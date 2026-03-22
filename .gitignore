@@ -1,0 +1,22 @@
+# IDE-specific files
+.idea/
+
+# Build output
+out/
+build/
+
+# Dependency directories
+node_modules/
+
+# Environment variables
+.env
+
+# Log files
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Other
+.DS_Store
+*.iml
