@@ -1,0 +1,16 @@
+{
+  "app/shops/[slug]/ClientPage.tsx -> @/components/BookingModal": {
+    "id": 2018,
+    "files": [
+      "static/chunks/18.d62e1960770bb601.js"
+    ]
+  },
+  "components/BarcodeScannerWrapper.tsx -> ./BarcodeScanner": {
+    "id": 7299,
+    "files": [
+      "static/chunks/7cb1fa1f.8aa99c163dd14371.js",
+      "static/chunks/876.1503142df291b394.js",
+      "static/chunks/299.5746627b5ab036f0.js"
+    ]
+  }
+}
