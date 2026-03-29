@@ -1,0 +1,344 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Shop {
+  id          String        @id @default(cuid())
+  name        String
+  description String?
+  template    String        @default("modern")
+  customization Json?
+  users       User[]
+  services    Service[]
+  products    Product[]
+  appointments Appointment[]
+  timeLogs    TimeLog[]
+  leaves      Leave[]
+  expenses    Expense[]
+  reviews     Review[]
+  waitlist    Waitlist[]
+  commissionRules CommissionRule[]
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+}
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  name          String?
+  phone         String?
+  role          UserRole
+  canManageInventory Boolean @default(false)
+  barcode       String?   @unique
+  workingHours  Json?
+
+  // Client CRM fields
+  clientNotes   String?
+  preferences   String?
+  allergies     String?
+  marketingConsent Boolean @default(false)
+  smsConsent    Boolean   @default(false)
+
+  // Staff Payroll/Comp fields
+  commissionRateService Float?
+  commissionRateProduct Float?
+
+  shopId        String?
+  shop          Shop?     @relation(fields: [shopId], references: [id])
+  clientAppointments Appointment[] @relation("ClientAppointments")
+  staffAppointments  Appointment[] @relation("StaffAppointments")
+  timeLogs      TimeLog[]
+  leaves        Leave[]
+  reviews       Review[]
+  commissionRules CommissionRule[] @relation("StaffCommissionRules")
+
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  @@index([shopId, role])
+  @@index([email])
+}
+
+model Product {
+  id              String        @id @default(cuid())
+  name            String
+  description     String?
+  sku             String?
+  barcode         String?       @unique
+  price           Float
+  cost            Float?
+  taxRate         Float         @default(0)
+  trackInventory  Boolean       @default(false)
+  inventoryCount  Int           @default(0)
+  reorderPoint    Int           @default(0)
+  type            ProductType   @default(RETAIL) // RETAIL, BACKBAR
+  supplier        String?
+
+  shopId          String
+  shop            Shop          @relation(fields: [shopId], references: [id])
+  appointmentItems AppointmentItem[]
+
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  @@index([shopId, type])
+}
+
+enum ProductType {
+  RETAIL
+  BACKBAR
+}
+
+model Service {
+  id              String        @id @default(cuid())
+  name            String
+  description     String?
+  price           Float
+  taxRate         Float         @default(0) // New: Tax support
+  duration        Int
+
+  trackInventory  Boolean       @default(false)
+  inventoryCount  Int           @default(0)
+  type            ServiceType   @default(CUSTOMER)
+  itemType        String?
+  brand           String?
+  barcode         String?       @unique
+
+  shopId          String
+  shop            Shop          @relation(fields: [shopId], references: [id])
+  appointments    Appointment[]
+  appointmentItems AppointmentItem[]
+  commissionRules CommissionRule[]
+
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  @@index([shopId, type])
+}
+
+model Appointment {
+  id          String    @id @default(cuid())
+  startTime   DateTime
+  endTime     DateTime
+  notes       String?
+
+  // Legacy fields
+  tipAmount   Float     @default(0)
+  discount    Float     @default(0)
+  paymentMethod String? // CASH, CARD, MOBILE
+  serviceId   String?
+  service     Service?   @relation(fields: [serviceId], references: [id])
+
+  // POS Totals
+  subtotal    Float     @default(0)
+  taxAmount   Float     @default(0)
+  totalAmount Float     @default(0)
+  items       AppointmentItem[]
+  payments    Payment[]
+
+  userId      String
+  user        User      @relation("ClientAppointments", fields: [userId], references: [id])
+  staffId     String
+  staff       User      @relation("StaffAppointments", fields: [staffId], references: [id])
+  shopId      String
+  shop        Shop      @relation(fields: [shopId], references: [id])
+  review      Review?
+  status      AppointmentStatus @default(SCHEDULED)
+  paymentId   String?           @unique
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@index([shopId, startTime])
+  @@index([shopId, status])
+  @@index([staffId, startTime, endTime])
+  @@index([userId])
+}
+
+// New: Links an Appointment to multiple Services OR Products
+model AppointmentItem {
+  id            String    @id @default(cuid())
+  appointmentId String
+  appointment   Appointment @relation(fields: [appointmentId], references: [id], onDelete: Cascade)
+
+  serviceId     String?
+  service       Service?    @relation(fields: [serviceId], references: [id])
+  productId     String?
+  product       Product?    @relation(fields: [productId], references: [id])
+
+  name          String
+  price         Float
+  quantity      Int         @default(1)
+}
+
+// New: Multi-tender POS Payments
+model Payment {
+  id            String    @id @default(cuid())
+  appointmentId String
+  appointment   Appointment @relation(fields: [appointmentId], references: [id], onDelete: Cascade)
+  amount        Float
+  method        PaymentMethod
+  status        PaymentStatus @default(COMPLETED)
+  transactionId String?   // Stripe/Square ref
+  receiptUrl    String?
+  createdAt     DateTime  @default(now())
+}
+
+enum PaymentMethod {
+  CASH
+  CARD
+  MOBILE
+  GIFT_CARD
+  OTHER
+}
+
+enum PaymentStatus {
+  PENDING
+  COMPLETED
+  FAILED
+  REFUNDED
+}
+
+// New: Granular Commission Rules
+model CommissionRule {
+  id            String    @id @default(cuid())
+  shopId        String
+  shop          Shop      @relation(fields: [shopId], references: [id])
+
+  staffId       String?
+  staff         User?     @relation("StaffCommissionRules", fields: [staffId], references: [id])
+
+  serviceId     String?
+  service       Service?  @relation(fields: [serviceId], references: [id])
+
+  rateType      CommissionType @default(PERCENTAGE)
+  rateValue     Float
+
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+enum CommissionType {
+  PERCENTAGE
+  FLAT
+}
+
+enum UserRole {
+  SUPER_ADMIN
+  SHOP_ADMIN
+  STAFF
+  CLIENT
+  ATTENDANCE_KIOSK
+}
+
+enum ServiceType {
+  CUSTOMER
+  INTERNAL
+}
+
+enum AppointmentStatus {
+  SCHEDULED
+  COMPLETED
+  CANCELLED
+  NO_SHOW
+}
+
+model Expense {
+  id          String    @id @default(cuid())
+  amount      Float
+  category    String    // RENT, SUPPLIES, UTILITIES, EQUIPMENT, MARKETING, OTHER
+  description String?
+  date        DateTime  @default(now())
+  shopId      String
+  shop        Shop      @relation(fields: [shopId], references: [id])
+  createdAt   DateTime  @default(now())
+
+  @@index([shopId, date])
+}
+
+model Review {
+  id            String    @id @default(cuid())
+  rating        Int       // 1-5
+  comment       String?
+  appointmentId String    @unique
+  appointment   Appointment @relation(fields: [appointmentId], references: [id])
+  userId        String
+  user          User      @relation(fields: [userId], references: [id])
+  shopId        String
+  shop          Shop      @relation(fields: [shopId], references: [id])
+  createdAt     DateTime  @default(now())
+
+  @@index([shopId])
+}
+
+model Waitlist {
+  id          String    @id @default(cuid())
+  clientName  String
+  clientPhone String?
+  partySize   Int       @default(1)
+  serviceId   String?
+  staffId     String?
+  status      String    @default("WAITING") // WAITING, SERVING, DONE, LEFT
+  position    Int
+  shopId      String
+  shop        Shop      @relation(fields: [shopId], references: [id])
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@index([shopId, status])
+  @@index([createdAt])
+}
+
+model Leave {
+  id        String    @id @default(cuid())
+  date      DateTime  @db.Date
+  startTime DateTime
+  endTime   DateTime
+  reason    String?
+  userId    String
+  user      User      @relation(fields: [userId], references: [id])
+  shopId    String
+  shop      Shop      @relation(fields: [shopId], references: [id])
+  createdAt DateTime  @default(now())
+
+  @@index([shopId, date])
+  @@index([userId, date])
+}
+
+model TimeLog {
+  id          String    @id @default(cuid())
+  clockIn     DateTime  @default(now())
+  clockOut    DateTime?
+  userId      String
+  user        User      @relation(fields: [userId], references: [id])
+  shopId      String
+  shop        Shop      @relation(fields: [shopId], references: [id])
+
+  @@index([shopId])
+  @@index([userId, clockIn])
+}
+
+model SystemLog {
+  id          String    @id @default(cuid())
+  level       String    @default("ERROR") // INFO, WARN, ERROR
+  message     String
+  stack       String?
+  path        String?   // The page or API route where the error occurred
+  shopId      String?
+  userId      String?
+  metadata    Json?     // Any extra JSON details
+  isResolved  Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@index([shopId])
+  @@index([level])
+  @@index([createdAt])
+}

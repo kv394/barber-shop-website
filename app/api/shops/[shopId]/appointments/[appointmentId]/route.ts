@@ -1,0 +1,98 @@
+import { logger } from "@/lib/logger";
+import { prisma } from '@/lib/prisma';
+import { NextResponse } from 'next/server';
+import { auth } from '@clerk/nextjs/server';
+import { revalidatePath } from 'next/cache';
+
+export async function DELETE(
+  request: Request,
+  { params }: { params: { shopId: string, appointmentId: string } }
+) {
+  try {
+    const { userId } = auth();
+    if (!userId) return new Response('Unauthorized', { status: 401 });
+
+    const user = await prisma.user.findUnique({ where: { id: userId } });
+    
+    // Check if Shop Admin, Staff, or Super Admin
+    const canManage = user?.role === 'SUPER_ADMIN' || 
+                     (user?.role === 'SHOP_ADMIN' && user?.shopId === params.shopId) ||
+                     (user?.role === 'STAFF' && user?.shopId === params.shopId);
+
+    // Also check if the user is a CLIENT trying to cancel their OWN appointment
+    let isClientCancelingOwn = false;
+    if (user?.role === 'CLIENT') {
+        const appointmentToCancel = await prisma.appointment.findUnique({
+            where: { id: params.appointmentId }
+        });
+        if (appointmentToCancel && appointmentToCancel.userId === userId) {
+            isClientCancelingOwn = true;
+        }
+    }
+
+    if (!canManage && !isClientCancelingOwn) {
+        return new Response('Forbidden: You do not have permission to cancel this appointment.', { status: 403 });
+    }
+
+    // Verify appointment exists and belongs to the specified shop to prevent cross-shop deletion attacks
+    const appointment = await prisma.appointment.findUnique({
+        where: { id: params.appointmentId }
+    });
+
+    if (!appointment || appointment.shopId !== params.shopId) {
+        return NextResponse.json({ error: 'Appointment not found or does not belong to this shop.' }, { status: 404 });
+    }
+
+    await prisma.appointment.delete({
+        where: { 
+            id: params.appointmentId,
+            shopId: params.shopId
+        }
+    });
+
+    revalidatePath(`/shop/${params.shopId}/bookings`);
+
+    return NextResponse.json({ success: true }, { status: 200 });
+  } catch (error: any) {
+    logger.error("Error deleting appointment:", error);
+    return NextResponse.json({ error: error.message || 'Failed to delete appointment' }, { status: 500 });
+  }
+}
+
+export async function PATCH(
+  request: Request,
+  { params }: { params: { shopId: string, appointmentId: string } }
+) {
+  try {
+    const { userId } = auth();
+    if (!userId) return new Response('Unauthorized', { status: 401 });
+
+    const user = await prisma.user.findUnique({ where: { id: userId } });
+    const canManage = user?.role === 'SUPER_ADMIN' ||
+                     (user?.role === 'SHOP_ADMIN' && user?.shopId === params.shopId) ||
+                     (user?.role === 'STAFF' && user?.shopId === params.shopId);
+
+    if (!canManage) {
+      return new Response('Forbidden', { status: 403 });
+    }
+
+    const body = await request.json();
+    const updateData: any = {};
+
+    if (body.notes !== undefined) updateData.notes = body.notes;
+    if (body.status && ['SCHEDULED', 'COMPLETED', 'CANCELLED', 'NO_SHOW'].includes(body.status)) {
+      updateData.status = body.status;
+    }
+
+    const appointment = await prisma.appointment.update({
+      where: { id: params.appointmentId, shopId: params.shopId },
+      data: updateData,
+    });
+
+    revalidatePath(`/shop/${params.shopId}/bookings`);
+    return NextResponse.json(appointment);
+  } catch (error: any) {
+    logger.error("Error updating appointment:", error);
+    return NextResponse.json({ error: error.message || 'Failed to update appointment' }, { status: 500 });
+  }
+}
