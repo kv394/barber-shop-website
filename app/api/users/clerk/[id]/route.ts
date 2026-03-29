@@ -2,8 +2,7 @@ import { logger } from "@/lib/logger";
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 
-// Use this to ensure the page caches effectively unless revalidated
-export const revalidate = 60;
+export const dynamic = 'force-dynamic';
 
 // This function handles GET requests to /api/users/clerk/[id]
 export async function GET(

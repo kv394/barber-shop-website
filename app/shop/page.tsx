@@ -2,6 +2,8 @@ import { auth } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation';
 import { prisma } from '@/lib/prisma';
 
+export const dynamic = 'force-dynamic';
+
 // This page acts as a redirector.
 // It finds which shop the currently logged-in user belongs to and redirects them to the correct dashboard.
 export default async function ShopRedirectPage() {

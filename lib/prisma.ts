@@ -18,7 +18,4 @@ if (process.env.NODE_ENV !== 'production') {
   global.prisma = prisma;
 }
 
-// Eagerly connect to DB on startup so the first request isn't slow
-prisma.$connect().catch((e) => {
-  console.error('⚠️ Prisma failed to connect eagerly:', e);
-});
+// Eager DB connection on startup is removed to prevent build-time connection errors on platforms like Netlify.

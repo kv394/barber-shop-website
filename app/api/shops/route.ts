@@ -4,7 +4,7 @@ import { prisma } from '@/lib/prisma';
 import crypto from 'crypto';
 import { auth } from '@clerk/nextjs/server';
 
-export const revalidate = 60; // Cache for 60 seconds
+export const dynamic = 'force-dynamic';
 
 // Function to handle GET requests (List all shops)
 export async function GET(request: Request) {
