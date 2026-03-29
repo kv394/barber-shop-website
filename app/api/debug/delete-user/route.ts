@@ -38,6 +38,9 @@ export async function DELETE(request: Request) {
     return NextResponse.json({ message: 'User record deleted successfully. Please sign in again to re-initialize.' }, { status: 200 });
 
   } catch (error: any) {
+    if (error?.digest === 'DYNAMIC_SERVER_USAGE' || error?.message?.includes('Dynamic server usage')) {
+      throw error;
+    }
     logger.error('Error deleting user record:', error);
     return NextResponse.json({ error: 'Failed to delete user record' }, { status: 500 });
   }

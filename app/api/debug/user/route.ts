@@ -35,6 +35,9 @@ export async function GET(request: Request) {
 
     return NextResponse.json(user);
   } catch (error: any) {
+    if (error?.digest === 'DYNAMIC_SERVER_USAGE' || error?.message?.includes('Dynamic server usage')) {
+      throw error;
+    }
     logger.error('Error fetching debug user data:', error);
     return NextResponse.json({ error: 'Failed to fetch user data' }, { status: 500 });
   }

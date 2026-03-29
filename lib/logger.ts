@@ -15,6 +15,11 @@ export const logger = {
     const errorMsg = error instanceof Error ? error.message : (typeof error === 'string' ? error : JSON.stringify(error));
     const stackTrace = error instanceof Error ? error.stack : 'No stack trace';
 
+    // Next.js uses errors to control dynamic rendering bailout. Do not log them to the database, and do not crash the build!
+    if (errorMsg.includes('Dynamic server usage') || error?.digest === 'DYNAMIC_SERVER_USAGE' || message.includes('rendered statically')) {
+      return;
+    }
+
     // Store in Database if possible
     try {
         const { prisma } = await import('@/lib/prisma');
