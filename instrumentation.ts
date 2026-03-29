@@ -6,13 +6,7 @@
  */
 export async function register() {
   if (process.env.NEXT_RUNTIME === 'nodejs') {
-    // Eagerly connect Prisma so first request doesn't pay the cold-start cost
-    const { prisma } = await import('./lib/prisma');
-    try {
-      await prisma.$queryRaw`SELECT 1`;
-      console.log('✅ Database connection warmed up');
-    } catch (e) {
-      console.error('⚠️ Database warmup failed:', e);
-    }
+    // DB Warmup disabled to prevent issues during Next.js static build phase on Netlify.
+    // Serverless functions will lazy-connect to the database when first requested.
   }
 }
