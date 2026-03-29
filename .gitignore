@@ -24,4 +24,4 @@ yarn-error.log*
 
 # Other
 .DS_Store
-*.iml
+*.iml.env.local
