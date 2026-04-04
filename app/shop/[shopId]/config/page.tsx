@@ -1,55 +1,34 @@
 import { notFound, redirect } from 'next/navigation';
-import { auth } from '@clerk/nextjs/server';
-import { prisma } from '@/lib/prisma';
+import { createClient } from '@/utils/supabase/server';
+import { getShopLayoutData } from '@/lib/shop-data';
 import { TemplateSelector } from '@/app/components/TemplateSelector';
 import ShopAdminLayout from '@/app/components/ShopAdminLayout';
 
-async function getShopData(shopId: string, userId: string) {
-  const userFromDb = await prisma.user.findUnique({
-    where: { id: userId },
-  });
-
-  if (!userFromDb || (userFromDb.role !== 'SUPER_ADMIN' && (userFromDb.role !== 'SHOP_ADMIN' || userFromDb.shopId !== shopId))) {
-    return { shop: null, userRole: null };
-  }
-
-  const shopFromDb = await prisma.shop.findUnique({
-    where: { id: shopId },
-  });
-
-  if (!shopFromDb) {
-    return { shop: null, userRole: userFromDb.role };
-  }
-
-  return { 
-    shop: JSON.parse(JSON.stringify(shopFromDb)), 
-    userRole: userFromDb.role 
-  };
-}
+export const revalidate = 60;
 
 export default async function ShopConfigPage({
   params,
 }: {
-  params: { shopId: string };
+  params: Promise<{ shopId: string }>;
 }) {
-  const { userId } = auth();
+  const { shopId } = await params;
+  const supabase = createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  const userId = user?.id;
   if (!userId) redirect('/');
 
-  const { shop, userRole } = await getShopData(params.shopId, userId);
-
-  if (!shop) {
+  const data = await getShopLayoutData(userId, shopId);
+  if (!data || (!data.isSuperAdmin && !data.isShopAdmin)) {
     notFound();
   }
 
-  const shopSlug = shop.name.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '');
-
   return (
     <ShopAdminLayout
-      shopName={shop.name}
-      shopSlug={shopSlug}
+      shopName={data.shop.name}
+      shopSlug={data.shopSlug}
       pageTitle="Shop Configuration & Setup"
-      shopId={params.shopId}
-      userRole={userRole as string}
+      shopId={shopId}
+      userRole={data.userRole}
       activeTab="setup"
     >
       <div className="space-y-8">
@@ -59,8 +38,8 @@ export default async function ShopConfigPage({
             Choose a layout for the public booking page. You can further customize colors in the Appearance tab.
           </p>
           <TemplateSelector
-            currentTemplate={shop.template || 'modern'}
-            shopId={params.shopId}
+            currentTemplate={data.shop.template || 'modern'}
+            shopId={shopId}
           />
         </div>
       </div>

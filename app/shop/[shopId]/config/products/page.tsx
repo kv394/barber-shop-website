@@ -1,5 +1,5 @@
 import { redirect } from 'next/navigation';
-import { auth } from '@clerk/nextjs/server';
+import { createClient } from '@/utils/supabase/server';
 import { prisma } from '@/lib/prisma';
 import { getShopLayoutData } from '@/lib/shop-data';
 import ShopAdminLayout from '@/app/components/ShopAdminLayout';
@@ -7,32 +7,35 @@ import ProductManager from '@/app/components/ProductManager';
 
 export const dynamic = 'force-dynamic';
 
-export default async function ConfigProductsPage({ params }: { params: { shopId: string } }) {
-  const { userId } = auth();
+export default async function ConfigProductsPage({ params }: { params: Promise<{ shopId: string }> }) {
+  const supabase = createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  const userId = user?.id;
   if (!userId) return redirect('/');
 
-  const data = await getShopLayoutData(userId, params.shopId);
+  const { shopId } = await params;
+  const data = await getShopLayoutData(userId, shopId);
   if (!data) return redirect('/');
 
   const { shop, userRole } = data;
   if (!userRole || userRole === 'ATTENDANCE_KIOSK') return redirect('/');
 
   const products = await prisma.product.findMany({
-    where: { shopId: params.shopId },
+    where: { shopId },
     orderBy: { createdAt: 'desc' },
   });
 
   return (
     <ShopAdminLayout
       shopName={shop.name}
-      shopSlug={shop.template}
+      shopSlug={data.shopSlug}
       pageTitle="Products & Inventory"
-      shopId={params.shopId}
+      shopId={shopId}
       userRole={userRole}
-      activeTab="settings"
+      activeTab="products"
     >
       <div className="max-w-4xl mx-auto py-8">
-        <ProductManager shopId={params.shopId} products={products} />
+        <ProductManager shopId={shopId} products={products} />
       </div>
     </ShopAdminLayout>
   );

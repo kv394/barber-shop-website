@@ -1,23 +1,27 @@
 import { logger } from "@/lib/logger";
 import { prisma } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
-import { auth } from '@clerk/nextjs/server';
+import { createClient } from '@/utils/supabase/server';
 import { revalidatePath } from 'next/cache';
+import { PaymentMethod } from '@prisma/client';
 
 export async function POST(
   request: Request,
-  { params }: { params: { shopId: string, appointmentId: string } }
+  { params }: { params: Promise<{ shopId: string, appointmentId: string }> }
 ) {
   try {
-    const { userId } = auth();
+    const { shopId, appointmentId } = await params;
+    const supabase = createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  const userId = user?.id;
     if (!userId) return new Response('Unauthorized', { status: 401 });
 
     const user = await prisma.user.findUnique({ where: { id: userId } });
     
     // Only Shop Admin, Staff, or Super Admin can mark an appointment as paid
     const canManage = user?.role === 'SUPER_ADMIN' || 
-                     (user?.role === 'SHOP_ADMIN' && user?.shopId === params.shopId) ||
-                     (user?.role === 'STAFF' && user?.shopId === params.shopId);
+                     (user?.role === 'SHOP_ADMIN' && user?.shopId === shopId) ||
+                     (user?.role === 'STAFF' && user?.shopId === shopId);
 
     if (!canManage) {
         return new Response('Forbidden: Only staff can process payments.', { status: 403 });
@@ -25,10 +29,10 @@ export async function POST(
 
     // Verify appointment exists and belongs to the specified shop
     const appointment = await prisma.appointment.findUnique({
-        where: { id: params.appointmentId }
+        where: { id: appointmentId }
     });
 
-    if (!appointment || appointment.shopId !== params.shopId) {
+    if (!appointment || appointment.shopId !== shopId) {
         return NextResponse.json({ error: 'Appointment not found.' }, { status: 404 });
     }
 
@@ -43,12 +47,32 @@ export async function POST(
 
     try {
       const body = await request.json();
-      tipAmount = parseFloat(body.tipAmount) || 0;
-      discount = parseFloat(body.discount) || 0;
-      paymentMethod = body.paymentMethod || 'CASH';
-      cartItems = body.cartItems || [];
-      payments = body.payments || [];
+      tipAmount = Math.max(0, parseFloat(body.tipAmount) || 0);
+      discount = Math.max(0, parseFloat(body.discount) || 0);
+      paymentMethod = typeof body.paymentMethod === 'string' ? body.paymentMethod.slice(0, 50) : 'CASH';
+      cartItems = Array.isArray(body.cartItems) ? body.cartItems : [];
+      payments = Array.isArray(body.payments) ? body.payments : [];
     } catch {}
+
+    // SECURITY: Validate cart items — prevent negative prices, quantities, or tax rates
+    for (const item of cartItems) {
+      if (typeof item.price !== 'number' || item.price < 0) {
+        return NextResponse.json({ error: 'Invalid item price' }, { status: 400 });
+      }
+      if (typeof item.quantity !== 'number' || item.quantity < 1 || !Number.isInteger(item.quantity)) {
+        return NextResponse.json({ error: 'Invalid item quantity' }, { status: 400 });
+      }
+      if (item.taxRate !== undefined && (typeof item.taxRate !== 'number' || item.taxRate < 0 || item.taxRate > 1)) {
+        return NextResponse.json({ error: 'Invalid tax rate' }, { status: 400 });
+      }
+    }
+
+    // SECURITY: Validate payment amounts
+    for (const p of payments) {
+      if (typeof p.amount !== 'number' || p.amount < 0) {
+        return NextResponse.json({ error: 'Invalid payment amount' }, { status: 400 });
+      }
+    }
 
     // Calculate totals
     const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
@@ -56,11 +80,25 @@ export async function POST(
     const taxAmount = cartItems.reduce((sum, item) => sum + (item.price * item.quantity * (item.taxRate || 0)), 0);
     const totalAmount = subtotal + taxAmount - discount + tipAmount;
 
-    // Build the transaction
+    // Build the transaction — SECURITY: all checks INSIDE the transaction to prevent
+    // double-checkout race conditions and inventory underflow
     await prisma.$transaction(async (tx) => {
+      // Re-check status inside the transaction to prevent double-checkout
+      const freshAppointment = await tx.appointment.findUnique({
+        where: { id: appointmentId },
+        select: { status: true, shopId: true },
+      });
+
+      if (!freshAppointment || freshAppointment.shopId !== shopId) {
+        throw new Error('NOT_FOUND');
+      }
+      if (freshAppointment.status === 'COMPLETED') {
+        throw new Error('ALREADY_COMPLETED');
+      }
+
       // 1. Mark appointment as completed
       await tx.appointment.update({
-          where: { id: params.appointmentId },
+          where: { id: appointmentId },
           data: { 
               status: 'COMPLETED',
               tipAmount,
@@ -77,20 +115,30 @@ export async function POST(
       if (cartItems.length > 0) {
         await tx.appointmentItem.createMany({
           data: cartItems.map(item => ({
-            appointmentId: params.appointmentId,
+            appointmentId: appointmentId,
             productId: item.productId,
             serviceId: item.serviceId,
-            name: item.name || 'Item',
+            name: String(item.name || 'Item').slice(0, 200),
             quantity: item.quantity,
             price: item.price,
-            cost: item.cost || 0,
+            cost: Math.max(0, item.cost || 0),
             taxRate: item.taxRate || 0,
           }))
         });
 
-        // 3. Deduct Inventory for Products
+        // 3. Deduct Inventory for Products — with underflow protection
         for (const item of cartItems) {
           if (item.productId && item.trackInventory) {
+             const product = await tx.product.findUnique({
+               where: { id: item.productId },
+               select: { inventoryCount: true, shopId: true },
+             });
+             if (!product || product.shopId !== shopId) {
+               throw new Error('INVALID_PRODUCT');
+             }
+             if (product.inventoryCount < item.quantity) {
+               throw new Error('INSUFFICIENT_INVENTORY');
+             }
              await tx.product.update({
                where: { id: item.productId },
                data: { inventoryCount: { decrement: item.quantity } }
@@ -102,22 +150,77 @@ export async function POST(
       // 4. Record separate Payment splits if provided
       if (payments.length > 0) {
          await tx.payment.createMany({
-           data: payments.map(p => ({
-             appointmentId: params.appointmentId,
-             method: p.method,
-             amount: p.amount,
-             status: 'COMPLETED',
-             stripeId: p.stripeId || null,
-           }))
+           data: payments.map(p => {
+             const validMethods: PaymentMethod[] = ['CASH', 'CARD', 'MOBILE', 'GIFT_CARD', 'OTHER'];
+             const raw = String(p.method || 'CASH').toUpperCase();
+             const method: PaymentMethod = validMethods.includes(raw as PaymentMethod) ? (raw as PaymentMethod) : 'CASH';
+             return {
+               appointmentId: appointmentId,
+               method,
+               amount: p.amount,
+               status: 'COMPLETED' as const,
+               transactionId: p.stripeId ? String(p.stripeId).slice(0, 200) : null,
+             };
+           })
          });
       }
     });
 
-    revalidatePath(`/shop/${params.shopId}/bookings`);
+    revalidatePath(`/shop/${shopId}/bookings`);
+
+    // ── Engagement & Retention: Post-checkout hooks ──
+    // Award loyalty points (fire-and-forget, don't block checkout)
+    try {
+      const { LoyaltyService } = await import('@/lib/loyalty');
+      await LoyaltyService.awardPointsForCheckout(
+        appointment.userId, shopId, totalAmount, appointmentId
+      );
+
+      // Complete any pending referral for this client
+      const pendingReferral = await prisma.referral.findFirst({
+        where: { shopId, refereeId: appointment.userId, status: 'PENDING' },
+      });
+      if (pendingReferral) {
+        await prisma.referral.update({
+          where: { id: pendingReferral.id },
+          data: { status: 'COMPLETED' },
+        });
+        // Award referral bonus to both parties
+        await LoyaltyService.awardReferralBonus(
+          pendingReferral.referrerId, shopId, pendingReferral.referrerRewardPoints
+        );
+        await LoyaltyService.awardReferralBonus(
+          pendingReferral.refereeId, shopId, pendingReferral.refereeRewardPoints
+        );
+        await prisma.referral.update({
+          where: { id: pendingReferral.id },
+          data: { status: 'REWARDED' },
+        });
+      }
+
+      // Send review request notification
+      const { NotificationService } = await import('@/lib/notifications');
+      const shop = await prisma.shop.findUnique({ where: { id: shopId }, select: { name: true } });
+      if (shop) {
+        await NotificationService.sendReviewRequest(shopId, appointment.userId, shop.name, appointmentId);
+      }
+    } catch (engagementError) {
+      // Don't fail checkout if engagement hooks fail
+      logger.error('Engagement post-checkout hooks failed (non-critical):', engagementError);
+    }
 
     return NextResponse.json({ success: true }, { status: 200 });
   } catch (error: any) {
+    if (error?.message === 'ALREADY_COMPLETED') {
+      return NextResponse.json({ error: 'This appointment has already been checked out.' }, { status: 400 });
+    }
+    if (error?.message === 'INSUFFICIENT_INVENTORY') {
+      return NextResponse.json({ error: 'Insufficient inventory for one or more products.' }, { status: 400 });
+    }
+    if (error?.message === 'INVALID_PRODUCT') {
+      return NextResponse.json({ error: 'Invalid product in cart.' }, { status: 400 });
+    }
     logger.error("Error checking out appointment:", error);
-    return NextResponse.json({ error: error.message || 'Failed to checkout' }, { status: 500 });
+    return NextResponse.json({ error: 'Failed to checkout' }, { status: 500 });
   }
 }

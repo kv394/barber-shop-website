@@ -1,24 +1,26 @@
 import { logger } from "@/lib/logger";
 import { prisma } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
-import { auth } from '@clerk/nextjs/server';
+import { createClient } from '@/utils/supabase/server';
+
+export const dynamic = 'force-dynamic';
 
 export async function GET(
   request: Request,
-  { params }: { params: { shopId: string } }
+  { params }: { params: Promise<{ shopId: string }> }
 ) {
   try {
+    const { shopId } = await params;
     const reviews = await prisma.review.findMany({
-      where: { shopId: params.shopId },
+      where: { shopId: shopId },
       include: {
         user: { select: { name: true } },
         appointment: { include: { service: { select: { name: true } }, staff: { select: { name: true } } } },
       },
       orderBy: { createdAt: 'desc' },
-      take: 50,
+      take: 100,
     });
-
-    return NextResponse.json(reviews);
+    return NextResponse.json({ reviews, total: reviews.length });
   } catch (error) {
     logger.error('Error fetching reviews:', error);
     return NextResponse.json({ error: 'Failed to fetch reviews' }, { status: 500 });
@@ -27,10 +29,13 @@ export async function GET(
 
 export async function POST(
   request: Request,
-  { params }: { params: { shopId: string } }
+  { params }: { params: Promise<{ shopId: string }> }
 ) {
   try {
-    const { userId } = auth();
+    const { shopId } = await params;
+    const supabase = createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  const userId = user?.id;
     if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
     const body = await request.json();
@@ -45,7 +50,7 @@ export async function POST(
       where: { id: appointmentId },
     });
 
-    if (!appointment || appointment.shopId !== params.shopId || appointment.userId !== userId) {
+    if (!appointment || appointment.shopId !== shopId || appointment.userId !== userId) {
       return NextResponse.json({ error: 'Appointment not found or not yours' }, { status: 404 });
     }
 
@@ -61,11 +66,12 @@ export async function POST(
 
     const review = await prisma.review.create({
       data: {
-        rating: parseInt(rating),
-        comment: comment || null,
+        rating: Math.min(5, Math.max(1, Math.floor(parseInt(rating)))),
+        // SECURITY: Strip HTML tags and limit length to prevent stored XSS
+        comment: comment ? String(comment).replace(/<[^>]*>/g, '').slice(0, 2000) : null,
         appointmentId,
         userId,
-        shopId: params.shopId,
+        shopId: shopId,
       },
     });
 

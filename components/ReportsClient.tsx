@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useMemo } from 'react';
+import RefundButton from '@/components/RefundButton';
 
 interface Appointment {
   id: string;
@@ -8,13 +9,28 @@ interface Appointment {
   status: string;
   tipAmount: number;
   discount: number;
+  totalAmount: number;
+  refundAmount: number;
+  refundedAt: string | null;
   paymentMethod: string | null;
   service: { name: string; price: number };
   user: { name: string | null; email: string };
   staff: { name: string | null };
 }
 
-export default function ReportsClient({ appointments, totalRevenue: allTimeRevenue, totalTips: allTimeTips }: { appointments: Appointment[]; totalRevenue: number; totalTips: number }) {
+export interface ReportsClientProps {
+  appointments: Appointment[];
+  totalRevenue: number;
+  totalTips: number;
+  shopId: string;
+}
+
+export default function ReportsClient({
+  appointments,
+  totalRevenue: allTimeRevenue,
+  totalTips: allTimeTips,
+  shopId,
+}: ReportsClientProps) {
   const [dateFrom, setDateFrom] = useState('');
   const [dateTo, setDateTo] = useState('');
   const [activeView, setActiveView] = useState<'transactions' | 'byStaff' | 'byService'>('transactions');
@@ -159,19 +175,40 @@ export default function ReportsClient({ appointments, totalRevenue: allTimeReven
           ) : (
             <>
               <div className="sm:hidden space-y-3">
-                {filtered.map(apt => (
-                  <div key={apt.id} className="bg-slate-900/70 p-3 rounded-lg border border-white/10">
-                    <div className="flex justify-between items-start mb-2">
-                      <div className="min-w-0">
-                        <p className="font-medium text-sm text-white truncate">{apt.user.name || apt.user.email}</p>
-                        <p className="text-xs text-brand-gold">{apt.service.name}</p>
-                        {apt.staff?.name && <p className="text-[10px] text-purple-400">✂️ {apt.staff.name}</p>}
+                {filtered.map(apt => {
+                  const paid = apt.totalAmount > 0 ? apt.totalAmount : apt.service.price;
+                  const isRefunded = (apt.refundAmount || 0) > 0;
+                  return (
+                    <div key={apt.id} className={`bg-slate-900/70 p-3 rounded-lg border border-white/10 ${isRefunded ? 'opacity-60' : ''}`}>
+                      <div className="flex justify-between items-start mb-2">
+                        <div className="min-w-0">
+                          <p className="font-medium text-sm text-white truncate">{apt.user.name || apt.user.email}</p>
+                          <p className="text-xs text-brand-gold">{apt.service.name}</p>
+                          {apt.staff?.name && <p className="text-[10px] text-purple-400">✂️ {apt.staff.name}</p>}
+                        </div>
+                        <div className="text-right shrink-0 ml-2">
+                          {isRefunded ? (
+                            <span className="font-bold text-amber-400 text-sm line-through">${paid.toFixed(2)}</span>
+                          ) : (
+                            <span className="font-bold text-green-400 text-sm">${paid.toFixed(2)}</span>
+                          )}
+                        </div>
                       </div>
-                      <span className="font-bold text-green-400 text-sm shrink-0">${apt.service.price.toFixed(2)}</span>
+                      <div className="flex items-center justify-between mt-1">
+                        <span className="text-[10px] text-gray-500 font-mono">
+                          {new Date(apt.updatedAt).toLocaleString(undefined, { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
+                        </span>
+                        {isRefunded ? (
+                          <span className="text-[10px] text-amber-400 bg-amber-900/20 px-2 py-0.5 rounded border border-amber-500/20">
+                            💸 Refunded
+                          </span>
+                        ) : (
+                          <RefundButton shopId={shopId} appointmentId={apt.id} totalAmount={paid} />
+                        )}
+                      </div>
                     </div>
-                    <span className="text-[10px] text-gray-500 font-mono">{new Date(apt.updatedAt).toLocaleString(undefined, { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}</span>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
 
               <div className="hidden sm:block overflow-x-auto">
@@ -182,21 +219,45 @@ export default function ReportsClient({ appointments, totalRevenue: allTimeReven
                       <th className="p-3 sm:p-4 font-semibold">Client</th>
                       <th className="p-3 sm:p-4 font-semibold">Service</th>
                       <th className="p-3 sm:p-4 font-semibold">Staff</th>
-                      <th className="p-3 sm:p-4 font-semibold text-right">Amount</th>
+                      <th className="p-3 sm:p-4 font-semibold text-right">Total Paid</th>
+                      <th className="p-3 sm:p-4 font-semibold text-right">Action</th>
                     </tr>
                   </thead>
                   <tbody className="text-sm">
-                    {filtered.map(apt => (
-                      <tr key={apt.id} className="border-b border-white/5 hover:bg-white/5 transition-colors">
-                        <td className="p-3 sm:p-4 font-mono text-gray-300 text-xs sm:text-sm">
-                          {new Date(apt.updatedAt).toLocaleString(undefined, { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
-                        </td>
-                        <td className="p-3 sm:p-4 text-white font-medium">{apt.user.name || apt.user.email}</td>
-                        <td className="p-3 sm:p-4 text-brand-gold">{apt.service.name}</td>
-                        <td className="p-3 sm:p-4 text-purple-300">{apt.staff?.name || '—'}</td>
-                        <td className="p-3 sm:p-4 text-right font-bold text-green-400">${apt.service.price.toFixed(2)}</td>
-                      </tr>
-                    ))}
+                    {filtered.map(apt => {
+                      const paid = apt.totalAmount > 0 ? apt.totalAmount : apt.service.price;
+                      const isRefunded = (apt.refundAmount || 0) > 0;
+                      return (
+                        <tr key={apt.id} className={`border-b border-white/5 hover:bg-white/5 transition-colors ${isRefunded ? 'opacity-60' : ''}`}>
+                          <td className="p-3 sm:p-4 font-mono text-gray-300 text-xs sm:text-sm">
+                            {new Date(apt.updatedAt).toLocaleString(undefined, { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
+                          </td>
+                          <td className="p-3 sm:p-4 text-white font-medium">{apt.user.name || apt.user.email}</td>
+                          <td className="p-3 sm:p-4 text-brand-gold">
+                            <div>{apt.service.name}</div>
+                            {apt.tipAmount > 0 && <div className="text-[10px] text-amber-400">+${apt.tipAmount.toFixed(2)} tip</div>}
+                            {apt.discount > 0 && <div className="text-[10px] text-red-400">-${apt.discount.toFixed(2)} disc.</div>}
+                          </td>
+                          <td className="p-3 sm:p-4 text-purple-300">{apt.staff?.name || '—'}</td>
+                          <td className="p-3 sm:p-4 text-right font-bold">
+                            {isRefunded ? (
+                              <span className="text-amber-400 line-through">${paid.toFixed(2)}</span>
+                            ) : (
+                              <span className="text-green-400">${paid.toFixed(2)}</span>
+                            )}
+                          </td>
+                          <td className="p-3 sm:p-4 text-right">
+                            {isRefunded ? (
+                              <span className="text-[10px] text-amber-400 bg-amber-900/20 border border-amber-500/20 px-2 py-1 rounded">
+                                💸 Refunded ${(apt.refundAmount || 0).toFixed(2)}
+                              </span>
+                            ) : (
+                              <RefundButton shopId={shopId} appointmentId={apt.id} totalAmount={paid} />
+                            )}
+                          </td>
+                        </tr>
+                      );
+                    })}
                   </tbody>
                 </table>
               </div>
@@ -263,4 +324,3 @@ export default function ReportsClient({ appointments, totalRevenue: allTimeReven
     </div>
   );
 }
-

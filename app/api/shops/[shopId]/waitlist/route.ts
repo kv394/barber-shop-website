@@ -1,21 +1,25 @@
 import { logger } from "@/lib/logger";
 import { prisma } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
-import { auth } from '@clerk/nextjs/server';
+import { createClient } from '@/utils/supabase/server';
 import { revalidatePath } from 'next/cache';
 
 export async function GET(
   request: Request,
-  { params }: { params: { shopId: string } }
+  { params }: { params: Promise<{ shopId: string }> }
 ) {
   try {
-    const { userId } = auth();
+    const { shopId } = await params;
+    const supabase = createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  const userId = user?.id;
     if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
     const user = await prisma.user.findUnique({ where: { id: userId } });
     const canView = user?.role === 'SUPER_ADMIN' ||
-      (user?.role === 'SHOP_ADMIN' && user?.shopId === params.shopId) ||
-      (user?.role === 'STAFF' && user?.shopId === params.shopId);
+      (user?.role === 'SHOP_ADMIN' && user?.shopId === shopId) ||
+      (user?.role === 'STAFF' && user?.shopId === shopId) ||
+      (user?.role === 'ATTENDANCE_KIOSK' && user?.shopId === shopId);
     if (!canView) return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
 
     const today = new Date();
@@ -23,7 +27,7 @@ export async function GET(
 
     const waitlist = await prisma.waitlist.findMany({
       where: {
-        shopId: params.shopId,
+        shopId: shopId,
         createdAt: { gte: today },
         status: { in: ['WAITING', 'SERVING'] },
       },
@@ -39,16 +43,19 @@ export async function GET(
 
 export async function POST(
   request: Request,
-  { params }: { params: { shopId: string } }
+  { params }: { params: Promise<{ shopId: string }> }
 ) {
   try {
-    const { userId } = auth();
+    const { shopId } = await params;
+    const supabase = createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  const userId = user?.id;
     if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
     const user = await prisma.user.findUnique({ where: { id: userId } });
     const canAdd = user?.role === 'SUPER_ADMIN' ||
-      (user?.role === 'SHOP_ADMIN' && user?.shopId === params.shopId) ||
-      (user?.role === 'STAFF' && user?.shopId === params.shopId);
+      (user?.role === 'SHOP_ADMIN' && user?.shopId === shopId) ||
+      (user?.role === 'STAFF' && user?.shopId === shopId);
     if (!canAdd) return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
 
     const body = await request.json();
@@ -58,27 +65,29 @@ export async function POST(
       return NextResponse.json({ error: 'Client name is required' }, { status: 400 });
     }
 
-    // Get next position
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    const lastEntry = await prisma.waitlist.findFirst({
-      where: { shopId: params.shopId, createdAt: { gte: today } },
-      orderBy: { position: 'desc' },
-    });
+    // SECURITY: Atomic position calculation + create to prevent duplicate positions
+    const entry = await prisma.$transaction(async (tx) => {
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      const lastEntry = await tx.waitlist.findFirst({
+        where: { shopId: shopId, createdAt: { gte: today } },
+        orderBy: { position: 'desc' },
+      });
 
-    const entry = await prisma.waitlist.create({
-      data: {
-        clientName,
-        clientPhone: clientPhone || null,
-        partySize: partySize || 1,
-        serviceId: serviceId || null,
-        staffId: staffId || null,
-        position: (lastEntry?.position || 0) + 1,
-        shopId: params.shopId,
-      },
-    });
+      return tx.waitlist.create({
+        data: {
+          clientName: String(clientName).slice(0, 200),
+          clientPhone: clientPhone ? String(clientPhone).slice(0, 30) : null,
+          partySize: Math.max(1, parseInt(partySize) || 1),
+          serviceId: serviceId || null,
+          staffId: staffId || null,
+          position: (lastEntry?.position || 0) + 1,
+          shopId: shopId,
+        },
+      });
+    }, { isolationLevel: 'Serializable' });
 
-    revalidatePath(`/shop/${params.shopId}/waitlist`);
+    revalidatePath(`/shop/${shopId}/waitlist`);
     return NextResponse.json(entry, { status: 201 });
   } catch (error) {
     logger.error('Error adding to waitlist:', error);
@@ -88,16 +97,19 @@ export async function POST(
 
 export async function PATCH(
   request: Request,
-  { params }: { params: { shopId: string } }
+  { params }: { params: Promise<{ shopId: string }> }
 ) {
   try {
-    const { userId } = auth();
+    const { shopId } = await params;
+    const supabase = createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  const userId = user?.id;
     if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
     const user = await prisma.user.findUnique({ where: { id: userId } });
     const canUpdate = user?.role === 'SUPER_ADMIN' ||
-      (user?.role === 'SHOP_ADMIN' && user?.shopId === params.shopId) ||
-      (user?.role === 'STAFF' && user?.shopId === params.shopId);
+      (user?.role === 'SHOP_ADMIN' && user?.shopId === shopId) ||
+      (user?.role === 'STAFF' && user?.shopId === shopId);
     if (!canUpdate) return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
 
     const body = await request.json();
@@ -115,11 +127,11 @@ export async function PATCH(
     if (staffId !== undefined) dataToUpdate.staffId = staffId;
 
     const updated = await prisma.waitlist.update({
-      where: { id },
+      where: { id, shopId },
       data: dataToUpdate,
     });
 
-    revalidatePath(`/shop/${params.shopId}/waitlist`);
+    revalidatePath(`/shop/${shopId}/waitlist`);
     return NextResponse.json(updated);
   } catch (error) {
     logger.error('Error updating waitlist:', error);

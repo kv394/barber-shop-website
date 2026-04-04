@@ -35,9 +35,10 @@ async function getShopsPage(page: number = 1) {
 export default async function ShopsDirectoryPage({
   searchParams,
 }: {
-  searchParams: { page?: string };
+  searchParams: Promise<{ page?: string }>;
 }) {
-  const currentPage = Number(searchParams.page) || 1;
+  const resolvedSearchParams = await searchParams;
+  const currentPage = Number(resolvedSearchParams.page) || 1;
   const { shops, totalCount, totalPages } = await getShopsPage(currentPage);
 
   return (

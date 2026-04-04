@@ -2,7 +2,7 @@ import { logger } from "@/lib/logger";
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import crypto from 'crypto';
-import { auth } from '@clerk/nextjs/server';
+import { createClient } from '@/utils/supabase/server';
 
 export const dynamic = 'force-dynamic';
 
@@ -13,16 +13,32 @@ export async function GET(request: Request) {
     const take = parseInt(searchParams.get('limit') || '50', 10);
     const skip = parseInt(searchParams.get('skip') || '0', 10);
 
+    // Check if caller is authenticated SUPER_ADMIN — if so, include users for admin UI
+    let isSuperAdmin = false;
+    try {
+      const supabase = createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  const userId = user?.id;
+      if (userId) {
+        const caller = await prisma.user.findUnique({ where: { id: userId }, select: { role: true } });
+        isSuperAdmin = caller?.role === 'SUPER_ADMIN';
+      }
+    } catch { /* unauthenticated — public access */ }
+
     const shops = await prisma.shop.findMany({
       take: Math.min(take, 100), 
       skip: Math.max(skip, 0),
-      // Include the users to determine shop status
-      include: {
-        users: {
-          select: {
-            role: true, // We only need the role to check for an admin
-          }
-        }
+      select: {
+        id: true,
+        name: true,
+        template: true,
+        description: true,
+        createdAt: true,
+        _count: {
+          select: { users: { where: { role: 'SHOP_ADMIN' } } },
+        },
+        // Only include user roles for SUPER_ADMIN (needed for home page status badges)
+        ...(isSuperAdmin ? { users: { select: { role: true } } } : {}),
       },
       orderBy: { createdAt: 'desc' }
     });
@@ -37,7 +53,9 @@ export async function GET(request: Request) {
 export async function POST(request: Request) {
   try {
     // HARDENING: Only Super Admins can create shops. Enforce server-side authorization.
-    const { userId } = auth();
+    const supabase = createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  const userId = user?.id;
     if (!userId) {
         return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
@@ -78,7 +96,7 @@ export async function POST(request: Request) {
     });
 
     // 2. Create or update the Kiosk User placeholder
-    const kioskBarcode = crypto.createHash('sha256').update(`kiosk-${newShop.id}`).digest('hex').substring(0, 12).toUpperCase();
+    const kioskBarcode = crypto.randomBytes(6).toString('hex').toUpperCase();
     await prisma.user.upsert({
         where: { email: sanitizedKioskEmail },
         update: {
@@ -97,7 +115,7 @@ export async function POST(request: Request) {
 
     // 3. If an admin email was provided, create or update that user as the Shop Admin
     if (sanitizedAdminEmail) {
-        const adminBarcode = crypto.createHash('sha256').update(`${sanitizedAdminEmail}-${process.env.JWT_SECRET || 'secret'}`).digest('hex').substring(0, 12).toUpperCase();
+        const adminBarcode = crypto.randomBytes(6).toString('hex').toUpperCase();
 
         await prisma.user.upsert({
             where: { email: sanitizedAdminEmail },
@@ -119,6 +137,6 @@ export async function POST(request: Request) {
 
   } catch (error: any) {
     logger.error("Error creating shop:", error);
-    return NextResponse.json({ error: error.message || 'Failed to create shop' }, { status: 500 });
+    return NextResponse.json({ error: 'Failed to create shop' }, { status: 500 });
   }
 }

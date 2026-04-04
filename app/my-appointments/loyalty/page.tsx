@@ -1,0 +1,105 @@
+'use client';
+
+import { useEffect, useState } from 'react';
+import Link from 'next/link';
+
+interface LoyaltyData {
+  shopName: string;
+  pointsBalance: number;
+  totalEarned: number;
+  totalRedeemed: number;
+  currentTier: string;
+  transactions: Array<{
+    id: string;
+    points: number;
+    type: string;
+    description: string | null;
+    createdAt: string;
+  }>;
+}
+
+export default function LoyaltyPage() {
+  const [accounts, setAccounts] = useState<LoyaltyData[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch('/api/my-appointments/loyalty')
+      .then(r => r.ok ? r.json() : [])
+      .then(setAccounts)
+      .finally(() => setLoading(false));
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center">
+        <p className="text-gray-400 animate-pulse">Loading loyalty…</p>
+      </div>
+    );
+  }
+
+  return (
+    <main className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
+      <header className="bg-black/40 backdrop-blur-md border-b border-slate-700 sticky top-0 z-20">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 py-4">
+          <h1 className="text-xl sm:text-2xl font-bold text-white">My Loyalty</h1>
+          <p className="text-xs text-gray-500">Track your points and rewards</p>
+        </div>
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 pb-2 flex gap-4 overflow-x-auto scrollbar-none">
+          <Link href="/my-appointments" className="text-sm text-gray-400 hover:text-white px-1 pb-1 whitespace-nowrap transition-colors">📅 Appointments</Link>
+          <Link href="/my-appointments/profile" className="text-sm text-gray-400 hover:text-white px-1 pb-1 whitespace-nowrap transition-colors">👤 Profile</Link>
+          <Link href="/my-appointments/loyalty" className="text-sm text-brand-gold border-b-2 border-brand-gold px-1 pb-1 font-semibold whitespace-nowrap">⭐ Loyalty</Link>
+          <Link href="/my-appointments/notifications" className="text-sm text-gray-400 hover:text-white px-1 pb-1 whitespace-nowrap transition-colors">🔔 Notifications</Link>
+          <Link href="/my-appointments/referrals" className="text-sm text-gray-400 hover:text-white px-1 pb-1 whitespace-nowrap transition-colors">🔗 Referrals</Link>
+        </div>
+      </header>
+
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8 space-y-8">
+        {accounts.length === 0 ? (
+          <div className="text-center py-12 border border-dashed border-white/10 rounded-xl">
+            <p className="text-4xl mb-3">⭐</p>
+            <p className="text-gray-400 text-sm">No loyalty accounts yet.</p>
+            <p className="text-gray-500 text-xs mt-2">Complete a visit at any participating shop to get started!</p>
+          </div>
+        ) : (
+          accounts.map((acct, i) => (
+            <div key={i} className="bg-slate-800/60 border border-white/5 rounded-xl overflow-hidden">
+              <div className="p-6 bg-gradient-to-r from-brand-gold/10 to-purple-600/10 border-b border-white/5">
+                <div className="flex justify-between items-center">
+                  <div>
+                    <h2 className="text-lg font-bold text-white">{acct.shopName}</h2>
+                    <span className="text-xs bg-brand-gold/20 text-brand-gold px-2 py-0.5 rounded-full font-semibold">{acct.currentTier}</span>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-3xl font-black text-brand-gold">{acct.pointsBalance}</p>
+                    <p className="text-xs text-gray-400">points available</p>
+                  </div>
+                </div>
+                <div className="flex gap-6 mt-4 text-xs text-gray-400">
+                  <span>Earned: <span className="text-green-400 font-semibold">{acct.totalEarned}</span></span>
+                  <span>Redeemed: <span className="text-amber-400 font-semibold">{acct.totalRedeemed}</span></span>
+                </div>
+              </div>
+              {acct.transactions.length > 0 && (
+                <div className="p-4 space-y-2 max-h-60 overflow-y-auto">
+                  <h3 className="text-xs text-gray-500 uppercase tracking-wider mb-2">Recent Activity</h3>
+                  {acct.transactions.map(tx => (
+                    <div key={tx.id} className="flex justify-between items-center py-2 border-b border-white/5 last:border-0">
+                      <div>
+                        <span className="text-sm text-gray-300">{tx.description || tx.type}</span>
+                        <span className="text-xs text-gray-600 ml-2">{new Date(tx.createdAt).toLocaleDateString()}</span>
+                      </div>
+                      <span className={`text-sm font-semibold ${tx.points >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+                        {tx.points >= 0 ? '+' : ''}{tx.points}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          ))
+        )}
+      </div>
+    </main>
+  );
+}
+

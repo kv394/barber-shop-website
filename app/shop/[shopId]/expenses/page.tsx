@@ -1,19 +1,20 @@
 import { redirect } from 'next/navigation';
-import { auth } from '@clerk/nextjs/server';
-import { prisma } from '@/lib/prisma';
+import { createClient } from '@/utils/supabase/server';
+import { getShopLayoutData } from '@/lib/shop-data';
 import ShopAdminLayout from '@/app/components/ShopAdminLayout';
 import ExpensesClient from '@/components/ExpensesClient';
 
 export const dynamic = 'force-dynamic';
 
-export default async function ExpensesPage({ params }: { params: { shopId: string } }) {
-  const { userId } = auth();
+export default async function ExpensesPage({ params }: { params: Promise<{ shopId: string }> }) {
+  const { shopId } = await params;
+  const supabase = createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  const userId = user?.id;
   if (!userId) return redirect('/');
 
-  const user = await prisma.user.findUnique({ where: { id: userId } });
-  const isAdmin = user?.role === 'SUPER_ADMIN' || (user?.role === 'SHOP_ADMIN' && user?.shopId === params.shopId);
-
-  if (!isAdmin) {
+  const data = await getShopLayoutData(userId, shopId);
+  if (!data || (!data.isSuperAdmin && !data.isShopAdmin)) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-slate-900 text-white p-12">
         <div className="text-center">
@@ -24,21 +25,16 @@ export default async function ExpensesPage({ params }: { params: { shopId: strin
     );
   }
 
-  const shop = await prisma.shop.findUnique({ where: { id: params.shopId } });
-  if (!shop) return redirect('/');
-
-  const shopSlug = shop.name.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '');
-
   return (
     <ShopAdminLayout
-      shopName={shop.name}
-      shopSlug={shopSlug}
+      shopName={data.shop.name}
+      shopSlug={data.shopSlug}
       pageTitle="Expense Tracking"
-      shopId={params.shopId}
-      userRole={user!.role}
+      shopId={shopId}
+      userRole={data.userRole}
       activeTab="expenses"
     >
-      <ExpensesClient shopId={params.shopId} />
+      <ExpensesClient shopId={shopId} />
     </ShopAdminLayout>
   );
 }

@@ -12,7 +12,8 @@ interface ClientDetailProps {
 export default function ClientDetailModal({ shopId, clientId, clientName, onClose }: ClientDetailProps) {
   const [client, setClient] = useState<any>(null);
   const [loading, setLoading] = useState(true);
-  
+  const [loyaltyData, setLoyaltyData] = useState<any>(null);
+
   // CRM Form fields
   const [formData, setFormData] = useState({
     clientNotes: '',
@@ -26,20 +27,32 @@ export default function ClientDetailModal({ shopId, clientId, clientName, onClos
   const [savedNotes, setSavedNotes] = useState(false);
 
   useEffect(() => {
-    fetch(`/api/shops/${shopId}/clients/${clientId}`)
-      .then(res => res.json())
-      .then(data => {
-        setClient(data);
-        setFormData({
-          clientNotes: data.clientNotes || '',
-          preferences: data.preferences || '',
-          allergies: data.allergies || '',
-          marketingConsent: data.marketingConsent || false,
-          smsConsent: data.smsConsent || false
-        });
-        setLoading(false);
-      })
-      .catch(() => setLoading(false));
+    Promise.all([
+      fetch(`/api/shops/${shopId}/clients/${clientId}`).then(r => r.json()),
+      fetch(`/api/shops/${shopId}/loyalty`).then(r => r.json()).catch(() => null),
+    ]).then(([clientData, loyaltyRes]) => {
+      setClient(clientData);
+      setFormData({
+        clientNotes: clientData.clientNotes || '',
+        preferences: clientData.preferences || '',
+        allergies: clientData.allergies || '',
+        marketingConsent: clientData.marketingConsent || false,
+        smsConsent: clientData.smsConsent || false,
+      });
+      if (loyaltyRes?.program) {
+        // Fetch this client's loyalty account from the accounts list
+        fetch(`/api/shops/${shopId}/loyalty/accounts`)
+          .then(r => r.json())
+          .then((accounts: any[]) => {
+            if (Array.isArray(accounts)) {
+              const acct = accounts.find((a: any) => a.userId === clientId);
+              setLoyaltyData(acct || null);
+            }
+          })
+          .catch(() => {});
+      }
+      setLoading(false);
+    }).catch(() => setLoading(false));
   }, [shopId, clientId]);
 
   const saveCrmData = async () => {
@@ -88,6 +101,7 @@ export default function ClientDetailModal({ shopId, clientId, clientName, onClos
               <div className="text-xs text-gray-400 mt-1 space-y-1">
                 <p>{client.email?.startsWith('walkin-') ? 'Walk-in Client' : client.email}</p>
                 {client.phone && <p>📱 {client.phone}</p>}
+                {client.referralCode && <p className="text-brand-gold/60">🔗 Referral: {client.referralCode}</p>}
               </div>
             )}
           </div>
@@ -117,6 +131,25 @@ export default function ClientDetailModal({ shopId, clientId, clientName, onClos
                   <p className="text-[9px] text-gray-400 uppercase tracking-wider">No-Shows</p>
                 </div>
               </div>
+
+              {/* Loyalty Points Card */}
+              {loyaltyData && (
+                <div className="bg-gradient-to-r from-brand-gold/10 to-amber-900/10 border border-brand-gold/20 p-3 rounded-lg">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <span className="text-lg">⭐</span>
+                      <div>
+                        <p className="text-xs text-gray-400 uppercase tracking-wider">Loyalty Points</p>
+                        <p className="text-xl font-black text-brand-gold">{loyaltyData.pointsBalance}</p>
+                      </div>
+                    </div>
+                    <div className="text-right text-[10px] text-gray-500">
+                      <p>Earned: <span className="text-green-400 font-semibold">{loyaltyData.totalEarned}</span></p>
+                      <p>Redeemed: <span className="text-red-400 font-semibold">{loyaltyData.totalRedeemed}</span></p>
+                    </div>
+                  </div>
+                </div>
+              )}
 
               <div className="flex-1 flex flex-col h-full max-h-[300px]">
                 <h4 className="text-sm font-semibold text-white mb-3 flex items-center gap-2"><span>📅</span> History</h4>

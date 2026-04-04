@@ -1,21 +1,24 @@
 import { logger } from "@/lib/logger";
 import { prisma } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
-import { auth, clerkClient } from '@clerk/nextjs/server';
+import { createClient } from '@/utils/supabase/server';
 
 export async function POST(
   request: Request,
-  { params }: { params: { shopId: string } }
+  { params }: { params: Promise<{ shopId: string }> }
 ) {
   try {
-    const { userId } = auth();
+    const { shopId } = await params;
+    const supabase = createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  const userId = user?.id;
     if (!userId) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     // Verify user is SHOP_ADMIN or SUPER_ADMIN for this shop
     const currentUser = await prisma.user.findUnique({ where: { id: userId } });
-    if (!currentUser || (currentUser.role !== 'SUPER_ADMIN' && (currentUser.role !== 'SHOP_ADMIN' || currentUser.shopId !== params.shopId))) {
+    if (!currentUser || (currentUser.role !== 'SUPER_ADMIN' && (currentUser.role !== 'SHOP_ADMIN' || currentUser.shopId !== shopId))) {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
 
@@ -25,22 +28,36 @@ export async function POST(
     if (!email || !password) {
       return NextResponse.json({ error: 'Email and password are required' }, { status: 400 });
     }
-    
+
+    // SECURITY: Enforce minimum password length
+    if (typeof password !== 'string' || password.length < 8) {
+      return NextResponse.json({ error: 'Password must be at least 8 characters' }, { status: 400 });
+    }
+
+    // SECURITY: Verify the target email belongs to a kiosk user of THIS shop
+    // Prevents a SHOP_ADMIN from changing passwords for users in other shops
+    const targetUser = await prisma.user.findUnique({ where: { email: String(email).trim().toLowerCase() } });
+    if (!targetUser || targetUser.shopId !== shopId || targetUser.role !== 'ATTENDANCE_KIOSK') {
+      return NextResponse.json({ error: 'Target user must be a kiosk account for this shop' }, { status: 403 });
+    }
+
     // Find if the user exists in Clerk by email
-    const clerkUsers = await clerkClient.users.getUserList({ emailAddress: [email] });
+    const client = await clerkClient();
+    const clerkUsersResponse = await client.users.getUserList({ emailAddress: [email] });
+    const clerkUsers = clerkUsersResponse.data;
 
     let targetClerkId: string;
 
     if (clerkUsers.length > 0) {
       // User exists in Clerk, just update their password
       targetClerkId = clerkUsers[0].id;
-      await clerkClient.users.updateUser(targetClerkId, { 
+      await client.users.updateUser(targetClerkId, {
         password: password,
         skipPasswordChecks: true,
       });
     } else {
       // User does not exist in Clerk, create them with the email pre-verified.
-      const newClerkUser = await clerkClient.users.createUser({
+      const newClerkUser = await client.users.createUser({
         emailAddress: [email],
         password: password,
         skipPasswordChecks: true,
@@ -58,7 +75,6 @@ export async function POST(
 
   } catch (error: any) {
     logger.error('Error setting kiosk password:', error);
-    const clerkError = error.errors?.[0]?.longMessage;
-    return NextResponse.json({ error: clerkError || 'Failed to set password.' }, { status: 500 });
+    return NextResponse.json({ error: 'Failed to set password.' }, { status: 500 });
   }
 }

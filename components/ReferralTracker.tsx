@@ -1,0 +1,105 @@
+'use client';
+
+import { useState, useEffect } from 'react';
+
+export default function ReferralTracker({ shopId }: { shopId: string }) {
+  const [data, setData] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch(`/api/shops/${shopId}/referrals`)
+      .then(res => res.json())
+      .then(d => setData(d))
+      .catch(() => {})
+      .finally(() => setLoading(false));
+  }, [shopId]);
+
+  if (loading) return <p className="text-gray-400 text-center py-12">Loading referrals...</p>;
+  if (!data) return <p className="text-red-400 text-center py-12">Failed to load referral data.</p>;
+
+  const { referrals, stats } = data;
+
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case 'REWARDED': return 'bg-green-900/50 text-green-300 border-green-500/30';
+      case 'COMPLETED': return 'bg-blue-900/50 text-blue-300 border-blue-500/30';
+      default: return 'bg-amber-900/50 text-amber-300 border-amber-500/30';
+    }
+  };
+
+  return (
+    <div className="space-y-8">
+      {stats && (
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div className="bg-gradient-to-br from-blue-900/40 to-blue-800/20 border border-blue-500/30 p-4 rounded-xl text-center">
+            <p className="text-3xl font-black text-blue-400">{stats.total}</p>
+            <p className="text-xs text-gray-400 uppercase tracking-wider">Total Referrals</p>
+          </div>
+          <div className="bg-gradient-to-br from-green-900/40 to-green-800/20 border border-green-500/30 p-4 rounded-xl text-center">
+            <p className="text-3xl font-black text-green-400">{stats.completed}</p>
+            <p className="text-xs text-gray-400 uppercase tracking-wider">Completed</p>
+          </div>
+          <div className="bg-gradient-to-br from-amber-900/40 to-amber-800/20 border border-amber-500/30 p-4 rounded-xl text-center">
+            <p className="text-3xl font-black text-amber-400">{stats.pending}</p>
+            <p className="text-xs text-gray-400 uppercase tracking-wider">Pending</p>
+          </div>
+        </div>
+      )}
+
+      <div className="bg-slate-900/70 p-6 rounded-xl border border-white/10">
+        <h3 className="text-lg font-bold text-white flex items-center gap-2 mb-4">
+          <span>🔗</span> How Referrals Work
+        </h3>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div className="bg-slate-800/50 p-4 rounded-lg border border-white/5 text-center">
+            <div className="text-2xl mb-2">📤</div>
+            <p className="text-sm font-semibold text-white mb-1">Client Shares Code</p>
+            <p className="text-xs text-gray-400">Each client gets a unique referral code to share with friends.</p>
+          </div>
+          <div className="bg-slate-800/50 p-4 rounded-lg border border-white/5 text-center">
+            <div className="text-2xl mb-2">👤</div>
+            <p className="text-sm font-semibold text-white mb-1">New Client Signs Up</p>
+            <p className="text-xs text-gray-400">The new client enters the referral code when booking.</p>
+          </div>
+          <div className="bg-slate-800/50 p-4 rounded-lg border border-white/5 text-center">
+            <div className="text-2xl mb-2">🎁</div>
+            <p className="text-sm font-semibold text-white mb-1">Both Get Rewarded</p>
+            <p className="text-xs text-gray-400">After first visit, both earn bonus loyalty points.</p>
+          </div>
+        </div>
+      </div>
+
+      <div className="bg-slate-900/70 p-6 rounded-xl border border-white/10">
+        <h3 className="text-lg font-bold text-white flex items-center gap-2 mb-4">
+          <span>📋</span> Referral History
+        </h3>
+
+        {!referrals || referrals.length === 0 ? (
+          <p className="text-gray-500 italic text-center py-8 border border-dashed border-white/10 rounded">
+            No referrals yet. Clients will see their unique referral code on the booking page.
+          </p>
+        ) : (
+          <div className="space-y-2 max-h-[400px] overflow-y-auto">
+            {referrals.map((ref: any) => (
+              <div key={ref.id} className="flex items-center gap-3 bg-slate-800/50 p-3 rounded-lg border border-white/5">
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm text-white">
+                    <span className="font-semibold text-brand-gold">{ref.referrer?.name || 'Unknown'}</span>
+                    <span className="text-gray-500 mx-2">→</span>
+                    <span className="font-semibold">{ref.referee?.name || 'New Client'}</span>
+                  </p>
+                  <p className="text-[10px] text-gray-500">
+                    {new Date(ref.createdAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}
+                  </p>
+                </div>
+                <span className={`px-2 py-0.5 rounded text-[10px] font-bold border ${getStatusColor(ref.status)}`}>
+                  {ref.status}
+                </span>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}

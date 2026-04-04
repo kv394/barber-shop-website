@@ -1,57 +1,64 @@
 import { redirect } from 'next/navigation';
-import { auth } from '@clerk/nextjs/server';
+import { createClient } from '@/utils/supabase/server';
 import { prisma } from '@/lib/prisma';
+import { getShopLayoutData } from '@/lib/shop-data';
 import ShopAdminLayout from '@/app/components/ShopAdminLayout';
 import ReportsClient from '@/components/ReportsClient';
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 30;
 
 async function getPageData(shopId: string, userId: string) {
-  const userFromDb = await prisma.user.findUnique({
-    where: { id: userId },
-  });
+  const data = await getShopLayoutData(userId, shopId);
+  if (!data) return null;
 
-  const isSuperAdmin = userFromDb?.role === 'SUPER_ADMIN';
-  const isShopAdmin = userFromDb?.role === 'SHOP_ADMIN' && userFromDb?.shopId === shopId;
+  const { isSuperAdmin, isShopAdmin } = data;
+  if (!isSuperAdmin && !isShopAdmin) return null;
 
-  if (!isSuperAdmin && !isShopAdmin) {
-    return { shop: null, userRole: null, recentCompletedAppointments: [], totalRevenue: 0, totalTips: 0 };
-  }
+  // Run queries in parallel: aggregate for totals, capped query for table UI,
+  // and a bounded query for the revenue-by-day chart (last 90 days only).
+  const ninetyDaysAgo = new Date();
+  ninetyDaysAgo.setDate(ninetyDaysAgo.getDate() - 90);
 
-  const shop = await prisma.shop.findUnique({ where: { id: shopId } });
+  const completedWhere = { shopId: shopId, status: 'COMPLETED' as const };
 
-  if (!shop) {
-    return { shop: null, userRole: userFromDb?.role, recentCompletedAppointments: [], totalRevenue: 0, totalTips: 0 };
-  }
-
-  // Run queries in parallel: lightweight aggregate for totals, capped heavy query for table UI
-  const [recentCompletedAppointments, allCompleted] = await Promise.all([
+  const [recentCompletedAppointments, totals, chartAppointments] = await Promise.all([
     prisma.appointment.findMany({
-      where: { shopId: shopId, status: 'COMPLETED' },
-      include: {
+      where: completedWhere,
+      select: {
+        id: true,
+        updatedAt: true,
+        status: true,
+        tipAmount: true,
+        discount: true,
+        totalAmount: true,
+        refundAmount: true,
+        refundedAt: true,
+        paymentMethod: true,
         service: { select: { name: true, price: true } },
         user: { select: { name: true, email: true } },
         staff: { select: { name: true } },
       },
       orderBy: { updatedAt: 'desc' },
-      take: 200, // Capped for performance
+      take: 200,
+    }),
+    prisma.appointment.aggregate({
+      where: completedWhere,
+      _sum: { totalAmount: true, tipAmount: true, discount: true },
+      _count: true,
     }),
     prisma.appointment.findMany({
-      where: { shopId: shopId, status: 'COMPLETED' },
-      include: {
-        user: true,
-        service: true,
-      },
-      orderBy: { startTime: 'desc' }
-    })
+      where: { ...completedWhere, updatedAt: { gte: ninetyDaysAgo } },
+      select: { updatedAt: true, totalAmount: true, discount: true, service: { select: { price: true } } },
+      orderBy: { updatedAt: 'asc' },
+    }),
   ]);
 
-  const totalRevenue = allCompleted.reduce((sum, apt) => sum + (apt.totalAmount > 0 ? apt.totalAmount : ((apt.service?.price || 0) - (apt.discount || 0))), 0);
-  const totalTips = allCompleted.reduce((sum, apt) => sum + (apt.tipAmount || 0), 0);
+  const totalRevenue = totals._sum.totalAmount ?? 0;
+  const totalTips = totals._sum.tipAmount ?? 0;
 
-  // Group by day for simple charting
+  // Group by day for simple charting (last 90 days)
   const revenueByDayRecord: Record<string, number> = {};
-  allCompleted.forEach(apt => {
+  chartAppointments.forEach(apt => {
     const dateKey = apt.updatedAt.toISOString().split('T')[0];
     revenueByDayRecord[dateKey] = (revenueByDayRecord[dateKey] || 0) + (apt.totalAmount > 0 ? apt.totalAmount : ((apt.service?.price || 0) - (apt.discount || 0)));
   });
@@ -59,8 +66,9 @@ async function getPageData(shopId: string, userId: string) {
   const revenueByDay = Object.entries(revenueByDayRecord).map(([date, total]) => ({ date, total }));
 
   return { 
-    shop: JSON.parse(JSON.stringify(shop)), 
-    userRole: userFromDb?.role,
+    shop: data.shop,
+    shopSlug: data.shopSlug,
+    userRole: data.userRole,
     recentCompletedAppointments: JSON.parse(JSON.stringify(recentCompletedAppointments)),
     totalRevenue,
     totalTips,
@@ -68,13 +76,16 @@ async function getPageData(shopId: string, userId: string) {
   };
 }
 
-export default async function ReportsPage({ params }: { params: { shopId: string } }) {
-  const { userId } = auth();
+export default async function ReportsPage({ params }: { params: Promise<{ shopId: string }> }) {
+  const supabase = createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  const userId = user?.id;
   if (!userId) return redirect('/');
 
-  const { shop, userRole, recentCompletedAppointments, totalRevenue, totalTips } = await getPageData(params.shopId, userId);
+  const { shopId } = await params;
+  const pageData = await getPageData(shopId, userId);
 
-  if (!shop) {
+  if (!pageData) {
     return (
         <div className="flex min-h-screen items-center justify-center bg-slate-900 text-white p-12">
             <div className="text-center">
@@ -85,18 +96,18 @@ export default async function ReportsPage({ params }: { params: { shopId: string
     )
   }
 
-  const shopSlug = shop.name.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '');
+  const { shop, shopSlug, userRole, recentCompletedAppointments, totalRevenue, totalTips } = pageData;
 
   return (
     <ShopAdminLayout
       shopName={shop.name}
       shopSlug={shopSlug}
       pageTitle="Financial Reports & History"
-      shopId={params.shopId}
+      shopId={shopId}
       userRole={userRole as string}
       activeTab="reports"
     >
-      <ReportsClient appointments={recentCompletedAppointments} totalRevenue={totalRevenue} totalTips={totalTips} />
+      <ReportsClient appointments={recentCompletedAppointments} totalRevenue={totalRevenue} totalTips={totalTips} shopId={shopId} />
     </ShopAdminLayout>
   );
 }

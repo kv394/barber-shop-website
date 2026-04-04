@@ -1,21 +1,21 @@
 import { logger } from "@/lib/logger";
 import { prisma } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
-import { auth } from '@clerk/nextjs/server';
+import { createClient } from '@/utils/supabase/server';
 import crypto from 'crypto';
 
 export async function POST(request: Request) {
-  const { userId } = auth();
+  const supabase = createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  const userId = user?.id;
   if (!userId) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
   const body = await request.json();
-  const { email, name } = body;
-
-  if (!email) {
-    return NextResponse.json({ error: 'Email is required' }, { status: 400 });
-  }
+  const { name } = body;
+  // SECURITY: Do NOT trust the email from the client body.
+  // Fetch the verified email from Clerk to prevent role-stealing.
 
   try {
     // Check if user already exists
@@ -25,10 +25,21 @@ export async function POST(request: Request) {
     });
 
     if (userById) {
-      return NextResponse.json(userById, { status: 200 });
+      // SECURITY: Don't leak sensitive fields like googleRefreshToken
+      const { googleRefreshToken, ...safeUser } = userById as any;
+      return NextResponse.json(safeUser, { status: 200 });
     }
 
-    // Check if this is an invited user
+    // Fetch the verified email from Clerk — never trust the client
+    const client = await clerkClient();
+    const clerkUser = await client.users.getUser(userId);
+    const email = clerkUser.emailAddresses?.[0]?.emailAddress;
+
+    if (!email) {
+      return NextResponse.json({ error: 'No email found for this user' }, { status: 400 });
+    }
+
+    // Check if this is an invited user (pre-created by admin with this email)
     const userByEmail = await prisma.user.findUnique({
       where: { email: email },
     });
@@ -59,8 +70,8 @@ export async function POST(request: Request) {
     const userCount = await prisma.user.count();
     const roleToAssign = userCount === 0 ? 'SUPER_ADMIN' : 'CLIENT';
     
-    const userBarcode = crypto.createHash('sha256').update(`${email}-${process.env.JWT_SECRET || 'secret'}`).digest('hex').substring(0, 12).toUpperCase();
-    
+    const userBarcode = crypto.randomBytes(6).toString('hex').toUpperCase();
+
     const newUser = await prisma.user.create({
       data: {
         id: userId,
@@ -77,7 +88,7 @@ export async function POST(request: Request) {
   } catch (error: any) {
     logger.error('Error in user initialization:', error);
     return NextResponse.json(
-      { error: 'Failed to initialize user profile. ' + (error.message || '') },
+      { error: 'Failed to initialize user profile.' },
       { status: 500 }
     );
   }

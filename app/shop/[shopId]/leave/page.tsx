@@ -1,20 +1,23 @@
 import { prisma } from '@/lib/prisma';
+import { getShopLayoutData } from '@/lib/shop-data';
 import ShopAdminLayout from '@/app/components/ShopAdminLayout';
-import { auth } from '@clerk/nextjs/server';
+import { createClient } from '@/utils/supabase/server';
 import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
 
-async function getShopData(shopId: string, userId: string) {
-  const user = await prisma.user.findUnique({ where: { id: userId } });
-  if (!user || (user.role !== 'SUPER_ADMIN' && user.shopId !== shopId)) {
-    return null;
-  }
+export const dynamic = 'force-dynamic';
 
-  const shop = await prisma.shop.findUnique({ where: { id: shopId } });
-  if (!shop) return null;
+async function getShopData(shopId: string, userId: string) {
+  const data = await getShopLayoutData(userId, shopId);
+  if (!data) return null;
+
+  // STAFF sees only their own leave; admins see all staff
+  const staffWhere = data.isStaff
+    ? { id: userId }
+    : { shopId: shopId, role: 'STAFF' as const };
 
   const staff = await prisma.user.findMany({
-    where: { shopId: shopId, role: 'STAFF' },
+    where: staffWhere,
     include: {
       leaves: {
         where: { date: { gte: new Date() } },
@@ -24,20 +27,37 @@ async function getShopData(shopId: string, userId: string) {
   });
 
   return { 
-    shop: JSON.parse(JSON.stringify(shop)), 
-    userRole: user.role, 
-    staff: JSON.parse(JSON.stringify(staff)) 
+    shop: data.shop,
+    shopSlug: data.shopSlug,
+    userRole: data.userRole,
+    isStaff: data.isStaff,
+    currentUserId: userId,
+    staff: JSON.parse(JSON.stringify(staff))
   };
 }
 
 async function addLeave(formData: FormData) {
   'use server';
+  const supabase = createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  const userId = user?.id;
+  if (!userId) return;
+
   const staffId = formData.get('staffId') as string;
   const date = formData.get('date') as string;
   const reason = formData.get('reason') as string;
   const shopId = formData.get('shopId') as string;
 
   if (!staffId || !date || !shopId) return;
+
+  // Security: verify the requesting user has permission (must be the staff member themselves or an admin)
+  const data = await getShopLayoutData(userId, shopId);
+  if (!data) return;
+  if (data.isStaff && data.user.id !== staffId) return; // STAFF can only add their own leave
+
+  // SECURITY: Verify the target staff member belongs to this shop
+  const targetStaff = await prisma.user.findUnique({ where: { id: staffId } });
+  if (!targetStaff || targetStaff.shopId !== shopId) return;
 
   const leaveDate = new Date(date);
   const startTime = new Date(date);
@@ -60,34 +80,51 @@ async function addLeave(formData: FormData) {
 
 async function deleteLeave(formData: FormData) {
   'use server';
+  const supabase = createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  const userId = user?.id;
+  if (!userId) return;
+
   const leaveId = formData.get('leaveId') as string;
   const shopId = formData.get('shopId') as string;
-  
+  const staffId = formData.get('staffId') as string;
+
   if (!leaveId || !shopId) return;
+
+  // Security: verify the requesting user has permission
+  const data = await getShopLayoutData(userId, shopId);
+  if (!data) return;
+  if (data.isStaff && data.user.id !== staffId) return; // STAFF can only delete their own leave
+
+  // SECURITY: Verify the leave belongs to this shop before deleting (prevent cross-shop deletion)
+  const leave = await prisma.leave.findUnique({ where: { id: leaveId } });
+  if (!leave || leave.shopId !== shopId) return;
 
   await prisma.leave.delete({ where: { id: leaveId } });
   revalidatePath(`/shop/${shopId}/leave`);
 }
 
-export default async function LeaveManagementPage({ params }: { params: { shopId: string } }) {
-  const { userId } = auth();
+export default async function LeaveManagementPage({ params }: { params: Promise<{ shopId: string }> }) {
+  const supabase = createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  const userId = user?.id;
   if (!userId) redirect('/sign-in');
 
-  const shopData = await getShopData(params.shopId, userId);
+  const { shopId } = await params;
+  const shopData = await getShopData(shopId, userId);
 
   if (!shopData) {
     return <div className="p-8 text-white">You do not have access to this page.</div>;
   }
 
-  const { shop, userRole, staff } = shopData;
-  const shopSlug = shop.name.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '');
+  const { shop, shopSlug, userRole, isStaff, staff } = shopData;
 
   return (
     <ShopAdminLayout
       shopName={shop.name}
       shopSlug={shopSlug}
-      pageTitle="Staff Leave Management"
-      shopId={params.shopId}
+      pageTitle={isStaff ? 'My Leave Schedule' : 'Staff Leave Management'}
+      shopId={shopId}
       userRole={userRole}
       activeTab="leave"
     >
@@ -101,7 +138,9 @@ export default async function LeaveManagementPage({ params }: { params: { shopId
               <input type="hidden" name="shopId" value={shop.id} />
               <input type="date" name="date" required style={{ colorScheme: 'dark', color: '#fff', backgroundColor: '#1e293b' }} className="w-full p-2.5 rounded-lg border border-slate-600 text-white" min={new Date().toISOString().split('T')[0]} />
               <input type="text" name="reason" placeholder="Reason (optional)" className="w-full bg-slate-800 p-2 rounded border border-slate-700" />
-              <button type="submit" className="w-full bg-blue-600 hover:bg-blue-500 p-2 rounded text-sm font-bold">Add Leave</button>
+              <button type="submit" className="w-full bg-blue-600 hover:bg-blue-500 p-2 rounded text-sm font-bold">
+                {isStaff ? 'Request Leave' : 'Add Leave'}
+              </button>
             </form>
 
             <div className="space-y-2">
@@ -116,6 +155,7 @@ export default async function LeaveManagementPage({ params }: { params: { shopId
                     <form action={deleteLeave}>
                       <input type="hidden" name="leaveId" value={leave.id} />
                       <input type="hidden" name="shopId" value={shop.id} />
+                      <input type="hidden" name="staffId" value={staffMember.id} />
                       <button type="submit" className="text-red-500 hover:text-red-400 text-xs">Delete</button>
                     </form>
                   </div>
@@ -126,6 +166,11 @@ export default async function LeaveManagementPage({ params }: { params: { shopId
             </div>
           </div>
         ))}
+        {staff.length === 0 && (
+          <p className="text-gray-500 italic col-span-3 text-center py-8 border border-dashed border-white/20 rounded text-sm">
+            No staff members found.
+          </p>
+        )}
       </div>
     </ShopAdminLayout>
   );

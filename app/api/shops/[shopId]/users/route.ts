@@ -1,15 +1,18 @@
 import { logger } from "@/lib/logger";
 import { prisma } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
-import { auth } from '@clerk/nextjs/server';
+import { createClient } from '@/utils/supabase/server';
 import crypto from 'crypto';
 
 export async function POST(
   request: Request,
-  { params }: { params: { shopId: string } }
+  { params }: { params: Promise<{ shopId: string }> }
 ) {
   try {
-    const { userId } = auth();
+    const { shopId } = await params;
+    const supabase = createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  const userId = user?.id;
 
     if (!userId) {
       return NextResponse.json(
@@ -31,7 +34,7 @@ export async function POST(
     }
 
     if (currentUser.role !== 'SUPER_ADMIN' && 
-        (currentUser.role !== 'SHOP_ADMIN' || currentUser.shopId !== params.shopId)) {
+        (currentUser.role !== 'SHOP_ADMIN' || currentUser.shopId !== shopId)) {
       return NextResponse.json(
         { error: 'Forbidden: You do not have permission to manage this shop' },
         { status: 403 }
@@ -55,9 +58,17 @@ export async function POST(
       );
     }
 
+    // SECURITY: Only SUPER_ADMIN can assign the SHOP_ADMIN role — prevent privilege escalation
+    if (role === 'SHOP_ADMIN' && currentUser.role !== 'SUPER_ADMIN') {
+      return NextResponse.json(
+        { error: 'Only Super Admins can assign the Shop Admin role' },
+        { status: 403 }
+      );
+    }
+
     // Check if shop exists
     const shop = await prisma.shop.findUnique({
-      where: { id: params.shopId },
+      where: { id: shopId },
     });
 
     if (!shop) {
@@ -68,7 +79,7 @@ export async function POST(
     }
 
     // Generate a unique barcode for the user based on their email and a secret
-    const userBarcode = crypto.createHash('sha256').update(`${email}-${process.env.JWT_SECRET || 'secret'}`).digest('hex').substring(0, 12).toUpperCase();
+    const userBarcode = crypto.randomBytes(6).toString('hex').toUpperCase();
 
     // Use upsert to handle both creation and updating of existing placeholder users
     const user = await prisma.user.upsert({
@@ -76,14 +87,14 @@ export async function POST(
         update: {
             role: role,
             canManageInventory: role === 'STAFF' ? Boolean(canManageInventory) : false,
-            shopId: params.shopId,
+            shopId: shopId,
         },
         create: {
             id: `invited_${crypto.randomBytes(8).toString('hex')}`, // More robust temporary ID
             email: email,
             role: role,
             canManageInventory: role === 'STAFF' ? Boolean(canManageInventory) : false,
-            shopId: params.shopId,
+            shopId: shopId,
             barcode: userBarcode,
         }
     });
@@ -97,7 +108,16 @@ export async function POST(
         user.barcode = userBarcode;
     }
 
-    return NextResponse.json(user, { status: 200 });
+    // SECURITY: Return only safe fields — don't leak googleRefreshToken etc.
+    return NextResponse.json({
+      id: user.id,
+      email: user.email,
+      name: user.name,
+      role: user.role,
+      shopId: user.shopId,
+      barcode: user.barcode,
+      canManageInventory: user.canManageInventory,
+    }, { status: 200 });
   } catch (error) {
     logger.error('Error assigning user to shop:', error);
     return NextResponse.json(
@@ -109,10 +129,13 @@ export async function POST(
 
 export async function GET(
   request: Request,
-  { params }: { params: { shopId: string } }
+  { params }: { params: Promise<{ shopId: string }> }
 ) {
   try {
-    const { userId } = auth();
+    const { shopId } = await params;
+    const supabase = createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  const userId = user?.id;
 
     if (!userId) {
       return NextResponse.json(
@@ -128,8 +151,8 @@ export async function GET(
 
     if (!currentUser || 
         (currentUser.role !== 'SUPER_ADMIN' && 
-         (currentUser.role !== 'SHOP_ADMIN' || currentUser.shopId !== params.shopId) &&
-         (currentUser.role !== 'STAFF' || currentUser.shopId !== params.shopId))) {
+         (currentUser.role !== 'SHOP_ADMIN' || currentUser.shopId !== shopId) &&
+         (currentUser.role !== 'STAFF' || currentUser.shopId !== shopId))) {
       return NextResponse.json(
         { error: 'Forbidden' },
         { status: 403 }
@@ -137,7 +160,7 @@ export async function GET(
     }
 
     // Restrict what users are visible based on role
-    const whereClause: any = { shopId: params.shopId };
+    const whereClause: any = { shopId: shopId };
     if (currentUser.role === 'SUPER_ADMIN') {
       // Super admins only manage shop admins and see the kiosk
       whereClause.role = { in: ['SHOP_ADMIN', 'ATTENDANCE_KIOSK'] };
@@ -168,10 +191,13 @@ export async function GET(
 
 export async function DELETE(
   request: Request,
-  { params }: { params: { shopId: string } }
+  { params }: { params: Promise<{ shopId: string }> }
 ) {
   try {
-    const { userId } = auth();
+    const { shopId } = await params;
+    const supabase = createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  const userId = user?.id;
 
     if (!userId) {
       return NextResponse.json(
@@ -187,7 +213,7 @@ export async function DELETE(
 
     if (!currentUser || 
         (currentUser.role !== 'SUPER_ADMIN' && 
-         (currentUser.role !== 'SHOP_ADMIN' || currentUser.shopId !== params.shopId))) {
+         (currentUser.role !== 'SHOP_ADMIN' || currentUser.shopId !== shopId))) {
       return NextResponse.json(
         { error: 'Forbidden' },
         { status: 403 }
@@ -216,10 +242,18 @@ export async function DELETE(
       where: { id: targetUserId },
     });
 
-    if (!user || user.shopId !== params.shopId) {
+    if (!user || user.shopId !== shopId) {
       return NextResponse.json(
         { error: 'User not found in this shop' },
         { status: 404 }
+      );
+    }
+
+    // SECURITY: SHOP_ADMIN cannot remove other SHOP_ADMINs — only SUPER_ADMIN can
+    if (user.role === 'SHOP_ADMIN' && currentUser.role !== 'SUPER_ADMIN') {
+      return NextResponse.json(
+        { error: 'Only Super Admins can remove Shop Admins' },
+        { status: 403 }
       );
     }
 
@@ -233,7 +267,7 @@ export async function DELETE(
       },
     });
 
-    return NextResponse.json(updatedUser, { status: 200 });
+    return NextResponse.json({ success: true, userId: targetUserId }, { status: 200 });
   } catch (error) {
     logger.error('Error removing user from shop:', error);
     return NextResponse.json(

@@ -1,0 +1,70 @@
+'use client';
+
+import { useState } from 'react';
+
+export default function RefundButton({
+  shopId,
+  appointmentId,
+  totalAmount,
+}: {
+  shopId: string;
+  appointmentId: string;
+  totalAmount: number;
+}) {
+  const [isRefunding, setIsRefunding] = useState(false);
+  const [showForm, setShowForm] = useState(false);
+  const [amount, setAmount] = useState(totalAmount.toFixed(2));
+
+  const handleRefund = async () => {
+    if (!confirm(`Refund $${parseFloat(amount).toFixed(2)}? This cannot be undone.`)) return;
+    setIsRefunding(true);
+    try {
+      const res = await fetch(`/api/shops/${shopId}/appointments/${appointmentId}/refund`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ amount: parseFloat(amount) }),
+      });
+      if (res.ok) {
+        window.location.reload();
+      } else {
+        const data = await res.json();
+        alert(data.error || 'Refund failed');
+      }
+    } catch {
+      alert('Refund failed');
+    } finally {
+      setIsRefunding(false);
+    }
+  };
+
+  if (showForm) {
+    return (
+      <div className="flex items-center gap-1">
+        <input
+          type="number"
+          value={amount}
+          onChange={(e) => setAmount(e.target.value)}
+          step="0.01"
+          min="0.01"
+          max={totalAmount}
+          className="w-20 bg-black/50 border border-white/20 rounded px-2 py-1 text-xs text-white"
+        />
+        <button onClick={handleRefund} disabled={isRefunding} className="bg-amber-600/80 text-white text-[10px] px-2 py-1 rounded hover:bg-amber-500 disabled:opacity-50">
+          {isRefunding ? '...' : '💸'}
+        </button>
+        <button onClick={() => setShowForm(false)} className="text-gray-400 text-[10px] px-1 hover:text-white">✕</button>
+      </div>
+    );
+  }
+
+  return (
+    <button
+      onClick={() => setShowForm(true)}
+      className="text-amber-400 text-[10px] hover:text-amber-300 px-2 py-1 bg-amber-900/20 border border-amber-500/20 rounded"
+      title="Refund"
+    >
+      💸 Refund
+    </button>
+  );
+}
+

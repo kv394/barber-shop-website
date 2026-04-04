@@ -1,4 +1,4 @@
-import { auth } from '@clerk/nextjs/server';
+import { createClient } from '@/utils/supabase/server';
 import { prisma } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
 
@@ -6,9 +6,12 @@ export const dynamic = 'force-dynamic';
 
 export async function GET(
   request: Request,
-  { params }: { params: { shopId: string } }
+  { params }: { params: Promise<{ shopId: string }> }
 ) {
-  const { userId } = auth();
+  const { shopId } = await params;
+  const supabase = createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  const userId = user?.id;
   if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
   const url = new URL(request.url);
@@ -20,17 +23,18 @@ export async function GET(
   const [filterToHour, filterToMin] = toParam.split(':').map(Number);
 
   const user = await prisma.user.findUnique({ where: { id: userId } });
-  if (!user || (user.role !== 'SUPER_ADMIN' && user.shopId !== params.shopId)) {
+  if (!user || (user.role !== 'SUPER_ADMIN' &&
+      (user.shopId !== shopId || !['SHOP_ADMIN', 'STAFF'].includes(user.role)))) {
     return NextResponse.json({ error: 'Access denied' }, { status: 403 });
   }
 
-  const shop = await prisma.shop.findUnique({ where: { id: params.shopId } });
+  const shop = await prisma.shop.findUnique({ where: { id: shopId } });
   if (!shop) return NextResponse.json({ error: 'Shop not found' }, { status: 404 });
 
   const targetDate = new Date(date);
   const rolesToFetch: ('SHOP_ADMIN' | 'STAFF')[] = user.role === 'SUPER_ADMIN' ? ['SHOP_ADMIN'] : ['SHOP_ADMIN', 'STAFF'];
   const allStaff = await prisma.user.findMany({
-    where: { shopId: params.shopId, role: { in: rolesToFetch } },
+    where: { shopId: shopId, role: { in: rolesToFetch } },
     include: {
       staffAppointments: {
         where: {

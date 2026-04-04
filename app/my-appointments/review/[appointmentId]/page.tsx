@@ -1,0 +1,219 @@
+'use client';
+
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+
+interface AppointmentData {
+  id: string;
+  startTime: string;
+  status: string;
+  service: { name: string; price: number } | null;
+  staff: { name: string } | null;
+  shop: { id: string; name: string; timezone: string };
+  review: { id: string } | null;
+}
+
+export default function ReviewPage({ params }: { params: Promise<{ appointmentId: string }> }) {
+  const router = useRouter();
+  const [appointmentId, setAppointmentId] = useState<string>('');
+  const [appointment, setAppointment] = useState<AppointmentData | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [rating, setRating] = useState(0);
+  const [hoveredRating, setHoveredRating] = useState(0);
+  const [comment, setComment] = useState('');
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState(false);
+
+  useEffect(() => {
+    params.then(p => setAppointmentId(p.appointmentId));
+  }, [params]);
+
+  useEffect(() => {
+    if (!appointmentId) return;
+
+    fetch('/api/my-appointments')
+      .then(r => r.json())
+      .then(data => {
+        const all = [...(data.upcoming || []), ...(data.past || [])];
+        const apt = all.find((a: any) => a.id === appointmentId);
+        if (apt) setAppointment(apt);
+        else setError('Appointment not found.');
+      })
+      .catch(() => setError('Failed to load appointment.'))
+      .finally(() => setLoading(false));
+  }, [appointmentId]);
+
+  const handleSubmit = async () => {
+    if (!appointment || rating === 0) return;
+
+    setSubmitting(true);
+    setError(null);
+
+    try {
+      const res = await fetch(`/api/shops/${appointment.shop.id}/reviews`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          appointmentId: appointment.id,
+          rating,
+          comment: comment.trim() || undefined,
+        }),
+      });
+
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.error || 'Failed to submit review');
+      }
+
+      setSuccess(true);
+      setTimeout(() => router.push('/my-appointments'), 2000);
+    } catch (e: any) {
+      setError(e.message);
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center">
+        <p className="text-gray-400 animate-pulse">Loading…</p>
+      </div>
+    );
+  }
+
+  if (success) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-5xl mb-4">🎉</p>
+          <h2 className="text-2xl font-bold text-white mb-2">Thank You!</h2>
+          <p className="text-gray-400">Your review has been submitted.</p>
+          <p className="text-gray-500 text-sm mt-2">Redirecting…</p>
+        </div>
+      </div>
+    );
+  }
+
+  const alreadyReviewed = appointment?.review != null;
+
+  return (
+    <main className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
+      <header className="bg-black/40 backdrop-blur-md border-b border-slate-700 sticky top-0 z-20">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 py-4">
+          <h1 className="text-xl sm:text-2xl font-bold text-white">Leave a Review</h1>
+          <p className="text-xs text-gray-500">Share your experience</p>
+        </div>
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 pb-2 flex gap-4 overflow-x-auto scrollbar-none">
+          <Link href="/my-appointments" className="text-sm text-gray-400 hover:text-white px-1 pb-1 whitespace-nowrap transition-colors">📅 Appointments</Link>
+          <Link href="/my-appointments/profile" className="text-sm text-gray-400 hover:text-white px-1 pb-1 whitespace-nowrap transition-colors">👤 Profile</Link>
+          <Link href="/my-appointments/loyalty" className="text-sm text-gray-400 hover:text-white px-1 pb-1 whitespace-nowrap transition-colors">⭐ Loyalty</Link>
+          <Link href="/my-appointments/notifications" className="text-sm text-gray-400 hover:text-white px-1 pb-1 whitespace-nowrap transition-colors">🔔 Notifications</Link>
+        </div>
+      </header>
+
+      <div className="max-w-2xl mx-auto px-4 sm:px-6 py-8">
+        {error && (
+          <div className="mb-6 bg-red-900/30 border border-red-500/30 text-red-300 px-4 py-3 rounded-lg text-sm">
+            {error}
+          </div>
+        )}
+
+        {!appointment ? (
+          <div className="text-center py-12">
+            <p className="text-gray-400">Appointment not found.</p>
+            <Link href="/my-appointments" className="text-brand-gold hover:text-white text-sm mt-4 inline-block">← Back to appointments</Link>
+          </div>
+        ) : alreadyReviewed ? (
+          <div className="text-center py-12 bg-slate-800/60 border border-white/5 rounded-xl p-8">
+            <p className="text-4xl mb-4">✅</p>
+            <h2 className="text-xl font-bold text-white mb-2">Already Reviewed</h2>
+            <p className="text-gray-400 text-sm">You&apos;ve already left a review for this appointment.</p>
+            <Link href="/my-appointments" className="text-brand-gold hover:text-white text-sm mt-4 inline-block">← Back to appointments</Link>
+          </div>
+        ) : appointment.status !== 'COMPLETED' ? (
+          <div className="text-center py-12 bg-slate-800/60 border border-white/5 rounded-xl p-8">
+            <p className="text-4xl mb-4">⏳</p>
+            <h2 className="text-xl font-bold text-white mb-2">Not Yet Completed</h2>
+            <p className="text-gray-400 text-sm">You can only review completed appointments.</p>
+            <Link href="/my-appointments" className="text-brand-gold hover:text-white text-sm mt-4 inline-block">← Back to appointments</Link>
+          </div>
+        ) : (
+          <div className="bg-slate-800/60 border border-white/5 rounded-xl overflow-hidden">
+            {/* Appointment Summary */}
+            <div className="p-6 bg-gradient-to-r from-purple-600/10 to-brand-gold/10 border-b border-white/5">
+              <h2 className="text-lg font-bold text-white">{appointment.shop.name}</h2>
+              <div className="mt-2 space-y-1">
+                <p className="text-sm text-gray-300">
+                  {appointment.service?.name || 'Service'}
+                  {appointment.staff?.name && <span className="text-gray-500"> · with {appointment.staff.name}</span>}
+                </p>
+                <p className="text-xs text-gray-500">
+                  {new Date(appointment.startTime).toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
+                </p>
+              </div>
+            </div>
+
+            {/* Rating */}
+            <div className="p-6 space-y-6">
+              <div>
+                <label className="block text-sm text-gray-400 mb-3">How was your experience?</label>
+                <div className="flex gap-2 justify-center">
+                  {[1, 2, 3, 4, 5].map((star) => (
+                    <button
+                      key={star}
+                      type="button"
+                      onMouseEnter={() => setHoveredRating(star)}
+                      onMouseLeave={() => setHoveredRating(0)}
+                      onClick={() => setRating(star)}
+                      className="text-4xl transition-transform hover:scale-110 active:scale-95"
+                    >
+                      <span className={star <= (hoveredRating || rating) ? 'opacity-100' : 'opacity-30'}>
+                        ⭐
+                      </span>
+                    </button>
+                  ))}
+                </div>
+                {rating > 0 && (
+                  <p className="text-center text-sm text-gray-400 mt-2">
+                    {rating === 1 && 'Poor'}
+                    {rating === 2 && 'Fair'}
+                    {rating === 3 && 'Good'}
+                    {rating === 4 && 'Great'}
+                    {rating === 5 && 'Excellent!'}
+                  </p>
+                )}
+              </div>
+
+              {/* Comment */}
+              <div>
+                <label className="block text-sm text-gray-400 mb-2">Leave a comment (optional)</label>
+                <textarea
+                  value={comment}
+                  onChange={(e) => setComment(e.target.value)}
+                  placeholder="Tell us about your experience…"
+                  rows={4}
+                  maxLength={1000}
+                  className="w-full bg-black/50 border border-white/20 rounded-lg p-3 text-white placeholder-gray-600 focus:outline-none focus:border-brand-gold resize-none"
+                />
+                <p className="text-xs text-gray-600 text-right mt-1">{comment.length}/1000</p>
+              </div>
+
+              {/* Submit */}
+              <button
+                onClick={handleSubmit}
+                disabled={rating === 0 || submitting}
+                className="w-full bg-brand-gold text-brand-dark font-bold py-3 rounded-lg hover:bg-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {submitting ? 'Submitting…' : 'Submit Review'}
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
+    </main>
+  );
+}
+

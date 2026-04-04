@@ -1,27 +1,36 @@
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { auth } from "@clerk/nextjs/server";
+import { createClient } from '@/utils/supabase/server';
 
 export const dynamic = 'force-dynamic';
 
 export default async function SuperAdminLogsPage() {
-  const { userId } = await auth();
+  const supabase = createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  const userId = user?.id;
   if (!userId) {
     redirect("/sign-in");
   }
 
   const user = await prisma.user.findUnique({ where: { id: userId } });
   if (user?.role !== "SUPER_ADMIN") {
-    return <div>Unauthorized access.</div>;
+    return <div className="text-red-400 p-8">Unauthorized access.</div>;
   }
 
   const logs = await prisma.systemLog.findMany({
     orderBy: { createdAt: "desc" },
+    take: 200,
   });
 
   async function resolveLog(formData: FormData) {
     "use server";
+    // SECURITY: Re-verify auth — server actions can be called directly
+    const { userId: actionUserId } = await auth();
+    if (!actionUserId) return;
+    const actionUser = await prisma.user.findUnique({ where: { id: actionUserId } });
+    if (actionUser?.role !== "SUPER_ADMIN") return;
+
     const id = formData.get("id") as string;
     if (id) {
       await prisma.systemLog.update({
@@ -34,6 +43,12 @@ export default async function SuperAdminLogsPage() {
 
   async function deleteLog(formData: FormData) {
     "use server";
+    // SECURITY: Re-verify auth — server actions can be called directly
+    const { userId: actionUserId } = await auth();
+    if (!actionUserId) return;
+    const actionUser = await prisma.user.findUnique({ where: { id: actionUserId } });
+    if (actionUser?.role !== "SUPER_ADMIN") return;
+
     const id = formData.get("id") as string;
     if (id) {
       await prisma.systemLog.delete({ where: { id } });
@@ -42,20 +57,23 @@ export default async function SuperAdminLogsPage() {
   }
 
   return (
-    <div className="p-8 max-w-7xl mx-auto">
-      <h1 className="text-3xl font-bold mb-8 text-black">System Logs</h1>
-      <div className="bg-white rounded-lg shadow overflow-hidden">
-        <table className="min-w-full divide-y divide-gray-200 text-black">
-          <thead className="bg-gray-50">
+    <div>
+      <div className="mb-8">
+        <h1 className="text-3xl font-serif font-bold text-brand-gold mb-2">System Logs</h1>
+        <p className="text-gray-400">{logs.length} log entr{logs.length !== 1 ? 'ies' : 'y'} • {logs.filter((l: any) => !l.isResolved).length} unresolved</p>
+      </div>
+      <div className="bg-slate-800/50 rounded-xl border border-white/10 overflow-hidden">
+        <table className="min-w-full divide-y divide-white/10 text-white">
+          <thead className="bg-slate-800/80">
             <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Time</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Level & Path</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Message</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-              <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Time</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Level & Path</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Message</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Status</th>
+              <th className="px-6 py-3 text-right text-xs font-medium text-gray-400 uppercase tracking-wider">Actions</th>
             </tr>
           </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
+          <tbody className="divide-y divide-white/5">
             {logs.length === 0 ? (
               <tr>
                 <td colSpan={5} className="px-6 py-4 text-center text-sm text-gray-500">
@@ -64,33 +82,33 @@ export default async function SuperAdminLogsPage() {
               </tr>
             ) : (
               logs.map((log: any) => (
-                <tr key={log.id} className={log.level === "ERROR" && !log.isResolved ? "bg-red-50" : ""}>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                <tr key={log.id} className={log.level === "ERROR" && !log.isResolved ? "bg-red-900/20" : "hover:bg-white/5"}>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-400">
                     {new Date(log.createdAt).toLocaleString()}
                   </td>
-                  <td className="px-6 py-4 text-sm text-gray-900">
-                    <span className="font-semibold">{log.level}</span>
+                  <td className="px-6 py-4 text-sm text-white">
+                    <span className={`font-semibold ${log.level === 'ERROR' ? 'text-red-400' : log.level === 'WARN' ? 'text-amber-400' : 'text-blue-400'}`}>{log.level}</span>
                     <br />
                     <span className="text-gray-500 text-xs">{log.path || "N/A"}</span>
                   </td>
-                  <td className="px-6 py-4 text-sm text-gray-900 break-words max-w-md">
+                  <td className="px-6 py-4 text-sm text-gray-300 break-words max-w-md">
                     <div className="font-medium">{log.message}</div>
                     {log.stack && (
                       <details className="mt-1">
-                        <summary className="text-xs text-blue-500 cursor-pointer">View Stack</summary>
-                        <pre className="mt-2 text-xs bg-gray-100 p-2 rounded overflow-x-auto text-black">
+                        <summary className="text-xs text-brand-gold cursor-pointer">View Stack</summary>
+                        <pre className="mt-2 text-xs bg-black/40 p-2 rounded overflow-x-auto text-gray-300">
                           {log.stack}
                         </pre>
                       </details>
                     )}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm">
                     {log.isResolved ? (
-                      <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                      <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-500/20 text-green-400">
                         Resolved
                       </span>
                     ) : (
-                      <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                      <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-500/20 text-red-400">
                         Open
                       </span>
                     )}
@@ -100,14 +118,14 @@ export default async function SuperAdminLogsPage() {
                        {!log.isResolved && (
                          <form action={resolveLog}>
                            <input type="hidden" name="id" value={log.id} />
-                           <button type="submit" className="text-indigo-600 hover:text-indigo-900">
+                           <button type="submit" className="text-brand-gold hover:text-white">
                              Resolve
                            </button>
                          </form>
                        )}
                        <form action={deleteLog}>
                          <input type="hidden" name="id" value={log.id} />
-                         <button type="submit" className="text-red-600 hover:text-red-900">
+                         <button type="submit" className="text-red-400 hover:text-red-300">
                            Delete
                          </button>
                        </form>

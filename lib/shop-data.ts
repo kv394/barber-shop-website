@@ -19,7 +19,7 @@ export const getShopLayoutData = cache(async (userId: string, shopId: string) =>
         }),
         prisma.shop.findUnique({
           where: { id: shopId },
-          select: { id: true, name: true, customization: true },
+          select: { id: true, name: true, customization: true, template: true, timezone: true },
         }),
       ]);
 

@@ -1,6 +1,7 @@
 import { redirect } from 'next/navigation';
-import { auth } from '@clerk/nextjs/server';
+import { createClient } from '@/utils/supabase/server';
 import { prisma } from '@/lib/prisma';
+import { getShopLayoutData } from '@/lib/shop-data';
 import ShopAdminLayout from '@/app/components/ShopAdminLayout';
 import TeamDashboardClient from '@/app/components/TeamDashboardClient';
 import Link from 'next/link';
@@ -10,25 +11,37 @@ import crypto from 'crypto';
 export const dynamic = 'force-dynamic';
 
 async function getPageData(shopId: string, userId: string, date: string) {
-  const user = await prisma.user.findUnique({ where: { id: userId } });
-  if (!user || (user.role !== 'SUPER_ADMIN' && user.shopId !== shopId)) return null;
+  const data = await getShopLayoutData(userId, shopId);
+  if (!data) return null;
 
-  const shop = await prisma.shop.findUnique({ where: { id: shopId } });
-  if (!shop) return null;
-
+  const shop = data.shop;
   const targetDate = new Date(date);
-  const rolesToFetch: ('SHOP_ADMIN' | 'STAFF')[] = user.role === 'SUPER_ADMIN' ? ['SHOP_ADMIN'] : ['SHOP_ADMIN', 'STAFF'];
-  const allStaff = await prisma.user.findMany({
-    where: { shopId: shopId, role: { in: rolesToFetch } },
-    include: {
-      staffAppointments: { where: { startTime: { gte: targetDate, lt: new Date(targetDate.getTime() + 24 * 60 * 60 * 1000) } } },
-      leaves: { where: { date: targetDate } },
-    },
-  });
+  
+  // Super Admins manage SHOP_ADMINs and ATTENDANCE_KIOSKs. 
+  // Shop Admins manage STAFF.
+  const rolesToFetch: any[] = data.isSuperAdmin ? ['SHOP_ADMIN', 'ATTENDANCE_KIOSK'] : ['SHOP_ADMIN', 'STAFF'];
+  
+  const [allStaff, kioskUser] = await Promise.all([
+    prisma.user.findMany({
+      where: { shopId: shopId, role: { in: rolesToFetch } },
+      include: {
+        staffAppointments: { where: { startTime: { gte: targetDate, lt: new Date(targetDate.getTime() + 24 * 60 * 60 * 1000) } } },
+        leaves: { where: { date: targetDate } },
+      },
+    }),
+    prisma.user.findFirst({
+      where: { shopId, role: 'ATTENDANCE_KIOSK' }
+    })
+  ]);
 
   const dayOfWeek = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'][targetDate.getUTCDay()];
 
   const staffWithSchedule = allStaff.map(staff => {
+    // Skip schedule calculation for Kiosks
+    if (staff.role === 'ATTENDANCE_KIOSK') {
+       return { ...staff, schedule: [], isOnLeave: false, using: 'not-working' };
+    }
+
     const individualHours = (staff.workingHours as any) || {};
     let hoursForDay = individualHours[dayOfWeek];
     const isExplicitlyOff = hoursForDay === null;
@@ -59,17 +72,30 @@ async function getPageData(shopId: string, userId: string, date: string) {
 
   return { 
     shop: JSON.parse(JSON.stringify(shop)), 
-    userRole: user.role, 
-    staff: JSON.parse(JSON.stringify(staffWithSchedule)) 
+    shopSlug: data.shopSlug,
+    userRole: data.userRole,
+    staff: JSON.parse(JSON.stringify(staffWithSchedule)),
+    kioskUser: kioskUser ? JSON.parse(JSON.stringify(kioskUser)) : null
   };
 }
 
 async function inviteUser(formData: FormData) {
   'use server';
   const email = formData.get('email') as string;
-  const role = formData.get('role') as 'SHOP_ADMIN' | 'STAFF';
+  const role = formData.get('role') as 'SHOP_ADMIN' | 'STAFF' | 'ATTENDANCE_KIOSK';
   const shopId = formData.get('shopId') as string;
   if (!email || !role || !shopId) return;
+
+  // SECURITY: Verify the caller is authorized to invite users to this shop
+  const supabase = createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  const userId = user?.id;
+  if (!userId) return;
+  const caller = await prisma.user.findUnique({ where: { id: userId } });
+  if (!caller) return;
+  if (caller.role !== 'SUPER_ADMIN' && (caller.role !== 'SHOP_ADMIN' || caller.shopId !== shopId)) return;
+  // Only SUPER_ADMIN can assign SHOP_ADMIN or ATTENDANCE_KIOSK roles
+  if ((role === 'SHOP_ADMIN' || role === 'ATTENDANCE_KIOSK') && caller.role !== 'SUPER_ADMIN') return;
 
   const userBarcode = crypto.createHash('sha256').update(`${email}-${process.env.JWT_SECRET || 'secret'}`).digest('hex').substring(0, 12).toUpperCase();
   await prisma.user.upsert({
@@ -86,6 +112,27 @@ async function inviteUser(formData: FormData) {
   revalidatePath(`/shop/${shopId}/settings/team`);
 }
 
+async function removeUser(formData: FormData) {
+  'use server';
+  const targetUserId = formData.get('userId') as string;
+  const shopId = formData.get('shopId') as string;
+  if (!targetUserId || !shopId) return;
+
+  const supabase = createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  const userId = user?.id;
+  if (!userId) return;
+  const caller = await prisma.user.findUnique({ where: { id: userId } });
+  if (!caller) return;
+  if (caller.role !== 'SUPER_ADMIN' && (caller.role !== 'SHOP_ADMIN' || caller.shopId !== shopId)) return;
+
+  await prisma.user.update({
+    where: { id: targetUserId },
+    data: { shopId: null, role: 'CLIENT' }
+  });
+  revalidatePath(`/shop/${shopId}/settings/team`);
+}
+
 async function addLeave(formData: FormData) {
     'use server';
     const staffId = formData.get('staffId') as string;
@@ -94,6 +141,17 @@ async function addLeave(formData: FormData) {
     const endTime = formData.get('endTime') as string;
     const shopId = formData.get('shopId') as string;
     if (!staffId || !date || !startTime || !endTime || !shopId) return;
+
+    // SECURITY: Verify caller is authorized
+    const supabase = createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  const userId = user?.id;
+    if (!userId) return;
+    const data = await getShopLayoutData(userId, shopId);
+    if (!data) return;
+    // SECURITY: Verify target staff belongs to this shop
+    const targetStaff = await prisma.user.findUnique({ where: { id: staffId } });
+    if (!targetStaff || targetStaff.shopId !== shopId) return;
 
     const [startHour, startMinute] = startTime.split(':').map(Number);
     const startDate = new Date(date);
@@ -123,6 +181,17 @@ async function removeLeave(formData: FormData) {
     const endTime = formData.get('endTime') as string;
     const shopId = formData.get('shopId') as string;
     if (!staffId || !date || !startTime || !endTime || !shopId) return;
+
+    // SECURITY: Verify caller is authorized
+    const supabase = createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  const userId = user?.id;
+    if (!userId) return;
+    const data = await getShopLayoutData(userId, shopId);
+    if (!data) return;
+    // SECURITY: Verify target staff belongs to this shop
+    const targetStaff = await prisma.user.findUnique({ where: { id: staffId } });
+    if (!targetStaff || targetStaff.shopId !== shopId) return;
 
     const [startHour, startMinute] = startTime.split(':').map(Number);
     const startDate = new Date(date);
@@ -156,7 +225,17 @@ async function updateDayHours(formData: FormData) {
     const date = formData.get('date') as string;
     if (!staffId || !shopId || !dayOfWeek) return;
 
-    const staff = await prisma.user.findUnique({ where: { id: staffId }, select: { workingHours: true } });
+    // SECURITY: Verify caller is authorized (admin of this shop)
+    const supabase = createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  const userId = user?.id;
+    if (!userId) return;
+    const data = await getShopLayoutData(userId, shopId);
+    if (!data || data.isStaff) return; // Only admins can change staff hours
+
+    // SECURITY: Verify target staff belongs to this shop
+    const staff = await prisma.user.findUnique({ where: { id: staffId }, select: { workingHours: true, shopId: true } });
+    if (!staff || staff.shopId !== shopId) return;
     const currentHours = (staff?.workingHours as any) || {};
 
     if (isWorking && openTime && closeTime) {
@@ -172,25 +251,34 @@ async function updateDayHours(formData: FormData) {
     revalidatePath(`/shop/${shopId}/settings/team?date=${date}`);
 }
 
-export default async function TeamDashboardPage({ params, searchParams }: { params: { shopId: string }, searchParams: { date?: string }}) {
-  const { userId } = auth();
+export default async function TeamDashboardPage({ params, searchParams }: { params: Promise<{ shopId: string }>, searchParams: Promise<{ date?: string }>}) {
+  const { shopId } = await params;
+  const resolvedSearchParams = await searchParams;
+  const supabase = createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  const userId = user?.id;
   if (!userId) redirect('/sign-in');
 
-  const selectedDate = searchParams.date || new Date().toISOString().split('T')[0];
-  const pageData = await getPageData(params.shopId, userId, selectedDate);
+  const selectedDate = resolvedSearchParams.date || new Date().toISOString().split('T')[0];
+  const pageData = await getPageData(shopId, userId, selectedDate);
 
   if (!pageData) return <div className="p-8 text-white">Access Denied.</div>;
 
-  const { shop, userRole, staff } = pageData;
-  const shopSlug = shop.name.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '');
-  
-  // Actually, check if the shop already has an admin. A SUPER_ADMIN only sees SHOP_ADMIN members but wait, 
-  // user.findMany was updated to fetch `['SHOP_ADMIN', 'STAFF']` or `['SHOP_ADMIN']`. 
-  // Let's ensure accurate counting for `SHOP_ADMIN`:
+  const { shop, shopSlug, userRole, staff, kioskUser } = pageData;
+
   const canAddShopAdmin = userRole === 'SUPER_ADMIN' && !staff.some((s: any) => s.role === 'SHOP_ADMIN');
 
   return (
-    <ShopAdminLayout shopName={shop.name} shopSlug={shopSlug} pageTitle="Team Dashboard" shopId={params.shopId} userRole={userRole} activeTab="team">
+    <ShopAdminLayout shopName={shop.name} shopSlug={shopSlug} pageTitle={userRole === 'SUPER_ADMIN' ? 'Assign Shop Admin & Kiosk' : 'Team Dashboard'} shopId={shopId} userRole={userRole} activeTab="team">
+
+      {kioskUser && (
+         <div className="bg-blue-900/20 border border-blue-500/30 p-5 rounded-2xl shadow-lg mb-8">
+             <h3 className="text-blue-400 font-bold mb-2 flex items-center gap-2"><span>📱</span> Tablet Kiosk Setup</h3>
+             <p className="text-sm text-gray-300 mb-4">To set up the front desk attendance tablet, sign up for a new account on that device using this exact email:</p>
+             <div className="bg-black/50 p-3 rounded-lg text-center mb-3 border border-white/5"><code className="text-brand-gold font-mono font-bold tracking-wider">{kioskUser.email}</code></div>
+             <p className="text-xs text-blue-300">Once an account is created with this email, that account will instantly inherit kiosk privileges for this shop.</p>
+         </div>
+      )}
 
       {/* ═══ Invite Section ═══ */}
       <div className="mb-8 bg-gradient-to-br from-slate-900 to-slate-800 rounded-2xl border border-white/10 shadow-xl overflow-hidden">
@@ -242,15 +330,45 @@ export default async function TeamDashboardPage({ params, searchParams }: { para
         </div>
       </div>
 
-      {/* ═══ Date Picker + Staff Cards (client-side refresh) ═══ */}
-      <TeamDashboardClient
-        shopId={params.shopId}
-        initialDate={selectedDate}
-        initialStaff={staff}
-        addLeaveAction={addLeave}
-        removeLeaveAction={removeLeave}
-        updateDayHoursAction={updateDayHours}
-      />
+      {userRole === 'SUPER_ADMIN' ? (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {staff.map((staffMember: any) => (
+            <div key={staffMember.id} className="bg-slate-900/70 border border-white/10 rounded-2xl p-5 flex flex-col shadow-lg">
+              <div className="flex justify-between items-start mb-4">
+                <div>
+                  <h2 className="text-xl font-bold text-white mb-1 flex items-center gap-2">
+                    {staffMember.name || staffMember.email.split('@')[0]}
+                    <span className={`text-[9px] px-1.5 py-0.5 rounded uppercase tracking-wider font-bold ${staffMember.role === 'SHOP_ADMIN' ? 'bg-brand-gold/20 text-brand-gold' : 'bg-blue-500/20 text-blue-400'}`}>
+                      {staffMember.role.replace('_', ' ')}
+                    </span>
+                  </h2>
+                  <p className="text-xs text-gray-500">{staffMember.email}</p>
+                </div>
+              </div>
+              <form action={removeUser} className="mt-auto">
+                <input type="hidden" name="userId" value={staffMember.id} />
+                <input type="hidden" name="shopId" value={shop.id} />
+                <button type="submit" className="w-full text-xs text-red-400 bg-red-500/10 hover:bg-red-500/20 py-2 rounded-lg transition-colors border border-red-500/20">
+                  Remove from Shop
+                </button>
+              </form>
+            </div>
+          ))}
+          {staff.length === 0 && (
+            <p className="text-gray-500 italic">No assigned admins or kiosks.</p>
+          )}
+        </div>
+      ) : (
+        /* ═══ Date Picker + Staff Cards (client-side refresh) ═══ */
+        <TeamDashboardClient
+          shopId={shopId}
+          initialDate={selectedDate}
+          initialStaff={staff}
+          addLeaveAction={addLeave}
+          removeLeaveAction={removeLeave}
+          updateDayHoursAction={updateDayHours}
+        />
+      )}
     </ShopAdminLayout>
   );
 }

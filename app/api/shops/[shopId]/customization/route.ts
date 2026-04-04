@@ -1,16 +1,19 @@
 import { logger } from "@/lib/logger";
 import { prisma } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
-import { auth } from '@clerk/nextjs/server';
+import { createClient } from '@/utils/supabase/server';
 import { revalidatePath } from 'next/cache';
 import { cacheService } from '@/lib/cache';
 
 export async function POST(
   request: Request,
-  { params }: { params: { shopId: string } }
+  { params }: { params: Promise<{ shopId: string }> }
 ) {
   try {
-    const { userId } = auth();
+    const { shopId } = await params;
+    const supabase = createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  const userId = user?.id;
 
     if (!userId) {
       return NextResponse.json(
@@ -24,7 +27,7 @@ export async function POST(
       where: { id: userId },
     });
 
-    if (!user || (user.role !== 'SUPER_ADMIN' && (user.role !== 'SHOP_ADMIN' || user.shopId !== params.shopId))) {
+    if (!user || (user.role !== 'SUPER_ADMIN' && (user.role !== 'SHOP_ADMIN' || user.shopId !== shopId))) {
       return NextResponse.json(
         { error: 'Forbidden: You do not have permission to update this shop' },
         { status: 403 }
@@ -34,32 +37,49 @@ export async function POST(
     const body = await request.json();
     const { customization } = body;
 
-    if (!customization) {
+    if (!customization || typeof customization !== 'object' || Array.isArray(customization)) {
       return NextResponse.json(
-        { error: 'Customization data is required' },
+        { error: 'Customization must be a valid JSON object' },
         { status: 400 }
       );
     }
 
+    // SECURITY: Limit JSON payload size to prevent DoS via oversized customization blobs
+    const customizationStr = JSON.stringify(customization);
+    if (customizationStr.length > 50000) {
+      return NextResponse.json(
+        { error: 'Customization data is too large' },
+        { status: 400 }
+      );
+    }
+
+    // Merge with existing customization to preserve bookingSettings/notifSettings
+    // set by other dedicated routes
+    const existingShop = await prisma.shop.findUnique({
+      where: { id: shopId },
+      select: { customization: true },
+    });
+    const existing = (existingShop?.customization as any) || {};
+
     const updatedShop = await prisma.shop.update({
-      where: { id: params.shopId },
+      where: { id: shopId },
       data: {
-        customization,
+        customization: { ...existing, ...customization },
       },
     });
 
     // Clear the Redis cache for anyone accessing this shop
-    await cacheService.invalidatePattern(`shop_layout:*:${params.shopId}`);
+    await cacheService.invalidatePattern(`shop_layout:*:${shopId}`);
 
     // Clear the Next.js router cache so the new customization is applied everywhere
-    revalidatePath(`/shop/${params.shopId}`);
-    revalidatePath(`/shop/${params.shopId}/config`);
+    revalidatePath(`/shop/${shopId}`);
+    revalidatePath(`/shop/${shopId}/config`);
 
     return NextResponse.json(updatedShop, { status: 200 });
   } catch (error: any) {
     logger.error('Error updating customization:', error);
     return NextResponse.json(
-      { error: error.message || 'Failed to update customization' },
+      { error: 'Failed to update customization' },
       { status: 500 }
     );
   }

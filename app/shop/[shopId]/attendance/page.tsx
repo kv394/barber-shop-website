@@ -1,35 +1,27 @@
 import { notFound, redirect } from 'next/navigation';
-import { auth } from '@clerk/nextjs/server';
+import { createClient } from '@/utils/supabase/server';
 import { prisma } from '@/lib/prisma';
+import { getShopLayoutData } from '@/lib/shop-data';
 import ShopAdminLayout from '@/app/components/ShopAdminLayout';
 
 export const dynamic = 'force-dynamic';
 
 async function getPageData(shopId: string, userId: string) {
-  const userFromDb = await prisma.user.findUnique({
-    where: { id: userId },
-  });
-
-  if (!userFromDb || (userFromDb.role !== 'SUPER_ADMIN' && (userFromDb.role !== 'SHOP_ADMIN' || userFromDb.shopId !== shopId))) {
-    return { shop: null, userRole: null, logs: [] };
-  }
-
-  const shop = await prisma.shop.findUnique({ where: { id: shopId } });
-
-  if (!shop) {
-    return { shop: null, userRole: userFromDb.role, logs: [] };
-  }
+  const data = await getShopLayoutData(userId, shopId);
+  if (!data) return null; // Allow SHOP_ADMIN, STAFF, and SUPER_ADMIN
 
   const today = new Date();
   today.setHours(0, 0, 0, 0);
   const tomorrow = new Date(today);
   tomorrow.setDate(tomorrow.getDate() + 1);
 
+  // STAFF can only see their own attendance; admins see all
+  const where = data.isStaff
+    ? { shopId, userId: data.user.id, clockIn: { gte: today, lt: tomorrow } }
+    : { shopId, clockIn: { gte: today, lt: tomorrow } };
+
   const logs = await prisma.timeLog.findMany({
-    where: {
-      shopId: shopId,
-      clockIn: { gte: today, lt: tomorrow },
-    },
+    where,
     include: {
       user: { select: { name: true, email: true } },
     },
@@ -37,8 +29,10 @@ async function getPageData(shopId: string, userId: string) {
   });
 
   return { 
-    shop: JSON.parse(JSON.stringify(shop)), 
-    userRole: userFromDb.role,
+    shop: data.shop,
+    shopSlug: data.shopSlug,
+    userRole: data.userRole,
+    isStaff: data.isStaff,
     logs: JSON.parse(JSON.stringify(logs))
   };
 }
@@ -50,24 +44,27 @@ function formatDuration(milliseconds: number) {
     return `${hours}h ${minutes}m`;
 }
 
-export default async function AttendanceReportPage({ params }: { params: { shopId: string } }) {
-  const { userId } = auth();
+export default async function AttendanceReportPage({ params }: { params: Promise<{ shopId: string }> }) {
+  const { shopId } = await params;
+  const supabase = createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  const userId = user?.id;
   if (!userId) redirect('/');
 
-  const { shop, userRole, logs } = await getPageData(params.shopId, userId);
+  const pageData = await getPageData(shopId, userId);
 
-  if (!shop) {
+  if (!pageData) {
     notFound();
   }
 
-  const shopSlug = shop.name.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '');
+  const { shop, shopSlug, userRole, isStaff, logs } = pageData;
 
   return (
     <ShopAdminLayout
       shopName={shop.name}
       shopSlug={shopSlug}
-      pageTitle={`Daily Attendance Report for ${new Date().toLocaleDateString()}`}
-      shopId={params.shopId}
+      pageTitle={isStaff ? `My Attendance — ${new Date().toLocaleDateString()}` : `Daily Attendance Report for ${new Date().toLocaleDateString()}`}
+      shopId={shopId}
       userRole={userRole as string}
       activeTab="attendance"
     >

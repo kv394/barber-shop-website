@@ -1,7 +1,8 @@
 import { redirect } from 'next/navigation';
-import { auth } from '@clerk/nextjs/server';
+import { createClient } from '@/utils/supabase/server';
 import { prisma } from '@/lib/prisma';
 import { getShopLayoutData } from '@/lib/shop-data';
+import { formatDateInShopTz, formatInShopTz, getTodayInShopTz, toShopTzDayBounds } from '@/lib/timezone';
 import Link from 'next/link';
 import DeleteAppointmentButton from '@/components/DeleteAppointmentButton';
 import CheckoutButton from '@/components/CheckoutButton';
@@ -15,8 +16,10 @@ async function getPageData(shopId: string, userId: string) {
   const data = await getShopLayoutData(userId, shopId);
   if (!data) return { shop: null, userRole: null, appointments: [] };
 
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
+  // Use shop timezone for "today"
+  const shopTz = data.shop.timezone || 'America/New_York';
+  const todayStr = getTodayInShopTz(shopTz);
+  const { startOfDay: today } = toShopTzDayBounds(todayStr, shopTz);
 
   const nextMonth = new Date(today);
   nextMonth.setDate(nextMonth.getDate() + 30);
@@ -43,12 +46,15 @@ async function getPageData(shopId: string, userId: string) {
   };
 }
 
-export default async function BookingsPage({ params }: { params: { shopId: string } }) {
-  const { userId } = auth();
+export default async function BookingsPage({ params }: { params: Promise<{ shopId: string }> }) {
+  const { shopId } = await params;
+  const supabase = createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  const userId = user?.id;
   if (!userId) return redirect('/');
 
   try {
-    const { shop, userRole, appointments } = await getPageData(params.shopId, userId);
+    const { shop, userRole, appointments } = await getPageData(shopId, userId);
 
     if (!shop) {
       return (
@@ -75,7 +81,7 @@ export default async function BookingsPage({ params }: { params: { shopId: strin
         shopName={shop.name}
         shopSlug={shopSlug}
         pageTitle="Manage Appointments"
-        shopId={params.shopId}
+        shopId={shopId}
         userRole={userRole as string}
         activeTab="bookings"
       >

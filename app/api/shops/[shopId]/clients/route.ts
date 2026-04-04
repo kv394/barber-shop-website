@@ -1,14 +1,17 @@
 import { logger } from "@/lib/logger";
 import { prisma } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
-import { auth } from '@clerk/nextjs/server';
+import { createClient } from '@/utils/supabase/server';
 
 export async function GET(
   request: Request,
-  { params }: { params: { shopId: string } }
+  { params }: { params: Promise<{ shopId: string }> }
 ) {
   try {
-    const { userId } = auth();
+    const { shopId } = await params;
+    const supabase = createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  const userId = user?.id;
 
     if (!userId) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -20,8 +23,8 @@ export async function GET(
 
     if (!currentUser || 
         (currentUser.role !== 'SUPER_ADMIN' && 
-         (currentUser.role !== 'SHOP_ADMIN' || currentUser.shopId !== params.shopId) &&
-         (currentUser.role !== 'STAFF' || currentUser.shopId !== params.shopId))) {
+         (currentUser.role !== 'SHOP_ADMIN' || currentUser.shopId !== shopId) &&
+         (currentUser.role !== 'STAFF' || currentUser.shopId !== shopId))) {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
 
@@ -30,15 +33,15 @@ export async function GET(
       where: {
         role: 'CLIENT',
         OR: [
-            { shopId: params.shopId },
-            { clientAppointments: { some: { shopId: params.shopId } } }
+            { shopId: shopId },
+            { clientAppointments: { some: { shopId: shopId } } }
         ]
       },
       include: {
           _count: {
               select: {
                   clientAppointments: {
-                      where: { shopId: params.shopId }
+                      where: { shopId: shopId }
                   }
               }
           }

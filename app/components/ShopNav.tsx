@@ -7,10 +7,17 @@ export function ShopNav({ shopId, userRole, activeTab }: { shopId: string, userR
 
   // Group definitions
   const staffTabs = ['staff', 'attendance', 'leave', 'team'];
-  const reportsTabs = ['reports', 'staff-report', 'expenses'];
+  const reportsTabs = ['reports', 'staff-report', 'expenses', 'commissions'];
+  const engagementTabs = ['engagement', 'loyalty', 'referrals', 'campaigns', 'gift-cards'];
+  const settingsTabs = ['settings', 'appearance', 'contact-settings', 'settings-booking', 'settings-notifications', 'settings-commissions', 'settings-kiosk', 'setup', 'products', 'services'];
 
-  const isStaffSection = staffTabs.includes(activeTab);
+  // For STAFF, commissions page ("My Earnings") lives under the Staff section
+  const effectiveStaffTabs = isStaff ? [...staffTabs, 'commissions'] : staffTabs;
+
+  const isStaffSection = effectiveStaffTabs.includes(activeTab);
   const isReportsSection = reportsTabs.includes(activeTab);
+  const isEngagementSection = engagementTabs.includes(activeTab);
+  const isSettingsSection = settingsTabs.includes(activeTab);
 
   // Main tab: active if exact match OR if activeTab is in the group
   const mainTabClass = (tabName: string, groupTabs?: string[]) => {
@@ -26,16 +33,27 @@ export function ShopNav({ shopId, userRole, activeTab }: { shopId: string, userR
       ? "px-3 py-1.5 text-xs sm:text-sm text-brand-gold bg-brand-gold/10 border border-brand-gold/30 rounded-lg font-semibold whitespace-nowrap"
       : "px-3 py-1.5 text-xs sm:text-sm text-gray-400 hover:text-white hover:bg-white/5 border border-transparent rounded-lg transition whitespace-nowrap";
 
+  // ── SUPER_ADMIN: only back link + team assignment ──
+  if (isSuperAdmin) {
+    return (
+      <div className="mb-6 sm:mb-8">
+        <div className="flex gap-1 sm:gap-4 border-b border-white/10 pb-3 sm:pb-4 overflow-x-auto scrollbar-none -mx-3 px-3 sm:mx-0 sm:px-0">
+          <Link href="/superadmin" className="px-4 py-2 text-gray-400 hover:text-white transition whitespace-nowrap">
+            ← Super Admin
+          </Link>
+          <Link href={`/shop/${shopId}/settings/team`} className={mainTabClass('team')}>
+            👥 Assign Team
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
+  // ── SHOP_ADMIN & STAFF navigation ──
   return (
     <div className="mb-6 sm:mb-8">
       {/* ── Main Navigation ── */}
       <div className="flex gap-1 sm:gap-4 border-b border-white/10 pb-3 sm:pb-4 overflow-x-auto scrollbar-none -mx-3 px-3 sm:mx-0 sm:px-0">
-        {isSuperAdmin && (
-          <Link href="/" className="px-4 py-2 text-gray-400 hover:text-white transition whitespace-nowrap">
-            ← Super Admin
-          </Link>
-        )}
-
         {(isShopAdmin || isStaff) && (
           <>
             <Link href={`/shop/${shopId}`} className={mainTabClass('dashboard')}>
@@ -50,32 +68,24 @@ export function ShopNav({ shopId, userRole, activeTab }: { shopId: string, userR
             <Link href={`/shop/${shopId}/clients`} className={mainTabClass('clients')}>
               Clients
             </Link>
-            <Link href={`/shop/${shopId}/staff`} className={mainTabClass('staff', staffTabs)}>
+            <Link href={`/shop/${shopId}/staff`} className={mainTabClass('staff', effectiveStaffTabs)}>
               Staff
             </Link>
           </>
         )}
 
-        {isSuperAdmin && (
+        {isShopAdmin && (
           <>
-            <Link href={`/shop/${shopId}/config`} className={mainTabClass('setup')}>
-              Setup & Templates
+            <Link href={`/shop/${shopId}/engagement`} className={mainTabClass('engagement', engagementTabs)}>
+              Engage
             </Link>
-            <Link href={`/shop/${shopId}/settings`} className={mainTabClass('appearance')}>
-              Appearance & Settings
-            </Link>
-            <Link href={`/shop/${shopId}/settings/team`} className={mainTabClass('team')}>
-              Team
-            </Link>
-          </>
-        )}
-
-        {isShopAdmin && !isSuperAdmin && (
-          <>
             <Link href={`/shop/${shopId}/reports`} className={mainTabClass('reports', reportsTabs)}>
               Reports
             </Link>
-            <Link href={`/shop/${shopId}/settings`} className={mainTabClass('appearance')}>
+            <Link href={`/shop/${shopId}/reviews`} className={mainTabClass('reviews')}>
+              Reviews
+            </Link>
+            <Link href={`/shop/${shopId}/settings`} className={mainTabClass('settings', settingsTabs)}>
               Settings
             </Link>
           </>
@@ -99,11 +109,16 @@ export function ShopNav({ shopId, userRole, activeTab }: { shopId: string, userR
               👥 Manage Team
             </Link>
           )}
+          {isStaff && (
+            <Link href={`/shop/${shopId}/reports/commissions`} className={subTabClass('commissions')}>
+              💰 My Earnings
+            </Link>
+          )}
         </div>
       )}
 
       {/* ── Sub-nav: Reports section ── */}
-      {isShopAdmin && !isSuperAdmin && isReportsSection && (
+      {isShopAdmin && isReportsSection && (
         <div className="flex gap-2 mt-3 overflow-x-auto scrollbar-none -mx-3 px-3 sm:mx-0 sm:px-0">
           <Link href={`/shop/${shopId}/reports`} className={subTabClass('reports')}>
             💰 Financial
@@ -113,6 +128,57 @@ export function ShopNav({ shopId, userRole, activeTab }: { shopId: string, userR
           </Link>
           <Link href={`/shop/${shopId}/expenses`} className={subTabClass('expenses')}>
             💸 Expenses
+          </Link>
+          <Link href={`/shop/${shopId}/reports/commissions`} className={subTabClass('commissions')}>
+            💼 Commissions
+          </Link>
+        </div>
+      )}
+
+      {/* ── Sub-nav: Engagement section ── */}
+      {isShopAdmin && isEngagementSection && (
+        <div className="flex gap-2 mt-3 overflow-x-auto scrollbar-none -mx-3 px-3 sm:mx-0 sm:px-0">
+          <Link href={`/shop/${shopId}/engagement`} className={subTabClass('engagement')}>
+            📈 Analytics
+          </Link>
+          <Link href={`/shop/${shopId}/loyalty`} className={subTabClass('loyalty')}>
+            ⭐ Loyalty
+          </Link>
+          <Link href={`/shop/${shopId}/referrals`} className={subTabClass('referrals')}>
+            🔗 Referrals
+          </Link>
+          <Link href={`/shop/${shopId}/campaigns`} className={subTabClass('campaigns')}>
+            📣 Campaigns
+          </Link>
+          <Link href={`/shop/${shopId}/gift-cards`} className={subTabClass('gift-cards')}>
+            🎁 Gift Cards
+          </Link>
+        </div>
+      )}
+
+      {/* ── Sub-nav: Settings section ── */}
+      {isShopAdmin && isSettingsSection && (
+        <div className="flex gap-2 mt-3 overflow-x-auto scrollbar-none -mx-3 px-3 sm:mx-0 sm:px-0">
+          <Link href={`/shop/${shopId}/settings`} className={subTabClass('settings')}>
+            🎨 Appearance
+          </Link>
+          <Link href={`/shop/${shopId}/settings/booking`} className={subTabClass('settings-booking')}>
+            📅 Booking & Hours
+          </Link>
+          <Link href={`/shop/${shopId}/settings/notifications`} className={subTabClass('settings-notifications')}>
+            🔔 Notifications
+          </Link>
+          <Link href={`/shop/${shopId}/settings/commissions`} className={subTabClass('settings-commissions')}>
+            💼 Commissions
+          </Link>
+          <Link href={`/shop/${shopId}/settings/kiosk`} className={subTabClass('settings-kiosk')}>
+            📱 Kiosk
+          </Link>
+          <Link href={`/shop/${shopId}/config/services`} className={subTabClass('services')}>
+            💇 Services
+          </Link>
+          <Link href={`/shop/${shopId}/config/products`} className={subTabClass('products')}>
+            🛍️ Products
           </Link>
         </div>
       )}

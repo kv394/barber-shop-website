@@ -1,21 +1,15 @@
 import { prisma } from '@/lib/prisma';
+import { getShopLayoutData } from '@/lib/shop-data';
 import StaffAvailability from '@/app/components/StaffAvailability';
 import ShopAdminLayout from '@/app/components/ShopAdminLayout';
-import { auth } from '@clerk/nextjs/server';
+import { createClient } from '@/utils/supabase/server';
 import { redirect } from 'next/navigation';
 
 async function getShopData(shopId: string, userId: string, date: string, from: string, to: string) {
-  const user = await prisma.user.findUnique({ where: { id: userId } });
+  const data = await getShopLayoutData(userId, shopId);
+  if (!data) return null; // Allow SHOP_ADMIN, STAFF, and SUPER_ADMIN
 
-  const isSuperAdmin = user?.role === 'SUPER_ADMIN';
-  const isShopAdmin = user?.role === 'SHOP_ADMIN' && user?.shopId === shopId;
-
-  if (!isSuperAdmin && !isShopAdmin) {
-    return null;
-  }
-
-  const shop = await prisma.shop.findUnique({ where: { id: shopId } });
-  if (!shop) return null;
+  const shop = data.shop;
 
   const targetDate = new Date(date);
   const nextDate = new Date(targetDate);
@@ -100,8 +94,9 @@ async function getShopData(shopId: string, userId: string, date: string, from: s
 
   return { 
     shop: JSON.parse(JSON.stringify(shop)), 
-    userRole: user.role, 
-    staff: JSON.parse(JSON.stringify(staffWithSchedule)) 
+    shopSlug: data.shopSlug,
+    userRole: data.userRole,
+    staff: JSON.parse(JSON.stringify(staffWithSchedule))
   };
 }
 
@@ -109,31 +104,34 @@ export default async function StaffBookingPage({
   params,
   searchParams,
 }: {
-  params: { shopId: string };
-  searchParams: { date?: string, from?: string, to?: string };
+  params: Promise<{ shopId: string }>;
+  searchParams: Promise<{ date?: string, from?: string, to?: string }>;
 }) {
-  const { userId } = auth();
+  const supabase = createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  const userId = user?.id;
   if (!userId) redirect('/sign-in');
 
-  const selectedDate = searchParams.date || new Date().toISOString().split('T')[0];
-  const fromTime = searchParams.from || '00:00';
-  const toTime = searchParams.to || '23:59';
-  
-  const shopData = await getShopData(params.shopId, userId, selectedDate, fromTime, toTime);
+  const { shopId } = await params;
+  const resolvedSearchParams = await searchParams;
+  const selectedDate = resolvedSearchParams.date || new Date().toISOString().split('T')[0];
+  const fromTime = resolvedSearchParams.from || '00:00';
+  const toTime = resolvedSearchParams.to || '23:59';
+
+  const shopData = await getShopData(shopId, userId, selectedDate, fromTime, toTime);
 
   if (!shopData) {
     return <div className="p-8 text-white">You do not have access to this page.</div>;
   }
 
-  const { shop, userRole, staff } = shopData;
-  const shopSlug = shop.name.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '');
+  const { shop, shopSlug, userRole, staff } = shopData;
 
   return (
     <ShopAdminLayout
       shopName={shop.name}
       shopSlug={shopSlug}
       pageTitle="Staff Availability"
-      shopId={params.shopId}
+      shopId={shopId}
       userRole={userRole}
       activeTab="staff"
     >

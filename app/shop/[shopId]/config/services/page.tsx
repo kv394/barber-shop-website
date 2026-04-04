@@ -1,14 +1,17 @@
-import { notFound } from 'next/navigation';
-import { auth } from '@clerk/nextjs/server';
+import { notFound, redirect } from 'next/navigation';
+import { createClient } from '@/utils/supabase/server';
 import { getShopLayoutData } from '@/lib/shop-data';
 import { ServiceManagement } from '@/app/components/ServiceManagement';
 import ShopAdminLayout from '@/app/components/ShopAdminLayout';
 
-export default async function ServicesConfigPage({ params }: { params: { shopId: string } }) {
-  const { userId } = auth();
-  if (!userId) return new Response('Unauthorized', { status: 401 });
+export default async function ServicesConfigPage({ params }: { params: Promise<{ shopId: string }> }) {
+  const { shopId } = await params;
+  const supabase = createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  const userId = user?.id;
+  if (!userId) redirect('/sign-in');
 
-  const data = await getShopLayoutData(userId, params.shopId);
+  const data = await getShopLayoutData(userId, shopId);
   if (!data) notFound();
 
   const shopSlug = data.shop.name.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '');
@@ -18,11 +21,11 @@ export default async function ServicesConfigPage({ params }: { params: { shopId:
       shopName={data.shop.name}
       shopSlug={shopSlug}
       pageTitle="Manage Services"
-      shopId={params.shopId}
+      shopId={shopId}
       userRole={data.userRole}
-      activeTab="setup"
+      activeTab="services"
     >
-      <ServiceManagement shopId={params.shopId} />
+      <ServiceManagement shopId={shopId} />
     </ShopAdminLayout>
   );
 }

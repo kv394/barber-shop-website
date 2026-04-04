@@ -1,32 +1,35 @@
 import { logger } from "@/lib/logger";
 import { prisma } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
-import { auth } from '@clerk/nextjs/server';
+import { createClient } from '@/utils/supabase/server';
 
 export async function GET(
   request: Request,
-  { params }: { params: { shopId: string; clientId: string } }
+  { params }: { params: Promise<{ shopId: string; clientId: string }> }
 ) {
   try {
-    const { userId } = auth();
+    const { shopId, clientId } = await params;
+    const supabase = createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  const userId = user?.id;
     if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
     const currentUser = await prisma.user.findUnique({ where: { id: userId } });
     const canView = currentUser?.role === 'SUPER_ADMIN' ||
-      (currentUser?.role === 'SHOP_ADMIN' && currentUser?.shopId === params.shopId) ||
-      (currentUser?.role === 'STAFF' && currentUser?.shopId === params.shopId);
+      (currentUser?.role === 'SHOP_ADMIN' && currentUser?.shopId === shopId) ||
+      (currentUser?.role === 'STAFF' && currentUser?.shopId === shopId);
 
     if (!canView) return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
 
     const client = await prisma.user.findUnique({
-      where: { id: params.clientId },
+      where: { id: clientId },
       select: {
         id: true, name: true, email: true, phone: true, 
         clientNotes: true, preferences: true, allergies: true,
         marketingConsent: true, smsConsent: true,
         barcode: true, createdAt: true,
         clientAppointments: {
-          where: { shopId: params.shopId },
+          where: { shopId: shopId },
           include: {
             service: { select: { name: true, price: true, duration: true } },
             staff: { select: { name: true } },
@@ -35,7 +38,7 @@ export async function GET(
           take: 50,
         },
         _count: {
-          select: { clientAppointments: { where: { shopId: params.shopId } } },
+          select: { clientAppointments: { where: { shopId: shopId } } },
         },
       },
     });
@@ -51,31 +54,52 @@ export async function GET(
 
 export async function PATCH(
   request: Request,
-  { params }: { params: { shopId: string; clientId: string } }
+  { params }: { params: Promise<{ shopId: string; clientId: string }> }
 ) {
   try {
-    const { userId } = auth();
+    const { shopId, clientId } = await params;
+    const supabase = createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  const userId = user?.id;
     if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
     const currentUser = await prisma.user.findUnique({ where: { id: userId } });
     const canEdit = currentUser?.role === 'SUPER_ADMIN' ||
-      (currentUser?.role === 'SHOP_ADMIN' && currentUser?.shopId === params.shopId) ||
-      (currentUser?.role === 'STAFF' && currentUser?.shopId === params.shopId);
+      (currentUser?.role === 'SHOP_ADMIN' && currentUser?.shopId === shopId) ||
+      (currentUser?.role === 'STAFF' && currentUser?.shopId === shopId);
 
     if (!canEdit) return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+
+    // Verify the client has a relationship with this shop (appointments or shopId)
+    const client = await prisma.user.findFirst({
+      where: {
+        id: clientId,
+        OR: [
+          { shopId: shopId },
+          { clientAppointments: { some: { shopId: shopId } } },
+        ],
+      },
+    });
+    if (!client) return NextResponse.json({ error: 'Client not found in this shop' }, { status: 404 });
 
     const body = await request.json();
     const updateData: any = {};
 
-    if (body.clientNotes !== undefined) updateData.clientNotes = body.clientNotes;
-    if (body.preferences !== undefined) updateData.preferences = body.preferences;
-    if (body.allergies !== undefined) updateData.allergies = body.allergies;
-    if (body.marketingConsent !== undefined) updateData.marketingConsent = body.marketingConsent;
-    if (body.smsConsent !== undefined) updateData.smsConsent = body.smsConsent;
+    // SECURITY: Sanitize text fields — strip HTML tags and limit length (stored XSS prevention)
+    if (body.clientNotes !== undefined) updateData.clientNotes = typeof body.clientNotes === 'string' ? body.clientNotes.replace(/<[^>]*>/g, '').slice(0, 5000) : null;
+    if (body.preferences !== undefined) updateData.preferences = typeof body.preferences === 'string' ? body.preferences.replace(/<[^>]*>/g, '').slice(0, 2000) : null;
+    if (body.allergies !== undefined) updateData.allergies = typeof body.allergies === 'string' ? body.allergies.replace(/<[^>]*>/g, '').slice(0, 2000) : null;
+    if (body.marketingConsent !== undefined) updateData.marketingConsent = Boolean(body.marketingConsent);
+    if (body.smsConsent !== undefined) updateData.smsConsent = Boolean(body.smsConsent);
 
     const updated = await prisma.user.update({
-      where: { id: params.clientId },
+      where: { id: clientId },
       data: updateData,
+      select: {
+        id: true, name: true, email: true, phone: true,
+        clientNotes: true, preferences: true, allergies: true,
+        marketingConsent: true, smsConsent: true,
+      },
     });
 
     return NextResponse.json(updated);

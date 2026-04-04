@@ -2,8 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import dynamic from 'next/dynamic';
-import { useAuth, UserButton } from '@clerk/nextjs';
-import { useRouter, usePathname } from 'next/navigation';
+import SupabaseAuthButton from '@/components/SupabaseAuthButton';
+import { usePathname } from 'next/navigation';
 
 // Lazy-load the BookingModal component
 const BookingModal = dynamic(() => import('@/components/BookingModal'), {
@@ -11,36 +11,117 @@ const BookingModal = dynamic(() => import('@/components/BookingModal'), {
     loading: () => <div className="fixed inset-0 bg-black/80 z-[100] flex items-center justify-center"><p className="text-white">Loading...</p></div>
 });
 
-export default function ClientPage({ shop, templateType, primaryColor, secondaryColor, sportRed }: any) {
+/** Format the address object (or legacy string) into a single readable line */
+function formatAddress(addr: any): string {
+  if (!addr) return '';
+  if (typeof addr === 'string') return addr;
+  const parts = [
+    addr.street,
+    addr.suite,
+    addr.city,
+    addr.state && addr.zip ? `${addr.state} ${addr.zip}` : (addr.state || addr.zip),
+  ].filter(Boolean);
+  return parts.join(', ');
+}
+
+function StarRating({ rating }: { rating: number }) {
+  return (
+    <span className="inline-flex gap-0.5">
+      {[1, 2, 3, 4, 5].map(i => (
+        <span key={i} className={i <= rating ? 'opacity-100' : 'opacity-20'}>⭐</span>
+      ))}
+    </span>
+  );
+}
+
+function ReviewsSection({ reviews, variant = 'dark' }: { reviews: any[]; variant?: 'dark' | 'light' | 'warm' }) {
+  if (!reviews || reviews.length === 0) return null;
+
+  const avgRating = reviews.reduce((sum: number, r: any) => sum + r.rating, 0) / reviews.length;
+
+  const bgClass = variant === 'light'
+    ? 'bg-gray-50'
+    : variant === 'warm'
+      ? 'bg-[#f5efe6]'
+      : 'bg-black/20';
+  const textClass = variant === 'light' ? 'text-gray-900' : variant === 'warm' ? 'text-[#2c1e16]' : 'text-white';
+  const subTextClass = variant === 'light' ? 'text-gray-600' : variant === 'warm' ? 'text-[#5a4634]' : 'text-gray-400';
+  const cardClass = variant === 'light'
+    ? 'bg-white border border-gray-200 shadow-sm'
+    : variant === 'warm'
+      ? 'bg-[#fdfbf7] border border-[#e6d9c6]'
+      : 'bg-white/5 border border-white/10';
+
+  return (
+    <section className={`${bgClass} py-16`}>
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-12">
+          <h2 className={`text-3xl font-bold ${textClass} mb-2`}>What Our Clients Say</h2>
+          <div className="flex items-center justify-center gap-2 mt-3">
+            <StarRating rating={Math.round(avgRating)} />
+            <span className={`text-sm ${subTextClass}`}>
+              {avgRating.toFixed(1)} out of 5 ({reviews.length} review{reviews.length !== 1 ? 's' : ''})
+            </span>
+          </div>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {reviews.slice(0, 6).map((review: any) => (
+            <div key={review.id} className={`${cardClass} rounded-xl p-6`}>
+              <div className="flex items-center justify-between mb-3">
+                <StarRating rating={review.rating} />
+                <span className={`text-xs ${subTextClass}`}>
+                  {new Date(review.createdAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}
+                </span>
+              </div>
+              {review.comment && (
+                <p className={`text-sm ${subTextClass} mb-3 line-clamp-3`}>&ldquo;{review.comment}&rdquo;</p>
+              )}
+              <div className="flex items-center justify-between pt-3 border-t border-current/10">
+                <span className={`text-sm font-semibold ${textClass}`}>
+                  {review.user?.name || 'Anonymous'}
+                </span>
+                {review.appointment?.service?.name && (
+                  <span className={`text-xs ${subTextClass}`}>{review.appointment.service.name}</span>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export default function ClientPage({ shop, templateType, primaryColor, secondaryColor, sportRed, reviews = [] }: any) {
     const [selectedService, setSelectedService] = useState<any | null>(null);
     const { isSignedIn } = useAuth();
-    const router = useRouter();
-    const pathname = usePathname();
-    const [currentPath, setCurrentPath] = useState('');
-
-    useEffect(() => {
-        setCurrentPath(window.location.pathname);
-    }, [pathname]);
+    const pathname = usePathname() || '/';
 
     const handleBookClick = (service: any) => {
         setSelectedService(service);
     };
 
-    const handleSignInClick = () => {
-        router.push(`/sign-in?redirect_url=${encodeURIComponent(currentPath)}`);
-    };
+    // ── Normalised contact helpers (supports both old flat shape and new nested shape) ──
+    const c = shop.customization || {};
+    const shopPhone   = c.contact?.phone   || c.phone   || '';
+    const shopEmail   = c.contact?.email   || c.email   || '';
+    const shopWebsite = c.contact?.website || c.website || '';
+    const shopAddress = formatAddress(c.address);
+    const shopFB      = c.contact?.facebook  || c.social?.facebook  || '';
+    const shopIG      = c.contact?.instagram || c.social?.instagram || '';
+    const shopTW      = c.contact?.twitter   || c.social?.twitter   || '';
 
+    // Pass both signOutUrl and afterSignOutUrl to ensure compatibility with Clerk v4 and v7
     const authButton = (
         <div className="absolute top-6 right-6 z-50">
             {isSignedIn ? (
-                <UserButton afterSignOutUrl={currentPath} />
+                <UserButton signOutUrl={pathname} afterSignOutUrl={pathname} />
             ) : (
-                <button 
-                   onClick={handleSignInClick}
-                   className="bg-white/10 hover:bg-white/20 text-white px-4 py-2 rounded-lg font-semibold transition-colors"
-                >
-                   Sign In
-                </button>
+                <SignInButton mode="modal" fallbackRedirectUrl={pathname} signUpFallbackRedirectUrl={pathname}>
+                  <button className="bg-white/10 hover:bg-white/20 text-white px-4 py-2 rounded-lg font-semibold transition-colors">
+                     Sign In
+                  </button>
+                </SignInButton>
             )}
         </div>
     );
@@ -50,13 +131,13 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
             <main className="min-h-screen bg-white text-gray-900 font-sans relative">
                 {/* Top Bar - Contact Info & Auth */}
                 <div className="bg-black text-white text-xs py-2 px-4 flex justify-end items-center space-x-4">
-                    {shop.customization?.phone && <span>{shop.customization.phone}</span>}
-                    {shop.customization?.email && <span>{shop.customization.email}</span>}
+                    {shopPhone && <span>{shopPhone}</span>}
+                    {shopEmail && <span>{shopEmail}</span>}
                     <div className="relative">
-                        {isSignedIn ? (
-                            <UserButton afterSignOutUrl={currentPath} />
-                        ) : (
-                            <button onClick={handleSignInClick} className="text-white hover:underline">Sign In</button>
+                        {isSignedIn ? <UserButton signOutUrl={pathname} afterSignOutUrl={pathname} /> : (
+                            <SignInButton mode="modal" fallbackRedirectUrl={pathname} signUpFallbackRedirectUrl={pathname}>
+                              <button className="text-white hover:underline">Sign In</button>
+                            </SignInButton>
                         )}
                     </div>
                 </div>
@@ -118,7 +199,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                                     </div>
                                     <button 
                                         onClick={() => handleBookClick(service)}
-                                        className="w-full bg-black hover:bg-gray-800 text-white font-bold py-3 uppercase tracking-wider transition-colors" 
+                                        className="w-full text-white font-bold py-3 uppercase tracking-wider transition-colors"
                                         style={{ backgroundColor: sportRed }}
                                     >
                                         Book This
@@ -128,7 +209,9 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                         ))}
                     </div>
                 </section>
-    
+
+                <ReviewsSection reviews={reviews} variant="light" />
+
                 {/* Footer */}
                 <footer className="bg-black text-white py-16 uppercase text-sm tracking-widest">
                     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -142,23 +225,21 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                             <div>
                                 <h4 className="font-bold mb-6 text-gray-300">Quick Links</h4>
                                 <ul className="space-y-4 font-bold">
-                                    <li><a href="#" className="hover:text-red-500 transition-colors">Find a Location</a></li>
                                     <li><a href="#" className="hover:text-red-500 transition-colors">Services</a></li>
-                                    <li><a href="#" className="hover:text-red-500 transition-colors">Careers</a></li>
                                 </ul>
                             </div>
                             <div>
                                 <h4 className="font-bold mb-6 text-gray-300">Connect</h4>
                                 <div className="flex flex-col space-y-4 font-bold">
-                                    {shop.customization?.social?.facebook && <a href={shop.customization.social.facebook} className="hover:text-red-500 transition-colors">Facebook</a>}
-                                    {shop.customization?.social?.instagram && <a href={shop.customization.social.instagram} className="hover:text-red-500 transition-colors">Instagram</a>}
-                                    {shop.customization?.social?.twitter && <a href={shop.customization.social.twitter} className="hover:text-red-500 transition-colors">Twitter</a>}
+                                    {shopFB && <a href={shopFB} className="hover:text-red-500 transition-colors">Facebook</a>}
+                                    {shopIG && <a href={shopIG.startsWith('http') ? shopIG : `https://instagram.com/${shopIG.replace('@','')}`} className="hover:text-red-500 transition-colors">Instagram</a>}
+                                    {shopTW && <a href={shopTW} className="hover:text-red-500 transition-colors">Twitter</a>}
                                 </div>
                             </div>
                         </div>
                         <div className="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center text-gray-500 font-bold text-xs">
                             <p>&copy; {new Date().getFullYear()} {shop.name}. All rights reserved.</p>
-                            <p className="mt-4 md:mt-0">{shop.customization?.address}</p>
+                            {shopAddress && <p className="mt-4 md:mt-0">{shopAddress}</p>}
                         </div>
                     </div>
                 </footer>
@@ -168,7 +249,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                         shopId={shop.id} 
                         service={selectedService} 
                         onClose={() => setSelectedService(null)} 
-                        shopHours={shop.customization?.businessHours || {}}
+                        shopHours={c.businessHours || {}}
                     />
                 )}
             </main>
@@ -183,9 +264,11 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                 <h1 className="text-3xl font-bold" style={{ color: primaryColor }}>{shop.name}</h1>
                 <div className="relative">
                     {isSignedIn ? (
-                        <UserButton afterSignOutUrl={currentPath} />
+                        <UserButton signOutUrl={pathname} afterSignOutUrl={pathname} />
                     ) : (
-                        <button onClick={handleSignInClick} className="text-gray-600 hover:underline">Sign In</button>
+                        <SignInButton mode="modal" fallbackRedirectUrl={pathname} signUpFallbackRedirectUrl={pathname}>
+                            <button className="text-gray-600 hover:underline">Sign In</button>
+                        </SignInButton>
                     )}
                 </div>
               </div>
@@ -224,25 +307,27 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                 ))}
               </div>
             </section>
-    
+
+            <ReviewsSection reviews={reviews} variant="light" />
+
             <footer className="bg-gray-800 text-white">
               <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
                   <div>
                     <h3 className="text-lg font-bold mb-4">{shop.name}</h3>
-                    <p className="text-gray-400">{shop.customization?.address}</p>
+                    {shopAddress && <p className="text-gray-400">{shopAddress}</p>}
                   </div>
                   <div>
                     <h4 className="text-lg font-bold mb-4">Contact</h4>
-                    <p className="text-gray-400">{shop.customization?.phone}</p>
-                    <p className="text-gray-400">{shop.customization?.email}</p>
+                    {shopPhone && <p className="text-gray-400">{shopPhone}</p>}
+                    {shopEmail && <p className="text-gray-400">{shopEmail}</p>}
                   </div>
                   <div>
                     <h4 className="text-lg font-bold mb-4">Follow Us</h4>
                     <div className="flex gap-4">
-                      {shop.customization?.social?.facebook && <a href={shop.customization.social.facebook} className="text-gray-400 hover:text-white">Facebook</a>}
-                      {shop.customization?.social?.instagram && <a href={shop.customization.social.instagram} className="text-gray-400 hover:text-white">Instagram</a>}
-                      {shop.customization?.social?.twitter && <a href={shop.customization.social.twitter} className="text-gray-400 hover:text-white">Twitter</a>}
+                      {shopFB && <a href={shopFB} className="text-gray-400 hover:text-white">Facebook</a>}
+                      {shopIG && <a href={shopIG.startsWith('http') ? shopIG : `https://instagram.com/${shopIG.replace('@','')}`} className="text-gray-400 hover:text-white">Instagram</a>}
+                      {shopTW && <a href={shopTW} className="text-gray-400 hover:text-white">Twitter</a>}
                     </div>
                   </div>
                 </div>
@@ -257,7 +342,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                     shopId={shop.id} 
                     service={selectedService} 
                     onClose={() => setSelectedService(null)} 
-                    shopHours={shop.customization?.businessHours || {}}
+                    shopHours={c.businessHours || {}}
                 />
             )}
           </main>
@@ -298,12 +383,14 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
               </section>
             </div>
 
+            <ReviewsSection reviews={reviews} variant="dark" />
+
             {selectedService && (
                 <BookingModal 
                     shopId={shop.id} 
                     service={selectedService} 
                     onClose={() => setSelectedService(null)} 
-                    shopHours={shop.customization?.businessHours || {}}
+                    shopHours={c.businessHours || {}}
                 />
             )}
           </main>
@@ -342,12 +429,14 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
               </section>
             </div>
 
+            <ReviewsSection reviews={reviews} variant="dark" />
+
             {selectedService && (
                 <BookingModal 
                     shopId={shop.id} 
                     service={selectedService} 
                     onClose={() => setSelectedService(null)} 
-                    shopHours={shop.customization?.businessHours || {}}
+                    shopHours={c.businessHours || {}}
                 />
             )}
           </main>
@@ -359,9 +448,11 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
           <main className="min-h-screen bg-white text-gray-900 font-sans relative">
             <div className="absolute top-6 right-6 z-50">
                 {isSignedIn ? (
-                    <UserButton afterSignOutUrl={currentPath} />
+                    <UserButton signOutUrl={pathname} afterSignOutUrl={pathname} />
                 ) : (
-                    <button onClick={handleSignInClick} className="text-gray-600 hover:underline">Sign In</button>
+                    <SignInButton mode="modal" fallbackRedirectUrl={pathname} signUpFallbackRedirectUrl={pathname}>
+                        <button className="text-gray-600 hover:underline">Sign In</button>
+                    </SignInButton>
                 )}
             </div>
             <header className="max-w-4xl mx-auto px-6 py-12 border-b border-gray-100 flex flex-col md:flex-row justify-between items-end md:items-center">
@@ -370,8 +461,8 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                 {shop.description && <p className="text-gray-500 mt-2">{shop.description}</p>}
               </div>
               <div className="text-right mt-6 md:mt-0 text-sm text-gray-500">
-                 {shop.customization?.phone && <p>{shop.customization.phone}</p>}
-                 {shop.customization?.address && <p>{shop.customization.address}</p>}
+                 {shopPhone && <p>{shopPhone}</p>}
+                 {shopAddress && <p>{shopAddress}</p>}
               </div>
             </header>
     
@@ -406,12 +497,14 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
               )}
             </section>
 
+            <ReviewsSection reviews={reviews} variant="light" />
+
             {selectedService && (
                 <BookingModal 
                     shopId={shop.id} 
                     service={selectedService} 
                     onClose={() => setSelectedService(null)} 
-                    shopHours={shop.customization?.businessHours || {}}
+                    shopHours={c.businessHours || {}}
                 />
             )}
           </main>
@@ -423,9 +516,11 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
           <main className="min-h-screen bg-[#fdfbf7] text-[#2c1e16] font-serif relative">
             <div className="absolute top-6 right-8 z-50">
                 {isSignedIn ? (
-                    <UserButton afterSignOutUrl={currentPath} />
+                    <UserButton signOutUrl={pathname} afterSignOutUrl={pathname} />
                 ) : (
-                    <button onClick={handleSignInClick} className="text-gray-600 hover:underline">Sign In</button>
+                    <SignInButton mode="modal" fallbackRedirectUrl={pathname} signUpFallbackRedirectUrl={pathname}>
+                        <button className="text-gray-600 hover:underline">Sign In</button>
+                    </SignInButton>
                 )}
             </div>
             <header className="border-b-4 border-[#2c1e16] py-16 text-center bg-[url('https://www.transparenttextures.com/patterns/aged-paper.png')] relative">
@@ -462,10 +557,13 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                 ))}
               </div>
             </section>
-            
+
+            <ReviewsSection reviews={reviews} variant="warm" />
+
             <footer className="bg-[#2c1e16] text-[#e6d9c6] py-12 text-center text-sm font-sans tracking-widest uppercase">
-                 <p className="mb-2">{shop.customization?.address || 'Visit us today'}</p>
-                 <p>{shop.customization?.phone} | {shop.customization?.email}</p>
+                 {shopAddress && <p className="mb-2">{shopAddress}</p>}
+                 {!shopAddress && <p className="mb-2">Visit us today</p>}
+                 <p>{shopPhone}{shopPhone && shopEmail ? ' | ' : ''}{shopEmail}</p>
             </footer>
 
             {selectedService && (
@@ -473,7 +571,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                     shopId={shop.id} 
                     service={selectedService} 
                     onClose={() => setSelectedService(null)} 
-                    shopHours={shop.customization?.businessHours || {}}
+                    shopHours={c.businessHours || {}}
                 />
             )}
           </main>
@@ -485,14 +583,13 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
         <main className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 relative">
           <header className="absolute w-full top-0 left-0 p-6 flex justify-end z-50">
              {isSignedIn ? (
-                 <UserButton afterSignOutUrl={currentPath} />
+                 <UserButton signOutUrl={pathname} afterSignOutUrl={pathname} />
              ) : (
-                 <button 
-                    onClick={handleSignInClick}
-                    className="bg-white/10 hover:bg-white/20 text-white px-4 py-2 rounded-lg font-semibold transition-colors"
-                 >
-                    Sign In
-                 </button>
+                <SignInButton mode="modal" fallbackRedirectUrl={pathname} signUpFallbackRedirectUrl={pathname}>
+                    <button className="bg-white/10 hover:bg-white/20 text-white px-4 py-2 rounded-lg font-semibold transition-colors">
+                       Sign In
+                    </button>
+                </SignInButton>
              )}
           </header>
           {/* Hero Section */}
@@ -575,7 +672,9 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
               </div>
             )}
           </section>
-    
+
+          <ReviewsSection reviews={reviews} variant="dark" />
+
           {/* Footer */}
           <footer className="bg-black/50 border-t border-slate-700 py-12">
             <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -585,24 +684,31 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                   <p className="text-gray-400 mb-4">
                     {shop.description || 'Your trusted service provider'}
                   </p>
-                  {shop.customization?.address && (
-                    <p className="text-gray-400 text-sm">{shop.customization.address}</p>
+                  {shopAddress && (
+                    <p className="text-gray-400 text-sm">{shopAddress}</p>
                   )}
                 </div>
                 <div>
                   <h4 className="text-white font-bold mb-4">Contact</h4>
                   <ul className="space-y-2 text-gray-400 text-sm">
-                    {shop.customization?.phone && (
+                    {shopPhone && (
                       <li>
-                        <a href={`tel:${shop.customization.phone}`} className="hover:text-white transition">
-                          📞 {shop.customization.phone}
+                        <a href={`tel:${shopPhone}`} className="hover:text-white transition">
+                          📞 {shopPhone}
                         </a>
                       </li>
                     )}
-                    {shop.customization?.email && (
+                    {shopEmail && (
                       <li>
-                        <a href={`mailto:${shop.customization.email}`} className="hover:text-white transition">
-                          ✉️ {shop.customization.email}
+                        <a href={`mailto:${shopEmail}`} className="hover:text-white transition">
+                          ✉️ {shopEmail}
+                        </a>
+                      </li>
+                    )}
+                    {shopWebsite && (
+                      <li>
+                        <a href={shopWebsite} target="_blank" rel="noopener noreferrer" className="hover:text-white transition">
+                          🌐 Website
                         </a>
                       </li>
                     )}
@@ -616,9 +722,9 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                 <div>
                   <h4 className="text-white font-bold mb-4">Follow Us</h4>
                   <div className="flex gap-4">
-                    {shop.customization?.social?.facebook && (
+                    {shopFB && (
                       <a
-                        href={shop.customization.social.facebook}
+                        href={shopFB}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-gray-400 hover:text-white transition"
@@ -626,9 +732,9 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                         Facebook
                       </a>
                     )}
-                    {shop.customization?.social?.instagram && (
+                    {shopIG && (
                       <a
-                        href={shop.customization.social.instagram}
+                        href={shopIG.startsWith('http') ? shopIG : `https://instagram.com/${shopIG.replace('@','')}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-gray-400 hover:text-white transition"
@@ -636,9 +742,9 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                         Instagram
                       </a>
                     )}
-                    {shop.customization?.social?.twitter && (
+                    {shopTW && (
                       <a
-                        href={shop.customization.social.twitter}
+                        href={shopTW}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-gray-400 hover:text-white transition"
@@ -662,7 +768,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                 shopId={shop.id} 
                 service={selectedService} 
                 onClose={() => setSelectedService(null)} 
-                shopHours={shop.customization?.businessHours || {}}
+                shopHours={c.businessHours || {}}
             />
           )}
         </main>

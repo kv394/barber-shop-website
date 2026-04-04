@@ -1,5 +1,5 @@
 import { redirect } from 'next/navigation';
-import { auth } from '@clerk/nextjs/server';
+import { createClient } from '@/utils/supabase/server';
 import { prisma } from '@/lib/prisma';
 import ShopAdminLayout from '@/app/components/ShopAdminLayout';
 import StaffWorkingReport from '@/components/StaffWorkingReport';
@@ -76,11 +76,14 @@ async function getPageData(shopId: string, userId: string) {
   };
 }
 
-export default async function StaffWorkingPage({ params }: { params: { shopId: string } }) {
-  const { userId } = auth();
+export default async function StaffWorkingPage({ params }: { params: Promise<{ shopId: string }> }) {
+  const { shopId } = await params;
+  const supabase = createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  const userId = user?.id;
   if (!userId) return redirect('/');
 
-  const { shop, userRole, staffMembers } = await getPageData(params.shopId, userId);
+  const { shop, userRole, staffMembers } = await getPageData(shopId, userId);
 
   if (!shop) {
     return (
@@ -100,7 +103,7 @@ export default async function StaffWorkingPage({ params }: { params: { shopId: s
       shopName={shop.name}
       shopSlug={shopSlug}
       pageTitle="Staff Working Report"
-      shopId={params.shopId}
+      shopId={shopId}
       userRole={userRole as string}
       activeTab="staff-report"
     >

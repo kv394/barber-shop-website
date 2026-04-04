@@ -46,9 +46,10 @@ async function getShopBySlug(slug: string) {
 export async function generateMetadata({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
-  const shop = await getShopBySlug(params.slug);
+  const { slug } = await params;
+  const shop = await getShopBySlug(slug);
 
   if (!shop) {
     return {
@@ -70,9 +71,10 @@ export async function generateMetadata({
 export default async function PublicShopPage({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }) {
-  const shop = await getShopBySlug(params.slug);
+  const { slug } = await params;
+  const shop = await getShopBySlug(slug);
 
   if (!shop) {
     return (

@@ -1,7 +1,8 @@
 import { redirect } from 'next/navigation';
-import { auth } from '@clerk/nextjs/server';
+import { createClient } from '@/utils/supabase/server';
 import { prisma } from '@/lib/prisma';
 import { getShopLayoutData } from '@/lib/shop-data';
+import { getTodayInShopTz, toShopTzDayBounds } from '@/lib/timezone';
 import CreateServiceForm from '@/components/CreateServiceForm';
 import DeleteServiceButton from '@/components/DeleteServiceButton';
 import InventoryManager from '@/components/InventoryManager';
@@ -9,37 +10,46 @@ import Link from 'next/link';
 import BarcodeScannerWrapper from '@/components/BarcodeScannerWrapper';
 import ShopAdminLayout from '@/app/components/ShopAdminLayout';
 
+
 export const dynamic = 'force-dynamic';
 
 async function getShopData(shopId: string, userId: string) {
   const data = await getShopLayoutData(userId, shopId);
   if (!data) {
-    return { shop: null, userRole: null, canManageInventory: false, todayStats: null };
+    return { shop: null, userRole: null, canManageInventory: false, shopSlug: '', lowStockItems: [], todayStats: null };
   }
 
-  const shopFromDb = await prisma.shop.findUnique({
-    where: { id: shopId },
-    include: {
-      services: { orderBy: { type: 'asc' } },
-      users: { orderBy: { role: 'asc' } },
-    },
-  });
+  // Today's date boundaries — use shop timezone
+  const shopTz = data.shop.timezone || 'America/New_York';
+  const todayStr = getTodayInShopTz(shopTz);
+  const { startOfDay: today, endOfDay: tomorrow } = toShopTzDayBounds(todayStr, shopTz);
+
+  // Run both queries in parallel instead of sequentially
+  const [shopFromDb, todayAppointments, allTrackedServices] = await Promise.all([
+    prisma.shop.findUnique({
+      where: { id: shopId },
+      include: {
+        services: { orderBy: { type: 'asc' } },
+        users: { orderBy: { role: 'asc' } },
+      },
+    }),
+    prisma.appointment.findMany({
+      where: { shopId, startTime: { gte: today, lt: tomorrow } },
+      include: { service: { select: { price: true, name: true } }, user: { select: { name: true } }, staff: { select: { name: true } } },
+      orderBy: { startTime: 'asc' },
+    }),
+    prisma.service.findMany({
+      where: { shopId, trackInventory: true },
+      select: { id: true, name: true, inventoryCount: true },
+    }),
+  ]);
+
+  // Flag items at or below 5 units as low stock
+  const lowStockItems = allTrackedServices.filter(s => (s.inventoryCount || 0) <= 5);
 
   if (!shopFromDb) {
-    return { shop: null, userRole: data.userRole, canManageInventory: false, todayStats: null };
+    return { shop: null, userRole: data.userRole, canManageInventory: false, shopSlug: data.shopSlug, lowStockItems: [], todayStats: null };
   }
-
-  // Today's snapshot
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-  const tomorrow = new Date(today);
-  tomorrow.setDate(tomorrow.getDate() + 1);
-
-  const todayAppointments = await prisma.appointment.findMany({
-    where: { shopId, startTime: { gte: today, lt: tomorrow } },
-    include: { service: { select: { price: true, name: true } }, user: { select: { name: true } }, staff: { select: { name: true } } },
-    orderBy: { startTime: 'asc' },
-  });
 
   const completed = todayAppointments.filter(a => a.status === 'COMPLETED');
   const todayRevenue = completed.reduce((s, a) => s + (a.totalAmount > 0 ? a.totalAmount : ((a.service?.price || 0) - (a.discount || 0))), 0);
@@ -51,6 +61,8 @@ async function getShopData(shopId: string, userId: string) {
     shop: JSON.parse(JSON.stringify(shopFromDb)), 
     userRole: data.userRole,
     canManageInventory: data.canManageInventory,
+    shopSlug: data.shopSlug,
+    lowStockItems: JSON.parse(JSON.stringify(lowStockItems)),
     todayStats: {
       totalBookings: todayAppointments.length,
       completedCount: completed.length,
@@ -62,11 +74,19 @@ async function getShopData(shopId: string, userId: string) {
   };
 }
 
-export default async function ShopDashboardPage({ params }: { params: { shopId: string } }) {
-  const { userId } = auth();
+export default async function ShopDashboardPage({ params }: { params: Promise<{ shopId: string }> }) {
+  const supabase = createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  const userId = user?.id;
   if (!userId) return redirect('/');
 
-  const { shop, userRole, canManageInventory, todayStats } = await getShopData(params.shopId, userId);
+  const { shopId } = await params;
+  const { shop, userRole, canManageInventory, shopSlug, lowStockItems, todayStats } = await getShopData(shopId, userId);
+
+  // SUPER_ADMIN is a site admin — redirect to team assignment page (they don't access shop operations)
+  if (userRole === 'SUPER_ADMIN') {
+    return redirect(`/shop/${shopId}/settings/team`);
+  }
 
   if (!shop) {
     return (
@@ -82,19 +102,54 @@ export default async function ShopDashboardPage({ params }: { params: { shopId: 
   const isSuperAdmin = userRole === 'SUPER_ADMIN';
   const isShopAdmin = userRole === 'SHOP_ADMIN';
   const isStaff = userRole === 'STAFF';
-  const canEditServices = isSuperAdmin || isShopAdmin;
-  const showInventoryControls = isSuperAdmin || isShopAdmin || (isStaff && canManageInventory);
-  const shopSlug = shop.name.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '');
+  const canEditServices = isShopAdmin; // SUPER_ADMIN CANNOT EDIT
+  const showInventoryControls = isShopAdmin || (isStaff && canManageInventory); // SUPER_ADMIN CANNOT MANAGE INVENTORY
+  const resolvedSlug = shopSlug || shop.name.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '');
 
   return (
     <ShopAdminLayout
       shopName={shop.name}
-      shopSlug={shopSlug}
-      pageTitle={isStaff ? 'Staff Dashboard' : 'Shop Admin Dashboard'}
-      shopId={params.shopId}
+      shopSlug={resolvedSlug}
+      pageTitle={isStaff ? 'Staff Dashboard' : isSuperAdmin ? 'Platform Admin View' : 'Shop Admin Dashboard'}
+      shopId={shopId}
       userRole={userRole as string}
       activeTab="dashboard"
     >
+      {/* ── Booking Link + Low-Stock Alerts row (shop admin only) ── */}
+      {isShopAdmin && (
+        <div className="flex flex-col sm:flex-row gap-3 mb-6">
+          {/* Online booking link */}
+          <div className="flex-1 bg-brand-gold/10 border border-brand-gold/30 rounded-xl p-4 flex items-center gap-4">
+            <span className="text-2xl">🔗</span>
+            <div className="min-w-0 flex-1">
+              <p className="text-xs text-gray-400 mb-0.5">Your Booking Portal</p>
+              <p className="text-white font-mono text-sm truncate">/shops/{resolvedSlug}</p>
+            </div>
+            <Link href={`/shops/${resolvedSlug}`} target="_blank"
+              className="flex-shrink-0 px-3 py-1.5 bg-brand-gold text-black text-xs font-bold rounded-lg hover:bg-white transition-colors">
+              Open →
+            </Link>
+          </div>
+          {/* Low-stock alert */}
+          {lowStockItems.length > 0 && (
+            <div className="flex-1 bg-orange-900/20 border border-orange-500/30 rounded-xl p-4">
+              <p className="text-orange-300 font-semibold text-sm mb-2">⚠️ {lowStockItems.length} Low-Stock Item{lowStockItems.length > 1 ? 's' : ''}</p>
+              <div className="space-y-1">
+                {lowStockItems.slice(0, 3).map((item: any) => (
+                  <div key={item.id} className="flex justify-between text-xs">
+                    <span className="text-gray-300 truncate">{item.name}</span>
+                    <span className="text-orange-300 font-mono ml-2 flex-shrink-0">{item.inventoryCount} left</span>
+                  </div>
+                ))}
+                {lowStockItems.length > 3 && <p className="text-gray-500 text-xs">+{lowStockItems.length - 3} more</p>}
+              </div>
+              <Link href={`/shop/${shopId}/config/products`} className="text-orange-300 hover:text-orange-200 text-xs underline mt-2 inline-block">
+                Restock now →
+              </Link>
+            </div>
+          )}
+        </div>
+      )}
       {/* Today's Snapshot */}
       {todayStats && (
         <div className="mb-6 sm:mb-8">

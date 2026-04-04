@@ -1,3 +1,4 @@
+import { cache } from 'react';
 import { prisma } from '@/lib/prisma';
 import { Metadata } from 'next';
 import ClientPage from './ClientPage';
@@ -5,65 +6,87 @@ import ClientPage from './ClientPage';
 // Use this to ensure the page caches effectively unless revalidated
 export const revalidate = 60;
 
-async function getShopBySlug(slug: string) {
-  // First, try to find by ID (for backward compatibility)
+const serviceInclude = {
+  services: {
+    where: { type: 'CUSTOMER' as const },
+    orderBy: { createdAt: 'desc' as const },
+    select: { id: true, name: true, description: true, price: true, duration: true },
+  },
+};
+
+const getShopBySlug = cache(async (slug: string) => {
+  // 1. Try to find by exact ID (backward compat)
   let shop: any = await prisma.shop.findUnique({
     where: { id: slug },
-    include: {
-      services: {
-        // ONLY GET CUSTOMER FACING SERVICES
-        where: {
-            type: 'CUSTOMER'
-        },
-        orderBy: { createdAt: 'desc' },
-        // Optimization: Only select fields needed for the service cards
-        select: {
-            id: true,
-            name: true,
-            description: true,
-            price: true,
-            duration: true,
-        }
-      },
-    },
+    include: serviceInclude,
   });
 
   if (!shop) {
-    // If not found by ID, search by name (converted to slug format)
-    const allShops = await prisma.shop.findMany({
-      include: {
-        services: {
-          where: { type: 'CUSTOMER' },
-          orderBy: { createdAt: 'desc' },
-          select: { id: true, name: true, description: true, price: true, duration: true }
-        },
-      },
+    // 2. Case-insensitive name search — avoids loading ALL shops into memory.
+    //    The slug is derived from name via: lower → spaces→hyphens → strip non-word.
+    //    Reverse the slug to a LIKE-able pattern (hyphens → space wildcard).
+    const namePattern = slug.replace(/-/g, '%');
+    const candidates = await prisma.shop.findMany({
+      where: { name: { contains: namePattern.replace(/%/g, ' '), mode: 'insensitive' } },
+      include: serviceInclude,
+      take: 10, // Bounded — never fetches entire table
     });
 
-    shop = allShops.find(
+    shop = candidates.find(
       (s: any) => s.name.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '') === slug.toLowerCase()
     ) || null;
   }
 
-  if (!shop) {
-    return null;
-  }
+  if (!shop) return null;
 
-  // Serialize to plain objects and ensure customization is included
+  // Fetch reviews for this shop
+  const reviews = await prisma.review.findMany({
+    where: { shopId: shop.id },
+    include: {
+      user: { select: { name: true } },
+      appointment: {
+        include: {
+          service: { select: { name: true } },
+          staff: { select: { name: true } },
+        },
+      },
+    },
+    orderBy: { createdAt: 'desc' },
+    take: 20,
+  });
+
   const serialized = JSON.parse(JSON.stringify(shop));
+  // SECURITY: Only expose public-facing customization fields to the client.
+  // Internal settings like notifSettings, bookingSettings, businessHours are admin-only.
+  const rawCustom = serialized.customization || {};
+  const publicCustomization = {
+    primaryColor: rawCustom.primaryColor,
+    secondaryColor: rawCustom.secondaryColor,
+    logoUrl: rawCustom.logoUrl,
+    bannerUrl: rawCustom.bannerUrl,
+    tagline: rawCustom.tagline,
+    address: rawCustom.address,
+    phone: rawCustom.phone,
+    aboutText: rawCustom.aboutText,
+    socialLinks: rawCustom.socialLinks,
+    // Expose business hours for public schedule display
+    businessHours: rawCustom.businessHours,
+  };
   return {
     ...serialized,
-    customization: serialized.customization || {},
+    customization: publicCustomization,
     template: serialized.template || 'modern',
+    reviews: JSON.parse(JSON.stringify(reviews)),
   };
-}
+});
 
 export async function generateMetadata({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
-  const shop = await getShopBySlug(params.slug);
+  const { slug } = await params;
+  const shop = await getShopBySlug(slug);
 
   if (!shop) {
     return {
@@ -85,9 +108,10 @@ export async function generateMetadata({
 export default async function PublicShopPage({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }) {
-  const shop = await getShopBySlug(params.slug);
+  const { slug } = await params;
+  const shop = await getShopBySlug(slug);
 
   if (!shop) {
     return (
@@ -113,7 +137,8 @@ export default async function PublicShopPage({
           templateType={templateType} 
           primaryColor={primaryColor} 
           secondaryColor={secondaryColor} 
-          sportRed={sportRed} 
+          sportRed={sportRed}
+          reviews={shop.reviews || []}
       />
   );
 }

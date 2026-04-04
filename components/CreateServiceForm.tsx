@@ -14,7 +14,9 @@ export default function CreateServiceForm({ shopId }: { shopId: string }) {
   const [itemType, setItemType] = useState('');
   const [brand, setBrand] = useState('');
   const [barcode, setBarcode] = useState('');
-  
+  const [bufferMinutes, setBufferMinutes] = useState('');
+  const [imageUrl, setImageUrl] = useState('');
+
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -39,7 +41,9 @@ export default function CreateServiceForm({ shopId }: { shopId: string }) {
           type: serviceType, 
           itemType: isInternal ? itemType.trim() : null,
           brand: isInternal ? brand.trim() : null,
-          barcode: barcode.trim() || null, // Optional
+          barcode: barcode.trim() || null,
+          bufferMinutes: !isInternal && bufferMinutes ? Number(bufferMinutes) : 0,
+          imageUrl: imageUrl.trim() || null,
         }),
       });
 
@@ -103,6 +107,13 @@ export default function CreateServiceForm({ shopId }: { shopId: string }) {
               onChange={e => { const val = e.target.value; if (val === '' || /^\d+$/.test(val)) setDuration(val); }} 
               className="bg-black/40 border border-white/20 rounded p-3 text-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-brand-gold" 
             />
+            <input
+              type="text"
+              placeholder="Buffer time between bookings (mins, optional)"
+              value={bufferMinutes}
+              onChange={e => { const val = e.target.value; if (val === '' || /^\d+$/.test(val)) setBufferMinutes(val); }}
+              className="bg-black/40 border border-white/20 rounded p-3 text-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-brand-gold"
+            />
             <div className="md:col-span-1">
               <input 
                 type="text" 
@@ -110,6 +121,15 @@ export default function CreateServiceForm({ shopId }: { shopId: string }) {
                 value={description} 
                 onChange={e => setDescription(e.target.value)} 
                 className="w-full bg-black/40 border border-white/20 rounded p-3 text-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-brand-gold" 
+              />
+            </div>
+            <div className="md:col-span-1">
+              <input
+                type="url"
+                placeholder="Image URL (optional)"
+                value={imageUrl}
+                onChange={e => setImageUrl(e.target.value)}
+                className="w-full bg-black/40 border border-white/20 rounded p-3 text-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-brand-gold"
               />
             </div>
           </>

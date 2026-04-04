@@ -1,20 +1,23 @@
 import { logger } from "@/lib/logger";
 import { prisma } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
-import { auth } from '@clerk/nextjs/server';
+import { createClient } from '@/utils/supabase/server';
 import { revalidatePath } from 'next/cache';
 
 export async function GET(
   request: Request,
-  { params }: { params: { shopId: string } }
+  { params }: { params: Promise<{ shopId: string }> }
 ) {
   try {
-    const { userId } = auth();
+    const { shopId } = await params;
+    const supabase = createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  const userId = user?.id;
     if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
     const user = await prisma.user.findUnique({ where: { id: userId } });
     const canView = user?.role === 'SUPER_ADMIN' ||
-      (user?.role === 'SHOP_ADMIN' && user?.shopId === params.shopId);
+      (user?.role === 'SHOP_ADMIN' && user?.shopId === shopId);
     if (!canView) return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
 
     const { searchParams } = new URL(request.url);
@@ -29,7 +32,7 @@ export async function GET(
     }
 
     const expenses = await prisma.expense.findMany({
-      where: { shopId: params.shopId, ...dateFilter },
+      where: { shopId: shopId, ...dateFilter },
       orderBy: { date: 'desc' },
     });
 
@@ -42,15 +45,18 @@ export async function GET(
 
 export async function POST(
   request: Request,
-  { params }: { params: { shopId: string } }
+  { params }: { params: Promise<{ shopId: string }> }
 ) {
   try {
-    const { userId } = auth();
+    const { shopId } = await params;
+    const supabase = createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  const userId = user?.id;
     if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
     const user = await prisma.user.findUnique({ where: { id: userId } });
     const canCreate = user?.role === 'SUPER_ADMIN' ||
-      (user?.role === 'SHOP_ADMIN' && user?.shopId === params.shopId);
+      (user?.role === 'SHOP_ADMIN' && user?.shopId === shopId);
     if (!canCreate) return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
 
     const body = await request.json();
@@ -60,17 +66,22 @@ export async function POST(
       return NextResponse.json({ error: 'Amount and category are required' }, { status: 400 });
     }
 
+    const parsedAmount = parseFloat(amount);
+    if (isNaN(parsedAmount) || parsedAmount <= 0) {
+      return NextResponse.json({ error: 'Amount must be a positive number' }, { status: 400 });
+    }
+
     const expense = await prisma.expense.create({
       data: {
-        amount: parseFloat(amount),
-        category,
-        description: description || null,
+        amount: parsedAmount,
+        category: String(category).replace(/<[^>]*>/g, '').slice(0, 100),
+        description: description ? String(description).replace(/<[^>]*>/g, '').slice(0, 1000) : null,
         date: date ? new Date(date) : new Date(),
-        shopId: params.shopId,
+        shopId: shopId,
       },
     });
 
-    revalidatePath(`/shop/${params.shopId}/expenses`);
+    revalidatePath(`/shop/${shopId}/expenses`);
     return NextResponse.json(expense, { status: 201 });
   } catch (error) {
     logger.error('Error creating expense:', error);
@@ -80,23 +91,32 @@ export async function POST(
 
 export async function DELETE(
   request: Request,
-  { params }: { params: { shopId: string } }
+  { params }: { params: Promise<{ shopId: string }> }
 ) {
   try {
-    const { userId } = auth();
+    const { shopId } = await params;
+    const supabase = createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  const userId = user?.id;
     if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
     const user = await prisma.user.findUnique({ where: { id: userId } });
     const canDelete = user?.role === 'SUPER_ADMIN' ||
-      (user?.role === 'SHOP_ADMIN' && user?.shopId === params.shopId);
+      (user?.role === 'SHOP_ADMIN' && user?.shopId === shopId);
     if (!canDelete) return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
 
     const { searchParams } = new URL(request.url);
     const expenseId = searchParams.get('id');
     if (!expenseId) return NextResponse.json({ error: 'Expense ID required' }, { status: 400 });
 
+    // Verify expense belongs to this shop (prevent cross-shop deletion)
+    const expense = await prisma.expense.findUnique({ where: { id: expenseId } });
+    if (!expense || expense.shopId !== shopId) {
+      return NextResponse.json({ error: 'Expense not found' }, { status: 404 });
+    }
+
     await prisma.expense.delete({ where: { id: expenseId } });
-    revalidatePath(`/shop/${params.shopId}/expenses`);
+    revalidatePath(`/shop/${shopId}/expenses`);
     return NextResponse.json({ success: true });
   } catch (error) {
     logger.error('Error deleting expense:', error);

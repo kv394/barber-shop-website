@@ -7,7 +7,6 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
 }
 
 model Shop {
@@ -15,7 +14,14 @@ model Shop {
   name        String
   description String?
   template    String        @default("modern")
+  timezone    String        @default("America/New_York")
   customization Json?
+
+  // No-show deposit settings (C5)
+  depositRequired Boolean   @default(false)
+  depositAmount   Float     @default(0)
+  stripeAccountId String?
+
   users       User[]
   services    Service[]
   products    Product[]
@@ -26,8 +32,20 @@ model Shop {
   reviews     Review[]
   waitlist    Waitlist[]
   commissionRules CommissionRule[]
+  giftCards   GiftCard[]
+
+  // Engagement & Retention
+  loyaltyProgram   LoyaltyProgram?
+  loyaltyAccounts  LoyaltyAccount[]
+  referrals        Referral[]
+  campaigns        Campaign[]
+  notifications    Notification[]
+  blackoutDates    ShopBlackoutDate[]
+
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
+
+  @@index([createdAt]) // Performance index for directory sorting
 }
 
 model User {
@@ -44,12 +62,23 @@ model User {
   clientNotes   String?
   preferences   String?
   allergies     String?
+  birthday      DateTime?
   marketingConsent Boolean @default(false)
   smsConsent    Boolean   @default(false)
+
+  // Referral
+  referralCode  String?   @unique
 
   // Staff Payroll/Comp fields
   commissionRateService Float?
   commissionRateProduct Float?
+
+  // Profile image (C7)
+  imageUrl      String?
+
+  // Google Calendar sync (C4)
+  googleRefreshToken  String?
+  googleCalendarId    String?
 
   shopId        String?
   shop          Shop?     @relation(fields: [shopId], references: [id])
@@ -59,6 +88,13 @@ model User {
   leaves        Leave[]
   reviews       Review[]
   commissionRules CommissionRule[] @relation("StaffCommissionRules")
+
+  // Engagement & Retention
+  loyaltyAccounts LoyaltyAccount[]
+  referralsMade   Referral[]  @relation("ReferrerReferrals")
+  referralsReceived Referral[] @relation("RefereeReferrals")
+  notifications   Notification[]
+  notificationPreferences NotificationPreference[]
 
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
@@ -104,6 +140,8 @@ model Service {
   price           Float
   taxRate         Float         @default(0) // New: Tax support
   duration        Int
+  bufferMinutes   Int           @default(0) // I2: Buffer time between services
+  imageUrl        String?                   // C7: Service image
 
   trackInventory  Boolean       @default(false)
   inventoryCount  Int           @default(0)
@@ -136,6 +174,19 @@ model Appointment {
   paymentMethod String? // CASH, CARD, MOBILE
   serviceId   String?
   service     Service?   @relation(fields: [serviceId], references: [id])
+
+  // No-show deposit (C5)
+  depositPaymentIntentId String?
+  depositAmount          Float     @default(0)
+
+  // Refund tracking (I4)
+  refundAmount  Float     @default(0)
+  refundedAt    DateTime?
+
+  // Recurring appointments (I1)
+  recurrenceRule    String?
+  recurringGroupId  String?
+  isRecurringParent Boolean @default(false)
 
   // POS Totals
   subtotal    Float     @default(0)
@@ -267,6 +318,7 @@ model Review {
   id            String    @id @default(cuid())
   rating        Int       // 1-5
   comment       String?
+  ownerResponse String?   // shop admin reply
   appointmentId String    @unique
   appointment   Appointment @relation(fields: [appointmentId], references: [id])
   userId        String
@@ -274,7 +326,21 @@ model Review {
   shopId        String
   shop          Shop      @relation(fields: [shopId], references: [id])
   createdAt     DateTime  @default(now())
+  respondedAt   DateTime?
 
+  @@index([shopId, createdAt]) // Performance index
+}
+
+// ─── Blackout Dates (shop holidays / closed days) ──────────────
+model ShopBlackoutDate {
+  id          String   @id @default(cuid())
+  shopId      String
+  shop        Shop     @relation(fields: [shopId], references: [id])
+  date        DateTime // just the date (time stored as midnight UTC)
+  reason      String?
+  createdAt   DateTime @default(now())
+
+  @@unique([shopId, date])
   @@index([shopId])
 }
 
@@ -292,8 +358,7 @@ model Waitlist {
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
 
-  @@index([shopId, status])
-  @@index([createdAt])
+  @@index([shopId, createdAt]) // Performance index
 }
 
 model Leave {
@@ -341,4 +406,198 @@ model SystemLog {
   @@index([shopId])
   @@index([level])
   @@index([createdAt])
+}
+
+// ─── Engagement & Retention ────────────────────────────────────────
+
+model LoyaltyProgram {
+  id              String    @id @default(cuid())
+  shopId          String    @unique
+  shop            Shop      @relation(fields: [shopId], references: [id])
+
+  pointsPerDollar Float     @default(1)    // Base points earned per $1 spent
+  pointsPerVisit  Int       @default(10)   // Base bonus points per completed visit
+  redeemThreshold Int       @default(100)  // Min points required to redeem
+  redeemValue     Float     @default(5)    // Dollar value per redemption at threshold
+  isActive        Boolean   @default(true)
+
+  // Multi-tier config (JSON: array of tier objects)
+  // Each tier: { name, minPoints, earnMultiplier, perks }
+  // e.g. [{ name:"Bronze", minPoints:0, earnMultiplier:1, perks:"Standard rewards" },
+  //       { name:"Silver", minPoints:200, earnMultiplier:1.25, perks:"Priority booking" },
+  //       { name:"Gold", minPoints:500, earnMultiplier:1.5, perks:"Free product per visit" },
+  //       { name:"Platinum", minPoints:1000, earnMultiplier:2, perks:"VIP lounge access" }]
+  tiers           Json?
+
+  // Point expiry (0 = never expires)
+  pointExpiryDays Int       @default(0)
+
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+}
+
+model LoyaltyAccount {
+  id           String    @id @default(cuid())
+  userId       String
+  user         User      @relation(fields: [userId], references: [id])
+  shopId       String
+  shop         Shop      @relation(fields: [shopId], references: [id])
+
+  pointsBalance Int      @default(0)
+  totalEarned   Int      @default(0)
+  totalRedeemed Int      @default(0)
+
+  // Multi-tier
+  currentTier   String   @default("Bronze")
+  lifetimePoints Int     @default(0)  // Never decremented — used for tier calculation
+
+  transactions LoyaltyTransaction[]
+
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  @@unique([userId, shopId])
+  @@index([shopId])
+}
+
+model LoyaltyTransaction {
+  id               String    @id @default(cuid())
+  loyaltyAccountId String
+  loyaltyAccount   LoyaltyAccount @relation(fields: [loyaltyAccountId], references: [id], onDelete: Cascade)
+
+  points           Int       // positive = earned, negative = redeemed/expired
+  type             String    // EARN_VISIT, EARN_SPEND, EARN_TIER_BONUS, REDEEM, REFERRAL_BONUS, MANUAL_ADJUST, EXPIRY
+  description      String?
+  appointmentId    String?   // Optional link to appointment
+  expiresAt        DateTime? // When these specific points expire
+
+  createdAt        DateTime  @default(now())
+
+  @@index([loyaltyAccountId])
+  @@index([expiresAt])
+}
+
+model Referral {
+  id          String    @id @default(cuid())
+  shopId      String
+  shop        Shop      @relation(fields: [shopId], references: [id])
+
+  referrerId  String
+  referrer    User      @relation("ReferrerReferrals", fields: [referrerId], references: [id])
+  refereeId   String
+  referee     User      @relation("RefereeReferrals", fields: [refereeId], references: [id])
+
+  status      String    @default("PENDING") // PENDING, COMPLETED, REWARDED
+  referrerRewardPoints Int @default(50)
+  refereeRewardPoints  Int @default(25)
+
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@unique([shopId, refereeId])
+  @@index([shopId])
+  @@index([referrerId])
+}
+
+model Campaign {
+  id           String    @id @default(cuid())
+  shopId       String
+  shop         Shop      @relation(fields: [shopId], references: [id])
+
+  name         String
+  message      String    @db.Text
+  type         String    @default("PROMO") // PROMO, BIRTHDAY, RE_ENGAGEMENT, CUSTOM
+  channel      String    @default("EMAIL") // EMAIL, SMS, BOTH
+  status       String    @default("DRAFT") // DRAFT, SCHEDULED, SENT, CANCELLED
+
+  // Targeting
+  targetSegment String   @default("ALL") // ALL, INACTIVE_30, INACTIVE_60, INACTIVE_90, BIRTHDAY_THIS_MONTH, LOYALTY_VIP
+
+  scheduledAt  DateTime?
+  sentAt       DateTime?
+  recipientCount Int     @default(0)
+
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  @@index([shopId])
+  @@index([status])
+}
+
+model Notification {
+  id          String    @id @default(cuid())
+  shopId      String
+  shop        Shop      @relation(fields: [shopId], references: [id])
+  userId      String
+  user        User      @relation(fields: [userId], references: [id])
+
+  type        String    // APPOINTMENT_REMINDER, REVIEW_REQUEST, BIRTHDAY, RE_ENGAGEMENT, CAMPAIGN, LOYALTY_EARNED, REFERRAL
+  channel     String    @default("EMAIL") // EMAIL, SMS
+  title       String
+  message     String    @db.Text
+  status      String    @default("PENDING") // PENDING, SENT, FAILED, RETRYING
+
+  retryCount  Int       @default(0)   // Track delivery retries
+  maxRetries  Int       @default(3)
+
+  scheduledAt DateTime?
+  sentAt      DateTime?
+
+  createdAt   DateTime  @default(now())
+
+  @@index([shopId])
+  @@index([userId])
+  @@index([status, scheduledAt])
+  @@index([status, retryCount])
+}
+
+model NotificationPreference {
+  id              String    @id @default(cuid())
+  userId          String
+  user            User      @relation(fields: [userId], references: [id])
+
+  appointmentReminders Boolean @default(true)
+  reviewRequests       Boolean @default(true)
+  promotions           Boolean @default(true)
+  birthdayMessages     Boolean @default(true)
+  loyaltyUpdates       Boolean @default(true)
+
+  preferredChannel     String  @default("EMAIL") // EMAIL, SMS, BOTH
+
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+
+  @@unique([userId])
+}
+
+// ─── Gift Cards (I5) ───────────────────────────────────────────────
+
+model GiftCard {
+  id              String    @id @default(cuid())
+  code            String    @unique
+  shopId          String
+  shop            Shop      @relation(fields: [shopId], references: [id])
+
+  purchaserEmail  String?
+  recipientEmail  String?
+  recipientName   String?
+
+  initialBalance  Float
+  currentBalance  Float
+  expiresAt       DateTime?
+  status          GiftCardStatus @default(ACTIVE)
+
+  stripePaymentId String?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  @@index([shopId])
+  @@index([code])
+}
+
+enum GiftCardStatus {
+  ACTIVE
+  REDEEMED
+  EXPIRED
+  CANCELLED
 }

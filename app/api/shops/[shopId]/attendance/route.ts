@@ -1,17 +1,18 @@
 import { logger } from "@/lib/logger";
 import { prisma } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
-import { auth } from '@clerk/nextjs/server';
+import { createClient } from '@/utils/supabase/server';
+import { requireShopRole, isAuthError } from '@/lib/auth';
 
 export async function GET(
   request: Request,
-  { params }: { params: { shopId: string } }
+  { params }: { params: Promise<{ shopId: string }> }
 ) {
     try {
-        const { userId } = auth();
-        if (!userId) {
-            return NextResponse.json({ error: 'Scanner device is unauthorized' }, { status: 401 });
-        }
+    const { shopId } = await params;
+        // Require at least STAFF role to view active attendance logs
+        const authResult = await requireShopRole(shopId, ['SUPER_ADMIN', 'SHOP_ADMIN', 'STAFF', 'ATTENDANCE_KIOSK']);
+        if (isAuthError(authResult)) return authResult;
 
         // Find all active time logs for the given shop
         const today = new Date();
@@ -19,7 +20,7 @@ export async function GET(
 
         const activeLogs = await prisma.timeLog.findMany({
             where: {
-                shopId: params.shopId,
+                shopId: shopId,
                 clockIn: {
                     gte: today, // Only show logs from today
                 },
@@ -49,10 +50,13 @@ export async function GET(
 
 export async function POST(
   request: Request,
-  { params }: { params: { shopId: string } }
+  { params }: { params: Promise<{ shopId: string }> }
 ) {
   try {
-    const { userId } = auth();
+    const { shopId } = await params;
+    const supabase = createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  const userId = user?.id;
 
     // Verify the scanner device is logged in. 
     // It can be a Shop Admin, Staff, or a dedicated KIOSK user.
@@ -73,7 +77,7 @@ export async function POST(
     }
 
     // Ensure the scanner is assigned to this shop (unless Super Admin)
-    if (scannerUser.role !== 'SUPER_ADMIN' && scannerUser.shopId !== params.shopId) {
+    if (scannerUser.role !== 'SUPER_ADMIN' && scannerUser.shopId !== shopId) {
        return NextResponse.json({ error: 'This device is not assigned to this shop.' }, { status: 403 });
     }
 
@@ -88,7 +92,7 @@ export async function POST(
     const user = await prisma.user.findFirst({
       where: {
         barcode: barcode,
-        shopId: params.shopId,
+        shopId: shopId,
       },
     });
 
@@ -100,7 +104,7 @@ export async function POST(
     const activeLog = await prisma.timeLog.findFirst({
       where: {
         userId: user.id,
-        shopId: params.shopId,
+        shopId: shopId,
         clockOut: null,
       },
     });
@@ -123,7 +127,7 @@ export async function POST(
       const newLog = await prisma.timeLog.create({
         data: {
           userId: user.id,
-          shopId: params.shopId,
+          shopId: shopId,
           // clockIn is automatically set to now()
         },
       });
@@ -139,7 +143,7 @@ export async function POST(
   } catch (error: any) {
     logger.error('Error processing attendance:', error);
     return NextResponse.json(
-      { error: error.message || 'Failed to process attendance' },
+      { error: 'Failed to process attendance' },
       { status: 500 }
     );
   }

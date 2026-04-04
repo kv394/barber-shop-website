@@ -10,14 +10,22 @@ export default function Error({
   reset: () => void;
 }) {
   useEffect(() => {
+    // Extract error info even from non-standard Error objects
+    const errorMsg = error?.message || error?.toString?.() || String(error) || 'Unknown error';
+    const errorStack = error?.stack || 'No stack trace';
+    const errorDigest = (error as any)?.digest || undefined;
+
+    console.error('[ErrorBoundary]', { errorMsg, errorDigest, error });
+
     // Send telemetry on unhandled UI errors within the app boundaries
     fetch('/api/debug/log-error', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ 
         message: 'Unhandled App Error Boundary Caught Exception', 
-        errorMsg: error.message,
-        stack: error.stack,
+        errorMsg,
+        stack: errorStack,
+        digest: errorDigest,
         url: typeof window !== 'undefined' ? window.location.href : 'Unknown'
       })
     }).catch(() => {});

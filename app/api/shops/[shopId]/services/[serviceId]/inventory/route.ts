@@ -1,22 +1,21 @@
 import { logger } from "@/lib/logger";
-import { PrismaClient } from '@prisma/client';
+import { prisma } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
-import { auth } from '@clerk/nextjs/server';
+import { createClient } from '@/utils/supabase/server';
 import { revalidatePath } from 'next/cache';
 
-const prisma = new PrismaClient();
 
 export async function PATCH(
   request: Request,
-  { params }: { params: { shopId: string, serviceId: string } }
+  { params }: { params: Promise<{ shopId: string, serviceId: string }> }
 ) {
   try {
-    const { userId } = auth();
+    const { shopId, serviceId } = await params;
+    const supabase = createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  const userId = user?.id;
     if (!userId) return new Response("Unauthorized", { status: 401 });
 
-    const shopId = params.shopId;
-    const serviceId = params.serviceId;
-    
     const user = await prisma.user.findUnique({ where: { id: userId } });
     
     // Authorization Logic:
@@ -61,6 +60,6 @@ export async function PATCH(
     return NextResponse.json(updatedService, { status: 200 });
   } catch (error: any) {
     logger.error("Error updating inventory:", error);
-    return NextResponse.json({ error: error.message || 'Failed to update inventory' }, { status: 500 });
+    return NextResponse.json({ error: 'Failed to update inventory' }, { status: 500 });
   }
 }

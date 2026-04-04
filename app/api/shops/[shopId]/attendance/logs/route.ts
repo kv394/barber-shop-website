@@ -1,21 +1,24 @@
 import { logger } from "@/lib/logger";
 import { prisma } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
-import { auth } from '@clerk/nextjs/server';
+import { createClient } from '@/utils/supabase/server';
 
 export async function GET(
   request: Request,
-  { params }: { params: { shopId: string } }
+  { params }: { params: Promise<{ shopId: string }> }
 ) {
     try {
-        const { userId } = auth();
+    const { shopId } = await params;
+        const supabase = createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  const userId = user?.id;
         if (!userId) {
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
         }
 
         // Verify user has permission to view logs for this shop
         const currentUser = await prisma.user.findUnique({ where: { id: userId } });
-        if (!currentUser || (currentUser.role !== 'SUPER_ADMIN' && (currentUser.role !== 'SHOP_ADMIN' || currentUser.shopId !== params.shopId))) {
+        if (!currentUser || (currentUser.role !== 'SUPER_ADMIN' && (currentUser.role !== 'SHOP_ADMIN' || currentUser.shopId !== shopId))) {
             return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
         }
 
@@ -27,7 +30,7 @@ export async function GET(
 
         const logs = await prisma.timeLog.findMany({
             where: {
-                shopId: params.shopId,
+                shopId: shopId,
                 clockIn: {
                     gte: today,
                     lt: tomorrow,

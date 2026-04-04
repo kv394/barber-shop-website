@@ -17,15 +17,22 @@ function getTimeBarPercent(time: string): number {
 export default function ScheduleEditor({ staffMember, shopId }: { staffMember: any, shopId: string }) {
     const [workingHours, setWorkingHours] = useState(staffMember.workingHours || {});
     const [leaves, setLeaves] = useState(staffMember.leaves || []);
+
+    // State for the new leave form
     const [leaveDate, setLeaveDate] = useState('');
     const [leaveStartTime, setLeaveStartTime] = useState('09:00');
     const [leaveEndTime, setLeaveEndTime] = useState('17:00');
     const [leaveReason, setLeaveReason] = useState('');
     const [fullDay, setFullDay] = useState(false);
 
+    // This is the critical fix:
+    // This useEffect hook ensures that if the staffMember data changes (e.g., after a form submission),
+    // the component's internal state is updated to match, keeping the UI in sync.
     useEffect(() => {
         const initialHours = staffMember.workingHours || {};
-        daysOfWeek.forEach(day => { if (initialHours[day] === undefined) initialHours[day] = null; });
+        daysOfWeek.forEach(day => {
+            if (initialHours[day] === undefined) initialHours[day] = null;
+        });
         setWorkingHours(initialHours);
         setLeaves(staffMember.leaves || []);
     }, [staffMember]);

@@ -1,4 +1,4 @@
-import { auth } from '@clerk/nextjs/server';
+import { createClient } from '@/utils/supabase/server';
 import { redirect } from 'next/navigation';
 import { prisma } from '@/lib/prisma';
 
@@ -7,7 +7,9 @@ export const dynamic = 'force-dynamic';
 // This page acts as a redirector.
 // It finds which shop the currently logged-in user belongs to and redirects them to the correct dashboard.
 export default async function ShopRedirectPage() {
-  const { userId } = auth();
+  const supabase = createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  const userId = user?.id;
   if (!userId) {
     // If not logged in, send them to the sign-in page.
     return redirect('/sign-in');
