@@ -3,6 +3,7 @@ import { prisma } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
 import { createClient } from '@/utils/supabase/server';
 import { revalidatePath } from 'next/cache';
+import { AVAILABLE_TEMPLATES } from '@/lib/templates';
 
 export async function POST(
   request: Request,
@@ -45,7 +46,7 @@ export async function POST(
     }
 
     // SECURITY: Only allow known template values
-    const allowedTemplates = ['classic', 'modern', 'minimal', 'heritage', 'elegant', 'bold'];
+    const allowedTemplates = Object.keys(AVAILABLE_TEMPLATES);
     if (!allowedTemplates.includes(template)) {
       return NextResponse.json(
         { error: 'Invalid template name' },
