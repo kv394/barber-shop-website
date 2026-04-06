@@ -7,12 +7,21 @@ declare global {
   var prisma: PrismaClient | undefined;
 }
 
+// Force Node.js to use IPv6 first for Supabase database connections
+if (typeof process !== 'undefined' && process.env.NODE_ENV !== 'development') {
+  try {
+    const dns = require('dns');
+    if (dns && dns.setDefaultResultOrder) {
+      dns.setDefaultResultOrder('ipv6first');
+    }
+  } catch (e) {
+    // Ignore in edge environments where 'dns' might not exist
+  }
+}
+
 function createPrismaClient() {
   const connectionString = process.env.DATABASE_URL;
   if (!connectionString) {
-    // In some build environments, DATABASE_URL might be omitted. We provide a dummy adapter if needed,
-    // or just let it fail gracefully during build type-checks if possible.
-    // However, Prisma 7 *requires* a valid options object.
     console.warn("DATABASE_URL is missing. PrismaClient may fail to initialize.");
   }
 
