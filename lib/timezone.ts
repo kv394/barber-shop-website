@@ -139,10 +139,31 @@ export function toShopTzDayBounds(
   dateStr: string,
   timezone: string,
 ): { startOfDay: Date; endOfDay: Date } {
-  // Create a date in the target timezone by specifying it in the string
-  const startOfDay = new Date(`${dateStr}T00:00:00.000[${timezone}]`);
-
-  // The end of the day is just 24 hours after the start of the day
+  const [year, month, day] = dateStr.split('-').map(Number);
+  
+  // Use noon UTC as our anchor to determine the day's offset.
+  const anchorDate = new Date(Date.UTC(year, month - 1, day, 12, 0, 0));
+  
+  // Format the date to get the GMT offset string (e.g., "GMT-04:00" or "GMT")
+  const formatter = new Intl.DateTimeFormat('en-US', {
+    timeZone: timezone,
+    timeZoneName: 'longOffset'
+  });
+  
+  const parts = formatter.formatToParts(anchorDate);
+  const timeZoneName = parts.find(p => p.type === 'timeZoneName')?.value || '';
+  
+  // timeZoneName will be something like "GMT-04:00", "GMT+05:30", or "GMT"
+  let offset = timeZoneName.replace('GMT', '');
+  if (!offset) {
+    offset = 'Z';
+  }
+  
+  // Construct a valid ISO-8601 string that Node.js Date parser understands.
+  const startOfDayStr = `${dateStr}T00:00:00.000${offset}`;
+  const startOfDay = new Date(startOfDayStr);
+  
+  // Add exactly 24 hours (in milliseconds) to get the end of the day bounds.
   const endOfDay = new Date(startOfDay.getTime() + 24 * 60 * 60 * 1000);
 
   return { startOfDay, endOfDay };

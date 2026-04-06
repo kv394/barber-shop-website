@@ -22,21 +22,23 @@ export async function requireShopRole(
   shopId: string,
   allowedRoles: Role[]
 ): Promise<AuthResult | NextResponse> {
-  const supabase = createClient();
-  const { data: { user } } = await supabase.auth.getUser();
-  const userId = user?.id;
-  if (!userId) {
+  const supabase = await createClient();
+  const { data: { user: authUser } } = await supabase.auth.getUser();
+  
+  if (!authUser || !authUser.email) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
   const user = await prisma.user.findUnique({
-    where: { id: userId },
+    where: { email: authUser.email },
     select: { id: true, role: true, shopId: true, email: true, name: true },
   });
 
   if (!user) {
     return NextResponse.json({ error: 'User not found' }, { status: 401 });
   }
+
+  const userId = user.id;
 
   // Check role
   if (!allowedRoles.includes(user.role as Role)) {

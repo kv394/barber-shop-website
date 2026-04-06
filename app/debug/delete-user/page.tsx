@@ -1,16 +1,29 @@
 'use client';
 
-import { useAuth } from '@clerk/nextjs';
+import { createClient } from '@/utils/supabase/client';
 import { useEffect, useState } from 'react';
 
 export default function DeleteUserPage() {
-  const { userId } = useAuth();
-  const [message, setMessage] = useState('Attempting to fix user account...');
+  const [userId, setUserId] = useState<string | null>(null);
+  const [message, setMessage] = useState('Checking login status...');
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    const checkAuth = async () => {
+      const supabase = createClient();
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
+        setUserId(user.id);
+        setMessage('Attempting to fix user account...');
+      } else {
+        setMessage('Waiting for user to be logged in...');
+      }
+    };
+    checkAuth();
+  }, []);
+
+  useEffect(() => {
     if (!userId) {
-      setMessage('Waiting for user to be logged in...');
       return;
     }
 

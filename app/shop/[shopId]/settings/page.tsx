@@ -1,23 +1,24 @@
 import { notFound, redirect } from 'next/navigation';
 import { createClient } from '@/utils/supabase/server';
 import { getShopLayoutData } from '@/lib/shop-data';
-import { CustomizationForm } from '@/app/components/CustomizationForm';
+import { CustomizationForm } from '@/components/shop-admin/CustomizationForm';
 import { DEFAULT_CUSTOMIZATION } from '@/lib/templates';
-import ShopAdminLayout from '@/app/components/ShopAdminLayout';
-import TimezoneSelector from '@/components/TimezoneSelector';
-import DepositSettings from '@/components/DepositSettings';
+import ShopAdminLayout from '@/components/shop-admin/ShopAdminLayout';
+import TimezoneSelector from '@/components/shop-admin/TimezoneSelector';
+import DepositSettings from '@/components/checkout/DepositSettings';
 import Link from 'next/link';
 import { prisma } from '@/lib/prisma';
 
-export const revalidate = 60;
+export const dynamic = "force-dynamic";
 
 export default async function ShopSettingsPage({ 
   params 
 }: { 
   params: Promise<{ shopId: string }>
 }) {
-  const supabase = createClient();
+  const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
+  
   const userId = user?.id;
   if (!userId) redirect('/');
 

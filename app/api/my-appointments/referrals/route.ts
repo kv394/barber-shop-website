@@ -10,17 +10,16 @@ export const dynamic = 'force-dynamic';
  * Returns the authenticated user's referral code and referral history.
  */
 export async function GET() {
-  const supabase = createClient();
-  const { data: { user } } = await supabase.auth.getUser();
-  const userId = user?.id;
+  const supabase = await createClient();
+  const { data: { user: authUserSession } } = await supabase.auth.getUser();
+  let userId = authUserSession?.id;
+  const authUserEmail = authUserSession?.email;
   if (!userId) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
   try {
-    let user = await prisma.user.findUnique({
-      where: { id: userId },
-      select: { id: true, referralCode: true, name: true },
+    let user = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] }, select: { id: true, referralCode: true, name: true },
     });
 
     if (!user) {

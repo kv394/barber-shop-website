@@ -11,12 +11,13 @@ export async function PATCH(
 ) {
   try {
     const { shopId, serviceId } = await params;
-    const supabase = createClient();
-  const { data: { user } } = await supabase.auth.getUser();
-  const userId = user?.id;
+    const supabase = await createClient();
+  const { data: { user: authUserSession } } = await supabase.auth.getUser();
+  let userId = authUserSession?.id;
+  const authUserEmail = authUserSession?.email;
     if (!userId) return new Response("Unauthorized", { status: 401 });
 
-    const user = await prisma.user.findUnique({ where: { id: userId } });
+    const user = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
     
     // Authorization: Super Admin, or Shop Admin
     const isSuperAdmin = user?.role === 'SUPER_ADMIN';

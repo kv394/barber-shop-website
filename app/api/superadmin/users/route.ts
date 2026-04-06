@@ -10,12 +10,13 @@ const VALID_ROLES = ['SUPER_ADMIN', 'SHOP_ADMIN', 'STAFF', 'CLIENT', 'ATTENDANCE
  * Verify caller is SUPER_ADMIN. Returns user or error response.
  */
 async function requireSuperAdmin() {
-  const supabase = createClient();
-  const { data: { user } } = await supabase.auth.getUser();
-  const userId = user?.id;
+  const supabase = await createClient();
+  const { data: { user: authUserSession } } = await supabase.auth.getUser();
+  let userId = authUserSession?.id;
+  const authUserEmail = authUserSession?.email;
   if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
-  const user = await prisma.user.findUnique({ where: { id: userId }, select: { id: true, role: true } });
+  const user = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] }, select: { id: true, role: true } });
   if (!user || user.role !== 'SUPER_ADMIN') {
     return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
   }

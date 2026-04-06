@@ -10,12 +10,13 @@ export async function DELETE(
 ) {
   try {
     const { shopId, appointmentId } = await params;
-    const supabase = createClient();
-  const { data: { user } } = await supabase.auth.getUser();
-  const userId = user?.id;
+    const supabase = await createClient();
+  const { data: { user: authUserSession } } = await supabase.auth.getUser();
+  let userId = authUserSession?.id;
+  const authUserEmail = authUserSession?.email;
     if (!userId) return new Response('Unauthorized', { status: 401 });
 
-    const user = await prisma.user.findUnique({ where: { id: userId } });
+    const user = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
     
     // Check if Shop Admin, Staff, or Super Admin
     const canManage = user?.role === 'SUPER_ADMIN' || 
@@ -68,12 +69,13 @@ export async function PATCH(
 ) {
   try {
     const { shopId, appointmentId } = await params;
-    const supabase = createClient();
-  const { data: { user } } = await supabase.auth.getUser();
-  const userId = user?.id;
+    const supabase = await createClient();
+  const { data: { user: authUserSession } } = await supabase.auth.getUser();
+  let userId = authUserSession?.id;
+  const authUserEmail = authUserSession?.email;
     if (!userId) return new Response('Unauthorized', { status: 401 });
 
-    const user = await prisma.user.findUnique({ where: { id: userId } });
+    const user = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
     const canManage = user?.role === 'SUPER_ADMIN' ||
                      (user?.role === 'SHOP_ADMIN' && user?.shopId === shopId) ||
                      (user?.role === 'STAFF' && user?.shopId === shopId);

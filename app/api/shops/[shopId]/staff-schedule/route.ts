@@ -9,9 +9,10 @@ export async function GET(
   { params }: { params: Promise<{ shopId: string }> }
 ) {
   const { shopId } = await params;
-  const supabase = createClient();
-  const { data: { user } } = await supabase.auth.getUser();
-  const userId = user?.id;
+  const supabase = await createClient();
+  const { data: { user: authUserSession } } = await supabase.auth.getUser();
+  let userId = authUserSession?.id;
+  const authUserEmail = authUserSession?.email;
   if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
   const url = new URL(request.url);
@@ -22,7 +23,7 @@ export async function GET(
   const [filterFromHour, filterFromMin] = fromParam.split(':').map(Number);
   const [filterToHour, filterToMin] = toParam.split(':').map(Number);
 
-  const user = await prisma.user.findUnique({ where: { id: userId } });
+  const user = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
   if (!user || (user.role !== 'SUPER_ADMIN' &&
       (user.shopId !== shopId || !['SHOP_ADMIN', 'STAFF'].includes(user.role)))) {
     return NextResponse.json({ error: 'Access denied' }, { status: 403 });

@@ -50,7 +50,10 @@ export async function GET(request: Request) {
   }
 
   // --- 1. Authenticate the session ----------------------------------------
-  const { userId: sessionUserId } = await auth();
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  
+  const sessionUserId = user?.id;
   if (!sessionUserId) {
     logger.warn('Google OAuth callback hit without authenticated session');
     return safeRedirect('/my-appointments/profile?error=google_auth_failed');

@@ -1,6 +1,6 @@
 import { prisma } from '@/lib/prisma';
 import { getShopLayoutData } from '@/lib/shop-data';
-import ShopAdminLayout from '@/app/components/ShopAdminLayout';
+import ShopAdminLayout from '@/components/shop-admin/ShopAdminLayout';
 import { createClient } from '@/utils/supabase/server';
 import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
@@ -38,8 +38,9 @@ async function getShopData(shopId: string, userId: string) {
 
 async function addLeave(formData: FormData) {
   'use server';
-  const supabase = createClient();
+  const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
+  
   const userId = user?.id;
   if (!userId) return;
 
@@ -80,8 +81,9 @@ async function addLeave(formData: FormData) {
 
 async function deleteLeave(formData: FormData) {
   'use server';
-  const supabase = createClient();
+  const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
+  
   const userId = user?.id;
   if (!userId) return;
 
@@ -105,8 +107,9 @@ async function deleteLeave(formData: FormData) {
 }
 
 export default async function LeaveManagementPage({ params }: { params: Promise<{ shopId: string }> }) {
-  const supabase = createClient();
+  const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
+  
   const userId = user?.id;
   if (!userId) redirect('/sign-in');
 

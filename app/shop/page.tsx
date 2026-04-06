@@ -7,8 +7,9 @@ export const dynamic = 'force-dynamic';
 // This page acts as a redirector.
 // It finds which shop the currently logged-in user belongs to and redirects them to the correct dashboard.
 export default async function ShopRedirectPage() {
-  const supabase = createClient();
+  const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
+  
   const userId = user?.id;
   if (!userId) {
     // If not logged in, send them to the sign-in page.
@@ -16,17 +17,17 @@ export default async function ShopRedirectPage() {
   }
 
   // Find the user in our database to get their assigned shopId.
-  const user = await prisma.user.findUnique({
-    where: { id: userId },
+  const dbUser = await prisma.user.findFirst({
+    where: { OR: [{ id: userId }, { email: user?.email || '' }] },
     select: { shopId: true, role: true },
   });
 
-  if (user?.shopId) {
+  if (dbUser?.shopId) {
     // If they belong to a shop, redirect to that shop's main dashboard.
-    return redirect(`/shop/${user.shopId}`);
+    return redirect(`/shop/${dbUser.shopId}`);
   }
 
-  if (user?.role === 'SUPER_ADMIN') {
+  if (dbUser?.role === 'SUPER_ADMIN') {
     // If they are a Super Admin but not assigned to a shop, redirect to the main admin page.
     return redirect('/');
   }

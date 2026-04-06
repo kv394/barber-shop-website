@@ -2,8 +2,8 @@ import { redirect } from 'next/navigation';
 import { createClient } from '@/utils/supabase/server';
 import { prisma } from '@/lib/prisma';
 import { getShopLayoutData } from '@/lib/shop-data';
-import ShopAdminLayout from '@/app/components/ShopAdminLayout';
-import TeamDashboardClient from '@/app/components/TeamDashboardClient';
+import ShopAdminLayout from '@/components/shop-admin/ShopAdminLayout';
+import TeamDashboardClient from '@/components/shop-admin/TeamDashboardClient';
 import Link from 'next/link';
 import { revalidatePath } from 'next/cache';
 import crypto from 'crypto';
@@ -87,11 +87,12 @@ async function inviteUser(formData: FormData) {
   if (!email || !role || !shopId) return;
 
   // SECURITY: Verify the caller is authorized to invite users to this shop
-  const supabase = createClient();
+  const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
+  
   const userId = user?.id;
   if (!userId) return;
-  const caller = await prisma.user.findUnique({ where: { id: userId } });
+  const caller = await prisma.user.findFirst({ where: { OR: [{ id: userId }, { email: user?.email || '' }] } });
   if (!caller) return;
   if (caller.role !== 'SUPER_ADMIN' && (caller.role !== 'SHOP_ADMIN' || caller.shopId !== shopId)) return;
   // Only SUPER_ADMIN can assign SHOP_ADMIN or ATTENDANCE_KIOSK roles
@@ -118,11 +119,12 @@ async function removeUser(formData: FormData) {
   const shopId = formData.get('shopId') as string;
   if (!targetUserId || !shopId) return;
 
-  const supabase = createClient();
+  const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
+  
   const userId = user?.id;
   if (!userId) return;
-  const caller = await prisma.user.findUnique({ where: { id: userId } });
+  const caller = await prisma.user.findFirst({ where: { OR: [{ id: userId }, { email: user?.email || '' }] } });
   if (!caller) return;
   if (caller.role !== 'SUPER_ADMIN' && (caller.role !== 'SHOP_ADMIN' || caller.shopId !== shopId)) return;
 
@@ -143,8 +145,9 @@ async function addLeave(formData: FormData) {
     if (!staffId || !date || !startTime || !endTime || !shopId) return;
 
     // SECURITY: Verify caller is authorized
-    const supabase = createClient();
+    const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
+  
   const userId = user?.id;
     if (!userId) return;
     const data = await getShopLayoutData(userId, shopId);
@@ -183,8 +186,9 @@ async function removeLeave(formData: FormData) {
     if (!staffId || !date || !startTime || !endTime || !shopId) return;
 
     // SECURITY: Verify caller is authorized
-    const supabase = createClient();
+    const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
+  
   const userId = user?.id;
     if (!userId) return;
     const data = await getShopLayoutData(userId, shopId);
@@ -226,8 +230,9 @@ async function updateDayHours(formData: FormData) {
     if (!staffId || !shopId || !dayOfWeek) return;
 
     // SECURITY: Verify caller is authorized (admin of this shop)
-    const supabase = createClient();
+    const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
+  
   const userId = user?.id;
     if (!userId) return;
     const data = await getShopLayoutData(userId, shopId);
@@ -254,8 +259,9 @@ async function updateDayHours(formData: FormData) {
 export default async function TeamDashboardPage({ params, searchParams }: { params: Promise<{ shopId: string }>, searchParams: Promise<{ date?: string }>}) {
   const { shopId } = await params;
   const resolvedSearchParams = await searchParams;
-  const supabase = createClient();
+  const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
+  
   const userId = user?.id;
   if (!userId) redirect('/sign-in');
 

@@ -1,13 +1,17 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 
-export default function ProfilePage() {
+function ProfileContent() {
+  const searchParams = useSearchParams();
   const [profile, setProfile] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-  const [msg, setMsg] = useState<{ type: string; text: string } | null>(null);
+  const [msg, setMsg] = useState<{ type: string; text: string } | null>(
+    searchParams.get('message') ? { type: 'success', text: searchParams.get('message') as string } : null
+  );
 
   useEffect(() => {
     fetch('/api/my-appointments/profile')
@@ -107,9 +111,24 @@ export default function ProfilePage() {
           <button onClick={handleSave} disabled={saving} className="w-full bg-brand-gold text-brand-dark font-bold py-3 rounded-lg hover:bg-white transition-colors disabled:opacity-50 mt-4">
             {saving ? 'Saving…' : 'Save Changes'}
           </button>
+
+          <div className="pt-6 mt-6 border-t border-white/10">
+            <h3 className="text-sm font-semibold text-white mb-2">Security</h3>
+            <Link href="/update-password" className="inline-block px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white text-sm font-medium rounded-lg transition-colors border border-slate-600">
+              Change Password
+            </Link>
+          </div>
         </div>
       </div>
     </main>
+  );
+}
+
+export default function ProfilePage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-slate-900 flex items-center justify-center"><p className="text-gray-400">Loading...</p></div>}>
+      <ProfileContent />
+    </Suspense>
   );
 }
 

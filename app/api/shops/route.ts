@@ -3,12 +3,19 @@ import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import crypto from 'crypto';
 import { createClient } from '@/utils/supabase/server';
+import { rateLimit } from '@/lib/rate-limiter';
 
 export const dynamic = 'force-dynamic';
 
 // Function to handle GET requests (List all shops)
 export async function GET(request: Request) {
   try {
+    const ip = request.headers.get('x-forwarded-for') || 'unknown';
+    const rateLimitResult = await rateLimit(`shops-get:${ip}`, 30, 60); // 30 requests per minute
+    if (!rateLimitResult.success) {
+      return NextResponse.json({ error: 'Too many requests' }, { status: 429 });
+    }
+
     const { searchParams } = new URL(request.url);
     const take = parseInt(searchParams.get('limit') || '50', 10);
     const skip = parseInt(searchParams.get('skip') || '0', 10);
@@ -16,11 +23,12 @@ export async function GET(request: Request) {
     // Check if caller is authenticated SUPER_ADMIN — if so, include users for admin UI
     let isSuperAdmin = false;
     try {
-      const supabase = createClient();
-  const { data: { user } } = await supabase.auth.getUser();
-  const userId = user?.id;
+      const supabase = await createClient();
+      const { data: { user: authUserSession } } = await supabase.auth.getUser();
+      let userId = authUserSession?.id;
+      const authUserEmail = authUserSession?.email;
       if (userId) {
-        const caller = await prisma.user.findUnique({ where: { id: userId }, select: { role: true } });
+        const caller = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] }, select: { role: true } });
         isSuperAdmin = caller?.role === 'SUPER_ADMIN';
       }
     } catch { /* unauthenticated — public access */ }
@@ -52,15 +60,22 @@ export async function GET(request: Request) {
 // Function to handle POST requests (Create a new shop)
 export async function POST(request: Request) {
   try {
+    const ip = request.headers.get('x-forwarded-for') || 'unknown';
+    const rateLimitResult = await rateLimit(`shops-post:${ip}`, 5, 60); // 5 requests per minute
+    if (!rateLimitResult.success) {
+      return NextResponse.json({ error: 'Too many requests' }, { status: 429 });
+    }
+
     // HARDENING: Only Super Admins can create shops. Enforce server-side authorization.
-    const supabase = createClient();
-  const { data: { user } } = await supabase.auth.getUser();
-  const userId = user?.id;
+    const supabase = await createClient();
+  const { data: { user: authUserSession } } = await supabase.auth.getUser();
+  let userId = authUserSession?.id;
+  const authUserEmail = authUserSession?.email;
     if (!userId) {
         return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
     
-    const requestUser = await prisma.user.findUnique({ where: { id: userId } });
+    const requestUser = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
     if (!requestUser || requestUser.role !== 'SUPER_ADMIN') {
         return NextResponse.json({ error: 'Forbidden. Only Super Admins can provision shops.' }, { status: 403 });
     }

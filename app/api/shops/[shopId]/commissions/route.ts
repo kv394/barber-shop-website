@@ -11,14 +11,15 @@ export async function GET(
   request: Request,
   { params }: { params: Promise<{ shopId: string }> }
 ) {
-  const supabase = createClient();
-  const { data: { user } } = await supabase.auth.getUser();
-  const userId = user?.id;
+  const supabase = await createClient();
+  const { data: { user: authUserSession } } = await supabase.auth.getUser();
+  let userId = authUserSession?.id;
+  const authUserEmail = authUserSession?.email;
   if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
   const { shopId } = await params;
 
-  const user = await prisma.user.findUnique({ where: { id: userId } });
+  const user = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
   const isStaff = user?.role === 'STAFF' && user?.shopId === shopId;
   if (!user || (user.role !== 'SUPER_ADMIN' && user.role !== 'SHOP_ADMIN' && !isStaff)) {
     return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
@@ -100,13 +101,14 @@ export async function POST(
   request: Request,
   { params }: { params: Promise<{ shopId: string }> }
 ) {
-  const supabase = createClient();
-  const { data: { user } } = await supabase.auth.getUser();
-  const userId = user?.id;
+  const supabase = await createClient();
+  const { data: { user: authUserSession } } = await supabase.auth.getUser();
+  let userId = authUserSession?.id;
+  const authUserEmail = authUserSession?.email;
   if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
   const { shopId } = await params;
-  const user = await prisma.user.findUnique({ where: { id: userId } });
+  const user = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
   if (!user || (user.role !== 'SUPER_ADMIN' && (user.role !== 'SHOP_ADMIN' || user.shopId !== shopId))) {
     return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
   }

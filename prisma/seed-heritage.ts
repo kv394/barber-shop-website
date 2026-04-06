@@ -8,7 +8,7 @@
  */
 
 import { PrismaClient } from '@prisma/client';
-import { PrismaPg } from '@prisma/adapter-pg';
+
 import crypto from 'crypto';
 import { config } from 'dotenv';
 import { resolve } from 'path';
@@ -23,8 +23,8 @@ if (!connectionString) {
   process.exit(1);
 }
 
-const adapter = new PrismaPg({ connectionString });
-const prisma = new PrismaClient({ adapter });
+
+const prisma = new PrismaClient();
 
 const SHOP_ID = 'cmn9kj24n0000lqzc7kcsmpst';
 

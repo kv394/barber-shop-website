@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import ShopAdminLayout from '@/app/components/ShopAdminLayout';
+import ShopAdminLayout from '@/components/shop-admin/ShopAdminLayout';
 import { updateSchedule, addLeave, deleteLeave } from './actions';
 
 const daysOfWeek = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];

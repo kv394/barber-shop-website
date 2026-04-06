@@ -1,7 +1,7 @@
 import { prisma } from '@/lib/prisma';
 import { getShopLayoutData } from '@/lib/shop-data';
-import StaffAvailability from '@/app/components/StaffAvailability';
-import ShopAdminLayout from '@/app/components/ShopAdminLayout';
+import StaffAvailability from '@/components/shop-admin/StaffAvailability';
+import ShopAdminLayout from '@/components/shop-admin/ShopAdminLayout';
 import { createClient } from '@/utils/supabase/server';
 import { redirect } from 'next/navigation';
 
@@ -107,8 +107,9 @@ export default async function StaffBookingPage({
   params: Promise<{ shopId: string }>;
   searchParams: Promise<{ date?: string, from?: string, to?: string }>;
 }) {
-  const supabase = createClient();
+  const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
+  
   const userId = user?.id;
   if (!userId) redirect('/sign-in');
 

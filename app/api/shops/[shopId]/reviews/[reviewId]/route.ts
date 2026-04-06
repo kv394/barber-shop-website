@@ -28,14 +28,15 @@ export async function PATCH(
   request: NextRequest,
   { params }: { params: Promise<{ shopId: string; reviewId: string }> }
 ) {
-  const supabase = createClient();
-  const { data: { user } } = await supabase.auth.getUser();
-  const userId = user?.id;
+  const supabase = await createClient();
+  const { data: { user: authUserSession } } = await supabase.auth.getUser();
+  let userId = authUserSession?.id;
+  const authUserEmail = authUserSession?.email;
   if (!userId) return NextResponse.json({ error: CONFIG.ERRORS.UNAUTHORIZED }, { status: CONFIG.HTTP_STATUS.UNAUTHORIZED });
   const { shopId, reviewId } = await params;
 
   // Verify caller is admin of this shop
-  const caller = await prisma.user.findUnique({ where: { id: userId } });
+  const caller = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
   if (!caller || (caller.role !== CONFIG.ROLES.SUPER_ADMIN && (caller.role !== CONFIG.ROLES.SHOP_ADMIN || caller.shopId !== shopId)))
     return NextResponse.json({ error: CONFIG.ERRORS.FORBIDDEN }, { status: CONFIG.HTTP_STATUS.FORBIDDEN });
 
@@ -62,12 +63,13 @@ export async function DELETE(
   _: NextRequest,
   { params }: { params: Promise<{ shopId: string; reviewId: string }> }
 ) {
-  const supabase = createClient();
-  const { data: { user } } = await supabase.auth.getUser();
-  const userId = user?.id;
+  const supabase = await createClient();
+  const { data: { user: authUserSession } } = await supabase.auth.getUser();
+  let userId = authUserSession?.id;
+  const authUserEmail = authUserSession?.email;
   if (!userId) return NextResponse.json({ error: CONFIG.ERRORS.UNAUTHORIZED }, { status: CONFIG.HTTP_STATUS.UNAUTHORIZED });
   const { shopId, reviewId } = await params;
-  const caller = await prisma.user.findUnique({ where: { id: userId } });
+  const caller = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
   if (!caller || (caller.role !== CONFIG.ROLES.SUPER_ADMIN && (caller.role !== CONFIG.ROLES.SHOP_ADMIN || caller.shopId !== shopId)))
     return NextResponse.json({ error: CONFIG.ERRORS.FORBIDDEN }, { status: CONFIG.HTTP_STATUS.FORBIDDEN });
 

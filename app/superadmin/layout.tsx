@@ -2,18 +2,18 @@ import { redirect } from 'next/navigation';
 import { createClient } from '@/utils/supabase/server';
 import { prisma } from '@/lib/prisma';
 import Link from 'next/link';
-import SupabaseAuthButton from '@/components/SupabaseAuthButton';
+import SupabaseAuthButton from '@/components/auth/SupabaseAuthButton';
 
 export const dynamic = 'force-dynamic';
 
 export default async function SuperAdminLayout({ children }: { children: React.ReactNode }) {
-  const supabase = createClient();
+  const supabase = await createClient();
   const { data: { user: authUser } } = await supabase.auth.getUser();
   const userId = authUser?.id;
   if (!userId) return redirect('/');
 
-  const user = await prisma.user.findUnique({ where: { id: userId }, select: { role: true } });
-  if (user?.role !== 'SUPER_ADMIN') {
+  const dbUser = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUser?.email || '' }] }, select: { role: true } });
+  if (dbUser?.role !== 'SUPER_ADMIN') {
     return (
       <div className="flex min-h-screen items-center justify-center bg-slate-900 text-white">
         <div className="text-center">

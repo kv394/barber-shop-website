@@ -14,7 +14,7 @@
  */
 
 import { PrismaClient } from '@prisma/client';
-import { PrismaPg } from '@prisma/adapter-pg';
+
 import { config } from 'dotenv';
 import { resolve } from 'path';
 
@@ -24,8 +24,8 @@ config({ path: resolve(__dirname, '../.env.local'), override: false });
 const connectionString = process.env.DATABASE_URL;
 if (!connectionString) { console.error('❌  DATABASE_URL not set'); process.exit(1); }
 
-const adapter = new PrismaPg({ connectionString });
-const prisma = new PrismaClient({ adapter });
+
+const prisma = new PrismaClient();
 
 const SHOP_ID = 'cmn9kj24n0000lqzc7kcsmpst';
 

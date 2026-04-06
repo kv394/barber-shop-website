@@ -10,9 +10,10 @@ export async function POST(
 ) {
   try {
     const { shopId } = await params;
-    const supabase = createClient();
-  const { data: { user } } = await supabase.auth.getUser();
-  const userId = user?.id;
+    const supabase = await createClient();
+  const { data: { user: authUserSession } } = await supabase.auth.getUser();
+  let userId = authUserSession?.id;
+  const authUserEmail = authUserSession?.email;
 
     if (!userId) {
       return NextResponse.json(
@@ -133,9 +134,10 @@ export async function GET(
 ) {
   try {
     const { shopId } = await params;
-    const supabase = createClient();
-  const { data: { user } } = await supabase.auth.getUser();
-  const userId = user?.id;
+    const supabase = await createClient();
+  const { data: { user: authUserSession } } = await supabase.auth.getUser();
+  let userId = authUserSession?.id;
+  const authUserEmail = authUserSession?.email;
 
     if (!userId) {
       return NextResponse.json(
@@ -195,9 +197,10 @@ export async function DELETE(
 ) {
   try {
     const { shopId } = await params;
-    const supabase = createClient();
-  const { data: { user } } = await supabase.auth.getUser();
-  const userId = user?.id;
+    const supabase = await createClient();
+  const { data: { user: authUserSession } } = await supabase.auth.getUser();
+  let userId = authUserSession?.id;
+  const authUserEmail = authUserSession?.email;
 
     if (!userId) {
       return NextResponse.json(

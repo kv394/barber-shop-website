@@ -3,12 +3,12 @@ import { createClient } from '@/utils/supabase/server';
 import { prisma } from '@/lib/prisma';
 import { getShopLayoutData } from '@/lib/shop-data';
 import { getTodayInShopTz, toShopTzDayBounds } from '@/lib/timezone';
-import CreateServiceForm from '@/components/CreateServiceForm';
-import DeleteServiceButton from '@/components/DeleteServiceButton';
-import InventoryManager from '@/components/InventoryManager';
+import CreateServiceForm from '@/components/shop-admin/CreateServiceForm';
+import DeleteServiceButton from '@/components/shop-admin/DeleteServiceButton';
+import InventoryManager from '@/components/shop-admin/InventoryManager';
 import Link from 'next/link';
-import BarcodeScannerWrapper from '@/components/BarcodeScannerWrapper';
-import ShopAdminLayout from '@/app/components/ShopAdminLayout';
+import BarcodeScannerWrapper from '@/components/checkout/BarcodeScannerWrapper';
+import ShopAdminLayout from '@/components/shop-admin/ShopAdminLayout';
 
 
 export const dynamic = 'force-dynamic';
@@ -25,11 +25,12 @@ async function getShopData(shopId: string, userId: string) {
   const { startOfDay: today, endOfDay: tomorrow } = toShopTzDayBounds(todayStr, shopTz);
 
   // Run both queries in parallel instead of sequentially
-  const [shopFromDb, todayAppointments, allTrackedServices] = await Promise.all([
+  const [shopFromDb, todayAppointments, allTrackedServices, allTrackedProducts] = await Promise.all([
     prisma.shop.findUnique({
       where: { id: shopId },
       include: {
         services: { orderBy: { type: 'asc' } },
+        products: { orderBy: { name: 'asc' } },
         users: { orderBy: { role: 'asc' } },
       },
     }),
@@ -42,10 +43,17 @@ async function getShopData(shopId: string, userId: string) {
       where: { shopId, trackInventory: true },
       select: { id: true, name: true, inventoryCount: true },
     }),
+    prisma.product.findMany({
+      where: { shopId, trackInventory: true },
+      select: { id: true, name: true, inventoryCount: true, reorderPoint: true, type: true },
+    }),
   ]);
 
   // Flag items at or below 5 units as low stock
-  const lowStockItems = allTrackedServices.filter(s => (s.inventoryCount || 0) <= 5);
+  const lowStockItems = [
+    ...allTrackedServices.filter(s => (s.inventoryCount || 0) <= 5).map(s => ({ ...s, isProduct: false })),
+    ...allTrackedProducts.filter(p => (p.inventoryCount || 0) <= (p.reorderPoint || 5)).map(p => ({ ...p, isProduct: true }))
+  ];
 
   if (!shopFromDb) {
     return { shop: null, userRole: data.userRole, canManageInventory: false, shopSlug: data.shopSlug, lowStockItems: [], todayStats: null };
@@ -75,8 +83,9 @@ async function getShopData(shopId: string, userId: string) {
 }
 
 export default async function ShopDashboardPage({ params }: { params: Promise<{ shopId: string }> }) {
-  const supabase = createClient();
+  const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
+  
   const userId = user?.id;
   if (!userId) return redirect('/');
 

@@ -1,14 +1,13 @@
 import { redirect } from 'next/navigation';
 import { createClient } from '@/utils/supabase/server';
 import { prisma } from '@/lib/prisma';
-import ShopAdminLayout from '@/app/components/ShopAdminLayout';
-import StaffWorkingReport from '@/components/StaffWorkingReport';
+import ShopAdminLayout from '@/components/shop-admin/ShopAdminLayout';
+import StaffWorkingReport from '@/components/reports/StaffWorkingReport';
 
 export const dynamic = 'force-dynamic';
 
-async function getPageData(shopId: string, userId: string) {
-  const userFromDb = await prisma.user.findUnique({
-    where: { id: userId },
+async function getPageData(shopId: string, userId: string, email?: string) {
+  const userFromDb = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: email || '' }] },
   });
 
   const isSuperAdmin = userFromDb?.role === 'SUPER_ADMIN';
@@ -78,12 +77,13 @@ async function getPageData(shopId: string, userId: string) {
 
 export default async function StaffWorkingPage({ params }: { params: Promise<{ shopId: string }> }) {
   const { shopId } = await params;
-  const supabase = createClient();
+  const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
+  
   const userId = user?.id;
   if (!userId) return redirect('/');
 
-  const { shop, userRole, staffMembers } = await getPageData(shopId, userId);
+  const { shop, userRole, staffMembers } = await getPageData(shopId, userId, user?.email);
 
   if (!shop) {
     return (

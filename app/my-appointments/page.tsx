@@ -5,7 +5,7 @@ import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import { formatDateTimeInShopTz } from '@/lib/timezone';
 
-const RescheduleModal = dynamic(() => import('@/components/RescheduleModal'), { ssr: false });
+const RescheduleModal = dynamic(() => import('@/components/appointments/RescheduleModal'), { ssr: false });
 
 interface Appointment {
   id: string;

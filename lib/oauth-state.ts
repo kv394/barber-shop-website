@@ -9,7 +9,7 @@
 
 import crypto from 'crypto';
 
-const STATE_SECRET = process.env.OAUTH_STATE_SECRET || process.env.CLERK_SECRET_KEY || '';
+const STATE_SECRET = process.env.OAUTH_STATE_SECRET || '';
 const STATE_TTL_MS = 10 * 60 * 1000; // 10 minutes
 
 if (!STATE_SECRET) {
@@ -17,7 +17,7 @@ if (!STATE_SECRET) {
 }
 
 interface StatePayload {
-  /** Clerk user id */
+  /** Supabase user id */
   uid: string;
   /** Cryptographic nonce – prevents replay even within the TTL */
   nonce: string;

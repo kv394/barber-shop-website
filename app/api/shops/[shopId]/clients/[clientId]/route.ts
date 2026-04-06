@@ -9,12 +9,13 @@ export async function GET(
 ) {
   try {
     const { shopId, clientId } = await params;
-    const supabase = createClient();
-  const { data: { user } } = await supabase.auth.getUser();
-  const userId = user?.id;
+    const supabase = await createClient();
+  const { data: { user: authUserSession } } = await supabase.auth.getUser();
+  let userId = authUserSession?.id;
+  const authUserEmail = authUserSession?.email;
     if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
-    const currentUser = await prisma.user.findUnique({ where: { id: userId } });
+    const currentUser = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
     const canView = currentUser?.role === 'SUPER_ADMIN' ||
       (currentUser?.role === 'SHOP_ADMIN' && currentUser?.shopId === shopId) ||
       (currentUser?.role === 'STAFF' && currentUser?.shopId === shopId);
@@ -58,12 +59,13 @@ export async function PATCH(
 ) {
   try {
     const { shopId, clientId } = await params;
-    const supabase = createClient();
-  const { data: { user } } = await supabase.auth.getUser();
-  const userId = user?.id;
+    const supabase = await createClient();
+  const { data: { user: authUserSession } } = await supabase.auth.getUser();
+  let userId = authUserSession?.id;
+  const authUserEmail = authUserSession?.email;
     if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
-    const currentUser = await prisma.user.findUnique({ where: { id: userId } });
+    const currentUser = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
     const canEdit = currentUser?.role === 'SUPER_ADMIN' ||
       (currentUser?.role === 'SHOP_ADMIN' && currentUser?.shopId === shopId) ||
       (currentUser?.role === 'STAFF' && currentUser?.shopId === shopId);

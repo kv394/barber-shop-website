@@ -1,23 +1,24 @@
 'use client';
 
-import { useClerk } from '@clerk/nextjs';
+import { createClient } from '@/utils/supabase/client';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 
 export default function LogoutPage() {
-  const { signOut } = useClerk();
   const router = useRouter();
 
   useEffect(() => {
     const performLogout = async () => {
-      await signOut();
+      const supabase = createClient();
+      await supabase.auth.signOut();
       router.push('/');
+      router.refresh();
     };
     performLogout();
-  }, [signOut, router]);
+  }, [router]);
 
   return (
-    <div className="min-h-screen flex items-center justify-center">
+    <div className="min-h-screen flex items-center justify-center bg-brand-dark text-white">
       <p>Logging out...</p>
     </div>
   );

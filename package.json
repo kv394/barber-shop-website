@@ -1,5 +1,5 @@
 {
-  "name": "barber-shop-saas",
+  "name": "barbersaas",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -11,12 +11,9 @@
     "postinstall": "prisma generate"
   },
   "dependencies": {
-    "@clerk/backend": "^1.0.0",
-    "@clerk/nextjs": "^7.0.8",
     "@prisma/adapter-pg": "^7.6.0",
     "@prisma/client": "^7.6.0",
-    "@stripe/stripe-js": "^3.0.0",
-    "@supabase/ssr": "^0.3.0",
+    "@supabase/ssr": "^0.10.0",
     "@supabase/supabase-js": "^2.43.4",
     "barcode-detector": "^3.1.2",
     "ioredis": "^5.10.1",

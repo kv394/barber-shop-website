@@ -2,7 +2,7 @@ import { notFound, redirect } from 'next/navigation';
 import { createClient } from '@/utils/supabase/server';
 import { prisma } from '@/lib/prisma';
 import { getShopLayoutData } from '@/lib/shop-data';
-import ShopAdminLayout from '@/app/components/ShopAdminLayout';
+import ShopAdminLayout from '@/components/shop-admin/ShopAdminLayout';
 
 export const dynamic = 'force-dynamic';
 
@@ -46,8 +46,9 @@ function formatDuration(milliseconds: number) {
 
 export default async function AttendanceReportPage({ params }: { params: Promise<{ shopId: string }> }) {
   const { shopId } = await params;
-  const supabase = createClient();
+  const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
+  
   const userId = user?.id;
   if (!userId) redirect('/');
 

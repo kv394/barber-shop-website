@@ -2,11 +2,11 @@
 
 import { useState, useEffect } from 'react';
 import dynamic from 'next/dynamic';
-import SupabaseAuthButton from '@/components/SupabaseAuthButton';
+import SupabaseAuthButton from '@/components/auth/SupabaseAuthButton';
 import { usePathname } from 'next/navigation';
 
 // Lazy-load the BookingModal component
-const BookingModal = dynamic(() => import('@/components/BookingModal'), {
+const BookingModal = dynamic(() => import('@/components/appointments/BookingModal'), {
     ssr: false, // This component will only be rendered on the client side
     loading: () => <div className="fixed inset-0 bg-black/80 z-[100] flex items-center justify-center"><p className="text-white">Loading...</p></div>
 });
@@ -94,8 +94,7 @@ function ReviewsSection({ reviews, variant = 'dark' }: { reviews: any[]; variant
 
 export default function ClientPage({ shop, templateType, primaryColor, secondaryColor, sportRed, reviews = [] }: any) {
     const [selectedService, setSelectedService] = useState<any | null>(null);
-    const { isSignedIn } = useAuth();
-    const pathname = usePathname() || '/';
+        const pathname = usePathname() || '/';
 
     const handleBookClick = (service: any) => {
         setSelectedService(service);
@@ -111,18 +110,10 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
     const shopIG      = c.contact?.instagram || c.social?.instagram || '';
     const shopTW      = c.contact?.twitter   || c.social?.twitter   || '';
 
-    // Pass both signOutUrl and afterSignOutUrl to ensure compatibility with Clerk v4 and v7
+    // Auth button for client sign-in/out
     const authButton = (
         <div className="absolute top-6 right-6 z-50">
-            {isSignedIn ? (
-                <UserButton signOutUrl={pathname} afterSignOutUrl={pathname} />
-            ) : (
-                <SignInButton mode="modal" fallbackRedirectUrl={pathname} signUpFallbackRedirectUrl={pathname}>
-                  <button className="bg-white/10 hover:bg-white/20 text-white px-4 py-2 rounded-lg font-semibold transition-colors">
-                     Sign In
-                  </button>
-                </SignInButton>
-            )}
+            <SupabaseAuthButton redirectUrl={pathname} />
         </div>
     );
 
@@ -134,11 +125,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                     {shopPhone && <span>{shopPhone}</span>}
                     {shopEmail && <span>{shopEmail}</span>}
                     <div className="relative">
-                        {isSignedIn ? <UserButton signOutUrl={pathname} afterSignOutUrl={pathname} /> : (
-                            <SignInButton mode="modal" fallbackRedirectUrl={pathname} signUpFallbackRedirectUrl={pathname}>
-                              <button className="text-white hover:underline">Sign In</button>
-                            </SignInButton>
-                        )}
+                        <SupabaseAuthButton redirectUrl={pathname} />
                     </div>
                 </div>
     
@@ -263,13 +250,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
               <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center py-4">
                 <h1 className="text-3xl font-bold" style={{ color: primaryColor }}>{shop.name}</h1>
                 <div className="relative">
-                    {isSignedIn ? (
-                        <UserButton signOutUrl={pathname} afterSignOutUrl={pathname} />
-                    ) : (
-                        <SignInButton mode="modal" fallbackRedirectUrl={pathname} signUpFallbackRedirectUrl={pathname}>
-                            <button className="text-gray-600 hover:underline">Sign In</button>
-                        </SignInButton>
-                    )}
+                    <SupabaseAuthButton redirectUrl={pathname} />
                 </div>
               </div>
             </header>
@@ -447,13 +428,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
         return (
           <main className="min-h-screen bg-white text-gray-900 font-sans relative">
             <div className="absolute top-6 right-6 z-50">
-                {isSignedIn ? (
-                    <UserButton signOutUrl={pathname} afterSignOutUrl={pathname} />
-                ) : (
-                    <SignInButton mode="modal" fallbackRedirectUrl={pathname} signUpFallbackRedirectUrl={pathname}>
-                        <button className="text-gray-600 hover:underline">Sign In</button>
-                    </SignInButton>
-                )}
+                <SupabaseAuthButton redirectUrl={pathname} />
             </div>
             <header className="max-w-4xl mx-auto px-6 py-12 border-b border-gray-100 flex flex-col md:flex-row justify-between items-end md:items-center">
               <div>
@@ -515,13 +490,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
         return (
           <main className="min-h-screen bg-[#fdfbf7] text-[#2c1e16] font-serif relative">
             <div className="absolute top-6 right-8 z-50">
-                {isSignedIn ? (
-                    <UserButton signOutUrl={pathname} afterSignOutUrl={pathname} />
-                ) : (
-                    <SignInButton mode="modal" fallbackRedirectUrl={pathname} signUpFallbackRedirectUrl={pathname}>
-                        <button className="text-gray-600 hover:underline">Sign In</button>
-                    </SignInButton>
-                )}
+                <SupabaseAuthButton redirectUrl={pathname} />
             </div>
             <header className="border-b-4 border-[#2c1e16] py-16 text-center bg-[url('https://www.transparenttextures.com/patterns/aged-paper.png')] relative">
               <h1 className="text-6xl font-bold uppercase tracking-widest mb-4" style={{ color: primaryColor }}>{shop.name}</h1>
@@ -582,15 +551,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
       return (
         <main className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 relative">
           <header className="absolute w-full top-0 left-0 p-6 flex justify-end z-50">
-             {isSignedIn ? (
-                 <UserButton signOutUrl={pathname} afterSignOutUrl={pathname} />
-             ) : (
-                <SignInButton mode="modal" fallbackRedirectUrl={pathname} signUpFallbackRedirectUrl={pathname}>
-                    <button className="bg-white/10 hover:bg-white/20 text-white px-4 py-2 rounded-lg font-semibold transition-colors">
-                       Sign In
-                    </button>
-                </SignInButton>
-             )}
+             <SupabaseAuthButton redirectUrl={pathname} />
           </header>
           {/* Hero Section */}
           <section 

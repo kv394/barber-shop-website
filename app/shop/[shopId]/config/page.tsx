@@ -1,10 +1,10 @@
 import { notFound, redirect } from 'next/navigation';
 import { createClient } from '@/utils/supabase/server';
 import { getShopLayoutData } from '@/lib/shop-data';
-import { TemplateSelector } from '@/app/components/TemplateSelector';
-import ShopAdminLayout from '@/app/components/ShopAdminLayout';
+import { TemplateSelector } from '@/components/shop-admin/TemplateSelector';
+import ShopAdminLayout from '@/components/shop-admin/ShopAdminLayout';
 
-export const revalidate = 60;
+export const dynamic = "force-dynamic";
 
 export default async function ShopConfigPage({
   params,
@@ -12,8 +12,9 @@ export default async function ShopConfigPage({
   params: Promise<{ shopId: string }>;
 }) {
   const { shopId } = await params;
-  const supabase = createClient();
+  const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
+  
   const userId = user?.id;
   if (!userId) redirect('/');
 

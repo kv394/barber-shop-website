@@ -3,11 +3,20 @@ import { prisma } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
 import { createClient } from '@/utils/supabase/server';
 import crypto from 'crypto';
+import { rateLimit } from '@/lib/rate-limiter';
 
 export async function POST(request: Request) {
-  const supabase = createClient();
-  const { data: { user } } = await supabase.auth.getUser();
-  const userId = user?.id;
+  const ip = request.headers.get('x-forwarded-for') || 'unknown';
+  const rateLimitResult = await rateLimit(`init-user:${ip}`, 10, 60);
+  
+  if (!rateLimitResult.success) {
+    return NextResponse.json({ error: 'Too many requests' }, { status: 429 });
+  }
+
+  const supabase = await createClient();
+  const { data: { user: authUserSession } } = await supabase.auth.getUser();
+  let userId = authUserSession?.id;
+  const authUserEmail = authUserSession?.email;
   if (!userId) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
@@ -15,13 +24,11 @@ export async function POST(request: Request) {
   const body = await request.json();
   const { name } = body;
   // SECURITY: Do NOT trust the email from the client body.
-  // Fetch the verified email from Clerk to prevent role-stealing.
+  // Fetch the verified email from Supabase Auth to prevent role-stealing.
 
   try {
     // Check if user already exists
-    const userById = await prisma.user.findUnique({
-      where: { id: userId },
-      include: { shop: true },
+    const userById = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] }, include: { shop: true },
     });
 
     if (userById) {
@@ -30,10 +37,8 @@ export async function POST(request: Request) {
       return NextResponse.json(safeUser, { status: 200 });
     }
 
-    // Fetch the verified email from Clerk — never trust the client
-    const client = await clerkClient();
-    const clerkUser = await client.users.getUser(userId);
-    const email = clerkUser.emailAddresses?.[0]?.emailAddress;
+    // Fetch the verified email from Supabase Auth
+    const email = authUserEmail;
 
     if (!email) {
       return NextResponse.json({ error: 'No email found for this user' }, { status: 400 });

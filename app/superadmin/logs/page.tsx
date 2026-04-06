@@ -6,15 +6,16 @@ import { createClient } from '@/utils/supabase/server';
 export const dynamic = 'force-dynamic';
 
 export default async function SuperAdminLogsPage() {
-  const supabase = createClient();
+  const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
+  
   const userId = user?.id;
   if (!userId) {
     redirect("/sign-in");
   }
 
-  const user = await prisma.user.findUnique({ where: { id: userId } });
-  if (user?.role !== "SUPER_ADMIN") {
+  const dbUser = await prisma.user.findFirst({ where: { OR: [{ id: userId }, { email: user?.email || '' }] } });
+  if (dbUser?.role !== "SUPER_ADMIN") {
     return <div className="text-red-400 p-8">Unauthorized access.</div>;
   }
 
@@ -26,9 +27,12 @@ export default async function SuperAdminLogsPage() {
   async function resolveLog(formData: FormData) {
     "use server";
     // SECURITY: Re-verify auth — server actions can be called directly
-    const { userId: actionUserId } = await auth();
+    const supabase = await createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+  
+    const actionUserId = user?.id;
     if (!actionUserId) return;
-    const actionUser = await prisma.user.findUnique({ where: { id: actionUserId } });
+    const actionUser = await prisma.user.findFirst({ where: { OR: [{ id: actionUserId }, { email: user?.email || '' }] } });
     if (actionUser?.role !== "SUPER_ADMIN") return;
 
     const id = formData.get("id") as string;
@@ -44,9 +48,12 @@ export default async function SuperAdminLogsPage() {
   async function deleteLog(formData: FormData) {
     "use server";
     // SECURITY: Re-verify auth — server actions can be called directly
-    const { userId: actionUserId } = await auth();
+    const supabase = await createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+  
+    const actionUserId = user?.id;
     if (!actionUserId) return;
-    const actionUser = await prisma.user.findUnique({ where: { id: actionUserId } });
+    const actionUser = await prisma.user.findFirst({ where: { OR: [{ id: actionUserId }, { email: user?.email || '' }] } });
     if (actionUser?.role !== "SUPER_ADMIN") return;
 
     const id = formData.get("id") as string;

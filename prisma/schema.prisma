@@ -587,7 +587,6 @@ model GiftCard {
   expiresAt       DateTime?
   status          GiftCardStatus @default(ACTIVE)
 
-  stripePaymentId String?
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
 

@@ -4,7 +4,7 @@ import { getShopLayoutData } from '@/lib/shop-data';
 import { prisma } from '@/lib/prisma';
 import { headers } from 'next/headers';
 import Link from 'next/link';
-import SupabaseAuthButton from '@/components/SupabaseAuthButton';
+import SupabaseAuthButton from '@/components/auth/SupabaseAuthButton';
 
 export const dynamic = 'force-dynamic';
 
@@ -26,8 +26,9 @@ export default async function ShopLayout({
   const shopSlug = basicShop ? basicShop.name.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '') : '';
   const fallbackRedirect = shopSlug ? `/shops/${shopSlug}` : '/';
 
-  const supabase = createClient();
+  const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
+  
   const userId = user?.id;
   
   if (!userId) {

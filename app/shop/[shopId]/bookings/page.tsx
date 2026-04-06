@@ -4,11 +4,11 @@ import { prisma } from '@/lib/prisma';
 import { getShopLayoutData } from '@/lib/shop-data';
 import { formatDateInShopTz, formatInShopTz, getTodayInShopTz, toShopTzDayBounds } from '@/lib/timezone';
 import Link from 'next/link';
-import DeleteAppointmentButton from '@/components/DeleteAppointmentButton';
-import CheckoutButton from '@/components/CheckoutButton';
-import NoShowButton from '@/components/NoShowButton';
-import AppointmentNotes from '@/components/AppointmentNotes';
-import ShopAdminLayout from '@/app/components/ShopAdminLayout';
+import DeleteAppointmentButton from '@/components/appointments/DeleteAppointmentButton';
+import CheckoutButton from '@/components/checkout/CheckoutButton';
+import NoShowButton from '@/components/appointments/NoShowButton';
+import AppointmentNotes from '@/components/appointments/AppointmentNotes';
+import ShopAdminLayout from '@/components/shop-admin/ShopAdminLayout';
 
 export const dynamic = 'force-dynamic';
 
@@ -48,8 +48,9 @@ async function getPageData(shopId: string, userId: string) {
 
 export default async function BookingsPage({ params }: { params: Promise<{ shopId: string }> }) {
   const { shopId } = await params;
-  const supabase = createClient();
+  const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
+  
   const userId = user?.id;
   if (!userId) return redirect('/');
 

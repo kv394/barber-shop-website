@@ -1,10 +1,10 @@
 'use client';
 
 import { useState, useEffect, FormEvent } from 'react';
-import SupabaseAuthButton from '@/components/SupabaseAuthButton';
+import SupabaseAuthButton from '@/components/auth/SupabaseAuthButton';
 import Link from 'next/link';
-import DeleteShopButton from '@/components/DeleteShopButton';
-import BarcodeScannerWrapper from '@/components/BarcodeScannerWrapper';
+import DeleteShopButton from '@/components/shop-admin/DeleteShopButton';
+import BarcodeScannerWrapper from '@/components/checkout/BarcodeScannerWrapper';
 import { useRouter } from 'next/navigation';
 
 type Shop = {
@@ -232,7 +232,7 @@ export default function Home() {
   };
 
   useEffect(() => {
-    // Replaced Clerk useUser() hook with fetch from our own API using Supabase
+    // Fetch user data from our own API using Supabase
     const fetchUserData = async () => {
       try {
           let res = await fetch(`/api/users/me`);

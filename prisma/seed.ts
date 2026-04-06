@@ -15,7 +15,6 @@
  */
 
 import { PrismaClient } from '@prisma/client';
-import { PrismaPg } from '@prisma/adapter-pg';
 import crypto from 'crypto';
 
 const connectionString = process.env.DATABASE_URL;
@@ -24,8 +23,7 @@ if (!connectionString) {
   process.exit(1);
 }
 
-const adapter = new PrismaPg({ connectionString });
-const prisma = new PrismaClient({ adapter });
+const prisma = new PrismaClient();
 
 function barcode(seed: string): string {
   return crypto

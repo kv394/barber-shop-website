@@ -54,9 +54,10 @@ export async function POST(
 ) {
   try {
     const { shopId } = await params;
-    const supabase = createClient();
-  const { data: { user } } = await supabase.auth.getUser();
-  const userId = user?.id;
+    const supabase = await createClient();
+  const { data: { user: authUserSession } } = await supabase.auth.getUser();
+  let userId = authUserSession?.id;
+  const authUserEmail = authUserSession?.email;
 
     // Verify the scanner device is logged in. 
     // It can be a Shop Admin, Staff, or a dedicated KIOSK user.
@@ -64,9 +65,7 @@ export async function POST(
        return NextResponse.json({ error: 'Scanner device is unauthorized' }, { status: 401 });
     }
 
-    const scannerUser = await prisma.user.findUnique({
-      where: { id: userId }
-    });
+    const scannerUser = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
 
     if (!scannerUser || 
         (scannerUser.role !== 'SUPER_ADMIN' && 

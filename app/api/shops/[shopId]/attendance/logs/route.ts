@@ -9,15 +9,16 @@ export async function GET(
 ) {
     try {
     const { shopId } = await params;
-        const supabase = createClient();
-  const { data: { user } } = await supabase.auth.getUser();
-  const userId = user?.id;
+        const supabase = await createClient();
+  const { data: { user: authUserSession } } = await supabase.auth.getUser();
+  let userId = authUserSession?.id;
+  const authUserEmail = authUserSession?.email;
         if (!userId) {
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
         }
 
         // Verify user has permission to view logs for this shop
-        const currentUser = await prisma.user.findUnique({ where: { id: userId } });
+        const currentUser = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
         if (!currentUser || (currentUser.role !== 'SUPER_ADMIN' && (currentUser.role !== 'SHOP_ADMIN' || currentUser.shopId !== shopId))) {
             return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
         }

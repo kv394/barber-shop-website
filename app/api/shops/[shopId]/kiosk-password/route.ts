@@ -9,15 +9,16 @@ export async function POST(
 ) {
   try {
     const { shopId } = await params;
-    const supabase = createClient();
-  const { data: { user } } = await supabase.auth.getUser();
-  const userId = user?.id;
+    const supabase = await createClient();
+  const { data: { user: authUserSession } } = await supabase.auth.getUser();
+  let userId = authUserSession?.id;
+  const authUserEmail = authUserSession?.email;
     if (!userId) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     // Verify user is SHOP_ADMIN or SUPER_ADMIN for this shop
-    const currentUser = await prisma.user.findUnique({ where: { id: userId } });
+    const currentUser = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
     if (!currentUser || (currentUser.role !== 'SUPER_ADMIN' && (currentUser.role !== 'SHOP_ADMIN' || currentUser.shopId !== shopId))) {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
@@ -41,34 +42,38 @@ export async function POST(
       return NextResponse.json({ error: 'Target user must be a kiosk account for this shop' }, { status: 403 });
     }
 
-    // Find if the user exists in Clerk by email
-    const client = await clerkClient();
-    const clerkUsersResponse = await client.users.getUserList({ emailAddress: [email] });
-    const clerkUsers = clerkUsersResponse.data;
+    const { createClient: createSupabaseClient } = require('@supabase/supabase-js');
+    const supabaseAdmin = createSupabaseClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.SUPABASE_SERVICE_ROLE_KEY!
+    );
 
-    let targetClerkId: string;
+    // Create or update user in Supabase
+    let targetSupabaseId: string;
 
-    if (clerkUsers.length > 0) {
-      // User exists in Clerk, just update their password
-      targetClerkId = clerkUsers[0].id;
-      await client.users.updateUser(targetClerkId, {
+    const { data: usersData, error: listError } = await supabaseAdmin.auth.admin.listUsers();
+    const existingSupabaseUser = usersData?.users?.find((u: any) => u.email === email);
+
+    if (existingSupabaseUser) {
+      targetSupabaseId = existingSupabaseUser.id;
+      await supabaseAdmin.auth.admin.updateUserById(targetSupabaseId, {
         password: password,
-        skipPasswordChecks: true,
+        email_confirm: true,
       });
     } else {
-      // User does not exist in Clerk, create them with the email pre-verified.
-      const newClerkUser = await client.users.createUser({
-        emailAddress: [email],
+      const { data: newUser, error: createError } = await supabaseAdmin.auth.admin.createUser({
+        email: email,
         password: password,
-        skipPasswordChecks: true,
-      } as any);
-      targetClerkId = newClerkUser.id;
+        email_confirm: true,
+      });
+      if (createError) throw createError;
+      targetSupabaseId = newUser.user.id;
     }
     
-    // Ensure our local DB is synced with the correct Clerk ID
+    // Ensure our local DB is synced with the correct Supabase ID
     await prisma.user.update({
         where: { email: email },
-        data: { id: targetClerkId }
+        data: { id: targetSupabaseId }
     });
 
     return NextResponse.json({ success: true, message: 'Kiosk password set successfully.' });

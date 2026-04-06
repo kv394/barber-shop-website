@@ -1,8 +1,8 @@
 import { redirect, notFound } from 'next/navigation';
 import { createClient } from '@/utils/supabase/server';
 import { getShopLayoutData } from '@/lib/shop-data';
-import ShopAdminLayout from '@/app/components/ShopAdminLayout';
-import CommissionSetup from '@/components/CommissionSetup';
+import ShopAdminLayout from '@/components/shop-admin/ShopAdminLayout';
+import CommissionSetup from '@/components/reports/CommissionSetup';
 import Link from 'next/link';
 
 export const dynamic = 'force-dynamic';
@@ -28,8 +28,9 @@ function SettingsSubNav({ shopId, active }: { shopId: string; active: string }) 
 }
 
 export default async function CommissionsSettingsPage({ params }: { params: Promise<{ shopId: string }> }) {
-  const supabase = createClient();
+  const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
+  
   const userId = user?.id;
   if (!userId) redirect('/');
   const { shopId } = await params;

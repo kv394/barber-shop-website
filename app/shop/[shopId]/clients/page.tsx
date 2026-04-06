@@ -2,8 +2,8 @@ import { redirect } from 'next/navigation';
 import { createClient } from '@/utils/supabase/server';
 import { prisma } from '@/lib/prisma';
 import { getShopLayoutData } from '@/lib/shop-data';
-import ClientGrid from '@/components/ClientGrid';
-import ShopAdminLayout from '@/app/components/ShopAdminLayout';
+import ClientGrid from '@/components/clients/ClientGrid';
+import ShopAdminLayout from '@/components/shop-admin/ShopAdminLayout';
 
 export const dynamic = 'force-dynamic';
 
@@ -67,8 +67,9 @@ async function getPageData(shopId: string, userId: string, pageStr: string) {
 export default async function ClientsPage({ params, searchParams }: { params: Promise<{ shopId: string }>, searchParams: Promise<{ page?: string }> }) {
   const { shopId } = await params;
   const resolvedSearchParams = await searchParams;
-  const supabase = createClient();
+  const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
+  
   const userId = user?.id;
   if (!userId) return redirect('/');
 

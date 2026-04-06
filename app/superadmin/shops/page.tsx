@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import DeleteShopButton from '@/components/DeleteShopButton';
+import DeleteShopButton from '@/components/shop-admin/DeleteShopButton';
 
 type ShopData = {
   id: string;

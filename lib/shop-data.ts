@@ -1,6 +1,7 @@
 import { cache } from 'react';
 import { prisma } from '@/lib/prisma';
 import { cacheService } from '@/lib/cache';
+import { createClient } from '@/utils/supabase/server';
 
 /**
  * Cached per-request: fetches the current user + role.
@@ -8,13 +9,18 @@ import { cacheService } from '@/lib/cache';
  * even if called from both layout.tsx and page.tsx.
  */
 export const getShopLayoutData = cache(async (userId: string, shopId: string) => {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  const authUser = user;
+  const cacheKey = `shop_layout:${authUser?.email || userId}:${shopId}`;
+
   // Use Redis cache layered inside the per-request React memory cache
   return cacheService.getOrSet(
-    `shop_layout:${userId}:${shopId}`,
+    cacheKey,
     async () => {
       const [user, shop] = await Promise.all([
-        prisma.user.findUnique({
-          where: { id: userId },
+        prisma.user.findFirst({
+          where: authUser?.email ? { email: authUser.email } : { id: userId },
           select: { id: true, role: true, shopId: true, name: true, email: true, canManageInventory: true },
         }),
         prisma.shop.findUnique({

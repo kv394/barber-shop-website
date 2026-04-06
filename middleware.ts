@@ -1,56 +1,87 @@
-import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server';
-import { NextResponse } from 'next/server';
+import { NextResponse, type NextRequest } from 'next/server';
+import { createServerClient, type CookieOptions } from '@supabase/ssr';
 
-// Define public routes — be MINIMAL: only what unauthenticated users truly need
-// SECURITY: Use exact path patterns — avoid wildcards that match sub-routes
-// (e.g., /appointments should NOT match /appointments/[id]/checkout)
-const isPublicRoute = createRouteMatcher([
-  '/',
-  '/shops',
-  '/shops/(.*)',
-  '/sign-in(.*)',
-  '/sign-up(.*)',
-  '/api/shops',                          // Shop listing for public directory
-  '/api/shops/([^/]+)/appointments',     // Public booking slot listing (GET only, POST has own auth)
-  '/api/shops/([^/]+)/staff',            // Public staff list for booking UI
-  '/api/shops/([^/]+)/reviews',          // Public reviews display (GET only)
-  '/api/users/init',                     // User initialization on first login
-  '/api/cron',                           // Cron (has its own secret-based auth)
-]);
+const publicRoutes = [
+  '^/$',
+  '^/shops(?:/.*)?$',
+  '^/sign-in(?:/.*)?$',
+  '^/sign-up(?:/.*)?$',
+  '^/forgot-password(?:/.*)?$',
+  '^/recover-password(?:/.*)?$',
+  '^/update-password(?:/.*)?$',
+  '^/api/auth/callback(?:/.*)?$',
+  '^/api/shops$',
+  '^/api/shops/[^/]+/appointments$',
+  '^/api/shops/[^/]+/staff$',
+  '^/api/shops/[^/]+/reviews$',
+  '^/api/users/init$',
+  '^/api/users/me$',
+  '^/api/cron$'
+];
+
+const isPublicRoute = (path: string) => {
+  return publicRoutes.some(pattern => new RegExp(pattern).test(path));
+};
 
 // Generate a strict Content Security Policy
-// Note: Clerk requires certain unsafe-eval and unsafe-inline policies for their scripts/styles to function correctly in development/production
 const generateCsp = () => {
   const isDev = process.env.NODE_ENV !== 'production';
   const csp = `
     default-src 'self';
-    script-src 'self' 'unsafe-inline' 'unsafe-eval' https://*.clerk.com https://*.stripe.com;
-    connect-src 'self' https://*.clerk.com https://*.stripe.com wss://*.clerk.com;
-    img-src 'self' data: https://*.clerk.com https://images.unsplash.com https://cdn.pixabay.com;
+    script-src 'self' 'unsafe-inline' 'unsafe-eval' https://*.stripe.com;
+    connect-src 'self' https://*.supabase.co https://*.stripe.com;
+    img-src 'self' data: https://images.unsplash.com https://cdn.pixabay.com;
     style-src 'self' 'unsafe-inline';
     frame-src 'self' https://js.stripe.com https://hooks.stripe.com;
     font-src 'self' data:;
   `.replace(/\s{2,}/g, ' ').trim();
   
-  // In dev, Next.js needs more relaxed CSP for HMR. We enforce strict CSP in production.
   return isDev ? '' : csp;
 };
 
-// Match shop pages (but NOT API routes or the team page)
-// Note: SUPER_ADMIN restriction is enforced in the shop layout via x-pathname header
+export async function middleware(req: NextRequest) {
+  let response = NextResponse.next({
+    request: { headers: new Headers(req.headers) },
+  });
 
-export default clerkMiddleware(async (auth, req) => {
-  if (!isPublicRoute(req)) {
-    await auth.protect();
+  const supabase = createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
+      cookies: {
+        getAll() { return req.cookies.getAll(); },
+        setAll(cookiesToSet: { name: string; value: string; options: CookieOptions }[]) {
+          cookiesToSet.forEach(({ name, value }) => {
+            req.cookies.set(name, value);
+          });
+          response = NextResponse.next({ request: { headers: new Headers(req.headers) } });
+          cookiesToSet.forEach(({ name, value, options }) => {
+            const safeOptions = { ...options };
+            if (process.env.NODE_ENV !== 'production') {
+              safeOptions.secure = false;
+            }
+            response.cookies.set(name, value, safeOptions);
+          });
+        },
+      },
+    }
+  );
+
+  const { data: { user } } = await supabase.auth.getUser();
+
+  if (req.nextUrl.pathname === '/api/users/me') {
+    console.log('[MIDDLEWARE] /api/users/me -> user:', user?.email || 'null');
+    console.log('[MIDDLEWARE] cookies received:', req.cookies.getAll().map(c => c.name));
+  }
+
+  if (!isPublicRoute(req.nextUrl.pathname) && !user) {
+    const signInUrl = req.nextUrl.clone();
+    signInUrl.pathname = '/sign-in';
+    return NextResponse.redirect(signInUrl);
   }
 
   // Inject pathname into request headers so server components can read the current URL
-  const requestHeaders = new Headers(req.headers);
-  requestHeaders.set('x-pathname', req.nextUrl.pathname);
-  
-  const response = NextResponse.next({
-    request: { headers: requestHeaders },
-  });
+  response.headers.set('x-pathname', req.nextUrl.pathname);
 
   // Apply Security Headers (CSP, X-Frame-Options, X-Content-Type-Options, etc)
   const csp = generateCsp();
@@ -64,9 +95,21 @@ export default clerkMiddleware(async (auth, req) => {
   response.headers.set('X-Content-Type-Options', 'nosniff');
   // Strict Transport Security (HSTS)
   response.headers.set('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
+  // XSS Protection
+  response.headers.set('X-XSS-Protection', '1; mode=block');
+  // Referrer Policy
+  response.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
+  // Permissions Policy
+  response.headers.set('Permissions-Policy', 'camera=(), microphone=(), geolocation=(), interest-cohort=()');
+
+  // Clean up old cookies
+  const legacyCookies = req.cookies.getAll().filter(c => c.name.includes('__session') || c.name.includes('__client'));
+  legacyCookies.forEach(c => {
+    response.cookies.delete(c.name);
+  });
 
   return response;
-});
+}
 
 export const config = {
   matcher: [
