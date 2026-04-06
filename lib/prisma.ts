@@ -27,6 +27,7 @@ function createPrismaClient() {
 
   const pool = new Pool({ 
     connectionString,
+    // @ts-ignore - The pg driver supports this natively for IPv6, but the TypeScript definitions do not include it.
     family: 6 // Force IPv6 natively in the pg driver to fix Vercel+Supabase connection timeouts
   });
   const adapter = new PrismaPg(pool);
