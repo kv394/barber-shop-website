@@ -25,7 +25,10 @@ function createPrismaClient() {
     console.warn("DATABASE_URL is missing. PrismaClient may fail to initialize.");
   }
 
-  const pool = new Pool({ connectionString });
+  const pool = new Pool({ 
+    connectionString,
+    family: 6 // Force IPv6 natively in the pg driver to fix Vercel+Supabase connection timeouts
+  });
   const adapter = new PrismaPg(pool);
   return new PrismaClient({ adapter });
 }
