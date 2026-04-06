@@ -20,7 +20,8 @@ if (typeof process !== 'undefined' && process.env.NODE_ENV !== 'development') {
 }
 
 function createPrismaClient() {
-  const connectionString = process.env.DATABASE_URL;
+  // Use Vercel integration variable first if available, then fallback to manual URL
+  const connectionString = process.env.SUPABASE_DATABASE_URL || process.env.DATABASE_URL;
   if (!connectionString) {
     console.warn("DATABASE_URL is missing. PrismaClient may fail to initialize.");
   }

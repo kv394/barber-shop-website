@@ -8,6 +8,7 @@ loadEnvConfig(process.cwd());
 export default defineConfig({
   schema: path.join(__dirname, 'prisma', 'schema.prisma'),
   datasource: {
-    url: process.env.DATABASE_URL!,
+    // Vercel integration sets SUPABASE_DATABASE_URL automatically, fallback to manual DATABASE_URL
+    url: process.env.SUPABASE_DATABASE_URL || process.env.DATABASE_URL!,
   },
 });
