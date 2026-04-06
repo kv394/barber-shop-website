@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import ProductInventoryManager from './ProductInventoryManager';
+import ProductBarcodeScannerWrapper from '@/components/checkout/ProductBarcodeScannerWrapper';
 
 export default function ProductManager({ shopId, products }: { shopId: string, products: any[] }) {
   const router = useRouter();
@@ -59,7 +60,10 @@ export default function ProductManager({ shopId, products }: { shopId: string, p
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-bold text-white">Products & Inventory</h2>
+        <div className="flex items-center gap-4">
+          <h2 className="text-2xl font-bold text-white">Products & Inventory</h2>
+          <ProductBarcodeScannerWrapper shopId={shopId} products={products} />
+        </div>
         <button onClick={() => setIsAdding(!isAdding)} className="bg-brand-gold text-slate-900 px-4 py-2 rounded-lg font-bold hover:bg-yellow-400 transition-colors">
           {isAdding ? 'Cancel' : 'Add Product'}
         </button>
