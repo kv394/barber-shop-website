@@ -94,6 +94,33 @@ export default async function PublicShopPage({
 
   // Define different layouts based on the selected template
   
+  if (!['minimal', 'classic', 'modern'].includes(templateType)) {
+    const dynamicTemplate = await prisma.dynamicTemplate.findUnique({
+      where: { name: templateType }
+    });
+
+    if (dynamicTemplate) {
+      // We dynamically import handlebars so it doesn't break anything else
+      const Handlebars = (await import('handlebars')).default;
+      
+      const template = Handlebars.compile(dynamicTemplate.htmlCode);
+      const html = template({
+        shop,
+        primaryColor,
+        secondaryColor
+      });
+
+      return (
+        <main>
+          {dynamicTemplate.cssCode && (
+            <style dangerouslySetInnerHTML={{ __html: dynamicTemplate.cssCode }} />
+          )}
+          <div dangerouslySetInnerHTML={{ __html: html }} />
+        </main>
+      );
+    }
+  }
+
   if (templateType === 'minimal') {
     return (
       <main className="min-h-screen bg-white text-gray-900 font-sans">
