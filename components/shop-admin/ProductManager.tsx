@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import ProductInventoryManager from './ProductInventoryManager';
 
 export default function ProductManager({ shopId, products }: { shopId: string, products: any[] }) {
   const router = useRouter();
@@ -139,9 +140,12 @@ export default function ProductManager({ shopId, products }: { shopId: string, p
                 </td>
                 <td className="px-6 py-4">
                   {product.trackInventory ? (
-                    <span className={product.inventoryCount <= product.reorderPoint ? 'text-red-400 font-bold' : 'text-green-400'}>
-                      {product.inventoryCount} in stock
-                    </span>
+                    <ProductInventoryManager 
+                      shopId={shopId} 
+                      productId={product.id} 
+                      currentCount={product.inventoryCount} 
+                      lowStockThreshold={product.reorderPoint}
+                    />
                   ) : (
                     <span className="text-gray-500">Not tracked</span>
                   )}
