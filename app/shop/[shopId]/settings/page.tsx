@@ -2,6 +2,7 @@ import { notFound, redirect } from 'next/navigation';
 import { createClient } from '@/utils/supabase/server';
 import { getShopLayoutData } from '@/lib/shop-data';
 import { CustomizationForm } from '@/components/shop-admin/CustomizationForm';
+import { TemplateSelector } from '@/components/shop-admin/TemplateSelector';
 import { DEFAULT_CUSTOMIZATION } from '@/lib/templates';
 import ShopAdminLayout from '@/components/shop-admin/ShopAdminLayout';
 import TimezoneSelector from '@/components/shop-admin/TimezoneSelector';
@@ -70,6 +71,15 @@ export default async function ShopSettingsPage({
         initialRequired={shopDetails?.depositRequired || false}
         initialAmount={shopDetails?.depositAmount || 0}
       />
+
+      <div className="bg-slate-900/50 p-6 rounded-xl border border-white/10 mb-6">
+        <h2 className="text-xl font-bold text-white mb-2">Booking Portal Template</h2>
+        <p className="text-sm text-gray-400 mb-6">Choose the layout and style for your public booking portal.</p>
+        <TemplateSelector
+          currentTemplate={data.shop.template || 'modern'}
+          shopId={shopId}
+        />
+      </div>
 
       <CustomizationForm
         shopId={shopId}
