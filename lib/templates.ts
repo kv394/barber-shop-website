@@ -66,6 +66,12 @@ export interface Customization {
     instagram: string | null;
     twitter: string | null;
   };
+  pages?: {
+    id: string;
+    title: string;
+    content: string;
+    isVisible: boolean;
+  }[];
 }
 
 export const DEFAULT_CUSTOMIZATION: Customization = {
@@ -93,4 +99,12 @@ export const DEFAULT_CUSTOMIZATION: Customization = {
     instagram: null,
     twitter: null,
   },
+  pages: [
+    {
+      id: 'about-us',
+      title: 'About Us',
+      content: 'Welcome to our shop! We are dedicated to providing the best service.',
+      isVisible: true,
+    }
+  ],
 };

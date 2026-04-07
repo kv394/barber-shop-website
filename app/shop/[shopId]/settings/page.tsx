@@ -2,6 +2,7 @@ import { notFound, redirect } from 'next/navigation';
 import { createClient } from '@/utils/supabase/server';
 import { getShopLayoutData } from '@/lib/shop-data';
 import { CustomizationForm } from '@/components/shop-admin/CustomizationForm';
+import { CustomPagesForm } from '@/components/shop-admin/CustomPagesForm';
 import { TemplateSelector } from '@/components/shop-admin/TemplateSelector';
 import { DEFAULT_CUSTOMIZATION } from '@/lib/templates';
 import ShopAdminLayout from '@/components/shop-admin/ShopAdminLayout';
@@ -97,6 +98,11 @@ export default async function ShopSettingsPage({
         shopId={shopId}
         customization={customization}
         isSuperAdmin={data.isSuperAdmin}
+      />
+
+      <CustomPagesForm
+        shopId={shopId}
+        customization={customization}
       />
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

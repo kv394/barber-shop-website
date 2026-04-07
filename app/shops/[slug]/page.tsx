@@ -71,6 +71,7 @@ const getShopBySlug = cache(async (slug: string) => {
     socialLinks: rawCustom.socialLinks,
     // Expose business hours for public schedule display
     businessHours: rawCustom.businessHours,
+    pages: rawCustom.pages,
   };
   return {
     ...serialized,

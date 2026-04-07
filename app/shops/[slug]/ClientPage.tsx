@@ -94,7 +94,8 @@ function ReviewsSection({ reviews, variant = 'dark' }: { reviews: any[]; variant
 
 export default function ClientPage({ shop, templateType, primaryColor, secondaryColor, sportRed, reviews = [], dynamicTemplateHtml, dynamicTemplateCss }: any) {
     const [selectedService, setSelectedService] = useState<any | null>(null);
-        const pathname = usePathname() || '/';
+    const [activePageId, setActivePageId] = useState<string | null>(null);
+    const pathname = usePathname() || '/';
 
     const handleBookClick = (service: any) => {
         setSelectedService(service);
@@ -119,6 +120,8 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
 
     // ── Normalised contact helpers (supports both old flat shape and new nested shape) ──
     const c = shop.customization || {};
+    const pages = c.pages || [];
+    const activePage = pages.find((p: any) => p.id === activePageId);
     const shopPhone   = c.contact?.phone   || c.phone   || '';
     const shopEmail   = c.contact?.email   || c.email   || '';
     const shopWebsite = c.contact?.website || c.website || '';
@@ -586,14 +589,34 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
       // Default 'modern' template (the one that was originally there)
       return (
         <main className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 relative">
-          <header className="absolute w-full top-0 left-0 p-6 flex justify-end z-50">
+          <header className="absolute w-full top-0 left-0 p-4 sm:p-6 flex justify-between items-center z-50">
+             {pages.filter((p: any) => p.isVisible).length > 0 ? (
+                 <nav className="flex gap-4 sm:gap-6 bg-black/20 px-4 sm:px-6 py-2 rounded-full backdrop-blur-md border border-white/10 overflow-x-auto max-w-[calc(100vw-100px)] hide-scrollbar">
+                    <button onClick={() => setActivePageId(null)} className={`text-sm font-medium transition-colors whitespace-nowrap ${!activePageId ? 'text-white' : 'text-gray-400 hover:text-white'}`}>Home</button>
+                    {pages.filter((p: any) => p.isVisible).map((p: any) => (
+                        <button key={p.id} onClick={() => setActivePageId(p.id)} className={`text-sm font-medium transition-colors whitespace-nowrap ${activePageId === p.id ? 'text-white' : 'text-gray-400 hover:text-white'}`}>{p.title}</button>
+                    ))}
+                 </nav>
+             ) : (
+                 <div />
+             )}
              <SupabaseAuthButton redirectUrl={pathname} />
           </header>
-          {/* Hero Section */}
-          <section 
-            className="bg-black/40 backdrop-blur-md border-b border-slate-700"
-            style={{ borderBottomColor: primaryColor }}
-          >
+
+          {activePage ? (
+            <section className="pt-32 pb-20 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto min-h-[80vh]">
+               <div className="bg-slate-800/50 p-8 md:p-12 rounded-2xl border border-slate-700 shadow-xl">
+                  <h1 className="text-4xl font-bold mb-8" style={{ color: primaryColor }}>{activePage.title}</h1>
+                  <div className="prose prose-invert prose-lg max-w-none text-gray-300" dangerouslySetInnerHTML={{ __html: activePage.content || '' }} />
+               </div>
+            </section>
+          ) : (
+            <>
+              {/* Hero Section */}
+              <section 
+                className="bg-black/40 backdrop-blur-md border-b border-slate-700 pt-16 md:pt-8"
+                style={{ borderBottomColor: primaryColor }}
+              >
             <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
               <div className="text-center">
                 <h1 
@@ -671,6 +694,8 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
           </section>
 
           <ReviewsSection reviews={reviews} variant="dark" />
+            </>
+          )}
 
           {/* Footer */}
           <footer className="bg-black/50 border-t border-slate-700 py-12">
