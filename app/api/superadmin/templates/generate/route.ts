@@ -35,10 +35,11 @@ export async function POST(request: NextRequest) {
   try {
     const response = await ai.models.generateContent({
       model: selectedModel,
-      contents: `You are an expert web developer designing a highly customized and unique template for a barbershop.
-DO NOT output a generic, plain, or "modern" boilerplate. Your goal is to strictly follow the "User Prompt" below and create a distinct, deeply customized aesthetic (layout, colors, typography, shapes, and structural design) that exactly matches their request.
+      contents: `Design a unique, fully responsive layout using Tailwind CSS utility classes based on the following request:
 
-The template must be responsive and visually stunning, heavily utilizing Tailwind CSS utility classes.
+USER PROMPT:
+"${prompt}"
+
 Use the following handlebars-like placeholders for dynamic data injection:
 {{shop.name}}
 {{shop.description}}
@@ -49,20 +50,24 @@ Use the following handlebars-like placeholders for dynamic data injection:
   {{this.description}}
   {{this.price}}
   {{this.duration}}
-{{/each}}
-
-User Prompt: ${prompt}
-
-Respond ONLY with a JSON object with the following structure:
+{{/each}}`,
+      config: {
+        systemInstruction: `You are a world-class, avant-garde web designer and frontend developer.
+Your ONLY goal is to generate heavily customized, extremely unique, and visually stunning web templates that strictly adhere to the user's specific theme and request.
+DO NOT use generic, standard, or "modern boilerplate" layouts unless explicitly asked.
+Use creative spacing, dramatic typography, intricate Tailwind CSS classes, unique grid/flexbox arrangements, and elaborate structural designs.
+Return your response as a valid JSON object matching exactly this schema:
 {
-  "htmlCode": "The HTML markup here. Use Tailwind CSS classes for styling. Do not include html/head/body tags. Use semantic HTML5.",
-  "cssCode": "Any additional custom CSS rules (e.g. keyframes, complex gradients, or font imports). Do not include style tags."
+  "htmlCode": "<html structure using semantic HTML5 and Tailwind CSS>",
+  "cssCode": "<any custom css like animations, font imports, or complex gradients>"
 }`,
+        temperature: 1.3,
+        responseMimeType: 'application/json',
+      }
     });
 
-    const text = response.text || '';
-    const jsonStr = text.replace(/```json/g, '').replace(/```/g, '').trim();
-    const result = JSON.parse(jsonStr);
+    const text = response.text || '{}';
+    const result = JSON.parse(text);
 
     const template = await prisma.dynamicTemplate.create({
       data: {
