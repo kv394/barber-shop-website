@@ -117,6 +117,7 @@ export default function TemplatesPage() {
               <div className="flex justify-between items-start mb-2">
                 <h3 className="text-lg font-bold text-brand-gold">{t.name}</h3>
                 <div className="flex space-x-2">
+                  <a href={`/superadmin/templates/${t.id}/preview`} target="_blank" rel="noopener noreferrer" className="text-xs bg-green-500/20 text-green-400 px-2 py-1 rounded hover:bg-green-500/40 transition">Preview</a>
                   <button onClick={() => setEditingTemplate(t)} className="text-xs bg-blue-500/20 text-blue-400 px-2 py-1 rounded hover:bg-blue-500/40 transition">Edit</button>
                   <button onClick={() => handleDelete(t.id)} className="text-xs bg-red-500/20 text-red-400 px-2 py-1 rounded hover:bg-red-500/40 transition">Delete</button>
                 </div>
