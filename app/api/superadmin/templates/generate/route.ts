@@ -23,17 +23,18 @@ export async function POST(request: NextRequest) {
   const adminCheck = await requireSuperAdmin();
   if (adminCheck instanceof NextResponse) return adminCheck;
 
-  const { prompt, name, description } = await request.json();
+  const { prompt, name, description, model } = await request.json();
 
   if (!prompt || !name) {
     return NextResponse.json({ error: 'Missing prompt or name' }, { status: 400 });
   }
 
   const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+  const selectedModel = model || 'gemini-2.5-flash';
 
   try {
     const response = await ai.models.generateContent({
-      model: 'gemini-2.5-pro',
+      model: selectedModel,
       contents: `You are an expert web developer designing a highly customized and unique template for a barbershop.
 DO NOT output a generic, plain, or "modern" boilerplate. Your goal is to strictly follow the "User Prompt" below and create a distinct, deeply customized aesthetic (layout, colors, typography, shapes, and structural design) that exactly matches their request.
 

@@ -10,6 +10,7 @@ export default function TemplatesPage() {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [prompt, setPrompt] = useState('');
+  const [model, setModel] = useState('gemini-2.5-flash');
 
   const [editingTemplate, setEditingTemplate] = useState<any | null>(null);
   const [savingEdit, setSavingEdit] = useState(false);
@@ -35,7 +36,7 @@ export default function TemplatesPage() {
       const res = await fetch('/api/superadmin/templates/generate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, description, prompt }),
+        body: JSON.stringify({ name, description, prompt, model }),
       });
       const data = await res.json();
       if (data.error) throw new Error(data.error);
