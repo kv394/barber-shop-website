@@ -8,8 +8,9 @@ import Link from 'next/link';
 export const dynamic = 'force-dynamic';
 
 function SettingsSubNav({ shopId, active }: { shopId: string; active: string }) {
-  const links = [
+  const navLinks = [
     { href: `/shop/${shopId}/settings`, label: '🎨 Appearance', key: 'appearance' },
+    { href: `/shop/${shopId}/settings/templates`, label: '✨ AI Templates', key: 'templates' },
     { href: `/shop/${shopId}/settings/booking`, label: '📅 Booking & Hours', key: 'booking' },
     { href: `/shop/${shopId}/settings/notifications`, label: '🔔 Notifications', key: 'notifications' },
     { href: `/shop/${shopId}/settings/commissions`, label: '💼 Commissions', key: 'commissions' },
@@ -17,7 +18,7 @@ function SettingsSubNav({ shopId, active }: { shopId: string; active: string }) 
   ];
   return (
     <div className="flex gap-2 flex-wrap mb-6 pb-4 border-b border-white/10 overflow-x-auto">
-      {links.map(l => (
+      {navLinks.map(l => (
         <Link key={l.key} href={l.href}
           className={`px-3 py-1.5 rounded-lg text-sm font-medium whitespace-nowrap transition-colors ${l.key === active ? 'bg-brand-gold text-black' : 'bg-white/5 text-gray-400 hover:text-white'}`}>
           {l.label}

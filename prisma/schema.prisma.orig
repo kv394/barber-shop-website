@@ -42,9 +42,6 @@ model Shop {
   notifications    Notification[]
   blackoutDates    ShopBlackoutDate[]
 
-  // Custom AI Templates
-  dynamicTemplates DynamicTemplate[]
-
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
 
@@ -613,8 +610,6 @@ model DynamicTemplate {
   prompt      String?  @db.Text
   htmlCode    String   @db.Text
   cssCode     String   @db.Text
-  shopId      String?
-  shop        Shop?    @relation(fields: [shopId], references: [id])
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
