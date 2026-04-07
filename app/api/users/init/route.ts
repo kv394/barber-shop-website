@@ -51,7 +51,7 @@ export async function POST(request: Request) {
 
     if (userByEmail) {
       // Transaction to ensure invited user is claimed correctly
-      const finalUser = await prisma.$transaction(async (tx) => {
+      const finalUser = await prisma.$transaction(async (tx: any) => {
         await tx.user.delete({ where: { id: userByEmail.id } });
         const newUser = await tx.user.create({
           data: {

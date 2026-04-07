@@ -169,7 +169,7 @@ export async function POST(
 
     // SECURITY: Atomic conflict-check + create inside a serializable transaction
     // to prevent double-booking race conditions (TOCTOU).
-    const appointment = await prisma.$transaction(async (tx) => {
+    const appointment = await prisma.$transaction(async (tx: any) => {
       const conflict = await tx.appointment.findFirst({
         where: {
           shopId: shopId,

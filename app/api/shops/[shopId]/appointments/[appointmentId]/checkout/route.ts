@@ -83,7 +83,7 @@ export async function POST(
 
     // Build the transaction — SECURITY: all checks INSIDE the transaction to prevent
     // double-checkout race conditions and inventory underflow
-    await prisma.$transaction(async (tx) => {
+    await prisma.$transaction(async (tx: any) => {
       // Re-check status inside the transaction to prevent double-checkout
       const freshAppointment = await tx.appointment.findUnique({
         where: { id: appointmentId },

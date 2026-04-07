@@ -78,7 +78,7 @@ export async function POST(
 
     // SECURITY: Atomic conflict-check + create in a serializable transaction
     // to prevent double-booking race conditions (TOCTOU).
-    const appointments = await prisma.$transaction(async (tx) => {
+    const appointments = await prisma.$transaction(async (tx: any) => {
       // Check for conflicts on all dates inside the transaction
       const conflicts: string[] = [];
       for (const date of dates) {
@@ -128,7 +128,7 @@ export async function POST(
     return NextResponse.json({
       groupId,
       count: appointments.length,
-      appointments: appointments.map(a => ({
+      appointments: appointments.map((a: any) => ({
         id: a.id,
         startTime: a.startTime,
         endTime: a.endTime,

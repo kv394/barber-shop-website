@@ -116,15 +116,15 @@ export async function GET(
     });
 
     const topClientsSorted = topClients
-      .map(c => ({
+      .map((c: any) => ({
         id: c.id,
         name: c.name,
         email: c.email,
-        totalSpend: c.clientAppointments.reduce((s, a) => s + a.totalAmount, 0),
+        totalSpend: c.clientAppointments.reduce((s: number, a: any) => s + a.totalAmount, 0),
         visitCount: c.clientAppointments.length,
         loyaltyPoints: c.loyaltyAccounts[0]?.pointsBalance || 0,
       }))
-      .sort((a, b) => b.totalSpend - a.totalSpend)
+      .sort((a: any, b: any) => b.totalSpend - a.totalSpend)
       .slice(0, 10);
 
     return NextResponse.json({

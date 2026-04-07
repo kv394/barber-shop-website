@@ -75,8 +75,8 @@ export async function GET(
 
       const stats = {
         total: referrals.length,
-        completed: referrals.filter(r => r.status === 'COMPLETED' || r.status === 'REWARDED').length,
-        pending: referrals.filter(r => r.status === 'PENDING').length,
+        completed: referrals.filter((r: any) => r.status === 'COMPLETED' || r.status === 'REWARDED').length,
+        pending: referrals.filter((r: any) => r.status === 'PENDING').length,
       };
 
       return NextResponse.json({ referrals, stats, referralCode: user.referralCode });

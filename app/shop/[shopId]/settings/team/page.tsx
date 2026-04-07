@@ -36,7 +36,7 @@ async function getPageData(shopId: string, userId: string, date: string) {
 
   const dayOfWeek = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'][targetDate.getUTCDay()];
 
-  const staffWithSchedule = allStaff.map(staff => {
+  const staffWithSchedule = allStaff.map((staff: any) => {
     // Skip schedule calculation for Kiosks
     if (staff.role === 'ATTENDANCE_KIOSK') {
        return { ...staff, schedule: [], isOnLeave: false, using: 'not-working' };
@@ -58,8 +58,8 @@ async function getPageData(shopId: string, userId: string, date: string) {
     closingTime.setUTCHours(closeHour, closeMin, 0, 0);
     while (currentSlotTime < closingTime) {
       const slotEndTime = new Date(currentSlotTime.getTime() + 30 * 60000);
-      const booking = staff.staffAppointments.find(apt => new Date(apt.startTime) < slotEndTime && new Date(apt.endTime) > currentSlotTime);
-      const onLeave = staff.leaves.find(l => new Date(l.startTime) < slotEndTime && new Date(l.endTime) > currentSlotTime);
+      const booking = staff.staffAppointments.find((apt: any) => new Date(apt.startTime) < slotEndTime && new Date(apt.endTime) > currentSlotTime);
+      const onLeave = staff.leaves.find((l: any) => new Date(l.startTime) < slotEndTime && new Date(l.endTime) > currentSlotTime);
       schedule.push({
         time: currentSlotTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true, timeZone: 'UTC' }),
         isBooked: !!booking,

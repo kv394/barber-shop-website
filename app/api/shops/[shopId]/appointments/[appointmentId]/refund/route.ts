@@ -37,7 +37,7 @@ export async function POST(
     }
 
     // SECURITY: All status/refund checks INSIDE the transaction to prevent double-refund race
-    const result = await prisma.$transaction(async (tx) => {
+    const result = await prisma.$transaction(async (tx: any) => {
       const freshAppointment = await tx.appointment.findUnique({
         where: { id: appointmentId, shopId },
         include: { payments: true },
@@ -61,7 +61,7 @@ export async function POST(
       }
 
       // Try Stripe refund for real payments
-      const stripePayment = freshAppointment.payments.find(p =>
+      const stripePayment = freshAppointment.payments.find((p: any) =>
         p.transactionId && !p.transactionId.startsWith('sim_') && p.status === 'COMPLETED'
       );
 

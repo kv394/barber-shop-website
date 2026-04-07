@@ -55,11 +55,11 @@ export async function GET() {
       take: 20,
     });
 
-    const uniqueShops = visitedShops.map(a => a.shop);
+    const uniqueShops = visitedShops.map((a: any) => a.shop);
 
     return NextResponse.json({
       referralCode: user.referralCode,
-      referrals: referralsMade.map(r => ({
+      referrals: referralsMade.map((r: any) => ({
         id: r.id,
         refereeName: r.referee.name || r.referee.email?.split('@')[0] || 'Someone',
         shopName: r.shop.name,

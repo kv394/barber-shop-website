@@ -4,7 +4,7 @@ import { PrismaPg } from '@prisma/adapter-pg';
 
 declare global {
   // eslint-disable-next-line no-var
-  var prisma: PrismaClient | undefined;
+  var prismaGlobal: PrismaClient | undefined;
 }
 
 // Force Node.js to use IPv6 first for Supabase database connections
@@ -33,8 +33,8 @@ function createPrismaClient() {
   return new PrismaClient({ adapter });
 }
 
-export const prisma = global.prisma || createPrismaClient();
+export const prisma = global.prismaGlobal || createPrismaClient();
 
 if (process.env.NODE_ENV !== 'production') {
-  global.prisma = prisma;
+  global.prismaGlobal = prisma;
 }

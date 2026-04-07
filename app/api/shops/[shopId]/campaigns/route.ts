@@ -197,7 +197,7 @@ async function getTargetClients(shopId: string, segment: string) {
         select: { id: true, name: true, email: true, phone: true, birthday: true },
       });
       const month = now.getMonth();
-      return clients.filter(c => c.birthday && c.birthday.getMonth() === month);
+      return clients.filter((c: any) => c.birthday && c.birthday.getMonth() === month);
     }
     default: // ALL
       return prisma.user.findMany({

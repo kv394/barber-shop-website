@@ -48,7 +48,7 @@ async function getPageData(shopId: string, userId: string, pageStr: string) {
 
   const totalPages = Math.ceil(totalCount / pageSize);
 
-  const clientsWithLastVisit = clients.map(c => ({
+  const clientsWithLastVisit = clients.map((c: any) => ({
     ...c,
     lastVisit: c.clientAppointments[0]?.startTime || null,
     clientAppointments: undefined,

@@ -51,18 +51,18 @@ async function getShopData(shopId: string, userId: string) {
 
   // Flag items at or below 5 units as low stock
   const lowStockItems = [
-    ...allTrackedServices.filter(s => (s.inventoryCount || 0) <= 5).map(s => ({ ...s, isProduct: false })),
-    ...allTrackedProducts.filter(p => (p.inventoryCount || 0) <= (p.reorderPoint || 5)).map(p => ({ ...p, isProduct: true }))
+    ...allTrackedServices.filter((s: any) => (s.inventoryCount || 0) <= 5).map((s: any) => ({ ...s, isProduct: false })),
+    ...allTrackedProducts.filter((p: any) => (p.inventoryCount || 0) <= (p.reorderPoint || 5)).map((p: any) => ({ ...p, isProduct: true }))
   ];
 
   if (!shopFromDb) {
     return { shop: null, userRole: data.userRole, canManageInventory: false, shopSlug: data.shopSlug, lowStockItems: [], todayStats: null };
   }
 
-  const completed = todayAppointments.filter(a => a.status === 'COMPLETED');
-  const todayRevenue = completed.reduce((s, a) => s + (a.totalAmount > 0 ? a.totalAmount : ((a.service?.price || 0) - (a.discount || 0))), 0);
-  const todayTips = completed.reduce((s, a) => s + (a.tipAmount || 0), 0);
-  const upcoming = todayAppointments.filter(a => a.status === 'SCHEDULED' && new Date(a.startTime) > new Date());
+  const completed = todayAppointments.filter((a: any) => a.status === 'COMPLETED');
+  const todayRevenue = completed.reduce((s: number, a: any) => s + (a.totalAmount > 0 ? a.totalAmount : ((a.service?.price || 0) - (a.discount || 0))), 0);
+  const todayTips = completed.reduce((s: number, a: any) => s + (a.tipAmount || 0), 0);
+  const upcoming = todayAppointments.filter((a: any) => a.status === 'SCHEDULED' && new Date(a.startTime) > new Date());
   const nextAppointment = upcoming[0] || null;
 
   return { 

@@ -30,7 +30,7 @@ async function getShopData(shopId: string, userId: string, date: string, from: s
   const shopHours = (shop.customization as any)?.businessHours || {};
   const dayOfWeek = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'][targetDate.getUTCDay()];
   
-  const staffWithSchedule = staffMembers.map(staff => {
+  const staffWithSchedule = staffMembers.map((staff: any) => {
     if (staff.leaves.length > 0) {
       return { ...staff, schedule: [], isOnLeave: true, using: 'leave' };
     }
@@ -76,7 +76,7 @@ async function getShopData(shopId: string, userId: string, date: string, from: s
       
       if (slotHour >= fromHour && (slotHour > fromHour || slotMin >= fromMin)) {
         const slotEndTime = new Date(currentSlotTime.getTime() + slotDuration);
-        const booking = staff.staffAppointments.find(apt => {
+        const booking = staff.staffAppointments.find((apt: any) => {
           const aptStart = new Date(apt.startTime);
           const aptEnd = new Date(apt.endTime);
           return currentSlotTime < aptEnd && slotEndTime > aptStart;

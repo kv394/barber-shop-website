@@ -68,7 +68,7 @@ export async function POST(
     }
 
     // SECURITY: Atomic position calculation + create to prevent duplicate positions
-    const entry = await prisma.$transaction(async (tx) => {
+    const entry = await prisma.$transaction(async (tx: any) => {
       const today = new Date();
       today.setHours(0, 0, 0, 0);
       const lastEntry = await tx.waitlist.findFirst({

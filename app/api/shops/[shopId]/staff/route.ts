@@ -43,10 +43,10 @@ export async function GET(
     });
 
     // Filter out staff who have leave on the selected date
-    const availableStaff = staffWithLeave.filter(staff => staff.leaves.length === 0);
+    const availableStaff = staffWithLeave.filter((staff: any) => staff.leaves.length === 0);
 
     // SECURITY: Only return minimal public data — no emails, phone, or internal fields
-    const staffToReturn = availableStaff.map(s => ({
+    const staffToReturn = availableStaff.map((s: any) => ({
       id: s.id, 
       name: s.name || 'Staff Member',
       workingHours: s.workingHours

@@ -24,7 +24,7 @@ export async function GET() {
       totalEarned: a.totalEarned,
       totalRedeemed: a.totalRedeemed,
       currentTier: a.currentTier,
-      transactions: a.transactions.map(t => ({
+      transactions: a.transactions.map((t: any) => ({
         id: t.id,
         points: t.points,
         type: t.type,

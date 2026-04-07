@@ -58,7 +58,7 @@ async function getPageData(shopId: string, userId: string) {
 
   // Group by day for simple charting (last 90 days)
   const revenueByDayRecord: Record<string, number> = {};
-  chartAppointments.forEach(apt => {
+  chartAppointments.forEach((apt: any) => {
     const dateKey = apt.updatedAt.toISOString().split('T')[0];
     revenueByDayRecord[dateKey] = (revenueByDayRecord[dateKey] || 0) + (apt.totalAmount > 0 ? apt.totalAmount : ((apt.service?.price || 0) - (apt.discount || 0)));
   });

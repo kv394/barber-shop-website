@@ -30,9 +30,9 @@ export default async function SuperAdminDashboard() {
   ]);
 
   // Derive user counts
-  const totalUsers = userCounts.reduce((acc, g) => acc + g._count.id, 0);
+  const totalUsers = userCounts.reduce((acc: number, g: any) => acc + g._count.id, 0);
   const roleCounts: Record<string, number> = {};
-  userCounts.forEach(g => { roleCounts[g.role] = g._count.id; });
+  userCounts.forEach((g: any) => { roleCounts[g.role] = g._count.id; });
 
   return (
     <div>
@@ -83,7 +83,7 @@ export default async function SuperAdminDashboard() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-white/5">
-                {recentShops.map(shop => (
+                {recentShops.map((shop: any) => (
                   <tr key={shop.id} className="hover:bg-white/5 transition">
                     <td className="py-3 text-white font-medium">{shop.name}</td>
                     <td className="py-3 text-gray-300">{shop._count.users}</td>

@@ -165,7 +165,7 @@ export class LoyaltyService {
     const discountValue = program.redeemValue;
 
     // Atomic check-and-deduct inside a serializable transaction
-    const result = await prisma.$transaction(async (tx) => {
+    const result = await prisma.$transaction(async (tx: any) => {
       const account = await tx.loyaltyAccount.findUnique({
         where: { userId_shopId: { userId, shopId } },
       });

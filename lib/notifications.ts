@@ -283,7 +283,7 @@ export class NotificationService {
       },
     });
 
-    return clients.map(c => ({
+    return clients.map((c: any) => ({
       ...c,
       lastVisit: c.clientAppointments[0]?.startTime || null,
       daysSinceVisit: c.clientAppointments[0]
@@ -301,7 +301,7 @@ export class NotificationService {
       where: { shopId, role: 'CLIENT', birthday: { not: null } },
       select: { id: true, name: true, email: true, phone: true, birthday: true },
     });
-    return clients.filter(c => c.birthday && (c.birthday.getMonth() + 1) === month);
+    return clients.filter((c: any) => c.birthday && (c.birthday.getMonth() + 1) === month);
   }
 
   // ─── Private Dispatch Engine ─────────────────────────────────
