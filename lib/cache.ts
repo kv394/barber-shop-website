@@ -1,28 +1,23 @@
-import Redis from 'ioredis';
+import { Redis } from '@upstash/redis';
 import { logger } from './logger';
 
-// Initialize Redis connection only if REDIS_URL is provided in the environment
-const redisUrl = process.env.REDIS_URL;
+// Initialize Upstash Redis connection only if URL and TOKEN are provided
+const redisUrl = process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL;
+const redisToken = process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN;
 
 class CacheService {
   private redis: Redis | null = null;
 
   constructor() {
-    if (redisUrl) {
-      this.redis = new Redis(redisUrl, {
-        maxRetriesPerRequest: 3,
-        retryStrategy(times) {
-          if (times > 3) {
-            logger.warn('Redis reconnection failed after 3 times.');
-            return null;
-          }
-          return Math.min(times * 50, 2000);
-        },
-      });
-
-      this.redis.on('error', (err) => {
-        logger.error('Redis client error:', err);
-      });
+    if (redisUrl && redisToken) {
+      try {
+        this.redis = new Redis({
+          url: redisUrl,
+          token: redisToken,
+        });
+      } catch (err) {
+        logger.error('Failed to initialize Upstash Redis client:', err);
+      }
     }
   }
 
@@ -39,9 +34,9 @@ class CacheService {
     }
 
     try {
-      const cached = await this.redis.get(key);
+      const cached = await this.redis.get<T>(key);
       if (cached) {
-        return JSON.parse(cached) as T;
+        return cached;
       }
     } catch (err) {
       logger.warn(`Redis GET failed for key: ${key}`, err);
@@ -52,7 +47,7 @@ class CacheService {
 
     try {
       if (data !== undefined && data !== null) {
-        await this.redis.setex(key, ttlSeconds, JSON.stringify(data));
+        await this.redis.set(key, data, { ex: ttlSeconds });
       }
     } catch (err) {
       logger.warn(`Redis SET failed for key: ${key}`, err);
@@ -79,8 +74,10 @@ class CacheService {
   async invalidatePattern(pattern: string): Promise<void> {
     if (!this.redis) return;
     try {
+      // Upstash Redis provides `keys` command
       const keys = await this.redis.keys(pattern);
-      if (keys.length > 0) {
+      if (keys && keys.length > 0) {
+        // Upstash del takes multiple keys as spread
         await this.redis.del(...keys);
       }
     } catch (err) {

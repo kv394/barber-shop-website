@@ -1,14 +1,22 @@
-import Redis from 'ioredis';
+import { Redis } from '@upstash/redis';
 
 // Create a singleton Redis instance for rate limiting
 let redisClient: Redis | null = null;
 
+const redisUrl = process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL;
+const redisToken = process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN;
+
 export function getRedisClient() {
   if (!redisClient) {
-    // Only initialize if Redis URL is available.
-    // Fallback to null (in-memory limiting could be added for local dev, but Redis is standard for Prod)
-    if (process.env.REDIS_URL) {
-      redisClient = new Redis(process.env.REDIS_URL);
+    if (redisUrl && redisToken) {
+      try {
+        redisClient = new Redis({
+          url: redisUrl,
+          token: redisToken,
+        });
+      } catch (err) {
+        console.error('Failed to initialize Upstash Redis client for rate limiting:', err);
+      }
     }
   }
   return redisClient;
@@ -29,7 +37,6 @@ export async function rateLimit(
 ): Promise<{ success: boolean; remaining: number }> {
   const redis = getRedisClient();
   
-  // If Redis is not configured, bypass rate limiting (useful for local dev without Docker)
   if (!redis) {
     return { success: true, remaining: limit };
   }
@@ -37,25 +44,24 @@ export async function rateLimit(
   try {
     const key = `ratelimit:${identifier}`;
     
-    // Multi/Exec ensures these commands are run atomically
-    const current = await redis.get(key);
+    // Upstash provides a pipeline (multi/exec)
+    const current = await redis.get<number>(key);
     
-    if (current && parseInt(current, 10) >= limit) {
+    if (current && current >= limit) {
       return { success: false, remaining: 0 };
     }
 
-    const multi = redis.multi();
-    multi.incr(key);
+    const p = redis.pipeline();
+    p.incr(key);
     
-    // If the key didn't exist (it was just created by incr), set an expiration
     if (!current) {
-      multi.expire(key, windowSeconds);
+      p.expire(key, windowSeconds);
     }
     
-    const results = await multi.exec();
-    // In ioredis, multi.exec() returns an array of [error, result] tuples.
-    // The first command was INCR, so results[0][1] holds the new value.
-    const newValue = results ? results[0][1] as number : 1;
+    const results = await p.exec();
+    
+    // results[0] is the result of the first command (incr)
+    const newValue = results ? (results[0] as number) : 1;
 
     return { 
       success: newValue <= limit, 
@@ -63,7 +69,6 @@ export async function rateLimit(
     };
   } catch (error) {
     console.error('Rate Limiter Error:', error);
-    // Fail open: if Redis crashes, don't break the application, just allow the request
     return { success: true, remaining: 1 };
   }
 }
