@@ -23,6 +23,12 @@ export default async function ShopConfigPage({
     notFound();
   }
 
+  // Import prisma to fetch templates
+  const { prisma } = await import('@/lib/prisma');
+  const dynamicTemplates = await prisma.dynamicTemplate.findMany({
+    select: { name: true, description: true }
+  });
+
   return (
     <ShopAdminLayout
       shopName={data.shop.name}
@@ -41,6 +47,7 @@ export default async function ShopConfigPage({
           <TemplateSelector
             currentTemplate={data.shop.template || 'modern'}
             shopId={shopId}
+            dynamicTemplates={dynamicTemplates}
           />
         </div>
       </div>

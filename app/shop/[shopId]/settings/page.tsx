@@ -35,6 +35,10 @@ export default async function ShopSettingsPage({
     select: { depositRequired: true, depositAmount: true },
   });
 
+  const dynamicTemplates = await prisma.dynamicTemplate.findMany({
+    select: { name: true, description: true }
+  });
+
   const customization = data.shop.customization || DEFAULT_CUSTOMIZATION;
 
   return (
@@ -78,6 +82,7 @@ export default async function ShopSettingsPage({
         <TemplateSelector
           currentTemplate={data.shop.template || 'modern'}
           shopId={shopId}
+          dynamicTemplates={dynamicTemplates}
         />
       </div>
 

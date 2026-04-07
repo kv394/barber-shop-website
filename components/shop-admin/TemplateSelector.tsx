@@ -1,15 +1,16 @@
 'use client';
 
 import { useState } from 'react';
-import { AVAILABLE_TEMPLATES, TemplateType } from '@/lib/templates';
+import { AVAILABLE_TEMPLATES } from '@/lib/templates';
 
 interface TemplateSelectorProps {
-  currentTemplate: TemplateType;
+  currentTemplate: string;
   shopId: string;
+  dynamicTemplates?: { name: string; description: string | null }[];
 }
 
-export function TemplateSelector({ currentTemplate, shopId }: TemplateSelectorProps) {
-  const [selectedTemplate, setSelectedTemplate] = useState<TemplateType>(currentTemplate);
+export function TemplateSelector({ currentTemplate, shopId, dynamicTemplates = [] }: TemplateSelectorProps) {
+  const [selectedTemplate, setSelectedTemplate] = useState<string>(currentTemplate);
   const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -41,6 +42,15 @@ export function TemplateSelector({ currentTemplate, shopId }: TemplateSelectorPr
     }
   };
 
+  const allTemplates = [
+    ...Object.values(AVAILABLE_TEMPLATES),
+    ...dynamicTemplates.map(dt => ({
+      id: dt.name,
+      name: `✨ ${dt.name}`,
+      description: dt.description || 'Custom AI Generated Template',
+    }))
+  ];
+
   return (
     <div className="space-y-6">
       {error && (
@@ -50,7 +60,7 @@ export function TemplateSelector({ currentTemplate, shopId }: TemplateSelectorPr
       )}
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {Object.values(AVAILABLE_TEMPLATES).map((template) => (
+        {allTemplates.map((template) => (
           <div
             key={template.id}
             className={`
