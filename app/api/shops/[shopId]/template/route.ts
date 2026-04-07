@@ -47,7 +47,18 @@ export async function POST(
 
     // SECURITY: Only allow known template values
     const allowedTemplates = Object.keys(AVAILABLE_TEMPLATES);
-    if (!allowedTemplates.includes(template)) {
+    let isValid = allowedTemplates.includes(template);
+
+    if (!isValid) {
+      const dynamicTemplate = await prisma.dynamicTemplate.findUnique({
+        where: { name: template }
+      });
+      if (dynamicTemplate) {
+        isValid = true;
+      }
+    }
+
+    if (!isValid) {
       return NextResponse.json(
         { error: 'Invalid template name' },
         { status: 400 }
