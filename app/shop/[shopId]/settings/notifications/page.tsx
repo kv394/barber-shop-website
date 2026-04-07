@@ -10,7 +10,6 @@ export const dynamic = 'force-dynamic';
 function SettingsSubNav({ shopId, active }: { shopId: string; active: string }) {
   const navLinks = [
     { href: `/shop/${shopId}/settings`, label: '🎨 Appearance', key: 'appearance' },
-    { href: `/shop/${shopId}/settings/templates`, label: '✨ AI Templates', key: 'templates' },
     { href: `/shop/${shopId}/settings/booking`, label: '📅 Booking & Hours', key: 'booking' },
     { href: `/shop/${shopId}/settings/notifications`, label: '🔔 Notifications', key: 'notifications' },
     { href: `/shop/${shopId}/settings/commissions`, label: '💼 Commissions', key: 'commissions' },

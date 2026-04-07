@@ -62,7 +62,6 @@ export default async function ShopSettingsPage({
         <div className="flex gap-2 flex-wrap mb-6 pb-4 border-b border-white/10 overflow-x-auto">
           {[
             { href: `/shop/${shopId}/settings`, label: '🎨 Appearance', active: true },
-            { href: `/shop/${shopId}/settings/templates`, label: '✨ AI Templates' },
             { href: `/shop/${shopId}/settings/booking`, label: '📅 Booking & Hours' },
             { href: `/shop/${shopId}/settings/notifications`, label: '🔔 Notifications' },
             { href: `/shop/${shopId}/settings/commissions`, label: '💼 Commissions' },
