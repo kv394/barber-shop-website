@@ -46,6 +46,7 @@ Use the following handlebars-like placeholders for dynamic data injection:
 {{primaryColor}}
 {{secondaryColor}}
 {{#each shop.services}}
+  {{this.id}} (Use this in a data-service-id attribute on booking buttons/links)
   {{this.name}}
   {{this.description}}
   {{this.price}}

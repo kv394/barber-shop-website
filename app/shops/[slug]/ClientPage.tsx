@@ -92,12 +92,29 @@ function ReviewsSection({ reviews, variant = 'dark' }: { reviews: any[]; variant
   );
 }
 
-export default function ClientPage({ shop, templateType, primaryColor, secondaryColor, sportRed, reviews = [] }: any) {
+export default function ClientPage({ shop, templateType, primaryColor, secondaryColor, sportRed, reviews = [], dynamicTemplateHtml, dynamicTemplateCss }: any) {
     const [selectedService, setSelectedService] = useState<any | null>(null);
         const pathname = usePathname() || '/';
 
     const handleBookClick = (service: any) => {
         setSelectedService(service);
+    };
+
+    // Click handler for dynamically generated templates where we can't easily attach React handlers to string HTML.
+    const handleDynamicTemplateClick = (e: React.MouseEvent) => {
+        const target = e.target as HTMLElement;
+        const button = target.closest('button') || target.closest('a');
+
+        // Very basic heuristic: if it looks like a booking action, open the modal.
+        if (button && (button.innerText.toLowerCase().includes('book') || button.innerText.toLowerCase().includes('appointment'))) {
+            e.preventDefault();
+            // Try to find a specific service based on data attribute, fallback to the first service
+            const serviceId = button.getAttribute('data-service-id');
+            const service = shop.services?.find((s: any) => s.id === serviceId) || shop.services?.[0];
+            if (service) {
+                setSelectedService(service);
+            }
+        }
     };
 
     // ── Normalised contact helpers (supports both old flat shape and new nested shape) ──
@@ -116,6 +133,25 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
             <SupabaseAuthButton redirectUrl={pathname} />
         </div>
     );
+
+    if (dynamicTemplateHtml) {
+        return (
+            <main className="min-h-screen bg-slate-900 text-white font-sans relative" onClick={handleDynamicTemplateClick}>
+                {authButton}
+                {dynamicTemplateCss && <style dangerouslySetInnerHTML={{ __html: dynamicTemplateCss }} />}
+                <div dangerouslySetInnerHTML={{ __html: dynamicTemplateHtml }} />
+                
+                {selectedService && (
+                    <BookingModal
+                        shopId={shop.id}
+                        service={selectedService}
+                        onClose={() => setSelectedService(null)}
+                        shopHours={c.businessHours || {}}
+                    />
+                )}
+            </main>
+        );
+    }
 
     if (templateType === 'sporty') {
         return (

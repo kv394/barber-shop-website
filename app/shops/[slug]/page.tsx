@@ -130,6 +130,29 @@ export default async function PublicShopPage({
   const templateType = shop.template || 'modern';
   const sportRed = shop.customization?.primaryColor || '#d50000'; // Default to a strong red
 
+  let dynamicTemplateHtml = null;
+  let dynamicTemplateCss = null;
+
+  if (!['modern', 'classic', 'minimal', 'sporty', 'corporate', 'noir', 'sunset'].includes(templateType)) {
+    const dynamicTemplate = await prisma.dynamicTemplate.findUnique({
+      where: { name: templateType }
+    });
+
+    if (dynamicTemplate) {
+      try {
+        const compiledTemplate = Handlebars.compile(dynamicTemplate.htmlCode);
+        dynamicTemplateHtml = compiledTemplate({
+          shop,
+          primaryColor,
+          secondaryColor
+        });
+        dynamicTemplateCss = dynamicTemplate.cssCode;
+      } catch (e) {
+        console.error('Handlebars error:', e);
+      }
+    }
+  }
+
   // Pass everything to the Client Component
   return (
       <ClientPage 
@@ -139,6 +162,8 @@ export default async function PublicShopPage({
           secondaryColor={secondaryColor} 
           sportRed={sportRed}
           reviews={shop.reviews || []}
+          dynamicTemplateHtml={dynamicTemplateHtml}
+          dynamicTemplateCss={dynamicTemplateCss}
       />
   );
 }
