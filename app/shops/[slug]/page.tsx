@@ -140,6 +140,7 @@ export default async function PublicShopPage({
 
     if (dynamicTemplate) {
       try {
+        const Handlebars = (await import('handlebars')).default;
         const compiledTemplate = Handlebars.compile(dynamicTemplate.htmlCode);
         dynamicTemplateHtml = compiledTemplate({
           shop,

@@ -36,6 +36,12 @@ export default async function ShopSettingsPage({
   });
 
   const dynamicTemplates = await prisma.dynamicTemplate.findMany({
+    where: {
+      OR: [
+        { shopId: null },
+        { shopId: shopId }
+      ]
+    },
     select: { name: true, description: true }
   });
 

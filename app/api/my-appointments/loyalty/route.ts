@@ -18,7 +18,7 @@ export async function GET() {
   });
 
   return NextResponse.json(
-    accounts.map(a => ({
+    accounts.map((a: any) => ({
       shopName: a.shop.name,
       pointsBalance: a.pointsBalance,
       totalEarned: a.totalEarned,

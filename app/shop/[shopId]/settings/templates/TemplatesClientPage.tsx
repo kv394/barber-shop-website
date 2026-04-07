@@ -14,10 +14,29 @@ export default function TemplatesClientPage({ shopId, isSuperAdmin }: { shopId: 
 
   const [editingTemplate, setEditingTemplate] = useState<any | null>(null);
   const [savingEdit, setSavingEdit] = useState(false);
+  const [applying, setApplying] = useState<string | null>(null);
 
   useEffect(() => {
     fetchTemplates();
   }, [shopId]);
+
+  const handleApply = async (t: any) => {
+    setApplying(t.id);
+    try {
+      const res = await fetch(`/api/shops/${shopId}/template`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ template: t.name }),
+      });
+      const data = await res.json();
+      if (data.error) throw new Error(data.error);
+      alert('Template applied successfully!');
+    } catch (err: any) {
+      alert(err.message);
+    } finally {
+      setApplying(null);
+    }
+  };
 
   const fetchTemplates = () => {
     setLoading(true);
@@ -151,6 +170,7 @@ export default function TemplatesClientPage({ shopId, isSuperAdmin }: { shopId: 
                 
                 <div className="flex space-x-2 pt-2 border-t border-slate-700">
                   <a href={`/superadmin/templates/${t.id}/preview`} target="_blank" rel="noopener noreferrer" className="text-xs bg-gray-500/20 text-gray-300 px-3 py-1.5 rounded hover:bg-gray-500/40 transition text-center flex-1">Preview</a>
+                  <button onClick={() => handleApply(t)} disabled={applying === t.id} className="text-xs bg-green-500/20 text-green-400 px-3 py-1.5 rounded hover:bg-green-500/40 transition flex-1 disabled:opacity-50">{applying === t.id ? 'Applying...' : 'Apply'}</button>
                   {isOwner && (
                     <>
                       <button onClick={() => handleEditClick(t)} className="text-xs bg-blue-500/20 text-blue-400 px-3 py-1.5 rounded hover:bg-blue-500/40 transition flex-1">Edit</button>

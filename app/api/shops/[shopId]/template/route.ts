@@ -50,9 +50,11 @@ export async function POST(
     let isValid = allowedTemplates.includes(template);
 
     if (!isValid) {
+      console.log('Searching for dynamic template:', template);
       const dynamicTemplate = await prisma.dynamicTemplate.findUnique({
         where: { name: template }
       });
+      console.log('Found dynamic template:', dynamicTemplate?.name);
       if (dynamicTemplate) {
         isValid = true;
       }
@@ -75,6 +77,7 @@ export async function POST(
     // Clear the cache so the new template is applied everywhere
     revalidatePath(`/shop/${shopId}`);
     revalidatePath(`/shop/${shopId}/config`);
+    revalidatePath('/shops/[slug]', 'page'); // Bust public shop page cache
 
     return NextResponse.json(updatedShop, { status: 200 });
   } catch (error: any) {

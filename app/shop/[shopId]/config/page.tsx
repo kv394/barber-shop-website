@@ -26,6 +26,12 @@ export default async function ShopConfigPage({
   // Import prisma to fetch templates
   const { prisma } = await import('@/lib/prisma');
   const dynamicTemplates = await prisma.dynamicTemplate.findMany({
+    where: {
+      OR: [
+        { shopId: null },
+        { shopId: shopId }
+      ]
+    },
     select: { name: true, description: true }
   });
 
