@@ -33,9 +33,11 @@ export async function POST(request: NextRequest) {
 
   try {
     const response = await ai.models.generateContent({
-      model: 'gemini-2.5-flash',
-      contents: `You are an expert web developer designing a template for a barbershop.
-The template should be responsive and visually appealing using Tailwind CSS utility classes.
+      model: 'gemini-2.5-pro',
+      contents: `You are an expert web developer designing a highly customized and unique template for a barbershop.
+DO NOT output a generic, plain, or "modern" boilerplate. Your goal is to strictly follow the "User Prompt" below and create a distinct, deeply customized aesthetic (layout, colors, typography, shapes, and structural design) that exactly matches their request.
+
+The template must be responsive and visually stunning, heavily utilizing Tailwind CSS utility classes.
 Use the following handlebars-like placeholders for dynamic data injection:
 {{shop.name}}
 {{shop.description}}
@@ -52,8 +54,8 @@ User Prompt: ${prompt}
 
 Respond ONLY with a JSON object with the following structure:
 {
-  "htmlCode": "The HTML markup here. Use Tailwind CSS classes for styling. Do not include html/head/body tags.",
-  "cssCode": "Any additional custom CSS rules. Do not include style tags."
+  "htmlCode": "The HTML markup here. Use Tailwind CSS classes for styling. Do not include html/head/body tags. Use semantic HTML5.",
+  "cssCode": "Any additional custom CSS rules (e.g. keyframes, complex gradients, or font imports). Do not include style tags."
 }`,
     });
 
