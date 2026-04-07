@@ -11,14 +11,22 @@ export default function TemplatesPage() {
   const [description, setDescription] = useState('');
   const [prompt, setPrompt] = useState('');
 
+  const [editingTemplate, setEditingTemplate] = useState<any | null>(null);
+  const [savingEdit, setSavingEdit] = useState(false);
+
   useEffect(() => {
+    fetchTemplates();
+  }, []);
+
+  const fetchTemplates = () => {
+    setLoading(true);
     fetch('/api/superadmin/templates')
       .then(res => res.json())
       .then(data => {
         if (Array.isArray(data)) setTemplates(data);
         setLoading(false);
       });
-  }, []);
+  };
 
   const handleGenerate = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -39,6 +47,39 @@ export default function TemplatesPage() {
       alert(err.message);
     } finally {
       setGenerating(false);
+    }
+  };
+
+  const handleDelete = async (id: string) => {
+    if (!confirm('Are you sure you want to delete this template?')) return;
+    try {
+      const res = await fetch(`/api/superadmin/templates/${id}`, { method: 'DELETE' });
+      const data = await res.json();
+      if (data.error) throw new Error(data.error);
+      setTemplates(templates.filter(t => t.id !== id));
+    } catch (err: any) {
+      alert(err.message);
+    }
+  };
+
+  const handleEditSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!editingTemplate) return;
+    setSavingEdit(true);
+    try {
+      const res = await fetch(`/api/superadmin/templates/${editingTemplate.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(editingTemplate),
+      });
+      const data = await res.json();
+      if (data.error) throw new Error(data.error);
+      setTemplates(templates.map(t => t.id === editingTemplate.id ? data : t));
+      setEditingTemplate(null);
+    } catch (err: any) {
+      alert(err.message);
+    } finally {
+      setSavingEdit(false);
     }
   };
 
@@ -71,9 +112,15 @@ export default function TemplatesPage() {
       {loading ? <p className="text-gray-400">Loading templates...</p> : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {templates.map((t: any) => (
-            <div key={t.id} className="bg-slate-800 p-4 rounded-xl border border-white/10">
-              <h3 className="text-lg font-bold text-brand-gold">{t.name}</h3>
-              <p className="text-gray-400 text-sm mb-4">{t.description}</p>
+            <div key={t.id} className="bg-slate-800 p-4 rounded-xl border border-white/10 flex flex-col">
+              <div className="flex justify-between items-start mb-2">
+                <h3 className="text-lg font-bold text-brand-gold">{t.name}</h3>
+                <div className="flex space-x-2">
+                  <button onClick={() => setEditingTemplate(t)} className="text-xs bg-blue-500/20 text-blue-400 px-2 py-1 rounded hover:bg-blue-500/40 transition">Edit</button>
+                  <button onClick={() => handleDelete(t.id)} className="text-xs bg-red-500/20 text-red-400 px-2 py-1 rounded hover:bg-red-500/40 transition">Delete</button>
+                </div>
+              </div>
+              <p className="text-gray-400 text-sm mb-4 flex-grow">{t.description}</p>
               <div className="text-xs text-gray-500 overflow-hidden h-24 relative bg-slate-900 p-2 rounded">
                 <div className="absolute inset-0 bg-gradient-to-b from-transparent to-slate-900 pointer-events-none"></div>
                 <pre className="whitespace-pre-wrap">{t.htmlCode}</pre>
@@ -81,6 +128,59 @@ export default function TemplatesPage() {
             </div>
           ))}
           {templates.length === 0 && <p className="text-gray-400">No templates generated yet.</p>}
+        </div>
+      )}
+
+      {/* Edit Modal */}
+      {editingTemplate && (
+        <div className="fixed inset-0 bg-black/80 flex items-center justify-center p-4 z-50">
+          <div className="bg-slate-800 border border-white/10 p-6 rounded-xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-xl font-bold">Edit Template: {editingTemplate.name}</h2>
+              <button onClick={() => setEditingTemplate(null)} className="text-gray-400 hover:text-white">✕</button>
+            </div>
+            
+            <form onSubmit={handleEditSubmit} className="space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm text-gray-400 mb-1">Name</label>
+                  <input required value={editingTemplate.name} onChange={e => setEditingTemplate({...editingTemplate, name: e.target.value})} className="w-full bg-slate-900 border border-slate-700 p-2 rounded text-white" />
+                </div>
+                <div>
+                  <label className="block text-sm text-gray-400 mb-1">Description</label>
+                  <input value={editingTemplate.description || ''} onChange={e => setEditingTemplate({...editingTemplate, description: e.target.value})} className="w-full bg-slate-900 border border-slate-700 p-2 rounded text-white" />
+                </div>
+              </div>
+              
+              <div>
+                <label className="block text-sm text-gray-400 mb-1">HTML (Handlebars)</label>
+                <textarea 
+                  required 
+                  value={editingTemplate.htmlCode} 
+                  onChange={e => setEditingTemplate({...editingTemplate, htmlCode: e.target.value})} 
+                  rows={10} 
+                  className="w-full font-mono text-sm bg-slate-900 border border-slate-700 p-2 rounded text-white" 
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm text-gray-400 mb-1">CSS (Tailwind or custom CSS)</label>
+                <textarea 
+                  value={editingTemplate.cssCode || ''} 
+                  onChange={e => setEditingTemplate({...editingTemplate, cssCode: e.target.value})} 
+                  rows={5} 
+                  className="w-full font-mono text-sm bg-slate-900 border border-slate-700 p-2 rounded text-white" 
+                />
+              </div>
+
+              <div className="flex justify-end space-x-3 pt-4">
+                <button type="button" onClick={() => setEditingTemplate(null)} className="px-4 py-2 text-sm text-gray-300 hover:text-white">Cancel</button>
+                <button disabled={savingEdit} type="submit" className="bg-brand-gold hover:bg-yellow-500 text-black px-6 py-2 rounded font-semibold disabled:opacity-50 transition">
+                  {savingEdit ? 'Saving...' : 'Save Changes'}
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
       )}
     </div>
