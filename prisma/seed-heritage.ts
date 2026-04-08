@@ -8,6 +8,8 @@
  */
 
 import { PrismaClient } from '@prisma/client';
+import { Pool } from 'pg';
+import { PrismaPg } from '@prisma/adapter-pg';
 
 import crypto from 'crypto';
 import { config } from 'dotenv';
@@ -23,8 +25,9 @@ if (!connectionString) {
   process.exit(1);
 }
 
-
-const prisma = new PrismaClient();
+const pool = new Pool({ connectionString });
+const adapter = new PrismaPg(pool);
+const prisma = new PrismaClient({ adapter });
 
 const SHOP_ID = 'cmn9kj24n0000lqzc7kcsmpst';
 
@@ -308,6 +311,33 @@ async function main() {
     const clientName = clients.find(c => c.id === apt.clientId)?.name || apt.clientId;
     const statusEmoji = apt.status === 'COMPLETED' ? '✅' : '🕐';
     console.log(`      ${statusEmoji}  ${clientName} → ${staffName} | ${svc?.name} | ${apt.status}${apt.total > 0 ? ` | $${apt.total} + $${apt.tip} tip` : ''}`);
+  }
+
+  // ══════════════════════════════════════════════════════════════
+  //  COMMISSION RULES
+  // ══════════════════════════════════════════════════════════════
+  console.log('\n  💰  Commission Rules:');
+  const commissionRules = [
+    { id: 'hh-comm-marcus-svc',  staffId: 'heritage-staff-marcus',  serviceId: null, rateType: 'PERCENTAGE' as const, rateValue: 55 },
+    { id: 'hh-comm-deshawn-svc', staffId: 'heritage-staff-deshawn', serviceId: null, rateType: 'PERCENTAGE' as const, rateValue: 50 },
+    { id: 'hh-comm-elena-svc',   staffId: 'heritage-staff-elena',   serviceId: null, rateType: 'PERCENTAGE' as const, rateValue: 50 },
+    { id: 'hh-comm-jasmine-svc', staffId: 'heritage-staff-jasmine', serviceId: null, rateType: 'PERCENTAGE' as const, rateValue: 45 },
+  ];
+
+  for (const cr of commissionRules) {
+    await prisma.commissionRule.upsert({
+      where: { id: cr.id },
+      update: { rateValue: cr.rateValue },
+      create: { id: cr.id, shopId: SHOP_ID, staffId: cr.staffId, serviceId: cr.serviceId, rateType: cr.rateType, rateValue: cr.rateValue },
+    });
+    console.log(`      ✅  Staff ${cr.staffId.replace('heritage-staff-', '')}: ${cr.rateValue}% commission`);
+  }
+
+  // Also set per-user commission rates
+  for (const [id, rate] of [
+    ['heritage-staff-marcus', 55], ['heritage-staff-deshawn', 50], ['heritage-staff-elena', 50], ['heritage-staff-jasmine', 45],
+  ] as [string, number][]) {
+    await prisma.user.update({ where: { id }, data: { commissionRateService: rate, commissionRateProduct: 10 } });
   }
 
   // ══════════════════════════════════════════════════════════════
