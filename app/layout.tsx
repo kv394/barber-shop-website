@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
-import { Inter, Playfair_Display } from "next/font/google";
+import { Plus_Jakarta_Sans, Cormorant_Garamond } from "next/font/google";
 import "./globals.css";
 import { Analytics } from "@vercel/analytics/next";
 
-const inter = Inter({ subsets: ["latin"], variable: '--font-inter' });
-const playfairDisplay = Playfair_Display({ subsets: ["latin"], variable: '--font-playfair-display' });
+const plusJakarta = Plus_Jakarta_Sans({ subsets: ["latin"], variable: '--font-sans', weight: ['300', '400', '500', '600', '700', '800'] });
+const cormorant = Cormorant_Garamond({ subsets: ["latin"], variable: '--font-serif', weight: ['400', '500', '600', '700'], style: ['normal', 'italic'] });
 
 export const metadata: Metadata = {
   title: "Barber Shop SaaS",
@@ -18,7 +18,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.variable} ${playfairDisplay.variable}`}>
+      <body className={`${plusJakarta.variable} ${cormorant.variable} font-sans antialiased text-slate-200 bg-slate-950`}>
         {children}
         <Analytics />
       </body>

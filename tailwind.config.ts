@@ -9,15 +9,15 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['var(--font-inter)'],
-        serif: ['var(--font-playfair-display)'],
+        sans: ['var(--font-sans)', 'sans-serif'],
+        serif: ['var(--font-serif)', 'serif'],
       },
       colors: {
         brand: {
-          dark: '#111111',
-          light: '#fafafa',
-          gold: '#c5a059',
-          gray: '#555555'
+          dark: '#020617',     // slate-950
+          light: '#f8fafc',    // slate-50
+          gold: '#eab308',     // yellow-500 (Vibrant, modern gold)
+          gray: '#64748b'      // slate-500
         }
       }
     },
