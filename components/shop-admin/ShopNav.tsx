@@ -159,44 +159,7 @@ export function ShopNav({ shopId, userRole, activeTab }: { shopId: string, userR
         </div>
       )}
 
-      {/* ── Sub-nav: Settings section ── */}
-      {isShopAdmin && isSettingsSection && (
-        <div className="flex gap-2 mt-3 overflow-x-auto scrollbar-none -mx-3 px-3 sm:mx-0 sm:px-0">
-          <Link href={`/shop/${shopId}/settings`} className={subTabClass('settings')}>
-            🎨 Appearance
-          </Link>
-          <Link href={`/shop/${shopId}/settings/booking`} className={subTabClass('settings-booking')}>
-            📅 Booking & Hours
-          </Link>
-          <Link href={`/shop/${shopId}/settings/resources`} className={subTabClass('settings-resources')}>
-            🪑 Resources
-          </Link>
-          <Link href={`/shop/${shopId}/settings/forms`} className={subTabClass('settings-forms')}>
-            📝 Intake Forms
-          </Link>
-          <Link href={`/shop/${shopId}/settings/memberships`} className={subTabClass('settings-memberships')}>
-            ⭐ Memberships
-          </Link>
-          <Link href={`/shop/${shopId}/settings/notifications`} className={subTabClass('settings-notifications')}>
-            🔔 Notifications
-          </Link>
-          <Link href={`/shop/${shopId}/settings/commissions`} className={subTabClass('settings-commissions')}>
-            💼 Commissions
-          </Link>
-          <Link href={`/shop/${shopId}/settings/kiosk`} className={subTabClass('settings-kiosk')}>
-            📱 Kiosk
-          </Link>
-          <Link href={`/shop/${shopId}/settings/billing`} className={subTabClass('settings-billing')}>
-            💳 Billing
-          </Link>
-          <Link href={`/shop/${shopId}/config/services`} className={subTabClass('services')}>
-            💇 Services
-          </Link>
-          <Link href={`/shop/${shopId}/config/products`} className={subTabClass('products')}>
-            🛍️ Products
-          </Link>
-        </div>
-      )}
+      {/* Settings section no longer renders a sub-nav here, it's moved to a sidebar in ShopAdminLayout */}
     </div>
   );
 }
