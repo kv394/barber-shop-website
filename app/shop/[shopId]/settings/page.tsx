@@ -57,24 +57,6 @@ export default async function ShopSettingsPage({
       userRole={data.userRole}
       activeTab="settings"
     >
-      {/* Settings sub-nav — only for shop admins */}
-      {data.isShopAdmin && !data.isSuperAdmin && (
-        <div className="flex gap-2 flex-wrap mb-6 pb-4 border-b border-white/10 overflow-x-auto">
-          {[
-            { href: `/shop/${shopId}/settings`, label: '🎨 Appearance', active: true },
-            { href: `/shop/${shopId}/settings/booking`, label: '📅 Booking & Hours' },
-            { href: `/shop/${shopId}/settings/notifications`, label: '🔔 Notifications' },
-            { href: `/shop/${shopId}/settings/commissions`, label: '💼 Commissions' },
-            { href: `/shop/${shopId}/settings/kiosk`, label: '📱 Kiosk' },
-          ].map(l => (
-            <Link key={l.href} href={l.href}
-              className={`px-3 py-1.5 rounded-lg text-sm font-medium whitespace-nowrap transition-colors ${l.active ? 'bg-brand-gold text-black' : 'bg-white/5 text-gray-400 hover:text-white'}`}>
-              {l.label}
-            </Link>
-          ))}
-        </div>
-      )}
-
       <TimezoneSelector shopId={shopId} currentTimezone={data.shop.timezone || 'America/New_York'} />
 
       <DepositSettings
