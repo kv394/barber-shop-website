@@ -6,14 +6,15 @@ export default function CommissionSetup({ shopId }: { shopId: string }) {
   const [rules, setRules] = useState<Record<string, { svc: number; product: number }>>({});
   const [saving, setSaving] = useState<string | null>(null);
   const [msg, setMsg] = useState('');
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     Promise.all([
       fetch(`/api/shops/${shopId}/staff`).then(r => r.json()),
       fetch(`/api/shops/${shopId}/commissions`).then(r => r.json()),
     ]).then(([staffData, commData]) => {
-      const members = staffData.staff || staffData || [];
-      setStaff(members);
+      const members = Array.isArray(staffData.staff) ? staffData.staff : Array.isArray(staffData) ? staffData : [];
+      
       const map: Record<string, { svc: number; product: number }> = {};
       members.forEach((s: any) => {
         const rule = (commData.rules || commData || []).find((r: any) => r.staffId === s.id && !r.serviceId);
@@ -23,6 +24,9 @@ export default function CommissionSetup({ shopId }: { shopId: string }) {
         };
       });
       setRules(map);
+      setStaff(members);
+    }).finally(() => {
+      setLoading(false);
     });
   }, [shopId]);
 
@@ -38,7 +42,8 @@ export default function CommissionSetup({ shopId }: { shopId: string }) {
     setTimeout(() => setMsg(''), 2000);
   };
 
-  if (!staff.length) return <div className="animate-pulse text-gray-500 py-4">Loading staff…</div>;
+  if (loading) return <div className="animate-pulse text-gray-500 py-4">Loading staff…</div>;
+  if (!staff.length && !loading) return <div className="text-gray-500 py-4">No staff members found. Add staff to set commissions.</div>;
 
   return (
     <div className="bg-slate-800/60 border border-white/5 rounded-xl p-6 space-y-4">
