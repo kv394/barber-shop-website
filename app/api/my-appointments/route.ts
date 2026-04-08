@@ -20,6 +20,11 @@ export async function GET() {
   try {
     const now = new Date();
 
+    const user = await prisma.user.findFirst({
+      where: { id: userId },
+      select: { role: true, shopId: true },
+    });
+
     const [upcoming, past] = await Promise.all([
       prisma.appointment.findMany({
         where: {
@@ -58,6 +63,7 @@ export async function GET() {
     return NextResponse.json({
       upcoming: JSON.parse(JSON.stringify(upcoming)),
       past: JSON.parse(JSON.stringify(past)),
+      user: user,
     });
   } catch (error: any) {
     return NextResponse.json(

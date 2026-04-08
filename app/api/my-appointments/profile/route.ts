@@ -13,7 +13,7 @@ export async function GET() {
       id: true, name: true, email: true, phone: true,
       preferences: true, allergies: true, birthday: true,
       marketingConsent: true, smsConsent: true, imageUrl: true,
-      barcode: true,
+      barcode: true, shopId: true, role: true,
     },
   });
   if (!user) return NextResponse.json({ error: 'User not found' }, { status: 404 });
@@ -53,7 +53,7 @@ export async function PATCH(request: Request) {
       id: true, name: true, email: true, phone: true,
       preferences: true, allergies: true, birthday: true,
       marketingConsent: true, smsConsent: true, imageUrl: true,
-      barcode: true,
+      barcode: true, shopId: true, role: true,
     },
   });
   return NextResponse.json(updated);

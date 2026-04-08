@@ -32,6 +32,7 @@ const STATUS_STYLES: Record<string, { bg: string; text: string; label: string }>
 export default function MyAppointmentsPage() {
   const [upcoming, setUpcoming] = useState<Appointment[]>([]);
   const [past, setPast] = useState<Appointment[]>([]);
+  const [user, setUser] = useState<{ role: string, shopId: string | null } | null>(null);
   const [loading, setLoading] = useState(true);
   const [cancelling, setCancelling] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -44,6 +45,7 @@ export default function MyAppointmentsPage() {
       const data = await res.json();
       setUpcoming(data.upcoming || []);
       setPast(data.past || []);
+      setUser(data.user || null);
     } catch (e: any) {
       setError(e.message);
     } finally {
@@ -102,12 +104,23 @@ export default function MyAppointmentsPage() {
             <h1 className="text-xl sm:text-2xl font-bold text-white">My Appointments</h1>
             <p className="text-xs text-gray-500">Manage your upcoming bookings</p>
           </div>
-          <Link
-            href="/shops"
-            className="bg-brand-gold text-brand-dark font-bold px-4 py-2 rounded-lg text-sm hover:bg-white transition-colors"
-          >
-            Book New
-          </Link>
+          <div className="flex gap-2">
+            {user?.role === 'SUPER_ADMIN' ? (
+              <Link href="/superadmin" className="bg-slate-800 border border-slate-600 text-white font-bold px-4 py-2 rounded-lg text-sm hover:bg-slate-700 transition-colors">
+                Back to Superadmin
+              </Link>
+            ) : user?.shopId && (user?.role === 'SHOP_ADMIN' || user?.role === 'STAFF') ? (
+              <Link href={`/shop/${user.shopId}`} className="bg-slate-800 border border-slate-600 text-white font-bold px-4 py-2 rounded-lg text-sm hover:bg-slate-700 transition-colors">
+                Back to Dashboard
+              </Link>
+            ) : null}
+            <Link
+              href="/shops"
+              className="bg-brand-gold text-brand-dark font-bold px-4 py-2 rounded-lg text-sm hover:bg-white transition-colors"
+            >
+              Book New
+            </Link>
+          </div>
         </div>
         {/* Client portal nav (C2) */}
         <div className="max-w-4xl mx-auto px-4 sm:px-6 pb-2 flex gap-4 overflow-x-auto scrollbar-none">
