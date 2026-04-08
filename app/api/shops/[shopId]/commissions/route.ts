@@ -3,6 +3,8 @@ import { NextResponse } from 'next/server';
 import { createClient } from '@/utils/supabase/server';
 import { calculateCommissionsForAppointments } from '@/lib/commissions';
 
+export const dynamic = 'force-dynamic';
+
 /**
  * GET /api/shops/[shopId]/commissions
  * Calculate commission report for completed appointments in a date range.
@@ -80,7 +82,12 @@ export async function GET(
     s.totalPayout += r.commission + r.tipAmount;
   }
 
+  const rules = await prisma.commissionRule.findMany({
+    where: { shopId }
+  });
+
   return NextResponse.json({
+    rules,
     details: results,
     summary: Object.entries(staffSummary).map(([staffId, data]) => ({
       staffId,

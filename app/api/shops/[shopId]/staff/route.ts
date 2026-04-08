@@ -2,6 +2,8 @@ import { logger } from "@/lib/logger";
 import { prisma } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
 
+export const dynamic = 'force-dynamic';
+
 export async function GET(
   request: Request,
   { params }: { params: Promise<{ shopId: string }> }
@@ -12,7 +14,24 @@ export async function GET(
     const dateStr = searchParams.get('date');
 
     if (!dateStr) {
-      return NextResponse.json({ error: 'Date is required' }, { status: 400 });
+      // Return all staff if no date is provided (for admin/settings use cases)
+      const allStaff = await prisma.user.findMany({
+        where: {
+          shopId: shopId,
+          role: { in: ['STAFF', 'SHOP_ADMIN'] },
+        },
+        select: {
+          id: true,
+          name: true,
+          role: true,
+          email: true,
+          phone: true,
+          commissionRateService: true,
+          commissionRateProduct: true,
+          workingHours: true,
+        },
+      });
+      return NextResponse.json({ staff: allStaff });
     }
 
     const targetDate = new Date(dateStr);

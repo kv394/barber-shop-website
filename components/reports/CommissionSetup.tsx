@@ -9,15 +9,19 @@ export default function CommissionSetup({ shopId }: { shopId: string }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    const cb = Date.now();
     Promise.all([
-      fetch(`/api/shops/${shopId}/staff`).then(r => r.json()),
-      fetch(`/api/shops/${shopId}/commissions`).then(r => r.json()),
+      fetch(`/api/shops/${shopId}/staff?_cb=${cb}`).then(r => r.json()),
+      fetch(`/api/shops/${shopId}/commissions?_cb=${cb}`).then(r => r.json()),
     ]).then(([staffData, commData]) => {
       const members = Array.isArray(staffData.staff) ? staffData.staff : Array.isArray(staffData) ? staffData : [];
+      const rulesArray = Array.isArray(commData?.rules) ? commData.rules : Array.isArray(commData) ? commData : [];
       
+      console.log('CommissionSetup debug:', { shopId, staffData, commData, members, rulesArray });
+
       const map: Record<string, { svc: number; product: number }> = {};
       members.forEach((s: any) => {
-        const rule = (commData.rules || commData || []).find((r: any) => r.staffId === s.id && !r.serviceId);
+        const rule = rulesArray.find((r: any) => r.staffId === s.id && !r.serviceId);
         map[s.id] = {
           svc:     s.commissionRateService ?? rule?.rateValue ?? 50,
           product: s.commissionRateProduct ?? 10,

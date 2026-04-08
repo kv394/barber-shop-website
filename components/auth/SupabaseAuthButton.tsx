@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { createClient } from '@/utils/supabase/client';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { QRCodeSVG } from 'qrcode.react';
 
 export default function SupabaseAuthButton({ 
   redirectUrl 
@@ -11,6 +12,7 @@ export default function SupabaseAuthButton({
   redirectUrl?: string 
 }) {
   const [user, setUser] = useState<any>(null);
+  const [profile, setProfile] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
   const supabase = createClient();
@@ -18,7 +20,16 @@ export default function SupabaseAuthButton({
   useEffect(() => {
     const fetchUser = async () => {
       const { data } = await supabase.auth.getUser();
-      setUser(data?.user || null);
+      if (data?.user) {
+        setUser(data.user);
+        // Fetch extra profile data for the barcode
+        fetch('/api/my-appointments/profile')
+          .then(res => res.ok ? res.json() : null)
+          .then(data => {
+            if (data) setProfile(data);
+          })
+          .catch(err => console.error(err));
+      }
       setLoading(false);
     };
 
@@ -28,6 +39,7 @@ export default function SupabaseAuthButton({
     const { data: authListener } = supabase.auth.onAuthStateChange(
       (event, session) => {
         setUser(session?.user || null);
+        if (!session?.user) setProfile(null);
       }
     );
 
@@ -39,6 +51,7 @@ export default function SupabaseAuthButton({
   const handleSignOut = async () => {
     await supabase.auth.signOut();
     setUser(null);
+    setProfile(null);
     if (redirectUrl) {
       window.location.href = redirectUrl;
     } else {
@@ -59,16 +72,20 @@ export default function SupabaseAuthButton({
           </div>
         </button>
         {/* Dropdown Menu */}
-        <div className="absolute right-0 mt-2 w-48 bg-slate-900 border border-white/10 rounded-xl shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
-           <div className="p-3 border-b border-white/5">
-             <p className="text-xs text-gray-400 truncate">{user.email}</p>
+        <div className="absolute right-0 mt-2 w-56 bg-slate-900 border border-white/10 rounded-xl shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 overflow-hidden">
+           <div className="p-4 border-b border-white/5 flex flex-col items-center bg-slate-800/50">
+             <p className="text-xs text-gray-400 truncate mb-3 w-full text-center">{user.email}</p>
+             <div className="bg-white p-2 rounded-lg shadow-inner inline-block">
+               <QRCodeSVG value={profile?.barcode || user.id} size={100} level="L" />
+             </div>
+             <p className="text-[10px] text-gray-500 mt-2 text-center uppercase tracking-widest">My Check-in Code</p>
            </div>
            <div className="p-1">
               <Link href="/my-appointments" className="block w-full text-left px-3 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition-colors">
                 My Appointments
               </Link>
               <Link href="/my-appointments/profile" className="block w-full text-left px-3 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition-colors">
-                My Profile (QR Code)
+                Edit Profile
               </Link>
               <Link href="/update-password" className="block w-full text-left px-3 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition-colors">
                 Change Password
