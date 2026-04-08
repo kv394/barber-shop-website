@@ -67,6 +67,9 @@ export default function SupabaseAuthButton({
               <Link href="/my-appointments" className="block w-full text-left px-3 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition-colors">
                 My Appointments
               </Link>
+              <Link href="/my-appointments/profile" className="block w-full text-left px-3 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition-colors">
+                My Profile (QR Code)
+              </Link>
               <Link href="/update-password" className="block w-full text-left px-3 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition-colors">
                 Change Password
               </Link>
