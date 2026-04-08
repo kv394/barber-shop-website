@@ -6,10 +6,10 @@ export function ShopNav({ shopId, userRole, activeTab }: { shopId: string, userR
   const isStaff = userRole === 'STAFF';
 
   // Group definitions
-  const staffTabs = ['staff', 'attendance', 'leave', 'team'];
+  const staffTabs = ['staff', 'attendance', 'leave', 'team', 'portfolio'];
   const reportsTabs = ['reports', 'staff-report', 'expenses', 'commissions'];
   const engagementTabs = ['engagement', 'loyalty', 'referrals', 'campaigns', 'gift-cards'];
-  const settingsTabs = ['settings', 'appearance', 'contact-settings', 'settings-booking', 'settings-resources', 'settings-notifications', 'settings-commissions', 'settings-kiosk', 'setup', 'products', 'services'];
+  const settingsTabs = ['settings', 'appearance', 'contact-settings', 'settings-booking', 'settings-resources', 'settings-forms', 'settings-memberships', 'settings-notifications', 'settings-commissions', 'settings-kiosk', 'setup', 'products', 'services'];
 
   // For STAFF, commissions page ("My Earnings") lives under the Staff section
   const effectiveStaffTabs = isStaff ? [...staffTabs, 'commissions'] : staffTabs;
@@ -104,6 +104,9 @@ export function ShopNav({ shopId, userRole, activeTab }: { shopId: string, userR
           <Link href={`/shop/${shopId}/leave`} className={subTabClass('leave')}>
             🏖️ Leave
           </Link>
+          <Link href={`/shop/${shopId}/portfolio`} className={subTabClass('portfolio')}>
+            📸 Portfolio
+          </Link>
           {isShopAdmin && (
             <Link href={`/shop/${shopId}/settings/team`} className={subTabClass('team')}>
               👥 Manage Team
@@ -167,6 +170,12 @@ export function ShopNav({ shopId, userRole, activeTab }: { shopId: string, userR
           </Link>
           <Link href={`/shop/${shopId}/settings/resources`} className={subTabClass('settings-resources')}>
             🪑 Resources
+          </Link>
+          <Link href={`/shop/${shopId}/settings/forms`} className={subTabClass('settings-forms')}>
+            📝 Intake Forms
+          </Link>
+          <Link href={`/shop/${shopId}/settings/memberships`} className={subTabClass('settings-memberships')}>
+            ⭐ Memberships
           </Link>
           <Link href={`/shop/${shopId}/settings/notifications`} className={subTabClass('settings-notifications')}>
             🔔 Notifications
