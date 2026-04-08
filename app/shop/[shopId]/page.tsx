@@ -9,7 +9,7 @@ import InventoryManager from '@/components/shop-admin/InventoryManager';
 import Link from 'next/link';
 import BarcodeScannerWrapper from '@/components/checkout/BarcodeScannerWrapper';
 import ShopAdminLayout from '@/components/shop-admin/ShopAdminLayout';
-import { calculateUsageCostStrategy } from '@/lib/cost-calculator';
+import { calculateUsageCostStrategy, getSaaSTiers } from '@/lib/cost-calculator';
 
 export const dynamic = 'force-dynamic';
 
@@ -72,6 +72,7 @@ async function getShopData(shopId: string, userId: string) {
   // Billing Alert Logic
   let billingAlert: { message: string; type: 'warning' | 'error' } | null = null;
   if (latestReport) {
+    const tiers = await getSaaSTiers();
     const analysis = calculateUsageCostStrategy({
       userCount: latestReport.userCount,
       appointmentCount: latestReport.appointmentCount,
@@ -82,27 +83,28 @@ async function getShopData(shopId: string, userId: string) {
       clientHistoryImageCount: latestReport.clientHistoryImageCount,
       clientFormulaCount: latestReport.clientFormulaCount,
       reviewCount: latestReport.reviewCount
-    });
+    }, tiers);
 
-    if (analysis.pricingTierName === 'Starter') {
-      if (latestReport.appointmentCount >= 90 || latestReport.userCount >= 9) {
+    // Dynamic warning: If they are approaching the limits of the chosen tier.
+    // Check if they are > 90% of current tier capacity.
+    const currentTier = tiers.find(t => t.id === analysis.tierId);
+    if (currentTier) {
+      const limitsApproaching = [];
+      if (currentTier.maxAppointments < 999999 && latestReport.appointmentCount >= currentTier.maxAppointments * 0.9) limitsApproaching.push('appointments');
+      if (currentTier.maxUsers < 999 && latestReport.userCount >= currentTier.maxUsers * 0.9) limitsApproaching.push('users');
+      if (currentTier.maxFormSubmissions < 999999 && latestReport.formSubmissionCount >= currentTier.maxFormSubmissions * 0.9) limitsApproaching.push('intake forms');
+
+      if (limitsApproaching.length > 0) {
         billingAlert = {
-          message: 'You are approaching the limits of the Starter tier. Consider upgrading to Growth.',
-          type: 'warning'
-        };
-      }
-    } else if (analysis.pricingTierName === 'Growth') {
-      if (latestReport.appointmentCount >= 450 || latestReport.userCount >= 22 || latestReport.formSubmissionCount >= 90) {
-        billingAlert = {
-          message: 'You are approaching the limits of the Growth tier. Consider upgrading to Enterprise Spa.',
+          message: `You are approaching the ${limitsApproaching.join(', ')} limits of the ${currentTier.name} tier. Consider upgrading.`,
           type: 'warning'
         };
       }
     }
 
-    if (analysis.estimatedStorageMB > 450) {
+    if (analysis.estimatedStorageMB > (currentTier?.storageLimitMB || 500) * 0.9) {
       billingAlert = {
-        message: 'You are approaching the 500MB storage limit. Additional storage overages will apply.',
+        message: `You are approaching your ${(currentTier?.storageLimitMB || 500)}MB storage limit. Additional storage overages will apply.`,
         type: 'warning'
       };
     }

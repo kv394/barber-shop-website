@@ -803,3 +803,17 @@ model ShopUsageReport {
 
   @@index([shopId, period])
 }
+
+model SaaSTier {
+  id                  String   @id @default(cuid())
+  name                String   @unique
+  baseFeeUSD          Float
+  maxAppointments     Int
+  maxUsers            Int
+  maxFormSubmissions  Int
+  storageLimitMB      Float    @default(500)
+  overageFeePer100MB  Float    @default(1)
+  description         String?
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+}

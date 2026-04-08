@@ -48,6 +48,7 @@ export default async function SuperAdminLayout({ children }: { children: React.R
           <div className="flex gap-1 overflow-x-auto scrollbar-none py-2">
             <NavLink href="/superadmin" label="📊 Dashboard" />
             <NavLink href="/superadmin/shops" label="🏪 Shops" />
+            <NavLink href="/superadmin/tiers" label="💳 Pricing Tiers" />
             <NavLink href="/superadmin/logs" label="🚨 System Logs" />
             <NavLink href="/superadmin/templates" label="✨ AI Templates" />
           </div>

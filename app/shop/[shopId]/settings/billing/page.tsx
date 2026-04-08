@@ -3,7 +3,7 @@ import { createClient } from '@/utils/supabase/server';
 import { getShopLayoutData } from '@/lib/shop-data';
 import { prisma } from '@/lib/prisma';
 import ShopAdminLayout from '@/components/shop-admin/ShopAdminLayout';
-import { calculateUsageCostStrategy } from '@/lib/cost-calculator';
+import { calculateUsageCostStrategy, getSaaSTiers } from '@/lib/cost-calculator';
 
 export const dynamic = 'force-dynamic';
 
@@ -30,6 +30,8 @@ export default async function ShopBillingPage({ params }: { params: Promise<{ sh
   let metrics;
   let analysis;
 
+  const tiers = await getSaaSTiers();
+
   if (latestReport) {
     metrics = {
       userCount: latestReport.userCount,
@@ -42,12 +44,9 @@ export default async function ShopBillingPage({ params }: { params: Promise<{ sh
       clientFormulaCount: latestReport.clientFormulaCount,
       reviewCount: latestReport.reviewCount
     };
-    analysis = {
-      estimatedStorageMB: latestReport.estimatedStorageMB,
-      suggestedMonthlyFeeUSD: latestReport.suggestedMonthlyFeeUSD,
-      pricingTierName: latestReport.pricingTierName,
-      strategyReasoning: `[Data aggregated hourly] Based on a usage volume of ${metrics.appointmentCount} appointments and ${metrics.userCount} users, the '${latestReport.pricingTierName}' tier is recommended. Storage is efficiently utilized at ${latestReport.estimatedStorageMB} MB, keeping infrastructure overhead balanced and minimizing extra costs.`
-    };
+    analysis = calculateUsageCostStrategy(metrics, tiers);
+    // Override the reasoning to include the hourly note
+    analysis.strategyReasoning = `[Data aggregated hourly] ${analysis.strategyReasoning}`;
   } else {
     const [
       userCount, appointmentCount, productCount, serviceCount,
@@ -70,7 +69,7 @@ export default async function ShopBillingPage({ params }: { params: Promise<{ sh
       formSubmissionCount, portfolioImageCount, clientHistoryImageCount,
       clientFormulaCount, reviewCount
     };
-    analysis = calculateUsageCostStrategy(metrics);
+    analysis = calculateUsageCostStrategy(metrics, tiers);
   }
 
   return (
@@ -136,9 +135,14 @@ export default async function ShopBillingPage({ params }: { params: Promise<{ sh
               Storage over 500MB incurs a $1 fee per additional 100MB.
             </p>
             <ul className="text-sm text-gray-300 space-y-2 list-disc list-inside ml-4">
-              <li><strong className="text-white">Starter ($29/mo):</strong> Under 100 appointments, under 10 users.</li>
-              <li><strong className="text-white">Growth ($79/mo):</strong> 100+ appointments or 10+ users.</li>
-              <li><strong className="text-white">Enterprise Spa ($199/mo):</strong> 500+ appointments, 25+ users, or 100+ intake forms.</li>
+              {tiers.map(t => (
+                <li key={t.id}>
+                  <strong className="text-white">{t.name} (${t.baseFeeUSD}/mo):</strong>{' '}
+                  {t.maxAppointments < 999999 ? `Up to ${t.maxAppointments} appointments` : 'Unlimited appointments'},{' '}
+                  {t.maxUsers < 999 ? `up to ${t.maxUsers} users` : 'unlimited users'},{' '}
+                  {t.maxFormSubmissions < 999999 ? `up to ${t.maxFormSubmissions} intake forms` : 'unlimited forms'}.
+                </li>
+              ))}
             </ul>
           </div>
         </div>

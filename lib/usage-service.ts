@@ -1,6 +1,6 @@
 import { prisma } from './prisma';
 import { logger } from './logger';
-import { calculateUsageCostStrategy } from './cost-calculator';
+import { calculateUsageCostStrategy, getSaaSTiers } from './cost-calculator';
 
 export class UsageService {
   /**
@@ -11,6 +11,8 @@ export class UsageService {
       const shops = await prisma.shop.findMany({ select: { id: true } });
       const currentPeriod = new Date();
       currentPeriod.setMinutes(0, 0, 0); // truncate to current hour
+      
+      const tiers = await getSaaSTiers();
 
       let reportsGenerated = 0;
 
@@ -61,7 +63,7 @@ export class UsageService {
           reviewCount
         };
 
-        const analysis = calculateUsageCostStrategy(metrics);
+        const analysis = calculateUsageCostStrategy(metrics, tiers);
 
         await prisma.shopUsageReport.create({
           data: {

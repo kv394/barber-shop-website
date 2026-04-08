@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { createClient } from '@/utils/supabase/server';
 import { logger } from '@/lib/logger';
-import { calculateUsageCostStrategy } from '@/lib/cost-calculator';
+import { calculateUsageCostStrategy, getSaaSTiers } from '@/lib/cost-calculator';
 
 export const dynamic = 'force-dynamic';
 
@@ -96,7 +96,8 @@ export async function GET(
       };
 
       // 2. Use Deterministic Strategy (No Gemini API call)
-      analysis = calculateUsageCostStrategy(metrics);
+      const tiers = await getSaaSTiers();
+      analysis = calculateUsageCostStrategy(metrics, tiers);
     }
 
     return NextResponse.json({

@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { createClient } from '@/utils/supabase/server';
 import { logger } from '@/lib/logger';
-import { calculateUsageCostStrategy } from '@/lib/cost-calculator';
+import { calculateUsageCostStrategy, getSaaSTiers } from '@/lib/cost-calculator';
 
 export const dynamic = 'force-dynamic';
 
@@ -100,8 +100,9 @@ export async function GET(
         reviewCount
       };
 
+      const tiers = await getSaaSTiers();
       // 2. Use Deterministic Strategy
-      analysis = calculateUsageCostStrategy(metrics);
+      analysis = calculateUsageCostStrategy(metrics, tiers);
     }
 
     return NextResponse.json({

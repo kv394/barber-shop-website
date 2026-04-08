@@ -1,3 +1,5 @@
+import { prisma } from './prisma';
+
 export type UsageMetrics = {
   userCount: number;
   appointmentCount: number;
@@ -15,12 +17,96 @@ export type CostAnalysis = {
   suggestedMonthlyFeeUSD: number;
   pricingTierName: string;
   strategyReasoning: string;
+  tierId?: string;
 };
 
+export type SaaSTierInput = {
+  id: string;
+  name: string;
+  baseFeeUSD: number;
+  maxAppointments: number;
+  maxUsers: number;
+  maxFormSubmissions: number;
+  storageLimitMB: number;
+  overageFeePer100MB: number;
+  description: string | null;
+};
+
+export async function getSaaSTiers(): Promise<SaaSTierInput[]> {
+  let tiers = await prisma.saaSTier.findMany({
+    orderBy: { baseFeeUSD: 'asc' }
+  });
+
+  if (tiers.length === 0) {
+    const defaultTiers = [
+      {
+        name: 'Free Trial',
+        baseFeeUSD: 0,
+        maxAppointments: 50,
+        maxUsers: 2,
+        maxFormSubmissions: 20,
+        storageLimitMB: 100,
+        overageFeePer100MB: 2,
+        description: 'For small shops just getting started.'
+      },
+      {
+        name: 'Starter',
+        baseFeeUSD: 29,
+        maxAppointments: 200,
+        maxUsers: 5,
+        maxFormSubmissions: 50,
+        storageLimitMB: 500,
+        overageFeePer100MB: 1,
+        description: 'For growing independent barbers and small parlors.'
+      },
+      {
+        name: 'Growth',
+        baseFeeUSD: 79,
+        maxAppointments: 1000,
+        maxUsers: 10,
+        maxFormSubmissions: 200,
+        storageLimitMB: 1000,
+        overageFeePer100MB: 1,
+        description: 'For busy shops with a full team.'
+      },
+      {
+        name: 'Enterprise Spa',
+        baseFeeUSD: 199,
+        maxAppointments: 5000,
+        maxUsers: 25,
+        maxFormSubmissions: 1000,
+        storageLimitMB: 5000,
+        overageFeePer100MB: 1,
+        description: 'For large spas and multi-chair operations.'
+      },
+      {
+        name: 'Unlimited Platform',
+        baseFeeUSD: 399,
+        maxAppointments: 999999,
+        maxUsers: 999,
+        maxFormSubmissions: 999999,
+        storageLimitMB: 20000,
+        overageFeePer100MB: 1,
+        description: 'For franchise-level volume with unlimited core usage.'
+      }
+    ];
+
+    for (const t of defaultTiers) {
+      await prisma.saaSTier.create({ data: t });
+    }
+
+    tiers = await prisma.saaSTier.findMany({
+      orderBy: { baseFeeUSD: 'asc' }
+    });
+  }
+
+  return tiers;
+}
+
 /**
- * Deterministic cost calculation strategy instead of AI on-the-fly.
+ * Deterministic cost calculation strategy matching usage to dynamic database tiers.
  */
-export function calculateUsageCostStrategy(metrics: UsageMetrics): CostAnalysis {
+export function calculateUsageCostStrategy(metrics: UsageMetrics, tiers: SaaSTierInput[]): CostAnalysis {
   // Storage logic
   const bytesPerImage = 2.5 * 1024 * 1024; // 2.5MB per photo
   const bytesPerUser = 200 * 1024; // 200KB per user record
@@ -43,32 +129,37 @@ export function calculateUsageCostStrategy(metrics: UsageMetrics): CostAnalysis 
 
   const estimatedStorageMB = Math.round((totalBytes / (1024 * 1024)) * 100) / 100;
 
-  // Monthly Tier logic
-  let pricingTierName = 'Starter';
-  let baseFeeUSD = 29;
-  
-  if (metrics.appointmentCount >= 500 || metrics.userCount >= 25 || metrics.formSubmissionCount >= 100) {
-    pricingTierName = 'Enterprise Spa';
-    baseFeeUSD = 199;
-  } else if (metrics.appointmentCount >= 100 || metrics.userCount >= 10) {
-    pricingTierName = 'Growth';
-    baseFeeUSD = 79;
+  // Find the appropriate tier based on usage limits. Tiers are ordered by baseFeeUSD ascending.
+  let selectedTier = tiers[0];
+
+  for (const tier of tiers) {
+    if (
+      metrics.appointmentCount <= tier.maxAppointments &&
+      metrics.userCount <= tier.maxUsers &&
+      metrics.formSubmissionCount <= tier.maxFormSubmissions
+    ) {
+      selectedTier = tier;
+      break;
+    }
+    // if it exceeds this tier's limits, it checks the next tier, eventually settling on the highest required
+    selectedTier = tier; // ensures it at least bumps up to the highest one if all are exceeded
   }
 
-  // Storage overage fee ($1 per 100MB over 500MB)
+  // Storage overage calculation based on the selected tier's settings
   let storageFee = 0;
-  if (estimatedStorageMB > 500) {
-    storageFee = Math.ceil((estimatedStorageMB - 500) / 100) * 1;
+  if (estimatedStorageMB > selectedTier.storageLimitMB) {
+    storageFee = Math.ceil((estimatedStorageMB - selectedTier.storageLimitMB) / 100) * selectedTier.overageFeePer100MB;
   }
 
-  const suggestedMonthlyFeeUSD = baseFeeUSD + storageFee;
+  const suggestedMonthlyFeeUSD = selectedTier.baseFeeUSD + storageFee;
 
-  const strategyReasoning = `Based on a usage volume of ${metrics.appointmentCount} appointments and ${metrics.userCount} users, the '${pricingTierName}' tier is recommended. Storage is efficiently utilized at ${estimatedStorageMB} MB, keeping infrastructure overhead balanced and minimizing extra costs.`;
+  const strategyReasoning = `Based on a usage volume of ${metrics.appointmentCount} appointments and ${metrics.userCount} users, the '${selectedTier.name}' tier is recommended. Storage utilizes ${estimatedStorageMB} MB against a ${selectedTier.storageLimitMB} MB limit.`;
 
   return {
     estimatedStorageMB,
     suggestedMonthlyFeeUSD,
-    pricingTierName,
+    pricingTierName: selectedTier.name,
+    tierId: selectedTier.id,
     strategyReasoning
   };
 }
