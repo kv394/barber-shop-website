@@ -36,14 +36,14 @@ export default function UsageAnalysisModal({ shopId, shopName, onClose }: UsageA
         </button>
 
         <h2 className="text-2xl font-bold text-brand-gold mb-2 flex items-center gap-2">
-          <span>🧠</span> AI Usage & Cost Analysis
+          <span>📊</span> Usage & Cost Analysis
         </h2>
         <p className="text-gray-400 text-sm mb-6">Analyzing resource consumption for <strong>{shopName}</strong></p>
 
         {loading ? (
           <div className="py-12 flex flex-col items-center justify-center">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-brand-gold mb-4"></div>
-            <p className="text-gray-400 animate-pulse text-sm">Gemini AI is analyzing metrics and calculating SaaS costs...</p>
+            <p className="text-gray-400 animate-pulse text-sm">Aggregating metrics and calculating SaaS costs...</p>
           </div>
         ) : error ? (
           <div className="p-4 bg-red-900/30 border border-red-500/30 rounded-lg text-red-400 text-sm">

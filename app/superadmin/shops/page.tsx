@@ -116,7 +116,7 @@ export default function SuperAdminShopsPage() {
                     onClick={() => setAnalyzingShop({ id: shop.id, name: shop.name })}
                     className="bg-indigo-600/20 text-indigo-400 border border-indigo-500/30 px-4 py-2 rounded-lg text-xs font-bold hover:bg-indigo-600/40 transition-colors"
                   >
-                    🧠 AI Usage Report
+                    📊 Usage Report
                   </button>
                   <Link
                     href={`/shop/${shop.id}/settings/team`}

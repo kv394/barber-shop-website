@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { NotificationService } from '@/lib/notifications';
 import { LoyaltyService } from '@/lib/loyalty';
+import { UsageService } from '@/lib/usage-service';
 import { logger } from '@/lib/logger';
 import { getProviderStatus } from '@/lib/messaging-providers';
 import { timingSafeEqual } from 'crypto';
@@ -66,6 +67,9 @@ export async function GET(request: Request) {
     // 2. Expire old loyalty points
     const pointsExpired = await LoyaltyService.processPointExpiry();
 
+    // 3. Generate hourly usage reports for all shops
+    const usageReportsGenerated = await UsageService.generateHourlyReports();
+
     const duration = Date.now() - startTime;
     const providers = getProviderStatus();
 
@@ -73,6 +77,7 @@ export async function GET(request: Request) {
       success: true,
       notificationsProcessed,
       pointsExpired,
+      usageReportsGenerated,
       durationMs: duration,
       providers,
       timestamp: new Date().toISOString(),

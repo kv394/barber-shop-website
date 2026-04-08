@@ -44,6 +44,7 @@ model Shop {
 
   // Custom AI Templates
   dynamicTemplates DynamicTemplate[]
+  usageReports     ShopUsageReport[]
 
   resources           Resource[]
   formTemplates       FormTemplate[]
@@ -779,4 +780,26 @@ model PortfolioImage {
 
   @@index([staffId])
   @@index([shopId])
+}
+
+model ShopUsageReport {
+  id                 String   @id @default(cuid())
+  shopId             String
+  shop               Shop     @relation(fields: [shopId], references: [id])
+  period             DateTime // Hourly timestamp
+  userCount          Int
+  appointmentCount   Int
+  productCount       Int
+  serviceCount       Int
+  formSubmissionCount Int
+  portfolioImageCount Int
+  clientHistoryImageCount Int
+  clientFormulaCount Int
+  reviewCount        Int
+  estimatedStorageMB Float
+  suggestedMonthlyFeeUSD Float
+  pricingTierName    String
+  createdAt          DateTime @default(now())
+
+  @@index([shopId, period])
 }
