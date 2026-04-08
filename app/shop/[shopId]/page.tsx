@@ -9,7 +9,7 @@ import InventoryManager from '@/components/shop-admin/InventoryManager';
 import Link from 'next/link';
 import BarcodeScannerWrapper from '@/components/checkout/BarcodeScannerWrapper';
 import ShopAdminLayout from '@/components/shop-admin/ShopAdminLayout';
-
+import { calculateUsageCostStrategy } from '@/lib/cost-calculator';
 
 export const dynamic = 'force-dynamic';
 
@@ -25,7 +25,7 @@ async function getShopData(shopId: string, userId: string) {
   const { startOfDay: today, endOfDay: tomorrow } = toShopTzDayBounds(todayStr, shopTz);
 
   // Run both queries in parallel instead of sequentially
-  const [shopFromDb, todayAppointments, allTrackedServices, allTrackedProducts] = await Promise.all([
+  const [shopFromDb, todayAppointments, allTrackedServices, allTrackedProducts, latestReport] = await Promise.all([
     prisma.shop.findUnique({
       where: { id: shopId },
       include: {
@@ -47,6 +47,10 @@ async function getShopData(shopId: string, userId: string) {
       where: { shopId, trackInventory: true },
       select: { id: true, name: true, inventoryCount: true, reorderPoint: true, type: true },
     }),
+    prisma.shopUsageReport.findFirst({
+      where: { shopId },
+      orderBy: { period: 'desc' }
+    })
   ]);
 
   // Flag items at or below 5 units as low stock
@@ -56,7 +60,7 @@ async function getShopData(shopId: string, userId: string) {
   ];
 
   if (!shopFromDb) {
-    return { shop: null, userRole: data.userRole, canManageInventory: false, shopSlug: data.shopSlug, lowStockItems: [], todayStats: null };
+    return { shop: null, userRole: data.userRole, canManageInventory: false, shopSlug: data.shopSlug, lowStockItems: [], todayStats: null, billingAlert: null };
   }
 
   const completed = todayAppointments.filter((a: any) => a.status === 'COMPLETED');
@@ -65,12 +69,52 @@ async function getShopData(shopId: string, userId: string) {
   const upcoming = todayAppointments.filter((a: any) => a.status === 'SCHEDULED' && new Date(a.startTime) > new Date());
   const nextAppointment = upcoming[0] || null;
 
+  // Billing Alert Logic
+  let billingAlert: { message: string; type: 'warning' | 'error' } | null = null;
+  if (latestReport) {
+    const analysis = calculateUsageCostStrategy({
+      userCount: latestReport.userCount,
+      appointmentCount: latestReport.appointmentCount,
+      productCount: latestReport.productCount,
+      serviceCount: latestReport.serviceCount,
+      formSubmissionCount: latestReport.formSubmissionCount,
+      portfolioImageCount: latestReport.portfolioImageCount,
+      clientHistoryImageCount: latestReport.clientHistoryImageCount,
+      clientFormulaCount: latestReport.clientFormulaCount,
+      reviewCount: latestReport.reviewCount
+    });
+
+    if (analysis.pricingTierName === 'Starter') {
+      if (latestReport.appointmentCount >= 90 || latestReport.userCount >= 9) {
+        billingAlert = {
+          message: 'You are approaching the limits of the Starter tier. Consider upgrading to Growth.',
+          type: 'warning'
+        };
+      }
+    } else if (analysis.pricingTierName === 'Growth') {
+      if (latestReport.appointmentCount >= 450 || latestReport.userCount >= 22 || latestReport.formSubmissionCount >= 90) {
+        billingAlert = {
+          message: 'You are approaching the limits of the Growth tier. Consider upgrading to Enterprise Spa.',
+          type: 'warning'
+        };
+      }
+    }
+
+    if (analysis.estimatedStorageMB > 450) {
+      billingAlert = {
+        message: 'You are approaching the 500MB storage limit. Additional storage overages will apply.',
+        type: 'warning'
+      };
+    }
+  }
+
   return { 
     shop: JSON.parse(JSON.stringify(shopFromDb)), 
     userRole: data.userRole,
     canManageInventory: data.canManageInventory,
     shopSlug: data.shopSlug,
     lowStockItems: JSON.parse(JSON.stringify(lowStockItems)),
+    billingAlert,
     todayStats: {
       totalBookings: todayAppointments.length,
       completedCount: completed.length,
@@ -90,7 +134,7 @@ export default async function ShopDashboardPage({ params }: { params: Promise<{ 
   if (!userId) return redirect('/');
 
   const { shopId } = await params;
-  const { shop, userRole, canManageInventory, shopSlug, lowStockItems, todayStats } = await getShopData(shopId, userId);
+  const { shop, userRole, canManageInventory, shopSlug, lowStockItems, todayStats, billingAlert } = await getShopData(shopId, userId);
 
   // SUPER_ADMIN is a site admin — redirect to team assignment page (they don't access shop operations)
   if (userRole === 'SUPER_ADMIN') {
@@ -124,6 +168,23 @@ export default async function ShopDashboardPage({ params }: { params: Promise<{ 
       userRole={userRole as string}
       activeTab="dashboard"
     >
+      {isShopAdmin && billingAlert && (
+        <div className={`mb-6 p-4 rounded-xl border flex items-start gap-3 ${
+          billingAlert.type === 'warning' 
+            ? 'bg-amber-900/20 border-amber-500/30 text-amber-200' 
+            : 'bg-red-900/20 border-red-500/30 text-red-200'
+        }`}>
+          <span className="text-2xl mt-0.5">⚠️</span>
+          <div className="flex-1">
+            <h3 className="font-bold text-sm mb-1">Billing & Usage Alert</h3>
+            <p className="text-xs opacity-90">{billingAlert.message}</p>
+            <Link href={`/shop/${shopId}/settings/billing`} className="mt-2 inline-block text-xs font-bold underline hover:no-underline">
+              View Billing Report →
+            </Link>
+          </div>
+        </div>
+      )}
+
       {/* ── Booking Link + Low-Stock Alerts row (shop admin only) ── */}
       {isShopAdmin && (
         <div className="flex flex-col sm:flex-row gap-3 mb-6">

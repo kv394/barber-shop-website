@@ -186,6 +186,9 @@ export function ShopNav({ shopId, userRole, activeTab }: { shopId: string, userR
           <Link href={`/shop/${shopId}/settings/kiosk`} className={subTabClass('settings-kiosk')}>
             📱 Kiosk
           </Link>
+          <Link href={`/shop/${shopId}/settings/billing`} className={subTabClass('settings-billing')}>
+            💳 Billing
+          </Link>
           <Link href={`/shop/${shopId}/config/services`} className={subTabClass('services')}>
             💇 Services
           </Link>
