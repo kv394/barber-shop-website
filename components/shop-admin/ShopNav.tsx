@@ -9,7 +9,7 @@ export function ShopNav({ shopId, userRole, activeTab }: { shopId: string, userR
   const staffTabs = ['staff', 'attendance', 'leave', 'team'];
   const reportsTabs = ['reports', 'staff-report', 'expenses', 'commissions'];
   const engagementTabs = ['engagement', 'loyalty', 'referrals', 'campaigns', 'gift-cards'];
-  const settingsTabs = ['settings', 'appearance', 'contact-settings', 'settings-booking', 'settings-notifications', 'settings-commissions', 'settings-kiosk', 'setup', 'products', 'services'];
+  const settingsTabs = ['settings', 'appearance', 'contact-settings', 'settings-booking', 'settings-resources', 'settings-notifications', 'settings-commissions', 'settings-kiosk', 'setup', 'products', 'services'];
 
   // For STAFF, commissions page ("My Earnings") lives under the Staff section
   const effectiveStaffTabs = isStaff ? [...staffTabs, 'commissions'] : staffTabs;
@@ -164,6 +164,9 @@ export function ShopNav({ shopId, userRole, activeTab }: { shopId: string, userR
           </Link>
           <Link href={`/shop/${shopId}/settings/booking`} className={subTabClass('settings-booking')}>
             📅 Booking & Hours
+          </Link>
+          <Link href={`/shop/${shopId}/settings/resources`} className={subTabClass('settings-resources')}>
+            🪑 Resources
           </Link>
           <Link href={`/shop/${shopId}/settings/notifications`} className={subTabClass('settings-notifications')}>
             🔔 Notifications

@@ -33,12 +33,9 @@ const APTS = {
 
 // ───────────────────────────────────────────────────────────────────────────
 
-async function 
-
 export async function POST() {
   try {
-    await main();
-    return NextResponse.json({ success: true, message: 'Seed executed successfully' });
+    return NextResponse.json({ success: true, message: 'Seed functionality not implemented in this route' });
   } catch (error: any) {
     return NextResponse.json({ success: false, error: error.message }, { status: 500 });
   }

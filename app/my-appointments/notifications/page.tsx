@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import BackButton from '@/components/BackButton';
+import MyAppointmentsNav from '@/components/MyAppointmentsNav';
 
 export default function NotificationsPage() {
   const [prefs, setPrefs] = useState<any>(null);
@@ -84,28 +86,6 @@ export default function NotificationsPage() {
 
           <div className="pt-4 border-t border-white/10">
             <label className="block text-sm text-gray-400 mb-2">Preferred Channel</label>
-            <select
-              value={prefs?.preferredChannel || 'EMAIL'}
-              onChange={(e) => setPrefs({ ...prefs, preferredChannel: e.target.value })}
-              style={{ colorScheme: 'dark' }}
-              className="w-full bg-black/50 border border-white/20 rounded p-3 text-white focus:outline-none focus:border-brand-gold"
-            >
-              <option value="EMAIL">Email Only</option>
-              <option value="SMS">SMS Only</option>
-              <option value="BOTH">Email + SMS</option>
-            </select>
-          </div>
-
-          <button onClick={handleSave} disabled={saving} className="w-full bg-brand-gold text-brand-dark font-bold py-3 rounded-lg hover:bg-white transition-colors disabled:opacity-50 mt-4">
-            {saving ? 'Saving…' : 'Save Preferences'}
-          </button>
-        </div>
-      </div>
-    </main>
-  );
-}
-
-bel className="block text-sm text-gray-400 mb-2">Preferred Channel</label>
             <select
               value={prefs?.preferredChannel || 'EMAIL'}
               onChange={(e) => setPrefs({ ...prefs, preferredChannel: e.target.value })}

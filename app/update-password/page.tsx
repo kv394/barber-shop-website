@@ -2,6 +2,7 @@ import { createClient } from '@/utils/supabase/server';
 import { redirect } from 'next/navigation';
 import { headers } from 'next/headers';
 import { rateLimit } from '@/lib/rate-limiter';
+import BackButton from '@/components/BackButton';
 
 export default async function UpdatePasswordPage({
   searchParams,

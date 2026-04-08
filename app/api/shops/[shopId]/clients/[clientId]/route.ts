@@ -38,6 +38,15 @@ export async function GET(
           orderBy: { startTime: 'desc' },
           take: 50,
         },
+        clientFormulas: {
+          where: { shopId: shopId },
+          include: { staff: { select: { name: true } } },
+          orderBy: { date: 'desc' },
+        },
+        clientHistoryImages: {
+          where: { shopId: shopId },
+          orderBy: { date: 'desc' },
+        },
         _count: {
           select: { clientAppointments: { where: { shopId: shopId } } },
         },
