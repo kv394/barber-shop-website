@@ -47,17 +47,14 @@ export default function NotificationsPage() {
   return (
     <main className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
       <header className="bg-black/40 backdrop-blur-md border-b border-slate-700 sticky top-0 z-20">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 py-4">
-          <h1 className="text-xl sm:text-2xl font-bold text-white">Notification Preferences</h1>
-          <p className="text-xs text-gray-500">Control what emails and texts you receive</p>
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 py-4 flex justify-between items-center">
+          <div>
+            <h1 className="text-xl sm:text-2xl font-bold text-white">Notification Preferences</h1>
+            <p className="text-xs text-gray-500">Control what emails and texts you receive</p>
+          </div>
+          <BackButton />
         </div>
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 pb-2 flex gap-4 overflow-x-auto scrollbar-none">
-          <Link href="/my-appointments" className="text-sm text-gray-400 hover:text-white px-1 pb-1 whitespace-nowrap transition-colors">📅 Appointments</Link>
-          <Link href="/my-appointments/profile" className="text-sm text-gray-400 hover:text-white px-1 pb-1 whitespace-nowrap transition-colors">👤 Profile</Link>
-          <Link href="/my-appointments/loyalty" className="text-sm text-gray-400 hover:text-white px-1 pb-1 whitespace-nowrap transition-colors">⭐ Loyalty</Link>
-          <Link href="/my-appointments/notifications" className="text-sm text-brand-gold border-b-2 border-brand-gold px-1 pb-1 font-semibold whitespace-nowrap">🔔 Notifications</Link>
-          <Link href="/my-appointments/referrals" className="text-sm text-gray-400 hover:text-white px-1 pb-1 whitespace-nowrap transition-colors">🔗 Referrals</Link>
-        </div>
+        <MyAppointmentsNav />
       </header>
 
       <div className="max-w-2xl mx-auto px-4 sm:px-6 py-8">
@@ -87,6 +84,28 @@ export default function NotificationsPage() {
 
           <div className="pt-4 border-t border-white/10">
             <label className="block text-sm text-gray-400 mb-2">Preferred Channel</label>
+            <select
+              value={prefs?.preferredChannel || 'EMAIL'}
+              onChange={(e) => setPrefs({ ...prefs, preferredChannel: e.target.value })}
+              style={{ colorScheme: 'dark' }}
+              className="w-full bg-black/50 border border-white/20 rounded p-3 text-white focus:outline-none focus:border-brand-gold"
+            >
+              <option value="EMAIL">Email Only</option>
+              <option value="SMS">SMS Only</option>
+              <option value="BOTH">Email + SMS</option>
+            </select>
+          </div>
+
+          <button onClick={handleSave} disabled={saving} className="w-full bg-brand-gold text-brand-dark font-bold py-3 rounded-lg hover:bg-white transition-colors disabled:opacity-50 mt-4">
+            {saving ? 'Saving…' : 'Save Preferences'}
+          </button>
+        </div>
+      </div>
+    </main>
+  );
+}
+
+bel className="block text-sm text-gray-400 mb-2">Preferred Channel</label>
             <select
               value={prefs?.preferredChannel || 'EMAIL'}
               onChange={(e) => setPrefs({ ...prefs, preferredChannel: e.target.value })}

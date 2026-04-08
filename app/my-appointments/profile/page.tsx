@@ -4,6 +4,7 @@ import { useEffect, useState, Suspense } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { QRCodeSVG } from 'qrcode.react';
+import MyAppointmentsNav from '@/components/MyAppointmentsNav';
 
 function ProfileContent() {
   const searchParams = useSearchParams();

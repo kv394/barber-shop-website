@@ -69,17 +69,14 @@ export default function ReferralsPage() {
   return (
     <main className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
       <header className="bg-black/40 backdrop-blur-md border-b border-slate-700 sticky top-0 z-20">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 py-4">
-          <h1 className="text-xl sm:text-2xl font-bold text-white">Referrals</h1>
-          <p className="text-xs text-gray-500">Invite friends and earn rewards</p>
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 py-4 flex justify-between items-center">
+          <div>
+            <h1 className="text-xl sm:text-2xl font-bold text-white">Referrals</h1>
+            <p className="text-xs text-gray-500">Invite friends and earn rewards</p>
+          </div>
+          <BackButton />
         </div>
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 pb-2 flex gap-4 overflow-x-auto scrollbar-none">
-          <Link href="/my-appointments" className="text-sm text-gray-400 hover:text-white px-1 pb-1 whitespace-nowrap transition-colors">📅 Appointments</Link>
-          <Link href="/my-appointments/profile" className="text-sm text-gray-400 hover:text-white px-1 pb-1 whitespace-nowrap transition-colors">👤 Profile</Link>
-          <Link href="/my-appointments/loyalty" className="text-sm text-gray-400 hover:text-white px-1 pb-1 whitespace-nowrap transition-colors">⭐ Loyalty</Link>
-          <Link href="/my-appointments/notifications" className="text-sm text-gray-400 hover:text-white px-1 pb-1 whitespace-nowrap transition-colors">🔔 Notifications</Link>
-          <Link href="/my-appointments/referrals" className="text-sm text-brand-gold border-b-2 border-brand-gold px-1 pb-1 font-semibold whitespace-nowrap">🔗 Referrals</Link>
-        </div>
+        <MyAppointmentsNav />
       </header>
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8 space-y-8">
@@ -154,6 +151,32 @@ export default function ReferralsPage() {
                     <div className="flex items-center justify-between">
                       <div>
                         <p className="font-semibold text-white text-sm">{ref.refereeName}</p>
+                        <p className="text-xs text-gray-500">{ref.shopName}</p>
+                      </div>
+                      <div className="text-right">
+                        <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${style.bg} ${style.text}`}>
+                          {style.label}
+                        </span>
+                        {ref.status === 'REWARDED' && (
+                          <p className="text-xs text-green-400 mt-1">+{ref.rewardPoints} pts</p>
+                        )}
+                      </div>
+                    </div>
+                    <p className="text-xs text-gray-600 mt-2">
+                      {new Date(ref.createdAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}
+                    </p>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </section>
+      </div>
+    </main>
+  );
+}
+
+p>
                         <p className="text-xs text-gray-500">{ref.shopName}</p>
                       </div>
                       <div className="text-right">

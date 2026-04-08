@@ -10,123 +10,138 @@ datasource db {
 }
 
 model Shop {
-  id          String        @id @default(cuid())
-  name        String
-  description String?
-  template    String        @default("modern")
-  timezone    String        @default("America/New_York")
+  id            String  @id @default(cuid())
+  name          String
+  description   String?
+  template      String  @default("modern")
+  timezone      String  @default("America/New_York")
   customization Json?
 
   // No-show deposit settings (C5)
-  depositRequired Boolean   @default(false)
-  depositAmount   Float     @default(0)
+  depositRequired Boolean @default(false)
+  depositAmount   Float   @default(0)
   stripeAccountId String?
 
-  users       User[]
-  services    Service[]
-  products    Product[]
-  appointments Appointment[]
-  timeLogs    TimeLog[]
-  leaves      Leave[]
-  expenses    Expense[]
-  reviews     Review[]
-  waitlist    Waitlist[]
+  users           User[]
+  services        Service[]
+  products        Product[]
+  appointments    Appointment[]
+  timeLogs        TimeLog[]
+  leaves          Leave[]
+  expenses        Expense[]
+  reviews         Review[]
+  waitlist        Waitlist[]
   commissionRules CommissionRule[]
-  giftCards   GiftCard[]
+  giftCards       GiftCard[]
 
   // Engagement & Retention
-  loyaltyProgram   LoyaltyProgram?
-  loyaltyAccounts  LoyaltyAccount[]
-  referrals        Referral[]
-  campaigns        Campaign[]
-  notifications    Notification[]
-  blackoutDates    ShopBlackoutDate[]
+  loyaltyProgram  LoyaltyProgram?
+  loyaltyAccounts LoyaltyAccount[]
+  referrals       Referral[]
+  campaigns       Campaign[]
+  notifications   Notification[]
+  blackoutDates   ShopBlackoutDate[]
 
   // Custom AI Templates
   dynamicTemplates DynamicTemplate[]
 
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @updatedAt
+  resources           Resource[]
+  formTemplates       FormTemplate[]
+  clientFormulas      ClientFormula[]
+  clientHistoryImages ClientHistoryImage[]
+  membershipTiers     MembershipTier[]
+  userMemberships     UserMembership[]
+  portfolioImages     PortfolioImage[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([createdAt]) // Performance index for directory sorting
 }
 
 model User {
-  id            String    @id @default(cuid())
-  email         String    @unique
-  name          String?
-  phone         String?
-  role          UserRole
-  canManageInventory Boolean @default(false)
-  barcode       String?   @unique
-  workingHours  Json?
+  id                 String   @id @default(cuid())
+  email              String   @unique
+  name               String?
+  phone              String?
+  role               UserRole
+  canManageInventory Boolean  @default(false)
+  barcode            String?  @unique
+  workingHours       Json?
 
   // Client CRM fields
-  clientNotes   String?
-  preferences   String?
-  allergies     String?
-  birthday      DateTime?
-  marketingConsent Boolean @default(false)
-  smsConsent    Boolean   @default(false)
+  clientNotes      String?
+  preferences      String?
+  allergies        String?
+  birthday         DateTime?
+  marketingConsent Boolean   @default(false)
+  smsConsent       Boolean   @default(false)
 
   // Referral
-  referralCode  String?   @unique
+  referralCode String? @unique
 
   // Staff Payroll/Comp fields
   commissionRateService Float?
   commissionRateProduct Float?
 
   // Profile image (C7)
-  imageUrl      String?
+  imageUrl String?
 
   // Google Calendar sync (C4)
-  googleRefreshToken  String?
-  googleCalendarId    String?
+  googleRefreshToken String?
+  googleCalendarId   String?
 
-  shopId        String?
-  shop          Shop?     @relation(fields: [shopId], references: [id])
-  clientAppointments Appointment[] @relation("ClientAppointments")
-  staffAppointments  Appointment[] @relation("StaffAppointments")
-  timeLogs      TimeLog[]
-  leaves        Leave[]
-  reviews       Review[]
-  commissionRules CommissionRule[] @relation("StaffCommissionRules")
+  clientFormulas      ClientFormula[]      @relation("ClientFormulas")
+  staffFormulas       ClientFormula[]      @relation("StaffFormulas")
+  clientHistoryImages ClientHistoryImage[] @relation("ClientHistoryImages")
+  memberships         UserMembership[]
+  portfolioImages     PortfolioImage[]     @relation("StaffPortfolio")
+
+  shopId             String?
+  shop               Shop?            @relation(fields: [shopId], references: [id])
+  clientAppointments Appointment[]    @relation("ClientAppointments")
+  staffAppointments  Appointment[]    @relation("StaffAppointments")
+  timeLogs           TimeLog[]
+  leaves             Leave[]
+  reviews            Review[]
+  commissionRules    CommissionRule[] @relation("StaffCommissionRules")
 
   // Engagement & Retention
-  loyaltyAccounts LoyaltyAccount[]
-  referralsMade   Referral[]  @relation("ReferrerReferrals")
-  referralsReceived Referral[] @relation("RefereeReferrals")
-  notifications   Notification[]
+  loyaltyAccounts         LoyaltyAccount[]
+  referralsMade           Referral[]               @relation("ReferrerReferrals")
+  referralsReceived       Referral[]               @relation("RefereeReferrals")
+  notifications           Notification[]
   notificationPreferences NotificationPreference[]
 
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  formSubmissions FormSubmission[]
 
   @@index([shopId, role])
   @@index([email])
 }
 
 model Product {
-  id              String        @id @default(cuid())
-  name            String
-  description     String?
-  sku             String?
-  barcode         String?       @unique
-  price           Float
-  cost            Float?
-  taxRate         Float         @default(0)
-  trackInventory  Boolean       @default(false)
-  inventoryCount  Int           @default(0)
-  reorderPoint    Int           @default(0)
-  type            ProductType   @default(RETAIL) // RETAIL, BACKBAR
-  supplier        String?
+  id             String      @id @default(cuid())
+  name           String
+  description    String?
+  sku            String?
+  barcode        String?     @unique
+  price          Float
+  cost           Float?
+  taxRate        Float       @default(0)
+  trackInventory Boolean     @default(false)
+  inventoryCount Int         @default(0)
+  reorderPoint   Int         @default(0)
+  type           ProductType @default(RETAIL) // RETAIL, BACKBAR
+  supplier       String?
 
-  shopId          String
-  shop            Shop          @relation(fields: [shopId], references: [id])
+  shopId           String
+  shop             Shop              @relation(fields: [shopId], references: [id])
   appointmentItems AppointmentItem[]
 
-  createdAt       DateTime      @default(now())
-  updatedAt       DateTime      @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([shopId, type])
 }
@@ -137,78 +152,86 @@ enum ProductType {
 }
 
 model Service {
-  id              String        @id @default(cuid())
-  name            String
-  description     String?
-  price           Float
-  taxRate         Float         @default(0) // New: Tax support
-  duration        Int
-  bufferMinutes   Int           @default(0) // I2: Buffer time between services
-  imageUrl        String?                   // C7: Service image
+  id             String  @id @default(cuid())
+  name           String
+  description    String?
+  price          Float
+  taxRate        Float   @default(0) // New: Tax support
+  duration       Int
+  processingTime Int     @default(0) // time client sits with color
+  finishingTime  Int     @default(0) // time staff needs after processing
+  bufferMinutes  Int     @default(0) // I2: Buffer time between services
+  imageUrl       String? // C7: Service image
 
-  trackInventory  Boolean       @default(false)
-  inventoryCount  Int           @default(0)
-  type            ServiceType   @default(CUSTOMER)
-  itemType        String?
-  brand           String?
-  barcode         String?       @unique
+  trackInventory Boolean     @default(false)
+  inventoryCount Int         @default(0)
+  type           ServiceType @default(CUSTOMER)
+  itemType       String?
+  brand          String?
+  barcode        String?     @unique
 
-  shopId          String
-  shop            Shop          @relation(fields: [shopId], references: [id])
-  appointments    Appointment[]
+  shopId           String
+  shop             Shop              @relation(fields: [shopId], references: [id])
+  appointments     Appointment[]
   appointmentItems AppointmentItem[]
-  commissionRules CommissionRule[]
+  commissionRules  CommissionRule[]
 
-  createdAt       DateTime      @default(now())
-  updatedAt       DateTime      @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([shopId, type])
 }
 
 model Appointment {
-  id          String    @id @default(cuid())
-  startTime   DateTime
-  endTime     DateTime
-  notes       String?
+  id        String   @id @default(cuid())
+  startTime DateTime
+  endTime   DateTime
+  notes     String?
 
   // Legacy fields
-  tipAmount   Float     @default(0)
-  discount    Float     @default(0)
+  tipAmount     Float    @default(0)
+  discount      Float    @default(0)
   paymentMethod String? // CASH, CARD, MOBILE
-  serviceId   String?
-  service     Service?   @relation(fields: [serviceId], references: [id])
+  serviceId     String?
+  service       Service? @relation(fields: [serviceId], references: [id])
 
   // No-show deposit (C5)
   depositPaymentIntentId String?
-  depositAmount          Float     @default(0)
+  depositAmount          Float   @default(0)
 
   // Refund tracking (I4)
-  refundAmount  Float     @default(0)
-  refundedAt    DateTime?
+  refundAmount Float     @default(0)
+  refundedAt   DateTime?
 
   // Recurring appointments (I1)
   recurrenceRule    String?
   recurringGroupId  String?
   isRecurringParent Boolean @default(false)
 
+  resourceId String?
+  resource   Resource? @relation(fields: [resourceId], references: [id])
+
+  formSubmissions FormSubmission[]
+
   // POS Totals
-  subtotal    Float     @default(0)
-  taxAmount   Float     @default(0)
-  totalAmount Float     @default(0)
+  subtotal    Float             @default(0)
+  taxAmount   Float             @default(0)
+  totalAmount Float             @default(0)
   items       AppointmentItem[]
   payments    Payment[]
 
-  userId      String
-  user        User      @relation("ClientAppointments", fields: [userId], references: [id])
-  staffId     String
-  staff       User      @relation("StaffAppointments", fields: [staffId], references: [id])
-  shopId      String
-  shop        Shop      @relation(fields: [shopId], references: [id])
-  review      Review?
-  status      AppointmentStatus @default(SCHEDULED)
-  paymentId   String?           @unique
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  userId              String
+  user                User                 @relation("ClientAppointments", fields: [userId], references: [id])
+  staffId             String
+  staff               User                 @relation("StaffAppointments", fields: [staffId], references: [id])
+  shopId              String
+  shop                Shop                 @relation(fields: [shopId], references: [id])
+  review              Review?
+  status              AppointmentStatus    @default(SCHEDULED)
+  paymentId           String?              @unique
+  createdAt           DateTime             @default(now())
+  updatedAt           DateTime             @updatedAt
+  clientHistoryImages ClientHistoryImage[]
 
   @@index([shopId, startTime])
   @@index([shopId, status])
@@ -218,31 +241,31 @@ model Appointment {
 
 // New: Links an Appointment to multiple Services OR Products
 model AppointmentItem {
-  id            String    @id @default(cuid())
+  id            String      @id @default(cuid())
   appointmentId String
   appointment   Appointment @relation(fields: [appointmentId], references: [id], onDelete: Cascade)
 
-  serviceId     String?
-  service       Service?    @relation(fields: [serviceId], references: [id])
-  productId     String?
-  product       Product?    @relation(fields: [productId], references: [id])
+  serviceId String?
+  service   Service? @relation(fields: [serviceId], references: [id])
+  productId String?
+  product   Product? @relation(fields: [productId], references: [id])
 
-  name          String
-  price         Float
-  quantity      Int         @default(1)
+  name     String
+  price    Float
+  quantity Int    @default(1)
 }
 
 // New: Multi-tender POS Payments
 model Payment {
-  id            String    @id @default(cuid())
+  id            String        @id @default(cuid())
   appointmentId String
-  appointment   Appointment @relation(fields: [appointmentId], references: [id], onDelete: Cascade)
+  appointment   Appointment   @relation(fields: [appointmentId], references: [id], onDelete: Cascade)
   amount        Float
   method        PaymentMethod
   status        PaymentStatus @default(COMPLETED)
-  transactionId String?   // Stripe/Square ref
+  transactionId String? // Stripe/Square ref
   receiptUrl    String?
-  createdAt     DateTime  @default(now())
+  createdAt     DateTime      @default(now())
 }
 
 enum PaymentMethod {
@@ -262,21 +285,21 @@ enum PaymentStatus {
 
 // New: Granular Commission Rules
 model CommissionRule {
-  id            String    @id @default(cuid())
-  shopId        String
-  shop          Shop      @relation(fields: [shopId], references: [id])
+  id     String @id @default(cuid())
+  shopId String
+  shop   Shop   @relation(fields: [shopId], references: [id])
 
-  staffId       String?
-  staff         User?     @relation("StaffCommissionRules", fields: [staffId], references: [id])
+  staffId String?
+  staff   User?   @relation("StaffCommissionRules", fields: [staffId], references: [id])
 
-  serviceId     String?
-  service       Service?  @relation(fields: [serviceId], references: [id])
+  serviceId String?
+  service   Service? @relation(fields: [serviceId], references: [id])
 
-  rateType      CommissionType @default(PERCENTAGE)
-  rateValue     Float
+  rateType  CommissionType @default(PERCENTAGE)
+  rateValue Float
 
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 enum CommissionType {
@@ -305,30 +328,30 @@ enum AppointmentStatus {
 }
 
 model Expense {
-  id          String    @id @default(cuid())
+  id          String   @id @default(cuid())
   amount      Float
-  category    String    // RENT, SUPPLIES, UTILITIES, EQUIPMENT, MARKETING, OTHER
+  category    String // RENT, SUPPLIES, UTILITIES, EQUIPMENT, MARKETING, OTHER
   description String?
-  date        DateTime  @default(now())
+  date        DateTime @default(now())
   shopId      String
-  shop        Shop      @relation(fields: [shopId], references: [id])
-  createdAt   DateTime  @default(now())
+  shop        Shop     @relation(fields: [shopId], references: [id])
+  createdAt   DateTime @default(now())
 
   @@index([shopId, date])
 }
 
 model Review {
-  id            String    @id @default(cuid())
-  rating        Int       // 1-5
+  id            String      @id @default(cuid())
+  rating        Int // 1-5
   comment       String?
-  ownerResponse String?   // shop admin reply
-  appointmentId String    @unique
+  ownerResponse String? // shop admin reply
+  appointmentId String      @unique
   appointment   Appointment @relation(fields: [appointmentId], references: [id])
   userId        String
-  user          User      @relation(fields: [userId], references: [id])
+  user          User        @relation(fields: [userId], references: [id])
   shopId        String
-  shop          Shop      @relation(fields: [shopId], references: [id])
-  createdAt     DateTime  @default(now())
+  shop          Shop        @relation(fields: [shopId], references: [id])
+  createdAt     DateTime    @default(now())
   respondedAt   DateTime?
 
   @@index([shopId, createdAt]) // Performance index
@@ -336,75 +359,75 @@ model Review {
 
 // ─── Blackout Dates (shop holidays / closed days) ──────────────
 model ShopBlackoutDate {
-  id          String   @id @default(cuid())
-  shopId      String
-  shop        Shop     @relation(fields: [shopId], references: [id])
-  date        DateTime // just the date (time stored as midnight UTC)
-  reason      String?
-  createdAt   DateTime @default(now())
+  id        String   @id @default(cuid())
+  shopId    String
+  shop      Shop     @relation(fields: [shopId], references: [id])
+  date      DateTime // just the date (time stored as midnight UTC)
+  reason    String?
+  createdAt DateTime @default(now())
 
   @@unique([shopId, date])
   @@index([shopId])
 }
 
 model Waitlist {
-  id          String    @id @default(cuid())
+  id          String   @id @default(cuid())
   clientName  String
   clientPhone String?
-  partySize   Int       @default(1)
+  partySize   Int      @default(1)
   serviceId   String?
   staffId     String?
-  status      String    @default("WAITING") // WAITING, SERVING, DONE, LEFT
+  status      String   @default("WAITING") // WAITING, SERVING, DONE, LEFT
   position    Int
   shopId      String
-  shop        Shop      @relation(fields: [shopId], references: [id])
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  shop        Shop     @relation(fields: [shopId], references: [id])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
   @@index([shopId, createdAt]) // Performance index
 }
 
 model Leave {
-  id        String    @id @default(cuid())
-  date      DateTime  @db.Date
+  id        String   @id @default(cuid())
+  date      DateTime @db.Date
   startTime DateTime
   endTime   DateTime
   reason    String?
   userId    String
-  user      User      @relation(fields: [userId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
   shopId    String
-  shop      Shop      @relation(fields: [shopId], references: [id])
-  createdAt DateTime  @default(now())
+  shop      Shop     @relation(fields: [shopId], references: [id])
+  createdAt DateTime @default(now())
 
   @@index([shopId, date])
   @@index([userId, date])
 }
 
 model TimeLog {
-  id          String    @id @default(cuid())
-  clockIn     DateTime  @default(now())
-  clockOut    DateTime?
-  userId      String
-  user        User      @relation(fields: [userId], references: [id])
-  shopId      String
-  shop        Shop      @relation(fields: [shopId], references: [id])
+  id       String    @id @default(cuid())
+  clockIn  DateTime  @default(now())
+  clockOut DateTime?
+  userId   String
+  user     User      @relation(fields: [userId], references: [id])
+  shopId   String
+  shop     Shop      @relation(fields: [shopId], references: [id])
 
   @@index([shopId])
   @@index([userId, clockIn])
 }
 
 model SystemLog {
-  id          String    @id @default(cuid())
-  level       String    @default("ERROR") // INFO, WARN, ERROR
-  message     String
-  stack       String?
-  path        String?   // The page or API route where the error occurred
-  shopId      String?
-  userId      String?
-  metadata    Json?     // Any extra JSON details
-  isResolved  Boolean   @default(false)
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  id         String   @id @default(cuid())
+  level      String   @default("ERROR") // INFO, WARN, ERROR
+  message    String
+  stack      String?
+  path       String? // The page or API route where the error occurred
+  shopId     String?
+  userId     String?
+  metadata   Json? // Any extra JSON details
+  isResolved Boolean  @default(false)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 
   @@index([shopId])
   @@index([level])
@@ -414,15 +437,15 @@ model SystemLog {
 // ─── Engagement & Retention ────────────────────────────────────────
 
 model LoyaltyProgram {
-  id              String    @id @default(cuid())
-  shopId          String    @unique
-  shop            Shop      @relation(fields: [shopId], references: [id])
+  id     String @id @default(cuid())
+  shopId String @unique
+  shop   Shop   @relation(fields: [shopId], references: [id])
 
-  pointsPerDollar Float     @default(1)    // Base points earned per $1 spent
-  pointsPerVisit  Int       @default(10)   // Base bonus points per completed visit
-  redeemThreshold Int       @default(100)  // Min points required to redeem
-  redeemValue     Float     @default(5)    // Dollar value per redemption at threshold
-  isActive        Boolean   @default(true)
+  pointsPerDollar Float   @default(1) // Base points earned per $1 spent
+  pointsPerVisit  Int     @default(10) // Base bonus points per completed visit
+  redeemThreshold Int     @default(100) // Min points required to redeem
+  redeemValue     Float   @default(5) // Dollar value per redemption at threshold
+  isActive        Boolean @default(true)
 
   // Multi-tier config (JSON: array of tier objects)
   // Each tier: { name, minPoints, earnMultiplier, perks }
@@ -430,72 +453,72 @@ model LoyaltyProgram {
   //       { name:"Silver", minPoints:200, earnMultiplier:1.25, perks:"Priority booking" },
   //       { name:"Gold", minPoints:500, earnMultiplier:1.5, perks:"Free product per visit" },
   //       { name:"Platinum", minPoints:1000, earnMultiplier:2, perks:"VIP lounge access" }]
-  tiers           Json?
+  tiers Json?
 
   // Point expiry (0 = never expires)
-  pointExpiryDays Int       @default(0)
+  pointExpiryDays Int @default(0)
 
-  createdAt       DateTime  @default(now())
-  updatedAt       DateTime  @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model LoyaltyAccount {
-  id           String    @id @default(cuid())
-  userId       String
-  user         User      @relation(fields: [userId], references: [id])
-  shopId       String
-  shop         Shop      @relation(fields: [shopId], references: [id])
+  id     String @id @default(cuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+  shopId String
+  shop   Shop   @relation(fields: [shopId], references: [id])
 
-  pointsBalance Int      @default(0)
-  totalEarned   Int      @default(0)
-  totalRedeemed Int      @default(0)
+  pointsBalance Int @default(0)
+  totalEarned   Int @default(0)
+  totalRedeemed Int @default(0)
 
   // Multi-tier
-  currentTier   String   @default("Bronze")
-  lifetimePoints Int     @default(0)  // Never decremented — used for tier calculation
+  currentTier    String @default("Bronze")
+  lifetimePoints Int    @default(0) // Never decremented — used for tier calculation
 
   transactions LoyaltyTransaction[]
 
-  createdAt    DateTime  @default(now())
-  updatedAt    DateTime  @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@unique([userId, shopId])
   @@index([shopId])
 }
 
 model LoyaltyTransaction {
-  id               String    @id @default(cuid())
+  id               String         @id @default(cuid())
   loyaltyAccountId String
   loyaltyAccount   LoyaltyAccount @relation(fields: [loyaltyAccountId], references: [id], onDelete: Cascade)
 
-  points           Int       // positive = earned, negative = redeemed/expired
-  type             String    // EARN_VISIT, EARN_SPEND, EARN_TIER_BONUS, REDEEM, REFERRAL_BONUS, MANUAL_ADJUST, EXPIRY
-  description      String?
-  appointmentId    String?   // Optional link to appointment
-  expiresAt        DateTime? // When these specific points expire
+  points        Int // positive = earned, negative = redeemed/expired
+  type          String // EARN_VISIT, EARN_SPEND, EARN_TIER_BONUS, REDEEM, REFERRAL_BONUS, MANUAL_ADJUST, EXPIRY
+  description   String?
+  appointmentId String? // Optional link to appointment
+  expiresAt     DateTime? // When these specific points expire
 
-  createdAt        DateTime  @default(now())
+  createdAt DateTime @default(now())
 
   @@index([loyaltyAccountId])
   @@index([expiresAt])
 }
 
 model Referral {
-  id          String    @id @default(cuid())
-  shopId      String
-  shop        Shop      @relation(fields: [shopId], references: [id])
+  id     String @id @default(cuid())
+  shopId String
+  shop   Shop   @relation(fields: [shopId], references: [id])
 
-  referrerId  String
-  referrer    User      @relation("ReferrerReferrals", fields: [referrerId], references: [id])
-  refereeId   String
-  referee     User      @relation("RefereeReferrals", fields: [refereeId], references: [id])
+  referrerId String
+  referrer   User   @relation("ReferrerReferrals", fields: [referrerId], references: [id])
+  refereeId  String
+  referee    User   @relation("RefereeReferrals", fields: [refereeId], references: [id])
 
-  status      String    @default("PENDING") // PENDING, COMPLETED, REWARDED
-  referrerRewardPoints Int @default(50)
-  refereeRewardPoints  Int @default(25)
+  status               String @default("PENDING") // PENDING, COMPLETED, REWARDED
+  referrerRewardPoints Int    @default(50)
+  refereeRewardPoints  Int    @default(25)
 
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@unique([shopId, refereeId])
   @@index([shopId])
@@ -503,50 +526,50 @@ model Referral {
 }
 
 model Campaign {
-  id           String    @id @default(cuid())
-  shopId       String
-  shop         Shop      @relation(fields: [shopId], references: [id])
+  id     String @id @default(cuid())
+  shopId String
+  shop   Shop   @relation(fields: [shopId], references: [id])
 
-  name         String
-  message      String    @db.Text
-  type         String    @default("PROMO") // PROMO, BIRTHDAY, RE_ENGAGEMENT, CUSTOM
-  channel      String    @default("EMAIL") // EMAIL, SMS, BOTH
-  status       String    @default("DRAFT") // DRAFT, SCHEDULED, SENT, CANCELLED
+  name    String
+  message String @db.Text
+  type    String @default("PROMO") // PROMO, BIRTHDAY, RE_ENGAGEMENT, CUSTOM
+  channel String @default("EMAIL") // EMAIL, SMS, BOTH
+  status  String @default("DRAFT") // DRAFT, SCHEDULED, SENT, CANCELLED
 
   // Targeting
-  targetSegment String   @default("ALL") // ALL, INACTIVE_30, INACTIVE_60, INACTIVE_90, BIRTHDAY_THIS_MONTH, LOYALTY_VIP
+  targetSegment String @default("ALL") // ALL, INACTIVE_30, INACTIVE_60, INACTIVE_90, BIRTHDAY_THIS_MONTH, LOYALTY_VIP
 
-  scheduledAt  DateTime?
-  sentAt       DateTime?
-  recipientCount Int     @default(0)
+  scheduledAt    DateTime?
+  sentAt         DateTime?
+  recipientCount Int       @default(0)
 
-  createdAt    DateTime  @default(now())
-  updatedAt    DateTime  @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([shopId])
   @@index([status])
 }
 
 model Notification {
-  id          String    @id @default(cuid())
-  shopId      String
-  shop        Shop      @relation(fields: [shopId], references: [id])
-  userId      String
-  user        User      @relation(fields: [userId], references: [id])
+  id     String @id @default(cuid())
+  shopId String
+  shop   Shop   @relation(fields: [shopId], references: [id])
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
 
-  type        String    // APPOINTMENT_REMINDER, REVIEW_REQUEST, BIRTHDAY, RE_ENGAGEMENT, CAMPAIGN, LOYALTY_EARNED, REFERRAL
-  channel     String    @default("EMAIL") // EMAIL, SMS
-  title       String
-  message     String    @db.Text
-  status      String    @default("PENDING") // PENDING, SENT, FAILED, RETRYING
+  type    String // APPOINTMENT_REMINDER, REVIEW_REQUEST, BIRTHDAY, RE_ENGAGEMENT, CAMPAIGN, LOYALTY_EARNED, REFERRAL
+  channel String @default("EMAIL") // EMAIL, SMS
+  title   String
+  message String @db.Text
+  status  String @default("PENDING") // PENDING, SENT, FAILED, RETRYING
 
-  retryCount  Int       @default(0)   // Track delivery retries
-  maxRetries  Int       @default(3)
+  retryCount Int @default(0) // Track delivery retries
+  maxRetries Int @default(3)
 
   scheduledAt DateTime?
   sentAt      DateTime?
 
-  createdAt   DateTime  @default(now())
+  createdAt DateTime @default(now())
 
   @@index([shopId])
   @@index([userId])
@@ -555,9 +578,9 @@ model Notification {
 }
 
 model NotificationPreference {
-  id              String    @id @default(cuid())
-  userId          String
-  user            User      @relation(fields: [userId], references: [id])
+  id     String @id @default(cuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
 
   appointmentReminders Boolean @default(true)
   reviewRequests       Boolean @default(true)
@@ -565,10 +588,10 @@ model NotificationPreference {
   birthdayMessages     Boolean @default(true)
   loyaltyUpdates       Boolean @default(true)
 
-  preferredChannel     String  @default("EMAIL") // EMAIL, SMS, BOTH
+  preferredChannel String @default("EMAIL") // EMAIL, SMS, BOTH
 
-  createdAt            DateTime @default(now())
-  updatedAt            DateTime @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@unique([userId])
 }
@@ -576,22 +599,22 @@ model NotificationPreference {
 // ─── Gift Cards (I5) ───────────────────────────────────────────────
 
 model GiftCard {
-  id              String    @id @default(cuid())
-  code            String    @unique
-  shopId          String
-  shop            Shop      @relation(fields: [shopId], references: [id])
+  id     String @id @default(cuid())
+  code   String @unique
+  shopId String
+  shop   Shop   @relation(fields: [shopId], references: [id])
 
-  purchaserEmail  String?
-  recipientEmail  String?
-  recipientName   String?
+  purchaserEmail String?
+  recipientEmail String?
+  recipientName  String?
 
-  initialBalance  Float
-  currentBalance  Float
-  expiresAt       DateTime?
-  status          GiftCardStatus @default(ACTIVE)
+  initialBalance Float
+  currentBalance Float
+  expiresAt      DateTime?
+  status         GiftCardStatus @default(ACTIVE)
 
-  createdAt       DateTime  @default(now())
-  updatedAt       DateTime  @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([shopId])
   @@index([code])
@@ -617,4 +640,143 @@ model DynamicTemplate {
   shop        Shop?    @relation(fields: [shopId], references: [id])
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+}
+
+model Resource {
+  id           String        @id @default(cuid())
+  name         String
+  type         String // e.g., CHAIR, ROOM, MACHINE
+  shopId       String
+  shop         Shop          @relation(fields: [shopId], references: [id])
+  appointments Appointment[]
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+
+  @@index([shopId])
+}
+
+model FormTemplate {
+  id          String           @id @default(cuid())
+  name        String
+  content     String           @db.Text
+  isRequired  Boolean          @default(false)
+  shopId      String
+  shop        Shop             @relation(fields: [shopId], references: [id])
+  submissions FormSubmission[]
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+
+  @@index([shopId])
+}
+
+model FormSubmission {
+  id             String       @id @default(cuid())
+  appointmentId  String
+  appointment    Appointment  @relation(fields: [appointmentId], references: [id])
+  clientId       String
+  client         User         @relation(fields: [clientId], references: [id])
+  formTemplateId String
+  formTemplate   FormTemplate @relation(fields: [formTemplateId], references: [id])
+  contentData    Json
+  signatureUrl   String?
+  submittedAt    DateTime     @default(now())
+
+  @@index([appointmentId])
+  @@index([clientId])
+}
+
+model ClientFormula {
+  id      String   @id @default(cuid())
+  formula String   @db.Text
+  notes   String?  @db.Text
+  date    DateTime @default(now())
+
+  clientId String
+  client   User   @relation("ClientFormulas", fields: [clientId], references: [id])
+  staffId  String
+  staff    User   @relation("StaffFormulas", fields: [staffId], references: [id])
+  shopId   String
+  shop     Shop   @relation(fields: [shopId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([clientId])
+  @@index([shopId])
+}
+
+model ClientHistoryImage {
+  id        String   @id @default(cuid())
+  imageUrl  String
+  imageType String   @default("AFTER") // BEFORE, AFTER, IN_PROGRESS
+  date      DateTime @default(now())
+
+  clientId      String
+  client        User         @relation("ClientHistoryImages", fields: [clientId], references: [id])
+  appointmentId String?
+  appointment   Appointment? @relation(fields: [appointmentId], references: [id])
+  shopId        String
+  shop          Shop         @relation(fields: [shopId], references: [id])
+
+  createdAt DateTime @default(now())
+
+  @@index([clientId])
+  @@index([appointmentId])
+}
+
+model MembershipTier {
+  id              String  @id @default(cuid())
+  name            String
+  description     String?
+  price           Float
+  interval        String  @default("MONTHLY") // MONTHLY, YEARLY
+  stripeProductId String?
+  stripePriceId   String?
+
+  shopId  String
+  shop    Shop             @relation(fields: [shopId], references: [id])
+  members UserMembership[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([shopId])
+}
+
+model UserMembership {
+  id                   String    @id @default(cuid())
+  status               String    @default("ACTIVE") // ACTIVE, CANCELED, PAST_DUE
+  stripeSubscriptionId String?
+  currentPeriodEnd     DateTime?
+
+  userId           String
+  user             User           @relation(fields: [userId], references: [id])
+  membershipTierId String
+  membershipTier   MembershipTier @relation(fields: [membershipTierId], references: [id])
+  shopId           String
+  shop             Shop           @relation(fields: [shopId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+  @@index([shopId])
+}
+
+model PortfolioImage {
+  id           String  @id @default(cuid())
+  imageUrl     String
+  caption      String?
+  displayOrder Int     @default(0)
+
+  staffId String
+  staff   User   @relation("StaffPortfolio", fields: [staffId], references: [id])
+  shopId  String
+  shop    Shop   @relation(fields: [shopId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([staffId])
+  @@index([shopId])
 }

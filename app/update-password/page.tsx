@@ -40,7 +40,10 @@ export default async function UpdatePasswordPage({
 
   return (
     <div className="flex min-h-[80vh] items-center justify-center p-4">
-      <div className="w-full max-w-md bg-slate-900 border border-white/10 rounded-2xl shadow-2xl p-8 mt-12 mb-12">
+      <div className="w-full max-w-md bg-slate-900 border border-white/10 rounded-2xl shadow-2xl p-8 mt-12 mb-12 relative">
+        <div className="absolute -top-14 left-0">
+          <BackButton />
+        </div>
         <div className="text-center mb-8">
           <h1 className="font-serif text-3xl font-bold text-white mb-2">Update Password</h1>
           <p className="text-gray-400">Enter your new password below</p>

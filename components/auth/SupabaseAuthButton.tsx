@@ -104,6 +104,9 @@ export default function SupabaseAuthButton({
                     My Appointments
                   </Link>
                   <Link onClick={() => setIsOpen(false)} href="/my-appointments/profile" className="block w-full text-center sm:text-left px-4 py-3.5 sm:py-2 text-base sm:text-sm text-gray-200 hover:text-white hover:bg-white/5 rounded-xl transition-colors font-medium">
+                    My QR Code
+                  </Link>
+                  <Link onClick={() => setIsOpen(false)} href="/my-appointments/profile" className="block w-full text-center sm:text-left px-4 py-3.5 sm:py-2 text-base sm:text-sm text-gray-200 hover:text-white hover:bg-white/5 rounded-xl transition-colors font-medium">
                     Edit Profile
                   </Link>
                   <Link onClick={() => setIsOpen(false)} href="/update-password" className="block w-full text-center sm:text-left px-4 py-3.5 sm:py-2 text-base sm:text-sm text-gray-200 hover:text-white hover:bg-white/5 rounded-xl transition-colors font-medium">

@@ -123,13 +123,7 @@ export default function MyAppointmentsPage() {
           </div>
         </div>
         {/* Client portal nav (C2) */}
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 pb-2 flex gap-4 overflow-x-auto scrollbar-none">
-          <Link href="/my-appointments" className="text-sm text-brand-gold border-b-2 border-brand-gold px-1 pb-1 font-semibold whitespace-nowrap">📅 Appointments</Link>
-          <Link href="/my-appointments/profile" className="text-sm text-gray-400 hover:text-white px-1 pb-1 whitespace-nowrap transition-colors">👤 Profile</Link>
-          <Link href="/my-appointments/loyalty" className="text-sm text-gray-400 hover:text-white px-1 pb-1 whitespace-nowrap transition-colors">⭐ Loyalty</Link>
-          <Link href="/my-appointments/notifications" className="text-sm text-gray-400 hover:text-white px-1 pb-1 whitespace-nowrap transition-colors">🔔 Notifications</Link>
-          <Link href="/my-appointments/referrals" className="text-sm text-gray-400 hover:text-white px-1 pb-1 whitespace-nowrap transition-colors">🔗 Referrals</Link>
-        </div>
+        <MyAppointmentsNav />
       </header>
 
       {/* Reschedule Modal (C3) */}
@@ -307,6 +301,33 @@ function AppointmentCard({
                 {cancelling ? 'Cancelling…' : 'Cancel'}
               </button>
             </div>
+          )}
+          {showRebook && apt.service && shopSlug && (
+            <Link
+              href={`/shops/${shopSlug}?service=${apt.service.id}`}
+              className="px-4 py-2 text-sm font-semibold bg-brand-gold/20 text-brand-gold border border-brand-gold/30 rounded-lg hover:bg-brand-gold/40 transition-all text-center"
+            >
+              Rebook
+            </Link>
+          )}
+          {showRebook && apt.status === 'COMPLETED' && !apt.review && (
+            <Link
+              href={`/my-appointments/review/${apt.id}`}
+              className="px-4 py-2 text-sm font-semibold bg-purple-600/20 text-purple-400 border border-purple-500/30 rounded-lg hover:bg-purple-600/40 transition-all text-center"
+            >
+              ⭐ Leave Review
+            </Link>
+          )}
+          {apt.review && (
+            <span className="px-4 py-2 text-sm text-green-400/70 text-center">✅ Reviewed</span>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+  </div>
           )}
           {showRebook && apt.service && shopSlug && (
             <Link

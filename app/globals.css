@@ -7,6 +7,14 @@ body {
   color-scheme: dark;
 }
 
+/* ===== Modern Gradient Backgrounds ===== */
+@layer utilities {
+  .bg-modern-gradient {
+    background: radial-gradient(circle at top left, #1e293b, #020617, #0f172a);
+    background-attachment: fixed;
+  }
+}
+
 /* ===== Force time & date pickers to be fully visible on dark backgrounds ===== */
 input[type="time"],
 input[type="date"] {

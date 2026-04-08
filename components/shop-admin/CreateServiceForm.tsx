@@ -7,6 +7,8 @@ export default function CreateServiceForm({ shopId }: { shopId: string }) {
   const [description, setDescription] = useState('');
   const [price, setPrice] = useState('');
   const [duration, setDuration] = useState('');
+  const [processingTime, setProcessingTime] = useState('');
+  const [finishingTime, setFinishingTime] = useState('');
   const [trackInventory, setTrackInventory] = useState(false);
   const [serviceType, setServiceType] = useState<'CUSTOMER' | 'INTERNAL'>('CUSTOMER');
   
@@ -37,6 +39,8 @@ export default function CreateServiceForm({ shopId }: { shopId: string }) {
           description: description.trim(), 
           price: price ? Number(price) : 0, 
           duration: finalDuration, 
+          processingTime: isInternal ? 0 : (processingTime ? Number(processingTime) : 0),
+          finishingTime: isInternal ? 0 : (finishingTime ? Number(finishingTime) : 0),
           trackInventory: isInternal ? true : trackInventory,
           type: serviceType, 
           itemType: isInternal ? itemType.trim() : null,
@@ -102,9 +106,23 @@ export default function CreateServiceForm({ shopId }: { shopId: string }) {
           <>
             <input 
               type="text" 
-              placeholder="Duration (minutes)" 
+              placeholder="Initial Active Time (minutes)" 
               value={duration} 
               onChange={e => { const val = e.target.value; if (val === '' || /^\d+$/.test(val)) setDuration(val); }} 
+              className="bg-black/40 border border-white/20 rounded p-3 text-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-brand-gold" 
+            />
+            <input 
+              type="text" 
+              placeholder="Processing Time (minutes, optional)" 
+              value={processingTime} 
+              onChange={e => { const val = e.target.value; if (val === '' || /^\d+$/.test(val)) setProcessingTime(val); }} 
+              className="bg-black/40 border border-white/20 rounded p-3 text-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-brand-gold" 
+            />
+            <input 
+              type="text" 
+              placeholder="Finishing Time (minutes, optional)" 
+              value={finishingTime} 
+              onChange={e => { const val = e.target.value; if (val === '' || /^\d+$/.test(val)) setFinishingTime(val); }} 
               className="bg-black/40 border border-white/20 rounded p-3 text-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-brand-gold" 
             />
             <input

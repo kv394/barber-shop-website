@@ -61,7 +61,7 @@ export async function POST(
     }
 
     const body = await request.json();
-    const { name, description, price, duration, trackInventory, type, itemType, brand, bufferMinutes, imageUrl } = body;
+    const { name, description, price, duration, processingTime, finishingTime, trackInventory, type, itemType, brand, bufferMinutes, imageUrl } = body;
 
     if (!name || price === undefined || duration === undefined) {
         return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
@@ -70,6 +70,8 @@ export async function POST(
     // SECURITY: Validate numeric fields
     const parsedPrice = Number(price);
     const parsedDuration = Number(duration);
+    const parsedProcessingTime = processingTime ? Number(processingTime) : 0;
+    const parsedFinishingTime = finishingTime ? Number(finishingTime) : 0;
     const parsedBuffer = bufferMinutes ? Number(bufferMinutes) : 0;
     if (isNaN(parsedPrice) || parsedPrice < 0) {
       return NextResponse.json({ error: 'Price must be non-negative' }, { status: 400 });
@@ -96,6 +98,8 @@ export async function POST(
         description: description ? String(description).slice(0, 2000) : null,
         price: parsedPrice,
         duration: parsedDuration,
+        processingTime: parsedProcessingTime,
+        finishingTime: parsedFinishingTime,
         trackInventory: Boolean(trackInventory),
         type: type === 'INTERNAL' ? 'INTERNAL' : 'CUSTOMER',
         itemType: itemType ? String(itemType).slice(0, 100) : null,
