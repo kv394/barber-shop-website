@@ -103,6 +103,15 @@ export default function TemplatesPage() {
             <label className="block text-sm text-gray-400 mb-1">Prompt for Gemini</label>
             <textarea required value={prompt} onChange={e => setPrompt(e.target.value)} rows={4} className="w-full bg-slate-900 border border-slate-700 p-2 rounded text-white" placeholder="Describe the layout, colors, elements, styling... Handlebars syntax will be used for injection." />
           </div>
+          <div>
+            <label className="block text-sm text-gray-400 mb-1">AI Model</label>
+            <select value={model} onChange={e => setModel(e.target.value)} className="w-full bg-slate-900 border border-slate-700 p-2 rounded text-white">
+              <option value="gemini-2.5-flash">Gemini 2.5 Flash (Fast, Free Tier)</option>
+              <option value="gemini-2.5-pro">Gemini 2.5 Pro (Advanced)</option>
+              <option value="gemini-1.5-flash">Gemini 1.5 Flash</option>
+              <option value="gemini-1.5-pro">Gemini 1.5 Pro</option>
+            </select>
+          </div>
           <button disabled={generating} type="submit" className="bg-brand-gold hover:bg-yellow-500 text-black px-6 py-2 rounded font-semibold disabled:opacity-50 transition">
             {generating ? 'Generating via Gemini...' : 'Generate Template'}
           </button>

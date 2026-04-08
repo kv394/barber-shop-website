@@ -3,6 +3,7 @@
 import { useEffect, useState, Suspense } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
+import { QRCodeSVG } from 'qrcode.react';
 
 function ProfileContent() {
   const searchParams = useSearchParams();
@@ -19,6 +20,10 @@ function ProfileContent() {
       .then(setProfile)
       .finally(() => setLoading(false));
   }, []);
+
+  const handlePrint = () => {
+    window.print();
+  };
 
   const handleSave = async () => {
     setSaving(true);
@@ -50,7 +55,7 @@ function ProfileContent() {
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
-      <header className="bg-black/40 backdrop-blur-md border-b border-slate-700 sticky top-0 z-20">
+      <header className="bg-black/40 backdrop-blur-md border-b border-slate-700 sticky top-0 z-20 print:hidden">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 py-4">
           <h1 className="text-xl sm:text-2xl font-bold text-white">My Profile</h1>
           <p className="text-xs text-gray-500">Update your personal information</p>
@@ -71,7 +76,20 @@ function ProfileContent() {
           </div>
         )}
 
-        <div className="bg-slate-800/60 border border-white/5 rounded-xl p-6 space-y-5">
+        <div className="bg-slate-800/60 border border-white/5 rounded-xl p-6 flex flex-col items-center justify-center space-y-4 print:bg-white print:border-none print:shadow-none print:text-black">
+          <h2 className="text-lg font-semibold text-white print:text-black">My Check-in Code</h2>
+          <div className="bg-white p-4 rounded-xl">
+            <QRCodeSVG value={profile?.barcode || profile?.id || 'NO_ID'} size={150} level="H" />
+          </div>
+          <p className="text-sm text-gray-400 print:text-gray-600 text-center max-w-xs">
+            Present this code at the kiosk or to your barber for quick check-in.
+          </p>
+          <button onClick={handlePrint} className="bg-slate-700 hover:bg-slate-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors print:hidden">
+            Print QR Code
+          </button>
+        </div>
+
+        <div className="bg-slate-800/60 border border-white/5 rounded-xl p-6 space-y-5 print:hidden">
           <div>
             <label className="block text-sm text-gray-400 mb-1">Name</label>
             <input type="text" value={profile?.name || ''} onChange={(e) => setProfile({ ...profile, name: e.target.value })} className="w-full bg-black/50 border border-white/20 rounded p-3 text-white focus:outline-none focus:border-brand-gold" />
