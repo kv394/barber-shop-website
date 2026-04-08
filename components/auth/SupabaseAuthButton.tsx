@@ -14,6 +14,7 @@ export default function SupabaseAuthButton({
   const [user, setUser] = useState<any>(null);
   const [profile, setProfile] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
   const supabase = createClient();
 
@@ -65,39 +66,62 @@ export default function SupabaseAuthButton({
 
   if (user) {
     return (
-      <div className="relative group inline-block z-50">
-        <button className="flex items-center gap-2 bg-slate-800/80 hover:bg-slate-700/80 border border-white/10 px-3 py-1.5 rounded-full transition-colors">
+      <div className="relative inline-block z-50">
+        <button 
+          onClick={() => setIsOpen(!isOpen)}
+          className="flex items-center gap-2 bg-slate-800/80 hover:bg-slate-700/80 border border-white/10 px-3 py-1.5 rounded-full transition-colors"
+        >
           <div className="w-6 h-6 rounded-full bg-brand-gold flex items-center justify-center text-brand-dark font-bold text-xs">
             {user.email?.charAt(0).toUpperCase() || 'U'}
           </div>
         </button>
-        {/* Dropdown Menu */}
-        <div className="absolute right-0 mt-2 w-56 bg-slate-900 border border-white/10 rounded-xl shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 overflow-hidden">
-           <div className="p-4 border-b border-white/5 flex flex-col items-center bg-slate-800/50">
-             <p className="text-xs text-gray-400 truncate mb-3 w-full text-center">{user.email}</p>
-             <div className="bg-white p-2 rounded-lg shadow-inner inline-block">
-               <QRCodeSVG value={profile?.barcode || user.id} size={100} level="L" />
-             </div>
-             <p className="text-[10px] text-gray-500 mt-2 text-center uppercase tracking-widest">My Check-in Code</p>
-           </div>
-           <div className="p-1">
-              <Link href="/my-appointments" className="block w-full text-left px-3 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition-colors">
-                My Appointments
-              </Link>
-              <Link href="/my-appointments/profile" className="block w-full text-left px-3 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition-colors">
-                Edit Profile
-              </Link>
-              <Link href="/update-password" className="block w-full text-left px-3 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition-colors">
-                Change Password
-              </Link>
-              <button 
-                onClick={handleSignOut} 
-                className="block w-full text-left px-3 py-2 text-sm text-red-400 hover:text-red-300 hover:bg-red-500/10 rounded-lg transition-colors mt-1"
-              >
-                Sign Out
-              </button>
-           </div>
-        </div>
+
+        {isOpen && (
+          <>
+            {/* Dark overlay for mobile, invisible on desktop */}
+            <div 
+              className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm sm:bg-transparent sm:backdrop-blur-none transition-opacity" 
+              onClick={() => setIsOpen(false)} 
+            />
+            
+            {/* Responsive Menu: Bottom Sheet on Mobile, Dropdown on Desktop */}
+            <div className="fixed sm:absolute bottom-0 left-0 right-0 sm:bottom-auto sm:left-auto sm:right-0 sm:mt-2 w-full sm:w-72 bg-slate-900 sm:border border-white/10 rounded-t-3xl sm:rounded-xl shadow-2xl z-50 overflow-hidden transform transition-transform duration-300 translate-y-0 sm:translate-y-0 animate-in slide-in-from-bottom-10 sm:slide-in-from-top-2 sm:fade-in">
+               <div className="p-6 sm:p-4 border-b border-white/5 flex flex-col items-center bg-slate-800/50 relative">
+                 {/* Mobile drag handle indicator */}
+                 <div className="w-12 h-1.5 bg-gray-600 rounded-full mb-5 sm:hidden absolute top-3"></div>
+                 
+                 <p className="text-sm sm:text-xs text-gray-400 truncate mb-4 sm:mb-3 w-full text-center mt-2 sm:mt-0">{user.email}</p>
+                 <div className="bg-white p-3 sm:p-2 rounded-2xl shadow-inner inline-block">
+                   {/* QR Code scales down slightly on desktop */}
+                   <QRCodeSVG value={profile?.barcode || user.id} size={160} className="sm:w-[120px] sm:h-[120px]" level="L" />
+                 </div>
+                 <p className="text-xs sm:text-[10px] text-gray-500 mt-4 sm:mt-2 text-center uppercase tracking-widest font-bold">My Check-in Code</p>
+               </div>
+               
+               {/* Menu Actions */}
+               <div className="p-4 sm:p-2 space-y-2 sm:space-y-1 bg-slate-900 pb-8 sm:pb-2">
+                  <Link onClick={() => setIsOpen(false)} href="/my-appointments" className="block w-full text-center sm:text-left px-4 py-3.5 sm:py-2 text-base sm:text-sm text-gray-200 hover:text-white hover:bg-white/5 rounded-xl transition-colors font-medium">
+                    My Appointments
+                  </Link>
+                  <Link onClick={() => setIsOpen(false)} href="/my-appointments/profile" className="block w-full text-center sm:text-left px-4 py-3.5 sm:py-2 text-base sm:text-sm text-gray-200 hover:text-white hover:bg-white/5 rounded-xl transition-colors font-medium">
+                    Edit Profile
+                  </Link>
+                  <Link onClick={() => setIsOpen(false)} href="/update-password" className="block w-full text-center sm:text-left px-4 py-3.5 sm:py-2 text-base sm:text-sm text-gray-200 hover:text-white hover:bg-white/5 rounded-xl transition-colors font-medium">
+                    Change Password
+                  </Link>
+                  
+                  <div className="h-px bg-white/10 my-3 sm:my-1" />
+                  
+                  <button 
+                    onClick={() => { setIsOpen(false); handleSignOut(); }} 
+                    className="block w-full text-center sm:text-left px-4 py-3.5 sm:py-2 text-base sm:text-sm text-red-400 hover:text-red-300 hover:bg-red-500/10 rounded-xl transition-colors font-medium"
+                  >
+                    Sign Out
+                  </button>
+               </div>
+            </div>
+          </>
+        )}
       </div>
     );
   }
