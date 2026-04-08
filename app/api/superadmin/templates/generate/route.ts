@@ -29,7 +29,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Missing prompt or name' }, { status: 400 });
   }
 
-  const selectedModel = model || 'gemini-1.5-pro';
+  const selectedModel = model || 'gemini-2.5-pro';
   const apiKey = process.env.GEMINI_API_KEY;
 
   if (!apiKey) {

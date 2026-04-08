@@ -81,7 +81,7 @@ Return your response as a valid JSON object matching exactly this schema:
   "strategyReasoning": "<string up to 3 sentences detailing why this pricing and tier makes sense based on their specific usage profile>"
 }`;
 
-    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro:generateContent?key=${apiKey}`, {
+    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-pro:generateContent?key=${apiKey}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
