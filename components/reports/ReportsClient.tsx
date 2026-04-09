@@ -102,32 +102,32 @@ export default function ReportsClient({
   return (
     <div>
       {/* Summary Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4 sm:gap-6 mb-6 sm:mb-8">
-        <div className="bg-gradient-to-br from-green-900/40 to-green-800/20 border border-green-500/30 p-4 sm:p-6 rounded-xl shadow-lg">
-          <h3 className="text-gray-400 text-xs sm:text-sm uppercase tracking-widest font-semibold mb-1 sm:mb-2">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 sm:gap-6 mb-6 sm:mb-8">
+        <div className="bg-gradient-to-br from-green-900/40 to-green-800/20 border border-green-500/30 p-4 sm:p-6 rounded-xl shadow-lg overflow-hidden flex flex-col justify-center">
+          <h3 className="text-gray-400 text-xs sm:text-sm uppercase tracking-widest font-semibold mb-1 sm:mb-2 truncate">
             {isFiltered ? 'Filtered Revenue' : 'Total Revenue'}
           </h3>
-          <p className="text-3xl sm:text-4xl font-black text-green-400">${filteredRevenue.toFixed(2)}</p>
-          {isFiltered && <p className="text-xs text-gray-500 mt-1">All-time: ${allTimeRevenue.toFixed(2)}</p>}
+          <p className="text-2xl lg:text-3xl xl:text-4xl font-black text-green-400 truncate" title={`$${filteredRevenue.toFixed(2)}`}>${filteredRevenue.toFixed(2)}</p>
+          {isFiltered && <p className="text-xs text-gray-500 mt-1 truncate" title={`All-time: $${allTimeRevenue.toFixed(2)}`}>All-time: ${allTimeRevenue.toFixed(2)}</p>}
         </div>
-        <div className="bg-gradient-to-br from-amber-900/40 to-amber-800/20 border border-amber-500/30 p-4 sm:p-6 rounded-xl shadow-lg">
-          <h3 className="text-gray-400 text-xs sm:text-sm uppercase tracking-widest font-semibold mb-1 sm:mb-2">💰 Tips</h3>
-          <p className="text-3xl sm:text-4xl font-black text-amber-400">${filteredTips.toFixed(2)}</p>
-          {isFiltered && <p className="text-xs text-gray-500 mt-1">All-time: ${allTimeTips.toFixed(2)}</p>}
+        <div className="bg-gradient-to-br from-amber-900/40 to-amber-800/20 border border-amber-500/30 p-4 sm:p-6 rounded-xl shadow-lg overflow-hidden flex flex-col justify-center">
+          <h3 className="text-gray-400 text-xs sm:text-sm uppercase tracking-widest font-semibold mb-1 sm:mb-2 truncate">💰 Tips</h3>
+          <p className="text-2xl lg:text-3xl xl:text-4xl font-black text-amber-400 truncate" title={`$${filteredTips.toFixed(2)}`}>${filteredTips.toFixed(2)}</p>
+          {isFiltered && <p className="text-xs text-gray-500 mt-1 truncate" title={`All-time: $${allTimeTips.toFixed(2)}`}>All-time: ${allTimeTips.toFixed(2)}</p>}
         </div>
-        <div className="bg-gradient-to-br from-blue-900/40 to-blue-800/20 border border-blue-500/30 p-4 sm:p-6 rounded-xl shadow-lg">
-          <h3 className="text-gray-400 text-xs sm:text-sm uppercase tracking-widest font-semibold mb-1 sm:mb-2">Completed</h3>
-          <p className="text-3xl sm:text-4xl font-black text-blue-400">{filtered.length}</p>
+        <div className="bg-gradient-to-br from-blue-900/40 to-blue-800/20 border border-blue-500/30 p-4 sm:p-6 rounded-xl shadow-lg overflow-hidden flex flex-col justify-center">
+          <h3 className="text-gray-400 text-xs sm:text-sm uppercase tracking-widest font-semibold mb-1 sm:mb-2 truncate">Completed</h3>
+          <p className="text-2xl lg:text-3xl xl:text-4xl font-black text-blue-400 truncate" title={`${filtered.length}`}>{filtered.length}</p>
         </div>
-        <div className="bg-gradient-to-br from-purple-900/40 to-purple-800/20 border border-purple-500/30 p-4 sm:p-6 rounded-xl shadow-lg">
-          <h3 className="text-gray-400 text-xs sm:text-sm uppercase tracking-widest font-semibold mb-1 sm:mb-2">Avg. Per Service</h3>
-          <p className="text-3xl sm:text-4xl font-black text-purple-400">
+        <div className="bg-gradient-to-br from-purple-900/40 to-purple-800/20 border border-purple-500/30 p-4 sm:p-6 rounded-xl shadow-lg overflow-hidden flex flex-col justify-center">
+          <h3 className="text-gray-400 text-xs sm:text-sm uppercase tracking-widest font-semibold mb-1 sm:mb-2 truncate">Avg. Per Service</h3>
+          <p className="text-2xl lg:text-3xl xl:text-4xl font-black text-purple-400 truncate" title={`$${filtered.length > 0 ? (filteredRevenue / filtered.length).toFixed(0) : '0'}`}>
             ${filtered.length > 0 ? (filteredRevenue / filtered.length).toFixed(0) : '0'}
           </p>
         </div>
-        <div className="bg-gradient-to-br from-cyan-900/40 to-cyan-800/20 border border-cyan-500/30 p-4 sm:p-6 rounded-xl shadow-lg flex flex-col justify-center items-center text-center">
-          <p className="text-gray-400 text-xs sm:text-sm mb-2">Export Data</p>
-          <button onClick={exportCSV} className="bg-cyan-600 hover:bg-cyan-500 text-white font-bold py-2 px-4 rounded transition-colors w-full text-sm">
+        <div className="bg-gradient-to-br from-cyan-900/40 to-cyan-800/20 border border-cyan-500/30 p-4 sm:p-6 rounded-xl shadow-lg flex flex-col justify-center items-center text-center overflow-hidden">
+          <p className="text-gray-400 text-xs sm:text-sm mb-2 truncate w-full">Export Data</p>
+          <button onClick={exportCSV} className="bg-cyan-600 hover:bg-cyan-500 text-white font-bold py-2 px-4 rounded transition-colors w-full text-sm truncate">
             📥 Export CSV
           </button>
         </div>
