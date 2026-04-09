@@ -107,32 +107,71 @@ export default function ReportsClient({
     <div>
       {/* Summary Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 sm:gap-6 mb-6 sm:mb-8">
-        <div className="bg-gradient-to-br from-green-900/40 to-green-800/20 border border-green-500/30 p-4 sm:p-5 rounded-xl shadow-lg flex flex-col justify-center min-w-0">
-          <h3 className="text-gray-400 text-xs uppercase tracking-widest font-semibold mb-1 sm:mb-2 truncate">
-            {isFiltered ? 'Filtered Revenue' : 'Total Revenue'}
-          </h3>
-          <p className="text-xl sm:text-2xl lg:text-3xl font-black text-green-400 break-words leading-tight">{formatCurrency(filteredRevenue)}</p>
-          {isFiltered && <p className="text-[10px] sm:text-xs text-gray-500 mt-1 break-words">All-time: {formatCurrency(allTimeRevenue)}</p>}
+        {/* Revenue Card */}
+        <div className="bg-slate-900/50 p-5 rounded-xl border border-white/5 shadow-lg flex flex-col justify-center min-w-0 relative overflow-hidden group hover:bg-slate-800/50 transition-all duration-300">
+          <div className="absolute top-0 left-0 w-full h-1 bg-green-500/80"></div>
+          <div className="flex justify-between items-center mb-3">
+            <h3 className="text-gray-400 text-xs uppercase tracking-widest font-semibold truncate">
+              {isFiltered ? 'Filtered Revenue' : 'Total Revenue'}
+            </h3>
+            <div className="w-8 h-8 rounded-full bg-green-500/10 flex items-center justify-center shrink-0">
+              <span className="text-green-500 text-sm">💵</span>
+            </div>
+          </div>
+          <p className="text-xl sm:text-2xl lg:text-3xl font-black text-white break-words leading-tight">{formatCurrency(filteredRevenue)}</p>
+          {isFiltered && <p className="text-[10px] sm:text-xs text-gray-500 mt-2 break-words">All-time: <span className="text-gray-300">{formatCurrency(allTimeRevenue)}</span></p>}
         </div>
-        <div className="bg-gradient-to-br from-amber-900/40 to-amber-800/20 border border-amber-500/30 p-4 sm:p-5 rounded-xl shadow-lg flex flex-col justify-center min-w-0">
-          <h3 className="text-gray-400 text-xs uppercase tracking-widest font-semibold mb-1 sm:mb-2 truncate">💰 Tips</h3>
-          <p className="text-xl sm:text-2xl lg:text-3xl font-black text-amber-400 break-words leading-tight">{formatCurrency(filteredTips)}</p>
-          {isFiltered && <p className="text-[10px] sm:text-xs text-gray-500 mt-1 break-words">All-time: {formatCurrency(allTimeTips)}</p>}
+
+        {/* Tips Card */}
+        <div className="bg-slate-900/50 p-5 rounded-xl border border-white/5 shadow-lg flex flex-col justify-center min-w-0 relative overflow-hidden group hover:bg-slate-800/50 transition-all duration-300">
+          <div className="absolute top-0 left-0 w-full h-1 bg-amber-500/80"></div>
+          <div className="flex justify-between items-center mb-3">
+            <h3 className="text-gray-400 text-xs uppercase tracking-widest font-semibold truncate">Tips</h3>
+            <div className="w-8 h-8 rounded-full bg-amber-500/10 flex items-center justify-center shrink-0">
+              <span className="text-amber-500 text-sm">💰</span>
+            </div>
+          </div>
+          <p className="text-xl sm:text-2xl lg:text-3xl font-black text-white break-words leading-tight">{formatCurrency(filteredTips)}</p>
+          {isFiltered && <p className="text-[10px] sm:text-xs text-gray-500 mt-2 break-words">All-time: <span className="text-gray-300">{formatCurrency(allTimeTips)}</span></p>}
         </div>
-        <div className="bg-gradient-to-br from-blue-900/40 to-blue-800/20 border border-blue-500/30 p-4 sm:p-5 rounded-xl shadow-lg flex flex-col justify-center min-w-0">
-          <h3 className="text-gray-400 text-xs uppercase tracking-widest font-semibold mb-1 sm:mb-2 truncate">Completed</h3>
-          <p className="text-xl sm:text-2xl lg:text-3xl font-black text-blue-400 break-words leading-tight">{filtered.length.toLocaleString('en-US')}</p>
+
+        {/* Completed Card */}
+        <div className="bg-slate-900/50 p-5 rounded-xl border border-white/5 shadow-lg flex flex-col justify-center min-w-0 relative overflow-hidden group hover:bg-slate-800/50 transition-all duration-300">
+          <div className="absolute top-0 left-0 w-full h-1 bg-blue-500/80"></div>
+          <div className="flex justify-between items-center mb-3">
+            <h3 className="text-gray-400 text-xs uppercase tracking-widest font-semibold truncate">Completed</h3>
+            <div className="w-8 h-8 rounded-full bg-blue-500/10 flex items-center justify-center shrink-0">
+              <span className="text-blue-500 text-sm">✂️</span>
+            </div>
+          </div>
+          <p className="text-xl sm:text-2xl lg:text-3xl font-black text-white break-words leading-tight">{filtered.length.toLocaleString('en-US')}</p>
+          <p className="text-[10px] sm:text-xs text-gray-500 mt-2 break-words opacity-0 group-hover:opacity-100 transition-opacity">Appointments</p>
         </div>
-        <div className="bg-gradient-to-br from-purple-900/40 to-purple-800/20 border border-purple-500/30 p-4 sm:p-5 rounded-xl shadow-lg flex flex-col justify-center min-w-0">
-          <h3 className="text-gray-400 text-xs uppercase tracking-widest font-semibold mb-1 sm:mb-2 truncate">Avg. Per Service</h3>
-          <p className="text-xl sm:text-2xl lg:text-3xl font-black text-purple-400 break-words leading-tight">
+
+        {/* Avg Service Card */}
+        <div className="bg-slate-900/50 p-5 rounded-xl border border-white/5 shadow-lg flex flex-col justify-center min-w-0 relative overflow-hidden group hover:bg-slate-800/50 transition-all duration-300">
+          <div className="absolute top-0 left-0 w-full h-1 bg-purple-500/80"></div>
+          <div className="flex justify-between items-center mb-3">
+            <h3 className="text-gray-400 text-xs uppercase tracking-widest font-semibold truncate">Avg Per Service</h3>
+            <div className="w-8 h-8 rounded-full bg-purple-500/10 flex items-center justify-center shrink-0">
+              <span className="text-purple-500 text-sm">📈</span>
+            </div>
+          </div>
+          <p className="text-xl sm:text-2xl lg:text-3xl font-black text-white break-words leading-tight">
             {formatCurrency(filtered.length > 0 ? (filteredRevenue / filtered.length) : 0)}
           </p>
+          <p className="text-[10px] sm:text-xs text-gray-500 mt-2 break-words opacity-0 group-hover:opacity-100 transition-opacity">Average Ticket</p>
         </div>
-        <div className="bg-gradient-to-br from-cyan-900/40 to-cyan-800/20 border border-cyan-500/30 p-4 sm:p-5 rounded-xl shadow-lg flex flex-col justify-center items-center text-center min-w-0">
-          <p className="text-gray-400 text-xs mb-2 w-full truncate">Export Data</p>
-          <button onClick={exportCSV} className="bg-cyan-600 hover:bg-cyan-500 text-white font-bold py-2 px-3 rounded transition-colors w-full text-xs sm:text-sm truncate">
-            📥 Export CSV
+
+        {/* Export Card */}
+        <div className="bg-slate-900/50 p-5 rounded-xl border border-white/5 shadow-lg flex flex-col justify-center min-w-0 relative overflow-hidden group hover:bg-slate-800/50 transition-all duration-300">
+          <div className="absolute top-0 left-0 w-full h-1 bg-brand-gold/80"></div>
+          <div className="flex justify-between items-center mb-3">
+            <h3 className="text-gray-400 text-xs uppercase tracking-widest font-semibold truncate w-full">Export Data</h3>
+          </div>
+          <p className="text-[10px] sm:text-xs text-gray-500 mb-3 flex-1">Download a CSV of the current report for accounting.</p>
+          <button onClick={exportCSV} className="bg-white/5 hover:bg-brand-gold hover:text-black border border-white/10 hover:border-brand-gold text-white font-bold py-2 px-3 rounded-lg transition-all w-full text-xs sm:text-sm truncate flex items-center justify-center gap-2">
+            <span>📥</span> CSV
           </button>
         </div>
       </div>
