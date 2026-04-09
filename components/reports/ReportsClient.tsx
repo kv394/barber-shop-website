@@ -105,73 +105,65 @@ export default function ReportsClient({
 
   return (
     <div>
-      {/* Summary Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 sm:gap-6 mb-6 sm:mb-8">
-        {/* Revenue Card */}
-        <div className="bg-slate-900/50 p-5 rounded-xl border border-white/5 shadow-lg flex flex-col justify-center min-w-0 relative overflow-hidden group hover:bg-slate-800/50 transition-all duration-300">
+      {/* Floating Summary Bar */}
+      <div className="bg-slate-900/80 backdrop-blur-xl shadow-2xl rounded-2xl border border-white/10 mb-8 flex flex-col lg:flex-row divide-y lg:divide-y-0 lg:divide-x divide-white/10 relative z-20 transform sm:-translate-y-6 sm:-mx-2">
+        
+        {/* Revenue */}
+        <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-white/5 transition-all duration-300 min-w-0">
           <div className="absolute top-0 left-0 w-full h-1 bg-green-500/80"></div>
           <div className="flex justify-between items-center mb-3">
-            <h3 className="text-gray-400 text-xs uppercase tracking-widest font-semibold truncate">
+            <h3 className="text-gray-400 text-[10px] sm:text-xs uppercase tracking-widest font-semibold truncate">
               {isFiltered ? 'Filtered Revenue' : 'Total Revenue'}
             </h3>
-            <div className="w-8 h-8 rounded-full bg-green-500/10 flex items-center justify-center shrink-0">
-              <span className="text-green-500 text-sm">💵</span>
-            </div>
+            <span className="text-green-500 text-sm">💵</span>
           </div>
-          <p className="text-xl sm:text-2xl lg:text-3xl font-black text-white break-words leading-tight">{formatCurrency(filteredRevenue)}</p>
-          {isFiltered && <p className="text-[10px] sm:text-xs text-gray-500 mt-2 break-words">All-time: <span className="text-gray-300">{formatCurrency(allTimeRevenue)}</span></p>}
+          <p className="text-2xl sm:text-3xl font-black text-white break-words leading-tight">{formatCurrency(filteredRevenue)}</p>
+          {isFiltered && <p className="text-[10px] text-gray-500 mt-2 truncate">All-time: <span className="text-gray-300">{formatCurrency(allTimeRevenue)}</span></p>}
         </div>
 
-        {/* Tips Card */}
-        <div className="bg-slate-900/50 p-5 rounded-xl border border-white/5 shadow-lg flex flex-col justify-center min-w-0 relative overflow-hidden group hover:bg-slate-800/50 transition-all duration-300">
+        {/* Tips */}
+        <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-white/5 transition-all duration-300 min-w-0">
           <div className="absolute top-0 left-0 w-full h-1 bg-amber-500/80"></div>
           <div className="flex justify-between items-center mb-3">
-            <h3 className="text-gray-400 text-xs uppercase tracking-widest font-semibold truncate">Tips</h3>
-            <div className="w-8 h-8 rounded-full bg-amber-500/10 flex items-center justify-center shrink-0">
-              <span className="text-amber-500 text-sm">💰</span>
-            </div>
+            <h3 className="text-gray-400 text-[10px] sm:text-xs uppercase tracking-widest font-semibold truncate">Tips</h3>
+            <span className="text-amber-500 text-sm">💰</span>
           </div>
-          <p className="text-xl sm:text-2xl lg:text-3xl font-black text-white break-words leading-tight">{formatCurrency(filteredTips)}</p>
-          {isFiltered && <p className="text-[10px] sm:text-xs text-gray-500 mt-2 break-words">All-time: <span className="text-gray-300">{formatCurrency(allTimeTips)}</span></p>}
+          <p className="text-2xl sm:text-3xl font-black text-white break-words leading-tight">{formatCurrency(filteredTips)}</p>
+          {isFiltered && <p className="text-[10px] text-gray-500 mt-2 truncate">All-time: <span className="text-gray-300">{formatCurrency(allTimeTips)}</span></p>}
         </div>
 
-        {/* Completed Card */}
-        <div className="bg-slate-900/50 p-5 rounded-xl border border-white/5 shadow-lg flex flex-col justify-center min-w-0 relative overflow-hidden group hover:bg-slate-800/50 transition-all duration-300">
+        {/* Completed */}
+        <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-white/5 transition-all duration-300 min-w-0">
           <div className="absolute top-0 left-0 w-full h-1 bg-blue-500/80"></div>
           <div className="flex justify-between items-center mb-3">
-            <h3 className="text-gray-400 text-xs uppercase tracking-widest font-semibold truncate">Completed</h3>
-            <div className="w-8 h-8 rounded-full bg-blue-500/10 flex items-center justify-center shrink-0">
-              <span className="text-blue-500 text-sm">✂️</span>
-            </div>
+            <h3 className="text-gray-400 text-[10px] sm:text-xs uppercase tracking-widest font-semibold truncate">Completed</h3>
+            <span className="text-blue-500 text-sm">✂️</span>
           </div>
-          <p className="text-xl sm:text-2xl lg:text-3xl font-black text-white break-words leading-tight">{filtered.length.toLocaleString('en-US')}</p>
-          <p className="text-[10px] sm:text-xs text-gray-500 mt-2 break-words opacity-0 group-hover:opacity-100 transition-opacity">Appointments</p>
+          <p className="text-2xl sm:text-3xl font-black text-white break-words leading-tight">{filtered.length.toLocaleString('en-US')}</p>
+          <p className="text-[10px] text-gray-500 mt-2 truncate opacity-0 group-hover:opacity-100 transition-opacity">Appointments</p>
         </div>
 
-        {/* Avg Service Card */}
-        <div className="bg-slate-900/50 p-5 rounded-xl border border-white/5 shadow-lg flex flex-col justify-center min-w-0 relative overflow-hidden group hover:bg-slate-800/50 transition-all duration-300">
+        {/* Avg Service */}
+        <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-white/5 transition-all duration-300 min-w-0">
           <div className="absolute top-0 left-0 w-full h-1 bg-purple-500/80"></div>
           <div className="flex justify-between items-center mb-3">
-            <h3 className="text-gray-400 text-xs uppercase tracking-widest font-semibold truncate">Avg Per Service</h3>
-            <div className="w-8 h-8 rounded-full bg-purple-500/10 flex items-center justify-center shrink-0">
-              <span className="text-purple-500 text-sm">📈</span>
-            </div>
+            <h3 className="text-gray-400 text-[10px] sm:text-xs uppercase tracking-widest font-semibold truncate">Avg Ticket</h3>
+            <span className="text-purple-500 text-sm">📈</span>
           </div>
-          <p className="text-xl sm:text-2xl lg:text-3xl font-black text-white break-words leading-tight">
+          <p className="text-2xl sm:text-3xl font-black text-white break-words leading-tight">
             {formatCurrency(filtered.length > 0 ? (filteredRevenue / filtered.length) : 0)}
           </p>
-          <p className="text-[10px] sm:text-xs text-gray-500 mt-2 break-words opacity-0 group-hover:opacity-100 transition-opacity">Average Ticket</p>
+          <p className="text-[10px] text-gray-500 mt-2 truncate opacity-0 group-hover:opacity-100 transition-opacity">Per Service</p>
         </div>
 
-        {/* Export Card */}
-        <div className="bg-slate-900/50 p-5 rounded-xl border border-white/5 shadow-lg flex flex-col justify-center min-w-0 relative overflow-hidden group hover:bg-slate-800/50 transition-all duration-300">
+        {/* Export */}
+        <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-white/5 transition-all duration-300 flex flex-col justify-center min-w-0">
           <div className="absolute top-0 left-0 w-full h-1 bg-brand-gold/80"></div>
           <div className="flex justify-between items-center mb-3">
-            <h3 className="text-gray-400 text-xs uppercase tracking-widest font-semibold truncate w-full">Export Data</h3>
+            <h3 className="text-gray-400 text-[10px] sm:text-xs uppercase tracking-widest font-semibold truncate">Export Data</h3>
           </div>
-          <p className="text-[10px] sm:text-xs text-gray-500 mb-3 flex-1">Download a CSV of the current report for accounting.</p>
-          <button onClick={exportCSV} className="bg-white/5 hover:bg-brand-gold hover:text-black border border-white/10 hover:border-brand-gold text-white font-bold py-2 px-3 rounded-lg transition-all w-full text-xs sm:text-sm truncate flex items-center justify-center gap-2">
-            <span>📥</span> CSV
+          <button onClick={exportCSV} className="bg-white/5 hover:bg-brand-gold hover:text-black border border-white/10 hover:border-brand-gold text-white font-bold py-2 sm:py-3 px-3 rounded-lg transition-all w-full text-xs sm:text-sm truncate flex items-center justify-center gap-2">
+            <span>📥</span> Download CSV
           </button>
         </div>
       </div>
