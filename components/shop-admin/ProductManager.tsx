@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import ProductInventoryManager from './ProductInventoryManager';
 import ProductBarcodeScannerWrapper from '@/components/checkout/ProductBarcodeScannerWrapper';
+import { QRCodeSVG } from 'qrcode.react';
 
 export default function ProductManager({ shopId, products }: { shopId: string, products: any[] }) {
   const router = useRouter();
@@ -135,7 +136,22 @@ export default function ProductManager({ shopId, products }: { shopId: string, p
           <tbody className="divide-y divide-white/5">
             {products.map((product) => (
               <tr key={product.id} className="hover:bg-slate-800/50">
-                <td className="px-6 py-4 font-medium text-white">{product.name}</td>
+                <td className="px-6 py-4 font-medium text-white">
+                  {product.name}
+                  {product.barcode && <p className="text-[10px] text-gray-500 font-mono mt-1">{product.barcode}</p>}
+                </td>
+                <td className="px-6 py-4">
+                  <div className="bg-white p-1 rounded-md inline-block relative group">
+                    <QRCodeSVG value={product.barcode || product.id} size={48} level="L" />
+                    {/* Hover to enlarge feature */}
+                    <div className="absolute left-1/2 -translate-x-1/2 top-0 -translate-y-full opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-opacity z-50 mb-2">
+                      <div className="bg-white p-3 rounded-xl shadow-2xl border border-gray-200">
+                        <QRCodeSVG value={product.barcode || product.id} size={128} level="L" />
+                        <p className="text-center text-xs text-gray-500 font-mono mt-2 truncate w-32">{product.barcode || product.id}</p>
+                      </div>
+                    </div>
+                  </div>
+                </td>
                 <td className="px-6 py-4">${product.price.toFixed(2)}</td>
                 <td className="px-6 py-4">
                   <span className={`px-2 py-1 rounded-full text-xs font-medium ${product.type === 'RETAIL' ? 'bg-blue-500/20 text-blue-400' : 'bg-purple-500/20 text-purple-400'}`}>
@@ -163,7 +179,7 @@ export default function ProductManager({ shopId, products }: { shopId: string, p
             ))}
             {products.length === 0 && (
               <tr>
-                <td colSpan={5} className="px-6 py-8 text-center text-gray-500">
+                <td colSpan={6} className="px-6 py-8 text-center text-gray-500">
                   No products found. Add your first product to manage inventory!
                 </td>
               </tr>
