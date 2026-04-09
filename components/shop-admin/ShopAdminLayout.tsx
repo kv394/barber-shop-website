@@ -18,20 +18,59 @@ const SETTINGS_TABS = [
   'setup', 'products', 'services', 'settings-billing'
 ];
 
-function SettingsSidebar({ activeTab, shopId }: { activeTab: string, shopId: string }) {
-  const navLinks = [
-    { href: `/shop/${shopId}/settings`, label: '🎨 Appearance', key: 'settings' },
-    { href: `/shop/${shopId}/settings/booking`, label: '📅 Booking & Hours', key: 'settings-booking' },
-    { href: `/shop/${shopId}/config/services`, label: '💇 Services', key: 'services' },
-    { href: `/shop/${shopId}/config/products`, label: '🛍️ Products', key: 'products' },
-    { href: `/shop/${shopId}/settings/resources`, label: '🪑 Resources', key: 'settings-resources' },
-    { href: `/shop/${shopId}/settings/forms`, label: '📝 Intake Forms', key: 'settings-forms' },
-    { href: `/shop/${shopId}/settings/memberships`, label: '⭐ Memberships', key: 'settings-memberships' },
-    { href: `/shop/${shopId}/settings/notifications`, label: '🔔 Notifications', key: 'settings-notifications' },
-    { href: `/shop/${shopId}/settings/commissions`, label: '💼 Commissions', key: 'settings-commissions' },
-    { href: `/shop/${shopId}/settings/kiosk`, label: '📱 Kiosk', key: 'settings-kiosk' },
-    { href: `/shop/${shopId}/settings/billing`, label: '💳 Billing', key: 'settings-billing' },
-  ];
+const STAFF_TABS = ['staff', 'attendance', 'leave', 'team', 'portfolio'];
+const REPORTS_TABS = ['reports', 'staff-report', 'expenses', 'commissions'];
+const ENGAGEMENT_TABS = ['engagement', 'loyalty', 'referrals', 'campaigns', 'gift-cards'];
+
+function SectionSidebar({ activeTab, shopId, section, userRole }: { activeTab: string, shopId: string, section: string, userRole: string }) {
+  let navLinks: { href: string, label: string, key: string }[] = [];
+
+  const isStaff = userRole === 'STAFF';
+  const isShopAdmin = userRole === 'SHOP_ADMIN';
+
+  if (section === 'settings') {
+    navLinks = [
+      { href: `/shop/${shopId}/settings`, label: '🎨 Appearance', key: 'settings' },
+      { href: `/shop/${shopId}/settings/booking`, label: '📅 Booking & Hours', key: 'settings-booking' },
+      { href: `/shop/${shopId}/config/services`, label: '💇 Services', key: 'services' },
+      { href: `/shop/${shopId}/config/products`, label: '🛍️ Products', key: 'products' },
+      { href: `/shop/${shopId}/settings/resources`, label: '🪑 Resources', key: 'settings-resources' },
+      { href: `/shop/${shopId}/settings/forms`, label: '📝 Intake Forms', key: 'settings-forms' },
+      { href: `/shop/${shopId}/settings/memberships`, label: '⭐ Memberships', key: 'settings-memberships' },
+      { href: `/shop/${shopId}/settings/notifications`, label: '🔔 Notifications', key: 'settings-notifications' },
+      { href: `/shop/${shopId}/settings/commissions`, label: '💼 Commissions', key: 'settings-commissions' },
+      { href: `/shop/${shopId}/settings/kiosk`, label: '📱 Kiosk', key: 'settings-kiosk' },
+      { href: `/shop/${shopId}/settings/billing`, label: '💳 Billing', key: 'settings-billing' },
+    ];
+  } else if (section === 'staff') {
+    navLinks = [
+      { href: `/shop/${shopId}/staff`, label: '📅 Availability', key: 'staff' },
+      { href: `/shop/${shopId}/attendance`, label: '🕐 Attendance', key: 'attendance' },
+      { href: `/shop/${shopId}/leave`, label: '🏖️ Leave', key: 'leave' },
+      { href: `/shop/${shopId}/portfolio`, label: '📸 Portfolio', key: 'portfolio' },
+    ];
+    if (isShopAdmin) {
+      navLinks.push({ href: `/shop/${shopId}/settings/team`, label: '👥 Manage Team', key: 'team' });
+    }
+    if (isStaff) {
+      navLinks.push({ href: `/shop/${shopId}/reports/commissions`, label: '💰 My Earnings', key: 'commissions' });
+    }
+  } else if (section === 'reports') {
+    navLinks = [
+      { href: `/shop/${shopId}/reports`, label: '💰 Financial', key: 'reports' },
+      { href: `/shop/${shopId}/reports/staff-working`, label: '📊 Staff Performance', key: 'staff-report' },
+      { href: `/shop/${shopId}/expenses`, label: '💸 Expenses', key: 'expenses' },
+      { href: `/shop/${shopId}/reports/commissions`, label: '💼 Commissions', key: 'commissions' },
+    ];
+  } else if (section === 'engagement') {
+    navLinks = [
+      { href: `/shop/${shopId}/engagement`, label: '📈 Analytics', key: 'engagement' },
+      { href: `/shop/${shopId}/loyalty`, label: '⭐ Loyalty', key: 'loyalty' },
+      { href: `/shop/${shopId}/referrals`, label: '🔗 Referrals', key: 'referrals' },
+      { href: `/shop/${shopId}/campaigns`, label: '📣 Campaigns', key: 'campaigns' },
+      { href: `/shop/${shopId}/gift-cards`, label: '🎁 Gift Cards', key: 'gift-cards' },
+    ];
+  }
 
   return (
     <nav className="flex flex-row md:flex-col gap-1 overflow-x-auto scrollbar-none pb-2 md:pb-0">
@@ -62,9 +101,21 @@ export default function ShopAdminLayout({
   userRole,
   activeTab,
 }: ShopAdminLayoutProps) {
-  // We only show the split layout if the user is SHOP_ADMIN, because STAFF 
-  // might not have permission to view everything and shouldn't get the full sidebar.
+  
   const isSettingsView = SETTINGS_TABS.includes(activeTab) && userRole === 'SHOP_ADMIN';
+  
+  const effectiveStaffTabs = userRole === 'STAFF' ? [...STAFF_TABS, 'commissions'] : STAFF_TABS;
+  const isStaffView = effectiveStaffTabs.includes(activeTab) && (userRole === 'SHOP_ADMIN' || userRole === 'STAFF');
+  const isReportsView = REPORTS_TABS.includes(activeTab) && userRole === 'SHOP_ADMIN';
+  const isEngagementView = ENGAGEMENT_TABS.includes(activeTab) && userRole === 'SHOP_ADMIN';
+
+  const isSplitLayout = isSettingsView || isStaffView || isReportsView || isEngagementView;
+
+  let activeSection = '';
+  if (isSettingsView) activeSection = 'settings';
+  else if (isStaffView) activeSection = 'staff';
+  else if (isReportsView) activeSection = 'reports';
+  else if (isEngagementView) activeSection = 'engagement';
 
   return (
     <>
@@ -74,20 +125,20 @@ export default function ShopAdminLayout({
 
       <ShopNav shopId={shopId} userRole={userRole} activeTab={activeTab} />
 
-      {isSettingsView ? (
+      {isSplitLayout ? (
         <div className="flex flex-col md:flex-row gap-6 items-start">
           {/* Sidebar */}
           <div className="w-full md:w-64 shrink-0 bg-slate-800/50 rounded-xl border border-white/10 p-2 shadow-lg">
-            <SettingsSidebar activeTab={activeTab} shopId={shopId} />
+            <SectionSidebar activeTab={activeTab} shopId={shopId} section={activeSection} userRole={userRole} />
           </div>
           
           {/* Main Content Area */}
-          <div className="flex-1 w-full bg-slate-800/50 p-3 sm:p-4 md:p-8 rounded-xl border border-white/10 shadow-lg min-w-0">
+          <div className="flex-1 w-full bg-slate-800/50 p-3 sm:p-4 md:p-8 rounded-xl border border-white/10 shadow-lg min-w-0 overflow-hidden">
             {children}
           </div>
         </div>
       ) : (
-        <div className="bg-slate-800/50 p-3 sm:p-4 md:p-8 rounded-xl border border-white/10 shadow-lg">
+        <div className="bg-slate-800/50 p-3 sm:p-4 md:p-8 rounded-xl border border-white/10 shadow-lg overflow-hidden">
           {children}
         </div>
       )}
