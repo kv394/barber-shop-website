@@ -101,53 +101,45 @@ export default function StaffWorkingReport({ staffMembers }: { staffMembers: Sta
 
   return (
     <div>
-      {/* Summary Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 mb-6 sm:mb-8">
-        <div className="bg-slate-900/50 p-4 sm:p-5 rounded-xl border border-white/5 shadow-lg flex flex-col justify-center min-w-0 relative overflow-hidden group hover:bg-slate-800/50 transition-all duration-300">
+      {/* Floating Summary Bar */}
+      <div className="bg-slate-900/80 backdrop-blur-xl shadow-2xl rounded-2xl border border-white/10 mb-8 flex flex-col lg:flex-row divide-y lg:divide-y-0 lg:divide-x divide-white/10 relative z-20 transform sm:-translate-y-6 sm:-mx-2">
+        <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-white/5 transition-all duration-300 min-w-0">
           <div className="absolute top-0 left-0 w-full h-1 bg-blue-500/80"></div>
-          <div className="flex justify-between items-center mb-2 sm:mb-3">
-            <h3 className="text-gray-400 text-xs uppercase tracking-widest font-semibold truncate">Total Staff</h3>
-            <div className="w-8 h-8 rounded-full bg-blue-500/10 flex items-center justify-center shrink-0">
-              <span className="text-blue-500 text-sm">👥</span>
-            </div>
+          <div className="flex justify-between items-center mb-3">
+            <h3 className="text-gray-400 text-[10px] sm:text-xs uppercase tracking-widest font-semibold truncate">Total Staff</h3>
+            <span className="text-blue-500 text-sm">👥</span>
           </div>
-          <p className="text-xl sm:text-2xl lg:text-3xl font-black text-white break-words leading-tight">{staffMembers.length}</p>
-          <p className="text-xs text-gray-500 mt-2">
-            {staffData.filter(s => s.isActive).length} currently active
+          <p className="text-2xl sm:text-3xl font-black text-white break-words leading-tight">{staffMembers.length}</p>
+          <p className="text-[10px] text-gray-500 mt-2 truncate">
+            <span className="text-gray-300">{staffData.filter(s => s.isActive).length}</span> currently active
           </p>
         </div>
-        <div className="bg-slate-900/50 p-4 sm:p-5 rounded-xl border border-white/5 shadow-lg flex flex-col justify-center min-w-0 relative overflow-hidden group hover:bg-slate-800/50 transition-all duration-300">
+        <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-white/5 transition-all duration-300 min-w-0">
           <div className="absolute top-0 left-0 w-full h-1 bg-purple-500/80"></div>
-          <div className="flex justify-between items-center mb-2 sm:mb-3">
-            <h3 className="text-gray-400 text-xs uppercase tracking-widest font-semibold truncate">Total Hours</h3>
-            <div className="w-8 h-8 rounded-full bg-purple-500/10 flex items-center justify-center shrink-0">
-              <span className="text-purple-500 text-sm">⏱️</span>
-            </div>
+          <div className="flex justify-between items-center mb-3">
+            <h3 className="text-gray-400 text-[10px] sm:text-xs uppercase tracking-widest font-semibold truncate">Total Hours</h3>
+            <span className="text-purple-500 text-sm">⏱️</span>
           </div>
-          <p className="text-xl sm:text-2xl lg:text-3xl font-black text-white break-words leading-tight">{formatDuration(totalHoursMs)}</p>
-          {isFiltered && <p className="text-xs text-gray-500 mt-2">In selected date range</p>}
+          <p className="text-2xl sm:text-3xl font-black text-white break-words leading-tight">{formatDuration(totalHoursMs)}</p>
+          {isFiltered && <p className="text-[10px] text-gray-500 mt-2 truncate opacity-0 group-hover:opacity-100 transition-opacity">In selected date range</p>}
         </div>
-        <div className="bg-slate-900/50 p-4 sm:p-5 rounded-xl border border-white/5 shadow-lg flex flex-col justify-center min-w-0 relative overflow-hidden group hover:bg-slate-800/50 transition-all duration-300">
+        <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-white/5 transition-all duration-300 min-w-0">
           <div className="absolute top-0 left-0 w-full h-1 bg-green-500/80"></div>
-          <div className="flex justify-between items-center mb-2 sm:mb-3">
-            <h3 className="text-gray-400 text-xs uppercase tracking-widest font-semibold truncate">Clients Served</h3>
-            <div className="w-8 h-8 rounded-full bg-green-500/10 flex items-center justify-center shrink-0">
-              <span className="text-green-500 text-sm">✂️</span>
-            </div>
+          <div className="flex justify-between items-center mb-3">
+            <h3 className="text-gray-400 text-[10px] sm:text-xs uppercase tracking-widest font-semibold truncate">Clients Served</h3>
+            <span className="text-green-500 text-sm">✂️</span>
           </div>
-          <p className="text-xl sm:text-2xl lg:text-3xl font-black text-white break-words leading-tight">{totalClients}</p>
-          {isFiltered && <p className="text-xs text-gray-500 mt-2">In selected date range</p>}
+          <p className="text-2xl sm:text-3xl font-black text-white break-words leading-tight">{totalClients}</p>
+          {isFiltered && <p className="text-[10px] text-gray-500 mt-2 truncate opacity-0 group-hover:opacity-100 transition-opacity">In selected date range</p>}
         </div>
-        <div className="bg-slate-900/50 p-4 sm:p-5 rounded-xl border border-white/5 shadow-lg flex flex-col justify-center min-w-0 relative overflow-hidden group hover:bg-slate-800/50 transition-all duration-300">
+        <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-white/5 transition-all duration-300 min-w-0">
           <div className="absolute top-0 left-0 w-full h-1 bg-amber-500/80"></div>
-          <div className="flex justify-between items-center mb-2 sm:mb-3">
-            <h3 className="text-gray-400 text-xs uppercase tracking-widest font-semibold truncate">Revenue Generated</h3>
-            <div className="w-8 h-8 rounded-full bg-amber-500/10 flex items-center justify-center shrink-0">
-              <span className="text-amber-500 text-sm">💰</span>
-            </div>
+          <div className="flex justify-between items-center mb-3">
+            <h3 className="text-gray-400 text-[10px] sm:text-xs uppercase tracking-widest font-semibold truncate">Revenue Generated</h3>
+            <span className="text-amber-500 text-sm">💰</span>
           </div>
-          <p className="text-xl sm:text-2xl lg:text-3xl font-black text-white break-words leading-tight">${totalRevenue.toFixed(2)}</p>
-          {isFiltered && <p className="text-xs text-gray-500 mt-2">In selected date range</p>}
+          <p className="text-2xl sm:text-3xl font-black text-white break-words leading-tight">${totalRevenue.toFixed(2)}</p>
+          {isFiltered && <p className="text-[10px] text-gray-500 mt-2 truncate opacity-0 group-hover:opacity-100 transition-opacity">In selected date range</p>}
         </div>
       </div>
 

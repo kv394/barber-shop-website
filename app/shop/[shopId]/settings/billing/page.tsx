@@ -90,16 +90,20 @@ export default async function ShopBillingPage({ params }: { params: Promise<{ sh
         </div>
 
         <div className="space-y-6">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+          <div className="bg-slate-900/80 backdrop-blur-xl shadow-2xl rounded-2xl border border-white/10 flex flex-col md:flex-row md:flex-wrap lg:flex-nowrap divide-y md:divide-y-0 md:divide-x divide-white/10 relative z-20 overflow-hidden transform sm:-translate-y-6 sm:-mx-2 mb-2 sm:mb-6 mt-6 sm:mt-10">
             {[
-              { label: 'Appointments', val: metrics.appointmentCount },
-              { label: 'Users', val: metrics.userCount },
-              { label: 'Intake Forms', val: metrics.formSubmissionCount },
-              { label: 'Images', val: metrics.portfolioImageCount + metrics.clientHistoryImageCount },
+              { label: 'Appointments', val: metrics.appointmentCount, colorClass: 'text-blue-500', bgClass: 'bg-blue-500/80', icon: '📅' },
+              { label: 'Users', val: metrics.userCount, colorClass: 'text-green-500', bgClass: 'bg-green-500/80', icon: '👥' },
+              { label: 'Intake Forms', val: metrics.formSubmissionCount, colorClass: 'text-purple-500', bgClass: 'bg-purple-500/80', icon: '📝' },
+              { label: 'Images', val: metrics.portfolioImageCount + metrics.clientHistoryImageCount, colorClass: 'text-amber-500', bgClass: 'bg-amber-500/80', icon: '📸' },
             ].map(m => (
-              <div key={m.label} className="bg-slate-800/50 p-4 rounded-xl border border-white/10 text-center">
-                <p className="text-2xl font-bold text-white">{m.val}</p>
-                <p className="text-[10px] text-gray-400 uppercase tracking-wider mt-1">{m.label}</p>
+              <div key={m.label} className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-white/5 transition-all duration-300 min-w-0 border-t md:border-t-0 md:border-l border-white/10 first:border-0">
+                <div className={`absolute top-0 left-0 w-full h-1 ${m.bgClass}`}></div>
+                <div className="flex justify-between items-center mb-2 sm:mb-3">
+                  <h3 className="text-gray-400 text-[10px] sm:text-xs uppercase tracking-widest font-semibold truncate">{m.label}</h3>
+                  <span className={`${m.colorClass} text-sm`}>{m.icon}</span>
+                </div>
+                <p className="text-xl sm:text-2xl lg:text-3xl font-black text-white break-words leading-tight">{m.val}</p>
               </div>
             ))}
           </div>

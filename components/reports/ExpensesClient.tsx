@@ -69,15 +69,15 @@ export default function ExpensesClient({ shopId }: { shopId: string }) {
           <input type="month" value={month} onChange={e => setMonth(e.target.value)} style={inputStyle}
             className="w-full border border-white/10 rounded p-2.5 text-sm focus:outline-none focus:border-brand-gold [&::-webkit-calendar-picker-indicator]:invert" />
         </div>
-        <div className="bg-slate-900/50 p-4 sm:p-5 rounded-xl border border-white/5 shadow-lg flex flex-col justify-center min-w-0 relative overflow-hidden group hover:bg-slate-800/50 transition-all duration-300 flex-1">
+        <div className="bg-slate-900/80 backdrop-blur-xl shadow-2xl rounded-2xl border border-white/10 flex-1 relative overflow-hidden group hover:bg-white/5 transition-all duration-300 z-20">
           <div className="absolute top-0 left-0 w-full h-1 bg-red-500/80"></div>
-          <div className="flex justify-between items-center mb-2 sm:mb-3">
-            <h3 className="text-gray-400 text-xs uppercase tracking-widest font-semibold truncate">Total Expenses</h3>
-            <div className="w-8 h-8 rounded-full bg-red-500/10 flex items-center justify-center shrink-0">
+          <div className="p-5 sm:p-6">
+            <div className="flex justify-between items-center mb-2 sm:mb-3">
+              <h3 className="text-gray-400 text-[10px] sm:text-xs uppercase tracking-widest font-semibold truncate">Total Expenses</h3>
               <span className="text-red-500 text-sm">💸</span>
             </div>
+            <p className="text-2xl sm:text-3xl font-black text-white break-words leading-tight">${total.toFixed(2)}</p>
           </div>
-          <p className="text-xl sm:text-2xl lg:text-3xl font-black text-white break-words leading-tight">${total.toFixed(2)}</p>
         </div>
       </div>
 

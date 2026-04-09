@@ -92,47 +92,39 @@ export default function CommissionReportClient({
         <button onClick={exportCSV} className="bg-white/10 hover:bg-white/20 text-white px-4 py-2 rounded text-sm transition-colors">📥 Export CSV</button>
       </div>
 
-      {/* Totals */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-        <div className="bg-slate-900/50 p-4 sm:p-5 rounded-xl border border-white/5 shadow-lg flex flex-col justify-center min-w-0 relative overflow-hidden group hover:bg-slate-800/50 transition-all duration-300">
+      {/* Totals Floating Bar */}
+      <div className="bg-slate-900/80 backdrop-blur-xl shadow-2xl rounded-2xl border border-white/10 flex flex-col sm:flex-row divide-y sm:divide-y-0 sm:divide-x divide-white/10 relative z-20 overflow-hidden transform sm:-translate-y-6 sm:-mx-2 mb-2 sm:mb-6">
+        <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-white/5 transition-all duration-300 min-w-0">
           <div className="absolute top-0 left-0 w-full h-1 bg-green-500/80"></div>
-          <div className="flex justify-between items-center mb-2 sm:mb-3">
+          <div className="flex justify-between items-center mb-3">
             <h3 className="text-gray-400 text-[10px] sm:text-xs uppercase tracking-widest font-semibold truncate">{isPersonalView ? 'My Revenue' : 'Gross Revenue'}</h3>
-            <div className="w-8 h-8 rounded-full bg-green-500/10 flex items-center justify-center shrink-0">
-              <span className="text-green-500 text-sm">💵</span>
-            </div>
+            <span className="text-green-500 text-sm">💵</span>
           </div>
-          <p className="text-xl sm:text-2xl lg:text-3xl font-black text-white break-words leading-tight">${totalRevenue.toFixed(0)}</p>
+          <p className="text-2xl sm:text-3xl font-black text-white break-words leading-tight">${totalRevenue.toFixed(0)}</p>
         </div>
-        <div className="bg-slate-900/50 p-4 sm:p-5 rounded-xl border border-white/5 shadow-lg flex flex-col justify-center min-w-0 relative overflow-hidden group hover:bg-slate-800/50 transition-all duration-300">
+        <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-white/5 transition-all duration-300 min-w-0">
           <div className="absolute top-0 left-0 w-full h-1 bg-blue-500/80"></div>
-          <div className="flex justify-between items-center mb-2 sm:mb-3">
+          <div className="flex justify-between items-center mb-3">
             <h3 className="text-gray-400 text-[10px] sm:text-xs uppercase tracking-widest font-semibold truncate">{isPersonalView ? 'My Commission' : 'Commission'}</h3>
-            <div className="w-8 h-8 rounded-full bg-blue-500/10 flex items-center justify-center shrink-0">
-              <span className="text-blue-500 text-sm">💎</span>
-            </div>
+            <span className="text-blue-500 text-sm">💎</span>
           </div>
-          <p className="text-xl sm:text-2xl lg:text-3xl font-black text-white break-words leading-tight">${totalCommission.toFixed(0)}</p>
+          <p className="text-2xl sm:text-3xl font-black text-white break-words leading-tight">${totalCommission.toFixed(0)}</p>
         </div>
-        <div className="bg-slate-900/50 p-4 sm:p-5 rounded-xl border border-white/5 shadow-lg flex flex-col justify-center min-w-0 relative overflow-hidden group hover:bg-slate-800/50 transition-all duration-300">
+        <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-white/5 transition-all duration-300 min-w-0">
           <div className="absolute top-0 left-0 w-full h-1 bg-amber-500/80"></div>
-          <div className="flex justify-between items-center mb-2 sm:mb-3">
+          <div className="flex justify-between items-center mb-3">
             <h3 className="text-gray-400 text-[10px] sm:text-xs uppercase tracking-widest font-semibold truncate">{isPersonalView ? 'My Tips' : 'Tips'}</h3>
-            <div className="w-8 h-8 rounded-full bg-amber-500/10 flex items-center justify-center shrink-0">
-              <span className="text-amber-500 text-sm">🪙</span>
-            </div>
+            <span className="text-amber-500 text-sm">🪙</span>
           </div>
-          <p className="text-xl sm:text-2xl lg:text-3xl font-black text-white break-words leading-tight">${totalTips.toFixed(0)}</p>
+          <p className="text-2xl sm:text-3xl font-black text-white break-words leading-tight">${totalTips.toFixed(0)}</p>
         </div>
-        <div className="bg-slate-900/50 p-4 sm:p-5 rounded-xl border border-white/5 shadow-lg flex flex-col justify-center min-w-0 relative overflow-hidden group hover:bg-slate-800/50 transition-all duration-300">
+        <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-white/5 transition-all duration-300 min-w-0">
           <div className="absolute top-0 left-0 w-full h-1 bg-purple-500/80"></div>
-          <div className="flex justify-between items-center mb-2 sm:mb-3">
+          <div className="flex justify-between items-center mb-3">
             <h3 className="text-gray-400 text-[10px] sm:text-xs uppercase tracking-widest font-semibold truncate">{isPersonalView ? 'My Total Pay' : 'Total Payout'}</h3>
-            <div className="w-8 h-8 rounded-full bg-purple-500/10 flex items-center justify-center shrink-0">
-              <span className="text-purple-500 text-sm">💳</span>
-            </div>
+            <span className="text-purple-500 text-sm">💳</span>
           </div>
-          <p className="text-xl sm:text-2xl lg:text-3xl font-black text-white break-words leading-tight">${totalPayout.toFixed(0)}</p>
+          <p className="text-2xl sm:text-3xl font-black text-white break-words leading-tight">${totalPayout.toFixed(0)}</p>
         </div>
       </div>
 

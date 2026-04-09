@@ -21,67 +21,55 @@ export default function EngagementAnalytics({ shopId }: { shopId: string }) {
 
   return (
     <div className="space-y-8">
-      {/* Overview Cards */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
-        <div className="bg-slate-900/50 p-4 sm:p-5 rounded-xl border border-white/5 shadow-lg flex flex-col justify-center min-w-0 relative overflow-hidden group hover:bg-slate-800/50 transition-all duration-300">
+      {/* Overview Floating Bar */}
+      <div className="bg-slate-900/80 backdrop-blur-xl shadow-2xl rounded-2xl border border-white/10 flex flex-col md:flex-row md:flex-wrap lg:flex-nowrap divide-y md:divide-y-0 md:divide-x divide-white/10 relative z-20 overflow-hidden transform sm:-translate-y-6 sm:-mx-2 mb-2 sm:mb-6">
+        <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-white/5 transition-all duration-300 min-w-0">
           <div className="absolute top-0 left-0 w-full h-1 bg-blue-500/80"></div>
-          <div className="flex justify-between items-center mb-2 sm:mb-3">
-            <h3 className="text-gray-400 text-[9px] sm:text-xs uppercase tracking-widest font-semibold truncate">Total Clients</h3>
-            <div className="w-8 h-8 rounded-full bg-blue-500/10 flex items-center justify-center shrink-0">
-              <span className="text-blue-500 text-sm">👥</span>
-            </div>
+          <div className="flex justify-between items-center mb-3">
+            <h3 className="text-gray-400 text-[10px] sm:text-xs uppercase tracking-widest font-semibold truncate">Total Clients</h3>
+            <span className="text-blue-500 text-sm">👥</span>
           </div>
-          <p className="text-xl sm:text-2xl lg:text-3xl font-black text-white break-words leading-tight">{overview.totalClients}</p>
+          <p className="text-2xl sm:text-3xl font-black text-white break-words leading-tight">{overview.totalClients}</p>
         </div>
-        <div className="bg-slate-900/50 p-4 sm:p-5 rounded-xl border border-white/5 shadow-lg flex flex-col justify-center min-w-0 relative overflow-hidden group hover:bg-slate-800/50 transition-all duration-300">
+        <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-white/5 transition-all duration-300 min-w-0">
           <div className="absolute top-0 left-0 w-full h-1 bg-green-500/80"></div>
-          <div className="flex justify-between items-center mb-2 sm:mb-3">
-            <h3 className="text-gray-400 text-[9px] sm:text-xs uppercase tracking-widest font-semibold truncate">Active (30d)</h3>
-            <div className="w-8 h-8 rounded-full bg-green-500/10 flex items-center justify-center shrink-0">
-              <span className="text-green-500 text-sm">🔥</span>
-            </div>
+          <div className="flex justify-between items-center mb-3">
+            <h3 className="text-gray-400 text-[10px] sm:text-xs uppercase tracking-widest font-semibold truncate">Active (30d)</h3>
+            <span className="text-green-500 text-sm">🔥</span>
           </div>
-          <p className="text-xl sm:text-2xl lg:text-3xl font-black text-white break-words leading-tight">{overview.activeLastMonth}</p>
+          <p className="text-2xl sm:text-3xl font-black text-white break-words leading-tight">{overview.activeLastMonth}</p>
         </div>
-        <div className="bg-slate-900/50 p-4 sm:p-5 rounded-xl border border-white/5 shadow-lg flex flex-col justify-center min-w-0 relative overflow-hidden group hover:bg-slate-800/50 transition-all duration-300">
+        <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-white/5 transition-all duration-300 min-w-0">
           <div className="absolute top-0 left-0 w-full h-1 bg-cyan-500/80"></div>
-          <div className="flex justify-between items-center mb-2 sm:mb-3">
-            <h3 className="text-gray-400 text-[9px] sm:text-xs uppercase tracking-widest font-semibold truncate">New (30d)</h3>
-            <div className="w-8 h-8 rounded-full bg-cyan-500/10 flex items-center justify-center shrink-0">
-              <span className="text-cyan-500 text-sm">🌟</span>
-            </div>
+          <div className="flex justify-between items-center mb-3">
+            <h3 className="text-gray-400 text-[10px] sm:text-xs uppercase tracking-widest font-semibold truncate">New (30d)</h3>
+            <span className="text-cyan-500 text-sm">🌟</span>
           </div>
-          <p className="text-xl sm:text-2xl lg:text-3xl font-black text-white break-words leading-tight">{overview.newLastMonth}</p>
+          <p className="text-2xl sm:text-3xl font-black text-white break-words leading-tight">{overview.newLastMonth}</p>
         </div>
-        <div className="bg-slate-900/50 p-4 sm:p-5 rounded-xl border border-white/5 shadow-lg flex flex-col justify-center min-w-0 relative overflow-hidden group hover:bg-slate-800/50 transition-all duration-300">
+        <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-white/5 transition-all duration-300 min-w-0">
           <div className="absolute top-0 left-0 w-full h-1 bg-purple-500/80"></div>
-          <div className="flex justify-between items-center mb-2 sm:mb-3">
-            <h3 className="text-gray-400 text-[9px] sm:text-xs uppercase tracking-widest font-semibold truncate">Retention</h3>
-            <div className="w-8 h-8 rounded-full bg-purple-500/10 flex items-center justify-center shrink-0">
-              <span className="text-purple-500 text-sm">🔄</span>
-            </div>
+          <div className="flex justify-between items-center mb-3">
+            <h3 className="text-gray-400 text-[10px] sm:text-xs uppercase tracking-widest font-semibold truncate">Retention</h3>
+            <span className="text-purple-500 text-sm">🔄</span>
           </div>
-          <p className="text-xl sm:text-2xl lg:text-3xl font-black text-white break-words leading-tight">{overview.retentionRate}%</p>
+          <p className="text-2xl sm:text-3xl font-black text-white break-words leading-tight">{overview.retentionRate}%</p>
         </div>
-        <div className="bg-slate-900/50 p-4 sm:p-5 rounded-xl border border-white/5 shadow-lg flex flex-col justify-center min-w-0 relative overflow-hidden group hover:bg-slate-800/50 transition-all duration-300">
+        <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-white/5 transition-all duration-300 min-w-0">
           <div className="absolute top-0 left-0 w-full h-1 bg-amber-500/80"></div>
-          <div className="flex justify-between items-center mb-2 sm:mb-3">
-            <h3 className="text-gray-400 text-[9px] sm:text-xs uppercase tracking-widest font-semibold truncate">Appts (30d)</h3>
-            <div className="w-8 h-8 rounded-full bg-amber-500/10 flex items-center justify-center shrink-0">
-              <span className="text-amber-500 text-sm">📅</span>
-            </div>
+          <div className="flex justify-between items-center mb-3">
+            <h3 className="text-gray-400 text-[10px] sm:text-xs uppercase tracking-widest font-semibold truncate">Appts (30d)</h3>
+            <span className="text-amber-500 text-sm">📅</span>
           </div>
-          <p className="text-xl sm:text-2xl lg:text-3xl font-black text-white break-words leading-tight">{overview.completedAppointments}</p>
+          <p className="text-2xl sm:text-3xl font-black text-white break-words leading-tight">{overview.completedAppointments}</p>
         </div>
-        <div className="bg-slate-900/50 p-4 sm:p-5 rounded-xl border border-white/5 shadow-lg flex flex-col justify-center min-w-0 relative overflow-hidden group hover:bg-slate-800/50 transition-all duration-300">
+        <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-white/5 transition-all duration-300 min-w-0 border-t md:border-t-0 md:border-l border-white/10">
           <div className="absolute top-0 left-0 w-full h-1 bg-yellow-500/80"></div>
-          <div className="flex justify-between items-center mb-2 sm:mb-3">
-            <h3 className="text-gray-400 text-[9px] sm:text-xs uppercase tracking-widest font-semibold truncate">Avg Rating</h3>
-            <div className="w-8 h-8 rounded-full bg-yellow-500/10 flex items-center justify-center shrink-0">
-              <span className="text-yellow-500 text-sm">⭐</span>
-            </div>
+          <div className="flex justify-between items-center mb-3">
+            <h3 className="text-gray-400 text-[10px] sm:text-xs uppercase tracking-widest font-semibold truncate">Avg Rating</h3>
+            <span className="text-yellow-500 text-sm">⭐</span>
           </div>
-          <p className="text-xl sm:text-2xl lg:text-3xl font-black text-white break-words leading-tight">{overview.averageRating}</p>
+          <p className="text-2xl sm:text-3xl font-black text-white break-words leading-tight">{overview.averageRating}</p>
         </div>
       </div>
 
