@@ -104,24 +104,26 @@ export default async function ShopBillingPage({ params }: { params: Promise<{ sh
             ))}
           </div>
 
-          <div className="bg-gradient-to-br from-brand-gold/10 to-amber-900/10 border border-brand-gold/20 p-6 rounded-xl">
+          <div className="bg-slate-900/50 p-6 rounded-xl border border-white/5 shadow-lg relative overflow-hidden transition-all duration-300">
+            <div className="absolute top-0 left-0 w-full h-1 bg-brand-gold/80"></div>
             <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 mb-6">
               <div>
-                <p className="text-xs text-brand-gold uppercase font-bold tracking-widest mb-1">Current Tier</p>
-                <h3 className="text-3xl font-bold text-white">{analysis.pricingTierName}</h3>
+                <div className="flex justify-between items-center mb-2">
+                   <p className="text-xs text-brand-gold uppercase tracking-widest font-semibold">Current Tier</p>
+                </div>
+                <h3 className="text-3xl font-black text-white leading-tight">{analysis.pricingTierName}</h3>
               </div>
               <div className="md:text-right">
-                <p className="text-xs text-brand-gold uppercase font-bold tracking-widest mb-1">Estimated Monthly Fee</p>
-                <p className="text-4xl font-black text-white">${analysis.suggestedMonthlyFeeUSD}<span className="text-sm text-gray-400 font-medium">/mo</span></p>
+                <p className="text-xs text-brand-gold uppercase tracking-widest font-semibold mb-2">Estimated Monthly Fee</p>
+                <p className="text-4xl font-black text-white leading-tight">${analysis.suggestedMonthlyFeeUSD}<span className="text-sm text-gray-400 font-medium">/mo</span></p>
               </div>
             </div>
-            
+
             <div className="bg-black/20 p-4 rounded-lg mt-4 border border-white/5">
               <p className="text-sm text-gray-300 leading-relaxed">
                 {analysis.strategyReasoning}
               </p>
             </div>
-
             <div className="mt-6 pt-4 border-t border-brand-gold/10 flex justify-between items-center text-xs">
               <span className="text-gray-400">Estimated Database Storage:</span>
               <span className="font-mono text-white bg-black/40 px-2 py-1 rounded">~{analysis.estimatedStorageMB} MB</span>

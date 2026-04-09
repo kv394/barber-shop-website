@@ -31,17 +31,35 @@ export default function ReferralTracker({ shopId }: { shopId: string }) {
     <div className="space-y-8">
       {stats && (
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          <div className="bg-gradient-to-br from-blue-900/40 to-blue-800/20 border border-blue-500/30 p-4 rounded-xl text-center">
-            <p className="text-3xl font-black text-blue-400">{stats.total}</p>
-            <p className="text-xs text-gray-400 uppercase tracking-wider">Total Referrals</p>
+          <div className="bg-slate-900/50 p-4 sm:p-5 rounded-xl border border-white/5 shadow-lg flex flex-col justify-center min-w-0 relative overflow-hidden group hover:bg-slate-800/50 transition-all duration-300">
+            <div className="absolute top-0 left-0 w-full h-1 bg-blue-500/80"></div>
+            <div className="flex justify-between items-center mb-2 sm:mb-3">
+              <h3 className="text-gray-400 text-xs uppercase tracking-widest font-semibold truncate">Total Referrals</h3>
+              <div className="w-8 h-8 rounded-full bg-blue-500/10 flex items-center justify-center shrink-0">
+                <span className="text-blue-500 text-sm">👥</span>
+              </div>
+            </div>
+            <p className="text-xl sm:text-2xl lg:text-3xl font-black text-white break-words leading-tight">{stats.total}</p>
           </div>
-          <div className="bg-gradient-to-br from-green-900/40 to-green-800/20 border border-green-500/30 p-4 rounded-xl text-center">
-            <p className="text-3xl font-black text-green-400">{stats.completed}</p>
-            <p className="text-xs text-gray-400 uppercase tracking-wider">Completed</p>
+          <div className="bg-slate-900/50 p-4 sm:p-5 rounded-xl border border-white/5 shadow-lg flex flex-col justify-center min-w-0 relative overflow-hidden group hover:bg-slate-800/50 transition-all duration-300">
+            <div className="absolute top-0 left-0 w-full h-1 bg-green-500/80"></div>
+            <div className="flex justify-between items-center mb-2 sm:mb-3">
+              <h3 className="text-gray-400 text-xs uppercase tracking-widest font-semibold truncate">Completed</h3>
+              <div className="w-8 h-8 rounded-full bg-green-500/10 flex items-center justify-center shrink-0">
+                <span className="text-green-500 text-sm">✅</span>
+              </div>
+            </div>
+            <p className="text-xl sm:text-2xl lg:text-3xl font-black text-white break-words leading-tight">{stats.completed}</p>
           </div>
-          <div className="bg-gradient-to-br from-amber-900/40 to-amber-800/20 border border-amber-500/30 p-4 rounded-xl text-center">
-            <p className="text-3xl font-black text-amber-400">{stats.pending}</p>
-            <p className="text-xs text-gray-400 uppercase tracking-wider">Pending</p>
+          <div className="bg-slate-900/50 p-4 sm:p-5 rounded-xl border border-white/5 shadow-lg flex flex-col justify-center min-w-0 relative overflow-hidden group hover:bg-slate-800/50 transition-all duration-300">
+            <div className="absolute top-0 left-0 w-full h-1 bg-amber-500/80"></div>
+            <div className="flex justify-between items-center mb-2 sm:mb-3">
+              <h3 className="text-gray-400 text-xs uppercase tracking-widest font-semibold truncate">Pending</h3>
+              <div className="w-8 h-8 rounded-full bg-amber-500/10 flex items-center justify-center shrink-0">
+                <span className="text-amber-500 text-sm">⏳</span>
+              </div>
+            </div>
+            <p className="text-xl sm:text-2xl lg:text-3xl font-black text-white break-words leading-tight">{stats.pending}</p>
           </div>
         </div>
       )}

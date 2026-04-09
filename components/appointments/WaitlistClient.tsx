@@ -63,17 +63,35 @@ export default function WaitlistClient({ shopId, services, staff }: { shopId: st
   return (
     <div>
       <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-6">
-        <div className="bg-gradient-to-br from-blue-900/40 to-blue-800/20 border border-blue-500/30 p-4 rounded-xl text-center">
-          <p className="text-3xl font-black text-blue-400">{waiting.length}</p>
-          <p className="text-xs text-gray-400 uppercase tracking-wider">Waiting</p>
+        <div className="bg-slate-900/50 p-4 sm:p-5 rounded-xl border border-white/5 shadow-lg flex flex-col justify-center min-w-0 relative overflow-hidden group hover:bg-slate-800/50 transition-all duration-300">
+          <div className="absolute top-0 left-0 w-full h-1 bg-blue-500/80"></div>
+          <div className="flex justify-between items-center mb-2 sm:mb-3">
+            <h3 className="text-gray-400 text-xs uppercase tracking-widest font-semibold truncate">Waiting</h3>
+            <div className="w-8 h-8 rounded-full bg-blue-500/10 flex items-center justify-center shrink-0">
+              <span className="text-blue-500 text-sm">⏳</span>
+            </div>
+          </div>
+          <p className="text-xl sm:text-2xl lg:text-3xl font-black text-white break-words leading-tight">{waiting.length}</p>
         </div>
-        <div className="bg-gradient-to-br from-green-900/40 to-green-800/20 border border-green-500/30 p-4 rounded-xl text-center">
-          <p className="text-3xl font-black text-green-400">{serving.length}</p>
-          <p className="text-xs text-gray-400 uppercase tracking-wider">Being Served</p>
+        <div className="bg-slate-900/50 p-4 sm:p-5 rounded-xl border border-white/5 shadow-lg flex flex-col justify-center min-w-0 relative overflow-hidden group hover:bg-slate-800/50 transition-all duration-300">
+          <div className="absolute top-0 left-0 w-full h-1 bg-green-500/80"></div>
+          <div className="flex justify-between items-center mb-2 sm:mb-3">
+            <h3 className="text-gray-400 text-xs uppercase tracking-widest font-semibold truncate">Being Served</h3>
+            <div className="w-8 h-8 rounded-full bg-green-500/10 flex items-center justify-center shrink-0">
+              <span className="text-green-500 text-sm">✂️</span>
+            </div>
+          </div>
+          <p className="text-xl sm:text-2xl lg:text-3xl font-black text-white break-words leading-tight">{serving.length}</p>
         </div>
-        <div className="bg-gradient-to-br from-purple-900/40 to-purple-800/20 border border-purple-500/30 p-4 rounded-xl text-center col-span-2 sm:col-span-1">
-          <p className="text-3xl font-black text-purple-400">{waiting.length > 0 ? `~${waiting.length * 15}m` : '0m'}</p>
-          <p className="text-xs text-gray-400 uppercase tracking-wider">Est. Wait</p>
+        <div className="bg-slate-900/50 p-4 sm:p-5 rounded-xl border border-white/5 shadow-lg flex flex-col justify-center min-w-0 relative overflow-hidden group hover:bg-slate-800/50 transition-all duration-300 col-span-2 sm:col-span-1">
+          <div className="absolute top-0 left-0 w-full h-1 bg-purple-500/80"></div>
+          <div className="flex justify-between items-center mb-2 sm:mb-3">
+            <h3 className="text-gray-400 text-xs uppercase tracking-widest font-semibold truncate">Est. Wait</h3>
+            <div className="w-8 h-8 rounded-full bg-purple-500/10 flex items-center justify-center shrink-0">
+              <span className="text-purple-500 text-sm">⏱️</span>
+            </div>
+          </div>
+          <p className="text-xl sm:text-2xl lg:text-3xl font-black text-white break-words leading-tight">{waiting.length > 0 ? `~${waiting.length * 15}m` : '0m'}</p>
         </div>
       </div>
 
