@@ -10,6 +10,8 @@ import Barcode from 'react-barcode';
 export default function ProductManager({ shopId, products }: { shopId: string, products: any[] }) {
   const router = useRouter();
   const [isAdding, setIsAdding] = useState(false);
+  const [editingBarcodeId, setEditingBarcodeId] = useState<string | null>(null);
+  const [editBarcodeValue, setEditBarcodeValue] = useState('');
   const [formData, setFormData] = useState({
     name: '', price: '', inventoryCount: '0', 
     reorderPoint: '0', trackInventory: false, 
