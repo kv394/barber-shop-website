@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import ProductInventoryManager from './ProductInventoryManager';
 import ProductBarcodeScannerWrapper from '@/components/checkout/ProductBarcodeScannerWrapper';
 import { QRCodeSVG } from 'qrcode.react';
+import Barcode from 'react-barcode';
 
 export default function ProductManager({ shopId, products }: { shopId: string, products: any[] }) {
   const router = useRouter();
@@ -141,13 +142,13 @@ export default function ProductManager({ shopId, products }: { shopId: string, p
                   {product.barcode && <p className="text-[10px] text-gray-500 font-mono mt-1">{product.barcode}</p>}
                 </td>
                 <td className="px-6 py-4">
-                  <div className="bg-white p-1 rounded-md inline-block relative group">
-                    <QRCodeSVG value={product.barcode || product.id} size={48} level="L" />
+                  <div className="bg-white p-2 rounded-md inline-block relative group">
+                    <Barcode value={product.barcode || product.id} displayValue={false} height={30} width={1.2} margin={0} background="transparent" />
                     {/* Hover to enlarge feature */}
                     <div className="absolute left-1/2 -translate-x-1/2 top-0 -translate-y-full opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-opacity z-50 mb-2">
-                      <div className="bg-white p-3 rounded-xl shadow-2xl border border-gray-200">
-                        <QRCodeSVG value={product.barcode || product.id} size={128} level="L" />
-                        <p className="text-center text-xs text-gray-500 font-mono mt-2 truncate w-32">{product.barcode || product.id}</p>
+                      <div className="bg-white p-4 rounded-xl shadow-2xl border border-gray-200 min-w-[200px] flex flex-col items-center">
+                        <Barcode value={product.barcode || product.id} displayValue={false} height={60} width={2} margin={0} background="transparent" />
+                        <p className="text-center text-xs text-gray-500 font-mono mt-3 truncate max-w-full px-2">{product.barcode || product.id}</p>
                       </div>
                     </div>
                   </div>
