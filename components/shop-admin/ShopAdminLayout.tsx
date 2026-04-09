@@ -133,12 +133,12 @@ export default function ShopAdminLayout({
           </div>
           
           {/* Main Content Area */}
-          <div className="flex-1 w-full bg-slate-800/50 p-3 sm:p-4 md:p-8 rounded-xl border border-white/10 shadow-lg min-w-0 overflow-hidden">
+          <div className="flex-1 w-full bg-slate-800/50 p-3 sm:p-4 md:p-8 rounded-xl border border-white/10 shadow-lg min-w-0">
             {children}
           </div>
         </div>
       ) : (
-        <div className="bg-slate-800/50 p-3 sm:p-4 md:p-8 rounded-xl border border-white/10 shadow-lg overflow-hidden">
+        <div className="bg-slate-800/50 p-3 sm:p-4 md:p-8 rounded-xl border border-white/10 shadow-lg">
           {children}
         </div>
       )}

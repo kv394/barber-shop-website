@@ -125,7 +125,7 @@ export default function ProductManager({ shopId, products }: { shopId: string, p
         </form>
       )}
 
-      <div className="bg-slate-800 rounded-lg border border-white/10 overflow-hidden">
+      <div className="bg-slate-800 rounded-lg border border-white/10">
         <table className="w-full text-left text-sm text-gray-400">
           <thead className="bg-slate-900/50 text-xs uppercase text-gray-500 border-b border-white/10">
             <tr>
