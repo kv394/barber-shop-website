@@ -145,7 +145,7 @@ export default async function StaffBookingPage({
           return (
             <div key={staffMember.id} className="bg-slate-900/70 border border-white/10 rounded-lg p-3 sm:p-4 flex flex-col">
               <div className="flex justify-between items-start mb-2 gap-2">
-                <h2 className="text-base sm:text-xl font-semibold text-brand-gold truncate">{staffMember.name}</h2>
+                <h2 className="text-base sm:text-xl font-semibold text-brand-gold truncate">{staffMember.name || staffMember.email || 'Unnamed Staff'}</h2>
                 {staffMember.using === 'default' && <span className="text-[10px] sm:text-xs bg-amber-900/50 text-amber-300 px-2 py-0.5 sm:py-1 rounded-full shrink-0">Default Hours</span>}
                 {staffMember.using === 'shop' && <span className="text-[10px] sm:text-xs bg-blue-900/50 text-blue-300 px-2 py-0.5 sm:py-1 rounded-full shrink-0">Shop Hours</span>}
               </div>
