@@ -137,6 +137,13 @@ export default async function StaffBookingPage({
       userRole={userRole}
       activeTab="staff"
     >
+      <div className="flex justify-end mb-4">
+        {userRole === 'SHOP_ADMIN' && (
+          <a href={`/shop/${shopId}/settings/team`} className="bg-brand-gold text-slate-900 px-4 py-2 rounded-lg font-bold hover:bg-yellow-400 transition-colors">
+            + Onboard Staff
+          </a>
+        )}
+      </div>
       <StaffAvailability defaultDate={selectedDate} defaultFrom={fromTime} defaultTo={toTime} />
       
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">

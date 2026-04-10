@@ -183,7 +183,7 @@ export default async function ShopDashboardPage({ params }: { params: Promise<{ 
         </div>
       )}
 
-      {/* ── Booking Link + Low-Stock Alerts row (shop admin only) ── */}
+      {/* ── Booking Link + Quick Actions row (shop admin only) ── */}
       {isShopAdmin && (
         <div className="flex flex-col sm:flex-row gap-3 mb-6">
           {/* Online booking link */}
@@ -196,6 +196,17 @@ export default async function ShopDashboardPage({ params }: { params: Promise<{ 
             <Link href={`/shops/${resolvedSlug}`} target="_blank"
               className="flex-shrink-0 px-3 py-1.5 bg-brand-gold text-black text-xs font-bold rounded-lg hover:bg-white transition-colors">
               Open →
+            </Link>
+          </div>
+          {/* Quick Actions */}
+          <div className="flex-1 bg-slate-900/50 border border-white/10 rounded-xl p-4 flex items-center justify-between">
+            <div>
+              <p className="text-white font-semibold text-sm mb-0.5">👥 Team Management</p>
+              <p className="text-xs text-gray-400">Onboard staff or set working hours</p>
+            </div>
+            <Link href={`/shop/${shopId}/settings/team`}
+              className="flex-shrink-0 px-3 py-1.5 bg-white/10 text-white text-xs font-bold rounded-lg hover:bg-white/20 transition-colors">
+              Manage Team →
             </Link>
           </div>
           {/* Low-stock alert */}
