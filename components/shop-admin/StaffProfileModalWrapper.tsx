@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { QRCodeSVG } from 'qrcode.react';
 
 export default function StaffProfileModalWrapper({ staff, children }: { staff: any, children: React.ReactNode }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -29,6 +30,11 @@ export default function StaffProfileModalWrapper({ staff, children }: { staff: a
               <span className="text-xs bg-brand-gold/20 text-brand-gold px-3 py-1 rounded-full uppercase tracking-wider font-bold mb-6">
                 {staff.role?.replace('_', ' ')}
               </span>
+
+              <div className="bg-white p-3 rounded-xl mb-6 shadow-sm">
+                <QRCodeSVG value={staff.barcode || staff.id} size={120} level="H" />
+                <p className="text-center text-[10px] text-gray-500 font-mono mt-2 tracking-wider">{staff.barcode || 'NO_CODE'}</p>
+              </div>
               
               <div className="w-full space-y-4 text-sm bg-slate-800/50 p-4 rounded-xl border border-white/5">
                 <div className="flex justify-between items-center border-b border-white/5 pb-3">
