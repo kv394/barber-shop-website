@@ -83,11 +83,62 @@ export default function SchedulePage() {
     <ShopAdminLayout
       shopName={shop.name}
       shopSlug={shopSlug}
-      pageTitle={`Edit Schedule for ${staffMember.name}`}
+      pageTitle={`Edit Profile & Schedule for ${staffMember.name || staffMember.email.split('@')[0]}`}
       shopId={shop.id}
       userRole={userRole || ''}
       activeTab="team"
     >
+      <div className="bg-slate-900/50 p-6 rounded-lg border border-white/10 mb-8">
+        <h3 className="text-2xl font-bold mb-6 text-white">Staff Details</h3>
+        <form 
+          onSubmit={async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.currentTarget);
+            const data = {
+              name: formData.get('name'),
+              phone: formData.get('phone'),
+              canManageInventory: formData.get('canManageInventory') === 'true',
+            };
+            const btn = e.currentTarget.querySelector('button[type="submit"]') as HTMLButtonElement;
+            const originalText = btn.innerText;
+            btn.innerText = 'Saving...';
+            btn.disabled = true;
+            try {
+              await fetch(`/api/shops/${shop.id}/staff/${staffMember.id}`, {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+              });
+              await fetchData();
+            } finally {
+              btn.innerText = originalText;
+              btn.disabled = false;
+            }
+          }}
+          className="grid grid-cols-1 md:grid-cols-3 gap-6"
+        >
+          <div>
+            <label className="block text-[10px] text-gray-500 mb-1 font-semibold uppercase tracking-wider">Name</label>
+            <input type="text" name="name" defaultValue={staffMember.name || ''} className="w-full bg-slate-800 p-2.5 rounded-lg border border-slate-700 text-white focus:ring-2 focus:ring-brand-gold outline-none transition-all" />
+          </div>
+          <div>
+            <label className="block text-[10px] text-gray-500 mb-1 font-semibold uppercase tracking-wider">Phone</label>
+            <input type="tel" name="phone" defaultValue={staffMember.phone || ''} className="w-full bg-slate-800 p-2.5 rounded-lg border border-slate-700 text-white focus:ring-2 focus:ring-brand-gold outline-none transition-all" />
+          </div>
+          <div className="flex items-end">
+            <div className="flex items-center h-[46px] w-full bg-slate-800 px-4 rounded-lg border border-slate-700">
+              <input type="checkbox" id="inventory" name="canManageInventory" value="true" defaultChecked={staffMember.canManageInventory} className="w-4 h-4 accent-brand-gold mr-3" />
+              <label htmlFor="inventory" className="text-sm font-semibold text-white cursor-pointer select-none">Can Manage Inventory?</label>
+            </div>
+          </div>
+          <div className="md:col-span-3">
+            <button type="submit" className="bg-brand-gold text-brand-dark font-bold py-2.5 px-8 rounded-lg hover:bg-white transition-colors shadow-lg">
+              Save Details
+            </button>
+          </div>
+        </form>
+      </div>
+
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         <div className="bg-slate-900/50 p-6 rounded-lg border border-white/10">
           <h3 className="text-2xl font-bold mb-6 text-white">Weekly Schedule</h3>

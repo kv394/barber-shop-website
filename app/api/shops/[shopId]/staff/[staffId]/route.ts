@@ -59,6 +59,7 @@ export async function PATCH(
     if (body.workingHours !== undefined) allowedFields.workingHours = body.workingHours;
     if (body.name !== undefined) allowedFields.name = body.name;
     if (body.phone !== undefined) allowedFields.phone = body.phone;
+    if (body.canManageInventory !== undefined) allowedFields.canManageInventory = body.canManageInventory;
 
     const updated = await prisma.user.update({ where: { id: staffId }, data: allowedFields });
     return NextResponse.json(JSON.parse(JSON.stringify(updated)));
