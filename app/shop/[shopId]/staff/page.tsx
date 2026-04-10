@@ -2,6 +2,7 @@ import { prisma } from '@/lib/prisma';
 import { getShopLayoutData } from '@/lib/shop-data';
 import StaffAvailability from '@/components/shop-admin/StaffAvailability';
 import ShopAdminLayout from '@/components/shop-admin/ShopAdminLayout';
+import StaffProfileModalWrapper from '@/components/shop-admin/StaffProfileModalWrapper';
 import { createClient } from '@/utils/supabase/server';
 import { redirect } from 'next/navigation';
 
@@ -145,9 +146,22 @@ export default async function StaffBookingPage({
           return (
             <div key={staffMember.id} className="bg-slate-900/70 border border-white/10 rounded-lg p-3 sm:p-4 flex flex-col">
               <div className="flex justify-between items-start mb-2 gap-2">
-                <h2 className="text-base sm:text-xl font-semibold text-brand-gold truncate">{staffMember.name || staffMember.email || 'Unnamed Staff'}</h2>
-                {staffMember.using === 'default' && <span className="text-[10px] sm:text-xs bg-amber-900/50 text-amber-300 px-2 py-0.5 sm:py-1 rounded-full shrink-0">Default Hours</span>}
-                {staffMember.using === 'shop' && <span className="text-[10px] sm:text-xs bg-blue-900/50 text-blue-300 px-2 py-0.5 sm:py-1 rounded-full shrink-0">Shop Hours</span>}
+                <StaffProfileModalWrapper staff={staffMember}>
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-full overflow-hidden bg-slate-800 border border-brand-gold/50 flex items-center justify-center shrink-0">
+                      {staffMember.imageUrl ? (
+                        <img src={staffMember.imageUrl} alt={staffMember.name} className="w-full h-full object-cover" />
+                      ) : (
+                        <span className="text-xs">👤</span>
+                      )}
+                    </div>
+                    <h2 className="text-base sm:text-xl font-semibold text-brand-gold truncate">{staffMember.name || staffMember.email || 'Unnamed Staff'}</h2>
+                  </div>
+                </StaffProfileModalWrapper>
+                <div className="flex flex-col gap-1 items-end shrink-0">
+                  {staffMember.using === 'default' && <span className="text-[10px] sm:text-xs bg-amber-900/50 text-amber-300 px-2 py-0.5 sm:py-1 rounded-full">Default Hours</span>}
+                  {staffMember.using === 'shop' && <span className="text-[10px] sm:text-xs bg-blue-900/50 text-blue-300 px-2 py-0.5 sm:py-1 rounded-full">Shop Hours</span>}
+                </div>
               </div>
               <div className="flex-grow max-h-80 overflow-y-auto pr-1 sm:pr-2 space-y-1">
                 {isOnLeave ? (
