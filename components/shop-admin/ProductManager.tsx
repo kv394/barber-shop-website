@@ -10,8 +10,15 @@ import Barcode from 'react-barcode';
 export default function ProductManager({ shopId, products }: { shopId: string, products: any[] }) {
   const router = useRouter();
   const [isAdding, setIsAdding] = useState(false);
+  const [editingProduct, setEditingProduct] = useState<any | null>(null);
   const [editingBarcodeId, setEditingBarcodeId] = useState<string | null>(null);
   const [editBarcodeValue, setEditBarcodeValue] = useState('');
+  
+  const resetForm = () => {
+    setFormData({ name: '', price: '', inventoryCount: '0', reorderPoint: '0', trackInventory: false, type: 'RETAIL', sku: '', barcode: '' });
+    setEditingProduct(null);
+  };
+
   const [formData, setFormData] = useState({
     name: '', price: '', inventoryCount: '0', 
     reorderPoint: '0', trackInventory: false, 
@@ -23,8 +30,12 @@ export default function ProductManager({ shopId, products }: { shopId: string, p
     e.preventDefault();
     setIsSubmitting(true);
     try {
-      const res = await fetch(`/api/shops/${shopId}/products`, {
-        method: 'POST',
+      const url = editingProduct 
+        ? `/api/shops/${shopId}/products/${editingProduct.id}`
+        : `/api/shops/${shopId}/products`;
+        
+      const res = await fetch(url, {
+        method: editingProduct ? 'PATCH' : 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           ...formData,
@@ -34,17 +45,34 @@ export default function ProductManager({ shopId, products }: { shopId: string, p
         }),
       });
 
-      if (!res.ok) throw new Error('Failed to create product');
+      if (!res.ok) throw new Error(editingProduct ? 'Failed to update product' : 'Failed to create product');
 
       setIsAdding(false);
-      setFormData({ name: '', price: '', inventoryCount: '0', reorderPoint: '0', trackInventory: false, type: 'RETAIL', sku: '', barcode: '' });
+      resetForm();
       router.refresh();
     } catch (error) {
       console.error(error);
-      alert('Error creating product');
+      alert(editingProduct ? 'Error updating product' : 'Error creating product');
     } finally {
       setIsSubmitting(false);
     }
+  };
+
+  const handleEditClick = (product: any) => {
+    setEditingProduct(product);
+    setFormData({
+      name: product.name,
+      price: product.price.toString(),
+      inventoryCount: product.inventoryCount.toString(),
+      reorderPoint: product.reorderPoint.toString(),
+      trackInventory: product.trackInventory,
+      type: product.type,
+      sku: product.sku || '',
+      barcode: product.barcode || ''
+    });
+    setIsAdding(true);
+    // Scroll to top where the form is
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleDelete = async (id: string) => {
@@ -68,13 +96,21 @@ export default function ProductManager({ shopId, products }: { shopId: string, p
           <h2 className="text-2xl font-bold text-white">Products & Inventory</h2>
           <ProductBarcodeScannerWrapper shopId={shopId} products={products} />
         </div>
-        <button onClick={() => setIsAdding(!isAdding)} className="bg-brand-gold text-slate-900 px-4 py-2 rounded-lg font-bold hover:bg-yellow-400 transition-colors">
+        <button onClick={() => {
+          if (isAdding) {
+            setIsAdding(false);
+            resetForm();
+          } else {
+            setIsAdding(true);
+          }
+        }} className="bg-brand-gold text-slate-900 px-4 py-2 rounded-lg font-bold hover:bg-yellow-400 transition-colors">
           {isAdding ? 'Cancel' : 'Add Product'}
         </button>
       </div>
 
       {isAdding && (
         <form onSubmit={handleSubmit} className="bg-slate-800 p-6 rounded-lg border border-white/10 space-y-4">
+          <h3 className="text-lg font-bold text-white mb-4">{editingProduct ? 'Edit Product' : 'Add New Product'}</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-400 mb-1">Name *</label>
@@ -119,7 +155,7 @@ export default function ProductManager({ shopId, products }: { shopId: string, p
           </div>
           <div className="flex justify-end pt-4">
             <button type="submit" disabled={isSubmitting} className="bg-brand-gold text-slate-900 px-6 py-2 rounded-lg font-bold hover:bg-yellow-400 transition-colors disabled:opacity-50">
-              {isSubmitting ? 'Saving...' : 'Save Product'}
+              {isSubmitting ? 'Saving...' : editingProduct ? 'Save Changes' : 'Save Product'}
             </button>
           </div>
         </form>
@@ -141,7 +177,10 @@ export default function ProductManager({ shopId, products }: { shopId: string, p
               <tr key={product.id} className="hover:bg-white/5 transition-colors duration-200">
                 <td className="px-6 py-4">
                   <div className="relative group inline-block">
-                    <div className="font-bold text-white cursor-pointer hover:text-brand-gold transition-colors inline-block">
+                    <div 
+                      onClick={() => handleEditClick(product)}
+                      className="font-bold text-white cursor-pointer hover:text-brand-gold transition-colors inline-block"
+                    >
                       {product.name}
                     </div>
                     {product.barcode && <p className="text-[10px] text-gray-500 font-mono mt-1">{product.barcode}</p>}

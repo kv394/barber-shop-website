@@ -27,3 +27,38 @@ export async function DELETE(
   }
 }
 
+export async function PATCH(
+  req: Request,
+  { params }: { params: Promise<{ shopId: string; productId: string }> }
+) {
+  try {
+    const { shopId, productId } = await params;
+    const body = await req.json();
+
+    const authResult = await requireShopRole(shopId, ['SUPER_ADMIN', 'SHOP_ADMIN']);
+    if (isAuthError(authResult)) return authResult;
+
+    const updatedProduct = await prisma.product.update({
+      where: {
+        id: productId,
+        shopId: shopId,
+      },
+      data: {
+        name: body.name,
+        price: body.price,
+        type: body.type,
+        trackInventory: body.trackInventory,
+        inventoryCount: body.inventoryCount,
+        reorderPoint: body.reorderPoint,
+        sku: body.sku,
+        barcode: body.barcode,
+      },
+    });
+
+    return NextResponse.json(updatedProduct);
+  } catch (error) {
+    logger.error('Error updating product:', error);
+    return NextResponse.json({ error: 'Failed to update product' }, { status: 500 });
+  }
+}
+
