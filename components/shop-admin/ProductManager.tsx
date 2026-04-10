@@ -18,6 +18,16 @@ export default function ProductManager({ shopId, products }: { shopId: string, p
     type: 'RETAIL', sku: '', barcode: ''
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [expandedProductIds, setExpandedProductIds] = useState<Set<string>>(new Set());
+
+  const toggleBarcode = (productId: string) => {
+    setExpandedProductIds(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(productId)) newSet.delete(productId);
+      else newSet.add(productId);
+      return newSet;
+    });
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -139,21 +149,21 @@ export default function ProductManager({ shopId, products }: { shopId: string, p
           <tbody className="divide-y divide-white/5">
             {products.map((product) => (
               <tr key={product.id} className="hover:bg-white/5 transition-colors duration-200">
-                <td className="px-6 py-4 font-bold text-white">
-                  {product.name}
-                  {product.barcode && <p className="text-[10px] text-gray-500 font-mono mt-1">{product.barcode}</p>}
-                </td>
                 <td className="px-6 py-4">
-                  <div className="bg-white p-2 rounded-md inline-block relative group">
-                    <Barcode value={product.barcode || product.id} displayValue={false} height={30} width={1.2} margin={0} background="transparent" />
-                    {/* Hover to enlarge feature */}
-                    <div className="absolute left-1/2 -translate-x-1/2 top-full mt-2 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-opacity z-50">
-                      <div className="bg-white p-4 rounded-xl shadow-2xl border border-gray-200 min-w-[200px] flex flex-col items-center">
-                        <Barcode value={product.barcode || product.id} displayValue={false} height={60} width={2} margin={0} background="transparent" />
-                        <p className="text-center text-xs text-gray-500 font-mono mt-3 truncate max-w-full px-2">{product.barcode || product.id}</p>
-                      </div>
-                    </div>
+                  <div 
+                    onClick={() => toggleBarcode(product.id)}
+                    className="font-bold text-white cursor-pointer hover:text-brand-gold transition-colors inline-block"
+                  >
+                    {product.name}
                   </div>
+                  {product.barcode && <p className="text-[10px] text-gray-500 font-mono mt-1">{product.barcode}</p>}
+                  
+                  {expandedProductIds.has(product.id) && (
+                    <div className="mt-3 bg-white p-4 rounded-xl shadow-2xl border border-gray-200 inline-flex flex-col items-center">
+                      <Barcode value={product.barcode || product.id} displayValue={false} height={60} width={2} margin={0} background="transparent" />
+                      <p className="text-center text-xs text-gray-500 font-mono mt-3 truncate max-w-full px-2">{product.barcode || product.id}</p>
+                    </div>
+                  )}
                 </td>
                 <td className="px-6 py-4">${product.price.toFixed(2)}</td>
                 <td className="px-6 py-4">
