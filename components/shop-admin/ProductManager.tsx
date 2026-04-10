@@ -141,19 +141,17 @@ export default function ProductManager({ shopId, products }: { shopId: string, p
               <tr key={product.id} className="hover:bg-white/5 transition-colors duration-200">
                 <td className="px-6 py-4">
                   <div className="relative group inline-block">
-                    <div className="font-bold text-white cursor-help hover:text-brand-gold transition-colors inline-block">
+                    <div className="font-bold text-white cursor-pointer hover:text-brand-gold transition-colors inline-block">
                       {product.name}
                     </div>
                     {product.barcode && <p className="text-[10px] text-gray-500 font-mono mt-1">{product.barcode}</p>}
                     
-                    {product.barcode && (
-                      <div className="absolute left-0 top-full mt-2 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-opacity z-50">
-                        <div className="bg-white p-4 rounded-xl shadow-2xl border border-gray-200 min-w-[200px] flex flex-col items-center">
-                          <Barcode value={product.barcode} displayValue={false} height={60} width={2} margin={0} background="transparent" />
-                          <p className="text-center text-xs text-gray-500 font-mono mt-3 truncate max-w-full px-2">{product.barcode}</p>
-                        </div>
+                    <div className="absolute left-0 top-full mt-2 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-opacity z-50">
+                      <div className="bg-white p-4 rounded-xl shadow-2xl border border-gray-200 min-w-[200px] flex flex-col items-center">
+                        <Barcode value={product.barcode || product.id} displayValue={false} height={60} width={2} margin={0} background="transparent" />
+                        <p className="text-center text-xs text-gray-500 font-mono mt-3 truncate max-w-full px-2">{product.barcode || product.id}</p>
                       </div>
-                    )}
+                    </div>
                   </div>
                 </td>
                 <td className="px-6 py-4">${product.price.toFixed(2)}</td>
