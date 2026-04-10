@@ -40,35 +40,38 @@ export async function POST(request: NextRequest) {
   try {
     let result;
 
-    const systemInstruction = `You are a world-class, avant-garde web designer and frontend developer.
-Your ONLY goal is to generate heavily customized, extremely unique, and visually stunning web templates that strictly adhere to the user's specific theme and request.
-DO NOT use generic, standard, or "modern boilerplate" layouts unless explicitly asked.
-Use creative spacing, dramatic typography, intricate Tailwind CSS classes, unique grid/flexbox arrangements, and elaborate structural designs.
-Return your response as a valid JSON object matching exactly this schema:
-{
-  "htmlCode": "<html structure using semantic HTML5 and Tailwind CSS>",
-  "cssCode": "<any custom css like animations, font imports, or complex gradients>"
-}`;
+    const systemInstruction = `You are an expert frontend developer and web designer.
+Your task is to generate a highly customized, fully responsive web template using HTML5 and Tailwind CSS based on the user's prompt.
+You MUST strictly adhere to the following rules:
+1. Output ONLY a valid JSON object. Do not include markdown formatting like \`\`\`json.
+2. The JSON object must have exactly two keys: "htmlCode" and "cssCode".
+3. The "htmlCode" must contain the full HTML structure (assume it will be placed inside a <body> tag, provide the main wrapper divs).
+4. The "cssCode" should contain any custom CSS (e.g., @import fonts, custom animations). Leave as empty string if not needed.
+5. You MUST use the exact Handlebars placeholders provided by the user for dynamic data. Do not invent new placeholders.
+6. Make the design visually stunning, modern, and tailored to the user's specific request.`;
 
-    const userPrompt = `Design a completely unique, fully responsive layout using Tailwind CSS utility classes based on the following request:
-
-USER PROMPT:
+    const userPrompt = `Create a stunning, responsive Tailwind CSS template for a barbershop/salon based on this request:
 "${prompt}"
 
-Use the following handlebars-like placeholders for dynamic data injection:
-{{shop.name}}
-{{shop.description}}
-{{primaryColor}}
-{{secondaryColor}}
+REQUIRED PLACEHOLDERS to use in your HTML:
+- {{shop.name}} : The name of the shop (use in headers/hero)
+- {{shop.description}} : The description of the shop
+- {{primaryColor}} : Use as an inline style or Tailwind arbitrary value if needed (e.g. style="color: {{primaryColor}}")
+- {{secondaryColor}} : Use as an inline style or Tailwind arbitrary value if needed
+
+SERVICES LOOP:
+You must iterate over the services to display them (e.g., in a grid or list).
 {{#each shop.services}}
-  {{this.id}} (Use this in a data-service-id attribute on booking buttons/links)
-  {{this.name}}
-  {{this.description}}
-  {{this.price}}
-  {{this.duration}}
+  <div class="service-card-example ...">
+     <h3>{{this.name}}</h3>
+     <p>{{this.description}}</p>
+     <span>\${{this.price}}</span>
+     <span>{{this.duration}} mins</span>
+     <button data-service-id="{{this.id}}">Book Now</button>
+  </div>
 {{/each}}
 
-OUTPUT ONLY VALID JSON.`;
+Output ONLY the raw, valid JSON object matching the schema { "htmlCode": "...", "cssCode": "..." }. No markdown blocks.`;
 
     if (isGroq) {
       const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
@@ -83,7 +86,7 @@ OUTPUT ONLY VALID JSON.`;
             { role: 'system', content: systemInstruction },
             { role: 'user', content: userPrompt }
           ],
-          temperature: 0.7,
+          temperature: 0.4,
           response_format: { type: "json_object" }
         })
       });
@@ -92,7 +95,8 @@ OUTPUT ONLY VALID JSON.`;
       if (!response.ok) throw new Error(data.error?.message || 'Failed to generate template with Groq');
       
       const text = data.choices[0]?.message?.content || '{}';
-      result = JSON.parse(text);
+      const cleanText = text.replace(/```json/g, '').replace(/```/g, '').trim();
+      result = JSON.parse(cleanText);
     } else {
       const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${selectedModel}:generateContent?key=${apiKey}`, {
         method: 'POST',
@@ -103,7 +107,7 @@ OUTPUT ONLY VALID JSON.`;
           system_instruction: { parts: [{ text: systemInstruction }] },
           contents: [{ parts: [{ text: userPrompt }] }],
           generationConfig: {
-            temperature: 1.5,
+            temperature: 0.7,
             responseMimeType: 'application/json',
           }
         })
@@ -116,7 +120,8 @@ OUTPUT ONLY VALID JSON.`;
       }
 
       const text = data.candidates?.[0]?.content?.parts?.[0]?.text || '{}';
-      result = JSON.parse(text);
+      const cleanText = text.replace(/```json/g, '').replace(/```/g, '').trim();
+      result = JSON.parse(cleanText);
     }
 
     const template = await prisma.dynamicTemplate.create({
