@@ -122,7 +122,6 @@ export async function POST(
             name: String(item.name || 'Item').slice(0, 200),
             quantity: item.quantity,
             price: item.price,
-            cost: Math.max(0, item.cost || 0),
             taxRate: item.taxRate || 0,
           }))
         });
