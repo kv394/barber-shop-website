@@ -110,6 +110,9 @@ export default function TemplatesPage() {
               <option value="gemini-2.5-pro">Gemini 2.5 Pro (Advanced)</option>
               <option value="gemini-1.5-flash">Gemini 1.5 Flash</option>
               <option value="gemini-1.5-pro">Gemini 1.5 Pro</option>
+              <option value="gemma-2-27b-it">Gemma 2 27B (Open Weights)</option>
+              <option value="gemma-2-9b-it">Gemma 2 9B (Open Weights)</option>
+              <option value="gemma-2-2b-it">Gemma 2 2B (Open Weights)</option>
             </select>
           </div>
           <button disabled={generating} type="submit" className="bg-brand-gold hover:bg-yellow-500 text-black px-6 py-2 rounded font-semibold disabled:opacity-50 transition">
