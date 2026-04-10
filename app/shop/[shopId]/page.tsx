@@ -222,7 +222,7 @@ export default async function ShopDashboardPage({ params }: { params: Promise<{ 
       {todayStats && (
         <div className="mb-6 sm:mb-8">
           <h2 className="text-lg sm:text-xl font-bold text-white mb-4">📊 Today&apos;s Snapshot</h2>
-          <div className="bg-slate-900/80 backdrop-blur-xl shadow-2xl rounded-2xl border border-white/10 mb-8 flex flex-col lg:flex-row divide-y lg:divide-y-0 lg:divide-x divide-white/10 relative z-20 transform sm:-translate-y-6 sm:-mx-2">
+          <div className="bg-slate-900/80 backdrop-blur-xl shadow-lg rounded-2xl border border-white/10 mb-8 flex flex-col lg:flex-row divide-y lg:divide-y-0 lg:divide-x divide-white/10">
             <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-white/5 transition-all duration-300 min-w-0">
               <div className="absolute top-0 left-0 w-full h-1 bg-blue-500/80"></div>
               <div className="flex justify-between items-center mb-3">
