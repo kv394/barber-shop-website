@@ -43,17 +43,22 @@ function SectionSidebar({ activeTab, shopId, section, userRole }: { activeTab: s
       { href: `/shop/${shopId}/settings/billing`, label: '💳 Billing', key: 'settings-billing' },
     ];
   } else if (section === 'staff') {
-    navLinks = [
-      { href: `/shop/${shopId}/staff`, label: '📅 Availability', key: 'staff' },
-      { href: `/shop/${shopId}/attendance`, label: '🕐 Attendance', key: 'attendance' },
-      { href: `/shop/${shopId}/leave`, label: '🏖️ Leave', key: 'leave' },
-      { href: `/shop/${shopId}/portfolio`, label: '📸 Portfolio', key: 'portfolio' },
-    ];
     if (isShopAdmin) {
-      navLinks.push({ href: `/shop/${shopId}/settings/team`, label: '👥 Manage Team', key: 'team' });
-    }
-    if (isStaff) {
-      navLinks.push({ href: `/shop/${shopId}/reports/commissions`, label: '💰 My Earnings', key: 'commissions' });
+      navLinks = [
+        { href: `/shop/${shopId}/settings/team`, label: '👥 Manage Team', key: 'team' },
+        { href: `/shop/${shopId}/staff`, label: '📅 Availability', key: 'staff' },
+        { href: `/shop/${shopId}/attendance`, label: '🕐 Attendance', key: 'attendance' },
+        { href: `/shop/${shopId}/leave`, label: '🏖️ Leave', key: 'leave' },
+        { href: `/shop/${shopId}/portfolio`, label: '📸 Portfolio', key: 'portfolio' },
+      ];
+    } else {
+      navLinks = [
+        { href: `/shop/${shopId}/staff`, label: '📅 My Schedule', key: 'staff' },
+        { href: `/shop/${shopId}/attendance`, label: '🕐 My Attendance', key: 'attendance' },
+        { href: `/shop/${shopId}/leave`, label: '🏖️ My Leave', key: 'leave' },
+        { href: `/shop/${shopId}/portfolio`, label: '📸 My Portfolio', key: 'portfolio' },
+        { href: `/shop/${shopId}/reports/commissions`, label: '💰 My Earnings', key: 'commissions' },
+      ];
     }
   } else if (section === 'reports') {
     navLinks = [

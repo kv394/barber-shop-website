@@ -62,7 +62,7 @@ export function ShopNav({ shopId, userRole, activeTab }: { shopId: string, userR
             <Link href={`/shop/${shopId}/clients`} className={mainTabClass('clients')}>
               Clients
             </Link>
-            <Link href={`/shop/${shopId}/staff`} className={mainTabClass('staff', effectiveStaffTabs)}>
+            <Link href={`/shop/${shopId}/${isShopAdmin ? 'settings/team' : 'staff'}`} className={mainTabClass('staff', effectiveStaffTabs)}>
               Staff
             </Link>
           </>
