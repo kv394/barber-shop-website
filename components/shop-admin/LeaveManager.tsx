@@ -94,7 +94,7 @@ export default function LeaveManager({ shopId, userId }: { shopId: string, userI
 
   return (
     <div className="space-y-8">
-      <div className="bg-botanical-surface p-6 rounded-xl border border-white/5">
+      <div className="bg-botanical-surface p-6 rounded-xl border border-botanical-border">
         <h3 className="text-xl font-bold text-botanical-text mb-4">Request Time Off</h3>
         <form onSubmit={handleAddLeave} className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -105,7 +105,7 @@ export default function LeaveManager({ shopId, userId }: { shopId: string, userI
                 required 
                 value={date} 
                 onChange={e => setDate(e.target.value)}
-                className="w-full bg-black/40 border border-botanical-border rounded-lg px-3 py-2 text-botanical-text focus:border-brand-gold outline-none"
+                className="w-full bg-botanical-surface border border-botanical-border rounded-lg px-3 py-2 text-botanical-text focus:border-brand-gold outline-none"
               />
             </div>
             <div>
@@ -115,7 +115,7 @@ export default function LeaveManager({ shopId, userId }: { shopId: string, userI
                 required 
                 value={startTime} 
                 onChange={e => setStartTime(e.target.value)}
-                className="w-full bg-black/40 border border-botanical-border rounded-lg px-3 py-2 text-botanical-text focus:border-brand-gold outline-none"
+                className="w-full bg-botanical-surface border border-botanical-border rounded-lg px-3 py-2 text-botanical-text focus:border-brand-gold outline-none"
               />
             </div>
             <div>
@@ -125,7 +125,7 @@ export default function LeaveManager({ shopId, userId }: { shopId: string, userI
                 required 
                 value={endTime} 
                 onChange={e => setEndTime(e.target.value)}
-                className="w-full bg-black/40 border border-botanical-border rounded-lg px-3 py-2 text-botanical-text focus:border-brand-gold outline-none"
+                className="w-full bg-botanical-surface border border-botanical-border rounded-lg px-3 py-2 text-botanical-text focus:border-brand-gold outline-none"
               />
             </div>
           </div>
@@ -136,7 +136,7 @@ export default function LeaveManager({ shopId, userId }: { shopId: string, userI
               value={reason} 
               onChange={e => setReason(e.target.value)}
               placeholder="e.g. Doctor appointment, Sick, Vacation"
-              className="w-full bg-black/40 border border-botanical-border rounded-lg px-3 py-2 text-botanical-text focus:border-brand-gold outline-none"
+              className="w-full bg-botanical-surface border border-botanical-border rounded-lg px-3 py-2 text-botanical-text focus:border-brand-gold outline-none"
             />
           </div>
           <button 
@@ -149,14 +149,14 @@ export default function LeaveManager({ shopId, userId }: { shopId: string, userI
         </form>
       </div>
 
-      <div className="bg-botanical-surface p-6 rounded-xl border border-white/5">
+      <div className="bg-botanical-surface p-6 rounded-xl border border-botanical-border">
         <h3 className="text-xl font-bold text-botanical-text mb-4">Upcoming & Past Leaves</h3>
         {leaves.length === 0 ? (
           <p className="text-sm text-botanical-muted italic">No leaves recorded.</p>
         ) : (
           <div className="space-y-3">
             {leaves.map(leave => (
-              <div key={leave.id} className="flex justify-between items-center bg-black/30 p-4 rounded-lg border border-white/5">
+              <div key={leave.id} className="flex justify-between items-center bg-botanical-surface p-4 rounded-lg border border-botanical-border">
                 <div>
                   <p className="font-bold text-botanical-accent">
                     {new Date(leave.date).toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' })}

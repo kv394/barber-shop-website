@@ -371,24 +371,24 @@ export default function BookingModal({ shopId, service, onClose, shopHours }: Bo
   // ────────────── SUCCESS SCREEN ──────────────
   if (success) {
       return (
-        <div className="fixed inset-0 bg-black/80 z-[100] flex items-center justify-center p-4 backdrop-blur-sm">
-            <div className="bg-slate-900 rounded-xl p-8 max-w-md w-full border border-green-500 shadow-2xl text-center">
+        <div className="fixed inset-0 bg-botanical-surface z-[100] flex items-center justify-center p-4 backdrop-blur-sm">
+            <div className="bg-botanical-surface rounded-xl p-8 max-w-md w-full border border-green-500 shadow-2xl text-center">
                 <div className="text-6xl mb-4">🎉</div>
-                <h3 className="text-2xl font-bold text-white mb-2">Booking Confirmed!</h3>
-                <p className="text-gray-300 mb-2">The appointment for <span className="text-brand-gold font-semibold">{service.name}</span> has been scheduled.</p>
+                <h3 className="text-2xl font-bold text-botanical-text mb-2">Booking Confirmed!</h3>
+                <p className="text-botanical-muted mb-2">The appointment for <span className="text-botanical-accent font-semibold">{service.name}</span> has been scheduled.</p>
                 {confirmedStartTime && (
-                  <div className="bg-white/5 rounded-lg p-4 mb-6 border border-white/10 text-sm text-left space-y-1">
-                    <p className="text-gray-400">📅 <span className="text-white">{formattedDate}</span></p>
-                    <p className="text-gray-400">🕐 <span className="text-white">{selectedTime}</span></p>
-                    <p className="text-gray-400">💈 <span className="text-white">{confirmedStaffName}</span></p>
-                    <p className="text-gray-400">💰 <span className="text-white">${service.price.toFixed(2)}</span></p>
+                  <div className="bg-botanical-surface rounded-lg p-4 mb-6 border border-botanical-border text-sm text-left space-y-1">
+                    <p className="text-botanical-muted">📅 <span className="text-botanical-text">{formattedDate}</span></p>
+                    <p className="text-botanical-muted">🕐 <span className="text-botanical-text">{selectedTime}</span></p>
+                    <p className="text-botanical-muted">💈 <span className="text-botanical-text">{confirmedStaffName}</span></p>
+                    <p className="text-botanical-muted">💰 <span className="text-botanical-text">${service.price.toFixed(2)}</span></p>
                   </div>
                 )}
                 <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                  <button onClick={handleAddToCalendar} className="border border-white/20 text-white px-5 py-2 rounded-lg hover:bg-white/10 transition-colors text-sm font-semibold flex items-center justify-center gap-2">
+                  <button onClick={handleAddToCalendar} className="border border-botanical-border text-botanical-text px-5 py-2 rounded-lg hover:bg-botanical-surface transition-colors text-sm font-semibold flex items-center justify-center gap-2">
                     📅 Add to Calendar
                   </button>
-                  <button onClick={handleDone} className="bg-brand-gold text-brand-dark font-bold px-6 py-2 rounded-lg hover:bg-white transition-colors">
+                  <button onClick={handleDone} className="bg-botanical-primary text-botanical-bg font-bold px-6 py-2 rounded-lg hover:bg-white transition-colors">
                     {userRole ? 'Go to Bookings' : 'Done'}
                   </button>
                 </div>
@@ -400,59 +400,59 @@ export default function BookingModal({ shopId, service, onClose, shopHours }: Bo
   // ────────────── SUMMARY / REVIEW SCREEN ──────────────
   if (showSummary) {
     return (
-      <div className="fixed inset-0 bg-black/80 z-[100] flex items-center justify-center p-4 backdrop-blur-sm">
-        <div className="bg-slate-900 rounded-xl p-6 w-full max-w-md border border-slate-700 shadow-2xl relative text-left">
-          <button onClick={() => setShowSummary(false)} className="absolute top-4 right-4 text-gray-400 hover:text-white bg-slate-800 rounded-full w-8 h-8 flex items-center justify-center z-10">←</button>
-          <h3 className="text-xl font-bold text-white mb-1">Review Your Booking</h3>
-          <p className="text-gray-400 text-sm mb-5">Please confirm the details below.</p>
+      <div className="fixed inset-0 bg-botanical-surface z-[100] flex items-center justify-center p-4 backdrop-blur-sm">
+        <div className="bg-botanical-surface rounded-xl p-6 w-full max-w-md border border-botanical-border shadow-2xl relative text-left">
+          <button onClick={() => setShowSummary(false)} className="absolute top-4 right-4 text-botanical-muted hover:text-botanical-text bg-botanical-surface rounded-full w-8 h-8 flex items-center justify-center z-10">←</button>
+          <h3 className="text-xl font-bold text-botanical-text mb-1">Review Your Booking</h3>
+          <p className="text-botanical-muted text-sm mb-5">Please confirm the details below.</p>
 
           {error && <p className="text-red-400 text-sm bg-red-900/20 p-3 rounded mb-4">{error}</p>}
 
-          <div className="bg-white/5 rounded-lg border border-white/10 divide-y divide-white/10 mb-6">
+          <div className="bg-botanical-surface rounded-lg border border-botanical-border divide-y divide-white/10 mb-6">
             <div className="flex justify-between items-center p-4">
-              <span className="text-gray-400 text-sm">Service</span>
-              <span className="text-white font-semibold">{service.name}</span>
+              <span className="text-botanical-muted text-sm">Service</span>
+              <span className="text-botanical-text font-semibold">{service.name}</span>
             </div>
             <div className="flex justify-between items-center p-4">
-              <span className="text-gray-400 text-sm">Date</span>
-              <span className="text-white">{formattedDate}</span>
+              <span className="text-botanical-muted text-sm">Date</span>
+              <span className="text-botanical-text">{formattedDate}</span>
             </div>
             <div className="flex justify-between items-center p-4">
-              <span className="text-gray-400 text-sm">Time</span>
-              <span className="text-white">{selectedTime}</span>
+              <span className="text-botanical-muted text-sm">Time</span>
+              <span className="text-botanical-text">{selectedTime}</span>
             </div>
             <div className="flex justify-between items-center p-4">
-              <span className="text-gray-400 text-sm">Staff</span>
-              <span className="text-white">{getStaffNameById(selectedStaff)}</span>
+              <span className="text-botanical-muted text-sm">Staff</span>
+              <span className="text-botanical-text">{getStaffNameById(selectedStaff)}</span>
             </div>
             <div className="flex justify-between items-center p-4">
-              <span className="text-gray-400 text-sm">Duration</span>
-              <span className="text-white">{service.duration} mins</span>
+              <span className="text-botanical-muted text-sm">Duration</span>
+              <span className="text-botanical-text">{service.duration} mins</span>
             </div>
             {/* Price is now calculated on the server */}
             {/* <div className="flex justify-between items-center p-4">
-              <span className="text-gray-400 text-sm">Price</span>
-              <span className="text-brand-gold font-bold text-lg">${service.price.toFixed(2)}</span>
+              <span className="text-botanical-muted text-sm">Price</span>
+              <span className="text-botanical-accent font-bold text-lg">${service.price.toFixed(2)}</span>
             </div> */}
             {isWalkIn && (clientName || selectedExistingClient) && (
               <div className="flex justify-between items-center p-4">
-                <span className="text-gray-400 text-sm">Client</span>
-                <span className="text-white">{selectedExistingClient?.name || clientName}</span>
+                <span className="text-botanical-muted text-sm">Client</span>
+                <span className="text-botanical-text">{selectedExistingClient?.name || clientName}</span>
               </div>
             )}
             {bookingNotes && (
               <div className="p-4">
-                <span className="text-gray-400 text-sm block mb-1">Notes</span>
-                <span className="text-white text-sm">{bookingNotes}</span>
+                <span className="text-botanical-muted text-sm block mb-1">Notes</span>
+                <span className="text-botanical-text text-sm">{bookingNotes}</span>
               </div>
             )}
           </div>
 
           <div className="flex gap-3">
-            <button onClick={() => setShowSummary(false)} className="flex-1 border border-white/20 text-white font-semibold py-3 rounded-lg hover:bg-white/10 transition-colors">
+            <button onClick={() => setShowSummary(false)} className="flex-1 border border-botanical-border text-botanical-text font-semibold py-3 rounded-lg hover:bg-botanical-surface transition-colors">
               Edit
             </button>
-            <button onClick={handleBook} disabled={isBooking} className="flex-1 bg-brand-gold text-brand-dark font-bold py-3 rounded-lg hover:bg-white transition-colors disabled:opacity-50">
+            <button onClick={handleBook} disabled={isBooking} className="flex-1 bg-botanical-primary text-botanical-bg font-bold py-3 rounded-lg hover:bg-white transition-colors disabled:opacity-50">
               {isBooking ? (
                 <span className="flex items-center justify-center gap-2">
                   <span className="w-4 h-4 border-2 border-brand-dark border-t-transparent rounded-full animate-spin"></span>
@@ -468,18 +468,18 @@ export default function BookingModal({ shopId, service, onClose, shopHours }: Bo
 
   // ────────────── MAIN BOOKING FORM ──────────────
   return (
-    <div className="fixed inset-0 bg-black/80 z-[100] flex items-center justify-center p-4 backdrop-blur-sm">
-      <div className="bg-slate-900 rounded-xl p-6 w-full max-w-md border border-slate-700 shadow-2xl relative text-left max-h-[90vh] overflow-y-auto custom-scrollbar">
-        <button onClick={onClose} className="absolute top-4 right-4 text-gray-400 hover:text-white bg-slate-800 rounded-full w-8 h-8 flex items-center justify-center z-10">✕</button>
-        <h3 className="text-xl font-bold text-white mb-1">Book Appointment</h3>
-        <p className="text-brand-gold font-semibold mb-6">{service.name} <span className="text-gray-400 font-normal ml-2">({service.duration} mins • ${service.price})</span></p>
+    <div className="fixed inset-0 bg-botanical-surface z-[100] flex items-center justify-center p-4 backdrop-blur-sm">
+      <div className="bg-botanical-surface rounded-xl p-6 w-full max-w-md border border-botanical-border shadow-2xl relative text-left max-h-[90vh] overflow-y-auto custom-scrollbar">
+        <button onClick={onClose} className="absolute top-4 right-4 text-botanical-muted hover:text-botanical-text bg-botanical-surface rounded-full w-8 h-8 flex items-center justify-center z-10">✕</button>
+        <h3 className="text-xl font-bold text-botanical-text mb-1">Book Appointment</h3>
+        <p className="text-botanical-accent font-semibold mb-6">{service.name} <span className="text-botanical-muted font-normal ml-2">({service.duration} mins • ${service.price})</span></p>
 
         {!isLoaded ? (
-             <p className="text-gray-400 text-center py-8">Loading...</p>
+             <p className="text-botanical-muted text-center py-8">Loading...</p>
         ) : !isSignedIn ? (
-            <div className="text-center py-6 bg-white/5 rounded-lg border border-white/10 flex flex-col items-center">
-                <p className="text-gray-300 mb-4">Please sign in or create an account to book an appointment.</p>
-                <a href={`/sign-in?redirect_url=${encodeURIComponent(currentPath)}`} className="bg-brand-gold text-brand-dark px-6 py-2 rounded font-bold hover:bg-white transition-colors inline-block text-center">
+            <div className="text-center py-6 bg-botanical-surface rounded-lg border border-botanical-border flex flex-col items-center">
+                <p className="text-botanical-muted mb-4">Please sign in or create an account to book an appointment.</p>
+                <a href={`/sign-in?redirect_url=${encodeURIComponent(currentPath)}`} className="bg-botanical-primary text-botanical-bg px-6 py-2 rounded font-bold hover:bg-white transition-colors inline-block text-center">
                   Sign In to Book
                 </a>
             </div>
@@ -491,7 +491,7 @@ export default function BookingModal({ shopId, service, onClose, shopHours }: Bo
                 {userRole && (
                     <div className="bg-blue-900/20 border border-blue-500/30 p-4 rounded-lg space-y-3">
                         <div className="flex items-center space-x-2">
-                            <input type="checkbox" id="walkInToggle" checked={isWalkIn} onChange={(e) => { setIsWalkIn(e.target.checked); handleClearSelectedClient(); }} className="w-4 h-4 accent-brand-gold bg-black/50 border-white/20 rounded" />
+                            <input type="checkbox" id="walkInToggle" checked={isWalkIn} onChange={(e) => { setIsWalkIn(e.target.checked); handleClearSelectedClient(); }} className="w-4 h-4 accent-brand-gold bg-botanical-surface border-botanical-border rounded" />
                             <label htmlFor="walkInToggle" className="text-sm font-semibold text-blue-300 cursor-pointer">I am booking on behalf of a client</label>
                         </div>
                         {isWalkIn && (
@@ -500,55 +500,55 @@ export default function BookingModal({ shopId, service, onClose, shopHours }: Bo
                                 {!selectedExistingClient ? (
                                   <>
                                     <div className="relative">
-                                      <label className="block text-xs text-gray-400 mb-1">Search Existing Clients</label>
+                                      <label className="block text-xs text-botanical-muted mb-1">Search Existing Clients</label>
                                       <input
                                         type="text"
                                         placeholder="Type name or email..."
                                         value={clientSearchQuery}
                                         onChange={(e) => setClientSearchQuery(e.target.value)}
-                                        className="w-full bg-black/50 border border-white/20 rounded p-2 text-sm text-white focus:outline-none focus:border-brand-gold"
+                                        className="w-full bg-botanical-surface border border-botanical-border rounded p-2 text-sm text-botanical-text focus:outline-none focus:border-brand-gold"
                                       />
                                       {isSearchingClients && <div className="absolute right-3 top-8 w-3 h-3 border-2 border-brand-gold border-t-transparent rounded-full animate-spin"></div>}
                                       {clientSearchResults.length > 0 && (
-                                        <div className="absolute z-20 w-full mt-1 bg-slate-800 border border-white/20 rounded-lg shadow-xl max-h-40 overflow-y-auto">
+                                        <div className="absolute z-20 w-full mt-1 bg-botanical-surface border border-botanical-border rounded-lg shadow-xl max-h-40 overflow-y-auto">
                                           {clientSearchResults.map(c => (
-                                            <button key={c.id} onClick={() => handleSelectExistingClient(c)} className="w-full text-left px-3 py-2 hover:bg-white/10 transition-colors border-b border-white/5 last:border-0">
-                                              <span className="text-white text-sm font-medium">{c.name || 'No name'}</span>
-                                              <span className="text-gray-500 text-xs ml-2">{c.email}</span>
+                                            <button key={c.id} onClick={() => handleSelectExistingClient(c)} className="w-full text-left px-3 py-2 hover:bg-botanical-surface transition-colors border-b border-botanical-border last:border-0">
+                                              <span className="text-botanical-text text-sm font-medium">{c.name || 'No name'}</span>
+                                              <span className="text-botanical-muted text-xs ml-2">{c.email}</span>
                                             </button>
                                           ))}
                                         </div>
                                       )}
                                     </div>
-                                    <div className="relative flex items-center gap-2 text-xs text-gray-500">
-                                      <div className="flex-1 border-t border-white/10"></div>
+                                    <div className="relative flex items-center gap-2 text-xs text-botanical-muted">
+                                      <div className="flex-1 border-t border-botanical-border"></div>
                                       <span>or enter new client</span>
-                                      <div className="flex-1 border-t border-white/10"></div>
+                                      <div className="flex-1 border-t border-botanical-border"></div>
                                     </div>
                                   </>
                                 ) : (
                                   <div className="flex items-center justify-between bg-green-900/20 border border-green-500/30 rounded p-2">
                                     <div>
                                       <span className="text-green-300 text-sm font-semibold">{selectedExistingClient.name}</span>
-                                      <span className="text-gray-500 text-xs ml-2">{selectedExistingClient.email}</span>
+                                      <span className="text-botanical-muted text-xs ml-2">{selectedExistingClient.email}</span>
                                     </div>
-                                    <button onClick={handleClearSelectedClient} className="text-gray-400 hover:text-white text-xs underline">Change</button>
+                                    <button onClick={handleClearSelectedClient} className="text-botanical-muted hover:text-botanical-text text-xs underline">Change</button>
                                   </div>
                                 )}
 
                                 {!selectedExistingClient && (
                                   <>
                                     <div>
-                                      <label className="block text-xs text-gray-400 mb-1">Client Name *</label>
-                                      <input type="text" placeholder="John Doe" value={clientName} onChange={(e) => setClientName(e.target.value)} className="w-full bg-black/50 border border-white/20 rounded p-2 text-sm text-white focus:outline-none focus:border-brand-gold" />
+                                      <label className="block text-xs text-botanical-muted mb-1">Client Name *</label>
+                                      <input type="text" placeholder="John Doe" value={clientName} onChange={(e) => setClientName(e.target.value)} className="w-full bg-botanical-surface border border-botanical-border rounded p-2 text-sm text-botanical-text focus:outline-none focus:border-brand-gold" />
                                     </div>
                                     <div>
-                                      <label className="block text-xs text-gray-400 mb-1">Client Email (Optional)</label>
-                                      <input type="email" placeholder="john@example.com" value={clientEmail} onChange={(e) => setClientEmail(e.target.value)} className="w-full bg-black/50 border border-white/20 rounded p-2 text-sm text-white focus:outline-none focus:border-brand-gold" />
+                                      <label className="block text-xs text-botanical-muted mb-1">Client Email (Optional)</label>
+                                      <input type="email" placeholder="john@example.com" value={clientEmail} onChange={(e) => setClientEmail(e.target.value)} className="w-full bg-botanical-surface border border-botanical-border rounded p-2 text-sm text-botanical-text focus:outline-none focus:border-brand-gold" />
                                     </div>
                                     <div>
-                                      <label className="block text-xs text-gray-400 mb-1">Client Phone (Optional)</label>
-                                      <input type="tel" placeholder="+1 555-123-4567" value={clientPhone} onChange={(e) => setClientPhone(e.target.value)} className="w-full bg-black/50 border border-white/20 rounded p-2 text-sm text-white focus:outline-none focus:border-brand-gold" />
+                                      <label className="block text-xs text-botanical-muted mb-1">Client Phone (Optional)</label>
+                                      <input type="tel" placeholder="+1 555-123-4567" value={clientPhone} onChange={(e) => setClientPhone(e.target.value)} className="w-full bg-botanical-surface border border-botanical-border rounded p-2 text-sm text-botanical-text focus:outline-none focus:border-brand-gold" />
                                     </div>
                                   </>
                                 )}
@@ -559,15 +559,15 @@ export default function BookingModal({ shopId, service, onClose, shopHours }: Bo
 
                 {/* ──── Step 1: Date ──── */}
                 <div>
-                    <label className="block text-sm text-gray-400 mb-2">1. Select Date</label>
-                    <input type="date" value={selectedDate} onChange={(e) => { setSelectedDate(e.target.value); setSelectedTime(''); setSelectedStaff(''); }} min={new Date().toISOString().split('T')[0]} style={{ colorScheme: 'dark', color: '#fff', backgroundColor: 'rgba(0,0,0,0.5)' }} className="w-full border border-white/20 rounded p-3 text-white focus:outline-none focus:border-brand-gold" />
+                    <label className="block text-sm text-botanical-muted mb-2">1. Select Date</label>
+                    <input type="date" value={selectedDate} onChange={(e) => { setSelectedDate(e.target.value); setSelectedTime(''); setSelectedStaff(''); }} min={new Date().toISOString().split('T')[0]} style={{ colorScheme: 'dark', color: '#fff', backgroundColor: 'rgba(0,0,0,0.5)' }} className="w-full border border-botanical-border rounded p-3 text-botanical-text focus:outline-none focus:border-brand-gold" />
                 </div>
 
                 {/* ──── Step 2: Time ──── */}
                 <div>
-                    <label className="block text-sm text-gray-400 mb-2">2. Select Time</label>
+                    <label className="block text-sm text-botanical-muted mb-2">2. Select Time</label>
                     {isLoading ? (
-                      <div className="flex items-center gap-2 text-gray-500 text-sm py-3">
+                      <div className="flex items-center gap-2 text-botanical-muted text-sm py-3">
                         <div className="w-4 h-4 border-2 border-brand-gold border-t-transparent rounded-full animate-spin"></div>
                         Loading availability...
                       </div>
@@ -576,7 +576,7 @@ export default function BookingModal({ shopId, service, onClose, shopHours }: Bo
                           value={selectedTime}
                           onChange={(e) => { setSelectedTime(e.target.value); setSelectedStaff(''); }}
                           style={{ colorScheme: 'dark', color: '#fff', backgroundColor: 'rgba(0,0,0,0.5)' }}
-                          className="w-full border border-white/20 rounded p-3 text-white text-sm focus:outline-none focus:border-brand-gold cursor-pointer"
+                          className="w-full border border-botanical-border rounded p-3 text-botanical-text text-sm focus:outline-none focus:border-brand-gold cursor-pointer"
                         >
                           <option value="">— Choose a time —</option>
                           {availableTimeSlots.map(time => (
@@ -591,13 +591,13 @@ export default function BookingModal({ shopId, service, onClose, shopHours }: Bo
                 {/* ──── Step 3: Staff ──── */}
                 {selectedTime && (
                     <div>
-                        <label className="block text-sm text-gray-400 mb-2">3. Select Staff</label>
+                        <label className="block text-sm text-botanical-muted mb-2">3. Select Staff</label>
                         {staffAtSelectedTime.length > 0 ? (
                             <select
                               value={selectedStaff}
                               onChange={(e) => setSelectedStaff(e.target.value)}
                               style={{ colorScheme: 'dark', color: '#fff', backgroundColor: 'rgba(0,0,0,0.5)' }}
-                              className="w-full border border-white/20 rounded p-3 text-white text-sm focus:outline-none focus:border-brand-gold cursor-pointer"
+                              className="w-full border border-botanical-border rounded p-3 text-botanical-text text-sm focus:outline-none focus:border-brand-gold cursor-pointer"
                             >
                               <option value="">— Choose a barber —</option>
                               <option value={ANY_STAFF_VALUE}>🔀 Any Available (First Free)</option>
@@ -612,24 +612,24 @@ export default function BookingModal({ shopId, service, onClose, shopHours }: Bo
                 {/* ──── Step 4: Notes ──── */}
                 {selectedStaff && (
                   <div>
-                    <label className="block text-sm text-gray-400 mb-2">4. Special Requests <span className="text-gray-600">(optional)</span></label>
+                    <label className="block text-sm text-botanical-muted mb-2">4. Special Requests <span className="text-gray-600">(optional)</span></label>
                     <textarea
                       value={bookingNotes}
                       onChange={(e) => setBookingNotes(e.target.value)}
                       placeholder="e.g. skin fade, allergies, preferred products..."
                       rows={2}
                       maxLength={500}
-                      className="w-full bg-black/50 border border-white/20 rounded p-3 text-sm text-white focus:outline-none focus:border-brand-gold resize-none placeholder-gray-600"
+                      className="w-full bg-botanical-surface border border-botanical-border rounded p-3 text-sm text-botanical-text focus:outline-none focus:border-brand-gold resize-none placeholder-gray-600"
                     />
                   </div>
                 )}
 
                 {/* ──── Review & Book Button ──── */}
-                <div className="pt-4 border-t border-white/10">
+                <div className="pt-4 border-t border-botanical-border">
                     <button
                       onClick={handleReviewBooking}
                       disabled={!selectedDate || !selectedTime || !selectedStaff || (isWalkIn && !clientName.trim() && !selectedExistingClient)}
-                      className="w-full bg-brand-gold text-brand-dark font-bold py-3 rounded-lg hover:bg-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="w-full bg-botanical-primary text-botanical-bg font-bold py-3 rounded-lg hover:bg-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       Review Booking
                     </button>

@@ -29,7 +29,7 @@ export default async function MyAppointmentsLayout({
   }
 
   return (
-    <div className="bg-slate-900 h-[100dvh] overflow-y-auto overflow-x-hidden text-white font-sans">
+    <div className="bg-botanical-surface h-[100dvh] overflow-y-auto overflow-x-hidden text-botanical-text font-sans">
       {children}
     </div>
   );

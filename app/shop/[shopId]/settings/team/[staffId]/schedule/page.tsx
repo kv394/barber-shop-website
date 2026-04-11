@@ -119,11 +119,11 @@ export default function SchedulePage() {
         >
           <div>
             <label className="block text-[10px] text-botanical-muted mb-1 font-semibold uppercase tracking-wider">Name</label>
-            <input type="text" name="name" defaultValue={staffMember.name || ''} className="w-full bg-botanical-surface p-2.5 rounded-lg border border-botanical-border text-botanical-text focus:ring-2 focus:ring-brand-gold outline-none transition-all" />
+            <input type="text" name="name" defaultValue={staffMember.name || ''} className="w-full bg-botanical-surface p-2.5 rounded-lg border border-botanical-border text-botanical-text focus:ring-2 focus:ring-botanical-primary outline-none transition-all" />
           </div>
           <div>
             <label className="block text-[10px] text-botanical-muted mb-1 font-semibold uppercase tracking-wider">Phone</label>
-            <input type="tel" name="phone" defaultValue={staffMember.phone || ''} className="w-full bg-botanical-surface p-2.5 rounded-lg border border-botanical-border text-botanical-text focus:ring-2 focus:ring-brand-gold outline-none transition-all" />
+            <input type="tel" name="phone" defaultValue={staffMember.phone || ''} className="w-full bg-botanical-surface p-2.5 rounded-lg border border-botanical-border text-botanical-text focus:ring-2 focus:ring-botanical-primary outline-none transition-all" />
           </div>
           <div className="flex items-end">
             <div className="flex items-center h-[46px] w-full bg-botanical-surface px-4 rounded-lg border border-botanical-border">
@@ -132,7 +132,7 @@ export default function SchedulePage() {
             </div>
           </div>
           <div className="md:col-span-3">
-            <button type="submit" className="bg-botanical-primary text-white font-bold py-2.5 px-8 rounded-lg hover:bg-white transition-colors shadow-lg">
+            <button type="submit" className="bg-botanical-primary text-botanical-text font-bold py-2.5 px-8 rounded-lg hover:bg-white transition-colors shadow-lg">
               Save Details
             </button>
           </div>
@@ -170,14 +170,14 @@ export default function SchedulePage() {
                         type="time" 
                         name={`${day}-open`} 
                         defaultValue={dayHours.open} 
-                        className="bg-botanical-surface p-2 rounded border border-botanical-border text-botanical-text focus:ring-2 focus:ring-brand-gold outline-none disabled:opacity-50 disabled:cursor-not-allowed" 
+                        className="bg-botanical-surface p-2 rounded border border-botanical-border text-botanical-text focus:ring-2 focus:ring-botanical-primary outline-none disabled:opacity-50 disabled:cursor-not-allowed" 
                         disabled={!isEnabled} 
                       />
                       <input 
                         type="time" 
                         name={`${day}-close`} 
                         defaultValue={dayHours.close} 
-                        className="bg-botanical-surface p-2 rounded border border-botanical-border text-botanical-text focus:ring-2 focus:ring-brand-gold outline-none disabled:opacity-50 disabled:cursor-not-allowed" 
+                        className="bg-botanical-surface p-2 rounded border border-botanical-border text-botanical-text focus:ring-2 focus:ring-botanical-primary outline-none disabled:opacity-50 disabled:cursor-not-allowed" 
                         disabled={!isEnabled} 
                       />
                     </div>
@@ -189,7 +189,7 @@ export default function SchedulePage() {
               <button 
                 type="submit" 
                 disabled={isSaving}
-                className="bg-botanical-primary text-white font-bold py-3 px-8 rounded-lg hover:bg-white transition-colors disabled:opacity-50"
+                className="bg-botanical-primary text-botanical-text font-bold py-3 px-8 rounded-lg hover:bg-white transition-colors disabled:opacity-50"
               >
                 {isSaving ? 'Saving...' : 'Save Weekly Schedule'}
               </button>

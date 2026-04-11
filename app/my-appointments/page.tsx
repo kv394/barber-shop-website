@@ -87,10 +87,10 @@ export default function MyAppointmentsPage() {
 
   if (loading) {
     return (
-      <div className="h-[100dvh] overflow-y-auto overflow-x-hidden flex items-center justify-center bg-slate-900">
+      <div className="h-[100dvh] overflow-y-auto overflow-x-hidden flex items-center justify-center bg-botanical-surface">
         <div className="flex flex-col items-center gap-4">
           <div className="w-12 h-12 border-4 border-brand-gold border-t-transparent rounded-full animate-spin"></div>
-          <p className="text-brand-gold text-sm animate-pulse font-medium tracking-wide uppercase">Loading Appointments...</p>
+          <p className="text-botanical-accent text-sm animate-pulse font-medium tracking-wide uppercase">Loading Appointments...</p>
         </div>
       </div>
     );
@@ -99,25 +99,25 @@ export default function MyAppointmentsPage() {
   return (
     <main className="h-[100dvh] overflow-y-auto overflow-x-hidden">
       {/* Header */}
-      <header className="bg-black/40 backdrop-blur-md border-b border-slate-700 sticky top-0 z-20">
+      <header className="bg-botanical-surface backdrop-blur-md border-b border-botanical-border sticky top-0 z-20">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
           <div>
-            <h1 className="text-xl sm:text-2xl font-bold text-white">My Appointments</h1>
-            <p className="text-xs text-gray-500">Manage your upcoming bookings</p>
+            <h1 className="text-xl sm:text-2xl font-bold text-botanical-text">My Appointments</h1>
+            <p className="text-xs text-botanical-muted">Manage your upcoming bookings</p>
           </div>
           <div className="flex gap-2">
             {user?.role === 'SUPER_ADMIN' ? (
-              <Link href="/superadmin" className="bg-slate-800 border border-slate-600 text-white font-bold px-4 py-2 rounded-lg text-sm hover:bg-slate-700 transition-colors">
+              <Link href="/superadmin" className="bg-botanical-surface border border-slate-600 text-botanical-text font-bold px-4 py-2 rounded-lg text-sm hover:bg-botanical-surface transition-colors">
                 Back to Superadmin
               </Link>
             ) : user?.shopId && (user?.role === 'SHOP_ADMIN' || user?.role === 'STAFF') ? (
-              <Link href={`/shop/${user.shopId}`} className="bg-slate-800 border border-slate-600 text-white font-bold px-4 py-2 rounded-lg text-sm hover:bg-slate-700 transition-colors">
+              <Link href={`/shop/${user.shopId}`} className="bg-botanical-surface border border-slate-600 text-botanical-text font-bold px-4 py-2 rounded-lg text-sm hover:bg-botanical-surface transition-colors">
                 Back to Dashboard
               </Link>
             ) : null}
             <Link
               href="/shops"
-              className="bg-brand-gold text-brand-dark font-bold px-4 py-2 rounded-lg text-sm hover:bg-white transition-colors"
+              className="bg-botanical-primary text-botanical-bg font-bold px-4 py-2 rounded-lg text-sm hover:bg-white transition-colors"
             >
               Book New
             </Link>
@@ -152,18 +152,18 @@ export default function MyAppointmentsPage() {
         <section>
           <div className="flex items-center gap-3 mb-5">
             <div className="w-2 h-8 bg-blue-500 rounded-full" />
-            <h2 className="text-lg font-bold text-white">
+            <h2 className="text-lg font-bold text-botanical-text">
               Upcoming ({upcoming.length})
             </h2>
           </div>
 
           {upcoming.length === 0 ? (
-            <div className="text-center py-12 border border-dashed border-white/10 rounded-xl">
+            <div className="text-center py-12 border border-dashed border-botanical-border rounded-xl">
               <p className="text-4xl mb-3">📅</p>
-              <p className="text-gray-400 text-sm">No upcoming appointments</p>
+              <p className="text-botanical-muted text-sm">No upcoming appointments</p>
               <Link
                 href="/shops"
-                className="inline-block mt-4 text-brand-gold hover:text-white text-sm font-semibold transition-colors"
+                className="inline-block mt-4 text-botanical-accent hover:text-botanical-text text-sm font-semibold transition-colors"
               >
                 Browse shops to book →
               </Link>
@@ -188,14 +188,14 @@ export default function MyAppointmentsPage() {
         <section>
           <div className="flex items-center gap-3 mb-5">
             <div className="w-2 h-8 bg-gray-500 rounded-full" />
-            <h2 className="text-lg font-bold text-white">
+            <h2 className="text-lg font-bold text-botanical-text">
               Past ({past.length})
             </h2>
           </div>
 
           {past.length === 0 ? (
-            <div className="text-center py-12 border border-dashed border-white/10 rounded-xl">
-              <p className="text-gray-500 text-sm italic">No past appointments yet.</p>
+            <div className="text-center py-12 border border-dashed border-botanical-border rounded-xl">
+              <p className="text-botanical-muted text-sm italic">No past appointments yet.</p>
             </div>
           ) : (
             <div className="space-y-3">
@@ -237,13 +237,13 @@ function AppointmentCard({
   const shopSlug = apt.shop?.name?.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '') || '';
 
   return (
-    <div className="bg-slate-800/60 border border-white/5 rounded-xl p-4 sm:p-5 hover:border-white/10 transition-colors">
+    <div className="bg-botanical-surface border border-botanical-border rounded-xl p-4 sm:p-5 hover:border-botanical-border transition-colors">
       <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3">
         {/* Left: Info */}
         <div className="flex-1 min-w-0 space-y-2">
           {/* Shop name + status */}
           <div className="flex items-center gap-2 flex-wrap">
-            <span className="font-bold text-white text-sm sm:text-base truncate">
+            <span className="font-bold text-botanical-text text-sm sm:text-base truncate">
               {apt.shop?.name || 'Unknown Shop'}
             </span>
             <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${style.bg} ${style.text}`}>
@@ -253,19 +253,19 @@ function AppointmentCard({
 
           {/* Service + Staff */}
           <div className="flex items-center gap-2 text-sm">
-            <span className="text-gray-300">{apt.service?.name || 'Service'}</span>
+            <span className="text-botanical-muted">{apt.service?.name || 'Service'}</span>
             {apt.staff?.name && (
               <>
                 <span className="text-gray-600">·</span>
-                <span className="text-gray-400">with {apt.staff.name}</span>
+                <span className="text-botanical-muted">with {apt.staff.name}</span>
               </>
             )}
           </div>
 
           {/* Date / Time */}
           <div className="flex items-center gap-2">
-            <span className="text-xs text-gray-500">📅</span>
-            <span className="text-sm font-mono text-brand-gold">
+            <span className="text-xs text-botanical-muted">📅</span>
+            <span className="text-sm font-mono text-botanical-accent">
               {formatDateTimeInShopTz(apt.startTime, tz)}
             </span>
             {apt.service?.duration && (
@@ -275,8 +275,8 @@ function AppointmentCard({
 
           {/* Price */}
           {apt.status === 'COMPLETED' && apt.totalAmount > 0 && (
-            <div className="flex items-center gap-3 text-xs text-gray-400">
-              <span>Total: <span className="text-white font-semibold">${apt.totalAmount.toFixed(2)}</span></span>
+            <div className="flex items-center gap-3 text-xs text-botanical-muted">
+              <span>Total: <span className="text-botanical-text font-semibold">${apt.totalAmount.toFixed(2)}</span></span>
               {apt.tipAmount > 0 && <span>Tip: <span className="text-green-400">${apt.tipAmount.toFixed(2)}</span></span>}
             </div>
           )}
@@ -306,7 +306,7 @@ function AppointmentCard({
           {showRebook && apt.service && shopSlug && (
             <Link
               href={`/shops/${shopSlug}?service=${apt.service.id}`}
-              className="px-4 py-2 text-sm font-semibold bg-brand-gold/20 text-brand-gold border border-brand-gold/30 rounded-lg hover:bg-brand-gold/40 transition-all text-center"
+              className="px-4 py-2 text-sm font-semibold bg-botanical-primary/20 text-botanical-accent border border-brand-gold/30 rounded-lg hover:bg-botanical-primary/40 transition-all text-center"
             >
               Rebook
             </Link>

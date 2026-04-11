@@ -80,12 +80,12 @@ export default async function ShopLayout({
   }
 
   return (
-    <main className="flex h-[100dvh] overflow-y-auto overflow-x-hidden flex-col items-center bg-botanical-bg text-botanical-text px-0 sm:p-4 md:p-8 lg:p-12 pb-24 sm:pb-4 pt-[64px] sm:pt-4 md:pt-8 lg:pt-12 scroll-smooth">
+    <>
       {/* Mobile Header (All Roles except Super Admin) */}
       {!isSuperAdmin && (
-        <header className="sm:hidden fixed top-0 left-0 right-0 z-[100] flex justify-between items-center bg-white border-b border-botanical-border px-4 py-3 shadow-sm">
+        <header className="sm:hidden fixed top-0 left-0 right-0 z-[100] flex justify-between items-center bg-botanical-surface border-b border-botanical-border px-4 py-3 shadow-sm">
           <div className="flex flex-col min-w-0 pr-4">
-             <span className="text-slate-900 font-black text-lg leading-tight truncate">{data.shop.name}</span>
+             <span className="text-botanical-text font-black text-lg leading-tight truncate">{data.shop.name}</span>
              <span className="text-botanical-muted text-[10px] uppercase font-bold tracking-wider leading-tight mt-0.5">{data.userRole.replace('_', ' ')}</span>
           </div>
           <div className="shrink-0">
@@ -94,7 +94,8 @@ export default async function ShopLayout({
         </header>
       )}
 
-      <div className="w-full max-w-7xl px-3 sm:px-0 pt-4 sm:pt-0">
+      <main className="flex h-[100dvh] overflow-y-auto overflow-x-hidden flex-col items-center bg-botanical-bg text-botanical-text px-0 sm:p-4 md:p-8 lg:p-12 pb-24 sm:pb-4 pt-[64px] sm:pt-4 md:pt-8 lg:pt-12 scroll-smooth">
+        <div className="w-full max-w-7xl px-3 sm:px-0 pt-4 sm:pt-0">
         <header className="hidden sm:flex justify-between items-center mb-6 sm:mb-8">
           <h1 className="font-serif text-2xl sm:text-3xl font-bold">
             {isSuperAdmin ? (
@@ -129,7 +130,7 @@ export default async function ShopLayout({
                 <Link
                 href={`/shops/${data.shopSlug}`}
                 target="_blank"
-                className="bg-botanical-primary text-white hover:bg-white px-4 sm:px-6 py-2 rounded-lg transition-colors text-xs sm:text-sm font-semibold whitespace-nowrap"
+                className="bg-botanical-primary text-botanical-text hover:bg-white px-4 sm:px-6 py-2 rounded-lg transition-colors text-xs sm:text-sm font-semibold whitespace-nowrap"
                 >
                 View Public Page ↗
                 </Link>
@@ -139,7 +140,8 @@ export default async function ShopLayout({
 
         {children}
       </div>
+      </main>
       <GlobalChatWidget shopId={shopId} currentUserId={userId} userRole={data.userRole} />
-    </main>
+    </>
   );
 }

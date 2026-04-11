@@ -202,17 +202,17 @@ export default function BarcodeScanner({ onScan, onClose }: BarcodeScannerProps)
   }, []); // mount once
 
   return (
-    <div className="fixed inset-0 bg-black/85 z-[100] flex items-center justify-center p-4 backdrop-blur-sm">
-      <div className="bg-slate-900 rounded-xl p-5 w-full max-w-sm border border-slate-700 shadow-2xl relative">
+    <div className="fixed inset-0 bg-botanical-surface z-[100] flex items-center justify-center p-4 backdrop-blur-sm">
+      <div className="bg-botanical-surface rounded-xl p-5 w-full max-w-sm border border-botanical-border shadow-2xl relative">
         <button
           onClick={handleClose}
-          className="absolute top-3 right-3 text-gray-400 hover:text-white bg-slate-800 rounded-full w-8 h-8 flex items-center justify-center z-10 text-sm"
+          className="absolute top-3 right-3 text-botanical-muted hover:text-botanical-text bg-botanical-surface rounded-full w-8 h-8 flex items-center justify-center z-10 text-sm"
         >
           ✕
         </button>
 
-        <h3 className="text-lg font-bold text-white mb-1">Scan QR / Barcode</h3>
-        <p className="text-xs text-gray-400 mb-4">
+        <h3 className="text-lg font-bold text-botanical-text mb-1">Scan QR / Barcode</h3>
+        <p className="text-xs text-botanical-muted mb-4">
           Point the camera at a barcode or QR code.
         </p>
 
@@ -222,7 +222,7 @@ export default function BarcodeScanner({ onScan, onClose }: BarcodeScannerProps)
           </div>
         )}
 
-        <div className="relative bg-black rounded-lg overflow-hidden border border-slate-700" style={{ minHeight: 280 }}>
+        <div className="relative bg-botanical-surface rounded-lg overflow-hidden border border-botanical-border" style={{ minHeight: 280 }}>
           <video
             ref={videoRef}
             className="w-full h-auto"
@@ -233,9 +233,9 @@ export default function BarcodeScanner({ onScan, onClose }: BarcodeScannerProps)
           <canvas ref={canvasRef} className="hidden" />
 
           {isStarting && !error && (
-            <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/70 text-white gap-3">
+            <div className="absolute inset-0 flex flex-col items-center justify-center bg-botanical-surface text-botanical-text gap-3">
               <div className="w-8 h-8 border-2 border-brand-gold border-t-transparent rounded-full animate-spin" />
-              <p className="text-sm text-gray-300">Starting camera…</p>
+              <p className="text-sm text-botanical-muted">Starting camera…</p>
             </div>
           )}
 
@@ -246,13 +246,13 @@ export default function BarcodeScanner({ onScan, onClose }: BarcodeScannerProps)
                 <span className="absolute top-0 right-0 w-8 h-8 border-t-4 border-r-4 border-brand-gold rounded-tr" />
                 <span className="absolute bottom-0 left-0 w-8 h-8 border-b-4 border-l-4 border-brand-gold rounded-bl" />
                 <span className="absolute bottom-0 right-0 w-8 h-8 border-b-4 border-r-4 border-brand-gold rounded-br" />
-                <div className="absolute inset-x-0 top-0 h-0.5 bg-brand-gold/70 animate-[scan_2s_linear_infinite]" />
+                <div className="absolute inset-x-0 top-0 h-0.5 bg-botanical-primary/70 animate-[scan_2s_linear_infinite]" />
               </div>
             </div>
           )}
         </div>
 
-        <p className="text-center text-xs text-gray-500 mt-3">
+        <p className="text-center text-xs text-botanical-muted mt-3">
           Hold steady — scanning automatically
         </p>
       </div>

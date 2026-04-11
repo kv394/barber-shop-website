@@ -132,7 +132,7 @@ export function CustomPagesForm({ shopId, customization }: { shopId: string; cus
                   id={`visible-${page.id}`}
                   checked={page.isVisible}
                   onChange={(e) => updatePage(index, 'isVisible', e.target.checked)}
-                  className="w-4 h-4 rounded border-gray-600 text-botanical-accent focus:ring-brand-gold bg-botanical-bg"
+                  className="w-4 h-4 rounded border-gray-600 text-botanical-accent focus:ring-botanical-primary bg-botanical-bg"
                 />
                 <label htmlFor={`visible-${page.id}`} className="text-sm text-botanical-muted">
                   Visible in public menu

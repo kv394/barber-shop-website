@@ -79,7 +79,7 @@ export default function ReviewPage({ params }: { params: Promise<{ appointmentId
   if (loading) {
     return (
       <div className="h-[100dvh] overflow-y-auto overflow-x-hidden">
-        <p className="text-gray-400 animate-pulse">Loading…</p>
+        <p className="text-botanical-muted animate-pulse">Loading…</p>
       </div>
     );
   }
@@ -89,9 +89,9 @@ export default function ReviewPage({ params }: { params: Promise<{ appointmentId
       <div className="h-[100dvh] overflow-y-auto overflow-x-hidden">
         <div className="text-center">
           <p className="text-5xl mb-4">🎉</p>
-          <h2 className="text-2xl font-bold text-white mb-2">Thank You!</h2>
-          <p className="text-gray-400">Your review has been submitted.</p>
-          <p className="text-gray-500 text-sm mt-2">Redirecting…</p>
+          <h2 className="text-2xl font-bold text-botanical-text mb-2">Thank You!</h2>
+          <p className="text-botanical-muted">Your review has been submitted.</p>
+          <p className="text-botanical-muted text-sm mt-2">Redirecting…</p>
         </div>
       </div>
     );
@@ -101,16 +101,16 @@ export default function ReviewPage({ params }: { params: Promise<{ appointmentId
 
   return (
     <main className="h-[100dvh] overflow-y-auto overflow-x-hidden">
-      <header className="bg-black/40 backdrop-blur-md border-b border-slate-700 sticky top-0 z-20">
+      <header className="bg-botanical-surface backdrop-blur-md border-b border-botanical-border sticky top-0 z-20">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 py-4">
-          <h1 className="text-xl sm:text-2xl font-bold text-white">Leave a Review</h1>
-          <p className="text-xs text-gray-500">Share your experience</p>
+          <h1 className="text-xl sm:text-2xl font-bold text-botanical-text">Leave a Review</h1>
+          <p className="text-xs text-botanical-muted">Share your experience</p>
         </div>
         <div className="max-w-4xl mx-auto px-4 sm:px-6 pb-2 flex gap-4 overflow-x-auto scrollbar-none">
-          <Link href="/my-appointments" className="text-sm text-gray-400 hover:text-white px-1 pb-1 whitespace-nowrap transition-colors">📅 Appointments</Link>
-          <Link href="/my-appointments/profile" className="text-sm text-gray-400 hover:text-white px-1 pb-1 whitespace-nowrap transition-colors">👤 Profile</Link>
-          <Link href="/my-appointments/loyalty" className="text-sm text-gray-400 hover:text-white px-1 pb-1 whitespace-nowrap transition-colors">⭐ Loyalty</Link>
-          <Link href="/my-appointments/notifications" className="text-sm text-gray-400 hover:text-white px-1 pb-1 whitespace-nowrap transition-colors">🔔 Notifications</Link>
+          <Link href="/my-appointments" className="text-sm text-botanical-muted hover:text-botanical-text px-1 pb-1 whitespace-nowrap transition-colors">📅 Appointments</Link>
+          <Link href="/my-appointments/profile" className="text-sm text-botanical-muted hover:text-botanical-text px-1 pb-1 whitespace-nowrap transition-colors">👤 Profile</Link>
+          <Link href="/my-appointments/loyalty" className="text-sm text-botanical-muted hover:text-botanical-text px-1 pb-1 whitespace-nowrap transition-colors">⭐ Loyalty</Link>
+          <Link href="/my-appointments/notifications" className="text-sm text-botanical-muted hover:text-botanical-text px-1 pb-1 whitespace-nowrap transition-colors">🔔 Notifications</Link>
         </div>
       </header>
 
@@ -123,34 +123,34 @@ export default function ReviewPage({ params }: { params: Promise<{ appointmentId
 
         {!appointment ? (
           <div className="text-center py-12">
-            <p className="text-gray-400">Appointment not found.</p>
-            <Link href="/my-appointments" className="text-brand-gold hover:text-white text-sm mt-4 inline-block">← Back to appointments</Link>
+            <p className="text-botanical-muted">Appointment not found.</p>
+            <Link href="/my-appointments" className="text-botanical-accent hover:text-botanical-text text-sm mt-4 inline-block">← Back to appointments</Link>
           </div>
         ) : alreadyReviewed ? (
-          <div className="text-center py-12 bg-slate-800/60 border border-white/5 rounded-xl p-8">
+          <div className="text-center py-12 bg-botanical-surface border border-botanical-border rounded-xl p-8">
             <p className="text-4xl mb-4">✅</p>
-            <h2 className="text-xl font-bold text-white mb-2">Already Reviewed</h2>
-            <p className="text-gray-400 text-sm">You&apos;ve already left a review for this appointment.</p>
-            <Link href="/my-appointments" className="text-brand-gold hover:text-white text-sm mt-4 inline-block">← Back to appointments</Link>
+            <h2 className="text-xl font-bold text-botanical-text mb-2">Already Reviewed</h2>
+            <p className="text-botanical-muted text-sm">You&apos;ve already left a review for this appointment.</p>
+            <Link href="/my-appointments" className="text-botanical-accent hover:text-botanical-text text-sm mt-4 inline-block">← Back to appointments</Link>
           </div>
         ) : appointment.status !== 'COMPLETED' ? (
-          <div className="text-center py-12 bg-slate-800/60 border border-white/5 rounded-xl p-8">
+          <div className="text-center py-12 bg-botanical-surface border border-botanical-border rounded-xl p-8">
             <p className="text-4xl mb-4">⏳</p>
-            <h2 className="text-xl font-bold text-white mb-2">Not Yet Completed</h2>
-            <p className="text-gray-400 text-sm">You can only review completed appointments.</p>
-            <Link href="/my-appointments" className="text-brand-gold hover:text-white text-sm mt-4 inline-block">← Back to appointments</Link>
+            <h2 className="text-xl font-bold text-botanical-text mb-2">Not Yet Completed</h2>
+            <p className="text-botanical-muted text-sm">You can only review completed appointments.</p>
+            <Link href="/my-appointments" className="text-botanical-accent hover:text-botanical-text text-sm mt-4 inline-block">← Back to appointments</Link>
           </div>
         ) : (
-          <div className="bg-slate-800/60 border border-white/5 rounded-xl overflow-hidden">
+          <div className="bg-botanical-surface border border-botanical-border rounded-xl overflow-hidden">
             {/* Appointment Summary */}
-            <div className="p-6 bg-gradient-to-r from-purple-600/10 to-brand-gold/10 border-b border-white/5">
-              <h2 className="text-lg font-bold text-white">{appointment.shop.name}</h2>
+            <div className="p-6 bg-gradient-to-r from-purple-600/10 to-brand-gold/10 border-b border-botanical-border">
+              <h2 className="text-lg font-bold text-botanical-text">{appointment.shop.name}</h2>
               <div className="mt-2 space-y-1">
-                <p className="text-sm text-gray-300">
+                <p className="text-sm text-botanical-muted">
                   {appointment.service?.name || 'Service'}
-                  {appointment.staff?.name && <span className="text-gray-500"> · with {appointment.staff.name}</span>}
+                  {appointment.staff?.name && <span className="text-botanical-muted"> · with {appointment.staff.name}</span>}
                 </p>
-                <p className="text-xs text-gray-500">
+                <p className="text-xs text-botanical-muted">
                   {new Date(appointment.startTime).toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
                 </p>
               </div>
@@ -159,7 +159,7 @@ export default function ReviewPage({ params }: { params: Promise<{ appointmentId
             {/* Rating */}
             <div className="p-6 space-y-6">
               <div>
-                <label className="block text-sm text-gray-400 mb-3">How was your experience?</label>
+                <label className="block text-sm text-botanical-muted mb-3">How was your experience?</label>
                 <div className="flex gap-2 justify-center">
                   {[1, 2, 3, 4, 5].map((star) => (
                     <button
@@ -177,7 +177,7 @@ export default function ReviewPage({ params }: { params: Promise<{ appointmentId
                   ))}
                 </div>
                 {rating > 0 && (
-                  <p className="text-center text-sm text-gray-400 mt-2">
+                  <p className="text-center text-sm text-botanical-muted mt-2">
                     {rating === 1 && 'Poor'}
                     {rating === 2 && 'Fair'}
                     {rating === 3 && 'Good'}
@@ -189,14 +189,14 @@ export default function ReviewPage({ params }: { params: Promise<{ appointmentId
 
               {/* Comment */}
               <div>
-                <label className="block text-sm text-gray-400 mb-2">Leave a comment (optional)</label>
+                <label className="block text-sm text-botanical-muted mb-2">Leave a comment (optional)</label>
                 <textarea
                   value={comment}
                   onChange={(e) => setComment(e.target.value)}
                   placeholder="Tell us about your experience…"
                   rows={4}
                   maxLength={1000}
-                  className="w-full bg-black/50 border border-white/20 rounded-lg p-3 text-white placeholder-gray-600 focus:outline-none focus:border-brand-gold resize-none"
+                  className="w-full bg-botanical-surface border border-botanical-border rounded-lg p-3 text-botanical-text placeholder-gray-600 focus:outline-none focus:border-brand-gold resize-none"
                 />
                 <p className="text-xs text-gray-600 text-right mt-1">{comment.length}/1000</p>
               </div>
@@ -205,7 +205,7 @@ export default function ReviewPage({ params }: { params: Promise<{ appointmentId
               <button
                 onClick={handleSubmit}
                 disabled={rating === 0 || submitting}
-                className="w-full bg-brand-gold text-brand-dark font-bold py-3 rounded-lg hover:bg-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full bg-botanical-primary text-botanical-bg font-bold py-3 rounded-lg hover:bg-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {submitting ? 'Submitting…' : 'Submit Review'}
               </button>

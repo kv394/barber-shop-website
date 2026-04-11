@@ -32,7 +32,7 @@ export default function Error({
   }, [error]);
 
   return (
-    <div className="flex h-[calc(100vh-200px)] min-h-[400px] flex-col items-center justify-center rounded-xl border border-red-500/20 bg-red-500/5 p-8 text-center text-white shadow-lg mx-auto w-full max-w-2xl mt-12">
+    <div className="flex h-[calc(100vh-200px)] min-h-[400px] flex-col items-center justify-center rounded-xl border border-red-500/20 bg-red-500/5 p-8 text-center text-botanical-text shadow-lg mx-auto w-full max-w-2xl mt-12">
       <div className="flex h-16 w-16 items-center justify-center rounded-full bg-red-500/20 mb-6 border border-red-500/30">
         <span className="text-3xl">⚠️</span>
       </div>
@@ -44,13 +44,13 @@ export default function Error({
       <div className="flex gap-4">
         <button
           onClick={() => reset()}
-          className="rounded-lg bg-brand-gold px-6 py-2.5 font-bold text-brand-dark transition-all hover:scale-105 active:scale-95"
+          className="rounded-lg bg-botanical-primary px-6 py-2.5 font-bold text-botanical-bg transition-all hover:scale-105 active:scale-95"
         >
           Try Again
         </button>
         <button
           onClick={() => window.location.reload()}
-          className="rounded-lg border border-zinc-600 bg-zinc-800 px-6 py-2.5 font-bold text-white transition-all hover:bg-zinc-700"
+          className="rounded-lg border border-zinc-600 bg-zinc-800 px-6 py-2.5 font-bold text-botanical-text transition-all hover:bg-zinc-700"
         >
           Reload Page
         </button>

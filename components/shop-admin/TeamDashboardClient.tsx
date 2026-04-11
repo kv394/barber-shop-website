@@ -34,7 +34,7 @@ export default function TeamDashboardClient({
   return (
     <>
       <div className="flex justify-end mb-4">
-        <Link href={`/shop/${shopId}/portfolio`} className="bg-botanical-surface text-botanical-muted border border-slate-600 px-4 py-2 rounded-lg hover:bg-slate-700 transition-colors font-bold uppercase tracking-wider flex items-center gap-2 shadow-lg">
+        <Link href={`/shop/${shopId}/portfolio`} className="bg-botanical-surface text-botanical-muted border border-slate-600 px-4 py-2 rounded-lg hover:bg-botanical-surface transition-colors font-bold uppercase tracking-wider flex items-center gap-2 shadow-lg">
           📸 Shop Portfolio Gallery
         </Link>
       </div>
@@ -102,7 +102,7 @@ export default function TeamDashboardClient({
                         <input type="hidden" name="date" value={initialDate} />
                         <input type="hidden" name="startTime" value="00:00" />
                         <input type="hidden" name="endTime" value="23:59" />
-                        <button type="submit" className="text-xs text-botanical-text bg-slate-700 hover:bg-red-600 px-3 py-1.5 rounded transition-colors">Cancel Leave</button>
+                        <button type="submit" className="text-xs text-botanical-text bg-botanical-surface hover:bg-red-600 px-3 py-1.5 rounded transition-colors">Cancel Leave</button>
                     </form>
                   </div>
                 ) : isNotWorking ? (
@@ -111,7 +111,7 @@ export default function TeamDashboardClient({
                     <p className="text-sm font-medium text-botanical-muted mb-4">Scheduled Day Off</p>
                     
                     {/* Quick Add Shift form with editable times */}
-                    <form action={updateDayHoursAction} className="w-full space-y-2 border-t border-white/5 pt-3">
+                    <form action={updateDayHoursAction} className="w-full space-y-2 border-t border-botanical-border pt-3">
                         <input type="hidden" name="staffId" value={staffMember.id} />
                         <input type="hidden" name="shopId" value={shopId} />
                         <input type="hidden" name="dayOfWeek" value={staffMember.dayOfWeek} />
@@ -124,7 +124,7 @@ export default function TeamDashboardClient({
                                 name="openTime" 
                                 value={getTimeValue(staffMember.id, 'open', defaultOpen)}
                                 onChange={(e) => handleTimeChange(staffMember.id, 'open', e.target.value)}
-                                className="bg-slate-700 text-botanical-text text-xs p-1 rounded border border-slate-600 outline-none focus:ring-1 focus:ring-brand-gold"
+                                className="bg-botanical-surface text-botanical-text text-xs p-1 rounded border border-slate-600 outline-none focus:ring-1 focus:ring-botanical-primary"
                             />
                             <span className="text-botanical-muted text-xs">to</span>
                             <input 
@@ -132,7 +132,7 @@ export default function TeamDashboardClient({
                                 name="closeTime" 
                                 value={getTimeValue(staffMember.id, 'close', defaultClose)}
                                 onChange={(e) => handleTimeChange(staffMember.id, 'close', e.target.value)}
-                                className="bg-slate-700 text-botanical-text text-xs p-1 rounded border border-slate-600 outline-none focus:ring-1 focus:ring-brand-gold"
+                                className="bg-botanical-surface text-botanical-text text-xs p-1 rounded border border-slate-600 outline-none focus:ring-1 focus:ring-botanical-primary"
                             />
                         </div>
                         <button type="submit" className="w-full text-xs text-botanical-accent bg-botanical-primary/10 hover:bg-botanical-primary/20 py-1.5 rounded transition-colors border border-brand-gold/20">Add Shift</button>
@@ -140,7 +140,7 @@ export default function TeamDashboardClient({
                   </div>
                 ) : (
                   <>
-                    <div className="flex items-center justify-between mb-3 pb-2 border-b border-white/5">
+                    <div className="flex items-center justify-between mb-3 pb-2 border-b border-botanical-border">
                         <span className="text-xs font-semibold text-botanical-muted uppercase tracking-wider">Today's Hours</span>
                         <span className="text-sm font-mono text-botanical-accent">
                             {new Date(`1970-01-01T${staffMember.openTime}Z`).toLocaleTimeString([], {hour: 'numeric', minute:'2-digit'})} - {new Date(`1970-01-01T${staffMember.closeTime}Z`).toLocaleTimeString([], {hour: 'numeric', minute:'2-digit'})}
@@ -173,7 +173,7 @@ export default function TeamDashboardClient({
               <div className="grid grid-cols-2 gap-2 mt-auto">
                 <Link 
                     href={`/shop/${shopId}/settings/team/${staffMember.id}/schedule`} 
-                    className="w-full text-center bg-botanical-surface hover:bg-slate-700 text-botanical-text text-xs font-semibold py-2 rounded-lg transition-colors border border-botanical-border"
+                    className="w-full text-center bg-botanical-surface hover:bg-botanical-surface text-botanical-text text-xs font-semibold py-2 rounded-lg transition-colors border border-botanical-border"
                 >
                     Edit Schedule
                 </Link>
@@ -190,14 +190,14 @@ export default function TeamDashboardClient({
                                 name="startTime" 
                                 value={getTimeValue(staffMember.id, 'open', defaultOpen)}
                                 onChange={(e) => handleTimeChange(staffMember.id, 'open', e.target.value)}
-                                className="w-full bg-botanical-surface text-botanical-muted text-[10px] p-1 rounded border border-botanical-border outline-none focus:ring-1 focus:ring-brand-gold"
+                                className="w-full bg-botanical-surface text-botanical-muted text-[10px] p-1 rounded border border-botanical-border outline-none focus:ring-1 focus:ring-botanical-primary"
                             />
                              <input 
                                 type="time" 
                                 name="endTime" 
                                 value={getTimeValue(staffMember.id, 'close', defaultClose)}
                                 onChange={(e) => handleTimeChange(staffMember.id, 'close', e.target.value)}
-                                className="w-full bg-botanical-surface text-botanical-muted text-[10px] p-1 rounded border border-botanical-border outline-none focus:ring-1 focus:ring-brand-gold"
+                                className="w-full bg-botanical-surface text-botanical-muted text-[10px] p-1 rounded border border-botanical-border outline-none focus:ring-1 focus:ring-botanical-primary"
                             />
                         </div>
 

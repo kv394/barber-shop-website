@@ -156,7 +156,7 @@ export default async function StaffBookingPage({
     >
       <div className="flex justify-end mb-4">
         {userRole === 'SHOP_ADMIN' && (
-          <a href={`/shop/${shopId}/settings/team`} className="bg-botanical-primary text-slate-900 px-4 py-2 rounded-lg font-bold hover:bg-yellow-400 transition-colors">
+          <a href={`/shop/${shopId}/settings/team`} className="bg-botanical-primary text-botanical-text px-4 py-2 rounded-lg font-bold hover:bg-yellow-400 transition-colors">
             + Onboard Staff
           </a>
         )}

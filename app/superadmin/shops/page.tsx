@@ -35,19 +35,19 @@ export default function SuperAdminShopsPage() {
   useEffect(() => { fetchShops(); }, []);
 
   if (loading) {
-    return <div className="text-center py-12 text-gray-400">Loading shops...</div>;
+    return <div className="text-center py-12 text-botanical-muted">Loading shops...</div>;
   }
 
   return (
     <div>
       <div className="flex justify-between items-center mb-6">
         <div>
-          <h1 className="text-3xl font-serif font-bold text-brand-gold mb-2">Shop Management</h1>
-          <p className="text-gray-400">{shops.length} shop{shops.length !== 1 ? 's' : ''} on the platform</p>
+          <h1 className="text-3xl font-serif font-bold text-botanical-accent mb-2">Shop Management</h1>
+          <p className="text-botanical-muted">{shops.length} shop{shops.length !== 1 ? 's' : ''} on the platform</p>
         </div>
         <Link
           href="/"
-          className="bg-brand-gold text-brand-dark px-6 py-2.5 rounded-lg font-semibold hover:bg-white transition-colors text-sm"
+          className="bg-botanical-primary text-botanical-bg px-6 py-2.5 rounded-lg font-semibold hover:bg-white transition-colors text-sm"
         >
           + Create New Shop
         </Link>
@@ -71,12 +71,12 @@ export default function SuperAdminShopsPage() {
           const staffCount = shop.users.filter(u => u.role === 'STAFF').length;
 
           return (
-            <div key={shop.id} className="bg-slate-800/50 rounded-xl border border-white/10 p-6 hover:border-white/20 transition">
+            <div key={shop.id} className="bg-botanical-surface rounded-xl border border-botanical-border p-6 hover:border-botanical-border transition">
               <div className="flex flex-col lg:flex-row lg:items-start justify-between gap-4">
                 {/* Shop Info */}
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-3 mb-2">
-                    <h3 className="text-xl font-bold text-white truncate">{shop.name}</h3>
+                    <h3 className="text-xl font-bold text-botanical-text truncate">{shop.name}</h3>
                     <span className={`px-2 py-0.5 rounded-full text-xs font-bold ${
                       hasAdmin
                         ? 'bg-green-500/20 text-green-400 border border-green-500/30'
@@ -85,27 +85,27 @@ export default function SuperAdminShopsPage() {
                       {hasAdmin ? 'Active' : 'Needs Admin'}
                     </span>
                   </div>
-                  <p className="text-xs text-gray-500 font-mono mb-3">ID: {shop.id}</p>
+                  <p className="text-xs text-botanical-muted font-mono mb-3">ID: {shop.id}</p>
 
                   {admins.length > 0 && (
                     <div className="mb-2">
-                      <span className="text-xs text-gray-400">Admin{admins.length > 1 ? 's' : ''}: </span>
+                      <span className="text-xs text-botanical-muted">Admin{admins.length > 1 ? 's' : ''}: </span>
                       {admins.map((a, i) => (
-                        <span key={a.id} className="text-xs text-brand-gold">
+                        <span key={a.id} className="text-xs text-botanical-accent">
                           {a.name || a.email}{i < admins.length - 1 ? ', ' : ''}
                         </span>
                       ))}
                     </div>
                   )}
 
-                  <div className="flex flex-wrap gap-4 text-xs text-gray-400 mt-2">
+                  <div className="flex flex-wrap gap-4 text-xs text-botanical-muted mt-2">
                     <span>👥 {shop._count.users} users</span>
                     <span>✂️ {staffCount} staff</span>
                     <span>💇 {shop._count.services} services</span>
                     <span>⭐ {shop._count.reviews} reviews</span>
                   </div>
 
-                  <p className="text-xs text-gray-500 mt-2">
+                  <p className="text-xs text-botanical-muted mt-2">
                     Created: {new Date(shop.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}
                   </p>
                 </div>
@@ -120,7 +120,7 @@ export default function SuperAdminShopsPage() {
                   </button>
                   <Link
                     href={`/shop/${shop.id}/settings/team`}
-                    className="bg-brand-gold text-brand-dark px-4 py-2 rounded-lg text-xs font-bold hover:bg-white transition-colors"
+                    className="bg-botanical-primary text-botanical-bg px-4 py-2 rounded-lg text-xs font-bold hover:bg-white transition-colors"
                   >
                     Assign Team
                   </Link>
@@ -132,9 +132,9 @@ export default function SuperAdminShopsPage() {
         })}
 
         {shops.length === 0 && (
-          <div className="bg-slate-800/50 rounded-xl border border-white/10 p-12 text-center">
-            <p className="text-gray-400 text-lg">No shops created yet.</p>
-            <Link href="/" className="text-brand-gold hover:underline mt-2 inline-block">Create your first shop →</Link>
+          <div className="bg-botanical-surface rounded-xl border border-botanical-border p-12 text-center">
+            <p className="text-botanical-muted text-lg">No shops created yet.</p>
+            <Link href="/" className="text-botanical-accent hover:underline mt-2 inline-block">Create your first shop →</Link>
           </div>
         )}
       </div>

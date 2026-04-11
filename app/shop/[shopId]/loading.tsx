@@ -13,7 +13,7 @@ export default function Loading() {
         {/* Summary cards skeleton */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
           {Array.from({ length: 4 }).map((_, i) => (
-            <div key={i} className="bg-botanical-bg/50 rounded-xl p-4 sm:p-6 border border-white/5">
+            <div key={i} className="bg-botanical-bg/50 rounded-xl p-4 sm:p-6 border border-botanical-border">
               <div className="h-3 w-16 bg-botanical-surface rounded mb-3" />
               <div className="h-8 w-20 bg-botanical-border rounded" />
             </div>
@@ -23,7 +23,7 @@ export default function Loading() {
         {/* Table skeleton */}
         <div className="space-y-3">
           {Array.from({ length: 5 }).map((_, i) => (
-            <div key={i} className="flex items-center gap-4 p-3 rounded-lg bg-botanical-bg/30 border border-white/5">
+            <div key={i} className="flex items-center gap-4 p-3 rounded-lg bg-botanical-bg/30 border border-botanical-border">
               <div className="h-4 w-4 bg-botanical-surface rounded-full" />
               <div className="h-4 flex-1 bg-botanical-surface rounded" />
               <div className="h-4 w-24 bg-botanical-surface rounded" />

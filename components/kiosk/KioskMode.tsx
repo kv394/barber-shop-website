@@ -66,17 +66,17 @@ export default function KioskMode({ userProfile }: { userProfile: UserProfile })
     }, [userProfile?.shopId]);
 
     return (
-        <main className="h-[100dvh] overflow-y-auto overflow-x-hidden bg-brand-dark">
+        <main className="h-[100dvh] overflow-y-auto overflow-x-hidden bg-botanical-bg">
             <div className="absolute top-4 right-4 md:top-8 md:right-8 z-50">
                 <SupabaseAuthButton />
             </div>
             
             {/* Header */}
             <div className="text-center w-full max-w-7xl mx-auto flex-shrink-0 mb-6 md:mb-10 mt-4">
-                <h1 className="font-serif text-4xl md:text-5xl lg:text-7xl font-bold text-brand-gold mb-2">
+                <h1 className="font-serif text-4xl md:text-5xl lg:text-7xl font-bold text-botanical-accent mb-2">
                     {userProfile?.shop?.name || "Shop Hub"}
                 </h1>
-                <h2 className="text-xl md:text-2xl lg:text-4xl text-gray-300">Time & Attendance Kiosk</h2>
+                <h2 className="text-xl md:text-2xl lg:text-4xl text-botanical-muted">Time & Attendance Kiosk</h2>
             </div>
             
             {/* Main Content */}
@@ -84,17 +84,17 @@ export default function KioskMode({ userProfile }: { userProfile: UserProfile })
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 h-full min-h-[600px]">
                     
                     {/* Scanner Section (Left Side on Large Screens) */}
-                    <div className="lg:col-span-5 bg-white/5 p-6 md:p-8 lg:p-12 rounded-3xl border border-white/10 shadow-2xl flex flex-col items-center justify-center relative overflow-hidden group">
+                    <div className="lg:col-span-5 bg-botanical-surface p-6 md:p-8 lg:p-12 rounded-3xl border border-botanical-border shadow-2xl flex flex-col items-center justify-center relative overflow-hidden group">
                         {/* Decorative background glow */}
-                        <div className="absolute inset-0 bg-brand-gold/5 blur-[100px] rounded-full pointer-events-none group-hover:bg-brand-gold/10 transition-colors duration-700"></div>
+                        <div className="absolute inset-0 bg-botanical-primary/5 blur-[100px] rounded-full pointer-events-none group-hover:bg-botanical-primary/10 transition-colors duration-700"></div>
 
-                        <div className="bg-brand-gold/10 text-brand-gold p-4 rounded-full mb-6 z-10 border border-brand-gold/20">
+                        <div className="bg-botanical-primary/10 text-botanical-accent p-4 rounded-full mb-6 z-10 border border-brand-gold/20">
                             <svg className="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm14 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"></path>
                             </svg>
                         </div>
-                        <h3 className="text-3xl md:text-4xl font-bold text-white mb-3 text-center z-10">Scan ID</h3>
-                        <p className="text-gray-400 mb-8 md:mb-12 text-center text-lg z-10 max-w-xs">Staff members, please scan your personal QR code to clock in or out.</p>
+                        <h3 className="text-3xl md:text-4xl font-bold text-botanical-text mb-3 text-center z-10">Scan ID</h3>
+                        <p className="text-botanical-muted mb-8 md:mb-12 text-center text-lg z-10 max-w-xs">Staff members, please scan your personal QR code to clock in or out.</p>
                         
                         {userProfile?.shopId ? (
                             <div className="transform scale-125 md:scale-150 lg:scale-[1.7] origin-center inline-block bg-white p-3 rounded-xl shadow-[0_0_40px_rgba(0,0,0,0.5)] z-10 border-4 border-slate-200">
@@ -109,10 +109,10 @@ export default function KioskMode({ userProfile }: { userProfile: UserProfile })
                     <div className="lg:col-span-7 flex flex-col gap-6 lg:gap-8">
                         
                         {/* Clocked In Staff */}
-                        <div className="flex-1 bg-white/5 p-6 md:p-8 rounded-3xl border border-white/10 shadow-2xl flex flex-col max-h-[50vh] lg:max-h-[350px]">
+                        <div className="flex-1 bg-botanical-surface p-6 md:p-8 rounded-3xl border border-botanical-border shadow-2xl flex flex-col max-h-[50vh] lg:max-h-[350px]">
                             <div className="flex items-center gap-4 mb-6 shrink-0">
                                 <div className="w-12 h-12 rounded-xl bg-blue-500/20 flex items-center justify-center text-2xl border border-blue-500/30">👥</div>
-                                <h3 className="text-2xl md:text-3xl font-serif text-white">Currently Clocked In</h3>
+                                <h3 className="text-2xl md:text-3xl font-serif text-botanical-text">Currently Clocked In</h3>
                                 <span className="ml-auto bg-blue-500/20 text-blue-300 px-4 py-1.5 rounded-full text-sm font-bold border border-blue-500/30">
                                     {activeLogs.length} Staff
                                 </span>
@@ -126,14 +126,14 @@ export default function KioskMode({ userProfile }: { userProfile: UserProfile })
                                 ) : activeLogs.length > 0 ? (
                                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                                         {activeLogs.map(log => (
-                                            <div key={log.id} className="bg-black/40 p-4 rounded-xl flex justify-between items-center gap-3 border border-white/5 hover:border-white/20 transition-colors">
+                                            <div key={log.id} className="bg-botanical-surface p-4 rounded-xl flex justify-between items-center gap-3 border border-botanical-border hover:border-botanical-border transition-colors">
                                                 <div className="min-w-0">
-                                                    <p className="font-bold text-white text-lg truncate">{log.user.name || log.user.email.split('@')[0]}</p>
-                                                    <p className="text-xs text-gray-500 truncate">{log.user.email}</p>
+                                                    <p className="font-bold text-botanical-text text-lg truncate">{log.user.name || log.user.email.split('@')[0]}</p>
+                                                    <p className="text-xs text-botanical-muted truncate">{log.user.email}</p>
                                                 </div>
-                                                <div className="text-right shrink-0 bg-slate-800/80 px-3 py-1.5 rounded-lg border border-slate-700">
-                                                    <p className="text-[10px] text-gray-500 uppercase tracking-wider mb-0.5">In since</p>
-                                                    <span className="text-brand-gold font-mono text-base font-bold">
+                                                <div className="text-right shrink-0 bg-botanical-surface px-3 py-1.5 rounded-lg border border-botanical-border">
+                                                    <p className="text-[10px] text-botanical-muted uppercase tracking-wider mb-0.5">In since</p>
+                                                    <span className="text-botanical-accent font-mono text-base font-bold">
                                                         {new Date(log.clockIn).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                                                     </span>
                                                 </div>
@@ -141,7 +141,7 @@ export default function KioskMode({ userProfile }: { userProfile: UserProfile })
                                         ))}
                                     </div>
                                 ) : (
-                                    <div className="flex flex-col items-center justify-center h-full text-gray-500 py-8 min-h-[150px]">
+                                    <div className="flex flex-col items-center justify-center h-full text-botanical-muted py-8 min-h-[150px]">
                                         <span className="text-4xl mb-3 opacity-50">📭</span>
                                         <p className="italic text-lg">No staff currently clocked in.</p>
                                     </div>
@@ -150,10 +150,10 @@ export default function KioskMode({ userProfile }: { userProfile: UserProfile })
                         </div>
 
                         {/* Checked-In Clients */}
-                        <div className="flex-1 bg-white/5 p-6 md:p-8 rounded-3xl border border-white/10 shadow-2xl flex flex-col max-h-[50vh] lg:max-h-[350px]">
+                        <div className="flex-1 bg-botanical-surface p-6 md:p-8 rounded-3xl border border-botanical-border shadow-2xl flex flex-col max-h-[50vh] lg:max-h-[350px]">
                             <div className="flex items-center gap-4 mb-6 shrink-0">
                                 <div className="w-12 h-12 rounded-xl bg-purple-500/20 flex items-center justify-center text-2xl border border-purple-500/30">🛋️</div>
-                                <h3 className="text-2xl md:text-3xl font-serif text-white">Checked-In Clients</h3>
+                                <h3 className="text-2xl md:text-3xl font-serif text-botanical-text">Checked-In Clients</h3>
                                 <span className="ml-auto bg-purple-500/20 text-purple-300 px-4 py-1.5 rounded-full text-sm font-bold border border-purple-500/30">
                                     {waitlist.length} Waiting
                                 </span>
@@ -167,14 +167,14 @@ export default function KioskMode({ userProfile }: { userProfile: UserProfile })
                                 ) : waitlist.length > 0 ? (
                                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                                         {waitlist.map(entry => (
-                                            <div key={entry.id} className={`p-4 rounded-xl flex justify-between items-center gap-3 border ${entry.status === 'SERVING' ? 'bg-green-900/20 border-green-500/30' : 'bg-black/40 border-white/5'}`}>
+                                            <div key={entry.id} className={`p-4 rounded-xl flex justify-between items-center gap-3 border ${entry.status === 'SERVING' ? 'bg-green-900/20 border-green-500/30' : 'bg-botanical-surface border-botanical-border'}`}>
                                                 <div className="flex items-center gap-4 min-w-0">
-                                                    <div className={`w-10 h-10 rounded-full flex items-center justify-center font-mono font-bold text-lg shrink-0 border ${entry.status === 'SERVING' ? 'bg-green-500/20 text-green-400 border-green-500/50' : 'bg-slate-800 text-gray-400 border-slate-700'}`}>
+                                                    <div className={`w-10 h-10 rounded-full flex items-center justify-center font-mono font-bold text-lg shrink-0 border ${entry.status === 'SERVING' ? 'bg-green-500/20 text-green-400 border-green-500/50' : 'bg-botanical-surface text-botanical-muted border-botanical-border'}`}>
                                                         {entry.position}
                                                     </div>
                                                     <div className="min-w-0">
-                                                        <p className="font-bold text-white text-lg truncate">{entry.clientName}</p>
-                                                        <p className="text-xs text-gray-400">Arrived {new Date(entry.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
+                                                        <p className="font-bold text-botanical-text text-lg truncate">{entry.clientName}</p>
+                                                        <p className="text-xs text-botanical-muted">Arrived {new Date(entry.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
                                                     </div>
                                                 </div>
                                                 <span className={`shrink-0 text-[10px] font-bold px-3 py-1.5 rounded-lg uppercase tracking-wider ${entry.status === 'SERVING' ? 'bg-green-500/20 text-green-400 border border-green-500/30' : 'bg-amber-500/20 text-amber-400 border border-amber-500/30'}`}>
@@ -184,7 +184,7 @@ export default function KioskMode({ userProfile }: { userProfile: UserProfile })
                                         ))}
                                     </div>
                                 ) : (
-                                    <div className="flex flex-col items-center justify-center h-full text-gray-500 py-8 min-h-[150px]">
+                                    <div className="flex flex-col items-center justify-center h-full text-botanical-muted py-8 min-h-[150px]">
                                         <span className="text-4xl mb-3 opacity-50">✨</span>
                                         <p className="italic text-lg">No clients currently waiting.</p>
                                     </div>

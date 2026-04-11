@@ -287,7 +287,7 @@ export default async function TeamDashboardPage({ params, searchParams }: { para
          <div className="bg-blue-900/20 border border-blue-500/30 p-5 rounded-2xl shadow-lg mb-8">
              <h3 className="text-blue-400 font-bold mb-2 flex items-center gap-2"><span>📱</span> Tablet Kiosk Setup</h3>
              <p className="text-sm text-botanical-muted mb-4">To set up the front desk attendance tablet, sign up for a new account on that device using this exact email:</p>
-             <div className="bg-black/50 p-3 rounded-lg text-center mb-3 border border-white/5"><code className="text-botanical-accent font-mono font-bold tracking-wider">{kioskUser.email}</code></div>
+             <div className="bg-botanical-surface p-3 rounded-lg text-center mb-3 border border-botanical-border"><code className="text-botanical-accent font-mono font-bold tracking-wider">{kioskUser.email}</code></div>
              <p className="text-xs text-blue-300">Once an account is created with this email, that account will instantly inherit kiosk privileges for this shop.</p>
          </div>
       )}
@@ -309,13 +309,13 @@ export default async function TeamDashboardPage({ params, searchParams }: { para
             <div className="md:col-span-6">
               <label className="block text-[10px] text-botanical-muted mb-1 font-semibold uppercase tracking-wider">📧 Email</label>
               <input type="email" name="email" required placeholder="team@example.com"
-                className="w-full p-2.5 rounded-lg border border-slate-600 bg-botanical-surface text-botanical-text text-sm placeholder-gray-600 focus:ring-2 focus:ring-brand-gold focus:outline-none transition-all" />
+                className="w-full p-2.5 rounded-lg border border-slate-600 bg-botanical-surface text-botanical-text text-sm placeholder-gray-600 focus:ring-2 focus:ring-botanical-primary focus:outline-none transition-all" />
             </div>
             <div className="md:col-span-3">
               <label className="block text-[10px] text-botanical-muted mb-1 font-semibold uppercase tracking-wider">👤 Role</label>
               <select name="role" defaultValue={userRole === 'SUPER_ADMIN' ? 'SHOP_ADMIN' : 'STAFF'}
                 style={{ colorScheme: 'dark' }}
-                className="w-full p-2.5 rounded-lg border border-slate-600 bg-botanical-surface text-botanical-text text-sm focus:ring-2 focus:ring-brand-gold focus:outline-none transition-all">
+                className="w-full p-2.5 rounded-lg border border-slate-600 bg-botanical-surface text-botanical-text text-sm focus:ring-2 focus:ring-botanical-primary focus:outline-none transition-all">
                 {userRole === 'SHOP_ADMIN' && <option value="STAFF">Staff</option>}
                 {userRole === 'SUPER_ADMIN' && (
                   <>
@@ -327,7 +327,7 @@ export default async function TeamDashboardPage({ params, searchParams }: { para
             </div>
             <div className="md:col-span-3">
               <button type="submit" disabled={userRole === 'SUPER_ADMIN' && !canAddShopAdmin}
-                className="w-full bg-botanical-primary text-white font-bold py-2.5 px-6 rounded-xl hover:bg-white hover:scale-[1.02] active:scale-95 transition-all duration-200 shadow-lg shadow-brand-gold/20 text-sm disabled:opacity-50 disabled:cursor-not-allowed">
+                className="w-full bg-botanical-primary text-botanical-text font-bold py-2.5 px-6 rounded-xl hover:bg-white hover:scale-[1.02] active:scale-95 transition-all duration-200 shadow-lg shadow-brand-gold/20 text-sm disabled:opacity-50 disabled:cursor-not-allowed">
                 Invite Member
               </button>
             </div>

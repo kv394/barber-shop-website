@@ -37,8 +37,8 @@ export default async function SuperAdminDashboard() {
   return (
     <div>
       <div className="mb-8">
-        <h1 className="text-3xl font-serif font-bold text-brand-gold mb-2">Platform Dashboard</h1>
-        <p className="text-gray-400">Overview of all shops and users across the platform.</p>
+        <h1 className="text-3xl font-serif font-bold text-botanical-accent mb-2">Platform Dashboard</h1>
+        <p className="text-botanical-muted">Overview of all shops and users across the platform.</p>
       </div>
 
       {/* KPI Cards */}
@@ -50,13 +50,13 @@ export default async function SuperAdminDashboard() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
         {/* User Breakdown */}
-        <div className="bg-slate-800/50 rounded-xl border border-white/10 p-6">
-          <h2 className="text-lg font-bold text-white mb-4">👥 Users by Role</h2>
+        <div className="bg-botanical-surface rounded-xl border border-botanical-border p-6">
+          <h2 className="text-lg font-bold text-botanical-text mb-4">👥 Users by Role</h2>
           <div className="space-y-3">
             {(['SUPER_ADMIN', 'SHOP_ADMIN', 'STAFF', 'CLIENT', 'ATTENDANCE_KIOSK'] as const).map(role => (
               <div key={role} className="flex justify-between items-center">
-                <span className="text-sm text-gray-300">{role.replace(/_/g, ' ')}</span>
-                <span className="text-sm font-mono text-white bg-white/5 px-3 py-1 rounded-lg">
+                <span className="text-sm text-botanical-muted">{role.replace(/_/g, ' ')}</span>
+                <span className="text-sm font-mono text-botanical-text bg-botanical-surface px-3 py-1 rounded-lg">
                   {roleCounts[role] || 0}
                 </span>
               </div>
@@ -65,17 +65,17 @@ export default async function SuperAdminDashboard() {
         </div>
 
         {/* Recent Shops */}
-        <div className="bg-slate-800/50 rounded-xl border border-white/10 p-6">
+        <div className="bg-botanical-surface rounded-xl border border-botanical-border p-6">
           <div className="flex justify-between items-center mb-4">
-            <h2 className="text-lg font-bold text-white">🏪 Recent Shops</h2>
-            <Link href="/superadmin/shops" className="text-brand-gold text-sm hover:underline">
+            <h2 className="text-lg font-bold text-botanical-text">🏪 Recent Shops</h2>
+            <Link href="/superadmin/shops" className="text-botanical-accent text-sm hover:underline">
               View All →
             </Link>
           </div>
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="text-gray-400 text-left border-b border-white/10">
+                <tr className="text-botanical-muted text-left border-b border-botanical-border">
                   <th className="pb-3 font-medium">Shop Name</th>
                   <th className="pb-3 font-medium">Users</th>
                   <th className="pb-3 font-medium">Created</th>
@@ -84,12 +84,12 @@ export default async function SuperAdminDashboard() {
               </thead>
               <tbody className="divide-y divide-white/5">
                 {recentShops.map((shop: any) => (
-                  <tr key={shop.id} className="hover:bg-white/5 transition">
-                    <td className="py-3 text-white font-medium">{shop.name}</td>
-                    <td className="py-3 text-gray-300">{shop._count.users}</td>
-                    <td className="py-3 text-gray-400">{new Date(shop.createdAt).toLocaleDateString()}</td>
+                  <tr key={shop.id} className="hover:bg-botanical-surface transition">
+                    <td className="py-3 text-botanical-text font-medium">{shop.name}</td>
+                    <td className="py-3 text-botanical-muted">{shop._count.users}</td>
+                    <td className="py-3 text-botanical-muted">{new Date(shop.createdAt).toLocaleDateString()}</td>
                     <td className="py-3 text-right">
-                      <Link href={`/shop/${shop.id}/settings/team`} className="text-brand-gold hover:underline text-xs">
+                      <Link href={`/shop/${shop.id}/settings/team`} className="text-botanical-accent hover:underline text-xs">
                         Assign Team →
                       </Link>
                     </td>
@@ -114,12 +114,12 @@ function KpiCard({ label, value, color }: { label: string; value: string | numbe
     red: 'from-red-900/40 to-red-800/20 border-red-500/30 text-red-400',
   };
   const classes = colorMap[color] || colorMap.blue;
-  const textColor = classes.split(' ').pop() || 'text-white';
+  const textColor = classes.split(' ').pop() || 'text-botanical-text';
 
   return (
     <div className={`bg-gradient-to-br ${classes} border p-4 rounded-xl text-center`}>
       <p className={`text-2xl sm:text-3xl font-black ${textColor}`}>{value}</p>
-      <p className="text-[10px] sm:text-xs text-gray-400 uppercase tracking-wider mt-1">{label}</p>
+      <p className="text-[10px] sm:text-xs text-botanical-muted uppercase tracking-wider mt-1">{label}</p>
     </div>
   );
 }

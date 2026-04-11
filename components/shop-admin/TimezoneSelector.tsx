@@ -51,7 +51,7 @@ export default function TimezoneSelector({
           onChange={handleChange}
           disabled={saving}
           style={{ colorScheme: 'dark' }}
-          className="flex-1 max-w-md p-2.5 rounded-lg border border-slate-600 bg-botanical-surface text-botanical-text text-sm focus:ring-2 focus:ring-brand-gold focus:outline-none transition-all disabled:opacity-50"
+          className="flex-1 max-w-md p-2.5 rounded-lg border border-slate-600 bg-botanical-surface text-botanical-text text-sm focus:ring-2 focus:ring-botanical-primary focus:outline-none transition-all disabled:opacity-50"
         >
           {TIMEZONE_OPTIONS.map((tz) => (
             <option key={tz.value} value={tz.value}>

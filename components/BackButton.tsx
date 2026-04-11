@@ -18,12 +18,12 @@ export default function BackButton() {
   }, []);
 
   if (loading) {
-    return <div className="w-24 h-9 bg-slate-800/50 animate-pulse rounded-lg"></div>;
+    return <div className="w-24 h-9 bg-botanical-surface animate-pulse rounded-lg"></div>;
   }
 
   if (user?.role === 'SUPER_ADMIN') {
     return (
-      <Link href="/superadmin" className="text-sm bg-slate-800 hover:bg-slate-700 border border-slate-600 text-white px-4 py-2 rounded-lg font-semibold transition-colors shadow-sm">
+      <Link href="/superadmin" className="text-sm bg-botanical-surface hover:bg-botanical-surface border border-slate-600 text-botanical-text px-4 py-2 rounded-lg font-semibold transition-colors shadow-sm">
         Back to Superadmin
       </Link>
     );
@@ -31,14 +31,14 @@ export default function BackButton() {
 
   if (user?.shopId && (user?.role === 'SHOP_ADMIN' || user?.role === 'STAFF')) {
     return (
-      <Link href={`/shop/${user.shopId}`} className="text-sm bg-slate-800 hover:bg-slate-700 border border-slate-600 text-white px-4 py-2 rounded-lg font-semibold transition-colors shadow-sm">
+      <Link href={`/shop/${user.shopId}`} className="text-sm bg-botanical-surface hover:bg-botanical-surface border border-slate-600 text-botanical-text px-4 py-2 rounded-lg font-semibold transition-colors shadow-sm">
         Back to Dashboard
       </Link>
     );
   }
 
   return (
-    <Link href="/my-appointments" className="text-sm bg-slate-800 hover:bg-slate-700 border border-slate-600 text-white px-4 py-2 rounded-lg font-semibold transition-colors shadow-sm">
+    <Link href="/my-appointments" className="text-sm bg-botanical-surface hover:bg-botanical-surface border border-slate-600 text-botanical-text px-4 py-2 rounded-lg font-semibold transition-colors shadow-sm">
       Back to Appointments
     </Link>
   );

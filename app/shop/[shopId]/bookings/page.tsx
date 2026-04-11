@@ -95,7 +95,7 @@ export default async function BookingsPage({ params }: { params: Promise<{ shopI
             <h2 className="text-xl sm:text-2xl font-bold text-botanical-text">Upcoming Bookings</h2>
             <BookingDatePicker dates={Object.keys(groupedAppointments)} />
           </div>
-          <Link href={`/shops/${shopSlug}`} target="_blank" className="bg-botanical-primary hover:bg-yellow-400 text-white font-bold px-4 py-2 rounded-lg text-xs sm:text-sm transition-colors whitespace-nowrap shadow-lg">+ Add Booking</Link>
+          <Link href={`/shops/${shopSlug}`} target="_blank" className="bg-botanical-primary hover:bg-yellow-400 text-botanical-text font-bold px-4 py-2 rounded-lg text-xs sm:text-sm transition-colors whitespace-nowrap shadow-lg">+ Add Booking</Link>
         </div>
 
         {Object.keys(groupedAppointments).length === 0 ? (
@@ -119,7 +119,7 @@ export default async function BookingsPage({ params }: { params: Promise<{ shopI
                     const isActive = isScheduled || isAccepted || isWorkCompleted;
 
                     const statusBadge = isScheduled ? (
-                      <span className="px-2 py-0.5 text-[10px] uppercase font-bold rounded bg-botanical-surface text-slate-300 border border-slate-600 whitespace-nowrap">Scheduled</span>
+                      <span className="px-2 py-0.5 text-[10px] uppercase font-bold rounded bg-botanical-surface text-botanical-text border border-slate-600 whitespace-nowrap">Scheduled</span>
                     ) : isAccepted ? (
                       <span className="px-2 py-0.5 text-[10px] uppercase font-bold rounded bg-blue-900/50 text-blue-300 border border-blue-500/30 whitespace-nowrap">Accepted</span>
                     ) : isWorkCompleted ? (
@@ -127,7 +127,7 @@ export default async function BookingsPage({ params }: { params: Promise<{ shopI
                     ) : null;
 
                     return (
-                      <div key={apt.id} className={`bg-black/40 p-5 rounded-lg border ${isNow ? 'border-green-500/50 shadow-[0_0_15px_rgba(34,197,94,0.2)]' : 'border-white/5'}`}>
+                      <div key={apt.id} className={`bg-botanical-surface p-5 rounded-lg border ${isNow ? 'border-green-500/50 shadow-[0_0_15px_rgba(34,197,94,0.2)]' : 'border-botanical-border'}`}>
                                            <div className="flex justify-between items-start mb-3 gap-2">
                                                <div className="flex flex-col items-start gap-1">
                                                    <div className="flex flex-wrap items-center gap-2">

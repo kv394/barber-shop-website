@@ -62,88 +62,88 @@ export default function WaitlistClient({ shopId, services, staff }: { shopId: st
 
   return (
     <div>
-      <div className="bg-slate-900/80 backdrop-blur-xl shadow-2xl rounded-2xl border border-white/10 flex flex-col md:flex-row divide-y md:divide-y-0 md:divide-x divide-white/10 relative z-20 overflow-hidden transform sm:-translate-y-6 sm:-mx-2 mb-2 sm:mb-6">
-        <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-white/5 transition-all duration-300 min-w-0">
+      <div className="bg-botanical-surface backdrop-blur-xl shadow-2xl rounded-2xl border border-botanical-border flex flex-col md:flex-row divide-y md:divide-y-0 md:divide-x divide-white/10 relative z-20 overflow-hidden transform sm:-translate-y-6 sm:-mx-2 mb-2 sm:mb-6">
+        <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-botanical-surface transition-all duration-300 min-w-0">
           <div className="absolute top-0 left-0 w-full h-1 bg-blue-500/80"></div>
           <div className="flex justify-between items-center mb-2 sm:mb-3">
-            <h3 className="text-gray-400 text-[10px] sm:text-xs uppercase tracking-widest font-semibold truncate">Waiting</h3>
+            <h3 className="text-botanical-muted text-[10px] sm:text-xs uppercase tracking-widest font-semibold truncate">Waiting</h3>
             <span className="text-blue-500 text-sm">⏳</span>
           </div>
-          <p className="text-xl sm:text-2xl lg:text-3xl font-black text-white break-words leading-tight">{waiting.length}</p>
+          <p className="text-xl sm:text-2xl lg:text-3xl font-black text-botanical-text break-words leading-tight">{waiting.length}</p>
         </div>
-        <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-white/5 transition-all duration-300 min-w-0">
+        <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-botanical-surface transition-all duration-300 min-w-0">
           <div className="absolute top-0 left-0 w-full h-1 bg-green-500/80"></div>
           <div className="flex justify-between items-center mb-2 sm:mb-3">
-            <h3 className="text-gray-400 text-[10px] sm:text-xs uppercase tracking-widest font-semibold truncate">Being Served</h3>
+            <h3 className="text-botanical-muted text-[10px] sm:text-xs uppercase tracking-widest font-semibold truncate">Being Served</h3>
             <span className="text-green-500 text-sm">✂️</span>
           </div>
-          <p className="text-xl sm:text-2xl lg:text-3xl font-black text-white break-words leading-tight">{serving.length}</p>
+          <p className="text-xl sm:text-2xl lg:text-3xl font-black text-botanical-text break-words leading-tight">{serving.length}</p>
         </div>
-        <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-white/5 transition-all duration-300 min-w-0">
+        <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-botanical-surface transition-all duration-300 min-w-0">
           <div className="absolute top-0 left-0 w-full h-1 bg-purple-500/80"></div>
           <div className="flex justify-between items-center mb-2 sm:mb-3">
-            <h3 className="text-gray-400 text-[10px] sm:text-xs uppercase tracking-widest font-semibold truncate">Est. Wait</h3>
+            <h3 className="text-botanical-muted text-[10px] sm:text-xs uppercase tracking-widest font-semibold truncate">Est. Wait</h3>
             <span className="text-purple-500 text-sm">⏱️</span>
           </div>
-          <p className="text-xl sm:text-2xl lg:text-3xl font-black text-white break-words leading-tight">{waiting.length > 0 ? `~${waiting.length * 15}m` : '0m'}</p>
+          <p className="text-xl sm:text-2xl lg:text-3xl font-black text-botanical-text break-words leading-tight">{waiting.length > 0 ? `~${waiting.length * 15}m` : '0m'}</p>
         </div>
       </div>
 
-      <form onSubmit={handleAdd} className="bg-slate-900/50 p-4 rounded-lg border border-white/5 mb-6 space-y-3">
-        <h3 className="text-sm font-bold text-white">+ Add Walk-in</h3>
+      <form onSubmit={handleAdd} className="bg-botanical-surface p-4 rounded-lg border border-botanical-border mb-6 space-y-3">
+        <h3 className="text-sm font-bold text-botanical-text">+ Add Walk-in</h3>
         <div className="grid grid-cols-1 sm:grid-cols-5 gap-3">
-          <input type="text" value={clientName} onChange={e => setClientName(e.target.value)} placeholder="Client Name *" required style={inputStyle} className="border border-white/10 rounded p-2.5 text-sm focus:outline-none focus:border-brand-gold" />
-          <input type="tel" value={clientPhone} onChange={e => setClientPhone(e.target.value)} placeholder="Phone (optional)" style={inputStyle} className="border border-white/10 rounded p-2.5 text-sm focus:outline-none focus:border-brand-gold" />
-          <select value={serviceId} onChange={e => setServiceId(e.target.value)} style={inputStyle} className="border border-white/10 rounded p-2.5 text-sm focus:outline-none focus:border-brand-gold">
+          <input type="text" value={clientName} onChange={e => setClientName(e.target.value)} placeholder="Client Name *" required style={inputStyle} className="border border-botanical-border rounded p-2.5 text-sm focus:outline-none focus:border-brand-gold" />
+          <input type="tel" value={clientPhone} onChange={e => setClientPhone(e.target.value)} placeholder="Phone (optional)" style={inputStyle} className="border border-botanical-border rounded p-2.5 text-sm focus:outline-none focus:border-brand-gold" />
+          <select value={serviceId} onChange={e => setServiceId(e.target.value)} style={inputStyle} className="border border-botanical-border rounded p-2.5 text-sm focus:outline-none focus:border-brand-gold">
             <option value="">Any Service</option>
             {services.map(s => <option key={s.id} value={s.id}>{s.name} ({s.duration}m)</option>)}
           </select>
-          <select value={staffId} onChange={e => setStaffId(e.target.value)} style={inputStyle} className="border border-white/10 rounded p-2.5 text-sm focus:outline-none focus:border-brand-gold">
+          <select value={staffId} onChange={e => setStaffId(e.target.value)} style={inputStyle} className="border border-botanical-border rounded p-2.5 text-sm focus:outline-none focus:border-brand-gold">
             <option value="">No Preference</option>
             {staff.map(s => <option key={s.id} value={s.id}>{s.name || (s.email ? s.email.split('@')[0] : 'Staff')}</option>)}
           </select>
-          <button type="submit" disabled={adding} className="bg-blue-600 hover:bg-blue-500 text-white font-bold py-2.5 rounded text-sm disabled:opacity-50">{adding ? 'Adding...' : 'Add'}</button>
+          <button type="submit" disabled={adding} className="bg-blue-600 hover:bg-blue-500 text-botanical-text font-bold py-2.5 rounded text-sm disabled:opacity-50">{adding ? 'Adding...' : 'Add'}</button>
         </div>
       </form>
 
-      {loading ? <p className="text-gray-400 text-center py-8">Loading...</p> : (
+      {loading ? <p className="text-botanical-muted text-center py-8">Loading...</p> : (
         <div className="space-y-3">
           {serving.map(entry => (
             <div key={entry.id} className="bg-green-900/20 p-4 rounded-lg border border-green-500/30 flex justify-between items-center">
               <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-full bg-green-600 flex items-center justify-center text-white font-bold text-sm">✂️</div>
+                <div className="w-8 h-8 rounded-full bg-green-600 flex items-center justify-center text-botanical-text font-bold text-sm">✂️</div>
                 <div>
-                  <p className="text-sm font-bold text-white">{entry.clientName}</p>
+                  <p className="text-sm font-bold text-botanical-text">{entry.clientName}</p>
                   <p className="text-[10px] text-green-400">Being served · {getWaitTime(entry.createdAt)} ago</p>
                   {entry.staffId && <p className="text-[10px] text-purple-400">✂️ {getStaffName(entry.staffId)}</p>}
-                  {entry.clientPhone && <p className="text-[10px] text-gray-500">📱 {entry.clientPhone}</p>}
+                  {entry.clientPhone && <p className="text-[10px] text-botanical-muted">📱 {entry.clientPhone}</p>}
                 </div>
               </div>
-              <button onClick={() => updateStatus(entry.id, 'DONE')} className="bg-green-600 hover:bg-green-500 text-white text-xs font-bold px-3 py-1.5 rounded">Done ✓</button>
+              <button onClick={() => updateStatus(entry.id, 'DONE')} className="bg-green-600 hover:bg-green-500 text-botanical-text text-xs font-bold px-3 py-1.5 rounded">Done ✓</button>
             </div>
           ))}
           {waiting.map((entry, idx) => (
-            <div key={entry.id} className="bg-slate-900/70 p-4 rounded-lg border border-white/10">
+            <div key={entry.id} className="bg-botanical-surface p-4 rounded-lg border border-botanical-border">
               <div className="flex justify-between items-center">
                 <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-full bg-slate-700 flex items-center justify-center text-white font-bold text-sm">{idx + 1}</div>
+                  <div className="w-8 h-8 rounded-full bg-botanical-surface flex items-center justify-center text-botanical-text font-bold text-sm">{idx + 1}</div>
                   <div>
-                    <p className="text-sm font-bold text-white">{entry.clientName}</p>
-                    <p className="text-[10px] text-gray-400">Waiting · {getWaitTime(entry.createdAt)}</p>
+                    <p className="text-sm font-bold text-botanical-text">{entry.clientName}</p>
+                    <p className="text-[10px] text-botanical-muted">Waiting · {getWaitTime(entry.createdAt)}</p>
                     {entry.staffId && <p className="text-[10px] text-purple-400">✂️ {getStaffName(entry.staffId)}</p>}
-                    {entry.clientPhone && <p className="text-[10px] text-gray-500">📱 {entry.clientPhone}</p>}
+                    {entry.clientPhone && <p className="text-[10px] text-botanical-muted">📱 {entry.clientPhone}</p>}
                   </div>
                 </div>
                 <div className="flex gap-2">
                   <button onClick={() => setAssigningId(entry.id)} className="bg-purple-900/50 hover:bg-purple-800/50 text-purple-300 border border-purple-500/30 text-xs px-2 py-1.5 rounded">Reassign Barber</button>
-                  <button onClick={() => handleServe(entry.id)} className="bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold px-3 py-1.5 rounded">Serve</button>
-                  <button onClick={() => updateStatus(entry.id, 'LEFT')} className="bg-slate-700 hover:bg-slate-600 text-gray-300 text-xs px-2 py-1.5 rounded">Left</button>
+                  <button onClick={() => handleServe(entry.id)} className="bg-blue-600 hover:bg-blue-500 text-botanical-text text-xs font-bold px-3 py-1.5 rounded">Serve</button>
+                  <button onClick={() => updateStatus(entry.id, 'LEFT')} className="bg-botanical-surface hover:bg-slate-600 text-botanical-muted text-xs px-2 py-1.5 rounded">Left</button>
                 </div>
               </div>
               {/* Staff Picker Dropdown */}
               {assigningId === entry.id && (
-                <div className="mt-3 pt-3 border-t border-white/10">
-                  <p className="text-[10px] text-gray-400 uppercase tracking-wider mb-2">Assign barber:</p>
+                <div className="mt-3 pt-3 border-t border-botanical-border">
+                  <p className="text-[10px] text-botanical-muted uppercase tracking-wider mb-2">Assign barber:</p>
                   <div className="flex flex-wrap gap-2">
                     {staff.map(s => (
                       <button key={s.id} onClick={() => updateStatus(entry.id, undefined, s.id)}
@@ -152,11 +152,11 @@ export default function WaitlistClient({ shopId, services, staff }: { shopId: st
                       </button>
                     ))}
                     <button onClick={() => updateStatus(entry.id, undefined, null)}
-                      className="bg-slate-800 hover:bg-slate-700 text-gray-300 text-xs px-3 py-1.5 rounded border border-white/10 transition-colors">
+                      className="bg-botanical-surface hover:bg-botanical-surface text-botanical-muted text-xs px-3 py-1.5 rounded border border-botanical-border transition-colors">
                       Remove assignment
                     </button>
                     <button onClick={() => setAssigningId(null)}
-                      className="text-gray-500 hover:text-white text-xs px-2 py-1.5">
+                      className="text-botanical-muted hover:text-botanical-text text-xs px-2 py-1.5">
                       Cancel
                     </button>
                   </div>
@@ -165,7 +165,7 @@ export default function WaitlistClient({ shopId, services, staff }: { shopId: st
             </div>
           ))}
           {waiting.length === 0 && serving.length === 0 && (
-            <p className="text-gray-500 italic text-center py-8 text-sm border border-dashed border-white/20 rounded">No one in the queue. Add walk-in clients above.</p>
+            <p className="text-botanical-muted italic text-center py-8 text-sm border border-dashed border-botanical-border rounded">No one in the queue. Add walk-in clients above.</p>
           )}
         </div>
       )}

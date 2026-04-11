@@ -42,7 +42,7 @@ export default function MembershipManager({ shopId }: { shopId: string }) {
   if (loading) return <div className="animate-pulse text-botanical-muted py-4">Loading memberships…</div>;
 
   return (
-    <div className="bg-botanical-surface border border-white/5 rounded-xl p-6">
+    <div className="bg-botanical-surface border border-botanical-border rounded-xl p-6">
       <h3 className="text-lg font-bold text-botanical-text mb-2">⭐ Membership Tiers</h3>
       <p className="text-sm text-botanical-muted mb-6">
         Create recurring subscription plans (e.g. VIP Barber Club: $100/mo for unlimited cuts).
@@ -59,7 +59,7 @@ export default function MembershipManager({ shopId }: { shopId: string }) {
               value={name} 
               onChange={e => setName(e.target.value)} 
               placeholder="e.g. VIP Monthly" 
-              className="w-full bg-black/40 border border-botanical-border rounded px-3 py-2 text-botanical-text text-sm focus:outline-none focus:border-brand-gold" 
+              className="w-full bg-botanical-surface border border-botanical-border rounded px-3 py-2 text-botanical-text text-sm focus:outline-none focus:border-brand-gold" 
               required 
             />
           </div>
@@ -72,7 +72,7 @@ export default function MembershipManager({ shopId }: { shopId: string }) {
               placeholder="e.g. 100" 
               min="0"
               step="0.01"
-              className="w-full bg-black/40 border border-botanical-border rounded px-3 py-2 text-botanical-text text-sm focus:outline-none focus:border-brand-gold" 
+              className="w-full bg-botanical-surface border border-botanical-border rounded px-3 py-2 text-botanical-text text-sm focus:outline-none focus:border-brand-gold" 
               required 
             />
           </div>
@@ -81,7 +81,7 @@ export default function MembershipManager({ shopId }: { shopId: string }) {
             <select 
               value={interval} 
               onChange={e => setInterval(e.target.value)} 
-              className="w-full bg-black/40 border border-botanical-border rounded px-3 py-2 text-botanical-text text-sm focus:outline-none focus:border-brand-gold"
+              className="w-full bg-botanical-surface border border-botanical-border rounded px-3 py-2 text-botanical-text text-sm focus:outline-none focus:border-brand-gold"
             >
               <option value="MONTHLY">Monthly</option>
               <option value="YEARLY">Yearly</option>
@@ -94,14 +94,14 @@ export default function MembershipManager({ shopId }: { shopId: string }) {
               onChange={e => setDescription(e.target.value)} 
               placeholder="e.g. Unlimited haircuts, 10% off products..." 
               rows={2}
-              className="w-full bg-black/40 border border-botanical-border rounded px-3 py-2 text-botanical-text text-sm focus:outline-none focus:border-brand-gold" 
+              className="w-full bg-botanical-surface border border-botanical-border rounded px-3 py-2 text-botanical-text text-sm focus:outline-none focus:border-brand-gold" 
             />
           </div>
         </div>
         <button 
           type="submit" 
           disabled={saving || !name.trim() || !price} 
-          className="px-4 py-2 bg-botanical-primary text-white rounded text-sm font-bold hover:bg-white transition disabled:opacity-50"
+          className="px-4 py-2 bg-botanical-primary text-botanical-text rounded text-sm font-bold hover:bg-white transition disabled:opacity-50"
         >
           {saving ? 'Creating...' : 'Create Tier'}
         </button>
@@ -113,7 +113,7 @@ export default function MembershipManager({ shopId }: { shopId: string }) {
       ) : (
         <div className="space-y-3">
           {tiers.map(t => (
-            <div key={t.id} className="p-4 bg-black/20 rounded-lg border border-white/5 flex justify-between items-start gap-4">
+            <div key={t.id} className="p-4 bg-botanical-surface rounded-lg border border-botanical-border flex justify-between items-start gap-4">
               <div>
                 <div className="flex items-center gap-2 mb-1">
                   <h5 className="text-botanical-text font-bold text-base">{t.name}</h5>

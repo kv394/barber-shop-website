@@ -38,7 +38,7 @@ export default function ResourceManagement({ shopId }: { shopId: string }) {
   if (loading) return <div className="animate-pulse text-botanical-muted py-4">Loading resources…</div>;
 
   return (
-    <div className="bg-botanical-surface border border-white/5 rounded-xl p-6">
+    <div className="bg-botanical-surface border border-botanical-border rounded-xl p-6">
       <h3 className="text-lg font-bold text-botanical-text mb-2">🪑 Shop Resources</h3>
       <p className="text-sm text-botanical-muted mb-6">
         Add physical resources like pedicure chairs, laser machines, or massage rooms. Appointments can be configured to require these resources.
@@ -52,13 +52,13 @@ export default function ResourceManagement({ shopId }: { shopId: string }) {
           value={name} 
           onChange={e => setName(e.target.value)} 
           placeholder="Resource Name (e.g. Chair 1, Room A)" 
-          className="flex-1 bg-black/40 border border-botanical-border rounded px-3 py-2 text-botanical-text text-sm focus:outline-none focus:border-brand-gold" 
+          className="flex-1 bg-botanical-surface border border-botanical-border rounded px-3 py-2 text-botanical-text text-sm focus:outline-none focus:border-brand-gold" 
           required 
         />
         <select 
           value={type} 
           onChange={e => setType(e.target.value)} 
-          className="w-40 bg-black/40 border border-botanical-border rounded px-3 py-2 text-botanical-text text-sm focus:outline-none focus:border-brand-gold"
+          className="w-40 bg-botanical-surface border border-botanical-border rounded px-3 py-2 text-botanical-text text-sm focus:outline-none focus:border-brand-gold"
         >
           <option value="CHAIR">Chair / Station</option>
           <option value="ROOM">Room</option>
@@ -67,7 +67,7 @@ export default function ResourceManagement({ shopId }: { shopId: string }) {
         <button 
           type="submit" 
           disabled={saving || !name.trim()} 
-          className="px-4 py-2 bg-botanical-primary text-white rounded text-sm font-bold hover:bg-white transition disabled:opacity-50"
+          className="px-4 py-2 bg-botanical-primary text-botanical-text rounded text-sm font-bold hover:bg-white transition disabled:opacity-50"
         >
           {saving ? 'Adding...' : 'Add'}
         </button>
@@ -78,7 +78,7 @@ export default function ResourceManagement({ shopId }: { shopId: string }) {
       ) : (
         <div className="space-y-2">
           {resources.map(r => (
-            <div key={r.id} className="flex items-center justify-between p-3 bg-black/20 rounded-lg border border-white/5">
+            <div key={r.id} className="flex items-center justify-between p-3 bg-botanical-surface rounded-lg border border-botanical-border">
               <div className="flex flex-col">
                 <span className="text-botanical-text font-medium">{r.name}</span>
                 <span className="text-xs text-botanical-muted uppercase tracking-wider">{r.type}</span>

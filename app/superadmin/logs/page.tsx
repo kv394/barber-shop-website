@@ -66,44 +66,44 @@ export default async function SuperAdminLogsPage() {
   return (
     <div>
       <div className="mb-8">
-        <h1 className="text-3xl font-serif font-bold text-brand-gold mb-2">System Logs</h1>
-        <p className="text-gray-400">{logs.length} log entr{logs.length !== 1 ? 'ies' : 'y'} • {logs.filter((l: any) => !l.isResolved).length} unresolved</p>
+        <h1 className="text-3xl font-serif font-bold text-botanical-accent mb-2">System Logs</h1>
+        <p className="text-botanical-muted">{logs.length} log entr{logs.length !== 1 ? 'ies' : 'y'} • {logs.filter((l: any) => !l.isResolved).length} unresolved</p>
       </div>
-      <div className="bg-slate-800/50 rounded-xl border border-white/10 overflow-hidden">
-        <table className="min-w-full divide-y divide-white/10 text-white">
-          <thead className="bg-slate-800/80">
+      <div className="bg-botanical-surface rounded-xl border border-botanical-border overflow-hidden">
+        <table className="min-w-full divide-y divide-white/10 text-botanical-text">
+          <thead className="bg-botanical-surface">
             <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Time</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Level & Path</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Message</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Status</th>
-              <th className="px-6 py-3 text-right text-xs font-medium text-gray-400 uppercase tracking-wider">Actions</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-botanical-muted uppercase tracking-wider">Time</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-botanical-muted uppercase tracking-wider">Level & Path</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-botanical-muted uppercase tracking-wider">Message</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-botanical-muted uppercase tracking-wider">Status</th>
+              <th className="px-6 py-3 text-right text-xs font-medium text-botanical-muted uppercase tracking-wider">Actions</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-white/5">
             {logs.length === 0 ? (
               <tr>
-                <td colSpan={5} className="px-6 py-4 text-center text-sm text-gray-500">
+                <td colSpan={5} className="px-6 py-4 text-center text-sm text-botanical-muted">
                   No logs found.
                 </td>
               </tr>
             ) : (
               logs.map((log: any) => (
-                <tr key={log.id} className={log.level === "ERROR" && !log.isResolved ? "bg-red-900/20" : "hover:bg-white/5"}>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-400">
+                <tr key={log.id} className={log.level === "ERROR" && !log.isResolved ? "bg-red-900/20" : "hover:bg-botanical-surface"}>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-botanical-muted">
                     {new Date(log.createdAt).toLocaleString()}
                   </td>
-                  <td className="px-6 py-4 text-sm text-white">
+                  <td className="px-6 py-4 text-sm text-botanical-text">
                     <span className={`font-semibold ${log.level === 'ERROR' ? 'text-red-400' : log.level === 'WARN' ? 'text-amber-400' : 'text-blue-400'}`}>{log.level}</span>
                     <br />
-                    <span className="text-gray-500 text-xs">{log.path || "N/A"}</span>
+                    <span className="text-botanical-muted text-xs">{log.path || "N/A"}</span>
                   </td>
-                  <td className="px-6 py-4 text-sm text-gray-300 break-words max-w-md">
+                  <td className="px-6 py-4 text-sm text-botanical-muted break-words max-w-md">
                     <div className="font-medium">{log.message}</div>
                     {log.stack && (
                       <details className="mt-1">
-                        <summary className="text-xs text-brand-gold cursor-pointer">View Stack</summary>
-                        <pre className="mt-2 text-xs bg-black/40 p-2 rounded overflow-x-auto text-gray-300">
+                        <summary className="text-xs text-botanical-accent cursor-pointer">View Stack</summary>
+                        <pre className="mt-2 text-xs bg-botanical-surface p-2 rounded overflow-x-auto text-botanical-muted">
                           {log.stack}
                         </pre>
                       </details>
@@ -125,7 +125,7 @@ export default async function SuperAdminLogsPage() {
                        {!log.isResolved && (
                          <form action={resolveLog}>
                            <input type="hidden" name="id" value={log.id} />
-                           <button type="submit" className="text-brand-gold hover:text-white">
+                           <button type="submit" className="text-botanical-accent hover:text-botanical-text">
                              Resolve
                            </button>
                          </form>

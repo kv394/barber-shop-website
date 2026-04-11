@@ -106,83 +106,83 @@ export default function ReportsClient({
   return (
     <div>
       {/* Floating Summary Bar */}
-      <div className="bg-slate-900/80 backdrop-blur-xl shadow-2xl rounded-2xl border border-white/10 mb-8 flex flex-col lg:flex-row divide-y lg:divide-y-0 lg:divide-x divide-white/10 relative z-20 transform sm:-translate-y-6 sm:-mx-2">
+      <div className="bg-botanical-surface backdrop-blur-xl shadow-2xl rounded-2xl border border-botanical-border mb-8 flex flex-col lg:flex-row divide-y lg:divide-y-0 lg:divide-x divide-white/10 relative z-20 transform sm:-translate-y-6 sm:-mx-2">
         
         {/* Revenue */}
-        <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-white/5 transition-all duration-300 min-w-0">
+        <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-botanical-surface transition-all duration-300 min-w-0">
           <div className="absolute top-0 left-0 w-full h-1 bg-green-500/80"></div>
           <div className="flex justify-between items-center mb-3">
-            <h3 className="text-gray-400 text-[10px] sm:text-xs uppercase tracking-widest font-semibold truncate">
+            <h3 className="text-botanical-muted text-[10px] sm:text-xs uppercase tracking-widest font-semibold truncate">
               {isFiltered ? 'Filtered Revenue' : 'Total Revenue'}
             </h3>
             <span className="text-green-500 text-sm">💵</span>
           </div>
-          <p className="text-2xl sm:text-3xl font-black text-white break-words leading-tight">{formatCurrency(filteredRevenue)}</p>
-          {isFiltered && <p className="text-[10px] text-gray-500 mt-2 truncate">All-time: <span className="text-gray-300">{formatCurrency(allTimeRevenue)}</span></p>}
+          <p className="text-2xl sm:text-3xl font-black text-botanical-text break-words leading-tight">{formatCurrency(filteredRevenue)}</p>
+          {isFiltered && <p className="text-[10px] text-botanical-muted mt-2 truncate">All-time: <span className="text-botanical-muted">{formatCurrency(allTimeRevenue)}</span></p>}
         </div>
 
         {/* Tips */}
-        <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-white/5 transition-all duration-300 min-w-0">
+        <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-botanical-surface transition-all duration-300 min-w-0">
           <div className="absolute top-0 left-0 w-full h-1 bg-amber-500/80"></div>
           <div className="flex justify-between items-center mb-3">
-            <h3 className="text-gray-400 text-[10px] sm:text-xs uppercase tracking-widest font-semibold truncate">Tips</h3>
+            <h3 className="text-botanical-muted text-[10px] sm:text-xs uppercase tracking-widest font-semibold truncate">Tips</h3>
             <span className="text-amber-500 text-sm">💰</span>
           </div>
-          <p className="text-2xl sm:text-3xl font-black text-white break-words leading-tight">{formatCurrency(filteredTips)}</p>
-          {isFiltered && <p className="text-[10px] text-gray-500 mt-2 truncate">All-time: <span className="text-gray-300">{formatCurrency(allTimeTips)}</span></p>}
+          <p className="text-2xl sm:text-3xl font-black text-botanical-text break-words leading-tight">{formatCurrency(filteredTips)}</p>
+          {isFiltered && <p className="text-[10px] text-botanical-muted mt-2 truncate">All-time: <span className="text-botanical-muted">{formatCurrency(allTimeTips)}</span></p>}
         </div>
 
         {/* Completed */}
-        <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-white/5 transition-all duration-300 min-w-0">
+        <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-botanical-surface transition-all duration-300 min-w-0">
           <div className="absolute top-0 left-0 w-full h-1 bg-blue-500/80"></div>
           <div className="flex justify-between items-center mb-3">
-            <h3 className="text-gray-400 text-[10px] sm:text-xs uppercase tracking-widest font-semibold truncate">Completed</h3>
+            <h3 className="text-botanical-muted text-[10px] sm:text-xs uppercase tracking-widest font-semibold truncate">Completed</h3>
             <span className="text-blue-500 text-sm">✂️</span>
           </div>
-          <p className="text-2xl sm:text-3xl font-black text-white break-words leading-tight">{filtered.length.toLocaleString('en-US')}</p>
-          <p className="text-[10px] text-gray-500 mt-2 truncate opacity-0 group-hover:opacity-100 transition-opacity">Appointments</p>
+          <p className="text-2xl sm:text-3xl font-black text-botanical-text break-words leading-tight">{filtered.length.toLocaleString('en-US')}</p>
+          <p className="text-[10px] text-botanical-muted mt-2 truncate opacity-0 group-hover:opacity-100 transition-opacity">Appointments</p>
         </div>
 
         {/* Avg Service */}
-        <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-white/5 transition-all duration-300 min-w-0">
+        <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-botanical-surface transition-all duration-300 min-w-0">
           <div className="absolute top-0 left-0 w-full h-1 bg-purple-500/80"></div>
           <div className="flex justify-between items-center mb-3">
-            <h3 className="text-gray-400 text-[10px] sm:text-xs uppercase tracking-widest font-semibold truncate">Avg Ticket</h3>
+            <h3 className="text-botanical-muted text-[10px] sm:text-xs uppercase tracking-widest font-semibold truncate">Avg Ticket</h3>
             <span className="text-purple-500 text-sm">📈</span>
           </div>
-          <p className="text-2xl sm:text-3xl font-black text-white break-words leading-tight">
+          <p className="text-2xl sm:text-3xl font-black text-botanical-text break-words leading-tight">
             {formatCurrency(filtered.length > 0 ? (filteredRevenue / filtered.length) : 0)}
           </p>
-          <p className="text-[10px] text-gray-500 mt-2 truncate opacity-0 group-hover:opacity-100 transition-opacity">Per Service</p>
+          <p className="text-[10px] text-botanical-muted mt-2 truncate opacity-0 group-hover:opacity-100 transition-opacity">Per Service</p>
         </div>
 
         {/* Export */}
-        <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-white/5 transition-all duration-300 flex flex-col justify-center min-w-0">
-          <div className="absolute top-0 left-0 w-full h-1 bg-brand-gold/80"></div>
+        <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-botanical-surface transition-all duration-300 flex flex-col justify-center min-w-0">
+          <div className="absolute top-0 left-0 w-full h-1 bg-botanical-primary/80"></div>
           <div className="flex justify-between items-center mb-3">
-            <h3 className="text-gray-400 text-[10px] sm:text-xs uppercase tracking-widest font-semibold truncate">Export Data</h3>
+            <h3 className="text-botanical-muted text-[10px] sm:text-xs uppercase tracking-widest font-semibold truncate">Export Data</h3>
           </div>
-          <button onClick={exportCSV} className="bg-white/5 hover:bg-brand-gold hover:text-black border border-white/10 hover:border-brand-gold text-white font-bold py-2 sm:py-3 px-3 rounded-lg transition-all w-full text-xs sm:text-sm truncate flex items-center justify-center gap-2">
+          <button onClick={exportCSV} className="bg-botanical-surface hover:bg-botanical-primary hover:text-black border border-botanical-border hover:border-brand-gold text-botanical-text font-bold py-2 sm:py-3 px-3 rounded-lg transition-all w-full text-xs sm:text-sm truncate flex items-center justify-center gap-2">
             <span>📥</span> Download CSV
           </button>
         </div>
       </div>
 
       {/* Date Filters */}
-      <div className="flex flex-col sm:flex-row gap-3 mb-6 p-4 bg-slate-900/50 rounded-lg border border-white/5">
+      <div className="flex flex-col sm:flex-row gap-3 mb-6 p-4 bg-botanical-surface rounded-lg border border-botanical-border">
         <div className="flex-1">
-          <label className="block text-[10px] text-gray-400 uppercase tracking-wider mb-1">From Date</label>
+          <label className="block text-[10px] text-botanical-muted uppercase tracking-wider mb-1">From Date</label>
           <input type="date" value={dateFrom} onChange={e => setDateFrom(e.target.value)} style={inputStyle}
-            className="w-full border border-white/10 rounded p-2 text-sm focus:outline-none focus:border-brand-gold [&::-webkit-calendar-picker-indicator]:invert" />
+            className="w-full border border-botanical-border rounded p-2 text-sm focus:outline-none focus:border-brand-gold [&::-webkit-calendar-picker-indicator]:invert" />
         </div>
         <div className="flex-1">
-          <label className="block text-[10px] text-gray-400 uppercase tracking-wider mb-1">To Date</label>
+          <label className="block text-[10px] text-botanical-muted uppercase tracking-wider mb-1">To Date</label>
           <input type="date" value={dateTo} onChange={e => setDateTo(e.target.value)} style={inputStyle}
-            className="w-full border border-white/10 rounded p-2 text-sm focus:outline-none focus:border-brand-gold [&::-webkit-calendar-picker-indicator]:invert" />
+            className="w-full border border-botanical-border rounded p-2 text-sm focus:outline-none focus:border-brand-gold [&::-webkit-calendar-picker-indicator]:invert" />
         </div>
         {isFiltered && (
           <div className="flex items-end">
-            <button onClick={() => { setDateFrom(''); setDateTo(''); }} className="text-xs text-gray-400 hover:text-white px-4 py-2 border border-white/10 rounded">
+            <button onClick={() => { setDateFrom(''); setDateTo(''); }} className="text-xs text-botanical-muted hover:text-botanical-text px-4 py-2 border border-botanical-border rounded">
               Clear Filters
             </button>
           </div>
@@ -190,12 +190,12 @@ export default function ReportsClient({
       </div>
 
       {/* View Tabs */}
-      <div className="flex gap-2 mb-4 border-b border-white/10 pb-3">
+      <div className="flex gap-2 mb-4 border-b border-botanical-border pb-3">
         {(['transactions', 'byStaff', 'byService'] as const).map(view => (
           <button
             key={view}
             onClick={() => setActiveView(view)}
-            className={`px-4 py-2 text-sm rounded-t transition-colors ${activeView === view ? 'text-brand-gold border-b-2 border-brand-gold font-semibold' : 'text-gray-400 hover:text-white'}`}
+            className={`px-4 py-2 text-sm rounded-t transition-colors ${activeView === view ? 'text-botanical-accent border-b-2 border-brand-gold font-semibold' : 'text-botanical-muted hover:text-botanical-text'}`}
           >
             {view === 'transactions' ? '📋 Transactions' : view === 'byStaff' ? '✂️ By Staff' : '💇 By Service'}
           </button>
@@ -206,7 +206,7 @@ export default function ReportsClient({
       {activeView === 'transactions' && (
         <div>
           {filtered.length === 0 ? (
-            <p className="text-gray-500 italic text-center py-8 sm:py-12 text-sm border border-dashed border-white/20 rounded">No completed transactions found{isFiltered ? ' for this date range' : ''}.</p>
+            <p className="text-botanical-muted italic text-center py-8 sm:py-12 text-sm border border-dashed border-botanical-border rounded">No completed transactions found{isFiltered ? ' for this date range' : ''}.</p>
           ) : (
             <>
               <div className="sm:hidden space-y-3">
@@ -214,11 +214,11 @@ export default function ReportsClient({
                   const paid = apt.totalAmount > 0 ? apt.totalAmount : apt.service.price;
                   const isRefunded = (apt.refundAmount || 0) > 0;
                   return (
-                    <div key={apt.id} className={`bg-slate-900/70 p-3 rounded-lg border border-white/10 ${isRefunded ? 'opacity-60' : ''}`}>
+                    <div key={apt.id} className={`bg-botanical-surface p-3 rounded-lg border border-botanical-border ${isRefunded ? 'opacity-60' : ''}`}>
                       <div className="flex justify-between items-start mb-2">
                         <div className="min-w-0">
-                          <p className="font-medium text-sm text-white truncate">{apt.user.name || apt.user.email}</p>
-                          <p className="text-xs text-brand-gold">{apt.service.name}</p>
+                          <p className="font-medium text-sm text-botanical-text truncate">{apt.user.name || apt.user.email}</p>
+                          <p className="text-xs text-botanical-accent">{apt.service.name}</p>
                           {apt.staff?.name && <p className="text-[10px] text-purple-400">✂️ {apt.staff.name}</p>}
                         </div>
                         <div className="text-right shrink-0 ml-2">
@@ -230,7 +230,7 @@ export default function ReportsClient({
                         </div>
                       </div>
                       <div className="flex items-center justify-between mt-1">
-                        <span className="text-[10px] text-gray-500 font-mono">
+                        <span className="text-[10px] text-botanical-muted font-mono">
                           {new Date(apt.updatedAt).toLocaleString(undefined, { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
                         </span>
                         {isRefunded ? (
@@ -249,7 +249,7 @@ export default function ReportsClient({
               <div className="hidden sm:block overflow-x-auto">
                 <table className="w-full text-left border-collapse">
                   <thead>
-                    <tr className="border-b border-white/10 text-gray-400 text-xs sm:text-sm uppercase tracking-wider">
+                    <tr className="border-b border-botanical-border text-botanical-muted text-xs sm:text-sm uppercase tracking-wider">
                       <th className="p-3 sm:p-4 font-semibold">Date & Time</th>
                       <th className="p-3 sm:p-4 font-semibold">Client</th>
                       <th className="p-3 sm:p-4 font-semibold">Service</th>
@@ -263,12 +263,12 @@ export default function ReportsClient({
                       const paid = apt.totalAmount > 0 ? apt.totalAmount : apt.service.price;
                       const isRefunded = (apt.refundAmount || 0) > 0;
                       return (
-                        <tr key={apt.id} className={`border-b border-white/5 hover:bg-white/5 transition-colors ${isRefunded ? 'opacity-60' : ''}`}>
-                          <td className="p-3 sm:p-4 font-mono text-gray-300 text-xs sm:text-sm">
+                        <tr key={apt.id} className={`border-b border-botanical-border hover:bg-botanical-surface transition-colors ${isRefunded ? 'opacity-60' : ''}`}>
+                          <td className="p-3 sm:p-4 font-mono text-botanical-muted text-xs sm:text-sm">
                             {new Date(apt.updatedAt).toLocaleString(undefined, { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
                           </td>
-                          <td className="p-3 sm:p-4 text-white font-medium">{apt.user.name || apt.user.email}</td>
-                          <td className="p-3 sm:p-4 text-brand-gold">
+                          <td className="p-3 sm:p-4 text-botanical-text font-medium">{apt.user.name || apt.user.email}</td>
+                          <td className="p-3 sm:p-4 text-botanical-accent">
                             <div>{apt.service.name}</div>
                             {apt.tipAmount > 0 && <div className="text-[10px] text-amber-400">+${apt.tipAmount.toFixed(2)} tip</div>}
                             {apt.discount > 0 && <div className="text-[10px] text-red-400">-${apt.discount.toFixed(2)} disc.</div>}
@@ -305,22 +305,22 @@ export default function ReportsClient({
       {activeView === 'byStaff' && (
         <div className="space-y-3">
           {byStaff.length === 0 ? (
-            <p className="text-gray-500 italic text-center py-8 text-sm border border-dashed border-white/20 rounded">No data available.</p>
+            <p className="text-botanical-muted italic text-center py-8 text-sm border border-dashed border-botanical-border rounded">No data available.</p>
           ) : byStaff.map(staff => {
             const pct = filteredRevenue > 0 ? (staff.revenue / filteredRevenue) * 100 : 0;
             return (
-              <div key={staff.name} className="bg-slate-900/70 p-4 rounded-lg border border-white/10">
+              <div key={staff.name} className="bg-botanical-surface p-4 rounded-lg border border-botanical-border">
                 <div className="flex justify-between items-center mb-2">
                   <div>
-                    <h4 className="font-bold text-white">✂️ {staff.name}</h4>
-                    <p className="text-xs text-gray-400">{staff.count} services completed</p>
+                    <h4 className="font-bold text-botanical-text">✂️ {staff.name}</h4>
+                    <p className="text-xs text-botanical-muted">{staff.count} services completed</p>
                   </div>
                   <div className="text-right">
                     <p className="text-lg font-bold text-green-400">${staff.revenue.toFixed(2)}</p>
-                    <p className="text-[10px] text-gray-500">{pct.toFixed(1)}% of total</p>
+                    <p className="text-[10px] text-botanical-muted">{pct.toFixed(1)}% of total</p>
                   </div>
                 </div>
-                <div className="w-full bg-white/5 rounded-full h-2">
+                <div className="w-full bg-botanical-surface rounded-full h-2">
                   <div className="bg-green-500 h-2 rounded-full transition-all" style={{ width: `${pct}%` }} />
                 </div>
               </div>
@@ -333,23 +333,23 @@ export default function ReportsClient({
       {activeView === 'byService' && (
         <div className="space-y-3">
           {byService.length === 0 ? (
-            <p className="text-gray-500 italic text-center py-8 text-sm border border-dashed border-white/20 rounded">No data available.</p>
+            <p className="text-botanical-muted italic text-center py-8 text-sm border border-dashed border-botanical-border rounded">No data available.</p>
           ) : byService.map(svc => {
             const pct = filteredRevenue > 0 ? (svc.revenue / filteredRevenue) * 100 : 0;
             return (
-              <div key={svc.name} className="bg-slate-900/70 p-4 rounded-lg border border-white/10">
+              <div key={svc.name} className="bg-botanical-surface p-4 rounded-lg border border-botanical-border">
                 <div className="flex justify-between items-center mb-2">
                   <div>
-                    <h4 className="font-bold text-brand-gold">{svc.name}</h4>
-                    <p className="text-xs text-gray-400">{svc.count} times booked</p>
+                    <h4 className="font-bold text-botanical-accent">{svc.name}</h4>
+                    <p className="text-xs text-botanical-muted">{svc.count} times booked</p>
                   </div>
                   <div className="text-right">
                     <p className="text-lg font-bold text-green-400">${svc.revenue.toFixed(2)}</p>
-                    <p className="text-[10px] text-gray-500">{pct.toFixed(1)}% of total</p>
+                    <p className="text-[10px] text-botanical-muted">{pct.toFixed(1)}% of total</p>
                   </div>
                 </div>
-                <div className="w-full bg-white/5 rounded-full h-2">
-                  <div className="bg-brand-gold h-2 rounded-full transition-all" style={{ width: `${pct}%` }} />
+                <div className="w-full bg-botanical-surface rounded-full h-2">
+                  <div className="bg-botanical-primary h-2 rounded-full transition-all" style={{ width: `${pct}%` }} />
                 </div>
               </div>
             );

@@ -39,7 +39,7 @@ export default function StaffInbox({ shopId, userId }: { shopId: string, userId:
 
   if (items.length === 0) {
     return (
-      <div className="bg-botanical-surface p-6 rounded-xl border border-white/5 text-center">
+      <div className="bg-botanical-surface p-6 rounded-xl border border-botanical-border text-center">
         <span className="text-3xl mb-2 block">📭</span>
         <p className="text-botanical-muted text-sm">No new notifications</p>
       </div>
@@ -48,11 +48,11 @@ export default function StaffInbox({ shopId, userId }: { shopId: string, userId:
 
   return (
     <div className="bg-botanical-bg/80 backdrop-blur-xl rounded-2xl shadow-lg border border-botanical-border overflow-hidden">
-      <div className="p-4 sm:p-5 border-b border-white/5 flex items-center justify-between">
+      <div className="p-4 sm:p-5 border-b border-botanical-border flex items-center justify-between">
         <h3 className="text-botanical-text text-lg font-bold flex items-center gap-2">
           <span>🔔</span> My Notifications
         </h3>
-        <span className="bg-botanical-primary text-slate-900 text-xs font-bold px-3 py-1 rounded-full">{items.length} New</span>
+        <span className="bg-botanical-primary text-botanical-text text-xs font-bold px-3 py-1 rounded-full">{items.length} New</span>
       </div>
       <div className="divide-y divide-white/5 max-h-[60vh] sm:max-h-96 overflow-y-auto">
         {items.map(item => (

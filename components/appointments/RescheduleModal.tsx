@@ -147,40 +147,40 @@ export default function RescheduleModal({
   };
 
   return (
-    <div className="fixed inset-0 bg-black/80 z-[100] flex items-center justify-center p-4 backdrop-blur-sm">
-      <div className="bg-slate-900 rounded-xl p-6 w-full max-w-md border border-slate-700 shadow-2xl relative text-left max-h-[90vh] overflow-y-auto">
-        <button onClick={onClose} className="absolute top-4 right-4 text-gray-400 hover:text-white bg-slate-800 rounded-full w-8 h-8 flex items-center justify-center">✕</button>
+    <div className="fixed inset-0 bg-botanical-surface z-[100] flex items-center justify-center p-4 backdrop-blur-sm">
+      <div className="bg-botanical-surface rounded-xl p-6 w-full max-w-md border border-botanical-border shadow-2xl relative text-left max-h-[90vh] overflow-y-auto">
+        <button onClick={onClose} className="absolute top-4 right-4 text-botanical-muted hover:text-botanical-text bg-botanical-surface rounded-full w-8 h-8 flex items-center justify-center">✕</button>
 
-        <h3 className="text-xl font-bold text-white mb-1">Reschedule Appointment</h3>
-        <p className="text-brand-gold font-semibold mb-6">{serviceName}</p>
+        <h3 className="text-xl font-bold text-botanical-text mb-1">Reschedule Appointment</h3>
+        <p className="text-botanical-accent font-semibold mb-6">{serviceName}</p>
 
         {error && <p className="text-red-400 text-sm bg-red-900/20 p-3 rounded mb-4">{error}</p>}
 
         <div className="space-y-5">
           {/* Date */}
           <div>
-            <label className="block text-sm text-gray-400 mb-2">New Date</label>
+            <label className="block text-sm text-botanical-muted mb-2">New Date</label>
             <input
               type="date"
               value={selectedDate}
               onChange={(e) => { setSelectedDate(e.target.value); setSelectedTime(''); }}
               min={new Date().toISOString().split('T')[0]}
               style={{ colorScheme: 'dark' }}
-              className="w-full bg-black/50 border border-white/20 rounded p-3 text-white focus:outline-none focus:border-brand-gold"
+              className="w-full bg-botanical-surface border border-botanical-border rounded p-3 text-botanical-text focus:outline-none focus:border-brand-gold"
             />
           </div>
 
           {/* Staff */}
           <div>
-            <label className="block text-sm text-gray-400 mb-2">Staff</label>
+            <label className="block text-sm text-botanical-muted mb-2">Staff</label>
             {isLoading ? (
-              <p className="text-gray-500 text-sm">Loading...</p>
+              <p className="text-botanical-muted text-sm">Loading...</p>
             ) : (
               <select
                 value={selectedStaff}
                 onChange={(e) => { setSelectedStaff(e.target.value); setSelectedTime(''); }}
                 style={{ colorScheme: 'dark' }}
-                className="w-full bg-black/50 border border-white/20 rounded p-3 text-white focus:outline-none focus:border-brand-gold"
+                className="w-full bg-botanical-surface border border-botanical-border rounded p-3 text-botanical-text focus:outline-none focus:border-brand-gold"
               >
                 <option value="">— Select staff —</option>
                 {allStaff.map(s => (
@@ -193,13 +193,13 @@ export default function RescheduleModal({
           {/* Time */}
           {selectedStaff && (
             <div>
-              <label className="block text-sm text-gray-400 mb-2">New Time</label>
+              <label className="block text-sm text-botanical-muted mb-2">New Time</label>
               {availableSlots.length > 0 ? (
                 <select
                   value={selectedTime}
                   onChange={(e) => setSelectedTime(e.target.value)}
                   style={{ colorScheme: 'dark' }}
-                  className="w-full bg-black/50 border border-white/20 rounded p-3 text-white focus:outline-none focus:border-brand-gold"
+                  className="w-full bg-botanical-surface border border-botanical-border rounded p-3 text-botanical-text focus:outline-none focus:border-brand-gold"
                 >
                   <option value="">— Choose a time —</option>
                   {availableSlots.map(t => (
@@ -212,14 +212,14 @@ export default function RescheduleModal({
             </div>
           )}
 
-          <div className="flex gap-3 pt-4 border-t border-white/10">
-            <button onClick={onClose} className="flex-1 border border-white/20 text-white font-semibold py-3 rounded-lg hover:bg-white/10 transition-colors">
+          <div className="flex gap-3 pt-4 border-t border-botanical-border">
+            <button onClick={onClose} className="flex-1 border border-botanical-border text-botanical-text font-semibold py-3 rounded-lg hover:bg-botanical-surface transition-colors">
               Cancel
             </button>
             <button
               onClick={handleReschedule}
               disabled={!selectedTime || isSubmitting}
-              className="flex-1 bg-brand-gold text-brand-dark font-bold py-3 rounded-lg hover:bg-white transition-colors disabled:opacity-50"
+              className="flex-1 bg-botanical-primary text-botanical-bg font-bold py-3 rounded-lg hover:bg-white transition-colors disabled:opacity-50"
             >
               {isSubmitting ? 'Rescheduling...' : 'Confirm Reschedule'}
             </button>

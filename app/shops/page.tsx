@@ -67,13 +67,13 @@ export default async function ShopsDirectoryPage({
   return (
     <main className="h-[100dvh] overflow-y-auto overflow-x-hidden">
       {/* Hero Section */}
-      <section className="bg-black/40 backdrop-blur-md border-b border-slate-700">
+      <section className="bg-botanical-surface backdrop-blur-md border-b border-botanical-border">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16 md:py-24">
           <div className="text-center">
-            <h1 className="text-3xl sm:text-5xl md:text-6xl font-bold text-white mb-4 sm:mb-6">
+            <h1 className="text-3xl sm:text-5xl md:text-6xl font-bold text-botanical-text mb-4 sm:mb-6">
               Discover Top Shops
             </h1>
-            <p className="text-base sm:text-xl text-gray-300 max-w-2xl mx-auto">
+            <p className="text-base sm:text-xl text-botanical-muted max-w-2xl mx-auto">
               Find the best services near you. Browse through our network of
               quality shops and book your appointment today.
             </p>
@@ -87,11 +87,11 @@ export default async function ShopsDirectoryPage({
           <>
             <div className="mb-8 sm:mb-16 flex flex-col sm:flex-row sm:justify-between sm:items-end gap-2">
               <div>
-                <h2 className="text-2xl sm:text-4xl font-bold text-white mb-2 sm:mb-4">
+                <h2 className="text-2xl sm:text-4xl font-bold text-botanical-text mb-2 sm:mb-4">
                   Featured Shops
                 </h2>
                 <div className="w-20 h-1 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full"></div>
-                <p className="text-gray-400 mt-2 sm:mt-4 text-sm">
+                <p className="text-botanical-muted mt-2 sm:mt-4 text-sm">
                   Showing {shops.length} of {totalCount} shop{totalCount !== 1 ? 's' : ''}
                 </p>
               </div>
@@ -106,7 +106,7 @@ export default async function ShopsDirectoryPage({
 
                 return (
                   <Link key={shop.id} href={`/shops/${shopSlug}`}>
-                    <div className="group bg-gradient-to-br from-slate-800 to-slate-900 rounded-xl overflow-hidden border border-slate-700 hover:border-blue-500 transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/20 cursor-pointer h-full flex flex-col">
+                    <div className="group bg-gradient-to-br from-slate-800 to-slate-900 rounded-xl overflow-hidden border border-botanical-border hover:border-blue-500 transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/20 cursor-pointer h-full flex flex-col">
                       {/* Shop Image Placeholder */}
                       <div className="w-full h-48 bg-gradient-to-br from-blue-600/20 to-cyan-600/20 group-hover:from-blue-600/30 group-hover:to-cyan-600/30 transition-colors flex items-center justify-center">
                         <div className="text-5xl">🏪</div>
@@ -114,38 +114,38 @@ export default async function ShopsDirectoryPage({
 
                       {/* Shop Info */}
                       <div className="p-6 flex flex-col flex-grow">
-                        <h3 className="text-2xl font-bold text-white group-hover:text-blue-400 transition-colors mb-2">
+                        <h3 className="text-2xl font-bold text-botanical-text group-hover:text-blue-400 transition-colors mb-2">
                           {shop.name}
                         </h3>
 
                         {shop.description && (
-                          <p className="text-gray-400 text-sm mb-4 line-clamp-2 flex-grow">
+                          <p className="text-botanical-muted text-sm mb-4 line-clamp-2 flex-grow">
                             {shop.description}
                           </p>
                         )}
 
                         {/* Stats */}
-                        <div className="flex gap-4 py-4 border-t border-b border-slate-700 mt-auto">
+                        <div className="flex gap-4 py-4 border-t border-b border-botanical-border mt-auto">
                           <div className="flex-1">
-                            <p className="text-gray-500 text-xs uppercase tracking-wider">
+                            <p className="text-botanical-muted text-xs uppercase tracking-wider">
                               Services
                             </p>
-                            <p className="text-white font-bold text-lg">
+                            <p className="text-botanical-text font-bold text-lg">
                               {shop._count?.services || 0}
                             </p>
                           </div>
                           <div className="flex-1">
-                            <p className="text-gray-500 text-xs uppercase tracking-wider">
+                            <p className="text-botanical-muted text-xs uppercase tracking-wider">
                               Team
                             </p>
-                            <p className="text-white font-bold text-lg">
+                            <p className="text-botanical-text font-bold text-lg">
                               {shop._count?.users || 0}
                             </p>
                           </div>
                         </div>
 
                         {/* CTA */}
-                        <button className="w-full mt-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded-lg transition-colors">
+                        <button className="w-full mt-4 bg-blue-600 hover:bg-blue-700 text-botanical-text font-semibold py-2 rounded-lg transition-colors">
                           View Shop →
                         </button>
                       </div>
@@ -157,33 +157,33 @@ export default async function ShopsDirectoryPage({
 
             {/* Pagination Controls */}
             {totalPages > 1 && (
-              <div className="flex flex-col sm:flex-row justify-center items-center gap-3 sm:space-x-4 border-t border-slate-700 pt-6 sm:pt-8">
+              <div className="flex flex-col sm:flex-row justify-center items-center gap-3 sm:space-x-4 border-t border-botanical-border pt-6 sm:pt-8">
                 {currentPage > 1 ? (
                   <Link 
                     href={`/shops?page=${currentPage - 1}`}
-                    className="px-5 sm:px-6 py-2 bg-slate-800 hover:bg-slate-700 text-white rounded-lg transition-colors border border-slate-600 text-sm w-full sm:w-auto text-center"
+                    className="px-5 sm:px-6 py-2 bg-botanical-surface hover:bg-botanical-surface text-botanical-text rounded-lg transition-colors border border-slate-600 text-sm w-full sm:w-auto text-center"
                   >
                     ← Previous
                   </Link>
                 ) : (
-                  <span className="px-5 sm:px-6 py-2 bg-slate-900 text-slate-600 rounded-lg border border-slate-800 cursor-not-allowed text-sm w-full sm:w-auto text-center">
+                  <span className="px-5 sm:px-6 py-2 bg-botanical-surface text-slate-600 rounded-lg border border-botanical-border cursor-not-allowed text-sm w-full sm:w-auto text-center">
                     ← Previous
                   </span>
                 )}
                 
-                <span className="text-gray-400 text-sm">
-                  Page <span className="text-white font-bold">{currentPage}</span> of {totalPages}
+                <span className="text-botanical-muted text-sm">
+                  Page <span className="text-botanical-text font-bold">{currentPage}</span> of {totalPages}
                 </span>
 
                 {currentPage < totalPages ? (
                   <Link 
                     href={`/shops?page=${currentPage + 1}`}
-                    className="px-5 sm:px-6 py-2 bg-slate-800 hover:bg-slate-700 text-white rounded-lg transition-colors border border-slate-600 text-sm w-full sm:w-auto text-center"
+                    className="px-5 sm:px-6 py-2 bg-botanical-surface hover:bg-botanical-surface text-botanical-text rounded-lg transition-colors border border-slate-600 text-sm w-full sm:w-auto text-center"
                   >
                     Next →
                   </Link>
                 ) : (
-                  <span className="px-5 sm:px-6 py-2 bg-slate-900 text-slate-600 rounded-lg border border-slate-800 cursor-not-allowed text-sm w-full sm:w-auto text-center">
+                  <span className="px-5 sm:px-6 py-2 bg-botanical-surface text-slate-600 rounded-lg border border-botanical-border cursor-not-allowed text-sm w-full sm:w-auto text-center">
                     Next →
                   </span>
                 )}
@@ -192,8 +192,8 @@ export default async function ShopsDirectoryPage({
           </>
         ) : (
           <div className="text-center py-20">
-            <p className="text-gray-400 text-lg mb-4">No shops available yet.</p>
-            <p className="text-gray-500">
+            <p className="text-botanical-muted text-lg mb-4">No shops available yet.</p>
+            <p className="text-botanical-muted">
               Check back soon for new shops to explore!
             </p>
           </div>
@@ -201,9 +201,9 @@ export default async function ShopsDirectoryPage({
       </section>
 
       {/* Features Section */}
-      <section className="bg-black/40 py-12 sm:py-20 border-t border-slate-700">
+      <section className="bg-botanical-surface py-12 sm:py-20 border-t border-botanical-border">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-2xl sm:text-3xl font-bold text-white text-center mb-8 sm:mb-16">
+          <h2 className="text-2xl sm:text-3xl font-bold text-botanical-text text-center mb-8 sm:mb-16">
             Why Choose Us?
           </h2>
 
@@ -230,13 +230,13 @@ export default async function ShopsDirectoryPage({
             ].map((feature, index) => (
               <div
                 key={index}
-                className="text-center bg-slate-800/50 rounded-lg p-6 sm:p-8 border border-slate-700 hover:border-blue-500 transition-colors"
+                className="text-center bg-botanical-surface rounded-lg p-6 sm:p-8 border border-botanical-border hover:border-blue-500 transition-colors"
               >
                 <div className="text-3xl sm:text-4xl mb-3 sm:mb-4">{feature.icon}</div>
-                <h3 className="text-lg sm:text-xl font-bold text-white mb-2 sm:mb-3">
+                <h3 className="text-lg sm:text-xl font-bold text-botanical-text mb-2 sm:mb-3">
                   {feature.title}
                 </h3>
-                <p className="text-gray-400 text-sm sm:text-base">{feature.description}</p>
+                <p className="text-botanical-muted text-sm sm:text-base">{feature.description}</p>
               </div>
             ))}
           </div>
@@ -246,7 +246,7 @@ export default async function ShopsDirectoryPage({
       {/* CTA Section */}
       <section className="bg-gradient-to-r from-blue-600 to-cyan-600 py-10 sm:py-16">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-4 sm:mb-6">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-botanical-text mb-4 sm:mb-6">
             Ready to Start?
           </h2>
           <p className="text-blue-100 text-base sm:text-lg mb-6 sm:mb-8">
@@ -260,60 +260,60 @@ export default async function ShopsDirectoryPage({
       </section>
 
       {/* Footer */}
-      <footer className="bg-black/50 border-t border-slate-700 py-12">
+      <footer className="bg-botanical-surface border-t border-botanical-border py-12">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
             <div>
-              <h3 className="text-white font-bold text-lg mb-4">ShopHub</h3>
-              <p className="text-gray-400">
+              <h3 className="text-botanical-text font-bold text-lg mb-4">ShopHub</h3>
+              <p className="text-botanical-muted">
                 Your one-stop destination for quality services.
               </p>
             </div>
             <div>
-              <h4 className="text-white font-bold mb-4">Quick Links</h4>
-              <ul className="space-y-2 text-gray-400">
+              <h4 className="text-botanical-text font-bold mb-4">Quick Links</h4>
+              <ul className="space-y-2 text-botanical-muted">
                 <li>
-                  <a href="#" className="hover:text-white transition">
+                  <a href="#" className="hover:text-botanical-text transition">
                     About Us
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="hover:text-white transition">
+                  <a href="#" className="hover:text-botanical-text transition">
                     Contact
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="hover:text-white transition">
+                  <a href="#" className="hover:text-botanical-text transition">
                     FAQ
                   </a>
                 </li>
               </ul>
             </div>
             <div>
-              <h4 className="text-white font-bold mb-4">Follow Us</h4>
+              <h4 className="text-botanical-text font-bold mb-4">Follow Us</h4>
               <div className="flex gap-4">
                 <a
                   href="#"
-                  className="text-gray-400 hover:text-white transition"
+                  className="text-botanical-muted hover:text-botanical-text transition"
                 >
                   Facebook
                 </a>
                 <a
                   href="#"
-                  className="text-gray-400 hover:text-white transition"
+                  className="text-botanical-muted hover:text-botanical-text transition"
                 >
                   Instagram
                 </a>
                 <a
                   href="#"
-                  className="text-gray-400 hover:text-white transition"
+                  className="text-botanical-muted hover:text-botanical-text transition"
                 >
                   Twitter
                 </a>
               </div>
             </div>
           </div>
-          <div className="border-t border-slate-700 pt-8 text-center text-gray-500 text-sm">
+          <div className="border-t border-botanical-border pt-8 text-center text-botanical-muted text-sm">
             <p>&copy; {new Date().getFullYear()} ShopHub. All rights reserved.</p>
           </div>
         </div>

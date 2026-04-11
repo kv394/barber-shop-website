@@ -49,36 +49,36 @@ function ProfileContent() {
   if (loading) {
     return (
       <div className="h-[100dvh] overflow-y-auto overflow-x-hidden">
-        <p className="text-gray-400 animate-pulse">Loading profile…</p>
+        <p className="text-botanical-muted animate-pulse">Loading profile…</p>
       </div>
     );
   }
 
   return (
     <main className="h-[100dvh] overflow-y-auto overflow-x-hidden">
-      <header className="bg-black/40 backdrop-blur-md border-b border-slate-700 sticky top-0 z-20 print:hidden">
+      <header className="bg-botanical-surface backdrop-blur-md border-b border-botanical-border sticky top-0 z-20 print:hidden">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 py-4 flex justify-between items-center">
           <div>
-            <h1 className="text-xl sm:text-2xl font-bold text-white">My Profile</h1>
-            <p className="text-xs text-gray-500">Update your personal information</p>
+            <h1 className="text-xl sm:text-2xl font-bold text-botanical-text">My Profile</h1>
+            <p className="text-xs text-botanical-muted">Update your personal information</p>
           </div>
           
           {profile?.role === 'SUPER_ADMIN' ? (
-            <Link href="/superadmin" className="text-sm bg-slate-800 hover:bg-slate-700 border border-slate-600 text-white px-4 py-2 rounded-lg font-semibold transition-colors">
+            <Link href="/superadmin" className="text-sm bg-botanical-surface hover:bg-botanical-surface border border-slate-600 text-botanical-text px-4 py-2 rounded-lg font-semibold transition-colors">
               Back to Superadmin
             </Link>
           ) : profile?.shopId && (profile?.role === 'SHOP_ADMIN' || profile?.role === 'STAFF') ? (
-            <Link href={`/shop/${profile.shopId}`} className="text-sm bg-slate-800 hover:bg-slate-700 border border-slate-600 text-white px-4 py-2 rounded-lg font-semibold transition-colors">
+            <Link href={`/shop/${profile.shopId}`} className="text-sm bg-botanical-surface hover:bg-botanical-surface border border-slate-600 text-botanical-text px-4 py-2 rounded-lg font-semibold transition-colors">
               Back to Dashboard
             </Link>
           ) : null}
         </div>
         <div className="max-w-4xl mx-auto px-4 sm:px-6 pb-2 flex gap-4 overflow-x-auto scrollbar-none">
-          <Link href="/my-appointments" className="text-sm text-gray-400 hover:text-white px-1 pb-1 whitespace-nowrap transition-colors">📅 Appointments</Link>
-          <Link href="/my-appointments/profile" className="text-sm text-brand-gold border-b-2 border-brand-gold px-1 pb-1 font-semibold whitespace-nowrap">👤 Profile</Link>
-          <Link href="/my-appointments/loyalty" className="text-sm text-gray-400 hover:text-white px-1 pb-1 whitespace-nowrap transition-colors">⭐ Loyalty</Link>
-          <Link href="/my-appointments/notifications" className="text-sm text-gray-400 hover:text-white px-1 pb-1 whitespace-nowrap transition-colors">🔔 Notifications</Link>
-          <Link href="/my-appointments/referrals" className="text-sm text-gray-400 hover:text-white px-1 pb-1 whitespace-nowrap transition-colors">🔗 Referrals</Link>
+          <Link href="/my-appointments" className="text-sm text-botanical-muted hover:text-botanical-text px-1 pb-1 whitespace-nowrap transition-colors">📅 Appointments</Link>
+          <Link href="/my-appointments/profile" className="text-sm text-botanical-accent border-b-2 border-brand-gold px-1 pb-1 font-semibold whitespace-nowrap">👤 Profile</Link>
+          <Link href="/my-appointments/loyalty" className="text-sm text-botanical-muted hover:text-botanical-text px-1 pb-1 whitespace-nowrap transition-colors">⭐ Loyalty</Link>
+          <Link href="/my-appointments/notifications" className="text-sm text-botanical-muted hover:text-botanical-text px-1 pb-1 whitespace-nowrap transition-colors">🔔 Notifications</Link>
+          <Link href="/my-appointments/referrals" className="text-sm text-botanical-muted hover:text-botanical-text px-1 pb-1 whitespace-nowrap transition-colors">🔗 Referrals</Link>
         </div>
       </header>
 
@@ -89,66 +89,66 @@ function ProfileContent() {
           </div>
         )}
 
-        <div className="bg-slate-800/60 border border-white/5 rounded-xl p-6 flex flex-col items-center justify-center space-y-4 print:bg-white print:border-none print:shadow-none print:text-black">
-          <h2 className="text-lg font-semibold text-white print:text-black">My Check-in Code</h2>
+        <div className="bg-botanical-surface border border-botanical-border rounded-xl p-6 flex flex-col items-center justify-center space-y-4 print:bg-white print:border-none print:shadow-none print:text-black">
+          <h2 className="text-lg font-semibold text-botanical-text print:text-black">My Check-in Code</h2>
           <div className="bg-white p-4 rounded-xl">
             <QRCodeSVG value={profile?.barcode || profile?.id || 'NO_ID'} size={150} level="H" />
           </div>
-          <p className="text-sm text-gray-400 print:text-gray-600 text-center max-w-xs">
+          <p className="text-sm text-botanical-muted print:text-gray-600 text-center max-w-xs">
             Present this code at the kiosk or to your barber for quick check-in.
           </p>
-          <button onClick={handlePrint} className="bg-slate-700 hover:bg-slate-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors print:hidden">
+          <button onClick={handlePrint} className="bg-botanical-surface hover:bg-slate-600 text-botanical-text px-4 py-2 rounded-lg text-sm font-medium transition-colors print:hidden">
             Print QR Code
           </button>
         </div>
 
-        <div className="bg-slate-800/60 border border-white/5 rounded-xl p-6 space-y-5 print:hidden">
+        <div className="bg-botanical-surface border border-botanical-border rounded-xl p-6 space-y-5 print:hidden">
           <div>
-            <label className="block text-sm text-gray-400 mb-1">Name</label>
-            <input type="text" value={profile?.name || ''} onChange={(e) => setProfile({ ...profile, name: e.target.value })} className="w-full bg-black/50 border border-white/20 rounded p-3 text-white focus:outline-none focus:border-brand-gold" />
+            <label className="block text-sm text-botanical-muted mb-1">Name</label>
+            <input type="text" value={profile?.name || ''} onChange={(e) => setProfile({ ...profile, name: e.target.value })} className="w-full bg-botanical-surface border border-botanical-border rounded p-3 text-botanical-text focus:outline-none focus:border-brand-gold" />
           </div>
           <div>
-            <label className="block text-sm text-gray-400 mb-1">Email</label>
-            <input type="email" value={profile?.email || ''} disabled className="w-full bg-black/30 border border-white/10 rounded p-3 text-gray-500 cursor-not-allowed" />
+            <label className="block text-sm text-botanical-muted mb-1">Email</label>
+            <input type="email" value={profile?.email || ''} disabled className="w-full bg-botanical-surface border border-botanical-border rounded p-3 text-botanical-muted cursor-not-allowed" />
           </div>
           <div>
-            <label className="block text-sm text-gray-400 mb-1">Phone</label>
-            <input type="tel" value={profile?.phone || ''} onChange={(e) => setProfile({ ...profile, phone: e.target.value })} placeholder="+1 555-123-4567" className="w-full bg-black/50 border border-white/20 rounded p-3 text-white placeholder-gray-600 focus:outline-none focus:border-brand-gold" />
+            <label className="block text-sm text-botanical-muted mb-1">Phone</label>
+            <input type="tel" value={profile?.phone || ''} onChange={(e) => setProfile({ ...profile, phone: e.target.value })} placeholder="+1 555-123-4567" className="w-full bg-botanical-surface border border-botanical-border rounded p-3 text-botanical-text placeholder-gray-600 focus:outline-none focus:border-brand-gold" />
           </div>
           <div>
-            <label className="block text-sm text-gray-400 mb-1">Birthday</label>
-            <input type="date" value={profile?.birthday ? new Date(profile.birthday).toISOString().split('T')[0] : ''} onChange={(e) => setProfile({ ...profile, birthday: e.target.value || null })} style={{ colorScheme: 'dark' }} className="w-full bg-black/50 border border-white/20 rounded p-3 text-white focus:outline-none focus:border-brand-gold" />
+            <label className="block text-sm text-botanical-muted mb-1">Birthday</label>
+            <input type="date" value={profile?.birthday ? new Date(profile.birthday).toISOString().split('T')[0] : ''} onChange={(e) => setProfile({ ...profile, birthday: e.target.value || null })} style={{ colorScheme: 'dark' }} className="w-full bg-botanical-surface border border-botanical-border rounded p-3 text-botanical-text focus:outline-none focus:border-brand-gold" />
           </div>
           <div>
-            <label className="block text-sm text-gray-400 mb-1">Preferences (e.g., skin fade, longer on top)</label>
-            <textarea value={profile?.preferences || ''} onChange={(e) => setProfile({ ...profile, preferences: e.target.value })} rows={2} className="w-full bg-black/50 border border-white/20 rounded p-3 text-white placeholder-gray-600 focus:outline-none focus:border-brand-gold resize-none" />
+            <label className="block text-sm text-botanical-muted mb-1">Preferences (e.g., skin fade, longer on top)</label>
+            <textarea value={profile?.preferences || ''} onChange={(e) => setProfile({ ...profile, preferences: e.target.value })} rows={2} className="w-full bg-botanical-surface border border-botanical-border rounded p-3 text-botanical-text placeholder-gray-600 focus:outline-none focus:border-brand-gold resize-none" />
           </div>
           <div>
-            <label className="block text-sm text-gray-400 mb-1">Allergies / Sensitivities</label>
-            <textarea value={profile?.allergies || ''} onChange={(e) => setProfile({ ...profile, allergies: e.target.value })} rows={2} className="w-full bg-black/50 border border-white/20 rounded p-3 text-white placeholder-gray-600 focus:outline-none focus:border-brand-gold resize-none" />
+            <label className="block text-sm text-botanical-muted mb-1">Allergies / Sensitivities</label>
+            <textarea value={profile?.allergies || ''} onChange={(e) => setProfile({ ...profile, allergies: e.target.value })} rows={2} className="w-full bg-botanical-surface border border-botanical-border rounded p-3 text-botanical-text placeholder-gray-600 focus:outline-none focus:border-brand-gold resize-none" />
           </div>
 
-          <div className="pt-4 border-t border-white/10 space-y-3">
+          <div className="pt-4 border-t border-botanical-border space-y-3">
             <label className="flex items-center gap-3 cursor-pointer">
               <input type="checkbox" checked={profile?.marketingConsent || false} onChange={(e) => setProfile({ ...profile, marketingConsent: e.target.checked })} className="w-4 h-4 accent-brand-gold" />
-              <span className="text-sm text-gray-300">I agree to receive marketing emails and promotions</span>
+              <span className="text-sm text-botanical-muted">I agree to receive marketing emails and promotions</span>
             </label>
             <label className="flex items-center gap-3 cursor-pointer">
               <input type="checkbox" checked={profile?.smsConsent || false} onChange={(e) => setProfile({ ...profile, smsConsent: e.target.checked })} className="w-4 h-4 accent-brand-gold" />
-              <span className="text-sm text-gray-300">I agree to receive SMS appointment reminders</span>
+              <span className="text-sm text-botanical-muted">I agree to receive SMS appointment reminders</span>
             </label>
           </div>
 
-          <button onClick={handleSave} disabled={saving} className="w-full bg-brand-gold text-brand-dark font-bold py-3 rounded-lg hover:bg-white transition-colors disabled:opacity-50 mt-4">
+          <button onClick={handleSave} disabled={saving} className="w-full bg-botanical-primary text-botanical-bg font-bold py-3 rounded-lg hover:bg-white transition-colors disabled:opacity-50 mt-4">
             {saving ? 'Saving…' : 'Save Changes'}
           </button>
 
-          <div className="pt-6 mt-6 border-t border-white/10">
-            <h3 className="text-sm font-semibold text-white mb-2">Security</h3>
-            <Link href="/update-password" className="inline-block px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white text-sm font-medium rounded-lg transition-colors border border-slate-600">
+          <div className="pt-6 mt-6 border-t border-botanical-border">
+            <h3 className="text-sm font-semibold text-botanical-text mb-2">Security</h3>
+            <Link href="/update-password" className="inline-block px-4 py-2 bg-botanical-surface hover:bg-slate-600 text-botanical-text text-sm font-medium rounded-lg transition-colors border border-slate-600">
               Change Password
             </Link>
-            <Link href="/my-appointments/profile/security" className="inline-block ml-3 px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white text-sm font-medium rounded-lg transition-colors border border-slate-600">
+            <Link href="/my-appointments/profile/security" className="inline-block ml-3 px-4 py-2 bg-botanical-surface hover:bg-slate-600 text-botanical-text text-sm font-medium rounded-lg transition-colors border border-slate-600">
               Security & Recovery
             </Link>
           </div>
@@ -160,7 +160,7 @@ function ProfileContent() {
 
 export default function ProfilePage() {
   return (
-    <Suspense fallback={<div className="h-[100dvh] overflow-y-auto overflow-x-hidden"><p className="text-gray-400">Loading...</p></div>}>
+    <Suspense fallback={<div className="h-[100dvh] overflow-y-auto overflow-x-hidden"><p className="text-botanical-muted">Loading...</p></div>}>
       <ProfileContent />
     </Suspense>
   );

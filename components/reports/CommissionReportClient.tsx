@@ -82,80 +82,80 @@ export default function CommissionReportClient({
       {/* Filters */}
       <div className="flex flex-wrap gap-4 items-end">
         <div>
-          <label className="block text-xs text-gray-400 mb-1">Start Date</label>
-          <input type="date" value={startDate} onChange={e => setStartDate(e.target.value)} style={{ colorScheme: 'dark' }} className="bg-black/40 border border-white/20 rounded p-2 text-white text-sm focus:outline-none focus:border-brand-gold" />
+          <label className="block text-xs text-botanical-muted mb-1">Start Date</label>
+          <input type="date" value={startDate} onChange={e => setStartDate(e.target.value)} style={{ colorScheme: 'dark' }} className="bg-botanical-surface border border-botanical-border rounded p-2 text-botanical-text text-sm focus:outline-none focus:border-brand-gold" />
         </div>
         <div>
-          <label className="block text-xs text-gray-400 mb-1">End Date</label>
-          <input type="date" value={endDate} onChange={e => setEndDate(e.target.value)} style={{ colorScheme: 'dark' }} className="bg-black/40 border border-white/20 rounded p-2 text-white text-sm focus:outline-none focus:border-brand-gold" />
+          <label className="block text-xs text-botanical-muted mb-1">End Date</label>
+          <input type="date" value={endDate} onChange={e => setEndDate(e.target.value)} style={{ colorScheme: 'dark' }} className="bg-botanical-surface border border-botanical-border rounded p-2 text-botanical-text text-sm focus:outline-none focus:border-brand-gold" />
         </div>
-        <button onClick={exportCSV} className="bg-white/10 hover:bg-white/20 text-white px-4 py-2 rounded text-sm transition-colors">📥 Export CSV</button>
+        <button onClick={exportCSV} className="bg-botanical-surface hover:bg-botanical-surface text-botanical-text px-4 py-2 rounded text-sm transition-colors">📥 Export CSV</button>
       </div>
 
       {/* Totals Floating Bar */}
-      <div className="bg-slate-900/80 backdrop-blur-xl shadow-2xl rounded-2xl border border-white/10 flex flex-col sm:flex-row divide-y sm:divide-y-0 sm:divide-x divide-white/10 relative z-20 overflow-hidden transform sm:-translate-y-6 sm:-mx-2 mb-2 sm:mb-6">
-        <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-white/5 transition-all duration-300 min-w-0">
+      <div className="bg-botanical-surface backdrop-blur-xl shadow-2xl rounded-2xl border border-botanical-border flex flex-col sm:flex-row divide-y sm:divide-y-0 sm:divide-x divide-white/10 relative z-20 overflow-hidden transform sm:-translate-y-6 sm:-mx-2 mb-2 sm:mb-6">
+        <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-botanical-surface transition-all duration-300 min-w-0">
           <div className="absolute top-0 left-0 w-full h-1 bg-green-500/80"></div>
           <div className="flex justify-between items-center mb-3">
-            <h3 className="text-gray-400 text-[10px] sm:text-xs uppercase tracking-widest font-semibold truncate">{isPersonalView ? 'My Revenue' : 'Gross Revenue'}</h3>
+            <h3 className="text-botanical-muted text-[10px] sm:text-xs uppercase tracking-widest font-semibold truncate">{isPersonalView ? 'My Revenue' : 'Gross Revenue'}</h3>
             <span className="text-green-500 text-sm">💵</span>
           </div>
-          <p className="text-2xl sm:text-3xl font-black text-white break-words leading-tight">${totalRevenue.toFixed(0)}</p>
+          <p className="text-2xl sm:text-3xl font-black text-botanical-text break-words leading-tight">${totalRevenue.toFixed(0)}</p>
         </div>
-        <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-white/5 transition-all duration-300 min-w-0">
+        <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-botanical-surface transition-all duration-300 min-w-0">
           <div className="absolute top-0 left-0 w-full h-1 bg-blue-500/80"></div>
           <div className="flex justify-between items-center mb-3">
-            <h3 className="text-gray-400 text-[10px] sm:text-xs uppercase tracking-widest font-semibold truncate">{isPersonalView ? 'My Commission' : 'Commission'}</h3>
+            <h3 className="text-botanical-muted text-[10px] sm:text-xs uppercase tracking-widest font-semibold truncate">{isPersonalView ? 'My Commission' : 'Commission'}</h3>
             <span className="text-blue-500 text-sm">💎</span>
           </div>
-          <p className="text-2xl sm:text-3xl font-black text-white break-words leading-tight">${totalCommission.toFixed(0)}</p>
+          <p className="text-2xl sm:text-3xl font-black text-botanical-text break-words leading-tight">${totalCommission.toFixed(0)}</p>
         </div>
-        <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-white/5 transition-all duration-300 min-w-0">
+        <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-botanical-surface transition-all duration-300 min-w-0">
           <div className="absolute top-0 left-0 w-full h-1 bg-amber-500/80"></div>
           <div className="flex justify-between items-center mb-3">
-            <h3 className="text-gray-400 text-[10px] sm:text-xs uppercase tracking-widest font-semibold truncate">{isPersonalView ? 'My Tips' : 'Tips'}</h3>
+            <h3 className="text-botanical-muted text-[10px] sm:text-xs uppercase tracking-widest font-semibold truncate">{isPersonalView ? 'My Tips' : 'Tips'}</h3>
             <span className="text-amber-500 text-sm">🪙</span>
           </div>
-          <p className="text-2xl sm:text-3xl font-black text-white break-words leading-tight">${totalTips.toFixed(0)}</p>
+          <p className="text-2xl sm:text-3xl font-black text-botanical-text break-words leading-tight">${totalTips.toFixed(0)}</p>
         </div>
-        <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-white/5 transition-all duration-300 min-w-0">
+        <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-botanical-surface transition-all duration-300 min-w-0">
           <div className="absolute top-0 left-0 w-full h-1 bg-purple-500/80"></div>
           <div className="flex justify-between items-center mb-3">
-            <h3 className="text-gray-400 text-[10px] sm:text-xs uppercase tracking-widest font-semibold truncate">{isPersonalView ? 'My Total Pay' : 'Total Payout'}</h3>
+            <h3 className="text-botanical-muted text-[10px] sm:text-xs uppercase tracking-widest font-semibold truncate">{isPersonalView ? 'My Total Pay' : 'Total Payout'}</h3>
             <span className="text-purple-500 text-sm">💳</span>
           </div>
-          <p className="text-2xl sm:text-3xl font-black text-white break-words leading-tight">${totalPayout.toFixed(0)}</p>
+          <p className="text-2xl sm:text-3xl font-black text-botanical-text break-words leading-tight">${totalPayout.toFixed(0)}</p>
         </div>
       </div>
 
       {loading ? (
-        <p className="text-gray-400 text-center py-8 animate-pulse">Calculating commissions…</p>
+        <p className="text-botanical-muted text-center py-8 animate-pulse">Calculating commissions…</p>
       ) : summary.length === 0 ? (
-        <p className="text-gray-500 italic text-center py-8 border border-dashed border-white/20 rounded">No completed appointments in this date range.</p>
+        <p className="text-botanical-muted italic text-center py-8 border border-dashed border-botanical-border rounded">No completed appointments in this date range.</p>
       ) : (
         <>
           {/* Staff Summary Table */}
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-white/10 text-gray-400 text-xs uppercase">
+                <tr className="border-b border-botanical-border text-botanical-muted text-xs uppercase">
                   <th className="text-left p-3">Staff</th>
                   <th className="text-right p-3">Services</th>
                   <th className="text-right p-3">Revenue</th>
                   <th className="text-right p-3">Commission</th>
                   <th className="text-right p-3">Tips</th>
-                  <th className="text-right p-3 text-brand-gold">Payout</th>
+                  <th className="text-right p-3 text-botanical-accent">Payout</th>
                 </tr>
               </thead>
               <tbody>
                 {summary.map(s => (
-                  <tr key={s.staffId} className="border-b border-white/5 hover:bg-white/5">
-                    <td className="p-3 font-medium text-white">{s.staffName}</td>
-                    <td className="p-3 text-right text-gray-300">{s.servicesCount}</td>
-                    <td className="p-3 text-right text-gray-300">${s.grossRevenue.toFixed(2)}</td>
+                  <tr key={s.staffId} className="border-b border-botanical-border hover:bg-botanical-surface">
+                    <td className="p-3 font-medium text-botanical-text">{s.staffName}</td>
+                    <td className="p-3 text-right text-botanical-muted">{s.servicesCount}</td>
+                    <td className="p-3 text-right text-botanical-muted">${s.grossRevenue.toFixed(2)}</td>
                     <td className="p-3 text-right text-blue-400">${s.totalCommission.toFixed(2)}</td>
                     <td className="p-3 text-right text-amber-400">${s.totalTips.toFixed(2)}</td>
-                    <td className="p-3 text-right text-brand-gold font-bold">${s.totalPayout.toFixed(2)}</td>
+                    <td className="p-3 text-right text-botanical-accent font-bold">${s.totalPayout.toFixed(2)}</td>
                   </tr>
                 ))}
               </tbody>
@@ -163,7 +163,7 @@ export default function CommissionReportClient({
           </div>
 
           {/* Detail Toggle */}
-          <button onClick={() => setShowDetails(!showDetails)} className="text-sm text-gray-400 hover:text-white transition-colors">
+          <button onClick={() => setShowDetails(!showDetails)} className="text-sm text-botanical-muted hover:text-botanical-text transition-colors">
             {showDetails ? '▼ Hide Details' : '▶ Show Line-by-Line Details'}
           </button>
 
@@ -171,7 +171,7 @@ export default function CommissionReportClient({
             <div className="overflow-x-auto max-h-80 overflow-y-auto">
               <table className="w-full text-xs">
                 <thead>
-                  <tr className="border-b border-white/10 text-gray-500 uppercase sticky top-0 bg-slate-800">
+                  <tr className="border-b border-botanical-border text-botanical-muted uppercase sticky top-0 bg-botanical-surface">
                     <th className="text-left p-2">Staff</th>
                     <th className="text-left p-2">Service</th>
                     <th className="text-right p-2">Amount</th>
@@ -182,13 +182,13 @@ export default function CommissionReportClient({
                 </thead>
                 <tbody>
                   {details.map((d, i) => (
-                    <tr key={i} className="border-b border-white/5">
-                      <td className="p-2 text-gray-300">{d.staffName}</td>
-                      <td className="p-2 text-gray-300">{d.serviceName}</td>
-                      <td className="p-2 text-right text-gray-300">${d.serviceAmount.toFixed(2)}</td>
+                    <tr key={i} className="border-b border-botanical-border">
+                      <td className="p-2 text-botanical-muted">{d.staffName}</td>
+                      <td className="p-2 text-botanical-muted">{d.serviceName}</td>
+                      <td className="p-2 text-right text-botanical-muted">${d.serviceAmount.toFixed(2)}</td>
                       <td className="p-2 text-right text-amber-400">${d.tipAmount.toFixed(2)}</td>
                       <td className="p-2 text-right text-blue-400">${d.commission.toFixed(2)}</td>
-                      <td className="p-2 text-gray-500">{d.rateValue}{d.rateType === 'PERCENTAGE' ? '%' : ' flat'} ({d.commissionSource})</td>
+                      <td className="p-2 text-botanical-muted">{d.rateValue}{d.rateType === 'PERCENTAGE' ? '%' : ' flat'} ({d.commissionSource})</td>
                     </tr>
                   ))}
                 </tbody>

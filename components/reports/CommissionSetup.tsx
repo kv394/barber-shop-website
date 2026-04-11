@@ -46,43 +46,43 @@ export default function CommissionSetup({ shopId }: { shopId: string }) {
     setTimeout(() => setMsg(''), 2000);
   };
 
-  if (loading) return <div className="animate-pulse text-gray-500 py-4">Loading staff…</div>;
-  if (!staff.length && !loading) return <div className="text-gray-500 py-4">No staff members found. Add staff to set commissions.</div>;
+  if (loading) return <div className="animate-pulse text-botanical-muted py-4">Loading staff…</div>;
+  if (!staff.length && !loading) return <div className="text-botanical-muted py-4">No staff members found. Add staff to set commissions.</div>;
 
   return (
-    <div className="bg-slate-800/60 border border-white/5 rounded-xl p-6 space-y-4">
-      <h3 className="text-lg font-bold text-white">💼 Commission Rates</h3>
-      <p className="text-gray-400 text-sm">Set service and retail product commission rates per staff member.</p>
+    <div className="bg-botanical-surface border border-botanical-border rounded-xl p-6 space-y-4">
+      <h3 className="text-lg font-bold text-botanical-text">💼 Commission Rates</h3>
+      <p className="text-botanical-muted text-sm">Set service and retail product commission rates per staff member.</p>
       {msg && <div className="p-2 bg-green-900/30 border border-green-500/30 text-green-300 rounded text-sm">{msg}</div>}
       <div className="space-y-3">
         {staff.map((s: any) => (
-          <div key={s.id} className="flex flex-wrap items-center gap-3 p-4 bg-black/20 rounded-lg">
+          <div key={s.id} className="flex flex-wrap items-center gap-3 p-4 bg-botanical-surface rounded-lg">
             <div className="flex items-center gap-2 min-w-[140px]">
-              <div className="w-8 h-8 rounded-full bg-brand-gold/20 text-brand-gold flex items-center justify-center font-bold text-sm">
+              <div className="w-8 h-8 rounded-full bg-botanical-primary/20 text-botanical-accent flex items-center justify-center font-bold text-sm">
                 {(s.name || 'S')[0]}
               </div>
-              <span className="text-white text-sm font-medium">{s.name}</span>
+              <span className="text-botanical-text text-sm font-medium">{s.name}</span>
             </div>
             <div className="flex items-center gap-2">
-              <label className="text-xs text-gray-500">Services</label>
+              <label className="text-xs text-botanical-muted">Services</label>
               <div className="flex items-center gap-1">
                 <input type="number" min={0} max={100} value={rules[s.id]?.svc ?? 50}
                   onChange={e => setRules(r => ({ ...r, [s.id]: { ...r[s.id], svc: +e.target.value } }))}
-                  className="w-16 bg-black/40 border border-white/10 rounded px-2 py-1.5 text-white text-sm focus:outline-none focus:border-brand-gold" />
-                <span className="text-gray-500 text-sm">%</span>
+                  className="w-16 bg-botanical-surface border border-botanical-border rounded px-2 py-1.5 text-botanical-text text-sm focus:outline-none focus:border-brand-gold" />
+                <span className="text-botanical-muted text-sm">%</span>
               </div>
             </div>
             <div className="flex items-center gap-2">
-              <label className="text-xs text-gray-500">Products</label>
+              <label className="text-xs text-botanical-muted">Products</label>
               <div className="flex items-center gap-1">
                 <input type="number" min={0} max={100} value={rules[s.id]?.product ?? 10}
                   onChange={e => setRules(r => ({ ...r, [s.id]: { ...r[s.id], product: +e.target.value } }))}
-                  className="w-16 bg-black/40 border border-white/10 rounded px-2 py-1.5 text-white text-sm focus:outline-none focus:border-brand-gold" />
-                <span className="text-gray-500 text-sm">%</span>
+                  className="w-16 bg-botanical-surface border border-botanical-border rounded px-2 py-1.5 text-botanical-text text-sm focus:outline-none focus:border-brand-gold" />
+                <span className="text-botanical-muted text-sm">%</span>
               </div>
             </div>
             <button onClick={() => save(s.id)} disabled={saving === s.id}
-              className="ml-auto px-3 py-1.5 bg-brand-gold/20 text-brand-gold border border-brand-gold/30 rounded text-xs font-semibold hover:bg-brand-gold hover:text-black transition disabled:opacity-50">
+              className="ml-auto px-3 py-1.5 bg-botanical-primary/20 text-botanical-accent border border-brand-gold/30 rounded text-xs font-semibold hover:bg-botanical-primary hover:text-black transition disabled:opacity-50">
               {saving === s.id ? '…' : 'Save'}
             </button>
           </div>

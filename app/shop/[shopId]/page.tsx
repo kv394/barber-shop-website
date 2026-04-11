@@ -225,7 +225,7 @@ export default async function ShopDashboardPage({ params }: { params: Promise<{ 
               <p className="text-xs text-botanical-muted">Onboard staff or set working hours</p>
             </div>
             <Link href={`/shop/${shopId}/settings/team`}
-              className="flex-shrink-0 px-3 py-1.5 bg-botanical-border text-botanical-text text-xs font-bold rounded-lg hover:bg-white/20 transition-colors">
+              className="flex-shrink-0 px-3 py-1.5 bg-botanical-border text-botanical-text text-xs font-bold rounded-lg hover:bg-botanical-surface transition-colors">
               Manage Team →
             </Link>
           </div>
@@ -251,7 +251,7 @@ export default async function ShopDashboardPage({ params }: { params: Promise<{ 
       )}
       {/* ── Predictive Action Surface: Up Next (STAFF & ADMIN) ── */}
       {todayStats && todayStats.nextAppointment && (
-        <div className="mb-6 sm:mb-8 bg-gradient-to-br from-brand-gold to-yellow-600 rounded-3xl p-6 sm:p-8 shadow-[0_10px_40px_rgba(234,179,8,0.2)] text-white relative overflow-hidden group">
+        <div className="mb-6 sm:mb-8 bg-gradient-to-br from-brand-gold to-yellow-600 rounded-3xl p-6 sm:p-8 shadow-[0_10px_40px_rgba(234,179,8,0.2)] text-botanical-text relative overflow-hidden group">
           <div className="absolute top-0 right-0 p-8 opacity-10 transform translate-x-4 -translate-y-4 group-hover:scale-110 transition-transform duration-700">
             <span className="text-9xl">✂️</span>
           </div>

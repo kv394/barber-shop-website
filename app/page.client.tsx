@@ -8,7 +8,7 @@ import BarcodeScannerWrapper from '@/components/checkout/BarcodeScannerWrapper';
 import { useRouter } from 'next/navigation';
 import dynamic from 'next/dynamic';
 
-const KioskMode = dynamic(() => import('@/components/kiosk/KioskMode'), { ssr: false, loading: () => <div className="h-[100dvh] flex items-center justify-center bg-brand-dark text-brand-gold">Loading Kiosk...</div> });
+const KioskMode = dynamic(() => import('@/components/kiosk/KioskMode'), { ssr: false, loading: () => <div className="h-[100dvh] flex items-center justify-center bg-botanical-bg text-botanical-accent">Loading Kiosk...</div> });
 
 type Shop = {
   id: string;
@@ -153,10 +153,10 @@ export default function Home() {
 
   if (isLoading) {
     return (
-      <div className="h-[100dvh] overflow-y-auto overflow-x-hidden flex items-center justify-center bg-brand-dark">
+      <div className="h-[100dvh] overflow-y-auto overflow-x-hidden flex items-center justify-center bg-botanical-bg">
         <div className="flex flex-col items-center gap-4">
           <div className="w-12 h-12 border-4 border-brand-gold border-t-transparent rounded-full animate-spin"></div>
-          <p className="text-gray-400 text-sm animate-pulse font-medium tracking-wide uppercase">Initializing Platform...</p>
+          <p className="text-botanical-muted text-sm animate-pulse font-medium tracking-wide uppercase">Initializing Platform...</p>
         </div>
       </div>
     );
@@ -170,10 +170,10 @@ export default function Home() {
   // We can return a loading state while the redirect happens
   if (userProfile?.shopId && userProfile.role !== 'SUPER_ADMIN') {
     return (
-      <div className="h-[100dvh] overflow-y-auto overflow-x-hidden flex items-center justify-center bg-brand-dark">
+      <div className="h-[100dvh] overflow-y-auto overflow-x-hidden flex items-center justify-center bg-botanical-bg">
         <div className="flex flex-col items-center gap-4">
           <div className="w-12 h-12 border-4 border-brand-gold border-t-transparent rounded-full animate-spin"></div>
-          <p className="text-brand-gold text-sm animate-pulse font-medium tracking-wide uppercase">Entering Shop Portal...</p>
+          <p className="text-botanical-accent text-sm animate-pulse font-medium tracking-wide uppercase">Entering Shop Portal...</p>
         </div>
       </div>
     );
@@ -182,17 +182,17 @@ export default function Home() {
   const isSignedIn = !!userProfile;
 
   return (
-    <main className="h-[100dvh] overflow-y-auto overflow-x-hidden bg-brand-dark">
+    <main className="h-[100dvh] overflow-y-auto overflow-x-hidden bg-botanical-bg">
       <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
         
         <header className="flex justify-between items-center mb-12 sm:mb-20">
           <h1 className="font-serif text-3xl sm:text-4xl font-bold tracking-tight">
             {userProfile?.role === 'SUPER_ADMIN' ? (
-                <><span className="text-white">Barber</span><span className="text-brand-gold">SaaS</span></>
+                <><span className="text-botanical-text">Barber</span><span className="text-botanical-accent">SaaS</span></>
             ) : userProfile?.shop?.name ? (
-                <span className="text-brand-gold">{userProfile.shop.name}</span>
+                <span className="text-botanical-accent">{userProfile.shop.name}</span>
             ) : (
-                <><span className="text-white">Booking</span> <span className="text-brand-gold">Portal</span></>
+                <><span className="text-botanical-text">Booking</span> <span className="text-botanical-accent">Portal</span></>
             )}
           </h1>
           <div>
@@ -201,10 +201,10 @@ export default function Home() {
         </header>
 
         <div className="text-center mb-12 sm:mb-20">
-          <h2 className="font-serif text-4xl sm:text-6xl md:text-7xl font-bold leading-tight tracking-tight text-white max-w-4xl mx-auto drop-shadow-sm">
+          <h2 className="font-serif text-4xl sm:text-6xl md:text-7xl font-bold leading-tight tracking-tight text-botanical-text max-w-4xl mx-auto drop-shadow-sm">
             {isSignedIn ? `Welcome, ${userProfile?.name || 'User'}` : "Book Your Next Appointment"}
           </h2>
-          <p className="mt-4 sm:mt-6 text-lg sm:text-xl text-brand-gold/80 font-medium tracking-wide">
+          <p className="mt-4 sm:mt-6 text-lg sm:text-xl text-botanical-accent/80 font-medium tracking-wide">
             {userProfile ? (userProfile.role === 'SUPER_ADMIN' ? 'Platform Administrator Dashboard' : '') : (isSignedIn ? 'Loading...' : 'Please sign in to continue.')}
           </p>
         </div>
@@ -213,14 +213,14 @@ export default function Home() {
           {userProfile?.role === 'SUPER_ADMIN' && (
             <div className="space-y-6">
               {/* Quick Actions */}
-              <div className="bg-white/10 p-6 sm:p-8 rounded-lg border border-white/10">
-                <h2 className="text-xl sm:text-2xl font-serif text-white mb-2">Super Admin Control Panel</h2>
-                <p className="text-sm text-gray-400 mb-6">Manage the entire platform from the dedicated dashboard.</p>
+              <div className="bg-botanical-surface p-6 sm:p-8 rounded-lg border border-botanical-border">
+                <h2 className="text-xl sm:text-2xl font-serif text-botanical-text mb-2">Super Admin Control Panel</h2>
+                <p className="text-sm text-botanical-muted mb-6">Manage the entire platform from the dedicated dashboard.</p>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                  <Link href="/superadmin" className="bg-brand-gold text-brand-dark px-6 py-4 rounded-lg font-semibold hover:bg-white transition-colors text-center">
+                  <Link href="/superadmin" className="bg-botanical-primary text-botanical-bg px-6 py-4 rounded-lg font-semibold hover:bg-white transition-colors text-center">
                     📊 Platform Dashboard
                   </Link>
-                  <Link href="/superadmin/shops" className="bg-white/10 text-white px-6 py-4 rounded-lg font-semibold hover:bg-white/20 transition-colors text-center">
+                  <Link href="/superadmin/shops" className="bg-botanical-surface text-botanical-text px-6 py-4 rounded-lg font-semibold hover:bg-botanical-surface transition-colors text-center">
                     🏪 Manage Shops
                   </Link>
                   <Link href="/superadmin/logs" className="bg-red-900/30 text-red-400 px-6 py-4 rounded-lg font-semibold hover:bg-red-800/50 transition-colors text-center border border-red-500/30">
@@ -230,9 +230,9 @@ export default function Home() {
               </div>
 
               {/* Quick Shop Create */}
-              <div className="bg-white/10 p-4 sm:p-6 md:p-8 rounded-lg border border-white/10">
-                <h2 className="text-xl sm:text-2xl font-serif text-white mb-1">Quick Create Shop</h2>
-                <p className="text-xs sm:text-sm text-gray-400 mb-4">Provision a new tenant workspace.</p>
+              <div className="bg-botanical-surface p-4 sm:p-6 md:p-8 rounded-lg border border-botanical-border">
+                <h2 className="text-xl sm:text-2xl font-serif text-botanical-text mb-1">Quick Create Shop</h2>
+                <p className="text-xs sm:text-sm text-botanical-muted mb-4">Provision a new tenant workspace.</p>
 
                 {createError && (
                     <div className="mb-4 p-3 bg-red-900/50 border border-red-500 text-red-200 rounded text-sm">
@@ -243,39 +243,39 @@ export default function Home() {
                 <form onSubmit={handleCreateShop} className="space-y-4">
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                       <div>
-                          <label className="block text-sm text-gray-400 mb-1">Shop Name *</label>
+                          <label className="block text-sm text-botanical-muted mb-1">Shop Name *</label>
                           <input 
                               type="text" 
                               value={newShopName} 
                               onChange={(e) => setNewShopName(e.target.value)} 
                               placeholder="e.g., Downtown Barbers" 
-                              className="w-full bg-black/40 border border-white/20 rounded-md py-3 px-4 text-white placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-brand-gold" 
+                              className="w-full bg-botanical-surface border border-botanical-border rounded-md py-3 px-4 text-botanical-text placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-botanical-primary" 
                               required
                           />
                       </div>
                       <div>
-                          <label className="block text-sm text-gray-400 mb-1">Kiosk Email *</label>
+                          <label className="block text-sm text-botanical-muted mb-1">Kiosk Email *</label>
                           <input
                               type="email" 
                               value={kioskEmail} 
                               onChange={(e) => setKioskEmail(e.target.value)} 
                               placeholder="kiosk@example.com" 
-                              className="w-full bg-black/40 border border-white/20 rounded-md py-3 px-4 text-white placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-brand-gold" 
+                              className="w-full bg-botanical-surface border border-botanical-border rounded-md py-3 px-4 text-botanical-text placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-botanical-primary" 
                               required
                           />
                       </div>
                       <div>
-                          <label className="block text-sm text-gray-400 mb-1">Admin Email (Optional)</label>
+                          <label className="block text-sm text-botanical-muted mb-1">Admin Email (Optional)</label>
                           <input
                               type="email" 
                               value={newShopAdminEmail} 
                               onChange={(e) => setNewShopAdminEmail(e.target.value)} 
                               placeholder="admin@shop.com" 
-                              className="w-full bg-black/40 border border-white/20 rounded-md py-3 px-4 text-white placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-brand-gold" 
+                              className="w-full bg-botanical-surface border border-botanical-border rounded-md py-3 px-4 text-botanical-text placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-botanical-primary" 
                           />
                       </div>
                   </div>
-                  <button type="submit" className="w-full bg-brand-gold text-brand-dark px-8 py-3 rounded-md font-semibold hover:bg-white transition-colors">
+                  <button type="submit" className="w-full bg-botanical-primary text-botanical-bg px-8 py-3 rounded-md font-semibold hover:bg-white transition-colors">
                       Create Shop Workspace
                   </button>
                 </form>
@@ -286,22 +286,22 @@ export default function Home() {
                 <div>
                   <div className="flex justify-between items-center mb-4">
                     <h2 className="text-xl sm:text-2xl font-serif">Shops ({shops.length})</h2>
-                    <Link href="/superadmin/shops" className="text-brand-gold text-sm hover:underline">View All →</Link>
+                    <Link href="/superadmin/shops" className="text-botanical-accent text-sm hover:underline">View All →</Link>
                   </div>
                   <div className="space-y-3">
                     {shops.slice(0, 5).map((shop) => {
                        const hasAdmin = (shop.users || []).some(u => u.role === 'SHOP_ADMIN');
                        return (
-                          <div key={shop.id} className="bg-white/5 p-4 sm:p-6 rounded-lg hover:bg-white/10 transition-colors border border-white/5 shadow-md">
+                          <div key={shop.id} className="bg-botanical-surface p-4 sm:p-6 rounded-lg hover:bg-botanical-surface transition-colors border border-botanical-border shadow-md">
                             <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3">
                               <div className="flex-grow min-w-0">
                                   <div className="flex items-center gap-2 sm:gap-4 flex-wrap">
-                                      <h3 className="text-base sm:text-xl font-semibold text-white truncate">{shop.name}</h3>
+                                      <h3 className="text-base sm:text-xl font-semibold text-botanical-text truncate">{shop.name}</h3>
                                       <span className={`px-2 sm:px-3 py-0.5 sm:py-1 rounded-full text-[10px] sm:text-xs font-bold ${hasAdmin ? 'bg-green-500/20 text-green-400' : 'bg-amber-500/20 text-amber-400'}`}>
                                           {hasAdmin ? 'Active' : 'Needs Admin'}
                                       </span>
                                   </div>
-                                  <Link href={`/shop/${shop.id}/settings/team`} className="text-xs sm:text-sm text-brand-gold hover:underline mt-1 inline-block">
+                                  <Link href={`/shop/${shop.id}/settings/team`} className="text-xs sm:text-sm text-botanical-accent hover:underline mt-1 inline-block">
                                       Assign Team
                                   </Link>
                               </div>
@@ -320,11 +320,11 @@ export default function Home() {
           
           {/* CLIENT Fallback (if they don't have a shopId yet) */}
           {userProfile?.role === 'CLIENT' && !userProfile.shopId && (
-            <div className="bg-white/10 p-8 rounded-lg text-center border border-white/10">
+            <div className="bg-botanical-surface p-8 rounded-lg text-center border border-botanical-border">
               <h2 className="text-2xl font-serif mb-4">Welcome back!</h2>
-              <p className="text-gray-300 mb-6">Browse available shops and book your appointments.</p>
+              <p className="text-botanical-muted mb-6">Browse available shops and book your appointments.</p>
               <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                <Link href="/shops" className="inline-block bg-white/20 text-white px-8 py-3 rounded-md font-semibold hover:bg-white/30 transition-colors">
+                <Link href="/shops" className="inline-block bg-botanical-surface text-botanical-text px-8 py-3 rounded-md font-semibold hover:bg-botanical-surface transition-colors">
                   Browse Shops
                 </Link>
               </div>
@@ -332,16 +332,16 @@ export default function Home() {
           )}
           
           {!userProfile && isSignedIn && (
-            <div className="bg-white/10 p-8 rounded-lg text-center border border-white/10">
-              <p className="text-gray-300">Your profile is being set up. Please refresh the page.</p>
+            <div className="bg-botanical-surface p-8 rounded-lg text-center border border-botanical-border">
+              <p className="text-botanical-muted">Your profile is being set up. Please refresh the page.</p>
             </div>
           )}
           
           {!isSignedIn && (
-            <div className="bg-white/10 p-8 rounded-lg text-center border border-white/10">
-              <p className="text-gray-300 mb-6">Sign in to access your portal or browse available shops.</p>
+            <div className="bg-botanical-surface p-8 rounded-lg text-center border border-botanical-border">
+              <p className="text-botanical-muted mb-6">Sign in to access your portal or browse available shops.</p>
               <div className="flex gap-4 justify-center">
-                <Link href="/shops" className="inline-block bg-white/20 text-white px-8 py-3 rounded-md font-semibold hover:bg-white/30 transition-colors">
+                <Link href="/shops" className="inline-block bg-botanical-surface text-botanical-text px-8 py-3 rounded-md font-semibold hover:bg-botanical-surface transition-colors">
                   Browse Shops
                 </Link>
               </div>

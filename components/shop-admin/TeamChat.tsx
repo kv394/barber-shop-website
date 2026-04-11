@@ -147,7 +147,7 @@ export default function TeamChat({ shopId, currentUserId }: { shopId: string, cu
     <div className="flex flex-col h-[calc(100dvh-180px)] sm:h-[600px] bg-white rounded-t-3xl sm:rounded-2xl border border-botanical-border overflow-hidden shadow-2xl relative">
       {/* Header */}
       <div className="p-4 sm:p-5 border-b border-botanical-border bg-white z-10 shadow-sm relative">
-        <h3 className="font-bold text-slate-900 flex items-center gap-2 text-lg">
+        <h3 className="font-bold text-botanical-text flex items-center gap-2 text-lg">
           <span>💬</span> Team Chat
         </h3>
         <p className="text-xs text-botanical-muted">Moderated by Shop Admin</p>
@@ -169,11 +169,11 @@ export default function TeamChat({ shopId, currentUserId }: { shopId: string, cu
                 {!isMe && (
                   <span className="text-xs text-botanical-muted mb-1 ml-1 flex items-center gap-1 font-medium">
                     {msg.sender.name || 'User'} 
-                    {isAdmin && <span className="bg-botanical-primary text-white text-[8px] font-bold px-1.5 py-0.5 rounded uppercase">Admin</span>}
+                    {isAdmin && <span className="bg-botanical-primary text-botanical-text text-[8px] font-bold px-1.5 py-0.5 rounded uppercase">Admin</span>}
                   </span>
                 )}
                 
-                <div className={`max-w-[85%] sm:max-w-[80%] p-2 rounded-2xl ${isMe ? 'bg-botanical-primary text-white rounded-br-sm' : 'bg-white border border-botanical-border text-slate-800 rounded-bl-sm'} shadow-sm flex flex-col gap-2 overflow-hidden`}>
+                <div className={`max-w-[85%] sm:max-w-[80%] p-2 rounded-2xl ${isMe ? 'bg-botanical-primary text-botanical-text rounded-br-sm' : 'bg-white border border-botanical-border text-botanical-text rounded-bl-sm'} shadow-sm flex flex-col gap-2 overflow-hidden`}>
                   {msg.imageUrl && (
                     // eslint-disable-next-line @next/next/no-img-element
                     <img src={msg.imageUrl} alt="Shared image" className="max-w-full rounded-xl object-contain max-h-60" loading="lazy" />
@@ -208,7 +208,7 @@ export default function TeamChat({ shopId, currentUserId }: { shopId: string, cu
                 {u.name.charAt(0).toUpperCase()}
               </div>
               <div>
-                <div className="font-semibold text-slate-900 text-sm">{u.name}</div>
+                <div className="font-semibold text-botanical-text text-sm">{u.name}</div>
                 <div className="text-xs text-botanical-muted">{u.role.replace('_', ' ')}</div>
               </div>
             </button>
@@ -225,7 +225,7 @@ export default function TeamChat({ shopId, currentUserId }: { shopId: string, cu
               value={imageUrl}
               onChange={(e) => setImageUrl(e.target.value)}
               placeholder="Paste image URL here..."
-              className="flex-1 bg-transparent text-sm text-slate-900 placeholder-gray-500 focus:outline-none px-2"
+              className="flex-1 bg-transparent text-sm text-botanical-text placeholder-gray-500 focus:outline-none px-2"
             />
             <button
               type="button"
@@ -251,12 +251,12 @@ export default function TeamChat({ shopId, currentUserId }: { shopId: string, cu
             value={newMessage}
             onChange={handleInputChange}
             placeholder="Type a message..."
-            className="flex-1 bg-gray-100 border border-botanical-border rounded-full px-4 py-2.5 text-sm text-slate-900 placeholder-gray-500 focus:outline-none focus:border-brand-gold focus:ring-1 focus:ring-brand-gold transition-shadow"
+            className="flex-1 bg-gray-100 border border-botanical-border rounded-full px-4 py-2.5 text-sm text-botanical-text placeholder-gray-500 focus:outline-none focus:border-brand-gold focus:ring-1 focus:ring-botanical-primary transition-shadow"
           />
           <button 
             type="submit" 
             disabled={sending || (!newMessage.trim() && !imageUrl.trim())}
-            className="bg-botanical-primary text-white rounded-full w-11 h-11 flex items-center justify-center flex-shrink-0 disabled:opacity-50 transition-opacity hover:bg-yellow-400 shadow-sm"
+            className="bg-botanical-primary text-botanical-text rounded-full w-11 h-11 flex items-center justify-center flex-shrink-0 disabled:opacity-50 transition-opacity hover:bg-yellow-400 shadow-sm"
           >
             {sending ? '...' : '➤'}
           </button>

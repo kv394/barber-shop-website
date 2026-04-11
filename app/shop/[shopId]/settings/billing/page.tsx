@@ -108,7 +108,7 @@ export default async function ShopBillingPage({ params }: { params: Promise<{ sh
             ))}
           </div>
 
-          <div className="bg-botanical-bg/50 p-6 rounded-xl border border-white/5 shadow-lg relative overflow-hidden transition-all duration-300">
+          <div className="bg-botanical-bg/50 p-6 rounded-xl border border-botanical-border shadow-lg relative overflow-hidden transition-all duration-300">
             <div className="absolute top-0 left-0 w-full h-1 bg-botanical-primary/80"></div>
             <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 mb-6">
               <div>
@@ -123,14 +123,14 @@ export default async function ShopBillingPage({ params }: { params: Promise<{ sh
               </div>
             </div>
 
-            <div className="bg-black/20 p-4 rounded-lg mt-4 border border-white/5">
+            <div className="bg-botanical-surface p-4 rounded-lg mt-4 border border-botanical-border">
               <p className="text-sm text-botanical-muted leading-relaxed">
                 {analysis.strategyReasoning}
               </p>
             </div>
             <div className="mt-6 pt-4 border-t border-brand-gold/10 flex justify-between items-center text-xs">
               <span className="text-botanical-muted">Estimated Database Storage:</span>
-              <span className="font-mono text-botanical-text bg-black/40 px-2 py-1 rounded">~{analysis.estimatedStorageMB} MB</span>
+              <span className="font-mono text-botanical-text bg-botanical-surface px-2 py-1 rounded">~{analysis.estimatedStorageMB} MB</span>
             </div>
           </div>
 

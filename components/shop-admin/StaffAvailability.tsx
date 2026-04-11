@@ -109,7 +109,7 @@ export default function StaffAvailability({ defaultDate, defaultFrom, defaultTo,
               value={defaultDate}
               onChange={handleDateChange}
               style={timeStyle}
-              className="w-full p-2.5 rounded-lg border border-slate-600 text-botanical-text text-sm focus:ring-2 focus:ring-brand-gold focus:outline-none transition-all"
+              className="w-full p-2.5 rounded-lg border border-slate-600 text-botanical-text text-sm focus:ring-2 focus:ring-botanical-primary focus:outline-none transition-all"
             />
           </div>
           {showTimeFilters && (
@@ -122,7 +122,7 @@ export default function StaffAvailability({ defaultDate, defaultFrom, defaultTo,
                   value={defaultFrom}
                   onChange={handleTimeChange}
                   style={timeStyle}
-                  className="w-full p-2.5 rounded-lg border border-slate-600 text-botanical-text text-sm focus:ring-2 focus:ring-brand-gold focus:outline-none transition-all"
+                  className="w-full p-2.5 rounded-lg border border-slate-600 text-botanical-text text-sm focus:ring-2 focus:ring-botanical-primary focus:outline-none transition-all"
                 />
               </div>
               <div>
@@ -133,7 +133,7 @@ export default function StaffAvailability({ defaultDate, defaultFrom, defaultTo,
                   value={defaultTo}
                   onChange={handleTimeChange}
                   style={timeStyle}
-                  className="w-full p-2.5 rounded-lg border border-slate-600 text-botanical-text text-sm focus:ring-2 focus:ring-brand-gold focus:outline-none transition-all"
+                  className="w-full p-2.5 rounded-lg border border-slate-600 text-botanical-text text-sm focus:ring-2 focus:ring-botanical-primary focus:outline-none transition-all"
                 />
               </div>
             </>

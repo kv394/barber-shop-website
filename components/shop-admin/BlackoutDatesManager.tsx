@@ -47,7 +47,7 @@ export default function BlackoutDatesManager({ shopId }: { shopId: string }) {
   const past = dates.filter(d => new Date(d.date) < today);
 
   return (
-    <div className="bg-botanical-surface border border-white/5 rounded-xl p-6 space-y-5">
+    <div className="bg-botanical-surface border border-botanical-border rounded-xl p-6 space-y-5">
       <h3 className="text-lg font-bold text-botanical-text">🚫 Blackout Dates & Holidays</h3>
       <p className="text-botanical-muted text-sm">Mark days when your shop is closed. Online booking will be disabled for these dates.</p>
       {msg && <div className="p-3 bg-green-900/30 border border-green-500/30 text-green-300 rounded-lg text-sm">{msg}</div>}
@@ -56,9 +56,9 @@ export default function BlackoutDatesManager({ shopId }: { shopId: string }) {
       <div className="flex flex-col sm:flex-row gap-3">
         <input type="date" value={newDate} onChange={e => setNewDate(e.target.value)}
           min={new Date().toISOString().split('T')[0]}
-          className="bg-black/40 border border-botanical-border rounded px-3 py-2 text-botanical-text text-sm focus:outline-none focus:border-brand-gold flex-shrink-0" />
+          className="bg-botanical-surface border border-botanical-border rounded px-3 py-2 text-botanical-text text-sm focus:outline-none focus:border-brand-gold flex-shrink-0" />
         <select value={newReason} onChange={e => setNewReason(e.target.value)}
-          className="flex-1 bg-black/40 border border-botanical-border rounded px-3 py-2 text-botanical-text text-sm focus:outline-none focus:border-brand-gold">
+          className="flex-1 bg-botanical-surface border border-botanical-border rounded px-3 py-2 text-botanical-text text-sm focus:outline-none focus:border-brand-gold">
           <option value="">Select reason (optional)</option>
           {REASONS.map(r => <option key={r} value={r}>{r}</option>)}
         </select>
@@ -79,7 +79,7 @@ export default function BlackoutDatesManager({ shopId }: { shopId: string }) {
               const dt = new Date(d.date);
               const dayName = dt.toLocaleDateString('en-US', { weekday: 'long', timeZone: 'UTC' });
               return (
-                <div key={d.id} className="flex items-center justify-between p-3 bg-black/20 rounded-lg">
+                <div key={d.id} className="flex items-center justify-between p-3 bg-botanical-surface rounded-lg">
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-lg bg-red-900/40 border border-red-500/30 flex flex-col items-center justify-center">
                       <span className="text-red-300 text-xs font-bold leading-none">{MONTHS[dt.getUTCMonth()]}</span>

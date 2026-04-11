@@ -133,10 +133,10 @@ export default async function SignUpPage({
 
   return (
     <div className="flex min-h-[80vh] items-center justify-center p-4">
-      <div className="w-full max-w-md bg-slate-900 border border-white/10 rounded-2xl shadow-2xl p-8 mt-12 mb-12">
+      <div className="w-full max-w-md bg-botanical-surface border border-botanical-border rounded-2xl shadow-2xl p-8 mt-12 mb-12">
         <div className="text-center mb-8">
-          <h1 className="font-serif text-3xl font-bold text-white mb-2">Create Account</h1>
-          <p className="text-gray-400">Join to book your next appointment</p>
+          <h1 className="font-serif text-3xl font-bold text-botanical-text mb-2">Create Account</h1>
+          <p className="text-botanical-muted">Join to book your next appointment</p>
         </div>
 
         {error && (
@@ -145,20 +145,20 @@ export default async function SignUpPage({
 
         <form action={signUpAction} className="space-y-5">
           <div>
-            <label className="block text-sm font-medium text-gray-300 mb-1.5">Full Name</label>
-            <input name="name" type="text" required placeholder="John Doe" className="w-full bg-black/50 border border-white/20 rounded-lg p-3 text-white focus:ring-2 focus:ring-brand-gold focus:border-transparent outline-none" />
+            <label className="block text-sm font-medium text-botanical-muted mb-1.5">Full Name</label>
+            <input name="name" type="text" required placeholder="John Doe" className="w-full bg-botanical-surface border border-botanical-border rounded-lg p-3 text-botanical-text focus:ring-2 focus:ring-botanical-primary focus:border-transparent outline-none" />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-300 mb-1.5">Email Address</label>
-            <input name="email" type="email" required placeholder="you@example.com" className="w-full bg-black/50 border border-white/20 rounded-lg p-3 text-white focus:ring-2 focus:ring-brand-gold focus:border-transparent outline-none" />
+            <label className="block text-sm font-medium text-botanical-muted mb-1.5">Email Address</label>
+            <input name="email" type="email" required placeholder="you@example.com" className="w-full bg-botanical-surface border border-botanical-border rounded-lg p-3 text-botanical-text focus:ring-2 focus:ring-botanical-primary focus:border-transparent outline-none" />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-300 mb-1.5">Password</label>
-            <input name="password" type="password" required minLength={8} placeholder="••••••••" className="w-full bg-black/50 border border-white/20 rounded-lg p-3 text-white focus:ring-2 focus:ring-brand-gold focus:border-transparent outline-none" />
+            <label className="block text-sm font-medium text-botanical-muted mb-1.5">Password</label>
+            <input name="password" type="password" required minLength={8} placeholder="••••••••" className="w-full bg-botanical-surface border border-botanical-border rounded-lg p-3 text-botanical-text focus:ring-2 focus:ring-botanical-primary focus:border-transparent outline-none" />
           </div>
-          <button type="submit" className="w-full bg-brand-gold text-black font-bold py-3 rounded-lg hover:bg-white transition-colors mt-2">Sign Up</button>
+          <button type="submit" className="w-full bg-botanical-primary text-black font-bold py-3 rounded-lg hover:bg-white transition-colors mt-2">Sign Up</button>
         </form>
-        <p className="text-center text-sm text-gray-500 mt-8">Already have an account? <Link href="/sign-in" className="text-brand-gold hover:underline">Sign In</Link></p>
+        <p className="text-center text-sm text-botanical-muted mt-8">Already have an account? <Link href="/sign-in" className="text-botanical-accent hover:underline">Sign In</Link></p>
       </div>
     </div>
   );

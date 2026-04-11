@@ -34,11 +34,11 @@ export default function KioskSetupClient({ shopId, shopName }: { shopId: string;
         <p className="text-botanical-muted text-sm leading-relaxed">Set up a tablet or screen in your shop for staff to scan their QR/barcode to clock in and out. PIN-protected, no login required.</p>
       </div>
 
-      <div className="bg-botanical-surface border border-white/5 rounded-xl p-6 space-y-4">
+      <div className="bg-botanical-surface border border-botanical-border rounded-xl p-6 space-y-4">
         <h3 className="text-lg font-bold text-botanical-text">📱 Kiosk URL</h3>
         <p className="text-botanical-muted text-sm">Open on a tablet or dedicated screen in your shop.</p>
         <div className="flex gap-2">
-          <input readOnly value={kioskUrl} className="flex-1 bg-black/40 border border-botanical-border rounded-lg px-3 py-2.5 text-botanical-text text-sm font-mono focus:outline-none" />
+          <input readOnly value={kioskUrl} className="flex-1 bg-botanical-surface border border-botanical-border rounded-lg px-3 py-2.5 text-botanical-text text-sm font-mono focus:outline-none" />
           <button onClick={copyUrl} className={`px-4 py-2 rounded-lg text-sm font-semibold transition-colors ${copied ? 'bg-green-600 text-botanical-text' : 'bg-botanical-primary text-black hover:bg-white'}`}>
             {copied ? '✓ Copied!' : 'Copy'}
           </button>
@@ -46,12 +46,12 @@ export default function KioskSetupClient({ shopId, shopName }: { shopId: string;
         <a href={kioskUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 text-botanical-accent hover:underline text-sm">🚀 Open kiosk in new tab →</a>
       </div>
 
-      <div className="bg-botanical-surface border border-white/5 rounded-xl p-6 space-y-4">
+      <div className="bg-botanical-surface border border-botanical-border rounded-xl p-6 space-y-4">
         <h3 className="text-lg font-bold text-botanical-text">🔐 Kiosk PIN</h3>
         <p className="text-botanical-muted text-sm">Protect the kiosk with a 4–8 digit PIN.</p>
         <div className="flex gap-3">
           <input type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="Enter new PIN (4–8 digits)" maxLength={8}
-            className="w-48 bg-black/40 border border-botanical-border rounded-lg px-3 py-2.5 text-botanical-text text-sm focus:outline-none focus:border-brand-gold" />
+            className="w-48 bg-botanical-surface border border-botanical-border rounded-lg px-3 py-2.5 text-botanical-text text-sm focus:outline-none focus:border-brand-gold" />
           <button onClick={savePassword} disabled={saving || !password.trim()}
             className="px-4 py-2 bg-botanical-primary text-black rounded-lg text-sm font-bold disabled:opacity-50 hover:bg-white transition-colors">
             {saving ? 'Saving…' : 'Set PIN'}
@@ -59,13 +59,13 @@ export default function KioskSetupClient({ shopId, shopName }: { shopId: string;
         </div>
       </div>
 
-      <div className="bg-botanical-surface border border-white/5 rounded-xl p-6 space-y-3">
+      <div className="bg-botanical-surface border border-botanical-border rounded-xl p-6 space-y-3">
         <h3 className="text-lg font-bold text-botanical-text">🪪 Staff QR / Barcode Cards</h3>
         <p className="text-botanical-muted text-sm">Each staff member has a unique QR code. Go to Team Management to view and print.</p>
         <a href={`/shop/${shopId}/settings/team`} className="inline-block px-4 py-2 bg-botanical-surface border border-botanical-border text-botanical-muted rounded-lg text-sm hover:bg-botanical-border transition-colors">👥 Go to Team Management →</a>
       </div>
 
-      <div className="bg-botanical-surface border border-white/5 rounded-xl p-6">
+      <div className="bg-botanical-surface border border-botanical-border rounded-xl p-6">
         <h3 className="text-lg font-bold text-botanical-text mb-4">📋 Setup Instructions</h3>
         <ol className="space-y-3 text-sm text-botanical-muted">
           {['Set your kiosk PIN above.','Open the Kiosk URL on a tablet in your shop.','Enter the PIN to activate kiosk mode.','Staff scan their QR or barcode to clock in/out.','View logs under Staff → Attendance.'].map((step, i) => (

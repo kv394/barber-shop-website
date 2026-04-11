@@ -24,7 +24,7 @@ export default function UserQRCode({ barcode, userName, showText = true }: UserQ
             <p className="text-black font-semibold mt-2 text-sm text-center">
                 {userName}
             </p>
-            <p className="text-gray-500 font-mono text-xs tracking-widest mt-1">
+            <p className="text-botanical-muted font-mono text-xs tracking-widest mt-1">
                 {barcode}
             </p>
           </>

@@ -57,7 +57,7 @@ export default function PortfolioManager({ shopId, currentUserId, userRole }: { 
   };
 
   return (
-    <div className="bg-botanical-surface border border-white/5 rounded-xl p-6">
+    <div className="bg-botanical-surface border border-botanical-border rounded-xl p-6">
       <h3 className="text-lg font-bold text-botanical-text mb-2">📸 Staff Portfolio</h3>
       <p className="text-sm text-botanical-muted mb-6">
         Upload photos of your best work (fade, nail art, coloring, etc.). Clients can view these when booking.
@@ -65,12 +65,12 @@ export default function PortfolioManager({ shopId, currentUserId, userRole }: { 
 
       {/* Admin Staff Selector */}
       {(userRole === 'SHOP_ADMIN' || userRole === 'SUPER_ADMIN') && staffList.length > 0 && (
-        <div className="mb-6 p-4 bg-black/20 rounded-lg border border-white/5">
+        <div className="mb-6 p-4 bg-botanical-surface rounded-lg border border-botanical-border">
           <label className="block text-xs text-botanical-muted mb-2 uppercase tracking-wider">Select Staff Member Portfolio</label>
           <select 
             value={selectedStaffId}
             onChange={(e) => setSelectedStaffId(e.target.value)}
-            className="w-full bg-black/40 border border-botanical-border rounded px-3 py-2 text-botanical-text text-sm focus:outline-none focus:border-brand-gold"
+            className="w-full bg-botanical-surface border border-botanical-border rounded px-3 py-2 text-botanical-text text-sm focus:outline-none focus:border-brand-gold"
           >
             {staffList.map(s => (
               <option key={s.id} value={s.id}>{s.name} ({s.email})</option>
@@ -91,7 +91,7 @@ export default function PortfolioManager({ shopId, currentUserId, userRole }: { 
               value={imageUrl} 
               onChange={e => setImageUrl(e.target.value)} 
               placeholder="e.g. https://example.com/image.jpg" 
-              className="w-full bg-black/40 border border-botanical-border rounded px-3 py-2 text-botanical-text text-sm focus:outline-none focus:border-brand-gold" 
+              className="w-full bg-botanical-surface border border-botanical-border rounded px-3 py-2 text-botanical-text text-sm focus:outline-none focus:border-brand-gold" 
               required 
             />
           </div>
@@ -102,14 +102,14 @@ export default function PortfolioManager({ shopId, currentUserId, userRole }: { 
               value={caption} 
               onChange={e => setCaption(e.target.value)} 
               placeholder="e.g. Balayage & Cut" 
-              className="w-full bg-black/40 border border-botanical-border rounded px-3 py-2 text-botanical-text text-sm focus:outline-none focus:border-brand-gold" 
+              className="w-full bg-botanical-surface border border-botanical-border rounded px-3 py-2 text-botanical-text text-sm focus:outline-none focus:border-brand-gold" 
             />
           </div>
         </div>
         <button 
           type="submit" 
           disabled={saving || !imageUrl.trim()} 
-          className="px-4 py-2 bg-botanical-primary text-white rounded text-sm font-bold hover:bg-white transition disabled:opacity-50"
+          className="px-4 py-2 bg-botanical-primary text-botanical-text rounded text-sm font-bold hover:bg-white transition disabled:opacity-50"
         >
           {saving ? 'Uploading...' : 'Add to Portfolio'}
         </button>
@@ -122,10 +122,10 @@ export default function PortfolioManager({ shopId, currentUserId, userRole }: { 
       ) : (
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
           {images.map(img => (
-            <div key={img.id} className="relative group rounded-lg overflow-hidden border border-botanical-border aspect-square bg-black">
+            <div key={img.id} className="relative group rounded-lg overflow-hidden border border-botanical-border aspect-square bg-botanical-surface">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={img.imageUrl} alt={img.caption || 'Portfolio image'} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
-              <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-between p-3">
+              <div className="absolute inset-0 bg-botanical-surface opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-between p-3">
                 <div className="text-right">
                   <button 
                     onClick={() => removeImage(img.id)}
