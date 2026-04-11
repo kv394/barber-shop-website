@@ -90,7 +90,7 @@ export default async function ShopLayout({
       <main className="flex h-[100dvh] overflow-y-auto overflow-x-hidden flex-col items-center bg-botanical-bg text-botanical-text px-0 sm:p-4 md:p-8 lg:p-12 pb-24 sm:pb-4 pt-[64px] sm:pt-4 md:pt-8 lg:pt-12 scroll-smooth">
         <div className="w-full max-w-7xl px-3 sm:px-0 pt-4 sm:pt-0">
         <header className="hidden sm:flex justify-between items-center mb-6 sm:mb-8">
-          <h1 className="font-serif text-xl sm:text-2xl font-bold">
+          <h1 className="font-serif text-2xl sm:text-3xl md:text-4xl font-bold">
             {isSuperAdmin ? (
               <Link href="/superadmin">
                 <span className="text-botanical-text">Barber</span>
