@@ -79,8 +79,8 @@ export default async function SignInPage({
           if (computedSlug) {
             finalRedirectUrl = `/shops/${computedSlug}`;
           } else {
-             // Keep the redirect URL if there's one, else send to home
-             finalRedirectUrl = redirectUrl && redirectUrl !== '/' ? redirectUrl : '/';
+             // Keep the redirect URL if there's one, else send to shops directory
+             finalRedirectUrl = redirectUrl && redirectUrl !== '/' ? redirectUrl : '/shops';
           }
         } else {
           // Send staff/admins to the base URL

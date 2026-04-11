@@ -138,11 +138,7 @@ export default async function PublicShopPage({
     });
     
     if (dbUser && dbUser.role !== 'CLIENT') {
-       if (dbUser.shopId) {
-         redirect(`/shop/${dbUser.shopId}`);
-       } else {
-         redirect('/');
-       }
+       redirect('/');
     }
   }
 

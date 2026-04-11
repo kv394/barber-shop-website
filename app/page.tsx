@@ -20,6 +20,8 @@ export default async function HomePage() {
         const targetSlug = dbUser.shop?.name ? dbUser.shop.name.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '') : null;
         if (targetSlug) {
           redirect(`/shops/${targetSlug}`);
+        } else {
+          redirect('/shops');
         }
       } else if (dbUser.role === 'SHOP_ADMIN' || dbUser.role === 'STAFF') {
         if (dbUser.shopId) {

@@ -15,15 +15,15 @@ export default function MyAppointmentsNav() {
   ];
 
   return (
-    <nav className="max-w-4xl mx-auto px-4 sm:px-6 py-3 sm:py-4">
-      <div className="flex sm:flex-wrap gap-2 sm:gap-4 overflow-x-auto scrollbar-none pb-2 sm:pb-0">
+    <nav className="max-w-4xl mx-auto px-4 sm:px-3 py-3 sm:py-4">
+      <div className="flex sm:flex-wrap gap-1 sm:gap-1 overflow-x-auto scrollbar-none pb-2 sm:pb-0">
         {links.map((link) => {
           const isActive = pathname === link.href;
           return (
             <Link
               key={link.href}
               href={link.href}
-              className={`flex items-center gap-2 px-4 py-2.5 rounded-full text-sm font-semibold whitespace-nowrap transition-all ${
+              className={`flex items-center gap-1 px-4 py-1.5 rounded-full text-base md:text-lg font-semibold whitespace-nowrap transition-all ${
                 isActive 
                   ? 'bg-botanical-primarytext-white shadow-lg shadow-brand-gold/20' 
                   : 'bg-botanical-surface hover:bg-botanical-surface text-botanical-muted hover:text-botanical-text border-2 border-b-[6px] border-botanical-border'

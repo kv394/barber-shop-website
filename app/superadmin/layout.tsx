@@ -14,15 +14,7 @@ export default async function SuperAdminLayout({ children }: { children: React.R
 
   const dbUser = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUser?.email || '' }] }, select: { role: true } });
   if (dbUser?.role !== 'SUPER_ADMIN') {
-    return (
-      <div className="h-[100dvh] overflow-y-auto overflow-x-hidden">
-        <div className="text-center">
-          <h1 className="text-4xl font-bold text-red-500 mb-4">Access Denied</h1>
-          <p className="text-botanical-muted">Only Super Admins can access this area.</p>
-          <Link href="/" className="text-botanical-accent hover:underline mt-4 inline-block">← Back to Home</Link>
-        </div>
-      </div>
-    );
+    redirect('/');
   }
 
   return (

@@ -49,11 +49,7 @@ export default async function ShopsDirectoryPage({
     });
     
     if (dbUser && dbUser.role !== 'CLIENT') {
-       if (dbUser.shopId) {
-         redirect(`/shop/${dbUser.shopId}`);
-       } else {
-         redirect('/');
-       }
+       redirect('/');
     } else if (dbUser && dbUser.role === 'CLIENT' && dbUser.shopId && dbUser.shop?.name) {
        const targetSlug = dbUser.shop.name.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '');
        redirect(`/shops/${targetSlug}`);
