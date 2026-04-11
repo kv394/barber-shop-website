@@ -18,7 +18,7 @@ const SETTINGS_TABS = [
   'setup', 'products', 'services', 'settings-billing'
 ];
 
-const STAFF_TABS = ['staff', 'attendance', 'leave', 'team', 'portfolio'];
+const STAFF_TABS = ['staff', 'team', 'leave', 'portfolio'];
 const REPORTS_TABS = ['reports', 'staff-report', 'expenses', 'commissions'];
 const ENGAGEMENT_TABS = ['engagement', 'loyalty', 'referrals', 'campaigns', 'gift-cards'];
 
@@ -46,13 +46,11 @@ function SectionSidebar({ activeTab, shopId, section, userRole }: { activeTab: s
     if (isShopAdmin) {
       navLinks = [
         { href: `/shop/${shopId}/settings/team`, label: '👥 Team & Availability', key: 'team' },
-        { href: `/shop/${shopId}/attendance`, label: '🕐 Attendance', key: 'attendance' },
         { href: `/shop/${shopId}/portfolio`, label: '📸 Portfolio', key: 'portfolio' },
       ];
     } else {
       navLinks = [
         { href: `/shop/${shopId}/staff`, label: '📅 My Schedule', key: 'staff' },
-        { href: `/shop/${shopId}/attendance`, label: '🕐 My Attendance', key: 'attendance' },
         { href: `/shop/${shopId}/leave`, label: '🏖️ My Leave', key: 'leave' },
         { href: `/shop/${shopId}/portfolio`, label: '📸 My Portfolio', key: 'portfolio' },
         { href: `/shop/${shopId}/reports/commissions`, label: '💰 My Earnings', key: 'commissions' },

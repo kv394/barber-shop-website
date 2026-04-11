@@ -6,7 +6,7 @@ export function ShopNav({ shopId, userRole, activeTab }: { shopId: string, userR
   const isStaff = userRole === 'STAFF';
 
   // Group definitions
-  const staffTabs = ['staff', 'attendance', 'leave', 'team', 'portfolio'];
+  const staffTabs = ['staff', 'team', 'portfolio'];
   const reportsTabs = ['reports', 'staff-report', 'expenses', 'commissions'];
   const engagementTabs = ['engagement', 'loyalty', 'referrals', 'campaigns', 'gift-cards'];
   const settingsTabs = ['settings', 'appearance', 'contact-settings', 'settings-booking', 'settings-resources', 'settings-forms', 'settings-memberships', 'settings-notifications', 'settings-commissions', 'settings-kiosk', 'setup', 'products', 'services'];
