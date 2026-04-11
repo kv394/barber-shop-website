@@ -23,8 +23,8 @@ export function ShopNav({ shopId, userRole, activeTab }: { shopId: string, userR
   const mainTabClass = (tabName: string, groupTabs?: string[]) => {
     const isActive = activeTab === tabName || (groupTabs && groupTabs.includes(activeTab));
     return isActive
-      ? "px-4 py-2 text-sm sm:text-base text-brand-dark bg-brand-gold whitespace-nowrap font-bold shadow-[0_4px_0_0_#b38b22] border border-yellow-600 transform -translate-y-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold rounded-lg"
-      : "px-4 py-2 text-sm sm:text-base text-gray-400 hover:text-white hover:bg-white/5 transition-colors whitespace-nowrap font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-400 rounded-lg";
+      ? "px-5 py-2.5 text-sm sm:text-base text-brand-dark bg-brand-gold whitespace-nowrap font-black rounded-xl border-b-[4px] border-yellow-700 shadow-lg transform -translate-y-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold"
+      : "px-5 py-2.5 text-sm sm:text-base text-gray-400 hover:text-white hover:bg-white/10 transition-colors whitespace-nowrap font-bold rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-400";
   };
 
   // ── SUPER_ADMIN: only back link + team assignment ──
