@@ -186,7 +186,7 @@ export default function Home() {
       <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
         
         <header className="flex justify-between items-center mb-12 sm:mb-20">
-          <h1 className="font-serif text-3xl sm:text-4xl font-bold tracking-tight">
+          <h1 className="font-serif text-lg sm:text-sm font-bold tracking-tight">
             {userProfile?.role === 'SUPER_ADMIN' ? (
                 <><span className="text-botanical-text">Barber</span><span className="text-botanical-accent">SaaS</span></>
             ) : userProfile?.shop?.name ? (
@@ -201,10 +201,10 @@ export default function Home() {
         </header>
 
         <div className="text-center mb-12 sm:mb-20">
-          <h2 className="font-serif text-4xl sm:text-6xl md:text-7xl font-bold leading-tight tracking-tight text-botanical-text max-w-4xl mx-auto drop-shadow-sm">
+          <h2 className="font-serif text-sm sm:text-lg md:text-sm font-bold leading-tight tracking-tight text-botanical-text max-w-4xl mx-auto drop-shadow-sm">
             {isSignedIn ? `Welcome, ${userProfile?.name || 'User'}` : "Book Your Next Appointment"}
           </h2>
-          <p className="mt-4 sm:mt-6 text-lg sm:text-xl text-botanical-accent/80 font-medium tracking-wide">
+          <p className="mt-4 sm:mt-6 text-lg sm:text-sm text-botanical-accent/80 font-medium tracking-wide">
             {userProfile ? (userProfile.role === 'SUPER_ADMIN' ? 'Platform Administrator Dashboard' : '') : (isSignedIn ? 'Loading...' : 'Please sign in to continue.')}
           </p>
         </div>
@@ -214,7 +214,7 @@ export default function Home() {
             <div className="space-y-6">
               {/* Quick Actions */}
               <div className="bg-botanical-surface p-6 sm:p-8 rounded-lg border-2 border-b-[6px] border-botanical-border">
-                <h2 className="text-xl sm:text-2xl font-serif text-botanical-text mb-2">Super Admin Control Panel</h2>
+                <h2 className="text-sm sm:text-base font-serif text-botanical-text mb-2">Super Admin Control Panel</h2>
                 <p className="text-sm text-botanical-muted mb-6">Manage the entire platform from the dedicated dashboard.</p>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                   <Link href="/superadmin" className="bg-botanical-primary text-white px-6 py-4 rounded-lg font-semibold hover:bg-white transition-colors text-center">
@@ -231,7 +231,7 @@ export default function Home() {
 
               {/* Quick Shop Create */}
               <div className="bg-botanical-surface p-4 sm:p-6 md:p-8 rounded-lg border-2 border-b-[6px] border-botanical-border">
-                <h2 className="text-xl sm:text-2xl font-serif text-botanical-text mb-1">Quick Create Shop</h2>
+                <h2 className="text-sm sm:text-base font-serif text-botanical-text mb-1">Quick Create Shop</h2>
                 <p className="text-xs sm:text-sm text-botanical-muted mb-4">Provision a new tenant workspace.</p>
 
                 {createError && (
@@ -285,7 +285,7 @@ export default function Home() {
               {shops && shops.length > 0 && (
                 <div>
                   <div className="flex justify-between items-center mb-4">
-                    <h2 className="text-xl sm:text-2xl font-serif">Shops ({shops.length})</h2>
+                    <h2 className="text-sm sm:text-base font-serif">Shops ({shops.length})</h2>
                     <Link href="/superadmin/shops" className="text-botanical-accent text-sm hover:underline">View All →</Link>
                   </div>
                   <div className="space-y-3">
@@ -296,8 +296,8 @@ export default function Home() {
                             <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3">
                               <div className="flex-grow min-w-0">
                                   <div className="flex items-center gap-2 sm:gap-4 flex-wrap">
-                                      <h3 className="text-base sm:text-xl font-semibold text-botanical-text truncate">{shop.name}</h3>
-                                      <span className={`px-2 sm:px-3 py-0.5 sm:py-1 rounded-full text-[10px] sm:text-xs font-bold ${hasAdmin ? 'bg-green-500/20 text-green-400' : 'bg-amber-500/20 text-amber-400'}`}>
+                                      <h3 className="text-base sm:text-sm font-semibold text-botanical-text truncate">{shop.name}</h3>
+                                      <span className={`px-2 sm:px-3 py-0.5 sm:py-1 rounded-full text-xs sm:text-sm font-bold ${hasAdmin ? 'bg-green-500/20 text-green-400' : 'bg-amber-500/20 text-amber-400'}`}>
                                           {hasAdmin ? 'Active' : 'Needs Admin'}
                                       </span>
                                   </div>
@@ -321,7 +321,7 @@ export default function Home() {
           {/* CLIENT Fallback (if they don't have a shopId yet) */}
           {userProfile?.role === 'CLIENT' && !userProfile.shopId && (
             <div className="bg-botanical-surface p-8 rounded-lg text-center border-2 border-b-[6px] border-botanical-border">
-              <h2 className="text-2xl font-serif mb-4">Welcome back!</h2>
+              <h2 className="text-base font-serif mb-4">Welcome back!</h2>
               <p className="text-botanical-muted mb-6">Browse available shops and book your appointments.</p>
               <div className="flex flex-col sm:flex-row gap-3 justify-center">
                 <Link href="/shops" className="inline-block bg-botanical-surface text-botanical-text px-8 py-3 rounded-md font-semibold hover:bg-botanical-surface transition-colors">

@@ -119,7 +119,7 @@ export default function SectionSidebar({ activeTab, shopId, section, userRole }:
               href={l.href}
               ref={isActive ? activeLinkRef : null}
               aria-current={isActive ? 'page' : undefined}
-              className={`px-5 md:px-5 py-2.5 md:py-4 rounded-xl md:rounded-none text-sm font-bold md:font-medium whitespace-nowrap transition-all duration-150 relative w-full text-left md:border-b md:border-botanical-border md:last:border-b-0 ${
+              className={`px-5 md:px-5 py-2.5 md:py-4 rounded-xl md:rounded-none text-[10px] font-bold md:font-medium whitespace-nowrap transition-all duration-150 relative w-full text-left md:border-b md:border-botanical-border md:last:border-b-0 ${
                 isActive 
                   ? 'bg-gray-200/80 md:bg-botanical-primary/5 text-slate-900 md:text-botanical-primary shadow-[inset_0_3px_6px_rgba(0,0,0,0.15)] md:shadow-none border border-gray-300 md:border-transparent md:border-b-botanical-border transform translate-y-0.5 md:transform-none' 
                   : 'bg-white md:bg-transparent text-botanical-muted hover:bg-gray-50 md:hover:bg-black/5 md:hover:text-botanical-text border-b-[4px] border-botanical-border md:border-transparent md:border-b-botanical-border shadow-sm md:shadow-none hover:transform hover:-translate-y-0.5 md:hover:transform-none'
@@ -140,7 +140,7 @@ export default function SectionSidebar({ activeTab, shopId, section, userRole }:
           showLeftIndicator ? 'opacity-100' : 'opacity-0'
         }`}
       >
-        <div className="w-6 h-6 bg-white shadow-sm border-2 border-b-[6px] border-botanical-border rounded-full flex items-center justify-center animate-pulse">
+        <div className="w-6 h-6 bg-white shadow-sm border border-botanical-border rounded-full flex items-center justify-center animate-pulse">
           <span className="text-botanical-text font-black text-lg leading-none -mt-0.5 mr-0.5">‹</span>
         </div>
       </div>
@@ -152,7 +152,7 @@ export default function SectionSidebar({ activeTab, shopId, section, userRole }:
           showRightIndicator ? 'opacity-100' : 'opacity-0'
         }`}
       >
-        <div className="w-6 h-6 bg-white shadow-sm border-2 border-b-[6px] border-botanical-border rounded-full flex items-center justify-center animate-pulse">
+        <div className="w-6 h-6 bg-white shadow-sm border border-botanical-border rounded-full flex items-center justify-center animate-pulse">
           <span className="text-botanical-text font-black text-lg leading-none -mt-0.5 ml-0.5">›</span>
         </div>
       </div>
