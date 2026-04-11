@@ -5,6 +5,7 @@ import { prisma } from '@/lib/prisma';
 import { headers } from 'next/headers';
 import Link from 'next/link';
 import SupabaseAuthButton from '@/components/auth/SupabaseAuthButton';
+import GlobalChatWidget from '@/components/shop-admin/GlobalChatWidget';
 
 export const dynamic = 'force-dynamic';
 
@@ -121,6 +122,7 @@ export default async function ShopLayout({
 
         {children}
       </div>
+      <GlobalChatWidget shopId={shopId} currentUserId={userId} userRole={data.userRole} />
     </main>
   );
 }
