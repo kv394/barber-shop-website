@@ -249,6 +249,42 @@ export default async function ShopDashboardPage({ params }: { params: Promise<{ 
           )}
         </div>
       )}
+      {/* ── Predictive Action Surface: Up Next (STAFF & ADMIN) ── */}
+      {todayStats && todayStats.nextAppointment && (
+        <div className="mb-6 sm:mb-8 bg-gradient-to-br from-brand-gold to-yellow-600 rounded-3xl p-6 sm:p-8 shadow-[0_10px_40px_rgba(234,179,8,0.2)] text-brand-dark relative overflow-hidden group">
+          <div className="absolute top-0 right-0 p-8 opacity-10 transform translate-x-4 -translate-y-4 group-hover:scale-110 transition-transform duration-700">
+            <span className="text-9xl">✂️</span>
+          </div>
+          <div className="relative z-10">
+            <p className="text-sm font-bold uppercase tracking-widest mb-1 opacity-80">Up Next</p>
+            <h2 className="font-serif text-3xl sm:text-5xl font-bold mb-2 leading-tight">
+              {todayStats.nextAppointment.user?.name || 'Guest'}
+            </h2>
+            <div className="flex flex-wrap items-center gap-3 sm:gap-6 text-sm sm:text-base font-semibold opacity-90 mb-6">
+              <span className="flex items-center gap-1.5">
+                <span className="text-xl">⏰</span> 
+                {new Date(todayStats.nextAppointment.startTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+              </span>
+              <span className="flex items-center gap-1.5">
+                <span className="text-xl">✨</span> 
+                {todayStats.nextAppointment.service?.name}
+              </span>
+              {todayStats.nextAppointment.staff?.name && isShopAdmin && (
+                <span className="flex items-center gap-1.5">
+                  <span className="text-xl">👤</span> 
+                  {todayStats.nextAppointment.staff.name}
+                </span>
+              )}
+            </div>
+            <div className="flex gap-3">
+              <Link href={`/shop/${shopId}/bookings`} className="bg-brand-dark text-white px-6 py-3 rounded-xl font-bold hover:bg-slate-800 transition-colors shadow-lg active:scale-95">
+                View Details
+              </Link>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Today's Snapshot */}
       {todayStats && (
         <div className="mb-6 sm:mb-8">
@@ -295,17 +331,6 @@ export default async function ShopDashboardPage({ params }: { params: Promise<{ 
               <p className="text-xl sm:text-3xl font-black text-white break-words leading-tight">{todayStats.upcomingCount}</p>
             </div>
           </div>
-          {todayStats.nextAppointment && (
-            <div className="mt-3 bg-slate-900/50 p-3 rounded-lg border border-white/5 flex items-center gap-3">
-              <span className="text-brand-gold font-mono text-sm">
-                {new Date(todayStats.nextAppointment.startTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-              </span>
-              <span className="text-white text-sm font-medium">{todayStats.nextAppointment.user?.name || 'Guest'}</span>
-              <span className="text-gray-400 text-xs">— {todayStats.nextAppointment.service?.name}</span>
-              {todayStats.nextAppointment.staff?.name && <span className="text-purple-400 text-xs">✂️ {todayStats.nextAppointment.staff.name}</span>}
-              <span className="ml-auto text-[10px] text-gray-500 uppercase tracking-wider">Next Up</span>
-            </div>
-          )}
         </div>
       )}
       

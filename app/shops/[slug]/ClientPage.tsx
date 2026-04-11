@@ -238,14 +238,13 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                                     <div className="text-sm font-bold text-gray-400 uppercase tracking-widest border-t border-gray-200 pt-4 mb-4">
                                         Est. Time: {service.duration} mins
                                     </div>
-                                    <button 
+                                    <button
                                         onClick={() => handleBookClick(service)}
-                                        className="w-full text-white font-bold py-3 uppercase tracking-wider transition-colors"
+                                        className="w-full text-white font-bold py-3 uppercase tracking-wider transition-all duration-300 hover:scale-[1.02] active:scale-95 shadow-md hover:shadow-lg"
                                         style={{ backgroundColor: sportRed }}
                                     >
                                         Book This
-                                    </button>
-                                </div>
+                                    </button>                                </div>
                             </div>
                         ))}
                     </div>
@@ -347,14 +346,13 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                       </div>
                     </div>
                     <div className="px-6 pb-6 mt-auto">
-                         <button 
+                         <button
                             onClick={() => handleBookClick(service)}
-                            className="w-full text-white font-bold py-2 rounded transition-opacity hover:opacity-90" 
+                            className="w-full text-white font-bold py-2 rounded transition-all duration-300 hover:opacity-90 hover:scale-[1.02] active:scale-95 shadow-sm hover:shadow-md"
                             style={{ backgroundColor: primaryColor }}
-                        >
+                         >
                             Book Service
-                        </button>
-                    </div>
+                         </button>                    </div>
                   </div>
                 ))}
               </div>
@@ -444,13 +442,12 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                       </div>
                       <div className="flex items-center gap-6">
                           <div className="text-xl font-bold">${service.price.toFixed(2)}</div>
-                          <button 
+                          <button
                             onClick={() => handleBookClick(service)}
-                            className="border border-white text-white hover:bg-white hover:text-black px-4 py-1 uppercase text-xs tracking-widest transition-colors"
+                            className="border border-white text-white hover:bg-white hover:text-black px-4 py-1 uppercase text-xs tracking-widest transition-all duration-300 hover:scale-105 active:scale-95 shadow-[0_0_10px_rgba(255,255,255,0.1)] hover:shadow-[0_0_15px_rgba(255,255,255,0.3)]"
                           >
                             Book
-                          </button>
-                      </div>
+                          </button>                      </div>
                     </div>
                   ))}
                 </div>
@@ -515,13 +512,12 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                         <span className="text-sm text-gray-400">{service.duration} mins</span>
                         <span className="text-xl font-bold text-orange-400">${service.price.toFixed(2)}</span>
                       </div>
-                      <button 
+                      <button
                         onClick={() => handleBookClick(service)}
-                        className="w-full bg-gradient-to-r from-orange-500/20 to-purple-500/20 hover:from-orange-500 hover:to-purple-600 border border-orange-500/50 text-white font-semibold py-2 rounded transition-all"
+                        className="w-full bg-gradient-to-r from-orange-500/20 to-purple-500/20 hover:from-orange-500 hover:to-purple-600 border border-orange-500/50 text-white font-semibold py-2 rounded transition-all duration-300 hover:scale-[1.02] active:scale-95 hover:shadow-[0_0_20px_rgba(249,115,22,0.4)]"
                       >
                         Book
-                      </button>
-                    </div>
+                      </button>                    </div>
                   ))}
                 </div>
               </section>
@@ -593,14 +589,13 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                             <span className="font-medium block">${service.price.toFixed(2)}</span>
                             <span className="text-gray-400 text-xs">{service.duration}m</span>
                         </div>
-                        <button 
+                        <button
                             onClick={() => handleBookClick(service)}
-                            className="text-sm font-semibold hover:underline" 
+                            className="text-sm font-semibold hover:underline transition-all duration-300 hover:scale-110 active:scale-95 origin-right"
                             style={{ color: primaryColor }}
                         >
                             Book
-                        </button>
-                      </div>
+                        </button>                      </div>
                     </div>
                   ))}
                 </div>
@@ -673,13 +668,12 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                       ${service.price.toFixed(2)} &bull; {service.duration} MINS
                     </div>
                     {service.description && <p className="text-[#5a4634] italic text-sm mb-4">{service.description}</p>}
-                    <button 
+                    <button
                         onClick={() => handleBookClick(service)}
-                        className="mt-auto border border-[#2c1e16] px-6 py-2 text-xs uppercase tracking-widest hover:bg-[#2c1e16] hover:text-[#fdfbf7] transition-colors"
+                        className="mt-auto border border-[#2c1e16] px-6 py-2 text-xs uppercase tracking-widest hover:bg-[#2c1e16] hover:text-[#fdfbf7] transition-all duration-300 hover:scale-105 active:scale-95 hover:shadow-md"
                     >
                         Select
-                    </button>
-                  </div>
+                    </button>                  </div>
                 ))}
               </div>
             </section>
@@ -793,14 +787,13 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                       <div className="text-gray-500 text-sm">
                         ⏱️ {service.duration} minutes
                       </div>
-                      <button 
+                      <button
                         onClick={() => handleBookClick(service)}
-                        className="text-white px-4 py-2 rounded-lg font-semibold transition-opacity hover:opacity-90 text-sm"
+                        className="text-white px-4 py-2 rounded-lg font-semibold transition-all duration-300 hover:scale-105 active:scale-95 shadow-md hover:shadow-lg text-sm"
                         style={{ backgroundColor: primaryColor }}
                       >
                         Book
-                      </button>
-                    </div>
+                      </button>                    </div>
                   </div>
                 ))}
               </div>

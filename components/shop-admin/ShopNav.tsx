@@ -23,8 +23,8 @@ export function ShopNav({ shopId, userRole, activeTab }: { shopId: string, userR
   const mainTabClass = (tabName: string, groupTabs?: string[]) => {
     const isActive = activeTab === tabName || (groupTabs && groupTabs.includes(activeTab));
     return isActive
-      ? "px-5 py-2.5 text-sm sm:text-base text-brand-dark bg-brand-gold whitespace-nowrap font-black rounded-xl border-b-[4px] border-yellow-700 shadow-lg transform -translate-y-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold"
-      : "px-5 py-2.5 text-sm sm:text-base text-gray-400 hover:text-white hover:bg-white/10 transition-colors whitespace-nowrap font-bold rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-400";
+      ? "px-5 py-2.5 text-sm sm:text-base text-brand-dark bg-yellow-500 whitespace-nowrap font-black rounded-xl shadow-[inset_0_4px_8px_rgba(0,0,0,0.4)] transform translate-y-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold"
+      : "px-5 py-2.5 text-sm sm:text-base text-gray-300 bg-slate-800 hover:text-white hover:bg-slate-700 transition-all duration-150 whitespace-nowrap font-bold rounded-xl border-b-[4px] border-slate-950 hover:border-b-[6px] hover:-translate-y-0.5 active:border-b-[0px] active:translate-y-1 active:shadow-[inset_0_4px_8px_rgba(0,0,0,0.4)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-400";
   };
 
   // ── SUPER_ADMIN: only back link + team assignment ──

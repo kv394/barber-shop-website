@@ -182,11 +182,11 @@ export default function Home() {
   const isSignedIn = !!userProfile;
 
   return (
-    <main className="h-[100dvh] overflow-y-auto overflow-x-hidden">
-      <div className="w-full max-w-4xl">
+    <main className="h-[100dvh] overflow-y-auto overflow-x-hidden bg-brand-dark">
+      <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
         
-        <header className="flex justify-between items-center mb-8 sm:mb-12">
-          <h1 className="font-serif text-2xl sm:text-3xl font-bold">
+        <header className="flex justify-between items-center mb-12 sm:mb-20">
+          <h1 className="font-serif text-3xl sm:text-4xl font-bold tracking-tight">
             {userProfile?.role === 'SUPER_ADMIN' ? (
                 <><span className="text-white">Barber</span><span className="text-brand-gold">SaaS</span></>
             ) : userProfile?.shop?.name ? (
@@ -200,12 +200,12 @@ export default function Home() {
           </div>
         </header>
 
-        <div className="text-center mb-8 sm:mb-12">
-          <h2 className="font-serif text-3xl sm:text-5xl md:text-6xl font-bold">
+        <div className="text-center mb-12 sm:mb-20">
+          <h2 className="font-serif text-4xl sm:text-6xl md:text-7xl font-bold leading-tight tracking-tight text-white max-w-4xl mx-auto drop-shadow-sm">
             {isSignedIn ? `Welcome, ${userProfile?.name || 'User'}` : "Book Your Next Appointment"}
           </h2>
-          <p className="mt-3 sm:mt-4 text-base sm:text-lg text-brand-gold">
-            {userProfile ? (userProfile.role === 'SUPER_ADMIN' ? 'Platform Administrator' : '') : (isSignedIn ? 'Loading...' : 'Please sign in to continue.')}
+          <p className="mt-4 sm:mt-6 text-lg sm:text-xl text-brand-gold/80 font-medium tracking-wide">
+            {userProfile ? (userProfile.role === 'SUPER_ADMIN' ? 'Platform Administrator Dashboard' : '') : (isSignedIn ? 'Loading...' : 'Please sign in to continue.')}
           </p>
         </div>
 

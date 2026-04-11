@@ -119,10 +119,10 @@ export default function SectionSidebar({ activeTab, shopId, section, userRole }:
               href={l.href}
               ref={isActive ? activeLinkRef : null}
               aria-current={isActive ? 'page' : undefined}
-              className={`px-4 py-2.5 rounded-lg text-sm font-bold whitespace-nowrap ${
+              className={`px-5 py-2.5 rounded-xl text-sm font-bold whitespace-nowrap transition-all duration-150 ${
                 isActive 
-                  ? 'bg-gray-200/60 text-slate-900 md:bg-brand-gold md:text-brand-dark shadow-[inset_0_3px_6px_rgba(0,0,0,0.1)] md:shadow-lg border border-gray-300 md:border-b-[4px] md:border-yellow-700 transform translate-y-0.5 md:-translate-y-1' 
-                  : 'bg-white text-slate-600 md:bg-transparent md:text-gray-400 hover:bg-gray-100 md:hover:bg-white/10 md:hover:text-white border border-gray-200 md:border-transparent shadow-sm md:shadow-none transition-colors duration-200'
+                  ? 'bg-gray-200/80 text-slate-900 md:bg-brand-gold md:text-brand-dark shadow-[inset_0_3px_6px_rgba(0,0,0,0.15)] md:shadow-[inset_0_3px_6px_rgba(0,0,0,0.4)] border border-gray-300 md:border-yellow-600 transform translate-y-0.5' 
+                  : 'bg-white text-slate-600 md:bg-slate-800/80 md:text-gray-300 hover:bg-gray-50 md:hover:bg-slate-700 md:hover:text-white border-b-[4px] border-gray-300 md:border-slate-950 shadow-sm md:shadow-md hover:transform hover:-translate-y-0.5'
               }`}            >
               {l.label}
             </Link>
