@@ -28,10 +28,12 @@ export default function SectionSidebar({ activeTab, shopId, section, userRole }:
       navLinks = [
         { href: `/shop/${shopId}/settings/team`, label: '👥 Team & Availability', key: 'team' },
         { href: `/shop/${shopId}/portfolio`, label: '📸 Portfolio', key: 'portfolio' },
+        { href: `/shop/${shopId}/chat`, label: '💬 Team Chat', key: 'chat' },
       ];
     } else {
       navLinks = [
         { href: `/shop/${shopId}/staff`, label: '📅 My Schedule', key: 'staff' },
+        { href: `/shop/${shopId}/chat`, label: '💬 Team Chat', key: 'chat' },
         { href: `/shop/${shopId}/leave`, label: '🏖️ My Leave', key: 'leave' },
         { href: `/shop/${shopId}/portfolio`, label: '📸 My Portfolio', key: 'portfolio' },
         { href: `/shop/${shopId}/reports/commissions`, label: '💰 My Earnings', key: 'commissions' },

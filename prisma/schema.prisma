@@ -56,6 +56,7 @@ model Shop {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  messages  Message[]
 
   @@index([createdAt]) // Performance index for directory sorting
 }
@@ -120,6 +121,7 @@ model User {
   createdAt       DateTime         @default(now())
   updatedAt       DateTime         @updatedAt
   formSubmissions FormSubmission[]
+  messages        Message[]
 
   @@index([shopId, role])
   @@index([email])
@@ -821,4 +823,16 @@ model SaaSTier {
   description         String?
   createdAt           DateTime @default(now())
   updatedAt           DateTime @updatedAt
+}
+
+model Message {
+  id        String   @id @default(cuid())
+  shopId    String
+  shop      Shop     @relation(fields: [shopId], references: [id], onDelete: Cascade)
+  senderId  String
+  sender    User     @relation(fields: [senderId], references: [id], onDelete: Cascade)
+  content   String   @db.Text
+  createdAt DateTime @default(now())
+
+  @@index([shopId, createdAt])
 }

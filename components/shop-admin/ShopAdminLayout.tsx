@@ -19,7 +19,7 @@ const SETTINGS_TABS = [
   'setup', 'products', 'services', 'settings-billing'
 ];
 
-const STAFF_TABS = ['staff', 'team', 'leave', 'portfolio', 'profile'];
+const STAFF_TABS = ['staff', 'team', 'leave', 'portfolio', 'profile', 'chat'];
 const REPORTS_TABS = ['reports', 'staff-report', 'expenses', 'commissions'];
 const ENGAGEMENT_TABS = ['engagement', 'loyalty', 'referrals', 'campaigns', 'gift-cards'];
 

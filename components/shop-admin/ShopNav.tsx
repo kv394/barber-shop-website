@@ -54,6 +54,9 @@ export function ShopNav({ shopId, userRole, activeTab }: { shopId: string, userR
               <Link href={`/shop/${shopId}`} aria-current={activeTab === 'dashboard' ? 'page' : undefined} className={mainTabClass('dashboard')}>
                 Dashboard
               </Link>
+              <Link href={`/shop/${shopId}/chat`} aria-current={activeTab === 'chat' ? 'page' : undefined} className={mainTabClass('chat')}>
+                Chat
+              </Link>
               <Link href={`/shop/${shopId}/bookings`} aria-current={activeTab === 'bookings' ? 'page' : undefined} className={mainTabClass('bookings')}>
                 Bookings
               </Link>
