@@ -34,7 +34,7 @@ export default async function ShopRedirectPage() {
 
   // Fallback for users who are logged in but not associated with any shop.
   return (
-    <div className="flex min-h-screen items-center justify-center bg-slate-900 text-white p-12">
+    <div className="h-[100dvh] overflow-y-auto overflow-x-hidden">
       <div className="text-center">
         <h1 className="text-2xl font-bold mb-4">No Shop Assigned</h1>
         <p className="text-gray-400">Your user account is not currently assigned to a shop.</p>

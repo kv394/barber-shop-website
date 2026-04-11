@@ -174,7 +174,7 @@ function RecoverPasswordForm() {
 
 export default function RecoverPasswordPage() {
   return (
-    <Suspense fallback={<div className="min-h-screen bg-black text-white flex items-center justify-center">Loading...</div>}>
+    <Suspense fallback={<div className="h-[100dvh] overflow-y-auto overflow-x-hidden">Loading...</div>}>
       <RecoverPasswordForm />
     </Suspense>
   );

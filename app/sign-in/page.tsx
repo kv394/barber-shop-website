@@ -67,10 +67,25 @@ export default async function SignInPage({
     if (authData?.user?.email) {
       const dbUser = await prisma.user.findUnique({
         where: { email: authData.user.email },
-        select: { role: true }
+        select: { role: true, shop: { select: { name: true } } }
       });
-      if (dbUser && dbUser.role !== 'CLIENT') {
-        finalRedirectUrl = '/'; // Send staff/admins to the base URL
+      
+      if (dbUser) {
+        if (dbUser.role === 'CLIENT') {
+          // Always send clients to the shop landing page if we can determine their shop
+          // But wait, clients can be linked to multiple shops potentially in some systems.
+          // In our system, user belongs to ONE shopId primarily.
+          const computedSlug = dbUser.shop?.name ? dbUser.shop.name.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '') : null;
+          if (computedSlug) {
+            finalRedirectUrl = `/shops/${computedSlug}`;
+          } else {
+             // Keep the redirect URL if there's one, else send to home
+             finalRedirectUrl = redirectUrl && redirectUrl !== '/' ? redirectUrl : '/';
+          }
+        } else {
+          // Send staff/admins to the base URL
+          finalRedirectUrl = '/';
+        }
       }
     }
 

@@ -88,7 +88,7 @@ export default async function ReportsPage({ params }: { params: Promise<{ shopId
 
   if (!pageData) {
     return (
-        <div className="flex min-h-screen items-center justify-center bg-slate-900 text-white p-12">
+        <div className="h-[100dvh] overflow-y-auto overflow-x-hidden">
             <div className="text-center">
                 <h1 className="text-4xl font-bold text-red-500 mb-4">Access Denied</h1>
                 <p className="text-gray-400">You do not have permission to view this page.</p>

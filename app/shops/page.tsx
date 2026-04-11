@@ -42,7 +42,7 @@ export default async function ShopsDirectoryPage({
   const { shops, totalCount, totalPages } = await getShopsPage(currentPage);
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
+    <main className="h-[100dvh] overflow-y-auto overflow-x-hidden">
       {/* Hero Section */}
       <section className="bg-black/40 backdrop-blur-md border-b border-slate-700">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16 md:py-24">

@@ -139,7 +139,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
 
     if (dynamicTemplateHtml) {
         return (
-            <main className="min-h-screen bg-slate-900 text-white font-sans relative" onClick={handleDynamicTemplateClick}>
+            <main className="h-[100dvh] overflow-y-auto overflow-x-hidden bg-slate-900 text-white font-sans relative" onClick={handleDynamicTemplateClick}>
                 {authButton}
                 {dynamicTemplateCss && <style dangerouslySetInnerHTML={{ __html: dynamicTemplateCss }} />}
                 <div dangerouslySetInnerHTML={{ __html: dynamicTemplateHtml }} />
@@ -158,7 +158,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
 
     if (templateType === 'sporty') {
         return (
-            <main className="min-h-screen bg-white text-gray-900 font-sans relative">
+            <main className="h-[100dvh] overflow-y-auto overflow-x-hidden bg-white text-gray-900 font-sans relative">
                 {/* Top Bar - Contact Info & Auth */}
                 <div className="bg-black text-white text-xs py-2 px-4 flex justify-end items-center space-x-4">
                     {shopPhone && <span>{shopPhone}</span>}
@@ -301,7 +301,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
       
       if (templateType === 'corporate') {
         return (
-          <main className="min-h-screen bg-gray-100 text-gray-800 font-sans relative">
+          <main className="h-[100dvh] overflow-y-auto overflow-x-hidden bg-gray-100 text-gray-800 font-sans relative">
             <header className="bg-white shadow-md relative z-40">
               <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center py-4 overflow-x-auto hide-scrollbar">
                 <h1 className="text-3xl font-bold shrink-0 mr-6" style={{ color: primaryColor }}>{shop.name}</h1>
@@ -405,7 +405,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
     
       if (templateType === 'noir') {
         return (
-          <main className="min-h-screen bg-black text-white font-serif relative">
+          <main className="h-[100dvh] overflow-y-auto overflow-x-hidden bg-black text-white font-serif relative">
             <div className="absolute top-6 left-8 z-50">
                 {pages.filter((p: any) => p.isVisible).length > 0 && (
                     <nav className="flex gap-6 font-sans text-xs uppercase tracking-[0.2em]">
@@ -475,7 +475,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
     
       if (templateType === 'sunset') {
         return (
-          <main className="min-h-screen bg-gradient-to-br from-purple-900 via-black to-orange-900 text-white font-sans relative">
+          <main className="h-[100dvh] overflow-y-auto overflow-x-hidden bg-gradient-to-br from-purple-900 via-black to-orange-900 text-white font-sans relative">
             <div className="absolute w-full top-0 left-0 p-4 sm:p-6 flex justify-between items-center z-50">
              {pages.filter((p: any) => p.isVisible).length > 0 ? (
                  <nav className="flex gap-4 sm:gap-6 bg-black/30 px-4 sm:px-6 py-2 rounded-full backdrop-blur-md border border-orange-500/20 overflow-x-auto max-w-[calc(100vw-100px)] hide-scrollbar">
@@ -545,7 +545,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
     
       if (templateType === 'minimal') {
         return (
-          <main className="min-h-screen bg-white text-gray-900 font-sans relative">
+          <main className="h-[100dvh] overflow-y-auto overflow-x-hidden bg-white text-gray-900 font-sans relative">
             <div className="absolute top-6 left-6 z-50">
                 {pages.filter((p: any) => p.isVisible).length > 0 && (
                     <nav className="flex gap-4 sm:gap-6 font-semibold text-sm">
@@ -627,7 +627,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
     
       if (templateType === 'classic') {
         return (
-          <main className="min-h-screen bg-[#fdfbf7] text-[#2c1e16] font-serif relative">
+          <main className="h-[100dvh] overflow-y-auto overflow-x-hidden bg-[#fdfbf7] text-[#2c1e16] font-serif relative">
             <div className="absolute top-6 left-8 z-50">
                 {pages.filter((p: any) => p.isVisible).length > 0 && (
                     <nav className="flex gap-6 font-sans text-xs font-bold uppercase tracking-widest">
@@ -708,7 +708,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
     
       // Default 'modern' template (the one that was originally there)
       return (
-        <main className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 relative">
+        <main className="h-[100dvh] overflow-y-auto overflow-x-hidden bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 relative">
           <header className="absolute w-full top-0 left-0 p-4 sm:p-6 flex justify-between items-center z-50">
              {pages.filter((p: any) => p.isVisible).length > 0 ? (
                  <nav className="flex gap-4 sm:gap-6 bg-black/20 px-4 sm:px-6 py-2 rounded-full backdrop-blur-md border border-white/10 overflow-x-auto max-w-[calc(100vw-100px)] hide-scrollbar">

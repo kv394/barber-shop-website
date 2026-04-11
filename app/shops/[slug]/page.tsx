@@ -2,6 +2,8 @@ import { cache } from 'react';
 import { prisma } from '@/lib/prisma';
 import { Metadata } from 'next';
 import ClientPage from './ClientPage';
+import { createClient } from '@/utils/supabase/server';
+import { redirect } from 'next/navigation';
 
 // Use this to ensure the page caches effectively unless revalidated
 export const revalidate = 60;
@@ -116,13 +118,32 @@ export default async function PublicShopPage({
 
   if (!shop) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 to-slate-800 flex items-center justify-center">
+      <div className="h-[100dvh] overflow-y-auto overflow-x-hidden">
         <div className="text-center">
           <h1 className="text-4xl font-bold text-white mb-4">Shop Not Found</h1>
           <p className="text-gray-400">We couldn't find the shop you're looking for.</p>
         </div>
       </div>
     );
+  }
+
+  // Automatically redirect STAFF and ADMINS to their dashboard (the BarberSaaS base URL)
+  // Only CLIENTS should be viewing the public shop landing page.
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (user?.email) {
+    const dbUser = await prisma.user.findUnique({
+      where: { email: user.email },
+      select: { role: true, shopId: true }
+    });
+    
+    if (dbUser && dbUser.role !== 'CLIENT') {
+       if (dbUser.shopId) {
+         redirect(`/shop/${dbUser.shopId}`);
+       } else {
+         redirect('/');
+       }
+    }
   }
 
   // Use the custom colors if they exist, otherwise fallback to defaults

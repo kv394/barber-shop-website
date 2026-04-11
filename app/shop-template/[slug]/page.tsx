@@ -78,7 +78,7 @@ export default async function PublicShopPage({
 
   if (!shop) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 to-slate-800 flex items-center justify-center">
+      <div className="h-[100dvh] overflow-y-auto overflow-x-hidden">
         <div className="text-center">
           <h1 className="text-4xl font-bold text-white mb-4">Shop Not Found</h1>
           <p className="text-gray-400">We couldn't find the shop you're looking for.</p>
@@ -123,7 +123,7 @@ export default async function PublicShopPage({
 
   if (templateType === 'minimal') {
     return (
-      <main className="min-h-screen bg-white text-gray-900 font-sans">
+      <main className="h-[100dvh] overflow-y-auto overflow-x-hidden">
         <header className="max-w-4xl mx-auto px-6 py-12 border-b border-gray-100 flex flex-col md:flex-row justify-between items-end md:items-center">
           <div>
             <h1 className="text-4xl font-light tracking-tight" style={{ color: primaryColor }}>{shop.name}</h1>
@@ -171,7 +171,7 @@ export default async function PublicShopPage({
 
   if (templateType === 'classic') {
     return (
-      <main className="min-h-screen bg-[#fdfbf7] text-[#2c1e16] font-serif">
+      <main className="h-[100dvh] overflow-y-auto overflow-x-hidden">
         <header className="border-b-4 border-[#2c1e16] py-16 text-center bg-[url('https://www.transparenttextures.com/patterns/aged-paper.png')]">
           <h1 className="text-6xl font-bold uppercase tracking-widest mb-4" style={{ color: primaryColor }}>{shop.name}</h1>
           <div className="flex items-center justify-center space-x-4 mb-4">
@@ -220,7 +220,7 @@ export default async function PublicShopPage({
 
   // Default 'modern' template (the one that was originally there)
   return (
-    <main className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
+    <main className="h-[100dvh] overflow-y-auto overflow-x-hidden">
       {/* Hero Section */}
       <section 
         className="bg-black/40 backdrop-blur-md border-b border-slate-700"

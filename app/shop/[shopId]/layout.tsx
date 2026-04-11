@@ -39,8 +39,25 @@ export default async function ShopLayout({
   const data = await getShopLayoutData(userId, shopId);
 
   if (!data) {
+    // If data is null, they either don't belong to this shop or they are a CLIENT.
+    // Let's check their actual role.
+    const dbUser = await prisma.user.findFirst({
+        where: { OR: [{ id: userId }, { email: user?.email || '' }] },
+        select: { role: true, shop: { select: { name: true } } }
+    });
+
+    if (dbUser?.role === 'CLIENT') {
+        const computedSlug = dbUser.shop?.name ? dbUser.shop.name.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '') : null;
+        const targetSlug = computedSlug || shopSlug;
+        if (targetSlug) {
+            redirect(`/shops/${targetSlug}`);
+        } else {
+            redirect('/');
+        }
+    }
+
     return (
-      <div className="flex min-h-screen items-center justify-center bg-slate-900 text-white p-12">
+      <div className="h-[100dvh] overflow-y-auto overflow-x-hidden">
         <div className="text-center">
           <h1 className="text-4xl font-bold text-red-500 mb-4">Access Denied</h1>
           <p className="text-gray-400">You do not have permission to view this page.</p>

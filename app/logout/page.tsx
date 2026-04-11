@@ -18,7 +18,7 @@ export default function LogoutPage() {
   }, [router]);
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-brand-dark text-white">
+    <div className="h-[100dvh] overflow-y-auto overflow-x-hidden">
       <p>Logging out...</p>
     </div>
   );

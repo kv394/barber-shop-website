@@ -53,7 +53,7 @@ export default async function TemplatePreviewPage({ params }: { params: Promise<
   }
 
   return (
-    <main className="min-h-screen bg-slate-900 text-white">
+    <main className="h-[100dvh] overflow-y-auto overflow-x-hidden">
       {/* Super Admin Preview Header */}
       <div className="bg-black/80 text-white p-3 border-b border-white/10 flex justify-between items-center sticky top-0 z-50">
         <div>
@@ -69,7 +69,7 @@ export default async function TemplatePreviewPage({ params }: { params: Promise<
       </div>
 
       {/* Rendered Template */}
-      <div className="bg-white text-black min-h-screen">
+      <div className="h-[100dvh] overflow-y-auto overflow-x-hidden">
         {template.cssCode && (
           <style dangerouslySetInnerHTML={{ __html: template.cssCode }} />
         )}

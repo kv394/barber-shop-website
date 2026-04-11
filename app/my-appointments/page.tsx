@@ -87,7 +87,7 @@ export default function MyAppointmentsPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center">
+      <div className="h-[100dvh] overflow-y-auto overflow-x-hidden">
         <div className="flex flex-col items-center gap-4">
           <div className="w-10 h-10 border-3 border-brand-gold border-t-transparent rounded-full animate-spin" />
           <p className="text-gray-400 text-sm animate-pulse">Loading your appointments…</p>
@@ -97,7 +97,7 @@ export default function MyAppointmentsPage() {
   }
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
+    <main className="h-[100dvh] overflow-y-auto overflow-x-hidden">
       {/* Header */}
       <header className="bg-black/40 backdrop-blur-md border-b border-slate-700 sticky top-0 z-20">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">

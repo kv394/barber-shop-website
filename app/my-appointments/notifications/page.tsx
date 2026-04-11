@@ -38,7 +38,7 @@ export default function NotificationsPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center">
+      <div className="h-[100dvh] overflow-y-auto overflow-x-hidden">
         <p className="text-gray-400 animate-pulse">Loading…</p>
       </div>
     );
@@ -47,7 +47,7 @@ export default function NotificationsPage() {
   const togglePref = (key: string) => setPrefs({ ...prefs, [key]: !prefs[key] });
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
+    <main className="h-[100dvh] overflow-y-auto overflow-x-hidden">
       <header className="bg-black/40 backdrop-blur-md border-b border-slate-700 sticky top-0 z-20">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 py-4 flex justify-between items-center">
           <div>
