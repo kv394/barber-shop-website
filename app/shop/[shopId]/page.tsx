@@ -32,7 +32,11 @@ async function getShopData(shopId: string, userId: string) {
       },
     }),
     prisma.appointment.findMany({
-      where: { shopId, startTime: { gte: today, lt: tomorrow } },
+      where: { 
+        shopId, 
+        startTime: { gte: today, lt: tomorrow },
+        ...(data.userRole === 'STAFF' ? { staffId: data.user.id } : {})
+      },
       include: { service: { select: { price: true, name: true } }, user: { select: { name: true } }, staff: { select: { name: true } } },
       orderBy: { startTime: 'asc' },
     }),

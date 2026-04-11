@@ -31,6 +31,7 @@ async function getPageData(shopId: string, userId: string) {
     where: {
       shopId: shopId,
       startTime: { gte: today, lte: nextMonth },
+      ...(data.userRole === 'STAFF' ? { staffId: data.user.id } : {})
     },
     include: {
       service: { select: { name: true, price: true, duration: true } },

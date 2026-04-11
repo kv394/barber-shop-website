@@ -22,8 +22,23 @@ export async function GET(
 
     if (!canView) return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
 
-    const client = await prisma.user.findUnique({
-      where: { id: clientId },
+    let clientCondition: any = {
+      id: clientId,
+      OR: [
+        { shopId: shopId },
+        { clientAppointments: { some: { shopId: shopId } } },
+      ],
+    };
+
+    if (currentUser?.role === 'STAFF') {
+        clientCondition = {
+            id: clientId,
+            clientAppointments: { some: { shopId: shopId, staffId: currentUser.id } }
+        };
+    }
+
+    const client = await prisma.user.findFirst({
+      where: clientCondition,
       select: {
         id: true, name: true, email: true, phone: true, 
         clientNotes: true, preferences: true, allergies: true,
@@ -81,15 +96,24 @@ export async function PATCH(
 
     if (!canEdit) return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
 
-    // Verify the client has a relationship with this shop (appointments or shopId)
+    let verifyClientCondition: any = {
+      id: clientId,
+      OR: [
+        { shopId: shopId },
+        { clientAppointments: { some: { shopId: shopId } } },
+      ],
+    };
+
+    if (currentUser?.role === 'STAFF') {
+        verifyClientCondition = {
+            id: clientId,
+            clientAppointments: { some: { shopId: shopId, staffId: currentUser.id } }
+        };
+    }
+
+    // Verify the client has a relationship with this shop (or with this staff member)
     const client = await prisma.user.findFirst({
-      where: {
-        id: clientId,
-        OR: [
-          { shopId: shopId },
-          { clientAppointments: { some: { shopId: shopId } } },
-        ],
-      },
+      where: verifyClientCondition,
     });
     if (!client) return NextResponse.json({ error: 'Client not found in this shop' }, { status: 404 });
 
