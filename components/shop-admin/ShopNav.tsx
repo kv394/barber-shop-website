@@ -22,17 +22,19 @@ export function ShopNav({ shopId, userRole, activeTab }: { shopId: string, userR
   // Main tab: active if exact match OR if activeTab is in the group
   const mainTabClass = (tabName: string, groupTabs?: string[]) => {
     const isActive = activeTab === tabName || (groupTabs && groupTabs.includes(activeTab));
-    return isActive
-      ? "px-4 py-2 text-sm sm:text-xs text-white bg-botanical-primary whitespace-nowrap font-black rounded-xl shadow-[inset_0_4px_8px_rgba(0,0,0,0.3)] transform translate-y-0.5 border border-botanical-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-botanical-primary"
-      : "px-4 py-2 text-sm sm:text-xs text-botanical-muted bg-white hover:text-botanical-text hover:bg-gray-50 transition-all duration-200 whitespace-nowrap font-bold rounded-xl border border-gray-200 border-b-[4px] border-b-gray-300 hover:border-b-[6px] hover:-translate-y-0.5 active:border-b-[0px] active:translate-y-1 active:shadow-[inset_0_4px_8px_rgba(0,0,0,0.2)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-400 shadow-sm";
+    return `flex-1 min-w-max px-4 py-3 text-sm sm:text-xs font-bold whitespace-nowrap transition-colors border-r border-botanical-border last:border-r-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-botanical-primary relative flex items-center justify-center ${
+      isActive 
+        ? "bg-botanical-primary/5 text-botanical-primary shadow-[inset_0_-3px_0_0_#3A5A40]" 
+        : "bg-transparent text-botanical-muted hover:bg-gray-50 hover:text-botanical-text"
+    }`;
   };
 
   // ── SUPER_ADMIN: only back link + team assignment ──
   if (isSuperAdmin) {
     return (
       <div className="mb-6 sm:mb-8">
-        <nav className="flex gap-2 sm:gap-4 pb-3 sm:pb-4 overflow-x-auto scrollbar-none -mx-3 px-3 sm:mx-0 sm:px-0">
-          <Link href="/superadmin" className="px-4 py-2 text-sm sm:text-xs text-botanical-muted bg-white hover:text-botanical-text hover:bg-gray-50 transition-all duration-200 whitespace-nowrap font-bold rounded-xl border border-gray-200 border-b-[4px] border-b-gray-300 hover:border-b-[6px] hover:-translate-y-0.5 active:border-b-[0px] active:translate-y-1 active:shadow-[inset_0_4px_8px_rgba(0,0,0,0.2)] shadow-sm">
+        <nav className="flex w-full overflow-x-auto scrollbar-none bg-white rounded-2xl border border-botanical-border shadow-sm">
+          <Link href="/superadmin" className="flex-1 min-w-max px-4 py-3 text-sm sm:text-xs font-bold text-botanical-muted hover:text-botanical-text hover:bg-gray-50 transition-colors whitespace-nowrap border-r border-botanical-border flex items-center justify-center">
             ← Super Admin
           </Link>
           <Link href={`/shop/${shopId}/settings/team`} className={mainTabClass('team')}>
@@ -48,7 +50,7 @@ export function ShopNav({ shopId, userRole, activeTab }: { shopId: string, userR
     <>
       {/* Desktop/Tablet Navigation */}
       <div className={`mb-6 sm:mb-8 hidden sm:block`}>
-        <nav className="flex gap-2 sm:gap-4 pb-3 sm:pb-4 overflow-x-auto scrollbar-none -mx-3 px-3 sm:mx-0 sm:px-0">
+        <nav className="flex w-full overflow-x-auto scrollbar-none bg-white rounded-2xl border border-botanical-border shadow-sm">
           {(isShopAdmin || isStaff) && (
             <>
               <Link href={`/shop/${shopId}`} aria-current={activeTab === 'dashboard' ? 'page' : undefined} className={mainTabClass('dashboard')}>
