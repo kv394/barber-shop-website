@@ -157,7 +157,7 @@ export default async function ShopDashboardPage({ params }: { params: Promise<{ 
     return (
         <div className="h-[100dvh] overflow-y-auto overflow-x-hidden">
             <div className="text-center">
-                <h1 className="text-4xl font-bold text-red-500 mb-4">Access Denied</h1>
+                <h1 className="text-sm font-bold text-red-500 mb-4">Access Denied</h1>
                 <p className="text-botanical-muted">You do not have permission to view this page.</p>
             </div>
         </div>
@@ -192,7 +192,7 @@ export default async function ShopDashboardPage({ params }: { params: Promise<{ 
             ? 'bg-amber-900/20 border-amber-500/30 text-amber-200' 
             : 'bg-red-900/20 border-red-500/30 text-red-200'
         }`}>
-          <span className="text-2xl mt-0.5">⚠️</span>
+          <span className="text-base mt-0.5">⚠️</span>
           <div className="flex-1">
             <h3 className="font-bold text-sm mb-1">Billing & Usage Alert</h3>
             <p className="text-xs opacity-90">{billingAlert.message}</p>
@@ -208,7 +208,7 @@ export default async function ShopDashboardPage({ params }: { params: Promise<{ 
         <div className="flex flex-col sm:flex-row gap-3 mb-6">
           {/* Online booking link */}
           <div className="flex-1 bg-botanical-primary/10 border border-brand-gold/30 rounded-xl p-4 flex items-center gap-4">
-            <span className="text-2xl">🔗</span>
+            <span className="text-base">🔗</span>
             <div className="min-w-0 flex-1">
               <p className="text-xs text-botanical-muted mb-0.5">Your Booking Portal</p>
               <p className="text-botanical-text font-mono text-sm truncate">/shops/{resolvedSlug}</p>
@@ -257,21 +257,21 @@ export default async function ShopDashboardPage({ params }: { params: Promise<{ 
           </div>
           <div className="relative z-10">
             <p className="text-sm font-bold uppercase tracking-widest mb-1 opacity-80">Up Next</p>
-            <h2 className="font-serif text-3xl sm:text-5xl font-bold mb-2 leading-tight">
+            <h2 className="font-serif text-[12px] sm:text-base font-bold mb-2 leading-tight">
               {todayStats.nextAppointment.user?.name || 'Guest'}
             </h2>
             <div className="flex flex-wrap items-center gap-3 sm:gap-6 text-sm sm:text-base font-semibold opacity-90 mb-6">
               <span className="flex items-center gap-1.5">
-                <span className="text-xl">⏰</span> 
+                <span className="text-sm">⏰</span> 
                 {new Date(todayStats.nextAppointment.startTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
               </span>
               <span className="flex items-center gap-1.5">
-                <span className="text-xl">✨</span> 
+                <span className="text-sm">✨</span> 
                 {todayStats.nextAppointment.service?.name}
               </span>
               {todayStats.nextAppointment.staff?.name && isShopAdmin && (
                 <span className="flex items-center gap-1.5">
-                  <span className="text-xl">👤</span> 
+                  <span className="text-sm">👤</span> 
                   {todayStats.nextAppointment.staff.name}
                 </span>
               )}
@@ -288,7 +288,7 @@ export default async function ShopDashboardPage({ params }: { params: Promise<{ 
       {/* Today's Snapshot */}
       {todayStats && (
         <div className="mb-6 sm:mb-8">
-          <h2 className="text-lg sm:text-xl font-bold text-botanical-text mb-4">📊 Today&apos;s Snapshot</h2>
+          <h2 className="text-[12px] sm:text-sm font-bold text-botanical-text mb-4">📊 Today&apos;s Snapshot</h2>
           <div className="grid grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-4 mb-4 sm:mb-8">
             <div className="bg-botanical-surface backdrop-blur-md shadow-[0_4px_30px_rgba(0,0,0,0.1)] rounded-2xl border-2 border-b-[6px] border-botanical-border p-4 sm:p-6 relative overflow-hidden group hover:bg-botanical-border hover:shadow-[0_8px_30px_rgba(0,0,0,0.15)] hover:-translate-y-1 transition-all duration-300 min-w-0">
               <div className="absolute top-0 left-0 w-full h-1 bg-blue-500/80"></div>
@@ -296,7 +296,7 @@ export default async function ShopDashboardPage({ params }: { params: Promise<{ 
                 <h3 className="text-botanical-muted text-[10px] sm:text-xs uppercase tracking-widest font-semibold truncate">Bookings</h3>
                 <span className="text-blue-500 text-sm sm:text-base">📅</span>
               </div>
-              <p className="text-xl sm:text-3xl font-black text-botanical-text break-words leading-tight">{todayStats.totalBookings}</p>
+              <p className="text-sm sm:text-[12px] font-black text-botanical-text break-words leading-tight">{todayStats.totalBookings}</p>
             </div>
             <div className="bg-botanical-surface backdrop-blur-md shadow-[0_4px_30px_rgba(0,0,0,0.1)] rounded-2xl border-2 border-b-[6px] border-botanical-border p-4 sm:p-6 relative overflow-hidden group hover:bg-botanical-border hover:shadow-[0_8px_30px_rgba(0,0,0,0.15)] hover:-translate-y-1 transition-all duration-300 min-w-0">
               <div className="absolute top-0 left-0 w-full h-1 bg-green-500/80"></div>
@@ -304,7 +304,7 @@ export default async function ShopDashboardPage({ params }: { params: Promise<{ 
                 <h3 className="text-botanical-muted text-[10px] sm:text-xs uppercase tracking-widest font-semibold truncate">Revenue</h3>
                 <span className="text-green-500 text-sm sm:text-base">💵</span>
               </div>
-              <p className="text-xl sm:text-3xl font-black text-botanical-text break-words leading-tight">${todayStats.revenue.toFixed(0)}</p>
+              <p className="text-sm sm:text-[12px] font-black text-botanical-text break-words leading-tight">${todayStats.revenue.toFixed(0)}</p>
             </div>
             <div className="bg-botanical-surface backdrop-blur-md shadow-[0_4px_30px_rgba(0,0,0,0.1)] rounded-2xl border-2 border-b-[6px] border-botanical-border p-4 sm:p-6 relative overflow-hidden group hover:bg-botanical-border hover:shadow-[0_8px_30px_rgba(0,0,0,0.15)] hover:-translate-y-1 transition-all duration-300 min-w-0">
               <div className="absolute top-0 left-0 w-full h-1 bg-amber-500/80"></div>
@@ -312,7 +312,7 @@ export default async function ShopDashboardPage({ params }: { params: Promise<{ 
                 <h3 className="text-botanical-muted text-[10px] sm:text-xs uppercase tracking-widest font-semibold truncate">Tips</h3>
                 <span className="text-amber-500 text-sm sm:text-base">🪙</span>
               </div>
-              <p className="text-xl sm:text-3xl font-black text-botanical-text break-words leading-tight">${todayStats.tips.toFixed(0)}</p>
+              <p className="text-sm sm:text-[12px] font-black text-botanical-text break-words leading-tight">${todayStats.tips.toFixed(0)}</p>
             </div>
             <div className="bg-botanical-surface backdrop-blur-md shadow-[0_4px_30px_rgba(0,0,0,0.1)] rounded-2xl border-2 border-b-[6px] border-botanical-border p-4 sm:p-6 relative overflow-hidden group hover:bg-botanical-border hover:shadow-[0_8px_30px_rgba(0,0,0,0.15)] hover:-translate-y-1 transition-all duration-300 min-w-0">
               <div className="absolute top-0 left-0 w-full h-1 bg-purple-500/80"></div>
@@ -320,7 +320,7 @@ export default async function ShopDashboardPage({ params }: { params: Promise<{ 
                 <h3 className="text-botanical-muted text-[10px] sm:text-xs uppercase tracking-widest font-semibold truncate">Completed</h3>
                 <span className="text-purple-500 text-sm sm:text-base">✅</span>
               </div>
-              <p className="text-xl sm:text-3xl font-black text-botanical-text break-words leading-tight">{todayStats.completedCount}</p>
+              <p className="text-sm sm:text-[12px] font-black text-botanical-text break-words leading-tight">{todayStats.completedCount}</p>
             </div>
             <div className="col-span-2 lg:col-span-1 bg-botanical-surface backdrop-blur-md shadow-[0_4px_30px_rgba(0,0,0,0.1)] rounded-2xl border-2 border-b-[6px] border-botanical-border p-4 sm:p-6 relative overflow-hidden group hover:bg-botanical-border hover:shadow-[0_8px_30px_rgba(0,0,0,0.15)] hover:-translate-y-1 transition-all duration-300 min-w-0">
               <div className="absolute top-0 left-0 w-full h-1 bg-cyan-500/80"></div>
@@ -328,7 +328,7 @@ export default async function ShopDashboardPage({ params }: { params: Promise<{ 
                 <h3 className="text-botanical-muted text-[10px] sm:text-xs uppercase tracking-widest font-semibold truncate">Upcoming</h3>
                 <span className="text-cyan-500 text-sm sm:text-base">⏳</span>
               </div>
-              <p className="text-xl sm:text-3xl font-black text-botanical-text break-words leading-tight">{todayStats.upcomingCount}</p>
+              <p className="text-sm sm:text-[12px] font-black text-botanical-text break-words leading-tight">{todayStats.upcomingCount}</p>
             </div>
           </div>
         </div>
