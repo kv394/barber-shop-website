@@ -117,7 +117,7 @@ export default function MyAppointmentsPage() {
             ) : null}
             <Link
               href="/shops"
-              className="bg-botanical-primary text-botanical-bg font-bold px-4 py-2 rounded-lg text-sm hover:bg-white transition-colors"
+              className="bg-botanical-primary text-white font-bold px-4 py-2 rounded-lg text-sm hover:bg-white transition-colors"
             >
               Book New
             </Link>
@@ -187,7 +187,7 @@ export default function MyAppointmentsPage() {
         {/* ═══ Past ═══ */}
         <section>
           <div className="flex items-center gap-3 mb-5">
-            <div className="w-2 h-8 bg-gray-500 rounded-full" />
+            <div className="w-2 h-8 bg-botanical-border rounded-full" />
             <h2 className="text-lg font-bold text-botanical-text">
               Past ({past.length})
             </h2>
@@ -256,7 +256,7 @@ function AppointmentCard({
             <span className="text-botanical-muted">{apt.service?.name || 'Service'}</span>
             {apt.staff?.name && (
               <>
-                <span className="text-gray-600">·</span>
+                <span className="text-botanical-muted">·</span>
                 <span className="text-botanical-muted">with {apt.staff.name}</span>
               </>
             )}
@@ -269,7 +269,7 @@ function AppointmentCard({
               {formatDateTimeInShopTz(apt.startTime, tz)}
             </span>
             {apt.service?.duration && (
-              <span className="text-xs text-gray-600">({apt.service.duration} min)</span>
+              <span className="text-xs text-botanical-muted">({apt.service.duration} min)</span>
             )}
           </div>
 

@@ -158,7 +158,7 @@ export default function BarcodeScannerWrapper({ shopId, services = [] }: { shopI
     <>
       <button
         onClick={() => { resetAll(); setIsScanning(true); }}
-        className="bg-botanical-primary text-botanical-bg px-4 py-2 rounded-lg text-sm font-semibold hover:bg-white transition-colors flex items-center gap-2"
+        className="bg-botanical-primary text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-white transition-colors flex items-center gap-2"
       >
         <span>📷</span> Scan QR / Barcode
       </button>
@@ -201,7 +201,7 @@ export default function BarcodeScannerWrapper({ shopId, services = [] }: { shopI
             {attendanceMessage && (
               <button
                 onClick={() => { resetAll(); setIsScanning(true); }}
-                className="w-full mt-4 bg-botanical-primary text-botanical-bg py-2.5 rounded-lg font-semibold text-sm hover:bg-white transition-colors"
+                className="w-full mt-4 bg-botanical-primary text-white py-2.5 rounded-lg font-semibold text-sm hover:bg-white transition-colors"
               >
                 Scan Next Person
               </button>
@@ -253,7 +253,7 @@ export default function BarcodeScannerWrapper({ shopId, services = [] }: { shopI
                           ))}
                         </select>
                         <button onClick={handleAssignBarcode} disabled={!selectedServiceToAssign || isUpdating}
-                          className="w-full bg-botanical-primary text-botanical-bg py-2.5 rounded font-semibold disabled:opacity-50 hover:bg-white transition-colors text-sm">
+                          className="w-full bg-botanical-primary text-white py-2.5 rounded font-semibold disabled:opacity-50 hover:bg-white transition-colors text-sm">
                           {isUpdating ? 'Linking…' : 'Map Barcode to Item'}
                         </button>
                       </div>

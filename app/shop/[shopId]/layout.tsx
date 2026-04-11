@@ -130,7 +130,7 @@ export default async function ShopLayout({
                 <Link
                 href={`/shops/${data.shopSlug}`}
                 target="_blank"
-                className="bg-botanical-primary text-botanical-text hover:bg-white px-4 sm:px-6 py-2 rounded-lg transition-colors text-xs sm:text-sm font-semibold whitespace-nowrap"
+                className="bg-botanical-primary text-white hover:bg-white px-4 sm:px-6 py-2 rounded-lg transition-colors text-xs sm:text-sm font-semibold whitespace-nowrap"
                 >
                 View Public Page ↗
                 </Link>

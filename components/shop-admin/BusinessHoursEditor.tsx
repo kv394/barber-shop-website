@@ -57,7 +57,7 @@ export default function BusinessHoursEditor({ shopId }: { shopId: string }) {
           const dh = hours[day];
           return (
             <div key={day} className={`flex items-center gap-3 p-3 rounded-lg transition ${open ? 'bg-botanical-surface' : 'bg-botanical-surface opacity-60'}`}>
-              <button onClick={() => toggle(day)} className={`w-11 h-6 rounded-full transition-colors relative flex-shrink-0 ${open ? 'bg-botanical-primary' : 'bg-gray-600'}`}>
+              <button onClick={() => toggle(day)} className={`w-11 h-6 rounded-full transition-colors relative flex-shrink-0 ${open ? 'bg-botanical-primary' : 'bg-botanical-border'}`}>
                 <span className={`absolute top-0.5 w-5 h-5 bg-white rounded-full shadow transition-transform ${open ? 'translate-x-5' : 'translate-x-0.5'}`} />
               </button>
               <span className="w-10 text-sm font-semibold text-botanical-text">{DAY_LABELS[day]}</span>
@@ -80,7 +80,7 @@ export default function BusinessHoursEditor({ shopId }: { shopId: string }) {
           );
         })}
       </div>
-      <button onClick={save} disabled={saving} className="mt-5 w-full bg-botanical-primary text-black font-bold py-3 rounded-lg hover:bg-white transition disabled:opacity-50">
+      <button onClick={save} disabled={saving} className="mt-5 w-full bg-botanical-primary text-white font-bold py-3 rounded-lg hover:bg-white transition disabled:opacity-50">
         {saving ? 'Saving…' : 'Save Business Hours'}
       </button>
     </div>

@@ -327,7 +327,7 @@ export default async function TeamDashboardPage({ params, searchParams }: { para
             </div>
             <div className="md:col-span-3">
               <button type="submit" disabled={userRole === 'SUPER_ADMIN' && !canAddShopAdmin}
-                className="w-full bg-botanical-primary text-botanical-text font-bold py-2.5 px-6 rounded-xl hover:bg-white hover:scale-[1.02] active:scale-95 transition-all duration-200 shadow-lg shadow-brand-gold/20 text-sm disabled:opacity-50 disabled:cursor-not-allowed">
+                className="w-full bg-botanical-primary text-white font-bold py-2.5 px-6 rounded-xl hover:bg-white hover:scale-[1.02] active:scale-95 transition-all duration-200 shadow-lg shadow-brand-gold/20 text-sm disabled:opacity-50 disabled:cursor-not-allowed">
                 Invite Member
               </button>
             </div>

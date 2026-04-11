@@ -198,14 +198,14 @@ export default function ReviewPage({ params }: { params: Promise<{ appointmentId
                   maxLength={1000}
                   className="w-full bg-botanical-surface border border-botanical-border rounded-lg p-3 text-botanical-text placeholder-gray-600 focus:outline-none focus:border-brand-gold resize-none"
                 />
-                <p className="text-xs text-gray-600 text-right mt-1">{comment.length}/1000</p>
+                <p className="text-xs text-botanical-muted text-right mt-1">{comment.length}/1000</p>
               </div>
 
               {/* Submit */}
               <button
                 onClick={handleSubmit}
                 disabled={rating === 0 || submitting}
-                className="w-full bg-botanical-primary text-botanical-bg font-bold py-3 rounded-lg hover:bg-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full bg-botanical-primary text-white font-bold py-3 rounded-lg hover:bg-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {submitting ? 'Submitting…' : 'Submit Review'}
               </button>

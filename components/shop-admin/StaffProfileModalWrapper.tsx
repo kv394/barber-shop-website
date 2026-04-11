@@ -53,7 +53,7 @@ export default function StaffProfileModalWrapper({ staff, children }: { staff: a
             </div>
             
             <div className="mt-6">
-              <button onClick={() => setIsOpen(false)} className="w-full py-3 bg-botanical-primary text-botanical-text rounded-xl hover:bg-yellow-400 transition-colors font-bold shadow-lg">
+              <button onClick={() => setIsOpen(false)} className="w-full py-3 bg-botanical-primary text-white rounded-xl hover:bg-yellow-400 transition-colors font-bold shadow-lg">
                 Close Profile
               </button>
             </div>

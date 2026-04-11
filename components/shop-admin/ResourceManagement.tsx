@@ -67,7 +67,7 @@ export default function ResourceManagement({ shopId }: { shopId: string }) {
         <button 
           type="submit" 
           disabled={saving || !name.trim()} 
-          className="px-4 py-2 bg-botanical-primary text-botanical-text rounded text-sm font-bold hover:bg-white transition disabled:opacity-50"
+          className="px-4 py-2 bg-botanical-primary text-white rounded text-sm font-bold hover:bg-white transition disabled:opacity-50"
         >
           {saving ? 'Adding...' : 'Add'}
         </button>

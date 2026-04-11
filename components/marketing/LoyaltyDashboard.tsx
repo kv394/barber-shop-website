@@ -18,7 +18,7 @@ const DEFAULT_TIERS: Tier[] = [
 
 const TIER_COLORS: Record<string, string> = {
   Bronze: 'bg-amber-800/30 text-amber-400 border-amber-600/40',
-  Silver: 'bg-gray-500/20 text-botanical-muted border-gray-400/40',
+  Silver: 'bg-botanical-border/20 text-botanical-muted border-botanical-border/40',
   Gold: 'bg-botanical-primary/20 text-yellow-400 border-yellow-500/40',
   Platinum: 'bg-purple-500/20 text-purple-300 border-purple-400/40',
 };
@@ -106,7 +106,7 @@ export default function LoyaltyDashboard({ shopId }: { shopId: string }) {
           <button
             onClick={() => setForm(f => ({ ...f, isActive: !f.isActive }))}
             className={`px-3 py-1.5 rounded-full text-xs font-bold border transition-colors ${
-              form.isActive ? 'bg-green-900/50 text-green-300 border-green-500/30' : 'bg-botanical-surface text-botanical-muted border-gray-600'
+              form.isActive ? 'bg-green-900/50 text-green-300 border-green-500/30' : 'bg-botanical-surface text-botanical-muted border-botanical-border'
             }`}
           >
             {form.isActive ? '● Active' : '○ Inactive'}
@@ -143,7 +143,7 @@ export default function LoyaltyDashboard({ shopId }: { shopId: string }) {
             <input type="number" min="0" value={form.pointExpiryDays}
               onChange={e => setForm(f => ({ ...f, pointExpiryDays: parseInt(e.target.value) || 0 }))}
               className={inputClass} />
-            <p className="text-[9px] text-gray-600 mt-0.5">0 = never expire</p>
+            <p className="text-[9px] text-botanical-muted mt-0.5">0 = never expire</p>
           </div>
         </div>
 
@@ -154,7 +154,7 @@ export default function LoyaltyDashboard({ shopId }: { shopId: string }) {
         </div>
 
         <button onClick={saveProgram} disabled={saving}
-          className="mt-4 bg-botanical-primary text-botanical-text px-6 py-2 rounded-md text-sm font-bold hover:bg-yellow-400 disabled:opacity-50">
+          className="mt-4 bg-botanical-primary text-white px-6 py-2 rounded-md text-sm font-bold hover:bg-yellow-400 disabled:opacity-50">
           {saving ? 'Saving...' : program ? 'Update Program' : 'Activate Program'}
         </button>
       </div>
@@ -200,7 +200,7 @@ export default function LoyaltyDashboard({ shopId }: { shopId: string }) {
               </div>
             ))}
             <button onClick={saveProgram} disabled={saving}
-              className="bg-botanical-primary text-botanical-text px-5 py-2 rounded-md text-sm font-bold hover:bg-yellow-400 disabled:opacity-50">
+              className="bg-botanical-primary text-white px-5 py-2 rounded-md text-sm font-bold hover:bg-yellow-400 disabled:opacity-50">
               {saving ? 'Saving...' : 'Save Tiers'}
             </button>
           </div>
@@ -236,7 +236,7 @@ export default function LoyaltyDashboard({ shopId }: { shopId: string }) {
               <div key={acc.id} className="flex items-center gap-3 bg-botanical-surface p-3 rounded-lg border border-botanical-border">
                 <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-black ${
                   idx === 0 ? 'bg-botanical-primary/20 text-yellow-400' :
-                  idx === 1 ? 'bg-gray-400/20 text-botanical-muted' :
+                  idx === 1 ? 'bg-botanical-border/20 text-botanical-muted' :
                   idx === 2 ? 'bg-amber-700/20 text-amber-500' :
                   'bg-botanical-surface text-botanical-muted'
                 }`}>
@@ -246,7 +246,7 @@ export default function LoyaltyDashboard({ shopId }: { shopId: string }) {
                   <div className="flex items-center gap-2">
                     <p className="text-sm font-semibold text-botanical-text truncate">{acc.user?.name || 'Guest'}</p>
                     <span className={`px-1.5 py-0.5 rounded text-[9px] font-bold border ${
-                      TIER_COLORS[acc.currentTier] || 'bg-botanical-surface text-botanical-muted border-gray-600'
+                      TIER_COLORS[acc.currentTier] || 'bg-botanical-surface text-botanical-muted border-botanical-border'
                     }`}>
                       {TIER_ICONS[acc.currentTier] || ''} {acc.currentTier || 'Bronze'}
                     </span>

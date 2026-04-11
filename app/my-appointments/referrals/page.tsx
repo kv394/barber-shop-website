@@ -120,7 +120,7 @@ export default function ReferralsPage() {
             <div className="text-center">
               <button
                 onClick={() => data?.referralCode && handleCopy(data.referralCode)}
-                className="bg-botanical-primary text-botanical-bg font-bold px-6 py-3 rounded-lg hover:bg-white transition-colors"
+                className="bg-botanical-primary text-white font-bold px-6 py-3 rounded-lg hover:bg-white transition-colors"
               >
                 {copied ? '✅ Copied Code!' : '📋 Copy Code'}
               </button>
@@ -164,7 +164,7 @@ export default function ReferralsPage() {
                         )}
                       </div>
                     </div>
-                    <p className="text-xs text-gray-600 mt-2">
+                    <p className="text-xs text-botanical-muted mt-2">
                       {new Date(ref.createdAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}
                     </p>
                   </div>

@@ -166,7 +166,7 @@ export default async function ShopsDirectoryPage({
                     ← Previous
                   </Link>
                 ) : (
-                  <span className="px-5 sm:px-6 py-2 bg-botanical-surface text-slate-600 rounded-lg border border-botanical-border cursor-not-allowed text-sm w-full sm:w-auto text-center">
+                  <span className="px-5 sm:px-6 py-2 bg-botanical-surface text-botanical-muted rounded-lg border border-botanical-border cursor-not-allowed text-sm w-full sm:w-auto text-center">
                     ← Previous
                   </span>
                 )}
@@ -183,7 +183,7 @@ export default async function ShopsDirectoryPage({
                     Next →
                   </Link>
                 ) : (
-                  <span className="px-5 sm:px-6 py-2 bg-botanical-surface text-slate-600 rounded-lg border border-botanical-border cursor-not-allowed text-sm w-full sm:w-auto text-center">
+                  <span className="px-5 sm:px-6 py-2 bg-botanical-surface text-botanical-muted rounded-lg border border-botanical-border cursor-not-allowed text-sm w-full sm:w-auto text-center">
                     Next →
                   </span>
                 )}

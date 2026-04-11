@@ -121,8 +121,8 @@ export default function SectionSidebar({ activeTab, shopId, section, userRole }:
               aria-current={isActive ? 'page' : undefined}
               className={`px-5 py-2.5 rounded-xl text-sm font-bold whitespace-nowrap transition-all duration-150 ${
                 isActive 
-                  ? 'bg-gray-200/80 text-botanical-text md:bg-botanical-primary md:text-botanical-text shadow-[inset_0_3px_6px_rgba(0,0,0,0.15)] md:shadow-[inset_0_3px_6px_rgba(0,0,0,0.4)] border border-botanical-border md:border-botanical-primary transform translate-y-0.5' 
-                  : 'bg-white text-slate-600 md:bg-botanical-surface md:text-botanical-muted hover:bg-gray-50 md:hover:bg-botanical-surface md:hover:text-botanical-text border-b-[4px] border-botanical-border md:border-slate-950 shadow-sm md:shadow-md hover:transform hover:-translate-y-0.5'
+                  ? 'bg-gray-200/80 text-white bg-botanical-primary text-white shadow-[inset_0_3px_6px_rgba(0,0,0,0.15)] md:shadow-[inset_0_3px_6px_rgba(0,0,0,0.4)] border border-botanical-border md:border-botanical-primary transform translate-y-0.5' 
+                  : 'bg-white text-botanical-muted md:bg-botanical-surface md:text-botanical-muted hover:bg-gray-50 md:hover:bg-botanical-surface md:hover:text-botanical-text border-b-[4px] border-botanical-border md:border-slate-950 shadow-sm md:shadow-md hover:transform hover:-translate-y-0.5'
               }`}            >
               {l.label}
             </Link>

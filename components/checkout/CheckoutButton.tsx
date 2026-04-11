@@ -204,7 +204,7 @@ export default function CheckoutButton({
                             className="text-left bg-botanical-surface hover:bg-botanical-surface border border-botanical-border rounded-lg p-2 transition-colors relative"
                           >
                             {inCart && (
-                              <span className="absolute top-1 right-1 bg-botanical-primary text-black text-[9px] font-black w-4 h-4 rounded-full flex items-center justify-center">
+                              <span className="absolute top-1 right-1 bg-botanical-primary text-white text-[9px] font-black w-4 h-4 rounded-full flex items-center justify-center">
                                 {inCart.quantity}
                               </span>
                             )}
@@ -228,7 +228,7 @@ export default function CheckoutButton({
                       onClick={() => { setTipAmount(t); setCustomTip(''); }}
                       className={`px-3 py-1.5 rounded-lg text-sm font-semibold transition-colors ${
                         tipAmount === t && customTip === ''
-                          ? 'bg-botanical-primary text-black'
+                          ? 'bg-botanical-primary text-white'
                           : 'bg-botanical-surface text-botanical-muted hover:bg-botanical-surface'
                       }`}
                     >

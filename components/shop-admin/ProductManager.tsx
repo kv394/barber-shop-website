@@ -102,7 +102,7 @@ export default function ProductManager({ shopId, products }: { shopId: string, p
             } else {
               setIsAdding(true);
             }
-          }} className="bg-botanical-primary text-botanical-text px-4 py-2 rounded-lg font-bold hover:bg-yellow-400 transition-colors shrink-0">
+          }} className="bg-botanical-primary text-white px-4 py-2 rounded-lg font-bold hover:bg-yellow-400 transition-colors shrink-0">
             {isAdding ? 'Cancel' : 'Add Product'}
           </button>
         </div>
@@ -154,7 +154,7 @@ export default function ProductManager({ shopId, products }: { shopId: string, p
             </div>
           </div>
           <div className="flex justify-end pt-4">
-            <button type="submit" disabled={isSubmitting} className="bg-botanical-primary text-botanical-text px-6 py-2 rounded-lg font-bold hover:bg-yellow-400 transition-colors disabled:opacity-50">
+            <button type="submit" disabled={isSubmitting} className="bg-botanical-primary text-white px-6 py-2 rounded-lg font-bold hover:bg-yellow-400 transition-colors disabled:opacity-50">
               {isSubmitting ? 'Saving...' : editingProduct ? 'Save Changes' : 'Save Product'}
             </button>
           </div>

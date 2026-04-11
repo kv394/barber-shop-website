@@ -82,7 +82,7 @@ export default function CommissionSetup({ shopId }: { shopId: string }) {
               </div>
             </div>
             <button onClick={() => save(s.id)} disabled={saving === s.id}
-              className="ml-auto px-3 py-1.5 bg-botanical-primary/20 text-botanical-accent border border-brand-gold/30 rounded text-xs font-semibold hover:bg-botanical-primary hover:text-black transition disabled:opacity-50">
+              className="ml-auto px-3 py-1.5 bg-botanical-primary text-white transition disabled:opacity-50">
               {saving === s.id ? '…' : 'Save'}
             </button>
           </div>

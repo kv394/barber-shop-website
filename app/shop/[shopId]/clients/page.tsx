@@ -127,7 +127,7 @@ export default async function ClientsPage({ params, searchParams }: { params: Pr
                   href={`/shop/${shopId}/clients?page=${p}`}
                   className={`w-8 h-8 flex items-center justify-center rounded text-sm font-bold transition-colors ${
                     p === currentPage
-                      ? "bg-botanical-primary text-botanical-text"
+                      ? "bg-botanical-primary text-white"
                       : "bg-botanical-surface text-botanical-muted hover:bg-botanical-surface hover:text-botanical-text"
                   }`}
                 >

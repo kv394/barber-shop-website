@@ -95,7 +95,7 @@ export default async function BookingsPage({ params }: { params: Promise<{ shopI
             <h2 className="text-xl sm:text-2xl font-bold text-botanical-text">Upcoming Bookings</h2>
             <BookingDatePicker dates={Object.keys(groupedAppointments)} />
           </div>
-          <Link href={`/shops/${shopSlug}`} target="_blank" className="bg-botanical-primary hover:bg-yellow-400 text-botanical-text font-bold px-4 py-2 rounded-lg text-xs sm:text-sm transition-colors whitespace-nowrap shadow-lg">+ Add Booking</Link>
+          <Link href={`/shops/${shopSlug}`} target="_blank" className="bg-botanical-primary text-white font-bold px-4 py-2 rounded-lg text-xs sm:text-sm transition-colors whitespace-nowrap shadow-lg">+ Add Booking</Link>
         </div>
 
         {Object.keys(groupedAppointments).length === 0 ? (

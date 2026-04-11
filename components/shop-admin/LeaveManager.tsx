@@ -142,7 +142,7 @@ export default function LeaveManager({ shopId, userId }: { shopId: string, userI
           <button 
             type="submit" 
             disabled={saving}
-            className="bg-botanical-primary text-black font-bold px-4 py-2 rounded hover:bg-yellow-400 transition-colors disabled:opacity-50"
+            className="bg-botanical-primary text-white font-bold px-4 py-2 rounded hover:bg-yellow-400 transition-colors disabled:opacity-50"
           >
             {saving ? 'Submitting...' : 'Submit Request'}
           </button>

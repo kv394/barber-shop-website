@@ -162,7 +162,7 @@ export default function ReportsClient({
           <div className="flex justify-between items-center mb-3">
             <h3 className="text-botanical-muted text-[10px] sm:text-xs uppercase tracking-widest font-semibold truncate">Export Data</h3>
           </div>
-          <button onClick={exportCSV} className="bg-botanical-surface hover:bg-botanical-primary hover:text-black border border-botanical-border hover:border-brand-gold text-botanical-text font-bold py-2 sm:py-3 px-3 rounded-lg transition-all w-full text-xs sm:text-sm truncate flex items-center justify-center gap-2">
+          <button onClick={exportCSV} className="bg-botanical-surface hover:bg-botanical-primary text-white font-bold py-2 sm:py-3 px-3 rounded-lg transition-all w-full text-xs sm:text-sm truncate flex items-center justify-center gap-2">
             <span>📥</span> Download CSV
           </button>
         </div>

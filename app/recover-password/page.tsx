@@ -93,13 +93,13 @@ function RecoverPasswordForm() {
         <div className="flex gap-2 mb-6 bg-botanical-surface p-1 rounded-lg border border-botanical-border">
           <button
             onClick={() => setMethod('email')}
-            className={`flex-1 py-2 text-sm font-medium rounded-md transition-colors ${method === 'email' ? 'bg-botanical-surface text-botanical-text' : 'text-slate-400 hover:text-botanical-text'}`}
+            className={`flex-1 py-2 text-sm font-medium rounded-md transition-colors ${method === 'email' ? 'bg-botanical-surface text-botanical-text' : 'text-botanical-muted hover:text-botanical-text'}`}
           >
             Email Link
           </button>
           <button
             onClick={() => setMethod('totp')}
-            className={`flex-1 py-2 text-sm font-medium rounded-md transition-colors ${method === 'totp' ? 'bg-botanical-surface text-botanical-text' : 'text-slate-400 hover:text-botanical-text'}`}
+            className={`flex-1 py-2 text-sm font-medium rounded-md transition-colors ${method === 'totp' ? 'bg-botanical-surface text-botanical-text' : 'text-botanical-muted hover:text-botanical-text'}`}
           >
             Authenticator App
           </button>
@@ -119,7 +119,7 @@ function RecoverPasswordForm() {
                 className="w-full bg-botanical-surface border border-botanical-border rounded-lg p-3 text-botanical-text focus:ring-2 focus:ring-botanical-primary focus:border-transparent outline-none" 
               />
             </div>
-            <button type="submit" disabled={loading} className="w-full bg-botanical-primary text-black font-bold py-3 rounded-lg hover:bg-white transition-colors mt-2 disabled:opacity-50">
+            <button type="submit" disabled={loading} className="w-full bg-botanical-primary text-white font-bold py-3 rounded-lg hover:bg-white transition-colors mt-2 disabled:opacity-50">
               {loading ? 'Sending...' : 'Send Reset Link'}
             </button>
           </form>
@@ -160,7 +160,7 @@ function RecoverPasswordForm() {
                 className="w-full bg-botanical-surface border border-botanical-border rounded-lg p-3 text-botanical-text focus:ring-2 focus:ring-botanical-primary focus:border-transparent outline-none" 
               />
             </div>
-            <button type="submit" disabled={loading || totpCode.length !== 6 || newPassword.length < 8} className="w-full bg-botanical-primary text-black font-bold py-3 rounded-lg hover:bg-white transition-colors mt-2 disabled:opacity-50">
+            <button type="submit" disabled={loading || totpCode.length !== 6 || newPassword.length < 8} className="w-full bg-botanical-primary text-white font-bold py-3 rounded-lg hover:bg-white transition-colors mt-2 disabled:opacity-50">
               {loading ? 'Recovering...' : 'Reset Password'}
             </button>
           </form>

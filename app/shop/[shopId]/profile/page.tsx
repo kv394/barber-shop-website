@@ -112,7 +112,7 @@ export default async function ProfilePage({ params }: { params: Promise<{ shopId
 
           <Link href="/my-appointments/profile" className="flex items-center justify-between p-5 hover:bg-botanical-surface transition-colors active:bg-botanical-border">
             <div className="flex items-center gap-4">
-              <span className="text-xl bg-slate-500/20 text-slate-400 w-10 h-10 rounded-full flex items-center justify-center">⚙️</span>
+              <span className="text-xl bg-botanical-border text-botanical-muted w-10 h-10 rounded-full flex items-center justify-center">⚙️</span>
               <div>
                 <h3 className="text-botanical-text font-semibold text-base">Account Settings</h3>
                 <p className="text-xs text-botanical-muted">Update password and global details</p>

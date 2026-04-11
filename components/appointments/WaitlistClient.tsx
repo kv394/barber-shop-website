@@ -137,7 +137,7 @@ export default function WaitlistClient({ shopId, services, staff }: { shopId: st
                 <div className="flex gap-2">
                   <button onClick={() => setAssigningId(entry.id)} className="bg-purple-900/50 hover:bg-purple-800/50 text-purple-300 border border-purple-500/30 text-xs px-2 py-1.5 rounded">Reassign Barber</button>
                   <button onClick={() => handleServe(entry.id)} className="bg-blue-600 hover:bg-blue-500 text-botanical-text text-xs font-bold px-3 py-1.5 rounded">Serve</button>
-                  <button onClick={() => updateStatus(entry.id, 'LEFT')} className="bg-botanical-surface hover:bg-slate-600 text-botanical-muted text-xs px-2 py-1.5 rounded">Left</button>
+                  <button onClick={() => updateStatus(entry.id, 'LEFT')} className="bg-botanical-surface hover:bg-botanical-border text-botanical-muted text-xs px-2 py-1.5 rounded">Left</button>
                 </div>
               </div>
               {/* Staff Picker Dropdown */}

@@ -207,7 +207,7 @@ export default function CreateServiceForm({ shopId }: { shopId: string }) {
       <button 
         type="submit" 
         disabled={isSubmitting || !name || !price || (!isInternal && !duration)} 
-        className="w-full bg-botanical-primary text-botanical-text font-semibold py-3 rounded-lg hover:bg-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed mt-4"
+        className="w-full bg-botanical-primary text-white font-semibold py-3 rounded-lg hover:bg-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed mt-4"
       >
         {isSubmitting ? 'Saving...' : (isInternal ? 'Save Inventory Item' : 'Save Service')}
       </button>

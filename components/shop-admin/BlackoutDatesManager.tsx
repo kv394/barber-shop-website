@@ -63,7 +63,7 @@ export default function BlackoutDatesManager({ shopId }: { shopId: string }) {
           {REASONS.map(r => <option key={r} value={r}>{r}</option>)}
         </select>
         <button onClick={addDate} disabled={!newDate || adding}
-          className="px-4 py-2 bg-botanical-primary text-black rounded-lg text-sm font-bold disabled:opacity-50 flex-shrink-0">
+          className="px-4 py-2 bg-botanical-primary text-white rounded-lg text-sm font-bold disabled:opacity-50 flex-shrink-0">
           {adding ? 'Adding…' : '+ Add Date'}
         </button>
       </div>
@@ -108,7 +108,7 @@ export default function BlackoutDatesManager({ shopId }: { shopId: string }) {
           <summary className="cursor-pointer text-botanical-muted hover:text-botanical-muted">Past dates ({past.length})</summary>
           <div className="mt-2 space-y-1">
             {past.map(d => (
-              <div key={d.id} className="flex items-center justify-between px-3 py-2 text-gray-600 text-xs">
+              <div key={d.id} className="flex items-center justify-between px-3 py-2 text-botanical-muted text-xs">
                 <span>{fmt(d.date)}{d.reason ? ` — ${d.reason}` : ''}</span>
                 <button onClick={() => remove(d.id)} className="hover:text-red-400 ml-2">×</button>
               </div>

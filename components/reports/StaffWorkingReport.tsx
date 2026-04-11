@@ -271,7 +271,7 @@ export default function StaffWorkingReport({ staffMembers }: { staffMembers: Sta
                                     <span className="text-botanical-text font-mono ml-2">
                                       {clockIn.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' })}
                                     </span>
-                                    <span className="text-gray-600 mx-1">→</span>
+                                    <span className="text-botanical-muted mx-1">→</span>
                                     <span className="text-botanical-text font-mono">
                                       {clockOut
                                         ? clockOut.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' })

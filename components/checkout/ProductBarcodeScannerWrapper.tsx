@@ -102,7 +102,7 @@ export default function ProductBarcodeScannerWrapper({ shopId, products = [] }: 
     <>
       <button
         onClick={() => { resetAll(); setIsScanning(true); }}
-        className="bg-botanical-primary text-botanical-bg px-4 py-2 rounded-lg text-sm font-semibold hover:bg-white transition-colors flex items-center gap-2"
+        className="bg-botanical-primary text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-white transition-colors flex items-center gap-2"
       >
         <span>📷</span> Scan Product
       </button>
@@ -173,7 +173,7 @@ export default function ProductBarcodeScannerWrapper({ shopId, products = [] }: 
                           ))}
                         </select>
                         <button onClick={handleAssignBarcode} disabled={!selectedProductToAssign || isUpdating}
-                          className="w-full bg-botanical-primary text-botanical-bg py-2.5 rounded font-semibold disabled:opacity-50 hover:bg-white transition-colors text-sm">
+                          className="w-full bg-botanical-primary text-white py-2.5 rounded font-semibold disabled:opacity-50 hover:bg-white transition-colors text-sm">
                           {isUpdating ? 'Linking…' : 'Map Barcode to Product'}
                         </button>
                       </div>

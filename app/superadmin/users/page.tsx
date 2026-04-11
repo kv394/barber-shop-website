@@ -107,7 +107,7 @@ export default function SuperAdminUsersPage() {
           />
           <button
             type="submit"
-            className="bg-botanical-primary text-botanical-bg px-6 py-2.5 rounded-lg font-semibold text-sm hover:bg-white transition-colors"
+            className="bg-botanical-primarytext-white px-6 py-2.5 rounded-lg font-semibold text-sm hover:bg-white transition-colors"
           >
             Search
           </button>
@@ -119,7 +119,7 @@ export default function SuperAdminUsersPage() {
               onClick={() => { setRoleFilter(role); setLoading(true); }}
               className={`px-3 py-2 text-xs font-bold rounded-lg whitespace-nowrap transition ${
                 roleFilter === role
-                  ? 'bg-botanical-primary text-botanical-bg'
+                  ? 'bg-botanical-primarytext-white'
                   : 'bg-botanical-surface text-botanical-muted hover:bg-botanical-surface hover:text-botanical-text'
               }`}
             >

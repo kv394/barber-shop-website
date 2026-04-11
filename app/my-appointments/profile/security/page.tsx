@@ -60,7 +60,7 @@ export default function SecurityProfilePage() {
       
       <div className="bg-botanical-surface border border-botanical-border rounded-xl p-6">
         <h2 className="text-xl font-semibold text-botanical-text mb-2">Authenticator App Recovery</h2>
-        <p className="text-slate-400 mb-6">
+        <p className="text-botanical-muted mb-6">
           Set up an Authenticator App (like Google Authenticator or Authy) to securely recover your password without relying on email links.
         </p>
 
@@ -74,7 +74,7 @@ export default function SecurityProfilePage() {
           <button
             onClick={handleBeginSetup}
             disabled={loading}
-            className="bg-botanical-primary text-black font-semibold py-2 px-6 rounded-lg hover:bg-white transition-colors disabled:opacity-50"
+            className="bg-botanical-primary text-white font-semibold py-2 px-6 rounded-lg hover:bg-white transition-colors disabled:opacity-50"
           >
             {loading ? 'Initializing...' : 'Set Up Authenticator'}
           </button>
@@ -106,7 +106,7 @@ export default function SecurityProfilePage() {
                 <button
                   onClick={handleVerify}
                   disabled={loading || verificationCode.length !== 6}
-                  className="bg-botanical-primary text-black font-semibold py-2 px-6 rounded-lg hover:bg-white transition-colors disabled:opacity-50"
+                  className="bg-botanical-primary text-white font-semibold py-2 px-6 rounded-lg hover:bg-white transition-colors disabled:opacity-50"
                 >
                   {loading ? 'Verifying...' : 'Verify & Save'}
                 </button>

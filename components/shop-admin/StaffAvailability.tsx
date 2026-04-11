@@ -85,7 +85,7 @@ export default function StaffAvailability({ defaultDate, defaultFrom, defaultTo,
           <div className="flex items-center gap-2">
             {!isToday && (
               <button onClick={goToToday}
-                className="text-[11px] text-botanical-accent hover:text-botanical-text font-semibold px-3 py-1.5 rounded-lg bg-botanical-primary/10 hover:bg-botanical-primary/20 border border-brand-gold/20 transition-all duration-200">
+                className="text-[11px] text-botanical-accent hover:text-white bg-botanical-primary/10 hover:bg-botanical-primary/20 border border-brand-gold/20 transition-all duration-200">
                 Today
               </button>
             )}

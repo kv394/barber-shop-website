@@ -61,7 +61,7 @@ export function CustomPagesForm({ shopId, customization }: { shopId: string; cus
         <h2 className="text-xl sm:text-2xl font-bold text-botanical-text">Custom Pages (Menus)</h2>
         <button
           onClick={addPage}
-          className="bg-botanical-primary text-black px-4 py-2 rounded font-bold hover:bg-botanical-primary transition-colors"
+          className="bg-botanical-primary text-white px-4 py-2 rounded font-bold hover:bg-botanical-primary transition-colors"
         >
           + Add Page
         </button>
@@ -132,7 +132,7 @@ export function CustomPagesForm({ shopId, customization }: { shopId: string; cus
                   id={`visible-${page.id}`}
                   checked={page.isVisible}
                   onChange={(e) => updatePage(index, 'isVisible', e.target.checked)}
-                  className="w-4 h-4 rounded border-gray-600 text-botanical-accent focus:ring-botanical-primary bg-botanical-bg"
+                  className="w-4 h-4 rounded border-botanical-border text-botanical-accent focus:ring-botanical-primary bg-botanical-bg"
                 />
                 <label htmlFor={`visible-${page.id}`} className="text-sm text-botanical-muted">
                   Visible in public menu

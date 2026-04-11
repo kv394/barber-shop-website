@@ -45,7 +45,7 @@ function ReviewsSection({ reviews, variant = 'dark' }: { reviews: any[]; variant
       ? 'bg-[#f5efe6]'
       : 'bg-botanical-surface';
   const textClass = variant === 'light' ? 'text-gray-900' : variant === 'warm' ? 'text-[#2c1e16]' : 'text-botanical-text';
-  const subTextClass = variant === 'light' ? 'text-gray-600' : variant === 'warm' ? 'text-[#5a4634]' : 'text-botanical-muted';
+  const subTextClass = variant === 'light' ? 'text-botanical-muted' : variant === 'warm' ? 'text-[#5a4634]' : 'text-botanical-muted';
   const cardClass = variant === 'light'
     ? 'bg-white border border-botanical-border shadow-sm'
     : variant === 'warm'
@@ -230,7 +230,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                                     <div className="text-3xl font-bold mb-4" style={{ color: sportRed }}>
                                         ${service.price.toFixed(2)}
                                     </div>
-                                    <p className="text-gray-600 mb-6 min-h-[3rem]">
+                                    <p className="text-botanical-muted mb-6 min-h-[3rem]">
                                         {service.description}
                                     </p>
                                 </div>
@@ -328,7 +328,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
             <section className="bg-white">
                 <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center">
                     <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-4">{shop.description || "Quality Service, Every Time."}</h2>
-                    <p className="text-lg text-gray-600">Find your perfect look with our expert stylists.</p>
+                    <p className="text-lg text-botanical-muted">Find your perfect look with our expert stylists.</p>
                 </div>
             </section>
     
@@ -339,7 +339,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                   <div key={service.id} className="bg-white rounded-lg shadow-lg overflow-hidden border border-botanical-border hover:shadow-xl transition-shadow flex flex-col">
                     <div className="p-6 flex-grow">
                       <h3 className="text-xl font-bold text-gray-900 mb-2">{service.name}</h3>
-                      <p className="text-gray-600 text-sm mb-4">{service.description}</p>
+                      <p className="text-botanical-muted text-sm mb-4">{service.description}</p>
                       <div className="flex justify-between items-center mb-4">
                         <span className="text-lg font-bold" style={{ color: primaryColor }}>${service.price.toFixed(2)}</span>
                         <span className="text-sm text-botanical-muted">{service.duration} min</span>
@@ -559,7 +559,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
             {activePage ? (
                 <section className="max-w-4xl mx-auto px-6 py-32 min-h-[60vh]">
                     <h1 className="text-4xl font-light tracking-tight mb-12" style={{ color: primaryColor }}>{activePage.title}</h1>
-                    <div className="prose prose-lg max-w-none text-gray-600" dangerouslySetInnerHTML={{ __html: activePage.content || '' }} />
+                    <div className="prose prose-lg max-w-none text-botanical-muted" dangerouslySetInnerHTML={{ __html: activePage.content || '' }} />
                 </section>
             ) : (
                 <>

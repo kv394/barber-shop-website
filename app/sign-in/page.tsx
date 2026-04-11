@@ -115,7 +115,7 @@ export default async function SignInPage({
               Forgot password?
             </Link>
           </div>
-          <button type="submit" className="w-full bg-botanical-primary text-black font-bold py-3 rounded-lg hover:bg-white transition-colors mt-2">Sign In</button>
+          <button type="submit" className="w-full bg-botanical-primary text-white font-bold py-3 rounded-lg hover:bg-white transition-colors mt-2">Sign In</button>
         </form>
         
         <p className="text-center text-sm text-botanical-muted mt-8">Don't have an account? <Link href="/sign-up" className="text-botanical-accent hover:underline">Sign Up</Link></p>

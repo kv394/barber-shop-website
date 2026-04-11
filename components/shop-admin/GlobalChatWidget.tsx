@@ -73,7 +73,7 @@ export default function GlobalChatWidget({ shopId, currentUserId, userRole }: { 
       {/* Floating Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="fixed bottom-24 sm:bottom-8 right-4 sm:right-8 w-14 h-14 bg-botanical-primary text-botanical-text rounded-full shadow-[0_0_20px_rgba(0,0,0,0.5)] flex items-center justify-center text-3xl hover:bg-yellow-400 hover:scale-105 active:scale-95 transition-all z-[90]"
+        className="fixed bottom-24 sm:bottom-8 right-4 sm:right-8 w-14 h-14 bg-botanical-primary text-white rounded-full shadow-[0_0_20px_rgba(0,0,0,0.5)] flex items-center justify-center text-3xl hover:bg-yellow-400 hover:scale-105 active:scale-95 transition-all z-[90]"
         title="Team Chat"
       >
         💬
@@ -91,7 +91,7 @@ export default function GlobalChatWidget({ shopId, currentUserId, userRole }: { 
             {/* Close button layered over the chat header */}
             <button 
                 onClick={() => setIsOpen(false)}
-                className="absolute top-3 right-4 text-slate-500 hover:text-botanical-text z-10 w-8 h-8 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center justify-center transition-colors"
+                className="absolute top-3 right-4 text-botanical-muted hover:text-botanical-text z-10 w-8 h-8 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center justify-center transition-colors"
             >
                 ✕
             </button>

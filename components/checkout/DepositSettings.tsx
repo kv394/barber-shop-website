@@ -55,7 +55,7 @@ export default function DepositSettings({
         )}
 
         <div className="flex items-center gap-3">
-          <button onClick={handleSave} disabled={saving} className="bg-botanical-primary text-botanical-bg font-semibold px-6 py-2 rounded hover:bg-white transition-colors disabled:opacity-50 text-sm">
+          <button onClick={handleSave} disabled={saving} className="bg-botanical-primary text-white font-semibold px-6 py-2 rounded hover:bg-white transition-colors disabled:opacity-50 text-sm">
             {saving ? 'Saving…' : 'Save Deposit Settings'}
           </button>
           {msg && <span className="text-xs text-green-400">{msg}</span>}

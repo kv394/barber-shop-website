@@ -50,19 +50,19 @@ export default function BookingSettingsForm({ shopId }: { shopId: string }) {
           <label className="text-sm text-botanical-muted block mb-1">Min Advance (hours)</label>
           <input type="number" min={0} max={72} value={settings.minAdvanceHours} onChange={e => upd('minAdvanceHours', +e.target.value)}
             className="w-full bg-botanical-surface border border-botanical-border rounded px-3 py-2 text-botanical-text text-sm focus:outline-none focus:border-brand-gold" />
-          <p className="text-xs text-gray-600 mt-1">Minimum hours before a booking</p>
+          <p className="text-xs text-botanical-muted mt-1">Minimum hours before a booking</p>
         </div>
         <div>
           <label className="text-sm text-botanical-muted block mb-1">Max Advance (days)</label>
           <input type="number" min={1} max={365} value={settings.maxAdvanceDays} onChange={e => upd('maxAdvanceDays', +e.target.value)}
             className="w-full bg-botanical-surface border border-botanical-border rounded px-3 py-2 text-botanical-text text-sm focus:outline-none focus:border-brand-gold" />
-          <p className="text-xs text-gray-600 mt-1">How far ahead clients can book</p>
+          <p className="text-xs text-botanical-muted mt-1">How far ahead clients can book</p>
         </div>
         <div>
           <label className="text-sm text-botanical-muted block mb-1">Buffer Between Appts (mins)</label>
           <input type="number" min={0} max={60} step={5} value={settings.bufferBetweenAppointments} onChange={e => upd('bufferBetweenAppointments', +e.target.value)}
             className="w-full bg-botanical-surface border border-botanical-border rounded px-3 py-2 text-botanical-text text-sm focus:outline-none focus:border-brand-gold" />
-          <p className="text-xs text-gray-600 mt-1">Cleaning / prep time between bookings</p>
+          <p className="text-xs text-botanical-muted mt-1">Cleaning / prep time between bookings</p>
         </div>
       </div>
 
@@ -70,7 +70,7 @@ export default function BookingSettingsForm({ shopId }: { shopId: string }) {
         <label className="text-sm text-botanical-muted block mb-1">Cancellation Window (hours)</label>
         <input type="number" min={0} max={168} value={settings.cancellationWindowHours} onChange={e => upd('cancellationWindowHours', +e.target.value)}
           className="w-full md:w-48 bg-botanical-surface border border-botanical-border rounded px-3 py-2 text-botanical-text text-sm focus:outline-none focus:border-brand-gold" />
-        <p className="text-xs text-gray-600 mt-1">Clients cannot cancel within this window before their appointment</p>
+        <p className="text-xs text-botanical-muted mt-1">Clients cannot cancel within this window before their appointment</p>
       </div>
 
       <div>
@@ -78,10 +78,10 @@ export default function BookingSettingsForm({ shopId }: { shopId: string }) {
         <textarea rows={3} value={settings.cancellationPolicy} onChange={e => upd('cancellationPolicy', e.target.value)}
           placeholder="e.g. Cancellations must be made at least 24 hours in advance. Late cancellations may incur a fee."
           className="w-full bg-botanical-surface border border-botanical-border rounded px-3 py-2 text-botanical-text text-sm placeholder-gray-600 focus:outline-none focus:border-brand-gold resize-none" />
-        <p className="text-xs text-gray-600 mt-1">Displayed on the booking portal and confirmation emails</p>
+        <p className="text-xs text-botanical-muted mt-1">Displayed on the booking portal and confirmation emails</p>
       </div>
 
-      <button onClick={save} disabled={saving} className="w-full bg-botanical-primary text-black font-bold py-3 rounded-lg hover:bg-white transition disabled:opacity-50">
+      <button onClick={save} disabled={saving} className="w-full bg-botanical-primary text-white font-bold py-3 rounded-lg hover:bg-white transition disabled:opacity-50">
         {saving ? 'Saving…' : 'Save Booking Settings'}
       </button>
     </div>

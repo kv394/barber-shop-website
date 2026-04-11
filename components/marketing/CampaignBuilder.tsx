@@ -61,7 +61,7 @@ export default function CampaignBuilder({ shopId }: { shopId: string }) {
 
   const getStatusBadge = (status: string) => {
     const colors: Record<string, string> = {
-      DRAFT: 'bg-botanical-surface text-botanical-muted border-gray-600',
+      DRAFT: 'bg-botanical-surface text-botanical-muted border-botanical-border',
       SCHEDULED: 'bg-blue-900/50 text-blue-300 border-blue-500/30',
       SENT: 'bg-green-900/50 text-green-300 border-green-500/30',
       CANCELLED: 'bg-red-900/50 text-red-300 border-red-500/30',
@@ -88,7 +88,7 @@ export default function CampaignBuilder({ shopId }: { shopId: string }) {
         </h3>
         <button
           onClick={() => setShowCreate(!showCreate)}
-          className="bg-botanical-primary text-botanical-text px-4 py-2 rounded-md text-sm font-bold hover:bg-yellow-400"
+          className="bg-botanical-primary text-white px-4 py-2 rounded-md text-sm font-bold hover:bg-yellow-400"
         >
           {showCreate ? '✕ Cancel' : '+ New Campaign'}
         </button>
@@ -161,7 +161,7 @@ export default function CampaignBuilder({ shopId }: { shopId: string }) {
 
           <button
             onClick={createCampaign}
-            className="bg-botanical-primary text-botanical-text px-6 py-2 rounded-md text-sm font-bold hover:bg-yellow-400"
+            className="bg-botanical-primary text-white px-6 py-2 rounded-md text-sm font-bold hover:bg-yellow-400"
           >
             Create Campaign
           </button>

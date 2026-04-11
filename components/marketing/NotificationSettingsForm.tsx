@@ -103,7 +103,7 @@ export default function NotificationSettingsForm({ shopId }: { shopId: string })
         </div>
       </div>
 
-      <button onClick={save} disabled={saving} className="w-full bg-botanical-primary text-black font-bold py-3 rounded-lg hover:bg-white transition disabled:opacity-50">
+      <button onClick={save} disabled={saving} className="w-full bg-botanical-primary text-white font-bold py-3 rounded-lg hover:bg-white transition disabled:opacity-50">
         {saving ? 'Saving…' : 'Save Notification Settings'}
       </button>
     </div>

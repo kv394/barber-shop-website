@@ -118,7 +118,7 @@ export default function TemplatesPage() {
               </optgroup>
             </select>
           </div>
-          <button disabled={generating} type="submit" className="bg-botanical-primary hover:bg-botanical-primary text-black px-6 py-2 rounded font-semibold disabled:opacity-50 transition">
+          <button disabled={generating} type="submit" className="bg-botanical-primary text-white px-6 py-2 rounded font-semibold disabled:opacity-50 transition">
             {generating ? 'Generating via Gemini...' : 'Generate Template'}
           </button>
         </form>
@@ -192,7 +192,7 @@ export default function TemplatesPage() {
 
               <div className="flex justify-end space-x-3 pt-4">
                 <button type="button" onClick={() => setEditingTemplate(null)} className="px-4 py-2 text-sm text-botanical-muted hover:text-botanical-text">Cancel</button>
-                <button disabled={savingEdit} type="submit" className="bg-botanical-primary hover:bg-botanical-primary text-black px-6 py-2 rounded font-semibold disabled:opacity-50 transition">
+                <button disabled={savingEdit} type="submit" className="bg-botanical-primary text-white px-6 py-2 rounded font-semibold disabled:opacity-50 transition">
                   {savingEdit ? 'Saving...' : 'Save Changes'}
                 </button>
               </div>

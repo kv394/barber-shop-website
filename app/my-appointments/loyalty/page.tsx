@@ -88,7 +88,7 @@ export default function LoyaltyPage() {
                     <div key={tx.id} className="flex justify-between items-center py-2 border-b border-botanical-border last:border-0">
                       <div>
                         <span className="text-sm text-botanical-muted">{tx.description || tx.type}</span>
-                        <span className="text-xs text-gray-600 ml-2">{new Date(tx.createdAt).toLocaleDateString()}</span>
+                        <span className="text-xs text-botanical-muted ml-2">{new Date(tx.createdAt).toLocaleDateString()}</span>
                       </div>
                       <span className={`text-sm font-semibold ${tx.points >= 0 ? 'text-green-400' : 'text-red-400'}`}>
                         {tx.points >= 0 ? '+' : ''}{tx.points}

@@ -44,7 +44,7 @@ export default function Error({
       <div className="flex gap-4">
         <button
           onClick={() => reset()}
-          className="rounded-lg bg-botanical-primary px-6 py-2.5 font-bold text-botanical-bg transition-all hover:scale-105 active:scale-95"
+          className="rounded-lg bg-botanical-primary text-white transition-all hover:scale-105 active:scale-95"
         >
           Try Again
         </button>

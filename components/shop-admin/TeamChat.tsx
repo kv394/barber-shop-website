@@ -169,11 +169,11 @@ export default function TeamChat({ shopId, currentUserId }: { shopId: string, cu
                 {!isMe && (
                   <span className="text-xs text-botanical-muted mb-1 ml-1 flex items-center gap-1 font-medium">
                     {msg.sender.name || 'User'} 
-                    {isAdmin && <span className="bg-botanical-primary text-botanical-text text-[8px] font-bold px-1.5 py-0.5 rounded uppercase">Admin</span>}
+                    {isAdmin && <span className="bg-botanical-primarytext-white text-[8px] font-bold px-1.5 py-0.5 rounded uppercase">Admin</span>}
                   </span>
                 )}
                 
-                <div className={`max-w-[85%] sm:max-w-[80%] p-2 rounded-2xl ${isMe ? 'bg-botanical-primary text-botanical-text rounded-br-sm' : 'bg-white border border-botanical-border text-botanical-text rounded-bl-sm'} shadow-sm flex flex-col gap-2 overflow-hidden`}>
+                <div className={`max-w-[85%] sm:max-w-[80%] p-2 rounded-2xl ${isMe ? 'bg-botanical-primarytext-white rounded-br-sm' : 'bg-white border border-botanical-border text-botanical-text rounded-bl-sm'} shadow-sm flex flex-col gap-2 overflow-hidden`}>
                   {msg.imageUrl && (
                     // eslint-disable-next-line @next/next/no-img-element
                     <img src={msg.imageUrl} alt="Shared image" className="max-w-full rounded-xl object-contain max-h-60" loading="lazy" />
@@ -256,7 +256,7 @@ export default function TeamChat({ shopId, currentUserId }: { shopId: string, cu
           <button 
             type="submit" 
             disabled={sending || (!newMessage.trim() && !imageUrl.trim())}
-            className="bg-botanical-primary text-botanical-text rounded-full w-11 h-11 flex items-center justify-center flex-shrink-0 disabled:opacity-50 transition-opacity hover:bg-yellow-400 shadow-sm"
+            className="bg-botanical-primarytext-white rounded-full w-11 h-11 flex items-center justify-center flex-shrink-0 disabled:opacity-50 transition-opacity hover:bg-yellow-400 shadow-sm"
           >
             {sending ? '...' : '➤'}
           </button>

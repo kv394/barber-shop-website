@@ -94,10 +94,10 @@ function ProfileContent() {
           <div className="bg-white p-4 rounded-xl">
             <QRCodeSVG value={profile?.barcode || profile?.id || 'NO_ID'} size={150} level="H" />
           </div>
-          <p className="text-sm text-botanical-muted print:text-gray-600 text-center max-w-xs">
+          <p className="text-sm text-botanical-muted print:text-botanical-muted text-center max-w-xs">
             Present this code at the kiosk or to your barber for quick check-in.
           </p>
-          <button onClick={handlePrint} className="bg-botanical-surface hover:bg-slate-600 text-botanical-text px-4 py-2 rounded-lg text-sm font-medium transition-colors print:hidden">
+          <button onClick={handlePrint} className="bg-botanical-surface hover:bg-botanical-border text-botanical-text px-4 py-2 rounded-lg text-sm font-medium transition-colors print:hidden">
             Print QR Code
           </button>
         </div>
@@ -139,16 +139,16 @@ function ProfileContent() {
             </label>
           </div>
 
-          <button onClick={handleSave} disabled={saving} className="w-full bg-botanical-primary text-botanical-bg font-bold py-3 rounded-lg hover:bg-white transition-colors disabled:opacity-50 mt-4">
+          <button onClick={handleSave} disabled={saving} className="w-full bg-botanical-primary text-white font-bold py-3 rounded-lg hover:bg-white transition-colors disabled:opacity-50 mt-4">
             {saving ? 'Saving…' : 'Save Changes'}
           </button>
 
           <div className="pt-6 mt-6 border-t border-botanical-border">
             <h3 className="text-sm font-semibold text-botanical-text mb-2">Security</h3>
-            <Link href="/update-password" className="inline-block px-4 py-2 bg-botanical-surface hover:bg-slate-600 text-botanical-text text-sm font-medium rounded-lg transition-colors border border-slate-600">
+            <Link href="/update-password" className="inline-block px-4 py-2 bg-botanical-surface hover:bg-botanical-border text-botanical-text text-sm font-medium rounded-lg transition-colors border border-slate-600">
               Change Password
             </Link>
-            <Link href="/my-appointments/profile/security" className="inline-block ml-3 px-4 py-2 bg-botanical-surface hover:bg-slate-600 text-botanical-text text-sm font-medium rounded-lg transition-colors border border-slate-600">
+            <Link href="/my-appointments/profile/security" className="inline-block ml-3 px-4 py-2 bg-botanical-surface hover:bg-botanical-border text-botanical-text text-sm font-medium rounded-lg transition-colors border border-slate-600">
               Security & Recovery
             </Link>
           </div>
