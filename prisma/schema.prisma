@@ -832,6 +832,7 @@ model Message {
   senderId  String
   sender    User     @relation(fields: [senderId], references: [id], onDelete: Cascade)
   content   String   @db.Text
+  imageUrl  String?  // Optional image attachment
   createdAt DateTime @default(now())
 
   @@index([shopId, createdAt])

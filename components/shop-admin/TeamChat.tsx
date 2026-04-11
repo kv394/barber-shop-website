@@ -11,6 +11,7 @@ interface Sender {
 interface Message {
   id: string;
   content: string;
+  imageUrl?: string | null;
   createdAt: string;
   sender: Sender;
 }
@@ -18,6 +19,8 @@ interface Message {
 export default function TeamChat({ shopId, currentUserId }: { shopId: string, currentUserId: string }) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [newMessage, setNewMessage] = useState('');
+  const [imageUrl, setImageUrl] = useState('');
+  const [showImageInput, setShowImageInput] = useState(false);
   const [loading, setLoading] = useState(true);
   const [sending, setSending] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -50,20 +53,22 @@ export default function TeamChat({ shopId, currentUserId }: { shopId: string, cu
 
   const handleSendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!newMessage.trim() || sending) return;
+    if ((!newMessage.trim() && !imageUrl.trim()) || sending) return;
 
     setSending(true);
     try {
       const res = await fetch(`/api/shops/${shopId}/chat`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ content: newMessage })
+        body: JSON.stringify({ content: newMessage, imageUrl: imageUrl.trim() || null })
       });
 
       if (res.ok) {
         const sentMessage = await res.json();
         setMessages(prev => [...prev, sentMessage]);
         setNewMessage('');
+        setImageUrl('');
+        setShowImageInput(false);
       } else {
         alert('Failed to send message');
       }
@@ -72,6 +77,25 @@ export default function TeamChat({ shopId, currentUserId }: { shopId: string, cu
     } finally {
       setSending(false);
     }
+  };
+
+  const renderContent = (content: string, isMe: boolean) => {
+    if (!content) return null;
+    const parts = content.split(/(@\w+)/g);
+    return (
+      <p className="text-sm whitespace-pre-wrap break-words px-2 pb-1">
+        {parts.map((part, i) => {
+          if (part.startsWith('@')) {
+            return (
+              <span key={i} className={`font-bold ${isMe ? 'text-white underline decoration-white/50 underline-offset-2' : 'text-brand-gold bg-brand-gold/10 px-1 rounded'}`}>
+                {part}
+              </span>
+            );
+          }
+          return <span key={i}>{part}</span>;
+        })}
+      </p>
+    );
   };
 
   if (loading) {
@@ -108,8 +132,12 @@ export default function TeamChat({ shopId, currentUserId }: { shopId: string, cu
                   </span>
                 )}
                 
-                <div className={`max-w-[85%] sm:max-w-[80%] px-4 py-2.5 rounded-2xl ${isMe ? 'bg-brand-gold text-brand-dark rounded-br-sm' : 'bg-white border border-gray-200 text-slate-800 rounded-bl-sm'} shadow-sm`}>
-                  <p className="text-sm whitespace-pre-wrap break-words">{msg.content}</p>
+                <div className={`max-w-[85%] sm:max-w-[80%] p-2 rounded-2xl ${isMe ? 'bg-brand-gold text-brand-dark rounded-br-sm' : 'bg-white border border-gray-200 text-slate-800 rounded-bl-sm'} shadow-sm flex flex-col gap-2 overflow-hidden`}>
+                  {msg.imageUrl && (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={msg.imageUrl} alt="Shared image" className="max-w-full rounded-xl object-contain max-h-60" loading="lazy" />
+                  )}
+                  {msg.content && renderContent(msg.content, isMe)}
                 </div>
                 
                 <span className={`text-[10px] text-gray-400 mt-1 ${isMe ? 'mr-1' : 'ml-1'}`}>
@@ -123,8 +151,34 @@ export default function TeamChat({ shopId, currentUserId }: { shopId: string, cu
       </div>
 
       {/* Input Area */}
-      <div className="p-3 sm:p-4 bg-white border-t border-gray-200 z-10 pb-safe">
-        <form onSubmit={handleSendMessage} className="flex gap-2">
+      <div className="p-3 sm:p-4 bg-white border-t border-gray-200 z-10 pb-safe flex flex-col gap-2">
+        {showImageInput && (
+          <div className="flex gap-2 items-center bg-gray-50 p-2 rounded-lg border border-gray-200 mb-1">
+            <input
+              type="url"
+              value={imageUrl}
+              onChange={(e) => setImageUrl(e.target.value)}
+              placeholder="Paste image URL here..."
+              className="flex-1 bg-transparent text-sm text-slate-900 placeholder-gray-500 focus:outline-none px-2"
+            />
+            <button
+              type="button"
+              onClick={() => { setImageUrl(''); setShowImageInput(false); }}
+              className="text-gray-400 hover:text-red-500 font-bold px-2"
+            >
+              ✕
+            </button>
+          </div>
+        )}
+        <form onSubmit={handleSendMessage} className="flex gap-2 items-center">
+          <button
+            type="button"
+            onClick={() => setShowImageInput(!showImageInput)}
+            className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 transition-colors ${showImageInput || imageUrl ? 'bg-blue-100 text-blue-600' : 'bg-gray-100 text-gray-500 hover:bg-gray-200'}`}
+            title="Attach Image URL"
+          >
+            📸
+          </button>
           <input 
             type="text" 
             value={newMessage}
@@ -134,7 +188,7 @@ export default function TeamChat({ shopId, currentUserId }: { shopId: string, cu
           />
           <button 
             type="submit" 
-            disabled={sending || !newMessage.trim()}
+            disabled={sending || (!newMessage.trim() && !imageUrl.trim())}
             className="bg-brand-gold text-brand-dark rounded-full w-11 h-11 flex items-center justify-center flex-shrink-0 disabled:opacity-50 transition-opacity hover:bg-yellow-400 shadow-sm"
           >
             {sending ? '...' : '➤'}

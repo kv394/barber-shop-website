@@ -70,15 +70,16 @@ export async function POST(
 
     const body = await request.json();
     
-    if (!body.content || body.content.trim() === '') {
-        return NextResponse.json({ error: 'Message content cannot be empty' }, { status: 400 });
+    if ((!body.content || body.content.trim() === '') && !body.imageUrl) {
+        return NextResponse.json({ error: 'Message cannot be empty' }, { status: 400 });
     }
 
     const message = await prisma.message.create({
       data: {
         shopId,
         senderId: user.id,
-        content: body.content.trim(),
+        content: body.content ? body.content.trim() : '',
+        imageUrl: body.imageUrl ? body.imageUrl.trim() : null,
       },
       include: {
         sender: {
@@ -90,6 +91,42 @@ export async function POST(
         }
       }
     });
+
+    // Handle @ mentions for notifications
+    if (message.content) {
+      const mentionRegex = /@(\w+)/g;
+      const mentions = Array.from(message.content.matchAll(mentionRegex)).map(m => m[1].toLowerCase());
+      
+      if (mentions.length > 0) {
+        // Find users in the shop whose first name matches the mentions
+        const shopUsers = await prisma.user.findMany({
+          where: { 
+            shopId,
+            role: { in: ['STAFF', 'SHOP_ADMIN', 'SUPER_ADMIN'] } 
+          }
+        });
+
+        const mentionedUsers = shopUsers.filter(u => {
+          if (!u.name) return false;
+          const firstName = u.name.split(' ')[0].toLowerCase();
+          return mentions.includes(firstName);
+        });
+
+        // Create a notification for each mentioned user
+        const notifications = mentionedUsers.filter(u => u.id !== user.id).map(u => ({
+          shopId,
+          userId: u.id,
+          type: 'CHAT_MENTION',
+          title: 'New Mention',
+          message: `${user.name || 'A team member'} mentioned you in the chat: "${message.content.substring(0, 50)}${message.content.length > 50 ? '...' : ''}"`,
+          status: 'PENDING'
+        }));
+
+        if (notifications.length > 0) {
+          await prisma.notification.createMany({ data: notifications });
+        }
+      }
+    }
 
     return NextResponse.json(message);
   } catch (error: any) {
