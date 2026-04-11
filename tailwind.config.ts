@@ -10,19 +10,19 @@ const config: Config = {
   theme: {
     extend: {
       fontSize: {
-        'xs': ['1.125rem', { lineHeight: '1.5rem' }],     // 18px (was 12px)
-        'sm': ['1.3125rem', { lineHeight: '1.875rem' }],  // 21px (was 14px)
-        'base': ['1.5rem', { lineHeight: '2.25rem' }],    // 24px (was 16px)
-        'lg': ['1.6875rem', { lineHeight: '2.625rem' }],  // 27px (was 18px)
-        'xl': ['1.875rem', { lineHeight: '2.625rem' }],   // 30px (was 20px)
-        '2xl': ['2.25rem', { lineHeight: '3rem' }],       // 36px (was 24px)
-        '3xl': ['2.8125rem', { lineHeight: '3.375rem' }], // 45px (was 30px)
-        '4xl': ['3.375rem', { lineHeight: '3.75rem' }],   // 54px (was 36px)
-        '5xl': ['4.5rem', { lineHeight: '1' }],           // 72px (was 48px)
-        '6xl': ['5.625rem', { lineHeight: '1' }],         // 90px (was 60px)
-        '7xl': ['6.75rem', { lineHeight: '1' }],          // 108px (was 72px)
-        '8xl': ['9rem', { lineHeight: '1' }],             // 144px (was 96px)
-        '9xl': ['12rem', { lineHeight: '1' }],            // 192px (was 128px)
+        'xs': ['0.9375rem', { lineHeight: '1.25rem' }],     // 15px (was 12px default)
+        'sm': ['1.09375rem', { lineHeight: '1.5625rem' }],  // 17.5px (was 14px default)
+        'base': ['1.25rem', { lineHeight: '1.875rem' }],    // 20px (was 16px default)
+        'lg': ['1.40625rem', { lineHeight: '2.1875rem' }],  // 22.5px (was 18px default)
+        'xl': ['1.5625rem', { lineHeight: '2.1875rem' }],   // 25px (was 20px default)
+        '2xl': ['1.875rem', { lineHeight: '2.5rem' }],      // 30px (was 24px default)
+        '3xl': ['2.34375rem', { lineHeight: '2.8125rem' }], // 37.5px (was 30px default)
+        '4xl': ['2.8125rem', { lineHeight: '3.125rem' }],   // 45px (was 36px default)
+        '5xl': ['3.75rem', { lineHeight: '1' }],            // 60px (was 48px default)
+        '6xl': ['4.6875rem', { lineHeight: '1' }],          // 75px (was 60px default)
+        '7xl': ['5.625rem', { lineHeight: '1' }],           // 90px (was 72px default)
+        '8xl': ['7.5rem', { lineHeight: '1' }],             // 120px (was 96px default)
+        '9xl': ['10rem', { lineHeight: '1' }],              // 160px (was 128px default)
       },
       fontFamily: {
         sans: ['var(--font-sans)', 'sans-serif'],
