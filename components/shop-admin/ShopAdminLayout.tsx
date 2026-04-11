@@ -1,5 +1,6 @@
 import { ShopNav } from '@/components/shop-admin/ShopNav';
 import Link from 'next/link';
+import SectionSidebar from '@/components/shop-admin/SectionSidebar';
 
 interface ShopAdminLayoutProps {
   children: React.ReactNode;
@@ -21,87 +22,6 @@ const SETTINGS_TABS = [
 const STAFF_TABS = ['staff', 'team', 'leave', 'portfolio', 'profile'];
 const REPORTS_TABS = ['reports', 'staff-report', 'expenses', 'commissions'];
 const ENGAGEMENT_TABS = ['engagement', 'loyalty', 'referrals', 'campaigns', 'gift-cards'];
-
-function SectionSidebar({ activeTab, shopId, section, userRole }: { activeTab: string, shopId: string, section: string, userRole: string }) {
-  let navLinks: { href: string, label: string, key: string }[] = [];
-
-  const isStaff = userRole === 'STAFF';
-  const isShopAdmin = userRole === 'SHOP_ADMIN';
-
-  if (section === 'settings') {
-    navLinks = [
-      { href: `/shop/${shopId}/settings`, label: '🎨 Appearance', key: 'settings' },
-      { href: `/shop/${shopId}/settings/booking`, label: '📅 Booking & Hours', key: 'settings-booking' },
-      { href: `/shop/${shopId}/config/services`, label: '💇 Services', key: 'services' },
-      { href: `/shop/${shopId}/config/products`, label: '🛍️ Products', key: 'products' },
-      { href: `/shop/${shopId}/settings/resources`, label: '🪑 Resources', key: 'settings-resources' },
-      { href: `/shop/${shopId}/settings/forms`, label: '📝 Intake Forms', key: 'settings-forms' },
-      { href: `/shop/${shopId}/settings/memberships`, label: '⭐ Memberships', key: 'settings-memberships' },
-      { href: `/shop/${shopId}/settings/notifications`, label: '🔔 Notifications', key: 'settings-notifications' },
-      { href: `/shop/${shopId}/settings/commissions`, label: '💼 Commissions', key: 'settings-commissions' },
-      { href: `/shop/${shopId}/settings/kiosk`, label: '📱 Kiosk', key: 'settings-kiosk' },
-      { href: `/shop/${shopId}/settings/billing`, label: '💳 Billing', key: 'settings-billing' },
-    ];
-  } else if (section === 'staff') {
-    if (isShopAdmin) {
-      navLinks = [
-        { href: `/shop/${shopId}/settings/team`, label: '👥 Team & Availability', key: 'team' },
-        { href: `/shop/${shopId}/portfolio`, label: '📸 Portfolio', key: 'portfolio' },
-      ];
-    } else {
-      navLinks = [
-        { href: `/shop/${shopId}/staff`, label: '📅 My Schedule', key: 'staff' },
-        { href: `/shop/${shopId}/leave`, label: '🏖️ My Leave', key: 'leave' },
-        { href: `/shop/${shopId}/portfolio`, label: '📸 My Portfolio', key: 'portfolio' },
-        { href: `/shop/${shopId}/reports/commissions`, label: '💰 My Earnings', key: 'commissions' },
-      ];
-    }
-  } else if (section === 'reports') {
-    navLinks = [
-      { href: `/shop/${shopId}/reports`, label: '💰 Financial', key: 'reports' },
-      { href: `/shop/${shopId}/reports/staff-working`, label: '📊 Staff Performance', key: 'staff-report' },
-      { href: `/shop/${shopId}/expenses`, label: '💸 Expenses', key: 'expenses' },
-      { href: `/shop/${shopId}/reports/commissions`, label: '💼 Commissions', key: 'commissions' },
-    ];
-  } else if (section === 'engagement') {
-    navLinks = [
-      { href: `/shop/${shopId}/engagement`, label: '📈 Analytics', key: 'engagement' },
-      { href: `/shop/${shopId}/loyalty`, label: '⭐ Loyalty', key: 'loyalty' },
-      { href: `/shop/${shopId}/referrals`, label: '🔗 Referrals', key: 'referrals' },
-      { href: `/shop/${shopId}/campaigns`, label: '📣 Campaigns', key: 'campaigns' },
-      { href: `/shop/${shopId}/gift-cards`, label: '🎁 Gift Cards', key: 'gift-cards' },
-    ];
-  }
-
-  return (
-    <div className="relative">
-      <nav className="flex flex-row md:flex-col gap-2 overflow-x-auto scrollbar-none pb-1 md:pb-0 pr-8 md:pr-0">
-        {navLinks.map((l) => {
-          const isActive = activeTab === l.key || (l.key === 'settings' && activeTab === 'appearance');
-          return (
-            <Link
-              key={l.key}
-              href={l.href}
-              className={`px-4 py-2.5 rounded-lg text-sm font-bold whitespace-nowrap transition-all ${
-                isActive 
-                  ? 'bg-slate-900 text-white md:bg-brand-gold md:text-slate-900 shadow-md' 
-                  : 'bg-white text-slate-600 md:bg-transparent md:text-gray-400 hover:bg-gray-100 md:hover:text-white md:hover:bg-white/5 border border-gray-200 md:border-transparent'
-              }`}
-            >
-              {l.label}
-            </Link>
-          );
-        })}
-      </nav>
-      {/* Mobile Scroll Indicator (Gradient Fade & Arrow) */}
-      <div className="absolute right-0 top-0 bottom-0 w-12 bg-gradient-to-l from-white via-white/80 to-transparent pointer-events-none md:hidden flex items-center justify-end pr-1 pb-1">
-        <div className="w-6 h-6 bg-white shadow-sm border border-gray-200 rounded-full flex items-center justify-center animate-pulse">
-          <span className="text-slate-900 font-black text-lg leading-none -mt-0.5 ml-0.5">›</span>
-        </div>
-      </div>
-    </div>
-  );
-}
 
 export default function ShopAdminLayout({
   children,
