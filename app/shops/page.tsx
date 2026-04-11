@@ -1,5 +1,7 @@
 import { prisma } from '@/lib/prisma';
 import Link from 'next/link';
+import { createClient } from '@/utils/supabase/server';
+import { redirect } from 'next/navigation';
 
 // Cache the directory page
 export const revalidate = 60;
@@ -37,6 +39,27 @@ export default async function ShopsDirectoryPage({
 }: {
   searchParams: Promise<{ page?: string }>;
 }) {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+
+  if (user?.email) {
+    const dbUser = await prisma.user.findUnique({
+      where: { email: user.email },
+      select: { role: true, shopId: true, shop: { select: { name: true } } }
+    });
+    
+    if (dbUser && dbUser.role !== 'CLIENT') {
+       if (dbUser.shopId) {
+         redirect(`/shop/${dbUser.shopId}`);
+       } else {
+         redirect('/');
+       }
+    } else if (dbUser && dbUser.role === 'CLIENT' && dbUser.shopId && dbUser.shop?.name) {
+       const targetSlug = dbUser.shop.name.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '');
+       redirect(`/shops/${targetSlug}`);
+    }
+  }
+
   const resolvedSearchParams = await searchParams;
   const currentPage = Number(resolvedSearchParams.page) || 1;
   const { shops, totalCount, totalPages } = await getShopsPage(currentPage);

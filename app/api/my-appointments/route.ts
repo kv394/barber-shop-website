@@ -8,7 +8,7 @@ export const dynamic = 'force-dynamic';
  * GET /api/my-appointments
  * Returns the authenticated client's upcoming and past appointments.
  */
-export async function GET() {
+export async function GET(request: Request) {
   const supabase = await createClient();
   const { data: { user: authUserSession } } = await supabase.auth.getUser();
   let userId = authUserSession?.id;
@@ -18,6 +18,11 @@ export async function GET() {
   }
 
   try {
+    const { searchParams } = new URL(request.url);
+    const limit = parseInt(searchParams.get('limit') || '15', 10);
+    const page = parseInt(searchParams.get('page') || '1', 10);
+    const skip = (page - 1) * limit;
+
     const now = new Date();
 
     const user = await prisma.user.findFirst({
@@ -39,7 +44,8 @@ export async function GET() {
           review: { select: { id: true } },
         },
         orderBy: { startTime: 'asc' },
-        take: 50,
+        take: limit,
+        skip: skip,
       }),
       prisma.appointment.findMany({
         where: {
@@ -56,7 +62,8 @@ export async function GET() {
           review: { select: { id: true } },
         },
         orderBy: { startTime: 'desc' },
-        take: 50,
+        take: limit,
+        skip: skip,
       }),
     ]);
 

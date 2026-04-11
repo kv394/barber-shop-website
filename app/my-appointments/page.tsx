@@ -87,10 +87,10 @@ export default function MyAppointmentsPage() {
 
   if (loading) {
     return (
-      <div className="h-[100dvh] overflow-y-auto overflow-x-hidden">
+      <div className="h-[100dvh] overflow-y-auto overflow-x-hidden flex items-center justify-center bg-slate-900">
         <div className="flex flex-col items-center gap-4">
-          <div className="w-10 h-10 border-3 border-brand-gold border-t-transparent rounded-full animate-spin" />
-          <p className="text-gray-400 text-sm animate-pulse">Loading your appointments…</p>
+          <div className="w-12 h-12 border-4 border-brand-gold border-t-transparent rounded-full animate-spin"></div>
+          <p className="text-brand-gold text-sm animate-pulse font-medium tracking-wide uppercase">Loading Appointments...</p>
         </div>
       </div>
     );
