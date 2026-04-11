@@ -79,17 +79,17 @@ export default function TeamChat({ shopId, currentUserId }: { shopId: string, cu
   }
 
   return (
-    <div className="flex flex-col h-[calc(100dvh-180px)] sm:h-[600px] bg-slate-900/50 rounded-xl border border-white/10 overflow-hidden">
+    <div className="flex flex-col h-[calc(100dvh-180px)] sm:h-[600px] bg-white rounded-t-3xl sm:rounded-2xl border border-gray-200 overflow-hidden shadow-2xl">
       {/* Header */}
-      <div className="p-4 border-b border-white/10 bg-slate-800/80">
-        <h3 className="font-bold text-white flex items-center gap-2">
+      <div className="p-4 sm:p-5 border-b border-gray-200 bg-white z-10 shadow-sm relative">
+        <h3 className="font-bold text-slate-900 flex items-center gap-2 text-lg">
           <span>💬</span> Team Chat
         </h3>
-        <p className="text-xs text-gray-400">Moderated by Shop Admin</p>
+        <p className="text-xs text-gray-500">Moderated by Shop Admin</p>
       </div>
 
       {/* Messages Area */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-4 scroll-smooth">
+      <div className="flex-1 overflow-y-auto p-4 space-y-4 scroll-smooth bg-slate-50">
         {messages.length === 0 ? (
           <div className="h-full flex items-center justify-center text-gray-500 italic text-sm">
             No messages yet. Start the conversation!
@@ -102,17 +102,17 @@ export default function TeamChat({ shopId, currentUserId }: { shopId: string, cu
             return (
               <div key={msg.id} className={`flex flex-col ${isMe ? 'items-end' : 'items-start'}`}>
                 {!isMe && (
-                  <span className="text-xs text-gray-400 mb-1 ml-1 flex items-center gap-1">
+                  <span className="text-xs text-gray-500 mb-1 ml-1 flex items-center gap-1 font-medium">
                     {msg.sender.name || 'User'} 
                     {isAdmin && <span className="bg-brand-gold text-brand-dark text-[8px] font-bold px-1.5 py-0.5 rounded uppercase">Admin</span>}
                   </span>
                 )}
                 
-                <div className={`max-w-[80%] px-4 py-2 rounded-2xl ${isMe ? 'bg-brand-gold text-brand-dark rounded-br-sm' : 'bg-slate-700 text-white rounded-bl-sm'} shadow-sm`}>
+                <div className={`max-w-[85%] sm:max-w-[80%] px-4 py-2.5 rounded-2xl ${isMe ? 'bg-brand-gold text-brand-dark rounded-br-sm' : 'bg-white border border-gray-200 text-slate-800 rounded-bl-sm'} shadow-sm`}>
                   <p className="text-sm whitespace-pre-wrap break-words">{msg.content}</p>
                 </div>
                 
-                <span className={`text-[10px] text-gray-500 mt-1 ${isMe ? 'mr-1' : 'ml-1'}`}>
+                <span className={`text-[10px] text-gray-400 mt-1 ${isMe ? 'mr-1' : 'ml-1'}`}>
                   {new Date(msg.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                 </span>
               </div>
@@ -123,19 +123,19 @@ export default function TeamChat({ shopId, currentUserId }: { shopId: string, cu
       </div>
 
       {/* Input Area */}
-      <div className="p-3 bg-slate-800/80 border-t border-white/10">
+      <div className="p-3 sm:p-4 bg-white border-t border-gray-200 z-10 pb-safe">
         <form onSubmit={handleSendMessage} className="flex gap-2">
           <input 
             type="text" 
             value={newMessage}
             onChange={(e) => setNewMessage(e.target.value)}
             placeholder="Type a message..."
-            className="flex-1 bg-black/40 border border-white/10 rounded-full px-4 py-2 text-sm text-white focus:outline-none focus:border-brand-gold"
+            className="flex-1 bg-gray-100 border border-gray-200 rounded-full px-4 py-2.5 text-sm text-slate-900 placeholder-gray-500 focus:outline-none focus:border-brand-gold focus:ring-1 focus:ring-brand-gold transition-shadow"
           />
           <button 
             type="submit" 
             disabled={sending || !newMessage.trim()}
-            className="bg-brand-gold text-brand-dark rounded-full w-10 h-10 flex items-center justify-center flex-shrink-0 disabled:opacity-50 transition-opacity"
+            className="bg-brand-gold text-brand-dark rounded-full w-11 h-11 flex items-center justify-center flex-shrink-0 disabled:opacity-50 transition-opacity hover:bg-yellow-400 shadow-sm"
           >
             {sending ? '...' : '➤'}
           </button>
