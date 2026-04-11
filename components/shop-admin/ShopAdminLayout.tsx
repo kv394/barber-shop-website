@@ -74,24 +74,30 @@ function SectionSidebar({ activeTab, shopId, section, userRole }: { activeTab: s
   }
 
   return (
-    <nav className="flex flex-row md:flex-col gap-1 overflow-x-auto scrollbar-none pb-2 md:pb-0">
-      {navLinks.map((l) => {
-        const isActive = activeTab === l.key || (l.key === 'settings' && activeTab === 'appearance');
-        return (
-          <Link
-            key={l.key}
-            href={l.href}
-            className={`px-4 py-2.5 rounded-lg text-sm font-medium whitespace-nowrap transition-colors ${
-              isActive 
-                ? 'bg-brand-gold text-brand-dark shadow-md' 
-                : 'text-gray-400 hover:text-white hover:bg-white/5'
-            }`}
-          >
-            {l.label}
-          </Link>
-        );
-      })}
-    </nav>
+    <div className="relative">
+      <nav className="flex flex-row md:flex-col gap-2 overflow-x-auto scrollbar-none pb-1 md:pb-0 pr-8 md:pr-0">
+        {navLinks.map((l) => {
+          const isActive = activeTab === l.key || (l.key === 'settings' && activeTab === 'appearance');
+          return (
+            <Link
+              key={l.key}
+              href={l.href}
+              className={`px-4 py-2.5 rounded-lg text-sm font-bold whitespace-nowrap transition-all ${
+                isActive 
+                  ? 'bg-slate-900 text-white md:bg-brand-gold md:text-slate-900 shadow-md' 
+                  : 'bg-white text-slate-600 md:bg-transparent md:text-gray-400 hover:bg-gray-100 md:hover:text-white md:hover:bg-white/5 border border-gray-200 md:border-transparent'
+              }`}
+            >
+              {l.label}
+            </Link>
+          );
+        })}
+      </nav>
+      {/* Mobile Scroll Indicator (Gradient Fade & Arrow) */}
+      <div className="absolute right-0 top-0 bottom-0 w-12 bg-gradient-to-l from-white/90 to-transparent pointer-events-none md:hidden flex items-center justify-end pr-1">
+        <span className="text-gray-400 font-bold animate-pulse text-lg">›</span>
+      </div>
+    </div>
   );
 }
 
@@ -130,9 +136,9 @@ export default function ShopAdminLayout({
       <ShopNav shopId={shopId} userRole={userRole} activeTab={activeTab} />
 
       {isSplitLayout ? (
-        <div className="flex flex-col md:flex-row gap-6 items-start">
+        <div className="flex flex-col md:flex-row gap-4 md:gap-6 items-start">
           {/* Sidebar */}
-          <div className="w-full md:w-64 shrink-0 bg-slate-800/50 rounded-xl border border-white/10 p-2 shadow-lg">
+          <div className="w-full md:w-64 shrink-0 bg-white md:bg-slate-800/50 rounded-xl border border-gray-200 md:border-white/10 p-2 shadow-lg relative overflow-hidden">
             <SectionSidebar activeTab={activeTab} shopId={shopId} section={activeSection} userRole={userRole} />
           </div>
           
