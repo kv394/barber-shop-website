@@ -293,29 +293,28 @@ export default async function TeamDashboardPage({ params, searchParams }: { para
       )}
 
       {/* ═══ Invite Section ═══ */}
-      <div className="mb-8 bg-gradient-to-br from-slate-900 to-slate-800 rounded-2xl border border-botanical-border shadow-xl overflow-hidden">
-        <div className="h-1 bg-gradient-to-r from-brand-gold via-brand-gold/60 to-transparent" />
+      <div className="mb-8 bg-white rounded-2xl border border-botanical-border shadow-xl overflow-hidden">
+        <div className="h-1 bg-gradient-to-r from-botanical-primary via-botanical-primary/60 to-transparent" />
         <div className="p-6">
           <div className="flex items-center gap-3 mb-5">
-            <div className="w-10 h-10 rounded-xl bg-botanical-primary/20 flex items-center justify-center text-xl">✉️</div>
+            <div className="w-10 h-10 rounded-xl bg-botanical-primary/10 flex items-center justify-center text-xl">✉️</div>
             <div>
-              <h3 className="text-lg font-bold text-botanical-text">Invite Team Member</h3>
-              <p className="text-xs text-botanical-muted">Add staff or admins to your shop</p>
+              <h3 className="text-lg font-bold text-slate-900">Invite Team Member</h3>
+              <p className="text-xs text-slate-500">Add staff or admins to your shop</p>
             </div>
           </div>
 
           <form action={inviteUser} className="grid grid-cols-1 md:grid-cols-12 gap-3 items-end">
             <input type="hidden" name="shopId" value={shop.id} />
             <div className="md:col-span-6">
-              <label className="block text-[10px] text-botanical-muted mb-1 font-semibold uppercase tracking-wider">📧 Email</label>
+              <label className="block text-[10px] text-slate-600 mb-1 font-semibold uppercase tracking-wider">📧 Email</label>
               <input type="email" name="email" required placeholder="team@example.com"
-                className="w-full p-2.5 rounded-lg border border-slate-600 bg-botanical-surface text-botanical-text text-sm placeholder-gray-600 focus:ring-2 focus:ring-botanical-primary focus:outline-none transition-all" />
+                className="w-full p-2.5 rounded-lg border border-gray-200 bg-white text-slate-900 text-sm placeholder-gray-400 focus:ring-2 focus:ring-botanical-primary focus:outline-none transition-all" />
             </div>
             <div className="md:col-span-3">
-              <label className="block text-[10px] text-botanical-muted mb-1 font-semibold uppercase tracking-wider">👤 Role</label>
+              <label className="block text-[10px] text-slate-600 mb-1 font-semibold uppercase tracking-wider">👤 Role</label>
               <select name="role" defaultValue={userRole === 'SUPER_ADMIN' ? 'SHOP_ADMIN' : 'STAFF'}
-                style={{ colorScheme: 'dark' }}
-                className="w-full p-2.5 rounded-lg border border-slate-600 bg-botanical-surface text-botanical-text text-sm focus:ring-2 focus:ring-botanical-primary focus:outline-none transition-all">
+                className="w-full p-2.5 rounded-lg border border-gray-200 bg-white text-slate-900 text-sm focus:ring-2 focus:ring-botanical-primary focus:outline-none transition-all">
                 {userRole === 'SHOP_ADMIN' && <option value="STAFF">Staff</option>}
                 {userRole === 'SUPER_ADMIN' && (
                   <>
@@ -327,14 +326,14 @@ export default async function TeamDashboardPage({ params, searchParams }: { para
             </div>
             <div className="md:col-span-3">
               <button type="submit" disabled={userRole === 'SUPER_ADMIN' && !canAddShopAdmin}
-                className="w-full bg-botanical-primary text-white font-bold py-2.5 px-6 rounded-xl hover:bg-white hover:scale-[1.02] active:scale-95 transition-all duration-200 shadow-lg shadow-brand-gold/20 text-sm disabled:opacity-50 disabled:cursor-not-allowed">
+                className="w-full bg-botanical-primary text-white font-bold py-2.5 px-6 rounded-xl hover:bg-botanical-primary/90 hover:scale-[1.02] active:scale-95 transition-all duration-200 shadow-md text-sm disabled:opacity-50 disabled:cursor-not-allowed">
                 Invite Member
               </button>
             </div>
           </form>
 
           {!canAddShopAdmin && userRole === 'SUPER_ADMIN' && (
-            <div className="mt-3 flex items-center gap-2 text-xs text-amber-400 bg-amber-900/20 px-3 py-2 rounded-lg border border-amber-500/20">
+            <div className="mt-3 flex items-center gap-2 text-xs text-amber-700 bg-amber-50 px-3 py-2 rounded-lg border border-amber-200">
               <span>⚠️</span>
               <span>A Shop Admin already exists. Remove them to assign a new one.</span>
             </div>
