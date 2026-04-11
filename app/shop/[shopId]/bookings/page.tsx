@@ -8,6 +8,7 @@ import DeleteAppointmentButton from '@/components/appointments/DeleteAppointment
 import CheckoutButton from '@/components/checkout/CheckoutButton';
 import NoShowButton from '@/components/appointments/NoShowButton';
 import AppointmentNotes from '@/components/appointments/AppointmentNotes';
+import BookingDatePicker from '@/components/appointments/BookingDatePicker';
 import ShopAdminLayout from '@/components/shop-admin/ShopAdminLayout';
 
 export const dynamic = 'force-dynamic';
@@ -87,8 +88,11 @@ export default async function BookingsPage({ params }: { params: Promise<{ shopI
         activeTab="bookings"
       >
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-4 sm:mb-6">
-          <h2 className="text-xl sm:text-2xl font-bold text-white">Upcoming Bookings (Next 30 Days)</h2>
-          <Link href={`/shops/${shopSlug}`} target="_blank" className="bg-white/10 hover:bg-white/20 text-white px-4 py-2 rounded text-xs sm:text-sm transition-colors whitespace-nowrap">+ Add Booking</Link>
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+            <h2 className="text-xl sm:text-2xl font-bold text-white">Upcoming Bookings</h2>
+            <BookingDatePicker dates={Object.keys(groupedAppointments)} />
+          </div>
+          <Link href={`/shops/${shopSlug}`} target="_blank" className="bg-brand-gold hover:bg-yellow-400 text-brand-dark font-bold px-4 py-2 rounded-lg text-xs sm:text-sm transition-colors whitespace-nowrap shadow-lg">+ Add Booking</Link>
         </div>
 
         {Object.keys(groupedAppointments).length === 0 ? (
@@ -96,7 +100,7 @@ export default async function BookingsPage({ params }: { params: Promise<{ shopI
         ) : (
           <div className="space-y-6 sm:space-y-8">
             {Object.keys(groupedAppointments).map((date) => (
-              <div key={date}>
+              <div key={date} id={`date-${date.replace(/\s+/g, '-')}`} className="scroll-mt-24">
                 <h3 className="text-base sm:text-xl font-bold text-brand-gold border-b border-white/10 pb-2 mb-3 sm:mb-4">{date}</h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
                   {groupedAppointments[date].map((apt: any) => {
