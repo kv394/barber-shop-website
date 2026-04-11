@@ -47,7 +47,6 @@ function SectionSidebar({ activeTab, shopId, section, userRole }: { activeTab: s
       navLinks = [
         { href: `/shop/${shopId}/settings/team`, label: '👥 Team & Availability', key: 'team' },
         { href: `/shop/${shopId}/attendance`, label: '🕐 Attendance', key: 'attendance' },
-        { href: `/shop/${shopId}/leave`, label: '🏖️ Leave', key: 'leave' },
         { href: `/shop/${shopId}/portfolio`, label: '📸 Portfolio', key: 'portfolio' },
       ];
     } else {
