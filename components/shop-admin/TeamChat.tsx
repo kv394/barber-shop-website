@@ -144,9 +144,9 @@ export default function TeamChat({ shopId, currentUserId }: { shopId: string, cu
   }
 
   return (
-    <div className="flex flex-col h-[calc(100dvh-180px)] sm:h-[600px] bg-white rounded-t-3xl sm:rounded-2xl border-2 border-b-[6px] border-botanical-border overflow-hidden shadow-2xl relative">
+    <div className="flex flex-col h-[calc(100dvh-180px)] sm:h-[600px] bg-botanical-surface rounded-t-3xl sm:rounded-2xl border-2 border-b-[6px] border-botanical-border overflow-hidden shadow-2xl relative">
       {/* Header */}
-      <div className="p-4 sm:p-5 border-b border-botanical-border bg-white z-10 shadow-sm relative">
+      <div className="p-4 sm:p-5 border-b border-botanical-border bg-botanical-surface z-10 shadow-sm relative">
         <h3 className="font-bold text-botanical-text flex items-center gap-2 text-lg">
           <span>💬</span> Team Chat
         </h3>
@@ -154,7 +154,7 @@ export default function TeamChat({ shopId, currentUserId }: { shopId: string, cu
       </div>
 
       {/* Messages Area */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-4 scroll-smooth bg-slate-50 relative">
+      <div className="flex-1 overflow-y-auto p-4 space-y-4 scroll-smooth bg-botanical-bg relative">
         {messages.length === 0 ? (
           <div className="h-full flex items-center justify-center text-botanical-muted italic text-sm">
             No messages yet. Start the conversation!
@@ -169,11 +169,11 @@ export default function TeamChat({ shopId, currentUserId }: { shopId: string, cu
                 {!isMe && (
                   <span className="text-xs text-botanical-muted mb-1 ml-1 flex items-center gap-1 font-medium">
                     {msg.sender.name || 'User'} 
-                    {isAdmin && <span className="bg-botanical-primarytext-white text-[8px] font-bold px-1.5 py-0.5 rounded uppercase">Admin</span>}
+                    {isAdmin && <span className="bg-botanical-primary text-white text-[8px] font-bold px-1.5 py-0.5 rounded uppercase">Admin</span>}
                   </span>
                 )}
                 
-                <div className={`max-w-[85%] sm:max-w-[80%] p-2 rounded-2xl ${isMe ? 'bg-botanical-primarytext-white rounded-br-sm' : 'bg-white border-2 border-b-[6px] border-botanical-border text-botanical-text rounded-bl-sm'} shadow-sm flex flex-col gap-2 overflow-hidden`}>
+                <div className={`max-w-[85%] sm:max-w-[80%] p-2 rounded-2xl ${isMe ? 'bg-botanical-primary text-white rounded-br-sm' : 'bg-botanical-surface border-2 border-b-[6px] border-botanical-border text-botanical-text rounded-bl-sm'} shadow-sm flex flex-col gap-2 overflow-hidden`}>
                   {msg.imageUrl && (
                     // eslint-disable-next-line @next/next/no-img-element
                     <img src={msg.imageUrl} alt="Shared image" className="max-w-full rounded-xl object-contain max-h-60" loading="lazy" />
@@ -193,8 +193,8 @@ export default function TeamChat({ shopId, currentUserId }: { shopId: string, cu
 
       {/* Mention Dropdown */}
       {mentionSearch !== null && filteredUsers.length > 0 && (
-        <div className="absolute bottom-[72px] sm:bottom-[80px] left-4 right-4 bg-white border-2 border-b-[6px] border-botanical-border shadow-xl rounded-xl z-20 overflow-hidden max-h-48 overflow-y-auto">
-          <div className="px-3 py-2 bg-gray-50 text-xs font-bold text-botanical-muted border-b border-gray-100 uppercase tracking-wider">
+        <div className="absolute bottom-[72px] sm:bottom-[80px] left-4 right-4 bg-botanical-surface border-2 border-b-[6px] border-botanical-border shadow-xl rounded-xl z-20 overflow-hidden max-h-48 overflow-y-auto">
+          <div className="px-3 py-2 bg-botanical-bg text-xs font-bold text-botanical-muted border-b border-gray-100 uppercase tracking-wider">
             Mention a Team Member
           </div>
           {filteredUsers.map(u => (
@@ -202,7 +202,7 @@ export default function TeamChat({ shopId, currentUserId }: { shopId: string, cu
               key={u.id}
               type="button"
               onClick={() => insertMention(u.name.split(' ')[0])}
-              className="w-full text-left px-4 py-3 hover:bg-gray-50 border-b border-gray-50 last:border-0 flex items-center gap-3 transition-colors"
+              className="w-full text-left px-4 py-3 hover:bg-botanical-bg border-b border-gray-50 last:border-0 flex items-center gap-3 transition-colors"
             >
               <div className="w-8 h-8 rounded-full bg-botanical-primary/20 text-botanical-accent font-bold flex items-center justify-center shrink-0">
                 {u.name.charAt(0).toUpperCase()}
@@ -217,9 +217,9 @@ export default function TeamChat({ shopId, currentUserId }: { shopId: string, cu
       )}
 
       {/* Input Area */}
-      <div className="p-3 sm:p-4 bg-white border-t border-botanical-border z-10 pb-safe flex flex-col gap-2">
+      <div className="p-3 sm:p-4 bg-botanical-surface border-t border-botanical-border z-10 pb-safe flex flex-col gap-2">
         {showImageInput && (
-          <div className="flex gap-2 items-center bg-gray-50 p-2 rounded-lg border-2 border-b-[6px] border-botanical-border mb-1">
+          <div className="flex gap-2 items-center bg-botanical-bg p-2 rounded-lg border-2 border-b-[6px] border-botanical-border mb-1">
             <input
               type="url"
               value={imageUrl}
@@ -240,7 +240,7 @@ export default function TeamChat({ shopId, currentUserId }: { shopId: string, cu
           <button
             type="button"
             onClick={() => setShowImageInput(!showImageInput)}
-            className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 transition-colors ${showImageInput || imageUrl ? 'bg-blue-100 text-blue-600' : 'bg-gray-100 text-botanical-muted hover:bg-gray-200'}`}
+            className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 transition-colors ${showImageInput || imageUrl ? 'bg-botanical-primary/20 text-botanical-primary' : 'bg-botanical-border/30 text-botanical-muted hover:bg-botanical-border'}`}
             title="Attach Image URL"
           >
             📸
@@ -251,12 +251,12 @@ export default function TeamChat({ shopId, currentUserId }: { shopId: string, cu
             value={newMessage}
             onChange={handleInputChange}
             placeholder="Type a message..."
-            className="flex-1 bg-gray-100 border-2 border-b-[6px] border-botanical-border rounded-full px-4 py-2.5 text-sm text-botanical-text placeholder-gray-500 focus:outline-none focus:border-brand-gold focus:ring-1 focus:ring-botanical-primary transition-shadow"
+            className="flex-1 bg-botanical-border/30 border-2 border-b-[6px] border-botanical-border rounded-full px-4 py-2.5 text-sm text-botanical-text placeholder-gray-500 focus:outline-none focus:border-brand-gold focus:ring-1 focus:ring-botanical-primary transition-shadow"
           />
           <button 
             type="submit" 
             disabled={sending || (!newMessage.trim() && !imageUrl.trim())}
-            className="bg-botanical-primarytext-white rounded-full w-11 h-11 flex items-center justify-center flex-shrink-0 disabled:opacity-50 transition-opacity hover:bg-yellow-400 shadow-sm"
+            className="bg-botanical-primary text-white rounded-full w-11 h-11 flex items-center justify-center flex-shrink-0 disabled:opacity-50 transition-opacity hover:opacity-90 shadow-sm"
           >
             {sending ? '...' : '➤'}
           </button>
