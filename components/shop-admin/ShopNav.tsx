@@ -100,47 +100,47 @@ export function ShopNav({ shopId, userRole, activeTab }: { shopId: string, userR
       </div>
 
       {/* ── Mobile App Bottom Navigation ── */}
-      <div className="sm:hidden fixed bottom-0 left-0 right-0 bg-slate-800/95 backdrop-blur-xl border-t border-white/20 z-50 pb-safe shadow-[0_-4px_25px_-5px_rgba(0,0,0,0.5)]">
+      <div className="sm:hidden fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-xl border-t border-gray-200 z-50 pb-safe shadow-[0_-4px_25px_-5px_rgba(0,0,0,0.1)]">
         <div className="flex justify-around items-center h-20 px-2 pb-2">
-          <Link href={`/shop/${shopId}`} className={`flex flex-col items-center justify-center w-full h-full space-y-1 ${activeTab === 'dashboard' ? 'text-brand-gold drop-shadow-md' : 'text-gray-400 hover:text-white'}`}>
-            <span className="text-2xl">🏠</span>
-            <span className="text-[11px] sm:text-xs font-bold tracking-wide">Home</span>
+          <Link href={`/shop/${shopId}`} className={`flex flex-col items-center justify-center w-full h-full space-y-1 ${activeTab === 'dashboard' ? 'text-slate-900 drop-shadow-sm' : 'text-gray-400 hover:text-slate-700'}`}>
+            <span className="text-3xl">🏠</span>
+            <span className="text-xs sm:text-sm font-bold tracking-wide">Home</span>
           </Link>
-          <Link href={`/shop/${shopId}/bookings`} className={`flex flex-col items-center justify-center w-full h-full space-y-1 ${activeTab === 'bookings' ? 'text-brand-gold drop-shadow-md' : 'text-gray-400 hover:text-white'}`}>
-            <span className="text-2xl">📅</span>
-            <span className="text-[11px] sm:text-xs font-bold tracking-wide">Bookings</span>
+          <Link href={`/shop/${shopId}/bookings`} className={`flex flex-col items-center justify-center w-full h-full space-y-1 ${activeTab === 'bookings' ? 'text-slate-900 drop-shadow-sm' : 'text-gray-400 hover:text-slate-700'}`}>
+            <span className="text-3xl">📅</span>
+            <span className="text-xs sm:text-sm font-bold tracking-wide">Bookings</span>
           </Link>
           {isStaff ? (
-            <Link href={`/shop/${shopId}/staff`} className={`flex flex-col items-center justify-center w-full h-full space-y-1 ${activeTab === 'staff' ? 'text-brand-gold drop-shadow-md' : 'text-gray-400 hover:text-white'}`}>
-              <span className="text-2xl">🗓️</span>
-              <span className="text-[11px] sm:text-xs font-bold tracking-wide">Schedule</span>
+            <Link href={`/shop/${shopId}/staff`} className={`flex flex-col items-center justify-center w-full h-full space-y-1 ${activeTab === 'staff' ? 'text-slate-900 drop-shadow-sm' : 'text-gray-400 hover:text-slate-700'}`}>
+              <span className="text-3xl">🗓️</span>
+              <span className="text-xs sm:text-sm font-bold tracking-wide">Schedule</span>
             </Link>
           ) : (
-            <Link href={`/shop/${shopId}/settings/team`} className={`flex flex-col items-center justify-center w-full h-full space-y-1 ${activeTab === 'team' || effectiveStaffTabs.includes(activeTab) ? 'text-brand-gold drop-shadow-md' : 'text-gray-400 hover:text-white'}`}>
-              <span className="text-2xl">👥</span>
-              <span className="text-[11px] sm:text-xs font-bold tracking-wide">Team</span>
+            <Link href={`/shop/${shopId}/settings/team`} className={`flex flex-col items-center justify-center w-full h-full space-y-1 ${activeTab === 'team' || effectiveStaffTabs.includes(activeTab) ? 'text-slate-900 drop-shadow-sm' : 'text-gray-400 hover:text-slate-700'}`}>
+              <span className="text-3xl">👥</span>
+              <span className="text-xs sm:text-sm font-bold tracking-wide">Team</span>
             </Link>
           )}
           {isStaff ? (
-            <Link href={`/shop/${shopId}/clients`} className={`flex flex-col items-center justify-center w-full h-full space-y-1 ${activeTab === 'clients' ? 'text-brand-gold drop-shadow-md' : 'text-gray-400 hover:text-white'}`}>
-              <span className="text-2xl">👥</span>
-              <span className="text-[11px] sm:text-xs font-bold tracking-wide">Clients</span>
+            <Link href={`/shop/${shopId}/clients`} className={`flex flex-col items-center justify-center w-full h-full space-y-1 ${activeTab === 'clients' ? 'text-slate-900 drop-shadow-sm' : 'text-gray-400 hover:text-slate-700'}`}>
+              <span className="text-3xl">👥</span>
+              <span className="text-xs sm:text-sm font-bold tracking-wide">Clients</span>
             </Link>
           ) : (
-            <Link href={`/shop/${shopId}/reports`} className={`flex flex-col items-center justify-center w-full h-full space-y-1 ${isReportsSection ? 'text-brand-gold drop-shadow-md' : 'text-gray-400 hover:text-white'}`}>
-              <span className="text-2xl">📊</span>
-              <span className="text-[11px] sm:text-xs font-bold tracking-wide">Reports</span>
+            <Link href={`/shop/${shopId}/reports`} className={`flex flex-col items-center justify-center w-full h-full space-y-1 ${isReportsSection ? 'text-slate-900 drop-shadow-sm' : 'text-gray-400 hover:text-slate-700'}`}>
+              <span className="text-3xl">📊</span>
+              <span className="text-xs sm:text-sm font-bold tracking-wide">Reports</span>
             </Link>
           )}
           {isStaff ? (
-            <Link href={`/shop/${shopId}/profile`} className={`flex flex-col items-center justify-center w-full h-full space-y-1 ${['profile', 'leave', 'portfolio', 'commissions'].includes(activeTab) ? 'text-brand-gold drop-shadow-md' : 'text-gray-400 hover:text-white'}`}>
-              <span className="text-2xl">👤</span>
-              <span className="text-[11px] sm:text-xs font-bold tracking-wide">Profile</span>
+            <Link href={`/shop/${shopId}/profile`} className={`flex flex-col items-center justify-center w-full h-full space-y-1 ${['profile', 'leave', 'portfolio', 'commissions'].includes(activeTab) ? 'text-slate-900 drop-shadow-sm' : 'text-gray-400 hover:text-slate-700'}`}>
+              <span className="text-3xl">👤</span>
+              <span className="text-xs sm:text-sm font-bold tracking-wide">Profile</span>
             </Link>
           ) : (
-            <Link href={`/shop/${shopId}/settings`} className={`flex flex-col items-center justify-center w-full h-full space-y-1 ${isSettingsSection ? 'text-brand-gold drop-shadow-md' : 'text-gray-400 hover:text-white'}`}>
-              <span className="text-2xl">⚙️</span>
-              <span className="text-[11px] sm:text-xs font-bold tracking-wide">Settings</span>
+            <Link href={`/shop/${shopId}/settings`} className={`flex flex-col items-center justify-center w-full h-full space-y-1 ${isSettingsSection ? 'text-slate-900 drop-shadow-sm' : 'text-gray-400 hover:text-slate-700'}`}>
+              <span className="text-3xl">⚙️</span>
+              <span className="text-xs sm:text-sm font-bold tracking-wide">Settings</span>
             </Link>
           )}
         </div>
