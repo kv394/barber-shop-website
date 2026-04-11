@@ -56,13 +56,15 @@ export default function SectionSidebar({ activeTab, shopId, section, userRole }:
 
   const scrollContainerRef = useRef<HTMLElement>(null);
   const activeLinkRef = useRef<HTMLAnchorElement>(null);
-  const [showIndicator, setShowIndicator] = useState(false);
+  const [showLeftIndicator, setShowLeftIndicator] = useState(false);
+  const [showRightIndicator, setShowRightIndicator] = useState(false);
 
   const checkScroll = () => {
     if (scrollContainerRef.current) {
       const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current;
+      setShowLeftIndicator(scrollLeft > 5);
       // Show indicator if not scrolled to the end (allow 10px tolerance for padding and subpixels)
-      setShowIndicator(scrollLeft < scrollWidth - clientWidth - 10);
+      setShowRightIndicator(scrollLeft < scrollWidth - clientWidth - 10);
     }
   };
 
@@ -106,7 +108,7 @@ export default function SectionSidebar({ activeTab, shopId, section, userRole }:
       <nav 
         ref={scrollContainerRef}
         onScroll={checkScroll}
-        className="flex flex-row md:flex-col gap-2 overflow-x-auto scrollbar-none pb-1 md:pb-0 pr-8 md:pr-0"
+        className="flex flex-row md:flex-col gap-2 overflow-x-auto scrollbar-none pb-1 md:pb-0 pl-4 md:pl-0 pr-8 md:pr-0 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
       >
         {navLinks.map((l) => {
           const isActive = activeTab === l.key || (l.key === 'settings' && activeTab === 'appearance');
@@ -126,10 +128,21 @@ export default function SectionSidebar({ activeTab, shopId, section, userRole }:
           );
         })}
       </nav>
-      {/* Mobile Scroll Indicator (Gradient Fade & Arrow) */}
+      {/* Left Mobile Scroll Indicator (Gradient Fade & Arrow) */}
+      <div 
+        className={`absolute left-0 top-0 bottom-0 w-12 bg-gradient-to-r from-white via-white/80 to-transparent pointer-events-none md:hidden flex items-center justify-start pl-1 pb-1 transition-opacity duration-300 ${
+          showLeftIndicator ? 'opacity-100' : 'opacity-0'
+        }`}
+      >
+        <div className="w-6 h-6 bg-white shadow-sm border border-gray-200 rounded-full flex items-center justify-center animate-pulse">
+          <span className="text-slate-900 font-black text-lg leading-none -mt-0.5 mr-0.5">‹</span>
+        </div>
+      </div>
+
+      {/* Right Mobile Scroll Indicator (Gradient Fade & Arrow) */}
       <div 
         className={`absolute right-0 top-0 bottom-0 w-12 bg-gradient-to-l from-white via-white/80 to-transparent pointer-events-none md:hidden flex items-center justify-end pr-1 pb-1 transition-opacity duration-300 ${
-          showIndicator ? 'opacity-100' : 'opacity-0'
+          showRightIndicator ? 'opacity-100' : 'opacity-0'
         }`}
       >
         <div className="w-6 h-6 bg-white shadow-sm border border-gray-200 rounded-full flex items-center justify-center animate-pulse">
