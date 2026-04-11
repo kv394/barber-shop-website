@@ -23,7 +23,10 @@ export default function TeamChat({ shopId, currentUserId }: { shopId: string, cu
   const [showImageInput, setShowImageInput] = useState(false);
   const [loading, setLoading] = useState(true);
   const [sending, setSending] = useState(false);
+  const [shopUsers, setShopUsers] = useState<any[]>([]);
+  const [mentionSearch, setMentionSearch] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const fetchMessages = async () => {
     try {
@@ -43,6 +46,17 @@ export default function TeamChat({ shopId, currentUserId }: { shopId: string, cu
     fetchMessages();
     // Poll for new messages every 5 seconds
     const intervalId = setInterval(fetchMessages, 5000);
+    
+    // Fetch users for mentions
+    fetch(`/api/shops/${shopId}/staff`)
+      .then(res => res.json())
+      .then(data => {
+        if (data.staff && Array.isArray(data.staff)) {
+          setShopUsers(data.staff);
+        }
+      })
+      .catch(console.error);
+      
     return () => clearInterval(intervalId);
   }, [shopId]);
 
@@ -69,6 +83,7 @@ export default function TeamChat({ shopId, currentUserId }: { shopId: string, cu
         setNewMessage('');
         setImageUrl('');
         setShowImageInput(false);
+        setMentionSearch(null);
       } else {
         alert('Failed to send message');
       }
@@ -78,6 +93,32 @@ export default function TeamChat({ shopId, currentUserId }: { shopId: string, cu
       setSending(false);
     }
   };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const val = e.target.value;
+    setNewMessage(val);
+    
+    // Check if the user is typing a mention
+    const lastWord = val.split(' ').pop();
+    if (lastWord && lastWord.startsWith('@')) {
+      setMentionSearch(lastWord.slice(1).toLowerCase());
+    } else {
+      setMentionSearch(null);
+    }
+  };
+
+  const insertMention = (name: string) => {
+    const words = newMessage.split(' ');
+    words.pop(); // remove the partial @mention
+    const newText = [...words, `@${name} `].join(' ');
+    setNewMessage(newText);
+    setMentionSearch(null);
+    inputRef.current?.focus();
+  };
+
+  const filteredUsers = mentionSearch !== null 
+    ? shopUsers.filter(u => u.name && u.name.split(' ')[0].toLowerCase().startsWith(mentionSearch))
+    : [];
 
   const renderContent = (content: string, isMe: boolean) => {
     if (!content) return null;
@@ -103,7 +144,7 @@ export default function TeamChat({ shopId, currentUserId }: { shopId: string, cu
   }
 
   return (
-    <div className="flex flex-col h-[calc(100dvh-180px)] sm:h-[600px] bg-white rounded-t-3xl sm:rounded-2xl border border-gray-200 overflow-hidden shadow-2xl">
+    <div className="flex flex-col h-[calc(100dvh-180px)] sm:h-[600px] bg-white rounded-t-3xl sm:rounded-2xl border border-gray-200 overflow-hidden shadow-2xl relative">
       {/* Header */}
       <div className="p-4 sm:p-5 border-b border-gray-200 bg-white z-10 shadow-sm relative">
         <h3 className="font-bold text-slate-900 flex items-center gap-2 text-lg">
@@ -113,7 +154,7 @@ export default function TeamChat({ shopId, currentUserId }: { shopId: string, cu
       </div>
 
       {/* Messages Area */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-4 scroll-smooth bg-slate-50">
+      <div className="flex-1 overflow-y-auto p-4 space-y-4 scroll-smooth bg-slate-50 relative">
         {messages.length === 0 ? (
           <div className="h-full flex items-center justify-center text-gray-500 italic text-sm">
             No messages yet. Start the conversation!
@@ -150,6 +191,31 @@ export default function TeamChat({ shopId, currentUserId }: { shopId: string, cu
         <div ref={messagesEndRef} />
       </div>
 
+      {/* Mention Dropdown */}
+      {mentionSearch !== null && filteredUsers.length > 0 && (
+        <div className="absolute bottom-[72px] sm:bottom-[80px] left-4 right-4 bg-white border border-gray-200 shadow-xl rounded-xl z-20 overflow-hidden max-h-48 overflow-y-auto">
+          <div className="px-3 py-2 bg-gray-50 text-xs font-bold text-gray-500 border-b border-gray-100 uppercase tracking-wider">
+            Mention a Team Member
+          </div>
+          {filteredUsers.map(u => (
+            <button
+              key={u.id}
+              type="button"
+              onClick={() => insertMention(u.name.split(' ')[0])}
+              className="w-full text-left px-4 py-3 hover:bg-gray-50 border-b border-gray-50 last:border-0 flex items-center gap-3 transition-colors"
+            >
+              <div className="w-8 h-8 rounded-full bg-brand-gold/20 text-brand-gold font-bold flex items-center justify-center shrink-0">
+                {u.name.charAt(0).toUpperCase()}
+              </div>
+              <div>
+                <div className="font-semibold text-slate-900 text-sm">{u.name}</div>
+                <div className="text-xs text-gray-500">{u.role.replace('_', ' ')}</div>
+              </div>
+            </button>
+          ))}
+        </div>
+      )}
+
       {/* Input Area */}
       <div className="p-3 sm:p-4 bg-white border-t border-gray-200 z-10 pb-safe flex flex-col gap-2">
         {showImageInput && (
@@ -180,9 +246,10 @@ export default function TeamChat({ shopId, currentUserId }: { shopId: string, cu
             📸
           </button>
           <input 
+            ref={inputRef}
             type="text" 
             value={newMessage}
-            onChange={(e) => setNewMessage(e.target.value)}
+            onChange={handleInputChange}
             placeholder="Type a message..."
             className="flex-1 bg-gray-100 border border-gray-200 rounded-full px-4 py-2.5 text-sm text-slate-900 placeholder-gray-500 focus:outline-none focus:border-brand-gold focus:ring-1 focus:ring-brand-gold transition-shadow"
           />
