@@ -80,31 +80,32 @@ export default function SupabaseAuthButton({
           <>
             {/* Dark overlay for mobile, invisible on desktop */}
             <div 
-              className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm sm:bg-transparent sm:backdrop-blur-none transition-opacity" 
+              className="fixed inset-0 bg-black/80 sm:bg-transparent transition-opacity" 
+              style={{ zIndex: 99998 }}
               onClick={() => setIsOpen(false)} 
             />
             
             {/* Responsive Menu: Bottom Sheet on Mobile, Dropdown on Desktop */}
-            <div className="fixed sm:absolute bottom-0 left-0 right-0 sm:bottom-auto sm:left-auto sm:right-0 sm:mt-2 w-full sm:w-72 bg-slate-900 sm:border border-white/10 rounded-t-3xl sm:rounded-xl shadow-2xl z-50 overflow-hidden transform transition-transform duration-300 translate-y-0 sm:translate-y-0 animate-in slide-in-from-bottom-10 sm:slide-in-from-top-2 sm:fade-in">
+            <div 
+              className="fixed sm:absolute bottom-0 left-0 right-0 sm:bottom-auto sm:left-auto sm:right-0 sm:mt-2 w-full sm:w-72 bg-slate-900 sm:border border-white/10 rounded-t-3xl sm:rounded-xl shadow-2xl overflow-hidden pb-safe"
+              style={{ zIndex: 99999 }}
+            >
                <div className="p-6 sm:p-4 border-b border-white/5 flex flex-col items-center bg-slate-800/50 relative">
                  {/* Mobile drag handle indicator */}
                  <div className="w-12 h-1.5 bg-gray-600 rounded-full mb-5 sm:hidden absolute top-3"></div>
                  
-                 <p className="text-sm sm:text-xs text-gray-400 truncate mb-4 sm:mb-3 w-full text-center mt-2 sm:mt-0">{user.email}</p>
+                 <p className="text-sm sm:text-xs text-gray-300 truncate mb-4 sm:mb-3 w-full text-center mt-2 sm:mt-0">{user.email}</p>
                  <div className="bg-white p-3 sm:p-2 rounded-2xl shadow-inner inline-block">
                    {/* QR Code scales down slightly on desktop */}
                    <QRCodeSVG value={profile?.barcode || user.id} size={160} className="sm:w-[120px] sm:h-[120px]" level="L" />
                  </div>
-                 <p className="text-xs sm:text-[10px] text-gray-500 mt-4 sm:mt-2 text-center uppercase tracking-widest font-bold">My Check-in Code</p>
+                 <p className="text-xs sm:text-[10px] text-gray-400 mt-4 sm:mt-2 text-center uppercase tracking-widest font-bold">My Check-in Code</p>
                </div>
                
                {/* Menu Actions */}
-               <div className="p-4 sm:p-2 space-y-2 sm:space-y-1 bg-slate-900 pb-8 sm:pb-2">
+               <div className="p-4 sm:p-2 space-y-2 sm:space-y-1 bg-slate-900 pb-10 sm:pb-2">
                   <Link onClick={() => setIsOpen(false)} href="/my-appointments" className="block w-full text-center sm:text-left px-4 py-3.5 sm:py-2 text-base sm:text-sm text-gray-200 hover:text-white hover:bg-white/5 rounded-xl transition-colors font-medium">
                     My Appointments
-                  </Link>
-                  <Link onClick={() => setIsOpen(false)} href="/my-appointments/profile" className="block w-full text-center sm:text-left px-4 py-3.5 sm:py-2 text-base sm:text-sm text-gray-200 hover:text-white hover:bg-white/5 rounded-xl transition-colors font-medium">
-                    My QR Code
                   </Link>
                   <Link onClick={() => setIsOpen(false)} href="/my-appointments/profile" className="block w-full text-center sm:text-left px-4 py-3.5 sm:py-2 text-base sm:text-sm text-gray-200 hover:text-white hover:bg-white/5 rounded-xl transition-colors font-medium">
                     Edit Profile

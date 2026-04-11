@@ -71,7 +71,7 @@ export default async function ShopLayout({
                <span className="text-slate-900 font-black text-lg leading-tight truncate">{data.shop.name}</span>
                <span className="text-gray-500 text-[10px] uppercase font-bold tracking-wider leading-tight mt-0.5">{data.userRole.replace('_', ' ')}</span>
             </div>
-            <div className="shrink-0 drop-shadow-sm">
+            <div className="shrink-0">
                <SupabaseAuthButton redirectUrl={fallbackRedirect} />
             </div>
           </header>
