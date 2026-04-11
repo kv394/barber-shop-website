@@ -64,7 +64,7 @@ export function CustomizationForm({
 
   return (
     <div className="w-full">
-      <h2 className="text-xl sm:text-2xl font-bold text-white mb-4 sm:mb-6">
+      <h2 className="text-xl sm:text-2xl font-bold text-botanical-text mb-4 sm:mb-6">
         {isSuperAdmin ? "Customize Your Shop Appearance" : "Update Contact Information"}
       </h2>
 
@@ -80,15 +80,15 @@ export function CustomizationForm({
         </div>
       )}
 
-      <div className="space-y-6 bg-slate-800/50 p-4 sm:p-6 md:p-8 rounded-lg border border-slate-700">
+      <div className="space-y-6 bg-botanical-surface p-4 sm:p-6 md:p-8 rounded-lg border border-botanical-border">
         
         {/* ONLY SUPER ADMIN CAN EDIT COLORS */}
         {isSuperAdmin && (
           <div>
-            <h3 className="text-lg font-bold text-white mb-4">Brand Colors</h3>
+            <h3 className="text-lg font-bold text-botanical-text mb-4">Brand Colors</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-botanical-muted mb-2">
                   Primary Color
                 </label>
                 <div className="flex gap-2">
@@ -106,13 +106,13 @@ export function CustomizationForm({
                     onChange={(e) =>
                       handleInputChange('primaryColor', e.target.value)
                     }
-                    className="flex-1 bg-slate-900 border border-slate-700 rounded px-3 py-2 text-white"
+                    className="flex-1 bg-botanical-bg border border-botanical-border rounded px-3 py-2 text-botanical-text"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-botanical-muted mb-2">
                   Secondary Color
                 </label>
                 <div className="flex gap-2">
@@ -130,7 +130,7 @@ export function CustomizationForm({
                     onChange={(e) =>
                       handleInputChange('secondaryColor', e.target.value)
                     }
-                    className="flex-1 bg-slate-900 border border-slate-700 rounded px-3 py-2 text-white"
+                    className="flex-1 bg-botanical-bg border border-botanical-border rounded px-3 py-2 text-botanical-text"
                   />
                 </div>
               </div>
@@ -139,10 +139,10 @@ export function CustomizationForm({
         )}
 
         <div>
-          <h3 className="text-lg font-bold text-white mb-4">Contact Information</h3>
+          <h3 className="text-lg font-bold text-botanical-text mb-4">Contact Information</h3>
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-botanical-muted mb-2">
                 Phone Number
               </label>
               <input
@@ -150,12 +150,12 @@ export function CustomizationForm({
                 value={formData.phone || ''}
                 onChange={(e) => handleInputChange('phone', e.target.value)}
                 placeholder="+1 (555) 000-0000"
-                className="w-full bg-slate-900 border border-slate-700 rounded px-4 py-2 text-white placeholder-gray-500"
+                className="w-full bg-botanical-bg border border-botanical-border rounded px-4 py-2 text-botanical-text placeholder-gray-500"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-botanical-muted mb-2">
                 Email Address
               </label>
               <input
@@ -163,12 +163,12 @@ export function CustomizationForm({
                 value={formData.email || ''}
                 onChange={(e) => handleInputChange('email', e.target.value)}
                 placeholder="contact@shop.com"
-                className="w-full bg-slate-900 border border-slate-700 rounded px-4 py-2 text-white placeholder-gray-500"
+                className="w-full bg-botanical-bg border border-botanical-border rounded px-4 py-2 text-botanical-text placeholder-gray-500"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-botanical-muted mb-2">
                 Business Address
               </label>
               <input
@@ -176,17 +176,17 @@ export function CustomizationForm({
                 value={formData.address || ''}
                 onChange={(e) => handleInputChange('address', e.target.value)}
                 placeholder="123 Main St, City, State"
-                className="w-full bg-slate-900 border border-slate-700 rounded px-4 py-2 text-white placeholder-gray-500"
+                className="w-full bg-botanical-bg border border-botanical-border rounded px-4 py-2 text-botanical-text placeholder-gray-500"
               />
             </div>
           </div>
         </div>
 
         <div>
-          <h3 className="text-lg font-bold text-white mb-4">Social Media Links</h3>
+          <h3 className="text-lg font-bold text-botanical-text mb-4">Social Media Links</h3>
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-botanical-muted mb-2">
                 Facebook URL
               </label>
               <input
@@ -199,12 +199,12 @@ export function CustomizationForm({
                   })
                 }
                 placeholder="https://facebook.com/yourpage"
-                className="w-full bg-slate-900 border border-slate-700 rounded px-4 py-2 text-white placeholder-gray-500"
+                className="w-full bg-botanical-bg border border-botanical-border rounded px-4 py-2 text-botanical-text placeholder-gray-500"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-botanical-muted mb-2">
                 Instagram URL
               </label>
               <input
@@ -217,12 +217,12 @@ export function CustomizationForm({
                   })
                 }
                 placeholder="https://instagram.com/yourpage"
-                className="w-full bg-slate-900 border border-slate-700 rounded px-4 py-2 text-white placeholder-gray-500"
+                className="w-full bg-botanical-bg border border-botanical-border rounded px-4 py-2 text-botanical-text placeholder-gray-500"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-botanical-muted mb-2">
                 Twitter URL
               </label>
               <input
@@ -235,7 +235,7 @@ export function CustomizationForm({
                   })
                 }
                 placeholder="https://twitter.com/yourpage"
-                className="w-full bg-slate-900 border border-slate-700 rounded px-4 py-2 text-white placeholder-gray-500"
+                className="w-full bg-botanical-bg border border-botanical-border rounded px-4 py-2 text-botanical-text placeholder-gray-500"
               />
             </div>
           </div>
@@ -244,7 +244,7 @@ export function CustomizationForm({
         <button
           onClick={handleSave}
           disabled={isLoading}
-          className="w-full bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white font-bold py-3 rounded-lg transition-colors"
+          className="w-full bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-botanical-text font-bold py-3 rounded-lg transition-colors"
         >
           {isLoading ? 'Saving...' : 'Save Information'}
         </button>

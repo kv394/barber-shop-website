@@ -46,8 +46,8 @@ export default async function ShopConfigPage({
     >
       <div className="space-y-8">
         <div>
-          <h2 className="text-2xl font-bold text-white mb-6">Select Template</h2>
-          <p className="text-gray-400 mb-6 text-sm leading-relaxed">
+          <h2 className="text-2xl font-bold text-botanical-text mb-6">Select Template</h2>
+          <p className="text-botanical-muted mb-6 text-sm leading-relaxed">
             Choose a layout for the public booking page. You can further customize colors in the Appearance tab.
           </p>
           <TemplateSelector

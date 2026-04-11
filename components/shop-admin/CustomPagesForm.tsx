@@ -58,10 +58,10 @@ export function CustomPagesForm({ shopId, customization }: { shopId: string; cus
   return (
     <div className="w-full mt-8">
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-xl sm:text-2xl font-bold text-white">Custom Pages (Menus)</h2>
+        <h2 className="text-xl sm:text-2xl font-bold text-botanical-text">Custom Pages (Menus)</h2>
         <button
           onClick={addPage}
-          className="bg-brand-gold text-black px-4 py-2 rounded font-bold hover:bg-yellow-500 transition-colors"
+          className="bg-botanical-primary text-black px-4 py-2 rounded font-bold hover:bg-botanical-primary transition-colors"
         >
           + Add Page
         </button>
@@ -80,15 +80,15 @@ export function CustomPagesForm({ shopId, customization }: { shopId: string; cus
       )}
 
       {pages.length === 0 ? (
-        <div className="text-gray-400 bg-slate-800/50 p-6 rounded-lg text-center">
+        <div className="text-botanical-muted bg-botanical-surface p-6 rounded-lg text-center">
           No custom pages found. Create one to add to your shop portal menu.
         </div>
       ) : (
         <div className="space-y-6">
           {pages.map((page, index) => (
-            <div key={page.id} className="bg-slate-800/50 p-6 rounded-lg border border-slate-700">
+            <div key={page.id} className="bg-botanical-surface p-6 rounded-lg border border-botanical-border">
               <div className="flex justify-between items-start mb-4">
-                <h3 className="text-lg font-bold text-white">Page {index + 1}</h3>
+                <h3 className="text-lg font-bold text-botanical-text">Page {index + 1}</h3>
                 <button
                   onClick={() => removePage(index)}
                   className="text-red-400 hover:text-red-300 text-sm"
@@ -98,31 +98,31 @@ export function CustomPagesForm({ shopId, customization }: { shopId: string; cus
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-300 mb-1">Title (Menu Label)</label>
+                  <label className="block text-sm font-medium text-botanical-muted mb-1">Title (Menu Label)</label>
                   <input
                     type="text"
                     value={page.title}
                     onChange={(e) => updatePage(index, 'title', e.target.value)}
-                    className="w-full bg-slate-900 border border-slate-700 rounded px-3 py-2 text-white"
+                    className="w-full bg-botanical-bg border border-botanical-border rounded px-3 py-2 text-botanical-text"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-300 mb-1">URL Slug / ID</label>
+                  <label className="block text-sm font-medium text-botanical-muted mb-1">URL Slug / ID</label>
                   <input
                     type="text"
                     value={page.id}
                     onChange={(e) => updatePage(index, 'id', e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, '-'))}
-                    className="w-full bg-slate-900 border border-slate-700 rounded px-3 py-2 text-white"
+                    className="w-full bg-botanical-bg border border-botanical-border rounded px-3 py-2 text-botanical-text"
                   />
                 </div>
               </div>
               <div className="mb-4">
-                <label className="block text-sm font-medium text-gray-300 mb-1">Content</label>
+                <label className="block text-sm font-medium text-botanical-muted mb-1">Content</label>
                 <textarea
                   value={page.content}
                   onChange={(e) => updatePage(index, 'content', e.target.value)}
                   rows={6}
-                  className="w-full bg-slate-900 border border-slate-700 rounded px-3 py-2 text-white"
+                  className="w-full bg-botanical-bg border border-botanical-border rounded px-3 py-2 text-botanical-text"
                   placeholder="Enter HTML or plain text here..."
                 />
               </div>
@@ -132,9 +132,9 @@ export function CustomPagesForm({ shopId, customization }: { shopId: string; cus
                   id={`visible-${page.id}`}
                   checked={page.isVisible}
                   onChange={(e) => updatePage(index, 'isVisible', e.target.checked)}
-                  className="w-4 h-4 rounded border-gray-600 text-brand-gold focus:ring-brand-gold bg-slate-900"
+                  className="w-4 h-4 rounded border-gray-600 text-botanical-accent focus:ring-brand-gold bg-botanical-bg"
                 />
-                <label htmlFor={`visible-${page.id}`} className="text-sm text-gray-300">
+                <label htmlFor={`visible-${page.id}`} className="text-sm text-botanical-muted">
                   Visible in public menu
                 </label>
               </div>
@@ -144,7 +144,7 @@ export function CustomPagesForm({ shopId, customization }: { shopId: string; cus
           <button
             onClick={handleSave}
             disabled={isLoading}
-            className="w-full bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white font-bold py-3 rounded-lg transition-colors"
+            className="w-full bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-botanical-text font-bold py-3 rounded-lg transition-colors"
           >
             {isLoading ? 'Saving...' : 'Save Pages'}
           </button>

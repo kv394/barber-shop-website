@@ -69,11 +69,11 @@ export default function SchedulePage() {
   };
 
   if (isLoading) {
-    return <div className="p-8 text-white text-center">Loading...</div>;
+    return <div className="p-8 text-botanical-text text-center">Loading...</div>;
   }
 
   if (!staffMember || !shop) {
-    return <div className="p-8 text-white text-center">Access denied or user not found.</div>;
+    return <div className="p-8 text-botanical-text text-center">Access denied or user not found.</div>;
   }
 
   const shopSlug = shop.name.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '');
@@ -88,8 +88,8 @@ export default function SchedulePage() {
       userRole={userRole || ''}
       activeTab="team"
     >
-      <div className="bg-slate-900/50 p-6 rounded-lg border border-white/10 mb-8">
-        <h3 className="text-2xl font-bold mb-6 text-white">Staff Details</h3>
+      <div className="bg-botanical-bg/50 p-6 rounded-lg border border-botanical-border mb-8">
+        <h3 className="text-2xl font-bold mb-6 text-botanical-text">Staff Details</h3>
         <form 
           onSubmit={async (e) => {
             e.preventDefault();
@@ -118,21 +118,21 @@ export default function SchedulePage() {
           className="grid grid-cols-1 md:grid-cols-3 gap-6"
         >
           <div>
-            <label className="block text-[10px] text-gray-500 mb-1 font-semibold uppercase tracking-wider">Name</label>
-            <input type="text" name="name" defaultValue={staffMember.name || ''} className="w-full bg-slate-800 p-2.5 rounded-lg border border-slate-700 text-white focus:ring-2 focus:ring-brand-gold outline-none transition-all" />
+            <label className="block text-[10px] text-botanical-muted mb-1 font-semibold uppercase tracking-wider">Name</label>
+            <input type="text" name="name" defaultValue={staffMember.name || ''} className="w-full bg-botanical-surface p-2.5 rounded-lg border border-botanical-border text-botanical-text focus:ring-2 focus:ring-brand-gold outline-none transition-all" />
           </div>
           <div>
-            <label className="block text-[10px] text-gray-500 mb-1 font-semibold uppercase tracking-wider">Phone</label>
-            <input type="tel" name="phone" defaultValue={staffMember.phone || ''} className="w-full bg-slate-800 p-2.5 rounded-lg border border-slate-700 text-white focus:ring-2 focus:ring-brand-gold outline-none transition-all" />
+            <label className="block text-[10px] text-botanical-muted mb-1 font-semibold uppercase tracking-wider">Phone</label>
+            <input type="tel" name="phone" defaultValue={staffMember.phone || ''} className="w-full bg-botanical-surface p-2.5 rounded-lg border border-botanical-border text-botanical-text focus:ring-2 focus:ring-brand-gold outline-none transition-all" />
           </div>
           <div className="flex items-end">
-            <div className="flex items-center h-[46px] w-full bg-slate-800 px-4 rounded-lg border border-slate-700">
+            <div className="flex items-center h-[46px] w-full bg-botanical-surface px-4 rounded-lg border border-botanical-border">
               <input type="checkbox" id="inventory" name="canManageInventory" value="true" defaultChecked={staffMember.canManageInventory} className="w-4 h-4 accent-brand-gold mr-3" />
-              <label htmlFor="inventory" className="text-sm font-semibold text-white cursor-pointer select-none">Can Manage Inventory?</label>
+              <label htmlFor="inventory" className="text-sm font-semibold text-botanical-text cursor-pointer select-none">Can Manage Inventory?</label>
             </div>
           </div>
           <div className="md:col-span-3">
-            <button type="submit" className="bg-brand-gold text-brand-dark font-bold py-2.5 px-8 rounded-lg hover:bg-white transition-colors shadow-lg">
+            <button type="submit" className="bg-botanical-primary text-white font-bold py-2.5 px-8 rounded-lg hover:bg-white transition-colors shadow-lg">
               Save Details
             </button>
           </div>
@@ -140,8 +140,8 @@ export default function SchedulePage() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        <div className="bg-slate-900/50 p-6 rounded-lg border border-white/10">
-          <h3 className="text-2xl font-bold mb-6 text-white">Weekly Schedule</h3>
+        <div className="bg-botanical-bg/50 p-6 rounded-lg border border-botanical-border">
+          <h3 className="text-2xl font-bold mb-6 text-botanical-text">Weekly Schedule</h3>
           {/* Use standard form action with uncontrolled inputs */}
           <form action={handleScheduleSubmit}>
             <input type="hidden" name="staffId" value={staffMember.id} />
@@ -162,7 +162,7 @@ export default function SchedulePage() {
                         onChange={e => handleCheckboxChange(day, e.target.checked)} 
                         className="w-5 h-5 accent-brand-gold" 
                       />
-                      <label htmlFor={`${day}-enabled`} className="ml-3 text-lg font-semibold capitalize text-white">{day}</label>
+                      <label htmlFor={`${day}-enabled`} className="ml-3 text-lg font-semibold capitalize text-botanical-text">{day}</label>
                     </div>
                     <div className="col-span-2 grid grid-cols-2 gap-4">
                       {/* Uncontrolled inputs using defaultValue */}
@@ -170,14 +170,14 @@ export default function SchedulePage() {
                         type="time" 
                         name={`${day}-open`} 
                         defaultValue={dayHours.open} 
-                        className="bg-slate-800 p-2 rounded border border-slate-700 text-white focus:ring-2 focus:ring-brand-gold outline-none disabled:opacity-50 disabled:cursor-not-allowed" 
+                        className="bg-botanical-surface p-2 rounded border border-botanical-border text-botanical-text focus:ring-2 focus:ring-brand-gold outline-none disabled:opacity-50 disabled:cursor-not-allowed" 
                         disabled={!isEnabled} 
                       />
                       <input 
                         type="time" 
                         name={`${day}-close`} 
                         defaultValue={dayHours.close} 
-                        className="bg-slate-800 p-2 rounded border border-slate-700 text-white focus:ring-2 focus:ring-brand-gold outline-none disabled:opacity-50 disabled:cursor-not-allowed" 
+                        className="bg-botanical-surface p-2 rounded border border-botanical-border text-botanical-text focus:ring-2 focus:ring-brand-gold outline-none disabled:opacity-50 disabled:cursor-not-allowed" 
                         disabled={!isEnabled} 
                       />
                     </div>
@@ -189,7 +189,7 @@ export default function SchedulePage() {
               <button 
                 type="submit" 
                 disabled={isSaving}
-                className="bg-brand-gold text-brand-dark font-bold py-3 px-8 rounded-lg hover:bg-white transition-colors disabled:opacity-50"
+                className="bg-botanical-primary text-white font-bold py-3 px-8 rounded-lg hover:bg-white transition-colors disabled:opacity-50"
               >
                 {isSaving ? 'Saving...' : 'Save Weekly Schedule'}
               </button>
@@ -197,32 +197,32 @@ export default function SchedulePage() {
           </form>
         </div>
         
-        <div className="bg-slate-900/50 p-6 rounded-lg border border-white/10">
-          <h3 className="text-2xl font-bold mb-6 text-white">Manage Leave</h3>
+        <div className="bg-botanical-bg/50 p-6 rounded-lg border border-botanical-border">
+          <h3 className="text-2xl font-bold mb-6 text-botanical-text">Manage Leave</h3>
           <form 
             action={async (formData) => {
               await addLeave(formData);
               fetchData(); // refresh list
             }} 
-            className="space-y-3 mb-6 p-4 bg-slate-800/50 rounded-lg"
+            className="space-y-3 mb-6 p-4 bg-botanical-surface rounded-lg"
           >
             <input type="hidden" name="staffId" value={staffMember.id} />
             <input type="hidden" name="shopId" value={shop.id} />
-            <input type="date" name="date" required className="w-full bg-slate-800 p-2 rounded border border-slate-700 text-white" min={new Date().toISOString().split('T')[0]} />
+            <input type="date" name="date" required className="w-full bg-botanical-surface p-2 rounded border border-botanical-border text-botanical-text" min={new Date().toISOString().split('T')[0]} />
             <div className="flex gap-2">
-              <input type="time" name="startTime" defaultValue="09:00" required className="w-full bg-slate-800 p-2 rounded border border-slate-700 text-white" />
-              <input type="time" name="endTime" defaultValue="17:00" required className="w-full bg-slate-800 p-2 rounded border border-slate-700 text-white" />
+              <input type="time" name="startTime" defaultValue="09:00" required className="w-full bg-botanical-surface p-2 rounded border border-botanical-border text-botanical-text" />
+              <input type="time" name="endTime" defaultValue="17:00" required className="w-full bg-botanical-surface p-2 rounded border border-botanical-border text-botanical-text" />
             </div>
-            <input type="text" name="reason" placeholder="Reason (optional)" className="w-full bg-slate-800 p-2 rounded border border-slate-700 text-white" />
-            <button type="submit" className="w-full bg-blue-600 hover:bg-blue-500 p-2 rounded text-sm font-bold text-white">Add Leave Day</button>
+            <input type="text" name="reason" placeholder="Reason (optional)" className="w-full bg-botanical-surface p-2 rounded border border-botanical-border text-botanical-text" />
+            <button type="submit" className="w-full bg-blue-600 hover:bg-blue-500 p-2 rounded text-sm font-bold text-botanical-text">Add Leave Day</button>
           </form>
           <div className="space-y-2">
-            <h4 className="text-lg font-semibold text-gray-300 border-b border-slate-700 pb-2">Upcoming Leave</h4>
+            <h4 className="text-lg font-semibold text-botanical-muted border-b border-botanical-border pb-2">Upcoming Leave</h4>
             {staffMember.leaves.map((leave: any) => (
-              <div key={leave.id} className="flex justify-between items-center bg-slate-800 p-3 rounded border border-slate-700">
+              <div key={leave.id} className="flex justify-between items-center bg-botanical-surface p-3 rounded border border-botanical-border">
                 <div>
-                  <p className="font-semibold text-white">{new Date(leave.date).toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</p>
-                  <p className="text-sm text-gray-400">{new Date(leave.startTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} - {new Date(leave.endTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
+                  <p className="font-semibold text-botanical-text">{new Date(leave.date).toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</p>
+                  <p className="text-sm text-botanical-muted">{new Date(leave.startTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} - {new Date(leave.endTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
                 </div>
                 <form 
                   action={async (formData) => {
@@ -237,7 +237,7 @@ export default function SchedulePage() {
                 </form>
               </div>
             ))}
-            {staffMember.leaves.length === 0 && <p className="text-sm text-gray-500 italic">No upcoming leave scheduled.</p>}
+            {staffMember.leaves.length === 0 && <p className="text-sm text-botanical-muted italic">No upcoming leave scheduled.</p>}
           </div>
         </div>
       </div>

@@ -73,12 +73,12 @@ export default function GlobalChatWidget({ shopId, currentUserId, userRole }: { 
       {/* Floating Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="fixed bottom-24 sm:bottom-8 right-4 sm:right-8 w-14 h-14 bg-brand-gold text-slate-900 rounded-full shadow-[0_0_20px_rgba(0,0,0,0.5)] flex items-center justify-center text-3xl hover:bg-yellow-400 hover:scale-105 active:scale-95 transition-all z-[90]"
+        className="fixed bottom-24 sm:bottom-8 right-4 sm:right-8 w-14 h-14 bg-botanical-primary text-slate-900 rounded-full shadow-[0_0_20px_rgba(0,0,0,0.5)] flex items-center justify-center text-3xl hover:bg-yellow-400 hover:scale-105 active:scale-95 transition-all z-[90]"
         title="Team Chat"
       >
         💬
         {unreadCount > 0 && !isOpen && (
-          <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] font-black w-6 h-6 flex items-center justify-center rounded-full border-2 border-white shadow-md animate-bounce">
+          <span className="absolute -top-1 -right-1 bg-red-500 text-botanical-text text-[10px] font-black w-6 h-6 flex items-center justify-center rounded-full border-2 border-white shadow-md animate-bounce">
             {unreadCount > 9 ? '9+' : unreadCount}
           </span>
         )}

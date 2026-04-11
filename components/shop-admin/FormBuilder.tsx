@@ -38,12 +38,12 @@ export default function FormBuilder({ shopId }: { shopId: string }) {
     setForms(prev => prev.filter(f => f.id !== id));
   };
 
-  if (loading) return <div className="animate-pulse text-gray-500 py-4">Loading forms…</div>;
+  if (loading) return <div className="animate-pulse text-botanical-muted py-4">Loading forms…</div>;
 
   return (
-    <div className="bg-slate-800/60 border border-white/5 rounded-xl p-6">
-      <h3 className="text-lg font-bold text-white mb-2">📝 Digital Intake Forms</h3>
-      <p className="text-sm text-gray-400 mb-6">
+    <div className="bg-botanical-surface border border-white/5 rounded-xl p-6">
+      <h3 className="text-lg font-bold text-botanical-text mb-2">📝 Digital Intake Forms</h3>
+      <p className="text-sm text-botanical-muted mb-6">
         Create waivers, consultation forms, and medical histories. Clients will be prompted to sign these before their appointment.
       </p>
 
@@ -51,24 +51,24 @@ export default function FormBuilder({ shopId }: { shopId: string }) {
 
       <form onSubmit={addForm} className="mb-8 space-y-4">
         <div>
-          <label className="block text-xs text-gray-400 mb-1">Form Name</label>
+          <label className="block text-xs text-botanical-muted mb-1">Form Name</label>
           <input 
             type="text" 
             value={name} 
             onChange={e => setName(e.target.value)} 
             placeholder="e.g. Laser Hair Removal Waiver" 
-            className="w-full bg-black/40 border border-white/10 rounded px-3 py-2 text-white text-sm focus:outline-none focus:border-brand-gold" 
+            className="w-full bg-black/40 border border-botanical-border rounded px-3 py-2 text-botanical-text text-sm focus:outline-none focus:border-brand-gold" 
             required 
           />
         </div>
         <div>
-          <label className="block text-xs text-gray-400 mb-1">Form Content / Questions</label>
+          <label className="block text-xs text-botanical-muted mb-1">Form Content / Questions</label>
           <textarea 
             value={content} 
             onChange={e => setContent(e.target.value)} 
             placeholder="Enter your form terms, or list questions separated by newlines." 
             rows={4}
-            className="w-full bg-black/40 border border-white/10 rounded px-3 py-2 text-white text-sm focus:outline-none focus:border-brand-gold" 
+            className="w-full bg-black/40 border border-botanical-border rounded px-3 py-2 text-botanical-text text-sm focus:outline-none focus:border-brand-gold" 
             required 
           />
         </div>
@@ -80,30 +80,30 @@ export default function FormBuilder({ shopId }: { shopId: string }) {
             onChange={e => setIsRequired(e.target.checked)} 
             className="accent-brand-gold w-4 h-4"
           />
-          <label htmlFor="isRequired" className="text-sm text-white">Require digital signature before appointment</label>
+          <label htmlFor="isRequired" className="text-sm text-botanical-text">Require digital signature before appointment</label>
         </div>
         <button 
           type="submit" 
           disabled={saving || !name.trim() || !content.trim()} 
-          className="px-4 py-2 bg-brand-gold text-brand-dark rounded text-sm font-bold hover:bg-white transition disabled:opacity-50"
+          className="px-4 py-2 bg-botanical-primary text-white rounded text-sm font-bold hover:bg-white transition disabled:opacity-50"
         >
           {saving ? 'Saving...' : 'Create Form'}
         </button>
       </form>
 
-      <h4 className="text-white font-medium mb-3">Existing Forms</h4>
+      <h4 className="text-botanical-text font-medium mb-3">Existing Forms</h4>
       {forms.length === 0 ? (
-        <p className="text-gray-500 text-sm py-2">No forms created yet.</p>
+        <p className="text-botanical-muted text-sm py-2">No forms created yet.</p>
       ) : (
         <div className="space-y-3">
           {forms.map(f => (
             <div key={f.id} className="p-4 bg-black/20 rounded-lg border border-white/5 flex justify-between items-start gap-4">
               <div>
                 <div className="flex items-center gap-2 mb-1">
-                  <h5 className="text-white font-medium text-sm">{f.name}</h5>
+                  <h5 className="text-botanical-text font-medium text-sm">{f.name}</h5>
                   {f.isRequired && <span className="text-[10px] uppercase font-bold tracking-wider bg-red-900/50 text-red-300 px-1.5 py-0.5 rounded">Required</span>}
                 </div>
-                <p className="text-xs text-gray-400 line-clamp-2">{f.content}</p>
+                <p className="text-xs text-botanical-muted line-clamp-2">{f.content}</p>
               </div>
               <button 
                 onClick={() => remove(f.id)} 

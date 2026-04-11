@@ -37,12 +37,12 @@ export default function TimezoneSelector({
   }
 
   return (
-    <div className="mb-8 bg-slate-900/70 border border-white/10 rounded-xl p-6">
+    <div className="mb-8 bg-botanical-bg/70 border border-botanical-border rounded-xl p-6">
       <div className="flex items-center gap-3 mb-4">
         <span className="text-2xl">🌐</span>
         <div>
-          <h3 className="text-lg font-bold text-white">Shop Timezone</h3>
-          <p className="text-xs text-gray-500">All appointment times are displayed in this timezone.</p>
+          <h3 className="text-lg font-bold text-botanical-text">Shop Timezone</h3>
+          <p className="text-xs text-botanical-muted">All appointment times are displayed in this timezone.</p>
         </div>
       </div>
       <div className="flex items-center gap-3">
@@ -51,7 +51,7 @@ export default function TimezoneSelector({
           onChange={handleChange}
           disabled={saving}
           style={{ colorScheme: 'dark' }}
-          className="flex-1 max-w-md p-2.5 rounded-lg border border-slate-600 bg-slate-800/80 text-white text-sm focus:ring-2 focus:ring-brand-gold focus:outline-none transition-all disabled:opacity-50"
+          className="flex-1 max-w-md p-2.5 rounded-lg border border-slate-600 bg-botanical-surface text-botanical-text text-sm focus:ring-2 focus:ring-brand-gold focus:outline-none transition-all disabled:opacity-50"
         >
           {TIMEZONE_OPTIONS.map((tz) => (
             <option key={tz.value} value={tz.value}>
@@ -59,7 +59,7 @@ export default function TimezoneSelector({
             </option>
           ))}
         </select>
-        {saving && <span className="text-xs text-gray-400 animate-pulse">Saving…</span>}
+        {saving && <span className="text-xs text-botanical-muted animate-pulse">Saving…</span>}
         {saved && <span className="text-xs text-green-400">✓ Saved</span>}
       </div>
     </div>

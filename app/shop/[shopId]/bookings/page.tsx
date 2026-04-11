@@ -66,7 +66,7 @@ export default async function BookingsPage({ params }: { params: Promise<{ shopI
         <div className="h-[100dvh] overflow-y-auto overflow-x-hidden">
             <div className="text-center">
                 <h1 className="text-4xl font-bold text-red-500 mb-4">Access Denied</h1>
-                <p className="text-gray-400">You do not have permission to view this page.</p>
+                <p className="text-botanical-muted">You do not have permission to view this page.</p>
             </div>
         </div>
       )
@@ -92,19 +92,19 @@ export default async function BookingsPage({ params }: { params: Promise<{ shopI
       >
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-4 sm:mb-6">
           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-            <h2 className="text-xl sm:text-2xl font-bold text-white">Upcoming Bookings</h2>
+            <h2 className="text-xl sm:text-2xl font-bold text-botanical-text">Upcoming Bookings</h2>
             <BookingDatePicker dates={Object.keys(groupedAppointments)} />
           </div>
-          <Link href={`/shops/${shopSlug}`} target="_blank" className="bg-brand-gold hover:bg-yellow-400 text-brand-dark font-bold px-4 py-2 rounded-lg text-xs sm:text-sm transition-colors whitespace-nowrap shadow-lg">+ Add Booking</Link>
+          <Link href={`/shops/${shopSlug}`} target="_blank" className="bg-botanical-primary hover:bg-yellow-400 text-white font-bold px-4 py-2 rounded-lg text-xs sm:text-sm transition-colors whitespace-nowrap shadow-lg">+ Add Booking</Link>
         </div>
 
         {Object.keys(groupedAppointments).length === 0 ? (
-          <p className="text-gray-500 italic text-center py-8 sm:py-12 text-sm border border-dashed border-white/20 rounded">No upcoming appointments scheduled.</p>
+          <p className="text-botanical-muted italic text-center py-8 sm:py-12 text-sm border border-dashed border-botanical-border rounded">No upcoming appointments scheduled.</p>
         ) : (
           <div className="space-y-6 sm:space-y-8">
             {Object.keys(groupedAppointments).map((date) => (
               <div key={date} id={`date-${date.replace(/\s+/g, '-')}`} className="scroll-mt-24">
-                <h3 className="text-base sm:text-xl font-bold text-brand-gold border-b border-white/10 pb-2 mb-3 sm:mb-4">{date}</h3>
+                <h3 className="text-base sm:text-xl font-bold text-botanical-accent border-b border-botanical-border pb-2 mb-3 sm:mb-4">{date}</h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
                   {groupedAppointments[date].map((apt: any) => {
                     const start = new Date(apt.startTime);
@@ -119,11 +119,11 @@ export default async function BookingsPage({ params }: { params: Promise<{ shopI
                     const isActive = isScheduled || isAccepted || isWorkCompleted;
 
                     const statusBadge = isScheduled ? (
-                      <span className="px-2 py-0.5 text-[10px] uppercase font-bold rounded bg-slate-800 text-slate-300 border border-slate-600 whitespace-nowrap">Scheduled</span>
+                      <span className="px-2 py-0.5 text-[10px] uppercase font-bold rounded bg-botanical-surface text-slate-300 border border-slate-600 whitespace-nowrap">Scheduled</span>
                     ) : isAccepted ? (
                       <span className="px-2 py-0.5 text-[10px] uppercase font-bold rounded bg-blue-900/50 text-blue-300 border border-blue-500/30 whitespace-nowrap">Accepted</span>
                     ) : isWorkCompleted ? (
-                      <span className="px-2 py-0.5 text-[10px] uppercase font-bold rounded bg-brand-gold/20 text-brand-gold border border-brand-gold/30 whitespace-nowrap">Ready for Checkout</span>
+                      <span className="px-2 py-0.5 text-[10px] uppercase font-bold rounded bg-botanical-primary/20 text-botanical-accent border border-brand-gold/30 whitespace-nowrap">Ready for Checkout</span>
                     ) : null;
 
                     return (
@@ -134,17 +134,17 @@ export default async function BookingsPage({ params }: { params: Promise<{ shopI
                                                        <h4 className="font-bold text-lg leading-tight">{apt.user?.name || "Guest"}</h4>
                                                        {statusBadge}
                                                    </div>
-                                                   <p className="text-xs text-gray-500">{apt.user?.email || "No email"}</p>
+                                                   <p className="text-xs text-botanical-muted">{apt.user?.email || "No email"}</p>
                                                </div>
                                                <div className="text-right">
-                                                   <p className="font-mono text-brand-gold">{start.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
-                                                   <p className="text-[10px] sm:text-xs text-gray-500">{apt.service.duration} mins</p>
+                                                   <p className="font-mono text-botanical-accent">{start.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
+                                                   <p className="text-[10px] sm:text-xs text-botanical-muted">{apt.service.duration} mins</p>
                                                </div>
                                            </div>
-                                           <div className="pt-2 sm:pt-3 border-t border-white/10 flex flex-col sm:flex-row justify-between items-start sm:items-end gap-2">
+                                           <div className="pt-2 sm:pt-3 border-t border-botanical-border flex flex-col sm:flex-row justify-between items-start sm:items-end gap-2">
                                                <div>
-                                                   <p className="font-semibold text-sm text-gray-300">{apt.service.name}</p>
-                                                   <p className="text-xs sm:text-sm text-gray-400">${apt.service.price.toFixed(2)}</p>
+                                                   <p className="font-semibold text-sm text-botanical-muted">{apt.service.name}</p>
+                                                   <p className="text-xs sm:text-sm text-botanical-muted">${apt.service.price.toFixed(2)}</p>
                                                </div>
                                                <div className="flex flex-wrap items-center justify-end gap-4 shrink-0 mt-3 sm:mt-0 w-full sm:w-auto">
                                                  {isActive && <NoShowButton shopId={shop.id} appointmentId={apt.id} userName={apt.user?.name || apt.user?.email || "Guest"} />}
@@ -178,6 +178,6 @@ export default async function BookingsPage({ params }: { params: Promise<{ shopI
       </ShopAdminLayout>
     );
   } catch (error: any) {
-    return <div className="text-white p-12"><h1>Error compiling</h1><pre>{error.stack || error.toString()}</pre></div>;
+    return <div className="text-botanical-text p-12"><h1>Error compiling</h1><pre>{error.stack || error.toString()}</pre></div>;
   }
 }

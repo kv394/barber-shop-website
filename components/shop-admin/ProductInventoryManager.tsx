@@ -64,7 +64,7 @@ export default function ProductInventoryManager({
   }
 
   return (
-    <div className="flex items-center space-x-2 bg-slate-800 p-1 rounded-lg">
+    <div className="flex items-center space-x-2 bg-botanical-surface p-1 rounded-lg">
       <span className={`text-lg w-12 text-center font-mono font-bold ${colorClass}`}>
         {currentCount}
       </span>
@@ -73,14 +73,14 @@ export default function ProductInventoryManager({
         type="number"
         value={quantity}
         onChange={(e) => setQuantity(parseInt(e.target.value, 10) || 0)}
-        className="w-16 bg-slate-900 border border-slate-700 rounded-md p-1 text-center text-white focus:outline-none focus:ring-2 focus:ring-brand-gold"
+        className="w-16 bg-botanical-bg border border-botanical-border rounded-md p-1 text-center text-botanical-text focus:outline-none focus:ring-2 focus:ring-brand-gold"
         min="0"
       />
 
       <button 
         onClick={handleAdd} 
         disabled={isUpdating}
-        className="px-2 py-1 text-xs bg-blue-600 hover:bg-blue-500 text-white rounded-md font-semibold disabled:opacity-50"
+        className="px-2 py-1 text-xs bg-blue-600 hover:bg-blue-500 text-botanical-text rounded-md font-semibold disabled:opacity-50"
       >
         Add
       </button>
@@ -88,7 +88,7 @@ export default function ProductInventoryManager({
       <button 
         onClick={handleSet} 
         disabled={isUpdating}
-        className="px-2 py-1 text-xs bg-purple-600 hover:bg-purple-500 text-white rounded-md font-semibold disabled:opacity-50"
+        className="px-2 py-1 text-xs bg-purple-600 hover:bg-purple-500 text-botanical-text rounded-md font-semibold disabled:opacity-50"
       >
         Set
       </button>

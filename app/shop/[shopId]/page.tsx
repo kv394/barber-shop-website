@@ -158,7 +158,7 @@ export default async function ShopDashboardPage({ params }: { params: Promise<{ 
         <div className="h-[100dvh] overflow-y-auto overflow-x-hidden">
             <div className="text-center">
                 <h1 className="text-4xl font-bold text-red-500 mb-4">Access Denied</h1>
-                <p className="text-gray-400">You do not have permission to view this page.</p>
+                <p className="text-botanical-muted">You do not have permission to view this page.</p>
             </div>
         </div>
     )
@@ -207,25 +207,25 @@ export default async function ShopDashboardPage({ params }: { params: Promise<{ 
       {isShopAdmin && (
         <div className="flex flex-col sm:flex-row gap-3 mb-6">
           {/* Online booking link */}
-          <div className="flex-1 bg-brand-gold/10 border border-brand-gold/30 rounded-xl p-4 flex items-center gap-4">
+          <div className="flex-1 bg-botanical-primary/10 border border-brand-gold/30 rounded-xl p-4 flex items-center gap-4">
             <span className="text-2xl">🔗</span>
             <div className="min-w-0 flex-1">
-              <p className="text-xs text-gray-400 mb-0.5">Your Booking Portal</p>
-              <p className="text-white font-mono text-sm truncate">/shops/{resolvedSlug}</p>
+              <p className="text-xs text-botanical-muted mb-0.5">Your Booking Portal</p>
+              <p className="text-botanical-text font-mono text-sm truncate">/shops/{resolvedSlug}</p>
             </div>
             <Link href={`/shops/${resolvedSlug}`} target="_blank"
-              className="flex-shrink-0 px-3 py-1.5 bg-brand-gold text-black text-xs font-bold rounded-lg hover:bg-white transition-colors">
+              className="flex-shrink-0 px-3 py-1.5 bg-botanical-primary text-black text-xs font-bold rounded-lg hover:bg-white transition-colors">
               Open →
             </Link>
           </div>
           {/* Quick Actions */}
-          <div className="flex-1 bg-slate-900/50 border border-white/10 rounded-xl p-4 flex items-center justify-between">
+          <div className="flex-1 bg-botanical-bg/50 border border-botanical-border rounded-xl p-4 flex items-center justify-between">
             <div>
-              <p className="text-white font-semibold text-sm mb-0.5">👥 Team Management</p>
-              <p className="text-xs text-gray-400">Onboard staff or set working hours</p>
+              <p className="text-botanical-text font-semibold text-sm mb-0.5">👥 Team Management</p>
+              <p className="text-xs text-botanical-muted">Onboard staff or set working hours</p>
             </div>
             <Link href={`/shop/${shopId}/settings/team`}
-              className="flex-shrink-0 px-3 py-1.5 bg-white/10 text-white text-xs font-bold rounded-lg hover:bg-white/20 transition-colors">
+              className="flex-shrink-0 px-3 py-1.5 bg-botanical-border text-botanical-text text-xs font-bold rounded-lg hover:bg-white/20 transition-colors">
               Manage Team →
             </Link>
           </div>
@@ -236,11 +236,11 @@ export default async function ShopDashboardPage({ params }: { params: Promise<{ 
               <div className="space-y-1">
                 {lowStockItems.slice(0, 3).map((item: any) => (
                   <div key={item.id} className="flex justify-between text-xs">
-                    <span className="text-gray-300 truncate">{item.name}</span>
+                    <span className="text-botanical-muted truncate">{item.name}</span>
                     <span className="text-orange-300 font-mono ml-2 flex-shrink-0">{item.inventoryCount} left</span>
                   </div>
                 ))}
-                {lowStockItems.length > 3 && <p className="text-gray-500 text-xs">+{lowStockItems.length - 3} more</p>}
+                {lowStockItems.length > 3 && <p className="text-botanical-muted text-xs">+{lowStockItems.length - 3} more</p>}
               </div>
               <Link href={`/shop/${shopId}/config/products`} className="text-orange-300 hover:text-orange-200 text-xs underline mt-2 inline-block">
                 Restock now →
@@ -251,7 +251,7 @@ export default async function ShopDashboardPage({ params }: { params: Promise<{ 
       )}
       {/* ── Predictive Action Surface: Up Next (STAFF & ADMIN) ── */}
       {todayStats && todayStats.nextAppointment && (
-        <div className="mb-6 sm:mb-8 bg-gradient-to-br from-brand-gold to-yellow-600 rounded-3xl p-6 sm:p-8 shadow-[0_10px_40px_rgba(234,179,8,0.2)] text-brand-dark relative overflow-hidden group">
+        <div className="mb-6 sm:mb-8 bg-gradient-to-br from-brand-gold to-yellow-600 rounded-3xl p-6 sm:p-8 shadow-[0_10px_40px_rgba(234,179,8,0.2)] text-white relative overflow-hidden group">
           <div className="absolute top-0 right-0 p-8 opacity-10 transform translate-x-4 -translate-y-4 group-hover:scale-110 transition-transform duration-700">
             <span className="text-9xl">✂️</span>
           </div>
@@ -277,7 +277,7 @@ export default async function ShopDashboardPage({ params }: { params: Promise<{ 
               )}
             </div>
             <div className="flex gap-3">
-              <Link href={`/shop/${shopId}/bookings`} className="bg-brand-dark text-white px-6 py-3 rounded-xl font-bold hover:bg-slate-800 transition-colors shadow-lg active:scale-95">
+              <Link href={`/shop/${shopId}/bookings`} className="bg-botanical-bg text-botanical-text px-6 py-3 rounded-xl font-bold hover:bg-botanical-surface transition-colors shadow-lg active:scale-95">
                 View Details
               </Link>
             </div>
@@ -288,47 +288,47 @@ export default async function ShopDashboardPage({ params }: { params: Promise<{ 
       {/* Today's Snapshot */}
       {todayStats && (
         <div className="mb-6 sm:mb-8">
-          <h2 className="text-lg sm:text-xl font-bold text-white mb-4">📊 Today&apos;s Snapshot</h2>
+          <h2 className="text-lg sm:text-xl font-bold text-botanical-text mb-4">📊 Today&apos;s Snapshot</h2>
           <div className="grid grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-4 mb-4 sm:mb-8">
-            <div className="bg-white/5 backdrop-blur-md shadow-[0_4px_30px_rgba(0,0,0,0.1)] rounded-2xl border border-white/20 p-4 sm:p-6 relative overflow-hidden group hover:bg-white/10 hover:shadow-[0_8px_30px_rgba(0,0,0,0.15)] hover:-translate-y-1 transition-all duration-300 min-w-0">
+            <div className="bg-botanical-surface backdrop-blur-md shadow-[0_4px_30px_rgba(0,0,0,0.1)] rounded-2xl border border-botanical-border p-4 sm:p-6 relative overflow-hidden group hover:bg-botanical-border hover:shadow-[0_8px_30px_rgba(0,0,0,0.15)] hover:-translate-y-1 transition-all duration-300 min-w-0">
               <div className="absolute top-0 left-0 w-full h-1 bg-blue-500/80"></div>
               <div className="flex justify-between items-center mb-2 sm:mb-3">
-                <h3 className="text-gray-400 text-[10px] sm:text-xs uppercase tracking-widest font-semibold truncate">Bookings</h3>
+                <h3 className="text-botanical-muted text-[10px] sm:text-xs uppercase tracking-widest font-semibold truncate">Bookings</h3>
                 <span className="text-blue-500 text-sm sm:text-base">📅</span>
               </div>
-              <p className="text-xl sm:text-3xl font-black text-white break-words leading-tight">{todayStats.totalBookings}</p>
+              <p className="text-xl sm:text-3xl font-black text-botanical-text break-words leading-tight">{todayStats.totalBookings}</p>
             </div>
-            <div className="bg-white/5 backdrop-blur-md shadow-[0_4px_30px_rgba(0,0,0,0.1)] rounded-2xl border border-white/20 p-4 sm:p-6 relative overflow-hidden group hover:bg-white/10 hover:shadow-[0_8px_30px_rgba(0,0,0,0.15)] hover:-translate-y-1 transition-all duration-300 min-w-0">
+            <div className="bg-botanical-surface backdrop-blur-md shadow-[0_4px_30px_rgba(0,0,0,0.1)] rounded-2xl border border-botanical-border p-4 sm:p-6 relative overflow-hidden group hover:bg-botanical-border hover:shadow-[0_8px_30px_rgba(0,0,0,0.15)] hover:-translate-y-1 transition-all duration-300 min-w-0">
               <div className="absolute top-0 left-0 w-full h-1 bg-green-500/80"></div>
               <div className="flex justify-between items-center mb-2 sm:mb-3">
-                <h3 className="text-gray-400 text-[10px] sm:text-xs uppercase tracking-widest font-semibold truncate">Revenue</h3>
+                <h3 className="text-botanical-muted text-[10px] sm:text-xs uppercase tracking-widest font-semibold truncate">Revenue</h3>
                 <span className="text-green-500 text-sm sm:text-base">💵</span>
               </div>
-              <p className="text-xl sm:text-3xl font-black text-white break-words leading-tight">${todayStats.revenue.toFixed(0)}</p>
+              <p className="text-xl sm:text-3xl font-black text-botanical-text break-words leading-tight">${todayStats.revenue.toFixed(0)}</p>
             </div>
-            <div className="bg-white/5 backdrop-blur-md shadow-[0_4px_30px_rgba(0,0,0,0.1)] rounded-2xl border border-white/20 p-4 sm:p-6 relative overflow-hidden group hover:bg-white/10 hover:shadow-[0_8px_30px_rgba(0,0,0,0.15)] hover:-translate-y-1 transition-all duration-300 min-w-0">
+            <div className="bg-botanical-surface backdrop-blur-md shadow-[0_4px_30px_rgba(0,0,0,0.1)] rounded-2xl border border-botanical-border p-4 sm:p-6 relative overflow-hidden group hover:bg-botanical-border hover:shadow-[0_8px_30px_rgba(0,0,0,0.15)] hover:-translate-y-1 transition-all duration-300 min-w-0">
               <div className="absolute top-0 left-0 w-full h-1 bg-amber-500/80"></div>
               <div className="flex justify-between items-center mb-2 sm:mb-3">
-                <h3 className="text-gray-400 text-[10px] sm:text-xs uppercase tracking-widest font-semibold truncate">Tips</h3>
+                <h3 className="text-botanical-muted text-[10px] sm:text-xs uppercase tracking-widest font-semibold truncate">Tips</h3>
                 <span className="text-amber-500 text-sm sm:text-base">🪙</span>
               </div>
-              <p className="text-xl sm:text-3xl font-black text-white break-words leading-tight">${todayStats.tips.toFixed(0)}</p>
+              <p className="text-xl sm:text-3xl font-black text-botanical-text break-words leading-tight">${todayStats.tips.toFixed(0)}</p>
             </div>
-            <div className="bg-white/5 backdrop-blur-md shadow-[0_4px_30px_rgba(0,0,0,0.1)] rounded-2xl border border-white/20 p-4 sm:p-6 relative overflow-hidden group hover:bg-white/10 hover:shadow-[0_8px_30px_rgba(0,0,0,0.15)] hover:-translate-y-1 transition-all duration-300 min-w-0">
+            <div className="bg-botanical-surface backdrop-blur-md shadow-[0_4px_30px_rgba(0,0,0,0.1)] rounded-2xl border border-botanical-border p-4 sm:p-6 relative overflow-hidden group hover:bg-botanical-border hover:shadow-[0_8px_30px_rgba(0,0,0,0.15)] hover:-translate-y-1 transition-all duration-300 min-w-0">
               <div className="absolute top-0 left-0 w-full h-1 bg-purple-500/80"></div>
               <div className="flex justify-between items-center mb-2 sm:mb-3">
-                <h3 className="text-gray-400 text-[10px] sm:text-xs uppercase tracking-widest font-semibold truncate">Completed</h3>
+                <h3 className="text-botanical-muted text-[10px] sm:text-xs uppercase tracking-widest font-semibold truncate">Completed</h3>
                 <span className="text-purple-500 text-sm sm:text-base">✅</span>
               </div>
-              <p className="text-xl sm:text-3xl font-black text-white break-words leading-tight">{todayStats.completedCount}</p>
+              <p className="text-xl sm:text-3xl font-black text-botanical-text break-words leading-tight">{todayStats.completedCount}</p>
             </div>
-            <div className="col-span-2 lg:col-span-1 bg-white/5 backdrop-blur-md shadow-[0_4px_30px_rgba(0,0,0,0.1)] rounded-2xl border border-white/20 p-4 sm:p-6 relative overflow-hidden group hover:bg-white/10 hover:shadow-[0_8px_30px_rgba(0,0,0,0.15)] hover:-translate-y-1 transition-all duration-300 min-w-0">
+            <div className="col-span-2 lg:col-span-1 bg-botanical-surface backdrop-blur-md shadow-[0_4px_30px_rgba(0,0,0,0.1)] rounded-2xl border border-botanical-border p-4 sm:p-6 relative overflow-hidden group hover:bg-botanical-border hover:shadow-[0_8px_30px_rgba(0,0,0,0.15)] hover:-translate-y-1 transition-all duration-300 min-w-0">
               <div className="absolute top-0 left-0 w-full h-1 bg-cyan-500/80"></div>
               <div className="flex justify-between items-center mb-2 sm:mb-3">
-                <h3 className="text-gray-400 text-[10px] sm:text-xs uppercase tracking-widest font-semibold truncate">Upcoming</h3>
+                <h3 className="text-botanical-muted text-[10px] sm:text-xs uppercase tracking-widest font-semibold truncate">Upcoming</h3>
                 <span className="text-cyan-500 text-sm sm:text-base">⏳</span>
               </div>
-              <p className="text-xl sm:text-3xl font-black text-white break-words leading-tight">{todayStats.upcomingCount}</p>
+              <p className="text-xl sm:text-3xl font-black text-botanical-text break-words leading-tight">{todayStats.upcomingCount}</p>
             </div>
           </div>
         </div>

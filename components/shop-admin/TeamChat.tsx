@@ -128,7 +128,7 @@ export default function TeamChat({ shopId, currentUserId }: { shopId: string, cu
         {parts.map((part, i) => {
           if (part.startsWith('@')) {
             return (
-              <span key={i} className={`font-bold ${isMe ? 'text-white underline decoration-white/50 underline-offset-2' : 'text-brand-gold bg-brand-gold/10 px-1 rounded'}`}>
+              <span key={i} className={`font-bold ${isMe ? 'text-botanical-text underline decoration-white/50 underline-offset-2' : 'text-botanical-accent bg-botanical-primary/10 px-1 rounded'}`}>
                 {part}
               </span>
             );
@@ -140,23 +140,23 @@ export default function TeamChat({ shopId, currentUserId }: { shopId: string, cu
   };
 
   if (loading) {
-    return <div className="p-4 text-center text-gray-400">Loading chat...</div>;
+    return <div className="p-4 text-center text-botanical-muted">Loading chat...</div>;
   }
 
   return (
-    <div className="flex flex-col h-[calc(100dvh-180px)] sm:h-[600px] bg-white rounded-t-3xl sm:rounded-2xl border border-gray-200 overflow-hidden shadow-2xl relative">
+    <div className="flex flex-col h-[calc(100dvh-180px)] sm:h-[600px] bg-white rounded-t-3xl sm:rounded-2xl border border-botanical-border overflow-hidden shadow-2xl relative">
       {/* Header */}
-      <div className="p-4 sm:p-5 border-b border-gray-200 bg-white z-10 shadow-sm relative">
+      <div className="p-4 sm:p-5 border-b border-botanical-border bg-white z-10 shadow-sm relative">
         <h3 className="font-bold text-slate-900 flex items-center gap-2 text-lg">
           <span>💬</span> Team Chat
         </h3>
-        <p className="text-xs text-gray-500">Moderated by Shop Admin</p>
+        <p className="text-xs text-botanical-muted">Moderated by Shop Admin</p>
       </div>
 
       {/* Messages Area */}
       <div className="flex-1 overflow-y-auto p-4 space-y-4 scroll-smooth bg-slate-50 relative">
         {messages.length === 0 ? (
-          <div className="h-full flex items-center justify-center text-gray-500 italic text-sm">
+          <div className="h-full flex items-center justify-center text-botanical-muted italic text-sm">
             No messages yet. Start the conversation!
           </div>
         ) : (
@@ -167,13 +167,13 @@ export default function TeamChat({ shopId, currentUserId }: { shopId: string, cu
             return (
               <div key={msg.id} className={`flex flex-col ${isMe ? 'items-end' : 'items-start'}`}>
                 {!isMe && (
-                  <span className="text-xs text-gray-500 mb-1 ml-1 flex items-center gap-1 font-medium">
+                  <span className="text-xs text-botanical-muted mb-1 ml-1 flex items-center gap-1 font-medium">
                     {msg.sender.name || 'User'} 
-                    {isAdmin && <span className="bg-brand-gold text-brand-dark text-[8px] font-bold px-1.5 py-0.5 rounded uppercase">Admin</span>}
+                    {isAdmin && <span className="bg-botanical-primary text-white text-[8px] font-bold px-1.5 py-0.5 rounded uppercase">Admin</span>}
                   </span>
                 )}
                 
-                <div className={`max-w-[85%] sm:max-w-[80%] p-2 rounded-2xl ${isMe ? 'bg-brand-gold text-brand-dark rounded-br-sm' : 'bg-white border border-gray-200 text-slate-800 rounded-bl-sm'} shadow-sm flex flex-col gap-2 overflow-hidden`}>
+                <div className={`max-w-[85%] sm:max-w-[80%] p-2 rounded-2xl ${isMe ? 'bg-botanical-primary text-white rounded-br-sm' : 'bg-white border border-botanical-border text-slate-800 rounded-bl-sm'} shadow-sm flex flex-col gap-2 overflow-hidden`}>
                   {msg.imageUrl && (
                     // eslint-disable-next-line @next/next/no-img-element
                     <img src={msg.imageUrl} alt="Shared image" className="max-w-full rounded-xl object-contain max-h-60" loading="lazy" />
@@ -181,7 +181,7 @@ export default function TeamChat({ shopId, currentUserId }: { shopId: string, cu
                   {msg.content && renderContent(msg.content, isMe)}
                 </div>
                 
-                <span className={`text-[10px] text-gray-400 mt-1 ${isMe ? 'mr-1' : 'ml-1'}`}>
+                <span className={`text-[10px] text-botanical-muted mt-1 ${isMe ? 'mr-1' : 'ml-1'}`}>
                   {new Date(msg.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                 </span>
               </div>
@@ -193,8 +193,8 @@ export default function TeamChat({ shopId, currentUserId }: { shopId: string, cu
 
       {/* Mention Dropdown */}
       {mentionSearch !== null && filteredUsers.length > 0 && (
-        <div className="absolute bottom-[72px] sm:bottom-[80px] left-4 right-4 bg-white border border-gray-200 shadow-xl rounded-xl z-20 overflow-hidden max-h-48 overflow-y-auto">
-          <div className="px-3 py-2 bg-gray-50 text-xs font-bold text-gray-500 border-b border-gray-100 uppercase tracking-wider">
+        <div className="absolute bottom-[72px] sm:bottom-[80px] left-4 right-4 bg-white border border-botanical-border shadow-xl rounded-xl z-20 overflow-hidden max-h-48 overflow-y-auto">
+          <div className="px-3 py-2 bg-gray-50 text-xs font-bold text-botanical-muted border-b border-gray-100 uppercase tracking-wider">
             Mention a Team Member
           </div>
           {filteredUsers.map(u => (
@@ -204,12 +204,12 @@ export default function TeamChat({ shopId, currentUserId }: { shopId: string, cu
               onClick={() => insertMention(u.name.split(' ')[0])}
               className="w-full text-left px-4 py-3 hover:bg-gray-50 border-b border-gray-50 last:border-0 flex items-center gap-3 transition-colors"
             >
-              <div className="w-8 h-8 rounded-full bg-brand-gold/20 text-brand-gold font-bold flex items-center justify-center shrink-0">
+              <div className="w-8 h-8 rounded-full bg-botanical-primary/20 text-botanical-accent font-bold flex items-center justify-center shrink-0">
                 {u.name.charAt(0).toUpperCase()}
               </div>
               <div>
                 <div className="font-semibold text-slate-900 text-sm">{u.name}</div>
-                <div className="text-xs text-gray-500">{u.role.replace('_', ' ')}</div>
+                <div className="text-xs text-botanical-muted">{u.role.replace('_', ' ')}</div>
               </div>
             </button>
           ))}
@@ -217,9 +217,9 @@ export default function TeamChat({ shopId, currentUserId }: { shopId: string, cu
       )}
 
       {/* Input Area */}
-      <div className="p-3 sm:p-4 bg-white border-t border-gray-200 z-10 pb-safe flex flex-col gap-2">
+      <div className="p-3 sm:p-4 bg-white border-t border-botanical-border z-10 pb-safe flex flex-col gap-2">
         {showImageInput && (
-          <div className="flex gap-2 items-center bg-gray-50 p-2 rounded-lg border border-gray-200 mb-1">
+          <div className="flex gap-2 items-center bg-gray-50 p-2 rounded-lg border border-botanical-border mb-1">
             <input
               type="url"
               value={imageUrl}
@@ -230,7 +230,7 @@ export default function TeamChat({ shopId, currentUserId }: { shopId: string, cu
             <button
               type="button"
               onClick={() => { setImageUrl(''); setShowImageInput(false); }}
-              className="text-gray-400 hover:text-red-500 font-bold px-2"
+              className="text-botanical-muted hover:text-red-500 font-bold px-2"
             >
               ✕
             </button>
@@ -240,7 +240,7 @@ export default function TeamChat({ shopId, currentUserId }: { shopId: string, cu
           <button
             type="button"
             onClick={() => setShowImageInput(!showImageInput)}
-            className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 transition-colors ${showImageInput || imageUrl ? 'bg-blue-100 text-blue-600' : 'bg-gray-100 text-gray-500 hover:bg-gray-200'}`}
+            className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 transition-colors ${showImageInput || imageUrl ? 'bg-blue-100 text-blue-600' : 'bg-gray-100 text-botanical-muted hover:bg-gray-200'}`}
             title="Attach Image URL"
           >
             📸
@@ -251,12 +251,12 @@ export default function TeamChat({ shopId, currentUserId }: { shopId: string, cu
             value={newMessage}
             onChange={handleInputChange}
             placeholder="Type a message..."
-            className="flex-1 bg-gray-100 border border-gray-200 rounded-full px-4 py-2.5 text-sm text-slate-900 placeholder-gray-500 focus:outline-none focus:border-brand-gold focus:ring-1 focus:ring-brand-gold transition-shadow"
+            className="flex-1 bg-gray-100 border border-botanical-border rounded-full px-4 py-2.5 text-sm text-slate-900 placeholder-gray-500 focus:outline-none focus:border-brand-gold focus:ring-1 focus:ring-brand-gold transition-shadow"
           />
           <button 
             type="submit" 
             disabled={sending || (!newMessage.trim() && !imageUrl.trim())}
-            className="bg-brand-gold text-brand-dark rounded-full w-11 h-11 flex items-center justify-center flex-shrink-0 disabled:opacity-50 transition-opacity hover:bg-yellow-400 shadow-sm"
+            className="bg-botanical-primary text-white rounded-full w-11 h-11 flex items-center justify-center flex-shrink-0 disabled:opacity-50 transition-opacity hover:bg-yellow-400 shadow-sm"
           >
             {sending ? '...' : '➤'}
           </button>

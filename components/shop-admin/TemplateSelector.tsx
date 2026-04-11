@@ -67,19 +67,19 @@ export function TemplateSelector({ currentTemplate, shopId, dynamicTemplates = [
               p-4 rounded-lg border-2 cursor-pointer transition-all
               ${selectedTemplate === template.id 
                 ? 'border-blue-500 bg-blue-500/10' 
-                : 'border-slate-700 bg-slate-800/50 hover:border-slate-500'}
+                : 'border-botanical-border bg-botanical-surface hover:border-slate-500'}
             `}
             onClick={() => setSelectedTemplate(template.id)}
           >
             <div className="flex items-center justify-between mb-2">
-              <h3 className="font-bold text-white">{template.name}</h3>
+              <h3 className="font-bold text-botanical-text">{template.name}</h3>
               {selectedTemplate === template.id && (
                 <div className="w-4 h-4 rounded-full bg-blue-500 flex items-center justify-center">
                   <div className="w-2 h-2 rounded-full bg-white"></div>
                 </div>
               )}
             </div>
-            <p className="text-sm text-gray-400">{template.description}</p>
+            <p className="text-sm text-botanical-muted">{template.description}</p>
           </div>
         ))}
       </div>
@@ -90,7 +90,7 @@ export function TemplateSelector({ currentTemplate, shopId, dynamicTemplates = [
         className={`
           w-full py-3 rounded-lg font-bold transition-colors
           ${selectedTemplate !== currentTemplate 
-            ? 'bg-blue-600 hover:bg-blue-700 text-white' 
+            ? 'bg-blue-600 hover:bg-blue-700 text-botanical-text' 
             : 'bg-slate-700 text-slate-400 cursor-not-allowed'}
         `}
       >

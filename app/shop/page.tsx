@@ -37,8 +37,8 @@ export default async function ShopRedirectPage() {
     <div className="h-[100dvh] overflow-y-auto overflow-x-hidden">
       <div className="text-center">
         <h1 className="text-2xl font-bold mb-4">No Shop Assigned</h1>
-        <p className="text-gray-400">Your user account is not currently assigned to a shop.</p>
-        <a href="/" className="inline-block mt-8 text-brand-gold hover:underline">Return to Home</a>
+        <p className="text-botanical-muted">Your user account is not currently assigned to a shop.</p>
+        <a href="/" className="inline-block mt-8 text-botanical-accent hover:underline">Return to Home</a>
       </div>
     </div>
   );

@@ -51,7 +51,7 @@ export default function DeleteShopButton({ shopId, shopName, onSuccess }: { shop
     <button 
       onClick={handleDelete} 
       disabled={isDeleting}
-      className="bg-red-900/50 text-red-400 hover:bg-red-600 hover:text-white px-4 py-2 rounded-md text-sm transition-colors disabled:opacity-50"
+      className="bg-red-900/50 text-red-400 hover:bg-red-600 hover:text-botanical-text px-4 py-2 rounded-md text-sm transition-colors disabled:opacity-50"
     >
       {isDeleting ? 'Deleting...' : 'Delete Shop'}
     </button>

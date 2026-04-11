@@ -44,12 +44,12 @@ export default function BusinessHoursEditor({ shopId }: { shopId: string }) {
     setTimeout(() => setMsg(''), 3000);
   };
 
-  if (loading) return <div className="animate-pulse text-gray-500 py-4">Loading hours…</div>;
+  if (loading) return <div className="animate-pulse text-botanical-muted py-4">Loading hours…</div>;
 
   return (
-    <div className="bg-slate-800/60 border border-white/5 rounded-xl p-6">
-      <h3 className="text-lg font-bold text-white mb-1">🕐 Business Hours</h3>
-      <p className="text-gray-400 text-sm mb-5">Set your shop's open and close times per day. Toggle a day off to mark it as closed.</p>
+    <div className="bg-botanical-surface border border-white/5 rounded-xl p-6">
+      <h3 className="text-lg font-bold text-botanical-text mb-1">🕐 Business Hours</h3>
+      <p className="text-botanical-muted text-sm mb-5">Set your shop's open and close times per day. Toggle a day off to mark it as closed.</p>
       {msg && <div className="mb-4 p-3 bg-green-900/30 border border-green-500/30 text-green-300 rounded-lg text-sm">{msg}</div>}
       <div className="space-y-3">
         {DAYS.map(day => {
@@ -57,30 +57,30 @@ export default function BusinessHoursEditor({ shopId }: { shopId: string }) {
           const dh = hours[day];
           return (
             <div key={day} className={`flex items-center gap-3 p-3 rounded-lg transition ${open ? 'bg-black/20' : 'bg-black/10 opacity-60'}`}>
-              <button onClick={() => toggle(day)} className={`w-11 h-6 rounded-full transition-colors relative flex-shrink-0 ${open ? 'bg-brand-gold' : 'bg-gray-600'}`}>
+              <button onClick={() => toggle(day)} className={`w-11 h-6 rounded-full transition-colors relative flex-shrink-0 ${open ? 'bg-botanical-primary' : 'bg-gray-600'}`}>
                 <span className={`absolute top-0.5 w-5 h-5 bg-white rounded-full shadow transition-transform ${open ? 'translate-x-5' : 'translate-x-0.5'}`} />
               </button>
-              <span className="w-10 text-sm font-semibold text-white">{DAY_LABELS[day]}</span>
+              <span className="w-10 text-sm font-semibold text-botanical-text">{DAY_LABELS[day]}</span>
               {open && dh ? (
                 <>
                   <select value={dh.open} onChange={e => setField(day, 'open', e.target.value)}
-                    className="bg-black/40 border border-white/10 rounded text-white text-sm px-2 py-1.5 focus:outline-none focus:border-brand-gold">
+                    className="bg-black/40 border border-botanical-border rounded text-botanical-text text-sm px-2 py-1.5 focus:outline-none focus:border-brand-gold">
                     {TIMES.map(t => <option key={t} value={t}>{t}</option>)}
                   </select>
-                  <span className="text-gray-500 text-sm">to</span>
+                  <span className="text-botanical-muted text-sm">to</span>
                   <select value={dh.close} onChange={e => setField(day, 'close', e.target.value)}
-                    className="bg-black/40 border border-white/10 rounded text-white text-sm px-2 py-1.5 focus:outline-none focus:border-brand-gold">
+                    className="bg-black/40 border border-botanical-border rounded text-botanical-text text-sm px-2 py-1.5 focus:outline-none focus:border-brand-gold">
                     {TIMES.filter(t => t > dh.open).map(t => <option key={t} value={t}>{t}</option>)}
                   </select>
                 </>
               ) : (
-                <span className="text-gray-500 text-sm italic">Closed</span>
+                <span className="text-botanical-muted text-sm italic">Closed</span>
               )}
             </div>
           );
         })}
       </div>
-      <button onClick={save} disabled={saving} className="mt-5 w-full bg-brand-gold text-black font-bold py-3 rounded-lg hover:bg-white transition disabled:opacity-50">
+      <button onClick={save} disabled={saving} className="mt-5 w-full bg-botanical-primary text-black font-bold py-3 rounded-lg hover:bg-white transition disabled:opacity-50">
         {saving ? 'Saving…' : 'Save Business Hours'}
       </button>
     </div>

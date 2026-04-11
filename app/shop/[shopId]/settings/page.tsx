@@ -65,9 +65,9 @@ export default async function ShopSettingsPage({
         initialAmount={shopDetails?.depositAmount || 0}
       />
 
-      <div className="bg-slate-900/50 p-6 rounded-xl border border-white/10 mb-6">
-        <h2 className="text-xl font-bold text-white mb-2">Booking Portal Template</h2>
-        <p className="text-sm text-gray-400 mb-6">Choose the layout and style for your public booking portal.</p>
+      <div className="bg-botanical-bg/50 p-6 rounded-xl border border-botanical-border mb-6">
+        <h2 className="text-xl font-bold text-botanical-text mb-2">Booking Portal Template</h2>
+        <p className="text-sm text-botanical-muted mb-6">Choose the layout and style for your public booking portal.</p>
         <TemplateSelector
           currentTemplate={data.shop.template || 'modern'}
           shopId={shopId}
@@ -88,43 +88,43 @@ export default async function ShopSettingsPage({
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <Link href={`/shop/${shopId}/config/services`} className="group">
-          <div className="bg-slate-900/50 p-6 rounded-lg border border-white/5 group-hover:border-brand-gold/50 transition-colors">
-            <h3 className="text-xl font-bold text-white mb-2 group-hover:text-brand-gold">💇‍♀️ Services</h3>
-            <p className="text-gray-400 text-sm">Manage your service menu, pricing, and duration.</p>
+          <div className="bg-botanical-bg/50 p-6 rounded-lg border border-white/5 group-hover:border-brand-gold/50 transition-colors">
+            <h3 className="text-xl font-bold text-botanical-text mb-2 group-hover:text-botanical-accent">💇‍♀️ Services</h3>
+            <p className="text-botanical-muted text-sm">Manage your service menu, pricing, and duration.</p>
           </div>
         </Link>
 
         <Link href={`/shop/${shopId}/config/products`} className="group">
-          <div className="bg-slate-900/50 p-6 rounded-lg border border-white/5 group-hover:border-brand-gold/50 transition-colors">
-            <h3 className="text-xl font-bold text-white mb-2 group-hover:text-brand-gold">🛍️ Products</h3>
-            <p className="text-gray-400 text-sm">Manage retail and backbar inventory, SKUs, and pricing.</p>
+          <div className="bg-botanical-bg/50 p-6 rounded-lg border border-white/5 group-hover:border-brand-gold/50 transition-colors">
+            <h3 className="text-xl font-bold text-botanical-text mb-2 group-hover:text-botanical-accent">🛍️ Products</h3>
+            <p className="text-botanical-muted text-sm">Manage retail and backbar inventory, SKUs, and pricing.</p>
           </div>
         </Link>
 
         {data.isShopAdmin && !data.isSuperAdmin && (
           <>
             <Link href={`/shop/${shopId}/settings/booking`} className="group">
-              <div className="bg-slate-900/50 p-6 rounded-lg border border-white/5 group-hover:border-brand-gold/50 transition-colors">
-                <h3 className="text-xl font-bold text-white mb-2 group-hover:text-brand-gold">📅 Booking & Hours</h3>
-                <p className="text-gray-400 text-sm">Business hours, online booking rules, buffer times, blackout dates.</p>
+              <div className="bg-botanical-bg/50 p-6 rounded-lg border border-white/5 group-hover:border-brand-gold/50 transition-colors">
+                <h3 className="text-xl font-bold text-botanical-text mb-2 group-hover:text-botanical-accent">📅 Booking & Hours</h3>
+                <p className="text-botanical-muted text-sm">Business hours, online booking rules, buffer times, blackout dates.</p>
               </div>
             </Link>
             <Link href={`/shop/${shopId}/settings/notifications`} className="group">
-              <div className="bg-slate-900/50 p-6 rounded-lg border border-white/5 group-hover:border-brand-gold/50 transition-colors">
-                <h3 className="text-xl font-bold text-white mb-2 group-hover:text-brand-gold">🔔 Notifications</h3>
-                <p className="text-gray-400 text-sm">Configure automated reminders, review requests, and admin alerts.</p>
+              <div className="bg-botanical-bg/50 p-6 rounded-lg border border-white/5 group-hover:border-brand-gold/50 transition-colors">
+                <h3 className="text-xl font-bold text-botanical-text mb-2 group-hover:text-botanical-accent">🔔 Notifications</h3>
+                <p className="text-botanical-muted text-sm">Configure automated reminders, review requests, and admin alerts.</p>
               </div>
             </Link>
             <Link href={`/shop/${shopId}/settings/commissions`} className="group">
-              <div className="bg-slate-900/50 p-6 rounded-lg border border-white/5 group-hover:border-brand-gold/50 transition-colors">
-                <h3 className="text-xl font-bold text-white mb-2 group-hover:text-brand-gold">💼 Commissions</h3>
-                <p className="text-gray-400 text-sm">Set service and product commission rates per staff member.</p>
+              <div className="bg-botanical-bg/50 p-6 rounded-lg border border-white/5 group-hover:border-brand-gold/50 transition-colors">
+                <h3 className="text-xl font-bold text-botanical-text mb-2 group-hover:text-botanical-accent">💼 Commissions</h3>
+                <p className="text-botanical-muted text-sm">Set service and product commission rates per staff member.</p>
               </div>
             </Link>
             <Link href={`/shop/${shopId}/settings/kiosk`} className="group">
-              <div className="bg-slate-900/50 p-6 rounded-lg border border-white/5 group-hover:border-brand-gold/50 transition-colors">
-                <h3 className="text-xl font-bold text-white mb-2 group-hover:text-brand-gold">📱 Kiosk Setup</h3>
-                <p className="text-gray-400 text-sm">Configure attendance kiosk URL and PIN for staff check-in.</p>
+              <div className="bg-botanical-bg/50 p-6 rounded-lg border border-white/5 group-hover:border-brand-gold/50 transition-colors">
+                <h3 className="text-xl font-bold text-botanical-text mb-2 group-hover:text-botanical-accent">📱 Kiosk Setup</h3>
+                <p className="text-botanical-muted text-sm">Configure attendance kiosk URL and PIN for staff check-in.</p>
               </div>
             </Link>
           </>

@@ -31,46 +31,46 @@ export default function KioskSetupClient({ shopId, shopName }: { shopId: string;
 
       <div className="bg-blue-900/20 border border-blue-500/20 rounded-xl p-5">
         <h4 className="text-blue-300 font-semibold mb-2">ℹ️ What is the Attendance Kiosk?</h4>
-        <p className="text-gray-400 text-sm leading-relaxed">Set up a tablet or screen in your shop for staff to scan their QR/barcode to clock in and out. PIN-protected, no login required.</p>
+        <p className="text-botanical-muted text-sm leading-relaxed">Set up a tablet or screen in your shop for staff to scan their QR/barcode to clock in and out. PIN-protected, no login required.</p>
       </div>
 
-      <div className="bg-slate-800/60 border border-white/5 rounded-xl p-6 space-y-4">
-        <h3 className="text-lg font-bold text-white">📱 Kiosk URL</h3>
-        <p className="text-gray-400 text-sm">Open on a tablet or dedicated screen in your shop.</p>
+      <div className="bg-botanical-surface border border-white/5 rounded-xl p-6 space-y-4">
+        <h3 className="text-lg font-bold text-botanical-text">📱 Kiosk URL</h3>
+        <p className="text-botanical-muted text-sm">Open on a tablet or dedicated screen in your shop.</p>
         <div className="flex gap-2">
-          <input readOnly value={kioskUrl} className="flex-1 bg-black/40 border border-white/10 rounded-lg px-3 py-2.5 text-white text-sm font-mono focus:outline-none" />
-          <button onClick={copyUrl} className={`px-4 py-2 rounded-lg text-sm font-semibold transition-colors ${copied ? 'bg-green-600 text-white' : 'bg-brand-gold text-black hover:bg-white'}`}>
+          <input readOnly value={kioskUrl} className="flex-1 bg-black/40 border border-botanical-border rounded-lg px-3 py-2.5 text-botanical-text text-sm font-mono focus:outline-none" />
+          <button onClick={copyUrl} className={`px-4 py-2 rounded-lg text-sm font-semibold transition-colors ${copied ? 'bg-green-600 text-botanical-text' : 'bg-botanical-primary text-black hover:bg-white'}`}>
             {copied ? '✓ Copied!' : 'Copy'}
           </button>
         </div>
-        <a href={kioskUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 text-brand-gold hover:underline text-sm">🚀 Open kiosk in new tab →</a>
+        <a href={kioskUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 text-botanical-accent hover:underline text-sm">🚀 Open kiosk in new tab →</a>
       </div>
 
-      <div className="bg-slate-800/60 border border-white/5 rounded-xl p-6 space-y-4">
-        <h3 className="text-lg font-bold text-white">🔐 Kiosk PIN</h3>
-        <p className="text-gray-400 text-sm">Protect the kiosk with a 4–8 digit PIN.</p>
+      <div className="bg-botanical-surface border border-white/5 rounded-xl p-6 space-y-4">
+        <h3 className="text-lg font-bold text-botanical-text">🔐 Kiosk PIN</h3>
+        <p className="text-botanical-muted text-sm">Protect the kiosk with a 4–8 digit PIN.</p>
         <div className="flex gap-3">
           <input type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="Enter new PIN (4–8 digits)" maxLength={8}
-            className="w-48 bg-black/40 border border-white/10 rounded-lg px-3 py-2.5 text-white text-sm focus:outline-none focus:border-brand-gold" />
+            className="w-48 bg-black/40 border border-botanical-border rounded-lg px-3 py-2.5 text-botanical-text text-sm focus:outline-none focus:border-brand-gold" />
           <button onClick={savePassword} disabled={saving || !password.trim()}
-            className="px-4 py-2 bg-brand-gold text-black rounded-lg text-sm font-bold disabled:opacity-50 hover:bg-white transition-colors">
+            className="px-4 py-2 bg-botanical-primary text-black rounded-lg text-sm font-bold disabled:opacity-50 hover:bg-white transition-colors">
             {saving ? 'Saving…' : 'Set PIN'}
           </button>
         </div>
       </div>
 
-      <div className="bg-slate-800/60 border border-white/5 rounded-xl p-6 space-y-3">
-        <h3 className="text-lg font-bold text-white">🪪 Staff QR / Barcode Cards</h3>
-        <p className="text-gray-400 text-sm">Each staff member has a unique QR code. Go to Team Management to view and print.</p>
-        <a href={`/shop/${shopId}/settings/team`} className="inline-block px-4 py-2 bg-white/5 border border-white/10 text-gray-300 rounded-lg text-sm hover:bg-white/10 transition-colors">👥 Go to Team Management →</a>
+      <div className="bg-botanical-surface border border-white/5 rounded-xl p-6 space-y-3">
+        <h3 className="text-lg font-bold text-botanical-text">🪪 Staff QR / Barcode Cards</h3>
+        <p className="text-botanical-muted text-sm">Each staff member has a unique QR code. Go to Team Management to view and print.</p>
+        <a href={`/shop/${shopId}/settings/team`} className="inline-block px-4 py-2 bg-botanical-surface border border-botanical-border text-botanical-muted rounded-lg text-sm hover:bg-botanical-border transition-colors">👥 Go to Team Management →</a>
       </div>
 
-      <div className="bg-slate-800/60 border border-white/5 rounded-xl p-6">
-        <h3 className="text-lg font-bold text-white mb-4">📋 Setup Instructions</h3>
-        <ol className="space-y-3 text-sm text-gray-300">
+      <div className="bg-botanical-surface border border-white/5 rounded-xl p-6">
+        <h3 className="text-lg font-bold text-botanical-text mb-4">📋 Setup Instructions</h3>
+        <ol className="space-y-3 text-sm text-botanical-muted">
           {['Set your kiosk PIN above.','Open the Kiosk URL on a tablet in your shop.','Enter the PIN to activate kiosk mode.','Staff scan their QR or barcode to clock in/out.','View logs under Staff → Attendance.'].map((step, i) => (
             <li key={i} className="flex gap-3">
-              <span className="flex-shrink-0 w-6 h-6 rounded-full bg-brand-gold/20 text-brand-gold text-xs font-bold flex items-center justify-center">{i + 1}</span>
+              <span className="flex-shrink-0 w-6 h-6 rounded-full bg-botanical-primary/20 text-botanical-accent text-xs font-bold flex items-center justify-center">{i + 1}</span>
               <span>{step}</span>
             </li>
           ))}

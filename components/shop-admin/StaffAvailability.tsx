@@ -64,7 +64,7 @@ export default function StaffAvailability({ defaultDate, defaultFrom, defaultTo,
   const showTimeFilters = defaultFrom !== undefined && defaultTo !== undefined;
 
   return (
-    <div className="mb-8 bg-gradient-to-br from-slate-900 to-slate-800 rounded-2xl border border-white/10 shadow-xl overflow-hidden">
+    <div className="mb-8 bg-gradient-to-br from-slate-900 to-slate-800 rounded-2xl border border-botanical-border shadow-xl overflow-hidden">
       {/* Gold accent */}
       <div className="h-1 bg-gradient-to-r from-brand-gold via-brand-gold/60 to-transparent" />
 
@@ -72,29 +72,29 @@ export default function StaffAvailability({ defaultDate, defaultFrom, defaultTo,
         {/* Header row with day navigation */}
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-brand-gold/20 flex items-center justify-center text-xl">📅</div>
+            <div className="w-10 h-10 rounded-xl bg-botanical-primary/20 flex items-center justify-center text-xl">📅</div>
             <div>
-              <h3 className="text-lg font-bold text-white">{dayName}</h3>
-              <p className="text-xs text-gray-500">{dateStr}</p>
+              <h3 className="text-lg font-bold text-botanical-text">{dayName}</h3>
+              <p className="text-xs text-botanical-muted">{dateStr}</p>
             </div>
             {isToday && (
-              <span className="text-[10px] bg-brand-gold/20 text-brand-gold px-2.5 py-0.5 rounded-full font-bold uppercase tracking-wider">Today</span>
+              <span className="text-[10px] bg-botanical-primary/20 text-botanical-accent px-2.5 py-0.5 rounded-full font-bold uppercase tracking-wider">Today</span>
             )}
           </div>
 
           <div className="flex items-center gap-2">
             {!isToday && (
               <button onClick={goToToday}
-                className="text-[11px] text-brand-gold hover:text-white font-semibold px-3 py-1.5 rounded-lg bg-brand-gold/10 hover:bg-brand-gold/20 border border-brand-gold/20 transition-all duration-200">
+                className="text-[11px] text-botanical-accent hover:text-botanical-text font-semibold px-3 py-1.5 rounded-lg bg-botanical-primary/10 hover:bg-botanical-primary/20 border border-brand-gold/20 transition-all duration-200">
                 Today
               </button>
             )}
             <button onClick={() => navigateDays(-1)}
-              className="w-9 h-9 flex items-center justify-center rounded-xl bg-slate-800/80 border border-white/10 hover:border-brand-gold/40 text-gray-400 hover:text-white transition-all duration-200 text-sm font-bold">
+              className="w-9 h-9 flex items-center justify-center rounded-xl bg-botanical-surface border border-botanical-border hover:border-brand-gold/40 text-botanical-muted hover:text-botanical-text transition-all duration-200 text-sm font-bold">
               ←
             </button>
             <button onClick={() => navigateDays(1)}
-              className="w-9 h-9 flex items-center justify-center rounded-xl bg-slate-800/80 border border-white/10 hover:border-brand-gold/40 text-gray-400 hover:text-white transition-all duration-200 text-sm font-bold">
+              className="w-9 h-9 flex items-center justify-center rounded-xl bg-botanical-surface border border-botanical-border hover:border-brand-gold/40 text-botanical-muted hover:text-botanical-text transition-all duration-200 text-sm font-bold">
               →
             </button>
           </div>
@@ -103,37 +103,37 @@ export default function StaffAvailability({ defaultDate, defaultFrom, defaultTo,
         {/* Inputs row */}
         <div className={`grid grid-cols-1 ${showTimeFilters ? 'md:grid-cols-3' : 'md:grid-cols-1'} gap-3`}>
           <div>
-            <label className="block text-[10px] text-gray-500 mb-1 font-semibold uppercase tracking-wider">📅 Date</label>
+            <label className="block text-[10px] text-botanical-muted mb-1 font-semibold uppercase tracking-wider">📅 Date</label>
             <input
               type="date"
               value={defaultDate}
               onChange={handleDateChange}
               style={timeStyle}
-              className="w-full p-2.5 rounded-lg border border-slate-600 text-white text-sm focus:ring-2 focus:ring-brand-gold focus:outline-none transition-all"
+              className="w-full p-2.5 rounded-lg border border-slate-600 text-botanical-text text-sm focus:ring-2 focus:ring-brand-gold focus:outline-none transition-all"
             />
           </div>
           {showTimeFilters && (
             <>
               <div>
-                <label className="block text-[10px] text-gray-500 mb-1 font-semibold uppercase tracking-wider">🕐 From</label>
+                <label className="block text-[10px] text-botanical-muted mb-1 font-semibold uppercase tracking-wider">🕐 From</label>
                 <input
                   type="time"
                   name="from"
                   value={defaultFrom}
                   onChange={handleTimeChange}
                   style={timeStyle}
-                  className="w-full p-2.5 rounded-lg border border-slate-600 text-white text-sm focus:ring-2 focus:ring-brand-gold focus:outline-none transition-all"
+                  className="w-full p-2.5 rounded-lg border border-slate-600 text-botanical-text text-sm focus:ring-2 focus:ring-brand-gold focus:outline-none transition-all"
                 />
               </div>
               <div>
-                <label className="block text-[10px] text-gray-500 mb-1 font-semibold uppercase tracking-wider">🕐 To</label>
+                <label className="block text-[10px] text-botanical-muted mb-1 font-semibold uppercase tracking-wider">🕐 To</label>
                 <input
                   type="time"
                   name="to"
                   value={defaultTo}
                   onChange={handleTimeChange}
                   style={timeStyle}
-                  className="w-full p-2.5 rounded-lg border border-slate-600 text-white text-sm focus:ring-2 focus:ring-brand-gold focus:outline-none transition-all"
+                  className="w-full p-2.5 rounded-lg border border-slate-600 text-botanical-text text-sm focus:ring-2 focus:ring-brand-gold focus:outline-none transition-all"
                 />
               </div>
             </>

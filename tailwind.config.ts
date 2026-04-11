@@ -14,37 +14,27 @@ const config: Config = {
         serif: ['var(--font-serif)', 'serif'],
       },
       colors: {
-        slate: {
-          50: '#F5F5F5',   // White Smoke
-          100: '#fbf4ef',  // Light Cashmere
-          200: '#F2D9C7',  // Cashmere
-          300: '#D1BFAD',  // Soft Amber
-          400: '#C4D9D1',  // Horizon
-          500: '#689c8e',  // Light Lochinvar
-          600: '#508A7A',  // Lochinvar
-          700: '#405954',  // Mineral Green
-          800: '#344a46',  // Dark Mineral Green
-          900: '#263633',  // Darker Mineral Green
-          950: '#16211f',  // Deepest Mineral Green
+        botanical: {
+          bg: '#F8F6F3',       // Warm Alabaster (App Background)
+          surface: '#FFFFFF',  // Pure White (Card/Calendar Surface)
+          border: '#E2E0D9',   // Oatmeal (Borders/Dividers)
+          text: '#2A2C31',     // Deep Charcoal (Primary Text)
+          muted: '#68707A',    // Muted Slate (Secondary Text)
+          primary: '#3A5A40',  // Deep Sage Green (Primary Action/CTA)
+          accent: '#D4A373',   // Soft Clay (Secondary Accent)
+          darkBase: '#1A1D21', // Dark Mode Base
         },
-        gray: {
-          50: '#F5F5F5',   // White Smoke
-          100: '#fbf4ef',
-          200: '#F2D9C7',  // Cashmere
-          300: '#D1BFAD',  // Soft Amber
-          400: '#C4D9D1',  // Horizon
-          500: '#689c8e',
-          600: '#508A7A',  // Lochinvar
-          700: '#405954',  // Mineral Green
-          800: '#344a46',
-          900: '#263633',
-          950: '#16211f',
+        status: {
+          confirmed: '#2D7D53', // Muted Emerald
+          pending: '#D9822B',   // Earthy Amber
+          cancelled: '#C54E4E', // Soft Crimson
+          info: '#3A7CA5',      // Calm Steel Blue
         },
         brand: {
-          dark: '#16211f',     // Deepest Mineral Green
-          light: '#F5F5F5',    // White Smoke
-          gold: '#D59066',     // Copperfield
-          gray: '#C4D9D1'      // Horizon
+          dark: '#2A2C31',     // Deep Charcoal
+          light: '#F8F6F3',    // Warm Alabaster
+          gold: '#D4A373',     // Soft Clay (replacing old gold)
+          gray: '#E2E0D9'      // Oatmeal
         }
       }
     },
