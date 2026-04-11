@@ -27,10 +27,10 @@ export default function NoShowButton({ shopId, appointmentId, userName }: { shop
     <button
       onClick={handleNoShow}
       disabled={loading}
-      className="bg-amber-900/50 hover:bg-amber-800/50 text-amber-300 border border-amber-500/30 text-[10px] sm:text-xs px-2 py-1 rounded font-bold disabled:opacity-50 transition-colors"
+      className="text-amber-500 hover:text-amber-400 text-xs font-semibold uppercase tracking-wider disabled:opacity-50 transition-colors mr-2"
       title="Mark as No-Show"
     >
-      {loading ? '...' : '🚫'}
+      {loading ? '...' : 'No-Show'}
     </button>
   );
 }

@@ -27,8 +27,8 @@ export default function AcceptAppointmentButton({ shopId, appointmentId, userNam
     <button
       onClick={handleAccept}
       disabled={loading}
-      className="bg-blue-900/50 hover:bg-blue-800/50 text-blue-300 border border-blue-500/30 text-[10px] sm:text-xs px-2 py-1 rounded font-bold disabled:opacity-50 transition-colors"
-      title="Accept Appointment"
+      className="bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold px-4 py-2 rounded uppercase tracking-wider transition-colors disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
+      title="Accept Booking"
     >
       {loading ? '...' : 'Accept'}
     </button>

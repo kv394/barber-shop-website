@@ -117,11 +117,22 @@ export default async function BookingsPage({ params }: { params: Promise<{ shopI
                     const isWorkCompleted = apt.status === 'WORK_COMPLETED';
                     const isActive = isScheduled || isAccepted || isWorkCompleted;
 
+                    const statusBadge = isScheduled ? (
+                      <span className="px-2 py-0.5 text-[10px] uppercase font-bold rounded bg-slate-800 text-slate-300 border border-slate-600 whitespace-nowrap">Scheduled</span>
+                    ) : isAccepted ? (
+                      <span className="px-2 py-0.5 text-[10px] uppercase font-bold rounded bg-blue-900/50 text-blue-300 border border-blue-500/30 whitespace-nowrap">Accepted</span>
+                    ) : isWorkCompleted ? (
+                      <span className="px-2 py-0.5 text-[10px] uppercase font-bold rounded bg-brand-gold/20 text-brand-gold border border-brand-gold/30 whitespace-nowrap">Ready for Checkout</span>
+                    ) : null;
+
                     return (
                       <div key={apt.id} className={`bg-black/40 p-5 rounded-lg border ${isNow ? 'border-green-500/50 shadow-[0_0_15px_rgba(34,197,94,0.2)]' : 'border-white/5'}`}>
-                                           <div className="flex justify-between items-start mb-3">
-                                               <div>
-                                                   <h4 className="font-bold text-lg">{apt.user?.name || "Guest"}</h4>
+                                           <div className="flex justify-between items-start mb-3 gap-2">
+                                               <div className="flex flex-col items-start gap-1">
+                                                   <div className="flex flex-wrap items-center gap-2">
+                                                       <h4 className="font-bold text-lg leading-tight">{apt.user?.name || "Guest"}</h4>
+                                                       {statusBadge}
+                                                   </div>
                                                    <p className="text-xs text-gray-500">{apt.user?.email || "No email"}</p>
                                                </div>
                                                <div className="text-right">
@@ -134,7 +145,7 @@ export default async function BookingsPage({ params }: { params: Promise<{ shopI
                                                    <p className="font-semibold text-sm text-gray-300">{apt.service.name}</p>
                                                    <p className="text-xs sm:text-sm text-gray-400">${apt.service.price.toFixed(2)}</p>
                                                </div>
-                                               <div className="flex items-center gap-1 shrink-0">
+                                               <div className="flex flex-wrap items-center justify-end gap-4 shrink-0 mt-3 sm:mt-0 w-full sm:w-auto">
                                                  {isActive && <NoShowButton shopId={shop.id} appointmentId={apt.id} userName={apt.user?.name || apt.user?.email || "Guest"} />}
                                                  {isActive && <DeleteAppointmentButton shopId={shop.id} appointmentId={apt.id} userName={apt.user?.name || apt.user?.email || "Guest"} />}
                                                  {isScheduled && <AcceptAppointmentButton shopId={shop.id} appointmentId={apt.id} userName={apt.user?.name || apt.user?.email || "Guest"} />}
