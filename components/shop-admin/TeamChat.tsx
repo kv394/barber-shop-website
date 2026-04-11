@@ -144,7 +144,7 @@ export default function TeamChat({ shopId, currentUserId }: { shopId: string, cu
   }
 
   return (
-    <div className="flex flex-col h-[calc(100dvh-180px)] sm:h-[600px] bg-white rounded-t-3xl sm:rounded-2xl border border-botanical-border overflow-hidden shadow-2xl relative">
+    <div className="flex flex-col h-[calc(100dvh-180px)] sm:h-[600px] bg-white rounded-t-3xl sm:rounded-2xl border-2 border-b-[6px] border-botanical-border overflow-hidden shadow-2xl relative">
       {/* Header */}
       <div className="p-4 sm:p-5 border-b border-botanical-border bg-white z-10 shadow-sm relative">
         <h3 className="font-bold text-botanical-text flex items-center gap-2 text-lg">
@@ -173,7 +173,7 @@ export default function TeamChat({ shopId, currentUserId }: { shopId: string, cu
                   </span>
                 )}
                 
-                <div className={`max-w-[85%] sm:max-w-[80%] p-2 rounded-2xl ${isMe ? 'bg-botanical-primarytext-white rounded-br-sm' : 'bg-white border border-botanical-border text-botanical-text rounded-bl-sm'} shadow-sm flex flex-col gap-2 overflow-hidden`}>
+                <div className={`max-w-[85%] sm:max-w-[80%] p-2 rounded-2xl ${isMe ? 'bg-botanical-primarytext-white rounded-br-sm' : 'bg-white border-2 border-b-[6px] border-botanical-border text-botanical-text rounded-bl-sm'} shadow-sm flex flex-col gap-2 overflow-hidden`}>
                   {msg.imageUrl && (
                     // eslint-disable-next-line @next/next/no-img-element
                     <img src={msg.imageUrl} alt="Shared image" className="max-w-full rounded-xl object-contain max-h-60" loading="lazy" />
@@ -193,7 +193,7 @@ export default function TeamChat({ shopId, currentUserId }: { shopId: string, cu
 
       {/* Mention Dropdown */}
       {mentionSearch !== null && filteredUsers.length > 0 && (
-        <div className="absolute bottom-[72px] sm:bottom-[80px] left-4 right-4 bg-white border border-botanical-border shadow-xl rounded-xl z-20 overflow-hidden max-h-48 overflow-y-auto">
+        <div className="absolute bottom-[72px] sm:bottom-[80px] left-4 right-4 bg-white border-2 border-b-[6px] border-botanical-border shadow-xl rounded-xl z-20 overflow-hidden max-h-48 overflow-y-auto">
           <div className="px-3 py-2 bg-gray-50 text-xs font-bold text-botanical-muted border-b border-gray-100 uppercase tracking-wider">
             Mention a Team Member
           </div>
@@ -219,7 +219,7 @@ export default function TeamChat({ shopId, currentUserId }: { shopId: string, cu
       {/* Input Area */}
       <div className="p-3 sm:p-4 bg-white border-t border-botanical-border z-10 pb-safe flex flex-col gap-2">
         {showImageInput && (
-          <div className="flex gap-2 items-center bg-gray-50 p-2 rounded-lg border border-botanical-border mb-1">
+          <div className="flex gap-2 items-center bg-gray-50 p-2 rounded-lg border-2 border-b-[6px] border-botanical-border mb-1">
             <input
               type="url"
               value={imageUrl}
@@ -251,7 +251,7 @@ export default function TeamChat({ shopId, currentUserId }: { shopId: string, cu
             value={newMessage}
             onChange={handleInputChange}
             placeholder="Type a message..."
-            className="flex-1 bg-gray-100 border border-botanical-border rounded-full px-4 py-2.5 text-sm text-botanical-text placeholder-gray-500 focus:outline-none focus:border-brand-gold focus:ring-1 focus:ring-botanical-primary transition-shadow"
+            className="flex-1 bg-gray-100 border-2 border-b-[6px] border-botanical-border rounded-full px-4 py-2.5 text-sm text-botanical-text placeholder-gray-500 focus:outline-none focus:border-brand-gold focus:ring-1 focus:ring-botanical-primary transition-shadow"
           />
           <button 
             type="submit" 

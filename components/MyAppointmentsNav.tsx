@@ -26,7 +26,7 @@ export default function MyAppointmentsNav() {
               className={`flex items-center gap-2 px-4 py-2.5 rounded-full text-sm font-semibold whitespace-nowrap transition-all ${
                 isActive 
                   ? 'bg-botanical-primarytext-white shadow-lg shadow-brand-gold/20' 
-                  : 'bg-botanical-surface hover:bg-botanical-surface text-botanical-muted hover:text-botanical-text border border-botanical-border'
+                  : 'bg-botanical-surface hover:bg-botanical-surface text-botanical-muted hover:text-botanical-text border-2 border-b-[6px] border-botanical-border'
               }`}
             >
               <span>{link.icon}</span> {link.label}

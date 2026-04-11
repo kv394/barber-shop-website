@@ -90,7 +90,7 @@ export default async function ShopBillingPage({ params }: { params: Promise<{ sh
         </div>
 
         <div className="space-y-6">
-          <div className="bg-botanical-bg/80 backdrop-blur-xl shadow-2xl rounded-2xl border border-botanical-border flex flex-col md:flex-row md:flex-wrap lg:flex-nowrap divide-y md:divide-y-0 md:divide-x divide-white/10 relative z-20 overflow-hidden transform sm:-translate-y-6 sm:-mx-2 mb-2 sm:mb-6 mt-6 sm:mt-10">
+          <div className="bg-botanical-bg/80 backdrop-blur-xl shadow-2xl rounded-2xl border-2 border-b-[6px] border-botanical-border flex flex-col md:flex-row md:flex-wrap lg:flex-nowrap divide-y md:divide-y-0 md:divide-x divide-white/10 relative z-20 overflow-hidden transform sm:-translate-y-6 sm:-mx-2 mb-2 sm:mb-6 mt-6 sm:mt-10">
             {[
               { label: 'Appointments', val: metrics.appointmentCount, colorClass: 'text-blue-500', bgClass: 'bg-blue-500/80', icon: '📅' },
               { label: 'Users', val: metrics.userCount, colorClass: 'text-green-500', bgClass: 'bg-green-500/80', icon: '👥' },
@@ -108,7 +108,7 @@ export default async function ShopBillingPage({ params }: { params: Promise<{ sh
             ))}
           </div>
 
-          <div className="bg-botanical-bg/50 p-6 rounded-xl border border-botanical-border shadow-lg relative overflow-hidden transition-all duration-300">
+          <div className="bg-botanical-bg/50 p-6 rounded-xl border-2 border-b-[6px] border-botanical-border shadow-lg relative overflow-hidden transition-all duration-300">
             <div className="absolute top-0 left-0 w-full h-1 bg-botanical-primary/80"></div>
             <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 mb-6">
               <div>
@@ -123,7 +123,7 @@ export default async function ShopBillingPage({ params }: { params: Promise<{ sh
               </div>
             </div>
 
-            <div className="bg-botanical-surface p-4 rounded-lg mt-4 border border-botanical-border">
+            <div className="bg-botanical-surface p-4 rounded-lg mt-4 border-2 border-b-[6px] border-botanical-border">
               <p className="text-sm text-botanical-muted leading-relaxed">
                 {analysis.strategyReasoning}
               </p>
@@ -134,7 +134,7 @@ export default async function ShopBillingPage({ params }: { params: Promise<{ sh
             </div>
           </div>
 
-          <div className="bg-botanical-surface p-6 rounded-xl border border-botanical-border mt-6">
+          <div className="bg-botanical-surface p-6 rounded-xl border-2 border-b-[6px] border-botanical-border mt-6">
             <h3 className="text-lg font-bold text-botanical-text mb-4">Usage Limits & Overage</h3>
             <p className="text-sm text-botanical-muted mb-4 leading-relaxed">
               Your tier is automatically determined by your usage volume. 

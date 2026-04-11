@@ -168,7 +168,7 @@ export default async function StaffBookingPage({
           const isOnLeave = staffMember.isOnLeave;
           const isNotWorking = staffMember.using === 'not-working';
           return (
-            <div key={staffMember.id} className="bg-botanical-bg/70 border border-botanical-border rounded-lg p-3 sm:p-4 flex flex-col">
+            <div key={staffMember.id} className="bg-botanical-bg/70 border-2 border-b-[6px] border-botanical-border rounded-lg p-3 sm:p-4 flex flex-col">
               <div className="flex justify-between items-start mb-2 gap-2">
                 <StaffProfileModalWrapper staff={staffMember}>
                   <div className="flex items-center gap-3">

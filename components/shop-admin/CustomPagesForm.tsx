@@ -86,7 +86,7 @@ export function CustomPagesForm({ shopId, customization }: { shopId: string; cus
       ) : (
         <div className="space-y-6">
           {pages.map((page, index) => (
-            <div key={page.id} className="bg-botanical-surface p-6 rounded-lg border border-botanical-border">
+            <div key={page.id} className="bg-botanical-surface p-6 rounded-lg border-2 border-b-[6px] border-botanical-border">
               <div className="flex justify-between items-start mb-4">
                 <h3 className="text-lg font-bold text-botanical-text">Page {index + 1}</h3>
                 <button
@@ -103,7 +103,7 @@ export function CustomPagesForm({ shopId, customization }: { shopId: string; cus
                     type="text"
                     value={page.title}
                     onChange={(e) => updatePage(index, 'title', e.target.value)}
-                    className="w-full bg-botanical-bg border border-botanical-border rounded px-3 py-2 text-botanical-text"
+                    className="w-full bg-botanical-bg border-2 border-b-[6px] border-botanical-border rounded px-3 py-2 text-botanical-text"
                   />
                 </div>
                 <div>
@@ -112,7 +112,7 @@ export function CustomPagesForm({ shopId, customization }: { shopId: string; cus
                     type="text"
                     value={page.id}
                     onChange={(e) => updatePage(index, 'id', e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, '-'))}
-                    className="w-full bg-botanical-bg border border-botanical-border rounded px-3 py-2 text-botanical-text"
+                    className="w-full bg-botanical-bg border-2 border-b-[6px] border-botanical-border rounded px-3 py-2 text-botanical-text"
                   />
                 </div>
               </div>
@@ -122,7 +122,7 @@ export function CustomPagesForm({ shopId, customization }: { shopId: string; cus
                   value={page.content}
                   onChange={(e) => updatePage(index, 'content', e.target.value)}
                   rows={6}
-                  className="w-full bg-botanical-bg border border-botanical-border rounded px-3 py-2 text-botanical-text"
+                  className="w-full bg-botanical-bg border-2 border-b-[6px] border-botanical-border rounded px-3 py-2 text-botanical-text"
                   placeholder="Enter HTML or plain text here..."
                 />
               </div>

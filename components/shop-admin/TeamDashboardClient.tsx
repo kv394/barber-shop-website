@@ -34,7 +34,7 @@ export default function TeamDashboardClient({
   return (
     <>
       <div className="flex justify-end mb-4">
-        <Link href={`/shop/${shopId}/portfolio`} className="bg-white text-slate-900 border border-gray-200 px-4 py-2 rounded-lg hover:bg-gray-50 transition-colors font-bold uppercase tracking-wider flex items-center gap-2 shadow-lg">
+        <Link href={`/shop/${shopId}/portfolio`} className="bg-white text-slate-900 border-2 border-b-[6px] border-botanical-border px-4 py-2 rounded-lg hover:bg-gray-50 transition-colors font-bold uppercase tracking-wider flex items-center gap-2 shadow-lg">
           📸 Shop Portfolio Gallery
         </Link>
       </div>
@@ -50,12 +50,12 @@ export default function TeamDashboardClient({
           const defaultClose = staffMember.closeTime || "17:00";
 
           return (
-            <div key={staffMember.id} className={`bg-white border border-gray-200 rounded-2xl p-5 flex flex-col shadow-lg transition-all duration-200 hover:shadow-xl hover:border-gray-200 ${isOnLeave ? 'ring-1 ring-red-500/50' : ''}`}>
+            <div key={staffMember.id} className={`bg-white border-2 border-b-[6px] border-botanical-border rounded-2xl p-5 flex flex-col shadow-lg transition-all duration-200 hover:shadow-xl hover:border-gray-200 ${isOnLeave ? 'ring-1 ring-red-500/50' : ''}`}>
               
               <div className="flex justify-between items-start mb-4">
                 <StaffProfileModalWrapper staff={staffMember}>
                   <div className="flex items-center gap-3 text-left">
-                    <div className="w-10 h-10 rounded-full overflow-hidden bg-white border border-gray-200 flex items-center justify-center shrink-0">
+                    <div className="w-10 h-10 rounded-full overflow-hidden bg-white border-2 border-b-[6px] border-botanical-border flex items-center justify-center shrink-0">
                       {staffMember.imageUrl ? (
                         <img src={staffMember.imageUrl} alt={staffMember.name} className="w-full h-full object-cover" />
                       ) : (
@@ -77,7 +77,7 @@ export default function TeamDashboardClient({
                   {isOnLeave ? (
                     <span className="text-[10px] bg-red-50 text-red-700 border border-red-200 px-2.5 py-1 rounded-full font-bold uppercase tracking-wider">On Leave</span>
                   ) : isNotWorking ? (
-                    <span className="text-[10px] bg-white text-slate-900 border border-gray-200 px-2.5 py-1 rounded-full font-bold uppercase tracking-wider">Day Off</span>
+                    <span className="text-[10px] bg-white text-slate-900 border-2 border-b-[6px] border-botanical-border px-2.5 py-1 rounded-full font-bold uppercase tracking-wider">Day Off</span>
                   ) : staffMember.isClockedIn ? (
                     <span className="text-[10px] bg-emerald-50 text-emerald-700 border border-emerald-200 px-2.5 py-1 rounded-full font-bold uppercase tracking-wider flex items-center gap-1.5">
                       <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> Clocked In
@@ -124,7 +124,7 @@ export default function TeamDashboardClient({
                                 name="openTime" 
                                 value={getTimeValue(staffMember.id, 'open', defaultOpen)}
                                 onChange={(e) => handleTimeChange(staffMember.id, 'open', e.target.value)}
-                                className="bg-white text-slate-900 text-xs p-1 rounded border border-gray-200 outline-none focus:ring-1 focus:ring-botanical-primary"
+                                className="bg-white text-slate-900 text-xs p-1 rounded border-2 border-b-[6px] border-botanical-border outline-none focus:ring-1 focus:ring-botanical-primary"
                             />
                             <span className="text-slate-600 text-xs">to</span>
                             <input 
@@ -132,7 +132,7 @@ export default function TeamDashboardClient({
                                 name="closeTime" 
                                 value={getTimeValue(staffMember.id, 'close', defaultClose)}
                                 onChange={(e) => handleTimeChange(staffMember.id, 'close', e.target.value)}
-                                className="bg-white text-slate-900 text-xs p-1 rounded border border-gray-200 outline-none focus:ring-1 focus:ring-botanical-primary"
+                                className="bg-white text-slate-900 text-xs p-1 rounded border-2 border-b-[6px] border-botanical-border outline-none focus:ring-1 focus:ring-botanical-primary"
                             />
                         </div>
                         <button type="submit" className="w-full text-xs text-botanical-primary bg-botanical-primary/10 hover:bg-botanical-primary hover:text-white py-1.5 rounded transition-colors border border-botanical-primary/20 font-bold">Add Shift</button>
@@ -173,7 +173,7 @@ export default function TeamDashboardClient({
               <div className="grid grid-cols-2 gap-2 mt-auto">
                 <Link 
                     href={`/shop/${shopId}/settings/team/${staffMember.id}/schedule`} 
-                    className="w-full text-center bg-white hover:bg-gray-50 text-slate-900 text-xs font-semibold py-2 rounded-lg transition-colors border border-gray-200"
+                    className="w-full text-center bg-white hover:bg-gray-50 text-slate-900 text-xs font-semibold py-2 rounded-lg transition-colors border-2 border-b-[6px] border-botanical-border"
                 >
                     Edit Schedule
                 </Link>
@@ -190,14 +190,14 @@ export default function TeamDashboardClient({
                                 name="startTime" 
                                 value={getTimeValue(staffMember.id, 'open', defaultOpen)}
                                 onChange={(e) => handleTimeChange(staffMember.id, 'open', e.target.value)}
-                                className="w-full bg-white text-slate-600 text-[10px] p-1 rounded border border-gray-200 outline-none focus:ring-1 focus:ring-botanical-primary"
+                                className="w-full bg-white text-slate-600 text-[10px] p-1 rounded border-2 border-b-[6px] border-botanical-border outline-none focus:ring-1 focus:ring-botanical-primary"
                             />
                              <input 
                                 type="time" 
                                 name="endTime" 
                                 value={getTimeValue(staffMember.id, 'close', defaultClose)}
                                 onChange={(e) => handleTimeChange(staffMember.id, 'close', e.target.value)}
-                                className="w-full bg-white text-slate-600 text-[10px] p-1 rounded border border-gray-200 outline-none focus:ring-1 focus:ring-botanical-primary"
+                                className="w-full bg-white text-slate-600 text-[10px] p-1 rounded border-2 border-b-[6px] border-botanical-border outline-none focus:ring-1 focus:ring-botanical-primary"
                             />
                         </div>
 

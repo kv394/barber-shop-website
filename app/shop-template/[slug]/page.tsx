@@ -258,7 +258,7 @@ export default async function PublicShopPage({
             {shop.services.map((service: any) => (
               <div
                 key={service.id}
-                className="group bg-gradient-to-br from-slate-800 to-slate-900 rounded-xl p-8 border border-botanical-border transition-all duration-300 hover:shadow-lg"
+                className="group bg-gradient-to-br from-slate-800 to-slate-900 rounded-xl p-8 border-2 border-b-[6px] border-botanical-border transition-all duration-300 hover:shadow-lg"
               >
                 <div className="flex items-start justify-between mb-4">
                   <h3 className="text-2xl font-bold text-botanical-text transition-colors">

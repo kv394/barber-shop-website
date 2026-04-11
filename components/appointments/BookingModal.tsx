@@ -377,7 +377,7 @@ export default function BookingModal({ shopId, service, onClose, shopHours }: Bo
                 <h3 className="text-2xl font-bold text-botanical-text mb-2">Booking Confirmed!</h3>
                 <p className="text-botanical-muted mb-2">The appointment for <span className="text-botanical-accent font-semibold">{service.name}</span> has been scheduled.</p>
                 {confirmedStartTime && (
-                  <div className="bg-botanical-surface rounded-lg p-4 mb-6 border border-botanical-border text-sm text-left space-y-1">
+                  <div className="bg-botanical-surface rounded-lg p-4 mb-6 border-2 border-b-[6px] border-botanical-border text-sm text-left space-y-1">
                     <p className="text-botanical-muted">📅 <span className="text-botanical-text">{formattedDate}</span></p>
                     <p className="text-botanical-muted">🕐 <span className="text-botanical-text">{selectedTime}</span></p>
                     <p className="text-botanical-muted">💈 <span className="text-botanical-text">{confirmedStaffName}</span></p>
@@ -385,7 +385,7 @@ export default function BookingModal({ shopId, service, onClose, shopHours }: Bo
                   </div>
                 )}
                 <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                  <button onClick={handleAddToCalendar} className="border border-botanical-border text-botanical-text px-5 py-2 rounded-lg hover:bg-botanical-surface transition-colors text-sm font-semibold flex items-center justify-center gap-2">
+                  <button onClick={handleAddToCalendar} className="border-2 border-b-[6px] border-botanical-border text-botanical-text px-5 py-2 rounded-lg hover:bg-botanical-surface transition-colors text-sm font-semibold flex items-center justify-center gap-2">
                     📅 Add to Calendar
                   </button>
                   <button onClick={handleDone} className="bg-botanical-primary text-white font-bold px-6 py-2 rounded-lg hover:bg-white transition-colors">
@@ -401,14 +401,14 @@ export default function BookingModal({ shopId, service, onClose, shopHours }: Bo
   if (showSummary) {
     return (
       <div className="fixed inset-0 bg-botanical-surface z-[100] flex items-center justify-center p-4 backdrop-blur-sm">
-        <div className="bg-botanical-surface rounded-xl p-6 w-full max-w-md border border-botanical-border shadow-2xl relative text-left">
+        <div className="bg-botanical-surface rounded-xl p-6 w-full max-w-md border-2 border-b-[6px] border-botanical-border shadow-2xl relative text-left">
           <button onClick={() => setShowSummary(false)} className="absolute top-4 right-4 text-botanical-muted hover:text-botanical-text bg-botanical-surface rounded-full w-8 h-8 flex items-center justify-center z-10">←</button>
           <h3 className="text-xl font-bold text-botanical-text mb-1">Review Your Booking</h3>
           <p className="text-botanical-muted text-sm mb-5">Please confirm the details below.</p>
 
           {error && <p className="text-red-400 text-sm bg-red-900/20 p-3 rounded mb-4">{error}</p>}
 
-          <div className="bg-botanical-surface rounded-lg border border-botanical-border divide-y divide-white/10 mb-6">
+          <div className="bg-botanical-surface rounded-lg border-2 border-b-[6px] border-botanical-border divide-y divide-white/10 mb-6">
             <div className="flex justify-between items-center p-4">
               <span className="text-botanical-muted text-sm">Service</span>
               <span className="text-botanical-text font-semibold">{service.name}</span>
@@ -449,7 +449,7 @@ export default function BookingModal({ shopId, service, onClose, shopHours }: Bo
           </div>
 
           <div className="flex gap-3">
-            <button onClick={() => setShowSummary(false)} className="flex-1 border border-botanical-border text-botanical-text font-semibold py-3 rounded-lg hover:bg-botanical-surface transition-colors">
+            <button onClick={() => setShowSummary(false)} className="flex-1 border-2 border-b-[6px] border-botanical-border text-botanical-text font-semibold py-3 rounded-lg hover:bg-botanical-surface transition-colors">
               Edit
             </button>
             <button onClick={handleBook} disabled={isBooking} className="flex-1 bg-botanical-primary text-white font-bold py-3 rounded-lg hover:bg-white transition-colors disabled:opacity-50">
@@ -469,7 +469,7 @@ export default function BookingModal({ shopId, service, onClose, shopHours }: Bo
   // ────────────── MAIN BOOKING FORM ──────────────
   return (
     <div className="fixed inset-0 bg-botanical-surface z-[100] flex items-center justify-center p-4 backdrop-blur-sm">
-      <div className="bg-botanical-surface rounded-xl p-6 w-full max-w-md border border-botanical-border shadow-2xl relative text-left max-h-[90vh] overflow-y-auto custom-scrollbar">
+      <div className="bg-botanical-surface rounded-xl p-6 w-full max-w-md border-2 border-b-[6px] border-botanical-border shadow-2xl relative text-left max-h-[90vh] overflow-y-auto custom-scrollbar">
         <button onClick={onClose} className="absolute top-4 right-4 text-botanical-muted hover:text-botanical-text bg-botanical-surface rounded-full w-8 h-8 flex items-center justify-center z-10">✕</button>
         <h3 className="text-xl font-bold text-botanical-text mb-1">Book Appointment</h3>
         <p className="text-botanical-accent font-semibold mb-6">{service.name} <span className="text-botanical-muted font-normal ml-2">({service.duration} mins • ${service.price})</span></p>
@@ -477,7 +477,7 @@ export default function BookingModal({ shopId, service, onClose, shopHours }: Bo
         {!isLoaded ? (
              <p className="text-botanical-muted text-center py-8">Loading...</p>
         ) : !isSignedIn ? (
-            <div className="text-center py-6 bg-botanical-surface rounded-lg border border-botanical-border flex flex-col items-center">
+            <div className="text-center py-6 bg-botanical-surface rounded-lg border-2 border-b-[6px] border-botanical-border flex flex-col items-center">
                 <p className="text-botanical-muted mb-4">Please sign in or create an account to book an appointment.</p>
                 <a href={`/sign-in?redirect_url=${encodeURIComponent(currentPath)}`} className="bg-botanical-primary text-white px-6 py-2 rounded font-bold hover:bg-white transition-colors inline-block text-center">
                   Sign In to Book
@@ -506,11 +506,11 @@ export default function BookingModal({ shopId, service, onClose, shopHours }: Bo
                                         placeholder="Type name or email..."
                                         value={clientSearchQuery}
                                         onChange={(e) => setClientSearchQuery(e.target.value)}
-                                        className="w-full bg-botanical-surface border border-botanical-border rounded p-2 text-sm text-botanical-text focus:outline-none focus:border-brand-gold"
+                                        className="w-full bg-botanical-surface border-2 border-b-[6px] border-botanical-border rounded p-2 text-sm text-botanical-text focus:outline-none focus:border-brand-gold"
                                       />
                                       {isSearchingClients && <div className="absolute right-3 top-8 w-3 h-3 border-2 border-brand-gold border-t-transparent rounded-full animate-spin"></div>}
                                       {clientSearchResults.length > 0 && (
-                                        <div className="absolute z-20 w-full mt-1 bg-botanical-surface border border-botanical-border rounded-lg shadow-xl max-h-40 overflow-y-auto">
+                                        <div className="absolute z-20 w-full mt-1 bg-botanical-surface border-2 border-b-[6px] border-botanical-border rounded-lg shadow-xl max-h-40 overflow-y-auto">
                                           {clientSearchResults.map(c => (
                                             <button key={c.id} onClick={() => handleSelectExistingClient(c)} className="w-full text-left px-3 py-2 hover:bg-botanical-surface transition-colors border-b border-botanical-border last:border-0">
                                               <span className="text-botanical-text text-sm font-medium">{c.name || 'No name'}</span>
@@ -540,15 +540,15 @@ export default function BookingModal({ shopId, service, onClose, shopHours }: Bo
                                   <>
                                     <div>
                                       <label className="block text-xs text-botanical-muted mb-1">Client Name *</label>
-                                      <input type="text" placeholder="John Doe" value={clientName} onChange={(e) => setClientName(e.target.value)} className="w-full bg-botanical-surface border border-botanical-border rounded p-2 text-sm text-botanical-text focus:outline-none focus:border-brand-gold" />
+                                      <input type="text" placeholder="John Doe" value={clientName} onChange={(e) => setClientName(e.target.value)} className="w-full bg-botanical-surface border-2 border-b-[6px] border-botanical-border rounded p-2 text-sm text-botanical-text focus:outline-none focus:border-brand-gold" />
                                     </div>
                                     <div>
                                       <label className="block text-xs text-botanical-muted mb-1">Client Email (Optional)</label>
-                                      <input type="email" placeholder="john@example.com" value={clientEmail} onChange={(e) => setClientEmail(e.target.value)} className="w-full bg-botanical-surface border border-botanical-border rounded p-2 text-sm text-botanical-text focus:outline-none focus:border-brand-gold" />
+                                      <input type="email" placeholder="john@example.com" value={clientEmail} onChange={(e) => setClientEmail(e.target.value)} className="w-full bg-botanical-surface border-2 border-b-[6px] border-botanical-border rounded p-2 text-sm text-botanical-text focus:outline-none focus:border-brand-gold" />
                                     </div>
                                     <div>
                                       <label className="block text-xs text-botanical-muted mb-1">Client Phone (Optional)</label>
-                                      <input type="tel" placeholder="+1 555-123-4567" value={clientPhone} onChange={(e) => setClientPhone(e.target.value)} className="w-full bg-botanical-surface border border-botanical-border rounded p-2 text-sm text-botanical-text focus:outline-none focus:border-brand-gold" />
+                                      <input type="tel" placeholder="+1 555-123-4567" value={clientPhone} onChange={(e) => setClientPhone(e.target.value)} className="w-full bg-botanical-surface border-2 border-b-[6px] border-botanical-border rounded p-2 text-sm text-botanical-text focus:outline-none focus:border-brand-gold" />
                                     </div>
                                   </>
                                 )}
@@ -560,7 +560,7 @@ export default function BookingModal({ shopId, service, onClose, shopHours }: Bo
                 {/* ──── Step 1: Date ──── */}
                 <div>
                     <label className="block text-sm text-botanical-muted mb-2">1. Select Date</label>
-                    <input type="date" value={selectedDate} onChange={(e) => { setSelectedDate(e.target.value); setSelectedTime(''); setSelectedStaff(''); }} min={new Date().toISOString().split('T')[0]} style={{ colorScheme: 'dark', color: '#fff', backgroundColor: 'rgba(0,0,0,0.5)' }} className="w-full border border-botanical-border rounded p-3 text-botanical-text focus:outline-none focus:border-brand-gold" />
+                    <input type="date" value={selectedDate} onChange={(e) => { setSelectedDate(e.target.value); setSelectedTime(''); setSelectedStaff(''); }} min={new Date().toISOString().split('T')[0]} style={{ colorScheme: 'dark', color: '#fff', backgroundColor: 'rgba(0,0,0,0.5)' }} className="w-full border-2 border-b-[6px] border-botanical-border rounded p-3 text-botanical-text focus:outline-none focus:border-brand-gold" />
                 </div>
 
                 {/* ──── Step 2: Time ──── */}
@@ -576,7 +576,7 @@ export default function BookingModal({ shopId, service, onClose, shopHours }: Bo
                           value={selectedTime}
                           onChange={(e) => { setSelectedTime(e.target.value); setSelectedStaff(''); }}
                           style={{ colorScheme: 'dark', color: '#fff', backgroundColor: 'rgba(0,0,0,0.5)' }}
-                          className="w-full border border-botanical-border rounded p-3 text-botanical-text text-sm focus:outline-none focus:border-brand-gold cursor-pointer"
+                          className="w-full border-2 border-b-[6px] border-botanical-border rounded p-3 text-botanical-text text-sm focus:outline-none focus:border-brand-gold cursor-pointer"
                         >
                           <option value="">— Choose a time —</option>
                           {availableTimeSlots.map(time => (
@@ -597,7 +597,7 @@ export default function BookingModal({ shopId, service, onClose, shopHours }: Bo
                               value={selectedStaff}
                               onChange={(e) => setSelectedStaff(e.target.value)}
                               style={{ colorScheme: 'dark', color: '#fff', backgroundColor: 'rgba(0,0,0,0.5)' }}
-                              className="w-full border border-botanical-border rounded p-3 text-botanical-text text-sm focus:outline-none focus:border-brand-gold cursor-pointer"
+                              className="w-full border-2 border-b-[6px] border-botanical-border rounded p-3 text-botanical-text text-sm focus:outline-none focus:border-brand-gold cursor-pointer"
                             >
                               <option value="">— Choose a barber —</option>
                               <option value={ANY_STAFF_VALUE}>🔀 Any Available (First Free)</option>
@@ -619,7 +619,7 @@ export default function BookingModal({ shopId, service, onClose, shopHours }: Bo
                       placeholder="e.g. skin fade, allergies, preferred products..."
                       rows={2}
                       maxLength={500}
-                      className="w-full bg-botanical-surface border border-botanical-border rounded p-3 text-sm text-botanical-text focus:outline-none focus:border-brand-gold resize-none placeholder-gray-600"
+                      className="w-full bg-botanical-surface border-2 border-b-[6px] border-botanical-border rounded p-3 text-sm text-botanical-text focus:outline-none focus:border-brand-gold resize-none placeholder-gray-600"
                     />
                   </div>
                 )}

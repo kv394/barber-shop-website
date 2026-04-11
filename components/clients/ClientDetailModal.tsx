@@ -143,7 +143,7 @@ export default function ClientDetailModal({ shopId, clientId, clientName, onClos
 
   return (
     <div className="fixed inset-0 bg-botanical-surface z-[100] flex items-center justify-center p-4 backdrop-blur-sm" onClick={onClose}>
-      <div className="bg-botanical-surface rounded-xl p-6 w-full max-w-2xl border border-botanical-border shadow-2xl max-h-[90vh] overflow-y-auto custom-scrollbar" onClick={e => e.stopPropagation()}>
+      <div className="bg-botanical-surface rounded-xl p-6 w-full max-w-2xl border-2 border-b-[6px] border-botanical-border shadow-2xl max-h-[90vh] overflow-y-auto custom-scrollbar" onClick={e => e.stopPropagation()}>
         <div className="flex justify-between items-start mb-6 border-b border-botanical-border pb-4">
           <div>
             <h3 className="text-xl font-bold text-botanical-accent">{clientName}</h3>
@@ -183,7 +183,7 @@ export default function ClientDetailModal({ shopId, clientId, clientName, onClos
             {/* Tab Contents */}
             <div className="flex-1 overflow-y-auto custom-scrollbar pr-2 pb-4">
               {activeTab === 'crm' && (
-                <div className="space-y-4 bg-botanical-surface p-4 rounded-xl border border-botanical-border">
+                <div className="space-y-4 bg-botanical-surface p-4 rounded-xl border-2 border-b-[6px] border-botanical-border">
                   <div className="space-y-3">
                     <div>
                       <label className="block text-[11px] text-botanical-muted mb-1 uppercase tracking-wider">General Notes</label>
@@ -192,7 +192,7 @@ export default function ClientDetailModal({ shopId, clientId, clientName, onClos
                         value={formData.clientNotes}
                         onChange={handleChange}
                         placeholder="General notes..."
-                        className="w-full bg-botanical-surface border border-botanical-border rounded-md p-2 text-sm text-botanical-text placeholder-gray-600 focus:outline-none focus:border-brand-gold resize-y"
+                        className="w-full bg-botanical-surface border-2 border-b-[6px] border-botanical-border rounded-md p-2 text-sm text-botanical-text placeholder-gray-600 focus:outline-none focus:border-brand-gold resize-y"
                         rows={3}
                       />
                     </div>
@@ -204,7 +204,7 @@ export default function ClientDetailModal({ shopId, clientId, clientName, onClos
                         value={formData.preferences}
                         onChange={handleChange}
                         placeholder="e.g. prefers silent appointments, cold water"
-                        className="w-full bg-botanical-surface border border-botanical-border rounded-md p-2 text-sm text-botanical-text placeholder-gray-600 focus:outline-none focus:border-brand-gold"
+                        className="w-full bg-botanical-surface border-2 border-b-[6px] border-botanical-border rounded-md p-2 text-sm text-botanical-text placeholder-gray-600 focus:outline-none focus:border-brand-gold"
                       />
                     </div>
                     <div>
@@ -241,17 +241,17 @@ export default function ClientDetailModal({ shopId, clientId, clientName, onClos
               {activeTab === 'history' && (
                 <div className="space-y-6">
                   <div className="grid grid-cols-3 gap-2">
-                    <div className="bg-botanical-surface p-3 rounded-lg text-center border border-botanical-border">
+                    <div className="bg-botanical-surface p-3 rounded-lg text-center border-2 border-b-[6px] border-botanical-border">
                       <p className="text-xl font-bold text-botanical-text">{client._count?.clientAppointments || 0}</p>
                       <p className="text-[9px] text-botanical-muted uppercase tracking-wider">Visits</p>
                     </div>
-                    <div className="bg-botanical-surface p-3 rounded-lg text-center border border-botanical-border">
+                    <div className="bg-botanical-surface p-3 rounded-lg text-center border-2 border-b-[6px] border-botanical-border">
                       <p className="text-xl font-bold text-green-400">
                         ${client.clientAppointments?.filter((a: any) => a.status === 'COMPLETED').reduce((sum: number, a: any) => sum + (a.totalAmount > 0 ? a.totalAmount : (a.service?.price || 0)), 0).toFixed(0) || '0'}
                       </p>
                       <p className="text-[9px] text-botanical-muted uppercase tracking-wider">Spent</p>
                     </div>
-                    <div className="bg-botanical-surface p-3 rounded-lg text-center border border-botanical-border">
+                    <div className="bg-botanical-surface p-3 rounded-lg text-center border-2 border-b-[6px] border-botanical-border">
                       <p className="text-xl font-bold text-amber-400">
                         {client.clientAppointments?.filter((a: any) => a.status === 'NO_SHOW').length || 0}
                       </p>
@@ -277,7 +277,7 @@ export default function ClientDetailModal({ shopId, clientId, clientName, onClos
                   {client.clientAppointments?.length > 0 ? (
                     <div className="space-y-2">
                       {client.clientAppointments.map((apt: any) => (
-                        <div key={apt.id} className="bg-botanical-surface p-3 rounded-lg border border-botanical-border text-sm flex justify-between items-start">
+                        <div key={apt.id} className="bg-botanical-surface p-3 rounded-lg border-2 border-b-[6px] border-botanical-border text-sm flex justify-between items-start">
                           <div className="min-w-0">
                             <p className="font-medium text-botanical-text truncate">{apt.service?.name || 'Walkin Service'}</p>
                             <p className="text-[10px] text-botanical-muted">
@@ -297,11 +297,11 @@ export default function ClientDetailModal({ shopId, clientId, clientName, onClos
 
               {activeTab === 'formulas' && (
                 <div className="space-y-6">
-                  <form onSubmit={saveFormula} className="bg-botanical-surface p-4 rounded-xl border border-botanical-border">
+                  <form onSubmit={saveFormula} className="bg-botanical-surface p-4 rounded-xl border-2 border-b-[6px] border-botanical-border">
                     <h4 className="text-sm font-semibold text-botanical-text mb-3">Add New Formula</h4>
                     <div className="space-y-3">
-                      <textarea value={newFormula} onChange={e => setNewFormula(e.target.value)} placeholder="e.g. 2oz 5N + 1oz 6G + 20vol" className="w-full bg-botanical-surface border border-botanical-border rounded-md p-2 text-sm text-botanical-text focus:border-brand-gold resize-y" rows={2} required />
-                      <input type="text" value={newNotes} onChange={e => setNewNotes(e.target.value)} placeholder="Additional notes..." className="w-full bg-botanical-surface border border-botanical-border rounded-md p-2 text-sm text-botanical-text focus:border-brand-gold" />
+                      <textarea value={newFormula} onChange={e => setNewFormula(e.target.value)} placeholder="e.g. 2oz 5N + 1oz 6G + 20vol" className="w-full bg-botanical-surface border-2 border-b-[6px] border-botanical-border rounded-md p-2 text-sm text-botanical-text focus:border-brand-gold resize-y" rows={2} required />
+                      <input type="text" value={newNotes} onChange={e => setNewNotes(e.target.value)} placeholder="Additional notes..." className="w-full bg-botanical-surface border-2 border-b-[6px] border-botanical-border rounded-md p-2 text-sm text-botanical-text focus:border-brand-gold" />
                       <button type="submit" disabled={savingFormula || !newFormula.trim()} className="bg-botanical-primary text-white px-4 py-2 rounded text-xs font-bold hover:bg-white disabled:opacity-50 transition">
                         {savingFormula ? 'Saving...' : 'Save Formula'}
                       </button>
@@ -312,7 +312,7 @@ export default function ClientDetailModal({ shopId, clientId, clientName, onClos
                     {client.clientFormulas?.length > 0 ? (
                       <div className="space-y-3">
                         {client.clientFormulas.map((f: any) => (
-                          <div key={f.id} className="p-3 bg-botanical-surface rounded-lg border border-botanical-border">
+                          <div key={f.id} className="p-3 bg-botanical-surface rounded-lg border-2 border-b-[6px] border-botanical-border">
                             <div className="flex justify-between items-start mb-2">
                               <p className="text-[10px] text-botanical-muted">{new Date(f.date).toLocaleDateString()} by {f.staff?.name}</p>
                             </div>
@@ -329,7 +329,7 @@ export default function ClientDetailModal({ shopId, clientId, clientName, onClos
               {activeTab === 'gallery' && (
                 <div className="space-y-6">
                   <form onSubmit={saveImage} className="flex gap-2">
-                    <input type="url" value={newImageUrl} onChange={e => setNewImageUrl(e.target.value)} placeholder="Image URL (e.g. https://...)" className="flex-1 bg-botanical-surface border border-botanical-border rounded px-3 py-2 text-sm text-botanical-text focus:border-brand-gold" required />
+                    <input type="url" value={newImageUrl} onChange={e => setNewImageUrl(e.target.value)} placeholder="Image URL (e.g. https://...)" className="flex-1 bg-botanical-surface border-2 border-b-[6px] border-botanical-border rounded px-3 py-2 text-sm text-botanical-text focus:border-brand-gold" required />
                     <button type="submit" disabled={savingImage || !newImageUrl.trim()} className="bg-botanical-primary text-white px-4 py-2 rounded text-xs font-bold hover:bg-white disabled:opacity-50">
                       {savingImage ? 'Adding...' : 'Add Photo'}
                     </button>
@@ -337,7 +337,7 @@ export default function ClientDetailModal({ shopId, clientId, clientName, onClos
                   {client.clientHistoryImages?.length > 0 ? (
                     <div className="grid grid-cols-2 gap-3">
                       {client.clientHistoryImages.map((img: any) => (
-                        <div key={img.id} className="relative aspect-square rounded-lg overflow-hidden border border-botanical-border group bg-botanical-surface">
+                        <div key={img.id} className="relative aspect-square rounded-lg overflow-hidden border-2 border-b-[6px] border-botanical-border group bg-botanical-surface">
                           {/* eslint-disable-next-line @next/next/no-img-element */}
                           <img src={img.imageUrl} alt="Client history" className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" />
                           <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 p-2">

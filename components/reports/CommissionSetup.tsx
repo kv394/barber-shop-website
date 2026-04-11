@@ -50,7 +50,7 @@ export default function CommissionSetup({ shopId }: { shopId: string }) {
   if (!staff.length && !loading) return <div className="text-botanical-muted py-4">No staff members found. Add staff to set commissions.</div>;
 
   return (
-    <div className="bg-botanical-surface border border-botanical-border rounded-xl p-6 space-y-4">
+    <div className="bg-botanical-surface border-2 border-b-[6px] border-botanical-border rounded-xl p-6 space-y-4">
       <h3 className="text-lg font-bold text-botanical-text">💼 Commission Rates</h3>
       <p className="text-botanical-muted text-sm">Set service and retail product commission rates per staff member.</p>
       {msg && <div className="p-2 bg-green-900/30 border border-green-500/30 text-green-300 rounded text-sm">{msg}</div>}
@@ -68,7 +68,7 @@ export default function CommissionSetup({ shopId }: { shopId: string }) {
               <div className="flex items-center gap-1">
                 <input type="number" min={0} max={100} value={rules[s.id]?.svc ?? 50}
                   onChange={e => setRules(r => ({ ...r, [s.id]: { ...r[s.id], svc: +e.target.value } }))}
-                  className="w-16 bg-botanical-surface border border-botanical-border rounded px-2 py-1.5 text-botanical-text text-sm focus:outline-none focus:border-brand-gold" />
+                  className="w-16 bg-botanical-surface border-2 border-b-[6px] border-botanical-border rounded px-2 py-1.5 text-botanical-text text-sm focus:outline-none focus:border-brand-gold" />
                 <span className="text-botanical-muted text-sm">%</span>
               </div>
             </div>
@@ -77,7 +77,7 @@ export default function CommissionSetup({ shopId }: { shopId: string }) {
               <div className="flex items-center gap-1">
                 <input type="number" min={0} max={100} value={rules[s.id]?.product ?? 10}
                   onChange={e => setRules(r => ({ ...r, [s.id]: { ...r[s.id], product: +e.target.value } }))}
-                  className="w-16 bg-botanical-surface border border-botanical-border rounded px-2 py-1.5 text-botanical-text text-sm focus:outline-none focus:border-brand-gold" />
+                  className="w-16 bg-botanical-surface border-2 border-b-[6px] border-botanical-border rounded px-2 py-1.5 text-botanical-text text-sm focus:outline-none focus:border-brand-gold" />
                 <span className="text-botanical-muted text-sm">%</span>
               </div>
             </div>

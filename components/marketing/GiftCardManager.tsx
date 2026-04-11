@@ -76,24 +76,24 @@ export default function GiftCardManager({ shopId }: { shopId: string }) {
       </div>
 
       {showForm && (
-        <div className="bg-botanical-surface p-6 rounded-lg border border-botanical-border space-y-4">
+        <div className="bg-botanical-surface p-6 rounded-lg border-2 border-b-[6px] border-botanical-border space-y-4">
           {error && <p className="text-red-400 text-sm">{error}</p>}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block text-xs text-botanical-muted mb-1">Amount ($) *</label>
-              <input type="number" min="5" step="5" value={amount} onChange={e => setAmount(e.target.value)} className="w-full bg-botanical-surface border border-botanical-border rounded p-2 text-botanical-text text-sm focus:outline-none focus:border-brand-gold" />
+              <input type="number" min="5" step="5" value={amount} onChange={e => setAmount(e.target.value)} className="w-full bg-botanical-surface border-2 border-b-[6px] border-botanical-border rounded p-2 text-botanical-text text-sm focus:outline-none focus:border-brand-gold" />
             </div>
             <div>
               <label className="block text-xs text-botanical-muted mb-1">Recipient Name</label>
-              <input type="text" value={recipientName} onChange={e => setRecipientName(e.target.value)} placeholder="John Doe" className="w-full bg-botanical-surface border border-botanical-border rounded p-2 text-botanical-text text-sm placeholder-gray-600 focus:outline-none focus:border-brand-gold" />
+              <input type="text" value={recipientName} onChange={e => setRecipientName(e.target.value)} placeholder="John Doe" className="w-full bg-botanical-surface border-2 border-b-[6px] border-botanical-border rounded p-2 text-botanical-text text-sm placeholder-gray-600 focus:outline-none focus:border-brand-gold" />
             </div>
             <div>
               <label className="block text-xs text-botanical-muted mb-1">Recipient Email (sends card)</label>
-              <input type="email" value={recipientEmail} onChange={e => setRecipientEmail(e.target.value)} placeholder="recipient@email.com" className="w-full bg-botanical-surface border border-botanical-border rounded p-2 text-botanical-text text-sm placeholder-gray-600 focus:outline-none focus:border-brand-gold" />
+              <input type="email" value={recipientEmail} onChange={e => setRecipientEmail(e.target.value)} placeholder="recipient@email.com" className="w-full bg-botanical-surface border-2 border-b-[6px] border-botanical-border rounded p-2 text-botanical-text text-sm placeholder-gray-600 focus:outline-none focus:border-brand-gold" />
             </div>
             <div>
               <label className="block text-xs text-botanical-muted mb-1">Purchaser Email</label>
-              <input type="email" value={purchaserEmail} onChange={e => setPurchaserEmail(e.target.value)} placeholder="buyer@email.com" className="w-full bg-botanical-surface border border-botanical-border rounded p-2 text-botanical-text text-sm placeholder-gray-600 focus:outline-none focus:border-brand-gold" />
+              <input type="email" value={purchaserEmail} onChange={e => setPurchaserEmail(e.target.value)} placeholder="buyer@email.com" className="w-full bg-botanical-surface border-2 border-b-[6px] border-botanical-border rounded p-2 text-botanical-text text-sm placeholder-gray-600 focus:outline-none focus:border-brand-gold" />
             </div>
           </div>
           <button onClick={handleCreate} disabled={creating || !amount} className="bg-botanical-primary text-white font-bold px-6 py-2 rounded-lg text-sm hover:bg-white transition-colors disabled:opacity-50">

@@ -67,14 +67,14 @@ export default function ReviewsClient({ shopId }: { shopId: string }) {
 
       {/* ── Summary card ── */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="bg-botanical-surface border border-botanical-border rounded-xl p-6 flex flex-col items-center justify-center gap-2">
+        <div className="bg-botanical-surface border-2 border-b-[6px] border-botanical-border rounded-xl p-6 flex flex-col items-center justify-center gap-2">
           <div className="text-6xl font-black text-botanical-text">{avg.toFixed(1)}</div>
           <div className="flex gap-0.5 text-2xl">
             {STARS.map(s => <span key={s} className={s <= Math.round(avg) ? 'text-yellow-400' : 'text-gray-600'}>★</span>)}
           </div>
           <div className="text-botanical-muted text-sm">{reviews.length} review{reviews.length !== 1 ? 's' : ''}</div>
         </div>
-        <div className="bg-botanical-surface border border-botanical-border rounded-xl p-6 space-y-2">
+        <div className="bg-botanical-surface border-2 border-b-[6px] border-botanical-border rounded-xl p-6 space-y-2">
           {dist.map(d => <StarBar key={d.rating} rating={d.rating} count={d.count} total={reviews.length} />)}
         </div>
       </div>
@@ -103,7 +103,7 @@ export default function ReviewsClient({ shopId }: { shopId: string }) {
       <div className="space-y-4">
         {filtered.length === 0 && <p className="text-botanical-muted text-center py-8">No reviews yet.</p>}
         {filtered.map(r => (
-          <div key={r.id} className="bg-botanical-surface border border-botanical-border rounded-xl p-5">
+          <div key={r.id} className="bg-botanical-surface border-2 border-b-[6px] border-botanical-border rounded-xl p-5">
             {/* Header */}
             <div className="flex items-start justify-between mb-3">
               <div>
@@ -148,7 +148,7 @@ export default function ReviewsClient({ shopId }: { shopId: string }) {
                   onChange={e => setResponseText(e.target.value)}
                   placeholder="Write your response…"
                   rows={3}
-                  className="w-full bg-botanical-surface border border-botanical-border rounded-lg p-3 text-sm text-botanical-text placeholder-gray-500 focus:outline-none focus:border-brand-gold resize-none"
+                  className="w-full bg-botanical-surface border-2 border-b-[6px] border-botanical-border rounded-lg p-3 text-sm text-botanical-text placeholder-gray-500 focus:outline-none focus:border-brand-gold resize-none"
                 />
                 <div className="flex gap-2">
                   <button onClick={() => submitResponse(r.id)} disabled={saving || !responseText.trim()} className="px-4 py-2 bg-botanical-primary text-black rounded-lg text-sm font-semibold disabled:opacity-50">

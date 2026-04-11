@@ -60,12 +60,12 @@ export default function ShopAdminLayout({
       {isSplitLayout ? (
         <div className="flex flex-col md:flex-row gap-4 md:gap-6 items-start">
           {/* Sidebar */}
-          <div className="w-full md:w-64 shrink-0 bg-white rounded-xl border border-botanical-border p-2 md:p-0 shadow-lg md:shadow-sm relative overflow-hidden">
+          <div className="w-full md:w-64 shrink-0 bg-white rounded-xl border-2 border-b-[6px] border-botanical-border p-2 md:p-0 shadow-lg md:shadow-sm relative overflow-hidden">
             <SectionSidebar activeTab={activeTab} shopId={shopId} section={activeSection} userRole={userRole} />
           </div>
           
           {/* Main Content Area */}
-          <div className="flex-1 w-full bg-botanical-surface p-3 sm:p-4 md:p-8 rounded-xl border border-botanical-border shadow-lg min-w-0">
+          <div className="flex-1 w-full bg-botanical-surface p-3 sm:p-4 md:p-8 rounded-xl border-2 border-b-[6px] border-botanical-border shadow-lg min-w-0">
             {children}
           </div>
         </div>

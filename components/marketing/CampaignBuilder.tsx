@@ -95,14 +95,14 @@ export default function CampaignBuilder({ shopId }: { shopId: string }) {
       </div>
 
       {showCreate && (
-        <div className="bg-botanical-surface p-6 rounded-xl border border-botanical-border space-y-4">
+        <div className="bg-botanical-surface p-6 rounded-xl border-2 border-b-[6px] border-botanical-border space-y-4">
           <div>
             <label className="block text-[11px] text-botanical-muted mb-1 uppercase tracking-wider">Campaign Name</label>
             <input
               value={form.name}
               onChange={(e) => setForm(f => ({ ...f, name: e.target.value }))}
               placeholder="e.g. Summer Sale 20% Off"
-              className="w-full bg-botanical-surface border border-botanical-border rounded-md p-2.5 text-sm text-botanical-text focus:outline-none focus:border-brand-gold"
+              className="w-full bg-botanical-surface border-2 border-b-[6px] border-botanical-border rounded-md p-2.5 text-sm text-botanical-text focus:outline-none focus:border-brand-gold"
             />
           </div>
 
@@ -113,7 +113,7 @@ export default function CampaignBuilder({ shopId }: { shopId: string }) {
               onChange={(e) => setForm(f => ({ ...f, message: e.target.value }))}
               placeholder="Write your promotional message here..."
               rows={4}
-              className="w-full bg-botanical-surface border border-botanical-border rounded-md p-2.5 text-sm text-botanical-text focus:outline-none focus:border-brand-gold resize-y"
+              className="w-full bg-botanical-surface border-2 border-b-[6px] border-botanical-border rounded-md p-2.5 text-sm text-botanical-text focus:outline-none focus:border-brand-gold resize-y"
             />
           </div>
 
@@ -123,7 +123,7 @@ export default function CampaignBuilder({ shopId }: { shopId: string }) {
               <select
                 value={form.type}
                 onChange={(e) => setForm(f => ({ ...f, type: e.target.value }))}
-                className="w-full bg-botanical-surface border border-botanical-border rounded-md p-2.5 text-sm text-botanical-text focus:outline-none focus:border-brand-gold"
+                className="w-full bg-botanical-surface border-2 border-b-[6px] border-botanical-border rounded-md p-2.5 text-sm text-botanical-text focus:outline-none focus:border-brand-gold"
               >
                 <option value="PROMO">Promotion</option>
                 <option value="RE_ENGAGEMENT">Re-engagement</option>
@@ -137,7 +137,7 @@ export default function CampaignBuilder({ shopId }: { shopId: string }) {
               <select
                 value={form.channel}
                 onChange={(e) => setForm(f => ({ ...f, channel: e.target.value }))}
-                className="w-full bg-botanical-surface border border-botanical-border rounded-md p-2.5 text-sm text-botanical-text focus:outline-none focus:border-brand-gold"
+                className="w-full bg-botanical-surface border-2 border-b-[6px] border-botanical-border rounded-md p-2.5 text-sm text-botanical-text focus:outline-none focus:border-brand-gold"
               >
                 <option value="EMAIL">Email</option>
                 <option value="SMS">SMS</option>
@@ -150,7 +150,7 @@ export default function CampaignBuilder({ shopId }: { shopId: string }) {
               <select
                 value={form.targetSegment}
                 onChange={(e) => setForm(f => ({ ...f, targetSegment: e.target.value }))}
-                className="w-full bg-botanical-surface border border-botanical-border rounded-md p-2.5 text-sm text-botanical-text focus:outline-none focus:border-brand-gold"
+                className="w-full bg-botanical-surface border-2 border-b-[6px] border-botanical-border rounded-md p-2.5 text-sm text-botanical-text focus:outline-none focus:border-brand-gold"
               >
                 {Object.entries(segmentLabels).map(([key, label]) => (
                   <option key={key} value={key}>{label}</option>
@@ -176,7 +176,7 @@ export default function CampaignBuilder({ shopId }: { shopId: string }) {
       ) : (
         <div className="space-y-3">
           {campaigns.map((c: any) => (
-            <div key={c.id} className="bg-botanical-surface p-4 rounded-xl border border-botanical-border flex flex-col sm:flex-row sm:items-center gap-3">
+            <div key={c.id} className="bg-botanical-surface p-4 rounded-xl border-2 border-b-[6px] border-botanical-border flex flex-col sm:flex-row sm:items-center gap-3">
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2 mb-1">
                   <h4 className="font-semibold text-botanical-text truncate">{c.name}</h4>

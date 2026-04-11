@@ -140,7 +140,7 @@ export default function SectionSidebar({ activeTab, shopId, section, userRole }:
           showLeftIndicator ? 'opacity-100' : 'opacity-0'
         }`}
       >
-        <div className="w-6 h-6 bg-white shadow-sm border border-botanical-border rounded-full flex items-center justify-center animate-pulse">
+        <div className="w-6 h-6 bg-white shadow-sm border-2 border-b-[6px] border-botanical-border rounded-full flex items-center justify-center animate-pulse">
           <span className="text-botanical-text font-black text-lg leading-none -mt-0.5 mr-0.5">‹</span>
         </div>
       </div>
@@ -152,7 +152,7 @@ export default function SectionSidebar({ activeTab, shopId, section, userRole }:
           showRightIndicator ? 'opacity-100' : 'opacity-0'
         }`}
       >
-        <div className="w-6 h-6 bg-white shadow-sm border border-botanical-border rounded-full flex items-center justify-center animate-pulse">
+        <div className="w-6 h-6 bg-white shadow-sm border-2 border-b-[6px] border-botanical-border rounded-full flex items-center justify-center animate-pulse">
           <span className="text-botanical-text font-black text-lg leading-none -mt-0.5 ml-0.5">›</span>
         </div>
       </div>

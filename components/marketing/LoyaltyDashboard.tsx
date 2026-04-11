@@ -93,12 +93,12 @@ export default function LoyaltyDashboard({ shopId }: { shopId: string }) {
 
   if (loading) return <p className="text-botanical-muted text-center py-12">Loading loyalty program...</p>;
 
-  const inputClass = "w-full bg-botanical-surface border border-botanical-border rounded-md p-2.5 text-sm text-botanical-text focus:outline-none focus:border-brand-gold";
+  const inputClass = "w-full bg-botanical-surface border-2 border-b-[6px] border-botanical-border rounded-md p-2.5 text-sm text-botanical-text focus:outline-none focus:border-brand-gold";
 
   return (
     <div className="space-y-8">
       {/* Program Settings */}
-      <div className="bg-botanical-surface p-6 rounded-xl border border-botanical-border">
+      <div className="bg-botanical-surface p-6 rounded-xl border-2 border-b-[6px] border-botanical-border">
         <div className="flex justify-between items-center mb-6">
           <h3 className="text-lg font-bold text-botanical-text flex items-center gap-2">
             <span>⚙️</span> Loyalty Program Settings
@@ -160,7 +160,7 @@ export default function LoyaltyDashboard({ shopId }: { shopId: string }) {
       </div>
 
       {/* Tier System */}
-      <div className="bg-botanical-surface p-6 rounded-xl border border-botanical-border">
+      <div className="bg-botanical-surface p-6 rounded-xl border-2 border-b-[6px] border-botanical-border">
         <div className="flex justify-between items-center mb-4">
           <h3 className="text-lg font-bold text-botanical-text flex items-center gap-2">
             <span>🏅</span> Tier System
@@ -174,28 +174,28 @@ export default function LoyaltyDashboard({ shopId }: { shopId: string }) {
         {editingTiers ? (
           <div className="space-y-3">
             {tierForm.map((tier, idx) => (
-              <div key={idx} className="grid grid-cols-4 gap-3 bg-botanical-surface p-3 rounded-lg border border-botanical-border">
+              <div key={idx} className="grid grid-cols-4 gap-3 bg-botanical-surface p-3 rounded-lg border-2 border-b-[6px] border-botanical-border">
                 <div>
                   <label className="block text-[9px] text-botanical-muted mb-0.5 uppercase">Name</label>
                   <input value={tier.name} onChange={e => updateTier(idx, 'name', e.target.value)}
-                    className="w-full bg-botanical-surface border border-botanical-border rounded p-1.5 text-xs text-botanical-text" />
+                    className="w-full bg-botanical-surface border-2 border-b-[6px] border-botanical-border rounded p-1.5 text-xs text-botanical-text" />
                 </div>
                 <div>
                   <label className="block text-[9px] text-botanical-muted mb-0.5 uppercase">Min Lifetime Pts</label>
                   <input type="number" min="0" value={tier.minPoints}
                     onChange={e => updateTier(idx, 'minPoints', parseInt(e.target.value) || 0)}
-                    className="w-full bg-botanical-surface border border-botanical-border rounded p-1.5 text-xs text-botanical-text" />
+                    className="w-full bg-botanical-surface border-2 border-b-[6px] border-botanical-border rounded p-1.5 text-xs text-botanical-text" />
                 </div>
                 <div>
                   <label className="block text-[9px] text-botanical-muted mb-0.5 uppercase">Earn Multiplier</label>
                   <input type="number" step="0.05" min="1" value={tier.earnMultiplier}
                     onChange={e => updateTier(idx, 'earnMultiplier', parseFloat(e.target.value) || 1)}
-                    className="w-full bg-botanical-surface border border-botanical-border rounded p-1.5 text-xs text-botanical-text" />
+                    className="w-full bg-botanical-surface border-2 border-b-[6px] border-botanical-border rounded p-1.5 text-xs text-botanical-text" />
                 </div>
                 <div>
                   <label className="block text-[9px] text-botanical-muted mb-0.5 uppercase">Perks</label>
                   <input value={tier.perks} onChange={e => updateTier(idx, 'perks', e.target.value)}
-                    className="w-full bg-botanical-surface border border-botanical-border rounded p-1.5 text-xs text-botanical-text" />
+                    className="w-full bg-botanical-surface border-2 border-b-[6px] border-botanical-border rounded p-1.5 text-xs text-botanical-text" />
                 </div>
               </div>
             ))}
@@ -221,7 +221,7 @@ export default function LoyaltyDashboard({ shopId }: { shopId: string }) {
       </div>
 
       {/* Leaderboard */}
-      <div className="bg-botanical-surface p-6 rounded-xl border border-botanical-border">
+      <div className="bg-botanical-surface p-6 rounded-xl border-2 border-b-[6px] border-botanical-border">
         <h3 className="text-lg font-bold text-botanical-text flex items-center gap-2 mb-4">
           <span>🏆</span> Loyalty Leaderboard
         </h3>
@@ -233,7 +233,7 @@ export default function LoyaltyDashboard({ shopId }: { shopId: string }) {
         ) : (
           <div className="space-y-2 max-h-[400px] overflow-y-auto">
             {accounts.map((acc: any, idx: number) => (
-              <div key={acc.id} className="flex items-center gap-3 bg-botanical-surface p-3 rounded-lg border border-botanical-border">
+              <div key={acc.id} className="flex items-center gap-3 bg-botanical-surface p-3 rounded-lg border-2 border-b-[6px] border-botanical-border">
                 <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-black ${
                   idx === 0 ? 'bg-botanical-primary/20 text-yellow-400' :
                   idx === 1 ? 'bg-botanical-border/20 text-botanical-muted' :

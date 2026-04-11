@@ -64,7 +64,7 @@ export default function StaffAvailability({ defaultDate, defaultFrom, defaultTo,
   const showTimeFilters = defaultFrom !== undefined && defaultTo !== undefined;
 
   return (
-    <div className="mb-8 bg-white rounded-2xl border border-gray-200 shadow-xl overflow-hidden">
+    <div className="mb-8 bg-white rounded-2xl border-2 border-b-[6px] border-botanical-border shadow-xl overflow-hidden">
       {/* Gold accent */}
       <div className="h-1 bg-gradient-to-r from-botanical-primary via-botanical-primary/60 to-transparent" />
 
@@ -90,11 +90,11 @@ export default function StaffAvailability({ defaultDate, defaultFrom, defaultTo,
               </button>
             )}
             <button onClick={() => navigateDays(-1)}
-              className="w-9 h-9 flex items-center justify-center rounded-xl bg-white border border-gray-200 hover:border-botanical-primary/40 text-slate-600 hover:text-slate-900 transition-all duration-200 text-sm font-bold">
+              className="w-9 h-9 flex items-center justify-center rounded-xl bg-white border-2 border-b-[6px] border-botanical-border hover:border-botanical-primary/40 text-slate-600 hover:text-slate-900 transition-all duration-200 text-sm font-bold">
               ←
             </button>
             <button onClick={() => navigateDays(1)}
-              className="w-9 h-9 flex items-center justify-center rounded-xl bg-white border border-gray-200 hover:border-botanical-primary/40 text-slate-600 hover:text-slate-900 transition-all duration-200 text-sm font-bold">
+              className="w-9 h-9 flex items-center justify-center rounded-xl bg-white border-2 border-b-[6px] border-botanical-border hover:border-botanical-primary/40 text-slate-600 hover:text-slate-900 transition-all duration-200 text-sm font-bold">
               →
             </button>
           </div>
@@ -109,7 +109,7 @@ export default function StaffAvailability({ defaultDate, defaultFrom, defaultTo,
               value={defaultDate}
               onChange={handleDateChange}
               style={timeStyle}
-              className="w-full p-2.5 rounded-lg border border-gray-200 text-slate-900 text-sm focus:ring-2 focus:ring-botanical-primary focus:outline-none transition-all"
+              className="w-full p-2.5 rounded-lg border-2 border-b-[6px] border-botanical-border text-slate-900 text-sm focus:ring-2 focus:ring-botanical-primary focus:outline-none transition-all"
             />
           </div>
           {showTimeFilters && (
@@ -122,7 +122,7 @@ export default function StaffAvailability({ defaultDate, defaultFrom, defaultTo,
                   value={defaultFrom}
                   onChange={handleTimeChange}
                   style={timeStyle}
-                  className="w-full p-2.5 rounded-lg border border-gray-200 text-slate-900 text-sm focus:ring-2 focus:ring-botanical-primary focus:outline-none transition-all"
+                  className="w-full p-2.5 rounded-lg border-2 border-b-[6px] border-botanical-border text-slate-900 text-sm focus:ring-2 focus:ring-botanical-primary focus:outline-none transition-all"
                 />
               </div>
               <div>
@@ -133,7 +133,7 @@ export default function StaffAvailability({ defaultDate, defaultFrom, defaultTo,
                   value={defaultTo}
                   onChange={handleTimeChange}
                   style={timeStyle}
-                  className="w-full p-2.5 rounded-lg border border-gray-200 text-slate-900 text-sm focus:ring-2 focus:ring-botanical-primary focus:outline-none transition-all"
+                  className="w-full p-2.5 rounded-lg border-2 border-b-[6px] border-botanical-border text-slate-900 text-sm focus:ring-2 focus:ring-botanical-primary focus:outline-none transition-all"
                 />
               </div>
             </>

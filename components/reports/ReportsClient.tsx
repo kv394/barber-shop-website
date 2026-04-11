@@ -106,7 +106,7 @@ export default function ReportsClient({
   return (
     <div>
       {/* Floating Summary Bar */}
-      <div className="bg-botanical-surface backdrop-blur-xl shadow-2xl rounded-2xl border border-botanical-border mb-8 flex flex-col lg:flex-row divide-y lg:divide-y-0 lg:divide-x divide-white/10 relative z-20 transform sm:-translate-y-6 sm:-mx-2">
+      <div className="bg-botanical-surface backdrop-blur-xl shadow-2xl rounded-2xl border-2 border-b-[6px] border-botanical-border mb-8 flex flex-col lg:flex-row divide-y lg:divide-y-0 lg:divide-x divide-white/10 relative z-20 transform sm:-translate-y-6 sm:-mx-2">
         
         {/* Revenue */}
         <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-botanical-surface transition-all duration-300 min-w-0">
@@ -169,20 +169,20 @@ export default function ReportsClient({
       </div>
 
       {/* Date Filters */}
-      <div className="flex flex-col sm:flex-row gap-3 mb-6 p-4 bg-botanical-surface rounded-lg border border-botanical-border">
+      <div className="flex flex-col sm:flex-row gap-3 mb-6 p-4 bg-botanical-surface rounded-lg border-2 border-b-[6px] border-botanical-border">
         <div className="flex-1">
           <label className="block text-[10px] text-botanical-muted uppercase tracking-wider mb-1">From Date</label>
           <input type="date" value={dateFrom} onChange={e => setDateFrom(e.target.value)} style={inputStyle}
-            className="w-full border border-botanical-border rounded p-2 text-sm focus:outline-none focus:border-brand-gold [&::-webkit-calendar-picker-indicator]:invert" />
+            className="w-full border-2 border-b-[6px] border-botanical-border rounded p-2 text-sm focus:outline-none focus:border-brand-gold [&::-webkit-calendar-picker-indicator]:invert" />
         </div>
         <div className="flex-1">
           <label className="block text-[10px] text-botanical-muted uppercase tracking-wider mb-1">To Date</label>
           <input type="date" value={dateTo} onChange={e => setDateTo(e.target.value)} style={inputStyle}
-            className="w-full border border-botanical-border rounded p-2 text-sm focus:outline-none focus:border-brand-gold [&::-webkit-calendar-picker-indicator]:invert" />
+            className="w-full border-2 border-b-[6px] border-botanical-border rounded p-2 text-sm focus:outline-none focus:border-brand-gold [&::-webkit-calendar-picker-indicator]:invert" />
         </div>
         {isFiltered && (
           <div className="flex items-end">
-            <button onClick={() => { setDateFrom(''); setDateTo(''); }} className="text-xs text-botanical-muted hover:text-botanical-text px-4 py-2 border border-botanical-border rounded">
+            <button onClick={() => { setDateFrom(''); setDateTo(''); }} className="text-xs text-botanical-muted hover:text-botanical-text px-4 py-2 border-2 border-b-[6px] border-botanical-border rounded">
               Clear Filters
             </button>
           </div>
@@ -214,7 +214,7 @@ export default function ReportsClient({
                   const paid = apt.totalAmount > 0 ? apt.totalAmount : apt.service.price;
                   const isRefunded = (apt.refundAmount || 0) > 0;
                   return (
-                    <div key={apt.id} className={`bg-botanical-surface p-3 rounded-lg border border-botanical-border ${isRefunded ? 'opacity-60' : ''}`}>
+                    <div key={apt.id} className={`bg-botanical-surface p-3 rounded-lg border-2 border-b-[6px] border-botanical-border ${isRefunded ? 'opacity-60' : ''}`}>
                       <div className="flex justify-between items-start mb-2">
                         <div className="min-w-0">
                           <p className="font-medium text-sm text-botanical-text truncate">{apt.user.name || apt.user.email}</p>
@@ -309,7 +309,7 @@ export default function ReportsClient({
           ) : byStaff.map(staff => {
             const pct = filteredRevenue > 0 ? (staff.revenue / filteredRevenue) * 100 : 0;
             return (
-              <div key={staff.name} className="bg-botanical-surface p-4 rounded-lg border border-botanical-border">
+              <div key={staff.name} className="bg-botanical-surface p-4 rounded-lg border-2 border-b-[6px] border-botanical-border">
                 <div className="flex justify-between items-center mb-2">
                   <div>
                     <h4 className="font-bold text-botanical-text">✂️ {staff.name}</h4>
@@ -337,7 +337,7 @@ export default function ReportsClient({
           ) : byService.map(svc => {
             const pct = filteredRevenue > 0 ? (svc.revenue / filteredRevenue) * 100 : 0;
             return (
-              <div key={svc.name} className="bg-botanical-surface p-4 rounded-lg border border-botanical-border">
+              <div key={svc.name} className="bg-botanical-surface p-4 rounded-lg border-2 border-b-[6px] border-botanical-border">
                 <div className="flex justify-between items-center mb-2">
                   <div>
                     <h4 className="font-bold text-botanical-accent">{svc.name}</h4>

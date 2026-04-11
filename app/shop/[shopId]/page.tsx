@@ -219,7 +219,7 @@ export default async function ShopDashboardPage({ params }: { params: Promise<{ 
             </Link>
           </div>
           {/* Quick Actions */}
-          <div className="flex-1 bg-botanical-bg/50 border border-botanical-border rounded-xl p-4 flex items-center justify-between">
+          <div className="flex-1 bg-botanical-bg/50 border-2 border-b-[6px] border-botanical-border rounded-xl p-4 flex items-center justify-between">
             <div>
               <p className="text-botanical-text font-semibold text-sm mb-0.5">👥 Team Management</p>
               <p className="text-xs text-botanical-muted">Onboard staff or set working hours</p>
@@ -290,7 +290,7 @@ export default async function ShopDashboardPage({ params }: { params: Promise<{ 
         <div className="mb-6 sm:mb-8">
           <h2 className="text-lg sm:text-xl font-bold text-botanical-text mb-4">📊 Today&apos;s Snapshot</h2>
           <div className="grid grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-4 mb-4 sm:mb-8">
-            <div className="bg-botanical-surface backdrop-blur-md shadow-[0_4px_30px_rgba(0,0,0,0.1)] rounded-2xl border border-botanical-border p-4 sm:p-6 relative overflow-hidden group hover:bg-botanical-border hover:shadow-[0_8px_30px_rgba(0,0,0,0.15)] hover:-translate-y-1 transition-all duration-300 min-w-0">
+            <div className="bg-botanical-surface backdrop-blur-md shadow-[0_4px_30px_rgba(0,0,0,0.1)] rounded-2xl border-2 border-b-[6px] border-botanical-border p-4 sm:p-6 relative overflow-hidden group hover:bg-botanical-border hover:shadow-[0_8px_30px_rgba(0,0,0,0.15)] hover:-translate-y-1 transition-all duration-300 min-w-0">
               <div className="absolute top-0 left-0 w-full h-1 bg-blue-500/80"></div>
               <div className="flex justify-between items-center mb-2 sm:mb-3">
                 <h3 className="text-botanical-muted text-[10px] sm:text-xs uppercase tracking-widest font-semibold truncate">Bookings</h3>
@@ -298,7 +298,7 @@ export default async function ShopDashboardPage({ params }: { params: Promise<{ 
               </div>
               <p className="text-xl sm:text-3xl font-black text-botanical-text break-words leading-tight">{todayStats.totalBookings}</p>
             </div>
-            <div className="bg-botanical-surface backdrop-blur-md shadow-[0_4px_30px_rgba(0,0,0,0.1)] rounded-2xl border border-botanical-border p-4 sm:p-6 relative overflow-hidden group hover:bg-botanical-border hover:shadow-[0_8px_30px_rgba(0,0,0,0.15)] hover:-translate-y-1 transition-all duration-300 min-w-0">
+            <div className="bg-botanical-surface backdrop-blur-md shadow-[0_4px_30px_rgba(0,0,0,0.1)] rounded-2xl border-2 border-b-[6px] border-botanical-border p-4 sm:p-6 relative overflow-hidden group hover:bg-botanical-border hover:shadow-[0_8px_30px_rgba(0,0,0,0.15)] hover:-translate-y-1 transition-all duration-300 min-w-0">
               <div className="absolute top-0 left-0 w-full h-1 bg-green-500/80"></div>
               <div className="flex justify-between items-center mb-2 sm:mb-3">
                 <h3 className="text-botanical-muted text-[10px] sm:text-xs uppercase tracking-widest font-semibold truncate">Revenue</h3>
@@ -306,7 +306,7 @@ export default async function ShopDashboardPage({ params }: { params: Promise<{ 
               </div>
               <p className="text-xl sm:text-3xl font-black text-botanical-text break-words leading-tight">${todayStats.revenue.toFixed(0)}</p>
             </div>
-            <div className="bg-botanical-surface backdrop-blur-md shadow-[0_4px_30px_rgba(0,0,0,0.1)] rounded-2xl border border-botanical-border p-4 sm:p-6 relative overflow-hidden group hover:bg-botanical-border hover:shadow-[0_8px_30px_rgba(0,0,0,0.15)] hover:-translate-y-1 transition-all duration-300 min-w-0">
+            <div className="bg-botanical-surface backdrop-blur-md shadow-[0_4px_30px_rgba(0,0,0,0.1)] rounded-2xl border-2 border-b-[6px] border-botanical-border p-4 sm:p-6 relative overflow-hidden group hover:bg-botanical-border hover:shadow-[0_8px_30px_rgba(0,0,0,0.15)] hover:-translate-y-1 transition-all duration-300 min-w-0">
               <div className="absolute top-0 left-0 w-full h-1 bg-amber-500/80"></div>
               <div className="flex justify-between items-center mb-2 sm:mb-3">
                 <h3 className="text-botanical-muted text-[10px] sm:text-xs uppercase tracking-widest font-semibold truncate">Tips</h3>
@@ -314,7 +314,7 @@ export default async function ShopDashboardPage({ params }: { params: Promise<{ 
               </div>
               <p className="text-xl sm:text-3xl font-black text-botanical-text break-words leading-tight">${todayStats.tips.toFixed(0)}</p>
             </div>
-            <div className="bg-botanical-surface backdrop-blur-md shadow-[0_4px_30px_rgba(0,0,0,0.1)] rounded-2xl border border-botanical-border p-4 sm:p-6 relative overflow-hidden group hover:bg-botanical-border hover:shadow-[0_8px_30px_rgba(0,0,0,0.15)] hover:-translate-y-1 transition-all duration-300 min-w-0">
+            <div className="bg-botanical-surface backdrop-blur-md shadow-[0_4px_30px_rgba(0,0,0,0.1)] rounded-2xl border-2 border-b-[6px] border-botanical-border p-4 sm:p-6 relative overflow-hidden group hover:bg-botanical-border hover:shadow-[0_8px_30px_rgba(0,0,0,0.15)] hover:-translate-y-1 transition-all duration-300 min-w-0">
               <div className="absolute top-0 left-0 w-full h-1 bg-purple-500/80"></div>
               <div className="flex justify-between items-center mb-2 sm:mb-3">
                 <h3 className="text-botanical-muted text-[10px] sm:text-xs uppercase tracking-widest font-semibold truncate">Completed</h3>
@@ -322,7 +322,7 @@ export default async function ShopDashboardPage({ params }: { params: Promise<{ 
               </div>
               <p className="text-xl sm:text-3xl font-black text-botanical-text break-words leading-tight">{todayStats.completedCount}</p>
             </div>
-            <div className="col-span-2 lg:col-span-1 bg-botanical-surface backdrop-blur-md shadow-[0_4px_30px_rgba(0,0,0,0.1)] rounded-2xl border border-botanical-border p-4 sm:p-6 relative overflow-hidden group hover:bg-botanical-border hover:shadow-[0_8px_30px_rgba(0,0,0,0.15)] hover:-translate-y-1 transition-all duration-300 min-w-0">
+            <div className="col-span-2 lg:col-span-1 bg-botanical-surface backdrop-blur-md shadow-[0_4px_30px_rgba(0,0,0,0.1)] rounded-2xl border-2 border-b-[6px] border-botanical-border p-4 sm:p-6 relative overflow-hidden group hover:bg-botanical-border hover:shadow-[0_8px_30px_rgba(0,0,0,0.15)] hover:-translate-y-1 transition-all duration-300 min-w-0">
               <div className="absolute top-0 left-0 w-full h-1 bg-cyan-500/80"></div>
               <div className="flex justify-between items-center mb-2 sm:mb-3">
                 <h3 className="text-botanical-muted text-[10px] sm:text-xs uppercase tracking-widest font-semibold truncate">Upcoming</h3>

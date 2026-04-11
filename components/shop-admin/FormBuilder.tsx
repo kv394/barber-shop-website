@@ -41,7 +41,7 @@ export default function FormBuilder({ shopId }: { shopId: string }) {
   if (loading) return <div className="animate-pulse text-botanical-muted py-4">Loading forms…</div>;
 
   return (
-    <div className="bg-botanical-surface border border-botanical-border rounded-xl p-6">
+    <div className="bg-botanical-surface border-2 border-b-[6px] border-botanical-border rounded-xl p-6">
       <h3 className="text-lg font-bold text-botanical-text mb-2">📝 Digital Intake Forms</h3>
       <p className="text-sm text-botanical-muted mb-6">
         Create waivers, consultation forms, and medical histories. Clients will be prompted to sign these before their appointment.
@@ -57,7 +57,7 @@ export default function FormBuilder({ shopId }: { shopId: string }) {
             value={name} 
             onChange={e => setName(e.target.value)} 
             placeholder="e.g. Laser Hair Removal Waiver" 
-            className="w-full bg-botanical-surface border border-botanical-border rounded px-3 py-2 text-botanical-text text-sm focus:outline-none focus:border-brand-gold" 
+            className="w-full bg-botanical-surface border-2 border-b-[6px] border-botanical-border rounded px-3 py-2 text-botanical-text text-sm focus:outline-none focus:border-brand-gold" 
             required 
           />
         </div>
@@ -68,7 +68,7 @@ export default function FormBuilder({ shopId }: { shopId: string }) {
             onChange={e => setContent(e.target.value)} 
             placeholder="Enter your form terms, or list questions separated by newlines." 
             rows={4}
-            className="w-full bg-botanical-surface border border-botanical-border rounded px-3 py-2 text-botanical-text text-sm focus:outline-none focus:border-brand-gold" 
+            className="w-full bg-botanical-surface border-2 border-b-[6px] border-botanical-border rounded px-3 py-2 text-botanical-text text-sm focus:outline-none focus:border-brand-gold" 
             required 
           />
         </div>
@@ -97,7 +97,7 @@ export default function FormBuilder({ shopId }: { shopId: string }) {
       ) : (
         <div className="space-y-3">
           {forms.map(f => (
-            <div key={f.id} className="p-4 bg-botanical-surface rounded-lg border border-botanical-border flex justify-between items-start gap-4">
+            <div key={f.id} className="p-4 bg-botanical-surface rounded-lg border-2 border-b-[6px] border-botanical-border flex justify-between items-start gap-4">
               <div>
                 <div className="flex items-center gap-2 mb-1">
                   <h5 className="text-botanical-text font-medium text-sm">{f.name}</h5>

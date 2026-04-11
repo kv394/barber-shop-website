@@ -27,7 +27,7 @@ export default function UsageAnalysisModal({ shopId, shopName, onClose }: UsageA
 
   return (
     <div className="fixed inset-0 bg-botanical-surface z-[100] flex items-center justify-center p-4 backdrop-blur-sm" onClick={onClose}>
-      <div className="bg-botanical-surface rounded-xl p-6 w-full max-w-2xl border border-botanical-border shadow-2xl relative" onClick={e => e.stopPropagation()}>
+      <div className="bg-botanical-surface rounded-xl p-6 w-full max-w-2xl border-2 border-b-[6px] border-botanical-border shadow-2xl relative" onClick={e => e.stopPropagation()}>
         <button 
           onClick={onClose} 
           className="absolute top-4 right-4 text-botanical-muted hover:text-botanical-text bg-botanical-surface rounded-full w-8 h-8 flex items-center justify-center"
@@ -58,7 +58,7 @@ export default function UsageAnalysisModal({ shopId, shopName, onClose }: UsageA
                 { label: 'Intake Forms', val: data.metrics.formSubmissionCount },
                 { label: 'Images', val: data.metrics.portfolioImageCount + data.metrics.clientHistoryImageCount },
               ].map(m => (
-                <div key={m.label} className="bg-botanical-surface p-3 rounded-lg border border-botanical-border text-center">
+                <div key={m.label} className="bg-botanical-surface p-3 rounded-lg border-2 border-b-[6px] border-botanical-border text-center">
                   <p className="text-xl font-bold text-botanical-text">{m.val}</p>
                   <p className="text-[10px] text-botanical-muted uppercase tracking-wider">{m.label}</p>
                 </div>
@@ -77,7 +77,7 @@ export default function UsageAnalysisModal({ shopId, shopName, onClose }: UsageA
                 </div>
               </div>
               
-              <div className="bg-botanical-surface p-4 rounded-lg mt-4 border border-botanical-border">
+              <div className="bg-botanical-surface p-4 rounded-lg mt-4 border-2 border-b-[6px] border-botanical-border">
                 <p className="text-sm text-botanical-muted leading-relaxed">
                   {data.analysis.strategyReasoning}
                 </p>

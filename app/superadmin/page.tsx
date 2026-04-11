@@ -50,7 +50,7 @@ export default async function SuperAdminDashboard() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
         {/* User Breakdown */}
-        <div className="bg-botanical-surface rounded-xl border border-botanical-border p-6">
+        <div className="bg-botanical-surface rounded-xl border-2 border-b-[6px] border-botanical-border p-6">
           <h2 className="text-lg font-bold text-botanical-text mb-4">👥 Users by Role</h2>
           <div className="space-y-3">
             {(['SUPER_ADMIN', 'SHOP_ADMIN', 'STAFF', 'CLIENT', 'ATTENDANCE_KIOSK'] as const).map(role => (
@@ -65,7 +65,7 @@ export default async function SuperAdminDashboard() {
         </div>
 
         {/* Recent Shops */}
-        <div className="bg-botanical-surface rounded-xl border border-botanical-border p-6">
+        <div className="bg-botanical-surface rounded-xl border-2 border-b-[6px] border-botanical-border p-6">
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-lg font-bold text-botanical-text">🏪 Recent Shops</h2>
             <Link href="/superadmin/shops" className="text-botanical-accent text-sm hover:underline">

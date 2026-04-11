@@ -213,7 +213,7 @@ export default function Home() {
           {userProfile?.role === 'SUPER_ADMIN' && (
             <div className="space-y-6">
               {/* Quick Actions */}
-              <div className="bg-botanical-surface p-6 sm:p-8 rounded-lg border border-botanical-border">
+              <div className="bg-botanical-surface p-6 sm:p-8 rounded-lg border-2 border-b-[6px] border-botanical-border">
                 <h2 className="text-xl sm:text-2xl font-serif text-botanical-text mb-2">Super Admin Control Panel</h2>
                 <p className="text-sm text-botanical-muted mb-6">Manage the entire platform from the dedicated dashboard.</p>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -230,7 +230,7 @@ export default function Home() {
               </div>
 
               {/* Quick Shop Create */}
-              <div className="bg-botanical-surface p-4 sm:p-6 md:p-8 rounded-lg border border-botanical-border">
+              <div className="bg-botanical-surface p-4 sm:p-6 md:p-8 rounded-lg border-2 border-b-[6px] border-botanical-border">
                 <h2 className="text-xl sm:text-2xl font-serif text-botanical-text mb-1">Quick Create Shop</h2>
                 <p className="text-xs sm:text-sm text-botanical-muted mb-4">Provision a new tenant workspace.</p>
 
@@ -249,7 +249,7 @@ export default function Home() {
                               value={newShopName} 
                               onChange={(e) => setNewShopName(e.target.value)} 
                               placeholder="e.g., Downtown Barbers" 
-                              className="w-full bg-botanical-surface border border-botanical-border rounded-md py-3 px-4 text-botanical-text placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-botanical-primary" 
+                              className="w-full bg-botanical-surface border-2 border-b-[6px] border-botanical-border rounded-md py-3 px-4 text-botanical-text placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-botanical-primary" 
                               required
                           />
                       </div>
@@ -260,7 +260,7 @@ export default function Home() {
                               value={kioskEmail} 
                               onChange={(e) => setKioskEmail(e.target.value)} 
                               placeholder="kiosk@example.com" 
-                              className="w-full bg-botanical-surface border border-botanical-border rounded-md py-3 px-4 text-botanical-text placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-botanical-primary" 
+                              className="w-full bg-botanical-surface border-2 border-b-[6px] border-botanical-border rounded-md py-3 px-4 text-botanical-text placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-botanical-primary" 
                               required
                           />
                       </div>
@@ -271,7 +271,7 @@ export default function Home() {
                               value={newShopAdminEmail} 
                               onChange={(e) => setNewShopAdminEmail(e.target.value)} 
                               placeholder="admin@shop.com" 
-                              className="w-full bg-botanical-surface border border-botanical-border rounded-md py-3 px-4 text-botanical-text placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-botanical-primary" 
+                              className="w-full bg-botanical-surface border-2 border-b-[6px] border-botanical-border rounded-md py-3 px-4 text-botanical-text placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-botanical-primary" 
                           />
                       </div>
                   </div>
@@ -292,7 +292,7 @@ export default function Home() {
                     {shops.slice(0, 5).map((shop) => {
                        const hasAdmin = (shop.users || []).some(u => u.role === 'SHOP_ADMIN');
                        return (
-                          <div key={shop.id} className="bg-botanical-surface p-4 sm:p-6 rounded-lg hover:bg-botanical-surface transition-colors border border-botanical-border shadow-md">
+                          <div key={shop.id} className="bg-botanical-surface p-4 sm:p-6 rounded-lg hover:bg-botanical-surface transition-colors border-2 border-b-[6px] border-botanical-border shadow-md">
                             <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3">
                               <div className="flex-grow min-w-0">
                                   <div className="flex items-center gap-2 sm:gap-4 flex-wrap">
@@ -320,7 +320,7 @@ export default function Home() {
           
           {/* CLIENT Fallback (if they don't have a shopId yet) */}
           {userProfile?.role === 'CLIENT' && !userProfile.shopId && (
-            <div className="bg-botanical-surface p-8 rounded-lg text-center border border-botanical-border">
+            <div className="bg-botanical-surface p-8 rounded-lg text-center border-2 border-b-[6px] border-botanical-border">
               <h2 className="text-2xl font-serif mb-4">Welcome back!</h2>
               <p className="text-botanical-muted mb-6">Browse available shops and book your appointments.</p>
               <div className="flex flex-col sm:flex-row gap-3 justify-center">
@@ -332,13 +332,13 @@ export default function Home() {
           )}
           
           {!userProfile && isSignedIn && (
-            <div className="bg-botanical-surface p-8 rounded-lg text-center border border-botanical-border">
+            <div className="bg-botanical-surface p-8 rounded-lg text-center border-2 border-b-[6px] border-botanical-border">
               <p className="text-botanical-muted">Your profile is being set up. Please refresh the page.</p>
             </div>
           )}
           
           {!isSignedIn && (
-            <div className="bg-botanical-surface p-8 rounded-lg text-center border border-botanical-border">
+            <div className="bg-botanical-surface p-8 rounded-lg text-center border-2 border-b-[6px] border-botanical-border">
               <p className="text-botanical-muted mb-6">Sign in to access your portal or browse available shops.</p>
               <div className="flex gap-4 justify-center">
                 <Link href="/shops" className="inline-block bg-botanical-surface text-botanical-text px-8 py-3 rounded-md font-semibold hover:bg-botanical-surface transition-colors">

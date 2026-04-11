@@ -37,7 +37,7 @@ export default function TimezoneSelector({
   }
 
   return (
-    <div className="mb-8 bg-botanical-bg/70 border border-botanical-border rounded-xl p-6">
+    <div className="mb-8 bg-botanical-bg/70 border-2 border-b-[6px] border-botanical-border rounded-xl p-6">
       <div className="flex items-center gap-3 mb-4">
         <span className="text-2xl">🌐</span>
         <div>

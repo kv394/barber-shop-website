@@ -149,7 +149,7 @@ export default function ReferralsPage() {
               {data.referrals.map(ref => {
                 const style = STATUS_STYLES[ref.status] || STATUS_STYLES.PENDING;
                 return (
-                  <div key={ref.id} className="bg-botanical-surface border border-botanical-border rounded-xl p-4 hover:border-botanical-border transition-colors">
+                  <div key={ref.id} className="bg-botanical-surface border-2 border-b-[6px] border-botanical-border rounded-xl p-4 hover:border-botanical-border transition-colors">
                     <div className="flex items-center justify-between">
                       <div>
                         <p className="font-semibold text-botanical-text text-sm">{ref.refereeName}</p>

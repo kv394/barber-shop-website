@@ -47,7 +47,7 @@ export default function BusinessHoursEditor({ shopId }: { shopId: string }) {
   if (loading) return <div className="animate-pulse text-botanical-muted py-4">Loading hours…</div>;
 
   return (
-    <div className="bg-botanical-surface border border-botanical-border rounded-xl p-6">
+    <div className="bg-botanical-surface border-2 border-b-[6px] border-botanical-border rounded-xl p-6">
       <h3 className="text-lg font-bold text-botanical-text mb-1">🕐 Business Hours</h3>
       <p className="text-botanical-muted text-sm mb-5">Set your shop's open and close times per day. Toggle a day off to mark it as closed.</p>
       {msg && <div className="mb-4 p-3 bg-green-900/30 border border-green-500/30 text-green-300 rounded-lg text-sm">{msg}</div>}
@@ -64,12 +64,12 @@ export default function BusinessHoursEditor({ shopId }: { shopId: string }) {
               {open && dh ? (
                 <>
                   <select value={dh.open} onChange={e => setField(day, 'open', e.target.value)}
-                    className="bg-botanical-surface border border-botanical-border rounded text-botanical-text text-sm px-2 py-1.5 focus:outline-none focus:border-brand-gold">
+                    className="bg-botanical-surface border-2 border-b-[6px] border-botanical-border rounded text-botanical-text text-sm px-2 py-1.5 focus:outline-none focus:border-brand-gold">
                     {TIMES.map(t => <option key={t} value={t}>{t}</option>)}
                   </select>
                   <span className="text-botanical-muted text-sm">to</span>
                   <select value={dh.close} onChange={e => setField(day, 'close', e.target.value)}
-                    className="bg-botanical-surface border border-botanical-border rounded text-botanical-text text-sm px-2 py-1.5 focus:outline-none focus:border-brand-gold">
+                    className="bg-botanical-surface border-2 border-b-[6px] border-botanical-border rounded text-botanical-text text-sm px-2 py-1.5 focus:outline-none focus:border-brand-gold">
                     {TIMES.filter(t => t > dh.open).map(t => <option key={t} value={t}>{t}</option>)}
                   </select>
                 </>

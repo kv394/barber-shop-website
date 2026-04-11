@@ -274,7 +274,7 @@ export default async function TeamDashboardPage({ params, searchParams }: { para
   const selectedDate = resolvedSearchParams.date || new Date().toISOString().split('T')[0];
   const pageData = await getPageData(shopId, userId, selectedDate);
 
-  if (!pageData) return <div className="p-8 text-botanical-text">Access Denied.</div>;
+  if (!pageData) return <div className="p-8 text-slate-900">Access Denied.</div>;
 
   const { shop, shopSlug, userRole, staff, kioskUser } = pageData;
 
@@ -284,16 +284,16 @@ export default async function TeamDashboardPage({ params, searchParams }: { para
     <ShopAdminLayout shopName={shop.name} shopSlug={shopSlug} pageTitle={userRole === 'SUPER_ADMIN' ? 'Assign Shop Admin & Kiosk' : 'Team & Availability'} shopId={shopId} userRole={userRole} activeTab="team">
 
       {kioskUser && (
-         <div className="bg-blue-900/20 border border-blue-500/30 p-5 rounded-2xl shadow-lg mb-8">
-             <h3 className="text-blue-400 font-bold mb-2 flex items-center gap-2"><span>📱</span> Tablet Kiosk Setup</h3>
-             <p className="text-sm text-botanical-muted mb-4">To set up the front desk attendance tablet, sign up for a new account on that device using this exact email:</p>
-             <div className="bg-botanical-surface p-3 rounded-lg text-center mb-3 border border-botanical-border"><code className="text-botanical-accent font-mono font-bold tracking-wider">{kioskUser.email}</code></div>
-             <p className="text-xs text-blue-300">Once an account is created with this email, that account will instantly inherit kiosk privileges for this shop.</p>
+         <div className="bg-blue-50 border border-blue-200 p-5 rounded-2xl shadow-lg mb-8">
+             <h3 className="text-blue-800 font-bold mb-2 flex items-center gap-2"><span>📱</span> Tablet Kiosk Setup</h3>
+             <p className="text-sm text-slate-500 mb-4">To set up the front desk attendance tablet, sign up for a new account on that device using this exact email:</p>
+             <div className="bg-white p-3 rounded-lg text-center mb-3 border-2 border-b-[6px] border-botanical-border"><code className="text-botanical-primary font-mono font-bold tracking-wider">{kioskUser.email}</code></div>
+             <p className="text-xs text-blue-700">Once an account is created with this email, that account will instantly inherit kiosk privileges for this shop.</p>
          </div>
       )}
 
       {/* ═══ Invite Section ═══ */}
-      <div className="mb-8 bg-white rounded-2xl border border-botanical-border shadow-xl overflow-hidden">
+      <div className="mb-8 bg-white rounded-2xl border-2 border-b-[6px] border-botanical-border shadow-xl overflow-hidden">
         <div className="h-1 bg-gradient-to-r from-botanical-primary via-botanical-primary/60 to-transparent" />
         <div className="p-6">
           <div className="flex items-center gap-3 mb-5">
@@ -309,12 +309,12 @@ export default async function TeamDashboardPage({ params, searchParams }: { para
             <div className="md:col-span-6">
               <label className="block text-[10px] text-slate-600 mb-1 font-semibold uppercase tracking-wider">📧 Email</label>
               <input type="email" name="email" required placeholder="team@example.com"
-                className="w-full p-2.5 rounded-lg border border-gray-200 bg-white text-slate-900 text-sm placeholder-gray-400 focus:ring-2 focus:ring-botanical-primary focus:outline-none transition-all" />
+                className="w-full p-2.5 rounded-lg border-2 border-b-[6px] border-botanical-border bg-white text-slate-900 text-sm placeholder-gray-400 focus:ring-2 focus:ring-botanical-primary focus:outline-none transition-all" />
             </div>
             <div className="md:col-span-3">
               <label className="block text-[10px] text-slate-600 mb-1 font-semibold uppercase tracking-wider">👤 Role</label>
               <select name="role" defaultValue={userRole === 'SUPER_ADMIN' ? 'SHOP_ADMIN' : 'STAFF'}
-                className="w-full p-2.5 rounded-lg border border-gray-200 bg-white text-slate-900 text-sm focus:ring-2 focus:ring-botanical-primary focus:outline-none transition-all">
+                className="w-full p-2.5 rounded-lg border-2 border-b-[6px] border-botanical-border bg-white text-slate-900 text-sm focus:ring-2 focus:ring-botanical-primary focus:outline-none transition-all">
                 {userRole === 'SHOP_ADMIN' && <option value="STAFF">Staff</option>}
                 {userRole === 'SUPER_ADMIN' && (
                   <>
@@ -344,29 +344,29 @@ export default async function TeamDashboardPage({ params, searchParams }: { para
       {userRole === 'SUPER_ADMIN' ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {staff.map((staffMember: any) => (
-            <div key={staffMember.id} className="bg-botanical-bg/70 border border-botanical-border rounded-2xl p-5 flex flex-col shadow-lg">
+            <div key={staffMember.id} className="bg-white border-2 border-b-[6px] border-botanical-border rounded-2xl p-5 flex flex-col shadow-lg">
               <div className="flex justify-between items-start mb-4">
                 <div>
-                  <h2 className="text-xl font-bold text-botanical-text mb-1 flex items-center gap-2">
+                  <h2 className="text-xl font-bold text-slate-900 mb-1 flex items-center gap-2">
                     {staffMember.name || staffMember.email.split('@')[0]}
-                    <span className={`text-[9px] px-1.5 py-0.5 rounded uppercase tracking-wider font-bold ${staffMember.role === 'SHOP_ADMIN' ? 'bg-botanical-primary/20 text-botanical-accent' : 'bg-blue-500/20 text-blue-400'}`}>
+                    <span className={`text-[9px] px-1.5 py-0.5 rounded uppercase tracking-wider font-bold ${staffMember.role === 'SHOP_ADMIN' ? 'bg-botanical-primary/10 text-botanical-primary border border-botanical-primary/20' : 'bg-blue-50 text-blue-700 border border-blue-200'}`}>
                       {staffMember.role.replace('_', ' ')}
                     </span>
                   </h2>
-                  <p className="text-xs text-botanical-muted">{staffMember.email}</p>
+                  <p className="text-xs text-slate-500">{staffMember.email}</p>
                 </div>
               </div>
               <form action={removeUser} className="mt-auto">
                 <input type="hidden" name="userId" value={staffMember.id} />
                 <input type="hidden" name="shopId" value={shop.id} />
-                <button type="submit" className="w-full text-xs text-red-400 bg-red-500/10 hover:bg-red-500/20 py-2 rounded-lg transition-colors border border-red-500/20">
+                <button type="submit" className="w-full text-xs text-red-700 bg-red-50 hover:bg-red-100 hover:text-red-800 py-2 rounded-lg transition-colors border border-red-200">
                   Remove from Shop
                 </button>
               </form>
             </div>
           ))}
           {staff.length === 0 && (
-            <p className="text-botanical-muted italic">No assigned admins or kiosks.</p>
+            <p className="text-slate-500 italic">No assigned admins or kiosks.</p>
           )}
         </div>
       ) : (

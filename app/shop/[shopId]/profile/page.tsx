@@ -39,7 +39,7 @@ export default async function ProfilePage({ params }: { params: Promise<{ shopId
       <div className="max-w-2xl mx-auto space-y-6">
         
         {/* Profile Header */}
-        <div className="bg-botanical-bg/80 backdrop-blur-xl border border-botanical-border rounded-2xl p-6 flex items-center gap-6 shadow-lg">
+        <div className="bg-botanical-bg/80 backdrop-blur-xl border-2 border-b-[6px] border-botanical-border rounded-2xl p-6 flex items-center gap-6 shadow-lg">
           <div className="w-20 h-20 rounded-full bg-botanical-primary/20 flex items-center justify-center text-4xl border-2 border-brand-gold/50 shadow-inner overflow-hidden shrink-0">
             {dbUser.name ? dbUser.name.charAt(0).toUpperCase() : '👤'}
           </div>
@@ -54,18 +54,18 @@ export default async function ProfilePage({ params }: { params: Promise<{ shopId
 
         {/* Stats */}
         <div className="grid grid-cols-2 gap-4">
-          <div className="bg-botanical-bg/80 backdrop-blur-xl border border-botanical-border rounded-2xl p-5 shadow-lg flex flex-col items-center justify-center">
+          <div className="bg-botanical-bg/80 backdrop-blur-xl border-2 border-b-[6px] border-botanical-border rounded-2xl p-5 shadow-lg flex flex-col items-center justify-center">
             <span className="text-3xl font-black text-botanical-text mb-1">{totalAppointments}</span>
             <span className="text-xs text-botanical-muted uppercase tracking-widest font-semibold">Total Bookings</span>
           </div>
-          <div className="bg-botanical-bg/80 backdrop-blur-xl border border-botanical-border rounded-2xl p-5 shadow-lg flex flex-col items-center justify-center">
+          <div className="bg-botanical-bg/80 backdrop-blur-xl border-2 border-b-[6px] border-botanical-border rounded-2xl p-5 shadow-lg flex flex-col items-center justify-center">
             <span className="text-3xl font-black text-botanical-accent mb-1">{completedAppointments}</span>
             <span className="text-xs text-botanical-muted uppercase tracking-widest font-semibold">Completed</span>
           </div>
         </div>
 
         {/* Menu Links */}
-        <div className="bg-botanical-bg/80 backdrop-blur-xl border border-botanical-border rounded-2xl shadow-lg overflow-hidden divide-y divide-white/5">
+        <div className="bg-botanical-bg/80 backdrop-blur-xl border-2 border-b-[6px] border-botanical-border rounded-2xl shadow-lg overflow-hidden divide-y divide-white/5">
           <Link href={`/shop/${shopId}/waitlist`} className="flex items-center justify-between p-5 hover:bg-botanical-surface transition-colors active:bg-botanical-border">
             <div className="flex items-center gap-4">
               <span className="text-xl bg-blue-500/20 text-blue-400 w-10 h-10 rounded-full flex items-center justify-center">📋</span>

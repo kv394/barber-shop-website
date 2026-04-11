@@ -73,7 +73,7 @@ export default function SuperAdminTiersPage() {
 
       <div className="space-y-6">
         {tiers.map((tier, index) => (
-          <div key={tier.id} className="bg-botanical-surface p-6 rounded-xl border border-botanical-border">
+          <div key={tier.id} className="bg-botanical-surface p-6 rounded-xl border-2 border-b-[6px] border-botanical-border">
             <div className="flex gap-4 items-center mb-4 pb-4 border-b border-botanical-border">
               <input
                 type="text"
@@ -88,7 +88,7 @@ export default function SuperAdminTiersPage() {
                   type="number"
                   value={tier.baseFeeUSD}
                   onChange={e => handleUpdate(index, 'baseFeeUSD', e.target.value)}
-                  className="bg-botanical-surface border border-botanical-border rounded p-1 w-20 text-botanical-text font-mono text-center outline-none focus:border-brand-gold"
+                  className="bg-botanical-surface border-2 border-b-[6px] border-botanical-border rounded p-1 w-20 text-botanical-text font-mono text-center outline-none focus:border-brand-gold"
                 />
                 <span className="text-botanical-muted text-sm">/mo</span>
               </div>
@@ -101,7 +101,7 @@ export default function SuperAdminTiersPage() {
                   type="number"
                   value={tier.maxAppointments}
                   onChange={e => handleUpdate(index, 'maxAppointments', e.target.value)}
-                  className="w-full bg-botanical-surface border border-botanical-border rounded p-2 text-botanical-text text-sm outline-none focus:border-brand-gold"
+                  className="w-full bg-botanical-surface border-2 border-b-[6px] border-botanical-border rounded p-2 text-botanical-text text-sm outline-none focus:border-brand-gold"
                 />
               </div>
               <div>
@@ -110,7 +110,7 @@ export default function SuperAdminTiersPage() {
                   type="number"
                   value={tier.maxUsers}
                   onChange={e => handleUpdate(index, 'maxUsers', e.target.value)}
-                  className="w-full bg-botanical-surface border border-botanical-border rounded p-2 text-botanical-text text-sm outline-none focus:border-brand-gold"
+                  className="w-full bg-botanical-surface border-2 border-b-[6px] border-botanical-border rounded p-2 text-botanical-text text-sm outline-none focus:border-brand-gold"
                 />
               </div>
               <div>
@@ -119,7 +119,7 @@ export default function SuperAdminTiersPage() {
                   type="number"
                   value={tier.maxFormSubmissions}
                   onChange={e => handleUpdate(index, 'maxFormSubmissions', e.target.value)}
-                  className="w-full bg-botanical-surface border border-botanical-border rounded p-2 text-botanical-text text-sm outline-none focus:border-brand-gold"
+                  className="w-full bg-botanical-surface border-2 border-b-[6px] border-botanical-border rounded p-2 text-botanical-text text-sm outline-none focus:border-brand-gold"
                 />
               </div>
               <div>
@@ -128,7 +128,7 @@ export default function SuperAdminTiersPage() {
                   type="number"
                   value={tier.storageLimitMB}
                   onChange={e => handleUpdate(index, 'storageLimitMB', e.target.value)}
-                  className="w-full bg-botanical-surface border border-botanical-border rounded p-2 text-botanical-text text-sm outline-none focus:border-brand-gold"
+                  className="w-full bg-botanical-surface border-2 border-b-[6px] border-botanical-border rounded p-2 text-botanical-text text-sm outline-none focus:border-brand-gold"
                 />
               </div>
               <div>
@@ -139,7 +139,7 @@ export default function SuperAdminTiersPage() {
                     type="number"
                     value={tier.overageFeePer100MB}
                     onChange={e => handleUpdate(index, 'overageFeePer100MB', e.target.value)}
-                    className="w-full bg-botanical-surface border border-botanical-border rounded p-2 pl-6 text-botanical-text text-sm outline-none focus:border-brand-gold"
+                    className="w-full bg-botanical-surface border-2 border-b-[6px] border-botanical-border rounded p-2 pl-6 text-botanical-text text-sm outline-none focus:border-brand-gold"
                   />
                 </div>
               </div>
@@ -151,7 +151,7 @@ export default function SuperAdminTiersPage() {
                 type="text"
                 value={tier.description || ''}
                 onChange={e => handleUpdate(index, 'description', e.target.value)}
-                className="w-full bg-botanical-surface border border-botanical-border rounded p-2 text-botanical-muted text-sm outline-none focus:border-brand-gold"
+                className="w-full bg-botanical-surface border-2 border-b-[6px] border-botanical-border rounded p-2 text-botanical-muted text-sm outline-none focus:border-brand-gold"
               />
             </div>
           </div>

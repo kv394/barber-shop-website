@@ -140,7 +140,7 @@ export default function ProductBarcodeScannerWrapper({ shopId, products = [] }: 
 
                 {matchedProduct ? (
                   <div>
-                    <div className="bg-botanical-surface p-4 rounded-lg mb-4 border border-botanical-border">
+                    <div className="bg-botanical-surface p-4 rounded-lg mb-4 border-2 border-b-[6px] border-botanical-border">
                       <h4 className="font-semibold text-botanical-text">{matchedProduct.name}</h4>
                       <p className="text-botanical-muted text-sm mt-1">Stock: <span className="font-mono text-botanical-text text-lg ml-1">{matchedProduct.inventoryCount}</span></p>
                     </div>
@@ -160,12 +160,12 @@ export default function ProductBarcodeScannerWrapper({ shopId, products = [] }: 
                     </button>
                   </div>
                 ) : (
-                  <div className="bg-botanical-surface border border-botanical-border p-4 rounded-lg">
+                  <div className="bg-botanical-surface border-2 border-b-[6px] border-botanical-border p-4 rounded-lg">
                     <p className="text-amber-400 font-semibold mb-1">Product not recognized.</p>
                     <p className="text-xs text-botanical-muted mb-4">Map this barcode to a product:</p>
                     {unmatchedProducts.length > 0 ? (
                       <div className="space-y-3">
-                        <select className="w-full bg-botanical-surface border border-botanical-border rounded p-2.5 text-sm text-botanical-text focus:ring-1 focus:ring-botanical-primary"
+                        <select className="w-full bg-botanical-surface border-2 border-b-[6px] border-botanical-border rounded p-2.5 text-sm text-botanical-text focus:ring-1 focus:ring-botanical-primary"
                           value={selectedProductToAssign} onChange={(e) => setSelectedProductToAssign(e.target.value)}>
                           <option value="">-- Select Product --</option>
                           {unmatchedProducts.map(s => (

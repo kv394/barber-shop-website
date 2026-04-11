@@ -94,7 +94,7 @@ export default async function SignInPage({
 
   return (
     <div className="flex min-h-[80vh] items-center justify-center p-4">
-      <div className="w-full max-w-md bg-botanical-surface border border-botanical-border rounded-2xl shadow-2xl p-8 mt-12 mb-12">
+      <div className="w-full max-w-md bg-botanical-surface border-2 border-b-[6px] border-botanical-border rounded-2xl shadow-2xl p-8 mt-12 mb-12">
         <div className="text-center mb-8">
           <h1 className="font-serif text-3xl font-bold text-botanical-text mb-2">Welcome Back</h1>
           <p className="text-botanical-muted">Sign in to manage your appointments</p>
@@ -106,11 +106,11 @@ export default async function SignInPage({
         <form action={signInAction} className="space-y-5">
           <div>
             <label className="block text-sm font-medium text-botanical-muted mb-1.5">Email Address</label>
-            <input name="email" type="email" required placeholder="you@example.com" className="w-full bg-botanical-surface border border-botanical-border rounded-lg p-3 text-botanical-text focus:ring-2 focus:ring-botanical-primary focus:border-transparent outline-none" />
+            <input name="email" type="email" required placeholder="you@example.com" className="w-full bg-botanical-surface border-2 border-b-[6px] border-botanical-border rounded-lg p-3 text-botanical-text focus:ring-2 focus:ring-botanical-primary focus:border-transparent outline-none" />
           </div>
           <div>
             <label className="block text-sm font-medium text-botanical-muted mb-1.5">Password</label>
-            <input name="password" type="password" required placeholder="••••••••" className="w-full bg-botanical-surface border border-botanical-border rounded-lg p-3 text-botanical-text focus:ring-2 focus:ring-botanical-primary focus:border-transparent outline-none" />
+            <input name="password" type="password" required placeholder="••••••••" className="w-full bg-botanical-surface border-2 border-b-[6px] border-botanical-border rounded-lg p-3 text-botanical-text focus:ring-2 focus:ring-botanical-primary focus:border-transparent outline-none" />
             <Link href="/recover-password" className="mt-2 block text-right text-sm text-botanical-accent hover:underline">
               Forgot password?
             </Link>

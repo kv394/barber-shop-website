@@ -40,7 +40,7 @@ export default function NotificationSettingsForm({ shopId }: { shopId: string })
   );
 
   return (
-    <div className="bg-botanical-surface border border-botanical-border rounded-xl p-6 space-y-4">
+    <div className="bg-botanical-surface border-2 border-b-[6px] border-botanical-border rounded-xl p-6 space-y-4">
       <h3 className="text-lg font-bold text-botanical-text">🔔 Notification Settings</h3>
       <p className="text-botanical-muted text-sm">Configure automated messages sent to clients and staff.</p>
       {msg && <div className="p-3 bg-green-900/30 border border-green-500/30 text-green-300 rounded-lg text-sm">{msg}</div>}
@@ -63,7 +63,7 @@ export default function NotificationSettingsForm({ shopId }: { shopId: string })
           <div className="ml-4 flex items-center gap-2">
             <span className="text-sm text-botanical-muted">Send</span>
           <input type="number" min={1} max={48} value={settings.reviewRequestDelayH} onChange={e => updateSetting('reviewRequestDelayH', +e.target.value)}
-              className="w-16 bg-botanical-surface border border-botanical-border rounded px-2 py-1 text-botanical-text text-sm focus:outline-none" />
+              className="w-16 bg-botanical-surface border-2 border-b-[6px] border-botanical-border rounded px-2 py-1 text-botanical-text text-sm focus:outline-none" />
             <span className="text-sm text-botanical-muted">hours after appointment</span>
           </div>
         )}
@@ -83,7 +83,7 @@ export default function NotificationSettingsForm({ shopId }: { shopId: string })
         <div>
           <label className="text-sm text-botanical-muted block mb-1">Default Channel</label>
         <select value={settings.channel} onChange={e => updateSetting('channel', e.target.value)}
-            className="w-full md:w-48 bg-botanical-surface border border-botanical-border rounded px-3 py-2 text-botanical-text text-sm focus:outline-none">
+            className="w-full md:w-48 bg-botanical-surface border-2 border-b-[6px] border-botanical-border rounded px-3 py-2 text-botanical-text text-sm focus:outline-none">
             <option value="EMAIL">Email Only</option>
             <option value="SMS">SMS Only</option>
             <option value="BOTH">Email + SMS</option>
@@ -93,12 +93,12 @@ export default function NotificationSettingsForm({ shopId }: { shopId: string })
           <div>
             <label className="text-sm text-botanical-muted block mb-1">Admin Alert Email</label>
           <input type="email" value={settings.adminEmail} onChange={e => updateSetting('adminEmail', e.target.value)} placeholder="admin@yourshop.com"
-              className="w-full bg-botanical-surface border border-botanical-border rounded px-3 py-2 text-botanical-text text-sm placeholder-gray-600 focus:outline-none focus:border-brand-gold" />
+              className="w-full bg-botanical-surface border-2 border-b-[6px] border-botanical-border rounded px-3 py-2 text-botanical-text text-sm placeholder-gray-600 focus:outline-none focus:border-brand-gold" />
           </div>
           <div>
             <label className="text-sm text-botanical-muted block mb-1">Admin Alert Phone (SMS)</label>
           <input type="tel" value={settings.adminPhone} onChange={e => updateSetting('adminPhone', e.target.value)} placeholder="+1 (404) 555-0100"
-              className="w-full bg-botanical-surface border border-botanical-border rounded px-3 py-2 text-botanical-text text-sm placeholder-gray-600 focus:outline-none focus:border-brand-gold" />
+              className="w-full bg-botanical-surface border-2 border-b-[6px] border-botanical-border rounded px-3 py-2 text-botanical-text text-sm placeholder-gray-600 focus:outline-none focus:border-brand-gold" />
           </div>
         </div>
       </div>

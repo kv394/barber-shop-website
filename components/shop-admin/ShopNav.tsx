@@ -22,23 +22,25 @@ export function ShopNav({ shopId, userRole, activeTab }: { shopId: string, userR
   // Main tab: active if exact match OR if activeTab is in the group
   const mainTabClass = (tabName: string, groupTabs?: string[]) => {
     const isActive = activeTab === tabName || (groupTabs && groupTabs.includes(activeTab));
-    return isActive
-      ? "px-5 py-2.5 text-sm sm:text-base text-whitebg-botanical-primary whitespace-nowrap font-black rounded-xl shadow-[inset_0_4px_8px_rgba(0,0,0,0.4)] transform translate-y-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-botanical-primary"
-      : "px-5 py-2.5 text-sm sm:text-base text-botanical-muted bg-botanical-surface hover:text-botanical-text hover:bg-botanical-surface transition-all duration-150 whitespace-nowrap font-bold rounded-xl border-b-[4px] border-slate-950 hover:border-b-[6px] hover:-translate-y-0.5 active:border-b-[0px] active:translate-y-1 active:shadow-[inset_0_4px_8px_rgba(0,0,0,0.4)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-400";
+    return `px-6 py-3.5 text-sm font-bold whitespace-nowrap transition-colors border-r border-botanical-border last:border-r-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-botanical-primary relative flex items-center justify-center ${
+      isActive 
+        ? "bg-botanical-primary/5 text-botanical-primary shadow-[inset_0_-3px_0_0_#3A5A40]" 
+        : "bg-transparent text-botanical-muted hover:bg-black/5 hover:text-botanical-text"
+    }`;
   };
 
   // ── SUPER_ADMIN: only back link + team assignment ──
   if (isSuperAdmin) {
     return (
       <div className="mb-6 sm:mb-8">
-        <div className="flex gap-1 sm:gap-4 border-b border-botanical-border pb-3 sm:pb-4 overflow-x-auto scrollbar-none -mx-3 px-3 sm:mx-0 sm:px-0">
-          <Link href="/superadmin" className="px-4 py-2 text-botanical-muted hover:text-botanical-text transition whitespace-nowrap">
+        <nav className="inline-flex overflow-x-auto scrollbar-none bg-white rounded-2xl border-2 border-b-[6px] border-botanical-border shadow-sm max-w-full">
+          <Link href="/superadmin" className="px-6 py-3.5 text-sm font-bold text-botanical-muted hover:text-botanical-text hover:bg-black/5 transition-colors whitespace-nowrap border-r border-botanical-border flex items-center justify-center">
             ← Super Admin
           </Link>
           <Link href={`/shop/${shopId}/settings/team`} className={mainTabClass('team')}>
             👥 Assign Team
           </Link>
-        </div>
+        </nav>
       </div>
     );
   }
@@ -48,7 +50,7 @@ export function ShopNav({ shopId, userRole, activeTab }: { shopId: string, userR
     <>
       {/* Desktop/Tablet Navigation */}
       <div className={`mb-6 sm:mb-8 hidden sm:block`}>
-        <div className="flex gap-1 sm:gap-4 border-b border-botanical-border pb-3 sm:pb-4 overflow-x-auto scrollbar-none -mx-3 px-3 sm:mx-0 sm:px-0">
+        <nav className="inline-flex overflow-x-auto scrollbar-none bg-white rounded-2xl border-2 border-b-[6px] border-botanical-border shadow-sm max-w-full">
           {(isShopAdmin || isStaff) && (
             <>
               <Link href={`/shop/${shopId}`} aria-current={activeTab === 'dashboard' ? 'page' : undefined} className={mainTabClass('dashboard')}>
@@ -96,49 +98,49 @@ export function ShopNav({ shopId, userRole, activeTab }: { shopId: string, userR
               </Link>
             </>
           )}
-        </div>
+        </nav>
       </div>
 
       {/* ── Mobile App Bottom Navigation ── */}
       <div className="sm:hidden fixed bottom-0 left-0 right-0 bg-botanical-surface backdrop-blur-xl border-t border-botanical-border z-[100] pb-safe shadow-[0_-4px_25px_-5px_rgba(0,0,0,0.1)]">
         <nav aria-label="Mobile Bottom Navigation" className="flex justify-around items-center h-20 px-2 pb-2 pt-1">
-          <Link href={`/shop/${shopId}`} aria-current={activeTab === 'dashboard' ? 'page' : undefined} className={`flex flex-col items-center justify-center w-full h-full mx-1 rounded-2xl space-y-1 ${activeTab === 'dashboard' ? 'text-botanical-text bg-white shadow-[0_4px_0_0_#cbd5e1] border border-botanical-border transform -translate-y-1' : 'text-botanical-muted hover:text-slate-700 hover:bg-gray-50 transition-colors'}`}>
+          <Link href={`/shop/${shopId}`} aria-current={activeTab === 'dashboard' ? 'page' : undefined} className={`flex flex-col items-center justify-center w-full h-full mx-1 rounded-2xl space-y-1 ${activeTab === 'dashboard' ? 'text-botanical-text bg-white shadow-[0_4px_0_0_#cbd5e1] border-2 border-b-[6px] border-botanical-border transform -translate-y-1' : 'text-botanical-muted hover:text-slate-700 hover:bg-gray-50 transition-colors'}`}>
             <span className="text-3xl" aria-hidden="true">🏠</span>
             <span className="text-xs sm:text-sm font-bold tracking-wide">Home</span>
           </Link>
-          <Link href={`/shop/${shopId}/bookings`} aria-current={activeTab === 'bookings' ? 'page' : undefined} className={`flex flex-col items-center justify-center w-full h-full mx-1 rounded-2xl space-y-1 ${activeTab === 'bookings' ? 'text-botanical-text bg-white shadow-[0_4px_0_0_#cbd5e1] border border-botanical-border transform -translate-y-1' : 'text-botanical-muted hover:text-slate-700 hover:bg-gray-50 transition-colors'}`}>
+          <Link href={`/shop/${shopId}/bookings`} aria-current={activeTab === 'bookings' ? 'page' : undefined} className={`flex flex-col items-center justify-center w-full h-full mx-1 rounded-2xl space-y-1 ${activeTab === 'bookings' ? 'text-botanical-text bg-white shadow-[0_4px_0_0_#cbd5e1] border-2 border-b-[6px] border-botanical-border transform -translate-y-1' : 'text-botanical-muted hover:text-slate-700 hover:bg-gray-50 transition-colors'}`}>
             <span className="text-3xl" aria-hidden="true">📅</span>
             <span className="text-xs sm:text-sm font-bold tracking-wide">Bookings</span>
           </Link>
           {isStaff ? (
-            <Link href={`/shop/${shopId}/staff`} aria-current={activeTab === 'staff' ? 'page' : undefined} className={`flex flex-col items-center justify-center w-full h-full mx-1 rounded-2xl space-y-1 ${activeTab === 'staff' ? 'text-botanical-text bg-white shadow-[0_4px_0_0_#cbd5e1] border border-botanical-border transform -translate-y-1' : 'text-botanical-muted hover:text-slate-700 hover:bg-gray-50 transition-colors'}`}>
+            <Link href={`/shop/${shopId}/staff`} aria-current={activeTab === 'staff' ? 'page' : undefined} className={`flex flex-col items-center justify-center w-full h-full mx-1 rounded-2xl space-y-1 ${activeTab === 'staff' ? 'text-botanical-text bg-white shadow-[0_4px_0_0_#cbd5e1] border-2 border-b-[6px] border-botanical-border transform -translate-y-1' : 'text-botanical-muted hover:text-slate-700 hover:bg-gray-50 transition-colors'}`}>
               <span className="text-3xl" aria-hidden="true">🗓️</span>
               <span className="text-xs sm:text-sm font-bold tracking-wide">Schedule</span>
             </Link>
           ) : (
-            <Link href={`/shop/${shopId}/settings/team`} aria-current={activeTab === 'team' || effectiveStaffTabs.includes(activeTab) ? 'page' : undefined} className={`flex flex-col items-center justify-center w-full h-full mx-1 rounded-2xl space-y-1 ${activeTab === 'team' || effectiveStaffTabs.includes(activeTab) ? 'text-botanical-text bg-white shadow-[0_4px_0_0_#cbd5e1] border border-botanical-border transform -translate-y-1' : 'text-botanical-muted hover:text-slate-700 hover:bg-gray-50 transition-colors'}`}>
+            <Link href={`/shop/${shopId}/settings/team`} aria-current={activeTab === 'team' || effectiveStaffTabs.includes(activeTab) ? 'page' : undefined} className={`flex flex-col items-center justify-center w-full h-full mx-1 rounded-2xl space-y-1 ${activeTab === 'team' || effectiveStaffTabs.includes(activeTab) ? 'text-botanical-text bg-white shadow-[0_4px_0_0_#cbd5e1] border-2 border-b-[6px] border-botanical-border transform -translate-y-1' : 'text-botanical-muted hover:text-slate-700 hover:bg-gray-50 transition-colors'}`}>
               <span className="text-3xl" aria-hidden="true">👥</span>
               <span className="text-xs sm:text-sm font-bold tracking-wide">Team</span>
             </Link>
           )}
           {isStaff ? (
-            <Link href={`/shop/${shopId}/clients`} aria-current={activeTab === 'clients' ? 'page' : undefined} className={`flex flex-col items-center justify-center w-full h-full mx-1 rounded-2xl space-y-1 ${activeTab === 'clients' ? 'text-botanical-text bg-white shadow-[0_4px_0_0_#cbd5e1] border border-botanical-border transform -translate-y-1' : 'text-botanical-muted hover:text-slate-700 hover:bg-gray-50 transition-colors'}`}>
+            <Link href={`/shop/${shopId}/clients`} aria-current={activeTab === 'clients' ? 'page' : undefined} className={`flex flex-col items-center justify-center w-full h-full mx-1 rounded-2xl space-y-1 ${activeTab === 'clients' ? 'text-botanical-text bg-white shadow-[0_4px_0_0_#cbd5e1] border-2 border-b-[6px] border-botanical-border transform -translate-y-1' : 'text-botanical-muted hover:text-slate-700 hover:bg-gray-50 transition-colors'}`}>
               <span className="text-3xl" aria-hidden="true">👥</span>
               <span className="text-xs sm:text-sm font-bold tracking-wide">Clients</span>
             </Link>
           ) : (
-            <Link href={`/shop/${shopId}/reports`} aria-current={isReportsSection ? 'page' : undefined} className={`flex flex-col items-center justify-center w-full h-full mx-1 rounded-2xl space-y-1 ${isReportsSection ? 'text-botanical-text bg-white shadow-[0_4px_0_0_#cbd5e1] border border-botanical-border transform -translate-y-1' : 'text-botanical-muted hover:text-slate-700 hover:bg-gray-50 transition-colors'}`}>
+            <Link href={`/shop/${shopId}/reports`} aria-current={isReportsSection ? 'page' : undefined} className={`flex flex-col items-center justify-center w-full h-full mx-1 rounded-2xl space-y-1 ${isReportsSection ? 'text-botanical-text bg-white shadow-[0_4px_0_0_#cbd5e1] border-2 border-b-[6px] border-botanical-border transform -translate-y-1' : 'text-botanical-muted hover:text-slate-700 hover:bg-gray-50 transition-colors'}`}>
               <span className="text-3xl" aria-hidden="true">📊</span>
               <span className="text-xs sm:text-sm font-bold tracking-wide">Reports</span>
             </Link>
           )}
           {isStaff ? (
-            <Link href={`/shop/${shopId}/profile`} aria-current={['profile', 'leave', 'portfolio', 'commissions'].includes(activeTab) ? 'page' : undefined} className={`flex flex-col items-center justify-center w-full h-full mx-1 rounded-2xl space-y-1 ${['profile', 'leave', 'portfolio', 'commissions'].includes(activeTab) ? 'text-botanical-text bg-white shadow-[0_4px_0_0_#cbd5e1] border border-botanical-border transform -translate-y-1' : 'text-botanical-muted hover:text-slate-700 hover:bg-gray-50 transition-colors'}`}>
+            <Link href={`/shop/${shopId}/profile`} aria-current={['profile', 'leave', 'portfolio', 'commissions'].includes(activeTab) ? 'page' : undefined} className={`flex flex-col items-center justify-center w-full h-full mx-1 rounded-2xl space-y-1 ${['profile', 'leave', 'portfolio', 'commissions'].includes(activeTab) ? 'text-botanical-text bg-white shadow-[0_4px_0_0_#cbd5e1] border-2 border-b-[6px] border-botanical-border transform -translate-y-1' : 'text-botanical-muted hover:text-slate-700 hover:bg-gray-50 transition-colors'}`}>
               <span className="text-3xl" aria-hidden="true">👤</span>
               <span className="text-xs sm:text-sm font-bold tracking-wide">Profile</span>
             </Link>
           ) : (
-            <Link href={`/shop/${shopId}/settings`} aria-current={isSettingsSection ? 'page' : undefined} className={`flex flex-col items-center justify-center w-full h-full mx-1 rounded-2xl space-y-1 ${isSettingsSection ? 'text-botanical-text bg-white shadow-[0_4px_0_0_#cbd5e1] border border-botanical-border transform -translate-y-1' : 'text-botanical-muted hover:text-slate-700 hover:bg-gray-50 transition-colors'}`}>
+            <Link href={`/shop/${shopId}/settings`} aria-current={isSettingsSection ? 'page' : undefined} className={`flex flex-col items-center justify-center w-full h-full mx-1 rounded-2xl space-y-1 ${isSettingsSection ? 'text-botanical-text bg-white shadow-[0_4px_0_0_#cbd5e1] border-2 border-b-[6px] border-botanical-border transform -translate-y-1' : 'text-botanical-muted hover:text-slate-700 hover:bg-gray-50 transition-colors'}`}>
               <span className="text-3xl" aria-hidden="true">⚙️</span>
               <span className="text-xs sm:text-sm font-bold tracking-wide">Settings</span>
             </Link>
