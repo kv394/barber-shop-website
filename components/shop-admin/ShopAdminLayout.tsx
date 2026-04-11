@@ -94,8 +94,10 @@ function SectionSidebar({ activeTab, shopId, section, userRole }: { activeTab: s
         })}
       </nav>
       {/* Mobile Scroll Indicator (Gradient Fade & Arrow) */}
-      <div className="absolute right-0 top-0 bottom-0 w-12 bg-gradient-to-l from-white/90 to-transparent pointer-events-none md:hidden flex items-center justify-end pr-1">
-        <span className="text-gray-400 font-bold animate-pulse text-lg">›</span>
+      <div className="absolute right-0 top-0 bottom-0 w-12 bg-gradient-to-l from-white via-white/80 to-transparent pointer-events-none md:hidden flex items-center justify-end pr-1 pb-1">
+        <div className="w-6 h-6 bg-white shadow-sm border border-gray-200 rounded-full flex items-center justify-center animate-pulse">
+          <span className="text-slate-900 font-black text-lg leading-none -mt-0.5 ml-0.5">›</span>
+        </div>
       </div>
     </div>
   );
