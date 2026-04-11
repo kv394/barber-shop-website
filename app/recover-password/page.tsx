@@ -1,46 +1,82 @@
-import { createClient } from '@/utils/supabase/server';
-import { redirect } from 'next/navigation';
+'use client';
+
+import { useState, Suspense } from 'react';
 import Link from 'next/link';
-import { headers } from 'next/headers';
-import { rateLimit } from '@/lib/rate-limiter';
+import { useSearchParams, useRouter } from 'next/navigation';
+import { createClient } from '@/utils/supabase/client';
 
-export default async function RecoverPasswordPage({
-  searchParams,
-}: {
-  searchParams: Promise<{ error?: string, message?: string }>;
-}) {
-  const resolvedSearchParams = await searchParams;
-  const error = resolvedSearchParams.error;
-  const message = resolvedSearchParams.message;
+function RecoverPasswordForm() {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  
+  const errorParam = searchParams?.get('error');
+  const messageParam = searchParams?.get('message');
 
-  const recoverAction = async (formData: FormData) => {
-    'use server';
-    
-    // Rate Limiting
-    const headersList = await headers();
-    const ip = headersList.get('x-forwarded-for') || 'unknown';
-    const rateLimitResult = await rateLimit(`recover:${ip}`, 3, 60 * 15); // 3 attempts per 15 minutes
-    
-    if (!rateLimitResult.success) {
-      return redirect(`/recover-password?error=${encodeURIComponent('Too many password reset attempts. Please try again later.')}`);
-    }
+  const [method, setMethod] = useState<'email' | 'totp'>('email');
+  const [loading, setLoading] = useState(false);
+  
+  const [error, setError] = useState(errorParam || '');
+  const [message, setMessage] = useState(messageParam || '');
 
-    const email = formData.get('email') as string;
+  // Email form state
+  const [email, setEmail] = useState('');
 
-    const supabase = await createClient();
-    
-    // Attempt to determine the base URL
-    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
+  // TOTP form state
+  const [totpEmail, setTotpEmail] = useState('');
+  const [totpCode, setTotpCode] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+
+  const handleEmailRecover = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setError('');
+    setMessage('');
+
+    const supabase = createClient();
+    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || window.location.origin;
 
     const { error: authError } = await supabase.auth.resetPasswordForEmail(email, {
       redirectTo: `${baseUrl}/api/auth/callback?redirect_to=/update-password`,
     });
 
+    setLoading(false);
     if (authError) {
-      return redirect(`/recover-password?error=${encodeURIComponent(authError.message)}`);
+      setError(authError.message);
+    } else {
+      setMessage('Check your email for the password reset link.');
     }
+  };
 
-    return redirect(`/recover-password?message=${encodeURIComponent('Check your email for the password reset link.')}`);
+  const handleTotpRecover = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setError('');
+    setMessage('');
+
+    try {
+      const res = await fetch('/api/auth/totp/recover', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: totpEmail, token: totpCode, newPassword })
+      });
+
+      const data = await res.json();
+      
+      if (!res.ok) {
+        throw new Error(data.error || 'Failed to recover password');
+      }
+
+      setMessage(data.message);
+      
+      setTimeout(() => {
+        router.push('/sign-in?message=' + encodeURIComponent('Password recovered successfully. Please sign in.'));
+      }, 3000);
+
+    } catch (err: any) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -48,22 +84,98 @@ export default async function RecoverPasswordPage({
       <div className="w-full max-w-md bg-slate-900 border border-white/10 rounded-2xl shadow-2xl p-8 mt-12 mb-12">
         <div className="text-center mb-8">
           <h1 className="font-serif text-3xl font-bold text-white mb-2">Recover Password</h1>
-          <p className="text-gray-400">Enter your email to reset your password</p>
+          <p className="text-gray-400">Choose how you want to reset your password</p>
         </div>
 
         {error && <div className="bg-red-500/10 border border-red-500/30 text-red-400 p-3 rounded-lg mb-6 text-sm text-center">{error}</div>}
         {message && <div className="bg-green-500/10 border border-green-500/30 text-green-400 p-3 rounded-lg mb-6 text-sm text-center">{message}</div>}
 
-        <form action={recoverAction} className="space-y-5">
-          <div>
-            <label className="block text-sm font-medium text-gray-300 mb-1.5">Email Address</label>
-            <input name="email" type="email" required placeholder="you@example.com" className="w-full bg-black/50 border border-white/20 rounded-lg p-3 text-white focus:ring-2 focus:ring-brand-gold focus:border-transparent outline-none" />
-          </div>
-          <button type="submit" className="w-full bg-brand-gold text-black font-bold py-3 rounded-lg hover:bg-white transition-colors mt-2">Send Reset Link</button>
-        </form>
+        <div className="flex gap-2 mb-6 bg-black/50 p-1 rounded-lg border border-white/10">
+          <button
+            onClick={() => setMethod('email')}
+            className={`flex-1 py-2 text-sm font-medium rounded-md transition-colors ${method === 'email' ? 'bg-slate-700 text-white' : 'text-slate-400 hover:text-white'}`}
+          >
+            Email Link
+          </button>
+          <button
+            onClick={() => setMethod('totp')}
+            className={`flex-1 py-2 text-sm font-medium rounded-md transition-colors ${method === 'totp' ? 'bg-slate-700 text-white' : 'text-slate-400 hover:text-white'}`}
+          >
+            Authenticator App
+          </button>
+        </div>
+
+        {method === 'email' ? (
+          <form onSubmit={handleEmailRecover} className="space-y-5">
+            <div>
+              <label className="block text-sm font-medium text-gray-300 mb-1.5">Email Address</label>
+              <input 
+                name="email" 
+                type="email" 
+                required 
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="you@example.com" 
+                className="w-full bg-black/50 border border-white/20 rounded-lg p-3 text-white focus:ring-2 focus:ring-brand-gold focus:border-transparent outline-none" 
+              />
+            </div>
+            <button type="submit" disabled={loading} className="w-full bg-brand-gold text-black font-bold py-3 rounded-lg hover:bg-white transition-colors mt-2 disabled:opacity-50">
+              {loading ? 'Sending...' : 'Send Reset Link'}
+            </button>
+          </form>
+        ) : (
+          <form onSubmit={handleTotpRecover} className="space-y-5">
+            <div>
+              <label className="block text-sm font-medium text-gray-300 mb-1.5">Email Address</label>
+              <input 
+                type="email" 
+                required 
+                value={totpEmail}
+                onChange={(e) => setTotpEmail(e.target.value)}
+                placeholder="you@example.com" 
+                className="w-full bg-black/50 border border-white/20 rounded-lg p-3 text-white focus:ring-2 focus:ring-brand-gold focus:border-transparent outline-none" 
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-300 mb-1.5">6-Digit Code</label>
+              <input 
+                type="text" 
+                maxLength={6}
+                required 
+                value={totpCode}
+                onChange={(e) => setTotpCode(e.target.value.replace(/\D/g, ''))}
+                placeholder="000000" 
+                className="w-full bg-black/50 border border-white/20 rounded-lg p-3 text-white focus:ring-2 focus:ring-brand-gold focus:border-transparent outline-none tracking-widest text-center" 
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-300 mb-1.5">New Password</label>
+              <input 
+                type="password" 
+                required 
+                minLength={8}
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+                placeholder="••••••••" 
+                className="w-full bg-black/50 border border-white/20 rounded-lg p-3 text-white focus:ring-2 focus:ring-brand-gold focus:border-transparent outline-none" 
+              />
+            </div>
+            <button type="submit" disabled={loading || totpCode.length !== 6 || newPassword.length < 8} className="w-full bg-brand-gold text-black font-bold py-3 rounded-lg hover:bg-white transition-colors mt-2 disabled:opacity-50">
+              {loading ? 'Recovering...' : 'Reset Password'}
+            </button>
+          </form>
+        )}
 
         <p className="text-center text-sm text-gray-500 mt-8">Remember your password? <Link href="/sign-in" className="text-brand-gold hover:underline">Sign In</Link></p>
       </div>
     </div>
+  );
+}
+
+export default function RecoverPasswordPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-black text-white flex items-center justify-center">Loading...</div>}>
+      <RecoverPasswordForm />
+    </Suspense>
   );
 }

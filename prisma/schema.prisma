@@ -85,6 +85,9 @@ model User {
   commissionRateService Float?
   commissionRateProduct Float?
 
+  // TOTP Recovery
+  recoveryTotpSecret String?
+
   // Profile image (C7)
   imageUrl String?
 

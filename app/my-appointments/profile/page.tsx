@@ -148,6 +148,9 @@ function ProfileContent() {
             <Link href="/update-password" className="inline-block px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white text-sm font-medium rounded-lg transition-colors border border-slate-600">
               Change Password
             </Link>
+            <Link href="/my-appointments/profile/security" className="inline-block ml-3 px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white text-sm font-medium rounded-lg transition-colors border border-slate-600">
+              Security & Recovery
+            </Link>
           </div>
         </div>
       </div>
