@@ -112,55 +112,55 @@ export default function ReportsClient({
         <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-botanical-surface transition-all duration-300 min-w-0">
           <div className="absolute top-0 left-0 w-full h-1 bg-green-500/80"></div>
           <div className="flex justify-between items-center mb-3">
-            <h3 className="text-botanical-muted text-[10px] sm:text-xs uppercase tracking-widest font-semibold truncate">
+            <h3 className="text-botanical-muted text-sm sm:text-xs uppercase tracking-widest font-semibold truncate">
               {isFiltered ? 'Filtered Revenue' : 'Total Revenue'}
             </h3>
             <span className="text-green-500 text-sm">💵</span>
           </div>
           <p className="text-2xl sm:text-3xl font-black text-botanical-text break-words leading-tight">{formatCurrency(filteredRevenue)}</p>
-          {isFiltered && <p className="text-[10px] text-botanical-muted mt-2 truncate">All-time: <span className="text-botanical-muted">{formatCurrency(allTimeRevenue)}</span></p>}
+          {isFiltered && <p className="text-sm text-botanical-muted mt-2 truncate">All-time: <span className="text-botanical-muted">{formatCurrency(allTimeRevenue)}</span></p>}
         </div>
 
         {/* Tips */}
         <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-botanical-surface transition-all duration-300 min-w-0">
           <div className="absolute top-0 left-0 w-full h-1 bg-amber-500/80"></div>
           <div className="flex justify-between items-center mb-3">
-            <h3 className="text-botanical-muted text-[10px] sm:text-xs uppercase tracking-widest font-semibold truncate">Tips</h3>
+            <h3 className="text-botanical-muted text-sm sm:text-xs uppercase tracking-widest font-semibold truncate">Tips</h3>
             <span className="text-amber-500 text-sm">💰</span>
           </div>
           <p className="text-2xl sm:text-3xl font-black text-botanical-text break-words leading-tight">{formatCurrency(filteredTips)}</p>
-          {isFiltered && <p className="text-[10px] text-botanical-muted mt-2 truncate">All-time: <span className="text-botanical-muted">{formatCurrency(allTimeTips)}</span></p>}
+          {isFiltered && <p className="text-sm text-botanical-muted mt-2 truncate">All-time: <span className="text-botanical-muted">{formatCurrency(allTimeTips)}</span></p>}
         </div>
 
         {/* Completed */}
         <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-botanical-surface transition-all duration-300 min-w-0">
           <div className="absolute top-0 left-0 w-full h-1 bg-blue-500/80"></div>
           <div className="flex justify-between items-center mb-3">
-            <h3 className="text-botanical-muted text-[10px] sm:text-xs uppercase tracking-widest font-semibold truncate">Completed</h3>
+            <h3 className="text-botanical-muted text-sm sm:text-xs uppercase tracking-widest font-semibold truncate">Completed</h3>
             <span className="text-blue-500 text-sm">✂️</span>
           </div>
           <p className="text-2xl sm:text-3xl font-black text-botanical-text break-words leading-tight">{filtered.length.toLocaleString('en-US')}</p>
-          <p className="text-[10px] text-botanical-muted mt-2 truncate opacity-0 group-hover:opacity-100 transition-opacity">Appointments</p>
+          <p className="text-sm text-botanical-muted mt-2 truncate opacity-0 group-hover:opacity-100 transition-opacity">Appointments</p>
         </div>
 
         {/* Avg Service */}
         <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-botanical-surface transition-all duration-300 min-w-0">
           <div className="absolute top-0 left-0 w-full h-1 bg-purple-500/80"></div>
           <div className="flex justify-between items-center mb-3">
-            <h3 className="text-botanical-muted text-[10px] sm:text-xs uppercase tracking-widest font-semibold truncate">Avg Ticket</h3>
+            <h3 className="text-botanical-muted text-sm sm:text-xs uppercase tracking-widest font-semibold truncate">Avg Ticket</h3>
             <span className="text-purple-500 text-sm">📈</span>
           </div>
           <p className="text-2xl sm:text-3xl font-black text-botanical-text break-words leading-tight">
             {formatCurrency(filtered.length > 0 ? (filteredRevenue / filtered.length) : 0)}
           </p>
-          <p className="text-[10px] text-botanical-muted mt-2 truncate opacity-0 group-hover:opacity-100 transition-opacity">Per Service</p>
+          <p className="text-sm text-botanical-muted mt-2 truncate opacity-0 group-hover:opacity-100 transition-opacity">Per Service</p>
         </div>
 
         {/* Export */}
         <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-botanical-surface transition-all duration-300 flex flex-col justify-center min-w-0">
           <div className="absolute top-0 left-0 w-full h-1 bg-botanical-primary/80"></div>
           <div className="flex justify-between items-center mb-3">
-            <h3 className="text-botanical-muted text-[10px] sm:text-xs uppercase tracking-widest font-semibold truncate">Export Data</h3>
+            <h3 className="text-botanical-muted text-sm sm:text-xs uppercase tracking-widest font-semibold truncate">Export Data</h3>
           </div>
           <button onClick={exportCSV} className="bg-botanical-surface hover:bg-botanical-primary text-white font-bold py-2 sm:py-3 px-3 rounded-lg transition-all w-full text-xs sm:text-sm truncate flex items-center justify-center gap-2">
             <span>📥</span> Download CSV
@@ -171,12 +171,12 @@ export default function ReportsClient({
       {/* Date Filters */}
       <div className="flex flex-col sm:flex-row gap-3 mb-6 p-4 bg-botanical-surface rounded-lg border-2 border-b-[6px] border-botanical-border">
         <div className="flex-1">
-          <label className="block text-[10px] text-botanical-muted uppercase tracking-wider mb-1">From Date</label>
+          <label className="block text-sm text-botanical-muted uppercase tracking-wider mb-1">From Date</label>
           <input type="date" value={dateFrom} onChange={e => setDateFrom(e.target.value)} style={inputStyle}
             className="w-full border-2 border-b-[6px] border-botanical-border rounded p-2 text-sm focus:outline-none focus:border-brand-gold [&::-webkit-calendar-picker-indicator]:invert" />
         </div>
         <div className="flex-1">
-          <label className="block text-[10px] text-botanical-muted uppercase tracking-wider mb-1">To Date</label>
+          <label className="block text-sm text-botanical-muted uppercase tracking-wider mb-1">To Date</label>
           <input type="date" value={dateTo} onChange={e => setDateTo(e.target.value)} style={inputStyle}
             className="w-full border-2 border-b-[6px] border-botanical-border rounded p-2 text-sm focus:outline-none focus:border-brand-gold [&::-webkit-calendar-picker-indicator]:invert" />
         </div>
@@ -219,7 +219,7 @@ export default function ReportsClient({
                         <div className="min-w-0">
                           <p className="font-medium text-sm text-botanical-text truncate">{apt.user.name || apt.user.email}</p>
                           <p className="text-xs text-botanical-accent">{apt.service.name}</p>
-                          {apt.staff?.name && <p className="text-[10px] text-purple-400">✂️ {apt.staff.name}</p>}
+                          {apt.staff?.name && <p className="text-sm text-purple-400">✂️ {apt.staff.name}</p>}
                         </div>
                         <div className="text-right shrink-0 ml-2">
                           {isRefunded ? (
@@ -230,11 +230,11 @@ export default function ReportsClient({
                         </div>
                       </div>
                       <div className="flex items-center justify-between mt-1">
-                        <span className="text-[10px] text-botanical-muted font-mono">
+                        <span className="text-sm text-botanical-muted font-mono">
                           {new Date(apt.updatedAt).toLocaleString(undefined, { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
                         </span>
                         {isRefunded ? (
-                          <span className="text-[10px] text-amber-400 bg-amber-900/20 px-2 py-0.5 rounded border border-amber-500/20">
+                          <span className="text-sm text-amber-400 bg-amber-900/20 px-2 py-0.5 rounded border border-amber-500/20">
                             💸 Refunded
                           </span>
                         ) : (
@@ -270,8 +270,8 @@ export default function ReportsClient({
                           <td className="p-3 sm:p-4 text-botanical-text font-medium">{apt.user.name || apt.user.email}</td>
                           <td className="p-3 sm:p-4 text-botanical-accent">
                             <div>{apt.service.name}</div>
-                            {apt.tipAmount > 0 && <div className="text-[10px] text-amber-400">+${apt.tipAmount.toFixed(2)} tip</div>}
-                            {apt.discount > 0 && <div className="text-[10px] text-red-400">-${apt.discount.toFixed(2)} disc.</div>}
+                            {apt.tipAmount > 0 && <div className="text-sm text-amber-400">+${apt.tipAmount.toFixed(2)} tip</div>}
+                            {apt.discount > 0 && <div className="text-sm text-red-400">-${apt.discount.toFixed(2)} disc.</div>}
                           </td>
                           <td className="p-3 sm:p-4 text-purple-300">{apt.staff?.name || '—'}</td>
                           <td className="p-3 sm:p-4 text-right font-bold">
@@ -283,7 +283,7 @@ export default function ReportsClient({
                           </td>
                           <td className="p-3 sm:p-4 text-right">
                             {isRefunded ? (
-                              <span className="text-[10px] text-amber-400 bg-amber-900/20 border border-amber-500/20 px-2 py-1 rounded">
+                              <span className="text-sm text-amber-400 bg-amber-900/20 border border-amber-500/20 px-2 py-1 rounded">
                                 💸 Refunded ${(apt.refundAmount || 0).toFixed(2)}
                               </span>
                             ) : (
@@ -317,7 +317,7 @@ export default function ReportsClient({
                   </div>
                   <div className="text-right">
                     <p className="text-lg font-bold text-green-400">${staff.revenue.toFixed(2)}</p>
-                    <p className="text-[10px] text-botanical-muted">{pct.toFixed(1)}% of total</p>
+                    <p className="text-sm text-botanical-muted">{pct.toFixed(1)}% of total</p>
                   </div>
                 </div>
                 <div className="w-full bg-botanical-surface rounded-full h-2">
@@ -345,7 +345,7 @@ export default function ReportsClient({
                   </div>
                   <div className="text-right">
                     <p className="text-lg font-bold text-green-400">${svc.revenue.toFixed(2)}</p>
-                    <p className="text-[10px] text-botanical-muted">{pct.toFixed(1)}% of total</p>
+                    <p className="text-sm text-botanical-muted">{pct.toFixed(1)}% of total</p>
                   </div>
                 </div>
                 <div className="w-full bg-botanical-surface rounded-full h-2">

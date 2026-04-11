@@ -119,11 +119,11 @@ export default async function BookingsPage({ params }: { params: Promise<{ shopI
                     const isActive = isScheduled || isAccepted || isWorkCompleted;
 
                     const statusBadge = isScheduled ? (
-                      <span className="px-2 py-0.5 text-[10px] uppercase font-bold rounded bg-botanical-surface text-botanical-text border border-slate-600 whitespace-nowrap">Scheduled</span>
+                      <span className="px-2 py-0.5 text-sm uppercase font-bold rounded bg-botanical-surface text-botanical-text border border-slate-600 whitespace-nowrap">Scheduled</span>
                     ) : isAccepted ? (
-                      <span className="px-2 py-0.5 text-[10px] uppercase font-bold rounded bg-blue-900/50 text-blue-300 border border-blue-500/30 whitespace-nowrap">Accepted</span>
+                      <span className="px-2 py-0.5 text-sm uppercase font-bold rounded bg-blue-900/50 text-blue-300 border border-blue-500/30 whitespace-nowrap">Accepted</span>
                     ) : isWorkCompleted ? (
-                      <span className="px-2 py-0.5 text-[10px] uppercase font-bold rounded bg-botanical-primary/20 text-botanical-accent border border-brand-gold/30 whitespace-nowrap">Ready for Checkout</span>
+                      <span className="px-2 py-0.5 text-sm uppercase font-bold rounded bg-botanical-primary/20 text-botanical-accent border border-brand-gold/30 whitespace-nowrap">Ready for Checkout</span>
                     ) : null;
 
                     return (
@@ -138,7 +138,7 @@ export default async function BookingsPage({ params }: { params: Promise<{ shopI
                                                </div>
                                                <div className="text-right">
                                                    <p className="font-mono text-botanical-accent">{start.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
-                                                   <p className="text-[10px] sm:text-xs text-botanical-muted">{apt.service.duration} mins</p>
+                                                   <p className="text-sm sm:text-xs text-botanical-muted">{apt.service.duration} mins</p>
                                                </div>
                                            </div>
                                            <div className="pt-2 sm:pt-3 border-t border-botanical-border flex flex-col sm:flex-row justify-between items-start sm:items-end gap-2">

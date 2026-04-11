@@ -65,7 +65,7 @@ export default function TeamDashboardClient({
                     <div>
                       <h2 className="text-xl font-bold text-slate-900 mb-0.5 flex items-center gap-2">
                         {staffMember.name || staffMember.email.split('@')[0]}
-                        {staffMember.role === 'SHOP_ADMIN' && <span className="text-[9px] bg-botanical-primary/20 text-botanical-primary px-1.5 py-0.5 rounded uppercase tracking-wider font-bold">Admin</span>}
+                        {staffMember.role === 'SHOP_ADMIN' && <span className="text-xs bg-botanical-primary/20 text-botanical-primary px-1.5 py-0.5 rounded uppercase tracking-wider font-bold">Admin</span>}
                       </h2>
                       <p className="text-xs text-slate-600">{staffMember.email}</p>
                     </div>
@@ -75,15 +75,15 @@ export default function TeamDashboardClient({
                 {/* Actions & Status Badge */}
                 <div className="flex flex-col items-end gap-2">
                   {isOnLeave ? (
-                    <span className="text-[10px] bg-red-50 text-red-700 border border-red-200 px-2.5 py-1 rounded-full font-bold uppercase tracking-wider">On Leave</span>
+                    <span className="text-sm bg-red-50 text-red-700 border border-red-200 px-2.5 py-1 rounded-full font-bold uppercase tracking-wider">On Leave</span>
                   ) : isNotWorking ? (
-                    <span className="text-[10px] bg-white text-slate-900 border-2 border-b-[6px] border-botanical-border px-2.5 py-1 rounded-full font-bold uppercase tracking-wider">Day Off</span>
+                    <span className="text-sm bg-white text-slate-900 border-2 border-b-[6px] border-botanical-border px-2.5 py-1 rounded-full font-bold uppercase tracking-wider">Day Off</span>
                   ) : staffMember.isClockedIn ? (
-                    <span className="text-[10px] bg-emerald-50 text-emerald-700 border border-emerald-200 px-2.5 py-1 rounded-full font-bold uppercase tracking-wider flex items-center gap-1.5">
+                    <span className="text-sm bg-emerald-50 text-emerald-700 border border-emerald-200 px-2.5 py-1 rounded-full font-bold uppercase tracking-wider flex items-center gap-1.5">
                       <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> Clocked In
                     </span>
                   ) : (
-                    <span className="text-[10px] bg-blue-50 text-blue-700 border border-blue-200 px-2.5 py-1 rounded-full font-bold uppercase tracking-wider">Scheduled</span>
+                    <span className="text-sm bg-blue-50 text-blue-700 border border-blue-200 px-2.5 py-1 rounded-full font-bold uppercase tracking-wider">Scheduled</span>
                   )}
                 </div>
               </div>
@@ -190,14 +190,14 @@ export default function TeamDashboardClient({
                                 name="startTime" 
                                 value={getTimeValue(staffMember.id, 'open', defaultOpen)}
                                 onChange={(e) => handleTimeChange(staffMember.id, 'open', e.target.value)}
-                                className="w-full bg-white text-slate-600 text-[10px] p-1 rounded border-2 border-b-[6px] border-botanical-border outline-none focus:ring-1 focus:ring-botanical-primary"
+                                className="w-full bg-white text-slate-600 text-sm p-1 rounded border-2 border-b-[6px] border-botanical-border outline-none focus:ring-1 focus:ring-botanical-primary"
                             />
                              <input 
                                 type="time" 
                                 name="endTime" 
                                 value={getTimeValue(staffMember.id, 'close', defaultClose)}
                                 onChange={(e) => handleTimeChange(staffMember.id, 'close', e.target.value)}
-                                className="w-full bg-white text-slate-600 text-[10px] p-1 rounded border-2 border-b-[6px] border-botanical-border outline-none focus:ring-1 focus:ring-botanical-primary"
+                                className="w-full bg-white text-slate-600 text-sm p-1 rounded border-2 border-b-[6px] border-botanical-border outline-none focus:ring-1 focus:ring-botanical-primary"
                             />
                         </div>
 

@@ -132,7 +132,7 @@ export default function KioskMode({ userProfile }: { userProfile: UserProfile })
                                                     <p className="text-xs text-botanical-muted truncate">{log.user.email}</p>
                                                 </div>
                                                 <div className="text-right shrink-0 bg-botanical-surface px-3 py-1.5 rounded-lg border-2 border-b-[6px] border-botanical-border">
-                                                    <p className="text-[10px] text-botanical-muted uppercase tracking-wider mb-0.5">In since</p>
+                                                    <p className="text-sm text-botanical-muted uppercase tracking-wider mb-0.5">In since</p>
                                                     <span className="text-botanical-accent font-mono text-base font-bold">
                                                         {new Date(log.clockIn).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                                                     </span>
@@ -177,7 +177,7 @@ export default function KioskMode({ userProfile }: { userProfile: UserProfile })
                                                         <p className="text-xs text-botanical-muted">Arrived {new Date(entry.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
                                                     </div>
                                                 </div>
-                                                <span className={`shrink-0 text-[10px] font-bold px-3 py-1.5 rounded-lg uppercase tracking-wider ${entry.status === 'SERVING' ? 'bg-green-500/20 text-green-400 border border-green-500/30' : 'bg-amber-500/20 text-amber-400 border border-amber-500/30'}`}>
+                                                <span className={`shrink-0 text-sm font-bold px-3 py-1.5 rounded-lg uppercase tracking-wider ${entry.status === 'SERVING' ? 'bg-green-500/20 text-green-400 border border-green-500/30' : 'bg-amber-500/20 text-amber-400 border border-amber-500/30'}`}>
                                                     {entry.status}
                                                 </span>
                                             </div>

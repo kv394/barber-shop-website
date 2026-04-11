@@ -78,14 +78,14 @@ export default function StaffAvailability({ defaultDate, defaultFrom, defaultTo,
               <p className="text-xs text-slate-600">{dateStr}</p>
             </div>
             {isToday && (
-              <span className="text-[10px] bg-botanical-primary/20 text-botanical-primary px-2.5 py-0.5 rounded-full font-bold uppercase tracking-wider">Today</span>
+              <span className="text-sm bg-botanical-primary/20 text-botanical-primary px-2.5 py-0.5 rounded-full font-bold uppercase tracking-wider">Today</span>
             )}
           </div>
 
           <div className="flex items-center gap-2">
             {!isToday && (
               <button onClick={goToToday}
-                className="text-[11px] text-botanical-primary hover:text-slate-900 bg-botanical-primary/10 hover:bg-botanical-primary/20 border border-botanical-primary/20 transition-all duration-200">
+                className="text-sm text-botanical-primary hover:text-slate-900 bg-botanical-primary/10 hover:bg-botanical-primary/20 border border-botanical-primary/20 transition-all duration-200">
                 Today
               </button>
             )}
@@ -103,7 +103,7 @@ export default function StaffAvailability({ defaultDate, defaultFrom, defaultTo,
         {/* Inputs row */}
         <div className={`grid grid-cols-1 ${showTimeFilters ? 'md:grid-cols-3' : 'md:grid-cols-1'} gap-3`}>
           <div>
-            <label className="block text-[10px] text-slate-600 mb-1 font-semibold uppercase tracking-wider">📅 Date</label>
+            <label className="block text-sm text-slate-600 mb-1 font-semibold uppercase tracking-wider">📅 Date</label>
             <input
               type="date"
               value={defaultDate}
@@ -115,7 +115,7 @@ export default function StaffAvailability({ defaultDate, defaultFrom, defaultTo,
           {showTimeFilters && (
             <>
               <div>
-                <label className="block text-[10px] text-slate-600 mb-1 font-semibold uppercase tracking-wider">🕐 From</label>
+                <label className="block text-sm text-slate-600 mb-1 font-semibold uppercase tracking-wider">🕐 From</label>
                 <input
                   type="time"
                   name="from"
@@ -126,7 +126,7 @@ export default function StaffAvailability({ defaultDate, defaultFrom, defaultTo,
                 />
               </div>
               <div>
-                <label className="block text-[10px] text-slate-600 mb-1 font-semibold uppercase tracking-wider">🕐 To</label>
+                <label className="block text-sm text-slate-600 mb-1 font-semibold uppercase tracking-wider">🕐 To</label>
                 <input
                   type="time"
                   name="to"

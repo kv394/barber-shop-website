@@ -44,7 +44,7 @@ export default function BlockTimeButton({ shopId, staffId, date, time }: { shopI
     <button 
       onClick={handleBlock} 
       disabled={loading}
-      className="ml-2 px-2 py-1 text-[10px] bg-botanical-surface hover:bg-botanical-border text-botanical-muted rounded border-2 border-b-[6px] border-botanical-border uppercase font-bold tracking-wider disabled:opacity-50 transition-colors"
+      className="ml-2 px-2 py-1 text-sm bg-botanical-surface hover:bg-botanical-border text-botanical-muted rounded border-2 border-b-[6px] border-botanical-border uppercase font-bold tracking-wider disabled:opacity-50 transition-colors"
       title="Block this time slot"
     >
       {loading ? '...' : 'Block'}

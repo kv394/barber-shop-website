@@ -34,7 +34,7 @@ export default function ReferralTracker({ shopId }: { shopId: string }) {
           <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-botanical-surface transition-all duration-300 min-w-0">
             <div className="absolute top-0 left-0 w-full h-1 bg-blue-500/80"></div>
             <div className="flex justify-between items-center mb-3">
-              <h3 className="text-botanical-muted text-[10px] sm:text-xs uppercase tracking-widest font-semibold truncate">Total Referrals</h3>
+              <h3 className="text-botanical-muted text-sm sm:text-xs uppercase tracking-widest font-semibold truncate">Total Referrals</h3>
               <span className="text-blue-500 text-sm">👥</span>
             </div>
             <p className="text-2xl sm:text-3xl font-black text-botanical-text break-words leading-tight">{stats.total}</p>
@@ -42,7 +42,7 @@ export default function ReferralTracker({ shopId }: { shopId: string }) {
           <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-botanical-surface transition-all duration-300 min-w-0">
             <div className="absolute top-0 left-0 w-full h-1 bg-green-500/80"></div>
             <div className="flex justify-between items-center mb-3">
-              <h3 className="text-botanical-muted text-[10px] sm:text-xs uppercase tracking-widest font-semibold truncate">Completed</h3>
+              <h3 className="text-botanical-muted text-sm sm:text-xs uppercase tracking-widest font-semibold truncate">Completed</h3>
               <span className="text-green-500 text-sm">✅</span>
             </div>
             <p className="text-2xl sm:text-3xl font-black text-botanical-text break-words leading-tight">{stats.completed}</p>
@@ -50,7 +50,7 @@ export default function ReferralTracker({ shopId }: { shopId: string }) {
           <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-botanical-surface transition-all duration-300 min-w-0">
             <div className="absolute top-0 left-0 w-full h-1 bg-amber-500/80"></div>
             <div className="flex justify-between items-center mb-3">
-              <h3 className="text-botanical-muted text-[10px] sm:text-xs uppercase tracking-widest font-semibold truncate">Pending</h3>
+              <h3 className="text-botanical-muted text-sm sm:text-xs uppercase tracking-widest font-semibold truncate">Pending</h3>
               <span className="text-amber-500 text-sm">⏳</span>
             </div>
             <p className="text-2xl sm:text-3xl font-black text-botanical-text break-words leading-tight">{stats.pending}</p>
@@ -100,11 +100,11 @@ export default function ReferralTracker({ shopId }: { shopId: string }) {
                     <span className="text-botanical-muted mx-2">→</span>
                     <span className="font-semibold">{ref.referee?.name || 'New Client'}</span>
                   </p>
-                  <p className="text-[10px] text-botanical-muted">
+                  <p className="text-sm text-botanical-muted">
                     {new Date(ref.createdAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}
                   </p>
                 </div>
-                <span className={`px-2 py-0.5 rounded text-[10px] font-bold border ${getStatusColor(ref.status)}`}>
+                <span className={`px-2 py-0.5 rounded text-sm font-bold border ${getStatusColor(ref.status)}`}>
                   {ref.status}
                 </span>
               </div>

@@ -101,7 +101,7 @@ export default function FormBuilder({ shopId }: { shopId: string }) {
               <div>
                 <div className="flex items-center gap-2 mb-1">
                   <h5 className="text-botanical-text font-medium text-sm">{f.name}</h5>
-                  {f.isRequired && <span className="text-[10px] uppercase font-bold tracking-wider bg-red-900/50 text-red-300 px-1.5 py-0.5 rounded">Required</span>}
+                  {f.isRequired && <span className="text-sm uppercase font-bold tracking-wider bg-red-900/50 text-red-300 px-1.5 py-0.5 rounded">Required</span>}
                 </div>
                 <p className="text-xs text-botanical-muted line-clamp-2">{f.content}</p>
               </div>

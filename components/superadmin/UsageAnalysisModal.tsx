@@ -60,7 +60,7 @@ export default function UsageAnalysisModal({ shopId, shopName, onClose }: UsageA
               ].map(m => (
                 <div key={m.label} className="bg-botanical-surface p-3 rounded-lg border-2 border-b-[6px] border-botanical-border text-center">
                   <p className="text-xl font-bold text-botanical-text">{m.val}</p>
-                  <p className="text-[10px] text-botanical-muted uppercase tracking-wider">{m.label}</p>
+                  <p className="text-sm text-botanical-muted uppercase tracking-wider">{m.label}</p>
                 </div>
               ))}
             </div>

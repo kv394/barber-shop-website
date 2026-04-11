@@ -169,7 +169,7 @@ export default function TeamChat({ shopId, currentUserId }: { shopId: string, cu
                 {!isMe && (
                   <span className="text-xs text-botanical-muted mb-1 ml-1 flex items-center gap-1 font-medium">
                     {msg.sender.name || 'User'} 
-                    {isAdmin && <span className="bg-botanical-primary text-white text-[8px] font-bold px-1.5 py-0.5 rounded uppercase">Admin</span>}
+                    {isAdmin && <span className="bg-botanical-primary text-white text-xs font-bold px-1.5 py-0.5 rounded uppercase">Admin</span>}
                   </span>
                 )}
                 
@@ -181,7 +181,7 @@ export default function TeamChat({ shopId, currentUserId }: { shopId: string, cu
                   {msg.content && renderContent(msg.content, isMe)}
                 </div>
                 
-                <span className={`text-[10px] text-botanical-muted mt-1 ${isMe ? 'mr-1' : 'ml-1'}`}>
+                <span className={`text-sm text-botanical-muted mt-1 ${isMe ? 'mr-1' : 'ml-1'}`}>
                   {new Date(msg.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                 </span>
               </div>

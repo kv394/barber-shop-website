@@ -183,7 +183,7 @@ export default function ProductManager({ shopId, products }: { shopId: string, p
                     >
                       {product.name}
                     </div>
-                    {product.barcode && <p className="text-[10px] text-botanical-muted font-mono mt-1">{product.barcode}</p>}
+                    {product.barcode && <p className="text-sm text-botanical-muted font-mono mt-1">{product.barcode}</p>}
                     
                     <div className="absolute left-0 top-full mt-2 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-opacity z-50">
                       <div className="bg-white p-4 rounded-xl shadow-2xl border-2 border-b-[6px] border-botanical-border min-w-[200px] flex flex-col items-center">

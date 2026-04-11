@@ -106,52 +106,52 @@ export default function StaffWorkingReport({ staffMembers }: { staffMembers: Sta
         <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-botanical-surface transition-all duration-300 min-w-0">
           <div className="absolute top-0 left-0 w-full h-1 bg-blue-500/80"></div>
           <div className="flex justify-between items-center mb-3">
-            <h3 className="text-botanical-muted text-[10px] sm:text-xs uppercase tracking-widest font-semibold truncate">Total Staff</h3>
+            <h3 className="text-botanical-muted text-sm sm:text-xs uppercase tracking-widest font-semibold truncate">Total Staff</h3>
             <span className="text-blue-500 text-sm">👥</span>
           </div>
           <p className="text-2xl sm:text-3xl font-black text-botanical-text break-words leading-tight">{staffMembers.length}</p>
-          <p className="text-[10px] text-botanical-muted mt-2 truncate">
+          <p className="text-sm text-botanical-muted mt-2 truncate">
             <span className="text-botanical-muted">{staffData.filter(s => s.isActive).length}</span> currently active
           </p>
         </div>
         <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-botanical-surface transition-all duration-300 min-w-0">
           <div className="absolute top-0 left-0 w-full h-1 bg-purple-500/80"></div>
           <div className="flex justify-between items-center mb-3">
-            <h3 className="text-botanical-muted text-[10px] sm:text-xs uppercase tracking-widest font-semibold truncate">Total Hours</h3>
+            <h3 className="text-botanical-muted text-sm sm:text-xs uppercase tracking-widest font-semibold truncate">Total Hours</h3>
             <span className="text-purple-500 text-sm">⏱️</span>
           </div>
           <p className="text-2xl sm:text-3xl font-black text-botanical-text break-words leading-tight">{formatDuration(totalHoursMs)}</p>
-          {isFiltered && <p className="text-[10px] text-botanical-muted mt-2 truncate opacity-0 group-hover:opacity-100 transition-opacity">In selected date range</p>}
+          {isFiltered && <p className="text-sm text-botanical-muted mt-2 truncate opacity-0 group-hover:opacity-100 transition-opacity">In selected date range</p>}
         </div>
         <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-botanical-surface transition-all duration-300 min-w-0">
           <div className="absolute top-0 left-0 w-full h-1 bg-green-500/80"></div>
           <div className="flex justify-between items-center mb-3">
-            <h3 className="text-botanical-muted text-[10px] sm:text-xs uppercase tracking-widest font-semibold truncate">Clients Served</h3>
+            <h3 className="text-botanical-muted text-sm sm:text-xs uppercase tracking-widest font-semibold truncate">Clients Served</h3>
             <span className="text-green-500 text-sm">✂️</span>
           </div>
           <p className="text-2xl sm:text-3xl font-black text-botanical-text break-words leading-tight">{totalClients}</p>
-          {isFiltered && <p className="text-[10px] text-botanical-muted mt-2 truncate opacity-0 group-hover:opacity-100 transition-opacity">In selected date range</p>}
+          {isFiltered && <p className="text-sm text-botanical-muted mt-2 truncate opacity-0 group-hover:opacity-100 transition-opacity">In selected date range</p>}
         </div>
         <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-botanical-surface transition-all duration-300 min-w-0">
           <div className="absolute top-0 left-0 w-full h-1 bg-amber-500/80"></div>
           <div className="flex justify-between items-center mb-3">
-            <h3 className="text-botanical-muted text-[10px] sm:text-xs uppercase tracking-widest font-semibold truncate">Revenue Generated</h3>
+            <h3 className="text-botanical-muted text-sm sm:text-xs uppercase tracking-widest font-semibold truncate">Revenue Generated</h3>
             <span className="text-amber-500 text-sm">💰</span>
           </div>
           <p className="text-2xl sm:text-3xl font-black text-botanical-text break-words leading-tight">${totalRevenue.toFixed(2)}</p>
-          {isFiltered && <p className="text-[10px] text-botanical-muted mt-2 truncate opacity-0 group-hover:opacity-100 transition-opacity">In selected date range</p>}
+          {isFiltered && <p className="text-sm text-botanical-muted mt-2 truncate opacity-0 group-hover:opacity-100 transition-opacity">In selected date range</p>}
         </div>
       </div>
 
       {/* Date Filters */}
       <div className="flex flex-col sm:flex-row gap-3 mb-6 p-4 bg-botanical-surface rounded-lg border-2 border-b-[6px] border-botanical-border">
         <div className="flex-1">
-          <label className="block text-[10px] text-botanical-muted uppercase tracking-wider mb-1">From Date</label>
+          <label className="block text-sm text-botanical-muted uppercase tracking-wider mb-1">From Date</label>
           <input type="date" value={dateFrom} onChange={e => setDateFrom(e.target.value)} style={inputStyle}
             className="w-full border-2 border-b-[6px] border-botanical-border rounded p-2 text-sm focus:outline-none focus:border-brand-gold [&::-webkit-calendar-picker-indicator]:invert" />
         </div>
         <div className="flex-1">
-          <label className="block text-[10px] text-botanical-muted uppercase tracking-wider mb-1">To Date</label>
+          <label className="block text-sm text-botanical-muted uppercase tracking-wider mb-1">To Date</label>
           <input type="date" value={dateTo} onChange={e => setDateTo(e.target.value)} style={inputStyle}
             className="w-full border-2 border-b-[6px] border-botanical-border rounded p-2 text-sm focus:outline-none focus:border-brand-gold [&::-webkit-calendar-picker-indicator]:invert" />
         </div>
@@ -192,7 +192,7 @@ export default function StaffWorkingReport({ staffMembers }: { staffMembers: Sta
                         <h4 className="font-bold text-botanical-text text-sm sm:text-base flex items-center gap-2">
                           {staff.name}
                           {staff.isActive && (
-                            <span className="text-[10px] text-green-400 bg-green-900/50 px-2 py-0.5 rounded-full font-bold animate-pulse">
+                            <span className="text-sm text-green-400 bg-green-900/50 px-2 py-0.5 rounded-full font-bold animate-pulse">
                               ACTIVE
                             </span>
                           )}
@@ -202,15 +202,15 @@ export default function StaffWorkingReport({ staffMembers }: { staffMembers: Sta
 
                     <div className="grid grid-cols-3 gap-4 sm:gap-8 text-center sm:text-right">
                       <div>
-                        <p className="text-[10px] text-botanical-muted uppercase tracking-wider">Hours</p>
+                        <p className="text-sm text-botanical-muted uppercase tracking-wider">Hours</p>
                         <p className="text-sm sm:text-lg font-bold text-purple-400">{staff.hours}</p>
                       </div>
                       <div>
-                        <p className="text-[10px] text-botanical-muted uppercase tracking-wider">Clients</p>
+                        <p className="text-sm text-botanical-muted uppercase tracking-wider">Clients</p>
                         <p className="text-sm sm:text-lg font-bold text-green-400">{staff.clients}</p>
                       </div>
                       <div>
-                        <p className="text-[10px] text-botanical-muted uppercase tracking-wider">Revenue</p>
+                        <p className="text-sm text-botanical-muted uppercase tracking-wider">Revenue</p>
                         <p className="text-sm sm:text-lg font-bold text-amber-400">${staff.revenue.toFixed(2)}</p>
                       </div>
                     </div>
@@ -219,7 +219,7 @@ export default function StaffWorkingReport({ staffMembers }: { staffMembers: Sta
                   {/* Progress Bars */}
                   <div className="mt-3 grid grid-cols-2 gap-3">
                     <div>
-                      <div className="flex justify-between text-[10px] text-botanical-muted mb-1">
+                      <div className="flex justify-between text-sm text-botanical-muted mb-1">
                         <span>Hours share</span>
                         <span>{hoursPct.toFixed(1)}%</span>
                       </div>
@@ -228,7 +228,7 @@ export default function StaffWorkingReport({ staffMembers }: { staffMembers: Sta
                       </div>
                     </div>
                     <div>
-                      <div className="flex justify-between text-[10px] text-botanical-muted mb-1">
+                      <div className="flex justify-between text-sm text-botanical-muted mb-1">
                         <span>Client share</span>
                         <span>{clientsPct.toFixed(1)}%</span>
                       </div>
@@ -247,7 +247,7 @@ export default function StaffWorkingReport({ staffMembers }: { staffMembers: Sta
                       <div>
                         <h5 className="text-sm font-semibold text-purple-400 mb-3 flex items-center gap-2">
                           ⏱️ Attendance Logs
-                          <span className="text-[10px] text-botanical-muted font-normal">
+                          <span className="text-sm text-botanical-muted font-normal">
                             ({selectedStaffData.filteredLogs.length} entries)
                           </span>
                         </h5>
@@ -293,7 +293,7 @@ export default function StaffWorkingReport({ staffMembers }: { staffMembers: Sta
                       <div>
                         <h5 className="text-sm font-semibold text-green-400 mb-3 flex items-center gap-2">
                           ✂️ Clients Served
-                          <span className="text-[10px] text-botanical-muted font-normal">
+                          <span className="text-sm text-botanical-muted font-normal">
                             ({selectedStaffData.filteredAppointments.length} completed)
                           </span>
                         </h5>

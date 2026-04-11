@@ -97,7 +97,7 @@ export default function SupabaseAuthButton({
                {/* QR Code scales down slightly on desktop */}
                <QRCodeSVG value={profile?.barcode || user.id} size={160} className="sm:w-[120px] sm:h-[120px]" level="L" />
              </div>
-             <p className="text-xs sm:text-[10px] text-botanical-muted mt-4 sm:mt-2 text-center uppercase tracking-widest font-bold">My Check-in Code</p>
+             <p className="text-xs sm:text-sm text-botanical-muted mt-4 sm:mt-2 text-center uppercase tracking-widest font-bold">My Check-in Code</p>
            </div>
            
            {/* Menu Actions */}

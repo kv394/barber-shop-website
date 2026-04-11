@@ -118,11 +118,11 @@ export default function SchedulePage() {
           className="grid grid-cols-1 md:grid-cols-3 gap-6"
         >
           <div>
-            <label className="block text-[10px] text-botanical-muted mb-1 font-semibold uppercase tracking-wider">Name</label>
+            <label className="block text-sm text-botanical-muted mb-1 font-semibold uppercase tracking-wider">Name</label>
             <input type="text" name="name" defaultValue={staffMember.name || ''} className="w-full bg-botanical-surface p-2.5 rounded-lg border-2 border-b-[6px] border-botanical-border text-botanical-text focus:ring-2 focus:ring-botanical-primary outline-none transition-all" />
           </div>
           <div>
-            <label className="block text-[10px] text-botanical-muted mb-1 font-semibold uppercase tracking-wider">Phone</label>
+            <label className="block text-sm text-botanical-muted mb-1 font-semibold uppercase tracking-wider">Phone</label>
             <input type="tel" name="phone" defaultValue={staffMember.phone || ''} className="w-full bg-botanical-surface p-2.5 rounded-lg border-2 border-b-[6px] border-botanical-border text-botanical-text focus:ring-2 focus:ring-botanical-primary outline-none transition-all" />
           </div>
           <div className="flex items-end">

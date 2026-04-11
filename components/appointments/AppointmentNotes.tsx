@@ -42,7 +42,7 @@ export default function AppointmentNotes({ shopId, appointmentId, initialNotes, 
     return (
       <button
         onClick={() => setIsOpen(true)}
-        className={`text-[10px] sm:text-xs transition-colors flex items-center gap-1 mt-2 ${hasClientInfo ? 'text-amber-400 hover:text-amber-300' : 'text-botanical-muted hover:text-botanical-text'}`}
+        className={`text-sm sm:text-xs transition-colors flex items-center gap-1 mt-2 ${hasClientInfo ? 'text-amber-400 hover:text-amber-300' : 'text-botanical-muted hover:text-botanical-text'}`}
         title="View Notes"
       >
         📝 {hasClientInfo ? 'View Client Notes' : initialNotes ? 'View Appointment Notes' : 'Add Notes'}
@@ -54,7 +54,7 @@ export default function AppointmentNotes({ shopId, appointmentId, initialNotes, 
     <div className="mt-3 pt-3 border-t border-botanical-border space-y-3">
       {hasClientInfo && (
         <div className="bg-botanical-surface p-2 rounded border border-amber-500/20">
-          <h5 className="text-[10px] uppercase tracking-wider text-amber-500 font-bold mb-1">Client Profile</h5>
+          <h5 className="text-sm uppercase tracking-wider text-amber-500 font-bold mb-1">Client Profile</h5>
           {clientNotes && <p className="text-xs text-botanical-muted mb-1"><span className="text-botanical-muted font-semibold">Notes:</span> {clientNotes}</p>}
           {preferences && <p className="text-xs text-botanical-muted mb-1"><span className="text-botanical-muted font-semibold">Prefs:</span> {preferences}</p>}
           {allergies && <p className="text-xs text-red-400"><span className="text-red-500 font-semibold">Allergies:</span> {allergies}</p>}
@@ -62,7 +62,7 @@ export default function AppointmentNotes({ shopId, appointmentId, initialNotes, 
       )}
 
       <div>
-        <h5 className="text-[10px] uppercase tracking-wider text-botanical-muted font-bold mb-1">Appointment Notes</h5>
+        <h5 className="text-sm uppercase tracking-wider text-botanical-muted font-bold mb-1">Appointment Notes</h5>
         <textarea
           value={notes}
           onChange={(e) => setNotes(e.target.value)}
@@ -71,10 +71,10 @@ export default function AppointmentNotes({ shopId, appointmentId, initialNotes, 
           rows={2}
         />
         <div className="flex gap-2 mt-1">
-          <button onClick={handleSave} disabled={saving} className="text-[10px] bg-botanical-primary/20 text-botanical-accent px-2 py-0.5 rounded hover:bg-botanical-primary/30 disabled:opacity-50">
+          <button onClick={handleSave} disabled={saving} className="text-sm bg-botanical-primary/20 text-botanical-accent px-2 py-0.5 rounded hover:bg-botanical-primary/30 disabled:opacity-50">
             {saving ? 'Saving...' : saved ? '✓ Saved' : 'Save Notes'}
           </button>
-          <button onClick={() => setIsOpen(false)} className="text-[10px] text-botanical-muted hover:text-botanical-text px-2 py-0.5">
+          <button onClick={() => setIsOpen(false)} className="text-sm text-botanical-muted hover:text-botanical-text px-2 py-0.5">
             Close
           </button>
         </div>

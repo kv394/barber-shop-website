@@ -183,8 +183,8 @@ export default async function StaffBookingPage({
                   </div>
                 </StaffProfileModalWrapper>
                 <div className="flex flex-col gap-1 items-end shrink-0">
-                  {staffMember.using === 'default' && <span className="text-[10px] sm:text-xs bg-amber-900/50 text-amber-300 px-2 py-0.5 sm:py-1 rounded-full">Default Hours</span>}
-                  {staffMember.using === 'shop' && <span className="text-[10px] sm:text-xs bg-blue-900/50 text-blue-300 px-2 py-0.5 sm:py-1 rounded-full">Shop Hours</span>}
+                  {staffMember.using === 'default' && <span className="text-sm sm:text-xs bg-amber-900/50 text-amber-300 px-2 py-0.5 sm:py-1 rounded-full">Default Hours</span>}
+                  {staffMember.using === 'shop' && <span className="text-sm sm:text-xs bg-blue-900/50 text-blue-300 px-2 py-0.5 sm:py-1 rounded-full">Shop Hours</span>}
                 </div>
               </div>
               <div className="flex-grow max-h-80 overflow-y-auto pr-1 sm:pr-2 space-y-1">

@@ -33,7 +33,7 @@ export default function StaffProfileModalWrapper({ staff, children }: { staff: a
 
               <div className="bg-white p-3 rounded-xl mb-6 shadow-sm">
                 <QRCodeSVG value={staff.barcode || staff.id} size={120} level="H" />
-                <p className="text-center text-[10px] text-botanical-muted font-mono mt-2 tracking-wider">{staff.barcode || 'NO_CODE'}</p>
+                <p className="text-center text-sm text-botanical-muted font-mono mt-2 tracking-wider">{staff.barcode || 'NO_CODE'}</p>
               </div>
               
               <div className="w-full space-y-4 text-sm bg-botanical-surface p-4 rounded-xl border-2 border-b-[6px] border-botanical-border">

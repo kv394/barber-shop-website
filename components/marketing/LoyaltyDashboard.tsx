@@ -115,35 +115,35 @@ export default function LoyaltyDashboard({ shopId }: { shopId: string }) {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
           <div>
-            <label className="block text-[11px] text-botanical-muted mb-1 uppercase tracking-wider">Pts / $1 Spent</label>
+            <label className="block text-sm text-botanical-muted mb-1 uppercase tracking-wider">Pts / $1 Spent</label>
             <input type="number" step="0.1" min="0" value={form.pointsPerDollar}
               onChange={e => setForm(f => ({ ...f, pointsPerDollar: parseFloat(e.target.value) || 0 }))}
               className={inputClass} />
           </div>
           <div>
-            <label className="block text-[11px] text-botanical-muted mb-1 uppercase tracking-wider">Pts / Visit</label>
+            <label className="block text-sm text-botanical-muted mb-1 uppercase tracking-wider">Pts / Visit</label>
             <input type="number" min="0" value={form.pointsPerVisit}
               onChange={e => setForm(f => ({ ...f, pointsPerVisit: parseInt(e.target.value) || 0 }))}
               className={inputClass} />
           </div>
           <div>
-            <label className="block text-[11px] text-botanical-muted mb-1 uppercase tracking-wider">Redeem Threshold</label>
+            <label className="block text-sm text-botanical-muted mb-1 uppercase tracking-wider">Redeem Threshold</label>
             <input type="number" min="1" value={form.redeemThreshold}
               onChange={e => setForm(f => ({ ...f, redeemThreshold: parseInt(e.target.value) || 1 }))}
               className={inputClass} />
           </div>
           <div>
-            <label className="block text-[11px] text-botanical-muted mb-1 uppercase tracking-wider">Redeem Value ($)</label>
+            <label className="block text-sm text-botanical-muted mb-1 uppercase tracking-wider">Redeem Value ($)</label>
             <input type="number" step="0.5" min="0" value={form.redeemValue}
               onChange={e => setForm(f => ({ ...f, redeemValue: parseFloat(e.target.value) || 0 }))}
               className={inputClass} />
           </div>
           <div>
-            <label className="block text-[11px] text-botanical-muted mb-1 uppercase tracking-wider">Point Expiry (days)</label>
+            <label className="block text-sm text-botanical-muted mb-1 uppercase tracking-wider">Point Expiry (days)</label>
             <input type="number" min="0" value={form.pointExpiryDays}
               onChange={e => setForm(f => ({ ...f, pointExpiryDays: parseInt(e.target.value) || 0 }))}
               className={inputClass} />
-            <p className="text-[9px] text-botanical-muted mt-0.5">0 = never expire</p>
+            <p className="text-xs text-botanical-muted mt-0.5">0 = never expire</p>
           </div>
         </div>
 
@@ -176,24 +176,24 @@ export default function LoyaltyDashboard({ shopId }: { shopId: string }) {
             {tierForm.map((tier, idx) => (
               <div key={idx} className="grid grid-cols-4 gap-3 bg-botanical-surface p-3 rounded-lg border-2 border-b-[6px] border-botanical-border">
                 <div>
-                  <label className="block text-[9px] text-botanical-muted mb-0.5 uppercase">Name</label>
+                  <label className="block text-xs text-botanical-muted mb-0.5 uppercase">Name</label>
                   <input value={tier.name} onChange={e => updateTier(idx, 'name', e.target.value)}
                     className="w-full bg-botanical-surface border-2 border-b-[6px] border-botanical-border rounded p-1.5 text-xs text-botanical-text" />
                 </div>
                 <div>
-                  <label className="block text-[9px] text-botanical-muted mb-0.5 uppercase">Min Lifetime Pts</label>
+                  <label className="block text-xs text-botanical-muted mb-0.5 uppercase">Min Lifetime Pts</label>
                   <input type="number" min="0" value={tier.minPoints}
                     onChange={e => updateTier(idx, 'minPoints', parseInt(e.target.value) || 0)}
                     className="w-full bg-botanical-surface border-2 border-b-[6px] border-botanical-border rounded p-1.5 text-xs text-botanical-text" />
                 </div>
                 <div>
-                  <label className="block text-[9px] text-botanical-muted mb-0.5 uppercase">Earn Multiplier</label>
+                  <label className="block text-xs text-botanical-muted mb-0.5 uppercase">Earn Multiplier</label>
                   <input type="number" step="0.05" min="1" value={tier.earnMultiplier}
                     onChange={e => updateTier(idx, 'earnMultiplier', parseFloat(e.target.value) || 1)}
                     className="w-full bg-botanical-surface border-2 border-b-[6px] border-botanical-border rounded p-1.5 text-xs text-botanical-text" />
                 </div>
                 <div>
-                  <label className="block text-[9px] text-botanical-muted mb-0.5 uppercase">Perks</label>
+                  <label className="block text-xs text-botanical-muted mb-0.5 uppercase">Perks</label>
                   <input value={tier.perks} onChange={e => updateTier(idx, 'perks', e.target.value)}
                     className="w-full bg-botanical-surface border-2 border-b-[6px] border-botanical-border rounded p-1.5 text-xs text-botanical-text" />
                 </div>
@@ -211,9 +211,9 @@ export default function LoyaltyDashboard({ shopId }: { shopId: string }) {
                 className={`p-4 rounded-lg border text-center ${TIER_COLORS[tier.name] || 'bg-botanical-surface text-botanical-text border-botanical-border'}`}>
                 <div className="text-2xl mb-1">{TIER_ICONS[tier.name] || '⭐'}</div>
                 <p className="font-bold text-sm">{tier.name}</p>
-                <p className="text-[10px] opacity-70 mt-0.5">{tier.minPoints}+ lifetime pts</p>
+                <p className="text-sm opacity-70 mt-0.5">{tier.minPoints}+ lifetime pts</p>
                 <p className="text-xs font-semibold mt-1">{tier.earnMultiplier}x earn rate</p>
-                <p className="text-[10px] opacity-60 mt-1">{tier.perks}</p>
+                <p className="text-sm opacity-60 mt-1">{tier.perks}</p>
               </div>
             ))}
           </div>
@@ -245,29 +245,29 @@ export default function LoyaltyDashboard({ shopId }: { shopId: string }) {
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
                     <p className="text-sm font-semibold text-botanical-text truncate">{acc.user?.name || 'Guest'}</p>
-                    <span className={`px-1.5 py-0.5 rounded text-[9px] font-bold border ${
+                    <span className={`px-1.5 py-0.5 rounded text-xs font-bold border ${
                       TIER_COLORS[acc.currentTier] || 'bg-botanical-surface text-botanical-muted border-botanical-border'
                     }`}>
                       {TIER_ICONS[acc.currentTier] || ''} {acc.currentTier || 'Bronze'}
                     </span>
                   </div>
-                  <p className="text-[10px] text-botanical-muted truncate">{acc.user?.email}</p>
+                  <p className="text-sm text-botanical-muted truncate">{acc.user?.email}</p>
                 </div>
                 <div className="text-right">
                   <p className="text-lg font-black text-botanical-accent">{acc.pointsBalance}</p>
-                  <p className="text-[9px] text-botanical-muted uppercase">balance</p>
+                  <p className="text-xs text-botanical-muted uppercase">balance</p>
                 </div>
                 <div className="text-right hidden sm:block">
                   <p className="text-sm text-blue-400">{acc.lifetimePoints || acc.totalEarned}</p>
-                  <p className="text-[9px] text-botanical-muted uppercase">lifetime</p>
+                  <p className="text-xs text-botanical-muted uppercase">lifetime</p>
                 </div>
                 <div className="text-right hidden sm:block">
                   <p className="text-sm text-green-400">{acc.totalEarned}</p>
-                  <p className="text-[9px] text-botanical-muted uppercase">earned</p>
+                  <p className="text-xs text-botanical-muted uppercase">earned</p>
                 </div>
                 <div className="text-right hidden md:block">
                   <p className="text-sm text-red-400">{acc.totalRedeemed}</p>
-                  <p className="text-[9px] text-botanical-muted uppercase">redeemed</p>
+                  <p className="text-xs text-botanical-muted uppercase">redeemed</p>
                 </div>
               </div>
             ))}

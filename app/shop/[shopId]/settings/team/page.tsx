@@ -307,12 +307,12 @@ export default async function TeamDashboardPage({ params, searchParams }: { para
           <form action={inviteUser} className="grid grid-cols-1 md:grid-cols-12 gap-3 items-end">
             <input type="hidden" name="shopId" value={shop.id} />
             <div className="md:col-span-6">
-              <label className="block text-[10px] text-slate-600 mb-1 font-semibold uppercase tracking-wider">📧 Email</label>
+              <label className="block text-sm text-slate-600 mb-1 font-semibold uppercase tracking-wider">📧 Email</label>
               <input type="email" name="email" required placeholder="team@example.com"
                 className="w-full p-2.5 rounded-lg border-2 border-b-[6px] border-botanical-border bg-white text-slate-900 text-sm placeholder-gray-400 focus:ring-2 focus:ring-botanical-primary focus:outline-none transition-all" />
             </div>
             <div className="md:col-span-3">
-              <label className="block text-[10px] text-slate-600 mb-1 font-semibold uppercase tracking-wider">👤 Role</label>
+              <label className="block text-sm text-slate-600 mb-1 font-semibold uppercase tracking-wider">👤 Role</label>
               <select name="role" defaultValue={userRole === 'SUPER_ADMIN' ? 'SHOP_ADMIN' : 'STAFF'}
                 className="w-full p-2.5 rounded-lg border-2 border-b-[6px] border-botanical-border bg-white text-slate-900 text-sm focus:ring-2 focus:ring-botanical-primary focus:outline-none transition-all">
                 {userRole === 'SHOP_ADMIN' && <option value="STAFF">Staff</option>}
@@ -349,7 +349,7 @@ export default async function TeamDashboardPage({ params, searchParams }: { para
                 <div>
                   <h2 className="text-xl font-bold text-slate-900 mb-1 flex items-center gap-2">
                     {staffMember.name || staffMember.email.split('@')[0]}
-                    <span className={`text-[9px] px-1.5 py-0.5 rounded uppercase tracking-wider font-bold ${staffMember.role === 'SHOP_ADMIN' ? 'bg-botanical-primary/10 text-botanical-primary border border-botanical-primary/20' : 'bg-blue-50 text-blue-700 border border-blue-200'}`}>
+                    <span className={`text-xs px-1.5 py-0.5 rounded uppercase tracking-wider font-bold ${staffMember.role === 'SHOP_ADMIN' ? 'bg-botanical-primary/10 text-botanical-primary border border-botanical-primary/20' : 'bg-blue-50 text-blue-700 border border-blue-200'}`}>
                       {staffMember.role.replace('_', ' ')}
                     </span>
                   </h2>

@@ -66,7 +66,7 @@ export default function WaitlistClient({ shopId, services, staff }: { shopId: st
         <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-botanical-surface transition-all duration-300 min-w-0">
           <div className="absolute top-0 left-0 w-full h-1 bg-blue-500/80"></div>
           <div className="flex justify-between items-center mb-2 sm:mb-3">
-            <h3 className="text-botanical-muted text-[10px] sm:text-xs uppercase tracking-widest font-semibold truncate">Waiting</h3>
+            <h3 className="text-botanical-muted text-sm sm:text-xs uppercase tracking-widest font-semibold truncate">Waiting</h3>
             <span className="text-blue-500 text-sm">⏳</span>
           </div>
           <p className="text-xl sm:text-2xl lg:text-3xl font-black text-botanical-text break-words leading-tight">{waiting.length}</p>
@@ -74,7 +74,7 @@ export default function WaitlistClient({ shopId, services, staff }: { shopId: st
         <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-botanical-surface transition-all duration-300 min-w-0">
           <div className="absolute top-0 left-0 w-full h-1 bg-green-500/80"></div>
           <div className="flex justify-between items-center mb-2 sm:mb-3">
-            <h3 className="text-botanical-muted text-[10px] sm:text-xs uppercase tracking-widest font-semibold truncate">Being Served</h3>
+            <h3 className="text-botanical-muted text-sm sm:text-xs uppercase tracking-widest font-semibold truncate">Being Served</h3>
             <span className="text-green-500 text-sm">✂️</span>
           </div>
           <p className="text-xl sm:text-2xl lg:text-3xl font-black text-botanical-text break-words leading-tight">{serving.length}</p>
@@ -82,7 +82,7 @@ export default function WaitlistClient({ shopId, services, staff }: { shopId: st
         <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-botanical-surface transition-all duration-300 min-w-0">
           <div className="absolute top-0 left-0 w-full h-1 bg-purple-500/80"></div>
           <div className="flex justify-between items-center mb-2 sm:mb-3">
-            <h3 className="text-botanical-muted text-[10px] sm:text-xs uppercase tracking-widest font-semibold truncate">Est. Wait</h3>
+            <h3 className="text-botanical-muted text-sm sm:text-xs uppercase tracking-widest font-semibold truncate">Est. Wait</h3>
             <span className="text-purple-500 text-sm">⏱️</span>
           </div>
           <p className="text-xl sm:text-2xl lg:text-3xl font-black text-botanical-text break-words leading-tight">{waiting.length > 0 ? `~${waiting.length * 15}m` : '0m'}</p>
@@ -114,9 +114,9 @@ export default function WaitlistClient({ shopId, services, staff }: { shopId: st
                 <div className="w-8 h-8 rounded-full bg-green-600 flex items-center justify-center text-botanical-text font-bold text-sm">✂️</div>
                 <div>
                   <p className="text-sm font-bold text-botanical-text">{entry.clientName}</p>
-                  <p className="text-[10px] text-green-400">Being served · {getWaitTime(entry.createdAt)} ago</p>
-                  {entry.staffId && <p className="text-[10px] text-purple-400">✂️ {getStaffName(entry.staffId)}</p>}
-                  {entry.clientPhone && <p className="text-[10px] text-botanical-muted">📱 {entry.clientPhone}</p>}
+                  <p className="text-sm text-green-400">Being served · {getWaitTime(entry.createdAt)} ago</p>
+                  {entry.staffId && <p className="text-sm text-purple-400">✂️ {getStaffName(entry.staffId)}</p>}
+                  {entry.clientPhone && <p className="text-sm text-botanical-muted">📱 {entry.clientPhone}</p>}
                 </div>
               </div>
               <button onClick={() => updateStatus(entry.id, 'DONE')} className="bg-green-600 hover:bg-green-500 text-botanical-text text-xs font-bold px-3 py-1.5 rounded">Done ✓</button>
@@ -129,9 +129,9 @@ export default function WaitlistClient({ shopId, services, staff }: { shopId: st
                   <div className="w-8 h-8 rounded-full bg-botanical-surface flex items-center justify-center text-botanical-text font-bold text-sm">{idx + 1}</div>
                   <div>
                     <p className="text-sm font-bold text-botanical-text">{entry.clientName}</p>
-                    <p className="text-[10px] text-botanical-muted">Waiting · {getWaitTime(entry.createdAt)}</p>
-                    {entry.staffId && <p className="text-[10px] text-purple-400">✂️ {getStaffName(entry.staffId)}</p>}
-                    {entry.clientPhone && <p className="text-[10px] text-botanical-muted">📱 {entry.clientPhone}</p>}
+                    <p className="text-sm text-botanical-muted">Waiting · {getWaitTime(entry.createdAt)}</p>
+                    {entry.staffId && <p className="text-sm text-purple-400">✂️ {getStaffName(entry.staffId)}</p>}
+                    {entry.clientPhone && <p className="text-sm text-botanical-muted">📱 {entry.clientPhone}</p>}
                   </div>
                 </div>
                 <div className="flex gap-2">
@@ -143,7 +143,7 @@ export default function WaitlistClient({ shopId, services, staff }: { shopId: st
               {/* Staff Picker Dropdown */}
               {assigningId === entry.id && (
                 <div className="mt-3 pt-3 border-t border-botanical-border">
-                  <p className="text-[10px] text-botanical-muted uppercase tracking-wider mb-2">Assign barber:</p>
+                  <p className="text-sm text-botanical-muted uppercase tracking-wider mb-2">Assign barber:</p>
                   <div className="flex flex-wrap gap-2">
                     {staff.map(s => (
                       <button key={s.id} onClick={() => updateStatus(entry.id, undefined, s.id)}

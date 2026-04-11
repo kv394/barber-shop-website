@@ -272,10 +272,10 @@ export function ServiceManagement({ shopId }: ServiceManagementProps) {
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center flex-wrap gap-2 mb-1">
                           <h4 className="font-semibold text-botanical-text text-sm sm:text-lg">{service.name}</h4>
-                          <div className={`text-[10px] sm:text-xs font-semibold px-2 py-0.5 sm:py-1 rounded border ${service.type === 'INTERNAL' ? 'bg-purple-900/50 text-purple-300 border-purple-500/30' : 'bg-green-900/50 text-green-300 border-green-500/30'}`}>
+                          <div className={`text-sm sm:text-xs font-semibold px-2 py-0.5 sm:py-1 rounded border ${service.type === 'INTERNAL' ? 'bg-purple-900/50 text-purple-300 border-purple-500/30' : 'bg-green-900/50 text-green-300 border-green-500/30'}`}>
                               {service.type}
                           </div>
-                          <div className={`text-[10px] sm:text-xs font-semibold px-2 py-0.5 sm:py-1 rounded border ${service.trackInventory ? 'bg-blue-900/50 text-blue-300 border-blue-500/30' : 'bg-botanical-surface text-botanical-muted border-botanical-border'}`}>
+                          <div className={`text-sm sm:text-xs font-semibold px-2 py-0.5 sm:py-1 rounded border ${service.trackInventory ? 'bg-blue-900/50 text-blue-300 border-blue-500/30' : 'bg-botanical-surface text-botanical-muted border-botanical-border'}`}>
                               Inventory: {service.trackInventory ? 'ON' : 'OFF'}
                           </div>
                       </div>

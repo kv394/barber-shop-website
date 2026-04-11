@@ -127,7 +127,7 @@ export default function GiftCardManager({ shopId }: { shopId: string }) {
                   <td className="p-3 text-right text-botanical-text">${card.initialBalance.toFixed(2)}</td>
                   <td className="p-3 text-right font-semibold text-green-400">${card.currentBalance.toFixed(2)}</td>
                   <td className="p-3 text-center">
-                    <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${card.status === 'ACTIVE' ? 'bg-green-900/40 text-green-300' : card.status === 'REDEEMED' ? 'bg-blue-900/40 text-blue-300' : 'bg-botanical-surface/40 text-botanical-muted'}`}>
+                    <span className={`text-sm font-bold px-2 py-0.5 rounded-full ${card.status === 'ACTIVE' ? 'bg-green-900/40 text-green-300' : card.status === 'REDEEMED' ? 'bg-blue-900/40 text-blue-300' : 'bg-botanical-surface/40 text-botanical-muted'}`}>
                       {card.status}
                     </span>
                   </td>

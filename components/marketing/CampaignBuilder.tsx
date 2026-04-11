@@ -66,7 +66,7 @@ export default function CampaignBuilder({ shopId }: { shopId: string }) {
       SENT: 'bg-green-900/50 text-green-300 border-green-500/30',
       CANCELLED: 'bg-red-900/50 text-red-300 border-red-500/30',
     };
-    return <span className={`px-2 py-0.5 rounded text-[10px] font-bold border ${colors[status] || colors.DRAFT}`}>{status}</span>;
+    return <span className={`px-2 py-0.5 rounded text-sm font-bold border ${colors[status] || colors.DRAFT}`}>{status}</span>;
   };
 
   const segmentLabels: Record<string, string> = {
@@ -97,7 +97,7 @@ export default function CampaignBuilder({ shopId }: { shopId: string }) {
       {showCreate && (
         <div className="bg-botanical-surface p-6 rounded-xl border-2 border-b-[6px] border-botanical-border space-y-4">
           <div>
-            <label className="block text-[11px] text-botanical-muted mb-1 uppercase tracking-wider">Campaign Name</label>
+            <label className="block text-sm text-botanical-muted mb-1 uppercase tracking-wider">Campaign Name</label>
             <input
               value={form.name}
               onChange={(e) => setForm(f => ({ ...f, name: e.target.value }))}
@@ -107,7 +107,7 @@ export default function CampaignBuilder({ shopId }: { shopId: string }) {
           </div>
 
           <div>
-            <label className="block text-[11px] text-botanical-muted mb-1 uppercase tracking-wider">Message</label>
+            <label className="block text-sm text-botanical-muted mb-1 uppercase tracking-wider">Message</label>
             <textarea
               value={form.message}
               onChange={(e) => setForm(f => ({ ...f, message: e.target.value }))}
@@ -119,7 +119,7 @@ export default function CampaignBuilder({ shopId }: { shopId: string }) {
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div>
-              <label className="block text-[11px] text-botanical-muted mb-1 uppercase tracking-wider">Type</label>
+              <label className="block text-sm text-botanical-muted mb-1 uppercase tracking-wider">Type</label>
               <select
                 value={form.type}
                 onChange={(e) => setForm(f => ({ ...f, type: e.target.value }))}
@@ -133,7 +133,7 @@ export default function CampaignBuilder({ shopId }: { shopId: string }) {
             </div>
 
             <div>
-              <label className="block text-[11px] text-botanical-muted mb-1 uppercase tracking-wider">Channel</label>
+              <label className="block text-sm text-botanical-muted mb-1 uppercase tracking-wider">Channel</label>
               <select
                 value={form.channel}
                 onChange={(e) => setForm(f => ({ ...f, channel: e.target.value }))}
@@ -146,7 +146,7 @@ export default function CampaignBuilder({ shopId }: { shopId: string }) {
             </div>
 
             <div>
-              <label className="block text-[11px] text-botanical-muted mb-1 uppercase tracking-wider">Target Audience</label>
+              <label className="block text-sm text-botanical-muted mb-1 uppercase tracking-wider">Target Audience</label>
               <select
                 value={form.targetSegment}
                 onChange={(e) => setForm(f => ({ ...f, targetSegment: e.target.value }))}
@@ -183,7 +183,7 @@ export default function CampaignBuilder({ shopId }: { shopId: string }) {
                   {getStatusBadge(c.status)}
                 </div>
                 <p className="text-xs text-botanical-muted truncate">{c.message}</p>
-                <div className="flex gap-3 mt-1 text-[10px] text-botanical-muted">
+                <div className="flex gap-3 mt-1 text-sm text-botanical-muted">
                   <span>📧 {c.channel}</span>
                   <span>🎯 {segmentLabels[c.targetSegment] || c.targetSegment}</span>
                   {c.recipientCount > 0 && <span>👥 {c.recipientCount} sent</span>}

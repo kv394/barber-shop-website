@@ -171,7 +171,7 @@ export default function CheckoutButton({
             <div className="p-5 space-y-5">
               {/* ── Cart ── */}
               <section>
-                <h3 className="text-[11px] font-semibold text-botanical-muted uppercase tracking-wider mb-2">Cart</h3>
+                <h3 className="text-sm font-semibold text-botanical-muted uppercase tracking-wider mb-2">Cart</h3>
                 <div className="space-y-2">
                   {cart.map(item => (
                     <div key={item.id} className="flex items-center gap-3 bg-botanical-surface rounded-lg px-3 py-2">
@@ -193,7 +193,7 @@ export default function CheckoutButton({
                 {/* Add products */}
                 {products.length > 0 && (
                   <div className="mt-3">
-                    <p className="text-[11px] text-botanical-muted mb-2 uppercase tracking-wider">Add Products</p>
+                    <p className="text-sm text-botanical-muted mb-2 uppercase tracking-wider">Add Products</p>
                     <div className="grid grid-cols-2 gap-2 max-h-32 overflow-y-auto pr-1">
                       {products.map(p => {
                         const inCart = cart.find(i => i.productId === p.id);
@@ -204,7 +204,7 @@ export default function CheckoutButton({
                             className="text-left bg-botanical-surface hover:bg-botanical-surface border-2 border-b-[6px] border-botanical-border rounded-lg p-2 transition-colors relative"
                           >
                             {inCart && (
-                              <span className="absolute top-1 right-1 bg-botanical-primary text-white text-[9px] font-black w-4 h-4 rounded-full flex items-center justify-center">
+                              <span className="absolute top-1 right-1 bg-botanical-primary text-white text-xs font-black w-4 h-4 rounded-full flex items-center justify-center">
                                 {inCart.quantity}
                               </span>
                             )}
@@ -220,7 +220,7 @@ export default function CheckoutButton({
 
               {/* ── Tip ── */}
               <section>
-                <h3 className="text-[11px] font-semibold text-botanical-muted uppercase tracking-wider mb-2">Tip</h3>
+                <h3 className="text-sm font-semibold text-botanical-muted uppercase tracking-wider mb-2">Tip</h3>
                 <div className="flex gap-2 flex-wrap">
                   {TIP_PRESETS.map(t => (
                     <button
@@ -253,7 +253,7 @@ export default function CheckoutButton({
 
               {/* ── Discount ── */}
               <section>
-                <h3 className="text-[11px] font-semibold text-botanical-muted uppercase tracking-wider mb-2">Discount</h3>
+                <h3 className="text-sm font-semibold text-botanical-muted uppercase tracking-wider mb-2">Discount</h3>
                 <div className="flex items-center gap-1 bg-botanical-surface rounded-lg px-3 py-2 w-36 border border-transparent focus-within:border-brand-gold/40 transition-colors">
                   <span className="text-botanical-muted text-sm">$</span>
                   <input
@@ -268,7 +268,7 @@ export default function CheckoutButton({
 
               {/* ── Payment Method ── */}
               <section>
-                <h3 className="text-[11px] font-semibold text-botanical-muted uppercase tracking-wider mb-2">Payment Method</h3>
+                <h3 className="text-sm font-semibold text-botanical-muted uppercase tracking-wider mb-2">Payment Method</h3>
                 <div className="flex gap-2">
                   {(['CASH', 'CARD', 'MOBILE'] as const).map(m => (
                     <button

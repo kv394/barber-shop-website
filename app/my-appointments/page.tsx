@@ -246,7 +246,7 @@ function AppointmentCard({
             <span className="font-bold text-botanical-text text-sm sm:text-base truncate">
               {apt.shop?.name || 'Unknown Shop'}
             </span>
-            <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${style.bg} ${style.text}`}>
+            <span className={`text-sm font-bold px-2 py-0.5 rounded-full ${style.bg} ${style.text}`}>
               {style.label}
             </span>
           </div>

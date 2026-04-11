@@ -65,7 +65,7 @@ export default function ExpensesClient({ shopId }: { shopId: string }) {
       {/* Month Picker + Total */}
       <div className="flex flex-col sm:flex-row gap-4 mb-6">
         <div className="flex-1">
-          <label className="block text-[10px] text-botanical-muted uppercase tracking-wider mb-1">Month</label>
+          <label className="block text-sm text-botanical-muted uppercase tracking-wider mb-1">Month</label>
           <input type="month" value={month} onChange={e => setMonth(e.target.value)} style={inputStyle}
             className="w-full border-2 border-b-[6px] border-botanical-border rounded p-2.5 text-sm focus:outline-none focus:border-brand-gold [&::-webkit-calendar-picker-indicator]:invert" />
         </div>
@@ -73,7 +73,7 @@ export default function ExpensesClient({ shopId }: { shopId: string }) {
           <div className="absolute top-0 left-0 w-full h-1 bg-red-500/80"></div>
           <div className="p-5 sm:p-6">
             <div className="flex justify-between items-center mb-2 sm:mb-3">
-              <h3 className="text-botanical-muted text-[10px] sm:text-xs uppercase tracking-widest font-semibold truncate">Total Expenses</h3>
+              <h3 className="text-botanical-muted text-sm sm:text-xs uppercase tracking-widest font-semibold truncate">Total Expenses</h3>
               <span className="text-red-500 text-sm">💸</span>
             </div>
             <p className="text-2xl sm:text-3xl font-black text-botanical-text break-words leading-tight">${total.toFixed(2)}</p>
@@ -127,7 +127,7 @@ export default function ExpensesClient({ shopId }: { shopId: string }) {
                 <span className="text-lg">{catEmojis[exp.category] || '📦'}</span>
                 <div>
                   <p className="text-sm text-botanical-text font-medium">{exp.description || exp.category}</p>
-                  <p className="text-[10px] text-botanical-muted">{new Date(exp.date).toLocaleDateString()} · {exp.category}</p>
+                  <p className="text-sm text-botanical-muted">{new Date(exp.date).toLocaleDateString()} · {exp.category}</p>
                 </div>
               </div>
               <div className="flex items-center gap-3">

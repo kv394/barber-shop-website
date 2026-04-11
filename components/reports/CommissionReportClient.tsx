@@ -97,7 +97,7 @@ export default function CommissionReportClient({
         <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-botanical-surface transition-all duration-300 min-w-0">
           <div className="absolute top-0 left-0 w-full h-1 bg-green-500/80"></div>
           <div className="flex justify-between items-center mb-3">
-            <h3 className="text-botanical-muted text-[10px] sm:text-xs uppercase tracking-widest font-semibold truncate">{isPersonalView ? 'My Revenue' : 'Gross Revenue'}</h3>
+            <h3 className="text-botanical-muted text-sm sm:text-xs uppercase tracking-widest font-semibold truncate">{isPersonalView ? 'My Revenue' : 'Gross Revenue'}</h3>
             <span className="text-green-500 text-sm">💵</span>
           </div>
           <p className="text-2xl sm:text-3xl font-black text-botanical-text break-words leading-tight">${totalRevenue.toFixed(0)}</p>
@@ -105,7 +105,7 @@ export default function CommissionReportClient({
         <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-botanical-surface transition-all duration-300 min-w-0">
           <div className="absolute top-0 left-0 w-full h-1 bg-blue-500/80"></div>
           <div className="flex justify-between items-center mb-3">
-            <h3 className="text-botanical-muted text-[10px] sm:text-xs uppercase tracking-widest font-semibold truncate">{isPersonalView ? 'My Commission' : 'Commission'}</h3>
+            <h3 className="text-botanical-muted text-sm sm:text-xs uppercase tracking-widest font-semibold truncate">{isPersonalView ? 'My Commission' : 'Commission'}</h3>
             <span className="text-blue-500 text-sm">💎</span>
           </div>
           <p className="text-2xl sm:text-3xl font-black text-botanical-text break-words leading-tight">${totalCommission.toFixed(0)}</p>
@@ -113,7 +113,7 @@ export default function CommissionReportClient({
         <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-botanical-surface transition-all duration-300 min-w-0">
           <div className="absolute top-0 left-0 w-full h-1 bg-amber-500/80"></div>
           <div className="flex justify-between items-center mb-3">
-            <h3 className="text-botanical-muted text-[10px] sm:text-xs uppercase tracking-widest font-semibold truncate">{isPersonalView ? 'My Tips' : 'Tips'}</h3>
+            <h3 className="text-botanical-muted text-sm sm:text-xs uppercase tracking-widest font-semibold truncate">{isPersonalView ? 'My Tips' : 'Tips'}</h3>
             <span className="text-amber-500 text-sm">🪙</span>
           </div>
           <p className="text-2xl sm:text-3xl font-black text-botanical-text break-words leading-tight">${totalTips.toFixed(0)}</p>
@@ -121,7 +121,7 @@ export default function CommissionReportClient({
         <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-botanical-surface transition-all duration-300 min-w-0">
           <div className="absolute top-0 left-0 w-full h-1 bg-purple-500/80"></div>
           <div className="flex justify-between items-center mb-3">
-            <h3 className="text-botanical-muted text-[10px] sm:text-xs uppercase tracking-widest font-semibold truncate">{isPersonalView ? 'My Total Pay' : 'Total Payout'}</h3>
+            <h3 className="text-botanical-muted text-sm sm:text-xs uppercase tracking-widest font-semibold truncate">{isPersonalView ? 'My Total Pay' : 'Total Payout'}</h3>
             <span className="text-purple-500 text-sm">💳</span>
           </div>
           <p className="text-2xl sm:text-3xl font-black text-botanical-text break-words leading-tight">${totalPayout.toFixed(0)}</p>

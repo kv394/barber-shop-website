@@ -64,12 +64,12 @@ export default function ClientGrid({ clients, shopId }: { clients: any[]; shopId
               </div>
               
               {client.barcode && (
-                <div className="mt-2 text-[10px] text-botanical-muted font-mono tracking-widest break-all">
+                <div className="mt-2 text-sm text-botanical-muted font-mono tracking-widest break-all">
                   ID: {client.barcode}
                 </div>
               )}
 
-              <p className="mt-2 text-[10px] text-botanical-muted group-hover:text-botanical-accent transition-colors">Click to view details →</p>
+              <p className="mt-2 text-sm text-botanical-muted group-hover:text-botanical-accent transition-colors">Click to view details →</p>
             </div>
           ))}
         </div>
