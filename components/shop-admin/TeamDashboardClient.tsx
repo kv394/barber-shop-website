@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import StaffAvailability from '@/components/shop-admin/StaffAvailability';
+import StaffProfileModalWrapper from '@/components/shop-admin/StaffProfileModalWrapper';
 
 export default function TeamDashboardClient({ 
   shopId, 
@@ -46,13 +47,24 @@ export default function TeamDashboardClient({
             <div key={staffMember.id} className={`bg-slate-900/70 border border-white/10 rounded-2xl p-5 flex flex-col shadow-lg transition-all duration-200 hover:shadow-xl hover:border-white/20 ${isOnLeave ? 'ring-1 ring-red-500/50' : ''}`}>
               
               <div className="flex justify-between items-start mb-4">
-                <div>
-                  <h2 className="text-xl font-bold text-white mb-1 flex items-center gap-2">
-                    {staffMember.name || staffMember.email.split('@')[0]}
-                    {staffMember.role === 'SHOP_ADMIN' && <span className="text-[9px] bg-brand-gold/20 text-brand-gold px-1.5 py-0.5 rounded uppercase tracking-wider font-bold">Admin</span>}
-                  </h2>
-                  <p className="text-xs text-gray-500">{staffMember.email}</p>
-                </div>
+                <StaffProfileModalWrapper staff={staffMember}>
+                  <div className="flex items-center gap-3 text-left">
+                    <div className="w-10 h-10 rounded-full overflow-hidden bg-slate-800 border border-brand-gold/50 flex items-center justify-center shrink-0">
+                      {staffMember.imageUrl ? (
+                        <img src={staffMember.imageUrl} alt={staffMember.name} className="w-full h-full object-cover" />
+                      ) : (
+                        <span className="text-sm">👤</span>
+                      )}
+                    </div>
+                    <div>
+                      <h2 className="text-xl font-bold text-white mb-0.5 flex items-center gap-2">
+                        {staffMember.name || staffMember.email.split('@')[0]}
+                        {staffMember.role === 'SHOP_ADMIN' && <span className="text-[9px] bg-brand-gold/20 text-brand-gold px-1.5 py-0.5 rounded uppercase tracking-wider font-bold">Admin</span>}
+                      </h2>
+                      <p className="text-xs text-gray-500">{staffMember.email}</p>
+                    </div>
+                  </div>
+                </StaffProfileModalWrapper>
                 
                 {/* Status Badge */}
                 {isOnLeave ? (
