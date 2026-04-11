@@ -116,7 +116,7 @@ export default async function ShopLayout({
         {isSuperAdmin && (
             <header className="mb-8 sm:mb-12 flex flex-col sm:flex-row justify-between sm:items-end border-b border-botanical-border pb-4 sm:pb-6 gap-3 sm:gap-4">
             <div className="min-w-0">
-                <h2 className="font-serif text-base sm:text-sm md:text-base font-bold text-botanical-accent mb-1 sm:mb-2 truncate">{data.shop.name}</h2>
+                <h2 className="font-serif text-xl sm:text-2xl md:text-3xl font-bold text-botanical-accent mb-1 sm:mb-2 truncate">{data.shop.name}</h2>
             </div>
             </header>
         )}
@@ -124,7 +124,7 @@ export default async function ShopLayout({
         {!isSuperAdmin && (
             <header className="hidden sm:flex mb-8 sm:mb-12 flex-col sm:flex-row justify-between sm:items-end border-b border-botanical-border pb-4 sm:pb-6 gap-3 sm:gap-4">
             <div className="min-w-0">
-                <h2 className="font-serif text-base sm:text-sm md:text-base font-bold text-botanical-accent mb-1 sm:mb-2 truncate">Management Dashboard</h2>
+                <h2 className="font-serif text-xl sm:text-2xl md:text-3xl font-bold text-botanical-accent mb-1 sm:mb-2 truncate">Management Dashboard</h2>
             </div>
             <div className="flex shrink-0">
                 <Link
