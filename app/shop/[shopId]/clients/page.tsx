@@ -7,7 +7,7 @@ import ShopAdminLayout from '@/components/shop-admin/ShopAdminLayout';
 
 export const dynamic = 'force-dynamic';
 
-async function getPageData(shopId: string, userId: string, pageStr: string) {
+async function getPageData(shopId: string, userId: string, pageStr: string, view: string) {
   const data = await getShopLayoutData(userId, shopId);
   if (!data) return null;
 
@@ -15,13 +15,26 @@ async function getPageData(shopId: string, userId: string, pageStr: string) {
   const pageSize = 24;
   const skip = (page - 1) * pageSize;
 
-  const whereClause = {
+  let whereClause: any = {
     role: 'CLIENT' as const,
     OR: [
         { shopId: shopId },
         { clientAppointments: { some: { shopId: shopId } } }
     ]
   };
+
+  // If staff wants to see only their clients
+  if (view === 'my' && data.userRole === 'STAFF') {
+      const dbUser = await prisma.user.findFirst({ where: { OR: [{ id: userId }, { email: userId }] } });
+      const actualUserId = dbUser?.id || userId;
+      
+      whereClause = {
+          role: 'CLIENT' as const,
+          clientAppointments: {
+              some: { shopId: shopId, staffId: actualUserId }
+          }
+      };
+  }
 
   const [totalCount, clients] = await Promise.all([
     prisma.user.count({ where: whereClause }),
@@ -64,16 +77,17 @@ async function getPageData(shopId: string, userId: string, pageStr: string) {
   };
 }
 
-export default async function ClientsPage({ params, searchParams }: { params: Promise<{ shopId: string }>, searchParams: Promise<{ page?: string }> }) {
+export default async function ClientsPage({ params, searchParams }: { params: Promise<{ shopId: string }>, searchParams: Promise<{ page?: string, view?: string }> }) {
   const { shopId } = await params;
   const resolvedSearchParams = await searchParams;
+  const view = resolvedSearchParams.view || 'all';
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
   
   const userId = user?.id;
   if (!userId) return redirect('/');
 
-  const pageData = await getPageData(shopId, userId, resolvedSearchParams.page || '1');
+  const pageData = await getPageData(shopId, userId, resolvedSearchParams.page || '1', view);
 
   if (!pageData) {
     return (
@@ -97,8 +111,15 @@ export default async function ClientsPage({ params, searchParams }: { params: Pr
       userRole={userRole as string}
       activeTab="clients"
     >
-      <div className="flex justify-between items-center mb-4 sm:mb-6">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 sm:mb-6 gap-4">
         <h2 className="text-xl sm:text-2xl font-bold text-white">Registered Clients</h2>
+        
+        {userRole === 'STAFF' && (
+          <div className="flex bg-slate-800/80 p-1 rounded-lg border border-white/10">
+            <a href={`/shop/${shopId}/clients?view=all`} className={`px-4 py-1.5 text-sm font-medium rounded-md transition-colors ${view !== 'my' ? 'bg-brand-gold text-slate-900' : 'text-gray-400 hover:text-white'}`}>All Clients</a>
+            <a href={`/shop/${shopId}/clients?view=my`} className={`px-4 py-1.5 text-sm font-medium rounded-md transition-colors ${view === 'my' ? 'bg-brand-gold text-slate-900' : 'text-gray-400 hover:text-white'}`}>My Clients</a>
+          </div>
+        )}
       </div>
       
       {clients.length === 0 ? (

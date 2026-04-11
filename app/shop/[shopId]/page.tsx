@@ -5,6 +5,7 @@ import { getShopLayoutData } from '@/lib/shop-data';
 import { getTodayInShopTz, toShopTzDayBounds } from '@/lib/timezone';
 import Link from 'next/link';
 import ShopAdminLayout from '@/components/shop-admin/ShopAdminLayout';
+import StaffInbox from '@/components/shop-admin/StaffInbox';
 import { calculateUsageCostStrategy, getSaaSTiers } from '@/lib/cost-calculator';
 
 export const dynamic = 'force-dynamic';
@@ -286,6 +287,13 @@ export default async function ShopDashboardPage({ params }: { params: Promise<{ 
               <span className="ml-auto text-[10px] text-gray-500 uppercase tracking-wider">Next Up</span>
             </div>
           )}
+        </div>
+      )}
+      
+      {/* ── Inbox / Notifications (STAFF only) ── */}
+      {isStaff && (
+        <div className="mb-6 sm:mb-8">
+          <StaffInbox shopId={shopId} userId={userId} />
         </div>
       )}
 

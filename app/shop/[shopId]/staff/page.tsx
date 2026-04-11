@@ -3,6 +3,8 @@ import { getShopLayoutData } from '@/lib/shop-data';
 import StaffAvailability from '@/components/shop-admin/StaffAvailability';
 import ShopAdminLayout from '@/components/shop-admin/ShopAdminLayout';
 import StaffProfileModalWrapper from '@/components/shop-admin/StaffProfileModalWrapper';
+import DirectClockInButton from '@/components/shop-admin/DirectClockInButton';
+import BlockTimeButton from '@/components/shop-admin/BlockTimeButton';
 import { createClient } from '@/utils/supabase/server';
 import { redirect } from 'next/navigation';
 
@@ -15,6 +17,18 @@ async function getShopData(shopId: string, userId: string, date: string, from: s
   const targetDate = new Date(date);
   const nextDate = new Date(targetDate);
   nextDate.setDate(targetDate.getDate() + 1);
+
+  // Check if current user is clocked in
+  const currentUserObj = await prisma.user.findFirst({ where: { OR: [{ id: userId }, { email: userId }] } });
+  const actualUserId = currentUserObj?.id || userId;
+  
+  const activeLog = await prisma.timeLog.findFirst({
+    where: {
+      userId: actualUserId,
+      shopId: shopId,
+      clockOut: null,
+    },
+  });
 
   const staffMembers = await prisma.user.findMany({
     where: { shopId: shopId, role: 'STAFF' },
@@ -85,6 +99,7 @@ async function getShopData(shopId: string, userId: string, date: string, from: s
 
         schedule.push({
           time: currentSlotTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true, timeZone: 'UTC' }),
+          isoTime: `${currentSlotTime.getUTCHours().toString().padStart(2, '0')}:${currentSlotTime.getUTCMinutes().toString().padStart(2, '0')}`,
           isBooked: !!booking,
         });
       }
@@ -97,7 +112,9 @@ async function getShopData(shopId: string, userId: string, date: string, from: s
     shop: JSON.parse(JSON.stringify(shop)), 
     shopSlug: data.shopSlug,
     userRole: data.userRole,
-    staff: JSON.parse(JSON.stringify(staffWithSchedule))
+    staff: JSON.parse(JSON.stringify(staffWithSchedule)),
+    isClockedIn: !!activeLog,
+    actualUserId
   };
 }
 
@@ -126,7 +143,7 @@ export default async function StaffBookingPage({
     return <div className="p-8 text-white">You do not have access to this page.</div>;
   }
 
-  const { shop, shopSlug, userRole, staff } = shopData;
+  const { shop, shopSlug, userRole, staff, isClockedIn, actualUserId } = shopData;
 
   return (
     <ShopAdminLayout
@@ -137,7 +154,12 @@ export default async function StaffBookingPage({
       userRole={userRole}
       activeTab="staff"
     >
-      <div className="flex justify-end mb-4">
+      <div className="flex justify-between items-center mb-4">
+        <div>
+          {(userRole === 'STAFF' || userRole === 'SHOP_ADMIN') && (
+            <DirectClockInButton shopId={shopId} initialIsClockedIn={isClockedIn} />
+          )}
+        </div>
         {userRole === 'SHOP_ADMIN' && (
           <a href={`/shop/${shopId}/settings/team`} className="bg-brand-gold text-slate-900 px-4 py-2 rounded-lg font-bold hover:bg-yellow-400 transition-colors">
             + Onboard Staff
@@ -183,7 +205,12 @@ export default async function StaffBookingPage({
                   staffMember.schedule.map((slot: any) => (
                     <div key={slot.time} className={`p-2 rounded-md text-xs sm:text-sm flex justify-between items-center ${slot.isBooked ? 'bg-amber-800/60' : 'bg-green-800/40'}`}>
                       <span className="font-mono text-gray-300">{slot.time}</span>
-                      {slot.isBooked ? <span className="font-bold text-amber-300">Booked</span> : <span className="font-semibold text-green-300">Available</span>}
+                      <div className="flex items-center">
+                        {slot.isBooked ? <span className="font-bold text-amber-300">Booked</span> : <span className="font-semibold text-green-300">Available</span>}
+                        {!slot.isBooked && (userRole === 'SHOP_ADMIN' || userRole === 'SUPER_ADMIN' || staffMember.id === actualUserId) && (
+                          <BlockTimeButton shopId={shopId} staffId={staffMember.id} date={selectedDate} time={slot.isoTime} />
+                        )}
+                      </div>
                     </div>
                   ))
                 ) : (

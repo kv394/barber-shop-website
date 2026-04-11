@@ -1,0 +1,53 @@
+'use client';
+
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+
+export default function BlockTimeButton({ shopId, staffId, date, time }: { shopId: string, staffId: string, date: string, time: string }) {
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
+
+  const handleBlock = async () => {
+    if (!confirm(`Block this 30-minute slot at ${time}?`)) return;
+    setLoading(true);
+
+    try {
+      // Create a start date combining date and time
+      const startTimeObj = new Date(`${date}T${time}:00Z`);
+      const endTimeObj = new Date(startTimeObj.getTime() + 30 * 60000); // 30 mins
+
+      const res = await fetch(`/api/shops/${shopId}/appointments/block`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          staffId,
+          startTime: startTimeObj.toISOString(),
+          endTime: endTimeObj.toISOString(),
+          notes: 'Blocked Time'
+        })
+      });
+
+      if (res.ok) {
+        router.refresh();
+      } else {
+        const data = await res.json();
+        alert(data.error || 'Failed to block time');
+      }
+    } catch (err) {
+      alert('Network error');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <button 
+      onClick={handleBlock} 
+      disabled={loading}
+      className="ml-2 px-2 py-1 text-[10px] bg-slate-700 hover:bg-slate-600 text-gray-300 rounded border border-white/10 uppercase font-bold tracking-wider disabled:opacity-50 transition-colors"
+      title="Block this time slot"
+    >
+      {loading ? '...' : 'Block'}
+    </button>
+  );
+}

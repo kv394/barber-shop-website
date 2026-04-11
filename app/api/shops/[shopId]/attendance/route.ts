@@ -81,22 +81,29 @@ export async function POST(
     }
 
     const body = await request.json();
-    const { barcode } = body;
+    const { barcode, direct } = body;
 
-    if (!barcode) {
-      return NextResponse.json({ error: 'Barcode is required' }, { status: 400 });
-    }
+    let user;
 
-    // Find the user by their barcode AND ensure they belong to this shop
-    const user = await prisma.user.findFirst({
-      where: {
-        barcode: barcode,
-        shopId: shopId,
-      },
-    });
+    if (direct) {
+      // Direct clock in/out by the logged in user
+      user = scannerUser;
+    } else {
+      if (!barcode) {
+        return NextResponse.json({ error: 'Barcode is required' }, { status: 400 });
+      }
 
-    if (!user) {
-      return NextResponse.json({ error: 'ID Card not recognized for this shop.' }, { status: 404 });
+      // Find the user by their barcode AND ensure they belong to this shop
+      user = await prisma.user.findFirst({
+        where: {
+          barcode: barcode,
+          shopId: shopId,
+        },
+      });
+
+      if (!user) {
+        return NextResponse.json({ error: 'ID Card not recognized for this shop.' }, { status: 404 });
+      }
     }
 
     // Check if they are already clocked in/checked in (have a TimeLog with no clockOut)
