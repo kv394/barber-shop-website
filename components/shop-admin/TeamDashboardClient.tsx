@@ -34,7 +34,7 @@ export default function TeamDashboardClient({
   return (
     <>
       <div className="flex justify-end mb-4">
-        <Link href={`/shop/${shopId}/portfolio`} className="bg-botanical-surface text-botanical-muted border border-slate-600 px-4 py-2 rounded-lg hover:bg-botanical-surface transition-colors font-bold uppercase tracking-wider flex items-center gap-2 shadow-lg">
+        <Link href={`/shop/${shopId}/portfolio`} className="bg-botanical-surface text-botanical-muted border border-botanical-border px-4 py-2 rounded-lg hover:bg-botanical-surface transition-colors font-bold uppercase tracking-wider flex items-center gap-2 shadow-lg">
           📸 Shop Portfolio Gallery
         </Link>
       </div>
@@ -50,7 +50,7 @@ export default function TeamDashboardClient({
           const defaultClose = staffMember.closeTime || "17:00";
 
           return (
-            <div key={staffMember.id} className={`bg-botanical-bg/70 border border-botanical-border rounded-2xl p-5 flex flex-col shadow-lg transition-all duration-200 hover:shadow-xl hover:border-botanical-border ${isOnLeave ? 'ring-1 ring-red-500/50' : ''}`}>
+            <div key={staffMember.id} className={`bg-botanical-surface border border-botanical-border rounded-2xl p-5 flex flex-col shadow-lg transition-all duration-200 hover:shadow-xl hover:border-botanical-border ${isOnLeave ? 'ring-1 ring-red-500/50' : ''}`}>
               
               <div className="flex justify-between items-start mb-4">
                 <StaffProfileModalWrapper staff={staffMember}>
@@ -75,15 +75,15 @@ export default function TeamDashboardClient({
                 {/* Actions & Status Badge */}
                 <div className="flex flex-col items-end gap-2">
                   {isOnLeave ? (
-                    <span className="text-[10px] bg-red-900/50 text-red-300 border border-red-500/30 px-2.5 py-1 rounded-full font-bold uppercase tracking-wider">On Leave</span>
+                    <span className="text-[10px] bg-red-50 text-red-700 border border-red-200 px-2.5 py-1 rounded-full font-bold uppercase tracking-wider">On Leave</span>
                   ) : isNotWorking ? (
-                    <span className="text-[10px] bg-botanical-surface text-botanical-muted border border-slate-600 px-2.5 py-1 rounded-full font-bold uppercase tracking-wider">Day Off</span>
+                    <span className="text-[10px] bg-botanical-surface text-botanical-muted border border-botanical-border px-2.5 py-1 rounded-full font-bold uppercase tracking-wider">Day Off</span>
                   ) : staffMember.isClockedIn ? (
-                    <span className="text-[10px] bg-emerald-900/50 text-emerald-300 border border-emerald-500/30 px-2.5 py-1 rounded-full font-bold uppercase tracking-wider flex items-center gap-1.5">
-                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> Clocked In
+                    <span className="text-[10px] bg-emerald-50 text-emerald-700 border border-emerald-200 px-2.5 py-1 rounded-full font-bold uppercase tracking-wider flex items-center gap-1.5">
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> Clocked In
                     </span>
                   ) : (
-                    <span className="text-[10px] bg-blue-900/50 text-blue-300 border border-blue-500/30 px-2.5 py-1 rounded-full font-bold uppercase tracking-wider">Scheduled</span>
+                    <span className="text-[10px] bg-blue-50 text-blue-700 border border-blue-200 px-2.5 py-1 rounded-full font-bold uppercase tracking-wider">Scheduled</span>
                   )}
                 </div>
               </div>
@@ -93,8 +93,8 @@ export default function TeamDashboardClient({
                 {isOnLeave ? (
                   <div className="flex-grow flex flex-col justify-center items-center text-center">
                     <span className="text-3xl mb-2">🏖️</span>
-                    <p className="text-sm font-semibold text-red-300">Currently on Leave</p>
-                    {staffMember.leaves[0]?.reason && <p className="text-xs text-red-400 mt-1 italic">"{staffMember.leaves[0].reason}"</p>}
+                    <p className="text-sm font-semibold text-red-700">Currently on Leave</p>
+                    {staffMember.leaves[0]?.reason && <p className="text-xs text-red-600 mt-1 italic">"{staffMember.leaves[0].reason}"</p>}
                     
                     <form action={removeLeaveAction} className="mt-4">
                         <input type="hidden" name="staffId" value={staffMember.id} />
@@ -102,7 +102,7 @@ export default function TeamDashboardClient({
                         <input type="hidden" name="date" value={initialDate} />
                         <input type="hidden" name="startTime" value="00:00" />
                         <input type="hidden" name="endTime" value="23:59" />
-                        <button type="submit" className="text-xs text-botanical-text bg-botanical-surface hover:bg-red-600 px-3 py-1.5 rounded transition-colors">Cancel Leave</button>
+                        <button type="submit" className="text-xs text-red-700 bg-red-50 border border-red-200 hover:bg-red-100 hover:text-red-800 px-3 py-1.5 rounded transition-colors">Cancel Leave</button>
                     </form>
                   </div>
                 ) : isNotWorking ? (
@@ -124,7 +124,7 @@ export default function TeamDashboardClient({
                                 name="openTime" 
                                 value={getTimeValue(staffMember.id, 'open', defaultOpen)}
                                 onChange={(e) => handleTimeChange(staffMember.id, 'open', e.target.value)}
-                                className="bg-botanical-surface text-botanical-text text-xs p-1 rounded border border-slate-600 outline-none focus:ring-1 focus:ring-botanical-primary"
+                                className="bg-botanical-surface text-botanical-text text-xs p-1 rounded border border-botanical-border outline-none focus:ring-1 focus:ring-botanical-primary"
                             />
                             <span className="text-botanical-muted text-xs">to</span>
                             <input 
@@ -132,10 +132,10 @@ export default function TeamDashboardClient({
                                 name="closeTime" 
                                 value={getTimeValue(staffMember.id, 'close', defaultClose)}
                                 onChange={(e) => handleTimeChange(staffMember.id, 'close', e.target.value)}
-                                className="bg-botanical-surface text-botanical-text text-xs p-1 rounded border border-slate-600 outline-none focus:ring-1 focus:ring-botanical-primary"
+                                className="bg-botanical-surface text-botanical-text text-xs p-1 rounded border border-botanical-border outline-none focus:ring-1 focus:ring-botanical-primary"
                             />
                         </div>
-                        <button type="submit" className="w-full text-xs text-botanical-accent bg-botanical-primary/10 hover:bg-botanical-primary/20 py-1.5 rounded transition-colors border border-brand-gold/20">Add Shift</button>
+                        <button type="submit" className="w-full text-xs text-botanical-primary bg-botanical-primary/10 hover:bg-botanical-primary hover:text-white py-1.5 rounded transition-colors border border-botanical-primary/20 font-bold">Add Shift</button>
                     </form>
                   </div>
                 ) : (
@@ -147,17 +147,17 @@ export default function TeamDashboardClient({
                         </span>
                     </div>
                     
-                    <div className="space-y-1.5 max-h-[160px] overflow-y-auto pr-1 scrollbar-thin scrollbar-thumb-slate-600 scrollbar-track-transparent">
+                    <div className="space-y-1.5 max-h-[160px] overflow-y-auto pr-1 scrollbar-thin scrollbar-thumb-botanical-border scrollbar-track-transparent">
                       {staffMember.schedule.length === 0 ? (
                           <p className="text-xs text-botanical-muted text-center py-4">No working slots configured.</p>
                       ) : (
                           staffMember.schedule.map((slot: any) => (
-                            <div key={slot.time} className={`px-2.5 py-1.5 rounded text-xs flex justify-between items-center ${slot.isBooked ? 'bg-amber-900/40 border border-amber-500/20' : staffMember.isClockedIn ? 'bg-emerald-900/20 border border-emerald-500/20' : 'bg-botanical-surface border border-transparent'}`}>
+                            <div key={slot.time} className={`px-2.5 py-1.5 rounded text-xs flex justify-between items-center ${slot.isBooked ? 'bg-amber-50 border border-amber-200' : staffMember.isClockedIn ? 'bg-emerald-50 border border-emerald-200' : 'bg-botanical-surface border border-transparent'}`}>
                               <span className="font-mono text-botanical-muted">{slot.time}</span>
                               {slot.isBooked ? (
-                                <span className="font-bold text-amber-400">Booked</span>
+                                <span className="font-bold text-amber-700">Booked</span>
                               ) : (
-                                <span className={staffMember.isClockedIn ? "text-emerald-400" : "text-green-400"}>
+                                <span className={staffMember.isClockedIn ? "text-emerald-700" : "text-green-700"}>
                                     {staffMember.isClockedIn ? 'Clocked In' : 'Open'}
                                 </span>
                               )}
@@ -201,7 +201,7 @@ export default function TeamDashboardClient({
                             />
                         </div>
 
-                        <button type="submit" className="w-full bg-red-900/40 hover:bg-red-600 text-red-300 hover:text-botanical-text text-xs font-semibold py-1.5 rounded transition-colors border border-red-500/30">
+                        <button type="submit" className="w-full bg-red-50 hover:bg-red-100 text-red-700 text-xs font-semibold py-1.5 rounded transition-colors border border-red-200">
                             Mark On Leave
                         </button>
                     </form>
