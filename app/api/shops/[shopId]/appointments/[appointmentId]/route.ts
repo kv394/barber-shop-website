@@ -88,7 +88,7 @@ export async function PATCH(
     const updateData: any = {};
 
     if (body.notes !== undefined) updateData.notes = body.notes;
-    if (body.status && ['SCHEDULED', 'COMPLETED', 'CANCELLED', 'NO_SHOW'].includes(body.status)) {
+    if (body.status && ['SCHEDULED', 'ACCEPTED', 'WORK_COMPLETED', 'COMPLETED', 'CANCELLED', 'NO_SHOW'].includes(body.status)) {
       updateData.status = body.status;
     }
 

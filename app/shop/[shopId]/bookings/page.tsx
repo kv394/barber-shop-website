@@ -10,6 +10,8 @@ import NoShowButton from '@/components/appointments/NoShowButton';
 import AppointmentNotes from '@/components/appointments/AppointmentNotes';
 import BookingDatePicker from '@/components/appointments/BookingDatePicker';
 import ShopAdminLayout from '@/components/shop-admin/ShopAdminLayout';
+import AcceptAppointmentButton from '@/components/appointments/AcceptAppointmentButton';
+import CompleteWorkButton from '@/components/appointments/CompleteWorkButton';
 
 export const dynamic = 'force-dynamic';
 
@@ -110,7 +112,10 @@ export default async function BookingsPage({ params }: { params: Promise<{ shopI
                     const isCompleted = apt.status === 'COMPLETED';
                     const isNoShow = apt.status === 'NO_SHOW';
                     const isCancelled = apt.status === 'CANCELLED';
-                    const isActive = apt.status === 'SCHEDULED';
+                    const isScheduled = apt.status === 'SCHEDULED';
+                    const isAccepted = apt.status === 'ACCEPTED';
+                    const isWorkCompleted = apt.status === 'WORK_COMPLETED';
+                    const isActive = isScheduled || isAccepted || isWorkCompleted;
 
                     return (
                       <div key={apt.id} className={`bg-black/40 p-5 rounded-lg border ${isNow ? 'border-green-500/50 shadow-[0_0_15px_rgba(34,197,94,0.2)]' : 'border-white/5'}`}>
@@ -132,10 +137,12 @@ export default async function BookingsPage({ params }: { params: Promise<{ shopI
                                                <div className="flex items-center gap-1 shrink-0">
                                                  {isActive && <NoShowButton shopId={shop.id} appointmentId={apt.id} userName={apt.user?.name || apt.user?.email || "Guest"} />}
                                                  {isActive && <DeleteAppointmentButton shopId={shop.id} appointmentId={apt.id} userName={apt.user?.name || apt.user?.email || "Guest"} />}
-                                                 {isActive && <CheckoutButton shopId={shop.id} appointmentId={apt.id} price={apt.service.price} serviceName={apt.service.name} serviceId={apt.serviceId} shopName={shop.name} />}
+                                                 {isScheduled && <AcceptAppointmentButton shopId={shop.id} appointmentId={apt.id} userName={apt.user?.name || apt.user?.email || "Guest"} />}
+                                                 {isAccepted && <CompleteWorkButton shopId={shop.id} appointmentId={apt.id} userName={apt.user?.name || apt.user?.email || "Guest"} />}
+                                                 {isWorkCompleted && <CheckoutButton shopId={shop.id} appointmentId={apt.id} price={apt.service.price} serviceName={apt.service.name} serviceId={apt.serviceId} shopName={shop.name} />}
                                                </div>
                                            </div>
-                                           {isNow && isActive && (
+                                           {isNow && (isScheduled || isAccepted) && (
                                              <div className="mt-3 text-xs text-green-400 font-bold tracking-widest uppercase flex items-center gap-2">
                                                <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span> IN PROGRESS
                                              </div>

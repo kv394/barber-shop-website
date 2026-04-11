@@ -326,6 +326,8 @@ enum ServiceType {
 
 enum AppointmentStatus {
   SCHEDULED
+  ACCEPTED
+  WORK_COMPLETED
   COMPLETED
   CANCELLED
   NO_SHOW
