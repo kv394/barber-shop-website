@@ -2,11 +2,22 @@
 
 import { useState } from 'react';
 
-export default function AppointmentNotes({ shopId, appointmentId, initialNotes }: { shopId: string; appointmentId: string; initialNotes: string | null }) {
+interface Props {
+  shopId: string;
+  appointmentId: string;
+  initialNotes: string | null;
+  clientNotes?: string | null;
+  allergies?: string | null;
+  preferences?: string | null;
+}
+
+export default function AppointmentNotes({ shopId, appointmentId, initialNotes, clientNotes, allergies, preferences }: Props) {
   const [isOpen, setIsOpen] = useState(false);
   const [notes, setNotes] = useState(initialNotes || '');
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
+
+  const hasClientInfo = clientNotes || allergies || preferences;
 
   const handleSave = async () => {
     setSaving(true);
@@ -31,30 +42,42 @@ export default function AppointmentNotes({ shopId, appointmentId, initialNotes }
     return (
       <button
         onClick={() => setIsOpen(true)}
-        className="text-[10px] sm:text-xs text-gray-400 hover:text-white transition-colors flex items-center gap-1"
-        title="Add notes"
+        className={`text-[10px] sm:text-xs transition-colors flex items-center gap-1 mt-2 ${hasClientInfo ? 'text-amber-400 hover:text-amber-300' : 'text-gray-400 hover:text-white'}`}
+        title="View Notes"
       >
-        📝 {initialNotes ? 'View Notes' : 'Add Notes'}
+        📝 {hasClientInfo ? 'View Client Notes' : initialNotes ? 'View Appointment Notes' : 'Add Notes'}
       </button>
     );
   }
 
   return (
-    <div className="mt-2 pt-2 border-t border-white/5">
-      <textarea
-        value={notes}
-        onChange={(e) => setNotes(e.target.value)}
-        placeholder="Haircut style, preferences, product used..."
-        className="w-full bg-black/30 border border-white/10 rounded p-2 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-brand-gold resize-none"
-        rows={2}
-      />
-      <div className="flex gap-2 mt-1">
-        <button onClick={handleSave} disabled={saving} className="text-[10px] bg-brand-gold/20 text-brand-gold px-2 py-0.5 rounded hover:bg-brand-gold/30 disabled:opacity-50">
-          {saving ? 'Saving...' : saved ? '✓ Saved' : 'Save'}
-        </button>
-        <button onClick={() => setIsOpen(false)} className="text-[10px] text-gray-500 hover:text-white px-2 py-0.5">
-          Close
-        </button>
+    <div className="mt-3 pt-3 border-t border-white/5 space-y-3">
+      {hasClientInfo && (
+        <div className="bg-slate-800/50 p-2 rounded border border-amber-500/20">
+          <h5 className="text-[10px] uppercase tracking-wider text-amber-500 font-bold mb-1">Client Profile</h5>
+          {clientNotes && <p className="text-xs text-gray-300 mb-1"><span className="text-gray-500 font-semibold">Notes:</span> {clientNotes}</p>}
+          {preferences && <p className="text-xs text-gray-300 mb-1"><span className="text-gray-500 font-semibold">Prefs:</span> {preferences}</p>}
+          {allergies && <p className="text-xs text-red-400"><span className="text-red-500 font-semibold">Allergies:</span> {allergies}</p>}
+        </div>
+      )}
+
+      <div>
+        <h5 className="text-[10px] uppercase tracking-wider text-gray-500 font-bold mb-1">Appointment Notes</h5>
+        <textarea
+          value={notes}
+          onChange={(e) => setNotes(e.target.value)}
+          placeholder="Haircut style, specific product used today..."
+          className="w-full bg-black/30 border border-white/10 rounded p-2 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-brand-gold resize-none"
+          rows={2}
+        />
+        <div className="flex gap-2 mt-1">
+          <button onClick={handleSave} disabled={saving} className="text-[10px] bg-brand-gold/20 text-brand-gold px-2 py-0.5 rounded hover:bg-brand-gold/30 disabled:opacity-50">
+            {saving ? 'Saving...' : saved ? '✓ Saved' : 'Save Notes'}
+          </button>
+          <button onClick={() => setIsOpen(false)} className="text-[10px] text-gray-500 hover:text-white px-2 py-0.5">
+            Close
+          </button>
+        </div>
       </div>
     </div>
   );

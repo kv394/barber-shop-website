@@ -43,52 +43,54 @@ export default async function SignUpPage({
       if (authError.message.includes('Database error saving new user')) {
         // This is a known Supabase issue when the user exists in Prisma but was not in Supabase Auth.
         // The DB trigger fails due to unique constraint on email.
+        let redirectUrl = null;
         try {
           const existingUser = await prisma.user.findUnique({ where: { email } });
           if (!existingUser) {
-            return redirect(`/sign-up?error=${encodeURIComponent(authError.message)}`);
+            redirectUrl = `/sign-up?error=${encodeURIComponent(authError.message)}`;
+          } else {
+            // Temporarily rename the email to bypass the Supabase trigger unique constraint
+            const tempEmail = `temp_${Date.now()}_${email}`;
+            await prisma.user.update({
+              where: { email },
+              data: { email: tempEmail },
+            });
+
+            // Retry signup after moving the old email out of the way
+            const retry = await supabase.auth.signUp({
+              email,
+              password,
+              options: { data: { name } }
+            });
+
+            if (retry.error) {
+               // Restore original email if retry fails
+               await prisma.user.update({ where: { id: existingUser.id }, data: { email } });
+               redirectUrl = `/sign-up?error=${encodeURIComponent(retry.error.message)}`;
+            } else {
+              if (retry.data?.user) {
+                 // The DB trigger might have created a new row for the new Supabase ID.
+                 // Delete the new row (if it exists) and update the original row to link it to the new Supabase ID.
+                 await prisma.user.delete({ where: { id: retry.data.user.id } }).catch(() => {});
+
+                 await prisma.user.update({
+                   where: { id: existingUser.id },
+                   data: {
+                     id: retry.data.user.id,
+                     email: email,
+                     name: name || existingUser.name,
+                   },
+                 });
+              }
+              redirectUrl = '/?message=Account created successfully.';
+            }
           }
-
-          // Temporarily rename the email to bypass the Supabase trigger unique constraint
-          const tempEmail = `temp_${Date.now()}_${email}`;
-          await prisma.user.update({
-            where: { email },
-            data: { email: tempEmail },
-          });
-
-          // Retry signup after moving the old email out of the way
-          const retry = await supabase.auth.signUp({
-            email,
-            password,
-            options: { data: { name } }
-          });
-
-          if (retry.error) {
-             // Restore original email if retry fails
-             await prisma.user.update({ where: { id: existingUser.id }, data: { email } });
-             return redirect(`/sign-up?error=${encodeURIComponent(retry.error.message)}`);
-          }
-
-          if (retry.data?.user) {
-             // The DB trigger might have created a new row for the new Supabase ID.
-             // Delete the new row (if it exists) and update the original row to link it to the new Supabase ID.
-             await prisma.user.delete({ where: { id: retry.data.user.id } }).catch(() => {});
-             
-             await prisma.user.update({
-               where: { id: existingUser.id },
-               data: {
-                 id: retry.data.user.id,
-                 email: email,
-                 name: name || existingUser.name,
-               },
-             });
-          }
-
-          return redirect('/?message=Account created successfully.');
         } catch (retryError: any) {
           console.error("Cleanup retry error:", retryError);
-          return redirect(`/sign-up?error=${encodeURIComponent('Please contact support. Account is in an unrecoverable state.')}`);
+          redirectUrl = `/sign-up?error=${encodeURIComponent('Please contact support. Account is in an unrecoverable state.')}`;
         }
+        
+        if (redirectUrl) return redirect(redirectUrl);
       }
       return redirect(`/sign-up?error=${encodeURIComponent(authError.message)}`);
     }

@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { revalidatePath } from 'next/cache';
 import { cookies, headers } from 'next/headers';
 import { rateLimit } from '@/lib/rate-limiter';
+import { prisma } from '@/lib/prisma';
 
 export default async function SignInPage({
   searchParams,
@@ -61,7 +62,19 @@ export default async function SignInPage({
 
     console.log(`[LOGIN SUCCESS] ID: ${authData?.user?.id}`);
     revalidatePath('/');
-    return redirect(redirectUrl);
+
+    let finalRedirectUrl = redirectUrl;
+    if (authData?.user?.email) {
+      const dbUser = await prisma.user.findUnique({
+        where: { email: authData.user.email },
+        select: { role: true }
+      });
+      if (dbUser && dbUser.role !== 'CLIENT') {
+        finalRedirectUrl = '/'; // Send staff/admins to the base URL
+      }
+    }
+
+    return redirect(finalRedirectUrl);
   };
 
   return (

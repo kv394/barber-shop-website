@@ -31,7 +31,7 @@ async function getPageData(shopId: string, userId: string) {
     },
     include: {
       service: { select: { name: true, price: true, duration: true } },
-      user: { select: { name: true, email: true } },
+      user: { select: { name: true, email: true, clientNotes: true, allergies: true, preferences: true } },
       staff: { select: { name: true } },
     },
     orderBy: { startTime: 'asc' },
@@ -136,7 +136,14 @@ export default async function BookingsPage({ params }: { params: Promise<{ shopI
                                                <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span> IN PROGRESS
                                              </div>
                                            )}
-                                           <AppointmentNotes shopId={shop.id} appointmentId={apt.id} initialNotes={apt.notes} />
+                                           <AppointmentNotes 
+                                              shopId={shop.id} 
+                                              appointmentId={apt.id} 
+                                              initialNotes={apt.notes}
+                                              clientNotes={apt.user?.clientNotes}
+                                              preferences={apt.user?.preferences}
+                                              allergies={apt.user?.allergies}
+                                            />
                                          </div>
                     );
                   })}
