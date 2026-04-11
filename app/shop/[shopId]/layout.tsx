@@ -83,7 +83,7 @@ export default async function ShopLayout({
     <main className="flex h-[100dvh] overflow-y-auto overflow-x-hidden flex-col items-center bg-slate-900 text-white px-0 sm:p-4 md:p-8 lg:p-12 pb-24 sm:pb-4 pt-[64px] sm:pt-4 md:pt-8 lg:pt-12 scroll-smooth">
       {/* Mobile Header (All Roles except Super Admin) */}
       {!isSuperAdmin && (
-        <header className="sm:hidden fixed top-0 left-0 right-0 z-[100] flex justify-between items-center bg-white/95 backdrop-blur-xl border-b border-gray-200 px-4 py-3 shadow-sm">
+        <header className="sm:hidden fixed top-0 left-0 right-0 z-[100] flex justify-between items-center bg-white border-b border-gray-200 px-4 py-3 shadow-sm">
           <div className="flex flex-col min-w-0 pr-4">
              <span className="text-slate-900 font-black text-lg leading-tight truncate">{data.shop.name}</span>
              <span className="text-gray-500 text-[10px] uppercase font-bold tracking-wider leading-tight mt-0.5">{data.userRole.replace('_', ' ')}</span>

@@ -102,43 +102,43 @@ export function ShopNav({ shopId, userRole, activeTab }: { shopId: string, userR
       {/* ── Mobile App Bottom Navigation ── */}
       <div className="sm:hidden fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-xl border-t border-gray-200 z-[100] pb-safe shadow-[0_-4px_25px_-5px_rgba(0,0,0,0.1)]">
         <nav aria-label="Mobile Bottom Navigation" className="flex justify-around items-center h-20 px-2 pb-2 pt-1">
-          <Link href={`/shop/${shopId}`} aria-current={activeTab === 'dashboard' ? 'page' : undefined} className={`flex flex-col items-center justify-center w-full h-full mx-1 rounded-xl transition-all space-y-1 ${activeTab === 'dashboard' ? 'text-slate-900 drop-shadow-sm bg-gray-100' : 'text-gray-500 hover:text-slate-700 hover:bg-gray-50'}`}>
+          <Link href={`/shop/${shopId}`} aria-current={activeTab === 'dashboard' ? 'page' : undefined} className={`flex flex-col items-center justify-center w-full h-full mx-1 rounded-2xl transition-all space-y-1 ${activeTab === 'dashboard' ? 'text-slate-900 bg-slate-100 shadow-inner' : 'text-gray-500 hover:text-slate-700 hover:bg-gray-50'}`}>
             <span className="text-3xl" aria-hidden="true">🏠</span>
             <span className="text-xs sm:text-sm font-bold tracking-wide">Home</span>
           </Link>
-          <Link href={`/shop/${shopId}/bookings`} aria-current={activeTab === 'bookings' ? 'page' : undefined} className={`flex flex-col items-center justify-center w-full h-full mx-1 rounded-xl transition-all space-y-1 ${activeTab === 'bookings' ? 'text-slate-900 drop-shadow-sm bg-gray-100' : 'text-gray-500 hover:text-slate-700 hover:bg-gray-50'}`}>
+          <Link href={`/shop/${shopId}/bookings`} aria-current={activeTab === 'bookings' ? 'page' : undefined} className={`flex flex-col items-center justify-center w-full h-full mx-1 rounded-2xl transition-all space-y-1 ${activeTab === 'bookings' ? 'text-slate-900 bg-slate-100 shadow-inner' : 'text-gray-500 hover:text-slate-700 hover:bg-gray-50'}`}>
             <span className="text-3xl" aria-hidden="true">📅</span>
             <span className="text-xs sm:text-sm font-bold tracking-wide">Bookings</span>
           </Link>
           {isStaff ? (
-            <Link href={`/shop/${shopId}/staff`} aria-current={activeTab === 'staff' ? 'page' : undefined} className={`flex flex-col items-center justify-center w-full h-full mx-1 rounded-xl transition-all space-y-1 ${activeTab === 'staff' ? 'text-slate-900 drop-shadow-sm bg-gray-100' : 'text-gray-500 hover:text-slate-700 hover:bg-gray-50'}`}>
+            <Link href={`/shop/${shopId}/staff`} aria-current={activeTab === 'staff' ? 'page' : undefined} className={`flex flex-col items-center justify-center w-full h-full mx-1 rounded-2xl transition-all space-y-1 ${activeTab === 'staff' ? 'text-slate-900 bg-slate-100 shadow-inner' : 'text-gray-500 hover:text-slate-700 hover:bg-gray-50'}`}>
               <span className="text-3xl" aria-hidden="true">🗓️</span>
               <span className="text-xs sm:text-sm font-bold tracking-wide">Schedule</span>
             </Link>
           ) : (
-            <Link href={`/shop/${shopId}/settings/team`} aria-current={activeTab === 'team' || effectiveStaffTabs.includes(activeTab) ? 'page' : undefined} className={`flex flex-col items-center justify-center w-full h-full mx-1 rounded-xl transition-all space-y-1 ${activeTab === 'team' || effectiveStaffTabs.includes(activeTab) ? 'text-slate-900 drop-shadow-sm bg-gray-100' : 'text-gray-500 hover:text-slate-700 hover:bg-gray-50'}`}>
+            <Link href={`/shop/${shopId}/settings/team`} aria-current={activeTab === 'team' || effectiveStaffTabs.includes(activeTab) ? 'page' : undefined} className={`flex flex-col items-center justify-center w-full h-full mx-1 rounded-2xl transition-all space-y-1 ${activeTab === 'team' || effectiveStaffTabs.includes(activeTab) ? 'text-slate-900 bg-slate-100 shadow-inner' : 'text-gray-500 hover:text-slate-700 hover:bg-gray-50'}`}>
               <span className="text-3xl" aria-hidden="true">👥</span>
               <span className="text-xs sm:text-sm font-bold tracking-wide">Team</span>
             </Link>
           )}
           {isStaff ? (
-            <Link href={`/shop/${shopId}/clients`} aria-current={activeTab === 'clients' ? 'page' : undefined} className={`flex flex-col items-center justify-center w-full h-full mx-1 rounded-xl transition-all space-y-1 ${activeTab === 'clients' ? 'text-slate-900 drop-shadow-sm bg-gray-100' : 'text-gray-500 hover:text-slate-700 hover:bg-gray-50'}`}>
+            <Link href={`/shop/${shopId}/clients`} aria-current={activeTab === 'clients' ? 'page' : undefined} className={`flex flex-col items-center justify-center w-full h-full mx-1 rounded-2xl transition-all space-y-1 ${activeTab === 'clients' ? 'text-slate-900 bg-slate-100 shadow-inner' : 'text-gray-500 hover:text-slate-700 hover:bg-gray-50'}`}>
               <span className="text-3xl" aria-hidden="true">👥</span>
               <span className="text-xs sm:text-sm font-bold tracking-wide">Clients</span>
             </Link>
           ) : (
-            <Link href={`/shop/${shopId}/reports`} aria-current={isReportsSection ? 'page' : undefined} className={`flex flex-col items-center justify-center w-full h-full mx-1 rounded-xl transition-all space-y-1 ${isReportsSection ? 'text-slate-900 drop-shadow-sm bg-gray-100' : 'text-gray-500 hover:text-slate-700 hover:bg-gray-50'}`}>
+            <Link href={`/shop/${shopId}/reports`} aria-current={isReportsSection ? 'page' : undefined} className={`flex flex-col items-center justify-center w-full h-full mx-1 rounded-2xl transition-all space-y-1 ${isReportsSection ? 'text-slate-900 bg-slate-100 shadow-inner' : 'text-gray-500 hover:text-slate-700 hover:bg-gray-50'}`}>
               <span className="text-3xl" aria-hidden="true">📊</span>
               <span className="text-xs sm:text-sm font-bold tracking-wide">Reports</span>
             </Link>
           )}
           {isStaff ? (
-            <Link href={`/shop/${shopId}/profile`} aria-current={['profile', 'leave', 'portfolio', 'commissions'].includes(activeTab) ? 'page' : undefined} className={`flex flex-col items-center justify-center w-full h-full mx-1 rounded-xl transition-all space-y-1 ${['profile', 'leave', 'portfolio', 'commissions'].includes(activeTab) ? 'text-slate-900 drop-shadow-sm bg-gray-100' : 'text-gray-500 hover:text-slate-700 hover:bg-gray-50'}`}>
+            <Link href={`/shop/${shopId}/profile`} aria-current={['profile', 'leave', 'portfolio', 'commissions'].includes(activeTab) ? 'page' : undefined} className={`flex flex-col items-center justify-center w-full h-full mx-1 rounded-2xl transition-all space-y-1 ${['profile', 'leave', 'portfolio', 'commissions'].includes(activeTab) ? 'text-slate-900 bg-slate-100 shadow-inner' : 'text-gray-500 hover:text-slate-700 hover:bg-gray-50'}`}>
               <span className="text-3xl" aria-hidden="true">👤</span>
               <span className="text-xs sm:text-sm font-bold tracking-wide">Profile</span>
             </Link>
           ) : (
-            <Link href={`/shop/${shopId}/settings`} aria-current={isSettingsSection ? 'page' : undefined} className={`flex flex-col items-center justify-center w-full h-full mx-1 rounded-xl transition-all space-y-1 ${isSettingsSection ? 'text-slate-900 drop-shadow-sm bg-gray-100' : 'text-gray-500 hover:text-slate-700 hover:bg-gray-50'}`}>
+            <Link href={`/shop/${shopId}/settings`} aria-current={isSettingsSection ? 'page' : undefined} className={`flex flex-col items-center justify-center w-full h-full mx-1 rounded-2xl transition-all space-y-1 ${isSettingsSection ? 'text-slate-900 bg-slate-100 shadow-inner' : 'text-gray-500 hover:text-slate-700 hover:bg-gray-50'}`}>
               <span className="text-3xl" aria-hidden="true">⚙️</span>
               <span className="text-xs sm:text-sm font-bold tracking-wide">Settings</span>
             </Link>
