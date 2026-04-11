@@ -23,8 +23,8 @@ export function ShopNav({ shopId, userRole, activeTab }: { shopId: string, userR
   const mainTabClass = (tabName: string, groupTabs?: string[]) => {
     const isActive = activeTab === tabName || (groupTabs && groupTabs.includes(activeTab));
     return isActive
-      ? "px-4 py-2 text-sm sm:text-base text-brand-dark bg-yellow-600 whitespace-nowrap font-bold shadow-[inset_0_3px_6px_rgba(0,0,0,0.4)] transform translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold rounded-lg"
-      : "px-4 py-2 text-sm sm:text-base text-gray-400 hover:text-slate-900 hover:bg-brand-gold transition-all duration-200 whitespace-nowrap font-bold hover:shadow-[0_4px_0_0_#ca8a04,0_5px_10px_rgba(0,0,0,0.4)] hover:transform hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-400 rounded-lg";
+      ? "px-4 py-2 text-sm sm:text-base text-brand-dark bg-brand-gold whitespace-nowrap font-bold shadow-[0_4px_0_0_#b38b22] border border-yellow-600 transform -translate-y-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold rounded-lg"
+      : "px-4 py-2 text-sm sm:text-base text-gray-400 hover:text-white hover:bg-white/5 transition-colors whitespace-nowrap font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-400 rounded-lg";
   };
 
   // ── SUPER_ADMIN: only back link + team assignment ──
@@ -102,43 +102,43 @@ export function ShopNav({ shopId, userRole, activeTab }: { shopId: string, userR
       {/* ── Mobile App Bottom Navigation ── */}
       <div className="sm:hidden fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-xl border-t border-gray-200 z-[100] pb-safe shadow-[0_-4px_25px_-5px_rgba(0,0,0,0.1)]">
         <nav aria-label="Mobile Bottom Navigation" className="flex justify-around items-center h-20 px-2 pb-2 pt-1">
-          <Link href={`/shop/${shopId}`} aria-current={activeTab === 'dashboard' ? 'page' : undefined} className={`flex flex-col items-center justify-center w-full h-full mx-1 rounded-2xl space-y-1 ${activeTab === 'dashboard' ? 'text-slate-900 bg-gray-200/60 shadow-[inset_0_3px_6px_rgba(0,0,0,0.1)] border border-gray-300 transform translate-y-0.5' : 'text-gray-500 hover:text-slate-700 hover:bg-gray-50 transition-colors'}`}>
+          <Link href={`/shop/${shopId}`} aria-current={activeTab === 'dashboard' ? 'page' : undefined} className={`flex flex-col items-center justify-center w-full h-full mx-1 rounded-2xl space-y-1 ${activeTab === 'dashboard' ? 'text-slate-900 bg-white shadow-[0_4px_0_0_#cbd5e1] border border-gray-200 transform -translate-y-1' : 'text-gray-500 hover:text-slate-700 hover:bg-gray-50 transition-colors'}`}>
             <span className="text-3xl" aria-hidden="true">🏠</span>
             <span className="text-xs sm:text-sm font-bold tracking-wide">Home</span>
           </Link>
-          <Link href={`/shop/${shopId}/bookings`} aria-current={activeTab === 'bookings' ? 'page' : undefined} className={`flex flex-col items-center justify-center w-full h-full mx-1 rounded-2xl space-y-1 ${activeTab === 'bookings' ? 'text-slate-900 bg-gray-200/60 shadow-[inset_0_3px_6px_rgba(0,0,0,0.1)] border border-gray-300 transform translate-y-0.5' : 'text-gray-500 hover:text-slate-700 hover:bg-gray-50 transition-colors'}`}>
+          <Link href={`/shop/${shopId}/bookings`} aria-current={activeTab === 'bookings' ? 'page' : undefined} className={`flex flex-col items-center justify-center w-full h-full mx-1 rounded-2xl space-y-1 ${activeTab === 'bookings' ? 'text-slate-900 bg-white shadow-[0_4px_0_0_#cbd5e1] border border-gray-200 transform -translate-y-1' : 'text-gray-500 hover:text-slate-700 hover:bg-gray-50 transition-colors'}`}>
             <span className="text-3xl" aria-hidden="true">📅</span>
             <span className="text-xs sm:text-sm font-bold tracking-wide">Bookings</span>
           </Link>
           {isStaff ? (
-            <Link href={`/shop/${shopId}/staff`} aria-current={activeTab === 'staff' ? 'page' : undefined} className={`flex flex-col items-center justify-center w-full h-full mx-1 rounded-2xl space-y-1 ${activeTab === 'staff' ? 'text-slate-900 bg-gray-200/60 shadow-[inset_0_3px_6px_rgba(0,0,0,0.1)] border border-gray-300 transform translate-y-0.5' : 'text-gray-500 hover:text-slate-700 hover:bg-gray-50 transition-colors'}`}>
+            <Link href={`/shop/${shopId}/staff`} aria-current={activeTab === 'staff' ? 'page' : undefined} className={`flex flex-col items-center justify-center w-full h-full mx-1 rounded-2xl space-y-1 ${activeTab === 'staff' ? 'text-slate-900 bg-white shadow-[0_4px_0_0_#cbd5e1] border border-gray-200 transform -translate-y-1' : 'text-gray-500 hover:text-slate-700 hover:bg-gray-50 transition-colors'}`}>
               <span className="text-3xl" aria-hidden="true">🗓️</span>
               <span className="text-xs sm:text-sm font-bold tracking-wide">Schedule</span>
             </Link>
           ) : (
-            <Link href={`/shop/${shopId}/settings/team`} aria-current={activeTab === 'team' || effectiveStaffTabs.includes(activeTab) ? 'page' : undefined} className={`flex flex-col items-center justify-center w-full h-full mx-1 rounded-2xl space-y-1 ${activeTab === 'team' || effectiveStaffTabs.includes(activeTab) ? 'text-slate-900 bg-gray-200/60 shadow-[inset_0_3px_6px_rgba(0,0,0,0.1)] border border-gray-300 transform translate-y-0.5' : 'text-gray-500 hover:text-slate-700 hover:bg-gray-50 transition-colors'}`}>
+            <Link href={`/shop/${shopId}/settings/team`} aria-current={activeTab === 'team' || effectiveStaffTabs.includes(activeTab) ? 'page' : undefined} className={`flex flex-col items-center justify-center w-full h-full mx-1 rounded-2xl space-y-1 ${activeTab === 'team' || effectiveStaffTabs.includes(activeTab) ? 'text-slate-900 bg-white shadow-[0_4px_0_0_#cbd5e1] border border-gray-200 transform -translate-y-1' : 'text-gray-500 hover:text-slate-700 hover:bg-gray-50 transition-colors'}`}>
               <span className="text-3xl" aria-hidden="true">👥</span>
               <span className="text-xs sm:text-sm font-bold tracking-wide">Team</span>
             </Link>
           )}
           {isStaff ? (
-            <Link href={`/shop/${shopId}/clients`} aria-current={activeTab === 'clients' ? 'page' : undefined} className={`flex flex-col items-center justify-center w-full h-full mx-1 rounded-2xl space-y-1 ${activeTab === 'clients' ? 'text-slate-900 bg-gray-200/60 shadow-[inset_0_3px_6px_rgba(0,0,0,0.1)] border border-gray-300 transform translate-y-0.5' : 'text-gray-500 hover:text-slate-700 hover:bg-gray-50 transition-colors'}`}>
+            <Link href={`/shop/${shopId}/clients`} aria-current={activeTab === 'clients' ? 'page' : undefined} className={`flex flex-col items-center justify-center w-full h-full mx-1 rounded-2xl space-y-1 ${activeTab === 'clients' ? 'text-slate-900 bg-white shadow-[0_4px_0_0_#cbd5e1] border border-gray-200 transform -translate-y-1' : 'text-gray-500 hover:text-slate-700 hover:bg-gray-50 transition-colors'}`}>
               <span className="text-3xl" aria-hidden="true">👥</span>
               <span className="text-xs sm:text-sm font-bold tracking-wide">Clients</span>
             </Link>
           ) : (
-            <Link href={`/shop/${shopId}/reports`} aria-current={isReportsSection ? 'page' : undefined} className={`flex flex-col items-center justify-center w-full h-full mx-1 rounded-2xl space-y-1 ${isReportsSection ? 'text-slate-900 bg-gray-200/60 shadow-[inset_0_3px_6px_rgba(0,0,0,0.1)] border border-gray-300 transform translate-y-0.5' : 'text-gray-500 hover:text-slate-700 hover:bg-gray-50 transition-colors'}`}>
+            <Link href={`/shop/${shopId}/reports`} aria-current={isReportsSection ? 'page' : undefined} className={`flex flex-col items-center justify-center w-full h-full mx-1 rounded-2xl space-y-1 ${isReportsSection ? 'text-slate-900 bg-white shadow-[0_4px_0_0_#cbd5e1] border border-gray-200 transform -translate-y-1' : 'text-gray-500 hover:text-slate-700 hover:bg-gray-50 transition-colors'}`}>
               <span className="text-3xl" aria-hidden="true">📊</span>
               <span className="text-xs sm:text-sm font-bold tracking-wide">Reports</span>
             </Link>
           )}
           {isStaff ? (
-            <Link href={`/shop/${shopId}/profile`} aria-current={['profile', 'leave', 'portfolio', 'commissions'].includes(activeTab) ? 'page' : undefined} className={`flex flex-col items-center justify-center w-full h-full mx-1 rounded-2xl space-y-1 ${['profile', 'leave', 'portfolio', 'commissions'].includes(activeTab) ? 'text-slate-900 bg-gray-200/60 shadow-[inset_0_3px_6px_rgba(0,0,0,0.1)] border border-gray-300 transform translate-y-0.5' : 'text-gray-500 hover:text-slate-700 hover:bg-gray-50 transition-colors'}`}>
+            <Link href={`/shop/${shopId}/profile`} aria-current={['profile', 'leave', 'portfolio', 'commissions'].includes(activeTab) ? 'page' : undefined} className={`flex flex-col items-center justify-center w-full h-full mx-1 rounded-2xl space-y-1 ${['profile', 'leave', 'portfolio', 'commissions'].includes(activeTab) ? 'text-slate-900 bg-white shadow-[0_4px_0_0_#cbd5e1] border border-gray-200 transform -translate-y-1' : 'text-gray-500 hover:text-slate-700 hover:bg-gray-50 transition-colors'}`}>
               <span className="text-3xl" aria-hidden="true">👤</span>
               <span className="text-xs sm:text-sm font-bold tracking-wide">Profile</span>
             </Link>
           ) : (
-            <Link href={`/shop/${shopId}/settings`} aria-current={isSettingsSection ? 'page' : undefined} className={`flex flex-col items-center justify-center w-full h-full mx-1 rounded-2xl space-y-1 ${isSettingsSection ? 'text-slate-900 bg-gray-200/60 shadow-[inset_0_3px_6px_rgba(0,0,0,0.1)] border border-gray-300 transform translate-y-0.5' : 'text-gray-500 hover:text-slate-700 hover:bg-gray-50 transition-colors'}`}>
+            <Link href={`/shop/${shopId}/settings`} aria-current={isSettingsSection ? 'page' : undefined} className={`flex flex-col items-center justify-center w-full h-full mx-1 rounded-2xl space-y-1 ${isSettingsSection ? 'text-slate-900 bg-white shadow-[0_4px_0_0_#cbd5e1] border border-gray-200 transform -translate-y-1' : 'text-gray-500 hover:text-slate-700 hover:bg-gray-50 transition-colors'}`}>
               <span className="text-3xl" aria-hidden="true">⚙️</span>
               <span className="text-xs sm:text-sm font-bold tracking-wide">Settings</span>
             </Link>
