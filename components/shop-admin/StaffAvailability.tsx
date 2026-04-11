@@ -66,7 +66,7 @@ export default function StaffAvailability({ defaultDate, defaultFrom, defaultTo,
   return (
     <div className="mb-8 bg-white rounded-2xl border border-gray-200 shadow-xl overflow-hidden">
       {/* Gold accent */}
-      <div className="h-1 bg-gradient-to-r from-brand-gold via-brand-gold/60 to-transparent" />
+      <div className="h-1 bg-gradient-to-r from-botanical-primary via-botanical-primary/60 to-transparent" />
 
       <div className="p-5">
         {/* Header row with day navigation */}
@@ -78,23 +78,23 @@ export default function StaffAvailability({ defaultDate, defaultFrom, defaultTo,
               <p className="text-xs text-slate-600">{dateStr}</p>
             </div>
             {isToday && (
-              <span className="text-[10px] bg-botanical-primary/20 text-botanical-accent px-2.5 py-0.5 rounded-full font-bold uppercase tracking-wider">Today</span>
+              <span className="text-[10px] bg-botanical-primary/20 text-botanical-primary px-2.5 py-0.5 rounded-full font-bold uppercase tracking-wider">Today</span>
             )}
           </div>
 
           <div className="flex items-center gap-2">
             {!isToday && (
               <button onClick={goToToday}
-                className="text-[11px] text-botanical-accent hover:text-slate-900 bg-botanical-primary/10 hover:bg-botanical-primary/20 border border-brand-gold/20 transition-all duration-200">
+                className="text-[11px] text-botanical-primary hover:text-slate-900 bg-botanical-primary/10 hover:bg-botanical-primary/20 border border-botanical-primary/20 transition-all duration-200">
                 Today
               </button>
             )}
             <button onClick={() => navigateDays(-1)}
-              className="w-9 h-9 flex items-center justify-center rounded-xl bg-white border border-gray-200 hover:border-brand-gold/40 text-slate-600 hover:text-slate-900 transition-all duration-200 text-sm font-bold">
+              className="w-9 h-9 flex items-center justify-center rounded-xl bg-white border border-gray-200 hover:border-botanical-primary/40 text-slate-600 hover:text-slate-900 transition-all duration-200 text-sm font-bold">
               ←
             </button>
             <button onClick={() => navigateDays(1)}
-              className="w-9 h-9 flex items-center justify-center rounded-xl bg-white border border-gray-200 hover:border-brand-gold/40 text-slate-600 hover:text-slate-900 transition-all duration-200 text-sm font-bold">
+              className="w-9 h-9 flex items-center justify-center rounded-xl bg-white border border-gray-200 hover:border-botanical-primary/40 text-slate-600 hover:text-slate-900 transition-all duration-200 text-sm font-bold">
               →
             </button>
           </div>

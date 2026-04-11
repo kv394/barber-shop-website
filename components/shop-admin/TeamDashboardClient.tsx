@@ -34,7 +34,7 @@ export default function TeamDashboardClient({
   return (
     <>
       <div className="flex justify-end mb-4">
-        <Link href={`/shop/${shopId}/portfolio`} className="bg-white text-slate-900 border border-gray-200 px-4 py-2 rounded-lg hover:bg-white transition-colors font-bold uppercase tracking-wider flex items-center gap-2 shadow-lg">
+        <Link href={`/shop/${shopId}/portfolio`} className="bg-white text-slate-900 border border-gray-200 px-4 py-2 rounded-lg hover:bg-gray-50 transition-colors font-bold uppercase tracking-wider flex items-center gap-2 shadow-lg">
           📸 Shop Portfolio Gallery
         </Link>
       </div>
@@ -55,7 +55,7 @@ export default function TeamDashboardClient({
               <div className="flex justify-between items-start mb-4">
                 <StaffProfileModalWrapper staff={staffMember}>
                   <div className="flex items-center gap-3 text-left">
-                    <div className="w-10 h-10 rounded-full overflow-hidden bg-white border border-brand-gold/50 flex items-center justify-center shrink-0">
+                    <div className="w-10 h-10 rounded-full overflow-hidden bg-white border border-gray-200 flex items-center justify-center shrink-0">
                       {staffMember.imageUrl ? (
                         <img src={staffMember.imageUrl} alt={staffMember.name} className="w-full h-full object-cover" />
                       ) : (
@@ -65,7 +65,7 @@ export default function TeamDashboardClient({
                     <div>
                       <h2 className="text-xl font-bold text-slate-900 mb-0.5 flex items-center gap-2">
                         {staffMember.name || staffMember.email.split('@')[0]}
-                        {staffMember.role === 'SHOP_ADMIN' && <span className="text-[9px] bg-botanical-primary/20 text-botanical-accent px-1.5 py-0.5 rounded uppercase tracking-wider font-bold">Admin</span>}
+                        {staffMember.role === 'SHOP_ADMIN' && <span className="text-[9px] bg-botanical-primary/20 text-botanical-primary px-1.5 py-0.5 rounded uppercase tracking-wider font-bold">Admin</span>}
                       </h2>
                       <p className="text-xs text-slate-600">{staffMember.email}</p>
                     </div>
@@ -135,14 +135,14 @@ export default function TeamDashboardClient({
                                 className="bg-white text-slate-900 text-xs p-1 rounded border border-gray-200 outline-none focus:ring-1 focus:ring-botanical-primary"
                             />
                         </div>
-                        <button type="submit" className="w-full text-xs text-botanical-primary bg-botanical-primary/10 hover:bg-botanical-primary hover:text-slate-900 py-1.5 rounded transition-colors border border-botanical-primary/20 font-bold">Add Shift</button>
+                        <button type="submit" className="w-full text-xs text-botanical-primary bg-botanical-primary/10 hover:bg-botanical-primary hover:text-white py-1.5 rounded transition-colors border border-botanical-primary/20 font-bold">Add Shift</button>
                     </form>
                   </div>
                 ) : (
                   <>
                     <div className="flex items-center justify-between mb-3 pb-2 border-b border-gray-200">
                         <span className="text-xs font-semibold text-slate-600 uppercase tracking-wider">Today's Hours</span>
-                        <span className="text-sm font-mono text-botanical-accent">
+                        <span className="text-sm font-mono text-botanical-primary">
                             {new Date(`1970-01-01T${staffMember.openTime}Z`).toLocaleTimeString([], {hour: 'numeric', minute:'2-digit'})} - {new Date(`1970-01-01T${staffMember.closeTime}Z`).toLocaleTimeString([], {hour: 'numeric', minute:'2-digit'})}
                         </span>
                     </div>
@@ -173,7 +173,7 @@ export default function TeamDashboardClient({
               <div className="grid grid-cols-2 gap-2 mt-auto">
                 <Link 
                     href={`/shop/${shopId}/settings/team/${staffMember.id}/schedule`} 
-                    className="w-full text-center bg-white hover:bg-white text-slate-900 text-xs font-semibold py-2 rounded-lg transition-colors border border-gray-200"
+                    className="w-full text-center bg-white hover:bg-gray-50 text-slate-900 text-xs font-semibold py-2 rounded-lg transition-colors border border-gray-200"
                 >
                     Edit Schedule
                 </Link>
