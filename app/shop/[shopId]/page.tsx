@@ -6,6 +6,7 @@ import { getTodayInShopTz, toShopTzDayBounds } from '@/lib/timezone';
 import Link from 'next/link';
 import ShopAdminLayout from '@/components/shop-admin/ShopAdminLayout';
 import StaffInbox from '@/components/shop-admin/StaffInbox';
+import DirectClockInButton from '@/components/shop-admin/DirectClockInButton';
 import { calculateUsageCostStrategy, getSaaSTiers } from '@/lib/cost-calculator';
 
 export const dynamic = 'force-dynamic';
@@ -22,7 +23,7 @@ async function getShopData(shopId: string, userId: string) {
   const { startOfDay: today, endOfDay: tomorrow } = toShopTzDayBounds(todayStr, shopTz);
 
   // Run both queries in parallel instead of sequentially
-  const [shopFromDb, todayAppointments, allTrackedServices, allTrackedProducts, latestReport] = await Promise.all([
+  const [shopFromDb, todayAppointments, allTrackedServices, allTrackedProducts, latestReport, activeLog] = await Promise.all([
     prisma.shop.findUnique({
       where: { id: shopId },
       include: {
@@ -51,6 +52,13 @@ async function getShopData(shopId: string, userId: string) {
     prisma.shopUsageReport.findFirst({
       where: { shopId },
       orderBy: { period: 'desc' }
+    }),
+    prisma.timeLog.findFirst({
+      where: {
+        userId: data.user.id,
+        shopId: shopId,
+        clockOut: null,
+      },
     })
   ]);
 
@@ -61,7 +69,7 @@ async function getShopData(shopId: string, userId: string) {
   ];
 
   if (!shopFromDb) {
-    return { shop: null, userRole: data.userRole, canManageInventory: false, shopSlug: data.shopSlug, lowStockItems: [], todayStats: null, billingAlert: null };
+    return { shop: null, userRole: data.userRole, canManageInventory: false, shopSlug: data.shopSlug, lowStockItems: [], todayStats: null, billingAlert: null, isClockedIn: false };
   }
 
   const completed = todayAppointments.filter((a: any) => a.status === 'COMPLETED');
@@ -118,6 +126,7 @@ async function getShopData(shopId: string, userId: string) {
     shopSlug: data.shopSlug,
     lowStockItems: JSON.parse(JSON.stringify(lowStockItems)),
     billingAlert,
+    isClockedIn: !!activeLog,
     todayStats: {
       totalBookings: todayAppointments.length,
       completedCount: completed.length,
@@ -137,7 +146,7 @@ export default async function ShopDashboardPage({ params }: { params: Promise<{ 
   if (!userId) return redirect('/');
 
   const { shopId } = await params;
-  const { shop, userRole, canManageInventory, shopSlug, lowStockItems, todayStats, billingAlert } = await getShopData(shopId, userId);
+  const { shop, userRole, canManageInventory, shopSlug, lowStockItems, todayStats, billingAlert, isClockedIn } = await getShopData(shopId, userId);
 
   // SUPER_ADMIN is a site admin — redirect to team assignment page (they don't access shop operations)
   if (userRole === 'SUPER_ADMIN') {
@@ -171,6 +180,12 @@ export default async function ShopDashboardPage({ params }: { params: Promise<{ 
       userRole={userRole as string}
       activeTab="dashboard"
     >
+      {/* ── Clock In Button (STAFF only) ── */}
+      {isStaff && (
+        <div className="mb-6">
+          <DirectClockInButton shopId={shopId} initialIsClockedIn={isClockedIn} />
+        </div>
+      )}
       {isShopAdmin && billingAlert && (
         <div className={`mb-6 p-4 rounded-xl border flex items-start gap-3 ${
           billingAlert.type === 'warning' 
@@ -238,46 +253,46 @@ export default async function ShopDashboardPage({ params }: { params: Promise<{ 
       {todayStats && (
         <div className="mb-6 sm:mb-8">
           <h2 className="text-lg sm:text-xl font-bold text-white mb-4">📊 Today&apos;s Snapshot</h2>
-          <div className="bg-slate-900/80 backdrop-blur-xl shadow-lg rounded-2xl border border-white/10 mb-8 flex flex-col lg:flex-row divide-y lg:divide-y-0 lg:divide-x divide-white/10">
-            <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-white/5 transition-all duration-300 min-w-0">
+          <div className="grid grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-4 mb-4 sm:mb-8">
+            <div className="bg-slate-900/80 backdrop-blur-xl shadow-lg rounded-2xl border border-white/10 p-4 sm:p-6 relative overflow-hidden group hover:bg-white/5 transition-all duration-300 min-w-0">
               <div className="absolute top-0 left-0 w-full h-1 bg-blue-500/80"></div>
-              <div className="flex justify-between items-center mb-3">
-                <h3 className="text-gray-400 text-xs uppercase tracking-widest font-semibold truncate">Total Bookings</h3>
-                <span className="text-blue-500 text-sm">📅</span>
+              <div className="flex justify-between items-center mb-2 sm:mb-3">
+                <h3 className="text-gray-400 text-[10px] sm:text-xs uppercase tracking-widest font-semibold truncate">Bookings</h3>
+                <span className="text-blue-500 text-sm sm:text-base">📅</span>
               </div>
-              <p className="text-2xl sm:text-3xl font-black text-white break-words leading-tight">{todayStats.totalBookings}</p>
+              <p className="text-xl sm:text-3xl font-black text-white break-words leading-tight">{todayStats.totalBookings}</p>
             </div>
-            <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-white/5 transition-all duration-300 min-w-0">
+            <div className="bg-slate-900/80 backdrop-blur-xl shadow-lg rounded-2xl border border-white/10 p-4 sm:p-6 relative overflow-hidden group hover:bg-white/5 transition-all duration-300 min-w-0">
               <div className="absolute top-0 left-0 w-full h-1 bg-green-500/80"></div>
-              <div className="flex justify-between items-center mb-3">
-                <h3 className="text-gray-400 text-xs uppercase tracking-widest font-semibold truncate">Revenue</h3>
-                <span className="text-green-500 text-sm">💵</span>
+              <div className="flex justify-between items-center mb-2 sm:mb-3">
+                <h3 className="text-gray-400 text-[10px] sm:text-xs uppercase tracking-widest font-semibold truncate">Revenue</h3>
+                <span className="text-green-500 text-sm sm:text-base">💵</span>
               </div>
-              <p className="text-2xl sm:text-3xl font-black text-white break-words leading-tight">${todayStats.revenue.toFixed(0)}</p>
+              <p className="text-xl sm:text-3xl font-black text-white break-words leading-tight">${todayStats.revenue.toFixed(0)}</p>
             </div>
-            <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-white/5 transition-all duration-300 min-w-0">
+            <div className="bg-slate-900/80 backdrop-blur-xl shadow-lg rounded-2xl border border-white/10 p-4 sm:p-6 relative overflow-hidden group hover:bg-white/5 transition-all duration-300 min-w-0">
               <div className="absolute top-0 left-0 w-full h-1 bg-amber-500/80"></div>
-              <div className="flex justify-between items-center mb-3">
-                <h3 className="text-gray-400 text-xs uppercase tracking-widest font-semibold truncate">Tips</h3>
-                <span className="text-amber-500 text-sm">🪙</span>
+              <div className="flex justify-between items-center mb-2 sm:mb-3">
+                <h3 className="text-gray-400 text-[10px] sm:text-xs uppercase tracking-widest font-semibold truncate">Tips</h3>
+                <span className="text-amber-500 text-sm sm:text-base">🪙</span>
               </div>
-              <p className="text-2xl sm:text-3xl font-black text-white break-words leading-tight">${todayStats.tips.toFixed(0)}</p>
+              <p className="text-xl sm:text-3xl font-black text-white break-words leading-tight">${todayStats.tips.toFixed(0)}</p>
             </div>
-            <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-white/5 transition-all duration-300 min-w-0">
+            <div className="bg-slate-900/80 backdrop-blur-xl shadow-lg rounded-2xl border border-white/10 p-4 sm:p-6 relative overflow-hidden group hover:bg-white/5 transition-all duration-300 min-w-0">
               <div className="absolute top-0 left-0 w-full h-1 bg-purple-500/80"></div>
-              <div className="flex justify-between items-center mb-3">
-                <h3 className="text-gray-400 text-xs uppercase tracking-widest font-semibold truncate">Completed</h3>
-                <span className="text-purple-500 text-sm">✅</span>
+              <div className="flex justify-between items-center mb-2 sm:mb-3">
+                <h3 className="text-gray-400 text-[10px] sm:text-xs uppercase tracking-widest font-semibold truncate">Completed</h3>
+                <span className="text-purple-500 text-sm sm:text-base">✅</span>
               </div>
-              <p className="text-2xl sm:text-3xl font-black text-white break-words leading-tight">{todayStats.completedCount}</p>
+              <p className="text-xl sm:text-3xl font-black text-white break-words leading-tight">{todayStats.completedCount}</p>
             </div>
-            <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-white/5 transition-all duration-300 min-w-0">
+            <div className="col-span-2 lg:col-span-1 bg-slate-900/80 backdrop-blur-xl shadow-lg rounded-2xl border border-white/10 p-4 sm:p-6 relative overflow-hidden group hover:bg-white/5 transition-all duration-300 min-w-0">
               <div className="absolute top-0 left-0 w-full h-1 bg-cyan-500/80"></div>
-              <div className="flex justify-between items-center mb-3">
-                <h3 className="text-gray-400 text-xs uppercase tracking-widest font-semibold truncate">Upcoming</h3>
-                <span className="text-cyan-500 text-sm">⏳</span>
+              <div className="flex justify-between items-center mb-2 sm:mb-3">
+                <h3 className="text-gray-400 text-[10px] sm:text-xs uppercase tracking-widest font-semibold truncate">Upcoming</h3>
+                <span className="text-cyan-500 text-sm sm:text-base">⏳</span>
               </div>
-              <p className="text-2xl sm:text-3xl font-black text-white break-words leading-tight">{todayStats.upcomingCount}</p>
+              <p className="text-xl sm:text-3xl font-black text-white break-words leading-tight">{todayStats.upcomingCount}</p>
             </div>
           </div>
           {todayStats.nextAppointment && (

@@ -47,23 +47,23 @@ export default function StaffInbox({ shopId, userId }: { shopId: string, userId:
   }
 
   return (
-    <div className="bg-slate-800/50 rounded-xl border border-white/5 overflow-hidden">
-      <div className="p-4 border-b border-white/5 bg-slate-800/80 flex items-center justify-between">
-        <h3 className="text-white font-bold flex items-center gap-2">
-          <span>🔔</span> Notifications
+    <div className="bg-slate-900/80 backdrop-blur-xl rounded-2xl shadow-lg border border-white/10 overflow-hidden">
+      <div className="p-4 sm:p-5 border-b border-white/5 flex items-center justify-between">
+        <h3 className="text-white text-lg font-bold flex items-center gap-2">
+          <span>🔔</span> My Notifications
         </h3>
-        <span className="bg-brand-gold text-slate-900 text-[10px] font-bold px-2 py-0.5 rounded-full">{items.length} New</span>
+        <span className="bg-brand-gold text-slate-900 text-xs font-bold px-3 py-1 rounded-full">{items.length} New</span>
       </div>
-      <div className="divide-y divide-white/5 max-h-80 overflow-y-auto">
+      <div className="divide-y divide-white/5 max-h-[60vh] sm:max-h-96 overflow-y-auto">
         {items.map(item => (
-          <div key={item.id} className="p-4 hover:bg-white/5 transition-colors group">
-            <div className="flex justify-between items-start mb-1">
-              <h4 className="text-sm font-semibold text-white group-hover:text-brand-gold transition-colors">{item.title}</h4>
-              <span className="text-[10px] text-gray-500 font-mono">
+          <div key={item.id} className="p-4 sm:p-5 hover:bg-white/5 transition-colors group active:bg-white/10">
+            <div className="flex justify-between items-start mb-2 gap-3">
+              <h4 className="text-base sm:text-sm font-semibold text-white group-hover:text-brand-gold transition-colors">{item.title}</h4>
+              <span className="text-xs text-gray-500 font-mono shrink-0 pt-0.5">
                 {new Date(item.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
               </span>
             </div>
-            <p className="text-xs text-gray-400 leading-relaxed">{item.message}</p>
+            <p className="text-sm sm:text-xs text-gray-400 leading-relaxed">{item.message}</p>
           </div>
         ))}
       </div>

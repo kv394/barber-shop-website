@@ -45,46 +45,76 @@ export function ShopNav({ shopId, userRole, activeTab }: { shopId: string, userR
 
   // ── SHOP_ADMIN & STAFF navigation ──
   return (
-    <div className="mb-6 sm:mb-8">
-      {/* ── Main Navigation ── */}
-      <div className="flex gap-1 sm:gap-4 border-b border-white/10 pb-3 sm:pb-4 overflow-x-auto scrollbar-none -mx-3 px-3 sm:mx-0 sm:px-0">
-        {(isShopAdmin || isStaff) && (
-          <>
-            <Link href={`/shop/${shopId}`} className={mainTabClass('dashboard')}>
-              Dashboard
-            </Link>
-            <Link href={`/shop/${shopId}/bookings`} className={mainTabClass('bookings')}>
-              Bookings
-            </Link>
-            <Link href={`/shop/${shopId}/waitlist`} className={mainTabClass('waitlist')}>
-              Waitlist
-            </Link>
-            <Link href={`/shop/${shopId}/clients`} className={mainTabClass('clients')}>
-              Clients
-            </Link>
-            <Link href={`/shop/${shopId}/${isShopAdmin ? 'settings/team' : 'staff'}`} className={mainTabClass('staff', effectiveStaffTabs)}>
-              Staff
-            </Link>
-          </>
-        )}
+    <>
+      {/* Desktop/Tablet Navigation (and Shop Admin Mobile) */}
+      <div className={`mb-6 sm:mb-8 ${isStaff ? 'hidden sm:block' : 'block'}`}>
+        <div className="flex gap-1 sm:gap-4 border-b border-white/10 pb-3 sm:pb-4 overflow-x-auto scrollbar-none -mx-3 px-3 sm:mx-0 sm:px-0">
+          {(isShopAdmin || isStaff) && (
+            <>
+              <Link href={`/shop/${shopId}`} className={mainTabClass('dashboard')}>
+                Dashboard
+              </Link>
+              <Link href={`/shop/${shopId}/bookings`} className={mainTabClass('bookings')}>
+                Bookings
+              </Link>
+              <Link href={`/shop/${shopId}/waitlist`} className={mainTabClass('waitlist')}>
+                Waitlist
+              </Link>
+              <Link href={`/shop/${shopId}/clients`} className={mainTabClass('clients')}>
+                Clients
+              </Link>
+              <Link href={`/shop/${shopId}/${isShopAdmin ? 'settings/team' : 'staff'}`} className={mainTabClass('staff', effectiveStaffTabs)}>
+                Staff
+              </Link>
+            </>
+          )}
 
-        {isShopAdmin && (
-          <>
-            <Link href={`/shop/${shopId}/engagement`} className={mainTabClass('engagement', engagementTabs)}>
-              Engage
-            </Link>
-            <Link href={`/shop/${shopId}/reports`} className={mainTabClass('reports', reportsTabs)}>
-              Reports
-            </Link>
-            <Link href={`/shop/${shopId}/reviews`} className={mainTabClass('reviews')}>
-              Reviews
-            </Link>
-            <Link href={`/shop/${shopId}/settings`} className={mainTabClass('settings', settingsTabs)}>
-              Settings
-            </Link>
-          </>
-        )}
+          {isShopAdmin && (
+            <>
+              <Link href={`/shop/${shopId}/engagement`} className={mainTabClass('engagement', engagementTabs)}>
+                Engage
+              </Link>
+              <Link href={`/shop/${shopId}/reports`} className={mainTabClass('reports', reportsTabs)}>
+                Reports
+              </Link>
+              <Link href={`/shop/${shopId}/reviews`} className={mainTabClass('reviews')}>
+                Reviews
+              </Link>
+              <Link href={`/shop/${shopId}/settings`} className={mainTabClass('settings', settingsTabs)}>
+                Settings
+              </Link>
+            </>
+          )}
+        </div>
       </div>
-    </div>
+
+      {/* ── Mobile App Bottom Navigation (STAFF Only) ── */}
+      {isStaff && (
+        <div className="sm:hidden fixed bottom-0 left-0 right-0 bg-slate-900/95 backdrop-blur-xl border-t border-white/10 z-50 pb-safe">
+          <div className="flex justify-around items-center h-16 px-2">
+            <Link href={`/shop/${shopId}`} className={`flex flex-col items-center justify-center w-full h-full space-y-1 ${activeTab === 'dashboard' ? 'text-brand-gold' : 'text-gray-500 hover:text-gray-300'}`}>
+              <span className="text-xl">🏠</span>
+              <span className="text-[10px] font-bold tracking-wide">Home</span>
+            </Link>
+            <Link href={`/shop/${shopId}/bookings`} className={`flex flex-col items-center justify-center w-full h-full space-y-1 ${activeTab === 'bookings' ? 'text-brand-gold' : 'text-gray-500 hover:text-gray-300'}`}>
+              <span className="text-xl">📅</span>
+              <span className="text-[10px] font-bold tracking-wide">Bookings</span>
+            </Link>
+            <Link href={`/shop/${shopId}/waitlist`} className={`flex flex-col items-center justify-center w-full h-full space-y-1 ${activeTab === 'waitlist' ? 'text-brand-gold' : 'text-gray-500 hover:text-gray-300'}`}>
+              <span className="text-xl">📋</span>
+              <span className="text-[10px] font-bold tracking-wide">Walk-in</span>
+            </Link>
+            <Link href={`/shop/${shopId}/clients`} className={`flex flex-col items-center justify-center w-full h-full space-y-1 ${activeTab === 'clients' ? 'text-brand-gold' : 'text-gray-500 hover:text-gray-300'}`}>
+              <span className="text-xl">👥</span>
+              <span className="text-[10px] font-bold tracking-wide">Clients</span>
+            </Link>
+            <Link href={`/shop/${shopId}/staff`} className={`flex flex-col items-center justify-center w-full h-full space-y-1 ${effectiveStaffTabs.includes(activeTab) ? 'text-brand-gold' : 'text-gray-500 hover:text-gray-300'}`}>
+              <span className="text-xl">👤</span>
+              <span className="text-[10px] font-bold tracking-wide">Profile</span>
+            </Link>
+          </div>
+        </div>
+      )}
+    </>
   );
 }

@@ -119,10 +119,12 @@ export default function ShopAdminLayout({
   else if (isReportsView) activeSection = 'reports';
   else if (isEngagementView) activeSection = 'engagement';
 
+  const isStaff = userRole === 'STAFF';
+
   return (
-    <>
+    <div className={isStaff ? 'pb-20 sm:pb-0' : ''}>
       {pageTitle && (
-        <p className="text-gray-400 text-sm sm:text-lg -mt-6 sm:-mt-8 mb-6 sm:mb-8">{pageTitle}</p>
+        <p className={`text-gray-400 text-sm sm:text-lg mb-6 sm:mb-8 ${isStaff ? 'px-3 sm:px-0 mt-2 sm:mt-0' : '-mt-6 sm:-mt-8'}`}>{pageTitle}</p>
       )}
 
       <ShopNav shopId={shopId} userRole={userRole} activeTab={activeTab} />
@@ -140,10 +142,10 @@ export default function ShopAdminLayout({
           </div>
         </div>
       ) : (
-        <div className="bg-slate-800/50 p-3 sm:p-4 md:p-8 rounded-xl border border-white/10 shadow-lg">
+        <div className={`shadow-lg ${isStaff ? 'bg-transparent sm:bg-slate-800/50 p-3 sm:p-4 md:p-8 border-0 sm:border sm:rounded-xl border-white/10' : 'bg-slate-800/50 p-3 sm:p-4 md:p-8 rounded-xl border border-white/10'}`}>
           {children}
         </div>
       )}
-    </>
+    </div>
   );
 }
