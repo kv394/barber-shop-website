@@ -51,6 +51,14 @@ const config: Config = {
           gold: '#D4A373',     // Soft Clay (replacing old gold)
           gray: '#E2E0D9'      // Oatmeal
         }
+      },
+      boxShadow: {
+        'sm': '0 2px 0 0 #E2E0D9, 0 3px 6px rgba(0,0,0,0.02)',
+        DEFAULT: '0 4px 0 0 #E2E0D9, 0 5px 10px rgba(0,0,0,0.05)',
+        'md': '0 6px 0 0 #E2E0D9, 0 8px 15px rgba(0,0,0,0.05)',
+        'lg': '0 8px 0 0 #E2E0D9, 0 10px 20px rgba(0,0,0,0.05)',
+        'xl': '0 12px 0 0 #E2E0D9, 0 15px 25px rgba(0,0,0,0.05)',
+        '2xl': '0 16px 0 0 #E2E0D9, 0 20px 30px rgba(0,0,0,0.05)',
       }
     },
   },
