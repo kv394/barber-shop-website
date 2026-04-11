@@ -61,16 +61,21 @@ export default function SectionSidebar({ activeTab, shopId, section, userRole }:
   const checkScroll = () => {
     if (scrollContainerRef.current) {
       const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current;
-      // Show indicator if not scrolled to the end (allow 5px tolerance)
-      setShowIndicator(scrollLeft < scrollWidth - clientWidth - 5);
+      // Show indicator if not scrolled to the end (allow 10px tolerance for padding and subpixels)
+      setShowIndicator(scrollLeft < scrollWidth - clientWidth - 10);
     }
   };
 
   useEffect(() => {
+    // Initial check on mount, and then give it a tiny delay to ensure the DOM has rendered the links fully
     checkScroll();
+    const timeout = setTimeout(checkScroll, 100);
     window.addEventListener('resize', checkScroll);
-    return () => window.removeEventListener('resize', checkScroll);
-  }, [navLinks]);
+    return () => {
+      clearTimeout(timeout);
+      window.removeEventListener('resize', checkScroll);
+    };
+  }, [navLinks, activeTab]);
 
   // Scroll to active element on mount
   useEffect(() => {
@@ -87,9 +92,14 @@ export default function SectionSidebar({ activeTab, shopId, section, userRole }:
           left: activeLink.offsetLeft - container.clientWidth / 2 + activeLink.clientWidth / 2,
           behavior: 'smooth'
         });
+        
+        // Check scroll again after animation, and repeatedly during the animation to catch the end state
+        setTimeout(checkScroll, 100);
+        setTimeout(checkScroll, 300);
+        setTimeout(checkScroll, 500);
       }
     }
-  }, []);
+  }, [activeTab]);
 
   return (
     <div className="relative">

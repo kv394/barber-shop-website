@@ -103,7 +103,7 @@ export default function SupabaseAuthButton({
                </div>
                
                {/* Menu Actions */}
-               <div className="p-4 sm:p-2 space-y-2 sm:space-y-1 bg-slate-900 pb-10 sm:pb-2">
+               <div className="p-4 sm:p-2 space-y-2 sm:space-y-1 bg-slate-900 pb-20 sm:pb-2">
                   <Link onClick={() => setIsOpen(false)} href="/my-appointments" className="block w-full text-center sm:text-left px-4 py-3.5 sm:py-2 text-base sm:text-sm text-gray-200 hover:text-white hover:bg-white/5 rounded-xl transition-colors font-medium">
                     My Appointments
                   </Link>
@@ -118,7 +118,7 @@ export default function SupabaseAuthButton({
                   
                   <button 
                     onClick={() => { setIsOpen(false); handleSignOut(); }} 
-                    className="block w-full text-center sm:text-left px-4 py-3.5 sm:py-2 text-base sm:text-sm text-red-400 hover:text-red-300 hover:bg-red-500/10 rounded-xl transition-colors font-medium"
+                    className="block w-full text-center sm:text-left px-4 py-4 sm:py-2 text-base sm:text-sm text-red-400 hover:text-red-300 hover:bg-red-500/10 rounded-xl transition-colors font-bold border border-red-500/20 sm:border-transparent bg-red-500/5 sm:bg-transparent"
                   >
                     Sign Out
                   </button>
