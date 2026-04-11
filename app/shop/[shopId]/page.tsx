@@ -253,7 +253,7 @@ export default async function ShopDashboardPage({ params }: { params: Promise<{ 
       {todayStats && todayStats.nextAppointment && (
         <div className="mb-6 sm:mb-8 bg-gradient-to-br from-brand-gold to-yellow-600 rounded-3xl p-6 sm:p-8 shadow-[0_10px_40px_rgba(234,179,8,0.2)] text-botanical-text relative overflow-hidden group">
           <div className="absolute top-0 right-0 p-8 opacity-10 transform translate-x-4 -translate-y-4 group-hover:scale-110 transition-transform duration-700">
-            <span className="text-6xl">✂️</span>
+            <span className="text-8xl">✂️</span>
           </div>
           <div className="relative z-10">
             <p className="text-sm font-bold uppercase tracking-widest mb-1 opacity-80">Up Next</p>
