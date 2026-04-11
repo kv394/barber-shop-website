@@ -110,7 +110,8 @@ export default function ShopAdminLayout({
   const isReportsView = REPORTS_TABS.includes(activeTab) && userRole === 'SHOP_ADMIN';
   const isEngagementView = ENGAGEMENT_TABS.includes(activeTab) && userRole === 'SHOP_ADMIN';
 
-  const isSplitLayout = isSettingsView || isStaffView || isReportsView || isEngagementView;
+  // Completely removed the sidebar for the Staff section since everything is on one page now
+  const isSplitLayout = isSettingsView || isReportsView || isEngagementView;
 
   let activeSection = '';
   if (isSettingsView) activeSection = 'settings';

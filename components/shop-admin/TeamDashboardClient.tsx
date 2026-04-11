@@ -66,18 +66,23 @@ export default function TeamDashboardClient({
                   </div>
                 </StaffProfileModalWrapper>
                 
-                {/* Status Badge */}
-                {isOnLeave ? (
-                  <span className="text-[10px] bg-red-900/50 text-red-300 border border-red-500/30 px-2.5 py-1 rounded-full font-bold uppercase tracking-wider">On Leave</span>
-                ) : isNotWorking ? (
-                  <span className="text-[10px] bg-slate-800 text-gray-400 border border-slate-600 px-2.5 py-1 rounded-full font-bold uppercase tracking-wider">Day Off</span>
-                ) : staffMember.isClockedIn ? (
-                  <span className="text-[10px] bg-emerald-900/50 text-emerald-300 border border-emerald-500/30 px-2.5 py-1 rounded-full font-bold uppercase tracking-wider flex items-center gap-1.5">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> Clocked In
-                  </span>
-                ) : (
-                  <span className="text-[10px] bg-blue-900/50 text-blue-300 border border-blue-500/30 px-2.5 py-1 rounded-full font-bold uppercase tracking-wider">Scheduled</span>
-                )}
+                {/* Actions & Status Badge */}
+                <div className="flex flex-col items-end gap-2">
+                  <Link href={`/shop/${shopId}/portfolio?staffId=${staffMember.id}`} className="text-[10px] bg-slate-800 text-gray-300 border border-slate-600 px-2 py-1 rounded hover:bg-slate-700 transition-colors font-bold uppercase tracking-wider flex items-center gap-1">
+                    📸 Portfolio
+                  </Link>
+                  {isOnLeave ? (
+                    <span className="text-[10px] bg-red-900/50 text-red-300 border border-red-500/30 px-2.5 py-1 rounded-full font-bold uppercase tracking-wider">On Leave</span>
+                  ) : isNotWorking ? (
+                    <span className="text-[10px] bg-slate-800 text-gray-400 border border-slate-600 px-2.5 py-1 rounded-full font-bold uppercase tracking-wider">Day Off</span>
+                  ) : staffMember.isClockedIn ? (
+                    <span className="text-[10px] bg-emerald-900/50 text-emerald-300 border border-emerald-500/30 px-2.5 py-1 rounded-full font-bold uppercase tracking-wider flex items-center gap-1.5">
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> Clocked In
+                    </span>
+                  ) : (
+                    <span className="text-[10px] bg-blue-900/50 text-blue-300 border border-blue-500/30 px-2.5 py-1 rounded-full font-bold uppercase tracking-wider">Scheduled</span>
+                  )}
+                </div>
               </div>
 
               {/* Schedule / Leave Display */}
