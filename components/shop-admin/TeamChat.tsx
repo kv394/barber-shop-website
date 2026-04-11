@@ -146,11 +146,11 @@ export default function TeamChat({ shopId, currentUserId }: { shopId: string, cu
   return (
     <div className="flex flex-col h-[calc(100dvh-180px)] sm:h-[600px] bg-botanical-surface rounded-t-3xl sm:rounded-2xl border-2 border-b-[6px] border-botanical-border overflow-hidden shadow-2xl relative">
       {/* Header */}
-      <div className="p-4 sm:p-5 border-b border-botanical-border bg-botanical-surface z-10 shadow-sm relative">
-        <h3 className="font-bold text-botanical-text flex items-center gap-2 text-lg">
+      <div className="p-4 sm:p-5 bg-botanical-text z-10 shadow-sm relative">
+        <h3 className="font-bold text-white flex items-center gap-2 text-lg">
           <span>💬</span> Team Chat
         </h3>
-        <p className="text-xs text-botanical-muted">Moderated by Shop Admin</p>
+        <p className="text-xs text-gray-300 opacity-80">Moderated by Shop Admin</p>
       </div>
 
       {/* Messages Area */}
