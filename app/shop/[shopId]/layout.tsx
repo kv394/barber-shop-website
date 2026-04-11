@@ -62,9 +62,9 @@ export default async function ShopLayout({
   }
 
   return (
-    <main className={`flex min-h-screen flex-col items-center bg-slate-900 text-white ${isStaff ? 'px-0 py-0 sm:p-4 md:p-8 lg:p-12 pb-24 sm:pb-4' : 'px-3 py-4 sm:p-4 md:p-8 lg:p-12'}`}>
-      <div className={`w-full max-w-7xl ${isStaff ? 'px-3 sm:px-0 pt-4 sm:pt-0' : ''}`}>
-        <header className={`flex justify-between items-center mb-6 sm:mb-8 ${isStaff ? 'hidden sm:flex' : ''}`}>
+    <main className="flex min-h-screen flex-col items-center bg-slate-900 text-white px-0 py-0 sm:p-4 md:p-8 lg:p-12 pb-24 sm:pb-4">
+      <div className="w-full max-w-7xl px-3 sm:px-0 pt-4 sm:pt-0">
+        <header className="hidden sm:flex justify-between items-center mb-6 sm:mb-8">
           <h1 className="font-serif text-2xl sm:text-3xl font-bold">
             {isSuperAdmin ? (
               <Link href="/superadmin">
@@ -90,7 +90,7 @@ export default async function ShopLayout({
         )}
         
         {!isSuperAdmin && (
-            <header className={`mb-8 sm:mb-12 flex flex-col sm:flex-row justify-between sm:items-end border-b border-white/10 pb-4 sm:pb-6 gap-3 sm:gap-4 ${isStaff ? 'hidden sm:flex' : ''}`}>
+            <header className="hidden sm:flex mb-8 sm:mb-12 flex-col sm:flex-row justify-between sm:items-end border-b border-white/10 pb-4 sm:pb-6 gap-3 sm:gap-4">
             <div className="min-w-0">
                 <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl font-bold text-brand-gold mb-1 sm:mb-2 truncate">Management Dashboard</h2>
             </div>

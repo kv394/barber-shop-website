@@ -18,7 +18,7 @@ const SETTINGS_TABS = [
   'setup', 'products', 'services', 'settings-billing'
 ];
 
-const STAFF_TABS = ['staff', 'team', 'leave', 'portfolio'];
+const STAFF_TABS = ['staff', 'team', 'leave', 'portfolio', 'profile'];
 const REPORTS_TABS = ['reports', 'staff-report', 'expenses', 'commissions'];
 const ENGAGEMENT_TABS = ['engagement', 'loyalty', 'referrals', 'campaigns', 'gift-cards'];
 
@@ -122,9 +122,9 @@ export default function ShopAdminLayout({
   const isStaff = userRole === 'STAFF';
 
   return (
-    <div className={isStaff ? 'pb-20 sm:pb-0' : ''}>
+    <div className="pb-20 sm:pb-0">
       {pageTitle && (
-        <p className={`text-gray-400 text-sm sm:text-lg mb-6 sm:mb-8 ${isStaff ? 'px-3 sm:px-0 mt-2 sm:mt-0' : '-mt-6 sm:-mt-8'}`}>{pageTitle}</p>
+        <p className="text-gray-400 text-sm sm:text-lg mb-6 sm:mb-8 px-3 sm:px-0 mt-2 sm:mt-0 sm:-mt-8">{pageTitle}</p>
       )}
 
       <ShopNav shopId={shopId} userRole={userRole} activeTab={activeTab} />
@@ -142,7 +142,7 @@ export default function ShopAdminLayout({
           </div>
         </div>
       ) : (
-        <div className={`shadow-lg ${isStaff ? 'bg-transparent sm:bg-slate-800/50 p-3 sm:p-4 md:p-8 border-0 sm:border sm:rounded-xl border-white/10' : 'bg-slate-800/50 p-3 sm:p-4 md:p-8 rounded-xl border border-white/10'}`}>
+        <div className="shadow-lg bg-transparent sm:bg-slate-800/50 p-3 sm:p-4 md:p-8 border-0 sm:border sm:rounded-xl border-white/10">
           {children}
         </div>
       )}
