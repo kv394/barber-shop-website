@@ -26,9 +26,9 @@ export default async function SuperAdminLayout({ children }: { children: React.R
   }
 
   return (
-    <main className="min-h-screen bg-slate-900 text-white">
+    <main className="h-[100dvh] bg-slate-900 text-white overflow-y-auto overflow-x-hidden scroll-smooth">
       {/* Top Bar */}
-      <header className="border-b border-white/10 bg-slate-900/95 sticky top-0 z-50 backdrop-blur-sm">
+      <header className="border-b border-white/10 bg-slate-900/95 sticky top-0 z-50 backdrop-blur-sm shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex justify-between items-center">
           <div className="flex items-center gap-6">
             <Link href="/" className="font-serif text-2xl font-bold">
