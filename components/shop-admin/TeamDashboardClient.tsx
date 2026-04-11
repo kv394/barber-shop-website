@@ -71,8 +71,12 @@ export default function TeamDashboardClient({
                   <span className="text-[10px] bg-red-900/50 text-red-300 border border-red-500/30 px-2.5 py-1 rounded-full font-bold uppercase tracking-wider">On Leave</span>
                 ) : isNotWorking ? (
                   <span className="text-[10px] bg-slate-800 text-gray-400 border border-slate-600 px-2.5 py-1 rounded-full font-bold uppercase tracking-wider">Day Off</span>
+                ) : staffMember.isClockedIn ? (
+                  <span className="text-[10px] bg-emerald-900/50 text-emerald-300 border border-emerald-500/30 px-2.5 py-1 rounded-full font-bold uppercase tracking-wider flex items-center gap-1.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> Clocked In
+                  </span>
                 ) : (
-                  <span className="text-[10px] bg-green-900/50 text-green-300 border border-green-500/30 px-2.5 py-1 rounded-full font-bold uppercase tracking-wider">Working</span>
+                  <span className="text-[10px] bg-blue-900/50 text-blue-300 border border-blue-500/30 px-2.5 py-1 rounded-full font-bold uppercase tracking-wider">Scheduled</span>
                 )}
               </div>
 
@@ -140,12 +144,14 @@ export default function TeamDashboardClient({
                           <p className="text-xs text-gray-500 text-center py-4">No working slots configured.</p>
                       ) : (
                           staffMember.schedule.map((slot: any) => (
-                            <div key={slot.time} className={`px-2.5 py-1.5 rounded text-xs flex justify-between items-center ${slot.isBooked ? 'bg-amber-900/40 border border-amber-500/20' : 'bg-slate-800 border border-transparent'}`}>
+                            <div key={slot.time} className={`px-2.5 py-1.5 rounded text-xs flex justify-between items-center ${slot.isBooked ? 'bg-amber-900/40 border border-amber-500/20' : staffMember.isClockedIn ? 'bg-emerald-900/20 border border-emerald-500/20' : 'bg-slate-800 border border-transparent'}`}>
                               <span className="font-mono text-gray-300">{slot.time}</span>
                               {slot.isBooked ? (
                                 <span className="font-bold text-amber-400">Booked</span>
                               ) : (
-                                <span className="text-green-400">Open</span>
+                                <span className={staffMember.isClockedIn ? "text-emerald-400" : "text-green-400"}>
+                                    {staffMember.isClockedIn ? 'Clocked In' : 'Open'}
+                                </span>
                               )}
                             </div>
                           ))

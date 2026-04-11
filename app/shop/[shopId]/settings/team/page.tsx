@@ -27,6 +27,7 @@ async function getPageData(shopId: string, userId: string, date: string) {
       include: {
         staffAppointments: { where: { startTime: { gte: targetDate, lt: new Date(targetDate.getTime() + 24 * 60 * 60 * 1000) } } },
         leaves: { where: { date: targetDate } },
+        timeLogs: { where: { clockIn: { gte: targetDate, lt: new Date(targetDate.getTime() + 24 * 60 * 60 * 1000) } }, orderBy: { clockIn: 'desc' }, take: 1 }
       },
     }),
     prisma.user.findFirst({
@@ -45,9 +46,14 @@ async function getPageData(shopId: string, userId: string, date: string) {
     const individualHours = (staff.workingHours as any) || {};
     let hoursForDay = individualHours[dayOfWeek];
     const isExplicitlyOff = hoursForDay === null;
-    if (isExplicitlyOff) return { ...staff, schedule: [], isOnLeave: false, using: 'not-working', dayOfWeek, openTime: null, closeTime: null, isWorking: false, workingHours: individualHours };
+    
+    // Check if clocked in today (has a log, but no clockOut time)
+    const latestLog = staff.timeLogs?.[0];
+    const isClockedIn = latestLog && !latestLog.clockOut;
+
+    if (isExplicitlyOff) return { ...staff, schedule: [], isOnLeave: false, using: 'not-working', dayOfWeek, openTime: null, closeTime: null, isWorking: false, workingHours: individualHours, isClockedIn };
     if (!hoursForDay) hoursForDay = (shop.customization as any)?.businessHours?.[dayOfWeek];
-    if (!hoursForDay) return { ...staff, schedule: [], isOnLeave: false, using: 'not-set', dayOfWeek, openTime: '09:00', closeTime: '17:00', isWorking: false, workingHours: individualHours };
+    if (!hoursForDay) return { ...staff, schedule: [], isOnLeave: false, using: 'not-set', dayOfWeek, openTime: '09:00', closeTime: '17:00', isWorking: false, workingHours: individualHours, isClockedIn };
     
     const schedule = [];
     const [openHour, openMin] = hoursForDay.open.split(':').map(Number);
@@ -67,7 +73,7 @@ async function getPageData(shopId: string, userId: string, date: string) {
       });
       currentSlotTime.setMinutes(currentSlotTime.getMinutes() + 30);
     }
-    return { ...staff, schedule, isOnLeave: staff.leaves.length > 0, dayOfWeek, openTime: hoursForDay.open, closeTime: hoursForDay.close, isWorking: true, workingHours: individualHours };
+    return { ...staff, schedule, isOnLeave: staff.leaves.length > 0, dayOfWeek, openTime: hoursForDay.open, closeTime: hoursForDay.close, isWorking: true, workingHours: individualHours, isClockedIn };
   });
 
   return { 
