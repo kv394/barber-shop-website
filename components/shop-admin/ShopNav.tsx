@@ -100,7 +100,7 @@ export function ShopNav({ shopId, userRole, activeTab }: { shopId: string, userR
       </div>
 
       {/* ── Mobile App Bottom Navigation ── */}
-      <div className="sm:hidden fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-xl border-t border-gray-200 z-50 pb-safe shadow-[0_-4px_25px_-5px_rgba(0,0,0,0.1)]">
+      <div className="sm:hidden fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-xl border-t border-gray-200 z-[100] pb-safe shadow-[0_-4px_25px_-5px_rgba(0,0,0,0.1)]">
         <div className="flex justify-around items-center h-20 px-2 pb-2">
           <Link href={`/shop/${shopId}`} className={`flex flex-col items-center justify-center w-full h-full space-y-1 ${activeTab === 'dashboard' ? 'text-slate-900 drop-shadow-sm' : 'text-gray-400 hover:text-slate-700'}`}>
             <span className="text-3xl">🏠</span>
