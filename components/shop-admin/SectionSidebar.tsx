@@ -121,7 +121,7 @@ export default function SectionSidebar({ activeTab, shopId, section, userRole }:
               aria-current={isActive ? 'page' : undefined}
               className={`px-4 py-2.5 rounded-lg text-sm font-bold whitespace-nowrap transition-all ${
                 isActive 
-                  ? 'bg-slate-900 text-white md:bg-brand-gold md:text-slate-900 shadow-md' 
+                  ? 'bg-slate-900 text-white md:bg-brand-gold md:text-slate-900 shadow-[0_4px_0_0_#d1d5db,0_5px_10px_rgba(0,0,0,0.15)] md:shadow-[0_4px_0_0_#b38b22,0_5px_10px_rgba(0,0,0,0.4)] transform -translate-y-1' 
                   : 'bg-white text-slate-600 md:bg-transparent md:text-gray-400 hover:bg-gray-100 md:hover:text-white md:hover:bg-white/5 border border-gray-200 md:border-transparent'
               }`}
             >
