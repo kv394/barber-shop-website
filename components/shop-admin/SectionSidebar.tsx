@@ -106,6 +106,7 @@ export default function SectionSidebar({ activeTab, shopId, section, userRole }:
   return (
     <div className="relative">
       <nav 
+        aria-label="Section Navigation"
         ref={scrollContainerRef}
         onScroll={checkScroll}
         className="flex flex-row md:flex-col gap-2 overflow-x-auto scrollbar-none pb-1 md:pb-0 pl-4 md:pl-0 pr-8 md:pr-0 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
@@ -117,6 +118,7 @@ export default function SectionSidebar({ activeTab, shopId, section, userRole }:
               key={l.key}
               href={l.href}
               ref={isActive ? activeLinkRef : null}
+              aria-current={isActive ? 'page' : undefined}
               className={`px-4 py-2.5 rounded-lg text-sm font-bold whitespace-nowrap transition-all ${
                 isActive 
                   ? 'bg-slate-900 text-white md:bg-brand-gold md:text-slate-900 shadow-md' 
@@ -130,6 +132,7 @@ export default function SectionSidebar({ activeTab, shopId, section, userRole }:
       </nav>
       {/* Left Mobile Scroll Indicator (Gradient Fade & Arrow) */}
       <div 
+        aria-hidden="true"
         className={`absolute left-0 top-0 bottom-0 w-12 bg-gradient-to-r from-white via-white/80 to-transparent pointer-events-none md:hidden flex items-center justify-start pl-1 pb-1 transition-opacity duration-300 ${
           showLeftIndicator ? 'opacity-100' : 'opacity-0'
         }`}
@@ -141,6 +144,7 @@ export default function SectionSidebar({ activeTab, shopId, section, userRole }:
 
       {/* Right Mobile Scroll Indicator (Gradient Fade & Arrow) */}
       <div 
+        aria-hidden="true"
         className={`absolute right-0 top-0 bottom-0 w-12 bg-gradient-to-l from-white via-white/80 to-transparent pointer-events-none md:hidden flex items-center justify-end pr-1 pb-1 transition-opacity duration-300 ${
           showRightIndicator ? 'opacity-100' : 'opacity-0'
         }`}
