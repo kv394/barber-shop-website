@@ -33,6 +33,12 @@ export default function TeamDashboardClient({
 
   return (
     <>
+      <div className="flex justify-end mb-4">
+        <Link href={`/shop/${shopId}/portfolio`} className="bg-slate-800 text-gray-300 border border-slate-600 px-4 py-2 rounded-lg hover:bg-slate-700 transition-colors font-bold uppercase tracking-wider flex items-center gap-2 shadow-lg">
+          📸 Shop Portfolio Gallery
+        </Link>
+      </div>
+
       <StaffAvailability defaultDate={initialDate} />
       
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -68,9 +74,6 @@ export default function TeamDashboardClient({
                 
                 {/* Actions & Status Badge */}
                 <div className="flex flex-col items-end gap-2">
-                  <Link href={`/shop/${shopId}/portfolio?staffId=${staffMember.id}`} className="text-[10px] bg-slate-800 text-gray-300 border border-slate-600 px-2 py-1 rounded hover:bg-slate-700 transition-colors font-bold uppercase tracking-wider flex items-center gap-1">
-                    📸 Portfolio
-                  </Link>
                   {isOnLeave ? (
                     <span className="text-[10px] bg-red-900/50 text-red-300 border border-red-500/30 px-2.5 py-1 rounded-full font-bold uppercase tracking-wider">On Leave</span>
                   ) : isNotWorking ? (
