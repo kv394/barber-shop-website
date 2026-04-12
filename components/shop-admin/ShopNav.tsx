@@ -103,7 +103,7 @@ export function ShopNav({ shopId, userRole, activeTab }: { shopId: string, userR
 
       {/* ── Mobile App Bottom Navigation ── */}
       <div className="sm:hidden fixed bottom-0 left-0 right-0 bg-botanical-surface backdrop-blur-xl border-t border-botanical-border z-[100] pb-safe shadow-[0_-4px_25px_-5px_rgba(0,0,0,0.1)]">
-        <nav aria-label="Mobile Bottom Navigation" className="flex justify-around items-center h-20 px-2 py-2">
+        <nav aria-label="Mobile Bottom Navigation" className="flex justify-around items-center h-24 px-2 py-3">
           <Link href={`/shop/${shopId}`} aria-current={activeTab === 'dashboard' ? 'page' : undefined} className={`flex flex-col items-center justify-center w-full h-full mx-1 rounded-2xl space-y-1 ${activeTab === 'dashboard' ? 'text-botanical-text bg-gray-100 shadow-[0_4px_0_0_#cbd5e1] border border-botanical-border transform -translate-y-1' : 'text-botanical-muted hover:text-slate-700 hover:bg-gray-50 transition-colors'}`}>
             <span className="text-2xl" aria-hidden="true">🏠</span>
             <span className="text-base md:text-lg font-bold tracking-wide text-center">Home</span>
