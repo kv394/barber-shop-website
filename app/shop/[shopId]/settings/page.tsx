@@ -43,7 +43,7 @@ export default async function ShopSettingsPage({
         { shopId: shopId }
       ]
     },
-    select: { name: true, description: true }
+    select: { name: true, description: true, variables: true }
   });
 
   const customization = data.shop.customization || DEFAULT_CUSTOMIZATION;
@@ -71,7 +71,7 @@ export default async function ShopSettingsPage({
         <TemplateSelector
           currentTemplate={data.shop.template || 'modern'}
           shopId={shopId}
-          dynamicTemplates={dynamicTemplates}
+          dynamicTemplates={dynamicTemplates as any}
         />
       </div>
 
@@ -80,6 +80,7 @@ export default async function ShopSettingsPage({
         customization={customization}
         isSuperAdmin={data.isSuperAdmin}
         currentTemplate={data.shop.template || 'modern'}
+        dynamicTemplates={dynamicTemplates as any}
       />
 
       <CustomPagesForm

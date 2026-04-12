@@ -11,6 +11,7 @@ interface CustomizationFormProps {
   onSave?: (customization: Customization) => void;
   isSuperAdmin: boolean;
   currentTemplate?: string;
+  dynamicTemplates?: any[];
 }
 
 export function CustomizationForm({
@@ -19,12 +20,16 @@ export function CustomizationForm({
   onSave,
   isSuperAdmin,
   currentTemplate,
+  dynamicTemplates = [],
 }: CustomizationFormProps) {
   const [formData, setFormData] = useState(customization || DEFAULT_CUSTOMIZATION);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
   const router = useRouter();
+
+  const activeDynamicTemplate = dynamicTemplates.find(dt => dt.name === currentTemplate);
+  const activeVariables: string[] = activeDynamicTemplate?.variables || [];
 
   const handleInputChange = (field: string, value: any) => {
     setFormData({
@@ -271,6 +276,41 @@ export function CustomizationForm({
 
         {currentTemplate === 'editorial' && (
           <EditorialCustomizationForm customization={formData} onUpdate={handleInputChange} />
+        )}
+
+        {activeVariables.length > 0 && (
+          <div>
+            <h3 className="text-lg font-bold text-botanical-text mb-4">Template Custom Variables</h3>
+            <p className="text-sm text-botanical-muted mb-4">
+              These fields were automatically detected from your selected custom template. Fill them in to customize your landing page.
+            </p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {activeVariables.map((variable) => (
+                <div key={variable}>
+                  <label className="block text-sm font-medium text-botanical-muted mb-2 capitalize">
+                    {variable.replace(/([A-Z])/g, ' $1').trim()}
+                  </label>
+                  {variable.toLowerCase().includes('image') || variable.toLowerCase().includes('url') ? (
+                     <input
+                       type="url"
+                       value={formData[variable] || ''}
+                       onChange={(e) => handleInputChange(variable, e.target.value)}
+                       placeholder="https://..."
+                       className="w-full bg-botanical-bg border border-botanical-border shadow-sm rounded px-4 py-2 text-botanical-text placeholder-gray-500"
+                     />
+                  ) : (
+                     <textarea
+                       value={formData[variable] || ''}
+                       onChange={(e) => handleInputChange(variable, e.target.value)}
+                       placeholder={`Enter ${variable}...`}
+                       rows={variable.toLowerCase().includes('text') || variable.toLowerCase().includes('description') ? 4 : 1}
+                       className="w-full bg-botanical-bg border border-botanical-border shadow-sm rounded px-4 py-2 text-botanical-text placeholder-gray-500"
+                     />
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
         )}
 
         <button

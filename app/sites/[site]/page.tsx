@@ -75,18 +75,8 @@ const getShopBySite = cache(async (site: string) => {
     : rawAddress;
 
   const publicCustomization = {
-    primaryColor: rawCustom.primaryColor,
-    secondaryColor: rawCustom.secondaryColor,
-    logoUrl: rawCustom.logoUrl,
-    bannerUrl: rawCustom.bannerUrl,
-    tagline: rawCustom.tagline,
+    ...rawCustom,
     address: formattedAddress,
-    phone: rawCustom.phone,
-    aboutText: rawCustom.aboutText,
-    socialLinks: rawCustom.socialLinks,
-    businessHours: rawCustom.businessHours,
-    pages: rawCustom.pages,
-    editorialCustomization: rawCustom.editorialCustomization,
   };
   return {
     ...serialized,
@@ -152,7 +142,8 @@ export default async function SitePage({ params }: { params: Promise<{ site: str
         dynamicTemplateHtml = compiledTemplate({
           shop,
           primaryColor,
-          secondaryColor
+          secondaryColor,
+          ...(shop.customization || {})
         });
         dynamicTemplateCss = dynamicTemplate.cssCode;
       } catch (e) {
