@@ -7,6 +7,13 @@ body {
   color-scheme: dark;
 }
 
+/* Slightly increase base font size on mobile for better legibility */
+@media (max-width: 767px) {
+  html {
+    font-size: 17.5px;
+  }
+}
+
 /* ===== Modern Gradient Backgrounds ===== */
 @layer utilities {
   .bg-modern-gradient {
