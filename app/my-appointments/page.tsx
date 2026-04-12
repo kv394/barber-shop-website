@@ -117,7 +117,7 @@ export default function MyAppointmentsPage() {
             ) : null}
             <Link
               href="/shops"
-              className="bg-botanical-primary text-white font-bold px-4 py-2 rounded-lg text-sm hover:bg-white transition-colors"
+              className="bg-botanical-primary text-white font-bold px-4 py-2 rounded-lg text-sm hover:bg-white hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 transition-colors"
             >
               Book New
             </Link>

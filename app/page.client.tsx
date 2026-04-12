@@ -217,7 +217,7 @@ export default function Home() {
                 <h2 className="text-sm sm:text-base font-serif text-botanical-text mb-2">Super Admin Control Panel</h2>
                 <p className="text-sm text-botanical-muted mb-6">Manage the entire platform from the dedicated dashboard.</p>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                  <Link href="/superadmin" className="bg-botanical-primary text-white px-6 py-4 rounded-lg font-semibold hover:bg-white transition-colors text-center">
+                  <Link href="/superadmin" className="bg-botanical-primary text-white px-6 py-4 rounded-lg font-semibold hover:bg-white hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 transition-colors text-center">
                     📊 Platform Dashboard
                   </Link>
                   <Link href="/superadmin/shops" className="bg-botanical-surface text-botanical-text px-6 py-4 rounded-lg font-semibold hover:bg-botanical-surface transition-colors text-center">
@@ -275,7 +275,7 @@ export default function Home() {
                           />
                       </div>
                   </div>
-                  <button type="submit" className="w-full bg-botanical-primary text-white px-8 py-3 rounded-md font-semibold hover:bg-white transition-colors">
+                  <button type="submit" className="w-full bg-botanical-primary text-white px-8 py-3 rounded-md font-semibold hover:bg-white hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 transition-colors">
                       Create Shop Workspace
                   </button>
                 </form>

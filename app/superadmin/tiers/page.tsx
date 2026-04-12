@@ -65,7 +65,7 @@ export default function SuperAdminTiersPage() {
         <button
           onClick={handleSave}
           disabled={saving}
-          className="bg-botanical-primary text-white px-6 py-2.5 rounded-lg font-bold hover:bg-white transition-colors disabled:opacity-50"
+          className="bg-botanical-primary text-white px-6 py-2.5 rounded-lg font-bold hover:bg-white hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 transition-colors disabled:opacity-50"
         >
           {saving ? 'Saving...' : 'Save All Changes'}
         </button>

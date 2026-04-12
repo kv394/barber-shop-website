@@ -388,7 +388,7 @@ export default function BookingModal({ shopId, service, onClose, shopHours }: Bo
                   <button onClick={handleAddToCalendar} className="border-2 border-b-[6px] border-botanical-border text-botanical-text px-5 py-2 rounded-lg hover:bg-botanical-surface transition-colors text-sm font-semibold flex items-center justify-center gap-2">
                     📅 Add to Calendar
                   </button>
-                  <button onClick={handleDone} className="bg-botanical-primary text-white font-bold px-6 py-2 rounded-lg hover:bg-white transition-colors">
+                  <button onClick={handleDone} className="bg-botanical-primary text-white font-bold px-6 py-2 rounded-lg hover:bg-white hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 transition-colors">
                     {userRole ? 'Go to Bookings' : 'Done'}
                   </button>
                 </div>
@@ -452,7 +452,7 @@ export default function BookingModal({ shopId, service, onClose, shopHours }: Bo
             <button onClick={() => setShowSummary(false)} className="flex-1 border-2 border-b-[6px] border-botanical-border text-botanical-text font-semibold py-3 rounded-lg hover:bg-botanical-surface transition-colors">
               Edit
             </button>
-            <button onClick={handleBook} disabled={isBooking} className="flex-1 bg-botanical-primary text-white font-bold py-3 rounded-lg hover:bg-white transition-colors disabled:opacity-50">
+            <button onClick={handleBook} disabled={isBooking} className="flex-1 bg-botanical-primary text-white font-bold py-3 rounded-lg hover:bg-white hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 transition-colors disabled:opacity-50">
               {isBooking ? (
                 <span className="flex items-center justify-center gap-2">
                   <span className="w-4 h-4 border-2 border-brand-dark border-t-transparent rounded-full animate-spin"></span>
@@ -479,7 +479,7 @@ export default function BookingModal({ shopId, service, onClose, shopHours }: Bo
         ) : !isSignedIn ? (
             <div className="text-center py-6 bg-botanical-surface rounded-lg border-2 border-b-[6px] border-botanical-border flex flex-col items-center">
                 <p className="text-botanical-muted mb-4">Please sign in or create an account to book an appointment.</p>
-                <a href={`/sign-in?redirect_url=${encodeURIComponent(currentPath)}`} className="bg-botanical-primary text-white px-6 py-2 rounded font-bold hover:bg-white transition-colors inline-block text-center">
+                <a href={`/sign-in?redirect_url=${encodeURIComponent(currentPath)}`} className="bg-botanical-primary text-white px-6 py-2 rounded font-bold hover:bg-white hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 transition-colors inline-block text-center">
                   Sign In to Book
                 </a>
             </div>
@@ -629,7 +629,7 @@ export default function BookingModal({ shopId, service, onClose, shopHours }: Bo
                     <button
                       onClick={handleReviewBooking}
                       disabled={!selectedDate || !selectedTime || !selectedStaff || (isWalkIn && !clientName.trim() && !selectedExistingClient)}
-                      className="w-full bg-botanical-primary text-white font-bold py-3 rounded-lg hover:bg-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="w-full bg-botanical-primary text-white font-bold py-3 rounded-lg hover:bg-white hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       Review Booking
                     </button>

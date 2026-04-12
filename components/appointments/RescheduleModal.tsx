@@ -219,7 +219,7 @@ export default function RescheduleModal({
             <button
               onClick={handleReschedule}
               disabled={!selectedTime || isSubmitting}
-              className="flex-1 bg-botanical-primary text-white font-bold py-3 rounded-lg hover:bg-white transition-colors disabled:opacity-50"
+              className="flex-1 bg-botanical-primary text-white font-bold py-3 rounded-lg hover:bg-white hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 transition-colors disabled:opacity-50"
             >
               {isSubmitting ? 'Rescheduling...' : 'Confirm Reschedule'}
             </button>

@@ -120,7 +120,7 @@ export default function ReferralsPage() {
             <div className="text-center">
               <button
                 onClick={() => data?.referralCode && handleCopy(data.referralCode)}
-                className="bg-botanical-primary text-white font-bold px-6 py-3 rounded-lg hover:bg-white transition-colors"
+                className="bg-botanical-primary text-white font-bold px-6 py-3 rounded-lg hover:bg-white hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 transition-colors"
               >
                 {copied ? '✅ Copied Code!' : '📋 Copy Code'}
               </button>

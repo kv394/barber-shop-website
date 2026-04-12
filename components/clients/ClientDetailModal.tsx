@@ -302,7 +302,7 @@ export default function ClientDetailModal({ shopId, clientId, clientName, onClos
                     <div className="space-y-3">
                       <textarea value={newFormula} onChange={e => setNewFormula(e.target.value)} placeholder="e.g. 2oz 5N + 1oz 6G + 20vol" className="w-full bg-botanical-surface border-2 border-b-[6px] border-botanical-border rounded-md p-2 text-sm text-botanical-text focus:border-brand-gold resize-y" rows={2} required />
                       <input type="text" value={newNotes} onChange={e => setNewNotes(e.target.value)} placeholder="Additional notes..." className="w-full bg-botanical-surface border-2 border-b-[6px] border-botanical-border rounded-md p-2 text-sm text-botanical-text focus:border-brand-gold" />
-                      <button type="submit" disabled={savingFormula || !newFormula.trim()} className="bg-botanical-primary text-white px-4 py-2 rounded text-xs font-bold hover:bg-white disabled:opacity-50 transition">
+                      <button type="submit" disabled={savingFormula || !newFormula.trim()} className="bg-botanical-primary text-white px-4 py-2 rounded text-xs font-bold hover:bg-white hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 disabled:opacity-50 transition">
                         {savingFormula ? 'Saving...' : 'Save Formula'}
                       </button>
                     </div>
@@ -330,7 +330,7 @@ export default function ClientDetailModal({ shopId, clientId, clientName, onClos
                 <div className="space-y-6">
                   <form onSubmit={saveImage} className="flex gap-2">
                     <input type="url" value={newImageUrl} onChange={e => setNewImageUrl(e.target.value)} placeholder="Image URL (e.g. https://...)" className="flex-1 bg-botanical-surface border-2 border-b-[6px] border-botanical-border rounded px-3 py-2 text-sm text-botanical-text focus:border-brand-gold" required />
-                    <button type="submit" disabled={savingImage || !newImageUrl.trim()} className="bg-botanical-primary text-white px-4 py-2 rounded text-xs font-bold hover:bg-white disabled:opacity-50">
+                    <button type="submit" disabled={savingImage || !newImageUrl.trim()} className="bg-botanical-primary text-white px-4 py-2 rounded text-xs font-bold hover:bg-white hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 disabled:opacity-50">
                       {savingImage ? 'Adding...' : 'Add Photo'}
                     </button>
                   </form>

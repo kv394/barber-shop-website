@@ -214,7 +214,7 @@ export default async function ShopDashboardPage({ params }: { params: Promise<{ 
               <p className="text-botanical-text font-mono text-sm truncate">/shops/{resolvedSlug}</p>
             </div>
             <Link href={`/shops/${resolvedSlug}`} target="_blank"
-              className="flex-shrink-0 px-3 py-1.5 bg-botanical-primary text-white text-xs font-bold rounded-lg hover:bg-white transition-colors">
+              className="flex-shrink-0 px-3 py-1.5 bg-botanical-primary text-white text-xs font-bold rounded-lg hover:bg-white hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 transition-colors">
               Open →
             </Link>
           </div>

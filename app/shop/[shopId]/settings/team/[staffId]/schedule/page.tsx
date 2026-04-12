@@ -132,7 +132,7 @@ export default function SchedulePage() {
             </div>
           </div>
           <div className="md:col-span-3">
-            <button type="submit" className="bg-botanical-primary text-white font-bold py-2.5 px-8 rounded-lg hover:bg-white transition-colors shadow-lg">
+            <button type="submit" className="bg-botanical-primary text-white font-bold py-2.5 px-8 rounded-lg hover:bg-white hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 transition-colors shadow-lg">
               Save Details
             </button>
           </div>
@@ -189,7 +189,7 @@ export default function SchedulePage() {
               <button 
                 type="submit" 
                 disabled={isSaving}
-                className="bg-botanical-primary text-white font-bold py-3 px-8 rounded-lg hover:bg-white transition-colors disabled:opacity-50"
+                className="bg-botanical-primary text-white font-bold py-3 px-8 rounded-lg hover:bg-white hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 transition-colors disabled:opacity-50"
               >
                 {isSaving ? 'Saving...' : 'Save Weekly Schedule'}
               </button>

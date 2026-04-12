@@ -205,7 +205,7 @@ export default function ReviewPage({ params }: { params: Promise<{ appointmentId
               <button
                 onClick={handleSubmit}
                 disabled={rating === 0 || submitting}
-                className="w-full bg-botanical-primary text-white font-bold py-3 rounded-lg hover:bg-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full bg-botanical-primary text-white font-bold py-3 rounded-lg hover:bg-white hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {submitting ? 'Submitting…' : 'Submit Review'}
               </button>

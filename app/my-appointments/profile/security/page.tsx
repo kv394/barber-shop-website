@@ -74,7 +74,7 @@ export default function SecurityProfilePage() {
           <button
             onClick={handleBeginSetup}
             disabled={loading}
-            className="bg-botanical-primary text-white font-semibold py-2 px-6 rounded-lg hover:bg-white transition-colors disabled:opacity-50"
+            className="bg-botanical-primary text-white font-semibold py-2 px-6 rounded-lg hover:bg-white hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 transition-colors disabled:opacity-50"
           >
             {loading ? 'Initializing...' : 'Set Up Authenticator'}
           </button>
@@ -106,7 +106,7 @@ export default function SecurityProfilePage() {
                 <button
                   onClick={handleVerify}
                   disabled={loading || verificationCode.length !== 6}
-                  className="bg-botanical-primary text-white font-semibold py-2 px-6 rounded-lg hover:bg-white transition-colors disabled:opacity-50"
+                  className="bg-botanical-primary text-white font-semibold py-2 px-6 rounded-lg hover:bg-white hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 transition-colors disabled:opacity-50"
                 >
                   {loading ? 'Verifying...' : 'Verify & Save'}
                 </button>

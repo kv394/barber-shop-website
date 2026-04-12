@@ -70,7 +70,7 @@ export default function GiftCardManager({ shopId }: { shopId: string }) {
             <p className="text-2xl font-bold text-botanical-text">{cards.length}</p>
           </div>
         </div>
-        <button onClick={() => setShowForm(!showForm)} className="bg-botanical-primary text-white font-bold px-4 py-2 rounded-lg text-sm hover:bg-white transition-colors">
+        <button onClick={() => setShowForm(!showForm)} className="bg-botanical-primary text-white font-bold px-4 py-2 rounded-lg text-sm hover:bg-white hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 transition-colors">
           {showForm ? 'Cancel' : '+ Create Gift Card'}
         </button>
       </div>
@@ -96,7 +96,7 @@ export default function GiftCardManager({ shopId }: { shopId: string }) {
               <input type="email" value={purchaserEmail} onChange={e => setPurchaserEmail(e.target.value)} placeholder="buyer@email.com" className="w-full bg-botanical-surface border-2 border-b-[6px] border-botanical-border rounded p-2 text-botanical-text text-sm placeholder-gray-600 focus:outline-none focus:border-brand-gold" />
             </div>
           </div>
-          <button onClick={handleCreate} disabled={creating || !amount} className="bg-botanical-primary text-white font-bold px-6 py-2 rounded-lg text-sm hover:bg-white transition-colors disabled:opacity-50">
+          <button onClick={handleCreate} disabled={creating || !amount} className="bg-botanical-primary text-white font-bold px-6 py-2 rounded-lg text-sm hover:bg-white hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 transition-colors disabled:opacity-50">
             {creating ? 'Creating…' : 'Create & Send Gift Card'}
           </button>
         </div>

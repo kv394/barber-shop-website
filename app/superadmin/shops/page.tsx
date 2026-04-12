@@ -47,7 +47,7 @@ export default function SuperAdminShopsPage() {
         </div>
         <Link
           href="/"
-          className="bg-botanical-primary text-white px-6 py-2.5 rounded-lg font-semibold hover:bg-white transition-colors text-sm"
+          className="bg-botanical-primary text-white px-6 py-2.5 rounded-lg font-semibold hover:bg-white hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 transition-colors text-sm"
         >
           + Create New Shop
         </Link>
@@ -120,7 +120,7 @@ export default function SuperAdminShopsPage() {
                   </button>
                   <Link
                     href={`/shop/${shop.id}/settings/team`}
-                    className="bg-botanical-primary text-white px-4 py-2 rounded-lg text-xs font-bold hover:bg-white transition-colors"
+                    className="bg-botanical-primary text-white px-4 py-2 rounded-lg text-xs font-bold hover:bg-white hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 transition-colors"
                   >
                     Assign Team
                   </Link>

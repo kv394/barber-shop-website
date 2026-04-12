@@ -81,7 +81,7 @@ export default function BookingSettingsForm({ shopId }: { shopId: string }) {
         <p className="text-xs text-botanical-muted mt-1">Displayed on the booking portal and confirmation emails</p>
       </div>
 
-      <button onClick={save} disabled={saving} className="w-full bg-botanical-primary text-white font-bold py-3 rounded-lg hover:bg-white transition disabled:opacity-50">
+      <button onClick={save} disabled={saving} className="w-full bg-botanical-primary text-white font-bold py-3 rounded-lg hover:bg-white hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 transition disabled:opacity-50">
         {saving ? 'Saving…' : 'Save Booking Settings'}
       </button>
     </div>

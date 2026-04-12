@@ -53,7 +53,7 @@ export default function KioskSetupClient({ shopId, shopName }: { shopId: string;
           <input type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="Enter new PIN (4–8 digits)" maxLength={8}
             className="w-48 bg-botanical-surface border-2 border-b-[6px] border-botanical-border rounded-lg px-3 py-2.5 text-botanical-text text-sm focus:outline-none focus:border-brand-gold" />
           <button onClick={savePassword} disabled={saving || !password.trim()}
-            className="px-4 py-2 bg-botanical-primary text-white rounded-lg text-sm font-bold disabled:opacity-50 hover:bg-white transition-colors">
+            className="px-4 py-2 bg-botanical-primary text-white rounded-lg text-sm font-bold disabled:opacity-50 hover:bg-white hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 transition-colors">
             {saving ? 'Saving…' : 'Set PIN'}
           </button>
         </div>

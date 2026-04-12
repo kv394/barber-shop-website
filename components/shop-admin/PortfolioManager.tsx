@@ -109,7 +109,7 @@ export default function PortfolioManager({ shopId, currentUserId, userRole }: { 
         <button 
           type="submit" 
           disabled={saving || !imageUrl.trim()} 
-          className="px-4 py-2 bg-botanical-primary text-white rounded text-sm font-bold hover:bg-white transition disabled:opacity-50"
+          className="px-4 py-2 bg-botanical-primary text-white rounded text-sm font-bold hover:bg-white hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 transition disabled:opacity-50"
         >
           {saving ? 'Uploading...' : 'Add to Portfolio'}
         </button>

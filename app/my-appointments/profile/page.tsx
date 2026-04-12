@@ -139,7 +139,7 @@ function ProfileContent() {
             </label>
           </div>
 
-          <button onClick={handleSave} disabled={saving} className="w-full bg-botanical-primary text-white font-bold py-3 rounded-lg hover:bg-white transition-colors disabled:opacity-50 mt-4">
+          <button onClick={handleSave} disabled={saving} className="w-full bg-botanical-primary text-white font-bold py-3 rounded-lg hover:bg-white hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 transition-colors disabled:opacity-50 mt-4">
             {saving ? 'Saving…' : 'Save Changes'}
           </button>
 

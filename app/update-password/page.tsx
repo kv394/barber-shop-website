@@ -58,7 +58,7 @@ export default async function UpdatePasswordPage({
             <label className="block text-sm font-medium text-botanical-muted mb-1.5">New Password</label>
             <input name="password" type="password" required placeholder="••••••••" minLength={6} className="w-full bg-botanical-surface border-2 border-b-[6px] border-botanical-border rounded-lg p-3 text-botanical-text focus:ring-2 focus:ring-botanical-primary focus:border-transparent outline-none" />
           </div>
-          <button type="submit" className="w-full bg-botanical-primary text-white font-bold py-3 rounded-lg hover:bg-white transition-colors mt-2">Update Password</button>
+          <button type="submit" className="w-full bg-botanical-primary text-white font-bold py-3 rounded-lg hover:bg-white hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 transition-colors mt-2">Update Password</button>
         </form>
       </div>
     </div>
