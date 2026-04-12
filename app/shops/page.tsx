@@ -141,7 +141,7 @@ export default async function ShopsDirectoryPage({
                         </div>
 
                         {/* CTA */}
-                        <button className="w-full mt-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded-lg transition-colors">
+                        <button className="w-full mt-4 bg-botanical-primary text-white hover:bg-white hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 font-semibold py-2 rounded-lg transition-colors">
                           View Shop →
                         </button>
                       </div>

@@ -102,7 +102,7 @@ export default function WaitlistClient({ shopId, services, staff }: { shopId: st
             <option value="">No Preference</option>
             {staff.map(s => <option key={s.id} value={s.id}>{s.name || (s.email ? s.email.split('@')[0] : 'Staff')}</option>)}
           </select>
-          <button type="submit" disabled={adding} className="bg-blue-600 hover:bg-blue-500 text-white font-bold py-2.5 rounded text-sm disabled:opacity-50">{adding ? 'Adding...' : 'Add'}</button>
+          <button type="submit" disabled={adding} className="bg-botanical-primary text-white hover:bg-white hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 font-bold py-2.5 rounded text-sm disabled:opacity-50">{adding ? 'Adding...' : 'Add'}</button>
         </div>
       </form>
 
@@ -136,7 +136,7 @@ export default function WaitlistClient({ shopId, services, staff }: { shopId: st
                 </div>
                 <div className="flex gap-2">
                   <button onClick={() => setAssigningId(entry.id)} className="bg-purple-900/50 hover:bg-purple-800/50 text-purple-300 border border-purple-500/30 text-xs px-2 py-1.5 rounded">Reassign Barber</button>
-                  <button onClick={() => handleServe(entry.id)} className="bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold px-3 py-1.5 rounded">Serve</button>
+                  <button onClick={() => handleServe(entry.id)} className="bg-botanical-primary text-white hover:bg-white hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 text-xs font-bold px-3 py-1.5 rounded">Serve</button>
                   <button onClick={() => updateStatus(entry.id, 'LEFT')} className="bg-botanical-surface hover:bg-botanical-border text-botanical-muted text-xs px-2 py-1.5 rounded">Left</button>
                 </div>
               </div>
