@@ -1,8 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/utils/supabase/server';
 import { prisma } from '@/lib/prisma';
-import fs from 'fs/promises';
-import path from 'path';
+import { uploadFileToDrive } from '@/lib/google-drive';
 
 export const dynamic = 'force-dynamic';
 
@@ -33,9 +32,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'No files provided' }, { status: 400 });
     }
 
-    const uploadDir = path.join(process.cwd(), 'superadmin_templates');
-    await fs.mkdir(uploadDir, { recursive: true });
-
+    const COMMON_FOLDER = 'superadmin_templates';
     const uploadedIds: string[] = [];
     const fileMap: Record<string, string> = {};
 
@@ -43,16 +40,15 @@ export async function POST(request: NextRequest) {
     let cssCode = '';
     let templateName = formTemplateName || ('uploaded-template-' + Date.now());
 
-    // First pass: upload all files locally
+    // First pass: upload all files to Google Drive
     for (const file of files) {
       const buffer = Buffer.from(await file.arrayBuffer());
-      const uniqueFileName = Date.now() + '-' + file.name.replace(/[^a-zA-Z0-9.-]/g, '_');
-      const filePath = path.join(uploadDir, uniqueFileName);
+      const fileId = await uploadFileToDrive(COMMON_FOLDER, file.name, file.type, buffer);
       
-      await fs.writeFile(filePath, buffer);
-      
-      uploadedIds.push(uniqueFileName);
-      fileMap[file.name] = uniqueFileName;
+      if (fileId) {
+        uploadedIds.push(fileId);
+        fileMap[file.name] = fileId;
+      }
 
       // If we find html or css, we can optionally parse it
       if (file.name.endsWith('.html')) {
@@ -63,11 +59,10 @@ export async function POST(request: NextRequest) {
     }
 
     // Second pass: Replace local paths in HTML/CSS with the new /api/assets/ URLs
-    for (const [fileName, uniqueFileName] of Object.entries(fileMap)) {
+    for (const [fileName, fileId] of Object.entries(fileMap)) {
       if (!fileName.endsWith('.html') && !fileName.endsWith('.css')) {
-        // e.g. "logo.png" -> "/api/assets/12345-logo.png"
-        const assetUrl = `/api/assets/${uniqueFileName}`;
-        // Create an escaped regex for the filename to replace all occurrences
+        // e.g. "logo.png" -> "/api/assets/12345"
+        const assetUrl = `/api/assets/${fileId}`;
         const regex = new RegExp(fileName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g');
         htmlCode = htmlCode.replace(regex, assetUrl);
         cssCode = cssCode.replace(regex, assetUrl);

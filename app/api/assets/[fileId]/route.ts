@@ -1,8 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { google } from 'googleapis';
 import { Redis } from '@upstash/redis';
-import fs from 'fs/promises';
-import path from 'path';
 
 // Note: Ensure you have NEXT_PUBLIC_UPSTASH_REDIS_REST_URL and NEXT_PUBLIC_UPSTASH_REDIS_REST_TOKEN in your environment.
 let redis: Redis | null = null;
@@ -43,39 +41,9 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ file
     return new NextResponse('Missing fileId', { status: 400 });
   }
 
-  // 1. Check local superadmin_templates directory first
-  try {
-    const localPath = path.join(process.cwd(), 'superadmin_templates', fileId);
-    const stat = await fs.stat(localPath);
-    if (stat.isFile()) {
-      const buffer = await fs.readFile(localPath);
-      
-      // Basic content type inference from extension
-      let contentType = 'application/octet-stream';
-      const ext = path.extname(fileId).toLowerCase();
-      if (ext === '.jpg' || ext === '.jpeg') contentType = 'image/jpeg';
-      else if (ext === '.png') contentType = 'image/png';
-      else if (ext === '.gif') contentType = 'image/gif';
-      else if (ext === '.webp') contentType = 'image/webp';
-      else if (ext === '.svg') contentType = 'image/svg+xml';
-      else if (ext === '.css') contentType = 'text/css';
-      else if (ext === '.js') contentType = 'application/javascript';
-
-      return new NextResponse(buffer, {
-        status: 200,
-        headers: {
-          'Content-Type': contentType,
-          'Cache-Control': 'public, max-age=31536000, immutable',
-        },
-      });
-    }
-  } catch (e) {
-    // Ignore error and fall through to Google Drive/Redis cache lookup
-  }
-
   const cacheKey = `img:${fileId}`;
 
-  // 2. Check Upstash Redis Cache
+  // 1. Check Upstash Redis Cache
   if (redis) {
     try {
       const cachedImageBase64 = await redis.get<string>(cacheKey);
