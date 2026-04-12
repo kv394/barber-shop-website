@@ -4,11 +4,30 @@ import { Readable } from 'stream';
 const getDriveService = () => {
   const credentialsString = process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON;
   if (!credentialsString) return null;
+
   try {
     const credentials = JSON.parse(credentialsString);
+    
+    // If we have a refresh token, use OAuth2 client (for OAuth Client ID JSON)
+    const refreshToken = process.env.GOOGLE_DRIVE_REFRESH_TOKEN;
+    if (refreshToken) {
+      const clientAuth = credentials.installed || credentials.web || credentials;
+      const { client_secret, client_id, redirect_uris } = clientAuth;
+      
+      const oAuth2Client = new google.auth.OAuth2(
+        client_id,
+        client_secret,
+        redirect_uris ? redirect_uris[0] : 'urn:ietf:wg:oauth:2.0:oob'
+      );
+      
+      oAuth2Client.setCredentials({ refresh_token: refreshToken });
+      return google.drive({ version: 'v3', auth: oAuth2Client });
+    }
+
+    // Fallback to Service Account
     const auth = new google.auth.GoogleAuth({
       credentials,
-      scopes: ['https://www.googleapis.com/auth/drive.file', 'https://www.googleapis.com/auth/drive.readonly'],
+      scopes: ['https://www.googleapis.com/auth/drive.file', 'https://www.googleapis.com/auth/drive.readonly', 'https://www.googleapis.com/auth/drive'],
     });
     return google.drive({ version: 'v3', auth });
   } catch (e) {

@@ -15,6 +15,9 @@ export default function TemplatesPage() {
   const [editingTemplate, setEditingTemplate] = useState<any | null>(null);
   const [savingEdit, setSavingEdit] = useState(false);
 
+  const [uploading, setUploading] = useState(false);
+  const [uploadFiles, setUploadFiles] = useState<FileList | null>(null);
+
   useEffect(() => {
     fetchTemplates();
   }, []);
@@ -27,6 +30,36 @@ export default function TemplatesPage() {
         if (Array.isArray(data)) setTemplates(data);
         setLoading(false);
       });
+  };
+
+  const handleUpload = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!uploadFiles || uploadFiles.length === 0) return;
+    
+    setUploading(true);
+    const formData = new FormData();
+    for (let i = 0; i < uploadFiles.length; i++) {
+      formData.append('files', uploadFiles[i]);
+    }
+    
+    try {
+      const res = await fetch('/api/superadmin/templates/upload', {
+        method: 'POST',
+        body: formData,
+      });
+      const data = await res.json();
+      if (data.error) throw new Error(data.error);
+      
+      alert('Template and images uploaded successfully to Google Drive!');
+      if (data.template) {
+        setTemplates([data.template, ...templates] as any);
+      }
+      setUploadFiles(null);
+    } catch (err: any) {
+      alert(err.message);
+    } finally {
+      setUploading(false);
+    }
   };
 
   const handleGenerate = async (e: React.FormEvent) => {
@@ -87,6 +120,28 @@ export default function TemplatesPage() {
   return (
     <div className="p-6 text-botanical-text">
       <h1 className="text-3xl font-bold mb-6">AI Template Generator</h1>
+
+      <div className="bg-botanical-surface p-6 rounded-xl border border-botanical-border shadow-sm mb-8">
+        <h2 className="text-xl font-semibold mb-4">Upload Template Files</h2>
+        <p className="text-sm text-botanical-muted mb-4">
+          Select multiple files (HTML, CSS, images) to upload them directly to Google Drive.
+          If an HTML file is included, a new template record will be created automatically.
+        </p>
+        <form onSubmit={handleUpload} className="space-y-4 flex flex-col md:flex-row md:space-y-0 md:space-x-4 items-end">
+          <div className="flex-1 w-full">
+            <label className="block text-sm text-botanical-muted mb-1">Select Files</label>
+            <input 
+              type="file" 
+              multiple 
+              onChange={e => setUploadFiles(e.target.files)} 
+              className="w-full bg-botanical-surface border border-botanical-border shadow-sm p-2 rounded text-botanical-text" 
+            />
+          </div>
+          <button disabled={uploading || !uploadFiles || uploadFiles.length === 0} type="submit" className="w-full md:w-auto bg-green-600 text-white px-6 py-2 rounded font-semibold disabled:opacity-50 transition">
+            {uploading ? 'Uploading...' : 'Upload Files'}
+          </button>
+        </form>
+      </div>
       
       <div className="bg-botanical-surface p-6 rounded-xl border border-botanical-border shadow-sm mb-8">
         <h2 className="text-xl font-semibold mb-4">Generate New Template with Gemini</h2>
