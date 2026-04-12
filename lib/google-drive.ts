@@ -36,12 +36,16 @@ const getDriveService = () => {
   }
 };
 
-export async function getOrCreateFolder(tenantId: string): Promise<string | null> {
+export async function getOrCreateFolder(folderName: string, parentId?: string): Promise<string | null> {
   const drive = getDriveService();
   if (!drive) throw new Error('Drive service not configured');
 
   // Search for the folder
-  const query = `mimeType='application/vnd.google-apps.folder' and name='${tenantId}' and trashed=false`;
+  let query = `mimeType='application/vnd.google-apps.folder' and name='${folderName}' and trashed=false`;
+  if (parentId) {
+    query += ` and '${parentId}' in parents`;
+  }
+
   const response = await drive.files.list({
     q: query,
     fields: 'files(id, name)',
@@ -53,10 +57,14 @@ export async function getOrCreateFolder(tenantId: string): Promise<string | null
   }
 
   // Create folder
-  const fileMetadata = {
-    name: tenantId,
+  const fileMetadata: any = {
+    name: folderName,
     mimeType: 'application/vnd.google-apps.folder',
   };
+  if (parentId) {
+    fileMetadata.parents = [parentId];
+  }
+
   const folder = await drive.files.create({
     requestBody: fileMetadata,
     fields: 'id',
@@ -65,19 +73,18 @@ export async function getOrCreateFolder(tenantId: string): Promise<string | null
   return folder.data.id || null;
 }
 
-export async function uploadFileToDrive(tenantId: string, fileName: string, mimeType: string, buffer: Buffer): Promise<string | null> {
+export async function uploadFileToFolder(folderId: string, fileName: string, mimeType: string, buffer: Buffer): Promise<string | null> {
   const drive = getDriveService();
   if (!drive) throw new Error('Drive service not configured');
 
-  const folderId = await getOrCreateFolder(tenantId);
-  if (!folderId) throw new Error('Could not create or find folder');
+  // Check if file exists first to overwrite it
+  const query = `name='${fileName}' and '${folderId}' in parents and trashed=false`;
+  const response = await drive.files.list({
+    q: query,
+    fields: 'files(id)',
+    spaces: 'drive',
+  });
 
-  const fileMetadata = {
-    name: fileName,
-    parents: [folderId],
-  };
-
-  // Convert buffer to readable stream
   const stream = new Readable();
   stream.push(buffer);
   stream.push(null);
@@ -87,11 +94,51 @@ export async function uploadFileToDrive(tenantId: string, fileName: string, mime
     body: stream,
   };
 
-  const file = await drive.files.create({
-    requestBody: fileMetadata,
-    media: media,
-    fields: 'id',
+  if (response.data.files && response.data.files.length > 0) {
+    // Update existing file
+    const fileId = response.data.files[0].id!;
+    const file = await drive.files.update({
+      fileId,
+      media,
+      fields: 'id',
+    });
+    return file.data.id || null;
+  } else {
+    // Create new file
+    const fileMetadata = {
+      name: fileName,
+      parents: [folderId],
+    };
+    const file = await drive.files.create({
+      requestBody: fileMetadata,
+      media,
+      fields: 'id',
+    });
+    return file.data.id || null;
+  }
+}
+
+export async function uploadFileToDrive(tenantId: string, fileName: string, mimeType: string, buffer: Buffer): Promise<string | null> {
+  const folderId = await getOrCreateFolder(tenantId);
+  if (!folderId) throw new Error('Could not create or find folder');
+  return uploadFileToFolder(folderId, fileName, mimeType, buffer);
+}
+
+export async function downloadFileFromFolder(folderId: string, fileName: string): Promise<string | null> {
+  const drive = getDriveService();
+  if (!drive) return null;
+
+  const query = `name='${fileName}' and '${folderId}' in parents and trashed=false`;
+  const response = await drive.files.list({
+    q: query,
+    fields: 'files(id)',
+    spaces: 'drive',
   });
 
-  return file.data.id || null;
+  if (response.data.files && response.data.files.length > 0) {
+    const fileId = response.data.files[0].id!;
+    const res = await drive.files.get({ fileId, alt: 'media' }, { responseType: 'text' });
+    return res.data as string;
+  }
+  return null;
 }

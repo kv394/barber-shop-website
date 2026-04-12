@@ -4,6 +4,7 @@ import { Metadata } from 'next';
 import ClientPage from './ClientPage';
 import { createClient } from '@/utils/supabase/server';
 import { redirect } from 'next/navigation';
+import { getOrCreateFolder, downloadFileFromFolder } from '@/lib/google-drive';
 
 // Use this to ensure the page caches effectively unless revalidated
 export const revalidate = 60;
@@ -171,16 +172,37 @@ export default async function PublicShopPage({
     });
 
     if (dynamicTemplate) {
+      let htmlCode = dynamicTemplate.htmlCode;
+      let cssCode = dynamicTemplate.cssCode;
+
+      try {
+        const barbersaasFolderId = await getOrCreateFolder('barbersaas');
+        if (barbersaasFolderId) {
+          const shopFolderId = await getOrCreateFolder(shop.id, barbersaasFolderId);
+          if (shopFolderId) {
+            const templateFolderId = await getOrCreateFolder(templateType, shopFolderId);
+            if (templateFolderId) {
+              const driveHtml = await downloadFileFromFolder(templateFolderId, 'index.html');
+              const driveCss = await downloadFileFromFolder(templateFolderId, 'styles.css');
+              if (driveHtml) htmlCode = driveHtml;
+              if (driveCss) cssCode = driveCss;
+            }
+          }
+        }
+      } catch (e) {
+        console.error('Failed to fetch template from Google Drive, falling back to DB:', e);
+      }
+
       try {
         const Handlebars = (await import('handlebars')).default;
-        const compiledTemplate = Handlebars.compile(dynamicTemplate.htmlCode);
+        const compiledTemplate = Handlebars.compile(htmlCode);
         dynamicTemplateHtml = compiledTemplate({
           ...shop.customization,
           shop,
           primaryColor,
           secondaryColor
         });
-        dynamicTemplateCss = dynamicTemplate.cssCode;
+        dynamicTemplateCss = cssCode;
       } catch (e) {
         console.error('Handlebars error:', e);
       }
