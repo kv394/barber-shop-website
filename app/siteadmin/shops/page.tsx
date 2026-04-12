@@ -19,6 +19,7 @@ export default function SiteAdminShopsPage() {
   const [shops, setShops] = useState<ShopData[]>([]);
   const [loading, setLoading] = useState(true);
   const [analyzingShop, setAnalyzingShop] = useState<{ id: string, name: string } | null>(null);
+  const [assigningTemplateShop, setAssigningTemplateShop] = useState<{ id: string, name: string, template: string } | null>(null);
 
   const fetchShops = async () => {
     try {
@@ -166,11 +167,6 @@ export default function SiteAdminShopsPage() {
             fetchShops();
           }}
         />
-      )}
-    </div>
-  );
-}
-  />
       )}
     </div>
   );
