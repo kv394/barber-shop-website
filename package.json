@@ -21,6 +21,7 @@
     "@supabase/supabase-js": "^2.43.4",
     "@upstash/redis": "^1.37.0",
     "@vercel/analytics": "^2.0.1",
+    "adm-zip": "^0.5.17",
     "barcode-detector": "^3.1.2",
     "google-auth-library": "^10.6.2",
     "googleapis": "^171.4.0",
@@ -37,6 +38,7 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
+    "@types/adm-zip": "^0.5.8",
     "@types/handlebars": "^4.0.40",
     "@types/node": "^20",
     "@types/pg": "^8.20.0",

@@ -131,8 +131,8 @@ export default function TemplatesPage() {
       <div className="bg-botanical-surface p-6 rounded-xl border border-botanical-border shadow-sm mb-8">
         <h2 className="text-xl font-semibold mb-4">Upload Template Files</h2>
         <p className="text-sm text-botanical-muted mb-4">
-          Select multiple files (HTML, CSS, images) to upload them directly to Google Drive.
-          If an HTML file is included, a new template record will be created automatically.
+          Select a single .zip file (containing HTML, CSS, images) OR multiple files. 
+          The system will automatically upload images to Google Drive, extract Handlebars {"{{variables}}"}, and create the template.
         </p>
         <form onSubmit={handleUpload} className="space-y-4 flex flex-col md:flex-row md:space-y-0 md:space-x-4 items-end">
           <div className="flex-1 w-full">

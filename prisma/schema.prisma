@@ -646,6 +646,7 @@ model DynamicTemplate {
   prompt      String?  @db.Text
   htmlCode    String   @db.Text
   cssCode     String   @db.Text
+  variables   Json?
   shopId      String?
   shop        Shop?    @relation(fields: [shopId], references: [id])
   createdAt   DateTime @default(now())

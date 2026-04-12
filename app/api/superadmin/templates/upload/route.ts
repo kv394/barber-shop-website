@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/utils/supabase/server';
 import { prisma } from '@/lib/prisma';
 import { uploadFileToDrive } from '@/lib/google-drive';
+import AdmZip from 'adm-zip';
 
 export const dynamic = 'force-dynamic';
 
@@ -39,33 +40,81 @@ export async function POST(request: NextRequest) {
     let htmlCode = '';
     let cssCode = '';
     let templateName = formTemplateName || ('uploaded-template-' + Date.now());
+    const extractedVariables = new Set<string>();
 
-    // First pass: upload all files to Google Drive
+    // First pass: upload all files to Google Drive (or extract from ZIP first)
     for (const file of files) {
       const buffer = Buffer.from(await file.arrayBuffer());
-      const fileId = await uploadFileToDrive(COMMON_FOLDER, file.name, file.type, buffer);
-      
-      if (fileId) {
-        uploadedIds.push(fileId);
-        fileMap[file.name] = fileId;
-      }
 
-      // If we find html or css, we can optionally parse it
-      if (file.name.endsWith('.html')) {
-        htmlCode = buffer.toString('utf-8');
-      } else if (file.name.endsWith('.css')) {
-        cssCode = buffer.toString('utf-8');
+      if (file.name.endsWith('.zip')) {
+        const zip = new AdmZip(buffer);
+        const zipEntries = zip.getEntries();
+
+        for (const zipEntry of zipEntries) {
+          if (zipEntry.isDirectory) continue;
+          
+          const entryName = zipEntry.name; // e.g. "screen.png"
+          const entryBuffer = zipEntry.getData();
+
+          if (entryName.endsWith('.html')) {
+            htmlCode = entryBuffer.toString('utf-8');
+            if (!formTemplateName) {
+                templateName = entryName.replace('.html', '');
+            }
+          } else if (entryName.endsWith('.css')) {
+            cssCode = entryBuffer.toString('utf-8');
+          } else {
+             // Attempt to upload image/asset
+             const ext = entryName.split('.').pop()?.toLowerCase() || '';
+             let mimeType = 'application/octet-stream';
+             if (ext === 'jpg' || ext === 'jpeg') mimeType = 'image/jpeg';
+             else if (ext === 'png') mimeType = 'image/png';
+             else if (ext === 'gif') mimeType = 'image/gif';
+             else if (ext === 'svg') mimeType = 'image/svg+xml';
+             else if (ext === 'webp') mimeType = 'image/webp';
+             
+             const fileId = await uploadFileToDrive(COMMON_FOLDER, entryName, mimeType, entryBuffer);
+             if (fileId) {
+               uploadedIds.push(fileId);
+               fileMap[entryName] = fileId;
+             }
+          }
+        }
+      } else {
+        const fileId = await uploadFileToDrive(COMMON_FOLDER, file.name, file.type, buffer);
+        
+        if (fileId) {
+          uploadedIds.push(fileId);
+          fileMap[file.name] = fileId;
+        }
+
+        // If we find html or css, we can optionally parse it
+        if (file.name.endsWith('.html')) {
+          htmlCode = buffer.toString('utf-8');
+        } else if (file.name.endsWith('.css')) {
+          cssCode = buffer.toString('utf-8');
+        }
       }
     }
 
     // Second pass: Replace local paths in HTML/CSS with the new /api/assets/ URLs
     for (const [fileName, fileId] of Object.entries(fileMap)) {
       if (!fileName.endsWith('.html') && !fileName.endsWith('.css')) {
-        // e.g. "logo.png" -> "/api/assets/12345"
+        // e.g. "screen.png" -> "/api/assets/12345"
         const assetUrl = `/api/assets/${fileId}`;
         const regex = new RegExp(fileName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g');
         htmlCode = htmlCode.replace(regex, assetUrl);
         cssCode = cssCode.replace(regex, assetUrl);
+      }
+    }
+
+    // Extract {{variables}} from HTML
+    if (htmlCode) {
+      // Matches anything inside {{ }}
+      const regex = /\{\{([^{}]+)\}\}/g;
+      let match;
+      while ((match = regex.exec(htmlCode)) !== null) {
+        extractedVariables.add(match[1].trim());
       }
     }
 
@@ -78,6 +127,7 @@ export async function POST(request: NextRequest) {
           description: 'Uploaded from files',
           htmlCode,
           cssCode,
+          variables: Array.from(extractedVariables),
         }
       });
     }
@@ -85,7 +135,8 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ 
       success: true, 
       uploadedCount: uploadedIds.length,
-      template: templateRecord
+      template: templateRecord,
+      extractedVariables: Array.from(extractedVariables)
     });
   } catch (error: any) {
     console.error('Error uploading template files:', error);
