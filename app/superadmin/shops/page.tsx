@@ -4,10 +4,12 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import DeleteShopButton from '@/components/shop-admin/DeleteShopButton';
 import UsageAnalysisModal from '@/components/superadmin/UsageAnalysisModal';
+import AssignTemplateModal from '@/components/superadmin/AssignTemplateModal';
 
 type ShopData = {
   id: string;
   name: string;
+  template: string;
   createdAt: string;
   users: { id: string; role: string; name: string | null; email: string }[];
   _count: { users: number; services: number; reviews: number };
@@ -124,6 +126,12 @@ export default function SuperAdminShopsPage() {
                   >
                     Assign Team
                   </Link>
+                  <button
+                    onClick={() => setAssigningTemplateShop({ id: shop.id, name: shop.name, template: shop.template || 'modern' })}
+                    className="bg-botanical-surface text-botanical-text border border-botanical-border px-4 py-2 rounded-lg text-xs font-bold hover:bg-botanical-bg transition-colors"
+                  >
+                    🎨 Assign Template
+                  </button>
                   <DeleteShopButton shopId={shop.id} shopName={shop.name} onSuccess={fetchShops} />
                 </div>
               </div>
@@ -145,6 +153,24 @@ export default function SuperAdminShopsPage() {
           shopName={analyzingShop.name}
           onClose={() => setAnalyzingShop(null)}
         />
+      )}
+
+      {assigningTemplateShop && (
+        <AssignTemplateModal
+          shopId={assigningTemplateShop.id}
+          shopName={assigningTemplateShop.name}
+          currentTemplate={assigningTemplateShop.template}
+          onClose={() => setAssigningTemplateShop(null)}
+          onSuccess={() => {
+            setAssigningTemplateShop(null);
+            fetchShops();
+          }}
+        />
+      )}
+    </div>
+  );
+}
+  />
       )}
     </div>
   );

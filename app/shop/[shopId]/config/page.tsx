@@ -1,7 +1,6 @@
 import { notFound, redirect } from 'next/navigation';
 import { createClient } from '@/utils/supabase/server';
 import { getShopLayoutData } from '@/lib/shop-data';
-import { TemplateSelector } from '@/components/shop-admin/TemplateSelector';
 import ShopAdminLayout from '@/components/shop-admin/ShopAdminLayout';
 
 export const dynamic = "force-dynamic";
@@ -45,16 +44,14 @@ export default async function ShopConfigPage({
       activeTab="setup"
     >
       <div className="space-y-8">
-        <div>
-          <h2 className="text-2xl font-bold text-botanical-text mb-6">Select Template</h2>
-          <p className="text-botanical-muted mb-6 text-sm leading-relaxed">
-            Choose a layout for the public booking page. You can further customize colors in the Appearance tab.
+        <div className="bg-botanical-bg/50 p-6 rounded-lg border border-botanical-border shadow-sm">
+          <h2 className="text-xl font-bold text-botanical-text mb-4">Shop Template</h2>
+          <p className="text-botanical-muted text-sm leading-relaxed mb-2">
+            Your shop is currently using the <strong>{data.shop.template || 'modern'}</strong> template.
           </p>
-          <TemplateSelector
-            currentTemplate={data.shop.template || 'modern'}
-            shopId={shopId}
-            dynamicTemplates={dynamicTemplates}
-          />
+          <p className="text-botanical-muted text-sm leading-relaxed">
+            Template assignments are managed by Super Administrators. You can customize the content and appearance of your template in the <a href={`/shop/${shopId}/settings`} className="text-botanical-accent hover:underline">Settings</a> tab.
+          </p>
         </div>
       </div>
     </ShopAdminLayout>

@@ -114,7 +114,11 @@ export async function POST(request: NextRequest) {
       const regex = /\{\{([^{}]+)\}\}/g;
       let match;
       while ((match = regex.exec(htmlCode)) !== null) {
-        extractedVariables.add(match[1].trim());
+        const varName = match[1].trim();
+        // Skip built-in Handlebars variables like shop.name or global colors
+        if (!varName.startsWith('shop.') && !['primaryColor', 'secondaryColor'].includes(varName)) {
+          extractedVariables.add(varName);
+        }
       }
     }
 

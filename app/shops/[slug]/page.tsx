@@ -175,6 +175,7 @@ export default async function PublicShopPage({
         const Handlebars = (await import('handlebars')).default;
         const compiledTemplate = Handlebars.compile(dynamicTemplate.htmlCode);
         dynamicTemplateHtml = compiledTemplate({
+          ...shop.customization,
           shop,
           primaryColor,
           secondaryColor

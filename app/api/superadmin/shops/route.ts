@@ -24,6 +24,7 @@ export async function GET() {
     select: {
       id: true,
       name: true,
+      template: true,
       createdAt: true,
       _count: {
         select: {
