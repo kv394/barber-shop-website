@@ -90,7 +90,7 @@ export function TemplateSelector({ currentTemplate, shopId, dynamicTemplates = [
         className={`
           w-full py-3 rounded-lg font-bold transition-colors
           ${selectedTemplate !== currentTemplate 
-            ? 'bg-blue-600 hover:bg-blue-700 text-botanical-text' 
+            ? 'bg-blue-600 hover:bg-blue-700 text-white' 
             : 'bg-botanical-surface text-botanical-muted cursor-not-allowed'}
         `}
       >

@@ -247,7 +247,7 @@ export function ServiceManagement({ shopId }: ServiceManagementProps) {
             <button
               type="submit"
               disabled={isSubmitting || !newService.name || !newService.price || !newService.duration}
-              className="w-full bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-botanical-text font-bold py-2 rounded-lg transition-colors"
+              className="w-full bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white font-bold py-2 rounded-lg transition-colors"
             >
               {isSubmitting ? 'Adding Service...' : 'Add Service'}
             </button>

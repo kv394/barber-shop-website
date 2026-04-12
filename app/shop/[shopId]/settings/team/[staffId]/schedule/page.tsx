@@ -214,7 +214,7 @@ export default function SchedulePage() {
               <input type="time" name="endTime" defaultValue="17:00" required className="w-full bg-botanical-surface p-2 rounded border-2 border-b-[6px] border-botanical-border text-botanical-text" />
             </div>
             <input type="text" name="reason" placeholder="Reason (optional)" className="w-full bg-botanical-surface p-2 rounded border-2 border-b-[6px] border-botanical-border text-botanical-text" />
-            <button type="submit" className="w-full bg-blue-600 hover:bg-blue-500 p-2 rounded text-sm font-bold text-botanical-text">Add Leave Day</button>
+            <button type="submit" className="w-full bg-blue-600 hover:bg-blue-500 p-2 rounded text-sm font-bold text-white">Add Leave Day</button>
           </form>
           <div className="space-y-2">
             <h4 className="text-lg font-semibold text-botanical-muted border-b border-botanical-border pb-2">Upcoming Leave</h4>

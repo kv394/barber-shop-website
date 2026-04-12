@@ -144,7 +144,7 @@ export function CustomPagesForm({ shopId, customization }: { shopId: string; cus
           <button
             onClick={handleSave}
             disabled={isLoading}
-            className="w-full bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-botanical-text font-bold py-3 rounded-lg transition-colors"
+            className="w-full bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white font-bold py-3 rounded-lg transition-colors"
           >
             {isLoading ? 'Saving...' : 'Save Pages'}
           </button>

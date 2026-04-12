@@ -80,7 +80,7 @@ export default function ProductInventoryManager({
       <button 
         onClick={handleAdd} 
         disabled={isUpdating}
-        className="px-2 py-1 text-xs bg-blue-600 hover:bg-blue-500 text-botanical-text rounded-md font-semibold disabled:opacity-50"
+        className="px-2 py-1 text-xs bg-blue-600 hover:bg-blue-500 text-white rounded-md font-semibold disabled:opacity-50"
       >
         Add
       </button>
