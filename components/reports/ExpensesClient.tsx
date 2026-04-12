@@ -67,7 +67,7 @@ export default function ExpensesClient({ shopId }: { shopId: string }) {
         <div className="flex-1">
           <label className="block text-sm text-botanical-muted uppercase tracking-wider mb-1">Month</label>
           <input type="month" value={month} onChange={e => setMonth(e.target.value)} style={inputStyle}
-            className="w-full border border-botanical-border shadow-sm rounded p-2.5 text-sm focus:outline-none focus:border-brand-gold [&::-webkit-calendar-picker-indicator]:invert" />
+            className="w-full border border-botanical-border shadow-sm rounded p-2.5 text-sm focus:outline-none focus:border-brand-gold " />
         </div>
         <div className="bg-botanical-surface backdrop-blur-xl shadow-2xl rounded-2xl border border-botanical-border shadow-sm flex-1 relative overflow-hidden group hover:bg-botanical-surface transition-all duration-300 z-20">
           <div className="absolute top-0 left-0 w-full h-1 bg-red-500/80"></div>
@@ -107,7 +107,7 @@ export default function ExpensesClient({ shopId }: { shopId: string }) {
           <input type="text" value={description} onChange={e => setDescription(e.target.value)} placeholder="Description (optional)" style={inputStyle}
             className="border border-botanical-border shadow-sm rounded p-2 text-sm focus:outline-none focus:border-brand-gold" />
           <input type="date" value={date} onChange={e => setDate(e.target.value)} style={inputStyle}
-            className="border border-botanical-border shadow-sm rounded p-2 text-sm focus:outline-none focus:border-brand-gold [&::-webkit-calendar-picker-indicator]:invert" />
+            className="border border-botanical-border shadow-sm rounded p-2 text-sm focus:outline-none focus:border-brand-gold " />
         </div>
         <button type="submit" disabled={adding} className="bg-red-600 hover:bg-red-500 text-botanical-text font-bold py-2 px-6 rounded text-sm disabled:opacity-50 transition-colors">
           {adding ? 'Adding...' : 'Add Expense'}
