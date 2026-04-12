@@ -1,4 +1,7 @@
+'use client';
+
 import Link from 'next/link';
+import { useState, useRef, useEffect } from 'react';
 
 export function ShopNav({ shopId, userRole, activeTab }: { shopId: string, userRole: string, activeTab: string }) {
   const isSuperAdmin = userRole === 'SUPER_ADMIN';
@@ -18,6 +21,36 @@ export function ShopNav({ shopId, userRole, activeTab }: { shopId: string, userR
   const isReportsSection = reportsTabs.includes(activeTab);
   const isEngagementSection = engagementTabs.includes(activeTab);
   const isSettingsSection = settingsTabs.includes(activeTab);
+
+  const scrollRef = useRef<HTMLElement>(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(false);
+
+  const checkScroll = () => {
+    if (scrollRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
+      setCanScrollLeft(scrollLeft > 0);
+      setCanScrollRight(Math.ceil(scrollLeft + clientWidth) < scrollWidth);
+    }
+  };
+
+  useEffect(() => {
+    checkScroll();
+    window.addEventListener('resize', checkScroll);
+    return () => window.removeEventListener('resize', checkScroll);
+  }, []);
+
+  // Check scroll when activeTab changes
+  useEffect(() => {
+    const timer = setTimeout(checkScroll, 100);
+    return () => clearTimeout(timer);
+  }, [activeTab]);
+
+  const scrollBy = (amount: number) => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollBy({ left: amount, behavior: 'smooth' });
+    }
+  };
 
   // Main tab: active if exact match OR if activeTab is in the group
   const mainTabClass = (tabName: string, groupTabs?: string[]) => {
@@ -103,7 +136,34 @@ export function ShopNav({ shopId, userRole, activeTab }: { shopId: string, userR
 
       {/* ── Mobile App Bottom Navigation ── */}
       <div className="sm:hidden fixed bottom-0 left-0 right-0 bg-botanical-surface backdrop-blur-xl border-t border-botanical-border z-[100] pb-safe shadow-[0_-4px_25px_-5px_rgba(0,0,0,0.1)]">
-        <nav aria-label="Mobile Bottom Navigation" className="flex items-center h-[5.5rem] px-2 py-2 overflow-x-auto scrollbar-none gap-1">
+        {canScrollLeft && (
+          <div className="absolute left-0 top-0 bottom-0 w-12 bg-gradient-to-r from-botanical-surface/90 to-transparent flex items-center justify-start pointer-events-none z-10 pb-safe">
+            <button 
+              onClick={() => scrollBy(-150)} 
+              className="w-6 h-10 flex items-center justify-center text-botanical-primary pointer-events-auto bg-botanical-surface backdrop-blur-md rounded-r-lg border border-l-0 border-botanical-border shadow-md active:bg-gray-100 transition-colors"
+              aria-label="Scroll left"
+            >
+              <span className="text-xl font-black leading-none -mt-0.5">‹</span>
+            </button>
+          </div>
+        )}
+        {canScrollRight && (
+          <div className="absolute right-0 top-0 bottom-0 w-12 bg-gradient-to-l from-botanical-surface/90 to-transparent flex items-center justify-end pointer-events-none z-10 pb-safe">
+            <button 
+              onClick={() => scrollBy(150)} 
+              className="w-6 h-10 flex items-center justify-center text-botanical-primary pointer-events-auto bg-botanical-surface backdrop-blur-md rounded-l-lg border border-r-0 border-botanical-border shadow-md active:bg-gray-100 transition-colors"
+              aria-label="Scroll right"
+            >
+              <span className="text-xl font-black leading-none -mt-0.5">›</span>
+            </button>
+          </div>
+        )}
+        <nav 
+          ref={scrollRef as any} 
+          onScroll={checkScroll} 
+          aria-label="Mobile Bottom Navigation" 
+          className="flex items-center h-[5.5rem] px-2 py-2 overflow-x-auto scrollbar-none gap-1 relative [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
+        >
           {(() => {
             const mobileLink = (href: string, tabId: string, icon: string, label: string, isGroupMatch = false) => {
               const isActive = activeTab === tabId || isGroupMatch;
