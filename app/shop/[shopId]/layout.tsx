@@ -89,47 +89,43 @@ export default async function ShopLayout({
 
       <main className="flex h-[100dvh] overflow-y-auto overflow-x-hidden flex-col items-center bg-botanical-bg text-botanical-text px-0 sm:p-4 md:p-8 lg:p-12 pb-24 sm:pb-4 pt-[64px] sm:pt-4 md:pt-8 lg:pt-12 scroll-smooth">
         <div className="w-full max-w-7xl px-3 sm:px-0 pt-4 sm:pt-0">
-        <header className="hidden sm:flex justify-between items-center mb-6 sm:mb-8">
-          <h1 className="font-serif text-xl sm:text-2xl md:text-3xl font-bold">
-            {isSuperAdmin ? (
-              <Link href="/superadmin">
-                <span className="text-botanical-text">Barber</span>
-                <span className="text-botanical-accent">SaaS</span>
-              </Link>
-            ) : (
-              <Link href={`/shop/${shopId}`}>
-                <span className="text-botanical-text">{data.shop.name}</span>
-                <span className="text-botanical-accent"> Portal</span>
-              </Link>
-            )}
-          </h1>
-          <SupabaseAuthButton redirectUrl={isSuperAdmin ? '/' : fallbackRedirect} />
-        </header>
-
-        {isSuperAdmin && (
-            <header className="mb-8 sm:mb-12 flex flex-col sm:flex-row justify-between sm:items-end border-b border-botanical-border pb-4 sm:pb-6 gap-3 sm:gap-4">
-            <div className="min-w-0">
-                <h2 className="font-serif text-xl sm:text-2xl md:text-3xl font-bold text-botanical-accent mb-1 sm:mb-2 truncate">{data.shop.name}</h2>
-            </div>
-            </header>
-        )}
-        
-        {!isSuperAdmin && (
-            <header className="hidden sm:flex mb-8 sm:mb-12 flex-col sm:flex-row justify-between sm:items-end border-b border-botanical-border pb-4 sm:pb-6 gap-3 sm:gap-4">
-            <div className="min-w-0">
-                <h2 className="font-serif text-xl sm:text-2xl md:text-3xl font-bold text-botanical-accent mb-1 sm:mb-2 truncate">Management Dashboard</h2>
-            </div>
-            <div className="flex shrink-0">
-                <Link
+        <header className="hidden sm:flex justify-between items-center border-b border-botanical-border mb-6 sm:mb-8 pb-4 sm:pb-6">
+          <div className="flex items-center gap-3">
+            <h1 className="font-serif text-2xl sm:text-3xl md:text-4xl font-bold flex items-center flex-wrap gap-2">
+              {isSuperAdmin ? (
+                <>
+                  <Link href="/superadmin" className="hover:opacity-80 transition-opacity">
+                    <span className="text-botanical-text">Barber</span>
+                    <span className="text-botanical-accent">SaaS</span>
+                  </Link>
+                  <span className="text-botanical-border mx-1 font-sans font-light">/</span>
+                  <span className="text-botanical-muted font-medium">{data.shop.name}</span>
+                </>
+              ) : (
+                <>
+                  <Link href={`/shop/${shopId}`} className="text-botanical-text hover:text-botanical-accent transition-colors truncate max-w-[300px] md:max-w-md lg:max-w-lg">
+                    {data.shop.name}
+                  </Link>
+                  <span className="text-botanical-border mx-1 font-sans font-light">/</span>
+                  <span className="text-botanical-muted font-medium text-xl sm:text-2xl md:text-3xl">Dashboard</span>
+                </>
+              )}
+            </h1>
+          </div>
+          
+          <div className="flex items-center gap-4 shrink-0">
+            {!isSuperAdmin && (
+              <Link
                 href={`/shops/${data.shopSlug}`}
                 target="_blank"
-                className="bg-botanical-primary text-white hover:bg-white hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 px-4 sm:px-6 py-2 rounded-lg transition-all duration-200 text-xs sm:text-sm font-semibold whitespace-nowrap shadow-sm hover:shadow-md"
-                >
+                className="bg-botanical-primary text-white hover:bg-white hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 px-4 sm:px-6 py-2.5 rounded-xl transition-all duration-200 text-xs sm:text-sm font-semibold whitespace-nowrap shadow-sm hover:shadow-md hover:-translate-y-0.5"
+              >
                 View Public Page ↗
-                </Link>
-            </div>
-            </header>
-        )}
+              </Link>
+            )}
+            <SupabaseAuthButton redirectUrl={isSuperAdmin ? '/' : fallbackRedirect} />
+          </div>
+        </header>
 
         {children}
       </div>
