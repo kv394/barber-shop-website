@@ -21,11 +21,11 @@ async function requireSiteAdmin() {
   return user;
 }
 
-export async function PATCH(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+export async function PATCH(request: NextRequest, { params }: { params: Promise<{ shopId: string }> }) {
   const adminCheck = await requireSiteAdmin();
   if (adminCheck instanceof NextResponse) return adminCheck;
 
-  const { id } = await params;
+  const { shopId } = await params;
   try {
     const { templateId } = await request.json();
     if (!templateId) {
@@ -34,7 +34,7 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
 
     // Set the template string to "dynamic:{id}" or just the standard name if it's a built-in one
     const updatedShop = await prisma.shop.update({
-      where: { id },
+      where: { id: shopId },
       data: { template: templateId },
       select: { id: true, template: true }
     });
