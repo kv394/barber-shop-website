@@ -40,9 +40,16 @@ export function ShopNav({ shopId, userRole, activeTab }: { shopId: string, userR
     return () => window.removeEventListener('resize', checkScroll);
   }, []);
 
-  // Check scroll when activeTab changes
+  // Center the active tab on mount or when activeTab changes
   useEffect(() => {
-    const timer = setTimeout(checkScroll, 100);
+    if (scrollRef.current) {
+      const activeEl = scrollRef.current.querySelector('[aria-current="page"]');
+      if (activeEl) {
+        // Smoothly scroll the active element into the center of the viewport
+        activeEl.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+      }
+    }
+    const timer = setTimeout(checkScroll, 150); // check scroll slightly after animation
     return () => clearTimeout(timer);
   }, [activeTab]);
 
