@@ -36,9 +36,19 @@ async function getShopBySlug(slug: string) {
 
   // Serialize to plain objects and ensure customization is included
   const serialized = JSON.parse(JSON.stringify(shop));
+  const rawCustom = serialized.customization || {};
+  
+  const rawAddress = rawCustom.address;
+  const formattedAddress = typeof rawAddress === 'object' && rawAddress !== null
+    ? [rawAddress.street, rawAddress.suite, rawAddress.city, rawAddress.state, rawAddress.zip, rawAddress.country].filter(Boolean).join(', ')
+    : rawAddress;
+
   return {
     ...serialized,
-    customization: serialized.customization || {},
+    customization: {
+      ...rawCustom,
+      address: formattedAddress,
+    },
     template: serialized.template || 'modern',
   };
 }

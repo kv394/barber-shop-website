@@ -1,11 +1,10 @@
 import { cache } from 'react';
 import { prisma } from '@/lib/prisma';
 import { Metadata } from 'next';
-import ClientPage from './ClientPage';
+import ClientPage from '@/app/shops/[slug]/ClientPage';
 import { createClient } from '@/utils/supabase/server';
 import { redirect } from 'next/navigation';
 
-// Use this to ensure the page caches effectively unless revalidated
 export const revalidate = 60;
 
 const serviceInclude = {
@@ -16,27 +15,37 @@ const serviceInclude = {
   },
 };
 
-const getShopBySlug = cache(async (slug: string) => {
-  // 1. Try to find by exact ID (backward compat)
+const getShopBySite = cache(async (site: string) => {
+  // If it's a subdomain on vercel, extract the subdomain
+  let subdomain = site;
+  let customDomain = site;
+  
+  if (site.includes('.vercel.app')) {
+    subdomain = site.split('.')[0];
+  } else if (site.includes('localhost')) {
+    subdomain = site.split(':')[0]; // Just in case, though middleware excludes localhost
+  }
+
+  // 1. Try to find by customDomain
   let shop: any = await prisma.shop.findUnique({
-    where: { id: slug },
+    where: { customDomain: site },
     include: serviceInclude,
   });
 
-  if (!shop) {
-    // 2. Case-insensitive name search — avoids loading ALL shops into memory.
-    //    The slug is derived from name via: lower → spaces→hyphens → strip non-word.
-    //    Reverse the slug to a LIKE-able pattern (hyphens → space wildcard).
-    const namePattern = slug.replace(/-/g, '%');
-    const candidates = await prisma.shop.findMany({
-      where: { name: { contains: namePattern.replace(/%/g, ' '), mode: 'insensitive' } },
+  // 2. Try to find by subdomain
+  if (!shop && subdomain) {
+    shop = await prisma.shop.findUnique({
+      where: { subdomain },
       include: serviceInclude,
-      take: 10, // Bounded — never fetches entire table
     });
-
-    shop = candidates.find(
-      (s: any) => s.name.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '') === slug.toLowerCase()
-    ) || null;
+  }
+  
+  // Fallback (for testing / backward compat): treat site as slug/ID
+  if (!shop) {
+    shop = await prisma.shop.findUnique({
+      where: { id: site.split('.')[0] },
+      include: serviceInclude,
+    });
   }
 
   if (!shop) return null;
@@ -58,11 +67,8 @@ const getShopBySlug = cache(async (slug: string) => {
   });
 
   const serialized = JSON.parse(JSON.stringify(shop));
-  // SECURITY: Only expose public-facing customization fields to the client.
-  // Internal settings like notifSettings, bookingSettings, businessHours are admin-only.
   const rawCustom = serialized.customization || {};
   
-  // Format address if it's an object
   const rawAddress = rawCustom.address;
   const formattedAddress = typeof rawAddress === 'object' && rawAddress !== null
     ? [rawAddress.street, rawAddress.suite, rawAddress.city, rawAddress.state, rawAddress.zip, rawAddress.country].filter(Boolean).join(', ')
@@ -78,7 +84,6 @@ const getShopBySlug = cache(async (slug: string) => {
     phone: rawCustom.phone,
     aboutText: rawCustom.aboutText,
     socialLinks: rawCustom.socialLinks,
-    // Expose business hours for public schedule display
     businessHours: rawCustom.businessHours,
     pages: rawCustom.pages,
     editorialCustomization: rawCustom.editorialCustomization,
@@ -91,13 +96,9 @@ const getShopBySlug = cache(async (slug: string) => {
   };
 });
 
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}): Promise<Metadata> {
-  const { slug } = await params;
-  const shop = await getShopBySlug(slug);
+export async function generateMetadata({ params }: { params: Promise<{ site: string }> }): Promise<Metadata> {
+  const { site } = await params;
+  const shop = await getShopBySite(decodeURIComponent(site));
 
   if (!shop) {
     return {
@@ -116,51 +117,25 @@ export async function generateMetadata({
   };
 }
 
-export default async function PublicShopPage({
-  params,
-  searchParams,
-}: {
-  params: Promise<{ slug: string }>;
-  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
-}) {
-  const { slug } = await params;
-  const resolvedSearchParams = await searchParams;
-  const isPreview = resolvedSearchParams?.preview === 'true';
-  const shop = await getShopBySlug(slug);
+export default async function SitePage({ params }: { params: Promise<{ site: string }> }) {
+  const { site } = await params;
+  const shop = await getShopBySite(decodeURIComponent(site));
 
   if (!shop) {
     return (
-      <div className="h-[100dvh] overflow-y-auto overflow-x-hidden">
+      <div className="h-[100dvh] overflow-y-auto overflow-x-hidden flex items-center justify-center">
         <div className="text-center">
           <h1 className="text-4xl font-bold text-botanical-text mb-4">Shop Not Found</h1>
-          <p className="text-botanical-muted">We couldn't find the shop you're looking for.</p>
+          <p className="text-botanical-muted">We couldn't find the shop for this domain ({site}).</p>
         </div>
       </div>
     );
   }
 
-  // Automatically redirect STAFF and ADMINS to their dashboard (the BarberSaaS base URL)
-  // Only CLIENTS should be viewing the public shop landing page.
-  if (!isPreview) {
-    const supabase = await createClient();
-    const { data: { user } } = await supabase.auth.getUser();
-    if (user?.email) {
-      const dbUser = await prisma.user.findUnique({
-        where: { email: user.email },
-        select: { role: true, shopId: true }
-      });
-      
-      if (dbUser && dbUser.role !== 'CLIENT') {
-         redirect('/');
-      }
-    }
-  }
-
-  // Use the custom colors if they exist, otherwise fallback to defaults
-  const primaryColor = shop.customization?.primaryColor || '#3b82f6'; // Default blue-500
-  const secondaryColor = shop.customization?.secondaryColor || '#06b6d4'; // Default cyan-500
+  const primaryColor = shop.customization?.primaryColor || '#3b82f6';
+  const secondaryColor = shop.customization?.secondaryColor || '#06b6d4';
   const templateType = shop.template || 'modern';
-  const sportRed = shop.customization?.primaryColor || '#d50000'; // Default to a strong red
+  const sportRed = shop.customization?.primaryColor || '#d50000';
 
   let dynamicTemplateHtml = null;
   let dynamicTemplateCss = null;
@@ -186,7 +161,6 @@ export default async function PublicShopPage({
     }
   }
 
-  // Pass everything to the Client Component
   return (
       <ClientPage 
           shop={shop} 

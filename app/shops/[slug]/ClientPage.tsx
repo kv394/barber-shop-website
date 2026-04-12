@@ -752,7 +752,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                           <span className="material-symbols-outlined" style={{ color: primaryColor }}>location_on</span>
                           <div>
                             <h4 className="font-bold text-lg mb-2">Our Location</h4>
-                            <p className="text-[#d0c5af]">{shop.customization?.address || 'Address not provided'}</p>
+                            <p className="text-[#d0c5af]">{shopAddress || 'Address not provided'}</p>
                           </div>
                         </div>
                         <div className="flex gap-6">

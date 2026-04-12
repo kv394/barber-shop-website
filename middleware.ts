@@ -14,6 +14,7 @@ const publicRoutes = [
   '^/api/shops/[^/]+/appointments$',
   '^/api/shops/[^/]+/staff$',
   '^/api/shops/[^/]+/reviews$',
+  '^/sites/[^/]+(?:/.*)?$',
   '^/api/users/init$',
   '^/api/users/me$',
   '^/api/cron$'
@@ -40,9 +41,29 @@ const generateCsp = () => {
 };
 
 export async function middleware(req: NextRequest) {
-  let response = NextResponse.next({
-    request: { headers: new Headers(req.headers) },
-  });
+  const url = req.nextUrl;
+  const hostname = req.headers.get('host') || '';
+  
+  const isApi = url.pathname.startsWith('/api');
+  const isAdmin = url.pathname.startsWith('/superadmin');
+  const isStatic = url.pathname.startsWith('/_next') || url.pathname.startsWith('/static') || url.pathname.includes('.');
+  
+  // We identify root domains so we know when to treat a host as a tenant subdomain vs base saas
+  const rootDomainStr = process.env.NEXT_PUBLIC_ROOT_DOMAIN || 'localhost:3000,barbersaas.vercel.app,barbersaas-henna.vercel.app';
+  const rootDomains = rootDomainStr.split(',');
+  
+  const shouldRewrite = !isApi && !isAdmin && !isStatic && !rootDomains.includes(hostname) && !url.pathname.startsWith('/sites');
+
+  let response: NextResponse;
+  if (shouldRewrite) {
+    response = NextResponse.rewrite(new URL(`/sites/${hostname}${url.pathname}`, req.url), {
+      request: { headers: new Headers(req.headers) },
+    });
+  } else {
+    response = NextResponse.next({
+      request: { headers: new Headers(req.headers) },
+    });
+  }
 
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,

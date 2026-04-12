@@ -12,6 +12,8 @@ datasource db {
 model Shop {
   id            String  @id @default(cuid())
   name          String
+  subdomain     String? @unique
+  customDomain  String? @unique
   description   String?
   template      String  @default("modern")
   timezone      String  @default("America/New_York")
