@@ -43,9 +43,16 @@ export default function ClientGrid({ clients, shopId }: { clients: any[]; shopId
               onClick={() => setSelectedClient(client)}
               className="bg-botanical-surface p-3 sm:p-5 rounded-lg border border-botanical-border shadow-sm flex flex-col cursor-pointer hover:border-brand-gold/30 transition-colors group"
             >
-              <div className="mb-3 sm:mb-4">
-                <h4 className="font-bold text-base sm:text-lg text-botanical-accent truncate group-hover:text-botanical-text transition-colors">{client.name || "Guest User"}</h4>
-                <p className="text-xs sm:text-sm text-botanical-muted truncate">{client.email.startsWith('walkin-') ? 'Walk-in (No Email)' : client.email}</p>
+              <div className="flex justify-between items-start mb-3 sm:mb-4 gap-2">
+                <div className="min-w-0">
+                  <h4 className="font-bold text-base sm:text-lg text-botanical-accent truncate group-hover:text-botanical-text transition-colors">{client.name || "Guest User"}</h4>
+                  <p className="text-xs sm:text-sm text-botanical-muted truncate">{client.email.startsWith('walkin-') ? 'Walk-in (No Email)' : client.email}</p>
+                </div>
+                {client.barcode && (
+                  <div className="shrink-0">
+                    <UserQRCode barcode={client.barcode} userName={client.name || "Client"} showText={false} size={64} />
+                  </div>
+                )}
               </div>
               
               <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-end mt-auto pt-4 border-t border-botanical-border">
@@ -55,12 +62,6 @@ export default function ClientGrid({ clients, shopId }: { clients: any[]; shopId
                     <div className="mt-1">Last: <span className="text-botanical-muted">{new Date(client.lastVisit).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}</span></div>
                   )}
                 </div>
-                
-                {client.barcode && (
-                  <div className="transform scale-[0.6] origin-bottom-right translate-y-4 translate-x-4">
-                    <UserQRCode barcode={client.barcode} userName={client.name || "Client"} showText={false} />
-                  </div>
-                )}
               </div>
               
               {client.barcode && (
