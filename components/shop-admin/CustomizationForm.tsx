@@ -80,7 +80,7 @@ export function CustomizationForm({
         </div>
       )}
 
-      <div className="space-y-6 bg-botanical-surface p-4 sm:p-6 md:p-8 rounded-lg border-2 border-b-[6px] border-botanical-border">
+      <div className="space-y-6 bg-botanical-surface p-4 sm:p-6 md:p-8 rounded-lg border border-botanical-border shadow-sm">
         
         {/* ONLY SUPER ADMIN CAN EDIT COLORS */}
         {isSuperAdmin && (
@@ -106,7 +106,7 @@ export function CustomizationForm({
                     onChange={(e) =>
                       handleInputChange('primaryColor', e.target.value)
                     }
-                    className="flex-1 bg-botanical-bg border-2 border-b-[6px] border-botanical-border rounded px-3 py-2 text-botanical-text"
+                    className="flex-1 bg-botanical-bg border border-botanical-border shadow-sm rounded px-3 py-2 text-botanical-text"
                   />
                 </div>
               </div>
@@ -130,7 +130,7 @@ export function CustomizationForm({
                     onChange={(e) =>
                       handleInputChange('secondaryColor', e.target.value)
                     }
-                    className="flex-1 bg-botanical-bg border-2 border-b-[6px] border-botanical-border rounded px-3 py-2 text-botanical-text"
+                    className="flex-1 bg-botanical-bg border border-botanical-border shadow-sm rounded px-3 py-2 text-botanical-text"
                   />
                 </div>
               </div>
@@ -150,7 +150,7 @@ export function CustomizationForm({
                 value={formData.phone || ''}
                 onChange={(e) => handleInputChange('phone', e.target.value)}
                 placeholder="+1 (555) 000-0000"
-                className="w-full bg-botanical-bg border-2 border-b-[6px] border-botanical-border rounded px-4 py-2 text-botanical-text placeholder-gray-500"
+                className="w-full bg-botanical-bg border border-botanical-border shadow-sm rounded px-4 py-2 text-botanical-text placeholder-gray-500"
               />
             </div>
 
@@ -163,7 +163,7 @@ export function CustomizationForm({
                 value={formData.email || ''}
                 onChange={(e) => handleInputChange('email', e.target.value)}
                 placeholder="contact@shop.com"
-                className="w-full bg-botanical-bg border-2 border-b-[6px] border-botanical-border rounded px-4 py-2 text-botanical-text placeholder-gray-500"
+                className="w-full bg-botanical-bg border border-botanical-border shadow-sm rounded px-4 py-2 text-botanical-text placeholder-gray-500"
               />
             </div>
 
@@ -176,7 +176,7 @@ export function CustomizationForm({
                 value={formData.address || ''}
                 onChange={(e) => handleInputChange('address', e.target.value)}
                 placeholder="123 Main St, City, State"
-                className="w-full bg-botanical-bg border-2 border-b-[6px] border-botanical-border rounded px-4 py-2 text-botanical-text placeholder-gray-500"
+                className="w-full bg-botanical-bg border border-botanical-border shadow-sm rounded px-4 py-2 text-botanical-text placeholder-gray-500"
               />
             </div>
           </div>
@@ -199,7 +199,7 @@ export function CustomizationForm({
                   })
                 }
                 placeholder="https://facebook.com/yourpage"
-                className="w-full bg-botanical-bg border-2 border-b-[6px] border-botanical-border rounded px-4 py-2 text-botanical-text placeholder-gray-500"
+                className="w-full bg-botanical-bg border border-botanical-border shadow-sm rounded px-4 py-2 text-botanical-text placeholder-gray-500"
               />
             </div>
 
@@ -217,7 +217,7 @@ export function CustomizationForm({
                   })
                 }
                 placeholder="https://instagram.com/yourpage"
-                className="w-full bg-botanical-bg border-2 border-b-[6px] border-botanical-border rounded px-4 py-2 text-botanical-text placeholder-gray-500"
+                className="w-full bg-botanical-bg border border-botanical-border shadow-sm rounded px-4 py-2 text-botanical-text placeholder-gray-500"
               />
             </div>
 
@@ -235,7 +235,7 @@ export function CustomizationForm({
                   })
                 }
                 placeholder="https://twitter.com/yourpage"
-                className="w-full bg-botanical-bg border-2 border-b-[6px] border-botanical-border rounded px-4 py-2 text-botanical-text placeholder-gray-500"
+                className="w-full bg-botanical-bg border border-botanical-border shadow-sm rounded px-4 py-2 text-botanical-text placeholder-gray-500"
               />
             </div>
           </div>

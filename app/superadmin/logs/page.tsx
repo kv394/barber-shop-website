@@ -69,7 +69,7 @@ export default async function SuperAdminLogsPage() {
         <h1 className="text-3xl font-serif font-bold text-botanical-accent mb-2">System Logs</h1>
         <p className="text-botanical-muted">{logs.length} log entr{logs.length !== 1 ? 'ies' : 'y'} • {logs.filter((l: any) => !l.isResolved).length} unresolved</p>
       </div>
-      <div className="bg-botanical-surface rounded-xl border-2 border-b-[6px] border-botanical-border overflow-hidden">
+      <div className="bg-botanical-surface rounded-xl border border-botanical-border shadow-sm overflow-hidden">
         <table className="min-w-full divide-y divide-white/10 text-botanical-text">
           <thead className="bg-botanical-surface">
             <tr>

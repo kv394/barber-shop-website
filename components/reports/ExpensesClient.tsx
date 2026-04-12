@@ -67,9 +67,9 @@ export default function ExpensesClient({ shopId }: { shopId: string }) {
         <div className="flex-1">
           <label className="block text-sm text-botanical-muted uppercase tracking-wider mb-1">Month</label>
           <input type="month" value={month} onChange={e => setMonth(e.target.value)} style={inputStyle}
-            className="w-full border-2 border-b-[6px] border-botanical-border rounded p-2.5 text-sm focus:outline-none focus:border-brand-gold [&::-webkit-calendar-picker-indicator]:invert" />
+            className="w-full border border-botanical-border shadow-sm rounded p-2.5 text-sm focus:outline-none focus:border-brand-gold [&::-webkit-calendar-picker-indicator]:invert" />
         </div>
-        <div className="bg-botanical-surface backdrop-blur-xl shadow-2xl rounded-2xl border-2 border-b-[6px] border-botanical-border flex-1 relative overflow-hidden group hover:bg-botanical-surface transition-all duration-300 z-20">
+        <div className="bg-botanical-surface backdrop-blur-xl shadow-2xl rounded-2xl border border-botanical-border shadow-sm flex-1 relative overflow-hidden group hover:bg-botanical-surface transition-all duration-300 z-20">
           <div className="absolute top-0 left-0 w-full h-1 bg-red-500/80"></div>
           <div className="p-5 sm:p-6">
             <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-2 sm:mb-3">
@@ -85,7 +85,7 @@ export default function ExpensesClient({ shopId }: { shopId: string }) {
       {byCategory.length > 0 && (
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-6">
           {byCategory.map(c => (
-            <div key={c.cat} className="bg-botanical-surface p-3 rounded-lg border-2 border-b-[6px] border-botanical-border text-center">
+            <div key={c.cat} className="bg-botanical-surface p-3 rounded-lg border border-botanical-border shadow-sm text-center">
               <p className="text-lg">{catEmojis[c.cat]}</p>
               <p className="text-xs text-botanical-muted">{c.cat}</p>
               <p className="text-sm font-bold text-botanical-text">${c.total.toFixed(2)}</p>
@@ -95,19 +95,19 @@ export default function ExpensesClient({ shopId }: { shopId: string }) {
       )}
 
       {/* Add Expense Form */}
-      <form onSubmit={handleAdd} className="bg-botanical-surface p-4 rounded-lg border-2 border-b-[6px] border-botanical-border mb-6 space-y-3">
+      <form onSubmit={handleAdd} className="bg-botanical-surface p-4 rounded-lg border border-botanical-border shadow-sm mb-6 space-y-3">
         <h3 className="text-sm font-bold text-botanical-text mb-2">+ Add Expense</h3>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
           <input type="number" step="0.01" min="0" value={amount} onChange={e => setAmount(e.target.value)} placeholder="Amount" required style={inputStyle}
-            className="border-2 border-b-[6px] border-botanical-border rounded p-2 text-sm focus:outline-none focus:border-brand-gold" />
+            className="border border-botanical-border shadow-sm rounded p-2 text-sm focus:outline-none focus:border-brand-gold" />
           <select value={category} onChange={e => setCategory(e.target.value)} style={inputStyle}
-            className="border-2 border-b-[6px] border-botanical-border rounded p-2 text-sm focus:outline-none focus:border-brand-gold">
+            className="border border-botanical-border shadow-sm rounded p-2 text-sm focus:outline-none focus:border-brand-gold">
             {CATEGORIES.map(c => <option key={c} value={c}>{catEmojis[c]} {c}</option>)}
           </select>
           <input type="text" value={description} onChange={e => setDescription(e.target.value)} placeholder="Description (optional)" style={inputStyle}
-            className="border-2 border-b-[6px] border-botanical-border rounded p-2 text-sm focus:outline-none focus:border-brand-gold" />
+            className="border border-botanical-border shadow-sm rounded p-2 text-sm focus:outline-none focus:border-brand-gold" />
           <input type="date" value={date} onChange={e => setDate(e.target.value)} style={inputStyle}
-            className="border-2 border-b-[6px] border-botanical-border rounded p-2 text-sm focus:outline-none focus:border-brand-gold [&::-webkit-calendar-picker-indicator]:invert" />
+            className="border border-botanical-border shadow-sm rounded p-2 text-sm focus:outline-none focus:border-brand-gold [&::-webkit-calendar-picker-indicator]:invert" />
         </div>
         <button type="submit" disabled={adding} className="bg-red-600 hover:bg-red-500 text-botanical-text font-bold py-2 px-6 rounded text-sm disabled:opacity-50 transition-colors">
           {adding ? 'Adding...' : 'Add Expense'}
@@ -122,7 +122,7 @@ export default function ExpensesClient({ shopId }: { shopId: string }) {
       ) : (
         <div className="space-y-2">
           {expenses.map(exp => (
-            <div key={exp.id} className="bg-botanical-surface p-3 rounded-lg border-2 border-b-[6px] border-botanical-border flex flex-wrap justify-between gap-x-2 gap-y-2 items-center">
+            <div key={exp.id} className="bg-botanical-surface p-3 rounded-lg border border-botanical-border shadow-sm flex flex-wrap justify-between gap-x-2 gap-y-2 items-center">
               <div className="flex items-center gap-3">
                 <span className="text-lg">{catEmojis[exp.category] || '📦'}</span>
                 <div>

@@ -102,7 +102,7 @@ export default function StaffWorkingReport({ staffMembers }: { staffMembers: Sta
   return (
     <div>
       {/* Floating Summary Bar */}
-      <div className="bg-botanical-surface backdrop-blur-xl shadow-2xl rounded-2xl border-2 border-b-[6px] border-botanical-border mb-8 flex flex-col lg:flex-row divide-y lg:divide-y-0 lg:divide-x divide-white/10 relative z-20 transform sm:-translate-y-6 sm:-mx-2">
+      <div className="bg-botanical-surface backdrop-blur-xl shadow-2xl rounded-2xl border border-botanical-border shadow-sm mb-8 flex flex-col lg:flex-row divide-y lg:divide-y-0 lg:divide-x divide-white/10 relative z-20 transform sm:-translate-y-6 sm:-mx-2">
         <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-botanical-surface transition-all duration-300 min-w-0">
           <div className="absolute top-0 left-0 w-full h-1 bg-blue-500/80"></div>
           <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-3">
@@ -144,20 +144,20 @@ export default function StaffWorkingReport({ staffMembers }: { staffMembers: Sta
       </div>
 
       {/* Date Filters */}
-      <div className="flex flex-col sm:flex-row gap-3 mb-6 p-4 bg-botanical-surface rounded-lg border-2 border-b-[6px] border-botanical-border">
+      <div className="flex flex-col sm:flex-row gap-3 mb-6 p-4 bg-botanical-surface rounded-lg border border-botanical-border shadow-sm">
         <div className="flex-1">
           <label className="block text-sm text-botanical-muted uppercase tracking-wider mb-1">From Date</label>
           <input type="date" value={dateFrom} onChange={e => setDateFrom(e.target.value)} style={inputStyle}
-            className="w-full border-2 border-b-[6px] border-botanical-border rounded p-2 text-sm focus:outline-none focus:border-brand-gold [&::-webkit-calendar-picker-indicator]:invert" />
+            className="w-full border border-botanical-border shadow-sm rounded p-2 text-sm focus:outline-none focus:border-brand-gold [&::-webkit-calendar-picker-indicator]:invert" />
         </div>
         <div className="flex-1">
           <label className="block text-sm text-botanical-muted uppercase tracking-wider mb-1">To Date</label>
           <input type="date" value={dateTo} onChange={e => setDateTo(e.target.value)} style={inputStyle}
-            className="w-full border-2 border-b-[6px] border-botanical-border rounded p-2 text-sm focus:outline-none focus:border-brand-gold [&::-webkit-calendar-picker-indicator]:invert" />
+            className="w-full border border-botanical-border shadow-sm rounded p-2 text-sm focus:outline-none focus:border-brand-gold [&::-webkit-calendar-picker-indicator]:invert" />
         </div>
         {isFiltered && (
           <div className="flex items-end">
-            <button onClick={() => { setDateFrom(''); setDateTo(''); }} className="text-xs text-botanical-muted hover:text-botanical-text px-4 py-2 border-2 border-b-[6px] border-botanical-border rounded">
+            <button onClick={() => { setDateFrom(''); setDateTo(''); }} className="text-xs text-botanical-muted hover:text-botanical-text px-4 py-2 border border-botanical-border shadow-sm rounded">
               Clear Filters
             </button>
           </div>
@@ -177,7 +177,7 @@ export default function StaffWorkingReport({ staffMembers }: { staffMembers: Sta
             const isExpanded = selectedStaff === staff.id;
 
             return (
-              <div key={staff.id} className="bg-botanical-surface rounded-xl border-2 border-b-[6px] border-botanical-border overflow-hidden">
+              <div key={staff.id} className="bg-botanical-surface rounded-xl border border-botanical-border shadow-sm overflow-hidden">
                 {/* Staff Summary Row */}
                 <button
                   onClick={() => setSelectedStaff(isExpanded ? null : staff.id)}
@@ -263,7 +263,7 @@ export default function StaffWorkingReport({ staffMembers }: { staffMembers: Sta
                                 : 'In Progress';
 
                               return (
-                                <div key={log.id} className="flex items-center justify-between bg-botanical-surface px-3 py-2 rounded-lg text-xs border-2 border-b-[6px] border-botanical-border">
+                                <div key={log.id} className="flex items-center justify-between bg-botanical-surface px-3 py-2 rounded-lg text-xs border border-botanical-border shadow-sm">
                                   <div>
                                     <span className="text-botanical-muted">
                                       {clockIn.toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}
@@ -302,7 +302,7 @@ export default function StaffWorkingReport({ staffMembers }: { staffMembers: Sta
                         ) : (
                           <div className="space-y-2 max-h-64 overflow-y-auto pr-1">
                             {selectedStaffData.filteredAppointments.slice(0, 50).map(apt => (
-                              <div key={apt.id} className="flex items-center justify-between bg-botanical-surface px-3 py-2 rounded-lg text-xs border-2 border-b-[6px] border-botanical-border">
+                              <div key={apt.id} className="flex items-center justify-between bg-botanical-surface px-3 py-2 rounded-lg text-xs border border-botanical-border shadow-sm">
                                 <div>
                                   <span className="text-botanical-muted">
                                     {new Date(apt.startTime).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}

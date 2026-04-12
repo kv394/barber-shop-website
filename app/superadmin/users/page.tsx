@@ -103,7 +103,7 @@ export default function SuperAdminUsersPage() {
             value={search}
             onChange={e => setSearch(e.target.value)}
             placeholder="Search by name or email..."
-            className="flex-1 bg-botanical-surface border-2 border-b-[6px] border-botanical-border rounded-lg px-4 py-2.5 text-botanical-text text-sm placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-botanical-primary"
+            className="flex-1 bg-botanical-surface border border-botanical-border shadow-sm rounded-lg px-4 py-2.5 text-botanical-text text-sm placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-botanical-primary"
           />
           <button
             type="submit"
@@ -133,7 +133,7 @@ export default function SuperAdminUsersPage() {
       {loading ? (
         <div className="text-center py-12 text-botanical-muted">Loading users...</div>
       ) : (
-        <div className="bg-botanical-surface rounded-xl border-2 border-b-[6px] border-botanical-border overflow-hidden">
+        <div className="bg-botanical-surface rounded-xl border border-botanical-border shadow-sm overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
@@ -170,7 +170,7 @@ export default function SuperAdminUsersPage() {
                             <select
                               value={editRole}
                               onChange={e => setEditRole(e.target.value)}
-                              className="bg-botanical-surface text-botanical-text text-xs rounded px-2 py-1 border-2 border-b-[6px] border-botanical-border"
+                              className="bg-botanical-surface text-botanical-text text-xs rounded px-2 py-1 border border-botanical-border shadow-sm"
                             >
                               {ROLES.filter(r => r !== 'ALL').map(r => (
                                 <option key={r} value={r}>{r.replace(/_/g, ' ')}</option>

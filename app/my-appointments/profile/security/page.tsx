@@ -58,7 +58,7 @@ export default function SecurityProfilePage() {
     <div className="max-w-2xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
       <h1 className="text-2xl font-bold text-botanical-text mb-6">Security & Recovery</h1>
       
-      <div className="bg-botanical-surface border-2 border-b-[6px] border-botanical-border rounded-xl p-6">
+      <div className="bg-botanical-surface border border-botanical-border shadow-sm rounded-xl p-6">
         <h2 className="text-xl font-semibold text-botanical-text mb-2">Authenticator App Recovery</h2>
         <p className="text-botanical-muted mb-6">
           Set up an Authenticator App (like Google Authenticator or Authy) to securely recover your password without relying on email links.

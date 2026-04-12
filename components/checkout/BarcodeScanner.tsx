@@ -203,7 +203,7 @@ export default function BarcodeScanner({ onScan, onClose }: BarcodeScannerProps)
 
   return (
     <div className="fixed inset-0 bg-botanical-surface z-[100] flex items-center justify-center p-4 backdrop-blur-sm">
-      <div className="bg-botanical-surface rounded-xl p-5 w-full max-w-sm border-2 border-b-[6px] border-botanical-border shadow-2xl relative">
+      <div className="bg-botanical-surface rounded-xl p-5 w-full max-w-sm border border-botanical-border shadow-sm shadow-2xl relative">
         <button
           onClick={handleClose}
           className="absolute top-3 right-3 text-botanical-muted hover:text-botanical-text bg-botanical-surface rounded-full w-8 h-8 flex items-center justify-center z-10 text-sm"
@@ -222,7 +222,7 @@ export default function BarcodeScanner({ onScan, onClose }: BarcodeScannerProps)
           </div>
         )}
 
-        <div className="relative bg-botanical-surface rounded-lg overflow-hidden border-2 border-b-[6px] border-botanical-border" style={{ minHeight: 280 }}>
+        <div className="relative bg-botanical-surface rounded-lg overflow-hidden border border-botanical-border shadow-sm" style={{ minHeight: 280 }}>
           <video
             ref={videoRef}
             className="w-full h-auto"

@@ -127,21 +127,21 @@ export default function ReviewPage({ params }: { params: Promise<{ appointmentId
             <Link href="/my-appointments" className="text-botanical-accent hover:text-botanical-text text-sm mt-4 inline-block">← Back to appointments</Link>
           </div>
         ) : alreadyReviewed ? (
-          <div className="text-center py-12 bg-botanical-surface border-2 border-b-[6px] border-botanical-border rounded-xl p-8">
+          <div className="text-center py-12 bg-botanical-surface border border-botanical-border shadow-sm rounded-xl p-8">
             <p className="text-4xl mb-4">✅</p>
             <h2 className="text-xl font-bold text-botanical-text mb-2">Already Reviewed</h2>
             <p className="text-botanical-muted text-sm">You&apos;ve already left a review for this appointment.</p>
             <Link href="/my-appointments" className="text-botanical-accent hover:text-botanical-text text-sm mt-4 inline-block">← Back to appointments</Link>
           </div>
         ) : appointment.status !== 'COMPLETED' ? (
-          <div className="text-center py-12 bg-botanical-surface border-2 border-b-[6px] border-botanical-border rounded-xl p-8">
+          <div className="text-center py-12 bg-botanical-surface border border-botanical-border shadow-sm rounded-xl p-8">
             <p className="text-4xl mb-4">⏳</p>
             <h2 className="text-xl font-bold text-botanical-text mb-2">Not Yet Completed</h2>
             <p className="text-botanical-muted text-sm">You can only review completed appointments.</p>
             <Link href="/my-appointments" className="text-botanical-accent hover:text-botanical-text text-sm mt-4 inline-block">← Back to appointments</Link>
           </div>
         ) : (
-          <div className="bg-botanical-surface border-2 border-b-[6px] border-botanical-border rounded-xl overflow-hidden">
+          <div className="bg-botanical-surface border border-botanical-border shadow-sm rounded-xl overflow-hidden">
             {/* Appointment Summary */}
             <div className="p-6 bg-gradient-to-r from-purple-600/10 to-brand-gold/10 border-b border-botanical-border">
               <h2 className="text-lg font-bold text-botanical-text">{appointment.shop.name}</h2>
@@ -196,7 +196,7 @@ export default function ReviewPage({ params }: { params: Promise<{ appointmentId
                   placeholder="Tell us about your experience…"
                   rows={4}
                   maxLength={1000}
-                  className="w-full bg-botanical-surface border-2 border-b-[6px] border-botanical-border rounded-lg p-3 text-botanical-text placeholder-gray-600 focus:outline-none focus:border-brand-gold resize-none"
+                  className="w-full bg-botanical-surface border border-botanical-border shadow-sm rounded-lg p-3 text-botanical-text placeholder-gray-600 focus:outline-none focus:border-brand-gold resize-none"
                 />
                 <p className="text-xs text-botanical-muted text-right mt-1">{comment.length}/1000</p>
               </div>

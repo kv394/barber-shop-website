@@ -237,7 +237,7 @@ function AppointmentCard({
   const shopSlug = apt.shop?.name?.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '') || '';
 
   return (
-    <div className="bg-botanical-surface border-2 border-b-[6px] border-botanical-border rounded-xl p-4 sm:p-5 hover:border-botanical-border transition-colors">
+    <div className="bg-botanical-surface border border-botanical-border shadow-sm rounded-xl p-4 sm:p-5 hover:border-botanical-border transition-colors">
       <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3">
         {/* Left: Info */}
         <div className="flex-1 min-w-0 space-y-2">

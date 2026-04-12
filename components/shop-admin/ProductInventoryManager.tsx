@@ -73,7 +73,7 @@ export default function ProductInventoryManager({
         type="number"
         value={quantity}
         onChange={(e) => setQuantity(parseInt(e.target.value, 10) || 0)}
-        className="w-16 bg-botanical-bg border-2 border-b-[6px] border-botanical-border rounded-md p-1 text-center text-botanical-text focus:outline-none focus:ring-2 focus:ring-botanical-primary"
+        className="w-16 bg-botanical-bg border border-botanical-border shadow-sm rounded-md p-1 text-center text-botanical-text focus:outline-none focus:ring-2 focus:ring-botanical-primary"
         min="0"
       />
 

@@ -41,7 +41,7 @@ export default async function UpdatePasswordPage({
 
   return (
     <div className="flex min-h-[80vh] items-center justify-center p-4">
-      <div className="w-full max-w-md bg-botanical-surface border-2 border-b-[6px] border-botanical-border rounded-2xl shadow-2xl p-8 mt-12 mb-12 relative">
+      <div className="w-full max-w-md bg-botanical-surface border border-botanical-border shadow-sm rounded-2xl shadow-2xl p-8 mt-12 mb-12 relative">
         <div className="absolute -top-14 left-0">
           <BackButton />
         </div>
@@ -56,7 +56,7 @@ export default async function UpdatePasswordPage({
         <form action={updatePasswordAction} className="space-y-5">
           <div>
             <label className="block text-sm font-medium text-botanical-muted mb-1.5">New Password</label>
-            <input name="password" type="password" required placeholder="••••••••" minLength={6} className="w-full bg-botanical-surface border-2 border-b-[6px] border-botanical-border rounded-lg p-3 text-botanical-text focus:ring-2 focus:ring-botanical-primary focus:border-transparent outline-none" />
+            <input name="password" type="password" required placeholder="••••••••" minLength={6} className="w-full bg-botanical-surface border border-botanical-border shadow-sm rounded-lg p-3 text-botanical-text focus:ring-2 focus:ring-botanical-primary focus:border-transparent outline-none" />
           </div>
           <button type="submit" className="w-full bg-botanical-primary text-white font-bold py-3 rounded-lg hover:bg-white hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 transition-colors mt-2">Update Password</button>
         </form>

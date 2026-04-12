@@ -287,13 +287,13 @@ export default async function TeamDashboardPage({ params, searchParams }: { para
          <div className="bg-blue-50 border border-blue-200 p-5 rounded-2xl shadow-lg mb-8">
              <h3 className="text-blue-800 font-bold mb-2 flex items-center gap-2"><span>📱</span> Tablet Kiosk Setup</h3>
              <p className="text-sm text-slate-500 mb-4">To set up the front desk attendance tablet, sign up for a new account on that device using this exact email:</p>
-             <div className="bg-white p-3 rounded-lg text-center mb-3 border-2 border-b-[6px] border-botanical-border"><code className="text-botanical-primary font-mono font-bold tracking-wider">{kioskUser.email}</code></div>
+             <div className="bg-white p-3 rounded-lg text-center mb-3 border border-botanical-border shadow-sm"><code className="text-botanical-primary font-mono font-bold tracking-wider">{kioskUser.email}</code></div>
              <p className="text-xs text-blue-700">Once an account is created with this email, that account will instantly inherit kiosk privileges for this shop.</p>
          </div>
       )}
 
       {/* ═══ Invite Section ═══ */}
-      <div className="mb-8 bg-white rounded-2xl border-2 border-b-[6px] border-botanical-border shadow-xl overflow-hidden">
+      <div className="mb-8 bg-white rounded-2xl border border-botanical-border shadow-sm shadow-xl overflow-hidden">
         <div className="h-1 bg-gradient-to-r from-botanical-primary via-botanical-primary/60 to-transparent" />
         <div className="p-6">
           <div className="flex items-center gap-3 mb-5">
@@ -309,12 +309,12 @@ export default async function TeamDashboardPage({ params, searchParams }: { para
             <div className="md:col-span-6">
               <label className="block text-sm text-slate-600 mb-1 font-semibold uppercase tracking-wider">📧 Email</label>
               <input type="email" name="email" required placeholder="team@example.com"
-                className="w-full p-2.5 rounded-lg border-2 border-b-[6px] border-botanical-border bg-white text-slate-900 text-sm placeholder-gray-400 focus:ring-2 focus:ring-botanical-primary focus:outline-none transition-all" />
+                className="w-full p-2.5 rounded-lg border border-botanical-border shadow-sm bg-white text-slate-900 text-sm placeholder-gray-400 focus:ring-2 focus:ring-botanical-primary focus:outline-none transition-all" />
             </div>
             <div className="md:col-span-3">
               <label className="block text-sm text-slate-600 mb-1 font-semibold uppercase tracking-wider">👤 Role</label>
               <select name="role" defaultValue={userRole === 'SUPER_ADMIN' ? 'SHOP_ADMIN' : 'STAFF'}
-                className="w-full p-2.5 rounded-lg border-2 border-b-[6px] border-botanical-border bg-white text-slate-900 text-sm focus:ring-2 focus:ring-botanical-primary focus:outline-none transition-all">
+                className="w-full p-2.5 rounded-lg border border-botanical-border shadow-sm bg-white text-slate-900 text-sm focus:ring-2 focus:ring-botanical-primary focus:outline-none transition-all">
                 {userRole === 'SHOP_ADMIN' && <option value="STAFF">Staff</option>}
                 {userRole === 'SUPER_ADMIN' && (
                   <>
@@ -344,7 +344,7 @@ export default async function TeamDashboardPage({ params, searchParams }: { para
       {userRole === 'SUPER_ADMIN' ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {staff.map((staffMember: any) => (
-            <div key={staffMember.id} className="bg-white border-2 border-b-[6px] border-botanical-border rounded-2xl p-5 flex flex-col shadow-lg">
+            <div key={staffMember.id} className="bg-white border border-botanical-border shadow-sm rounded-2xl p-5 flex flex-col shadow-lg">
               <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-start mb-4">
                 <div>
                   <h2 className="text-xl font-bold text-slate-900 mb-1 flex items-center gap-2">

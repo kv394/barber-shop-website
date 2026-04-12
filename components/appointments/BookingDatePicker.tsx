@@ -14,7 +14,7 @@ export default function BookingDatePicker({ dates }: { dates: string[] }) {
   if (dates.length === 0) return null;
 
   return (
-    <div className="flex items-center gap-2 bg-botanical-surface p-2 rounded-xl border-2 border-b-[6px] border-botanical-border">
+    <div className="flex items-center gap-2 bg-botanical-surface p-2 rounded-xl border border-botanical-border shadow-sm">
       <span className="text-botanical-muted pl-2">📅</span>
       <select 
         onChange={handleDateChange} 

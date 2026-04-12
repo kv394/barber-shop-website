@@ -102,7 +102,7 @@ export default async function ShopsDirectoryPage({
 
                 return (
                   <Link key={shop.id} href={`/shops/${shopSlug}`}>
-                    <div className="group bg-gradient-to-br from-slate-800 to-slate-900 rounded-xl overflow-hidden border-2 border-b-[6px] border-botanical-border hover:border-blue-500 transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/20 cursor-pointer h-full flex flex-col">
+                    <div className="group bg-gradient-to-br from-slate-800 to-slate-900 rounded-xl overflow-hidden border border-botanical-border shadow-sm hover:border-blue-500 transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/20 cursor-pointer h-full flex flex-col">
                       {/* Shop Image Placeholder */}
                       <div className="w-full h-48 bg-gradient-to-br from-blue-600/20 to-cyan-600/20 group-hover:from-blue-600/30 group-hover:to-cyan-600/30 transition-colors flex items-center justify-center">
                         <div className="text-5xl">🏪</div>
@@ -162,7 +162,7 @@ export default async function ShopsDirectoryPage({
                     ← Previous
                   </Link>
                 ) : (
-                  <span className="px-5 sm:px-6 py-2 bg-botanical-surface text-botanical-muted rounded-lg border-2 border-b-[6px] border-botanical-border cursor-not-allowed text-sm w-full sm:w-auto text-center">
+                  <span className="px-5 sm:px-6 py-2 bg-botanical-surface text-botanical-muted rounded-lg border border-botanical-border shadow-sm cursor-not-allowed text-sm w-full sm:w-auto text-center">
                     ← Previous
                   </span>
                 )}
@@ -179,7 +179,7 @@ export default async function ShopsDirectoryPage({
                     Next →
                   </Link>
                 ) : (
-                  <span className="px-5 sm:px-6 py-2 bg-botanical-surface text-botanical-muted rounded-lg border-2 border-b-[6px] border-botanical-border cursor-not-allowed text-sm w-full sm:w-auto text-center">
+                  <span className="px-5 sm:px-6 py-2 bg-botanical-surface text-botanical-muted rounded-lg border border-botanical-border shadow-sm cursor-not-allowed text-sm w-full sm:w-auto text-center">
                     Next →
                   </span>
                 )}
@@ -226,7 +226,7 @@ export default async function ShopsDirectoryPage({
             ].map((feature, index) => (
               <div
                 key={index}
-                className="text-center bg-botanical-surface rounded-lg p-6 sm:p-8 border-2 border-b-[6px] border-botanical-border hover:border-blue-500 transition-colors"
+                className="text-center bg-botanical-surface rounded-lg p-6 sm:p-8 border border-botanical-border shadow-sm hover:border-blue-500 transition-colors"
               >
                 <div className="text-3xl sm:text-4xl mb-3 sm:mb-4">{feature.icon}</div>
                 <h3 className="text-lg sm:text-xl font-bold text-botanical-text mb-2 sm:mb-3">

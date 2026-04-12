@@ -156,7 +156,7 @@ export default function CheckoutButton({
           onClick={() => !isProcessing && setIsOpen(false)}
         >
           <div
-            className="bg-botanical-surface border-2 border-b-[6px] border-botanical-border rounded-2xl shadow-2xl w-full max-w-lg max-h-[92vh] overflow-y-auto"
+            className="bg-botanical-surface border border-botanical-border shadow-sm rounded-2xl shadow-2xl w-full max-w-lg max-h-[92vh] overflow-y-auto"
             onClick={e => e.stopPropagation()}
           >
             {/* ── Header ── */}
@@ -201,7 +201,7 @@ export default function CheckoutButton({
                           <button
                             key={p.id}
                             onClick={() => addToCart(p)}
-                            className="text-left bg-botanical-surface hover:bg-botanical-surface border-2 border-b-[6px] border-botanical-border rounded-lg p-2 transition-colors relative"
+                            className="text-left bg-botanical-surface hover:bg-botanical-surface border border-botanical-border shadow-sm rounded-lg p-2 transition-colors relative"
                           >
                             {inCart && (
                               <span className="absolute top-1 right-1 bg-botanical-primary text-white text-xs font-black w-4 h-4 rounded-full flex items-center justify-center">
@@ -285,7 +285,7 @@ export default function CheckoutButton({
               </section>
 
               {/* ── Total Summary ── */}
-              <section className="bg-botanical-surface rounded-xl p-4 space-y-1.5 border-2 border-b-[6px] border-botanical-border">
+              <section className="bg-botanical-surface rounded-xl p-4 space-y-1.5 border border-botanical-border shadow-sm">
                 <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 text-sm text-botanical-muted">
                   <span>Subtotal</span><span>${subtotal.toFixed(2)}</span>
                 </div>

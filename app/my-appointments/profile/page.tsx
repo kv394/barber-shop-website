@@ -89,7 +89,7 @@ function ProfileContent() {
           </div>
         )}
 
-        <div className="bg-botanical-surface border-2 border-b-[6px] border-botanical-border rounded-xl p-6 flex flex-col items-center justify-center space-y-4 print:bg-white print:border-none print:shadow-none print:text-black">
+        <div className="bg-botanical-surface border border-botanical-border shadow-sm rounded-xl p-6 flex flex-col items-center justify-center space-y-4 print:bg-white print:border-none print:shadow-none print:text-black">
           <h2 className="text-lg font-semibold text-botanical-text print:text-black">My Check-in Code</h2>
           <div className="bg-white p-4 rounded-xl">
             <QRCodeSVG value={profile?.barcode || profile?.id || 'NO_ID'} size={150} level="H" />
@@ -102,30 +102,30 @@ function ProfileContent() {
           </button>
         </div>
 
-        <div className="bg-botanical-surface border-2 border-b-[6px] border-botanical-border rounded-xl p-6 space-y-5 print:hidden">
+        <div className="bg-botanical-surface border border-botanical-border shadow-sm rounded-xl p-6 space-y-5 print:hidden">
           <div>
             <label className="block text-sm text-botanical-muted mb-1">Name</label>
-            <input type="text" value={profile?.name || ''} onChange={(e) => setProfile({ ...profile, name: e.target.value })} className="w-full bg-botanical-surface border-2 border-b-[6px] border-botanical-border rounded p-3 text-botanical-text focus:outline-none focus:border-brand-gold" />
+            <input type="text" value={profile?.name || ''} onChange={(e) => setProfile({ ...profile, name: e.target.value })} className="w-full bg-botanical-surface border border-botanical-border shadow-sm rounded p-3 text-botanical-text focus:outline-none focus:border-brand-gold" />
           </div>
           <div>
             <label className="block text-sm text-botanical-muted mb-1">Email</label>
-            <input type="email" value={profile?.email || ''} disabled className="w-full bg-botanical-surface border-2 border-b-[6px] border-botanical-border rounded p-3 text-botanical-muted cursor-not-allowed" />
+            <input type="email" value={profile?.email || ''} disabled className="w-full bg-botanical-surface border border-botanical-border shadow-sm rounded p-3 text-botanical-muted cursor-not-allowed" />
           </div>
           <div>
             <label className="block text-sm text-botanical-muted mb-1">Phone</label>
-            <input type="tel" value={profile?.phone || ''} onChange={(e) => setProfile({ ...profile, phone: e.target.value })} placeholder="+1 555-123-4567" className="w-full bg-botanical-surface border-2 border-b-[6px] border-botanical-border rounded p-3 text-botanical-text placeholder-gray-600 focus:outline-none focus:border-brand-gold" />
+            <input type="tel" value={profile?.phone || ''} onChange={(e) => setProfile({ ...profile, phone: e.target.value })} placeholder="+1 555-123-4567" className="w-full bg-botanical-surface border border-botanical-border shadow-sm rounded p-3 text-botanical-text placeholder-gray-600 focus:outline-none focus:border-brand-gold" />
           </div>
           <div>
             <label className="block text-sm text-botanical-muted mb-1">Birthday</label>
-            <input type="date" value={profile?.birthday ? new Date(profile.birthday).toISOString().split('T')[0] : ''} onChange={(e) => setProfile({ ...profile, birthday: e.target.value || null })} style={{ colorScheme: 'dark' }} className="w-full bg-botanical-surface border-2 border-b-[6px] border-botanical-border rounded p-3 text-botanical-text focus:outline-none focus:border-brand-gold" />
+            <input type="date" value={profile?.birthday ? new Date(profile.birthday).toISOString().split('T')[0] : ''} onChange={(e) => setProfile({ ...profile, birthday: e.target.value || null })} style={{ colorScheme: 'dark' }} className="w-full bg-botanical-surface border border-botanical-border shadow-sm rounded p-3 text-botanical-text focus:outline-none focus:border-brand-gold" />
           </div>
           <div>
             <label className="block text-sm text-botanical-muted mb-1">Preferences (e.g., skin fade, longer on top)</label>
-            <textarea value={profile?.preferences || ''} onChange={(e) => setProfile({ ...profile, preferences: e.target.value })} rows={2} className="w-full bg-botanical-surface border-2 border-b-[6px] border-botanical-border rounded p-3 text-botanical-text placeholder-gray-600 focus:outline-none focus:border-brand-gold resize-none" />
+            <textarea value={profile?.preferences || ''} onChange={(e) => setProfile({ ...profile, preferences: e.target.value })} rows={2} className="w-full bg-botanical-surface border border-botanical-border shadow-sm rounded p-3 text-botanical-text placeholder-gray-600 focus:outline-none focus:border-brand-gold resize-none" />
           </div>
           <div>
             <label className="block text-sm text-botanical-muted mb-1">Allergies / Sensitivities</label>
-            <textarea value={profile?.allergies || ''} onChange={(e) => setProfile({ ...profile, allergies: e.target.value })} rows={2} className="w-full bg-botanical-surface border-2 border-b-[6px] border-botanical-border rounded p-3 text-botanical-text placeholder-gray-600 focus:outline-none focus:border-brand-gold resize-none" />
+            <textarea value={profile?.allergies || ''} onChange={(e) => setProfile({ ...profile, allergies: e.target.value })} rows={2} className="w-full bg-botanical-surface border border-botanical-border shadow-sm rounded p-3 text-botanical-text placeholder-gray-600 focus:outline-none focus:border-brand-gold resize-none" />
           </div>
 
           <div className="pt-4 border-t border-botanical-border space-y-3">

@@ -22,7 +22,7 @@ export default function EngagementAnalytics({ shopId }: { shopId: string }) {
   return (
     <div className="space-y-8">
       {/* Overview Floating Bar */}
-      <div className="bg-botanical-surface backdrop-blur-xl shadow-2xl rounded-2xl border-2 border-b-[6px] border-botanical-border flex flex-col md:flex-row md:flex-wrap lg:flex-nowrap divide-y md:divide-y-0 md:divide-x divide-white/10 relative z-20 overflow-hidden transform sm:-translate-y-6 sm:-mx-2 mb-2 sm:mb-6">
+      <div className="bg-botanical-surface backdrop-blur-xl shadow-2xl rounded-2xl border border-botanical-border shadow-sm flex flex-col md:flex-row md:flex-wrap lg:flex-nowrap divide-y md:divide-y-0 md:divide-x divide-white/10 relative z-20 overflow-hidden transform sm:-translate-y-6 sm:-mx-2 mb-2 sm:mb-6">
         <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-botanical-surface transition-all duration-300 min-w-0">
           <div className="absolute top-0 left-0 w-full h-1 bg-blue-500/80"></div>
           <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-3">
@@ -75,7 +75,7 @@ export default function EngagementAnalytics({ shopId }: { shopId: string }) {
 
       {/* Program Summaries */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div className="bg-botanical-surface p-5 rounded-xl border-2 border-b-[6px] border-botanical-border">
+        <div className="bg-botanical-surface p-5 rounded-xl border border-botanical-border shadow-sm">
           <h4 className="text-sm font-bold text-botanical-text flex items-center gap-2 mb-3">
             <span>⭐</span> Loyalty Program
           </h4>
@@ -93,7 +93,7 @@ export default function EngagementAnalytics({ shopId }: { shopId: string }) {
           </div>
         </div>
 
-        <div className="bg-botanical-surface p-5 rounded-xl border-2 border-b-[6px] border-botanical-border">
+        <div className="bg-botanical-surface p-5 rounded-xl border border-botanical-border shadow-sm">
           <h4 className="text-sm font-bold text-botanical-text flex items-center gap-2 mb-3">
             <span>🔗</span> Referrals
           </h4>
@@ -109,7 +109,7 @@ export default function EngagementAnalytics({ shopId }: { shopId: string }) {
           </div>
         </div>
 
-        <div className="bg-botanical-surface p-5 rounded-xl border-2 border-b-[6px] border-botanical-border">
+        <div className="bg-botanical-surface p-5 rounded-xl border border-botanical-border shadow-sm">
           <h4 className="text-sm font-bold text-botanical-text flex items-center gap-2 mb-3">
             <span>📣</span> Campaigns
           </h4>
@@ -123,7 +123,7 @@ export default function EngagementAnalytics({ shopId }: { shopId: string }) {
       </div>
 
       {/* Top Clients */}
-      <div className="bg-botanical-surface p-6 rounded-xl border-2 border-b-[6px] border-botanical-border">
+      <div className="bg-botanical-surface p-6 rounded-xl border border-botanical-border shadow-sm">
         <h3 className="text-lg font-bold text-botanical-text flex items-center gap-2 mb-4">
           <span>🏅</span> Top Clients (Last 90 Days)
         </h3>

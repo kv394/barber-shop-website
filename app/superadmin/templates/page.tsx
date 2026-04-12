@@ -88,24 +88,24 @@ export default function TemplatesPage() {
     <div className="p-6 text-botanical-text">
       <h1 className="text-3xl font-bold mb-6">AI Template Generator</h1>
       
-      <div className="bg-botanical-surface p-6 rounded-xl border-2 border-b-[6px] border-botanical-border mb-8">
+      <div className="bg-botanical-surface p-6 rounded-xl border border-botanical-border shadow-sm mb-8">
         <h2 className="text-xl font-semibold mb-4">Generate New Template with Gemini</h2>
         <form onSubmit={handleGenerate} className="space-y-4">
           <div>
             <label className="block text-sm text-botanical-muted mb-1">Template Identifier (e.g. neon-dark)</label>
-            <input required value={name} onChange={e => setName(e.target.value)} className="w-full bg-botanical-surface border-2 border-b-[6px] border-botanical-border p-2 rounded text-botanical-text" />
+            <input required value={name} onChange={e => setName(e.target.value)} className="w-full bg-botanical-surface border border-botanical-border shadow-sm p-2 rounded text-botanical-text" />
           </div>
           <div>
             <label className="block text-sm text-botanical-muted mb-1">Description</label>
-            <input value={description} onChange={e => setDescription(e.target.value)} className="w-full bg-botanical-surface border-2 border-b-[6px] border-botanical-border p-2 rounded text-botanical-text" />
+            <input value={description} onChange={e => setDescription(e.target.value)} className="w-full bg-botanical-surface border border-botanical-border shadow-sm p-2 rounded text-botanical-text" />
           </div>
           <div>
             <label className="block text-sm text-botanical-muted mb-1">Prompt for Gemini</label>
-            <textarea required value={prompt} onChange={e => setPrompt(e.target.value)} rows={4} className="w-full bg-botanical-surface border-2 border-b-[6px] border-botanical-border p-2 rounded text-botanical-text" placeholder="Describe the layout, colors, elements, styling... Handlebars syntax will be used for injection." />
+            <textarea required value={prompt} onChange={e => setPrompt(e.target.value)} rows={4} className="w-full bg-botanical-surface border border-botanical-border shadow-sm p-2 rounded text-botanical-text" placeholder="Describe the layout, colors, elements, styling... Handlebars syntax will be used for injection." />
           </div>
           <div>
             <label className="block text-sm text-botanical-muted mb-1">AI Model</label>
-            <select value={model} onChange={e => setModel(e.target.value)} className="w-full bg-botanical-surface border-2 border-b-[6px] border-botanical-border p-2 rounded text-botanical-text">
+            <select value={model} onChange={e => setModel(e.target.value)} className="w-full bg-botanical-surface border border-botanical-border shadow-sm p-2 rounded text-botanical-text">
               <option value="gemini-2.5-flash">Gemini 2.5 Flash (Fast, Free Tier)</option>
               <option value="gemini-2.5-pro">Gemini 2.5 Pro (Advanced)</option>
               <option value="gemini-1.5-flash">Gemini 1.5 Flash</option>
@@ -128,7 +128,7 @@ export default function TemplatesPage() {
       {loading ? <p className="text-botanical-muted">Loading templates...</p> : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {templates.map((t: any) => (
-            <div key={t.id} className="bg-botanical-surface p-4 rounded-xl border-2 border-b-[6px] border-botanical-border flex flex-col">
+            <div key={t.id} className="bg-botanical-surface p-4 rounded-xl border border-botanical-border shadow-sm flex flex-col">
               <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-start mb-2">
                 <h3 className="text-lg font-bold text-botanical-accent">{t.name}</h3>
                 <div className="flex space-x-2">
@@ -151,7 +151,7 @@ export default function TemplatesPage() {
       {/* Edit Modal */}
       {editingTemplate && (
         <div className="fixed inset-0 bg-botanical-surface flex items-center justify-center p-4 z-50">
-          <div className="bg-botanical-surface border-2 border-b-[6px] border-botanical-border p-6 rounded-xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+          <div className="bg-botanical-surface border border-botanical-border shadow-sm p-6 rounded-xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
             <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-4">
               <h2 className="text-xl font-bold">Edit Template: {editingTemplate.name}</h2>
               <button onClick={() => setEditingTemplate(null)} className="text-botanical-muted hover:text-botanical-text">✕</button>
@@ -161,11 +161,11 @@ export default function TemplatesPage() {
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm text-botanical-muted mb-1">Name</label>
-                  <input required value={editingTemplate.name} onChange={e => setEditingTemplate({...editingTemplate, name: e.target.value})} className="w-full bg-botanical-surface border-2 border-b-[6px] border-botanical-border p-2 rounded text-botanical-text" />
+                  <input required value={editingTemplate.name} onChange={e => setEditingTemplate({...editingTemplate, name: e.target.value})} className="w-full bg-botanical-surface border border-botanical-border shadow-sm p-2 rounded text-botanical-text" />
                 </div>
                 <div>
                   <label className="block text-sm text-botanical-muted mb-1">Description</label>
-                  <input value={editingTemplate.description || ''} onChange={e => setEditingTemplate({...editingTemplate, description: e.target.value})} className="w-full bg-botanical-surface border-2 border-b-[6px] border-botanical-border p-2 rounded text-botanical-text" />
+                  <input value={editingTemplate.description || ''} onChange={e => setEditingTemplate({...editingTemplate, description: e.target.value})} className="w-full bg-botanical-surface border border-botanical-border shadow-sm p-2 rounded text-botanical-text" />
                 </div>
               </div>
               
@@ -176,7 +176,7 @@ export default function TemplatesPage() {
                   value={editingTemplate.htmlCode} 
                   onChange={e => setEditingTemplate({...editingTemplate, htmlCode: e.target.value})} 
                   rows={10} 
-                  className="w-full font-mono text-sm bg-botanical-surface border-2 border-b-[6px] border-botanical-border p-2 rounded text-botanical-text" 
+                  className="w-full font-mono text-sm bg-botanical-surface border border-botanical-border shadow-sm p-2 rounded text-botanical-text" 
                 />
               </div>
 
@@ -186,7 +186,7 @@ export default function TemplatesPage() {
                   value={editingTemplate.cssCode || ''} 
                   onChange={e => setEditingTemplate({...editingTemplate, cssCode: e.target.value})} 
                   rows={5} 
-                  className="w-full font-mono text-sm bg-botanical-surface border-2 border-b-[6px] border-botanical-border p-2 rounded text-botanical-text" 
+                  className="w-full font-mono text-sm bg-botanical-surface border border-botanical-border shadow-sm p-2 rounded text-botanical-text" 
                 />
               </div>
 

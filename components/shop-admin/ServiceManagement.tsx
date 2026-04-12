@@ -151,7 +151,7 @@ export function ServiceManagement({ shopId }: ServiceManagementProps) {
         )}
 
         {/* Add Service Form */}
-        <div className="bg-botanical-surface p-4 sm:p-6 rounded-lg border-2 border-b-[6px] border-botanical-border mb-6 sm:mb-8">
+        <div className="bg-botanical-surface p-4 sm:p-6 rounded-lg border border-botanical-border shadow-sm mb-6 sm:mb-8">
           <h3 className="text-lg font-bold text-botanical-text mb-4">Add New Service</h3>
           <form onSubmit={handleAddService} className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -165,7 +165,7 @@ export function ServiceManagement({ shopId }: ServiceManagementProps) {
                   onChange={(e) => setNewService({ ...newService, name: e.target.value })}
                   placeholder="e.g., Haircut, Shave, Beard Trim"
                   required
-                  className="w-full bg-botanical-bg border-2 border-b-[6px] border-botanical-border rounded px-4 py-2 text-botanical-text placeholder-gray-500"
+                  className="w-full bg-botanical-bg border border-botanical-border shadow-sm rounded px-4 py-2 text-botanical-text placeholder-gray-500"
                 />
               </div>
 
@@ -182,7 +182,7 @@ export function ServiceManagement({ shopId }: ServiceManagementProps) {
                   }}
                   placeholder="30"
                   required
-                  className="w-full bg-botanical-bg border-2 border-b-[6px] border-botanical-border rounded px-4 py-2 text-botanical-text placeholder-gray-500"
+                  className="w-full bg-botanical-bg border border-botanical-border shadow-sm rounded px-4 py-2 text-botanical-text placeholder-gray-500"
                 />
               </div>
 
@@ -199,7 +199,7 @@ export function ServiceManagement({ shopId }: ServiceManagementProps) {
                   }}
                   placeholder="25.00"
                   required
-                  className="w-full bg-botanical-bg border-2 border-b-[6px] border-botanical-border rounded px-4 py-2 text-botanical-text placeholder-gray-500"
+                  className="w-full bg-botanical-bg border border-botanical-border shadow-sm rounded px-4 py-2 text-botanical-text placeholder-gray-500"
                 />
               </div>
               
@@ -210,7 +210,7 @@ export function ServiceManagement({ shopId }: ServiceManagementProps) {
                 <select
                   value={newService.type}
                   onChange={(e) => setNewService({ ...newService, type: e.target.value as 'CUSTOMER' | 'INTERNAL' })}
-                  className="w-full bg-botanical-bg border-2 border-b-[6px] border-botanical-border rounded px-4 py-2 text-botanical-text"
+                  className="w-full bg-botanical-bg border border-botanical-border shadow-sm rounded px-4 py-2 text-botanical-text"
                 >
                   <option value="CUSTOMER">Customer-Facing Service</option>
                   <option value="INTERNAL">Internal / Add-on Service</option>
@@ -226,7 +226,7 @@ export function ServiceManagement({ shopId }: ServiceManagementProps) {
                   value={newService.description}
                   onChange={(e) => setNewService({ ...newService, description: e.target.value })}
                   placeholder="Brief description of the service"
-                  className="w-full bg-botanical-bg border-2 border-b-[6px] border-botanical-border rounded px-4 py-2 text-botanical-text placeholder-gray-500"
+                  className="w-full bg-botanical-bg border border-botanical-border shadow-sm rounded px-4 py-2 text-botanical-text placeholder-gray-500"
                 />
               </div>
             </div>
@@ -258,7 +258,7 @@ export function ServiceManagement({ shopId }: ServiceManagementProps) {
         <div>
           <h3 className="text-lg font-bold text-botanical-text mb-4">Current Services</h3>
           {services.length === 0 ? (
-            <div className="bg-botanical-surface p-8 rounded-lg border-2 border-b-[6px] border-botanical-border text-center">
+            <div className="bg-botanical-surface p-8 rounded-lg border border-botanical-border shadow-sm text-center">
               <p className="text-botanical-muted">No services added yet. Create one above to get started!</p>
             </div>
           ) : (
@@ -266,7 +266,7 @@ export function ServiceManagement({ shopId }: ServiceManagementProps) {
               {services.map((service) => (
                 <div
                   key={service.id}
-                  className="bg-botanical-surface p-3 sm:p-4 rounded-lg border-2 border-b-[6px] border-botanical-border"
+                  className="bg-botanical-surface p-3 sm:p-4 rounded-lg border border-botanical-border shadow-sm"
                 >
                   <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
                     <div className="flex-1 min-w-0">

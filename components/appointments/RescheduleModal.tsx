@@ -148,7 +148,7 @@ export default function RescheduleModal({
 
   return (
     <div className="fixed inset-0 bg-botanical-surface z-[100] flex items-center justify-center p-4 backdrop-blur-sm">
-      <div className="bg-botanical-surface rounded-xl p-6 w-full max-w-md border-2 border-b-[6px] border-botanical-border shadow-2xl relative text-left max-h-[90vh] overflow-y-auto">
+      <div className="bg-botanical-surface rounded-xl p-6 w-full max-w-md border border-botanical-border shadow-sm shadow-2xl relative text-left max-h-[90vh] overflow-y-auto">
         <button onClick={onClose} className="absolute top-4 right-4 text-botanical-muted hover:text-botanical-text bg-botanical-surface rounded-full w-8 h-8 flex items-center justify-center">✕</button>
 
         <h3 className="text-xl font-bold text-botanical-text mb-1">Reschedule Appointment</h3>
@@ -166,7 +166,7 @@ export default function RescheduleModal({
               onChange={(e) => { setSelectedDate(e.target.value); setSelectedTime(''); }}
               min={new Date().toISOString().split('T')[0]}
               style={{ colorScheme: 'dark' }}
-              className="w-full bg-botanical-surface border-2 border-b-[6px] border-botanical-border rounded p-3 text-botanical-text focus:outline-none focus:border-brand-gold"
+              className="w-full bg-botanical-surface border border-botanical-border shadow-sm rounded p-3 text-botanical-text focus:outline-none focus:border-brand-gold"
             />
           </div>
 
@@ -180,7 +180,7 @@ export default function RescheduleModal({
                 value={selectedStaff}
                 onChange={(e) => { setSelectedStaff(e.target.value); setSelectedTime(''); }}
                 style={{ colorScheme: 'dark' }}
-                className="w-full bg-botanical-surface border-2 border-b-[6px] border-botanical-border rounded p-3 text-botanical-text focus:outline-none focus:border-brand-gold"
+                className="w-full bg-botanical-surface border border-botanical-border shadow-sm rounded p-3 text-botanical-text focus:outline-none focus:border-brand-gold"
               >
                 <option value="">— Select staff —</option>
                 {allStaff.map(s => (
@@ -199,7 +199,7 @@ export default function RescheduleModal({
                   value={selectedTime}
                   onChange={(e) => setSelectedTime(e.target.value)}
                   style={{ colorScheme: 'dark' }}
-                  className="w-full bg-botanical-surface border-2 border-b-[6px] border-botanical-border rounded p-3 text-botanical-text focus:outline-none focus:border-brand-gold"
+                  className="w-full bg-botanical-surface border border-botanical-border shadow-sm rounded p-3 text-botanical-text focus:outline-none focus:border-brand-gold"
                 >
                   <option value="">— Choose a time —</option>
                   {availableSlots.map(t => (
@@ -213,7 +213,7 @@ export default function RescheduleModal({
           )}
 
           <div className="flex gap-3 pt-4 border-t border-botanical-border">
-            <button onClick={onClose} className="flex-1 border-2 border-b-[6px] border-botanical-border text-botanical-text font-semibold py-3 rounded-lg hover:bg-botanical-surface transition-colors">
+            <button onClick={onClose} className="flex-1 border border-botanical-border shadow-sm text-botanical-text font-semibold py-3 rounded-lg hover:bg-botanical-surface transition-colors">
               Cancel
             </button>
             <button

@@ -70,7 +70,7 @@ export default function SupabaseAuthButton({
   };
 
   if (loading) {
-    return <div className="w-8 h-8 rounded-full bg-botanical-surface animate-pulse border-2 border-b-[6px] border-botanical-border"></div>;
+    return <div className="w-8 h-8 rounded-full bg-botanical-surface animate-pulse border border-botanical-border shadow-sm"></div>;
   }
 
   if (user) {
@@ -85,7 +85,7 @@ export default function SupabaseAuthButton({
         
         {/* Responsive Menu: Bottom Sheet on Mobile, Dropdown on Desktop */}
         <div 
-          className="fixed sm:absolute bottom-0 left-0 right-0 sm:bottom-auto sm:left-auto sm:right-0 sm:mt-2 w-full sm:w-72 bg-botanical-surface sm:border-2 border-b-[6px] border-botanical-border rounded-t-3xl sm:rounded-xl shadow-2xl overflow-hidden pb-safe"
+          className="fixed sm:absolute bottom-0 left-0 right-0 sm:bottom-auto sm:left-auto sm:right-0 sm:mt-2 w-full sm:w-72 bg-botanical-surface sm:border border-botanical-border shadow-sm rounded-t-3xl sm:rounded-xl shadow-2xl overflow-hidden pb-safe"
           style={{ zIndex: 99999 }}
         >
            <div className="p-6 sm:p-4 border-b border-botanical-border flex flex-col items-center bg-botanical-bg relative">
@@ -93,7 +93,7 @@ export default function SupabaseAuthButton({
              <div className="w-12 h-1.5 bg-gray-300 rounded-full mb-5 sm:hidden absolute top-3"></div>
              
              <p className="text-sm sm:text-xs text-botanical-muted truncate mb-4 sm:mb-3 w-full text-center mt-2 sm:mt-0">{user.email}</p>
-             <div className="bg-white p-3 sm:p-2 rounded-2xl shadow-inner inline-block border-2 border-b-[6px] border-botanical-border">
+             <div className="bg-white p-3 sm:p-2 rounded-2xl shadow-inner inline-block border border-botanical-border shadow-sm">
                {/* QR Code scales down slightly on desktop */}
                <QRCodeSVG value={profile?.barcode || user.id} size={160} className="sm:w-[120px] sm:h-[120px]" level="L" />
              </div>
@@ -129,7 +129,7 @@ export default function SupabaseAuthButton({
       <div className="relative inline-block z-50">
         <button 
           onClick={() => setIsOpen(!isOpen)}
-          className="flex items-center gap-2 bg-botanical-surface hover:bg-botanical-bg border-2 border-b-[6px] border-botanical-border px-3 py-1.5 rounded-full transition-colors shadow-sm"
+          className="flex items-center gap-2 bg-botanical-surface hover:bg-botanical-bg border border-botanical-border shadow-sm px-3 py-1.5 rounded-full transition-colors shadow-sm"
         >
           <div className="w-6 h-6 rounded-full bg-botanical-primary flex items-center justify-center text-white font-bold text-xs shadow-inner">
             {user.email?.charAt(0).toUpperCase() || 'U'}
@@ -144,7 +144,7 @@ export default function SupabaseAuthButton({
   return (
     <Link 
       href={`/sign-in?redirect_url=${encodeURIComponent(redirectUrl || typeof window !== 'undefined' ? window.location.pathname : '/')}`} 
-      className="bg-botanical-surface hover:bg-botanical-bg text-botanical-text px-4 py-2 rounded-lg text-sm font-semibold transition-colors shadow-sm border-2 border-b-[6px] border-botanical-border"
+      className="bg-botanical-surface hover:bg-botanical-bg text-botanical-text px-4 py-2 rounded-lg text-sm font-semibold transition-colors shadow-sm border border-botanical-border shadow-sm"
     >
       Sign In
     </Link>

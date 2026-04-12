@@ -28,7 +28,7 @@ export default function ClientGrid({ clients, shopId }: { clients: any[]; shopId
             placeholder="Search by name, email, phone, or barcode ID..." 
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full bg-botanical-surface border-2 border-b-[6px] border-botanical-border rounded-xl pl-12 pr-4 py-3 text-botanical-text focus:outline-none focus:border-brand-gold focus:ring-1 focus:ring-botanical-primary shadow-lg"
+            className="w-full bg-botanical-surface border border-botanical-border shadow-sm rounded-xl pl-12 pr-4 py-3 text-botanical-text focus:outline-none focus:border-brand-gold focus:ring-1 focus:ring-botanical-primary shadow-lg"
           />
         </div>
       </div>
@@ -41,7 +41,7 @@ export default function ClientGrid({ clients, shopId }: { clients: any[]; shopId
             <div
               key={client.id}
               onClick={() => setSelectedClient(client)}
-              className="bg-botanical-surface p-3 sm:p-5 rounded-lg border-2 border-b-[6px] border-botanical-border flex flex-col cursor-pointer hover:border-brand-gold/30 transition-colors group"
+              className="bg-botanical-surface p-3 sm:p-5 rounded-lg border border-botanical-border shadow-sm flex flex-col cursor-pointer hover:border-brand-gold/30 transition-colors group"
             >
               <div className="mb-3 sm:mb-4">
                 <h4 className="font-bold text-base sm:text-lg text-botanical-accent truncate group-hover:text-botanical-text transition-colors">{client.name || "Guest User"}</h4>

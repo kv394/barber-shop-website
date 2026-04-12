@@ -64,7 +64,7 @@ export default function LoyaltyPage() {
           </div>
         ) : (
           accounts.map((acct, i) => (
-            <div key={i} className="bg-botanical-surface border-2 border-b-[6px] border-botanical-border rounded-xl overflow-hidden">
+            <div key={i} className="bg-botanical-surface border border-botanical-border shadow-sm rounded-xl overflow-hidden">
               <div className="p-6 bg-gradient-to-r from-brand-gold/10 to-purple-600/10 border-b border-botanical-border">
                 <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center">
                   <div>

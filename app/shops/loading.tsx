@@ -14,7 +14,7 @@ export default function Loading() {
           <div className="h-8 w-48 bg-botanical-surface rounded mb-8" />
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {Array.from({ length: 6 }).map((_, i) => (
-              <div key={i} className="bg-botanical-surface rounded-xl border-2 border-b-[6px] border-botanical-border overflow-hidden">
+              <div key={i} className="bg-botanical-surface rounded-xl border border-botanical-border shadow-sm overflow-hidden">
                 <div className="h-48 bg-botanical-surface" />
                 <div className="p-6 space-y-3">
                   <div className="h-6 w-3/4 bg-botanical-surface rounded" />

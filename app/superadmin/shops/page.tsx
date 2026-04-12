@@ -71,7 +71,7 @@ export default function SuperAdminShopsPage() {
           const staffCount = shop.users.filter(u => u.role === 'STAFF').length;
 
           return (
-            <div key={shop.id} className="bg-botanical-surface rounded-xl border-2 border-b-[6px] border-botanical-border p-6 hover:border-botanical-border transition">
+            <div key={shop.id} className="bg-botanical-surface rounded-xl border border-botanical-border shadow-sm p-6 hover:border-botanical-border transition">
               <div className="flex flex-col lg:flex-row lg:items-start justify-between gap-4">
                 {/* Shop Info */}
                 <div className="flex-1 min-w-0">
@@ -132,7 +132,7 @@ export default function SuperAdminShopsPage() {
         })}
 
         {shops.length === 0 && (
-          <div className="bg-botanical-surface rounded-xl border-2 border-b-[6px] border-botanical-border p-12 text-center">
+          <div className="bg-botanical-surface rounded-xl border border-botanical-border shadow-sm p-12 text-center">
             <p className="text-botanical-muted text-lg">No shops created yet.</p>
             <Link href="/" className="text-botanical-accent hover:underline mt-2 inline-block">Create your first shop →</Link>
           </div>

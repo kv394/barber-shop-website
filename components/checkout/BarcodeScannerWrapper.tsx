@@ -220,7 +220,7 @@ export default function BarcodeScannerWrapper({ shopId, services = [] }: { shopI
 
                 {matchedService ? (
                   <div>
-                    <div className="bg-botanical-surface p-4 rounded-lg mb-4 border-2 border-b-[6px] border-botanical-border">
+                    <div className="bg-botanical-surface p-4 rounded-lg mb-4 border border-botanical-border shadow-sm">
                       <h4 className="font-semibold text-botanical-text">{matchedService.name}</h4>
                       <p className="text-botanical-muted text-sm mt-1">Stock: <span className="font-mono text-botanical-text text-lg ml-1">{matchedService.inventoryCount}</span></p>
                     </div>
@@ -240,12 +240,12 @@ export default function BarcodeScannerWrapper({ shopId, services = [] }: { shopI
                     </button>
                   </div>
                 ) : (
-                  <div className="bg-botanical-surface border-2 border-b-[6px] border-botanical-border p-4 rounded-lg">
+                  <div className="bg-botanical-surface border border-botanical-border shadow-sm p-4 rounded-lg">
                     <p className="text-amber-400 font-semibold mb-1">Item not recognized.</p>
                     <p className="text-xs text-botanical-muted mb-4">Map this barcode to an inventory item:</p>
                     {unmatchedServices.length > 0 ? (
                       <div className="space-y-3">
-                        <select className="w-full bg-botanical-surface border-2 border-b-[6px] border-botanical-border rounded p-2.5 text-sm text-botanical-text focus:ring-1 focus:ring-botanical-primary"
+                        <select className="w-full bg-botanical-surface border border-botanical-border shadow-sm rounded p-2.5 text-sm text-botanical-text focus:ring-1 focus:ring-botanical-primary"
                           value={selectedServiceToAssign} onChange={(e) => setSelectedServiceToAssign(e.target.value)}>
                           <option value="">-- Select Item --</option>
                           {unmatchedServices.map(s => (
@@ -266,7 +266,7 @@ export default function BarcodeScannerWrapper({ shopId, services = [] }: { shopI
             )}
 
             {scannedCode && !attendanceMessage && !shopId && (
-              <div className="bg-botanical-surface border-2 border-b-[6px] border-botanical-border p-4 rounded-lg">
+              <div className="bg-botanical-surface border border-botanical-border shadow-sm p-4 rounded-lg">
                 <p className="text-xs text-botanical-text font-mono break-all">{scannedCode}</p>
               </div>
             )}

@@ -32,7 +32,7 @@ export default function DepositSettings({
   };
 
   return (
-    <div className="bg-botanical-surface p-6 rounded-lg border-2 border-b-[6px] border-botanical-border mb-6">
+    <div className="bg-botanical-surface p-6 rounded-lg border border-botanical-border shadow-sm mb-6">
       <h3 className="text-lg font-bold text-botanical-text mb-1">🛡️ No-Show Deposit</h3>
       <p className="text-xs text-botanical-muted mb-4">Require a card hold for new bookings. Captured if the client doesn&apos;t show up.</p>
 
@@ -49,7 +49,7 @@ export default function DepositSettings({
               type="number" min="0" step="0.50"
               value={depositAmount}
               onChange={e => setDepositAmount(e.target.value)}
-              className="w-48 bg-botanical-surface border-2 border-b-[6px] border-botanical-border rounded p-2 text-botanical-text text-sm focus:outline-none focus:border-brand-gold"
+              className="w-48 bg-botanical-surface border border-botanical-border shadow-sm rounded p-2 text-botanical-text text-sm focus:outline-none focus:border-brand-gold"
             />
           </div>
         )}

@@ -62,7 +62,7 @@ export default function NotificationsPage() {
       <div className="max-w-2xl mx-auto px-4 sm:px-6 py-8">
         {msg && <div className="mb-4 p-3 rounded-lg bg-green-900/30 border border-green-500/30 text-green-300 text-sm">{msg}</div>}
 
-        <div className="bg-botanical-surface border-2 border-b-[6px] border-botanical-border rounded-xl p-6 space-y-4">
+        <div className="bg-botanical-surface border border-botanical-border shadow-sm rounded-xl p-6 space-y-4">
           {[
             { key: 'appointmentReminders', label: 'Appointment Reminders', desc: 'Get reminded 24 hours before your appointment' },
             { key: 'reviewRequests', label: 'Review Requests', desc: 'Be asked to review after your visit' },
@@ -90,7 +90,7 @@ export default function NotificationsPage() {
               value={prefs?.preferredChannel || 'EMAIL'}
               onChange={(e) => setPrefs({ ...prefs, preferredChannel: e.target.value })}
               style={{ colorScheme: 'dark' }}
-              className="w-full bg-botanical-surface border-2 border-b-[6px] border-botanical-border rounded p-3 text-botanical-text focus:outline-none focus:border-brand-gold"
+              className="w-full bg-botanical-surface border border-botanical-border shadow-sm rounded p-3 text-botanical-text focus:outline-none focus:border-brand-gold"
             >
               <option value="EMAIL">Email Only</option>
               <option value="SMS">SMS Only</option>

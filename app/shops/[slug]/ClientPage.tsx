@@ -47,10 +47,10 @@ function ReviewsSection({ reviews, variant = 'dark' }: { reviews: any[]; variant
   const textClass = variant === 'light' ? 'text-gray-900' : variant === 'warm' ? 'text-[#2c1e16]' : 'text-botanical-text';
   const subTextClass = variant === 'light' ? 'text-botanical-muted' : variant === 'warm' ? 'text-[#5a4634]' : 'text-botanical-muted';
   const cardClass = variant === 'light'
-    ? 'bg-white border-2 border-b-[6px] border-botanical-border shadow-sm'
+    ? 'bg-white border border-botanical-border shadow-sm shadow-sm'
     : variant === 'warm'
       ? 'bg-[#fdfbf7] border border-[#e6d9c6]'
-      : 'bg-botanical-surface border-2 border-b-[6px] border-botanical-border';
+      : 'bg-botanical-surface border border-botanical-border shadow-sm';
 
   return (
     <section className={`${bgClass} py-16`}>
@@ -336,7 +336,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
               <h2 className="text-3xl font-bold text-center text-gray-900 mb-12">Our Services</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {shop.services?.map((service: any) => (
-                  <div key={service.id} className="bg-white rounded-lg shadow-lg overflow-hidden border-2 border-b-[6px] border-botanical-border hover:shadow-xl transition-shadow flex flex-col">
+                  <div key={service.id} className="bg-white rounded-lg shadow-lg overflow-hidden border border-botanical-border shadow-sm hover:shadow-xl transition-shadow flex flex-col">
                     <div className="p-6 flex-grow">
                       <h3 className="text-xl font-bold text-gray-900 mb-2">{service.name}</h3>
                       <p className="text-botanical-muted text-sm mb-4">{service.description}</p>
@@ -705,7 +705,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
         <main className="h-[100dvh] overflow-y-auto overflow-x-hidden bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 relative">
           <header className="absolute w-full top-0 left-0 p-4 sm:p-6 flex flex-wrap justify-between gap-x-2 gap-y-2 items-center z-50">
              {pages.filter((p: any) => p.isVisible).length > 0 ? (
-                 <nav className="flex gap-4 sm:gap-6 bg-botanical-surface px-4 sm:px-6 py-2 rounded-full backdrop-blur-md border-2 border-b-[6px] border-botanical-border overflow-x-auto max-w-[calc(100vw-100px)] hide-scrollbar">
+                 <nav className="flex gap-4 sm:gap-6 bg-botanical-surface px-4 sm:px-6 py-2 rounded-full backdrop-blur-md border border-botanical-border shadow-sm overflow-x-auto max-w-[calc(100vw-100px)] hide-scrollbar">
                     <button onClick={() => setActivePageId(null)} className={`text-sm font-medium transition-colors whitespace-nowrap ${!activePageId ? 'text-botanical-text' : 'text-botanical-muted hover:text-botanical-text'}`}>Home</button>
                     {pages.filter((p: any) => p.isVisible).map((p: any) => (
                         <button key={p.id} onClick={() => setActivePageId(p.id)} className={`text-sm font-medium transition-colors whitespace-nowrap ${activePageId === p.id ? 'text-botanical-text' : 'text-botanical-muted hover:text-botanical-text'}`}>{p.title}</button>
@@ -719,7 +719,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
 
           {activePage ? (
             <section className="pt-32 pb-20 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto min-h-[80vh]">
-               <div className="bg-botanical-surface p-8 md:p-12 rounded-2xl border-2 border-b-[6px] border-botanical-border shadow-xl">
+               <div className="bg-botanical-surface p-8 md:p-12 rounded-2xl border border-botanical-border shadow-sm shadow-xl">
                   <h1 className="text-4xl font-bold mb-8" style={{ color: primaryColor }}>{activePage.title}</h1>
                   <div className="prose prose-invert prose-lg max-w-none text-botanical-muted" dangerouslySetInnerHTML={{ __html: activePage.content || '' }} />
                </div>
@@ -763,7 +763,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                 {shop.services.map((service: any) => (
                   <div
                     key={service.id}
-                    className="group bg-gradient-to-br from-slate-800 to-slate-900 rounded-xl p-8 border-2 border-b-[6px] border-botanical-border transition-all duration-300 hover:shadow-lg flex flex-col"
+                    className="group bg-gradient-to-br from-slate-800 to-slate-900 rounded-xl p-8 border border-botanical-border shadow-sm transition-all duration-300 hover:shadow-lg flex flex-col"
                   >
                     <div className="flex items-start justify-between mb-4">
                       <h3 className="text-2xl font-bold text-botanical-text transition-colors">
