@@ -170,16 +170,15 @@ export default function TeamDashboardClient({
               </div>
 
               {/* Action Buttons */}
-              <div className="grid grid-cols-2 gap-2 mt-auto">
-                <Link 
-                    href={`/shop/${shopId}/settings/team/${staffMember.id}/schedule`} 
-                    className="w-full text-center bg-white hover:bg-gray-50 text-slate-900 text-xs font-semibold py-2 rounded-lg transition-colors border-2 border-b-[6px] border-botanical-border"
+              <div className="flex flex-col gap-3 mt-auto pt-4">
+                <Link
+                    href={`/shop/${shopId}/settings/team/${staffMember.id}/schedule`}
+                    className="w-full text-center bg-white hover:bg-gray-50 text-slate-900 text-xs font-semibold py-2.5 rounded-lg transition-colors border-2 border-b-[6px] border-botanical-border flex items-center justify-center"
                 >
                     Edit Schedule
                 </Link>
-
                 {!isOnLeave && (
-                    <form action={addLeaveAction} className="flex flex-col gap-1">
+                    <form action={addLeaveAction} className="flex flex-col gap-2">
                         <input type="hidden" name="staffId" value={staffMember.id} />
                         <input type="hidden" name="shopId" value={shopId} />
                         <input type="hidden" name="date" value={initialDate} />
