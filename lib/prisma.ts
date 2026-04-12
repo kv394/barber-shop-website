@@ -26,11 +26,20 @@ function createPrismaClient() {
     console.warn("DATABASE_URL is missing. PrismaClient may fail to initialize.");
   }
 
+  if (connectionString) {
+    process.env.DATABASE_URL = connectionString;
+  }
+  
   const pool = new Pool({ 
-    connectionString
+    connectionString,
+    connectionTimeoutMillis: 5000,
   });
   const adapter = new PrismaPg(pool);
-  return new PrismaClient({ adapter });
+  
+  return new PrismaClient({
+    adapter,
+    log: ['error']
+  });
 }
 
 export const prisma = global.prismaGlobal || createPrismaClient();
