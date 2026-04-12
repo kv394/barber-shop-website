@@ -3,12 +3,14 @@
 import { useState } from 'react';
 import { DEFAULT_CUSTOMIZATION, Customization } from '@/lib/templates';
 import { useRouter } from 'next/navigation';
+import { EditorialCustomizationForm } from './EditorialCustomizationForm';
 
 interface CustomizationFormProps {
   shopId: string;
   customization: any;
   onSave?: (customization: Customization) => void;
   isSuperAdmin: boolean;
+  currentTemplate?: string;
 }
 
 export function CustomizationForm({
@@ -16,6 +18,7 @@ export function CustomizationForm({
   customization,
   onSave,
   isSuperAdmin,
+  currentTemplate,
 }: CustomizationFormProps) {
   const [formData, setFormData] = useState(customization || DEFAULT_CUSTOMIZATION);
   const [isLoading, setIsLoading] = useState(false);
@@ -82,9 +85,35 @@ export function CustomizationForm({
 
       <div className="space-y-6 bg-botanical-surface p-4 sm:p-6 md:p-8 rounded-lg border border-botanical-border shadow-sm">
         
-        {/* ONLY SUPER ADMIN CAN EDIT COLORS */}
-        {isSuperAdmin && (
-          <div>
+        <div>
+            <h3 className="text-lg font-bold text-botanical-text mb-4">Brand Look & Feel</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+              <div>
+                <label className="block text-sm font-medium text-botanical-muted mb-2">
+                  Logo URL
+                </label>
+                <input
+                  type="url"
+                  value={formData.logoUrl || ''}
+                  onChange={(e) => handleInputChange('logoUrl', e.target.value)}
+                  placeholder="https://example.com/logo.png"
+                  className="w-full bg-botanical-bg border border-botanical-border shadow-sm rounded px-4 py-2 text-botanical-text placeholder-gray-500"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-botanical-muted mb-2">
+                  Hero / Banner Image URL
+                </label>
+                <input
+                  type="url"
+                  value={formData.heroImageUrl || ''}
+                  onChange={(e) => handleInputChange('heroImageUrl', e.target.value)}
+                  placeholder="https://example.com/banner.jpg"
+                  className="w-full bg-botanical-bg border border-botanical-border shadow-sm rounded px-4 py-2 text-botanical-text placeholder-gray-500"
+                />
+              </div>
+            </div>
             <h3 className="text-lg font-bold text-botanical-text mb-4">Brand Colors</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
@@ -136,7 +165,6 @@ export function CustomizationForm({
               </div>
             </div>
           </div>
-        )}
 
         <div>
           <h3 className="text-lg font-bold text-botanical-text mb-4">Contact Information</h3>
@@ -240,6 +268,10 @@ export function CustomizationForm({
             </div>
           </div>
         </div>
+
+        {currentTemplate === 'editorial' && (
+          <EditorialCustomizationForm customization={formData} onUpdate={handleInputChange} />
+        )}
 
         <button
           onClick={handleSave}

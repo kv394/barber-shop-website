@@ -94,7 +94,7 @@ export default async function PublicShopPage({
 
   // Define different layouts based on the selected template
   
-  if (!['minimal', 'classic', 'modern'].includes(templateType)) {
+  if (!['minimal', 'classic', 'modern', 'editorial'].includes(templateType)) {
     const dynamicTemplate = await prisma.dynamicTemplate.findUnique({
       where: { name: templateType }
     });
@@ -119,6 +119,241 @@ export default async function PublicShopPage({
         </main>
       );
     }
+  }
+
+  if (templateType === 'editorial') {
+    const editorial = shop.customization?.editorialCustomization || {};
+    
+    return (
+      <main className="h-[100dvh] overflow-y-auto overflow-x-hidden bg-[#121412] text-[#e3e2e0] selection:bg-[#d4af37] selection:text-[#554300] font-sans">
+        <style dangerouslySetInnerHTML={{__html: `
+          @import url('https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,700;1,400&family=Manrope:wght@300;400;500;600;700&display=swap');
+          @import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap');
+          .font-headline { font-family: 'Noto Serif', serif; }
+          .font-body { font-family: 'Manrope', sans-serif; }
+          .font-label { font-family: 'Manrope', sans-serif; }
+        `}} />
+        
+        {/* TopNavBar */}
+        <nav className="fixed top-0 w-full z-50 bg-[#121412]/80 backdrop-blur-xl shadow-none no-border">
+          <div className="flex justify-between items-center px-8 py-6 max-w-screen-2xl mx-auto">
+            <div className="text-2xl font-bold font-headline tracking-tighter" style={{ color: primaryColor }}>
+              {shop.name}
+            </div>
+            {/* Desktop Navigation */}
+            <div className="hidden md:flex items-center gap-10">
+              <a className="text-stone-400 hover:text-white transition-colors font-body text-sm tracking-wide uppercase" href="#services">Services</a>
+              <a className="text-stone-400 hover:text-white transition-colors font-body text-sm tracking-wide uppercase" href="#gallery">Gallery</a>
+              <a className="text-stone-400 hover:text-white transition-colors font-body text-sm tracking-wide uppercase" href="#about">About</a>
+              <a className="text-stone-400 hover:text-white transition-colors font-body text-sm tracking-wide uppercase" href="#contact">Contact</a>
+            </div>
+            <div className="flex items-center gap-6">
+              <button 
+                className="px-6 py-3 rounded-xl font-medium hover:opacity-80 transition-all duration-300 text-[#121412]"
+                style={{ backgroundColor: primaryColor }}
+              >
+                Book Appointment
+              </button>
+            </div>
+          </div>
+        </nav>
+
+        <div className="pt-24">
+          {/* Hero Section */}
+          <section className="relative min-h-[921px] flex items-center px-8 md:px-16 overflow-hidden">
+            <div className="max-w-7xl mx-auto w-full grid grid-cols-1 md:grid-cols-12 gap-12 items-center">
+              <div className="md:col-span-6 z-10">
+                <span className="font-label tracking-[0.2em] uppercase text-xs mb-6 block" style={{ color: primaryColor }}>
+                  {editorial.heroTagline || 'Editorial Excellence'}
+                </span>
+                <h1 
+                  className="text-5xl md:text-7xl font-headline leading-[1.1] mb-8 tracking-tight"
+                  dangerouslySetInnerHTML={{ __html: editorial.heroTitle || `Your Sanctuary of <br/> <span class="italic" style="color: ${primaryColor}">Sophisticated Care</span>` }}
+                />
+                <p className="text-lg text-[#d0c5af] font-body max-w-md mb-10 leading-relaxed">
+                  {editorial.heroSubtitle || 'Experience beauty as an art form. Our atelier provides a curated space for those who appreciate the finer details of self-ceremony.'}
+                </p>
+                <div className="flex items-center gap-4">
+                  <button 
+                    className="px-8 py-4 rounded-lg hover:shadow-lg transition-all font-semibold text-[#121412]"
+                    style={{ background: `linear-gradient(to bottom right, ${primaryColor}, ${secondaryColor})` }}
+                  >
+                    Book Now
+                  </button>
+                  <a href="#services" className="font-semibold flex items-center gap-2 group px-4 py-4" style={{ color: secondaryColor }}>
+                    Explore Services
+                    <span className="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                  </a>
+                </div>
+              </div>
+              <div className="md:col-span-6 relative h-[600px] md:h-[750px]">
+                <div className="absolute inset-0 bg-[#1a1c1a] rounded-3xl overflow-hidden -rotate-2 transform translate-x-4 translate-y-4"></div>
+                <img 
+                  alt="Hero" 
+                  className="absolute inset-0 w-full h-full object-cover rounded-3xl shadow-xl transition-transform hover:scale-105 duration-700" 
+                  src={editorial.heroImage || "https://lh3.googleusercontent.com/aida-public/AB6AXuAPRu8QRu8seSz1ZA0n6LiPGRgqS7aZEcjxutc8fOcO1ZIkoJH2Umtws1TFTbdJwWCpmXEE_T0bVF00Q1EwlHR5KpYdbkMHCu2nUg2NAe5C2pfVotvKBcYkKM63pa2s4XXMCSh4EVxf389QPikRuNYPp_EHSwR5QQSbPcaysTObNr3wOBttSWwh41x9HEbYtenN4fQFtQfUC-criMC9c8Li4jj4D1-zB8_8LZYeg0ReRDBSudtfcTLc4qJDHasnl5yxlX6EAv0YYbw"}
+                />
+                <div className="absolute bottom-12 -left-12 bg-[#0d0f0d] p-6 rounded-2xl shadow-lg hidden lg:block">
+                  <p className="font-headline italic text-xl" style={{ color: primaryColor }}>"The standard of beauty refined."</p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* Services Section */}
+          <section id="services" className="py-32 px-8 bg-[#1a1c1a]">
+            <div className="max-w-7xl mx-auto">
+              <div className="text-center mb-20">
+                <h2 className="text-4xl md:text-5xl font-headline mb-4">{editorial.servicesTitle || 'Our Services'}</h2>
+                <div className="w-24 h-px mx-auto mb-6" style={{ backgroundColor: primaryColor }}></div>
+                <p className="font-body text-[#d0c5af] max-w-xl mx-auto">{editorial.servicesSubtitle || "A curated selection of rituals designed to restore your glow and refine your natural elegance."}</p>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                {shop.services?.map((service: any, index: number) => (
+                  <div key={service.id} className="group bg-[#0d0f0d] p-10 rounded-2xl transition-all hover:translate-y-[-8px]">
+                    <div className="w-16 h-16 bg-[#292a29] rounded-full flex items-center justify-center mb-8 text-[#d0c5af]">
+                      <span className="material-symbols-outlined text-3xl">{['spa', 'face', 'fluid_med'][index % 3] || 'spa'}</span>
+                    </div>
+                    <h3 className="text-2xl font-headline mb-4">{service.name}</h3>
+                    <p className="text-[#d0c5af] mb-8 leading-relaxed">{service.description}</p>
+                    <div className="text-sm font-bold text-white mb-4">${service.price.toFixed(2)} &bull; {service.duration}m</div>
+                    <button className="font-semibold flex items-center gap-2 group/link" style={{ color: primaryColor }}>
+                      Book This
+                      <span className="material-symbols-outlined text-sm group-hover/link:translate-x-1 transition-transform">east</span>
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          {/* Gallery Section */}
+          <section id="gallery" className="py-32 px-8 bg-[#121412]">
+            <div className="max-w-7xl mx-auto">
+              <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
+                <div>
+                  <span className="font-label tracking-widest uppercase text-xs mb-2 block" style={{ color: primaryColor }}>{editorial.gallerySubtitle || 'Our Work'}</span>
+                  <h2 className="text-4xl font-headline">{editorial.galleryTitle || 'The Gallery'}</h2>
+                </div>
+              </div>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 auto-rows-[200px]">
+                {editorial.galleryImages?.[0] && (
+                  <div className="col-span-2 row-span-2 rounded-2xl overflow-hidden relative group">
+                    <img alt="Gallery 1" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" src={editorial.galleryImages[0]} />
+                  </div>
+                )}
+                {editorial.galleryImages?.[1] && (
+                  <div className="col-span-1 row-span-1 rounded-2xl overflow-hidden relative group">
+                    <img alt="Gallery 2" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" src={editorial.galleryImages[1]} />
+                  </div>
+                )}
+                {editorial.galleryImages?.[2] && (
+                  <div className="col-span-1 row-span-2 rounded-2xl overflow-hidden relative group">
+                    <img alt="Gallery 3" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" src={editorial.galleryImages[2]} />
+                  </div>
+                )}
+                {editorial.galleryImages?.[3] && (
+                  <div className="col-span-1 row-span-1 rounded-2xl overflow-hidden relative group">
+                    <img alt="Gallery 4" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" src={editorial.galleryImages[3]} />
+                  </div>
+                )}
+              </div>
+            </div>
+          </section>
+
+          {/* Client Stories */}
+          {editorial.testimonials && editorial.testimonials.length > 0 && (
+            <section className="py-32 px-8 bg-[#1a1c1a] overflow-hidden relative">
+              <div className="absolute top-0 right-0 w-64 h-64 bg-[#292a29] rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2"></div>
+              <div className="max-w-7xl mx-auto">
+                <div className="grid grid-cols-1 md:grid-cols-12 gap-16 items-center">
+                  <div className="md:col-span-4">
+                    <h2 
+                      className="text-4xl md:text-5xl font-headline mb-6 leading-tight"
+                      dangerouslySetInnerHTML={{ __html: editorial.testimonialsTitle || `Reflections <br/>from Our <br/><span class="italic" style="color: ${primaryColor}">Atelier Guests</span>` }}
+                    />
+                  </div>
+                  <div className="md:col-span-8 flex gap-8">
+                    {editorial.testimonials.slice(0,2).map((t: any, i: number) => (
+                      <div key={i} className={`bg-[#0d0f0d] p-10 rounded-3xl shadow-sm max-w-sm ${i === 1 ? 'hidden md:block opacity-60' : ''}`}>
+                        <span className="material-symbols-outlined text-5xl mb-6" style={{ color: secondaryColor }}>format_quote</span>
+                        <p className="font-body text-lg italic text-[#e3e2e0] mb-8 leading-relaxed">"{t.quote}"</p>
+                        <div className="flex items-center gap-4">
+                          <div className="w-12 h-12 rounded-full bg-[#292a29]"></div>
+                          <div>
+                            <p className="font-bold text-[#e3e2e0]">{t.author}</p>
+                            <p className="text-xs text-[#d0c5af] uppercase tracking-widest">{t.role}</p>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </section>
+          )}
+
+          {/* Visit Us Section */}
+          <section id="contact" className="py-32 px-8 bg-[#121412]">
+            <div className="max-w-7xl mx-auto">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
+                <div>
+                  <h2 className="text-4xl font-headline mb-12">{editorial.visitUsTitle || 'Visit the Atelier'}</h2>
+                  <div className="space-y-12">
+                    <div className="flex gap-6">
+                      <span className="material-symbols-outlined" style={{ color: primaryColor }}>location_on</span>
+                      <div>
+                        <h4 className="font-bold text-lg mb-2">Our Location</h4>
+                        <p className="text-[#d0c5af]">{shop.customization?.address || 'Address not provided'}</p>
+                      </div>
+                    </div>
+                    <div className="flex gap-6">
+                      <span className="material-symbols-outlined" style={{ color: primaryColor }}>call</span>
+                      <div>
+                        <h4 className="font-bold text-lg mb-2">Contact Details</h4>
+                        <p className="text-[#d0c5af]">{shop.customization?.phone || 'Phone not provided'}<br/>{shop.customization?.email || 'Email not provided'}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="h-[500px] bg-[#1a1c1a] rounded-3xl overflow-hidden relative">
+                  <div className="absolute inset-0 grayscale contrast-125 opacity-40">
+                    <img alt="Map View" className="w-full h-full object-cover" src={editorial.mapImageUrl || "https://lh3.googleusercontent.com/aida-public/AB6AXuBPBUELt3H48sCkgUERZL-bYjLp_g4nyaMrAaWgWqv1QMVuCaaZub4OKguOms2xp_UClFnqWJd5F1jE8c8_9V8GbtLNhZwardBznAcbPP6O5ofImMcqWosMtI8MOhCDK6ERy1aepwuU8Jjoomg4v3oHOH1T-k1vmTJMASUVHIRN_wlzdQm3IGpjqWBgBHRYOEeLiJKp7GgD_lnnDst0M8NdV_0egB1TFqQmXLS5pgBlZELH0ExIL_x5_OEryY1I7lK2NPfP3cKIUjs"} />
+                  </div>
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="bg-[#121412] p-8 rounded-2xl shadow-xl border text-center max-w-xs" style={{ borderColor: `${primaryColor}20` }}>
+                      <div className="w-12 h-12 rounded-full mx-auto mb-4 flex items-center justify-center" style={{ backgroundColor: primaryColor }}>
+                        <span className="material-symbols-outlined text-[#121412]">pin_drop</span>
+                      </div>
+                      <p className="font-headline text-lg">{shop.name}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        {/* Footer */}
+        <footer className="w-full rounded-t-3xl bg-[#0d0f0d]">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 px-12 py-16 max-w-7xl mx-auto">
+            <div className="space-y-6">
+              <div className="text-xl font-headline text-stone-200">{shop.name}</div>
+              <p className="text-stone-400 font-body text-sm leading-relaxed">{shop.description || "A destination for curated beauty and refined wellness."}</p>
+            </div>
+            <div className="flex flex-col items-start md:items-end space-y-6 md:col-start-3">
+              <div className="flex gap-6">
+                <a className="hover:opacity-70 transition-all" style={{ color: primaryColor }} href="#"><span className="material-symbols-outlined">public</span></a>
+                <a className="hover:opacity-70 transition-all" style={{ color: primaryColor }} href="#"><span className="material-symbols-outlined">photo_camera</span></a>
+              </div>
+              <p className="text-stone-400 font-body text-sm tracking-wide uppercase text-right">
+                &copy; {new Date().getFullYear()} {shop.name}.
+              </p>
+            </div>
+          </div>
+        </footer>
+      </main>
+    );
   }
 
   if (templateType === 'minimal') {

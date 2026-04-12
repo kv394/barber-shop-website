@@ -79,6 +79,7 @@ export default async function ShopSettingsPage({
         shopId={shopId}
         customization={customization}
         isSuperAdmin={data.isSuperAdmin}
+        currentTemplate={data.shop.template || 'modern'}
       />
 
       <CustomPagesForm

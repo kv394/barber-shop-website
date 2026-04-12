@@ -129,6 +129,8 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
     const shopFB      = c.contact?.facebook  || c.social?.facebook  || '';
     const shopIG      = c.contact?.instagram || c.social?.instagram || '';
     const shopTW      = c.contact?.twitter   || c.social?.twitter   || '';
+    const logoUrl     = c.logoUrl || null;
+    const heroImageUrl = c.heroImageUrl || c.bannerUrl || null;
 
     // Auth button for client sign-in/out
     const authButton = (
@@ -171,9 +173,13 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                 {/* Header / Nav */}
                 <header className="border-b-4 border-botanical-border sticky top-0 bg-white z-40 shadow-sm">
                     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center overflow-x-auto hide-scrollbar">
-                        <h1 className="text-3xl font-black italic uppercase tracking-tighter shrink-0 mr-6" style={{ color: sportRed }}>
-                            {shop.name}
-                        </h1>
+                        {logoUrl ? (
+                            <img src={logoUrl} alt={shop.name} className="h-10 shrink-0 mr-6 object-contain" />
+                        ) : (
+                            <h1 className="text-3xl font-black italic uppercase tracking-tighter shrink-0 mr-6" style={{ color: sportRed }}>
+                                {shop.name}
+                            </h1>
+                        )}
                         {pages.filter((p: any) => p.isVisible).length > 0 && (
                             <nav className="flex gap-4 sm:gap-6 shrink-0">
                                 <button onClick={() => setActivePageId(null)} className={`text-sm font-bold uppercase transition-colors ${!activePageId ? 'text-black' : 'text-botanical-muted hover:text-black'}`}>Home</button>
@@ -193,8 +199,8 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                 ) : (
                     <>
                         {/* Hero Section */}
-                <section className="bg-gray-100 border-b border-botanical-border">
-                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24 text-center md:text-left flex flex-col md:flex-row items-center">
+                <section className="bg-gray-100 border-b border-botanical-border relative bg-cover bg-center" style={{ backgroundImage: heroImageUrl ? `url(${heroImageUrl})` : undefined }}><div className={heroImageUrl ? "absolute inset-0 bg-white/80" : ""} />
+                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24 text-center md:text-left flex flex-col md:flex-row items-center relative z-10">
                         <div className="md:w-1/2 mb-8 md:mb-0">
                             <h2 className="text-5xl md:text-7xl font-black uppercase italic leading-none mb-6">
                                 The MVP <br/> Haircut <br/> Experience.
@@ -303,7 +309,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
           <main className="h-[100dvh] overflow-y-auto overflow-x-hidden bg-gray-100 text-gray-800 font-sans relative">
             <header className="bg-white shadow-md relative z-40">
               <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center py-4 overflow-x-auto hide-scrollbar">
-                <h1 className="text-3xl font-bold shrink-0 mr-6" style={{ color: primaryColor }}>{shop.name}</h1>
+                {logoUrl ? <img src={logoUrl} alt={shop.name} className="h-10 shrink-0 mr-6 object-contain" /> : <h1 className="text-3xl font-bold shrink-0 mr-6" style={{ color: primaryColor }}>{shop.name}</h1>}
                 {pages.filter((p: any) => p.isVisible).length > 0 && (
                     <nav className="flex gap-4 sm:gap-6 shrink-0 mr-6">
                         <button onClick={() => setActivePageId(null)} className={`text-sm font-bold transition-colors ${!activePageId ? 'text-gray-900' : 'text-botanical-muted hover:text-gray-900'}`}>Home</button>
@@ -325,8 +331,8 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                 </section>
             ) : (
                 <>
-            <section className="bg-white">
-                <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center">
+            <section className="bg-white relative bg-cover bg-center" style={{ backgroundImage: heroImageUrl ? `url(${heroImageUrl})` : undefined }}><div className={heroImageUrl ? "absolute inset-0 bg-white/70" : ""} />
+                <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center relative z-10">
                     <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-4">{shop.description || "Quality Service, Every Time."}</h2>
                     <p className="text-lg text-botanical-muted">Find your perfect look with our expert stylists.</p>
                 </div>
@@ -427,7 +433,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                 ) : (
                     <>
               <header className="text-center mb-16">
-                <h1 className="text-6xl md:text-8xl font-black uppercase tracking-tighter">{shop.name}</h1>
+                {logoUrl ? <img src={logoUrl} alt={shop.name} className="h-24 md:h-32 mx-auto object-contain mb-4" /> : <h1 className="text-6xl md:text-8xl font-black uppercase tracking-tighter">{shop.name}</h1>}
                 <p className="text-lg text-botanical-muted mt-2">{shop.description}</p>
               </header>
     
@@ -498,7 +504,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
               ) : (
                 <>
               <header className="text-center mb-16">
-                <h1 className="text-5xl md:text-7xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-orange-400 to-purple-400 mb-4">{shop.name}</h1>
+                {logoUrl ? <img src={logoUrl} alt={shop.name} className="h-24 md:h-32 mx-auto object-contain mb-4" /> : <h1 className="text-5xl md:text-7xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-orange-400 to-purple-400 mb-4">{shop.name}</h1>}
                 <p className="text-lg text-purple-200/70">{shop.description}</p>
               </header>
     
@@ -565,7 +571,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                 <>
             <header className="max-w-4xl mx-auto px-6 pt-24 pb-12 border-b border-gray-100 flex flex-col md:flex-row justify-between items-end md:items-center">
               <div>
-                <h1 className="text-4xl font-light tracking-tight" style={{ color: primaryColor }}>{shop.name}</h1>
+                {logoUrl ? <img src={logoUrl} alt={shop.name} className="h-12 object-contain" /> : <h1 className="text-4xl font-light tracking-tight" style={{ color: primaryColor }}>{shop.name}</h1>}
                 {shop.description && <p className="text-botanical-muted mt-2">{shop.description}</p>}
               </div>
               <div className="text-right mt-6 md:mt-0 text-sm text-botanical-muted">
@@ -644,14 +650,17 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                 </section>
             ) : (
                 <>
-            <header className="border-b-4 border-[#2c1e16] pt-32 pb-16 text-center bg-[url('https://www.transparenttextures.com/patterns/aged-paper.png')] relative">
-              <h1 className="text-6xl font-bold uppercase tracking-widest mb-4" style={{ color: primaryColor }}>{shop.name}</h1>
+            <header className="border-b-4 border-[#2c1e16] pt-32 pb-16 text-center relative bg-cover bg-center" style={{ backgroundImage: heroImageUrl ? `url(${heroImageUrl})` : "url('https://www.transparenttextures.com/patterns/aged-paper.png')" }}>
+    <div className={heroImageUrl ? "absolute inset-0 bg-[#fdfbf7]/80" : ""} />
+    <div className="relative z-10">
+              {logoUrl ? <img src={logoUrl} alt={shop.name} className="h-24 mx-auto object-contain mb-4" /> : <h1 className="text-6xl font-bold uppercase tracking-widest mb-4" style={{ color: primaryColor }}>{shop.name}</h1>}
               <div className="flex items-center justify-center space-x-4 mb-4">
                 <div className="h-px w-16 bg-[#2c1e16]"></div>
                 <span className="italic text-lg">Est. {new Date(shop.createdAt).getFullYear()}</span>
                 <div className="h-px w-16 bg-[#2c1e16]"></div>
               </div>
               {shop.description && <p className="max-w-xl mx-auto text-[#5a4634]">{shop.description}</p>}
+            </div>
             </header>
     
             <section className="max-w-5xl mx-auto px-8 py-20">
@@ -728,17 +737,23 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
             <>
               {/* Hero Section */}
               <section 
-                className="bg-botanical-surface backdrop-blur-md border-b border-botanical-border pt-16 md:pt-8"
-                style={{ borderBottomColor: primaryColor }}
+                className="relative bg-cover bg-center border-b border-botanical-border pt-16 md:pt-8"
+                style={{ borderBottomColor: primaryColor, backgroundImage: heroImageUrl ? `url(${heroImageUrl})` : undefined }}
               >
+                <div className={heroImageUrl ? "absolute inset-0 bg-slate-900/80" : "absolute inset-0 bg-botanical-surface backdrop-blur-md"} />
+                <div className="relative z-10">
             <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
               <div className="text-center">
-                <h1 
-                  className="text-5xl md:text-6xl font-bold mb-6"
-                  style={{ color: primaryColor }}
-                >
-                  {shop.name}
-                </h1>
+                {logoUrl ? (
+                  <img src={logoUrl} alt={shop.name} className="h-24 md:h-32 mx-auto object-contain mb-6" />
+                ) : (
+                  <h1 
+                    className="text-5xl md:text-6xl font-bold mb-6"
+                    style={{ color: primaryColor }}
+                  >
+                    {shop.name}
+                  </h1>
+                )}
                 {shop.description && (
                   <p className="text-xl text-botanical-muted max-w-2xl mx-auto">
                     {shop.description}
@@ -746,6 +761,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                 )}
               </div>
             </div>
+                </div>
           </section>
     
           {/* Services Section */}
