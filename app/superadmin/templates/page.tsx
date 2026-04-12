@@ -17,6 +17,7 @@ export default function TemplatesPage() {
 
   const [uploading, setUploading] = useState(false);
   const [uploadFiles, setUploadFiles] = useState<FileList | null>(null);
+  const [uploadName, setUploadName] = useState('');
 
   useEffect(() => {
     fetchTemplates();
@@ -35,9 +36,14 @@ export default function TemplatesPage() {
   const handleUpload = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!uploadFiles || uploadFiles.length === 0) return;
+    if (!uploadName.trim()) {
+      alert('Please provide a name for the template.');
+      return;
+    }
     
     setUploading(true);
     const formData = new FormData();
+    formData.append('templateName', uploadName.trim());
     for (let i = 0; i < uploadFiles.length; i++) {
       formData.append('files', uploadFiles[i]);
     }
@@ -50,11 +56,12 @@ export default function TemplatesPage() {
       const data = await res.json();
       if (data.error) throw new Error(data.error);
       
-      alert('Template and images uploaded successfully to Google Drive!');
+      alert('Template uploaded successfully!');
       if (data.template) {
         setTemplates([data.template, ...templates] as any);
       }
       setUploadFiles(null);
+      setUploadName('');
     } catch (err: any) {
       alert(err.message);
     } finally {
@@ -124,20 +131,32 @@ export default function TemplatesPage() {
       <div className="bg-botanical-surface p-6 rounded-xl border border-botanical-border shadow-sm mb-8">
         <h2 className="text-xl font-semibold mb-4">Upload Template Files</h2>
         <p className="text-sm text-botanical-muted mb-4">
-          Select multiple files (HTML, CSS, images) to upload them directly to Google Drive.
+          Select multiple files (HTML, CSS, images) to upload them directly to your server.
           If an HTML file is included, a new template record will be created automatically.
         </p>
         <form onSubmit={handleUpload} className="space-y-4 flex flex-col md:flex-row md:space-y-0 md:space-x-4 items-end">
           <div className="flex-1 w-full">
+            <label className="block text-sm text-botanical-muted mb-1">Template Name</label>
+            <input 
+              required
+              type="text" 
+              placeholder="e.g. Vintage Barber"
+              value={uploadName}
+              onChange={e => setUploadName(e.target.value)} 
+              className="w-full bg-botanical-surface border border-botanical-border shadow-sm p-2 rounded text-botanical-text" 
+            />
+          </div>
+          <div className="flex-1 w-full">
             <label className="block text-sm text-botanical-muted mb-1">Select Files</label>
             <input 
+              required
               type="file" 
               multiple 
               onChange={e => setUploadFiles(e.target.files)} 
               className="w-full bg-botanical-surface border border-botanical-border shadow-sm p-2 rounded text-botanical-text" 
             />
           </div>
-          <button disabled={uploading || !uploadFiles || uploadFiles.length === 0} type="submit" className="w-full md:w-auto bg-green-600 text-white px-6 py-2 rounded font-semibold disabled:opacity-50 transition">
+          <button disabled={uploading || !uploadFiles || uploadFiles.length === 0 || !uploadName} type="submit" className="w-full md:w-auto bg-green-600 text-white px-6 py-2 rounded font-semibold disabled:opacity-50 transition">
             {uploading ? 'Uploading...' : 'Upload Files'}
           </button>
         </form>

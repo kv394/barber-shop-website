@@ -46,7 +46,7 @@ async function setupOAuth() {
     access_type: 'offline',
     scope: scopes,
     prompt: 'consent', // Force to get refresh token
-    login_hint: 'kv394@nyu.edu' // Use the designated test user
+    login_hint: 'commoninfo2all@gmail.com' // Use the designated test user
   });
 
   console.log('----------------------------------------------------');

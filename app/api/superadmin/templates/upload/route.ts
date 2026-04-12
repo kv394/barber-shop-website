@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/utils/supabase/server';
 import { prisma } from '@/lib/prisma';
-import { uploadFileToDrive } from '@/lib/google-drive';
+import fs from 'fs/promises';
+import path from 'path';
 
 export const dynamic = 'force-dynamic';
 
@@ -26,44 +27,48 @@ export async function POST(request: NextRequest) {
   try {
     const formData = await request.formData();
     const files = formData.getAll('files') as File[];
+    const formTemplateName = formData.get('templateName') as string;
 
     if (!files || files.length === 0) {
       return NextResponse.json({ error: 'No files provided' }, { status: 400 });
     }
 
-    const COMMON_FOLDER = 'superadmin_templates';
+    const uploadDir = path.join(process.cwd(), 'superadmin_templates');
+    await fs.mkdir(uploadDir, { recursive: true });
+
     const uploadedIds: string[] = [];
     const fileMap: Record<string, string> = {};
 
     let htmlCode = '';
     let cssCode = '';
-    let templateName = 'uploaded-template-' + Date.now();
+    let templateName = formTemplateName || ('uploaded-template-' + Date.now());
 
-    // First pass: upload all files and get their IDs
+    // First pass: upload all files locally
     for (const file of files) {
       const buffer = Buffer.from(await file.arrayBuffer());
-      const fileId = await uploadFileToDrive(COMMON_FOLDER, file.name, file.type, buffer);
+      const uniqueFileName = Date.now() + '-' + file.name.replace(/[^a-zA-Z0-9.-]/g, '_');
+      const filePath = path.join(uploadDir, uniqueFileName);
       
-      if (fileId) {
-        uploadedIds.push(fileId);
-        fileMap[file.name] = fileId;
-      }
+      await fs.writeFile(filePath, buffer);
+      
+      uploadedIds.push(uniqueFileName);
+      fileMap[file.name] = uniqueFileName;
 
       // If we find html or css, we can optionally parse it
       if (file.name.endsWith('.html')) {
         htmlCode = buffer.toString('utf-8');
-        templateName = file.name.replace('.html', '');
       } else if (file.name.endsWith('.css')) {
         cssCode = buffer.toString('utf-8');
       }
     }
 
     // Second pass: Replace local paths in HTML/CSS with the new /api/assets/ URLs
-    for (const [fileName, fileId] of Object.entries(fileMap)) {
+    for (const [fileName, uniqueFileName] of Object.entries(fileMap)) {
       if (!fileName.endsWith('.html') && !fileName.endsWith('.css')) {
-        // e.g. "logo.png" -> "/api/assets/12345"
-        const assetUrl = `/api/assets/${fileId}`;
-        const regex = new RegExp(fileName, 'g');
+        // e.g. "logo.png" -> "/api/assets/12345-logo.png"
+        const assetUrl = `/api/assets/${uniqueFileName}`;
+        // Create an escaped regex for the filename to replace all occurrences
+        const regex = new RegExp(fileName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g');
         htmlCode = htmlCode.replace(regex, assetUrl);
         cssCode = cssCode.replace(regex, assetUrl);
       }
