@@ -116,7 +116,7 @@ export default async function ShopLayout({
           <div className="flex items-center gap-4 shrink-0">
             {!isSuperAdmin && (
               <Link
-                href={`/shops/${data.shopSlug}`}
+                href={`/shops/${data.shopSlug}?preview=true`}
                 target="_blank"
                 className="bg-botanical-primary text-white hover:bg-white hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 px-4 sm:px-6 py-2.5 rounded-xl transition-all duration-200 text-xs sm:text-sm font-semibold whitespace-nowrap shadow-sm hover:shadow-md hover:-translate-y-0.5"
               >

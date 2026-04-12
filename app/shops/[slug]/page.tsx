@@ -74,6 +74,7 @@ const getShopBySlug = cache(async (slug: string) => {
     // Expose business hours for public schedule display
     businessHours: rawCustom.businessHours,
     pages: rawCustom.pages,
+    editorialCustomization: rawCustom.editorialCustomization,
   };
   return {
     ...serialized,
@@ -110,10 +111,14 @@ export async function generateMetadata({
 
 export default async function PublicShopPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ slug: string }>;
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
   const { slug } = await params;
+  const resolvedSearchParams = await searchParams;
+  const isPreview = resolvedSearchParams?.preview === 'true';
   const shop = await getShopBySlug(slug);
 
   if (!shop) {
@@ -129,16 +134,18 @@ export default async function PublicShopPage({
 
   // Automatically redirect STAFF and ADMINS to their dashboard (the BarberSaaS base URL)
   // Only CLIENTS should be viewing the public shop landing page.
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
-  if (user?.email) {
-    const dbUser = await prisma.user.findUnique({
-      where: { email: user.email },
-      select: { role: true, shopId: true }
-    });
-    
-    if (dbUser && dbUser.role !== 'CLIENT') {
-       redirect('/');
+  if (!isPreview) {
+    const supabase = await createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+    if (user?.email) {
+      const dbUser = await prisma.user.findUnique({
+        where: { email: user.email },
+        select: { role: true, shopId: true }
+      });
+      
+      if (dbUser && dbUser.role !== 'CLIENT') {
+         redirect('/');
+      }
     }
   }
 
@@ -151,7 +158,7 @@ export default async function PublicShopPage({
   let dynamicTemplateHtml = null;
   let dynamicTemplateCss = null;
 
-  if (!['modern', 'classic', 'minimal', 'sporty', 'corporate', 'noir', 'sunset'].includes(templateType)) {
+  if (!['modern', 'classic', 'minimal', 'sporty', 'corporate', 'noir', 'sunset', 'editorial'].includes(templateType)) {
     const dynamicTemplate = await prisma.dynamicTemplate.findUnique({
       where: { name: templateType }
     });
