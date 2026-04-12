@@ -21,11 +21,11 @@ async function requireSiteAdmin() {
   return user;
 }
 
-export async function PATCH(request: NextRequest, { params }: { params: { id: string } }) {
+export async function PATCH(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const adminCheck = await requireSiteAdmin();
   if (adminCheck instanceof NextResponse) return adminCheck;
 
-  const { id } = params;
+  const { id } = await params;
   try {
     const { templateId } = await request.json();
     if (!templateId) {
