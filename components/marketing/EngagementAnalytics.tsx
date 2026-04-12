@@ -22,54 +22,54 @@ export default function EngagementAnalytics({ shopId }: { shopId: string }) {
   return (
     <div className="space-y-8">
       {/* Overview Floating Bar */}
-      <div className="bg-botanical-surface backdrop-blur-xl shadow-2xl rounded-2xl border border-botanical-border shadow-sm flex flex-col md:flex-row md:flex-wrap lg:flex-nowrap divide-y md:divide-y-0 md:divide-x divide-white/10 relative z-20 overflow-hidden transform sm:-translate-y-6 sm:-mx-2 mb-2 sm:mb-6">
-        <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-botanical-surface transition-all duration-300 min-w-0">
+      <div className="bg-botanical-surface backdrop-blur-xl shadow-2xl rounded-2xl border border-botanical-border shadow-sm grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 relative z-20 overflow-hidden transform sm:-translate-y-6 sm:-mx-2 mb-2 sm:mb-6">
+        <div className="p-4 sm:p-5 relative overflow-hidden group hover:bg-gray-50 transition-all duration-300 min-w-0 border-b lg:border-b-0 lg:border-r border-botanical-border border-r md:border-r-0">
           <div className="absolute top-0 left-0 w-full h-1 bg-blue-500/80"></div>
-          <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-3">
-            <h3 className="text-botanical-muted text-sm sm:text-xs uppercase tracking-widest font-semibold truncate">Total Clients</h3>
-            <span className="text-blue-500 text-sm">👥</span>
+          <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-2 sm:mb-3">
+            <h3 className="text-botanical-muted text-[10px] sm:text-xs uppercase tracking-widest font-semibold truncate">Total Clients</h3>
+            <span className="text-blue-500 text-sm hidden sm:inline">👥</span>
           </div>
-          <p className="text-2xl sm:text-3xl font-black text-botanical-text break-words leading-tight">{overview.totalClients}</p>
+          <p className="text-xl sm:text-3xl font-black text-botanical-text break-words leading-tight">{overview.totalClients}</p>
         </div>
-        <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-botanical-surface transition-all duration-300 min-w-0">
+        <div className="p-4 sm:p-5 relative overflow-hidden group hover:bg-gray-50 transition-all duration-300 min-w-0 border-b lg:border-b-0 lg:border-r border-botanical-border md:border-r">
           <div className="absolute top-0 left-0 w-full h-1 bg-green-500/80"></div>
-          <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-3">
-            <h3 className="text-botanical-muted text-sm sm:text-xs uppercase tracking-widest font-semibold truncate">Active (30d)</h3>
-            <span className="text-green-500 text-sm">🔥</span>
+          <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-2 sm:mb-3">
+            <h3 className="text-botanical-muted text-[10px] sm:text-xs uppercase tracking-widest font-semibold truncate">Active (30d)</h3>
+            <span className="text-green-500 text-sm hidden sm:inline">🔥</span>
           </div>
-          <p className="text-2xl sm:text-3xl font-black text-botanical-text break-words leading-tight">{overview.activeLastMonth}</p>
+          <p className="text-xl sm:text-3xl font-black text-botanical-text break-words leading-tight">{overview.activeLastMonth}</p>
         </div>
-        <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-botanical-surface transition-all duration-300 min-w-0">
+        <div className="p-4 sm:p-5 relative overflow-hidden group hover:bg-gray-50 transition-all duration-300 min-w-0 border-b lg:border-b-0 lg:border-r border-botanical-border border-r md:border-r-0">
           <div className="absolute top-0 left-0 w-full h-1 bg-cyan-500/80"></div>
-          <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-3">
-            <h3 className="text-botanical-muted text-sm sm:text-xs uppercase tracking-widest font-semibold truncate">New (30d)</h3>
-            <span className="text-cyan-500 text-sm">🌟</span>
+          <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-2 sm:mb-3">
+            <h3 className="text-botanical-muted text-[10px] sm:text-xs uppercase tracking-widest font-semibold truncate">New (30d)</h3>
+            <span className="text-cyan-500 text-sm hidden sm:inline">🌟</span>
           </div>
-          <p className="text-2xl sm:text-3xl font-black text-botanical-text break-words leading-tight">{overview.newLastMonth}</p>
+          <p className="text-xl sm:text-3xl font-black text-botanical-text break-words leading-tight">{overview.newLastMonth}</p>
         </div>
-        <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-botanical-surface transition-all duration-300 min-w-0">
+        <div className="p-4 sm:p-5 relative overflow-hidden group hover:bg-gray-50 transition-all duration-300 min-w-0 border-b md:border-b-0 lg:border-r border-botanical-border md:border-r">
           <div className="absolute top-0 left-0 w-full h-1 bg-purple-500/80"></div>
-          <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-3">
-            <h3 className="text-botanical-muted text-sm sm:text-xs uppercase tracking-widest font-semibold truncate">Retention</h3>
-            <span className="text-purple-500 text-sm">🔄</span>
+          <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-2 sm:mb-3">
+            <h3 className="text-botanical-muted text-[10px] sm:text-xs uppercase tracking-widest font-semibold truncate">Retention</h3>
+            <span className="text-purple-500 text-sm hidden sm:inline">🔄</span>
           </div>
-          <p className="text-2xl sm:text-3xl font-black text-botanical-text break-words leading-tight">{overview.retentionRate}%</p>
+          <p className="text-xl sm:text-3xl font-black text-botanical-text break-words leading-tight">{overview.retentionRate}%</p>
         </div>
-        <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-botanical-surface transition-all duration-300 min-w-0">
+        <div className="p-4 sm:p-5 relative overflow-hidden group hover:bg-gray-50 transition-all duration-300 min-w-0 border-r border-botanical-border">
           <div className="absolute top-0 left-0 w-full h-1 bg-amber-500/80"></div>
-          <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-3">
-            <h3 className="text-botanical-muted text-sm sm:text-xs uppercase tracking-widest font-semibold truncate">Appts (30d)</h3>
-            <span className="text-amber-500 text-sm">📅</span>
+          <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-2 sm:mb-3">
+            <h3 className="text-botanical-muted text-[10px] sm:text-xs uppercase tracking-widest font-semibold truncate">Appts (30d)</h3>
+            <span className="text-amber-500 text-sm hidden sm:inline">📅</span>
           </div>
-          <p className="text-2xl sm:text-3xl font-black text-botanical-text break-words leading-tight">{overview.completedAppointments}</p>
+          <p className="text-xl sm:text-3xl font-black text-botanical-text break-words leading-tight">{overview.completedAppointments}</p>
         </div>
-        <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-botanical-surface transition-all duration-300 min-w-0 border-t md:border-t-0 md:border-l border-botanical-border">
+        <div className="p-4 sm:p-5 relative overflow-hidden group hover:bg-gray-50 transition-all duration-300 min-w-0">
           <div className="absolute top-0 left-0 w-full h-1 bg-botanical-primary/80"></div>
-          <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-3">
-            <h3 className="text-botanical-muted text-sm sm:text-xs uppercase tracking-widest font-semibold truncate">Avg Rating</h3>
-            <span className="text-yellow-500 text-sm">⭐</span>
+          <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-2 sm:mb-3">
+            <h3 className="text-botanical-muted text-[10px] sm:text-xs uppercase tracking-widest font-semibold truncate">Avg Rating</h3>
+            <span className="text-yellow-500 text-sm hidden sm:inline">⭐</span>
           </div>
-          <p className="text-2xl sm:text-3xl font-black text-botanical-text break-words leading-tight">{overview.averageRating}</p>
+          <p className="text-xl sm:text-3xl font-black text-botanical-text break-words leading-tight">{overview.averageRating}</p>
         </div>
       </div>
 
