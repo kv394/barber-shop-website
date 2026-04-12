@@ -2,7 +2,7 @@
 
 ## Quick Navigation
 
-### For SUPER_ADMIN Users
+### For SITE_ADMIN Users
 
 #### 1. Create a New Shop
 1. Go to `http://localhost:3000/` (home page)
@@ -116,7 +116,7 @@
 |------|------|-------------|
 | Any | `/` | Home page / Dashboard |
 | Any | `/shops` | Browse all shops |
-| SUPER_ADMIN | `/shop/[shopId]/config` | Shop configuration & setup |
+| SITE_ADMIN | `/shop/[shopId]/config` | Shop configuration & setup |
 | SHOP_ADMIN | `/shop/[shopId]/settings` | Customize shop appearance |
 | SHOP_ADMIN | `/shop/[shopId]/settings/team` | Manage team members |
 | Any | `/shop-template/[slug]` | Public shop page |
@@ -144,9 +144,9 @@
 
 ## Quick Start Guide
 
-### Scenario 1: Create and Configure a Shop (SUPER_ADMIN)
+### Scenario 1: Create and Configure a Shop (SITE_ADMIN)
 
-1. Sign in as SUPER_ADMIN
+1. Sign in as SITE_ADMIN
 2. Enter shop name: "Downtown Barber"
 3. Click "Create Shop"
 4. Click on "Downtown Barber" from existing shops
@@ -184,13 +184,13 @@
 ## Common Questions
 
 **Q: How do I become a SHOP_ADMIN?**
-A: A SUPER_ADMIN must add you to a shop with the SHOP_ADMIN role.
+A: A SITE_ADMIN must add you to a shop with the SHOP_ADMIN role.
 
 **Q: Can I manage multiple shops?**
-A: SUPER_ADMINs can manage all shops. SHOP_ADMINs can only manage their assigned shop.
+A: SITE_ADMINs can manage all shops. SHOP_ADMINs can only manage their assigned shop.
 
 **Q: How do I reset my role?**
-A: Contact a SUPER_ADMIN to reassign your role.
+A: Contact a SITE_ADMIN to reassign your role.
 
 **Q: Can I change the template later?**
 A: Yes! Go to Settings → Appearance and select a new template anytime.

@@ -17,9 +17,9 @@ export async function POST(
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    // Verify user is SHOP_ADMIN or SUPER_ADMIN for this shop
+    // Verify user is SHOP_ADMIN or SITE_ADMIN for this shop
     const currentUser = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
-    if (!currentUser || (currentUser.role !== 'SUPER_ADMIN' && (currentUser.role !== 'SHOP_ADMIN' || currentUser.shopId !== shopId))) {
+    if (!currentUser || (currentUser.role !== 'SITE_ADMIN' && (currentUser.role !== 'SHOP_ADMIN' || currentUser.shopId !== shopId))) {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
 

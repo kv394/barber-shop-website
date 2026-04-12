@@ -19,7 +19,7 @@ export async function GET(
     if (!userId) return new Response("Unauthorized", { status: 401 });
 
     const user = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
-    if (!user || (user.role !== 'SUPER_ADMIN' && user.role !== 'SHOP_ADMIN')) {
+    if (!user || (user.role !== 'SITE_ADMIN' && user.role !== 'SHOP_ADMIN')) {
       return new Response("Forbidden", { status: 403 });
     }
 

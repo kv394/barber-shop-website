@@ -17,7 +17,7 @@ export async function GET(
     if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
     const user = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
-    const canView = user?.role === 'SUPER_ADMIN' ||
+    const canView = user?.role === 'SITE_ADMIN' ||
       (user?.role === 'SHOP_ADMIN' && user?.shopId === shopId) ||
       (user?.role === 'STAFF' && user?.shopId === shopId) ||
       (user?.role === 'ATTENDANCE_KIOSK' && user?.shopId === shopId);
@@ -55,7 +55,7 @@ export async function POST(
     if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
     const user = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
-    const canAdd = user?.role === 'SUPER_ADMIN' ||
+    const canAdd = user?.role === 'SITE_ADMIN' ||
       (user?.role === 'SHOP_ADMIN' && user?.shopId === shopId) ||
       (user?.role === 'STAFF' && user?.shopId === shopId);
     if (!canAdd) return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
@@ -110,7 +110,7 @@ export async function PATCH(
     if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
     const user = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
-    const canUpdate = user?.role === 'SUPER_ADMIN' ||
+    const canUpdate = user?.role === 'SITE_ADMIN' ||
       (user?.role === 'SHOP_ADMIN' && user?.shopId === shopId) ||
       (user?.role === 'STAFF' && user?.shopId === shopId);
     if (!canUpdate) return NextResponse.json({ error: 'Forbidden' }, { status: 403 });

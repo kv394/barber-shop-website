@@ -45,7 +45,7 @@ export async function middleware(req: NextRequest) {
   const hostname = req.headers.get('host') || '';
   
   const isApi = url.pathname.startsWith('/api');
-  const isAdmin = url.pathname.startsWith('/superadmin');
+  const isAdmin = url.pathname.startsWith('/siteadmin');
   const isStatic = url.pathname.startsWith('/_next') || url.pathname.startsWith('/static') || url.pathname.includes('.');
   
   // We identify root domains so we know when to treat a host as a tenant subdomain vs base saas

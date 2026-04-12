@@ -23,7 +23,7 @@ export async function GET(
 
   const user = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
   const isStaff = user?.role === 'STAFF' && user?.shopId === shopId;
-  if (!user || (user.role !== 'SUPER_ADMIN' && user.role !== 'SHOP_ADMIN' && !isStaff)) {
+  if (!user || (user.role !== 'SITE_ADMIN' && user.role !== 'SHOP_ADMIN' && !isStaff)) {
     return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
   }
   if (user.role === 'SHOP_ADMIN' && user.shopId !== shopId) {
@@ -116,7 +116,7 @@ export async function POST(
 
   const { shopId } = await params;
   const user = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
-  if (!user || (user.role !== 'SUPER_ADMIN' && (user.role !== 'SHOP_ADMIN' || user.shopId !== shopId))) {
+  if (!user || (user.role !== 'SITE_ADMIN' && (user.role !== 'SHOP_ADMIN' || user.shopId !== shopId))) {
     return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
   }
 

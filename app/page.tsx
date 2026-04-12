@@ -28,7 +28,7 @@ export default async function HomePage() {
           redirect(`/shop/${dbUser.shopId}`);
         }
       }
-      // If SUPER_ADMIN or KIOSK, we stay here to let them see the platform dashboard / kiosk interface
+      // If SITE_ADMIN or KIOSK, we stay here to let them see the platform dashboard / kiosk interface
     }
   }
 

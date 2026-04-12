@@ -10,7 +10,7 @@ import { redirect } from 'next/navigation';
 
 async function getShopData(shopId: string, userId: string, date: string, from: string, to: string) {
   const data = await getShopLayoutData(userId, shopId);
-  if (!data) return null; // Allow SHOP_ADMIN, STAFF, and SUPER_ADMIN
+  if (!data) return null; // Allow SHOP_ADMIN, STAFF, and SITE_ADMIN
 
   const shop = data.shop;
 
@@ -202,7 +202,7 @@ export default async function StaffBookingPage({
                       <span className="font-mono text-botanical-muted">{slot.time}</span>
                       <div className="flex items-center">
                         {slot.isBooked ? <span className="font-bold text-amber-300">Booked</span> : <span className="font-semibold text-green-300">Available</span>}
-                        {!slot.isBooked && (userRole === 'SHOP_ADMIN' || userRole === 'SUPER_ADMIN' || staffMember.id === actualUserId) && (
+                        {!slot.isBooked && (userRole === 'SHOP_ADMIN' || userRole === 'SITE_ADMIN' || staffMember.id === actualUserId) && (
                           <BlockTimeButton shopId={shopId} staffId={staffMember.id} date={selectedDate} time={slot.isoTime} />
                         )}
                       </div>

@@ -11,8 +11,8 @@ async function getPageData(shopId: string, userId: string) {
   const data = await getShopLayoutData(userId, shopId);
   if (!data) return null;
 
-  const { isSuperAdmin, isShopAdmin } = data;
-  if (!isSuperAdmin && !isShopAdmin) return null;
+  const { isSiteAdmin, isShopAdmin } = data;
+  if (!isSiteAdmin && !isShopAdmin) return null;
 
   // Run queries in parallel: aggregate for totals, capped query for table UI,
   // and a bounded query for the revenue-by-day chart (last 90 days only).

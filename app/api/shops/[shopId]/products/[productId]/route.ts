@@ -10,7 +10,7 @@ export async function DELETE(
   try {
     const { shopId, productId } = await params;
 
-    const authResult = await requireShopRole(shopId, ['SUPER_ADMIN', 'SHOP_ADMIN']);
+    const authResult = await requireShopRole(shopId, ['SITE_ADMIN', 'SHOP_ADMIN']);
     if (isAuthError(authResult)) return authResult;
 
     const deletedProduct = await prisma.product.delete({
@@ -35,7 +35,7 @@ export async function PATCH(
     const { shopId, productId } = await params;
     const body = await req.json();
 
-    const authResult = await requireShopRole(shopId, ['SUPER_ADMIN', 'SHOP_ADMIN']);
+    const authResult = await requireShopRole(shopId, ['SITE_ADMIN', 'SHOP_ADMIN']);
     if (isAuthError(authResult)) return authResult;
 
     const updatedProduct = await prisma.product.update({

@@ -23,7 +23,7 @@ export async function GET(
     });
 
     if (!currentUser || 
-        (currentUser.role !== 'SUPER_ADMIN' && 
+        (currentUser.role !== 'SITE_ADMIN' && 
          (currentUser.role !== 'SHOP_ADMIN' || currentUser.shopId !== shopId) &&
          (currentUser.role !== 'STAFF' || currentUser.shopId !== shopId))) {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });

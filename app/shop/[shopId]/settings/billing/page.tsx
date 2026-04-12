@@ -17,7 +17,7 @@ export default async function ShopBillingPage({ params }: { params: Promise<{ sh
   const { shopId } = await params;
   const layoutData = await getShopLayoutData(userId, shopId);
   
-  if (!layoutData || (!layoutData.isSuperAdmin && !layoutData.isShopAdmin)) {
+  if (!layoutData || (!layoutData.isSiteAdmin && !layoutData.isShopAdmin)) {
     notFound();
   }
 

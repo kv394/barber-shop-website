@@ -28,8 +28,8 @@ export async function DELETE(
         return new Response('Not Found', { status: 404 });
     }
 
-    // Only allow deletion if the user is the owner of the leave OR is a SHOP_ADMIN/SUPER_ADMIN
-    if (leave.userId !== user.id && user.role !== 'SHOP_ADMIN' && user.role !== 'SUPER_ADMIN') {
+    // Only allow deletion if the user is the owner of the leave OR is a SHOP_ADMIN/SITE_ADMIN
+    if (leave.userId !== user.id && user.role !== 'SHOP_ADMIN' && user.role !== 'SITE_ADMIN') {
         return new Response('Forbidden', { status: 403 });
     }
 

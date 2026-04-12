@@ -63,8 +63,8 @@ export default function GlobalChatWidget({ shopId, currentUserId, userRole }: { 
     };
   }, [shopId, isOpen, currentUserId]);
 
-  // Only allow STAFF, SHOP_ADMIN, SUPER_ADMIN to see the chat
-  if (userRole !== 'STAFF' && userRole !== 'SHOP_ADMIN' && userRole !== 'SUPER_ADMIN') {
+  // Only allow STAFF, SHOP_ADMIN, SITE_ADMIN to see the chat
+  if (userRole !== 'STAFF' && userRole !== 'SHOP_ADMIN' && userRole !== 'SITE_ADMIN') {
     return null;
   }
 

@@ -19,11 +19,11 @@ export async function PATCH(
 
     const user = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
     
-    // Authorization: Super Admin, or Shop Admin
-    const isSuperAdmin = user?.role === 'SUPER_ADMIN';
+    // Authorization: Site Admin, or Shop Admin
+    const isSiteAdmin = user?.role === 'SITE_ADMIN';
     const isShopAdmin = user?.role === 'SHOP_ADMIN' && user?.shopId === shopId;
 
-    if (!isSuperAdmin && !isShopAdmin) {
+    if (!isSiteAdmin && !isShopAdmin) {
        return new Response("Forbidden: You do not have permission to modify barcodes", { status: 403 });
     }
 

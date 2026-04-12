@@ -7,7 +7,7 @@ export async function POST(req: Request, { params }: { params: Promise<{ shopId:
   try {
     const { shopId } = await params;
 
-    const authResult = await requireShopRole(shopId, ['SUPER_ADMIN', 'SHOP_ADMIN', 'STAFF']);
+    const authResult = await requireShopRole(shopId, ['SITE_ADMIN', 'SHOP_ADMIN', 'STAFF']);
     if (isAuthError(authResult)) return authResult;
 
     const { name, description, sku, barcode, price, cost, taxRate, trackInventory, inventoryCount, reorderPoint, type, supplier } = await req.json();
@@ -64,7 +64,7 @@ export async function GET(req: Request, { params }: { params: Promise<{ shopId: 
     const { shopId } = await params;
 
     // SECURITY: Products include cost/supplier data — require shop membership
-    const authResult = await requireShopRole(shopId, ['SUPER_ADMIN', 'SHOP_ADMIN', 'STAFF']);
+    const authResult = await requireShopRole(shopId, ['SITE_ADMIN', 'SHOP_ADMIN', 'STAFF']);
     if (isAuthError(authResult)) return authResult;
 
     const products = await prisma.product.findMany({

@@ -6,7 +6,7 @@ import BarcodeScannerWrapper from '@/components/checkout/BarcodeScannerWrapper';
 
 type UserProfile = {
   id: string;
-  role: 'SUPER_ADMIN' | 'SHOP_ADMIN' | 'STAFF' | 'CLIENT' | 'ATTENDANCE_KIOSK';
+  role: 'SITE_ADMIN' | 'SHOP_ADMIN' | 'STAFF' | 'CLIENT' | 'ATTENDANCE_KIOSK';
   name: string | null;
   email: string;
   shopId?: string;

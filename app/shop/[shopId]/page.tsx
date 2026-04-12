@@ -148,8 +148,8 @@ export default async function ShopDashboardPage({ params }: { params: Promise<{ 
   const { shopId } = await params;
   const { shop, userRole, canManageInventory, shopSlug, lowStockItems, todayStats, billingAlert, isClockedIn } = await getShopData(shopId, userId);
 
-  // SUPER_ADMIN is a site admin — redirect to team assignment page (they don't access shop operations)
-  if (userRole === 'SUPER_ADMIN') {
+  // SITE_ADMIN is a site admin — redirect to team assignment page (they don't access shop operations)
+  if (userRole === 'SITE_ADMIN') {
     return redirect(`/shop/${shopId}/settings/team`);
   }
 
@@ -164,18 +164,18 @@ export default async function ShopDashboardPage({ params }: { params: Promise<{ 
     )
   }
 
-  const isSuperAdmin = userRole === 'SUPER_ADMIN';
+  const isSiteAdmin = userRole === 'SITE_ADMIN';
   const isShopAdmin = userRole === 'SHOP_ADMIN';
   const isStaff = userRole === 'STAFF';
-  const canEditServices = isShopAdmin; // SUPER_ADMIN CANNOT EDIT
-  const showInventoryControls = isShopAdmin || (isStaff && canManageInventory); // SUPER_ADMIN CANNOT MANAGE INVENTORY
+  const canEditServices = isShopAdmin; // SITE_ADMIN CANNOT EDIT
+  const showInventoryControls = isShopAdmin || (isStaff && canManageInventory); // SITE_ADMIN CANNOT MANAGE INVENTORY
   const resolvedSlug = shopSlug || shop.name.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '');
 
   return (
     <ShopAdminLayout
       shopName={shop.name}
       shopSlug={resolvedSlug}
-      pageTitle={isStaff ? 'Staff Dashboard' : isSuperAdmin ? 'Platform Admin View' : 'Shop Admin Dashboard'}
+      pageTitle={isStaff ? 'Staff Dashboard' : isSiteAdmin ? 'Platform Admin View' : 'Shop Admin Dashboard'}
       shopId={shopId}
       userRole={userRole as string}
       activeTab="dashboard"

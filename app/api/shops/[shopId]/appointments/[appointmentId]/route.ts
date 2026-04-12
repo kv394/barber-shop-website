@@ -18,8 +18,8 @@ export async function DELETE(
 
     const user = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
     
-    // Check if Shop Admin, Staff, or Super Admin
-    const canManage = user?.role === 'SUPER_ADMIN' || 
+    // Check if Shop Admin, Staff, or Site Admin
+    const canManage = user?.role === 'SITE_ADMIN' || 
                      (user?.role === 'SHOP_ADMIN' && user?.shopId === shopId) ||
                      (user?.role === 'STAFF' && user?.shopId === shopId);
 
@@ -76,7 +76,7 @@ export async function PATCH(
     if (!userId) return new Response('Unauthorized', { status: 401 });
 
     const user = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
-    const canManage = user?.role === 'SUPER_ADMIN' ||
+    const canManage = user?.role === 'SITE_ADMIN' ||
                      (user?.role === 'SHOP_ADMIN' && user?.shopId === shopId) ||
                      (user?.role === 'STAFF' && user?.shopId === shopId);
 

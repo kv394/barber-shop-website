@@ -162,7 +162,7 @@ export default function TeamChat({ shopId, currentUserId }: { shopId: string, cu
         ) : (
           messages.map(msg => {
             const isMe = msg.sender.id === currentUserId;
-            const isAdmin = msg.sender.role === 'SHOP_ADMIN' || msg.sender.role === 'SUPER_ADMIN';
+            const isAdmin = msg.sender.role === 'SHOP_ADMIN' || msg.sender.role === 'SITE_ADMIN';
 
             return (
               <div key={msg.id} className={`flex flex-col ${isMe ? 'items-end' : 'items-start'}`}>

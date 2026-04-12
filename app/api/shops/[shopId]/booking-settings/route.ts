@@ -6,7 +6,7 @@ export const dynamic = 'force-dynamic';
 // GET + PUT booking settings stored in customization JSON
 export async function GET(_: NextRequest, { params }: { params: Promise<{ shopId: string }> }) {
   const { shopId } = await params;
-  const authResult = await requireShopRole(shopId, ['SUPER_ADMIN', 'SHOP_ADMIN']);
+  const authResult = await requireShopRole(shopId, ['SITE_ADMIN', 'SHOP_ADMIN']);
   if (isAuthError(authResult)) return authResult;
 
   const shop = await prisma.shop.findUnique({ where: { id: shopId }, select: { customization: true } });
@@ -24,7 +24,7 @@ export async function GET(_: NextRequest, { params }: { params: Promise<{ shopId
 
 export async function PUT(req: NextRequest, { params }: { params: Promise<{ shopId: string }> }) {
   const { shopId } = await params;
-  const authResult = await requireShopRole(shopId, ['SUPER_ADMIN', 'SHOP_ADMIN']);
+  const authResult = await requireShopRole(shopId, ['SITE_ADMIN', 'SHOP_ADMIN']);
   if (isAuthError(authResult)) return authResult;
 
   const body = await req.json();

@@ -27,7 +27,7 @@ export default async function ShopSettingsPage({
   const { shopId } = await params;
   const data = await getShopLayoutData(userId, shopId);
 
-  if (!data || (!data.isSuperAdmin && !data.isShopAdmin)) {
+  if (!data || (!data.isSiteAdmin && !data.isShopAdmin)) {
     notFound();
   }
 
@@ -65,7 +65,7 @@ export default async function ShopSettingsPage({
         initialAmount={shopDetails?.depositAmount || 0}
       />
 
-      {data.isSuperAdmin && (
+      {data.isSiteAdmin && (
         <div className="bg-botanical-bg/50 p-6 rounded-xl border border-botanical-border shadow-sm mb-6">
           <h2 className="text-xl font-bold text-botanical-text mb-2">Booking Portal Template</h2>
           <p className="text-sm text-botanical-muted mb-6">Choose the layout and style for your public booking portal.</p>
@@ -80,7 +80,7 @@ export default async function ShopSettingsPage({
       <CustomizationForm
         shopId={shopId}
         customization={customization}
-        isSuperAdmin={data.isSuperAdmin}
+        isSiteAdmin={data.isSiteAdmin}
         currentTemplate={data.shop.template || 'modern'}
         dynamicTemplates={dynamicTemplates as any}
       />
@@ -105,7 +105,7 @@ export default async function ShopSettingsPage({
           </div>
         </Link>
 
-        {data.isShopAdmin && !data.isSuperAdmin && (
+        {data.isShopAdmin && !data.isSiteAdmin && (
           <>
             <Link href={`/shop/${shopId}/settings/booking`} className="group">
               <div className="bg-botanical-bg/50 p-6 rounded-lg border border-botanical-border shadow-sm group-hover:border-brand-gold/50 transition-colors">

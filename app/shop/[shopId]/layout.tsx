@@ -60,11 +60,11 @@ export default async function ShopLayout({
     redirect('/');
   }
 
-  const isSuperAdmin = data.isSuperAdmin;
+  const isSiteAdmin = data.isSiteAdmin;
   const isStaff = data.userRole === 'STAFF';
 
-  // SUPER_ADMIN is a site admin — only allowed on the team assignment page
-  if (isSuperAdmin) {
+  // SITE_ADMIN is a site admin — only allowed on the team assignment page
+  if (isSiteAdmin) {
     const headersList = await headers();
     const pathname = headersList.get('x-pathname') || headersList.get('x-invoke-path') || '';
     if (pathname && !pathname.includes('/settings/team')) {
@@ -74,8 +74,8 @@ export default async function ShopLayout({
 
   return (
     <>
-      {/* Mobile Header (All Roles except Super Admin) */}
-      {!isSuperAdmin && (
+      {/* Mobile Header (All Roles except Site Admin) */}
+      {!isSiteAdmin && (
         <header className="sm:hidden fixed top-0 left-0 right-0 z-[100] flex flex-wrap justify-between gap-x-2 gap-y-2 items-center bg-botanical-surface border-b border-botanical-border px-4 py-3 shadow-sm">
           <div className="flex flex-col min-w-0 pr-4">
              <span className="text-botanical-text font-black text-xl leading-tight truncate">{data.shop.name}</span>
@@ -92,9 +92,9 @@ export default async function ShopLayout({
         <header className="hidden sm:flex flex-wrap justify-between gap-x-2 gap-y-2 items-center border-b border-botanical-border mb-6 sm:mb-8 pb-4 sm:pb-6">
           <div className="flex items-center gap-3">
             <h1 className="font-serif text-2xl sm:text-3xl md:text-4xl font-bold flex items-center flex-wrap gap-2">
-              {isSuperAdmin ? (
+              {isSiteAdmin ? (
                 <>
-                  <Link href="/superadmin" className="hover:opacity-80 transition-opacity">
+                  <Link href="/siteadmin" className="hover:opacity-80 transition-opacity">
                     <span className="text-botanical-text">Barber</span>
                     <span className="text-botanical-accent">SaaS</span>
                   </Link>
@@ -114,7 +114,7 @@ export default async function ShopLayout({
           </div>
           
           <div className="flex items-center gap-4 shrink-0">
-            {!isSuperAdmin && (
+            {!isSiteAdmin && (
               <Link
                 href={`/shops/${data.shopSlug}?preview=true`}
                 target="_blank"
@@ -123,7 +123,7 @@ export default async function ShopLayout({
                 View Public Page ↗
               </Link>
             )}
-            <SupabaseAuthButton redirectUrl={isSuperAdmin ? '/' : fallbackRedirect} />
+            <SupabaseAuthButton redirectUrl={isSiteAdmin ? '/' : fallbackRedirect} />
           </div>
         </header>
 

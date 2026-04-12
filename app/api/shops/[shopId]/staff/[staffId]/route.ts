@@ -12,7 +12,7 @@ export async function GET(
   try {
     const { shopId, staffId } = await params;
 
-    const authResult = await requireShopRole(shopId, ['SUPER_ADMIN', 'SHOP_ADMIN', 'STAFF']);
+    const authResult = await requireShopRole(shopId, ['SITE_ADMIN', 'SHOP_ADMIN', 'STAFF']);
     if (isAuthError(authResult)) return authResult;
 
     const shop = await prisma.shop.findUnique({ where: { id: shopId } });
@@ -42,8 +42,8 @@ export async function PATCH(
   try {
     const { shopId, staffId } = await params;
 
-    // Only SHOP_ADMIN or SUPER_ADMIN can modify staff profiles
-    const authResult = await requireShopRole(shopId, ['SUPER_ADMIN', 'SHOP_ADMIN']);
+    // Only SHOP_ADMIN or SITE_ADMIN can modify staff profiles
+    const authResult = await requireShopRole(shopId, ['SITE_ADMIN', 'SHOP_ADMIN']);
     if (isAuthError(authResult)) return authResult;
 
     // Verify the target staff member belongs to this shop

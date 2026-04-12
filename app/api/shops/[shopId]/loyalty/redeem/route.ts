@@ -26,11 +26,11 @@ export async function POST(
 
     // If redeeming for another user, must be staff/admin of THIS shop
     if (targetUserId !== userId) {
-      if (!['SUPER_ADMIN', 'SHOP_ADMIN', 'STAFF'].includes(user.role)) {
+      if (!['SITE_ADMIN', 'SHOP_ADMIN', 'STAFF'].includes(user.role)) {
         return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
       }
-      // Tenant isolation: non-SUPER_ADMIN must belong to this shop
-      if (user.role !== 'SUPER_ADMIN' && user.shopId !== shopId) {
+      // Tenant isolation: non-SITE_ADMIN must belong to this shop
+      if (user.role !== 'SITE_ADMIN' && user.shopId !== shopId) {
         return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
       }
     }

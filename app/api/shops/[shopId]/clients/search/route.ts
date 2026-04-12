@@ -16,10 +16,10 @@ export async function GET(
 
     // Verify the requesting user is staff/admin of this shop
     const requestingUser = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
-    if (!requestingUser || !['SUPER_ADMIN', 'SHOP_ADMIN', 'STAFF'].includes(requestingUser.role)) {
+    if (!requestingUser || !['SITE_ADMIN', 'SHOP_ADMIN', 'STAFF'].includes(requestingUser.role)) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });
     }
-    if (requestingUser.role !== 'SUPER_ADMIN' && requestingUser.shopId !== shopId) {
+    if (requestingUser.role !== 'SITE_ADMIN' && requestingUser.shopId !== shopId) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });
     }
 

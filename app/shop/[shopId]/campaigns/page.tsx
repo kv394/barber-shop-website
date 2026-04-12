@@ -15,7 +15,7 @@ export default async function CampaignsPage({ params }: { params: Promise<{ shop
 
   const { shopId } = await params;
   const data = await getShopLayoutData(userId, shopId);
-  if (!data || (!data.isSuperAdmin && !data.isShopAdmin)) return redirect('/');
+  if (!data || (!data.isSiteAdmin && !data.isShopAdmin)) return redirect('/');
 
   return (
     <ShopAdminLayout

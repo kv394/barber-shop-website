@@ -28,7 +28,7 @@ export default function PortfolioManager({ shopId, currentUserId, userRole }: { 
   };
 
   useEffect(() => {
-    if (userRole === 'SHOP_ADMIN' || userRole === 'SUPER_ADMIN') {
+    if (userRole === 'SHOP_ADMIN' || userRole === 'SITE_ADMIN') {
       loadStaffList();
     }
     loadImages(selectedStaffId);
@@ -64,7 +64,7 @@ export default function PortfolioManager({ shopId, currentUserId, userRole }: { 
       </p>
 
       {/* Admin Staff Selector */}
-      {(userRole === 'SHOP_ADMIN' || userRole === 'SUPER_ADMIN') && staffList.length > 0 && (
+      {(userRole === 'SHOP_ADMIN' || userRole === 'SITE_ADMIN') && staffList.length > 0 && (
         <div className="mb-6 p-4 bg-botanical-surface rounded-lg border border-botanical-border shadow-sm">
           <label className="block text-xs text-botanical-muted mb-2 uppercase tracking-wider">Select Staff Member Portfolio</label>
           <select 

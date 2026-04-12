@@ -19,8 +19,8 @@ export async function POST(
 
     const user = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
     
-    // Only Shop Admin, Staff, or Super Admin can mark an appointment as paid
-    const canManage = user?.role === 'SUPER_ADMIN' || 
+    // Only Shop Admin, Staff, or Site Admin can mark an appointment as paid
+    const canManage = user?.role === 'SITE_ADMIN' || 
                      (user?.role === 'SHOP_ADMIN' && user?.shopId === shopId) ||
                      (user?.role === 'STAFF' && user?.shopId === shopId);
 

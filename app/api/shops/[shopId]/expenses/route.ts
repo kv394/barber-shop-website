@@ -17,7 +17,7 @@ export async function GET(
     if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
     const user = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
-    const canView = user?.role === 'SUPER_ADMIN' ||
+    const canView = user?.role === 'SITE_ADMIN' ||
       (user?.role === 'SHOP_ADMIN' && user?.shopId === shopId);
     if (!canView) return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
 
@@ -57,7 +57,7 @@ export async function POST(
     if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
     const user = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
-    const canCreate = user?.role === 'SUPER_ADMIN' ||
+    const canCreate = user?.role === 'SITE_ADMIN' ||
       (user?.role === 'SHOP_ADMIN' && user?.shopId === shopId);
     if (!canCreate) return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
 
@@ -104,7 +104,7 @@ export async function DELETE(
     if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
     const user = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
-    const canDelete = user?.role === 'SUPER_ADMIN' ||
+    const canDelete = user?.role === 'SITE_ADMIN' ||
       (user?.role === 'SHOP_ADMIN' && user?.shopId === shopId);
     if (!canDelete) return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
 

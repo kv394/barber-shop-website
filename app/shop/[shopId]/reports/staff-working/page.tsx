@@ -10,10 +10,10 @@ async function getPageData(shopId: string, userId: string, email?: string) {
   const userFromDb = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: email || '' }] },
   });
 
-  const isSuperAdmin = userFromDb?.role === 'SUPER_ADMIN';
+  const isSiteAdmin = userFromDb?.role === 'SITE_ADMIN';
   const isShopAdmin = userFromDb?.role === 'SHOP_ADMIN' && userFromDb?.shopId === shopId;
 
-  if (!isSuperAdmin && !isShopAdmin) {
+  if (!isSiteAdmin && !isShopAdmin) {
     return { shop: null, userRole: null, staffMembers: [] };
   }
 

@@ -9,7 +9,7 @@ interface CustomizationFormProps {
   shopId: string;
   customization: any;
   onSave?: (customization: Customization) => void;
-  isSuperAdmin: boolean;
+  isSiteAdmin: boolean;
   currentTemplate?: string;
   dynamicTemplates?: any[];
 }
@@ -18,7 +18,7 @@ export function CustomizationForm({
   shopId,
   customization,
   onSave,
-  isSuperAdmin,
+  isSiteAdmin,
   currentTemplate,
   dynamicTemplates = [],
 }: CustomizationFormProps) {
@@ -73,7 +73,7 @@ export function CustomizationForm({
   return (
     <div className="w-full">
       <h2 className="text-xl sm:text-2xl font-bold text-botanical-text mb-4 sm:mb-6">
-        {isSuperAdmin ? "Customize Your Shop Appearance" : "Update Contact Information"}
+        {isSiteAdmin ? "Customize Your Shop Appearance" : "Update Contact Information"}
       </h2>
 
       {error && (

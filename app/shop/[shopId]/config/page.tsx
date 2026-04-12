@@ -18,7 +18,7 @@ export default async function ShopConfigPage({
   if (!userId) redirect('/');
 
   const data = await getShopLayoutData(userId, shopId);
-  if (!data || (!data.isSuperAdmin && !data.isShopAdmin)) {
+  if (!data || (!data.isSiteAdmin && !data.isShopAdmin)) {
     notFound();
   }
 
@@ -50,7 +50,7 @@ export default async function ShopConfigPage({
             Your shop is currently using the <strong>{data.shop.template || 'modern'}</strong> template.
           </p>
           <p className="text-botanical-muted text-sm leading-relaxed">
-            Template assignments are managed by Super Administrators. You can customize the content and appearance of your template in the <a href={`/shop/${shopId}/settings`} className="text-botanical-accent hover:underline">Settings</a> tab.
+            Template assignments are managed by Site Administrators. You can customize the content and appearance of your template in the <a href={`/shop/${shopId}/settings`} className="text-botanical-accent hover:underline">Settings</a> tab.
           </p>
         </div>
       </div>

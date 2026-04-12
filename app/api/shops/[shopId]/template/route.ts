@@ -23,12 +23,12 @@ export async function POST(
       );
     }
 
-    // Verify user is admin for this shop or a SUPER_ADMIN
+    // Verify user is admin for this shop or a SITE_ADMIN
     const user = await prisma.user.findUnique({
       where: { id: userId },
     });
 
-    if (!user || (user.role !== 'SUPER_ADMIN' && (user.role !== 'SHOP_ADMIN' || user.shopId !== shopId))) {
+    if (!user || (user.role !== 'SITE_ADMIN' && (user.role !== 'SHOP_ADMIN' || user.shopId !== shopId))) {
       return NextResponse.json(
         { error: 'Forbidden: You do not have permission to update this shop' },
         { status: 403 }

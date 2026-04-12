@@ -20,8 +20,8 @@ export async function GET(
         return new Response('Forbidden', { status: 403 });
     }
 
-    // Only SHOP_ADMIN, STAFF and SUPER_ADMIN can view team chat
-    if (user.role !== 'SHOP_ADMIN' && user.role !== 'STAFF' && user.role !== 'SUPER_ADMIN') {
+    // Only SHOP_ADMIN, STAFF and SITE_ADMIN can view team chat
+    if (user.role !== 'SHOP_ADMIN' && user.role !== 'STAFF' && user.role !== 'SITE_ADMIN') {
         return new Response('Forbidden', { status: 403 });
     }
 
@@ -64,7 +64,7 @@ export async function POST(
         return new Response('Forbidden', { status: 403 });
     }
 
-    if (user.role !== 'SHOP_ADMIN' && user.role !== 'STAFF' && user.role !== 'SUPER_ADMIN') {
+    if (user.role !== 'SHOP_ADMIN' && user.role !== 'STAFF' && user.role !== 'SITE_ADMIN') {
         return new Response('Forbidden', { status: 403 });
     }
 
@@ -102,7 +102,7 @@ export async function POST(
         const shopUsers = await prisma.user.findMany({
           where: { 
             shopId,
-            role: { in: ['STAFF', 'SHOP_ADMIN', 'SUPER_ADMIN'] } 
+            role: { in: ['STAFF', 'SHOP_ADMIN', 'SITE_ADMIN'] } 
           }
         });
 

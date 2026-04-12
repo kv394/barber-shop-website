@@ -20,8 +20,8 @@ export async function POST(
         return new Response('Forbidden', { status: 403 });
     }
 
-    // Only allow STAFF or SHOP_ADMIN/SUPER_ADMIN to block time
-    if (user.role !== 'STAFF' && user.role !== 'SHOP_ADMIN' && user.role !== 'SUPER_ADMIN') {
+    // Only allow STAFF or SHOP_ADMIN/SITE_ADMIN to block time
+    if (user.role !== 'STAFF' && user.role !== 'SHOP_ADMIN' && user.role !== 'SITE_ADMIN') {
         return new Response('Forbidden', { status: 403 });
     }
 

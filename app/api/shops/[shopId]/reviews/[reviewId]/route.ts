@@ -8,7 +8,7 @@ const CONFIG = {
   MAX_OWNER_RESPONSE_LENGTH: 2000,
   HTML_STRIP_REGEX:          /<[^>]*>/g,
   ROLES: {
-    SUPER_ADMIN: 'SUPER_ADMIN',
+    SITE_ADMIN: 'SITE_ADMIN',
     SHOP_ADMIN:  'SHOP_ADMIN',
   },
   HTTP_STATUS: {
@@ -37,7 +37,7 @@ export async function PATCH(
 
   // Verify caller is admin of this shop
   const caller = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
-  if (!caller || (caller.role !== CONFIG.ROLES.SUPER_ADMIN && (caller.role !== CONFIG.ROLES.SHOP_ADMIN || caller.shopId !== shopId)))
+  if (!caller || (caller.role !== CONFIG.ROLES.SITE_ADMIN && (caller.role !== CONFIG.ROLES.SHOP_ADMIN || caller.shopId !== shopId)))
     return NextResponse.json({ error: CONFIG.ERRORS.FORBIDDEN }, { status: CONFIG.HTTP_STATUS.FORBIDDEN });
 
   // SECURITY: Verify review belongs to this shop
@@ -70,7 +70,7 @@ export async function DELETE(
   if (!userId) return NextResponse.json({ error: CONFIG.ERRORS.UNAUTHORIZED }, { status: CONFIG.HTTP_STATUS.UNAUTHORIZED });
   const { shopId, reviewId } = await params;
   const caller = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
-  if (!caller || (caller.role !== CONFIG.ROLES.SUPER_ADMIN && (caller.role !== CONFIG.ROLES.SHOP_ADMIN || caller.shopId !== shopId)))
+  if (!caller || (caller.role !== CONFIG.ROLES.SITE_ADMIN && (caller.role !== CONFIG.ROLES.SHOP_ADMIN || caller.shopId !== shopId)))
     return NextResponse.json({ error: CONFIG.ERRORS.FORBIDDEN }, { status: CONFIG.HTTP_STATUS.FORBIDDEN });
 
   // SECURITY: Verify review belongs to this shop

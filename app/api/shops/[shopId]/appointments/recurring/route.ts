@@ -23,7 +23,7 @@ export async function POST(
   try {
     const { shopId } = await params;
     const user = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
-    const canManage = user?.role === 'SUPER_ADMIN' ||
+    const canManage = user?.role === 'SITE_ADMIN' ||
       (user?.role === 'SHOP_ADMIN' && user?.shopId === shopId) ||
       (user?.role === 'STAFF' && user?.shopId === shopId);
 

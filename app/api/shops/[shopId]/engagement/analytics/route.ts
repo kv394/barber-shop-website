@@ -10,7 +10,7 @@ export async function GET(
 ) {
   try {
     const { shopId } = await params;
-    const authResult = await requireShopRole(shopId, ['SUPER_ADMIN', 'SHOP_ADMIN']);
+    const authResult = await requireShopRole(shopId, ['SITE_ADMIN', 'SHOP_ADMIN']);
     if (isAuthError(authResult)) return authResult;
 
     const now = new Date();

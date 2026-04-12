@@ -10,7 +10,7 @@ export async function GET(
 ) {
   try {
     const { shopId } = await params;
-    const authResult = await requireShopRole(shopId, ['SUPER_ADMIN', 'SHOP_ADMIN']);
+    const authResult = await requireShopRole(shopId, ['SITE_ADMIN', 'SHOP_ADMIN']);
     if (isAuthError(authResult)) return authResult;
 
     const campaigns = await prisma.campaign.findMany({
@@ -32,7 +32,7 @@ export async function POST(
 ) {
   try {
     const { shopId } = await params;
-    const authResult = await requireShopRole(shopId, ['SUPER_ADMIN', 'SHOP_ADMIN']);
+    const authResult = await requireShopRole(shopId, ['SITE_ADMIN', 'SHOP_ADMIN']);
     if (isAuthError(authResult)) return authResult;
 
     const body = await request.json();
@@ -74,7 +74,7 @@ export async function PATCH(
 ) {
   try {
     const { shopId } = await params;
-    const authResult = await requireShopRole(shopId, ['SUPER_ADMIN', 'SHOP_ADMIN']);
+    const authResult = await requireShopRole(shopId, ['SITE_ADMIN', 'SHOP_ADMIN']);
     if (isAuthError(authResult)) return authResult;
 
     const body = await request.json();

@@ -31,11 +31,11 @@ export const getShopLayoutData = cache(async (userId: string, shopId: string) =>
 
       if (!user || !shop) return null;
 
-      const isSuperAdmin = user.role === 'SUPER_ADMIN';
+      const isSiteAdmin = user.role === 'SITE_ADMIN';
       const isShopAdmin = user.role === 'SHOP_ADMIN' && user.shopId === shopId;
       const isStaff = user.role === 'STAFF' && user.shopId === shopId;
 
-      if (!isSuperAdmin && !isShopAdmin && !isStaff) return null;
+      if (!isSiteAdmin && !isShopAdmin && !isStaff) return null;
 
       const shopSlug = shop.name.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '');
 
@@ -44,7 +44,7 @@ export const getShopLayoutData = cache(async (userId: string, shopId: string) =>
         shop: JSON.parse(JSON.stringify(shop)),
         shopSlug,
         userRole: user.role as string,
-        isSuperAdmin,
+        isSiteAdmin,
         isShopAdmin,
         isStaff,
         canManageInventory: user.canManageInventory,

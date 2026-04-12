@@ -73,7 +73,7 @@ export async function POST(request: Request) {
     // If no user exists, create a new one.
     // Determine if this is the very first user.
     const userCount = await prisma.user.count();
-    const roleToAssign = userCount === 0 ? 'SUPER_ADMIN' : 'CLIENT';
+    const roleToAssign = userCount === 0 ? 'SITE_ADMIN' : 'CLIENT';
     
     const userBarcode = crypto.randomBytes(6).toString('hex').toUpperCase();
 

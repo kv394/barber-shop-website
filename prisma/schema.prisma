@@ -316,7 +316,7 @@ enum CommissionType {
 }
 
 enum UserRole {
-  SUPER_ADMIN
+  SITE_ADMIN
   SHOP_ADMIN
   STAFF
   CLIENT

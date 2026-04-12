@@ -27,8 +27,8 @@ export default async function ShopRedirectPage() {
     return redirect(`/shop/${dbUser.shopId}`);
   }
 
-  if (dbUser?.role === 'SUPER_ADMIN') {
-    // If they are a Super Admin but not assigned to a shop, redirect to the main admin page.
+  if (dbUser?.role === 'SITE_ADMIN') {
+    // If they are a Site Admin but not assigned to a shop, redirect to the main admin page.
     return redirect('/');
   }
 

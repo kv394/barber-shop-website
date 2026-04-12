@@ -16,7 +16,7 @@ export async function GET(
     if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
     const currentUser = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
-    const canView = currentUser?.role === 'SUPER_ADMIN' ||
+    const canView = currentUser?.role === 'SITE_ADMIN' ||
       (currentUser?.role === 'SHOP_ADMIN' && currentUser?.shopId === shopId) ||
       (currentUser?.role === 'STAFF' && currentUser?.shopId === shopId);
 
@@ -90,7 +90,7 @@ export async function PATCH(
     if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
     const currentUser = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
-    const canEdit = currentUser?.role === 'SUPER_ADMIN' ||
+    const canEdit = currentUser?.role === 'SITE_ADMIN' ||
       (currentUser?.role === 'SHOP_ADMIN' && currentUser?.shopId === shopId) ||
       (currentUser?.role === 'STAFF' && currentUser?.shopId === shopId);
 

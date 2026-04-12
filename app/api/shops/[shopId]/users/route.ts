@@ -22,7 +22,7 @@ export async function POST(
       );
     }
 
-    // Verify user is SHOP_ADMIN or SUPER_ADMIN for this shop
+    // Verify user is SHOP_ADMIN or SITE_ADMIN for this shop
     const currentUser = await prisma.user.findUnique({
       where: { id: userId },
     });
@@ -34,7 +34,7 @@ export async function POST(
       );
     }
 
-    if (currentUser.role !== 'SUPER_ADMIN' && 
+    if (currentUser.role !== 'SITE_ADMIN' && 
         (currentUser.role !== 'SHOP_ADMIN' || currentUser.shopId !== shopId)) {
       return NextResponse.json(
         { error: 'Forbidden: You do not have permission to manage this shop' },
@@ -59,10 +59,10 @@ export async function POST(
       );
     }
 
-    // SECURITY: Only SUPER_ADMIN can assign the SHOP_ADMIN role — prevent privilege escalation
-    if (role === 'SHOP_ADMIN' && currentUser.role !== 'SUPER_ADMIN') {
+    // SECURITY: Only SITE_ADMIN can assign the SHOP_ADMIN role — prevent privilege escalation
+    if (role === 'SHOP_ADMIN' && currentUser.role !== 'SITE_ADMIN') {
       return NextResponse.json(
-        { error: 'Only Super Admins can assign the Shop Admin role' },
+        { error: 'Only Site Admins can assign the Shop Admin role' },
         { status: 403 }
       );
     }
@@ -152,7 +152,7 @@ export async function GET(
     });
 
     if (!currentUser || 
-        (currentUser.role !== 'SUPER_ADMIN' && 
+        (currentUser.role !== 'SITE_ADMIN' && 
          (currentUser.role !== 'SHOP_ADMIN' || currentUser.shopId !== shopId) &&
          (currentUser.role !== 'STAFF' || currentUser.shopId !== shopId))) {
       return NextResponse.json(
@@ -163,8 +163,8 @@ export async function GET(
 
     // Restrict what users are visible based on role
     const whereClause: any = { shopId: shopId };
-    if (currentUser.role === 'SUPER_ADMIN') {
-      // Super admins only manage shop admins and see the kiosk
+    if (currentUser.role === 'SITE_ADMIN') {
+      // Site admins only manage shop admins and see the kiosk
       whereClause.role = { in: ['SHOP_ADMIN', 'ATTENDANCE_KIOSK'] };
     }
 
@@ -209,13 +209,13 @@ export async function DELETE(
       );
     }
 
-    // Verify user is SHOP_ADMIN or SUPER_ADMIN
+    // Verify user is SHOP_ADMIN or SITE_ADMIN
     const currentUser = await prisma.user.findUnique({
       where: { id: userId },
     });
 
     if (!currentUser || 
-        (currentUser.role !== 'SUPER_ADMIN' && 
+        (currentUser.role !== 'SITE_ADMIN' && 
          (currentUser.role !== 'SHOP_ADMIN' || currentUser.shopId !== shopId))) {
       return NextResponse.json(
         { error: 'Forbidden' },
@@ -252,10 +252,10 @@ export async function DELETE(
       );
     }
 
-    // SECURITY: SHOP_ADMIN cannot remove other SHOP_ADMINs — only SUPER_ADMIN can
-    if (user.role === 'SHOP_ADMIN' && currentUser.role !== 'SUPER_ADMIN') {
+    // SECURITY: SHOP_ADMIN cannot remove other SHOP_ADMINs — only SITE_ADMIN can
+    if (user.role === 'SHOP_ADMIN' && currentUser.role !== 'SITE_ADMIN') {
       return NextResponse.json(
-        { error: 'Only Super Admins can remove Shop Admins' },
+        { error: 'Only Site Admins can remove Shop Admins' },
         { status: 403 }
       );
     }

@@ -2,7 +2,7 @@
  * Seed script — creates a demo shop + one dummy user per role category.
  *
  * Roles seeded:
- *   1. SUPER_ADMIN   — platform-wide admin (no shop assignment)
+ *   1. SITE_ADMIN   — platform-wide admin (no shop assignment)
  *   2. SHOP_ADMIN    — manages the demo shop
  *   3. STAFF         — barber/stylist at the demo shop
  *   4. CLIENT        — customer who books appointments
@@ -92,19 +92,19 @@ async function main() {
 
   // ── 3. Users — one per role ────────────────────────────────────
 
-  // SUPER_ADMIN — not tied to any shop
-  const superAdmin = await prisma.user.upsert({
-    where: { email: 'superadmin@demo.barbersaas.com' },
+  // SITE_ADMIN — not tied to any shop
+  const siteAdmin = await prisma.user.upsert({
+    where: { email: 'siteadmin@demo.barbersaas.com' },
     update: {},
     create: {
       id: 'seed-super-admin',
-      email: 'superadmin@demo.barbersaas.com',
+      email: 'siteadmin@demo.barbersaas.com',
       name: 'Alex Super',
-      role: 'SUPER_ADMIN',
-      barcode: barcode('superadmin@demo.barbersaas.com'),
+      role: 'SITE_ADMIN',
+      barcode: barcode('siteadmin@demo.barbersaas.com'),
     },
   });
-  console.log(`  ✅  SUPER_ADMIN : ${superAdmin.email}`);
+  console.log(`  ✅  SITE_ADMIN : ${siteAdmin.email}`);
 
   // SHOP_ADMIN — manages the demo shop
   const shopAdmin = await prisma.user.upsert({
@@ -233,7 +233,7 @@ async function main() {
   console.log('\n🎉  Seed complete! Here are the login emails:\n');
   console.log('   Role              Email');
   console.log('   ────────────────  ──────────────────────────────────');
-  console.log('   SUPER_ADMIN       superadmin@demo.barbersaas.com');
+  console.log('   SITE_ADMIN       siteadmin@demo.barbersaas.com');
   console.log('   SHOP_ADMIN        shopadmin@demo.barbersaas.com');
   console.log('   STAFF             staff@demo.barbersaas.com');
   console.log('   CLIENT            client@demo.barbersaas.com');

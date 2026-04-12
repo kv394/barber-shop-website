@@ -15,7 +15,7 @@ export default async function LoyaltyPage({ params }: { params: Promise<{ shopId
 
   const { shopId } = await params;
   const data = await getShopLayoutData(userId, shopId);
-  if (!data || (!data.isSuperAdmin && !data.isShopAdmin)) return redirect('/');
+  if (!data || (!data.isSiteAdmin && !data.isShopAdmin)) return redirect('/');
 
   return (
     <ShopAdminLayout

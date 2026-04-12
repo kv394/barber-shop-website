@@ -17,9 +17,9 @@ async function getPageData(shopId: string, userId: string, date: string) {
   const shop = data.shop;
   const targetDate = new Date(date);
   
-  // Super Admins manage SHOP_ADMINs and ATTENDANCE_KIOSKs. 
+  // Site Admins manage SHOP_ADMINs and ATTENDANCE_KIOSKs. 
   // Shop Admins manage STAFF.
-  const rolesToFetch: any[] = data.isSuperAdmin ? ['SHOP_ADMIN', 'ATTENDANCE_KIOSK'] : ['SHOP_ADMIN', 'STAFF'];
+  const rolesToFetch: any[] = data.isSiteAdmin ? ['SHOP_ADMIN', 'ATTENDANCE_KIOSK'] : ['SHOP_ADMIN', 'STAFF'];
   
   const [allStaff, kioskUser] = await Promise.all([
     prisma.user.findMany({
@@ -100,9 +100,9 @@ async function inviteUser(formData: FormData) {
   if (!userId) return;
   const caller = await prisma.user.findFirst({ where: { OR: [{ id: userId }, { email: user?.email || '' }] } });
   if (!caller) return;
-  if (caller.role !== 'SUPER_ADMIN' && (caller.role !== 'SHOP_ADMIN' || caller.shopId !== shopId)) return;
-  // Only SUPER_ADMIN can assign SHOP_ADMIN or ATTENDANCE_KIOSK roles
-  if ((role === 'SHOP_ADMIN' || role === 'ATTENDANCE_KIOSK') && caller.role !== 'SUPER_ADMIN') return;
+  if (caller.role !== 'SITE_ADMIN' && (caller.role !== 'SHOP_ADMIN' || caller.shopId !== shopId)) return;
+  // Only SITE_ADMIN can assign SHOP_ADMIN or ATTENDANCE_KIOSK roles
+  if ((role === 'SHOP_ADMIN' || role === 'ATTENDANCE_KIOSK') && caller.role !== 'SITE_ADMIN') return;
 
   const userBarcode = crypto.createHash('sha256').update(`${email}-${process.env.JWT_SECRET || 'secret'}`).digest('hex').substring(0, 12).toUpperCase();
   await prisma.user.upsert({
@@ -132,7 +132,7 @@ async function removeUser(formData: FormData) {
   if (!userId) return;
   const caller = await prisma.user.findFirst({ where: { OR: [{ id: userId }, { email: user?.email || '' }] } });
   if (!caller) return;
-  if (caller.role !== 'SUPER_ADMIN' && (caller.role !== 'SHOP_ADMIN' || caller.shopId !== shopId)) return;
+  if (caller.role !== 'SITE_ADMIN' && (caller.role !== 'SHOP_ADMIN' || caller.shopId !== shopId)) return;
 
   await prisma.user.update({
     where: { id: targetUserId },
@@ -278,10 +278,10 @@ export default async function TeamDashboardPage({ params, searchParams }: { para
 
   const { shop, shopSlug, userRole, staff, kioskUser } = pageData;
 
-  const canAddShopAdmin = userRole === 'SUPER_ADMIN' && !staff.some((s: any) => s.role === 'SHOP_ADMIN');
+  const canAddShopAdmin = userRole === 'SITE_ADMIN' && !staff.some((s: any) => s.role === 'SHOP_ADMIN');
 
   return (
-    <ShopAdminLayout shopName={shop.name} shopSlug={shopSlug} pageTitle={userRole === 'SUPER_ADMIN' ? 'Assign Shop Admin & Kiosk' : 'Team & Availability'} shopId={shopId} userRole={userRole} activeTab="team">
+    <ShopAdminLayout shopName={shop.name} shopSlug={shopSlug} pageTitle={userRole === 'SITE_ADMIN' ? 'Assign Shop Admin & Kiosk' : 'Team & Availability'} shopId={shopId} userRole={userRole} activeTab="team">
 
       {kioskUser && (
          <div className="bg-blue-50 border border-blue-200 p-5 rounded-2xl shadow-lg mb-8">
@@ -313,10 +313,10 @@ export default async function TeamDashboardPage({ params, searchParams }: { para
             </div>
             <div className="md:col-span-3">
               <label className="block text-sm text-slate-600 mb-1 font-semibold uppercase tracking-wider">👤 Role</label>
-              <select name="role" defaultValue={userRole === 'SUPER_ADMIN' ? 'SHOP_ADMIN' : 'STAFF'}
+              <select name="role" defaultValue={userRole === 'SITE_ADMIN' ? 'SHOP_ADMIN' : 'STAFF'}
                 className="w-full p-2.5 rounded-lg border border-botanical-border shadow-sm bg-white text-slate-900 text-sm focus:ring-2 focus:ring-botanical-primary focus:outline-none transition-all">
                 {userRole === 'SHOP_ADMIN' && <option value="STAFF">Staff</option>}
-                {userRole === 'SUPER_ADMIN' && (
+                {userRole === 'SITE_ADMIN' && (
                   <>
                     <option value="SHOP_ADMIN">Shop Admin</option>
                     <option value="ATTENDANCE_KIOSK">Attendance Kiosk</option>
@@ -325,14 +325,14 @@ export default async function TeamDashboardPage({ params, searchParams }: { para
               </select>
             </div>
             <div className="md:col-span-3">
-              <button type="submit" disabled={userRole === 'SUPER_ADMIN' && !canAddShopAdmin}
+              <button type="submit" disabled={userRole === 'SITE_ADMIN' && !canAddShopAdmin}
                 className="w-full bg-botanical-primary text-white font-bold py-2.5 px-6 rounded-xl hover:bg-botanical-primary/90 hover:scale-[1.02] active:scale-95 transition-all duration-200 shadow-md text-sm disabled:opacity-50 disabled:cursor-not-allowed">
                 Invite Member
               </button>
             </div>
           </form>
 
-          {!canAddShopAdmin && userRole === 'SUPER_ADMIN' && (
+          {!canAddShopAdmin && userRole === 'SITE_ADMIN' && (
             <div className="mt-3 flex items-center gap-2 text-xs text-amber-700 bg-amber-50 px-3 py-2 rounded-lg border border-amber-200">
               <span>⚠️</span>
               <span>A Shop Admin already exists. Remove them to assign a new one.</span>
@@ -341,7 +341,7 @@ export default async function TeamDashboardPage({ params, searchParams }: { para
         </div>
       </div>
 
-      {userRole === 'SUPER_ADMIN' ? (
+      {userRole === 'SITE_ADMIN' ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {staff.map((staffMember: any) => (
             <div key={staffMember.id} className="bg-white border border-botanical-border shadow-sm rounded-2xl p-5 flex flex-col shadow-lg">

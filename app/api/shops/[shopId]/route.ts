@@ -17,7 +17,7 @@ export async function PATCH(
     if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
     const user = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
-    if (!user || (user.role !== 'SUPER_ADMIN' && (user.role !== 'SHOP_ADMIN' || user.shopId !== shopId))) {
+    if (!user || (user.role !== 'SITE_ADMIN' && (user.role !== 'SHOP_ADMIN' || user.shopId !== shopId))) {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
 
@@ -70,10 +70,10 @@ export async function DELETE(
   const authUserEmail = authUserSession?.email;
     if (!userId) return new Response("Unauthorized", { status: 401 });
 
-    // Verify user is SUPER_ADMIN
+    // Verify user is SITE_ADMIN
     const user = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
-    if (!user || user.role !== 'SUPER_ADMIN') {
-       return new Response("Forbidden: Only Super Admins can delete shops", { status: 403 });
+    if (!user || user.role !== 'SITE_ADMIN') {
+       return new Response("Forbidden: Only Site Admins can delete shops", { status: 403 });
     }
 
     // Delete blackout dates separately (Prisma adapter type limitation)

@@ -16,7 +16,7 @@ export default async function ResourcesSettingsPage({ params }: { params: Promis
   if (!userId) redirect('/');
   const { shopId } = await params;
   const data = await getShopLayoutData(userId, shopId);
-  if (!data || (!data.isSuperAdmin && !data.isShopAdmin)) notFound();
+  if (!data || (!data.isSiteAdmin && !data.isShopAdmin)) notFound();
   
   return (
     <ShopAdminLayout shopName={data.shop.name} shopSlug={data.shopSlug} pageTitle="Resource Management" shopId={shopId} userRole={data.userRole} activeTab="settings-resources">

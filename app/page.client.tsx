@@ -19,7 +19,7 @@ type Shop = {
 
 type UserProfile = {
   id: string;
-  role: 'SUPER_ADMIN' | 'SHOP_ADMIN' | 'STAFF' | 'CLIENT' | 'ATTENDANCE_KIOSK';
+  role: 'SITE_ADMIN' | 'SHOP_ADMIN' | 'STAFF' | 'CLIENT' | 'ATTENDANCE_KIOSK';
   name: string | null;
   email: string;
   shopId?: string;
@@ -94,7 +94,7 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    if (userProfile?.role === 'SUPER_ADMIN') {
+    if (userProfile?.role === 'SITE_ADMIN') {
       fetchShops();
     }
   }, [userProfile]);
@@ -168,7 +168,7 @@ export default function Home() {
 
   // If they are a shop user and have a shop, they will be redirected by the useEffect above
   // We can return a loading state while the redirect happens
-  if (userProfile?.shopId && userProfile.role !== 'SUPER_ADMIN') {
+  if (userProfile?.shopId && userProfile.role !== 'SITE_ADMIN') {
     return (
       <div className="h-[100dvh] overflow-y-auto overflow-x-hidden flex items-center justify-center bg-botanical-bg">
         <div className="flex flex-col items-center gap-4">
@@ -187,7 +187,7 @@ export default function Home() {
         
         <header className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-12 sm:mb-20">
           <h1 className="font-serif text-4xl sm:text-5xl font-bold tracking-tight">
-            {userProfile?.role === 'SUPER_ADMIN' ? (
+            {userProfile?.role === 'SITE_ADMIN' ? (
                 <><span className="text-botanical-text">Barber</span><span className="text-botanical-accent">SaaS</span></>
             ) : userProfile?.shop?.name ? (
                 <span className="text-botanical-accent">{userProfile.shop.name}</span>
@@ -205,25 +205,25 @@ export default function Home() {
             {isSignedIn ? `Welcome, ${userProfile?.name || 'User'}` : "Book Your Next Appointment"}
           </h2>
           <p className="mt-4 sm:mt-6 text-lg sm:text-sm text-botanical-accent/80 font-medium tracking-wide">
-            {userProfile ? (userProfile.role === 'SUPER_ADMIN' ? 'Platform Administrator Dashboard' : '') : (isSignedIn ? 'Loading...' : 'Please sign in to continue.')}
+            {userProfile ? (userProfile.role === 'SITE_ADMIN' ? 'Platform Administrator Dashboard' : '') : (isSignedIn ? 'Loading...' : 'Please sign in to continue.')}
           </p>
         </div>
 
         <div>
-          {userProfile?.role === 'SUPER_ADMIN' && (
+          {userProfile?.role === 'SITE_ADMIN' && (
             <div className="space-y-6">
               {/* Quick Actions */}
               <div className="bg-botanical-surface p-6 sm:p-8 rounded-lg border border-botanical-border shadow-sm">
-                <h2 className="text-sm sm:text-base font-serif text-botanical-text mb-2">Super Admin Control Panel</h2>
+                <h2 className="text-sm sm:text-base font-serif text-botanical-text mb-2">Site Admin Control Panel</h2>
                 <p className="text-sm text-botanical-muted mb-6">Manage the entire platform from the dedicated dashboard.</p>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                  <Link href="/superadmin" className="bg-botanical-primary text-white px-6 py-4 rounded-lg font-semibold hover:bg-white hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 transition-colors text-center">
+                  <Link href="/siteadmin" className="bg-botanical-primary text-white px-6 py-4 rounded-lg font-semibold hover:bg-white hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 transition-colors text-center">
                     📊 Platform Dashboard
                   </Link>
-                  <Link href="/superadmin/shops" className="bg-botanical-surface text-botanical-text px-6 py-4 rounded-lg font-semibold hover:bg-botanical-surface transition-colors text-center">
+                  <Link href="/siteadmin/shops" className="bg-botanical-surface text-botanical-text px-6 py-4 rounded-lg font-semibold hover:bg-botanical-surface transition-colors text-center">
                     🏪 Manage Shops
                   </Link>
-                  <Link href="/superadmin/logs" className="bg-red-900/30 text-red-400 px-6 py-4 rounded-lg font-semibold hover:bg-red-800/50 transition-colors text-center border border-red-500/30">
+                  <Link href="/siteadmin/logs" className="bg-red-900/30 text-red-400 px-6 py-4 rounded-lg font-semibold hover:bg-red-800/50 transition-colors text-center border border-red-500/30">
                     🚨 System Logs
                   </Link>
                 </div>
@@ -286,7 +286,7 @@ export default function Home() {
                 <div>
                   <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-4">
                     <h2 className="text-sm sm:text-base font-serif">Shops ({shops.length})</h2>
-                    <Link href="/superadmin/shops" className="text-botanical-accent text-sm hover:underline">View All →</Link>
+                    <Link href="/siteadmin/shops" className="text-botanical-accent text-sm hover:underline">View All →</Link>
                   </div>
                   <div className="space-y-3">
                     {shops.slice(0, 5).map((shop) => {

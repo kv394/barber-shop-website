@@ -16,7 +16,7 @@ export async function GET(
     if (!userId) return new Response("Unauthorized", { status: 401 });
 
     const user = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
-    if (!user || (user.role !== 'SUPER_ADMIN' && user.shopId !== shopId)) {
+    if (!user || (user.role !== 'SITE_ADMIN' && user.shopId !== shopId)) {
       return new Response("Forbidden", { status: 403 });
     }
 
@@ -55,7 +55,7 @@ export async function POST(
 
     const user = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
     
-    if (!user || (user.role !== 'SUPER_ADMIN' && user.role !== 'SHOP_ADMIN' && user.role !== 'STAFF')) {
+    if (!user || (user.role !== 'SITE_ADMIN' && user.role !== 'SHOP_ADMIN' && user.role !== 'STAFF')) {
        return new Response("Forbidden", { status: 403 });
     }
 

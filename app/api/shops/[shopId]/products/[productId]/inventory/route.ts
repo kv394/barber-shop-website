@@ -19,14 +19,14 @@ export async function PATCH(
     const user = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
     
     // Authorization Logic:
-    // 1. Super Admins can always do it.
+    // 1. Site Admins can always do it.
     // 2. Shop Admins of this specific shop can always do it.
     // 3. Staff of this specific shop can do it ONLY IF they have the canManageInventory flag set to true.
-    const isSuperAdmin = user?.role === 'SUPER_ADMIN';
+    const isSiteAdmin = user?.role === 'SITE_ADMIN';
     const isShopAdmin = user?.role === 'SHOP_ADMIN' && user?.shopId === shopId;
     const isAuthorizedStaff = user?.role === 'STAFF' && user?.shopId === shopId && user?.canManageInventory;
 
-    if (!isSuperAdmin && !isShopAdmin && !isAuthorizedStaff) {
+    if (!isSiteAdmin && !isShopAdmin && !isAuthorizedStaff) {
        return new Response("Forbidden: You do not have permission to manage inventory", { status: 403 });
     }
 

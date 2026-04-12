@@ -106,9 +106,9 @@ export default function MyAppointmentsPage() {
             <p className="text-xs text-botanical-muted">Manage your upcoming bookings</p>
           </div>
           <div className="flex gap-2">
-            {user?.role === 'SUPER_ADMIN' ? (
-              <Link href="/superadmin" className="bg-botanical-surface border border-slate-600 text-botanical-text font-bold px-4 py-2 rounded-lg text-sm hover:bg-botanical-surface transition-colors">
-                Back to Superadmin
+            {user?.role === 'SITE_ADMIN' ? (
+              <Link href="/siteadmin" className="bg-botanical-surface border border-slate-600 text-botanical-text font-bold px-4 py-2 rounded-lg text-sm hover:bg-botanical-surface transition-colors">
+                Back to Siteadmin
               </Link>
             ) : user?.shopId && (user?.role === 'SHOP_ADMIN' || user?.role === 'STAFF') ? (
               <Link href={`/shop/${user.shopId}`} className="bg-botanical-surface border border-slate-600 text-botanical-text font-bold px-4 py-2 rounded-lg text-sm hover:bg-botanical-surface transition-colors">

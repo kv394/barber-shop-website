@@ -16,7 +16,7 @@ export default async function MembershipsSettingsPage({ params }: { params: Prom
   if (!userId) redirect('/');
   const { shopId } = await params;
   const data = await getShopLayoutData(userId, shopId);
-  if (!data || (!data.isSuperAdmin && !data.isShopAdmin)) notFound();
+  if (!data || (!data.isSiteAdmin && !data.isShopAdmin)) notFound();
   
   return (
     <ShopAdminLayout shopName={data.shop.name} shopSlug={data.shopSlug} pageTitle="Membership Tiers" shopId={shopId} userRole={data.userRole} activeTab="settings-memberships">

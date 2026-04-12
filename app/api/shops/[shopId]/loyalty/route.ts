@@ -20,7 +20,7 @@ export async function GET(
     // SECURITY: Verify user belongs to this shop
     const user = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
     if (!user) return NextResponse.json({ error: 'User not found' }, { status: 404 });
-    if (user.role !== 'SUPER_ADMIN' && user.shopId !== shopId) {
+    if (user.role !== 'SITE_ADMIN' && user.shopId !== shopId) {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
 
@@ -62,7 +62,7 @@ export async function POST(
     if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
     const user = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
-    if (!user || !['SUPER_ADMIN', 'SHOP_ADMIN'].includes(user.role)) {
+    if (!user || !['SITE_ADMIN', 'SHOP_ADMIN'].includes(user.role)) {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
     if (user.role === 'SHOP_ADMIN' && user.shopId !== shopId) {

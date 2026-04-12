@@ -15,7 +15,7 @@ export default async function StaffPortfolioPage({ params }: { params: Promise<{
   if (!userId) redirect('/');
   const { shopId } = await params;
   const data = await getShopLayoutData(userId, shopId);
-  if (!data || (!data.isSuperAdmin && !data.isShopAdmin && !data.isStaff)) notFound();
+  if (!data || (!data.isSiteAdmin && !data.isShopAdmin && !data.isStaff)) notFound();
   
   return (
     <ShopAdminLayout shopName={data.shop.name} shopSlug={data.shopSlug} pageTitle="Staff Portfolio" shopId={shopId} userRole={data.userRole} activeTab="portfolio">

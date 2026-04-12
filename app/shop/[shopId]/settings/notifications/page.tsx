@@ -16,7 +16,7 @@ export default async function NotificationsSettingsPage({ params }: { params: Pr
   if (!userId) redirect('/');
   const { shopId } = await params;
   const data = await getShopLayoutData(userId, shopId);
-  if (!data || (!data.isSuperAdmin && !data.isShopAdmin)) notFound();
+  if (!data || (!data.isSiteAdmin && !data.isShopAdmin)) notFound();
   return (
     <ShopAdminLayout shopName={data.shop.name} shopSlug={data.shopSlug} pageTitle="Notification Settings" shopId={shopId} userRole={data.userRole} activeTab="settings-notifications">
       <NotificationSettingsForm shopId={shopId} />

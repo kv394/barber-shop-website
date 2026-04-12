@@ -12,7 +12,7 @@ export async function DELETE(
   try {
     const { shopId, serviceId } = await params;
 
-    const authResult = await requireShopRole(shopId, ['SUPER_ADMIN', 'SHOP_ADMIN']);
+    const authResult = await requireShopRole(shopId, ['SITE_ADMIN', 'SHOP_ADMIN']);
     if (isAuthError(authResult)) return authResult;
 
     // Verify the service belongs to the shop before deleting

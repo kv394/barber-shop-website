@@ -16,7 +16,7 @@ export default async function GiftCardsPage({ params }: { params: Promise<{ shop
   const { shopId } = await params;
   const data = await getShopLayoutData(userId, shopId);
 
-  if (!data || (!data.isSuperAdmin && !data.isShopAdmin)) {
+  if (!data || (!data.isSiteAdmin && !data.isShopAdmin)) {
     return (
       <div className="h-[100dvh] overflow-y-auto overflow-x-hidden">
         <div className="text-center">

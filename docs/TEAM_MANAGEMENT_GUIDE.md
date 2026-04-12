@@ -104,8 +104,8 @@ Authorization: Bearer Your-Supabase-Session-Token
 ## Important Notes
 
 1. **Permissions**:
-   - Only SHOP_ADMIN or SUPER_ADMIN can assign users to shops
-   - Only SHOP_ADMIN or SUPER_ADMIN can remove users from shops
+   - Only SHOP_ADMIN or SITE_ADMIN can assign users to shops
+   - Only SHOP_ADMIN or SITE_ADMIN can remove users from shops
    - You cannot remove yourself from a shop
 
 2. **User Email**:
@@ -114,7 +114,7 @@ Authorization: Bearer Your-Supabase-Session-Token
 
 3. **Role Changes**:
    - If a user is already assigned to a shop, you can update their role by assigning them again
-   - SUPER_ADMIN users cannot be assigned to shops
+   - SITE_ADMIN users cannot be assigned to shops
 
 4. **Database**:
    - User assignments are stored in the PostgreSQL database
@@ -136,7 +136,7 @@ Authorization: Bearer Your-Supabase-Session-Token
 - Book appointments
 - View services and pricing
 
-### SUPER_ADMIN
+### SITE_ADMIN
 - Manage all shops
 - Create new shops
 - Delete shops
@@ -152,7 +152,7 @@ model User {
   email    String    @unique
   name     String?
   role     UserRole
-  shopId   String?   // Optional - NULL for SUPER_ADMINs
+  shopId   String?   // Optional - NULL for SITE_ADMINs
   shop     Shop?     @relation(fields: [shopId], references: [id])
   ...
 }
@@ -165,7 +165,7 @@ model Shop {
 }
 
 enum UserRole {
-  SUPER_ADMIN
+  SITE_ADMIN
   SHOP_ADMIN
   CLIENT
 }
@@ -179,7 +179,7 @@ enum UserRole {
 
 ### "Forbidden: You do not have permission" error
 - Make sure you're logged in as a SHOP_ADMIN for that specific shop
-- SUPER_ADMINs can manage any shop
+- SITE_ADMINs can manage any shop
 - SHOP_ADMINs can only manage their own shop
 
 ### User not appearing in team list

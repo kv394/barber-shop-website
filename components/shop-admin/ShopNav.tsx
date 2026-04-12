@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useState, useRef, useEffect } from 'react';
 
 export function ShopNav({ shopId, userRole, activeTab }: { shopId: string, userRole: string, activeTab: string }) {
-  const isSuperAdmin = userRole === 'SUPER_ADMIN';
+  const isSiteAdmin = userRole === 'SITE_ADMIN';
   const isShopAdmin = userRole === 'SHOP_ADMIN';
   const isStaff = userRole === 'STAFF';
 
@@ -69,13 +69,13 @@ export function ShopNav({ shopId, userRole, activeTab }: { shopId: string, userR
     }`;
   };
 
-  // ── SUPER_ADMIN: only back link + team assignment ──
-  if (isSuperAdmin) {
+  // ── SITE_ADMIN: only back link + team assignment ──
+  if (isSiteAdmin) {
     return (
       <div className="mb-6 sm:mb-8">
         <nav className="flex w-full overflow-x-auto scrollbar-none bg-white rounded-2xl border border-botanical-border shadow-sm">
-          <Link href="/superadmin" className="flex-1 min-w-max px-4 py-3 text-base md:text-lg font-bold text-botanical-muted hover:text-botanical-text hover:bg-gray-50 transition-colors whitespace-nowrap border-r border-botanical-border flex items-center justify-center">
-            ← Super Admin
+          <Link href="/siteadmin" className="flex-1 min-w-max px-4 py-3 text-base md:text-lg font-bold text-botanical-muted hover:text-botanical-text hover:bg-gray-50 transition-colors whitespace-nowrap border-r border-botanical-border flex items-center justify-center">
+            ← Site Admin
           </Link>
           <Link href={`/shop/${shopId}/settings/team`} className={mainTabClass('team')}>
             👥 Assign Team

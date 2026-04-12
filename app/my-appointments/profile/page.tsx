@@ -63,9 +63,9 @@ function ProfileContent() {
             <p className="text-xs text-botanical-muted">Update your personal information</p>
           </div>
           
-          {profile?.role === 'SUPER_ADMIN' ? (
-            <Link href="/superadmin" className="text-sm bg-botanical-surface hover:bg-botanical-surface border border-slate-600 text-botanical-text px-4 py-2 rounded-lg font-semibold transition-colors">
-              Back to Superadmin
+          {profile?.role === 'SITE_ADMIN' ? (
+            <Link href="/siteadmin" className="text-sm bg-botanical-surface hover:bg-botanical-surface border border-slate-600 text-botanical-text px-4 py-2 rounded-lg font-semibold transition-colors">
+              Back to Siteadmin
             </Link>
           ) : profile?.shopId && (profile?.role === 'SHOP_ADMIN' || profile?.role === 'STAFF') ? (
             <Link href={`/shop/${profile.shopId}`} className="text-sm bg-botanical-surface hover:bg-botanical-surface border border-slate-600 text-botanical-text px-4 py-2 rounded-lg font-semibold transition-colors">

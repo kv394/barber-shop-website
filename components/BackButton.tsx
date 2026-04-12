@@ -21,10 +21,10 @@ export default function BackButton() {
     return <div className="w-24 h-9 bg-botanical-surface animate-pulse rounded-lg"></div>;
   }
 
-  if (user?.role === 'SUPER_ADMIN') {
+  if (user?.role === 'SITE_ADMIN') {
     return (
-      <Link href="/superadmin" className="text-sm bg-botanical-surface hover:bg-botanical-surface border border-slate-600 text-botanical-text px-4 py-2 rounded-lg font-semibold transition-colors shadow-sm">
-        Back to Superadmin
+      <Link href="/siteadmin" className="text-sm bg-botanical-surface hover:bg-botanical-surface border border-slate-600 text-botanical-text px-4 py-2 rounded-lg font-semibold transition-colors shadow-sm">
+        Back to Siteadmin
       </Link>
     );
   }

@@ -18,11 +18,11 @@ export async function PATCH(
 
     const user = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
     
-    const isSuperAdmin = user?.role === 'SUPER_ADMIN';
+    const isSiteAdmin = user?.role === 'SITE_ADMIN';
     const isShopAdmin = user?.role === 'SHOP_ADMIN' && user?.shopId === shopId;
     const isStaff = user?.role === 'STAFF' && user?.shopId === shopId;
 
-    if (!isSuperAdmin && !isShopAdmin && !isStaff) {
+    if (!isSiteAdmin && !isShopAdmin && !isStaff) {
        return new Response("Forbidden", { status: 403 });
     }
 

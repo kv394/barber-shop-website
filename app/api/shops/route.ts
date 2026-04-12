@@ -20,8 +20,8 @@ export async function GET(request: Request) {
     const take = parseInt(searchParams.get('limit') || '50', 10);
     const skip = parseInt(searchParams.get('skip') || '0', 10);
 
-    // Check if caller is authenticated SUPER_ADMIN — if so, include users for admin UI
-    let isSuperAdmin = false;
+    // Check if caller is authenticated SITE_ADMIN — if so, include users for admin UI
+    let isSiteAdmin = false;
     try {
       const supabase = await createClient();
       const { data: { user: authUserSession } } = await supabase.auth.getUser();
@@ -29,7 +29,7 @@ export async function GET(request: Request) {
       const authUserEmail = authUserSession?.email;
       if (userId) {
         const caller = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] }, select: { role: true } });
-        isSuperAdmin = caller?.role === 'SUPER_ADMIN';
+        isSiteAdmin = caller?.role === 'SITE_ADMIN';
       }
     } catch { /* unauthenticated — public access */ }
 
@@ -45,8 +45,8 @@ export async function GET(request: Request) {
         _count: {
           select: { users: { where: { role: 'SHOP_ADMIN' } } },
         },
-        // Only include user roles for SUPER_ADMIN (needed for home page status badges)
-        ...(isSuperAdmin ? { users: { select: { role: true } } } : {}),
+        // Only include user roles for SITE_ADMIN (needed for home page status badges)
+        ...(isSiteAdmin ? { users: { select: { role: true } } } : {}),
       },
       orderBy: { createdAt: 'desc' }
     });
@@ -66,7 +66,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Too many requests' }, { status: 429 });
     }
 
-    // HARDENING: Only Super Admins can create shops. Enforce server-side authorization.
+    // HARDENING: Only Site Admins can create shops. Enforce server-side authorization.
     const supabase = await createClient();
   const { data: { user: authUserSession } } = await supabase.auth.getUser();
   let userId = authUserSession?.id;
@@ -76,8 +76,8 @@ export async function POST(request: Request) {
     }
     
     const requestUser = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
-    if (!requestUser || requestUser.role !== 'SUPER_ADMIN') {
-        return NextResponse.json({ error: 'Forbidden. Only Super Admins can provision shops.' }, { status: 403 });
+    if (!requestUser || requestUser.role !== 'SITE_ADMIN') {
+        return NextResponse.json({ error: 'Forbidden. Only Site Admins can provision shops.' }, { status: 403 });
     }
 
     const body = await request.json();

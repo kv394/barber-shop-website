@@ -111,7 +111,7 @@ export default function BookingModal({ shopId, service, onClose, shopHours }: Bo
         fetch(`/api/users/me`)
             .then(res => res.ok ? res.json() : null)
             .then(data => {
-                if (data?.shopId === shopId && ['SHOP_ADMIN', 'STAFF', 'SUPER_ADMIN'].includes(data.role)) {
+                if (data?.shopId === shopId && ['SHOP_ADMIN', 'STAFF', 'SITE_ADMIN'].includes(data.role)) {
                     setUserRole(data.role);
                     setUserShopId(data.shopId);
                 }
