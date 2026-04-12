@@ -83,11 +83,11 @@ export default function CommissionReportClient({
       <div className="flex flex-wrap gap-4 items-end">
         <div>
           <label className="block text-xs text-botanical-muted mb-1">Start Date</label>
-          <input type="date" value={startDate} onChange={e => setStartDate(e.target.value)} style={{ colorScheme: 'dark' }} className="bg-botanical-surface border border-botanical-border shadow-sm rounded p-2 text-botanical-text text-sm focus:outline-none focus:border-brand-gold" />
+          <input type="date" value={startDate} onChange={e => setStartDate(e.target.value)} className="bg-botanical-surface border border-botanical-border shadow-sm rounded p-2 text-botanical-text text-sm focus:outline-none focus:border-brand-gold" />
         </div>
         <div>
           <label className="block text-xs text-botanical-muted mb-1">End Date</label>
-          <input type="date" value={endDate} onChange={e => setEndDate(e.target.value)} style={{ colorScheme: 'dark' }} className="bg-botanical-surface border border-botanical-border shadow-sm rounded p-2 text-botanical-text text-sm focus:outline-none focus:border-brand-gold" />
+          <input type="date" value={endDate} onChange={e => setEndDate(e.target.value)} className="bg-botanical-surface border border-botanical-border shadow-sm rounded p-2 text-botanical-text text-sm focus:outline-none focus:border-brand-gold" />
         </div>
         <button onClick={exportCSV} className="bg-botanical-surface hover:bg-botanical-surface text-botanical-text px-4 py-2 rounded text-sm transition-colors">📥 Export CSV</button>
       </div>

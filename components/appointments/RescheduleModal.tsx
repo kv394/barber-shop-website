@@ -165,7 +165,7 @@ export default function RescheduleModal({
               value={selectedDate}
               onChange={(e) => { setSelectedDate(e.target.value); setSelectedTime(''); }}
               min={new Date().toISOString().split('T')[0]}
-              style={{ colorScheme: 'dark' }}
+             
               className="w-full bg-botanical-surface border border-botanical-border shadow-sm rounded p-3 text-botanical-text focus:outline-none focus:border-brand-gold"
             />
           </div>
@@ -179,7 +179,7 @@ export default function RescheduleModal({
               <select
                 value={selectedStaff}
                 onChange={(e) => { setSelectedStaff(e.target.value); setSelectedTime(''); }}
-                style={{ colorScheme: 'dark' }}
+               
                 className="w-full bg-botanical-surface border border-botanical-border shadow-sm rounded p-3 text-botanical-text focus:outline-none focus:border-brand-gold"
               >
                 <option value="">— Select staff —</option>
@@ -198,7 +198,7 @@ export default function RescheduleModal({
                 <select
                   value={selectedTime}
                   onChange={(e) => setSelectedTime(e.target.value)}
-                  style={{ colorScheme: 'dark' }}
+                 
                   className="w-full bg-botanical-surface border border-botanical-border shadow-sm rounded p-3 text-botanical-text focus:outline-none focus:border-brand-gold"
                 >
                   <option value="">— Choose a time —</option>

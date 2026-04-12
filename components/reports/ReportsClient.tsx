@@ -96,7 +96,7 @@ export default function ReportsClient({
     URL.revokeObjectURL(url);
   };
 
-  const inputStyle: React.CSSProperties = { colorScheme: 'dark', color: '#fff', backgroundColor: 'rgba(0,0,0,0.5)' };
+  const inputStyle: React.CSSProperties = {};
   const isFiltered = dateFrom || dateTo;
 
   const formatCurrency = (value: number) => {

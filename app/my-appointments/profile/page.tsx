@@ -117,7 +117,7 @@ function ProfileContent() {
           </div>
           <div>
             <label className="block text-sm text-botanical-muted mb-1">Birthday</label>
-            <input type="date" value={profile?.birthday ? new Date(profile.birthday).toISOString().split('T')[0] : ''} onChange={(e) => setProfile({ ...profile, birthday: e.target.value || null })} style={{ colorScheme: 'dark' }} className="w-full bg-botanical-surface border border-botanical-border shadow-sm rounded p-3 text-botanical-text focus:outline-none focus:border-brand-gold" />
+            <input type="date" value={profile?.birthday ? new Date(profile.birthday).toISOString().split('T')[0] : ''} onChange={(e) => setProfile({ ...profile, birthday: e.target.value || null })} className="w-full bg-botanical-surface border border-botanical-border shadow-sm rounded p-3 text-botanical-text focus:outline-none focus:border-brand-gold" />
           </div>
           <div>
             <label className="block text-sm text-botanical-muted mb-1">Preferences (e.g., skin fade, longer on top)</label>

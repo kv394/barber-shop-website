@@ -95,7 +95,7 @@ export default function StaffWorkingReport({ staffMembers }: { staffMembers: Sta
   const totalRevenue = staffData.reduce((sum, s) => sum + s.revenue, 0);
   const isFiltered = dateFrom || dateTo;
 
-  const inputStyle: React.CSSProperties = { colorScheme: 'dark', color: '#fff', backgroundColor: 'rgba(0,0,0,0.5)' };
+  const inputStyle: React.CSSProperties = {};
 
   const selectedStaffData = selectedStaff ? staffData.find(s => s.id === selectedStaff) : null;
 

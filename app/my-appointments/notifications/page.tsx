@@ -89,7 +89,7 @@ export default function NotificationsPage() {
             <select
               value={prefs?.preferredChannel || 'EMAIL'}
               onChange={(e) => setPrefs({ ...prefs, preferredChannel: e.target.value })}
-              style={{ colorScheme: 'dark' }}
+             
               className="w-full bg-botanical-surface border border-botanical-border shadow-sm rounded p-3 text-botanical-text focus:outline-none focus:border-brand-gold"
             >
               <option value="EMAIL">Email Only</option>

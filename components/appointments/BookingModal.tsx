@@ -560,7 +560,7 @@ export default function BookingModal({ shopId, service, onClose, shopHours }: Bo
                 {/* ──── Step 1: Date ──── */}
                 <div>
                     <label className="block text-sm text-botanical-muted mb-2">1. Select Date</label>
-                    <input type="date" value={selectedDate} onChange={(e) => { setSelectedDate(e.target.value); setSelectedTime(''); setSelectedStaff(''); }} min={new Date().toISOString().split('T')[0]} style={{ colorScheme: 'dark', color: '#fff', backgroundColor: 'rgba(0,0,0,0.5)' }} className="w-full border border-botanical-border shadow-sm rounded p-3 text-botanical-text focus:outline-none focus:border-brand-gold" />
+                    <input type="date" value={selectedDate} onChange={(e) => { setSelectedDate(e.target.value); setSelectedTime(''); setSelectedStaff(''); }} min={new Date().toISOString().split('T')[0]} className="w-full border border-botanical-border shadow-sm rounded p-3 text-botanical-text focus:outline-none focus:border-brand-gold" />
                 </div>
 
                 {/* ──── Step 2: Time ──── */}
@@ -575,7 +575,7 @@ export default function BookingModal({ shopId, service, onClose, shopHours }: Bo
                         <select
                           value={selectedTime}
                           onChange={(e) => { setSelectedTime(e.target.value); setSelectedStaff(''); }}
-                          style={{ colorScheme: 'dark', color: '#fff', backgroundColor: 'rgba(0,0,0,0.5)' }}
+                         
                           className="w-full border border-botanical-border shadow-sm rounded p-3 text-botanical-text text-sm focus:outline-none focus:border-brand-gold cursor-pointer"
                         >
                           <option value="">— Choose a time —</option>
@@ -596,7 +596,7 @@ export default function BookingModal({ shopId, service, onClose, shopHours }: Bo
                             <select
                               value={selectedStaff}
                               onChange={(e) => setSelectedStaff(e.target.value)}
-                              style={{ colorScheme: 'dark', color: '#fff', backgroundColor: 'rgba(0,0,0,0.5)' }}
+                             
                               className="w-full border border-botanical-border shadow-sm rounded p-3 text-botanical-text text-sm focus:outline-none focus:border-brand-gold cursor-pointer"
                             >
                               <option value="">— Choose a barber —</option>

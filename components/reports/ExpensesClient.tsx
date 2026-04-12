@@ -56,7 +56,7 @@ export default function ExpensesClient({ shopId }: { shopId: string }) {
     total: expenses.filter(e => e.category === cat).reduce((s, e) => s + e.amount, 0),
   })).filter(c => c.total > 0);
 
-  const inputStyle: React.CSSProperties = { colorScheme: 'dark', color: '#fff', backgroundColor: 'rgba(0,0,0,0.5)' };
+  const inputStyle: React.CSSProperties = {};
 
   const catEmojis: Record<string, string> = { RENT: '🏠', SUPPLIES: '🧴', UTILITIES: '⚡', EQUIPMENT: '🪑', MARKETING: '📣', OTHER: '📦' };
 

@@ -52,7 +52,7 @@ export default function WaitlistClient({ shopId, services, staff }: { shopId: st
 
   const waiting = waitlist.filter(w => w.status === 'WAITING');
   const serving = waitlist.filter(w => w.status === 'SERVING');
-  const inputStyle: React.CSSProperties = { colorScheme: 'dark', color: '#fff', backgroundColor: 'rgba(0,0,0,0.5)' };
+  const inputStyle: React.CSSProperties = {};
   const getWaitTime = (c: string) => { const m = Math.floor((Date.now() - new Date(c).getTime()) / 60000); return m < 1 ? 'Just now' : `${m} min`; };
   const getStaffName = (staffId: string | null) => { 
     if (!staffId) return null; 

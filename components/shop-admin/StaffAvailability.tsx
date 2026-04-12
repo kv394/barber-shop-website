@@ -2,7 +2,7 @@
 
 import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 
-const timeStyle = { colorScheme: 'dark' as const, color: '#fff', backgroundColor: '#1e293b' };
+const timeStyle = {};
 
 interface StaffAvailabilityProps {
   defaultDate: string;
