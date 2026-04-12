@@ -82,7 +82,7 @@ export default function CampaignBuilder({ shopId }: { shopId: string }) {
   return (
     <div className="space-y-8">
       {/* Create Campaign */}
-      <div className="flex justify-between items-center">
+      <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center">
         <h3 className="text-lg font-bold text-botanical-text flex items-center gap-2">
           <span>📣</span> Campaigns
         </h3>

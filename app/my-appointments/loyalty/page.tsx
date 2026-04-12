@@ -66,7 +66,7 @@ export default function LoyaltyPage() {
           accounts.map((acct, i) => (
             <div key={i} className="bg-botanical-surface border-2 border-b-[6px] border-botanical-border rounded-xl overflow-hidden">
               <div className="p-6 bg-gradient-to-r from-brand-gold/10 to-purple-600/10 border-b border-botanical-border">
-                <div className="flex justify-between items-center">
+                <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center">
                   <div>
                     <h2 className="text-lg font-bold text-botanical-text">{acct.shopName}</h2>
                     <span className="text-xs bg-botanical-primary/20 text-botanical-accent px-2 py-0.5 rounded-full font-semibold">{acct.currentTier}</span>
@@ -85,7 +85,7 @@ export default function LoyaltyPage() {
                 <div className="p-4 space-y-2 max-h-60 overflow-y-auto">
                   <h3 className="text-xs text-botanical-muted uppercase tracking-wider mb-2">Recent Activity</h3>
                   {acct.transactions.map(tx => (
-                    <div key={tx.id} className="flex justify-between items-center py-2 border-b border-botanical-border last:border-0">
+                    <div key={tx.id} className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center py-2 border-b border-botanical-border last:border-0">
                       <div>
                         <span className="text-sm text-botanical-muted">{tx.description || tx.type}</span>
                         <span className="text-xs text-botanical-muted ml-2">{new Date(tx.createdAt).toLocaleDateString()}</span>

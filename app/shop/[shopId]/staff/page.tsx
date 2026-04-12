@@ -169,7 +169,7 @@ export default async function StaffBookingPage({
           const isNotWorking = staffMember.using === 'not-working';
           return (
             <div key={staffMember.id} className="bg-botanical-bg/70 border-2 border-b-[6px] border-botanical-border rounded-lg p-3 sm:p-4 flex flex-col">
-              <div className="flex justify-between items-start mb-2 gap-2">
+              <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-start mb-2 gap-2">
                 <StaffProfileModalWrapper staff={staffMember}>
                   <div className="flex items-center gap-3">
                     <div className="w-8 h-8 rounded-full overflow-hidden bg-botanical-surface border border-brand-gold/50 flex items-center justify-center shrink-0">

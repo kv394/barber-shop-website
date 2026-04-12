@@ -55,7 +55,7 @@ export default async function TemplatePreviewPage({ params }: { params: Promise<
   return (
     <main className="h-[100dvh] overflow-y-auto overflow-x-hidden">
       {/* Super Admin Preview Header */}
-      <div className="bg-botanical-surface text-botanical-text p-3 border-b border-botanical-border flex justify-between items-center sticky top-0 z-50">
+      <div className="bg-botanical-surface text-botanical-text p-3 border-b border-botanical-border flex flex-wrap justify-between gap-x-2 gap-y-2 items-center sticky top-0 z-50">
         <div>
           <span className="font-bold text-botanical-accent mr-3">Previewing Template:</span>
           <span>{template.name}</span>

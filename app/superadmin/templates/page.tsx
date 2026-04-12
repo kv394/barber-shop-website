@@ -129,7 +129,7 @@ export default function TemplatesPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {templates.map((t: any) => (
             <div key={t.id} className="bg-botanical-surface p-4 rounded-xl border-2 border-b-[6px] border-botanical-border flex flex-col">
-              <div className="flex justify-between items-start mb-2">
+              <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-start mb-2">
                 <h3 className="text-lg font-bold text-botanical-accent">{t.name}</h3>
                 <div className="flex space-x-2">
                   <a href={`/superadmin/templates/${t.id}/preview`} target="_blank" rel="noopener noreferrer" className="text-xs bg-green-500/20 text-green-400 px-2 py-1 rounded hover:bg-green-500/40 transition">Preview</a>
@@ -152,7 +152,7 @@ export default function TemplatesPage() {
       {editingTemplate && (
         <div className="fixed inset-0 bg-botanical-surface flex items-center justify-center p-4 z-50">
           <div className="bg-botanical-surface border-2 border-b-[6px] border-botanical-border p-6 rounded-xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
-            <div className="flex justify-between items-center mb-4">
+            <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-4">
               <h2 className="text-xl font-bold">Edit Template: {editingTemplate.name}</h2>
               <button onClick={() => setEditingTemplate(null)} className="text-botanical-muted hover:text-botanical-text">✕</button>
             </div>

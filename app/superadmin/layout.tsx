@@ -21,7 +21,7 @@ export default async function SuperAdminLayout({ children }: { children: React.R
     <main className="h-[100dvh] bg-botanical-surface text-botanical-text overflow-y-auto overflow-x-hidden scroll-smooth">
       {/* Top Bar */}
       <header className="border-b border-botanical-border bg-botanical-surface sticky top-0 z-50 backdrop-blur-sm shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex justify-between items-center">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex flex-wrap justify-between gap-x-2 gap-y-2 items-center">
           <div className="flex items-center gap-6">
             <Link href="/" className="font-serif text-2xl font-bold">
               <span className="text-botanical-text">Barber</span><span className="text-botanical-accent">SaaS</span>

@@ -126,7 +126,7 @@ export default function KioskMode({ userProfile }: { userProfile: UserProfile })
                                 ) : activeLogs.length > 0 ? (
                                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                                         {activeLogs.map(log => (
-                                            <div key={log.id} className="bg-botanical-surface p-4 rounded-xl flex justify-between items-center gap-3 border-2 border-b-[6px] border-botanical-border hover:border-botanical-border transition-colors">
+                                            <div key={log.id} className="bg-botanical-surface p-4 rounded-xl flex flex-wrap justify-between gap-x-2 gap-y-2 items-center gap-3 border-2 border-b-[6px] border-botanical-border hover:border-botanical-border transition-colors">
                                                 <div className="min-w-0">
                                                     <p className="font-bold text-botanical-text text-lg truncate">{log.user.name || log.user.email.split('@')[0]}</p>
                                                     <p className="text-xs text-botanical-muted truncate">{log.user.email}</p>

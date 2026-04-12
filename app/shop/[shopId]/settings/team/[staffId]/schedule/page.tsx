@@ -219,7 +219,7 @@ export default function SchedulePage() {
           <div className="space-y-2">
             <h4 className="text-lg font-semibold text-botanical-muted border-b border-botanical-border pb-2">Upcoming Leave</h4>
             {staffMember.leaves.map((leave: any) => (
-              <div key={leave.id} className="flex justify-between items-center bg-botanical-surface p-3 rounded border-2 border-b-[6px] border-botanical-border">
+              <div key={leave.id} className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center bg-botanical-surface p-3 rounded border-2 border-b-[6px] border-botanical-border">
                 <div>
                   <p className="font-semibold text-botanical-text">{new Date(leave.date).toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</p>
                   <p className="text-sm text-botanical-muted">{new Date(leave.startTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} - {new Date(leave.endTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>

@@ -409,33 +409,33 @@ export default function BookingModal({ shopId, service, onClose, shopHours }: Bo
           {error && <p className="text-red-400 text-sm bg-red-900/20 p-3 rounded mb-4">{error}</p>}
 
           <div className="bg-botanical-surface rounded-lg border-2 border-b-[6px] border-botanical-border divide-y divide-white/10 mb-6">
-            <div className="flex justify-between items-center p-4">
+            <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center p-4">
               <span className="text-botanical-muted text-sm">Service</span>
               <span className="text-botanical-text font-semibold">{service.name}</span>
             </div>
-            <div className="flex justify-between items-center p-4">
+            <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center p-4">
               <span className="text-botanical-muted text-sm">Date</span>
               <span className="text-botanical-text">{formattedDate}</span>
             </div>
-            <div className="flex justify-between items-center p-4">
+            <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center p-4">
               <span className="text-botanical-muted text-sm">Time</span>
               <span className="text-botanical-text">{selectedTime}</span>
             </div>
-            <div className="flex justify-between items-center p-4">
+            <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center p-4">
               <span className="text-botanical-muted text-sm">Staff</span>
               <span className="text-botanical-text">{getStaffNameById(selectedStaff)}</span>
             </div>
-            <div className="flex justify-between items-center p-4">
+            <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center p-4">
               <span className="text-botanical-muted text-sm">Duration</span>
               <span className="text-botanical-text">{service.duration} mins</span>
             </div>
             {/* Price is now calculated on the server */}
-            {/* <div className="flex justify-between items-center p-4">
+            {/* <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center p-4">
               <span className="text-botanical-muted text-sm">Price</span>
               <span className="text-botanical-accent font-bold text-lg">${service.price.toFixed(2)}</span>
             </div> */}
             {isWalkIn && (clientName || selectedExistingClient) && (
-              <div className="flex justify-between items-center p-4">
+              <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center p-4">
                 <span className="text-botanical-muted text-sm">Client</span>
                 <span className="text-botanical-text">{selectedExistingClient?.name || clientName}</span>
               </div>

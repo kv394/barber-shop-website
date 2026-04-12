@@ -49,7 +49,7 @@ export default function NotificationsPage() {
   return (
     <main className="h-[100dvh] overflow-y-auto overflow-x-hidden">
       <header className="bg-botanical-surface backdrop-blur-md border-b border-botanical-border sticky top-0 z-20">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 py-4 flex justify-between items-center">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 py-4 flex flex-wrap justify-between gap-x-2 gap-y-2 items-center">
           <div>
             <h1 className="text-xl sm:text-2xl font-bold text-botanical-text">Notification Preferences</h1>
             <p className="text-xs text-botanical-muted">Control what emails and texts you receive</p>

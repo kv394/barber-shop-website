@@ -76,7 +76,7 @@ export default async function ShopLayout({
     <>
       {/* Mobile Header (All Roles except Super Admin) */}
       {!isSuperAdmin && (
-        <header className="sm:hidden fixed top-0 left-0 right-0 z-[100] flex justify-between items-center bg-botanical-surface border-b border-botanical-border px-4 py-3 shadow-sm">
+        <header className="sm:hidden fixed top-0 left-0 right-0 z-[100] flex flex-wrap justify-between gap-x-2 gap-y-2 items-center bg-botanical-surface border-b border-botanical-border px-4 py-3 shadow-sm">
           <div className="flex flex-col min-w-0 pr-4">
              <span className="text-botanical-text font-black text-xl leading-tight truncate">{data.shop.name}</span>
              <span className="text-botanical-muted text-xs uppercase font-bold tracking-wider leading-tight mt-0.5">{data.userRole.replace('_', ' ')}</span>
@@ -89,7 +89,7 @@ export default async function ShopLayout({
 
       <main className="flex h-[100dvh] overflow-y-auto overflow-x-hidden flex-col items-center bg-botanical-bg text-botanical-text px-0 sm:p-4 md:p-8 lg:p-12 pb-24 sm:pb-4 pt-[64px] sm:pt-4 md:pt-8 lg:pt-12 scroll-smooth">
         <div className="w-full max-w-7xl px-3 sm:px-0 pt-4 sm:pt-0">
-        <header className="hidden sm:flex justify-between items-center border-b border-botanical-border mb-6 sm:mb-8 pb-4 sm:pb-6">
+        <header className="hidden sm:flex flex-wrap justify-between gap-x-2 gap-y-2 items-center border-b border-botanical-border mb-6 sm:mb-8 pb-4 sm:pb-6">
           <div className="flex items-center gap-3">
             <h1 className="font-serif text-2xl sm:text-3xl md:text-4xl font-bold flex items-center flex-wrap gap-2">
               {isSuperAdmin ? (

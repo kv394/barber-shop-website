@@ -52,7 +52,7 @@ export default function TeamDashboardClient({
           return (
             <div key={staffMember.id} className={`bg-white border-2 border-b-[6px] border-botanical-border rounded-2xl p-5 flex flex-col shadow-lg transition-all duration-200 hover:shadow-xl hover:border-gray-200 ${isOnLeave ? 'ring-1 ring-red-500/50' : ''}`}>
               
-              <div className="flex justify-between items-start mb-4">
+              <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-start mb-4">
                 <StaffProfileModalWrapper staff={staffMember}>
                   <div className="flex items-center gap-3 text-left">
                     <div className="w-10 h-10 rounded-full overflow-hidden bg-white border-2 border-b-[6px] border-botanical-border flex items-center justify-center shrink-0">

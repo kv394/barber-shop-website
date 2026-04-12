@@ -48,7 +48,7 @@ export default function ClientGrid({ clients, shopId }: { clients: any[]; shopId
                 <p className="text-xs sm:text-sm text-botanical-muted truncate">{client.email.startsWith('walkin-') ? 'Walk-in (No Email)' : client.email}</p>
               </div>
               
-              <div className="flex justify-between items-end mt-auto pt-4 border-t border-botanical-border">
+              <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-end mt-auto pt-4 border-t border-botanical-border">
                 <div className="text-xs text-botanical-muted">
                   <div>Total Visits: <span className="font-bold text-botanical-text ml-1">{client._count?.clientAppointments || 0}</span></div>
                   {client.lastVisit && (

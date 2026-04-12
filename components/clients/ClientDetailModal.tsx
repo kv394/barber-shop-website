@@ -144,7 +144,7 @@ export default function ClientDetailModal({ shopId, clientId, clientName, onClos
   return (
     <div className="fixed inset-0 bg-botanical-surface z-[100] flex items-center justify-center p-4 backdrop-blur-sm" onClick={onClose}>
       <div className="bg-botanical-surface rounded-xl p-6 w-full max-w-2xl border-2 border-b-[6px] border-botanical-border shadow-2xl max-h-[90vh] overflow-y-auto custom-scrollbar" onClick={e => e.stopPropagation()}>
-        <div className="flex justify-between items-start mb-6 border-b border-botanical-border pb-4">
+        <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-start mb-6 border-b border-botanical-border pb-4">
           <div>
             <h3 className="text-xl font-bold text-botanical-accent">{clientName}</h3>
             {client && (
@@ -277,7 +277,7 @@ export default function ClientDetailModal({ shopId, clientId, clientName, onClos
                   {client.clientAppointments?.length > 0 ? (
                     <div className="space-y-2">
                       {client.clientAppointments.map((apt: any) => (
-                        <div key={apt.id} className="bg-botanical-surface p-3 rounded-lg border-2 border-b-[6px] border-botanical-border text-sm flex justify-between items-start">
+                        <div key={apt.id} className="bg-botanical-surface p-3 rounded-lg border-2 border-b-[6px] border-botanical-border text-sm flex flex-wrap justify-between gap-x-2 gap-y-2 items-start">
                           <div className="min-w-0">
                             <p className="font-medium text-botanical-text truncate">{apt.service?.name || 'Walkin Service'}</p>
                             <p className="text-sm text-botanical-muted">
@@ -313,7 +313,7 @@ export default function ClientDetailModal({ shopId, clientId, clientName, onClos
                       <div className="space-y-3">
                         {client.clientFormulas.map((f: any) => (
                           <div key={f.id} className="p-3 bg-botanical-surface rounded-lg border-2 border-b-[6px] border-botanical-border">
-                            <div className="flex justify-between items-start mb-2">
+                            <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-start mb-2">
                               <p className="text-sm text-botanical-muted">{new Date(f.date).toLocaleDateString()} by {f.staff?.name}</p>
                             </div>
                             <p className="text-sm text-botanical-accent font-mono mb-1">{f.formula}</p>

@@ -171,7 +171,7 @@ export default function BarcodeScannerWrapper({ shopId, services = [] }: { shopI
       {showOverlay && (
         <div className="fixed bottom-0 left-0 right-0 p-4 z-[60] flex justify-center pointer-events-none">
           <div className="bg-botanical-surface border border-brand-gold rounded-xl p-5 shadow-2xl max-w-sm w-full pointer-events-auto">
-            <div className="flex justify-between items-start mb-4">
+            <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-start mb-4">
               <h3 className="text-lg font-bold text-botanical-text">Scan Result</h3>
               <button onClick={resetAll} className="text-botanical-muted hover:text-botanical-text text-xl leading-none">✕</button>
             </div>

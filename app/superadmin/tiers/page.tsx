@@ -57,7 +57,7 @@ export default function SuperAdminTiersPage() {
 
   return (
     <div>
-      <div className="flex justify-between items-center mb-8">
+      <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-8">
         <div>
           <h1 className="text-3xl font-serif font-bold text-botanical-accent mb-2">SaaS Pricing Tiers</h1>
           <p className="text-botanical-muted">Manage limits and base fees for subscription packages.</p>

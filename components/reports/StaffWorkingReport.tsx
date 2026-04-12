@@ -105,7 +105,7 @@ export default function StaffWorkingReport({ staffMembers }: { staffMembers: Sta
       <div className="bg-botanical-surface backdrop-blur-xl shadow-2xl rounded-2xl border-2 border-b-[6px] border-botanical-border mb-8 flex flex-col lg:flex-row divide-y lg:divide-y-0 lg:divide-x divide-white/10 relative z-20 transform sm:-translate-y-6 sm:-mx-2">
         <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-botanical-surface transition-all duration-300 min-w-0">
           <div className="absolute top-0 left-0 w-full h-1 bg-blue-500/80"></div>
-          <div className="flex justify-between items-center mb-3">
+          <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-3">
             <h3 className="text-botanical-muted text-sm sm:text-xs uppercase tracking-widest font-semibold truncate">Total Staff</h3>
             <span className="text-blue-500 text-sm">👥</span>
           </div>
@@ -116,7 +116,7 @@ export default function StaffWorkingReport({ staffMembers }: { staffMembers: Sta
         </div>
         <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-botanical-surface transition-all duration-300 min-w-0">
           <div className="absolute top-0 left-0 w-full h-1 bg-purple-500/80"></div>
-          <div className="flex justify-between items-center mb-3">
+          <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-3">
             <h3 className="text-botanical-muted text-sm sm:text-xs uppercase tracking-widest font-semibold truncate">Total Hours</h3>
             <span className="text-purple-500 text-sm">⏱️</span>
           </div>
@@ -125,7 +125,7 @@ export default function StaffWorkingReport({ staffMembers }: { staffMembers: Sta
         </div>
         <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-botanical-surface transition-all duration-300 min-w-0">
           <div className="absolute top-0 left-0 w-full h-1 bg-green-500/80"></div>
-          <div className="flex justify-between items-center mb-3">
+          <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-3">
             <h3 className="text-botanical-muted text-sm sm:text-xs uppercase tracking-widest font-semibold truncate">Clients Served</h3>
             <span className="text-green-500 text-sm">✂️</span>
           </div>
@@ -134,7 +134,7 @@ export default function StaffWorkingReport({ staffMembers }: { staffMembers: Sta
         </div>
         <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-botanical-surface transition-all duration-300 min-w-0">
           <div className="absolute top-0 left-0 w-full h-1 bg-amber-500/80"></div>
-          <div className="flex justify-between items-center mb-3">
+          <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-3">
             <h3 className="text-botanical-muted text-sm sm:text-xs uppercase tracking-widest font-semibold truncate">Revenue Generated</h3>
             <span className="text-amber-500 text-sm">💰</span>
           </div>
@@ -219,7 +219,7 @@ export default function StaffWorkingReport({ staffMembers }: { staffMembers: Sta
                   {/* Progress Bars */}
                   <div className="mt-3 grid grid-cols-2 gap-3">
                     <div>
-                      <div className="flex justify-between text-sm text-botanical-muted mb-1">
+                      <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 text-sm text-botanical-muted mb-1">
                         <span>Hours share</span>
                         <span>{hoursPct.toFixed(1)}%</span>
                       </div>
@@ -228,7 +228,7 @@ export default function StaffWorkingReport({ staffMembers }: { staffMembers: Sta
                       </div>
                     </div>
                     <div>
-                      <div className="flex justify-between text-sm text-botanical-muted mb-1">
+                      <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 text-sm text-botanical-muted mb-1">
                         <span>Client share</span>
                         <span>{clientsPct.toFixed(1)}%</span>
                       </div>

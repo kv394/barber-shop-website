@@ -128,7 +128,7 @@ export default async function BookingsPage({ params }: { params: Promise<{ shopI
 
                     return (
                       <div key={apt.id} className={`bg-botanical-surface p-5 rounded-lg border ${isNow ? 'border-green-500/50 shadow-[0_0_15px_rgba(34,197,94,0.2)]' : 'border-botanical-border'}`}>
-                                           <div className="flex justify-between items-start mb-3 gap-2">
+                                           <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-start mb-3 gap-2">
                                                <div className="flex flex-col items-start gap-1">
                                                    <div className="flex flex-wrap items-center gap-2">
                                                        <h4 className="font-bold text-lg leading-tight">{apt.user?.name || "Guest"}</h4>

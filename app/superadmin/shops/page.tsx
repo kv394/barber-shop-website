@@ -40,7 +40,7 @@ export default function SuperAdminShopsPage() {
 
   return (
     <div>
-      <div className="flex justify-between items-center mb-6">
+      <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-6">
         <div>
           <h1 className="text-3xl font-serif font-bold text-botanical-accent mb-2">Shop Management</h1>
           <p className="text-botanical-muted">{shops.length} shop{shops.length !== 1 ? 's' : ''} on the platform</p>

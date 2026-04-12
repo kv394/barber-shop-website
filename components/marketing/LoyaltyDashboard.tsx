@@ -99,7 +99,7 @@ export default function LoyaltyDashboard({ shopId }: { shopId: string }) {
     <div className="space-y-8">
       {/* Program Settings */}
       <div className="bg-botanical-surface p-6 rounded-xl border-2 border-b-[6px] border-botanical-border">
-        <div className="flex justify-between items-center mb-6">
+        <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-6">
           <h3 className="text-lg font-bold text-botanical-text flex items-center gap-2">
             <span>⚙️</span> Loyalty Program Settings
           </h3>
@@ -161,7 +161,7 @@ export default function LoyaltyDashboard({ shopId }: { shopId: string }) {
 
       {/* Tier System */}
       <div className="bg-botanical-surface p-6 rounded-xl border-2 border-b-[6px] border-botanical-border">
-        <div className="flex justify-between items-center mb-4">
+        <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-4">
           <h3 className="text-lg font-bold text-botanical-text flex items-center gap-2">
             <span>🏅</span> Tier System
           </h3>

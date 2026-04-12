@@ -156,7 +156,7 @@ export default function LeaveManager({ shopId, userId }: { shopId: string, userI
         ) : (
           <div className="space-y-3">
             {leaves.map(leave => (
-              <div key={leave.id} className="flex justify-between items-center bg-botanical-surface p-4 rounded-lg border-2 border-b-[6px] border-botanical-border">
+              <div key={leave.id} className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center bg-botanical-surface p-4 rounded-lg border-2 border-b-[6px] border-botanical-border">
                 <div>
                   <p className="font-bold text-botanical-accent">
                     {new Date(leave.date).toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' })}

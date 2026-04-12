@@ -111,7 +111,7 @@ export default function ReportsClient({
         {/* Revenue */}
         <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-botanical-surface transition-all duration-300 min-w-0">
           <div className="absolute top-0 left-0 w-full h-1 bg-green-500/80"></div>
-          <div className="flex justify-between items-center mb-3">
+          <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-3">
             <h3 className="text-botanical-muted text-sm sm:text-xs uppercase tracking-widest font-semibold truncate">
               {isFiltered ? 'Filtered Revenue' : 'Total Revenue'}
             </h3>
@@ -124,7 +124,7 @@ export default function ReportsClient({
         {/* Tips */}
         <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-botanical-surface transition-all duration-300 min-w-0">
           <div className="absolute top-0 left-0 w-full h-1 bg-amber-500/80"></div>
-          <div className="flex justify-between items-center mb-3">
+          <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-3">
             <h3 className="text-botanical-muted text-sm sm:text-xs uppercase tracking-widest font-semibold truncate">Tips</h3>
             <span className="text-amber-500 text-sm">💰</span>
           </div>
@@ -135,7 +135,7 @@ export default function ReportsClient({
         {/* Completed */}
         <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-botanical-surface transition-all duration-300 min-w-0">
           <div className="absolute top-0 left-0 w-full h-1 bg-blue-500/80"></div>
-          <div className="flex justify-between items-center mb-3">
+          <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-3">
             <h3 className="text-botanical-muted text-sm sm:text-xs uppercase tracking-widest font-semibold truncate">Completed</h3>
             <span className="text-blue-500 text-sm">✂️</span>
           </div>
@@ -146,7 +146,7 @@ export default function ReportsClient({
         {/* Avg Service */}
         <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-botanical-surface transition-all duration-300 min-w-0">
           <div className="absolute top-0 left-0 w-full h-1 bg-purple-500/80"></div>
-          <div className="flex justify-between items-center mb-3">
+          <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-3">
             <h3 className="text-botanical-muted text-sm sm:text-xs uppercase tracking-widest font-semibold truncate">Avg Ticket</h3>
             <span className="text-purple-500 text-sm">📈</span>
           </div>
@@ -159,7 +159,7 @@ export default function ReportsClient({
         {/* Export */}
         <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-botanical-surface transition-all duration-300 flex flex-col justify-center min-w-0">
           <div className="absolute top-0 left-0 w-full h-1 bg-botanical-primary/80"></div>
-          <div className="flex justify-between items-center mb-3">
+          <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-3">
             <h3 className="text-botanical-muted text-sm sm:text-xs uppercase tracking-widest font-semibold truncate">Export Data</h3>
           </div>
           <button onClick={exportCSV} className="bg-botanical-surface hover:bg-botanical-primary text-white font-bold py-2 sm:py-3 px-3 rounded-lg transition-all w-full text-xs sm:text-sm truncate flex items-center justify-center gap-2">
@@ -215,7 +215,7 @@ export default function ReportsClient({
                   const isRefunded = (apt.refundAmount || 0) > 0;
                   return (
                     <div key={apt.id} className={`bg-botanical-surface p-3 rounded-lg border-2 border-b-[6px] border-botanical-border ${isRefunded ? 'opacity-60' : ''}`}>
-                      <div className="flex justify-between items-start mb-2">
+                      <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-start mb-2">
                         <div className="min-w-0">
                           <p className="font-medium text-sm text-botanical-text truncate">{apt.user.name || apt.user.email}</p>
                           <p className="text-xs text-botanical-accent">{apt.service.name}</p>
@@ -310,7 +310,7 @@ export default function ReportsClient({
             const pct = filteredRevenue > 0 ? (staff.revenue / filteredRevenue) * 100 : 0;
             return (
               <div key={staff.name} className="bg-botanical-surface p-4 rounded-lg border-2 border-b-[6px] border-botanical-border">
-                <div className="flex justify-between items-center mb-2">
+                <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-2">
                   <div>
                     <h4 className="font-bold text-botanical-text">✂️ {staff.name}</h4>
                     <p className="text-xs text-botanical-muted">{staff.count} services completed</p>
@@ -338,7 +338,7 @@ export default function ReportsClient({
             const pct = filteredRevenue > 0 ? (svc.revenue / filteredRevenue) * 100 : 0;
             return (
               <div key={svc.name} className="bg-botanical-surface p-4 rounded-lg border-2 border-b-[6px] border-botanical-border">
-                <div className="flex justify-between items-center mb-2">
+                <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-2">
                   <div>
                     <h4 className="font-bold text-botanical-accent">{svc.name}</h4>
                     <p className="text-xs text-botanical-muted">{svc.count} times booked</p>

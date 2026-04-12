@@ -37,15 +37,15 @@ export default function StaffProfileModalWrapper({ staff, children }: { staff: a
               </div>
               
               <div className="w-full space-y-4 text-sm bg-botanical-surface p-4 rounded-xl border-2 border-b-[6px] border-botanical-border">
-                <div className="flex justify-between items-center border-b border-botanical-border pb-3">
+                <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center border-b border-botanical-border pb-3">
                   <span className="text-botanical-muted font-medium">Email</span>
                   <span className="text-botanical-text font-medium truncate ml-4">{staff.email}</span>
                 </div>
-                <div className="flex justify-between items-center border-b border-botanical-border pb-3">
+                <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center border-b border-botanical-border pb-3">
                   <span className="text-botanical-muted font-medium">Phone</span>
                   <span className="text-botanical-text font-medium">{staff.phone || 'Not provided'}</span>
                 </div>
-                <div className="flex justify-between items-center">
+                <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center">
                   <span className="text-botanical-muted font-medium">Manage Inventory</span>
                   <span className="text-botanical-text font-medium">{staff.canManageInventory ? 'Yes' : 'No'}</span>
                 </div>

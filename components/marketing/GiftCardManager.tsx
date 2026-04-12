@@ -55,7 +55,7 @@ export default function GiftCardManager({ shopId }: { shopId: string }) {
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center">
+      <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center">
         <div className="flex gap-6">
           <div>
             <p className="text-xs text-botanical-muted uppercase">Total Sold</p>

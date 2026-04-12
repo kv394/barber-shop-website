@@ -97,7 +97,7 @@ export default function FormBuilder({ shopId }: { shopId: string }) {
       ) : (
         <div className="space-y-3">
           {forms.map(f => (
-            <div key={f.id} className="p-4 bg-botanical-surface rounded-lg border-2 border-b-[6px] border-botanical-border flex justify-between items-start gap-4">
+            <div key={f.id} className="p-4 bg-botanical-surface rounded-lg border-2 border-b-[6px] border-botanical-border flex flex-wrap justify-between gap-x-2 gap-y-2 items-start gap-4">
               <div>
                 <div className="flex items-center gap-2 mb-1">
                   <h5 className="text-botanical-text font-medium text-sm">{f.name}</h5>

@@ -33,7 +33,7 @@ export default function ReferralTracker({ shopId }: { shopId: string }) {
         <div className="bg-botanical-surface backdrop-blur-xl shadow-2xl rounded-2xl border-2 border-b-[6px] border-botanical-border flex flex-col md:flex-row divide-y md:divide-y-0 md:divide-x divide-white/10 relative z-20 overflow-hidden transform sm:-translate-y-6 sm:-mx-2 mb-2 sm:mb-6">
           <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-botanical-surface transition-all duration-300 min-w-0">
             <div className="absolute top-0 left-0 w-full h-1 bg-blue-500/80"></div>
-            <div className="flex justify-between items-center mb-3">
+            <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-3">
               <h3 className="text-botanical-muted text-sm sm:text-xs uppercase tracking-widest font-semibold truncate">Total Referrals</h3>
               <span className="text-blue-500 text-sm">👥</span>
             </div>
@@ -41,7 +41,7 @@ export default function ReferralTracker({ shopId }: { shopId: string }) {
           </div>
           <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-botanical-surface transition-all duration-300 min-w-0">
             <div className="absolute top-0 left-0 w-full h-1 bg-green-500/80"></div>
-            <div className="flex justify-between items-center mb-3">
+            <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-3">
               <h3 className="text-botanical-muted text-sm sm:text-xs uppercase tracking-widest font-semibold truncate">Completed</h3>
               <span className="text-green-500 text-sm">✅</span>
             </div>
@@ -49,7 +49,7 @@ export default function ReferralTracker({ shopId }: { shopId: string }) {
           </div>
           <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-botanical-surface transition-all duration-300 min-w-0">
             <div className="absolute top-0 left-0 w-full h-1 bg-amber-500/80"></div>
-            <div className="flex justify-between items-center mb-3">
+            <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-3">
               <h3 className="text-botanical-muted text-sm sm:text-xs uppercase tracking-widest font-semibold truncate">Pending</h3>
               <span className="text-amber-500 text-sm">⏳</span>
             </div>

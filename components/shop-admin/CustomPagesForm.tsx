@@ -57,7 +57,7 @@ export function CustomPagesForm({ shopId, customization }: { shopId: string; cus
 
   return (
     <div className="w-full mt-8">
-      <div className="flex justify-between items-center mb-6">
+      <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-6">
         <h2 className="text-xl sm:text-2xl font-bold text-botanical-text">Custom Pages (Menus)</h2>
         <button
           onClick={addPage}
@@ -87,7 +87,7 @@ export function CustomPagesForm({ shopId, customization }: { shopId: string; cus
         <div className="space-y-6">
           {pages.map((page, index) => (
             <div key={page.id} className="bg-botanical-surface p-6 rounded-lg border-2 border-b-[6px] border-botanical-border">
-              <div className="flex justify-between items-start mb-4">
+              <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-start mb-4">
                 <h3 className="text-lg font-bold text-botanical-text">Page {index + 1}</h3>
                 <button
                   onClick={() => removePage(index)}

@@ -72,7 +72,7 @@ export default function ExpensesClient({ shopId }: { shopId: string }) {
         <div className="bg-botanical-surface backdrop-blur-xl shadow-2xl rounded-2xl border-2 border-b-[6px] border-botanical-border flex-1 relative overflow-hidden group hover:bg-botanical-surface transition-all duration-300 z-20">
           <div className="absolute top-0 left-0 w-full h-1 bg-red-500/80"></div>
           <div className="p-5 sm:p-6">
-            <div className="flex justify-between items-center mb-2 sm:mb-3">
+            <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-2 sm:mb-3">
               <h3 className="text-botanical-muted text-sm sm:text-xs uppercase tracking-widest font-semibold truncate">Total Expenses</h3>
               <span className="text-red-500 text-sm">💸</span>
             </div>
@@ -122,7 +122,7 @@ export default function ExpensesClient({ shopId }: { shopId: string }) {
       ) : (
         <div className="space-y-2">
           {expenses.map(exp => (
-            <div key={exp.id} className="bg-botanical-surface p-3 rounded-lg border-2 border-b-[6px] border-botanical-border flex justify-between items-center">
+            <div key={exp.id} className="bg-botanical-surface p-3 rounded-lg border-2 border-b-[6px] border-botanical-border flex flex-wrap justify-between gap-x-2 gap-y-2 items-center">
               <div className="flex items-center gap-3">
                 <span className="text-lg">{catEmojis[exp.category] || '📦'}</span>
                 <div>

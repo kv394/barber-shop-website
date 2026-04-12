@@ -54,7 +54,7 @@ export default async function SuperAdminDashboard() {
           <h2 className="text-lg font-bold text-botanical-text mb-4">👥 Users by Role</h2>
           <div className="space-y-3">
             {(['SUPER_ADMIN', 'SHOP_ADMIN', 'STAFF', 'CLIENT', 'ATTENDANCE_KIOSK'] as const).map(role => (
-              <div key={role} className="flex justify-between items-center">
+              <div key={role} className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center">
                 <span className="text-sm text-botanical-muted">{role.replace(/_/g, ' ')}</span>
                 <span className="text-sm font-mono text-botanical-text bg-botanical-surface px-3 py-1 rounded-lg">
                   {roleCounts[role] || 0}
@@ -66,7 +66,7 @@ export default async function SuperAdminDashboard() {
 
         {/* Recent Shops */}
         <div className="bg-botanical-surface rounded-xl border-2 border-b-[6px] border-botanical-border p-6">
-          <div className="flex justify-between items-center mb-4">
+          <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-4">
             <h2 className="text-lg font-bold text-botanical-text">🏪 Recent Shops</h2>
             <Link href="/superadmin/shops" className="text-botanical-accent text-sm hover:underline">
               View All →

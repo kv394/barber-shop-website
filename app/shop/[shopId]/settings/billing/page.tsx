@@ -99,7 +99,7 @@ export default async function ShopBillingPage({ params }: { params: Promise<{ sh
             ].map(m => (
               <div key={m.label} className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-botanical-surface transition-all duration-300 min-w-0 border-t md:border-t-0 md:border-l border-botanical-border first:border-0">
                 <div className={`absolute top-0 left-0 w-full h-1 ${m.bgClass}`}></div>
-                <div className="flex justify-between items-center mb-2 sm:mb-3">
+                <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-2 sm:mb-3">
                   <h3 className="text-botanical-muted text-sm sm:text-xs uppercase tracking-widest font-semibold truncate">{m.label}</h3>
                   <span className={`${m.colorClass} text-sm`}>{m.icon}</span>
                 </div>
@@ -112,7 +112,7 @@ export default async function ShopBillingPage({ params }: { params: Promise<{ sh
             <div className="absolute top-0 left-0 w-full h-1 bg-botanical-primary/80"></div>
             <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 mb-6">
               <div>
-                <div className="flex justify-between items-center mb-2">
+                <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-2">
                    <p className="text-xs text-botanical-accent uppercase tracking-widest font-semibold">Current Tier</p>
                 </div>
                 <h3 className="text-3xl font-black text-botanical-text leading-tight">{analysis.pricingTierName}</h3>
@@ -128,7 +128,7 @@ export default async function ShopBillingPage({ params }: { params: Promise<{ sh
                 {analysis.strategyReasoning}
               </p>
             </div>
-            <div className="mt-6 pt-4 border-t border-brand-gold/10 flex justify-between items-center text-xs">
+            <div className="mt-6 pt-4 border-t border-brand-gold/10 flex flex-wrap justify-between gap-x-2 gap-y-2 items-center text-xs">
               <span className="text-botanical-muted">Estimated Database Storage:</span>
               <span className="font-mono text-botanical-text bg-botanical-surface px-2 py-1 rounded">~{analysis.estimatedStorageMB} MB</span>
             </div>

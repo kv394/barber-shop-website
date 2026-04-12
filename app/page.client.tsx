@@ -185,7 +185,7 @@ export default function Home() {
     <main className="h-[100dvh] overflow-y-auto overflow-x-hidden bg-botanical-bg">
       <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
         
-        <header className="flex justify-between items-center mb-12 sm:mb-20">
+        <header className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-12 sm:mb-20">
           <h1 className="font-serif text-4xl sm:text-5xl font-bold tracking-tight">
             {userProfile?.role === 'SUPER_ADMIN' ? (
                 <><span className="text-botanical-text">Barber</span><span className="text-botanical-accent">SaaS</span></>
@@ -284,7 +284,7 @@ export default function Home() {
               {/* Recent Shops Quick View */}
               {shops && shops.length > 0 && (
                 <div>
-                  <div className="flex justify-between items-center mb-4">
+                  <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-4">
                     <h2 className="text-sm sm:text-base font-serif">Shops ({shops.length})</h2>
                     <Link href="/superadmin/shops" className="text-botanical-accent text-sm hover:underline">View All →</Link>
                   </div>

@@ -65,7 +65,7 @@ export default function WaitlistClient({ shopId, services, staff }: { shopId: st
       <div className="bg-botanical-surface backdrop-blur-xl shadow-2xl rounded-2xl border-2 border-b-[6px] border-botanical-border flex flex-col md:flex-row divide-y md:divide-y-0 md:divide-x divide-white/10 relative z-20 overflow-hidden transform sm:-translate-y-6 sm:-mx-2 mb-2 sm:mb-6">
         <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-botanical-surface transition-all duration-300 min-w-0">
           <div className="absolute top-0 left-0 w-full h-1 bg-blue-500/80"></div>
-          <div className="flex justify-between items-center mb-2 sm:mb-3">
+          <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-2 sm:mb-3">
             <h3 className="text-botanical-muted text-sm sm:text-xs uppercase tracking-widest font-semibold truncate">Waiting</h3>
             <span className="text-blue-500 text-sm">⏳</span>
           </div>
@@ -73,7 +73,7 @@ export default function WaitlistClient({ shopId, services, staff }: { shopId: st
         </div>
         <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-botanical-surface transition-all duration-300 min-w-0">
           <div className="absolute top-0 left-0 w-full h-1 bg-green-500/80"></div>
-          <div className="flex justify-between items-center mb-2 sm:mb-3">
+          <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-2 sm:mb-3">
             <h3 className="text-botanical-muted text-sm sm:text-xs uppercase tracking-widest font-semibold truncate">Being Served</h3>
             <span className="text-green-500 text-sm">✂️</span>
           </div>
@@ -81,7 +81,7 @@ export default function WaitlistClient({ shopId, services, staff }: { shopId: st
         </div>
         <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-botanical-surface transition-all duration-300 min-w-0">
           <div className="absolute top-0 left-0 w-full h-1 bg-purple-500/80"></div>
-          <div className="flex justify-between items-center mb-2 sm:mb-3">
+          <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-2 sm:mb-3">
             <h3 className="text-botanical-muted text-sm sm:text-xs uppercase tracking-widest font-semibold truncate">Est. Wait</h3>
             <span className="text-purple-500 text-sm">⏱️</span>
           </div>
@@ -109,7 +109,7 @@ export default function WaitlistClient({ shopId, services, staff }: { shopId: st
       {loading ? <p className="text-botanical-muted text-center py-8">Loading...</p> : (
         <div className="space-y-3">
           {serving.map(entry => (
-            <div key={entry.id} className="bg-green-900/20 p-4 rounded-lg border border-green-500/30 flex justify-between items-center">
+            <div key={entry.id} className="bg-green-900/20 p-4 rounded-lg border border-green-500/30 flex flex-wrap justify-between gap-x-2 gap-y-2 items-center">
               <div className="flex items-center gap-3">
                 <div className="w-8 h-8 rounded-full bg-green-600 flex items-center justify-center text-botanical-text font-bold text-sm">✂️</div>
                 <div>
@@ -124,7 +124,7 @@ export default function WaitlistClient({ shopId, services, staff }: { shopId: st
           ))}
           {waiting.map((entry, idx) => (
             <div key={entry.id} className="bg-botanical-surface p-4 rounded-lg border-2 border-b-[6px] border-botanical-border">
-              <div className="flex justify-between items-center">
+              <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center">
                 <div className="flex items-center gap-3">
                   <div className="w-8 h-8 rounded-full bg-botanical-surface flex items-center justify-center text-botanical-text font-bold text-sm">{idx + 1}</div>
                   <div>

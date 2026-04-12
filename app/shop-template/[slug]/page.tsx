@@ -140,7 +140,7 @@ export default async function PublicShopPage({
           {shop.services && shop.services.length > 0 ? (
             <div className="space-y-8">
               {shop.services.map((service: any) => (
-                <div key={service.id} className="flex justify-between items-baseline group cursor-pointer">
+                <div key={service.id} className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-baseline group cursor-pointer">
                   <div className="flex-1 border-b border-dotted border-botanical-border pb-1 mr-4">
                     <h3 className="text-lg font-medium transition-colors" style={{ color: primaryColor }}>{service.name}</h3>
                     {service.description && <p className="text-botanical-muted text-sm mt-1">{service.description}</p>}

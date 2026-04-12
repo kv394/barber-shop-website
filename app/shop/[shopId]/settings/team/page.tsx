@@ -345,7 +345,7 @@ export default async function TeamDashboardPage({ params, searchParams }: { para
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {staff.map((staffMember: any) => (
             <div key={staffMember.id} className="bg-white border-2 border-b-[6px] border-botanical-border rounded-2xl p-5 flex flex-col shadow-lg">
-              <div className="flex justify-between items-start mb-4">
+              <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-start mb-4">
                 <div>
                   <h2 className="text-xl font-bold text-slate-900 mb-1 flex items-center gap-2">
                     {staffMember.name || staffMember.email.split('@')[0]}

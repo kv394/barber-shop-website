@@ -25,7 +25,7 @@ export default function EngagementAnalytics({ shopId }: { shopId: string }) {
       <div className="bg-botanical-surface backdrop-blur-xl shadow-2xl rounded-2xl border-2 border-b-[6px] border-botanical-border flex flex-col md:flex-row md:flex-wrap lg:flex-nowrap divide-y md:divide-y-0 md:divide-x divide-white/10 relative z-20 overflow-hidden transform sm:-translate-y-6 sm:-mx-2 mb-2 sm:mb-6">
         <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-botanical-surface transition-all duration-300 min-w-0">
           <div className="absolute top-0 left-0 w-full h-1 bg-blue-500/80"></div>
-          <div className="flex justify-between items-center mb-3">
+          <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-3">
             <h3 className="text-botanical-muted text-sm sm:text-xs uppercase tracking-widest font-semibold truncate">Total Clients</h3>
             <span className="text-blue-500 text-sm">👥</span>
           </div>
@@ -33,7 +33,7 @@ export default function EngagementAnalytics({ shopId }: { shopId: string }) {
         </div>
         <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-botanical-surface transition-all duration-300 min-w-0">
           <div className="absolute top-0 left-0 w-full h-1 bg-green-500/80"></div>
-          <div className="flex justify-between items-center mb-3">
+          <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-3">
             <h3 className="text-botanical-muted text-sm sm:text-xs uppercase tracking-widest font-semibold truncate">Active (30d)</h3>
             <span className="text-green-500 text-sm">🔥</span>
           </div>
@@ -41,7 +41,7 @@ export default function EngagementAnalytics({ shopId }: { shopId: string }) {
         </div>
         <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-botanical-surface transition-all duration-300 min-w-0">
           <div className="absolute top-0 left-0 w-full h-1 bg-cyan-500/80"></div>
-          <div className="flex justify-between items-center mb-3">
+          <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-3">
             <h3 className="text-botanical-muted text-sm sm:text-xs uppercase tracking-widest font-semibold truncate">New (30d)</h3>
             <span className="text-cyan-500 text-sm">🌟</span>
           </div>
@@ -49,7 +49,7 @@ export default function EngagementAnalytics({ shopId }: { shopId: string }) {
         </div>
         <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-botanical-surface transition-all duration-300 min-w-0">
           <div className="absolute top-0 left-0 w-full h-1 bg-purple-500/80"></div>
-          <div className="flex justify-between items-center mb-3">
+          <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-3">
             <h3 className="text-botanical-muted text-sm sm:text-xs uppercase tracking-widest font-semibold truncate">Retention</h3>
             <span className="text-purple-500 text-sm">🔄</span>
           </div>
@@ -57,7 +57,7 @@ export default function EngagementAnalytics({ shopId }: { shopId: string }) {
         </div>
         <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-botanical-surface transition-all duration-300 min-w-0">
           <div className="absolute top-0 left-0 w-full h-1 bg-amber-500/80"></div>
-          <div className="flex justify-between items-center mb-3">
+          <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-3">
             <h3 className="text-botanical-muted text-sm sm:text-xs uppercase tracking-widest font-semibold truncate">Appts (30d)</h3>
             <span className="text-amber-500 text-sm">📅</span>
           </div>
@@ -65,7 +65,7 @@ export default function EngagementAnalytics({ shopId }: { shopId: string }) {
         </div>
         <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-botanical-surface transition-all duration-300 min-w-0 border-t md:border-t-0 md:border-l border-botanical-border">
           <div className="absolute top-0 left-0 w-full h-1 bg-botanical-primary/80"></div>
-          <div className="flex justify-between items-center mb-3">
+          <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-3">
             <h3 className="text-botanical-muted text-sm sm:text-xs uppercase tracking-widest font-semibold truncate">Avg Rating</h3>
             <span className="text-yellow-500 text-sm">⭐</span>
           </div>
@@ -80,13 +80,13 @@ export default function EngagementAnalytics({ shopId }: { shopId: string }) {
             <span>⭐</span> Loyalty Program
           </h4>
           <div className="space-y-2">
-            <div className="flex justify-between text-sm">
+            <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 text-sm">
               <span className="text-botanical-muted">Status</span>
               <span className={loyalty.isActive ? 'text-green-400 font-semibold' : 'text-red-400'}>
                 {loyalty.isActive ? '● Active' : '● Inactive'}
               </span>
             </div>
-            <div className="flex justify-between text-sm">
+            <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 text-sm">
               <span className="text-botanical-muted">Members</span>
               <span className="text-botanical-text font-semibold">{loyalty.totalAccounts}</span>
             </div>
@@ -98,11 +98,11 @@ export default function EngagementAnalytics({ shopId }: { shopId: string }) {
             <span>🔗</span> Referrals
           </h4>
           <div className="space-y-2">
-            <div className="flex justify-between text-sm">
+            <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 text-sm">
               <span className="text-botanical-muted">Total</span>
               <span className="text-botanical-text font-semibold">{referrals.total}</span>
             </div>
-            <div className="flex justify-between text-sm">
+            <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 text-sm">
               <span className="text-botanical-muted">Completed</span>
               <span className="text-green-400 font-semibold">{referrals.completed}</span>
             </div>
@@ -114,7 +114,7 @@ export default function EngagementAnalytics({ shopId }: { shopId: string }) {
             <span>📣</span> Campaigns
           </h4>
           <div className="space-y-2">
-            <div className="flex justify-between text-sm">
+            <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 text-sm">
               <span className="text-botanical-muted">Sent</span>
               <span className="text-botanical-text font-semibold">{campaigns.totalSent}</span>
             </div>

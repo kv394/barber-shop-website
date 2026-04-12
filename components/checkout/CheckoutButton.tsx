@@ -286,20 +286,20 @@ export default function CheckoutButton({
 
               {/* ── Total Summary ── */}
               <section className="bg-botanical-surface rounded-xl p-4 space-y-1.5 border-2 border-b-[6px] border-botanical-border">
-                <div className="flex justify-between text-sm text-botanical-muted">
+                <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 text-sm text-botanical-muted">
                   <span>Subtotal</span><span>${subtotal.toFixed(2)}</span>
                 </div>
                 {effectiveDiscount > 0 && (
-                  <div className="flex justify-between text-sm text-red-400">
+                  <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 text-sm text-red-400">
                     <span>Discount</span><span>−${effectiveDiscount.toFixed(2)}</span>
                   </div>
                 )}
                 {tipAmount > 0 && (
-                  <div className="flex justify-between text-sm text-amber-400">
+                  <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 text-sm text-amber-400">
                     <span>Tip</span><span>+${tipAmount.toFixed(2)}</span>
                   </div>
                 )}
-                <div className="flex justify-between text-xl font-black text-botanical-text border-t border-botanical-border pt-2 mt-1">
+                <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 text-xl font-black text-botanical-text border-t border-botanical-border pt-2 mt-1">
                   <span>Total</span>
                   <span className="text-botanical-accent">${finalTotal.toFixed(2)}</span>
                 </div>

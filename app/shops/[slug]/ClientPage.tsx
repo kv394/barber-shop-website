@@ -340,7 +340,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                     <div className="p-6 flex-grow">
                       <h3 className="text-xl font-bold text-gray-900 mb-2">{service.name}</h3>
                       <p className="text-botanical-muted text-sm mb-4">{service.description}</p>
-                      <div className="flex justify-between items-center mb-4">
+                      <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-4">
                         <span className="text-lg font-bold" style={{ color: primaryColor }}>${service.price.toFixed(2)}</span>
                         <span className="text-sm text-botanical-muted">{service.duration} min</span>
                       </div>
@@ -435,7 +435,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                 <h2 className="text-center text-sm uppercase tracking-[0.3em] text-botanical-muted mb-10">Services</h2>
                 <div className="space-y-6">
                   {shop.services?.map((service: any) => (
-                    <div key={service.id} className="flex justify-between items-center border border-gray-800 p-4 hover:bg-botanical-surface transition-colors">
+                    <div key={service.id} className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center border border-gray-800 p-4 hover:bg-botanical-surface transition-colors">
                       <div>
                         <h3 className="text-xl font-bold">{service.name}</h3>
                         <p className="text-sm text-botanical-muted">{service.duration} minutes</p>
@@ -473,7 +473,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
       if (templateType === 'sunset') {
         return (
           <main className="h-[100dvh] overflow-y-auto overflow-x-hidden bg-gradient-to-br from-purple-900 via-black to-orange-900 text-botanical-text font-sans relative">
-            <div className="absolute w-full top-0 left-0 p-4 sm:p-6 flex justify-between items-center z-50">
+            <div className="absolute w-full top-0 left-0 p-4 sm:p-6 flex flex-wrap justify-between gap-x-2 gap-y-2 items-center z-50">
              {pages.filter((p: any) => p.isVisible).length > 0 ? (
                  <nav className="flex gap-4 sm:gap-6 bg-botanical-surface px-4 sm:px-6 py-2 rounded-full backdrop-blur-md border border-orange-500/20 overflow-x-auto max-w-[calc(100vw-100px)] hide-scrollbar">
                     <button onClick={() => setActivePageId(null)} className={`text-sm font-medium transition-colors whitespace-nowrap ${!activePageId ? 'text-orange-400' : 'text-botanical-muted hover:text-orange-400'}`}>Home</button>
@@ -508,7 +508,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                     <div key={service.id} className="bg-botanical-surface backdrop-blur-sm border border-orange-500/30 rounded-lg p-6 hover:border-orange-500 transition-colors flex flex-col">
                       <h3 className="text-2xl font-bold text-orange-300">{service.name}</h3>
                       <p className="text-purple-200/60 mt-1 mb-4 flex-grow">{service.description}</p>
-                      <div className="flex justify-between items-center border-t border-orange-500/20 pt-4 mb-4">
+                      <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center border-t border-orange-500/20 pt-4 mb-4">
                         <span className="text-sm text-botanical-muted">{service.duration} mins</span>
                         <span className="text-xl font-bold text-orange-400">${service.price.toFixed(2)}</span>
                       </div>
@@ -703,7 +703,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
       // Default 'modern' template (the one that was originally there)
       return (
         <main className="h-[100dvh] overflow-y-auto overflow-x-hidden bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 relative">
-          <header className="absolute w-full top-0 left-0 p-4 sm:p-6 flex justify-between items-center z-50">
+          <header className="absolute w-full top-0 left-0 p-4 sm:p-6 flex flex-wrap justify-between gap-x-2 gap-y-2 items-center z-50">
              {pages.filter((p: any) => p.isVisible).length > 0 ? (
                  <nav className="flex gap-4 sm:gap-6 bg-botanical-surface px-4 sm:px-6 py-2 rounded-full backdrop-blur-md border-2 border-b-[6px] border-botanical-border overflow-x-auto max-w-[calc(100vw-100px)] hide-scrollbar">
                     <button onClick={() => setActivePageId(null)} className={`text-sm font-medium transition-colors whitespace-nowrap ${!activePageId ? 'text-botanical-text' : 'text-botanical-muted hover:text-botanical-text'}`}>Home</button>

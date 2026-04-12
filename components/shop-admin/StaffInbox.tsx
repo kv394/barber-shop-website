@@ -57,7 +57,7 @@ export default function StaffInbox({ shopId, userId }: { shopId: string, userId:
       <div className="divide-y divide-white/5 max-h-[60vh] sm:max-h-96 overflow-y-auto">
         {items.map(item => (
           <div key={item.id} className="p-4 sm:p-5 hover:bg-botanical-surface transition-colors group active:bg-botanical-border">
-            <div className="flex justify-between items-start mb-2 gap-3">
+            <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-start mb-2 gap-3">
               <h4 className="text-base sm:text-sm font-semibold text-botanical-text group-hover:text-botanical-accent transition-colors">{item.title}</h4>
               <span className="text-xs text-botanical-muted font-mono shrink-0 pt-0.5">
                 {new Date(item.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
