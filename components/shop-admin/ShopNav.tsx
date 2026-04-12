@@ -103,48 +103,49 @@ export function ShopNav({ shopId, userRole, activeTab }: { shopId: string, userR
 
       {/* ── Mobile App Bottom Navigation ── */}
       <div className="sm:hidden fixed bottom-0 left-0 right-0 bg-botanical-surface backdrop-blur-xl border-t border-botanical-border z-[100] pb-safe shadow-[0_-4px_25px_-5px_rgba(0,0,0,0.1)]">
-        <nav aria-label="Mobile Bottom Navigation" className="flex justify-around items-center h-24 px-2 py-3">
-          <Link href={`/shop/${shopId}`} aria-current={activeTab === 'dashboard' ? 'page' : undefined} className={`flex flex-col items-center justify-center w-full h-full mx-1 rounded-2xl space-y-1 ${activeTab === 'dashboard' ? 'text-botanical-text shadow-sm bg-gray-100 border border-botanical-border' : 'text-botanical-muted hover:text-slate-700 hover:bg-gray-50 transition-colors'}`}>
-            <span className="text-2xl" aria-hidden="true">🏠</span>
-            <span className="text-base md:text-lg font-bold tracking-wide text-center">Home</span>
-          </Link>
-          <Link href={`/shop/${shopId}/bookings`} aria-current={activeTab === 'bookings' ? 'page' : undefined} className={`flex flex-col items-center justify-center w-full h-full mx-1 rounded-2xl space-y-1 ${activeTab === 'bookings' ? 'text-botanical-text shadow-sm bg-gray-100 border border-botanical-border' : 'text-botanical-muted hover:text-slate-700 hover:bg-gray-50 transition-colors'}`}>
-            <span className="text-2xl" aria-hidden="true">📅</span>
-            <span className="text-base md:text-lg font-bold tracking-wide text-center">Bookings</span>
-          </Link>
-          {isStaff ? (
-            <Link href={`/shop/${shopId}/staff`} aria-current={activeTab === 'staff' ? 'page' : undefined} className={`flex flex-col items-center justify-center w-full h-full mx-1 rounded-2xl space-y-1 ${activeTab === 'staff' ? 'text-botanical-text shadow-sm bg-gray-100 border border-botanical-border' : 'text-botanical-muted hover:text-slate-700 hover:bg-gray-50 transition-colors'}`}>
-              <span className="text-2xl" aria-hidden="true">🗓️</span>
-              <span className="text-base md:text-lg font-bold tracking-wide text-center">Schedule</span>
-            </Link>
-          ) : (
-            <Link href={`/shop/${shopId}/settings/team`} aria-current={activeTab === 'team' || effectiveStaffTabs.includes(activeTab) ? 'page' : undefined} className={`flex flex-col items-center justify-center w-full h-full mx-1 rounded-2xl space-y-1 ${activeTab === 'team' || effectiveStaffTabs.includes(activeTab) ? 'text-botanical-text shadow-sm bg-gray-100 border border-botanical-border' : 'text-botanical-muted hover:text-slate-700 hover:bg-gray-50 transition-colors'}`}>
-              <span className="text-2xl" aria-hidden="true">👥</span>
-              <span className="text-base md:text-lg font-bold tracking-wide text-center">Team</span>
-            </Link>
-          )}
-          {isStaff ? (
-            <Link href={`/shop/${shopId}/clients`} aria-current={activeTab === 'clients' ? 'page' : undefined} className={`flex flex-col items-center justify-center w-full h-full mx-1 rounded-2xl space-y-1 ${activeTab === 'clients' ? 'text-botanical-text shadow-sm bg-gray-100 border border-botanical-border' : 'text-botanical-muted hover:text-slate-700 hover:bg-gray-50 transition-colors'}`}>
-              <span className="text-2xl" aria-hidden="true">👥</span>
-              <span className="text-base md:text-lg font-bold tracking-wide text-center">Clients</span>
-            </Link>
-          ) : (
-            <Link href={`/shop/${shopId}/reports`} aria-current={isReportsSection ? 'page' : undefined} className={`flex flex-col items-center justify-center w-full h-full mx-1 rounded-2xl space-y-1 ${isReportsSection ? 'text-botanical-text shadow-sm bg-gray-100 border border-botanical-border' : 'text-botanical-muted hover:text-slate-700 hover:bg-gray-50 transition-colors'}`}>
-              <span className="text-2xl" aria-hidden="true">📊</span>
-              <span className="text-base md:text-lg font-bold tracking-wide text-center">Reports</span>
-            </Link>
-          )}
-          {isStaff ? (
-            <Link href={`/shop/${shopId}/profile`} aria-current={['profile', 'leave', 'portfolio', 'commissions'].includes(activeTab) ? 'page' : undefined} className={`flex flex-col items-center justify-center w-full h-full mx-1 rounded-2xl space-y-1 ${['profile', 'leave', 'portfolio', 'commissions'].includes(activeTab) ? 'text-botanical-text shadow-sm bg-gray-100 border border-botanical-border' : 'text-botanical-muted hover:text-slate-700 hover:bg-gray-50 transition-colors'}`}>
-              <span className="text-2xl" aria-hidden="true">👤</span>
-              <span className="text-base md:text-lg font-bold tracking-wide text-center">Profile</span>
-            </Link>
-          ) : (
-            <Link href={`/shop/${shopId}/settings`} aria-current={isSettingsSection ? 'page' : undefined} className={`flex flex-col items-center justify-center w-full h-full mx-1 rounded-2xl space-y-1 ${isSettingsSection ? 'text-botanical-text shadow-sm bg-gray-100 border border-botanical-border' : 'text-botanical-muted hover:text-slate-700 hover:bg-gray-50 transition-colors'}`}>
-              <span className="text-2xl" aria-hidden="true">⚙️</span>
-              <span className="text-base md:text-lg font-bold tracking-wide text-center">Settings</span>
-            </Link>
-          )}
+        <nav aria-label="Mobile Bottom Navigation" className="flex items-center h-[5.5rem] px-2 py-2 overflow-x-auto scrollbar-none gap-1">
+          {(() => {
+            const mobileLink = (href: string, tabId: string, icon: string, label: string, isGroupMatch = false) => {
+              const isActive = activeTab === tabId || isGroupMatch;
+              return (
+                <Link href={href} aria-current={isActive ? 'page' : undefined} className={`flex-shrink-0 flex flex-col items-center justify-center w-[72px] h-full rounded-2xl space-y-1 ${isActive ? 'text-botanical-text shadow-sm bg-gray-100 border border-botanical-border' : 'text-botanical-muted hover:text-slate-700 hover:bg-gray-50 transition-colors'}`}>
+                  <span className="text-[1.35rem]" aria-hidden="true">{icon}</span>
+                  <span className="text-[10px] font-bold tracking-wide text-center leading-tight">{label}</span>
+                </Link>
+              );
+            };
+
+            return (
+              <>
+                {(isShopAdmin || isStaff) && (
+                  <>
+                    {mobileLink(`/shop/${shopId}`, 'dashboard', '🏠', 'Home')}
+                    {mobileLink(`/shop/${shopId}/bookings`, 'bookings', '📅', 'Bookings')}
+                    {mobileLink(`/shop/${shopId}/waitlist`, 'waitlist', '⏳', 'Waitlist')}
+                    {mobileLink(`/shop/${shopId}/clients`, 'clients', '👥', 'Clients')}
+                    
+                    {isShopAdmin ? (
+                      mobileLink(`/shop/${shopId}/settings/team`, 'team', '👨‍👩‍👧‍👦', 'Team', effectiveStaffTabs.includes(activeTab) || activeTab === 'team')
+                    ) : (
+                      <>
+                        {mobileLink(`/shop/${shopId}/staff`, 'staff', '🗓️', 'Schedule')}
+                        {mobileLink(`/shop/${shopId}/profile`, 'profile', '👤', 'Profile', ['profile', 'leave', 'portfolio', 'commissions'].includes(activeTab))}
+                      </>
+                    )}
+                  </>
+                )}
+
+                {isShopAdmin && (
+                  <>
+                    {mobileLink(`/shop/${shopId}/engagement`, 'engagement', '📢', 'Engage', engagementTabs.includes(activeTab))}
+                    {mobileLink(`/shop/${shopId}/reports`, 'reports', '📊', 'Reports', reportsTabs.includes(activeTab))}
+                    {mobileLink(`/shop/${shopId}/reviews`, 'reviews', '⭐', 'Reviews')}
+                    {mobileLink(`/shop/${shopId}/settings`, 'settings', '⚙️', 'Settings', settingsTabs.includes(activeTab))}
+                  </>
+                )}
+              </>
+            );
+          })()}
         </nav>
       </div>
     </>
