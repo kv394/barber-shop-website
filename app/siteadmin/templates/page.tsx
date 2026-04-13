@@ -88,14 +88,34 @@ export default function TemplatesPage() {
     }
   };
 
+  const [generateFiles, setGenerateFiles] = useState<FileList | null>(null);
+
   const handleGenerate = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!targetShopId) {
+      alert('Please select a target shop context to organize assets.');
+      return;
+    }
     setGenerating(true);
+    
+    const formData = new FormData();
+    formData.append('name', name.trim());
+    formData.append('description', description.trim());
+    formData.append('prompt', prompt.trim());
+    formData.append('model', model);
+    formData.append('baseTemplateId', baseTemplateId);
+    formData.append('targetShopId', targetShopId);
+    
+    if (generateFiles) {
+      for (let i = 0; i < generateFiles.length; i++) {
+        formData.append('files', generateFiles[i]);
+      }
+    }
+
     try {
       const res = await fetch('/api/siteadmin/templates/generate', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, description, prompt, model, baseTemplateId, targetShopId }),
+        body: formData,
       });
       const data = await res.json();
       if (data.error) throw new Error(data.error);
@@ -105,6 +125,7 @@ export default function TemplatesPage() {
       setPrompt('');
       setBaseTemplateId('');
       setTargetShopId('');
+      setGenerateFiles(null);
     } catch (err: any) {
       alert(err.message);
     } finally {
@@ -240,7 +261,17 @@ export default function TemplatesPage() {
               </optgroup>
             </select>
           </div>
-          <button disabled={generating} type="submit" className="bg-botanical-primary text-white px-6 py-2 rounded font-semibold disabled:opacity-50 transition">
+          <div>
+            <label className="block text-sm text-botanical-muted mb-1">Optional Assets (Images, Logos)</label>
+            <input 
+              type="file" 
+              multiple 
+              onChange={e => setGenerateFiles(e.target.files)} 
+              className="w-full bg-botanical-surface border border-botanical-border shadow-sm p-2 rounded text-botanical-text" 
+            />
+            <p className="text-xs text-botanical-muted mt-1">These will be uploaded to Google Drive and their URLs passed to the AI.</p>
+          </div>
+          <button disabled={generating || !targetShopId} type="submit" className="bg-botanical-primary text-white px-6 py-2 rounded font-semibold disabled:opacity-50 transition">
             {generating ? 'Generating via Gemini...' : 'Generate Template'}
           </button>
         </form>

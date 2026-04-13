@@ -23,7 +23,14 @@ export async function POST(request: NextRequest) {
   const adminCheck = await requireSiteAdmin();
   if (adminCheck instanceof NextResponse) return adminCheck;
 
-  const { prompt, name, description, model, baseTemplateId, targetShopId } = await request.json();
+  const formData = await request.formData();
+  const prompt = formData.get('prompt') as string;
+  const name = formData.get('name') as string;
+  const description = formData.get('description') as string;
+  const model = formData.get('model') as string;
+  const baseTemplateId = formData.get('baseTemplateId') as string;
+  const targetShopId = formData.get('targetShopId') as string;
+  const files = formData.getAll('files') as File[];
 
   if (!prompt || !name) {
     return NextResponse.json({ error: 'Missing prompt or name' }, { status: 400 });
@@ -31,6 +38,19 @@ export async function POST(request: NextRequest) {
 
   if (!targetShopId) {
     return NextResponse.json({ error: 'Missing targetShopId' }, { status: 400 });
+  }
+
+  const FOLDER_PATH = `/barbersaas/${targetShopId}/${name}`;
+  const uploadedAssets: { fileName: string; url: string }[] = [];
+
+  if (files && files.length > 0) {
+    for (const file of files) {
+      const buffer = Buffer.from(await file.arrayBuffer());
+      const fileId = await uploadFileToPath(FOLDER_PATH, file.name, file.type, buffer);
+      if (fileId) {
+        uploadedAssets.push({ fileName: file.name, url: `/api/assets/${fileId}` });
+      }
+    }
   }
 
   let shopContextStr = '';
@@ -137,6 +157,7 @@ CRITICAL REQUIREMENTS FOR THE SITE STRUCTURE:
   4. Customer Reviews
   5. Gallery (using shop's photo gallery)
 - **Editable Content:** Use Handlebars variables for all headings, subheadings, and paragraphs (e.g., {{aboutUsTitle}}, {{servicesDescription}}, {{gallerySubtitle}}) so the shop admin can edit whatever text they want in the template edit page. Do not hardcode descriptive text if a placeholder can be used instead.
+- **Images:** Wherever images are necessary for the design (like hero backgrounds, placeholders for services, or staff avatars if not provided), you MUST ONLY use 100% royalty-free placeholder images. For example, use Unsplash direct image IDs like \`https://images.unsplash.com/photo-1585747860715-2ba37e788b70?w=800&q=80\` or services like \`https://picsum.photos/800/600\`. Do not leave src attributes empty and ensure all images are royalty-free.
 
 REQUIRED PLACEHOLDERS to use in your HTML:
 - {{shop.name}} : The name of the shop (use in headers/hero)
@@ -202,6 +223,14 @@ ${baseCss}
 
     if (shopContextStr) {
       userPrompt += `\n\n${shopContextStr}`;
+    }
+
+    if (uploadedAssets.length > 0) {
+      userPrompt += `\n\n--- UPLOADED ASSETS ---
+The user has provided the following asset files that you MUST use in your design (e.g., as logos, hero backgrounds, or profile pictures). 
+Use the exact provided URLs in the src or background-image attributes:
+${uploadedAssets.map(a => `- ${a.fileName}: ${a.url}`).join('\n')}
+-----------------------`;
     }
 
     userPrompt += `\n\nOutput ONLY the raw, valid JSON object matching the schema { "htmlCode": "...", "cssCode": "..." }. No markdown blocks.`;
