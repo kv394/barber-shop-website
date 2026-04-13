@@ -143,7 +143,7 @@ You MUST strictly adhere to the following rules:
 2. The JSON object must have exactly two keys: "htmlCode" and "cssCode".
 3. The "htmlCode" must contain the full HTML structure (assume it will be placed inside a <body> tag, provide the main wrapper divs).
 4. The "cssCode" should contain any custom CSS (e.g., @import fonts, custom animations). Leave as empty string if not needed.
-5. You MUST use the exact Handlebars placeholders provided by the user for dynamic data. Do not invent new placeholders.
+5. You MUST use the exact Handlebars placeholders provided by the user for dynamic data. Do NOT invent new placeholders, and do NOT use Handlebars filters, pipes, or logic (e.g., NO \`{{primaryColor | default '#000'}}\` or \`{{#if}}\` unless explicitly provided in loops). ONLY use raw variable names like \`{{primaryColor}}\`.
 6. Make the design visually stunning, modern, and tailored to the user's specific request.`;
 
     let userPrompt = `Create a stunning, responsive, and lively Tailwind CSS template for ${shopName} (a barbershop/salon landing page) based on this request:
