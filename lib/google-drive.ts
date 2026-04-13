@@ -148,11 +148,7 @@ export async function downloadFileFromFolder(folderId: string, fileName: string)
   if (!drive) return null;
 
   const query = `name='${fileName}' and '${folderId}' in parents and trashed=false`;
-  const response = await drive.files.list({
-    q: query,
-    fields: 'files(id)',
-    spaces: 'drive',
-  });
+  const response = await drive.files.list({ q: query, fields: 'files(id, name)' });
 
   if (response.data.files && response.data.files.length > 0) {
     const fileId = response.data.files[0].id!;
@@ -160,4 +156,45 @@ export async function downloadFileFromFolder(folderId: string, fileName: string)
     return res.data as string;
   }
   return null;
+}
+
+export async function deleteFolder(folderId: string): Promise<boolean> {
+  const drive = getDriveService();
+  if (!drive) return false;
+  try {
+    await drive.files.delete({ fileId: folderId });
+    return true;
+  } catch (e) {
+    console.error(`Failed to delete folder ${folderId}:`, e);
+    return false;
+  }
+}
+
+export async function deletePath(path: string): Promise<boolean> {
+  const drive = getDriveService();
+  if (!drive) return false;
+
+  const parts = path.split('/').filter(p => p.trim() !== '');
+  let currentParentId: string | undefined = undefined;
+
+  for (let i = 0; i < parts.length; i++) {
+    const part = parts[i];
+    let query = `mimeType='application/vnd.google-apps.folder' and name='${part}' and trashed=false`;
+    if (currentParentId) {
+      query += ` and '${currentParentId}' in parents`;
+    }
+    const response = await drive.files.list({ q: query, fields: 'files(id)' });
+
+    if (!response.data.files || response.data.files.length === 0) {
+      return false; // Path doesn't exist entirely
+    }
+
+    currentParentId = response.data.files[0].id!;
+  }
+
+  if (currentParentId) {
+    return deleteFolder(currentParentId);
+  }
+
+  return false;
 }

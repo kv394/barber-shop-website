@@ -197,10 +197,11 @@ Your task is to generate a highly customized, fully responsive web template usin
 You MUST strictly adhere to the following rules:
 1. Output ONLY a valid JSON object. Do not include markdown formatting like \`\`\`json.
 2. The JSON object must have exactly two keys: "htmlCode" and "cssCode".
-3. The "htmlCode" must contain the full HTML structure (assume it will be placed inside a <body> tag, provide the main wrapper divs).
-4. The "cssCode" should contain any custom CSS (e.g., @import fonts, custom animations). Leave as empty string if not needed.
+3. The "htmlCode" must contain the full HTML structure (assume it will be placed inside a <body> tag, provide the main wrapper divs). Do NOT include <html>, <head>, or <script> tags. React will not execute scripts.
+4. The "cssCode" should contain any custom CSS (e.g., @import fonts, custom animations). Leave as empty string if not needed. Move any Google Fonts <link> tags from the base template into @import statements here.
 5. You MUST use the exact Handlebars placeholders provided by the user for dynamic data. Do NOT invent new placeholders, and do NOT use Handlebars filters, pipes, or logic (e.g., NO \`{{primaryColor | default '#000'}}\` or \`{{#if}}\` unless explicitly provided in loops). ONLY use raw variable names like \`{{primaryColor}}\`.
-6. Make the design visually stunning, modern, and tailored to the user's specific request.`;
+6. Make the design visually stunning, modern, and tailored to the user's specific request.
+7. TAILWIND CONSTRAINT: You are injecting into an existing Next.js app. Do NOT rely on custom Tailwind configs or \`<script src="https://cdn.tailwindcss.com">\`. You MUST use ONLY standard Tailwind utility classes (e.g., \`bg-zinc-900\`, \`text-emerald-400\`) or arbitrary values (e.g., \`bg-[#121412]\`, \`text-[1.1rem]\`). If the base template uses custom theme classes like \`bg-surface\` or \`text-primary\`, you MUST convert them to standard Tailwind classes or arbitrary hex values to ensure they render correctly!`;
 
     let userPrompt = `Create a stunning, responsive, and lively Tailwind CSS template for ${shopName} (a barbershop/salon landing page) based on this request:
 "${prompt}"
@@ -216,6 +217,7 @@ CRITICAL REQUIREMENTS FOR THE SITE STRUCTURE:
   5. Gallery (using shop's photo gallery)
 - **Editable Content:** Use Handlebars variables for all headings, subheadings, and paragraphs (e.g., {{aboutUsTitle}}, {{servicesDescription}}, {{gallerySubtitle}}) so the shop admin can edit whatever text they want in the template edit page. Do not hardcode descriptive text if a placeholder can be used instead.
 - **Images:** Wherever images are necessary for the design (like hero backgrounds, placeholders for services, or staff avatars if not provided), you MUST ONLY use 100% royalty-free placeholder images. For example, use Unsplash direct image IDs like \`https://images.unsplash.com/photo-1585747860715-2ba37e788b70?w=800&q=80\` or services like \`https://picsum.photos/800/600\`. Do not leave src attributes empty and ensure all images are royalty-free.
+- **Navigation Links:** Do NOT generate any internal relative links (like \`/about\` or \`/book\`). All navigation links MUST use anchor tags pointing to section IDs on the same page (e.g., \`#about\`, \`#services\`) to prevent 404 "Page Not Found" errors when users click them in the preview.
 
 REQUIRED PLACEHOLDERS to use in your HTML:
 - {{shop.name}} : The name of the shop (use in headers/hero)

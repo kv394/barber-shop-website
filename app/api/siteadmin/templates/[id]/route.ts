@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/utils/supabase/server';
 import { prisma } from '@/lib/prisma';
+import { deletePath } from '@/lib/google-drive';
 
 export const dynamic = 'force-dynamic';
 
@@ -25,6 +26,15 @@ export async function DELETE(request: NextRequest, { params }: { params: Promise
   const { id } = await params;
 
   try {
+    const template = await prisma.dynamicTemplate.findUnique({
+      where: { id },
+    });
+
+    if (template && template.shopId) {
+      const folderPath = `/barbersaas/${template.shopId}/${template.name}`;
+      await deletePath(folderPath);
+    }
+
     await prisma.dynamicTemplate.delete({
       where: { id },
     });
