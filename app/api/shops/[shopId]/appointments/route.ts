@@ -119,7 +119,8 @@ export async function POST(
     const blockEnd = new Date(end.getTime() + (service.bufferMinutes || 0) * 60000);
 
     // Resolve the target user BEFORE the atomic transaction
-    let targetUserId = userId;
+    // Use the actual database ID, not necessarily the Supabase auth ID (which might differ if matched by email)
+    let targetUserId = bookingUser.id;
 
     // Handle walk-in bookings made by an admin or staff member.
     if (isWalkIn && (bookingUser.role === 'SHOP_ADMIN' || bookingUser.role === 'STAFF' || bookingUser.role === 'SITE_ADMIN')) {
