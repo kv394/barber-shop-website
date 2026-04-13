@@ -124,6 +124,25 @@ export async function uploadFileToDrive(tenantId: string, fileName: string, mime
   return uploadFileToFolder(folderId, fileName, mimeType, buffer);
 }
 
+export async function getOrCreatePath(path: string): Promise<string | null> {
+  const parts = path.split('/').filter(p => p.trim() !== '');
+  let currentParentId: string | undefined = undefined;
+  
+  for (const part of parts) {
+    const folderId = await getOrCreateFolder(part, currentParentId);
+    if (!folderId) return null;
+    currentParentId = folderId;
+  }
+  
+  return currentParentId || null;
+}
+
+export async function uploadFileToPath(path: string, fileName: string, mimeType: string, buffer: Buffer): Promise<string | null> {
+  const folderId = await getOrCreatePath(path);
+  if (!folderId) throw new Error('Could not create or find path');
+  return uploadFileToFolder(folderId, fileName, mimeType, buffer);
+}
+
 export async function downloadFileFromFolder(folderId: string, fileName: string): Promise<string | null> {
   const drive = getDriveService();
   if (!drive) return null;

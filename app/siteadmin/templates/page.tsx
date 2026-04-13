@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 
 export default function TemplatesPage() {
   const [templates, setTemplates] = useState<any[]>([]);
+  const [shops, setShops] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [generating, setGenerating] = useState(false);
   
@@ -11,6 +12,8 @@ export default function TemplatesPage() {
   const [description, setDescription] = useState('');
   const [prompt, setPrompt] = useState('');
   const [model, setModel] = useState('gemini-2.5-flash');
+  const [baseTemplateId, setBaseTemplateId] = useState('');
+  const [targetShopId, setTargetShopId] = useState('');
 
   const [editingTemplate, setEditingTemplate] = useState<any | null>(null);
   const [savingEdit, setSavingEdit] = useState(false);
@@ -18,9 +21,11 @@ export default function TemplatesPage() {
   const [uploading, setUploading] = useState(false);
   const [uploadFiles, setUploadFiles] = useState<FileList | null>(null);
   const [uploadName, setUploadName] = useState('');
+  const [uploadShopId, setUploadShopId] = useState('');
 
   useEffect(() => {
     fetchTemplates();
+    fetchShops();
   }, []);
 
   const fetchTemplates = () => {
@@ -33,6 +38,14 @@ export default function TemplatesPage() {
       });
   };
 
+  const fetchShops = () => {
+    fetch('/api/siteadmin/shops')
+      .then(res => res.json())
+      .then(data => {
+        if (data.shops && Array.isArray(data.shops)) setShops(data.shops);
+      });
+  };
+
   const handleUpload = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!uploadFiles || uploadFiles.length === 0) return;
@@ -40,10 +53,15 @@ export default function TemplatesPage() {
       alert('Please provide a name for the template.');
       return;
     }
+    if (!uploadShopId) {
+      alert('Please select a target shop context.');
+      return;
+    }
     
     setUploading(true);
     const formData = new FormData();
     formData.append('templateName', uploadName.trim());
+    formData.append('targetShopId', uploadShopId);
     for (let i = 0; i < uploadFiles.length; i++) {
       formData.append('files', uploadFiles[i]);
     }
@@ -62,6 +80,7 @@ export default function TemplatesPage() {
       }
       setUploadFiles(null);
       setUploadName('');
+      setUploadShopId('');
     } catch (err: any) {
       alert(err.message);
     } finally {
@@ -76,7 +95,7 @@ export default function TemplatesPage() {
       const res = await fetch('/api/siteadmin/templates/generate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, description, prompt, model }),
+        body: JSON.stringify({ name, description, prompt, model, baseTemplateId, targetShopId }),
       });
       const data = await res.json();
       if (data.error) throw new Error(data.error);
@@ -84,6 +103,8 @@ export default function TemplatesPage() {
       setName('');
       setDescription('');
       setPrompt('');
+      setBaseTemplateId('');
+      setTargetShopId('');
     } catch (err: any) {
       alert(err.message);
     } finally {
@@ -147,6 +168,15 @@ export default function TemplatesPage() {
             />
           </div>
           <div className="flex-1 w-full">
+            <label className="block text-sm text-botanical-muted mb-1">Target Shop (Required)</label>
+            <select value={uploadShopId} onChange={e => setUploadShopId(e.target.value)} required className="w-full bg-botanical-surface border border-botanical-border shadow-sm p-2 rounded text-botanical-text">
+              <option value="">Select Shop</option>
+              {shops.map((s: any) => (
+                <option key={s.id} value={s.id}>{s.name}</option>
+              ))}
+            </select>
+          </div>
+          <div className="flex-1 w-full">
             <label className="block text-sm text-botanical-muted mb-1">Select Files</label>
             <input 
               required
@@ -156,15 +186,33 @@ export default function TemplatesPage() {
               className="w-full bg-botanical-surface border border-botanical-border shadow-sm p-2 rounded text-botanical-text" 
             />
           </div>
-          <button disabled={uploading || !uploadFiles || uploadFiles.length === 0 || !uploadName} type="submit" className="w-full md:w-auto bg-green-600 text-white px-6 py-2 rounded font-semibold disabled:opacity-50 transition">
+          <button disabled={uploading || !uploadFiles || uploadFiles.length === 0 || !uploadName || !uploadShopId} type="submit" className="w-full md:w-auto bg-green-600 text-white px-6 py-2 rounded font-semibold disabled:opacity-50 transition">
             {uploading ? 'Uploading...' : 'Upload Files'}
           </button>
         </form>
       </div>
       
       <div className="bg-botanical-surface p-6 rounded-xl border border-botanical-border shadow-sm mb-8">
-        <h2 className="text-xl font-semibold mb-4">Generate New Template with Gemini</h2>
+        <h2 className="text-xl font-semibold mb-4">Generate New Template with AI</h2>
         <form onSubmit={handleGenerate} className="space-y-4">
+          <div>
+            <label className="block text-sm text-botanical-muted mb-1">Target Shop Context (Optional)</label>
+            <select value={targetShopId} onChange={e => setTargetShopId(e.target.value)} className="w-full bg-botanical-surface border border-botanical-border shadow-sm p-2 rounded text-botanical-text">
+              <option value="">None (Generic Template)</option>
+              {shops.map((s: any) => (
+                <option key={s.id} value={s.id}>{s.name}</option>
+              ))}
+            </select>
+          </div>
+          <div>
+            <label className="block text-sm text-botanical-muted mb-1">Base Template (Optional)</label>
+            <select value={baseTemplateId} onChange={e => setBaseTemplateId(e.target.value)} className="w-full bg-botanical-surface border border-botanical-border shadow-sm p-2 rounded text-botanical-text">
+              <option value="">None (Generate from scratch)</option>
+              {templates.map((t: any) => (
+                <option key={t.id} value={t.id}>{t.name}</option>
+              ))}
+            </select>
+          </div>
           <div>
             <label className="block text-sm text-botanical-muted mb-1">Template Identifier (e.g. neon-dark)</label>
             <input required value={name} onChange={e => setName(e.target.value)} className="w-full bg-botanical-surface border border-botanical-border shadow-sm p-2 rounded text-botanical-text" />
@@ -204,7 +252,10 @@ export default function TemplatesPage() {
           {templates.map((t: any) => (
             <div key={t.id} className="bg-botanical-surface p-4 rounded-xl border border-botanical-border shadow-sm flex flex-col">
               <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-start mb-2">
-                <h3 className="text-lg font-bold text-botanical-accent">{t.name}</h3>
+                <div>
+                  <h3 className="text-lg font-bold text-botanical-accent">{t.name}</h3>
+                  {t.shop && <span className="text-xs bg-indigo-500/20 text-indigo-300 px-2 py-0.5 rounded-full">For: {t.shop.name}</span>}
+                </div>
                 <div className="flex space-x-2">
                   <a href={`/siteadmin/templates/${t.id}/preview`} target="_blank" rel="noopener noreferrer" className="text-xs bg-green-500/20 text-green-400 px-2 py-1 rounded hover:bg-green-500/40 transition">Preview</a>
                   <button onClick={() => setEditingTemplate(t)} className="text-xs bg-blue-500/20 text-blue-400 px-2 py-1 rounded hover:bg-blue-500/40 transition">Edit</button>

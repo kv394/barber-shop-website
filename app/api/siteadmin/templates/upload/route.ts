@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/utils/supabase/server';
 import { prisma } from '@/lib/prisma';
-import { uploadFileToDrive } from '@/lib/google-drive';
+import { uploadFileToPath } from '@/lib/google-drive';
 import AdmZip from 'adm-zip';
 
 export const dynamic = 'force-dynamic';
@@ -28,19 +28,24 @@ export async function POST(request: NextRequest) {
     const formData = await request.formData();
     const files = formData.getAll('files') as File[];
     const formTemplateName = formData.get('templateName') as string;
+    const targetShopId = formData.get('targetShopId') as string;
 
     if (!files || files.length === 0) {
       return NextResponse.json({ error: 'No files provided' }, { status: 400 });
     }
 
-    const COMMON_FOLDER = 'siteadmin_templates';
-    const uploadedIds: string[] = [];
-    const fileMap: Record<string, string> = {};
+    if (!targetShopId) {
+      return NextResponse.json({ error: 'Target Shop ID is required' }, { status: 400 });
+    }
 
     let htmlCode = '';
     let cssCode = '';
     let templateName = formTemplateName || ('uploaded-template-' + Date.now());
     const extractedVariables = new Set<string>();
+
+    const FOLDER_PATH = `/barbersaas/${targetShopId}/${templateName}`;
+    const uploadedIds: string[] = [];
+    const fileMap: Record<string, string> = {};
 
     // First pass: upload all files to Google Drive (or extract from ZIP first)
     for (const file of files) {
@@ -73,7 +78,7 @@ export async function POST(request: NextRequest) {
              else if (ext === 'svg') mimeType = 'image/svg+xml';
              else if (ext === 'webp') mimeType = 'image/webp';
              
-             const fileId = await uploadFileToDrive(COMMON_FOLDER, entryName, mimeType, entryBuffer);
+             const fileId = await uploadFileToPath(FOLDER_PATH, entryName, mimeType, entryBuffer);
              if (fileId) {
                uploadedIds.push(fileId);
                fileMap[entryName] = fileId;
@@ -81,7 +86,7 @@ export async function POST(request: NextRequest) {
           }
         }
       } else {
-        const fileId = await uploadFileToDrive(COMMON_FOLDER, file.name, file.type, buffer);
+        const fileId = await uploadFileToPath(FOLDER_PATH, file.name, file.type, buffer);
         
         if (fileId) {
           uploadedIds.push(fileId);
@@ -132,6 +137,7 @@ export async function POST(request: NextRequest) {
           htmlCode,
           cssCode,
           variables: Array.from(extractedVariables),
+          shopId: targetShopId,
         }
       });
     }

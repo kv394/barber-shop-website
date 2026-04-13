@@ -5,6 +5,7 @@ import ClientPage from './ClientPage';
 import { createClient } from '@/utils/supabase/server';
 import { redirect } from 'next/navigation';
 import { getOrCreateFolder, downloadFileFromFolder } from '@/lib/google-drive';
+import { cacheService } from '@/lib/cache';
 
 // Use this to ensure the page caches effectively unless revalidated
 export const revalidate = 60;
@@ -14,6 +15,13 @@ const serviceInclude = {
     where: { type: 'CUSTOMER' as const },
     orderBy: { createdAt: 'desc' as const },
     select: { id: true, name: true, description: true, price: true, duration: true },
+  },
+  products: {
+    where: { type: 'RETAIL' as const },
+    select: { id: true, name: true, description: true, price: true },
+  },
+  portfolioImages: {
+    select: { id: true, url: true, description: true },
   },
 };
 
@@ -175,23 +183,33 @@ export default async function PublicShopPage({
       let htmlCode = dynamicTemplate.htmlCode;
       let cssCode = dynamicTemplate.cssCode;
 
-      try {
-        const barbersaasFolderId = await getOrCreateFolder('barbersaas');
-        if (barbersaasFolderId) {
-          const shopFolderId = await getOrCreateFolder(shop.id, barbersaasFolderId);
-          if (shopFolderId) {
-            const templateFolderId = await getOrCreateFolder(templateType, shopFolderId);
-            if (templateFolderId) {
-              const driveHtml = await downloadFileFromFolder(templateFolderId, 'index.html');
-              const driveCss = await downloadFileFromFolder(templateFolderId, 'styles.css');
-              if (driveHtml) htmlCode = driveHtml;
-              if (driveCss) cssCode = driveCss;
+      const cacheKey = `shop-template-content:${shop.id}:${templateType}`;
+      
+      const cachedContent = await cacheService.getOrSet(cacheKey, async () => {
+        let h = htmlCode;
+        let c = cssCode;
+        try {
+          const barbersaasFolderId = await getOrCreateFolder('barbersaas');
+          if (barbersaasFolderId) {
+            const shopFolderId = await getOrCreateFolder(shop.id, barbersaasFolderId);
+            if (shopFolderId) {
+              const templateFolderId = await getOrCreateFolder(templateType, shopFolderId);
+              if (templateFolderId) {
+                const driveHtml = await downloadFileFromFolder(templateFolderId, 'index.html');
+                const driveCss = await downloadFileFromFolder(templateFolderId, 'styles.css');
+                if (driveHtml) h = driveHtml;
+                if (driveCss) c = driveCss;
+              }
             }
           }
+        } catch (e) {
+          console.error('Failed to fetch template from Google Drive, falling back to DB:', e);
         }
-      } catch (e) {
-        console.error('Failed to fetch template from Google Drive, falling back to DB:', e);
-      }
+        return { htmlCode: h, cssCode: c };
+      }, 3600); // 1 hour cache TTL
+
+      htmlCode = cachedContent.htmlCode;
+      cssCode = cachedContent.cssCode;
 
       try {
         const Handlebars = (await import('handlebars')).default;

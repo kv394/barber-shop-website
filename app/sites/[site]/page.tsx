@@ -4,6 +4,8 @@ import { Metadata } from 'next';
 import ClientPage from '@/app/shops/[slug]/ClientPage';
 import { createClient } from '@/utils/supabase/server';
 import { redirect } from 'next/navigation';
+import { getOrCreateFolder, downloadFileFromFolder } from '@/lib/google-drive';
+import { cacheService } from '@/lib/cache';
 
 export const revalidate = 60;
 
@@ -136,16 +138,47 @@ export default async function SitePage({ params }: { params: Promise<{ site: str
     });
 
     if (dynamicTemplate) {
+      let htmlCode = dynamicTemplate.htmlCode;
+      let cssCode = dynamicTemplate.cssCode;
+
+      const cacheKey = `shop-template-content:${shop.id}:${templateType}`;
+      
+      const cachedContent = await cacheService.getOrSet(cacheKey, async () => {
+        let h = htmlCode;
+        let c = cssCode;
+        try {
+          const barbersaasFolderId = await getOrCreateFolder('barbersaas');
+          if (barbersaasFolderId) {
+            const shopFolderId = await getOrCreateFolder(shop.id, barbersaasFolderId);
+            if (shopFolderId) {
+              const templateFolderId = await getOrCreateFolder(templateType, shopFolderId);
+              if (templateFolderId) {
+                const driveHtml = await downloadFileFromFolder(templateFolderId, 'index.html');
+                const driveCss = await downloadFileFromFolder(templateFolderId, 'styles.css');
+                if (driveHtml) h = driveHtml;
+                if (driveCss) c = driveCss;
+              }
+            }
+          }
+        } catch (e) {
+          console.error('Failed to fetch template from Google Drive, falling back to DB:', e);
+        }
+        return { htmlCode: h, cssCode: c };
+      }, 3600); // 1 hour cache TTL
+
+      htmlCode = cachedContent.htmlCode;
+      cssCode = cachedContent.cssCode;
+
       try {
         const Handlebars = (await import('handlebars')).default;
-        const compiledTemplate = Handlebars.compile(dynamicTemplate.htmlCode);
+        const compiledTemplate = Handlebars.compile(htmlCode);
         dynamicTemplateHtml = compiledTemplate({
           shop,
           primaryColor,
           secondaryColor,
           ...(shop.customization || {})
         });
-        dynamicTemplateCss = dynamicTemplate.cssCode;
+        dynamicTemplateCss = cssCode;
       } catch (e) {
         console.error('Handlebars error:', e);
       }

@@ -24,6 +24,13 @@ export async function GET(request: NextRequest) {
 
   const templates = await prisma.dynamicTemplate.findMany({
     orderBy: { createdAt: 'desc' },
+    include: {
+      shop: {
+        select: {
+          name: true,
+        },
+      },
+    },
   });
 
   return NextResponse.json(templates);

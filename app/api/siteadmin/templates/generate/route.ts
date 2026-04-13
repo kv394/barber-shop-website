@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/utils/supabase/server';
 import { prisma } from '@/lib/prisma';
+import { uploadFileToPath } from '@/lib/google-drive';
 
 export const dynamic = 'force-dynamic';
 
@@ -22,10 +23,83 @@ export async function POST(request: NextRequest) {
   const adminCheck = await requireSiteAdmin();
   if (adminCheck instanceof NextResponse) return adminCheck;
 
-  const { prompt, name, description, model } = await request.json();
+  const { prompt, name, description, model, baseTemplateId, targetShopId } = await request.json();
 
   if (!prompt || !name) {
     return NextResponse.json({ error: 'Missing prompt or name' }, { status: 400 });
+  }
+
+  if (!targetShopId) {
+    return NextResponse.json({ error: 'Missing targetShopId' }, { status: 400 });
+  }
+
+  let shopContextStr = '';
+  if (targetShopId) {
+    const shop = await prisma.shop.findUnique({
+      where: { id: targetShopId },
+      include: {
+        services: { select: { id: true, name: true, description: true, price: true, duration: true } },
+        products: { select: { id: true, name: true, description: true, price: true } },
+        users: { 
+          where: { role: { in: ['STAFF', 'SHOP_ADMIN'] } },
+          select: { id: true, name: true, role: true }
+        },
+        reviews: {
+          select: { id: true, rating: true, comment: true, user: { select: { name: true } } },
+          take: 10,
+          orderBy: { createdAt: 'desc' }
+        }
+      }
+    });
+
+    if (shop) {
+      const c = shop.customization as any || {};
+      const galleryImages = c.editorial?.galleryImages || [];
+      shopContextStr = `
+--- REAL SHOP DATA CONTEXT ---
+The user has provided the following real data for the shop to help you design a more specific template.
+Use these specific services, products, staff names, reviews, and contact details in your design where appropriate (as dummy data injected via Handlebars, or to inspire the design).
+
+Shop Name: ${shop.name}
+Shop Description: ${shop.description || 'N/A'}
+Contact Phone: ${c.phone || 'N/A'}
+Contact Email: ${c.email || 'N/A'}
+Address: ${c.address?.street || ''} ${c.address?.city || ''} ${c.address?.state || ''} ${c.address?.zip || ''}
+Social Links: ${JSON.stringify(c.socialLinks || {})}
+About Us / Story: ${c.aboutUs || 'N/A'}
+
+Services Available:
+${shop.services.map(s => `- ${s.name}: $${s.price} (${s.duration} mins)`).join('\n')}
+
+Products Available:
+${shop.products.map(p => `- ${p.name}: $${p.price}`).join('\n')}
+
+Staff Members:
+${shop.users.map(u => `- ${u.name} (${u.role})`).join('\n')}
+
+Reviews:
+${shop.reviews.map(r => `- ${r.user?.name || 'Anonymous'}: ${r.rating} stars - "${r.comment || ''}"`).join('\n')}
+
+Gallery Images Available:
+${galleryImages.length > 0 ? galleryImages.map((g: string) => `- ${g}`).join('\n') : 'N/A'}
+
+Custom Pages/Sections Configured:
+${JSON.stringify(c.customPages || [])}
+------------------------------
+`;
+    }
+  }
+
+  let baseHtml = '';
+  let baseCss = '';
+  if (baseTemplateId) {
+    const baseTemplate = await prisma.dynamicTemplate.findUnique({
+      where: { id: baseTemplateId }
+    });
+    if (baseTemplate) {
+      baseHtml = baseTemplate.htmlCode;
+      baseCss = baseTemplate.cssCode || '';
+    }
   }
 
   const selectedModel = model || 'gemma2-9b-it';
@@ -50,28 +124,87 @@ You MUST strictly adhere to the following rules:
 5. You MUST use the exact Handlebars placeholders provided by the user for dynamic data. Do not invent new placeholders.
 6. Make the design visually stunning, modern, and tailored to the user's specific request.`;
 
-    const userPrompt = `Create a stunning, responsive Tailwind CSS template for a barbershop/salon based on this request:
+    let userPrompt = `Create a stunning, responsive, and lively Tailwind CSS template for a barbershop/salon landing page based on this request:
 "${prompt}"
+
+CRITICAL REQUIREMENTS FOR THE SITE STRUCTURE:
+- The site MUST be a single-page website layout.
+- The navigation MUST include a Client Profile Icon that users can click to access their profile and functionalities.
+- The site MUST ONLY have these specific sections (create different aesthetic variations for them as appropriate):
+  1. About Us (use {{aboutUs}} placeholder and/or real context)
+  2. Services (must allow selecting/booking MULTIPLE services directly from the landing page. Include a "Book Selected" button placeholder)
+  3. Staff
+  4. Customer Reviews
+  5. Gallery (using shop's photo gallery)
+- **Editable Content:** Use Handlebars variables for all headings, subheadings, and paragraphs (e.g., {{aboutUsTitle}}, {{servicesDescription}}, {{gallerySubtitle}}) so the shop admin can edit whatever text they want in the template edit page. Do not hardcode descriptive text if a placeholder can be used instead.
 
 REQUIRED PLACEHOLDERS to use in your HTML:
 - {{shop.name}} : The name of the shop (use in headers/hero)
 - {{shop.description}} : The description of the shop
-- {{primaryColor}} : Use as an inline style or Tailwind arbitrary value if needed (e.g. style="color: {{primaryColor}}")
+- {{primaryColor}} : Use as an inline style or Tailwind arbitrary value if needed
 - {{secondaryColor}} : Use as an inline style or Tailwind arbitrary value if needed
+- {{aboutUs}} : A placeholder for the shop admin to fill in their "About Us" story.
 
-SERVICES LOOP:
-You must iterate over the services to display them (e.g., in a grid or list).
+DYNAMIC LOOPS (You MUST iterate over these arrays to build the sections):
+
+1. SERVICES LOOP (Must support multi-select):
 {{#each shop.services}}
   <div class="service-card-example ...">
-     <h3>{{this.name}}</h3>
-     <p>{{this.description}}</p>
-     <span>\${{this.price}}</span>
-     <span>{{this.duration}} mins</span>
-     <button data-service-id="{{this.id}}">Book Now</button>
+     <input type="checkbox" name="selectedServices" value="{{this.id}}" id="service-{{this.id}}">
+     <label for="service-{{this.id}}">
+       <h3>{{this.name}}</h3>
+       <p>{{this.description}}</p>
+       <span>\${{this.price}}</span>
+       <span>{{this.duration}} mins</span>
+     </label>
   </div>
 {{/each}}
 
-Output ONLY the raw, valid JSON object matching the schema { "htmlCode": "...", "cssCode": "..." }. No markdown blocks.`;
+2. STAFF LOOP:
+{{#each shop.users}}
+  <div class="staff-card-example ...">
+     <h3>{{this.name}}</h3>
+     <p>{{this.role}}</p>
+  </div>
+{{/each}}
+
+3. REVIEWS LOOP:
+{{#each shop.reviews}}
+  <div class="review-card-example ...">
+     <p>"{{this.comment}}"</p>
+     <span>- {{this.user.name}}</span>
+     <span>{{this.rating}} Stars</span>
+  </div>
+{{/each}}
+
+4. PORTFOLIO GALLERY LOOP:
+{{#each shop.portfolioImages}}
+  <div class="gallery-item-example ...">
+     <img src="{{this.url}}" alt="Gallery Image">
+  </div>
+{{/each}}`;
+
+    if (baseHtml) {
+      userPrompt += `\n\n--- EXISTING TEMPLATE ---
+Please use the following HTML and CSS as your base starting point, and ONLY modify what is necessary to fulfill the user's prompt. Do NOT lose the existing data bindings or structure unless requested to change it.
+
+HTML:
+\`\`\`html
+${baseHtml}
+\`\`\`
+
+CSS:
+\`\`\`css
+${baseCss}
+\`\`\`
+-----------------------`;
+    }
+
+    if (shopContextStr) {
+      userPrompt += `\n\n${shopContextStr}`;
+    }
+
+    userPrompt += `\n\nOutput ONLY the raw, valid JSON object matching the schema { "htmlCode": "...", "cssCode": "..." }. No markdown blocks.`;
 
     if (isGroq) {
       const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
@@ -131,8 +264,15 @@ Output ONLY the raw, valid JSON object matching the schema { "htmlCode": "...", 
         prompt,
         htmlCode: result.htmlCode,
         cssCode: result.cssCode || '',
+        shopId: targetShopId || null,
       },
     });
+
+    const FOLDER_PATH = `/barbersaas/${targetShopId}/${name}`;
+    await uploadFileToPath(FOLDER_PATH, 'index.html', 'text/html', Buffer.from(result.htmlCode, 'utf-8'));
+    if (result.cssCode) {
+      await uploadFileToPath(FOLDER_PATH, 'styles.css', 'text/css', Buffer.from(result.cssCode, 'utf-8'));
+    }
 
     return NextResponse.json(template);
   } catch (error: any) {
