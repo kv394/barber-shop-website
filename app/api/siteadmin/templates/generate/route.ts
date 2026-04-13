@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/utils/supabase/server';
 import { prisma } from '@/lib/prisma';
 import { uploadFileToPath } from '@/lib/google-drive';
+import AdmZip from 'adm-zip';
 
 export const dynamic = 'force-dynamic';
 
@@ -42,13 +43,53 @@ export async function POST(request: NextRequest) {
 
   const FOLDER_PATH = `/barbersaas/${targetShopId}/${name}`;
   const uploadedAssets: { fileName: string; url: string }[] = [];
+  let uploadedHtml = '';
+  let uploadedCss = '';
 
   if (files && files.length > 0) {
     for (const file of files) {
       const buffer = Buffer.from(await file.arrayBuffer());
-      const fileId = await uploadFileToPath(FOLDER_PATH, file.name, file.type, buffer);
-      if (fileId) {
-        uploadedAssets.push({ fileName: file.name, url: `/api/assets/${fileId}` });
+
+      if (file.name.endsWith('.zip')) {
+        const zip = new AdmZip(buffer);
+        const zipEntries = zip.getEntries();
+
+        for (const zipEntry of zipEntries) {
+          if (zipEntry.isDirectory) continue;
+          
+          const entryName = zipEntry.name;
+          const entryBuffer = zipEntry.getData();
+
+          if (entryName.endsWith('.html') || entryName.endsWith('.htm')) {
+            uploadedHtml = entryBuffer.toString('utf-8');
+          } else if (entryName.endsWith('.css')) {
+            uploadedCss = entryBuffer.toString('utf-8');
+          } else {
+             const ext = entryName.split('.').pop()?.toLowerCase() || '';
+             let mimeType = 'application/octet-stream';
+             if (ext === 'jpg' || ext === 'jpeg') mimeType = 'image/jpeg';
+             else if (ext === 'png') mimeType = 'image/png';
+             else if (ext === 'gif') mimeType = 'image/gif';
+             else if (ext === 'svg') mimeType = 'image/svg+xml';
+             else if (ext === 'webp') mimeType = 'image/webp';
+             
+             const fileId = await uploadFileToPath(FOLDER_PATH, entryName, mimeType, entryBuffer);
+             if (fileId) {
+               uploadedAssets.push({ fileName: entryName, url: `/api/assets/${fileId}` });
+             }
+          }
+        }
+      } else {
+        if (file.name.endsWith('.html') || file.name.endsWith('.htm')) {
+          uploadedHtml = buffer.toString('utf-8');
+        } else if (file.name.endsWith('.css')) {
+          uploadedCss = buffer.toString('utf-8');
+        } else {
+          const fileId = await uploadFileToPath(FOLDER_PATH, file.name, file.type, buffer);
+          if (fileId) {
+            uploadedAssets.push({ fileName: file.name, url: `/api/assets/${fileId}` });
+          }
+        }
       }
     }
   }
@@ -112,9 +153,24 @@ ${JSON.stringify(c.customPages || [])}
     }
   }
 
-  let baseHtml = '';
-  let baseCss = '';
-  if (baseTemplateId) {
+  let baseHtml = uploadedHtml;
+  let baseCss = uploadedCss;
+
+  // Replace local asset paths with their generated /api/assets/ URLs
+  if (uploadedAssets.length > 0) {
+    for (const asset of uploadedAssets) {
+      if (baseHtml) {
+        const regex = new RegExp(asset.fileName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g');
+        baseHtml = baseHtml.replace(regex, asset.url);
+      }
+      if (baseCss) {
+        const regex = new RegExp(asset.fileName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g');
+        baseCss = baseCss.replace(regex, asset.url);
+      }
+    }
+  }
+
+  if (!baseHtml && baseTemplateId) {
     const baseTemplate = await prisma.dynamicTemplate.findUnique({
       where: { id: baseTemplateId }
     });
