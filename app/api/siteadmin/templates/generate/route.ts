@@ -54,6 +54,7 @@ export async function POST(request: NextRequest) {
   }
 
   let shopContextStr = '';
+  let shopName = 'a barbershop/salon';
   if (targetShopId) {
     const shop = await prisma.shop.findUnique({
       where: { id: targetShopId },
@@ -73,6 +74,7 @@ export async function POST(request: NextRequest) {
     });
 
     if (shop) {
+      shopName = shop.name;
       const c = shop.customization as any || {};
       const galleryImages = c.editorial?.galleryImages || [];
       shopContextStr = `
@@ -144,7 +146,7 @@ You MUST strictly adhere to the following rules:
 5. You MUST use the exact Handlebars placeholders provided by the user for dynamic data. Do not invent new placeholders.
 6. Make the design visually stunning, modern, and tailored to the user's specific request.`;
 
-    let userPrompt = `Create a stunning, responsive, and lively Tailwind CSS template for a barbershop/salon landing page based on this request:
+    let userPrompt = `Create a stunning, responsive, and lively Tailwind CSS template for ${shopName} (a barbershop/salon landing page) based on this request:
 "${prompt}"
 
 CRITICAL REQUIREMENTS FOR THE SITE STRUCTURE:
@@ -201,7 +203,7 @@ DYNAMIC LOOPS (You MUST iterate over these arrays to build the sections):
 4. PORTFOLIO GALLERY LOOP:
 {{#each shop.portfolioImages}}
   <div class="gallery-item-example ...">
-     <img src="{{this.url}}" alt="Gallery Image">
+     <img src="{{this.imageUrl}}" alt="{{this.caption}}">
   </div>
 {{/each}}`;
 

@@ -217,9 +217,9 @@ export default function TemplatesPage() {
         <h2 className="text-xl font-semibold mb-4">Generate New Template with AI</h2>
         <form onSubmit={handleGenerate} className="space-y-4">
           <div>
-            <label className="block text-sm text-botanical-muted mb-1">Target Shop Context (Optional)</label>
-            <select value={targetShopId} onChange={e => setTargetShopId(e.target.value)} className="w-full bg-botanical-surface border border-botanical-border shadow-sm p-2 rounded text-botanical-text">
-              <option value="">None (Generic Template)</option>
+            <label className="block text-sm text-botanical-muted mb-1">Target Shop (Required)</label>
+            <select value={targetShopId} onChange={e => setTargetShopId(e.target.value)} required className="w-full bg-botanical-surface border border-botanical-border shadow-sm p-2 rounded text-botanical-text">
+              <option value="">Select Target Shop</option>
               {shops.map((s: any) => (
                 <option key={s.id} value={s.id}>{s.name}</option>
               ))}

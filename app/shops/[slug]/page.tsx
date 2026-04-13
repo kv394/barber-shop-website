@@ -21,7 +21,7 @@ const serviceInclude = {
     select: { id: true, name: true, description: true, price: true },
   },
   portfolioImages: {
-    select: { id: true, url: true, description: true },
+    select: { id: true, imageUrl: true, caption: true },
   },
 };
 

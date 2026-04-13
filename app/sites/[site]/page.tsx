@@ -15,6 +15,13 @@ const serviceInclude = {
     orderBy: { createdAt: 'desc' as const },
     select: { id: true, name: true, description: true, price: true, duration: true },
   },
+  products: {
+    where: { type: 'RETAIL' as const },
+    select: { id: true, name: true, description: true, price: true },
+  },
+  portfolioImages: {
+    select: { id: true, imageUrl: true, caption: true },
+  },
 };
 
 const getShopBySite = cache(async (site: string) => {
