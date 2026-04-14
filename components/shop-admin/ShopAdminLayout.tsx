@@ -52,7 +52,7 @@ export default function ShopAdminLayout({
   return (
     <div className="pb-20 sm:pb-0">
       {pageTitle && (
-        <p className="text-botanical-muted text-sm sm:text-lg mb-6 sm:mb-8 px-3 sm:px-0 mt-2 sm:mt-0 sm:-mt-8">{pageTitle}</p>
+        <p className="text-botanical-muted mb-6 sm:mb-8 px-3 sm:px-0 mt-2 sm:mt-0 sm:-mt-8 text-base md:text-lg">{pageTitle}</p>
       )}
 
       <ShopNav shopId={shopId} userRole={userRole} activeTab={activeTab} />

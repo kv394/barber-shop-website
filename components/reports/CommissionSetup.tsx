@@ -51,8 +51,8 @@ export default function CommissionSetup({ shopId }: { shopId: string }) {
 
   return (
     <div className="bg-botanical-surface border border-botanical-border shadow-sm rounded-xl p-6 space-y-4">
-      <h3 className="text-lg font-bold text-botanical-text">💼 Commission Rates</h3>
-      <p className="text-botanical-muted text-sm">Set service and retail product commission rates per staff member.</p>
+      <h3 className="font-bold text-botanical-text text-2xl md:text-3xl">💼 Commission Rates</h3>
+      <p className="text-botanical-muted text-base md:text-lg">Set service and retail product commission rates per staff member.</p>
       {msg && <div className="p-2 bg-green-900/30 border border-green-500/30 text-green-300 rounded text-sm">{msg}</div>}
       <div className="space-y-3">
         {staff.map((s: any) => (
@@ -64,7 +64,7 @@ export default function CommissionSetup({ shopId }: { shopId: string }) {
               <span className="text-botanical-text text-sm font-medium">{s.name}</span>
             </div>
             <div className="flex items-center gap-2">
-              <label className="text-xs text-botanical-muted">Services</label>
+              <label className="text-botanical-muted text-sm">Services</label>
               <div className="flex items-center gap-1">
                 <input type="number" min={0} max={100} value={rules[s.id]?.svc ?? 50}
                   onChange={e => setRules(r => ({ ...r, [s.id]: { ...r[s.id], svc: +e.target.value } }))}
@@ -73,7 +73,7 @@ export default function CommissionSetup({ shopId }: { shopId: string }) {
               </div>
             </div>
             <div className="flex items-center gap-2">
-              <label className="text-xs text-botanical-muted">Products</label>
+              <label className="text-botanical-muted text-sm">Products</label>
               <div className="flex items-center gap-1">
                 <input type="number" min={0} max={100} value={rules[s.id]?.product ?? 10}
                   onChange={e => setRules(r => ({ ...r, [s.id]: { ...r[s.id], product: +e.target.value } }))}

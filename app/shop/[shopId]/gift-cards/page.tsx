@@ -20,7 +20,7 @@ export default async function GiftCardsPage({ params }: { params: Promise<{ shop
     return (
       <div className="h-[100dvh] overflow-y-auto overflow-x-hidden">
         <div className="text-center">
-          <h1 className="text-4xl font-bold text-red-500 mb-4">Access Denied</h1>
+          <h1 className="font-bold text-red-500 mb-4 text-4xl md:text-5xl lg:text-6xl">Access Denied</h1>
         </div>
       </div>
     );

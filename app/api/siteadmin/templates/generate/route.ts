@@ -218,6 +218,7 @@ CRITICAL REQUIREMENTS FOR THE SITE STRUCTURE:
 - **Editable Content:** Use Handlebars variables for all headings, subheadings, and paragraphs (e.g., {{aboutUsTitle}}, {{servicesDescription}}, {{gallerySubtitle}}) so the shop admin can edit whatever text they want in the template edit page. Do not hardcode descriptive text if a placeholder can be used instead.
 - **Images:** Wherever images are necessary for the design (like hero backgrounds, placeholders for services, or staff avatars if not provided), you MUST ONLY use 100% royalty-free placeholder images. For example, use Unsplash direct image IDs like \`https://images.unsplash.com/photo-1585747860715-2ba37e788b70?w=800&q=80\` or services like \`https://picsum.photos/800/600\`. Do not leave src attributes empty and ensure all images are royalty-free.
 - **Navigation Links:** Do NOT generate any internal relative links (like \`/about\` or \`/book\`). All navigation links MUST use anchor tags pointing to section IDs on the same page (e.g., \`#about\`, \`#services\`) to prevent 404 "Page Not Found" errors when users click them in the preview.
+- **Typography Hierarchy:** Perform a deep analysis of all text elements and adjust their font sizes strictly based on their location and semantic role. Use distinct, proportional sizes (e.g., \`text-4xl\` to \`text-6xl\` for main Hero headings, \`text-2xl\` to \`text-3xl\` for section sub-headings, \`text-base\` or \`text-lg\` for readable page content, and \`text-sm\` for metadata/labels). Ensure a stark, professional visual hierarchy.
 
 REQUIRED PLACEHOLDERS to use in your HTML:
 - {{shop.name}} : The name of the shop (use in headers/hero)
@@ -232,9 +233,9 @@ DYNAMIC LOOPS (You MUST iterate over these arrays to build the sections):
 {{#each shop.services}}
   <div class="service-card-example ...">
      <input type="checkbox" name="selectedServices" value="{{this.id}}" id="service-{{this.id}}">
-     <label for="service-{{this.id}}">
-       <h3>{{this.name}}</h3>
-       <p>{{this.description}}</p>
+     <label for="service-{{this.id}}" className="text-sm">
+       <h3 className="text-2xl md:text-3xl">{{this.name}}</h3>
+       <p className="text-base md:text-lg">{{this.description}}</p>
        <span>\${{this.price}}</span>
        <span>{{this.duration}} mins</span>
      </label>
@@ -244,15 +245,15 @@ DYNAMIC LOOPS (You MUST iterate over these arrays to build the sections):
 2. STAFF LOOP:
 {{#each shop.users}}
   <div class="staff-card-example ...">
-     <h3>{{this.name}}</h3>
-     <p>{{this.role}}</p>
+     <h3 className="text-2xl md:text-3xl">{{this.name}}</h3>
+     <p className="text-base md:text-lg">{{this.role}}</p>
   </div>
 {{/each}}
 
 3. REVIEWS LOOP:
 {{#each shop.reviews}}
   <div class="review-card-example ...">
-     <p>"{{this.comment}}"</p>
+     <p className="text-base md:text-lg">"{{this.comment}}"</p>
      <span>- {{this.user.name}}</span>
      <span>{{this.rating}} Stars</span>
   </div>

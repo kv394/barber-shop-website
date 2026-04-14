@@ -36,8 +36,8 @@ export default function Error({
       <div className="flex h-16 w-16 items-center justify-center rounded-full bg-red-500/20 mb-6 border border-red-500/30">
         <span className="text-3xl">⚠️</span>
       </div>
-      <h2 className="mb-3 text-2xl font-bold text-red-500">Something went wrong!</h2>
-      <p className="mb-8 max-w-[400px] text-zinc-400">
+      <h2 className="mb-3 font-bold text-red-500 text-3xl md:text-4xl">Something went wrong!</h2>
+      <p className="mb-8 max-w-[400px] text-zinc-400 text-base md:text-lg">
         We apologize for the inconvenience. Our system has automatically been notified about this technical issue.
       </p>
       

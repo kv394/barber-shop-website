@@ -19,7 +19,7 @@ export default function LogoutPage() {
 
   return (
     <div className="h-[100dvh] overflow-y-auto overflow-x-hidden">
-      <p>Logging out...</p>
+      <p className="text-base md:text-lg">Logging out...</p>
     </div>
   );
 }

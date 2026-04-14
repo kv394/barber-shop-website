@@ -48,8 +48,8 @@ export default function BlackoutDatesManager({ shopId }: { shopId: string }) {
 
   return (
     <div className="bg-botanical-surface border border-botanical-border shadow-sm rounded-xl p-6 space-y-5">
-      <h3 className="text-lg font-bold text-botanical-text">🚫 Blackout Dates & Holidays</h3>
-      <p className="text-botanical-muted text-sm">Mark days when your shop is closed. Online booking will be disabled for these dates.</p>
+      <h3 className="font-bold text-botanical-text text-2xl md:text-3xl">🚫 Blackout Dates & Holidays</h3>
+      <p className="text-botanical-muted text-base md:text-lg">Mark days when your shop is closed. Online booking will be disabled for these dates.</p>
       {msg && <div className="p-3 bg-green-900/30 border border-green-500/30 text-green-300 rounded-lg text-sm">{msg}</div>}
 
       {/* Add form */}
@@ -73,7 +73,7 @@ export default function BlackoutDatesManager({ shopId }: { shopId: string }) {
       {/* Upcoming dates */}
       {upcoming.length > 0 && (
         <div>
-          <p className="text-xs text-botanical-muted uppercase tracking-widest mb-2">Upcoming ({upcoming.length})</p>
+          <p className="text-botanical-muted uppercase tracking-widest mb-2 text-base md:text-lg">Upcoming ({upcoming.length})</p>
           <div className="space-y-2">
             {upcoming.map(d => {
               const dt = new Date(d.date);
@@ -86,8 +86,8 @@ export default function BlackoutDatesManager({ shopId }: { shopId: string }) {
                       <span className="text-red-200 text-base font-black leading-none">{dt.getUTCDate()}</span>
                     </div>
                     <div>
-                      <p className="text-botanical-text text-sm font-medium">{fmt(d.date)}</p>
-                      <p className="text-botanical-muted text-xs">{dayName}{d.reason ? ` · ${d.reason}` : ''}</p>
+                      <p className="text-botanical-text font-medium text-base md:text-lg">{fmt(d.date)}</p>
+                      <p className="text-botanical-muted text-base md:text-lg">{dayName}{d.reason ? ` · ${d.reason}` : ''}</p>
                     </div>
                   </div>
                   <button onClick={() => remove(d.id)} className="text-botanical-muted hover:text-red-400 text-lg transition">×</button>
@@ -99,7 +99,7 @@ export default function BlackoutDatesManager({ shopId }: { shopId: string }) {
       )}
 
       {upcoming.length === 0 && !loading && (
-        <p className="text-botanical-muted text-sm italic text-center py-4">No upcoming blackout dates. Add holidays or closures above.</p>
+        <p className="text-botanical-muted italic text-center py-4 text-base md:text-lg">No upcoming blackout dates. Add holidays or closures above.</p>
       )}
 
       {/* Past dates (collapsed) */}

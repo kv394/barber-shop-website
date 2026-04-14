@@ -35,15 +35,15 @@ export default function UsageAnalysisModal({ shopId, shopName, onClose }: UsageA
           ✕
         </button>
 
-        <h2 className="text-2xl font-bold text-botanical-accent mb-2 flex items-center gap-2">
+        <h2 className="font-bold text-botanical-accent mb-2 flex items-center gap-2 text-3xl md:text-4xl">
           <span>📊</span> Usage & Cost Analysis
         </h2>
-        <p className="text-botanical-muted text-sm mb-6">Analyzing resource consumption for <strong>{shopName}</strong></p>
+        <p className="text-botanical-muted mb-6 text-base md:text-lg">Analyzing resource consumption for <strong>{shopName}</strong></p>
 
         {loading ? (
           <div className="py-12 flex flex-col items-center justify-center">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-brand-gold mb-4"></div>
-            <p className="text-botanical-muted animate-pulse text-sm">Aggregating metrics and calculating SaaS costs...</p>
+            <p className="text-botanical-muted animate-pulse text-base md:text-lg">Aggregating metrics and calculating SaaS costs...</p>
           </div>
         ) : error ? (
           <div className="p-4 bg-red-900/30 border border-red-500/30 rounded-lg text-red-400 text-sm">
@@ -59,8 +59,8 @@ export default function UsageAnalysisModal({ shopId, shopName, onClose }: UsageA
                 { label: 'Images', val: data.metrics.portfolioImageCount + data.metrics.clientHistoryImageCount },
               ].map(m => (
                 <div key={m.label} className="bg-botanical-surface p-3 rounded-lg border border-botanical-border shadow-sm text-center">
-                  <p className="text-xl font-bold text-botanical-text">{m.val}</p>
-                  <p className="text-sm text-botanical-muted uppercase tracking-wider">{m.label}</p>
+                  <p className="font-bold text-botanical-text text-base md:text-lg">{m.val}</p>
+                  <p className="text-botanical-muted uppercase tracking-wider text-base md:text-lg">{m.label}</p>
                 </div>
               ))}
             </div>
@@ -68,17 +68,17 @@ export default function UsageAnalysisModal({ shopId, shopName, onClose }: UsageA
             <div className="bg-gradient-to-br from-brand-gold/10 to-amber-900/10 border border-brand-gold/20 p-5 rounded-xl">
               <div className="flex flex-col md:flex-row items-center justify-between gap-4 mb-4">
                 <div>
-                  <p className="text-xs text-botanical-accent uppercase font-bold tracking-widest mb-1">Recommended Tier</p>
-                  <h3 className="text-2xl font-bold text-botanical-text">{data.analysis.pricingTierName}</h3>
+                  <p className="text-botanical-accent uppercase font-bold tracking-widest mb-1 text-base md:text-lg">Recommended Tier</p>
+                  <h3 className="font-bold text-botanical-text text-2xl md:text-3xl">{data.analysis.pricingTierName}</h3>
                 </div>
                 <div className="text-right">
-                  <p className="text-xs text-botanical-accent uppercase font-bold tracking-widest mb-1">Suggested Fee</p>
-                  <p className="text-3xl font-black text-botanical-text">${data.analysis.suggestedMonthlyFeeUSD}<span className="text-sm text-botanical-muted font-medium">/mo</span></p>
+                  <p className="text-botanical-accent uppercase font-bold tracking-widest mb-1 text-base md:text-lg">Suggested Fee</p>
+                  <p className="font-black text-botanical-text text-base md:text-lg">${data.analysis.suggestedMonthlyFeeUSD}<span className="text-sm text-botanical-muted font-medium">/mo</span></p>
                 </div>
               </div>
               
               <div className="bg-botanical-surface p-4 rounded-lg mt-4 border border-botanical-border shadow-sm">
-                <p className="text-sm text-botanical-muted leading-relaxed">
+                <p className="text-botanical-muted leading-relaxed text-base md:text-lg">
                   {data.analysis.strategyReasoning}
                 </p>
               </div>

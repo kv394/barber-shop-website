@@ -49,7 +49,7 @@ export default async function TemplatePreviewPage({ params }: { params: Promise<
       secondaryColor
     });
   } catch (err: any) {
-    html = `<div style="padding: 2rem; color: red;"><h2>Handlebars Compilation Error</h2><pre>${err.message}</pre></div>`;
+    html = `<div style="padding: 2rem; color: red;"><h2 className="text-3xl md:text-4xl">Handlebars Compilation Error</h2><pre>${err.message}</pre></div>`;
   }
 
   return (

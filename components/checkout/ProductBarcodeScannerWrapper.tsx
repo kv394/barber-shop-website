@@ -116,7 +116,7 @@ export default function ProductBarcodeScannerWrapper({ shopId, products = [] }: 
         <div className="fixed bottom-0 left-0 right-0 p-4 z-[60] flex justify-center pointer-events-none">
           <div className="bg-botanical-surface border border-brand-gold rounded-xl p-5 shadow-2xl max-w-sm w-full pointer-events-auto">
             <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-start mb-4">
-              <h3 className="text-lg font-bold text-botanical-text">Scan Result</h3>
+              <h3 className="font-bold text-botanical-text text-2xl md:text-3xl">Scan Result</h3>
               <button onClick={resetAll} className="text-botanical-muted hover:text-botanical-text text-xl leading-none">✕</button>
             </div>
 
@@ -130,7 +130,7 @@ export default function ProductBarcodeScannerWrapper({ shopId, products = [] }: 
             {/* Inventory match */}
             {scannedCode && (
               <>
-                <p className="text-xs text-botanical-accent font-mono mb-4 bg-botanical-surface p-2 rounded truncate">Code: {scannedCode}</p>
+                <p className="text-botanical-accent font-mono mb-4 bg-botanical-surface p-2 rounded truncate text-base md:text-lg">Code: {scannedCode}</p>
 
                 {actionError && (
                   <div className="bg-red-900/30 border border-red-500/50 text-red-300 p-3 rounded-lg mb-4 text-sm">
@@ -141,8 +141,8 @@ export default function ProductBarcodeScannerWrapper({ shopId, products = [] }: 
                 {matchedProduct ? (
                   <div>
                     <div className="bg-botanical-surface p-4 rounded-lg mb-4 border border-botanical-border shadow-sm">
-                      <h4 className="font-semibold text-botanical-text">{matchedProduct.name}</h4>
-                      <p className="text-botanical-muted text-sm mt-1">Stock: <span className="font-mono text-botanical-text text-lg ml-1">{matchedProduct.inventoryCount}</span></p>
+                      <h4 className="font-semibold text-botanical-text text-xl md:text-2xl">{matchedProduct.name}</h4>
+                      <p className="text-botanical-muted mt-1 text-base md:text-lg">Stock: <span className="font-mono text-botanical-text text-lg ml-1">{matchedProduct.inventoryCount}</span></p>
                     </div>
                     <div className="flex gap-3">
                       <button onClick={() => handleUpdateInventory(-1)} disabled={isUpdating || matchedProduct.inventoryCount <= 0}
@@ -161,8 +161,8 @@ export default function ProductBarcodeScannerWrapper({ shopId, products = [] }: 
                   </div>
                 ) : (
                   <div className="bg-botanical-surface border border-botanical-border shadow-sm p-4 rounded-lg">
-                    <p className="text-amber-400 font-semibold mb-1">Product not recognized.</p>
-                    <p className="text-xs text-botanical-muted mb-4">Map this barcode to a product:</p>
+                    <p className="text-amber-400 font-semibold mb-1 text-base md:text-lg">Product not recognized.</p>
+                    <p className="text-botanical-muted mb-4 text-base md:text-lg">Map this barcode to a product:</p>
                     {unmatchedProducts.length > 0 ? (
                       <div className="space-y-3">
                         <select className="w-full bg-botanical-surface border border-botanical-border shadow-sm rounded p-2.5 text-sm text-botanical-text focus:ring-1 focus:ring-botanical-primary"
@@ -178,7 +178,7 @@ export default function ProductBarcodeScannerWrapper({ shopId, products = [] }: 
                         </button>
                       </div>
                     ) : (
-                      <p className="text-xs text-red-400 bg-red-900/20 p-3 rounded">No products found. Create one first.</p>
+                      <p className="text-red-400 bg-red-900/20 p-3 rounded text-base md:text-lg">No products found. Create one first.</p>
                     )}
                   </div>
                 )}

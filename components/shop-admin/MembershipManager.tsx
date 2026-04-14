@@ -43,8 +43,8 @@ export default function MembershipManager({ shopId }: { shopId: string }) {
 
   return (
     <div className="bg-botanical-surface border border-botanical-border shadow-sm rounded-xl p-6">
-      <h3 className="text-lg font-bold text-botanical-text mb-2">⭐ Membership Tiers</h3>
-      <p className="text-sm text-botanical-muted mb-6">
+      <h3 className="font-bold text-botanical-text mb-2 text-2xl md:text-3xl">⭐ Membership Tiers</h3>
+      <p className="text-botanical-muted mb-6 text-base md:text-lg">
         Create recurring subscription plans (e.g. VIP Barber Club: $100/mo for unlimited cuts).
       </p>
 
@@ -53,7 +53,7 @@ export default function MembershipManager({ shopId }: { shopId: string }) {
       <form onSubmit={addTier} className="mb-8 space-y-4">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label className="block text-xs text-botanical-muted mb-1">Tier Name</label>
+            <label className="block text-botanical-muted mb-1 text-sm">Tier Name</label>
             <input 
               type="text" 
               value={name} 
@@ -64,7 +64,7 @@ export default function MembershipManager({ shopId }: { shopId: string }) {
             />
           </div>
           <div>
-            <label className="block text-xs text-botanical-muted mb-1">Price ($)</label>
+            <label className="block text-botanical-muted mb-1 text-sm">Price ($)</label>
             <input 
               type="number" 
               value={price} 
@@ -77,7 +77,7 @@ export default function MembershipManager({ shopId }: { shopId: string }) {
             />
           </div>
           <div className="md:col-span-2">
-            <label className="block text-xs text-botanical-muted mb-1">Billing Interval</label>
+            <label className="block text-botanical-muted mb-1 text-sm">Billing Interval</label>
             <select 
               value={interval} 
               onChange={e => setInterval(e.target.value)} 
@@ -88,7 +88,7 @@ export default function MembershipManager({ shopId }: { shopId: string }) {
             </select>
           </div>
           <div className="md:col-span-2">
-            <label className="block text-xs text-botanical-muted mb-1">Description / Perks</label>
+            <label className="block text-botanical-muted mb-1 text-sm">Description / Perks</label>
             <textarea 
               value={description} 
               onChange={e => setDescription(e.target.value)} 
@@ -107,9 +107,9 @@ export default function MembershipManager({ shopId }: { shopId: string }) {
         </button>
       </form>
 
-      <h4 className="text-botanical-text font-medium mb-3">Active Membership Tiers</h4>
+      <h4 className="text-botanical-text font-medium mb-3 text-xl md:text-2xl">Active Membership Tiers</h4>
       {tiers.length === 0 ? (
-        <p className="text-botanical-muted text-sm py-2">No memberships created yet.</p>
+        <p className="text-botanical-muted py-2 text-base md:text-lg">No memberships created yet.</p>
       ) : (
         <div className="space-y-3">
           {tiers.map(t => (
@@ -121,7 +121,7 @@ export default function MembershipManager({ shopId }: { shopId: string }) {
                     ${t.price} / {t.interval.toLowerCase().replace('ly', '')}
                   </span>
                 </div>
-                <p className="text-xs text-botanical-muted">{t.description || 'No description provided.'}</p>
+                <p className="text-botanical-muted text-base md:text-lg">{t.description || 'No description provided.'}</p>
               </div>
               <button 
                 onClick={() => remove(t.id)} 

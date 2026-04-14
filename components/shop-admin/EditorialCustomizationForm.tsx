@@ -19,11 +19,11 @@ export function EditorialCustomizationForm({ shopId, customization, onUpdate }: 
 
   return (
     <div className="space-y-6 mt-8 border-t border-botanical-border pt-8">
-      <h3 className="text-xl font-bold text-botanical-text mb-4">Editorial Template Settings</h3>
+      <h3 className="font-bold text-botanical-text mb-4 text-2xl md:text-3xl">Editorial Template Settings</h3>
       
       <div className="grid grid-cols-1 gap-6">
         <div>
-          <label className="block text-sm font-medium text-botanical-muted mb-2">Hero Tagline</label>
+          <label className="block font-medium text-botanical-muted mb-2 text-sm">Hero Tagline</label>
           <input
             type="text"
             value={editorial.heroTagline || ''}
@@ -33,7 +33,7 @@ export function EditorialCustomizationForm({ shopId, customization, onUpdate }: 
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-botanical-muted mb-2">Hero Title (Use &lt;br/&gt; for newlines, &lt;span class="italic text-primary"&gt; for italics)</label>
+          <label className="block font-medium text-botanical-muted mb-2 text-sm">Hero Title (Use &lt;br/&gt; for newlines, &lt;span class="italic text-primary"&gt; for italics)</label>
           <input
             type="text"
             value={editorial.heroTitle || ''}
@@ -43,7 +43,7 @@ export function EditorialCustomizationForm({ shopId, customization, onUpdate }: 
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-botanical-muted mb-2">Hero Subtitle</label>
+          <label className="block font-medium text-botanical-muted mb-2 text-sm">Hero Subtitle</label>
           <textarea
             value={editorial.heroSubtitle || ''}
             onChange={(e) => handleChange('heroSubtitle', e.target.value)}
@@ -52,7 +52,7 @@ export function EditorialCustomizationForm({ shopId, customization, onUpdate }: 
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-botanical-muted mb-2">Hero Image URL</label>
+          <label className="block font-medium text-botanical-muted mb-2 text-sm">Hero Image URL</label>
           <div className="flex gap-2">
             <input
               type="text"
@@ -84,7 +84,7 @@ export function EditorialCustomizationForm({ shopId, customization, onUpdate }: 
         </div>
         
         <div>
-          <label className="block text-sm font-medium text-botanical-muted mb-2">Services Title</label>
+          <label className="block font-medium text-botanical-muted mb-2 text-sm">Services Title</label>
           <input
             type="text"
             value={editorial.servicesTitle || ''}
@@ -93,7 +93,7 @@ export function EditorialCustomizationForm({ shopId, customization, onUpdate }: 
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-botanical-muted mb-2">Services Subtitle</label>
+          <label className="block font-medium text-botanical-muted mb-2 text-sm">Services Subtitle</label>
           <textarea
             value={editorial.servicesSubtitle || ''}
             onChange={(e) => handleChange('servicesSubtitle', e.target.value)}
@@ -102,7 +102,7 @@ export function EditorialCustomizationForm({ shopId, customization, onUpdate }: 
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-botanical-muted mb-2">Gallery Title</label>
+          <label className="block font-medium text-botanical-muted mb-2 text-sm">Gallery Title</label>
           <input
             type="text"
             value={editorial.galleryTitle || ''}
@@ -111,7 +111,7 @@ export function EditorialCustomizationForm({ shopId, customization, onUpdate }: 
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-botanical-muted mb-2">Gallery Subtitle</label>
+          <label className="block font-medium text-botanical-muted mb-2 text-sm">Gallery Subtitle</label>
           <input
             type="text"
             value={editorial.gallerySubtitle || ''}
@@ -120,7 +120,7 @@ export function EditorialCustomizationForm({ shopId, customization, onUpdate }: 
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-botanical-muted mb-2">Gallery Image URLs (Comma separated)</label>
+          <label className="block font-medium text-botanical-muted mb-2 text-sm">Gallery Image URLs (Comma separated)</label>
           <textarea
             value={(editorial.galleryImages || []).join(',\n')}
             onChange={(e) => handleChange('galleryImages', e.target.value.split(',').map((s: string) => s.trim()))}
@@ -128,7 +128,7 @@ export function EditorialCustomizationForm({ shopId, customization, onUpdate }: 
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-botanical-muted mb-2">Testimonials Title</label>
+          <label className="block font-medium text-botanical-muted mb-2 text-sm">Testimonials Title</label>
           <input
             type="text"
             value={editorial.testimonialsTitle || ''}
@@ -137,7 +137,7 @@ export function EditorialCustomizationForm({ shopId, customization, onUpdate }: 
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-botanical-muted mb-2">Testimonials (JSON format)</label>
+          <label className="block font-medium text-botanical-muted mb-2 text-sm">Testimonials (JSON format)</label>
           <textarea
             value={JSON.stringify(editorial.testimonials || [], null, 2)}
             onChange={(e) => {
@@ -150,11 +150,11 @@ export function EditorialCustomizationForm({ shopId, customization, onUpdate }: 
             className="w-full bg-botanical-bg border border-botanical-border shadow-sm rounded px-4 py-2 text-botanical-text h-48 font-mono text-sm"
             placeholder='[ { "quote": "...", "author": "...", "role": "..." } ]'
           />
-          <p className="text-xs text-botanical-muted mt-1">Please provide valid JSON array of objects with quote, author, and role.</p>
+          <p className="text-botanical-muted mt-1 text-base md:text-lg">Please provide valid JSON array of objects with quote, author, and role.</p>
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-botanical-muted mb-2">Visit Us Title</label>
+          <label className="block font-medium text-botanical-muted mb-2 text-sm">Visit Us Title</label>
           <input
             type="text"
             value={editorial.visitUsTitle || ''}
@@ -163,7 +163,7 @@ export function EditorialCustomizationForm({ shopId, customization, onUpdate }: 
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-botanical-muted mb-2">Map Image URL</label>
+          <label className="block font-medium text-botanical-muted mb-2 text-sm">Map Image URL</label>
           <input
             type="text"
             value={editorial.mapImageUrl || ''}

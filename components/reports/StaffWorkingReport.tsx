@@ -106,52 +106,52 @@ export default function StaffWorkingReport({ staffMembers }: { staffMembers: Sta
         <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-botanical-surface transition-all duration-300 min-w-0">
           <div className="absolute top-0 left-0 w-full h-1 bg-blue-500/80"></div>
           <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-3">
-            <h3 className="text-botanical-muted text-sm sm:text-xs uppercase tracking-widest font-semibold truncate">Total Staff</h3>
+            <h3 className="text-botanical-muted uppercase tracking-widest font-semibold truncate text-2xl md:text-3xl">Total Staff</h3>
             <span className="text-blue-500 text-sm">👥</span>
           </div>
-          <p className="text-2xl sm:text-3xl font-black text-botanical-text break-words leading-tight">{staffMembers.length}</p>
-          <p className="text-sm text-botanical-muted mt-2 truncate">
+          <p className="font-black text-botanical-text break-words leading-tight text-base md:text-lg">{staffMembers.length}</p>
+          <p className="text-botanical-muted mt-2 truncate text-base md:text-lg">
             <span className="text-botanical-muted">{staffData.filter(s => s.isActive).length}</span> currently active
           </p>
         </div>
         <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-botanical-surface transition-all duration-300 min-w-0">
           <div className="absolute top-0 left-0 w-full h-1 bg-purple-500/80"></div>
           <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-3">
-            <h3 className="text-botanical-muted text-sm sm:text-xs uppercase tracking-widest font-semibold truncate">Total Hours</h3>
+            <h3 className="text-botanical-muted uppercase tracking-widest font-semibold truncate text-2xl md:text-3xl">Total Hours</h3>
             <span className="text-purple-500 text-sm">⏱️</span>
           </div>
-          <p className="text-2xl sm:text-3xl font-black text-botanical-text break-words leading-tight">{formatDuration(totalHoursMs)}</p>
-          {isFiltered && <p className="text-sm text-botanical-muted mt-2 truncate opacity-0 group-hover:opacity-100 transition-opacity">In selected date range</p>}
+          <p className="font-black text-botanical-text break-words leading-tight text-base md:text-lg">{formatDuration(totalHoursMs)}</p>
+          {isFiltered && <p className="text-botanical-muted mt-2 truncate opacity-0 group-hover:opacity-100 transition-opacity text-base md:text-lg">In selected date range</p>}
         </div>
         <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-botanical-surface transition-all duration-300 min-w-0">
           <div className="absolute top-0 left-0 w-full h-1 bg-green-500/80"></div>
           <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-3">
-            <h3 className="text-botanical-muted text-sm sm:text-xs uppercase tracking-widest font-semibold truncate">Clients Served</h3>
+            <h3 className="text-botanical-muted uppercase tracking-widest font-semibold truncate text-2xl md:text-3xl">Clients Served</h3>
             <span className="text-green-500 text-sm">✂️</span>
           </div>
-          <p className="text-2xl sm:text-3xl font-black text-botanical-text break-words leading-tight">{totalClients}</p>
-          {isFiltered && <p className="text-sm text-botanical-muted mt-2 truncate opacity-0 group-hover:opacity-100 transition-opacity">In selected date range</p>}
+          <p className="font-black text-botanical-text break-words leading-tight text-base md:text-lg">{totalClients}</p>
+          {isFiltered && <p className="text-botanical-muted mt-2 truncate opacity-0 group-hover:opacity-100 transition-opacity text-base md:text-lg">In selected date range</p>}
         </div>
         <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-botanical-surface transition-all duration-300 min-w-0">
           <div className="absolute top-0 left-0 w-full h-1 bg-amber-500/80"></div>
           <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-3">
-            <h3 className="text-botanical-muted text-sm sm:text-xs uppercase tracking-widest font-semibold truncate">Revenue Generated</h3>
+            <h3 className="text-botanical-muted uppercase tracking-widest font-semibold truncate text-2xl md:text-3xl">Revenue Generated</h3>
             <span className="text-amber-500 text-sm">💰</span>
           </div>
-          <p className="text-2xl sm:text-3xl font-black text-botanical-text break-words leading-tight">${totalRevenue.toFixed(2)}</p>
-          {isFiltered && <p className="text-sm text-botanical-muted mt-2 truncate opacity-0 group-hover:opacity-100 transition-opacity">In selected date range</p>}
+          <p className="font-black text-botanical-text break-words leading-tight text-base md:text-lg">${totalRevenue.toFixed(2)}</p>
+          {isFiltered && <p className="text-botanical-muted mt-2 truncate opacity-0 group-hover:opacity-100 transition-opacity text-base md:text-lg">In selected date range</p>}
         </div>
       </div>
 
       {/* Date Filters */}
       <div className="flex flex-col sm:flex-row gap-3 mb-6 p-4 bg-botanical-surface rounded-lg border border-botanical-border shadow-sm">
         <div className="flex-1">
-          <label className="block text-sm text-botanical-muted uppercase tracking-wider mb-1">From Date</label>
+          <label className="block text-botanical-muted uppercase tracking-wider mb-1 text-sm">From Date</label>
           <input type="date" value={dateFrom} onChange={e => setDateFrom(e.target.value)} style={inputStyle}
             className="w-full border border-botanical-border shadow-sm rounded p-2 text-sm focus:outline-none focus:border-brand-gold " />
         </div>
         <div className="flex-1">
-          <label className="block text-sm text-botanical-muted uppercase tracking-wider mb-1">To Date</label>
+          <label className="block text-botanical-muted uppercase tracking-wider mb-1 text-sm">To Date</label>
           <input type="date" value={dateTo} onChange={e => setDateTo(e.target.value)} style={inputStyle}
             className="w-full border border-botanical-border shadow-sm rounded p-2 text-sm focus:outline-none focus:border-brand-gold " />
         </div>
@@ -166,7 +166,7 @@ export default function StaffWorkingReport({ staffMembers }: { staffMembers: Sta
 
       {/* Staff Cards */}
       {staffData.length === 0 ? (
-        <p className="text-botanical-muted italic text-center py-8 sm:py-12 text-sm border border-dashed border-botanical-border rounded">
+        <p className="text-botanical-muted italic text-center py-8 sm:py-12 border border-dashed border-botanical-border rounded text-base md:text-lg">
           No staff members found.
         </p>
       ) : (
@@ -189,7 +189,7 @@ export default function StaffWorkingReport({ staffMembers }: { staffMembers: Sta
                         {staff.name.charAt(0).toUpperCase()}
                       </div>
                       <div>
-                        <h4 className="font-bold text-botanical-text text-sm sm:text-base flex items-center gap-2">
+                        <h4 className="font-bold text-botanical-text flex items-center gap-2 text-xl md:text-2xl">
                           {staff.name}
                           {staff.isActive && (
                             <span className="text-sm text-green-400 bg-green-900/50 px-2 py-0.5 rounded-full font-bold animate-pulse">
@@ -202,16 +202,16 @@ export default function StaffWorkingReport({ staffMembers }: { staffMembers: Sta
 
                     <div className="grid grid-cols-3 gap-4 sm:gap-8 text-center sm:text-right">
                       <div>
-                        <p className="text-sm text-botanical-muted uppercase tracking-wider">Hours</p>
-                        <p className="text-sm sm:text-lg font-bold text-purple-400">{staff.hours}</p>
+                        <p className="text-botanical-muted uppercase tracking-wider text-base md:text-lg">Hours</p>
+                        <p className="font-bold text-purple-400 text-base md:text-lg">{staff.hours}</p>
                       </div>
                       <div>
-                        <p className="text-sm text-botanical-muted uppercase tracking-wider">Clients</p>
-                        <p className="text-sm sm:text-lg font-bold text-green-400">{staff.clients}</p>
+                        <p className="text-botanical-muted uppercase tracking-wider text-base md:text-lg">Clients</p>
+                        <p className="font-bold text-green-400 text-base md:text-lg">{staff.clients}</p>
                       </div>
                       <div>
-                        <p className="text-sm text-botanical-muted uppercase tracking-wider">Revenue</p>
-                        <p className="text-sm sm:text-lg font-bold text-amber-400">${staff.revenue.toFixed(2)}</p>
+                        <p className="text-botanical-muted uppercase tracking-wider text-base md:text-lg">Revenue</p>
+                        <p className="font-bold text-amber-400 text-base md:text-lg">${staff.revenue.toFixed(2)}</p>
                       </div>
                     </div>
                   </div>
@@ -252,7 +252,7 @@ export default function StaffWorkingReport({ staffMembers }: { staffMembers: Sta
                           </span>
                         </h5>
                         {selectedStaffData.filteredLogs.length === 0 ? (
-                          <p className="text-xs text-botanical-muted italic">No attendance logs found{isFiltered ? ' for this date range' : ''}.</p>
+                          <p className="text-botanical-muted italic text-base md:text-lg">No attendance logs found{isFiltered ? ' for this date range' : ''}.</p>
                         ) : (
                           <div className="space-y-2 max-h-64 overflow-y-auto pr-1">
                             {selectedStaffData.filteredLogs.slice(0, 50).map(log => {
@@ -298,7 +298,7 @@ export default function StaffWorkingReport({ staffMembers }: { staffMembers: Sta
                           </span>
                         </h5>
                         {selectedStaffData.filteredAppointments.length === 0 ? (
-                          <p className="text-xs text-botanical-muted italic">No completed appointments{isFiltered ? ' for this date range' : ''}.</p>
+                          <p className="text-botanical-muted italic text-base md:text-lg">No completed appointments{isFiltered ? ' for this date range' : ''}.</p>
                         ) : (
                           <div className="space-y-2 max-h-64 overflow-y-auto pr-1">
                             {selectedStaffData.filteredAppointments.slice(0, 50).map(apt => (

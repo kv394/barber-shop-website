@@ -77,13 +77,13 @@ export default function CampaignBuilder({ shopId }: { shopId: string }) {
     BIRTHDAY_THIS_MONTH: '🎂 Birthday This Month',
   };
 
-  if (loading) return <p className="text-botanical-muted text-center py-12">Loading campaigns...</p>;
+  if (loading) return <p className="text-botanical-muted text-center py-12 text-base md:text-lg">Loading campaigns...</p>;
 
   return (
     <div className="space-y-8">
       {/* Create Campaign */}
       <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center">
-        <h3 className="text-lg font-bold text-botanical-text flex items-center gap-2">
+        <h3 className="font-bold text-botanical-text flex items-center gap-2 text-2xl md:text-3xl">
           <span>📣</span> Campaigns
         </h3>
         <button
@@ -97,7 +97,7 @@ export default function CampaignBuilder({ shopId }: { shopId: string }) {
       {showCreate && (
         <div className="bg-botanical-surface p-6 rounded-xl border border-botanical-border shadow-sm space-y-4">
           <div>
-            <label className="block text-sm text-botanical-muted mb-1 uppercase tracking-wider">Campaign Name</label>
+            <label className="block text-botanical-muted mb-1 uppercase tracking-wider text-sm">Campaign Name</label>
             <input
               value={form.name}
               onChange={(e) => setForm(f => ({ ...f, name: e.target.value }))}
@@ -107,7 +107,7 @@ export default function CampaignBuilder({ shopId }: { shopId: string }) {
           </div>
 
           <div>
-            <label className="block text-sm text-botanical-muted mb-1 uppercase tracking-wider">Message</label>
+            <label className="block text-botanical-muted mb-1 uppercase tracking-wider text-sm">Message</label>
             <textarea
               value={form.message}
               onChange={(e) => setForm(f => ({ ...f, message: e.target.value }))}
@@ -119,7 +119,7 @@ export default function CampaignBuilder({ shopId }: { shopId: string }) {
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div>
-              <label className="block text-sm text-botanical-muted mb-1 uppercase tracking-wider">Type</label>
+              <label className="block text-botanical-muted mb-1 uppercase tracking-wider text-sm">Type</label>
               <select
                 value={form.type}
                 onChange={(e) => setForm(f => ({ ...f, type: e.target.value }))}
@@ -133,7 +133,7 @@ export default function CampaignBuilder({ shopId }: { shopId: string }) {
             </div>
 
             <div>
-              <label className="block text-sm text-botanical-muted mb-1 uppercase tracking-wider">Channel</label>
+              <label className="block text-botanical-muted mb-1 uppercase tracking-wider text-sm">Channel</label>
               <select
                 value={form.channel}
                 onChange={(e) => setForm(f => ({ ...f, channel: e.target.value }))}
@@ -146,7 +146,7 @@ export default function CampaignBuilder({ shopId }: { shopId: string }) {
             </div>
 
             <div>
-              <label className="block text-sm text-botanical-muted mb-1 uppercase tracking-wider">Target Audience</label>
+              <label className="block text-botanical-muted mb-1 uppercase tracking-wider text-sm">Target Audience</label>
               <select
                 value={form.targetSegment}
                 onChange={(e) => setForm(f => ({ ...f, targetSegment: e.target.value }))}
@@ -170,7 +170,7 @@ export default function CampaignBuilder({ shopId }: { shopId: string }) {
 
       {/* Campaign List */}
       {campaigns.length === 0 ? (
-        <p className="text-botanical-muted italic text-center py-8 border border-dashed border-botanical-border rounded bg-botanical-surface">
+        <p className="text-botanical-muted italic text-center py-8 border border-dashed border-botanical-border rounded bg-botanical-surface text-base md:text-lg">
           No campaigns yet. Create one to start engaging your clients!
         </p>
       ) : (
@@ -179,10 +179,10 @@ export default function CampaignBuilder({ shopId }: { shopId: string }) {
             <div key={c.id} className="bg-botanical-surface p-4 rounded-xl border border-botanical-border shadow-sm flex flex-col sm:flex-row sm:items-center gap-3">
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2 mb-1">
-                  <h4 className="font-semibold text-botanical-text truncate">{c.name}</h4>
+                  <h4 className="font-semibold text-botanical-text truncate text-xl md:text-2xl">{c.name}</h4>
                   {getStatusBadge(c.status)}
                 </div>
-                <p className="text-xs text-botanical-muted truncate">{c.message}</p>
+                <p className="text-botanical-muted truncate text-base md:text-lg">{c.message}</p>
                 <div className="flex gap-3 mt-1 text-sm text-botanical-muted">
                   <span>📧 {c.channel}</span>
                   <span>🎯 {segmentLabels[c.targetSegment] || c.targetSegment}</span>

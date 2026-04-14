@@ -45,8 +45,8 @@ export default function SiteAdminShopsPage() {
     <div>
       <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-6">
         <div>
-          <h1 className="text-3xl font-serif font-bold text-botanical-accent mb-2">Shop Management</h1>
-          <p className="text-botanical-muted">{shops.length} shop{shops.length !== 1 ? 's' : ''} on the platform</p>
+          <h1 className="font-serif font-bold text-botanical-accent mb-2 text-4xl md:text-5xl lg:text-6xl">Shop Management</h1>
+          <p className="text-botanical-muted text-base md:text-lg">{shops.length} shop{shops.length !== 1 ? 's' : ''} on the platform</p>
         </div>
         <Link
           href="/"
@@ -59,8 +59,8 @@ export default function SiteAdminShopsPage() {
       <div className="mb-8 p-4 bg-indigo-900/20 border border-indigo-500/30 rounded-xl flex gap-4 items-start">
         <div className="text-2xl mt-1">🧠</div>
         <div>
-          <h3 className="text-indigo-300 font-bold text-sm mb-1">AI-Powered Usage & Billing Analysis</h3>
-          <p className="text-xs text-indigo-200/70 leading-relaxed">
+          <h3 className="text-indigo-300 font-bold mb-1 text-2xl md:text-3xl">AI-Powered Usage & Billing Analysis</h3>
+          <p className="text-indigo-200/70 leading-relaxed text-base md:text-lg">
             Click the <strong className="text-indigo-300">AI Usage Report</strong> button on any shop below to instantly generate a custom SaaS pricing recommendation. 
             The system securely feeds the shop's entire lifetime resource consumption (users, bookings, intake forms, gallery photos) into Gemini AI to calculate estimated storage costs and suggest a personalized monthly subscription tier.
           </p>
@@ -79,7 +79,7 @@ export default function SiteAdminShopsPage() {
                 {/* Shop Info */}
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-3 mb-2">
-                    <h3 className="text-xl font-bold text-botanical-text truncate">{shop.name}</h3>
+                    <h3 className="font-bold text-botanical-text truncate text-2xl md:text-3xl">{shop.name}</h3>
                     <span className={`px-2 py-0.5 rounded-full text-xs font-bold ${
                       hasAdmin
                         ? 'bg-green-500/20 text-green-400 border border-green-500/30'
@@ -88,7 +88,7 @@ export default function SiteAdminShopsPage() {
                       {hasAdmin ? 'Active' : 'Needs Admin'}
                     </span>
                   </div>
-                  <p className="text-xs text-botanical-muted font-mono mb-3">ID: {shop.id}</p>
+                  <p className="text-botanical-muted font-mono mb-3 text-base md:text-lg">ID: {shop.id}</p>
 
                   {admins.length > 0 && (
                     <div className="mb-2">
@@ -108,7 +108,7 @@ export default function SiteAdminShopsPage() {
                     <span>⭐ {shop._count.reviews} reviews</span>
                   </div>
 
-                  <p className="text-xs text-botanical-muted mt-2">
+                  <p className="text-botanical-muted mt-2 text-base md:text-lg">
                     Created: {new Date(shop.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}
                   </p>
                 </div>
@@ -142,7 +142,7 @@ export default function SiteAdminShopsPage() {
 
         {shops.length === 0 && (
           <div className="bg-botanical-surface rounded-xl border border-botanical-border shadow-sm p-12 text-center">
-            <p className="text-botanical-muted text-lg">No shops created yet.</p>
+            <p className="text-botanical-muted text-base md:text-lg">No shops created yet.</p>
             <Link href="/" className="text-botanical-accent hover:underline mt-2 inline-block">Create your first shop →</Link>
           </div>
         )}

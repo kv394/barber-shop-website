@@ -91,7 +91,7 @@ export default async function ShopLayout({
         <div className="w-full max-w-7xl px-3 sm:px-0 pt-4 sm:pt-0">
         <header className="hidden sm:flex flex-wrap justify-between gap-x-2 gap-y-2 items-center border-b border-botanical-border mb-6 sm:mb-8 pb-4 sm:pb-6">
           <div className="flex items-center gap-3">
-            <h1 className="font-serif text-2xl sm:text-3xl md:text-4xl font-bold flex items-center flex-wrap gap-2">
+            <h1 className="font-serif font-bold flex items-center flex-wrap gap-2 text-4xl md:text-5xl lg:text-6xl">
               {isSiteAdmin ? (
                 <>
                   <Link href="/siteadmin" className="hover:opacity-80 transition-opacity">

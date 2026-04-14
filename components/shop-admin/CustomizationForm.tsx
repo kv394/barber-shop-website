@@ -72,7 +72,7 @@ export function CustomizationForm({
 
   return (
     <div className="w-full">
-      <h2 className="text-xl sm:text-2xl font-bold text-botanical-text mb-4 sm:mb-6">
+      <h2 className="font-bold text-botanical-text mb-4 sm:mb-6 text-3xl md:text-4xl">
         {isSiteAdmin ? "Customize Your Shop Appearance" : "Update Contact Information"}
       </h2>
 
@@ -91,10 +91,10 @@ export function CustomizationForm({
       <div className="space-y-6 bg-botanical-surface p-4 sm:p-6 md:p-8 rounded-lg border border-botanical-border shadow-sm">
         
         <div>
-            <h3 className="text-lg font-bold text-botanical-text mb-4">Brand Look & Feel</h3>
+            <h3 className="font-bold text-botanical-text mb-4 text-2xl md:text-3xl">Brand Look & Feel</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
               <div>
-                <label className="block text-sm font-medium text-botanical-muted mb-2">
+                <label className="block font-medium text-botanical-muted mb-2 text-sm">
                   Logo URL
                 </label>
                 <div className="flex gap-2">
@@ -132,7 +132,7 @@ export function CustomizationForm({
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-botanical-muted mb-2">
+                <label className="block font-medium text-botanical-muted mb-2 text-sm">
                   Hero / Banner Image URL
                 </label>
                 <div className="flex gap-2">
@@ -169,10 +169,10 @@ export function CustomizationForm({
                 </div>
               </div>
             </div>
-            <h3 className="text-lg font-bold text-botanical-text mb-4">Brand Colors</h3>
+            <h3 className="font-bold text-botanical-text mb-4 text-2xl md:text-3xl">Brand Colors</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <label className="block text-sm font-medium text-botanical-muted mb-2">
+                <label className="block font-medium text-botanical-muted mb-2 text-sm">
                   Primary Color
                 </label>
                 <div className="flex gap-2">
@@ -196,7 +196,7 @@ export function CustomizationForm({
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-botanical-muted mb-2">
+                <label className="block font-medium text-botanical-muted mb-2 text-sm">
                   Secondary Color
                 </label>
                 <div className="flex gap-2">
@@ -222,10 +222,10 @@ export function CustomizationForm({
           </div>
 
         <div>
-          <h3 className="text-lg font-bold text-botanical-text mb-4">Contact Information</h3>
+          <h3 className="font-bold text-botanical-text mb-4 text-2xl md:text-3xl">Contact Information</h3>
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-botanical-muted mb-2">
+              <label className="block font-medium text-botanical-muted mb-2 text-sm">
                 Phone Number
               </label>
               <input
@@ -238,7 +238,7 @@ export function CustomizationForm({
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-botanical-muted mb-2">
+              <label className="block font-medium text-botanical-muted mb-2 text-sm">
                 Email Address
               </label>
               <input
@@ -251,7 +251,7 @@ export function CustomizationForm({
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-botanical-muted mb-2">
+              <label className="block font-medium text-botanical-muted mb-2 text-sm">
                 Business Address
               </label>
               <input
@@ -266,10 +266,10 @@ export function CustomizationForm({
         </div>
 
         <div>
-          <h3 className="text-lg font-bold text-botanical-text mb-4">Social Media Links</h3>
+          <h3 className="font-bold text-botanical-text mb-4 text-2xl md:text-3xl">Social Media Links</h3>
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-botanical-muted mb-2">
+              <label className="block font-medium text-botanical-muted mb-2 text-sm">
                 Facebook URL
               </label>
               <input
@@ -287,7 +287,7 @@ export function CustomizationForm({
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-botanical-muted mb-2">
+              <label className="block font-medium text-botanical-muted mb-2 text-sm">
                 Instagram URL
               </label>
               <input
@@ -305,7 +305,7 @@ export function CustomizationForm({
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-botanical-muted mb-2">
+              <label className="block font-medium text-botanical-muted mb-2 text-sm">
                 Twitter URL
               </label>
               <input
@@ -330,14 +330,14 @@ export function CustomizationForm({
 
         {activeVariables.length > 0 && (
           <div>
-            <h3 className="text-lg font-bold text-botanical-text mb-4">Template Custom Variables</h3>
-            <p className="text-sm text-botanical-muted mb-4">
+            <h3 className="font-bold text-botanical-text mb-4 text-2xl md:text-3xl">Template Custom Variables</h3>
+            <p className="text-botanical-muted mb-4 text-base md:text-lg">
               These fields were automatically detected from your selected custom template. Fill them in to customize your landing page.
             </p>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {activeVariables.map((variable) => (
                 <div key={variable}>
-                  <label className="block text-sm font-medium text-botanical-muted mb-2 capitalize">
+                  <label className="block font-medium text-botanical-muted mb-2 capitalize text-sm">
                     {variable.replace(/([A-Z])/g, ' $1').trim()}
                   </label>
                   {variable.toLowerCase().includes('image') || variable.toLowerCase().includes('url') ? (

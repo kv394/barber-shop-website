@@ -45,11 +45,11 @@ export default async function ShopConfigPage({
     >
       <div className="space-y-8">
         <div className="bg-botanical-bg/50 p-6 rounded-lg border border-botanical-border shadow-sm">
-          <h2 className="text-xl font-bold text-botanical-text mb-4">Shop Template</h2>
-          <p className="text-botanical-muted text-sm leading-relaxed mb-2">
+          <h2 className="font-bold text-botanical-text mb-4 text-3xl md:text-4xl">Shop Template</h2>
+          <p className="text-botanical-muted leading-relaxed mb-2 text-base md:text-lg">
             Your shop is currently using the <strong>{data.shop.template || 'modern'}</strong> template.
           </p>
-          <p className="text-botanical-muted text-sm leading-relaxed">
+          <p className="text-botanical-muted leading-relaxed text-base md:text-lg">
             Template assignments are managed by Site Administrators. You can customize the content and appearance of your template in the <a href={`/shop/${shopId}/settings`} className="text-botanical-accent hover:underline">Settings</a> tab.
           </p>
         </div>

@@ -211,8 +211,8 @@ export default function BarcodeScanner({ onScan, onClose }: BarcodeScannerProps)
           ✕
         </button>
 
-        <h3 className="text-lg font-bold text-botanical-text mb-1">Scan QR / Barcode</h3>
-        <p className="text-xs text-botanical-muted mb-4">
+        <h3 className="font-bold text-botanical-text mb-1 text-2xl md:text-3xl">Scan QR / Barcode</h3>
+        <p className="text-botanical-muted mb-4 text-base md:text-lg">
           Point the camera at a barcode or QR code.
         </p>
 
@@ -235,7 +235,7 @@ export default function BarcodeScanner({ onScan, onClose }: BarcodeScannerProps)
           {isStarting && !error && (
             <div className="absolute inset-0 flex flex-col items-center justify-center bg-botanical-surface text-botanical-text gap-3">
               <div className="w-8 h-8 border-2 border-brand-gold border-t-transparent rounded-full animate-spin" />
-              <p className="text-sm text-botanical-muted">Starting camera…</p>
+              <p className="text-botanical-muted text-base md:text-lg">Starting camera…</p>
             </div>
           )}
 
@@ -252,7 +252,7 @@ export default function BarcodeScanner({ onScan, onClose }: BarcodeScannerProps)
           )}
         </div>
 
-        <p className="text-center text-xs text-botanical-muted mt-3">
+        <p className="text-center text-botanical-muted mt-3 text-base md:text-lg">
           Hold steady — scanning automatically
         </p>
       </div>

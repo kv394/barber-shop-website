@@ -172,7 +172,7 @@ export default function BarcodeScannerWrapper({ shopId, services = [] }: { shopI
         <div className="fixed bottom-0 left-0 right-0 p-4 z-[60] flex justify-center pointer-events-none">
           <div className="bg-botanical-surface border border-brand-gold rounded-xl p-5 shadow-2xl max-w-sm w-full pointer-events-auto">
             <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-start mb-4">
-              <h3 className="text-lg font-bold text-botanical-text">Scan Result</h3>
+              <h3 className="font-bold text-botanical-text text-2xl md:text-3xl">Scan Result</h3>
               <button onClick={resetAll} className="text-botanical-muted hover:text-botanical-text text-xl leading-none">✕</button>
             </div>
 
@@ -187,12 +187,12 @@ export default function BarcodeScannerWrapper({ shopId, services = [] }: { shopI
             {attendanceMessage && (
               <div className={`p-5 rounded-lg text-center border ${attendanceMessage.type === 'success' ? 'bg-green-900/20 border-green-500/50' : 'bg-red-900/20 border-red-500/50'}`}>
                 {attendanceMessage.type === 'success' && <div className="text-4xl mb-3">✅</div>}
-                <h4 className={`text-xl font-bold mb-1 ${attendanceMessage.type === 'success' ? 'text-green-400' : 'text-red-400'}`}>
+                <h4 className={`${` font-bold mb-1 ${attendanceMessage.type === 'success' ? 'text-green-400' : 'text-red-400'} text-xl md:text-2xl`}`}>
                   {attendanceMessage.text}
                 </h4>
-                {attendanceMessage.user && <p className="text-botanical-text text-base">{attendanceMessage.user}</p>}
+                {attendanceMessage.user && <p className="text-botanical-text text-base md:text-lg">{attendanceMessage.user}</p>}
                 {attendanceMessage.type === 'success' && (
-                  <p className="text-xs text-botanical-muted mt-3">Auto-closing in {ATTENDANCE_AUTO_DISMISS_MS / 1000}s…</p>
+                  <p className="text-botanical-muted mt-3 text-base md:text-lg">Auto-closing in {ATTENDANCE_AUTO_DISMISS_MS / 1000}s…</p>
                 )}
               </div>
             )}
@@ -210,7 +210,7 @@ export default function BarcodeScannerWrapper({ shopId, services = [] }: { shopI
             {/* Inventory match */}
             {scannedCode && !attendanceMessage && shopId && (
               <>
-                <p className="text-xs text-botanical-accent font-mono mb-4 bg-botanical-surface p-2 rounded truncate">Code: {scannedCode}</p>
+                <p className="text-botanical-accent font-mono mb-4 bg-botanical-surface p-2 rounded truncate text-base md:text-lg">Code: {scannedCode}</p>
 
                 {actionError && (
                   <div className="bg-red-900/30 border border-red-500/50 text-red-300 p-3 rounded-lg mb-4 text-sm">
@@ -221,8 +221,8 @@ export default function BarcodeScannerWrapper({ shopId, services = [] }: { shopI
                 {matchedService ? (
                   <div>
                     <div className="bg-botanical-surface p-4 rounded-lg mb-4 border border-botanical-border shadow-sm">
-                      <h4 className="font-semibold text-botanical-text">{matchedService.name}</h4>
-                      <p className="text-botanical-muted text-sm mt-1">Stock: <span className="font-mono text-botanical-text text-lg ml-1">{matchedService.inventoryCount}</span></p>
+                      <h4 className="font-semibold text-botanical-text text-xl md:text-2xl">{matchedService.name}</h4>
+                      <p className="text-botanical-muted mt-1 text-base md:text-lg">Stock: <span className="font-mono text-botanical-text text-lg ml-1">{matchedService.inventoryCount}</span></p>
                     </div>
                     <div className="flex gap-3">
                       <button onClick={() => handleUpdateInventory(-1)} disabled={isUpdating || matchedService.inventoryCount <= 0}
@@ -241,8 +241,8 @@ export default function BarcodeScannerWrapper({ shopId, services = [] }: { shopI
                   </div>
                 ) : (
                   <div className="bg-botanical-surface border border-botanical-border shadow-sm p-4 rounded-lg">
-                    <p className="text-amber-400 font-semibold mb-1">Item not recognized.</p>
-                    <p className="text-xs text-botanical-muted mb-4">Map this barcode to an inventory item:</p>
+                    <p className="text-amber-400 font-semibold mb-1 text-base md:text-lg">Item not recognized.</p>
+                    <p className="text-botanical-muted mb-4 text-base md:text-lg">Map this barcode to an inventory item:</p>
                     {unmatchedServices.length > 0 ? (
                       <div className="space-y-3">
                         <select className="w-full bg-botanical-surface border border-botanical-border shadow-sm rounded p-2.5 text-sm text-botanical-text focus:ring-1 focus:ring-botanical-primary"
@@ -258,7 +258,7 @@ export default function BarcodeScannerWrapper({ shopId, services = [] }: { shopI
                         </button>
                       </div>
                     ) : (
-                      <p className="text-xs text-red-400 bg-red-900/20 p-3 rounded">No inventory items found. Create one in the dashboard first.</p>
+                      <p className="text-red-400 bg-red-900/20 p-3 rounded text-base md:text-lg">No inventory items found. Create one in the dashboard first.</p>
                     )}
                   </div>
                 )}
@@ -267,7 +267,7 @@ export default function BarcodeScannerWrapper({ shopId, services = [] }: { shopI
 
             {scannedCode && !attendanceMessage && !shopId && (
               <div className="bg-botanical-surface border border-botanical-border shadow-sm p-4 rounded-lg">
-                <p className="text-xs text-botanical-text font-mono break-all">{scannedCode}</p>
+                <p className="text-botanical-text font-mono break-all text-base md:text-lg">{scannedCode}</p>
               </div>
             )}
           </div>

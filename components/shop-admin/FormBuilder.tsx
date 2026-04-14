@@ -42,8 +42,8 @@ export default function FormBuilder({ shopId }: { shopId: string }) {
 
   return (
     <div className="bg-botanical-surface border border-botanical-border shadow-sm rounded-xl p-6">
-      <h3 className="text-lg font-bold text-botanical-text mb-2">📝 Digital Intake Forms</h3>
-      <p className="text-sm text-botanical-muted mb-6">
+      <h3 className="font-bold text-botanical-text mb-2 text-2xl md:text-3xl">📝 Digital Intake Forms</h3>
+      <p className="text-botanical-muted mb-6 text-base md:text-lg">
         Create waivers, consultation forms, and medical histories. Clients will be prompted to sign these before their appointment.
       </p>
 
@@ -51,7 +51,7 @@ export default function FormBuilder({ shopId }: { shopId: string }) {
 
       <form onSubmit={addForm} className="mb-8 space-y-4">
         <div>
-          <label className="block text-xs text-botanical-muted mb-1">Form Name</label>
+          <label className="block text-botanical-muted mb-1 text-sm">Form Name</label>
           <input 
             type="text" 
             value={name} 
@@ -62,7 +62,7 @@ export default function FormBuilder({ shopId }: { shopId: string }) {
           />
         </div>
         <div>
-          <label className="block text-xs text-botanical-muted mb-1">Form Content / Questions</label>
+          <label className="block text-botanical-muted mb-1 text-sm">Form Content / Questions</label>
           <textarea 
             value={content} 
             onChange={e => setContent(e.target.value)} 
@@ -80,7 +80,7 @@ export default function FormBuilder({ shopId }: { shopId: string }) {
             onChange={e => setIsRequired(e.target.checked)} 
             className="accent-brand-gold w-4 h-4"
           />
-          <label htmlFor="isRequired" className="text-sm text-botanical-text">Require digital signature before appointment</label>
+          <label htmlFor="isRequired" className="text-botanical-text text-sm">Require digital signature before appointment</label>
         </div>
         <button 
           type="submit" 
@@ -91,9 +91,9 @@ export default function FormBuilder({ shopId }: { shopId: string }) {
         </button>
       </form>
 
-      <h4 className="text-botanical-text font-medium mb-3">Existing Forms</h4>
+      <h4 className="text-botanical-text font-medium mb-3 text-xl md:text-2xl">Existing Forms</h4>
       {forms.length === 0 ? (
-        <p className="text-botanical-muted text-sm py-2">No forms created yet.</p>
+        <p className="text-botanical-muted py-2 text-base md:text-lg">No forms created yet.</p>
       ) : (
         <div className="space-y-3">
           {forms.map(f => (
@@ -103,7 +103,7 @@ export default function FormBuilder({ shopId }: { shopId: string }) {
                   <h5 className="text-botanical-text font-medium text-sm">{f.name}</h5>
                   {f.isRequired && <span className="text-sm uppercase font-bold tracking-wider bg-red-900/50 text-red-300 px-1.5 py-0.5 rounded">Required</span>}
                 </div>
-                <p className="text-xs text-botanical-muted line-clamp-2">{f.content}</p>
+                <p className="text-botanical-muted line-clamp-2 text-base md:text-lg">{f.content}</p>
               </div>
               <button 
                 onClick={() => remove(f.id)} 

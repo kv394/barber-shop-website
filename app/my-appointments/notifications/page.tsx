@@ -39,7 +39,7 @@ export default function NotificationsPage() {
   if (loading) {
     return (
       <div className="h-[100dvh] overflow-y-auto overflow-x-hidden">
-        <p className="text-botanical-muted animate-pulse">Loading…</p>
+        <p className="text-botanical-muted animate-pulse text-base md:text-lg">Loading…</p>
       </div>
     );
   }
@@ -51,8 +51,8 @@ export default function NotificationsPage() {
       <header className="bg-botanical-surface backdrop-blur-md border-b border-botanical-border sticky top-0 z-20">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 py-4 flex flex-wrap justify-between gap-x-2 gap-y-2 items-center">
           <div>
-            <h1 className="text-xl sm:text-2xl font-bold text-botanical-text">Notification Preferences</h1>
-            <p className="text-xs text-botanical-muted">Control what emails and texts you receive</p>
+            <h1 className="font-bold text-botanical-text text-4xl md:text-5xl lg:text-6xl">Notification Preferences</h1>
+            <p className="text-botanical-muted text-base md:text-lg">Control what emails and texts you receive</p>
           </div>
           <BackButton />
         </div>
@@ -70,10 +70,10 @@ export default function NotificationsPage() {
             { key: 'birthdayMessages', label: 'Birthday Messages', desc: 'Receive a special message on your birthday' },
             { key: 'loyaltyUpdates', label: 'Loyalty Updates', desc: 'Points earned, tier changes, and reward alerts' },
           ].map(item => (
-            <label key={item.key} className="flex items-center justify-between p-4 bg-botanical-surface rounded-lg cursor-pointer hover:bg-botanical-surface transition-colors">
+            <label key={item.key} className="flex items-center justify-between p-4 bg-botanical-surface rounded-lg cursor-pointer hover:bg-botanical-surface transition-colors text-sm">
               <div>
-                <p className="text-sm text-botanical-text font-medium">{item.label}</p>
-                <p className="text-xs text-botanical-muted">{item.desc}</p>
+                <p className="text-botanical-text font-medium text-base md:text-lg">{item.label}</p>
+                <p className="text-botanical-muted text-base md:text-lg">{item.desc}</p>
               </div>
               <input
                 type="checkbox"
@@ -85,7 +85,7 @@ export default function NotificationsPage() {
           ))}
 
           <div className="pt-4 border-t border-botanical-border">
-            <label className="block text-sm text-botanical-muted mb-2">Preferred Channel</label>
+            <label className="block text-botanical-muted mb-2 text-sm">Preferred Channel</label>
             <select
               value={prefs?.preferredChannel || 'EMAIL'}
               onChange={(e) => setPrefs({ ...prefs, preferredChannel: e.target.value })}

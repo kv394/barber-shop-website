@@ -92,12 +92,12 @@ export default function SupabaseAuthButton({
              {/* Mobile drag handle indicator */}
              <div className="w-12 h-1.5 bg-gray-300 rounded-full mb-5 sm:hidden absolute top-3"></div>
              
-             <p className="text-sm sm:text-xs text-botanical-muted truncate mb-4 sm:mb-3 w-full text-center mt-2 sm:mt-0">{user.email}</p>
+             <p className="text-botanical-muted truncate mb-4 sm:mb-3 w-full text-center mt-2 sm:mt-0 text-base md:text-lg">{user.email}</p>
              <div className="bg-white p-3 sm:p-2 rounded-2xl shadow-inner inline-block border border-botanical-border shadow-sm">
                {/* QR Code scales down slightly on desktop */}
                <QRCodeSVG value={profile?.barcode || user.id} size={160} className="sm:w-[120px] sm:h-[120px]" level="L" />
              </div>
-             <p className="text-xs sm:text-sm text-botanical-muted mt-4 sm:mt-2 text-center uppercase tracking-widest font-bold">My Check-in Code</p>
+             <p className="text-botanical-muted mt-4 sm:mt-2 text-center uppercase tracking-widest font-bold text-base md:text-lg">My Check-in Code</p>
            </div>
            
            {/* Menu Actions */}

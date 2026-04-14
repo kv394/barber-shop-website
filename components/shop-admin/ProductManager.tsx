@@ -92,7 +92,7 @@ export default function ProductManager({ shopId, products }: { shopId: string, p
   return (
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-        <h2 className="text-2xl font-bold text-botanical-text">Products & Inventory</h2>
+        <h2 className="font-bold text-botanical-text text-3xl md:text-4xl">Products & Inventory</h2>
         <div className="flex flex-wrap items-center gap-3 w-full sm:w-auto">
           <ProductBarcodeScannerWrapper shopId={shopId} products={products} />
           <button onClick={() => {
@@ -110,18 +110,18 @@ export default function ProductManager({ shopId, products }: { shopId: string, p
 
       {isAdding && (
         <form onSubmit={handleSubmit} className="bg-botanical-surface p-6 rounded-lg border border-botanical-border shadow-sm space-y-4">
-          <h3 className="text-lg font-bold text-botanical-text mb-4">{editingProduct ? 'Edit Product' : 'Add New Product'}</h3>
+          <h3 className="font-bold text-botanical-text mb-4 text-2xl md:text-3xl">{editingProduct ? 'Edit Product' : 'Add New Product'}</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-botanical-muted mb-1">Name *</label>
+              <label className="block font-medium text-botanical-muted mb-1 text-sm">Name *</label>
               <input required type="text" value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} className="w-full bg-botanical-bg border border-botanical-border shadow-sm rounded-lg px-4 py-2 text-botanical-text" />
             </div>
             <div>
-              <label className="block text-sm font-medium text-botanical-muted mb-1">Price ($) *</label>
+              <label className="block font-medium text-botanical-muted mb-1 text-sm">Price ($) *</label>
               <input required type="number" step="0.01" min="0" value={formData.price} onChange={(e) => setFormData({ ...formData, price: e.target.value })} className="w-full bg-botanical-bg border border-botanical-border shadow-sm rounded-lg px-4 py-2 text-botanical-text" />
             </div>
             <div>
-              <label className="block text-sm font-medium text-botanical-muted mb-1">Type</label>
+              <label className="block font-medium text-botanical-muted mb-1 text-sm">Type</label>
               <select value={formData.type} onChange={(e) => setFormData({ ...formData, type: e.target.value as 'RETAIL' | 'BACKBAR' })} className="w-full bg-botanical-bg border border-botanical-border shadow-sm rounded-lg px-4 py-2 text-botanical-text">
                 <option value="RETAIL">Retail</option>
                 <option value="BACKBAR">Backbar (Shop Use)</option>
@@ -129,27 +129,27 @@ export default function ProductManager({ shopId, products }: { shopId: string, p
             </div>
             <div className="flex items-center space-x-2 mt-6">
               <input type="checkbox" id="trackInventory" checked={formData.trackInventory} onChange={(e) => setFormData({ ...formData, trackInventory: e.target.checked })} className="rounded border-botanical-border bg-botanical-bg text-botanical-accent focus:ring-botanical-primary" />
-              <label htmlFor="trackInventory" className="text-sm font-medium text-botanical-muted">Track Inventory</label>
+              <label htmlFor="trackInventory" className="font-medium text-botanical-muted text-sm">Track Inventory</label>
             </div>
             
             {formData.trackInventory && (
               <>
                 <div>
-                  <label className="block text-sm font-medium text-botanical-muted mb-1">Current Stock</label>
+                  <label className="block font-medium text-botanical-muted mb-1 text-sm">Current Stock</label>
                   <input type="number" min="0" value={formData.inventoryCount} onChange={(e) => setFormData({ ...formData, inventoryCount: e.target.value })} className="w-full bg-botanical-bg border border-botanical-border shadow-sm rounded-lg px-4 py-2 text-botanical-text" />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-botanical-muted mb-1">Low Stock Alert (Reorder Point)</label>
+                  <label className="block font-medium text-botanical-muted mb-1 text-sm">Low Stock Alert (Reorder Point)</label>
                   <input type="number" min="0" value={formData.reorderPoint} onChange={(e) => setFormData({ ...formData, reorderPoint: e.target.value })} className="w-full bg-botanical-bg border border-botanical-border shadow-sm rounded-lg px-4 py-2 text-botanical-text" />
                 </div>
               </>
             )}
             <div>
-              <label className="block text-sm font-medium text-botanical-muted mb-1">SKU (Optional)</label>
+              <label className="block font-medium text-botanical-muted mb-1 text-sm">SKU (Optional)</label>
               <input type="text" value={formData.sku} onChange={(e) => setFormData({ ...formData, sku: e.target.value })} className="w-full bg-botanical-bg border border-botanical-border shadow-sm rounded-lg px-4 py-2 text-botanical-text" />
             </div>
             <div>
-              <label className="block text-sm font-medium text-botanical-muted mb-1">Barcode (Optional)</label>
+              <label className="block font-medium text-botanical-muted mb-1 text-sm">Barcode (Optional)</label>
               <input type="text" value={formData.barcode} onChange={(e) => setFormData({ ...formData, barcode: e.target.value })} className="w-full bg-botanical-bg border border-botanical-border shadow-sm rounded-lg px-4 py-2 text-botanical-text" />
             </div>
           </div>
@@ -183,12 +183,12 @@ export default function ProductManager({ shopId, products }: { shopId: string, p
                     >
                       {product.name}
                     </div>
-                    {product.barcode && <p className="text-sm text-botanical-muted font-mono mt-1">{product.barcode}</p>}
+                    {product.barcode && <p className="text-botanical-muted font-mono mt-1 text-base md:text-lg">{product.barcode}</p>}
                     
                     <div className="absolute left-0 top-full mt-2 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-opacity z-50">
                       <div className="bg-white p-4 rounded-xl shadow-2xl border border-botanical-border shadow-sm min-w-[200px] flex flex-col items-center">
                         <Barcode value={product.barcode || product.id} displayValue={false} height={60} width={2} margin={0} background="transparent" />
-                        <p className="text-center text-xs text-botanical-muted font-mono mt-3 truncate max-w-full px-2">{product.barcode || product.id}</p>
+                        <p className="text-center text-botanical-muted font-mono mt-3 truncate max-w-full px-2 text-base md:text-lg">{product.barcode || product.id}</p>
                       </div>
                     </div>
                   </div>

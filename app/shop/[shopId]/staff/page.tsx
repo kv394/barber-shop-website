@@ -179,7 +179,7 @@ export default async function StaffBookingPage({
                         <span className="text-xs">👤</span>
                       )}
                     </div>
-                    <h2 className="text-base sm:text-xl font-semibold text-botanical-accent truncate">{staffMember.name || staffMember.email || 'Unnamed Staff'}</h2>
+                    <h2 className="font-semibold text-botanical-accent truncate text-3xl md:text-4xl">{staffMember.name || staffMember.email || 'Unnamed Staff'}</h2>
                   </div>
                 </StaffProfileModalWrapper>
                 <div className="flex flex-col gap-1 items-end shrink-0">
@@ -190,11 +190,11 @@ export default async function StaffBookingPage({
               <div className="flex-grow max-h-80 overflow-y-auto pr-1 sm:pr-2 space-y-1">
                 {isOnLeave ? (
                   <div className="text-center py-4 h-full flex flex-col justify-center items-center rounded-md bg-red-900/50">
-                    <p className="font-bold text-red-300 text-sm sm:text-lg">ON LEAVE</p>
+                    <p className="font-bold text-red-300 text-base md:text-lg">ON LEAVE</p>
                   </div>
                 ) : isNotWorking ? (
                     <div className="text-center py-4 h-full flex flex-col justify-center items-center rounded-md bg-botanical-surface">
-                        <p className="font-bold text-botanical-muted text-sm">NOT WORKING</p>
+                        <p className="font-bold text-botanical-muted text-base md:text-lg">NOT WORKING</p>
                     </div>
                 ) : staffMember.schedule.length > 0 ? (
                   staffMember.schedule.map((slot: any) => (
@@ -210,7 +210,7 @@ export default async function StaffBookingPage({
                   ))
                 ) : (
                   <div className="text-center py-4 h-full flex flex-col justify-center items-center rounded-md bg-botanical-surface">
-                    <p className="text-xs sm:text-sm text-botanical-muted italic">No slots in selected range.</p>
+                    <p className="text-botanical-muted italic text-base md:text-lg">No slots in selected range.</p>
                   </div>
                 )}
               </div>

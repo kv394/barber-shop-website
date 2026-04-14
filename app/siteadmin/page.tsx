@@ -37,8 +37,8 @@ export default async function SiteAdminDashboard() {
   return (
     <div>
       <div className="mb-8">
-        <h1 className="text-3xl font-serif font-bold text-botanical-accent mb-2">Platform Dashboard</h1>
-        <p className="text-botanical-muted">Overview of all shops and users across the platform.</p>
+        <h1 className="font-serif font-bold text-botanical-accent mb-2 text-4xl md:text-5xl lg:text-6xl">Platform Dashboard</h1>
+        <p className="text-botanical-muted text-base md:text-lg">Overview of all shops and users across the platform.</p>
       </div>
 
       {/* KPI Cards */}
@@ -51,7 +51,7 @@ export default async function SiteAdminDashboard() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
         {/* User Breakdown */}
         <div className="bg-botanical-surface rounded-xl border border-botanical-border shadow-sm p-6">
-          <h2 className="text-lg font-bold text-botanical-text mb-4">👥 Users by Role</h2>
+          <h2 className="font-bold text-botanical-text mb-4 text-3xl md:text-4xl">👥 Users by Role</h2>
           <div className="space-y-3">
             {(['SITE_ADMIN', 'SHOP_ADMIN', 'STAFF', 'CLIENT', 'ATTENDANCE_KIOSK'] as const).map(role => (
               <div key={role} className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center">
@@ -67,7 +67,7 @@ export default async function SiteAdminDashboard() {
         {/* Recent Shops */}
         <div className="bg-botanical-surface rounded-xl border border-botanical-border shadow-sm p-6">
           <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-4">
-            <h2 className="text-lg font-bold text-botanical-text">🏪 Recent Shops</h2>
+            <h2 className="font-bold text-botanical-text text-3xl md:text-4xl">🏪 Recent Shops</h2>
             <Link href="/siteadmin/shops" className="text-botanical-accent text-sm hover:underline">
               View All →
             </Link>
@@ -118,8 +118,8 @@ function KpiCard({ label, value, color }: { label: string; value: string | numbe
 
   return (
     <div className={`bg-gradient-to-br ${classes} border p-4 rounded-xl text-center`}>
-      <p className={`text-2xl sm:text-3xl font-black ${textColor}`}>{value}</p>
-      <p className="text-sm sm:text-xs text-botanical-muted uppercase tracking-wider mt-1">{label}</p>
+      <p className={`${` font-black ${textColor} text-base md:text-lg`}`}>{value}</p>
+      <p className="text-botanical-muted uppercase tracking-wider mt-1 text-base md:text-lg">{label}</p>
     </div>
   );
 }

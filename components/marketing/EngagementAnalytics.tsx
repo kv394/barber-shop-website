@@ -14,8 +14,8 @@ export default function EngagementAnalytics({ shopId }: { shopId: string }) {
       .finally(() => setLoading(false));
   }, [shopId]);
 
-  if (loading) return <p className="text-botanical-muted text-center py-12">Loading analytics...</p>;
-  if (!data || data.error) return <p className="text-red-400 text-center py-12">Failed to load analytics.</p>;
+  if (loading) return <p className="text-botanical-muted text-center py-12 text-base md:text-lg">Loading analytics...</p>;
+  if (!data || data.error) return <p className="text-red-400 text-center py-12 text-base md:text-lg">Failed to load analytics.</p>;
 
   const { overview, loyalty, referrals, campaigns, topClients } = data;
 
@@ -26,45 +26,45 @@ export default function EngagementAnalytics({ shopId }: { shopId: string }) {
         <div className="p-4 sm:p-5 relative overflow-hidden group hover:bg-gray-50 transition-all duration-300 min-w-0 border-b lg:border-b-0 lg:border-r border-botanical-border border-r md:border-r-0 flex flex-col items-center justify-center text-center">
           <div className="absolute top-0 left-0 w-full h-1 bg-blue-500/80"></div>
           <span className="text-blue-500 text-xl sm:text-2xl mb-1 sm:mb-2 flex-shrink-0">👥</span>
-          <h3 className="text-botanical-muted text-[10px] sm:text-xs uppercase tracking-widest font-semibold leading-tight mb-1 w-full truncate">Total Clients</h3>
-          <p className="text-xl sm:text-3xl font-black text-botanical-text break-words leading-tight w-full">{overview.totalClients}</p>
+          <h3 className="text-botanical-muted text-[10px] uppercase tracking-widest font-semibold leading-tight mb-1 w-full truncate text-2xl md:text-3xl">Total Clients</h3>
+          <p className="font-black text-botanical-text break-words leading-tight w-full text-base md:text-lg">{overview.totalClients}</p>
         </div>
         <div className="p-4 sm:p-5 relative overflow-hidden group hover:bg-gray-50 transition-all duration-300 min-w-0 border-b lg:border-b-0 lg:border-r border-botanical-border md:border-r flex flex-col items-center justify-center text-center">
           <div className="absolute top-0 left-0 w-full h-1 bg-green-500/80"></div>
           <span className="text-green-500 text-xl sm:text-2xl mb-1 sm:mb-2 flex-shrink-0">🔥</span>
-          <h3 className="text-botanical-muted text-[10px] sm:text-xs uppercase tracking-widest font-semibold leading-tight mb-1 w-full truncate">Active (30d)</h3>
-          <p className="text-xl sm:text-3xl font-black text-botanical-text break-words leading-tight w-full">{overview.activeLastMonth}</p>
+          <h3 className="text-botanical-muted text-[10px] uppercase tracking-widest font-semibold leading-tight mb-1 w-full truncate text-2xl md:text-3xl">Active (30d)</h3>
+          <p className="font-black text-botanical-text break-words leading-tight w-full text-base md:text-lg">{overview.activeLastMonth}</p>
         </div>
         <div className="p-4 sm:p-5 relative overflow-hidden group hover:bg-gray-50 transition-all duration-300 min-w-0 border-b lg:border-b-0 lg:border-r border-botanical-border border-r md:border-r-0 flex flex-col items-center justify-center text-center">
           <div className="absolute top-0 left-0 w-full h-1 bg-cyan-500/80"></div>
           <span className="text-cyan-500 text-xl sm:text-2xl mb-1 sm:mb-2 flex-shrink-0">🌟</span>
-          <h3 className="text-botanical-muted text-[10px] sm:text-xs uppercase tracking-widest font-semibold leading-tight mb-1 w-full truncate">New (30d)</h3>
-          <p className="text-xl sm:text-3xl font-black text-botanical-text break-words leading-tight w-full">{overview.newLastMonth}</p>
+          <h3 className="text-botanical-muted text-[10px] uppercase tracking-widest font-semibold leading-tight mb-1 w-full truncate text-2xl md:text-3xl">New (30d)</h3>
+          <p className="font-black text-botanical-text break-words leading-tight w-full text-base md:text-lg">{overview.newLastMonth}</p>
         </div>
         <div className="p-4 sm:p-5 relative overflow-hidden group hover:bg-gray-50 transition-all duration-300 min-w-0 border-b md:border-b-0 lg:border-r border-botanical-border md:border-r flex flex-col items-center justify-center text-center">
           <div className="absolute top-0 left-0 w-full h-1 bg-purple-500/80"></div>
           <span className="text-purple-500 text-xl sm:text-2xl mb-1 sm:mb-2 flex-shrink-0">🔄</span>
-          <h3 className="text-botanical-muted text-[10px] sm:text-xs uppercase tracking-widest font-semibold leading-tight mb-1 w-full truncate">Retention</h3>
-          <p className="text-xl sm:text-3xl font-black text-botanical-text break-words leading-tight w-full">{overview.retentionRate}%</p>
+          <h3 className="text-botanical-muted text-[10px] uppercase tracking-widest font-semibold leading-tight mb-1 w-full truncate text-2xl md:text-3xl">Retention</h3>
+          <p className="font-black text-botanical-text break-words leading-tight w-full text-base md:text-lg">{overview.retentionRate}%</p>
         </div>
         <div className="p-4 sm:p-5 relative overflow-hidden group hover:bg-gray-50 transition-all duration-300 min-w-0 border-r border-botanical-border flex flex-col items-center justify-center text-center">
           <div className="absolute top-0 left-0 w-full h-1 bg-amber-500/80"></div>
           <span className="text-amber-500 text-xl sm:text-2xl mb-1 sm:mb-2 flex-shrink-0">📅</span>
-          <h3 className="text-botanical-muted text-[10px] sm:text-xs uppercase tracking-widest font-semibold leading-tight mb-1 w-full truncate">Appts (30d)</h3>
-          <p className="text-xl sm:text-3xl font-black text-botanical-text break-words leading-tight w-full">{overview.completedAppointments}</p>
+          <h3 className="text-botanical-muted text-[10px] uppercase tracking-widest font-semibold leading-tight mb-1 w-full truncate text-2xl md:text-3xl">Appts (30d)</h3>
+          <p className="font-black text-botanical-text break-words leading-tight w-full text-base md:text-lg">{overview.completedAppointments}</p>
         </div>
         <div className="p-4 sm:p-5 relative overflow-hidden group hover:bg-gray-50 transition-all duration-300 min-w-0 flex flex-col items-center justify-center text-center">
           <div className="absolute top-0 left-0 w-full h-1 bg-botanical-primary/80"></div>
           <span className="text-yellow-500 text-xl sm:text-2xl mb-1 sm:mb-2 flex-shrink-0">⭐</span>
-          <h3 className="text-botanical-muted text-[10px] sm:text-xs uppercase tracking-widest font-semibold leading-tight mb-1 w-full truncate">Avg Rating</h3>
-          <p className="text-xl sm:text-3xl font-black text-botanical-text break-words leading-tight w-full">{overview.averageRating}</p>
+          <h3 className="text-botanical-muted text-[10px] uppercase tracking-widest font-semibold leading-tight mb-1 w-full truncate text-2xl md:text-3xl">Avg Rating</h3>
+          <p className="font-black text-botanical-text break-words leading-tight w-full text-base md:text-lg">{overview.averageRating}</p>
         </div>
       </div>
 
       {/* Program Summaries */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <div className="bg-botanical-surface p-5 rounded-xl border border-botanical-border shadow-sm">
-          <h4 className="text-sm font-bold text-botanical-text flex items-center gap-2 mb-3">
+          <h4 className="font-bold text-botanical-text flex items-center gap-2 mb-3 text-xl md:text-2xl">
             <span>⭐</span> Loyalty Program
           </h4>
           <div className="space-y-2">
@@ -82,7 +82,7 @@ export default function EngagementAnalytics({ shopId }: { shopId: string }) {
         </div>
 
         <div className="bg-botanical-surface p-5 rounded-xl border border-botanical-border shadow-sm">
-          <h4 className="text-sm font-bold text-botanical-text flex items-center gap-2 mb-3">
+          <h4 className="font-bold text-botanical-text flex items-center gap-2 mb-3 text-xl md:text-2xl">
             <span>🔗</span> Referrals
           </h4>
           <div className="space-y-2">
@@ -98,7 +98,7 @@ export default function EngagementAnalytics({ shopId }: { shopId: string }) {
         </div>
 
         <div className="bg-botanical-surface p-5 rounded-xl border border-botanical-border shadow-sm">
-          <h4 className="text-sm font-bold text-botanical-text flex items-center gap-2 mb-3">
+          <h4 className="font-bold text-botanical-text flex items-center gap-2 mb-3 text-xl md:text-2xl">
             <span>📣</span> Campaigns
           </h4>
           <div className="space-y-2">
@@ -112,12 +112,12 @@ export default function EngagementAnalytics({ shopId }: { shopId: string }) {
 
       {/* Top Clients */}
       <div className="bg-botanical-surface p-6 rounded-xl border border-botanical-border shadow-sm">
-        <h3 className="text-lg font-bold text-botanical-text flex items-center gap-2 mb-4">
+        <h3 className="font-bold text-botanical-text flex items-center gap-2 mb-4 text-2xl md:text-3xl">
           <span>🏅</span> Top Clients (Last 90 Days)
         </h3>
 
         {!topClients || topClients.length === 0 ? (
-          <p className="text-botanical-muted italic text-center py-8 border border-dashed border-botanical-border rounded">
+          <p className="text-botanical-muted italic text-center py-8 border border-dashed border-botanical-border rounded text-base md:text-lg">
             No client data available yet.
           </p>
         ) : (
@@ -137,8 +137,8 @@ export default function EngagementAnalytics({ shopId }: { shopId: string }) {
                   <tr key={c.id} className="border-b border-botanical-border hover:bg-botanical-surface">
                     <td className="py-2 px-2 text-botanical-muted">{idx + 1}</td>
                     <td className="py-2 px-2">
-                      <p className="text-botanical-text font-medium truncate max-w-[200px]">{c.name || 'Guest'}</p>
-                      <p className="text-sm text-botanical-muted truncate">{c.email}</p>
+                      <p className="text-botanical-text font-medium truncate max-w-[200px] text-base md:text-lg">{c.name || 'Guest'}</p>
+                      <p className="text-botanical-muted truncate text-base md:text-lg">{c.email}</p>
                     </td>
                     <td className="py-2 px-2 text-right text-blue-400 font-semibold">{c.visitCount}</td>
                     <td className="py-2 px-2 text-right text-green-400 font-semibold">${c.totalSpend.toFixed(0)}</td>

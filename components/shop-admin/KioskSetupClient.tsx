@@ -30,13 +30,13 @@ export default function KioskSetupClient({ shopId, shopName }: { shopId: string;
       {msg && <div className="p-3 bg-green-900/30 border border-green-500/30 text-green-300 rounded-lg text-sm">{msg}</div>}
 
       <div className="bg-blue-900/20 border border-blue-500/20 rounded-xl p-5">
-        <h4 className="text-blue-300 font-semibold mb-2">ℹ️ What is the Attendance Kiosk?</h4>
-        <p className="text-botanical-muted text-sm leading-relaxed">Set up a tablet or screen in your shop for staff to scan their QR/barcode to clock in and out. PIN-protected, no login required.</p>
+        <h4 className="text-blue-300 font-semibold mb-2 text-xl md:text-2xl">ℹ️ What is the Attendance Kiosk?</h4>
+        <p className="text-botanical-muted leading-relaxed text-base md:text-lg">Set up a tablet or screen in your shop for staff to scan their QR/barcode to clock in and out. PIN-protected, no login required.</p>
       </div>
 
       <div className="bg-botanical-surface border border-botanical-border shadow-sm rounded-xl p-6 space-y-4">
-        <h3 className="text-lg font-bold text-botanical-text">📱 Kiosk URL</h3>
-        <p className="text-botanical-muted text-sm">Open on a tablet or dedicated screen in your shop.</p>
+        <h3 className="font-bold text-botanical-text text-2xl md:text-3xl">📱 Kiosk URL</h3>
+        <p className="text-botanical-muted text-base md:text-lg">Open on a tablet or dedicated screen in your shop.</p>
         <div className="flex gap-2">
           <input readOnly value={kioskUrl} className="flex-1 bg-botanical-surface border border-botanical-border shadow-sm rounded-lg px-3 py-2.5 text-botanical-text text-sm font-mono focus:outline-none" />
           <button onClick={copyUrl} className={`px-4 py-2 rounded-lg text-sm font-semibold transition-colors ${copied ? 'bg-green-600 text-white' : 'bg-botanical-primary text-white hover:bg-botanical-surface'}`}>
@@ -47,8 +47,8 @@ export default function KioskSetupClient({ shopId, shopName }: { shopId: string;
       </div>
 
       <div className="bg-botanical-surface border border-botanical-border shadow-sm rounded-xl p-6 space-y-4">
-        <h3 className="text-lg font-bold text-botanical-text">🔐 Kiosk PIN</h3>
-        <p className="text-botanical-muted text-sm">Protect the kiosk with a 4–8 digit PIN.</p>
+        <h3 className="font-bold text-botanical-text text-2xl md:text-3xl">🔐 Kiosk PIN</h3>
+        <p className="text-botanical-muted text-base md:text-lg">Protect the kiosk with a 4–8 digit PIN.</p>
         <div className="flex gap-3">
           <input type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="Enter new PIN (4–8 digits)" maxLength={8}
             className="w-48 bg-botanical-surface border border-botanical-border shadow-sm rounded-lg px-3 py-2.5 text-botanical-text text-sm focus:outline-none focus:border-brand-gold" />
@@ -60,13 +60,13 @@ export default function KioskSetupClient({ shopId, shopName }: { shopId: string;
       </div>
 
       <div className="bg-botanical-surface border border-botanical-border shadow-sm rounded-xl p-6 space-y-3">
-        <h3 className="text-lg font-bold text-botanical-text">🪪 Staff QR / Barcode Cards</h3>
-        <p className="text-botanical-muted text-sm">Each staff member has a unique QR code. Go to Team Management to view and print.</p>
+        <h3 className="font-bold text-botanical-text text-2xl md:text-3xl">🪪 Staff QR / Barcode Cards</h3>
+        <p className="text-botanical-muted text-base md:text-lg">Each staff member has a unique QR code. Go to Team Management to view and print.</p>
         <a href={`/shop/${shopId}/settings/team`} className="inline-block px-4 py-2 bg-botanical-surface border border-botanical-border shadow-sm text-botanical-muted rounded-lg text-sm hover:bg-botanical-border transition-colors">👥 Go to Team Management →</a>
       </div>
 
       <div className="bg-botanical-surface border border-botanical-border shadow-sm rounded-xl p-6">
-        <h3 className="text-lg font-bold text-botanical-text mb-4">📋 Setup Instructions</h3>
+        <h3 className="font-bold text-botanical-text mb-4 text-2xl md:text-3xl">📋 Setup Instructions</h3>
         <ol className="space-y-3 text-sm text-botanical-muted">
           {['Set your kiosk PIN above.','Open the Kiosk URL on a tablet in your shop.','Enter the PIN to activate kiosk mode.','Staff scan their QR or barcode to clock in/out.','View logs under Staff → Attendance.'].map((step, i) => (
             <li key={i} className="flex gap-3">

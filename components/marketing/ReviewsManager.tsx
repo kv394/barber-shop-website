@@ -101,7 +101,7 @@ export default function ReviewsClient({ shopId }: { shopId: string }) {
 
       {/* ── Review list ── */}
       <div className="space-y-4">
-        {filtered.length === 0 && <p className="text-botanical-muted text-center py-8">No reviews yet.</p>}
+        {filtered.length === 0 && <p className="text-botanical-muted text-center py-8 text-base md:text-lg">No reviews yet.</p>}
         {filtered.map(r => (
           <div key={r.id} className="bg-botanical-surface border border-botanical-border shadow-sm rounded-xl p-5">
             {/* Header */}
@@ -126,13 +126,13 @@ export default function ReviewsClient({ shopId }: { shopId: string }) {
             </div>
 
             {/* Comment */}
-            {r.comment && <p className="text-botanical-muted text-sm mb-3 italic">"{r.comment}"</p>}
+            {r.comment && <p className="text-botanical-muted mb-3 italic text-base md:text-lg">"{r.comment}"</p>}
 
             {/* Owner response */}
             {r.ownerResponse && responding !== r.id && (
               <div className="mt-3 pl-4 border-l-2 border-brand-gold/40">
-                <p className="text-xs text-botanical-accent font-semibold mb-1">Owner Response</p>
-                <p className="text-botanical-muted text-sm">{r.ownerResponse}</p>
+                <p className="text-botanical-accent font-semibold mb-1 text-base md:text-lg">Owner Response</p>
+                <p className="text-botanical-muted text-base md:text-lg">{r.ownerResponse}</p>
                 <div className="flex gap-2 mt-2">
                   <button onClick={() => { setResponding(r.id); setResponseText(r.ownerResponse); }} className="text-xs text-botanical-muted hover:text-botanical-text transition">Edit</button>
                   <button onClick={() => deleteResponse(r.id)} className="text-xs text-red-500 hover:text-red-300 transition">Delete</button>

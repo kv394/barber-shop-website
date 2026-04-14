@@ -74,8 +74,8 @@ export default function StaffAvailability({ defaultDate, defaultFrom, defaultTo,
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl bg-botanical-primary/20 flex items-center justify-center text-xl">📅</div>
             <div>
-              <h3 className="text-lg font-bold text-slate-900">{dayName}</h3>
-              <p className="text-xs text-slate-600">{dateStr}</p>
+              <h3 className="font-bold text-slate-900 text-2xl md:text-3xl">{dayName}</h3>
+              <p className="text-slate-600 text-base md:text-lg">{dateStr}</p>
             </div>
             {isToday && (
               <span className="text-sm bg-botanical-primary/20 text-botanical-primary px-2.5 py-0.5 rounded-full font-bold uppercase tracking-wider">Today</span>
@@ -103,7 +103,7 @@ export default function StaffAvailability({ defaultDate, defaultFrom, defaultTo,
         {/* Inputs row */}
         <div className={`grid grid-cols-1 ${showTimeFilters ? 'md:grid-cols-3' : 'md:grid-cols-1'} gap-3`}>
           <div>
-            <label className="block text-sm text-slate-600 mb-1 font-semibold uppercase tracking-wider">📅 Date</label>
+            <label className="block text-slate-600 mb-1 font-semibold uppercase tracking-wider text-sm">📅 Date</label>
             <input
               type="date"
               value={defaultDate}
@@ -115,7 +115,7 @@ export default function StaffAvailability({ defaultDate, defaultFrom, defaultTo,
           {showTimeFilters && (
             <>
               <div>
-                <label className="block text-sm text-slate-600 mb-1 font-semibold uppercase tracking-wider">🕐 From</label>
+                <label className="block text-slate-600 mb-1 font-semibold uppercase tracking-wider text-sm">🕐 From</label>
                 <input
                   type="time"
                   name="from"
@@ -126,7 +126,7 @@ export default function StaffAvailability({ defaultDate, defaultFrom, defaultTo,
                 />
               </div>
               <div>
-                <label className="block text-sm text-slate-600 mb-1 font-semibold uppercase tracking-wider">🕐 To</label>
+                <label className="block text-slate-600 mb-1 font-semibold uppercase tracking-wider text-sm">🕐 To</label>
                 <input
                   type="time"
                   name="to"

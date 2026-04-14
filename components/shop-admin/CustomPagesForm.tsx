@@ -58,7 +58,7 @@ export function CustomPagesForm({ shopId, customization }: { shopId: string; cus
   return (
     <div className="w-full mt-8">
       <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-6">
-        <h2 className="text-xl sm:text-2xl font-bold text-botanical-text">Custom Pages (Menus)</h2>
+        <h2 className="font-bold text-botanical-text text-3xl md:text-4xl">Custom Pages (Menus)</h2>
         <button
           onClick={addPage}
           className="bg-botanical-primary text-white px-4 py-2 rounded font-bold hover:bg-botanical-primary transition-colors"
@@ -88,7 +88,7 @@ export function CustomPagesForm({ shopId, customization }: { shopId: string; cus
           {pages.map((page, index) => (
             <div key={page.id} className="bg-botanical-surface p-6 rounded-lg border border-botanical-border shadow-sm">
               <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-start mb-4">
-                <h3 className="text-lg font-bold text-botanical-text">Page {index + 1}</h3>
+                <h3 className="font-bold text-botanical-text text-2xl md:text-3xl">Page {index + 1}</h3>
                 <button
                   onClick={() => removePage(index)}
                   className="text-red-400 hover:text-red-300 text-sm"
@@ -98,7 +98,7 @@ export function CustomPagesForm({ shopId, customization }: { shopId: string; cus
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                 <div>
-                  <label className="block text-sm font-medium text-botanical-muted mb-1">Title (Menu Label)</label>
+                  <label className="block font-medium text-botanical-muted mb-1 text-sm">Title (Menu Label)</label>
                   <input
                     type="text"
                     value={page.title}
@@ -107,7 +107,7 @@ export function CustomPagesForm({ shopId, customization }: { shopId: string; cus
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-botanical-muted mb-1">URL Slug / ID</label>
+                  <label className="block font-medium text-botanical-muted mb-1 text-sm">URL Slug / ID</label>
                   <input
                     type="text"
                     value={page.id}
@@ -117,7 +117,7 @@ export function CustomPagesForm({ shopId, customization }: { shopId: string; cus
                 </div>
               </div>
               <div className="mb-4">
-                <label className="block text-sm font-medium text-botanical-muted mb-1">Content</label>
+                <label className="block font-medium text-botanical-muted mb-1 text-sm">Content</label>
                 <textarea
                   value={page.content}
                   onChange={(e) => updatePage(index, 'content', e.target.value)}
@@ -134,7 +134,7 @@ export function CustomPagesForm({ shopId, customization }: { shopId: string; cus
                   onChange={(e) => updatePage(index, 'isVisible', e.target.checked)}
                   className="w-4 h-4 rounded border-botanical-border text-botanical-accent focus:ring-botanical-primary bg-botanical-bg"
                 />
-                <label htmlFor={`visible-${page.id}`} className="text-sm text-botanical-muted">
+                <label htmlFor={`visible-${page.id}`} className="text-botanical-muted text-sm">
                   Visible in public menu
                 </label>
               </div>

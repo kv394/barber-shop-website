@@ -34,7 +34,7 @@ export default function ClientGrid({ clients, shopId }: { clients: any[]; shopId
       </div>
 
       {filteredClients.length === 0 ? (
-        <p className="text-botanical-muted italic text-center py-8 text-sm bg-botanical-surface rounded-xl border border-dashed border-botanical-border">No clients match your search.</p>
+        <p className="text-botanical-muted italic text-center py-8 bg-botanical-surface rounded-xl border border-dashed border-botanical-border text-base md:text-lg">No clients match your search.</p>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
           {filteredClients.map((client: any) => (
@@ -45,8 +45,8 @@ export default function ClientGrid({ clients, shopId }: { clients: any[]; shopId
             >
               <div className="flex justify-between items-start mb-3 sm:mb-4 gap-2">
                 <div className="min-w-0">
-                  <h4 className="font-bold text-base sm:text-lg text-botanical-accent truncate group-hover:text-botanical-text transition-colors">{client.name || "Guest User"}</h4>
-                  <p className="text-xs sm:text-sm text-botanical-muted truncate">{client.email.startsWith('walkin-') ? 'Walk-in (No Email)' : client.email}</p>
+                  <h4 className="font-bold text-botanical-accent truncate group-hover:text-botanical-text transition-colors text-xl md:text-2xl">{client.name || "Guest User"}</h4>
+                  <p className="text-botanical-muted truncate text-base md:text-lg">{client.email.startsWith('walkin-') ? 'Walk-in (No Email)' : client.email}</p>
                 </div>
                 {client.barcode && (
                   <div className="shrink-0">
@@ -70,7 +70,7 @@ export default function ClientGrid({ clients, shopId }: { clients: any[]; shopId
                 </div>
               )}
 
-              <p className="mt-2 text-sm text-botanical-muted group-hover:text-botanical-accent transition-colors">Click to view details →</p>
+              <p className="mt-2 text-botanical-muted group-hover:text-botanical-accent transition-colors text-base md:text-lg">Click to view details →</p>
             </div>
           ))}
         </div>

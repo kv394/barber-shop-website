@@ -66,8 +66,8 @@ export default async function SiteAdminLogsPage() {
   return (
     <div>
       <div className="mb-8">
-        <h1 className="text-3xl font-serif font-bold text-botanical-accent mb-2">System Logs</h1>
-        <p className="text-botanical-muted">{logs.length} log entr{logs.length !== 1 ? 'ies' : 'y'} • {logs.filter((l: any) => !l.isResolved).length} unresolved</p>
+        <h1 className="font-serif font-bold text-botanical-accent mb-2 text-4xl md:text-5xl lg:text-6xl">System Logs</h1>
+        <p className="text-botanical-muted text-base md:text-lg">{logs.length} log entr{logs.length !== 1 ? 'ies' : 'y'} • {logs.filter((l: any) => !l.isResolved).length} unresolved</p>
       </div>
       <div className="bg-botanical-surface rounded-xl border border-botanical-border shadow-sm overflow-hidden">
         <table className="min-w-full divide-y divide-white/10 text-botanical-text">

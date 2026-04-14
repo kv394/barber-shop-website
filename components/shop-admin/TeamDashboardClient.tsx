@@ -63,11 +63,11 @@ export default function TeamDashboardClient({
                       )}
                     </div>
                     <div>
-                      <h2 className="text-xl font-bold text-slate-900 mb-0.5 flex items-center gap-2">
+                      <h2 className="font-bold text-slate-900 mb-0.5 flex items-center gap-2 text-3xl md:text-4xl">
                         {staffMember.name || staffMember.email.split('@')[0]}
                         {staffMember.role === 'SHOP_ADMIN' && <span className="text-xs bg-botanical-primary/20 text-botanical-primary px-1.5 py-0.5 rounded uppercase tracking-wider font-bold">Admin</span>}
                       </h2>
-                      <p className="text-xs text-slate-600">{staffMember.email}</p>
+                      <p className="text-slate-600 text-base md:text-lg">{staffMember.email}</p>
                     </div>
                   </div>
                 </StaffProfileModalWrapper>
@@ -93,8 +93,8 @@ export default function TeamDashboardClient({
                 {isOnLeave ? (
                   <div className="flex-grow flex flex-col justify-center items-center text-center">
                     <span className="text-3xl mb-2">🏖️</span>
-                    <p className="text-sm font-semibold text-red-700">Currently on Leave</p>
-                    {staffMember.leaves[0]?.reason && <p className="text-xs text-red-600 mt-1 italic">"{staffMember.leaves[0].reason}"</p>}
+                    <p className="font-semibold text-red-700 text-base md:text-lg">Currently on Leave</p>
+                    {staffMember.leaves[0]?.reason && <p className="text-red-600 mt-1 italic text-base md:text-lg">"{staffMember.leaves[0].reason}"</p>}
                     
                     <form action={removeLeaveAction} className="mt-4">
                         <input type="hidden" name="staffId" value={staffMember.id} />
@@ -108,7 +108,7 @@ export default function TeamDashboardClient({
                 ) : isNotWorking ? (
                   <div className="flex-grow flex flex-col justify-center items-center text-center">
                     <span className="text-3xl mb-2">💤</span>
-                    <p className="text-sm font-medium text-slate-600 mb-4">Scheduled Day Off</p>
+                    <p className="font-medium text-slate-600 mb-4 text-base md:text-lg">Scheduled Day Off</p>
                     
                     {/* Quick Add Shift form with editable times */}
                     <form action={updateDayHoursAction} className="w-full space-y-2 border-t border-gray-200 pt-3">
@@ -149,7 +149,7 @@ export default function TeamDashboardClient({
                     
                     <div className="space-y-1.5 max-h-[160px] overflow-y-auto pr-1 scrollbar-thin scrollbar-thumb-botanical-border scrollbar-track-transparent">
                       {staffMember.schedule.length === 0 ? (
-                          <p className="text-xs text-slate-600 text-center py-4">No working slots configured.</p>
+                          <p className="text-slate-600 text-center py-4 text-base md:text-lg">No working slots configured.</p>
                       ) : (
                           staffMember.schedule.map((slot: any) => (
                             <div key={slot.time} className={`px-2.5 py-1.5 rounded text-xs flex justify-between items-center ${slot.isBooked ? 'bg-amber-50 border border-amber-200' : staffMember.isClockedIn ? 'bg-emerald-50 border border-emerald-200' : 'bg-white border border-transparent'}`}>

@@ -151,15 +151,15 @@ export default function RescheduleModal({
       <div className="bg-botanical-surface rounded-xl p-6 w-full max-w-md border border-botanical-border shadow-sm shadow-2xl relative text-left max-h-[90vh] overflow-y-auto">
         <button onClick={onClose} className="absolute top-4 right-4 text-botanical-muted hover:text-botanical-text bg-botanical-surface rounded-full w-8 h-8 flex items-center justify-center">✕</button>
 
-        <h3 className="text-xl font-bold text-botanical-text mb-1">Reschedule Appointment</h3>
-        <p className="text-botanical-accent font-semibold mb-6">{serviceName}</p>
+        <h3 className="font-bold text-botanical-text mb-1 text-2xl md:text-3xl">Reschedule Appointment</h3>
+        <p className="text-botanical-accent font-semibold mb-6 text-base md:text-lg">{serviceName}</p>
 
-        {error && <p className="text-red-400 text-sm bg-red-900/20 p-3 rounded mb-4">{error}</p>}
+        {error && <p className="text-red-400 bg-red-900/20 p-3 rounded mb-4 text-base md:text-lg">{error}</p>}
 
         <div className="space-y-5">
           {/* Date */}
           <div>
-            <label className="block text-sm text-botanical-muted mb-2">New Date</label>
+            <label className="block text-botanical-muted mb-2 text-sm">New Date</label>
             <input
               type="date"
               value={selectedDate}
@@ -172,9 +172,9 @@ export default function RescheduleModal({
 
           {/* Staff */}
           <div>
-            <label className="block text-sm text-botanical-muted mb-2">Staff</label>
+            <label className="block text-botanical-muted mb-2 text-sm">Staff</label>
             {isLoading ? (
-              <p className="text-botanical-muted text-sm">Loading...</p>
+              <p className="text-botanical-muted text-base md:text-lg">Loading...</p>
             ) : (
               <select
                 value={selectedStaff}
@@ -193,7 +193,7 @@ export default function RescheduleModal({
           {/* Time */}
           {selectedStaff && (
             <div>
-              <label className="block text-sm text-botanical-muted mb-2">New Time</label>
+              <label className="block text-botanical-muted mb-2 text-sm">New Time</label>
               {availableSlots.length > 0 ? (
                 <select
                   value={selectedTime}
@@ -207,7 +207,7 @@ export default function RescheduleModal({
                   ))}
                 </select>
               ) : (
-                <p className="text-amber-400 text-sm bg-amber-900/20 p-3 rounded">No slots available for this date/staff.</p>
+                <p className="text-amber-400 bg-amber-900/20 p-3 rounded text-base md:text-lg">No slots available for this date/staff.</p>
               )}
             </div>
           )}

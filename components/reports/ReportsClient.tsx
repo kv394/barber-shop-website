@@ -112,55 +112,55 @@ export default function ReportsClient({
         <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-botanical-surface transition-all duration-300 min-w-0">
           <div className="absolute top-0 left-0 w-full h-1 bg-green-500/80"></div>
           <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-3">
-            <h3 className="text-botanical-muted text-sm sm:text-xs uppercase tracking-widest font-semibold truncate">
+            <h3 className="text-botanical-muted uppercase tracking-widest font-semibold truncate text-2xl md:text-3xl">
               {isFiltered ? 'Filtered Revenue' : 'Total Revenue'}
             </h3>
             <span className="text-green-500 text-sm">💵</span>
           </div>
-          <p className="text-2xl sm:text-3xl font-black text-botanical-text break-words leading-tight">{formatCurrency(filteredRevenue)}</p>
-          {isFiltered && <p className="text-sm text-botanical-muted mt-2 truncate">All-time: <span className="text-botanical-muted">{formatCurrency(allTimeRevenue)}</span></p>}
+          <p className="font-black text-botanical-text break-words leading-tight text-base md:text-lg">{formatCurrency(filteredRevenue)}</p>
+          {isFiltered && <p className="text-botanical-muted mt-2 truncate text-base md:text-lg">All-time: <span className="text-botanical-muted">{formatCurrency(allTimeRevenue)}</span></p>}
         </div>
 
         {/* Tips */}
         <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-botanical-surface transition-all duration-300 min-w-0">
           <div className="absolute top-0 left-0 w-full h-1 bg-amber-500/80"></div>
           <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-3">
-            <h3 className="text-botanical-muted text-sm sm:text-xs uppercase tracking-widest font-semibold truncate">Tips</h3>
+            <h3 className="text-botanical-muted uppercase tracking-widest font-semibold truncate text-2xl md:text-3xl">Tips</h3>
             <span className="text-amber-500 text-sm">💰</span>
           </div>
-          <p className="text-2xl sm:text-3xl font-black text-botanical-text break-words leading-tight">{formatCurrency(filteredTips)}</p>
-          {isFiltered && <p className="text-sm text-botanical-muted mt-2 truncate">All-time: <span className="text-botanical-muted">{formatCurrency(allTimeTips)}</span></p>}
+          <p className="font-black text-botanical-text break-words leading-tight text-base md:text-lg">{formatCurrency(filteredTips)}</p>
+          {isFiltered && <p className="text-botanical-muted mt-2 truncate text-base md:text-lg">All-time: <span className="text-botanical-muted">{formatCurrency(allTimeTips)}</span></p>}
         </div>
 
         {/* Completed */}
         <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-botanical-surface transition-all duration-300 min-w-0">
           <div className="absolute top-0 left-0 w-full h-1 bg-blue-500/80"></div>
           <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-3">
-            <h3 className="text-botanical-muted text-sm sm:text-xs uppercase tracking-widest font-semibold truncate">Completed</h3>
+            <h3 className="text-botanical-muted uppercase tracking-widest font-semibold truncate text-2xl md:text-3xl">Completed</h3>
             <span className="text-blue-500 text-sm">✂️</span>
           </div>
-          <p className="text-2xl sm:text-3xl font-black text-botanical-text break-words leading-tight">{filtered.length.toLocaleString('en-US')}</p>
-          <p className="text-sm text-botanical-muted mt-2 truncate opacity-0 group-hover:opacity-100 transition-opacity">Appointments</p>
+          <p className="font-black text-botanical-text break-words leading-tight text-base md:text-lg">{filtered.length.toLocaleString('en-US')}</p>
+          <p className="text-botanical-muted mt-2 truncate opacity-0 group-hover:opacity-100 transition-opacity text-base md:text-lg">Appointments</p>
         </div>
 
         {/* Avg Service */}
         <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-botanical-surface transition-all duration-300 min-w-0">
           <div className="absolute top-0 left-0 w-full h-1 bg-purple-500/80"></div>
           <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-3">
-            <h3 className="text-botanical-muted text-sm sm:text-xs uppercase tracking-widest font-semibold truncate">Avg Ticket</h3>
+            <h3 className="text-botanical-muted uppercase tracking-widest font-semibold truncate text-2xl md:text-3xl">Avg Ticket</h3>
             <span className="text-purple-500 text-sm">📈</span>
           </div>
-          <p className="text-2xl sm:text-3xl font-black text-botanical-text break-words leading-tight">
+          <p className="font-black text-botanical-text break-words leading-tight text-base md:text-lg">
             {formatCurrency(filtered.length > 0 ? (filteredRevenue / filtered.length) : 0)}
           </p>
-          <p className="text-sm text-botanical-muted mt-2 truncate opacity-0 group-hover:opacity-100 transition-opacity">Per Service</p>
+          <p className="text-botanical-muted mt-2 truncate opacity-0 group-hover:opacity-100 transition-opacity text-base md:text-lg">Per Service</p>
         </div>
 
         {/* Export */}
         <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-botanical-surface transition-all duration-300 flex flex-col justify-center min-w-0">
           <div className="absolute top-0 left-0 w-full h-1 bg-botanical-primary/80"></div>
           <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-3">
-            <h3 className="text-botanical-muted text-sm sm:text-xs uppercase tracking-widest font-semibold truncate">Export Data</h3>
+            <h3 className="text-botanical-muted uppercase tracking-widest font-semibold truncate text-2xl md:text-3xl">Export Data</h3>
           </div>
           <button onClick={exportCSV} className="bg-botanical-surface hover:bg-botanical-primary text-white font-bold py-2 sm:py-3 px-3 rounded-lg transition-all w-full text-xs sm:text-sm truncate flex items-center justify-center gap-2">
             <span>📥</span> Download CSV
@@ -171,12 +171,12 @@ export default function ReportsClient({
       {/* Date Filters */}
       <div className="flex flex-col sm:flex-row gap-3 mb-6 p-4 bg-botanical-surface rounded-lg border border-botanical-border shadow-sm">
         <div className="flex-1">
-          <label className="block text-sm text-botanical-muted uppercase tracking-wider mb-1">From Date</label>
+          <label className="block text-botanical-muted uppercase tracking-wider mb-1 text-sm">From Date</label>
           <input type="date" value={dateFrom} onChange={e => setDateFrom(e.target.value)} style={inputStyle}
             className="w-full border border-botanical-border shadow-sm rounded p-2 text-sm focus:outline-none focus:border-brand-gold " />
         </div>
         <div className="flex-1">
-          <label className="block text-sm text-botanical-muted uppercase tracking-wider mb-1">To Date</label>
+          <label className="block text-botanical-muted uppercase tracking-wider mb-1 text-sm">To Date</label>
           <input type="date" value={dateTo} onChange={e => setDateTo(e.target.value)} style={inputStyle}
             className="w-full border border-botanical-border shadow-sm rounded p-2 text-sm focus:outline-none focus:border-brand-gold " />
         </div>
@@ -206,7 +206,7 @@ export default function ReportsClient({
       {activeView === 'transactions' && (
         <div>
           {filtered.length === 0 ? (
-            <p className="text-botanical-muted italic text-center py-8 sm:py-12 text-sm border border-dashed border-botanical-border rounded">No completed transactions found{isFiltered ? ' for this date range' : ''}.</p>
+            <p className="text-botanical-muted italic text-center py-8 sm:py-12 border border-dashed border-botanical-border rounded text-base md:text-lg">No completed transactions found{isFiltered ? ' for this date range' : ''}.</p>
           ) : (
             <>
               <div className="sm:hidden space-y-3">
@@ -217,9 +217,9 @@ export default function ReportsClient({
                     <div key={apt.id} className={`bg-botanical-surface p-3 rounded-lg border border-botanical-border shadow-sm ${isRefunded ? 'opacity-60' : ''}`}>
                       <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-start mb-2">
                         <div className="min-w-0">
-                          <p className="font-medium text-sm text-botanical-text truncate">{apt.user.name || apt.user.email}</p>
-                          <p className="text-xs text-botanical-accent">{apt.service.name}</p>
-                          {apt.staff?.name && <p className="text-sm text-purple-400">✂️ {apt.staff.name}</p>}
+                          <p className="font-medium text-botanical-text truncate text-base md:text-lg">{apt.user.name || apt.user.email}</p>
+                          <p className="text-botanical-accent text-base md:text-lg">{apt.service.name}</p>
+                          {apt.staff?.name && <p className="text-purple-400 text-base md:text-lg">✂️ {apt.staff.name}</p>}
                         </div>
                         <div className="text-right shrink-0 ml-2">
                           {isRefunded ? (
@@ -305,19 +305,19 @@ export default function ReportsClient({
       {activeView === 'byStaff' && (
         <div className="space-y-3">
           {byStaff.length === 0 ? (
-            <p className="text-botanical-muted italic text-center py-8 text-sm border border-dashed border-botanical-border rounded">No data available.</p>
+            <p className="text-botanical-muted italic text-center py-8 border border-dashed border-botanical-border rounded text-base md:text-lg">No data available.</p>
           ) : byStaff.map(staff => {
             const pct = filteredRevenue > 0 ? (staff.revenue / filteredRevenue) * 100 : 0;
             return (
               <div key={staff.name} className="bg-botanical-surface p-4 rounded-lg border border-botanical-border shadow-sm">
                 <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-2">
                   <div>
-                    <h4 className="font-bold text-botanical-text">✂️ {staff.name}</h4>
-                    <p className="text-xs text-botanical-muted">{staff.count} services completed</p>
+                    <h4 className="font-bold text-botanical-text text-xl md:text-2xl">✂️ {staff.name}</h4>
+                    <p className="text-botanical-muted text-base md:text-lg">{staff.count} services completed</p>
                   </div>
                   <div className="text-right">
-                    <p className="text-lg font-bold text-green-400">${staff.revenue.toFixed(2)}</p>
-                    <p className="text-sm text-botanical-muted">{pct.toFixed(1)}% of total</p>
+                    <p className="font-bold text-green-400 text-base md:text-lg">${staff.revenue.toFixed(2)}</p>
+                    <p className="text-botanical-muted text-base md:text-lg">{pct.toFixed(1)}% of total</p>
                   </div>
                 </div>
                 <div className="w-full bg-botanical-surface rounded-full h-2">
@@ -333,19 +333,19 @@ export default function ReportsClient({
       {activeView === 'byService' && (
         <div className="space-y-3">
           {byService.length === 0 ? (
-            <p className="text-botanical-muted italic text-center py-8 text-sm border border-dashed border-botanical-border rounded">No data available.</p>
+            <p className="text-botanical-muted italic text-center py-8 border border-dashed border-botanical-border rounded text-base md:text-lg">No data available.</p>
           ) : byService.map(svc => {
             const pct = filteredRevenue > 0 ? (svc.revenue / filteredRevenue) * 100 : 0;
             return (
               <div key={svc.name} className="bg-botanical-surface p-4 rounded-lg border border-botanical-border shadow-sm">
                 <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-2">
                   <div>
-                    <h4 className="font-bold text-botanical-accent">{svc.name}</h4>
-                    <p className="text-xs text-botanical-muted">{svc.count} times booked</p>
+                    <h4 className="font-bold text-botanical-accent text-xl md:text-2xl">{svc.name}</h4>
+                    <p className="text-botanical-muted text-base md:text-lg">{svc.count} times booked</p>
                   </div>
                   <div className="text-right">
-                    <p className="text-lg font-bold text-green-400">${svc.revenue.toFixed(2)}</p>
-                    <p className="text-sm text-botanical-muted">{pct.toFixed(1)}% of total</p>
+                    <p className="font-bold text-green-400 text-base md:text-lg">${svc.revenue.toFixed(2)}</p>
+                    <p className="text-botanical-muted text-base md:text-lg">{pct.toFixed(1)}% of total</p>
                   </div>
                 </div>
                 <div className="w-full bg-botanical-surface rounded-full h-2">

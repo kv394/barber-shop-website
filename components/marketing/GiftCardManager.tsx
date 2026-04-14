@@ -58,16 +58,16 @@ export default function GiftCardManager({ shopId }: { shopId: string }) {
       <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center">
         <div className="flex gap-6">
           <div>
-            <p className="text-xs text-botanical-muted uppercase">Total Sold</p>
-            <p className="text-2xl font-bold text-botanical-accent">${totalSold.toFixed(0)}</p>
+            <p className="text-botanical-muted uppercase text-base md:text-lg">Total Sold</p>
+            <p className="font-bold text-botanical-accent text-base md:text-lg">${totalSold.toFixed(0)}</p>
           </div>
           <div>
-            <p className="text-xs text-botanical-muted uppercase">Outstanding</p>
-            <p className="text-2xl font-bold text-green-400">${totalValue.toFixed(0)}</p>
+            <p className="text-botanical-muted uppercase text-base md:text-lg">Outstanding</p>
+            <p className="font-bold text-green-400 text-base md:text-lg">${totalValue.toFixed(0)}</p>
           </div>
           <div>
-            <p className="text-xs text-botanical-muted uppercase">Cards Issued</p>
-            <p className="text-2xl font-bold text-botanical-text">{cards.length}</p>
+            <p className="text-botanical-muted uppercase text-base md:text-lg">Cards Issued</p>
+            <p className="font-bold text-botanical-text text-base md:text-lg">{cards.length}</p>
           </div>
         </div>
         <button onClick={() => setShowForm(!showForm)} className="bg-botanical-primary text-white font-bold px-4 py-2 rounded-lg text-sm hover:bg-white hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 transition-colors">
@@ -77,22 +77,22 @@ export default function GiftCardManager({ shopId }: { shopId: string }) {
 
       {showForm && (
         <div className="bg-botanical-surface p-6 rounded-lg border border-botanical-border shadow-sm space-y-4">
-          {error && <p className="text-red-400 text-sm">{error}</p>}
+          {error && <p className="text-red-400 text-base md:text-lg">{error}</p>}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs text-botanical-muted mb-1">Amount ($) *</label>
+              <label className="block text-botanical-muted mb-1 text-sm">Amount ($) *</label>
               <input type="number" min="5" step="5" value={amount} onChange={e => setAmount(e.target.value)} className="w-full bg-botanical-surface border border-botanical-border shadow-sm rounded p-2 text-botanical-text text-sm focus:outline-none focus:border-brand-gold" />
             </div>
             <div>
-              <label className="block text-xs text-botanical-muted mb-1">Recipient Name</label>
+              <label className="block text-botanical-muted mb-1 text-sm">Recipient Name</label>
               <input type="text" value={recipientName} onChange={e => setRecipientName(e.target.value)} placeholder="John Doe" className="w-full bg-botanical-surface border border-botanical-border shadow-sm rounded p-2 text-botanical-text text-sm placeholder-gray-600 focus:outline-none focus:border-brand-gold" />
             </div>
             <div>
-              <label className="block text-xs text-botanical-muted mb-1">Recipient Email (sends card)</label>
+              <label className="block text-botanical-muted mb-1 text-sm">Recipient Email (sends card)</label>
               <input type="email" value={recipientEmail} onChange={e => setRecipientEmail(e.target.value)} placeholder="recipient@email.com" className="w-full bg-botanical-surface border border-botanical-border shadow-sm rounded p-2 text-botanical-text text-sm placeholder-gray-600 focus:outline-none focus:border-brand-gold" />
             </div>
             <div>
-              <label className="block text-xs text-botanical-muted mb-1">Purchaser Email</label>
+              <label className="block text-botanical-muted mb-1 text-sm">Purchaser Email</label>
               <input type="email" value={purchaserEmail} onChange={e => setPurchaserEmail(e.target.value)} placeholder="buyer@email.com" className="w-full bg-botanical-surface border border-botanical-border shadow-sm rounded p-2 text-botanical-text text-sm placeholder-gray-600 focus:outline-none focus:border-brand-gold" />
             </div>
           </div>
@@ -103,9 +103,9 @@ export default function GiftCardManager({ shopId }: { shopId: string }) {
       )}
 
       {loading ? (
-        <p className="text-botanical-muted text-center py-8 animate-pulse">Loading…</p>
+        <p className="text-botanical-muted text-center py-8 animate-pulse text-base md:text-lg">Loading…</p>
       ) : cards.length === 0 ? (
-        <p className="text-botanical-muted italic text-center py-8 border border-dashed border-botanical-border rounded">No gift cards created yet.</p>
+        <p className="text-botanical-muted italic text-center py-8 border border-dashed border-botanical-border rounded text-base md:text-lg">No gift cards created yet.</p>
       ) : (
         <div className="overflow-x-auto">
           <table className="w-full text-sm">

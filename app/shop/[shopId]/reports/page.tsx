@@ -90,8 +90,8 @@ export default async function ReportsPage({ params }: { params: Promise<{ shopId
     return (
         <div className="h-[100dvh] overflow-y-auto overflow-x-hidden">
             <div className="text-center">
-                <h1 className="text-4xl font-bold text-red-500 mb-4">Access Denied</h1>
-                <p className="text-botanical-muted">You do not have permission to view this page.</p>
+                <h1 className="font-bold text-red-500 mb-4 text-4xl md:text-5xl lg:text-6xl">Access Denied</h1>
+                <p className="text-botanical-muted text-base md:text-lg">You do not have permission to view this page.</p>
             </div>
         </div>
     )

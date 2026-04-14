@@ -89,8 +89,8 @@ export default async function ClientsPage({ params, searchParams }: { params: Pr
     return (
       <div className="h-[100dvh] overflow-y-auto overflow-x-hidden">
         <div className="text-center">
-          <h1 className="text-4xl font-bold text-red-500 mb-4">Access Denied</h1>
-          <p className="text-botanical-muted">You do not have permission to view this page.</p>
+          <h1 className="font-bold text-red-500 mb-4 text-4xl md:text-5xl lg:text-6xl">Access Denied</h1>
+          <p className="text-botanical-muted text-base md:text-lg">You do not have permission to view this page.</p>
         </div>
       </div>
     );
@@ -108,13 +108,13 @@ export default async function ClientsPage({ params, searchParams }: { params: Pr
       activeTab="clients"
     >
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 sm:mb-6 gap-4">
-        <h2 className="text-xl sm:text-2xl font-bold text-botanical-text">
+        <h2 className="font-bold text-botanical-text text-3xl md:text-4xl">
           {userRole === 'STAFF' ? 'My Clients' : 'Registered Clients'}
         </h2>
       </div>
       
       {clients.length === 0 ? (
-        <p className="text-botanical-muted italic text-center py-8 sm:py-12 text-sm border border-dashed border-botanical-border rounded">No clients registered to this shop yet.</p>
+        <p className="text-botanical-muted italic text-center py-8 sm:py-12 border border-dashed border-botanical-border rounded text-base md:text-lg">No clients registered to this shop yet.</p>
       ) : (
         <>
           <ClientGrid clients={clients} shopId={shopId} />

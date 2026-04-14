@@ -72,14 +72,14 @@ export function TemplateSelector({ currentTemplate, shopId, dynamicTemplates = [
             onClick={() => setSelectedTemplate(template.id)}
           >
             <div className="flex items-center justify-between mb-2">
-              <h3 className="font-bold text-botanical-text">{template.name}</h3>
+              <h3 className="font-bold text-botanical-text text-2xl md:text-3xl">{template.name}</h3>
               {selectedTemplate === template.id && (
                 <div className="w-4 h-4 rounded-full bg-blue-500 flex items-center justify-center">
                   <div className="w-2 h-2 rounded-full bg-white"></div>
                 </div>
               )}
             </div>
-            <p className="text-sm text-botanical-muted">{template.description}</p>
+            <p className="text-botanical-muted text-base md:text-lg">{template.description}</p>
           </div>
         ))}
       </div>

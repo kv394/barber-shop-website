@@ -8,7 +8,7 @@ import { usePathname } from 'next/navigation';
 // Lazy-load the BookingModal component
 const BookingModal = dynamic(() => import('@/components/appointments/BookingModal'), {
     ssr: false, // This component will only be rendered on the client side
-    loading: () => <div className="fixed inset-0 bg-botanical-surface z-[100] flex items-center justify-center"><p className="text-botanical-text">Loading...</p></div>
+    loading: () => <div className="fixed inset-0 bg-botanical-surface z-[100] flex items-center justify-center"><p className="text-botanical-text text-base md:text-lg">Loading...</p></div>
 });
 
 /** Format the address object (or legacy string) into a single readable line */
@@ -56,7 +56,7 @@ function ReviewsSection({ reviews, variant = 'dark' }: { reviews: any[]; variant
     <section className={`${bgClass} py-16`}>
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
-          <h2 className={`text-3xl font-bold ${textClass} mb-2`}>What Our Clients Say</h2>
+          <h2 className={`${` font-bold ${textClass} text-3xl md:text-4xl`} mb-2`}>What Our Clients Say</h2>
           <div className="flex items-center justify-center gap-2 mt-3">
             <StarRating rating={Math.round(avgRating)} />
             <span className={`text-sm ${subTextClass}`}>
@@ -74,7 +74,7 @@ function ReviewsSection({ reviews, variant = 'dark' }: { reviews: any[]; variant
                 </span>
               </div>
               {review.comment && (
-                <p className={`text-sm ${subTextClass} mb-3 line-clamp-3`}>&ldquo;{review.comment}&rdquo;</p>
+                <p className={`${` ${subTextClass} text-base md:text-lg`} mb-3 line-clamp-3`}>&ldquo;{review.comment}&rdquo;</p>
               )}
               <div className="flex items-center justify-between pt-3 border-t border-current/10">
                 <span className={`text-sm font-semibold ${textClass}`}>
@@ -176,7 +176,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                         {logoUrl ? (
                             <img src={logoUrl} alt={shop.name} className="h-10 shrink-0 mr-6 object-contain" />
                         ) : (
-                            <h1 className="text-3xl font-black italic uppercase tracking-tighter shrink-0 mr-6" style={{ color: sportRed }}>
+                            <h1 className="font-black italic uppercase tracking-tighter shrink-0 mr-6 text-4xl md:text-5xl lg:text-6xl" style={{ color: sportRed }}>
                                 {shop.name}
                             </h1>
                         )}
@@ -193,7 +193,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
     
                 {activePage ? (
                     <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 min-h-[60vh]">
-                        <h1 className="text-4xl font-black uppercase italic mb-8" style={{ color: sportRed }}>{activePage.title}</h1>
+                        <h1 className="font-black uppercase italic mb-8 text-4xl md:text-5xl lg:text-6xl" style={{ color: sportRed }}>{activePage.title}</h1>
                         <div className="prose prose-lg max-w-none text-gray-800" dangerouslySetInnerHTML={{ __html: activePage.content || '' }} />
                     </section>
                 ) : (
@@ -202,10 +202,10 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                 <section className="bg-gray-100 border-b border-botanical-border relative bg-cover bg-center" style={{ backgroundImage: heroImageUrl ? `url(${heroImageUrl})` : undefined }}><div className={heroImageUrl ? "absolute inset-0 bg-white/80" : ""} />
                     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24 text-center md:text-left flex flex-col md:flex-row items-center relative z-10">
                         <div className="md:w-1/2 mb-8 md:mb-0">
-                            <h2 className="text-5xl md:text-7xl font-black uppercase italic leading-none mb-6">
+                            <h2 className="font-black uppercase italic leading-none mb-6 text-3xl md:text-4xl">
                                 The MVP <br/> Haircut <br/> Experience.
                             </h2>
-                            <p className="text-xl text-gray-700 font-semibold mb-8 max-w-lg">
+                            <p className="text-gray-700 font-semibold mb-8 max-w-lg text-base md:text-lg">
                                 {shop.description || "Precision cuts, legendary service, and the ultimate environment."}
                             </p>
                         </div>
@@ -222,7 +222,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                 {/* Services Section */}
                 <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
                     <div className="text-center mb-16">
-                        <h2 className="text-4xl font-black uppercase italic mb-2">Our Services</h2>
+                        <h2 className="font-black uppercase italic mb-2 text-3xl md:text-4xl">Our Services</h2>
                         <div className="w-24 h-2 mx-auto" style={{ backgroundColor: sportRed }}></div>
                     </div>
     
@@ -230,13 +230,13 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                         {shop.services?.map((service: any) => (
                             <div key={service.id} className="bg-white border-2 border-botanical-border p-8 text-center hover:border-botanical-border transition-colors shadow-sm hover:shadow-lg group flex flex-col justify-between">
                                 <div>
-                                    <h3 className="text-2xl font-black uppercase italic mb-4 group-hover:text-red-600 transition-colors" style={{ color: 'black' }}>
+                                    <h3 className="font-black uppercase italic mb-4 group-hover:text-red-600 transition-colors text-2xl md:text-3xl" style={{ color: 'black' }}>
                                         {service.name}
                                     </h3>
                                     <div className="text-3xl font-bold mb-4" style={{ color: sportRed }}>
                                         ${service.price.toFixed(2)}
                                     </div>
-                                    <p className="text-botanical-muted mb-6 min-h-[3rem]">
+                                    <p className="text-botanical-muted mb-6 min-h-[3rem] text-base md:text-lg">
                                         {service.description}
                                     </p>
                                 </div>
@@ -265,19 +265,19 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
                             <div className="md:col-span-2">
-                                <h3 className="text-3xl font-black italic mb-6" style={{ color: sportRed }}>{shop.name}</h3>
-                                <p className="text-botanical-muted normal-case tracking-normal mb-6 max-w-sm">
+                                <h3 className="font-black italic mb-6 text-2xl md:text-3xl" style={{ color: sportRed }}>{shop.name}</h3>
+                                <p className="text-botanical-muted normal-case tracking-normal mb-6 max-w-sm text-base md:text-lg">
                                     {shop.description}
                                 </p>
                             </div>
                             <div>
-                                <h4 className="font-bold mb-6 text-botanical-muted">Quick Links</h4>
+                                <h4 className="font-bold mb-6 text-botanical-muted text-xl md:text-2xl">Quick Links</h4>
                                 <ul className="space-y-4 font-bold">
                                     <li><a href="#" className="hover:text-red-500 transition-colors">Services</a></li>
                                 </ul>
                             </div>
                             <div>
-                                <h4 className="font-bold mb-6 text-botanical-muted">Connect</h4>
+                                <h4 className="font-bold mb-6 text-botanical-muted text-xl md:text-2xl">Connect</h4>
                                 <div className="flex flex-col space-y-4 font-bold">
                                     {shopFB && <a href={shopFB} className="hover:text-red-500 transition-colors">Facebook</a>}
                                     {shopIG && <a href={shopIG.startsWith('http') ? shopIG : `https://instagram.com/${shopIG.replace('@','')}`} className="hover:text-red-500 transition-colors">Instagram</a>}
@@ -286,8 +286,8 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                             </div>
                         </div>
                         <div className="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center text-botanical-muted font-bold text-xs">
-                            <p>&copy; {new Date().getFullYear()} {shop.name}. All rights reserved.</p>
-                            {shopAddress && <p className="mt-4 md:mt-0">{shopAddress}</p>}
+                            <p className="text-base md:text-lg">&copy; {new Date().getFullYear()} {shop.name}. All rights reserved.</p>
+                            {shopAddress && <p className="mt-4 md:mt-0 text-base md:text-lg">{shopAddress}</p>}
                         </div>
                     </div>
                 </footer>
@@ -309,7 +309,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
           <main className="h-[100dvh] overflow-y-auto overflow-x-hidden bg-gray-100 text-gray-800 font-sans relative">
             <header className="bg-white shadow-md relative z-40">
               <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center py-4 overflow-x-auto hide-scrollbar">
-                {logoUrl ? <img src={logoUrl} alt={shop.name} className="h-10 shrink-0 mr-6 object-contain" /> : <h1 className="text-3xl font-bold shrink-0 mr-6" style={{ color: primaryColor }}>{shop.name}</h1>}
+                {logoUrl ? <img src={logoUrl} alt={shop.name} className="h-10 shrink-0 mr-6 object-contain" /> : <h1 className="font-bold shrink-0 mr-6 text-4xl md:text-5xl lg:text-6xl" style={{ color: primaryColor }}>{shop.name}</h1>}
                 {pages.filter((p: any) => p.isVisible).length > 0 && (
                     <nav className="flex gap-4 sm:gap-6 shrink-0 mr-6">
                         <button onClick={() => setActivePageId(null)} className={`text-sm font-bold transition-colors ${!activePageId ? 'text-gray-900' : 'text-botanical-muted hover:text-gray-900'}`}>Home</button>
@@ -326,26 +326,26 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
 
             {activePage ? (
                 <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 min-h-[60vh]">
-                    <h1 className="text-4xl font-bold text-gray-900 mb-8" style={{ color: primaryColor }}>{activePage.title}</h1>
+                    <h1 className="font-bold text-gray-900 mb-8 text-4xl md:text-5xl lg:text-6xl" style={{ color: primaryColor }}>{activePage.title}</h1>
                     <div className="prose prose-lg max-w-none text-gray-700" dangerouslySetInnerHTML={{ __html: activePage.content || '' }} />
                 </section>
             ) : (
                 <>
             <section className="bg-white relative bg-cover bg-center" style={{ backgroundImage: heroImageUrl ? `url(${heroImageUrl})` : undefined }}><div className={heroImageUrl ? "absolute inset-0 bg-white/70" : ""} />
                 <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center relative z-10">
-                    <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-4">{shop.description || "Quality Service, Every Time."}</h2>
-                    <p className="text-lg text-botanical-muted">Find your perfect look with our expert stylists.</p>
+                    <h2 className="font-extrabold text-gray-900 mb-4 text-3xl md:text-4xl">{shop.description || "Quality Service, Every Time."}</h2>
+                    <p className="text-botanical-muted text-base md:text-lg">Find your perfect look with our expert stylists.</p>
                 </div>
             </section>
     
             <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-              <h2 className="text-3xl font-bold text-center text-gray-900 mb-12">Our Services</h2>
+              <h2 className="font-bold text-center text-gray-900 mb-12 text-3xl md:text-4xl">Our Services</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {shop.services?.map((service: any) => (
                   <div key={service.id} className="bg-white rounded-lg shadow-lg overflow-hidden border border-botanical-border shadow-sm hover:shadow-xl transition-shadow flex flex-col">
                     <div className="p-6 flex-grow">
-                      <h3 className="text-xl font-bold text-gray-900 mb-2">{service.name}</h3>
-                      <p className="text-botanical-muted text-sm mb-4">{service.description}</p>
+                      <h3 className="font-bold text-gray-900 mb-2 text-2xl md:text-3xl">{service.name}</h3>
+                      <p className="text-botanical-muted mb-4 text-base md:text-lg">{service.description}</p>
                       <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-4">
                         <span className="text-lg font-bold" style={{ color: primaryColor }}>${service.price.toFixed(2)}</span>
                         <span className="text-sm text-botanical-muted">{service.duration} min</span>
@@ -372,16 +372,16 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
               <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
                   <div>
-                    <h3 className="text-lg font-bold mb-4">{shop.name}</h3>
-                    {shopAddress && <p className="text-botanical-muted">{shopAddress}</p>}
+                    <h3 className="font-bold mb-4 text-2xl md:text-3xl">{shop.name}</h3>
+                    {shopAddress && <p className="text-botanical-muted text-base md:text-lg">{shopAddress}</p>}
                   </div>
                   <div>
-                    <h4 className="text-lg font-bold mb-4">Contact</h4>
-                    {shopPhone && <p className="text-botanical-muted">{shopPhone}</p>}
-                    {shopEmail && <p className="text-botanical-muted">{shopEmail}</p>}
+                    <h4 className="font-bold mb-4 text-xl md:text-2xl">Contact</h4>
+                    {shopPhone && <p className="text-botanical-muted text-base md:text-lg">{shopPhone}</p>}
+                    {shopEmail && <p className="text-botanical-muted text-base md:text-lg">{shopEmail}</p>}
                   </div>
                   <div>
-                    <h4 className="text-lg font-bold mb-4">Follow Us</h4>
+                    <h4 className="font-bold mb-4 text-xl md:text-2xl">Follow Us</h4>
                     <div className="flex gap-4">
                       {shopFB && <a href={shopFB} className="text-botanical-muted hover:text-botanical-text">Facebook</a>}
                       {shopIG && <a href={shopIG.startsWith('http') ? shopIG : `https://instagram.com/${shopIG.replace('@','')}`} className="text-botanical-muted hover:text-botanical-text">Instagram</a>}
@@ -390,7 +390,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                   </div>
                 </div>
                 <div className="border-t border-gray-700 mt-8 pt-8 text-center text-botanical-muted text-sm">
-                  <p>&copy; {new Date().getFullYear()} {shop.name}. All rights reserved.</p>
+                  <p className="text-base md:text-lg">&copy; {new Date().getFullYear()} {shop.name}. All rights reserved.</p>
                 </div>
               </div>
             </footer>
@@ -427,24 +427,24 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
             <div className="p-8 md:p-16 pt-24 md:pt-32">
                 {activePage ? (
                     <section className="max-w-3xl mx-auto min-h-[60vh]">
-                        <h1 className="text-4xl md:text-6xl font-black uppercase tracking-tighter mb-8 text-center">{activePage.title}</h1>
+                        <h1 className="font-black uppercase tracking-tighter mb-8 text-center text-4xl md:text-5xl lg:text-6xl">{activePage.title}</h1>
                         <div className="prose prose-invert prose-lg max-w-none text-botanical-muted font-sans" dangerouslySetInnerHTML={{ __html: activePage.content || '' }} />
                     </section>
                 ) : (
                     <>
               <header className="text-center mb-16">
-                {logoUrl ? <img src={logoUrl} alt={shop.name} className="h-24 md:h-32 mx-auto object-contain mb-4" /> : <h1 className="text-6xl md:text-8xl font-black uppercase tracking-tighter">{shop.name}</h1>}
-                <p className="text-lg text-botanical-muted mt-2">{shop.description}</p>
+                {logoUrl ? <img src={logoUrl} alt={shop.name} className="h-24 md:h-32 mx-auto object-contain mb-4" /> : <h1 className="font-black uppercase tracking-tighter text-4xl md:text-5xl lg:text-6xl">{shop.name}</h1>}
+                <p className="text-botanical-muted mt-2 text-base md:text-lg">{shop.description}</p>
               </header>
     
               <section className="max-w-3xl mx-auto">
-                <h2 className="text-center text-sm uppercase tracking-[0.3em] text-botanical-muted mb-10">Services</h2>
+                <h2 className="text-center uppercase tracking-[0.3em] text-botanical-muted mb-10 text-3xl md:text-4xl">Services</h2>
                 <div className="space-y-6">
                   {shop.services?.map((service: any) => (
                     <div key={service.id} className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center border border-gray-800 p-4 hover:bg-botanical-surface transition-colors">
                       <div>
-                        <h3 className="text-xl font-bold">{service.name}</h3>
-                        <p className="text-sm text-botanical-muted">{service.duration} minutes</p>
+                        <h3 className="font-bold text-2xl md:text-3xl">{service.name}</h3>
+                        <p className="text-botanical-muted text-base md:text-lg">{service.duration} minutes</p>
                       </div>
                       <div className="flex items-center gap-6">
                           <div className="text-xl font-bold">${service.price.toFixed(2)}</div>
@@ -497,23 +497,23 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
               {activePage ? (
                 <section className="max-w-4xl mx-auto min-h-[60vh]">
                     <div className="bg-botanical-surface backdrop-blur-sm border border-orange-500/30 rounded-lg p-8 md:p-12">
-                        <h1 className="text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-orange-400 to-purple-400 mb-8">{activePage.title}</h1>
+                        <h1 className="font-bold bg-clip-text text-transparent bg-gradient-to-r from-orange-400 to-purple-400 mb-8 text-4xl md:text-5xl lg:text-6xl">{activePage.title}</h1>
                         <div className="prose prose-invert prose-lg max-w-none text-purple-200/80" dangerouslySetInnerHTML={{ __html: activePage.content || '' }} />
                     </div>
                 </section>
               ) : (
                 <>
               <header className="text-center mb-16">
-                {logoUrl ? <img src={logoUrl} alt={shop.name} className="h-24 md:h-32 mx-auto object-contain mb-4" /> : <h1 className="text-5xl md:text-7xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-orange-400 to-purple-400 mb-4">{shop.name}</h1>}
-                <p className="text-lg text-purple-200/70">{shop.description}</p>
+                {logoUrl ? <img src={logoUrl} alt={shop.name} className="h-24 md:h-32 mx-auto object-contain mb-4" /> : <h1 className="font-bold bg-clip-text text-transparent bg-gradient-to-r from-orange-400 to-purple-400 mb-4 text-4xl md:text-5xl lg:text-6xl">{shop.name}</h1>}
+                <p className="text-purple-200/70 text-base md:text-lg">{shop.description}</p>
               </header>
     
               <section className="max-w-4xl mx-auto">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {shop.services?.map((service: any) => (
                     <div key={service.id} className="bg-botanical-surface backdrop-blur-sm border border-orange-500/30 rounded-lg p-6 hover:border-orange-500 transition-colors flex flex-col">
-                      <h3 className="text-2xl font-bold text-orange-300">{service.name}</h3>
-                      <p className="text-purple-200/60 mt-1 mb-4 flex-grow">{service.description}</p>
+                      <h3 className="font-bold text-orange-300 text-2xl md:text-3xl">{service.name}</h3>
+                      <p className="text-purple-200/60 mt-1 mb-4 flex-grow text-base md:text-lg">{service.description}</p>
                       <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center border-t border-orange-500/20 pt-4 mb-4">
                         <span className="text-sm text-botanical-muted">{service.duration} mins</span>
                         <span className="text-xl font-bold text-orange-400">${service.price.toFixed(2)}</span>
@@ -592,7 +592,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
               {activePage ? (
                  <section className="py-32 px-8 min-h-[70vh]">
                     <div className="max-w-4xl mx-auto">
-                        <h1 className="text-5xl font-headline mb-12" style={{ color: primaryColor }}>{activePage.title}</h1>
+                        <h1 className="font-headline mb-12 text-4xl md:text-5xl lg:text-6xl" style={{ color: primaryColor }}>{activePage.title}</h1>
                         <div className="prose prose-invert prose-lg max-w-none font-body text-[#d0c5af]" dangerouslySetInnerHTML={{ __html: activePage.content || '' }} />
                     </div>
                 </section>
@@ -606,10 +606,10 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                       {editorial.heroTagline || 'Editorial Excellence'}
                     </span>
                     <h1 
-                      className="text-5xl md:text-7xl font-headline leading-[1.1] mb-8 tracking-tight"
+                      className="font-headline leading-[1.1] mb-8 tracking-tight text-4xl md:text-5xl lg:text-6xl"
                       dangerouslySetInnerHTML={{ __html: editorial.heroTitle || `Your Sanctuary of <br/> <span class="italic" style="color: ${primaryColor}">Sophisticated Care</span>` }}
                     />
-                    <p className="text-lg text-[#d0c5af] font-body max-w-md mb-10 leading-relaxed">
+                    <p className="text-[#d0c5af] font-body max-w-md mb-10 leading-relaxed text-base md:text-lg">
                       {editorial.heroSubtitle || 'Experience beauty as an art form. Our atelier provides a curated space for those who appreciate the finer details of self-ceremony.'}
                     </p>
                     <div className="flex items-center gap-4">
@@ -639,7 +639,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                       src={editorial.heroImage || "https://lh3.googleusercontent.com/aida-public/AB6AXuAPRu8QRu8seSz1ZA0n6LiPGRgqS7aZEcjxutc8fOcO1ZIkoJH2Umtws1TFTbdJwWCpmXEE_T0bVF00Q1EwlHR5KpYdbkMHCu2nUg2NAe5C2pfVotvKBcYkKM63pa2s4XXMCSh4EVxf389QPikRuNYPp_EHSwR5QQSbPcaysTObNr3wOBttSWwh41x9HEbYtenN4fQFtQfUC-criMC9c8Li4jj4D1-zB8_8LZYeg0ReRDBSudtfcTLc4qJDHasnl5yxlX6EAv0YYbw"}
                     />
                     <div className="absolute bottom-12 -left-12 bg-[#0d0f0d] p-6 rounded-2xl shadow-lg hidden lg:block">
-                      <p className="font-headline italic text-xl" style={{ color: primaryColor }}>"The standard of beauty refined."</p>
+                      <p className="font-headline italic text-base md:text-lg" style={{ color: primaryColor }}>"The standard of beauty refined."</p>
                     </div>
                   </div>
                 </div>
@@ -649,9 +649,9 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
               <section id="services" className="py-32 px-8 bg-[#1a1c1a]">
                 <div className="max-w-7xl mx-auto">
                   <div className="text-center mb-20">
-                    <h2 className="text-4xl md:text-5xl font-headline mb-4">{editorial.servicesTitle || 'Our Services'}</h2>
+                    <h2 className="font-headline mb-4 text-3xl md:text-4xl">{editorial.servicesTitle || 'Our Services'}</h2>
                     <div className="w-24 h-px mx-auto mb-6" style={{ backgroundColor: primaryColor }}></div>
-                    <p className="font-body text-[#d0c5af] max-w-xl mx-auto">{editorial.servicesSubtitle || "A curated selection of rituals designed to restore your glow and refine your natural elegance."}</p>
+                    <p className="font-body text-[#d0c5af] max-w-xl mx-auto text-base md:text-lg">{editorial.servicesSubtitle || "A curated selection of rituals designed to restore your glow and refine your natural elegance."}</p>
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                     {shop.services?.map((service: any, index: number) => (
@@ -659,8 +659,8 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                         <div className="w-16 h-16 bg-[#292a29] rounded-full flex items-center justify-center mb-8 text-[#d0c5af]">
                           <span className="material-symbols-outlined text-3xl">{['spa', 'face', 'fluid_med'][index % 3] || 'spa'}</span>
                         </div>
-                        <h3 className="text-2xl font-headline mb-4">{service.name}</h3>
-                        <p className="text-[#d0c5af] mb-8 leading-relaxed">{service.description}</p>
+                        <h3 className="font-headline mb-4 text-2xl md:text-3xl">{service.name}</h3>
+                        <p className="text-[#d0c5af] mb-8 leading-relaxed text-base md:text-lg">{service.description}</p>
                         <div className="text-sm font-bold text-white mb-4">${service.price.toFixed(2)} &bull; {service.duration}m</div>
                         <button 
                             onClick={() => handleBookClick(service)}
@@ -681,7 +681,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                   <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
                     <div>
                       <span className="font-label tracking-widest uppercase text-xs mb-2 block" style={{ color: primaryColor }}>{editorial.gallerySubtitle || 'Our Work'}</span>
-                      <h2 className="text-4xl font-headline">{editorial.galleryTitle || 'The Gallery'}</h2>
+                      <h2 className="font-headline text-3xl md:text-4xl">{editorial.galleryTitle || 'The Gallery'}</h2>
                     </div>
                   </div>
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 auto-rows-[200px]">
@@ -717,7 +717,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                     <div className="grid grid-cols-1 md:grid-cols-12 gap-16 items-center">
                       <div className="md:col-span-4">
                         <h2 
-                          className="text-4xl md:text-5xl font-headline mb-6 leading-tight"
+                          className="font-headline mb-6 leading-tight text-3xl md:text-4xl"
                           dangerouslySetInnerHTML={{ __html: editorial.testimonialsTitle || `Reflections <br/>from Our <br/><span class="italic" style="color: ${primaryColor}">Atelier Guests</span>` }}
                         />
                       </div>
@@ -725,12 +725,12 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                         {editorial.testimonials.slice(0,2).map((t: any, i: number) => (
                           <div key={i} className={`bg-[#0d0f0d] p-10 rounded-3xl shadow-sm max-w-sm ${i === 1 ? 'hidden md:block opacity-60' : ''}`}>
                             <span className="material-symbols-outlined text-5xl mb-6" style={{ color: secondaryColor }}>format_quote</span>
-                            <p className="font-body text-lg italic text-[#e3e2e0] mb-8 leading-relaxed">"{t.quote}"</p>
+                            <p className="font-body italic text-[#e3e2e0] mb-8 leading-relaxed text-base md:text-lg">"{t.quote}"</p>
                             <div className="flex items-center gap-4">
                               <div className="w-12 h-12 rounded-full bg-[#292a29]"></div>
                               <div>
-                                <p className="font-bold text-[#e3e2e0]">{t.author}</p>
-                                <p className="text-xs text-[#d0c5af] uppercase tracking-widest">{t.role}</p>
+                                <p className="font-bold text-[#e3e2e0] text-base md:text-lg">{t.author}</p>
+                                <p className="text-[#d0c5af] uppercase tracking-widest text-base md:text-lg">{t.role}</p>
                               </div>
                             </div>
                           </div>
@@ -746,20 +746,20 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                 <div className="max-w-7xl mx-auto">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
                     <div>
-                      <h2 className="text-4xl font-headline mb-12">{editorial.visitUsTitle || 'Visit the Atelier'}</h2>
+                      <h2 className="font-headline mb-12 text-3xl md:text-4xl">{editorial.visitUsTitle || 'Visit the Atelier'}</h2>
                       <div className="space-y-12">
                         <div className="flex gap-6">
                           <span className="material-symbols-outlined" style={{ color: primaryColor }}>location_on</span>
                           <div>
-                            <h4 className="font-bold text-lg mb-2">Our Location</h4>
-                            <p className="text-[#d0c5af]">{shopAddress || 'Address not provided'}</p>
+                            <h4 className="font-bold mb-2 text-xl md:text-2xl">Our Location</h4>
+                            <p className="text-[#d0c5af] text-base md:text-lg">{shopAddress || 'Address not provided'}</p>
                           </div>
                         </div>
                         <div className="flex gap-6">
                           <span className="material-symbols-outlined" style={{ color: primaryColor }}>call</span>
                           <div>
-                            <h4 className="font-bold text-lg mb-2">Contact Details</h4>
-                            <p className="text-[#d0c5af]">{shop.customization?.phone || 'Phone not provided'}<br/>{shop.customization?.email || 'Email not provided'}</p>
+                            <h4 className="font-bold mb-2 text-xl md:text-2xl">Contact Details</h4>
+                            <p className="text-[#d0c5af] text-base md:text-lg">{shop.customization?.phone || 'Phone not provided'}<br/>{shop.customization?.email || 'Email not provided'}</p>
                           </div>
                         </div>
                       </div>
@@ -773,7 +773,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                           <div className="w-12 h-12 rounded-full mx-auto mb-4 flex items-center justify-center" style={{ backgroundColor: primaryColor }}>
                             <span className="material-symbols-outlined text-[#121412]">pin_drop</span>
                           </div>
-                          <p className="font-headline text-lg">{shop.name}</p>
+                          <p className="font-headline text-base md:text-lg">{shop.name}</p>
                         </div>
                       </div>
                     </div>
@@ -789,14 +789,14 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
               <div className="grid grid-cols-1 md:grid-cols-3 gap-12 px-12 py-16 max-w-7xl mx-auto">
                 <div className="space-y-6">
                   <div className="text-xl font-headline text-stone-200">{shop.name}</div>
-                  <p className="text-stone-400 font-body text-sm leading-relaxed">{shop.description || "A destination for curated beauty and refined wellness."}</p>
+                  <p className="text-stone-400 font-body leading-relaxed text-base md:text-lg">{shop.description || "A destination for curated beauty and refined wellness."}</p>
                 </div>
                 <div className="flex flex-col items-start md:items-end space-y-6 md:col-start-3">
                   <div className="flex gap-6">
                     <a className="hover:opacity-70 transition-all" style={{ color: primaryColor }} href="#"><span className="material-symbols-outlined">public</span></a>
                     <a className="hover:opacity-70 transition-all" style={{ color: primaryColor }} href="#"><span className="material-symbols-outlined">photo_camera</span></a>
                   </div>
-                  <p className="text-stone-400 font-body text-sm tracking-wide uppercase text-right">
+                  <p className="text-stone-400 font-body tracking-wide uppercase text-right text-base md:text-lg">
                     &copy; {new Date().getFullYear()} {shop.name}.
                   </p>
                 </div>
@@ -834,31 +834,31 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
 
             {activePage ? (
                 <section className="max-w-4xl mx-auto px-6 py-32 min-h-[60vh]">
-                    <h1 className="text-4xl font-light tracking-tight mb-12" style={{ color: primaryColor }}>{activePage.title}</h1>
+                    <h1 className="font-light tracking-tight mb-12 text-4xl md:text-5xl lg:text-6xl" style={{ color: primaryColor }}>{activePage.title}</h1>
                     <div className="prose prose-lg max-w-none text-botanical-muted" dangerouslySetInnerHTML={{ __html: activePage.content || '' }} />
                 </section>
             ) : (
                 <>
             <header className="max-w-4xl mx-auto px-6 pt-24 pb-12 border-b border-gray-100 flex flex-col md:flex-row justify-between items-end md:items-center">
               <div>
-                {logoUrl ? <img src={logoUrl} alt={shop.name} className="h-12 object-contain" /> : <h1 className="text-4xl font-light tracking-tight" style={{ color: primaryColor }}>{shop.name}</h1>}
-                {shop.description && <p className="text-botanical-muted mt-2">{shop.description}</p>}
+                {logoUrl ? <img src={logoUrl} alt={shop.name} className="h-12 object-contain" /> : <h1 className="font-light tracking-tight text-4xl md:text-5xl lg:text-6xl" style={{ color: primaryColor }}>{shop.name}</h1>}
+                {shop.description && <p className="text-botanical-muted mt-2 text-base md:text-lg">{shop.description}</p>}
               </div>
               <div className="text-right mt-6 md:mt-0 text-sm text-botanical-muted">
-                 {shopPhone && <p>{shopPhone}</p>}
-                 {shopAddress && <p>{shopAddress}</p>}
+                 {shopPhone && <p className="text-base md:text-lg">{shopPhone}</p>}
+                 {shopAddress && <p className="text-base md:text-lg">{shopAddress}</p>}
               </div>
             </header>
     
             <section className="max-w-4xl mx-auto px-6 py-16">
-              <h2 className="text-sm font-semibold tracking-widest uppercase text-botanical-muted mb-10">Service Menu</h2>
+              <h2 className="font-semibold tracking-widest uppercase text-botanical-muted mb-10 text-3xl md:text-4xl">Service Menu</h2>
               {shop.services && shop.services.length > 0 ? (
                 <div className="space-y-8">
                   {shop.services.map((service: any) => (
                     <div key={service.id} className="flex flex-col md:flex-row justify-between md:items-baseline group border-b border-gray-100 pb-4">
                       <div className="flex-1 mr-4 mb-4 md:mb-0">
-                        <h3 className="text-lg font-medium transition-colors" style={{ color: primaryColor }}>{service.name}</h3>
-                        {service.description && <p className="text-botanical-muted text-sm mt-1">{service.description}</p>}
+                        <h3 className="font-medium transition-colors text-2xl md:text-3xl" style={{ color: primaryColor }}>{service.name}</h3>
+                        {service.description && <p className="text-botanical-muted mt-1 text-base md:text-lg">{service.description}</p>}
                       </div>
                       <div className="flex items-center gap-4">
                         <div className="text-right mr-4 border-r border-botanical-border pr-4">
@@ -876,7 +876,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                   ))}
                 </div>
               ) : (
-                <p className="text-botanical-muted italic">No services listed.</p>
+                <p className="text-botanical-muted italic text-base md:text-lg">No services listed.</p>
               )}
             </section>
             </>
@@ -915,7 +915,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
 
             {activePage ? (
                 <section className="max-w-4xl mx-auto px-8 py-32 min-h-[60vh]">
-                    <h1 className="text-5xl font-bold uppercase tracking-widest mb-12 text-center" style={{ color: primaryColor }}>{activePage.title}</h1>
+                    <h1 className="font-bold uppercase tracking-widest mb-12 text-center text-4xl md:text-5xl lg:text-6xl" style={{ color: primaryColor }}>{activePage.title}</h1>
                     <div className="prose prose-lg max-w-none text-[#5a4634]" dangerouslySetInnerHTML={{ __html: activePage.content || '' }} />
                 </section>
             ) : (
@@ -923,18 +923,18 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
             <header className="border-b-4 border-[#2c1e16] pt-32 pb-16 text-center relative bg-cover bg-center" style={{ backgroundImage: heroImageUrl ? `url(${heroImageUrl})` : "url('https://www.transparenttextures.com/patterns/aged-paper.png')" }}>
     <div className={heroImageUrl ? "absolute inset-0 bg-[#fdfbf7]/80" : ""} />
     <div className="relative z-10">
-              {logoUrl ? <img src={logoUrl} alt={shop.name} className="h-24 mx-auto object-contain mb-4" /> : <h1 className="text-6xl font-bold uppercase tracking-widest mb-4" style={{ color: primaryColor }}>{shop.name}</h1>}
+              {logoUrl ? <img src={logoUrl} alt={shop.name} className="h-24 mx-auto object-contain mb-4" /> : <h1 className="font-bold uppercase tracking-widest mb-4 text-4xl md:text-5xl lg:text-6xl" style={{ color: primaryColor }}>{shop.name}</h1>}
               <div className="flex items-center justify-center space-x-4 mb-4">
                 <div className="h-px w-16 bg-[#2c1e16]"></div>
                 <span className="italic text-lg">Est. {new Date(shop.createdAt).getFullYear()}</span>
                 <div className="h-px w-16 bg-[#2c1e16]"></div>
               </div>
-              {shop.description && <p className="max-w-xl mx-auto text-[#5a4634]">{shop.description}</p>}
+              {shop.description && <p className="max-w-xl mx-auto text-[#5a4634] text-base md:text-lg">{shop.description}</p>}
             </div>
             </header>
     
             <section className="max-w-5xl mx-auto px-8 py-20">
-              <h2 className="text-3xl font-bold text-center uppercase tracking-widest mb-16 relative">
+              <h2 className="font-bold text-center uppercase tracking-widest mb-16 relative text-3xl md:text-4xl">
                 <span className="bg-[#fdfbf7] px-6 relative z-10">Our Services</span>
                 <div className="absolute left-0 top-1/2 w-full h-px bg-[#e6d9c6] -z-0"></div>
               </h2>
@@ -942,11 +942,11 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
               <div className="grid md:grid-cols-2 gap-x-16 gap-y-12">
                 {shop.services?.map((service: any) => (
                   <div key={service.id} className="text-center flex flex-col items-center">
-                    <h3 className="text-2xl font-bold mb-2" style={{ color: primaryColor }}>{service.name}</h3>
+                    <h3 className="font-bold mb-2 text-2xl md:text-3xl" style={{ color: primaryColor }}>{service.name}</h3>
                     <div className="font-sans text-[#8b7355] text-sm tracking-widest uppercase mb-3">
                       ${service.price.toFixed(2)} &bull; {service.duration} MINS
                     </div>
-                    {service.description && <p className="text-[#5a4634] italic text-sm mb-4">{service.description}</p>}
+                    {service.description && <p className="text-[#5a4634] italic mb-4 text-base md:text-lg">{service.description}</p>}
                     <button
                         onClick={() => handleBookClick(service)}
                         className="mt-auto border border-[#2c1e16] px-6 py-2 text-xs uppercase tracking-widest hover:bg-[#2c1e16] hover:text-[#fdfbf7] transition-all duration-300 hover:scale-105 active:scale-95 hover:shadow-md"
@@ -962,9 +962,9 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
             <ReviewsSection reviews={reviews} variant="warm" />
 
             <footer className="bg-[#2c1e16] text-[#e6d9c6] py-12 text-center text-sm font-sans tracking-widest uppercase">
-                 {shopAddress && <p className="mb-2">{shopAddress}</p>}
-                 {!shopAddress && <p className="mb-2">Visit us today</p>}
-                 <p>{shopPhone}{shopPhone && shopEmail ? ' | ' : ''}{shopEmail}</p>
+                 {shopAddress && <p className="mb-2 text-base md:text-lg">{shopAddress}</p>}
+                 {!shopAddress && <p className="mb-2 text-base md:text-lg">Visit us today</p>}
+                 <p className="text-base md:text-lg">{shopPhone}{shopPhone && shopEmail ? ' | ' : ''}{shopEmail}</p>
             </footer>
 
             {selectedService && (
@@ -999,7 +999,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
           {activePage ? (
             <section className="pt-32 pb-20 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto min-h-[80vh]">
                <div className="bg-botanical-surface p-8 md:p-12 rounded-2xl border border-botanical-border shadow-sm shadow-xl">
-                  <h1 className="text-4xl font-bold mb-8" style={{ color: primaryColor }}>{activePage.title}</h1>
+                  <h1 className="font-bold mb-8 text-4xl md:text-5xl lg:text-6xl" style={{ color: primaryColor }}>{activePage.title}</h1>
                   <div className="prose prose-invert prose-lg max-w-none text-botanical-muted" dangerouslySetInnerHTML={{ __html: activePage.content || '' }} />
                </div>
             </section>
@@ -1018,14 +1018,14 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                   <img src={logoUrl} alt={shop.name} className="h-24 md:h-32 mx-auto object-contain mb-6" />
                 ) : (
                   <h1 
-                    className="text-5xl md:text-6xl font-bold mb-6"
+                    className="font-bold mb-6 text-4xl md:text-5xl lg:text-6xl"
                     style={{ color: primaryColor }}
                   >
                     {shop.name}
                   </h1>
                 )}
                 {shop.description && (
-                  <p className="text-xl text-botanical-muted max-w-2xl mx-auto">
+                  <p className="text-botanical-muted max-w-2xl mx-auto text-base md:text-lg">
                     {shop.description}
                   </p>
                 )}
@@ -1037,7 +1037,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
           {/* Services Section */}
           <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
             <div className="mb-16">
-              <h2 className="text-4xl font-bold text-botanical-text mb-4">Our Services</h2>
+              <h2 className="font-bold text-botanical-text mb-4 text-3xl md:text-4xl">Our Services</h2>
               <div 
                 className="w-20 h-1 rounded-full"
                 style={{ background: `linear-gradient(to right, ${primaryColor}, ${secondaryColor})` }}
@@ -1052,7 +1052,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                     className="group bg-gradient-to-br from-slate-800 to-slate-900 rounded-xl p-8 border border-botanical-border shadow-sm transition-all duration-300 hover:shadow-lg flex flex-col"
                   >
                     <div className="flex items-start justify-between mb-4">
-                      <h3 className="text-2xl font-bold text-botanical-text transition-colors">
+                      <h3 className="font-bold text-botanical-text transition-colors text-2xl md:text-3xl">
                         {service.name}
                       </h3>
                       <div 
@@ -1064,7 +1064,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                     </div>
     
                     {service.description && (
-                      <p className="text-botanical-muted mb-4 text-sm leading-relaxed flex-grow">
+                      <p className="text-botanical-muted mb-4 leading-relaxed flex-grow text-base md:text-lg">
                         {service.description}
                       </p>
                     )}
@@ -1085,7 +1085,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
               </div>
             ) : (
               <div className="text-center py-16">
-                <p className="text-botanical-muted text-lg">
+                <p className="text-botanical-muted text-base md:text-lg">
                   No services available at the moment. Please check back later.
                 </p>
               </div>
@@ -1101,16 +1101,16 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
             <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
                 <div>
-                  <h3 className="text-botanical-text font-bold text-lg mb-4">{shop.name}</h3>
-                  <p className="text-botanical-muted mb-4">
+                  <h3 className="text-botanical-text font-bold mb-4 text-2xl md:text-3xl">{shop.name}</h3>
+                  <p className="text-botanical-muted mb-4 text-base md:text-lg">
                     {shop.description || 'Your trusted service provider'}
                   </p>
                   {shopAddress && (
-                    <p className="text-botanical-muted text-sm">{shopAddress}</p>
+                    <p className="text-botanical-muted text-base md:text-lg">{shopAddress}</p>
                   )}
                 </div>
                 <div>
-                  <h4 className="text-botanical-text font-bold mb-4">Contact</h4>
+                  <h4 className="text-botanical-text font-bold mb-4 text-xl md:text-2xl">Contact</h4>
                   <ul className="space-y-2 text-botanical-muted text-sm">
                     {shopPhone && (
                       <li>
@@ -1141,7 +1141,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                   </ul>
                 </div>
                 <div>
-                  <h4 className="text-botanical-text font-bold mb-4">Follow Us</h4>
+                  <h4 className="text-botanical-text font-bold mb-4 text-xl md:text-2xl">Follow Us</h4>
                   <div className="flex gap-4">
                     {shopFB && (
                       <a
@@ -1177,7 +1177,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                 </div>
               </div>
               <div className="border-t border-botanical-border pt-8 text-center text-botanical-muted text-sm">
-                <p>
+                <p className="text-base md:text-lg">
                   &copy; {new Date().getFullYear()} {shop.name}. All rights reserved.
                 </p>
               </div>

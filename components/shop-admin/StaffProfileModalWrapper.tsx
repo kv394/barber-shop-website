@@ -26,14 +26,14 @@ export default function StaffProfileModalWrapper({ staff, children }: { staff: a
                   <span className="text-4xl">👤</span>
                 )}
               </div>
-              <h2 className="text-2xl font-bold text-botanical-text mb-1 text-center">{staff.name || staff.email || 'Unnamed Staff'}</h2>
+              <h2 className="font-bold text-botanical-text mb-1 text-center text-3xl md:text-4xl">{staff.name || staff.email || 'Unnamed Staff'}</h2>
               <span className="text-xs bg-botanical-primary/20 text-botanical-accent px-3 py-1 rounded-full uppercase tracking-wider font-bold mb-6">
                 {staff.role?.replace('_', ' ')}
               </span>
 
               <div className="bg-white p-3 rounded-xl mb-6 shadow-sm">
                 <QRCodeSVG value={staff.barcode || staff.id} size={120} level="H" />
-                <p className="text-center text-sm text-botanical-muted font-mono mt-2 tracking-wider">{staff.barcode || 'NO_CODE'}</p>
+                <p className="text-center text-botanical-muted font-mono mt-2 tracking-wider text-base md:text-lg">{staff.barcode || 'NO_CODE'}</p>
               </div>
               
               <div className="w-full space-y-4 text-sm bg-botanical-surface p-4 rounded-xl border border-botanical-border shadow-sm">

@@ -63,7 +63,7 @@ export default function ReferralsPage() {
   if (loading) {
     return (
       <div className="h-[100dvh] overflow-y-auto overflow-x-hidden">
-        <p className="text-botanical-muted animate-pulse">Loading referrals…</p>
+        <p className="text-botanical-muted animate-pulse text-base md:text-lg">Loading referrals…</p>
       </div>
     );
   }
@@ -73,8 +73,8 @@ export default function ReferralsPage() {
       <header className="bg-botanical-surface backdrop-blur-md border-b border-botanical-border sticky top-0 z-20">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 py-4 flex flex-wrap justify-between gap-x-2 gap-y-2 items-center">
           <div>
-            <h1 className="text-xl sm:text-2xl font-bold text-botanical-text">Referrals</h1>
-            <p className="text-xs text-botanical-muted">Invite friends and earn rewards</p>
+            <h1 className="font-bold text-botanical-text text-4xl md:text-5xl lg:text-6xl">Referrals</h1>
+            <p className="text-botanical-muted text-base md:text-lg">Invite friends and earn rewards</p>
           </div>
           <BackButton />
         </div>
@@ -85,11 +85,11 @@ export default function ReferralsPage() {
         {/* Referral Code Card */}
         <div className="bg-gradient-to-r from-purple-600/20 to-brand-gold/20 border border-brand-gold/30 rounded-xl p-6 sm:p-8">
           <div className="text-center">
-            <p className="text-sm text-botanical-muted mb-2">Your Referral Code</p>
+            <p className="text-botanical-muted mb-2 text-base md:text-lg">Your Referral Code</p>
             <div className="text-4xl sm:text-5xl font-black text-botanical-accent tracking-widest mb-4">
               {data?.referralCode || '—'}
             </div>
-            <p className="text-sm text-botanical-muted mb-6">
+            <p className="text-botanical-muted mb-6 text-base md:text-lg">
               Share your code with friends. When they complete their first visit, you both earn bonus loyalty points!
             </p>
           </div>
@@ -97,14 +97,14 @@ export default function ReferralsPage() {
           {/* Per-shop referral links */}
           {data?.shops && data.shops.length > 0 ? (
             <div className="space-y-3">
-              <p className="text-xs text-botanical-muted uppercase tracking-wider font-semibold">Shareable Links</p>
+              <p className="text-botanical-muted uppercase tracking-wider font-semibold text-base md:text-lg">Shareable Links</p>
               {data.shops.map(shop => {
                 const link = getReferralLink(shop.name);
                 return (
                   <div key={shop.id} className="flex items-center gap-3 bg-botanical-surface rounded-lg p-3">
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm font-semibold text-botanical-text truncate">{shop.name}</p>
-                      <p className="text-xs text-botanical-muted truncate">{link}</p>
+                      <p className="font-semibold text-botanical-text truncate text-base md:text-lg">{shop.name}</p>
+                      <p className="text-botanical-muted truncate text-base md:text-lg">{link}</p>
                     </div>
                     <button
                       onClick={() => handleCopy(link)}
@@ -124,7 +124,7 @@ export default function ReferralsPage() {
               >
                 {copied ? '✅ Copied Code!' : '📋 Copy Code'}
               </button>
-              <p className="text-xs text-botanical-muted mt-3">Complete a visit to get shareable shop links</p>
+              <p className="text-botanical-muted mt-3 text-base md:text-lg">Complete a visit to get shareable shop links</p>
             </div>
           )}
         </div>
@@ -133,16 +133,16 @@ export default function ReferralsPage() {
         <section>
           <div className="flex items-center gap-3 mb-5">
             <div className="w-2 h-8 bg-purple-500 rounded-full" />
-            <h2 className="text-lg font-bold text-botanical-text">
+            <h2 className="font-bold text-botanical-text text-3xl md:text-4xl">
               Referral History ({data?.referrals?.length || 0})
             </h2>
           </div>
 
           {!data?.referrals || data.referrals.length === 0 ? (
             <div className="text-center py-12 border border-dashed border-botanical-border rounded-xl">
-              <p className="text-4xl mb-3">🔗</p>
-              <p className="text-botanical-muted text-sm">No referrals yet.</p>
-              <p className="text-botanical-muted text-xs mt-2">Share your code to start earning rewards!</p>
+              <p className="mb-3 text-base md:text-lg">🔗</p>
+              <p className="text-botanical-muted text-base md:text-lg">No referrals yet.</p>
+              <p className="text-botanical-muted mt-2 text-base md:text-lg">Share your code to start earning rewards!</p>
             </div>
           ) : (
             <div className="space-y-3">
@@ -152,19 +152,19 @@ export default function ReferralsPage() {
                   <div key={ref.id} className="bg-botanical-surface border border-botanical-border shadow-sm rounded-xl p-4 hover:border-botanical-border transition-colors">
                     <div className="flex items-center justify-between">
                       <div>
-                        <p className="font-semibold text-botanical-text text-sm">{ref.refereeName}</p>
-                        <p className="text-xs text-botanical-muted">{ref.shopName}</p>
+                        <p className="font-semibold text-botanical-text text-base md:text-lg">{ref.refereeName}</p>
+                        <p className="text-botanical-muted text-base md:text-lg">{ref.shopName}</p>
                       </div>
                       <div className="text-right">
                         <span className={`text-sm font-bold px-2 py-0.5 rounded-full ${style.bg} ${style.text}`}>
                           {style.label}
                         </span>
                         {ref.status === 'REWARDED' && (
-                          <p className="text-xs text-green-400 mt-1">+{ref.rewardPoints} pts</p>
+                          <p className="text-green-400 mt-1 text-base md:text-lg">+{ref.rewardPoints} pts</p>
                         )}
                       </div>
                     </div>
-                    <p className="text-xs text-botanical-muted mt-2">
+                    <p className="text-botanical-muted mt-2 text-base md:text-lg">
                       {new Date(ref.createdAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}
                     </p>
                   </div>

@@ -44,8 +44,8 @@ export default async function ProfilePage({ params }: { params: Promise<{ shopId
             {dbUser.name ? dbUser.name.charAt(0).toUpperCase() : '👤'}
           </div>
           <div>
-            <h2 className="text-2xl font-bold text-botanical-text mb-1">{dbUser.name || 'Unnamed Staff'}</h2>
-            <p className="text-sm text-botanical-muted mb-2">{dbUser.email}</p>
+            <h2 className="font-bold text-botanical-text mb-1 text-3xl md:text-4xl">{dbUser.name || 'Unnamed Staff'}</h2>
+            <p className="text-botanical-muted mb-2 text-base md:text-lg">{dbUser.email}</p>
             <span className="inline-block px-3 py-1 bg-botanical-primary/10 border border-brand-gold/30 text-botanical-accent text-xs font-bold rounded-full uppercase tracking-wider">
               {dbUser.role === 'STAFF' ? 'Staff Member' : dbUser.role}
             </span>
@@ -70,8 +70,8 @@ export default async function ProfilePage({ params }: { params: Promise<{ shopId
             <div className="flex items-center gap-4">
               <span className="text-xl bg-blue-500/20 text-blue-400 w-10 h-10 rounded-full flex items-center justify-center">📋</span>
               <div>
-                <h3 className="text-botanical-text font-semibold text-base">Walk-in Waitlist</h3>
-                <p className="text-xs text-botanical-muted">Manage walk-ins and wait times</p>
+                <h3 className="text-botanical-text font-semibold text-2xl md:text-3xl">Walk-in Waitlist</h3>
+                <p className="text-botanical-muted text-base md:text-lg">Manage walk-ins and wait times</p>
               </div>
             </div>
             <span className="text-botanical-muted">→</span>
@@ -81,8 +81,8 @@ export default async function ProfilePage({ params }: { params: Promise<{ shopId
             <div className="flex items-center gap-4">
               <span className="text-xl bg-amber-500/20 text-amber-400 w-10 h-10 rounded-full flex items-center justify-center">🏖️</span>
               <div>
-                <h3 className="text-botanical-text font-semibold text-base">Time Off & Leave</h3>
-                <p className="text-xs text-botanical-muted">Request vacations and manage absences</p>
+                <h3 className="text-botanical-text font-semibold text-2xl md:text-3xl">Time Off & Leave</h3>
+                <p className="text-botanical-muted text-base md:text-lg">Request vacations and manage absences</p>
               </div>
             </div>
             <span className="text-botanical-muted">→</span>
@@ -92,8 +92,8 @@ export default async function ProfilePage({ params }: { params: Promise<{ shopId
             <div className="flex items-center gap-4">
               <span className="text-xl bg-green-500/20 text-green-400 w-10 h-10 rounded-full flex items-center justify-center">💰</span>
               <div>
-                <h3 className="text-botanical-text font-semibold text-base">My Earnings</h3>
-                <p className="text-xs text-botanical-muted">Track your commissions and tips</p>
+                <h3 className="text-botanical-text font-semibold text-2xl md:text-3xl">My Earnings</h3>
+                <p className="text-botanical-muted text-base md:text-lg">Track your commissions and tips</p>
               </div>
             </div>
             <span className="text-botanical-muted">→</span>
@@ -103,8 +103,8 @@ export default async function ProfilePage({ params }: { params: Promise<{ shopId
             <div className="flex items-center gap-4">
               <span className="text-xl bg-purple-500/20 text-purple-400 w-10 h-10 rounded-full flex items-center justify-center">📸</span>
               <div>
-                <h3 className="text-botanical-text font-semibold text-base">My Portfolio</h3>
-                <p className="text-xs text-botanical-muted">Manage your gallery of haircuts</p>
+                <h3 className="text-botanical-text font-semibold text-2xl md:text-3xl">My Portfolio</h3>
+                <p className="text-botanical-muted text-base md:text-lg">Manage your gallery of haircuts</p>
               </div>
             </div>
             <span className="text-botanical-muted">→</span>
@@ -114,8 +114,8 @@ export default async function ProfilePage({ params }: { params: Promise<{ shopId
             <div className="flex items-center gap-4">
               <span className="text-xl bg-botanical-border text-botanical-muted w-10 h-10 rounded-full flex items-center justify-center">⚙️</span>
               <div>
-                <h3 className="text-botanical-text font-semibold text-base">Account Settings</h3>
-                <p className="text-xs text-botanical-muted">Update password and global details</p>
+                <h3 className="text-botanical-text font-semibold text-2xl md:text-3xl">Account Settings</h3>
+                <p className="text-botanical-muted text-base md:text-lg">Update password and global details</p>
               </div>
             </div>
             <span className="text-botanical-muted">→</span>

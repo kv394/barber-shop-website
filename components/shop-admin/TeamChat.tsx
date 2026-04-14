@@ -124,7 +124,7 @@ export default function TeamChat({ shopId, currentUserId }: { shopId: string, cu
     if (!content) return null;
     const parts = content.split(/(@\w+)/g);
     return (
-      <p className="text-sm whitespace-pre-wrap break-words px-2 pb-1">
+      <p className="whitespace-pre-wrap break-words px-2 pb-1 text-base md:text-lg">
         {parts.map((part, i) => {
           if (part.startsWith('@')) {
             return (
@@ -147,10 +147,10 @@ export default function TeamChat({ shopId, currentUserId }: { shopId: string, cu
     <div className="flex flex-col h-[calc(100dvh-180px)] sm:h-[600px] bg-botanical-surface rounded-t-3xl sm:rounded-2xl border border-botanical-border shadow-sm overflow-hidden shadow-2xl relative">
       {/* Header */}
       <div className="p-4 sm:p-5 bg-botanical-primary z-10 shadow-sm relative">
-        <h3 className="font-bold text-white flex items-center gap-2 text-lg">
+        <h3 className="font-bold text-white flex items-center gap-2 text-2xl md:text-3xl">
           <span>💬</span> Team Chat
         </h3>
-        <p className="text-xs text-white/80 mt-0.5">Moderated by Shop Admin</p>
+        <p className="text-white/80 mt-0.5 text-base md:text-lg">Moderated by Shop Admin</p>
       </div>
 
       {/* Messages Area */}

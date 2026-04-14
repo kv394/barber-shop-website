@@ -55,9 +55,9 @@ export default function AppointmentNotes({ shopId, appointmentId, initialNotes, 
       {hasClientInfo && (
         <div className="bg-botanical-surface p-2 rounded border border-amber-500/20">
           <h5 className="text-sm uppercase tracking-wider text-amber-500 font-bold mb-1">Client Profile</h5>
-          {clientNotes && <p className="text-xs text-botanical-muted mb-1"><span className="text-botanical-muted font-semibold">Notes:</span> {clientNotes}</p>}
-          {preferences && <p className="text-xs text-botanical-muted mb-1"><span className="text-botanical-muted font-semibold">Prefs:</span> {preferences}</p>}
-          {allergies && <p className="text-xs text-red-400"><span className="text-red-500 font-semibold">Allergies:</span> {allergies}</p>}
+          {clientNotes && <p className="text-botanical-muted mb-1 text-base md:text-lg"><span className="text-botanical-muted font-semibold">Notes:</span> {clientNotes}</p>}
+          {preferences && <p className="text-botanical-muted mb-1 text-base md:text-lg"><span className="text-botanical-muted font-semibold">Prefs:</span> {preferences}</p>}
+          {allergies && <p className="text-red-400 text-base md:text-lg"><span className="text-red-500 font-semibold">Allergies:</span> {allergies}</p>}
         </div>
       )}
 

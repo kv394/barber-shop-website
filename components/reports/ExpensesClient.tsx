@@ -65,7 +65,7 @@ export default function ExpensesClient({ shopId }: { shopId: string }) {
       {/* Month Picker + Total */}
       <div className="flex flex-col sm:flex-row gap-4 mb-6">
         <div className="flex-1">
-          <label className="block text-sm text-botanical-muted uppercase tracking-wider mb-1">Month</label>
+          <label className="block text-botanical-muted uppercase tracking-wider mb-1 text-sm">Month</label>
           <input type="month" value={month} onChange={e => setMonth(e.target.value)} style={inputStyle}
             className="w-full border border-botanical-border shadow-sm rounded p-2.5 text-sm focus:outline-none focus:border-brand-gold " />
         </div>
@@ -73,10 +73,10 @@ export default function ExpensesClient({ shopId }: { shopId: string }) {
           <div className="absolute top-0 left-0 w-full h-1 bg-red-500/80"></div>
           <div className="p-5 sm:p-6">
             <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-2 sm:mb-3">
-              <h3 className="text-botanical-muted text-sm sm:text-xs uppercase tracking-widest font-semibold truncate">Total Expenses</h3>
+              <h3 className="text-botanical-muted uppercase tracking-widest font-semibold truncate text-2xl md:text-3xl">Total Expenses</h3>
               <span className="text-red-500 text-sm">💸</span>
             </div>
-            <p className="text-2xl sm:text-3xl font-black text-botanical-text break-words leading-tight">${total.toFixed(2)}</p>
+            <p className="font-black text-botanical-text break-words leading-tight text-base md:text-lg">${total.toFixed(2)}</p>
           </div>
         </div>
       </div>
@@ -86,9 +86,9 @@ export default function ExpensesClient({ shopId }: { shopId: string }) {
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-6">
           {byCategory.map(c => (
             <div key={c.cat} className="bg-botanical-surface p-3 rounded-lg border border-botanical-border shadow-sm text-center">
-              <p className="text-lg">{catEmojis[c.cat]}</p>
-              <p className="text-xs text-botanical-muted">{c.cat}</p>
-              <p className="text-sm font-bold text-botanical-text">${c.total.toFixed(2)}</p>
+              <p className="text-base md:text-lg">{catEmojis[c.cat]}</p>
+              <p className="text-botanical-muted text-base md:text-lg">{c.cat}</p>
+              <p className="font-bold text-botanical-text text-base md:text-lg">${c.total.toFixed(2)}</p>
             </div>
           ))}
         </div>
@@ -96,7 +96,7 @@ export default function ExpensesClient({ shopId }: { shopId: string }) {
 
       {/* Add Expense Form */}
       <form onSubmit={handleAdd} className="bg-botanical-surface p-4 rounded-lg border border-botanical-border shadow-sm mb-6 space-y-3">
-        <h3 className="text-sm font-bold text-botanical-text mb-2">+ Add Expense</h3>
+        <h3 className="font-bold text-botanical-text mb-2 text-2xl md:text-3xl">+ Add Expense</h3>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
           <input type="number" step="0.01" min="0" value={amount} onChange={e => setAmount(e.target.value)} placeholder="Amount" required style={inputStyle}
             className="border border-botanical-border shadow-sm rounded p-2 text-sm focus:outline-none focus:border-brand-gold" />
@@ -116,9 +116,9 @@ export default function ExpensesClient({ shopId }: { shopId: string }) {
 
       {/* Expense List */}
       {loading ? (
-        <p className="text-botanical-muted text-center py-8">Loading...</p>
+        <p className="text-botanical-muted text-center py-8 text-base md:text-lg">Loading...</p>
       ) : expenses.length === 0 ? (
-        <p className="text-botanical-muted italic text-center py-8 text-sm border border-dashed border-botanical-border rounded">No expenses recorded for this month.</p>
+        <p className="text-botanical-muted italic text-center py-8 border border-dashed border-botanical-border rounded text-base md:text-lg">No expenses recorded for this month.</p>
       ) : (
         <div className="space-y-2">
           {expenses.map(exp => (
@@ -126,8 +126,8 @@ export default function ExpensesClient({ shopId }: { shopId: string }) {
               <div className="flex items-center gap-3">
                 <span className="text-lg">{catEmojis[exp.category] || '📦'}</span>
                 <div>
-                  <p className="text-sm text-botanical-text font-medium">{exp.description || exp.category}</p>
-                  <p className="text-sm text-botanical-muted">{new Date(exp.date).toLocaleDateString()} · {exp.category}</p>
+                  <p className="text-botanical-text font-medium text-base md:text-lg">{exp.description || exp.category}</p>
+                  <p className="text-botanical-muted text-base md:text-lg">{new Date(exp.date).toLocaleDateString()} · {exp.category}</p>
                 </div>
               </div>
               <div className="flex items-center gap-3">

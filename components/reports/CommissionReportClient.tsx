@@ -82,11 +82,11 @@ export default function CommissionReportClient({
       {/* Filters */}
       <div className="flex flex-wrap gap-4 items-end">
         <div>
-          <label className="block text-xs text-botanical-muted mb-1">Start Date</label>
+          <label className="block text-botanical-muted mb-1 text-sm">Start Date</label>
           <input type="date" value={startDate} onChange={e => setStartDate(e.target.value)} className="bg-botanical-surface border border-botanical-border shadow-sm rounded p-2 text-botanical-text text-sm focus:outline-none focus:border-brand-gold" />
         </div>
         <div>
-          <label className="block text-xs text-botanical-muted mb-1">End Date</label>
+          <label className="block text-botanical-muted mb-1 text-sm">End Date</label>
           <input type="date" value={endDate} onChange={e => setEndDate(e.target.value)} className="bg-botanical-surface border border-botanical-border shadow-sm rounded p-2 text-botanical-text text-sm focus:outline-none focus:border-brand-gold" />
         </div>
         <button onClick={exportCSV} className="bg-botanical-surface hover:bg-botanical-surface text-botanical-text px-4 py-2 rounded text-sm transition-colors">📥 Export CSV</button>
@@ -97,41 +97,41 @@ export default function CommissionReportClient({
         <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-botanical-surface transition-all duration-300 min-w-0">
           <div className="absolute top-0 left-0 w-full h-1 bg-green-500/80"></div>
           <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-3">
-            <h3 className="text-botanical-muted text-sm sm:text-xs uppercase tracking-widest font-semibold truncate">{isPersonalView ? 'My Revenue' : 'Gross Revenue'}</h3>
+            <h3 className="text-botanical-muted uppercase tracking-widest font-semibold truncate text-2xl md:text-3xl">{isPersonalView ? 'My Revenue' : 'Gross Revenue'}</h3>
             <span className="text-green-500 text-sm">💵</span>
           </div>
-          <p className="text-2xl sm:text-3xl font-black text-botanical-text break-words leading-tight">${totalRevenue.toFixed(0)}</p>
+          <p className="font-black text-botanical-text break-words leading-tight text-base md:text-lg">${totalRevenue.toFixed(0)}</p>
         </div>
         <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-botanical-surface transition-all duration-300 min-w-0">
           <div className="absolute top-0 left-0 w-full h-1 bg-blue-500/80"></div>
           <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-3">
-            <h3 className="text-botanical-muted text-sm sm:text-xs uppercase tracking-widest font-semibold truncate">{isPersonalView ? 'My Commission' : 'Commission'}</h3>
+            <h3 className="text-botanical-muted uppercase tracking-widest font-semibold truncate text-2xl md:text-3xl">{isPersonalView ? 'My Commission' : 'Commission'}</h3>
             <span className="text-blue-500 text-sm">💎</span>
           </div>
-          <p className="text-2xl sm:text-3xl font-black text-botanical-text break-words leading-tight">${totalCommission.toFixed(0)}</p>
+          <p className="font-black text-botanical-text break-words leading-tight text-base md:text-lg">${totalCommission.toFixed(0)}</p>
         </div>
         <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-botanical-surface transition-all duration-300 min-w-0">
           <div className="absolute top-0 left-0 w-full h-1 bg-amber-500/80"></div>
           <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-3">
-            <h3 className="text-botanical-muted text-sm sm:text-xs uppercase tracking-widest font-semibold truncate">{isPersonalView ? 'My Tips' : 'Tips'}</h3>
+            <h3 className="text-botanical-muted uppercase tracking-widest font-semibold truncate text-2xl md:text-3xl">{isPersonalView ? 'My Tips' : 'Tips'}</h3>
             <span className="text-amber-500 text-sm">🪙</span>
           </div>
-          <p className="text-2xl sm:text-3xl font-black text-botanical-text break-words leading-tight">${totalTips.toFixed(0)}</p>
+          <p className="font-black text-botanical-text break-words leading-tight text-base md:text-lg">${totalTips.toFixed(0)}</p>
         </div>
         <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-botanical-surface transition-all duration-300 min-w-0">
           <div className="absolute top-0 left-0 w-full h-1 bg-purple-500/80"></div>
           <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-3">
-            <h3 className="text-botanical-muted text-sm sm:text-xs uppercase tracking-widest font-semibold truncate">{isPersonalView ? 'My Total Pay' : 'Total Payout'}</h3>
+            <h3 className="text-botanical-muted uppercase tracking-widest font-semibold truncate text-2xl md:text-3xl">{isPersonalView ? 'My Total Pay' : 'Total Payout'}</h3>
             <span className="text-purple-500 text-sm">💳</span>
           </div>
-          <p className="text-2xl sm:text-3xl font-black text-botanical-text break-words leading-tight">${totalPayout.toFixed(0)}</p>
+          <p className="font-black text-botanical-text break-words leading-tight text-base md:text-lg">${totalPayout.toFixed(0)}</p>
         </div>
       </div>
 
       {loading ? (
-        <p className="text-botanical-muted text-center py-8 animate-pulse">Calculating commissions…</p>
+        <p className="text-botanical-muted text-center py-8 animate-pulse text-base md:text-lg">Calculating commissions…</p>
       ) : summary.length === 0 ? (
-        <p className="text-botanical-muted italic text-center py-8 border border-dashed border-botanical-border rounded">No completed appointments in this date range.</p>
+        <p className="text-botanical-muted italic text-center py-8 border border-dashed border-botanical-border rounded text-base md:text-lg">No completed appointments in this date range.</p>
       ) : (
         <>
           {/* Staff Summary Table */}

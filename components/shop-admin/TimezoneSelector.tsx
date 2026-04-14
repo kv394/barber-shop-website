@@ -41,8 +41,8 @@ export default function TimezoneSelector({
       <div className="flex items-center gap-3 mb-4">
         <span className="text-2xl">🌐</span>
         <div>
-          <h3 className="text-lg font-bold text-botanical-text">Shop Timezone</h3>
-          <p className="text-xs text-botanical-muted">All appointment times are displayed in this timezone.</p>
+          <h3 className="font-bold text-botanical-text text-2xl md:text-3xl">Shop Timezone</h3>
+          <p className="text-botanical-muted text-base md:text-lg">All appointment times are displayed in this timezone.</p>
         </div>
       </div>
       <div className="flex items-center gap-3">

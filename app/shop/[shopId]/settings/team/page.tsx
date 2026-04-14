@@ -285,10 +285,10 @@ export default async function TeamDashboardPage({ params, searchParams }: { para
 
       {kioskUser && (
          <div className="bg-blue-50 border border-blue-200 p-5 rounded-2xl shadow-lg mb-8">
-             <h3 className="text-blue-800 font-bold mb-2 flex items-center gap-2"><span>📱</span> Tablet Kiosk Setup</h3>
-             <p className="text-sm text-slate-500 mb-4">To set up the front desk attendance tablet, sign up for a new account on that device using this exact email:</p>
+             <h3 className="text-blue-800 font-bold mb-2 flex items-center gap-2 text-2xl md:text-3xl"><span>📱</span> Tablet Kiosk Setup</h3>
+             <p className="text-slate-500 mb-4 text-base md:text-lg">To set up the front desk attendance tablet, sign up for a new account on that device using this exact email:</p>
              <div className="bg-white p-3 rounded-lg text-center mb-3 border border-botanical-border shadow-sm"><code className="text-botanical-primary font-mono font-bold tracking-wider">{kioskUser.email}</code></div>
-             <p className="text-xs text-blue-700">Once an account is created with this email, that account will instantly inherit kiosk privileges for this shop.</p>
+             <p className="text-blue-700 text-base md:text-lg">Once an account is created with this email, that account will instantly inherit kiosk privileges for this shop.</p>
          </div>
       )}
 
@@ -299,20 +299,20 @@ export default async function TeamDashboardPage({ params, searchParams }: { para
           <div className="flex items-center gap-3 mb-5">
             <div className="w-10 h-10 rounded-xl bg-botanical-primary/10 flex items-center justify-center text-xl">✉️</div>
             <div>
-              <h3 className="text-lg font-bold text-slate-900">Invite Team Member</h3>
-              <p className="text-xs text-slate-500">Add staff or admins to your shop</p>
+              <h3 className="font-bold text-slate-900 text-2xl md:text-3xl">Invite Team Member</h3>
+              <p className="text-slate-500 text-base md:text-lg">Add staff or admins to your shop</p>
             </div>
           </div>
 
           <form action={inviteUser} className="grid grid-cols-1 md:grid-cols-12 gap-3 items-end">
             <input type="hidden" name="shopId" value={shop.id} />
             <div className="md:col-span-6">
-              <label className="block text-sm text-slate-600 mb-1 font-semibold uppercase tracking-wider">📧 Email</label>
+              <label className="block text-slate-600 mb-1 font-semibold uppercase tracking-wider text-sm">📧 Email</label>
               <input type="email" name="email" required placeholder="team@example.com"
                 className="w-full p-2.5 rounded-lg border border-botanical-border shadow-sm bg-white text-slate-900 text-sm placeholder-gray-400 focus:ring-2 focus:ring-botanical-primary focus:outline-none transition-all" />
             </div>
             <div className="md:col-span-3">
-              <label className="block text-sm text-slate-600 mb-1 font-semibold uppercase tracking-wider">👤 Role</label>
+              <label className="block text-slate-600 mb-1 font-semibold uppercase tracking-wider text-sm">👤 Role</label>
               <select name="role" defaultValue={userRole === 'SITE_ADMIN' ? 'SHOP_ADMIN' : 'STAFF'}
                 className="w-full p-2.5 rounded-lg border border-botanical-border shadow-sm bg-white text-slate-900 text-sm focus:ring-2 focus:ring-botanical-primary focus:outline-none transition-all">
                 {userRole === 'SHOP_ADMIN' && <option value="STAFF">Staff</option>}
@@ -347,13 +347,13 @@ export default async function TeamDashboardPage({ params, searchParams }: { para
             <div key={staffMember.id} className="bg-white border border-botanical-border shadow-sm rounded-2xl p-5 flex flex-col shadow-lg">
               <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-start mb-4">
                 <div>
-                  <h2 className="text-xl font-bold text-slate-900 mb-1 flex items-center gap-2">
+                  <h2 className="font-bold text-slate-900 mb-1 flex items-center gap-2 text-3xl md:text-4xl">
                     {staffMember.name || staffMember.email.split('@')[0]}
                     <span className={`text-xs px-1.5 py-0.5 rounded uppercase tracking-wider font-bold ${staffMember.role === 'SHOP_ADMIN' ? 'bg-botanical-primary/10 text-botanical-primary border border-botanical-primary/20' : 'bg-blue-50 text-blue-700 border border-blue-200'}`}>
                       {staffMember.role.replace('_', ' ')}
                     </span>
                   </h2>
-                  <p className="text-xs text-slate-500">{staffMember.email}</p>
+                  <p className="text-slate-500 text-base md:text-lg">{staffMember.email}</p>
                 </div>
               </div>
               <form action={removeUser} className="mt-auto">
@@ -366,7 +366,7 @@ export default async function TeamDashboardPage({ params, searchParams }: { para
             </div>
           ))}
           {staff.length === 0 && (
-            <p className="text-slate-500 italic">No assigned admins or kiosks.</p>
+            <p className="text-slate-500 italic text-base md:text-lg">No assigned admins or kiosks.</p>
           )}
         </div>
       ) : (

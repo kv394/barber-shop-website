@@ -69,7 +69,7 @@ export default function CreateServiceForm({ shopId }: { shopId: string }) {
 
   return (
     <form onSubmit={handleSubmit} className="mt-8 pt-6 border-t border-botanical-border" noValidate>
-      <h3 className="font-serif text-xl text-botanical-accent mb-6">
+      <h3 className="font-serif text-botanical-accent mb-6 text-2xl md:text-3xl">
         {isInternal ? 'Add Inventory Item' : 'Add New Service'}
       </h3>
       
@@ -192,7 +192,7 @@ export default function CreateServiceForm({ shopId }: { shopId: string }) {
       {!isInternal && (
         <div className="flex items-center space-x-3 py-4 mt-4">
           <input type="checkbox" id="trackInventory" checked={trackInventory} onChange={(e) => setTrackInventory(e.target.checked)} className="w-4 h-4 accent-brand-gold bg-botanical-border border-botanical-border shadow-sm rounded focus:ring-botanical-primary" />
-          <label htmlFor="trackInventory" className="text-sm text-botanical-muted cursor-pointer select-none">
+          <label htmlFor="trackInventory" className="text-botanical-muted cursor-pointer select-none text-sm">
             Enable Inventory Tracking for this service
           </label>
         </div>

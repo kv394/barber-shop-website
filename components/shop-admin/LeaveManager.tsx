@@ -95,11 +95,11 @@ export default function LeaveManager({ shopId, userId }: { shopId: string, userI
   return (
     <div className="space-y-8">
       <div className="bg-botanical-surface p-6 rounded-xl border border-botanical-border shadow-sm">
-        <h3 className="text-xl font-bold text-botanical-text mb-4">Request Time Off</h3>
+        <h3 className="font-bold text-botanical-text mb-4 text-2xl md:text-3xl">Request Time Off</h3>
         <form onSubmit={handleAddLeave} className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
-              <label className="block text-xs text-botanical-muted mb-1">Date</label>
+              <label className="block text-botanical-muted mb-1 text-sm">Date</label>
               <input 
                 type="date" 
                 required 
@@ -109,7 +109,7 @@ export default function LeaveManager({ shopId, userId }: { shopId: string, userI
               />
             </div>
             <div>
-              <label className="block text-xs text-botanical-muted mb-1">Start Time</label>
+              <label className="block text-botanical-muted mb-1 text-sm">Start Time</label>
               <input 
                 type="time" 
                 required 
@@ -119,7 +119,7 @@ export default function LeaveManager({ shopId, userId }: { shopId: string, userI
               />
             </div>
             <div>
-              <label className="block text-xs text-botanical-muted mb-1">End Time</label>
+              <label className="block text-botanical-muted mb-1 text-sm">End Time</label>
               <input 
                 type="time" 
                 required 
@@ -130,7 +130,7 @@ export default function LeaveManager({ shopId, userId }: { shopId: string, userI
             </div>
           </div>
           <div>
-            <label className="block text-xs text-botanical-muted mb-1">Reason (Optional)</label>
+            <label className="block text-botanical-muted mb-1 text-sm">Reason (Optional)</label>
             <input 
               type="text" 
               value={reason} 
@@ -150,21 +150,21 @@ export default function LeaveManager({ shopId, userId }: { shopId: string, userI
       </div>
 
       <div className="bg-botanical-surface p-6 rounded-xl border border-botanical-border shadow-sm">
-        <h3 className="text-xl font-bold text-botanical-text mb-4">Upcoming & Past Leaves</h3>
+        <h3 className="font-bold text-botanical-text mb-4 text-2xl md:text-3xl">Upcoming & Past Leaves</h3>
         {leaves.length === 0 ? (
-          <p className="text-sm text-botanical-muted italic">No leaves recorded.</p>
+          <p className="text-botanical-muted italic text-base md:text-lg">No leaves recorded.</p>
         ) : (
           <div className="space-y-3">
             {leaves.map(leave => (
               <div key={leave.id} className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center bg-botanical-surface p-4 rounded-lg border border-botanical-border shadow-sm">
                 <div>
-                  <p className="font-bold text-botanical-accent">
+                  <p className="font-bold text-botanical-accent text-base md:text-lg">
                     {new Date(leave.date).toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' })}
                   </p>
-                  <p className="text-sm text-botanical-text">
+                  <p className="text-botanical-text text-base md:text-lg">
                     {new Date(leave.startTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} - {new Date(leave.endTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                   </p>
-                  {leave.reason && <p className="text-xs text-botanical-muted mt-1">Note: {leave.reason}</p>}
+                  {leave.reason && <p className="text-botanical-muted mt-1 text-base md:text-lg">Note: {leave.reason}</p>}
                 </div>
                 <button 
                   onClick={() => handleDelete(leave.id)}

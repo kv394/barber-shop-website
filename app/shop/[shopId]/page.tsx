@@ -157,8 +157,8 @@ export default async function ShopDashboardPage({ params }: { params: Promise<{ 
     return (
         <div className="h-[100dvh] overflow-y-auto overflow-x-hidden">
             <div className="text-center">
-                <h1 className="text-sm font-bold text-red-500 mb-4">Access Denied</h1>
-                <p className="text-botanical-muted">You do not have permission to view this page.</p>
+                <h1 className="font-bold text-red-500 mb-4 text-4xl md:text-5xl lg:text-6xl">Access Denied</h1>
+                <p className="text-botanical-muted text-base md:text-lg">You do not have permission to view this page.</p>
             </div>
         </div>
     )
@@ -194,8 +194,8 @@ export default async function ShopDashboardPage({ params }: { params: Promise<{ 
         }`}>
           <span className="text-base mt-0.5">⚠️</span>
           <div className="flex-1">
-            <h3 className="font-bold text-sm mb-1">Billing & Usage Alert</h3>
-            <p className="text-xs opacity-90">{billingAlert.message}</p>
+            <h3 className="font-bold mb-1 text-2xl md:text-3xl">Billing & Usage Alert</h3>
+            <p className="opacity-90 text-base md:text-lg">{billingAlert.message}</p>
             <Link href={`/shop/${shopId}/settings/billing`} className="mt-2 inline-block text-xs font-bold underline hover:no-underline">
               View Billing Report →
             </Link>
@@ -210,8 +210,8 @@ export default async function ShopDashboardPage({ params }: { params: Promise<{ 
           <div className="flex-1 bg-botanical-primary/10 border border-brand-gold/30 rounded-xl p-4 flex items-center gap-4">
             <span className="text-base">🔗</span>
             <div className="min-w-0 flex-1">
-              <p className="text-xs text-botanical-muted mb-0.5">Your Booking Portal</p>
-              <p className="text-botanical-text font-mono text-sm truncate">/shops/{resolvedSlug}</p>
+              <p className="text-botanical-muted mb-0.5 text-base md:text-lg">Your Booking Portal</p>
+              <p className="text-botanical-text font-mono truncate text-base md:text-lg">/shops/{resolvedSlug}</p>
             </div>
             <Link href={`/shops/${resolvedSlug}`} target="_blank"
               className="flex-shrink-0 px-3 py-1.5 bg-botanical-primary text-white text-xs font-bold rounded-lg hover:bg-white hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 transition-colors">
@@ -221,8 +221,8 @@ export default async function ShopDashboardPage({ params }: { params: Promise<{ 
           {/* Quick Actions */}
           <div className="flex-1 bg-botanical-bg/50 border border-botanical-border shadow-sm rounded-xl p-4 flex items-center justify-between">
             <div>
-              <p className="text-botanical-text font-semibold text-sm mb-0.5">👥 Team Management</p>
-              <p className="text-xs text-botanical-muted">Onboard staff or set working hours</p>
+              <p className="text-botanical-text font-semibold mb-0.5 text-base md:text-lg">👥 Team Management</p>
+              <p className="text-botanical-muted text-base md:text-lg">Onboard staff or set working hours</p>
             </div>
             <Link href={`/shop/${shopId}/settings/team`}
               className="flex-shrink-0 px-3 py-1.5 bg-botanical-border text-botanical-text text-xs font-bold rounded-lg hover:bg-botanical-surface transition-colors">
@@ -232,7 +232,7 @@ export default async function ShopDashboardPage({ params }: { params: Promise<{ 
           {/* Low-stock alert */}
           {lowStockItems.length > 0 && (
             <div className="flex-1 bg-orange-900/20 border border-orange-500/30 rounded-xl p-4">
-              <p className="text-orange-300 font-semibold text-sm mb-2">⚠️ {lowStockItems.length} Low-Stock Item{lowStockItems.length > 1 ? 's' : ''}</p>
+              <p className="text-orange-300 font-semibold mb-2 text-base md:text-lg">⚠️ {lowStockItems.length} Low-Stock Item{lowStockItems.length > 1 ? 's' : ''}</p>
               <div className="space-y-1">
                 {lowStockItems.slice(0, 3).map((item: any) => (
                   <div key={item.id} className="flex flex-wrap justify-between gap-x-2 gap-y-2 text-xs">
@@ -240,7 +240,7 @@ export default async function ShopDashboardPage({ params }: { params: Promise<{ 
                     <span className="text-orange-300 font-mono ml-2 flex-shrink-0">{item.inventoryCount} left</span>
                   </div>
                 ))}
-                {lowStockItems.length > 3 && <p className="text-botanical-muted text-xs">+{lowStockItems.length - 3} more</p>}
+                {lowStockItems.length > 3 && <p className="text-botanical-muted text-base md:text-lg">+{lowStockItems.length - 3} more</p>}
               </div>
               <Link href={`/shop/${shopId}/config/products`} className="text-orange-300 hover:text-orange-200 text-xs underline mt-2 inline-block">
                 Restock now →
@@ -256,8 +256,8 @@ export default async function ShopDashboardPage({ params }: { params: Promise<{ 
             <span className="text-8xl">✂️</span>
           </div>
           <div className="relative z-10">
-            <p className="text-sm font-bold uppercase tracking-widest mb-1 opacity-80">Up Next</p>
-            <h2 className="font-serif text-lg sm:text-base font-bold mb-2 leading-tight">
+            <p className="font-bold uppercase tracking-widest mb-1 opacity-80 text-base md:text-lg">Up Next</p>
+            <h2 className="font-serif font-bold mb-2 leading-tight text-3xl md:text-4xl">
               {todayStats.nextAppointment.user?.name || 'Guest'}
             </h2>
             <div className="flex flex-wrap items-center gap-3 sm:gap-6 text-sm sm:text-base font-semibold opacity-90 mb-6">
@@ -288,47 +288,47 @@ export default async function ShopDashboardPage({ params }: { params: Promise<{ 
       {/* Today's Snapshot */}
       {todayStats && (
         <div className="mb-6 sm:mb-8">
-          <h2 className="text-lg sm:text-sm font-bold text-botanical-text mb-4">📊 Today&apos;s Snapshot</h2>
+          <h2 className="font-bold text-botanical-text mb-4 text-3xl md:text-4xl">📊 Today&apos;s Snapshot</h2>
           <div className="grid grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-4 mb-4 sm:mb-8">
             <div className="bg-botanical-surface backdrop-blur-md shadow-[0_4px_30px_rgba(0,0,0,0.1)] rounded-2xl border border-botanical-border shadow-sm p-4 sm:p-6 relative overflow-hidden group hover:bg-botanical-border hover:shadow-[0_8px_30px_rgba(0,0,0,0.15)] hover:-translate-y-1 transition-all duration-300 min-w-0">
               <div className="absolute top-0 left-0 w-full h-1 bg-blue-500/80"></div>
               <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-2 sm:mb-3">
-                <h3 className="text-botanical-muted text-xs sm:text-xs uppercase tracking-widest font-semibold truncate">Bookings</h3>
+                <h3 className="text-botanical-muted uppercase tracking-widest font-semibold truncate text-2xl md:text-3xl">Bookings</h3>
                 <span className="text-blue-500 text-sm sm:text-base">📅</span>
               </div>
-              <p className="text-base sm:text-lg font-black text-botanical-text break-words leading-tight">{todayStats.totalBookings}</p>
+              <p className="font-black text-botanical-text break-words leading-tight text-base md:text-lg">{todayStats.totalBookings}</p>
             </div>
             <div className="bg-botanical-surface backdrop-blur-md shadow-[0_4px_30px_rgba(0,0,0,0.1)] rounded-2xl border border-botanical-border shadow-sm p-4 sm:p-6 relative overflow-hidden group hover:bg-botanical-border hover:shadow-[0_8px_30px_rgba(0,0,0,0.15)] hover:-translate-y-1 transition-all duration-300 min-w-0">
               <div className="absolute top-0 left-0 w-full h-1 bg-green-500/80"></div>
               <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-2 sm:mb-3">
-                <h3 className="text-botanical-muted text-xs sm:text-xs uppercase tracking-widest font-semibold truncate">Revenue</h3>
+                <h3 className="text-botanical-muted uppercase tracking-widest font-semibold truncate text-2xl md:text-3xl">Revenue</h3>
                 <span className="text-green-500 text-sm sm:text-base">💵</span>
               </div>
-              <p className="text-base sm:text-lg font-black text-botanical-text break-words leading-tight">${todayStats.revenue.toFixed(0)}</p>
+              <p className="font-black text-botanical-text break-words leading-tight text-base md:text-lg">${todayStats.revenue.toFixed(0)}</p>
             </div>
             <div className="bg-botanical-surface backdrop-blur-md shadow-[0_4px_30px_rgba(0,0,0,0.1)] rounded-2xl border border-botanical-border shadow-sm p-4 sm:p-6 relative overflow-hidden group hover:bg-botanical-border hover:shadow-[0_8px_30px_rgba(0,0,0,0.15)] hover:-translate-y-1 transition-all duration-300 min-w-0">
               <div className="absolute top-0 left-0 w-full h-1 bg-amber-500/80"></div>
               <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-2 sm:mb-3">
-                <h3 className="text-botanical-muted text-xs sm:text-xs uppercase tracking-widest font-semibold truncate">Tips</h3>
+                <h3 className="text-botanical-muted uppercase tracking-widest font-semibold truncate text-2xl md:text-3xl">Tips</h3>
                 <span className="text-amber-500 text-sm sm:text-base">🪙</span>
               </div>
-              <p className="text-base sm:text-lg font-black text-botanical-text break-words leading-tight">${todayStats.tips.toFixed(0)}</p>
+              <p className="font-black text-botanical-text break-words leading-tight text-base md:text-lg">${todayStats.tips.toFixed(0)}</p>
             </div>
             <div className="bg-botanical-surface backdrop-blur-md shadow-[0_4px_30px_rgba(0,0,0,0.1)] rounded-2xl border border-botanical-border shadow-sm p-4 sm:p-6 relative overflow-hidden group hover:bg-botanical-border hover:shadow-[0_8px_30px_rgba(0,0,0,0.15)] hover:-translate-y-1 transition-all duration-300 min-w-0">
               <div className="absolute top-0 left-0 w-full h-1 bg-purple-500/80"></div>
               <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-2 sm:mb-3">
-                <h3 className="text-botanical-muted text-xs sm:text-xs uppercase tracking-widest font-semibold truncate">Completed</h3>
+                <h3 className="text-botanical-muted uppercase tracking-widest font-semibold truncate text-2xl md:text-3xl">Completed</h3>
                 <span className="text-purple-500 text-sm sm:text-base">✅</span>
               </div>
-              <p className="text-base sm:text-lg font-black text-botanical-text break-words leading-tight">{todayStats.completedCount}</p>
+              <p className="font-black text-botanical-text break-words leading-tight text-base md:text-lg">{todayStats.completedCount}</p>
             </div>
             <div className="col-span-2 lg:col-span-1 bg-botanical-surface backdrop-blur-md shadow-[0_4px_30px_rgba(0,0,0,0.1)] rounded-2xl border border-botanical-border shadow-sm p-4 sm:p-6 relative overflow-hidden group hover:bg-botanical-border hover:shadow-[0_8px_30px_rgba(0,0,0,0.15)] hover:-translate-y-1 transition-all duration-300 min-w-0">
               <div className="absolute top-0 left-0 w-full h-1 bg-cyan-500/80"></div>
               <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-2 sm:mb-3">
-                <h3 className="text-botanical-muted text-xs sm:text-xs uppercase tracking-widest font-semibold truncate">Upcoming</h3>
+                <h3 className="text-botanical-muted uppercase tracking-widest font-semibold truncate text-2xl md:text-3xl">Upcoming</h3>
                 <span className="text-cyan-500 text-sm sm:text-base">⏳</span>
               </div>
-              <p className="text-base sm:text-lg font-black text-botanical-text break-words leading-tight">{todayStats.upcomingCount}</p>
+              <p className="font-black text-botanical-text break-words leading-tight text-base md:text-lg">{todayStats.upcomingCount}</p>
             </div>
           </div>
         </div>

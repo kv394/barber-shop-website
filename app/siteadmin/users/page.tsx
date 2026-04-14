@@ -79,8 +79,8 @@ export default function SiteAdminUsersPage() {
   return (
     <div>
       <div className="mb-8">
-        <h1 className="text-3xl font-serif font-bold text-botanical-accent mb-2">User Management</h1>
-        <p className="text-botanical-muted">Manage all users across the platform. {users.length} user{users.length !== 1 ? 's' : ''} found.</p>
+        <h1 className="font-serif font-bold text-botanical-accent mb-2 text-4xl md:text-5xl lg:text-6xl">User Management</h1>
+        <p className="text-botanical-muted text-base md:text-lg">Manage all users across the platform. {users.length} user{users.length !== 1 ? 's' : ''} found.</p>
       </div>
 
       {/* Alerts */}
@@ -160,8 +160,8 @@ export default function SiteAdminUsersPage() {
                     <tr key={user.id} className="hover:bg-botanical-surface transition">
                       <td className="px-4 py-3">
                         <div>
-                          <p className="text-botanical-text font-medium">{user.name || '—'}</p>
-                          <p className="text-xs text-botanical-muted">{user.email}</p>
+                          <p className="text-botanical-text font-medium text-base md:text-lg">{user.name || '—'}</p>
+                          <p className="text-botanical-muted text-base md:text-lg">{user.email}</p>
                         </div>
                       </td>
                       <td className="px-4 py-3">

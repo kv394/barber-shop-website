@@ -79,7 +79,7 @@ export default function ReviewPage({ params }: { params: Promise<{ appointmentId
   if (loading) {
     return (
       <div className="h-[100dvh] overflow-y-auto overflow-x-hidden">
-        <p className="text-botanical-muted animate-pulse">Loading…</p>
+        <p className="text-botanical-muted animate-pulse text-base md:text-lg">Loading…</p>
       </div>
     );
   }
@@ -88,10 +88,10 @@ export default function ReviewPage({ params }: { params: Promise<{ appointmentId
     return (
       <div className="h-[100dvh] overflow-y-auto overflow-x-hidden">
         <div className="text-center">
-          <p className="text-5xl mb-4">🎉</p>
-          <h2 className="text-2xl font-bold text-botanical-text mb-2">Thank You!</h2>
-          <p className="text-botanical-muted">Your review has been submitted.</p>
-          <p className="text-botanical-muted text-sm mt-2">Redirecting…</p>
+          <p className="mb-4 text-base md:text-lg">🎉</p>
+          <h2 className="font-bold text-botanical-text mb-2 text-3xl md:text-4xl">Thank You!</h2>
+          <p className="text-botanical-muted text-base md:text-lg">Your review has been submitted.</p>
+          <p className="text-botanical-muted mt-2 text-base md:text-lg">Redirecting…</p>
         </div>
       </div>
     );
@@ -103,8 +103,8 @@ export default function ReviewPage({ params }: { params: Promise<{ appointmentId
     <main className="h-[100dvh] overflow-y-auto overflow-x-hidden">
       <header className="bg-botanical-surface backdrop-blur-md border-b border-botanical-border sticky top-0 z-20">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 py-4">
-          <h1 className="text-xl sm:text-2xl font-bold text-botanical-text">Leave a Review</h1>
-          <p className="text-xs text-botanical-muted">Share your experience</p>
+          <h1 className="font-bold text-botanical-text text-4xl md:text-5xl lg:text-6xl">Leave a Review</h1>
+          <p className="text-botanical-muted text-base md:text-lg">Share your experience</p>
         </div>
         <div className="max-w-4xl mx-auto px-4 sm:px-6 pb-2 flex gap-4 overflow-x-auto scrollbar-none">
           <Link href="/my-appointments" className="text-sm text-botanical-muted hover:text-botanical-text px-1 pb-1 whitespace-nowrap transition-colors">📅 Appointments</Link>
@@ -123,34 +123,34 @@ export default function ReviewPage({ params }: { params: Promise<{ appointmentId
 
         {!appointment ? (
           <div className="text-center py-12">
-            <p className="text-botanical-muted">Appointment not found.</p>
+            <p className="text-botanical-muted text-base md:text-lg">Appointment not found.</p>
             <Link href="/my-appointments" className="text-botanical-accent hover:text-botanical-text text-sm mt-4 inline-block">← Back to appointments</Link>
           </div>
         ) : alreadyReviewed ? (
           <div className="text-center py-12 bg-botanical-surface border border-botanical-border shadow-sm rounded-xl p-8">
-            <p className="text-4xl mb-4">✅</p>
-            <h2 className="text-xl font-bold text-botanical-text mb-2">Already Reviewed</h2>
-            <p className="text-botanical-muted text-sm">You&apos;ve already left a review for this appointment.</p>
+            <p className="mb-4 text-base md:text-lg">✅</p>
+            <h2 className="font-bold text-botanical-text mb-2 text-3xl md:text-4xl">Already Reviewed</h2>
+            <p className="text-botanical-muted text-base md:text-lg">You&apos;ve already left a review for this appointment.</p>
             <Link href="/my-appointments" className="text-botanical-accent hover:text-botanical-text text-sm mt-4 inline-block">← Back to appointments</Link>
           </div>
         ) : appointment.status !== 'COMPLETED' ? (
           <div className="text-center py-12 bg-botanical-surface border border-botanical-border shadow-sm rounded-xl p-8">
-            <p className="text-4xl mb-4">⏳</p>
-            <h2 className="text-xl font-bold text-botanical-text mb-2">Not Yet Completed</h2>
-            <p className="text-botanical-muted text-sm">You can only review completed appointments.</p>
+            <p className="mb-4 text-base md:text-lg">⏳</p>
+            <h2 className="font-bold text-botanical-text mb-2 text-3xl md:text-4xl">Not Yet Completed</h2>
+            <p className="text-botanical-muted text-base md:text-lg">You can only review completed appointments.</p>
             <Link href="/my-appointments" className="text-botanical-accent hover:text-botanical-text text-sm mt-4 inline-block">← Back to appointments</Link>
           </div>
         ) : (
           <div className="bg-botanical-surface border border-botanical-border shadow-sm rounded-xl overflow-hidden">
             {/* Appointment Summary */}
             <div className="p-6 bg-gradient-to-r from-purple-600/10 to-brand-gold/10 border-b border-botanical-border">
-              <h2 className="text-lg font-bold text-botanical-text">{appointment.shop.name}</h2>
+              <h2 className="font-bold text-botanical-text text-3xl md:text-4xl">{appointment.shop.name}</h2>
               <div className="mt-2 space-y-1">
-                <p className="text-sm text-botanical-muted">
+                <p className="text-botanical-muted text-base md:text-lg">
                   {appointment.service?.name || 'Service'}
                   {appointment.staff?.name && <span className="text-botanical-muted"> · with {appointment.staff.name}</span>}
                 </p>
-                <p className="text-xs text-botanical-muted">
+                <p className="text-botanical-muted text-base md:text-lg">
                   {new Date(appointment.startTime).toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
                 </p>
               </div>
@@ -159,7 +159,7 @@ export default function ReviewPage({ params }: { params: Promise<{ appointmentId
             {/* Rating */}
             <div className="p-6 space-y-6">
               <div>
-                <label className="block text-sm text-botanical-muted mb-3">How was your experience?</label>
+                <label className="block text-botanical-muted mb-3 text-sm">How was your experience?</label>
                 <div className="flex gap-2 justify-center">
                   {[1, 2, 3, 4, 5].map((star) => (
                     <button
@@ -177,7 +177,7 @@ export default function ReviewPage({ params }: { params: Promise<{ appointmentId
                   ))}
                 </div>
                 {rating > 0 && (
-                  <p className="text-center text-sm text-botanical-muted mt-2">
+                  <p className="text-center text-botanical-muted mt-2 text-base md:text-lg">
                     {rating === 1 && 'Poor'}
                     {rating === 2 && 'Fair'}
                     {rating === 3 && 'Good'}
@@ -189,7 +189,7 @@ export default function ReviewPage({ params }: { params: Promise<{ appointmentId
 
               {/* Comment */}
               <div>
-                <label className="block text-sm text-botanical-muted mb-2">Leave a comment (optional)</label>
+                <label className="block text-botanical-muted mb-2 text-sm">Leave a comment (optional)</label>
                 <textarea
                   value={comment}
                   onChange={(e) => setComment(e.target.value)}
@@ -198,7 +198,7 @@ export default function ReviewPage({ params }: { params: Promise<{ appointmentId
                   maxLength={1000}
                   className="w-full bg-botanical-surface border border-botanical-border shadow-sm rounded-lg p-3 text-botanical-text placeholder-gray-600 focus:outline-none focus:border-brand-gold resize-none"
                 />
-                <p className="text-xs text-botanical-muted text-right mt-1">{comment.length}/1000</p>
+                <p className="text-botanical-muted text-right mt-1 text-base md:text-lg">{comment.length}/1000</p>
               </div>
 
               {/* Submit */}

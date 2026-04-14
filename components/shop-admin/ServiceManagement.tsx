@@ -128,7 +128,7 @@ export function ServiceManagement({ shopId }: ServiceManagementProps) {
   if (isLoading) {
     return (
       <div className="text-center py-8">
-        <p className="text-botanical-muted">Loading services...</p>
+        <p className="text-botanical-muted text-base md:text-lg">Loading services...</p>
       </div>
     );
   }
@@ -136,7 +136,7 @@ export function ServiceManagement({ shopId }: ServiceManagementProps) {
   return (
     <div className="w-full space-y-6 sm:space-y-8">
       <div>
-        <h2 className="text-xl sm:text-2xl font-bold text-botanical-text mb-4 sm:mb-6">Manage Services</h2>
+        <h2 className="font-bold text-botanical-text mb-4 sm:mb-6 text-3xl md:text-4xl">Manage Services</h2>
 
         {error && (
           <div className="bg-red-500/10 border border-red-500 text-red-400 p-3 sm:p-4 rounded-lg mb-4 sm:mb-6 text-sm">
@@ -152,11 +152,11 @@ export function ServiceManagement({ shopId }: ServiceManagementProps) {
 
         {/* Add Service Form */}
         <div className="bg-botanical-surface p-4 sm:p-6 rounded-lg border border-botanical-border shadow-sm mb-6 sm:mb-8">
-          <h3 className="text-lg font-bold text-botanical-text mb-4">Add New Service</h3>
+          <h3 className="font-bold text-botanical-text mb-4 text-2xl md:text-3xl">Add New Service</h3>
           <form onSubmit={handleAddService} className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-botanical-muted mb-2">
+                <label className="block font-medium text-botanical-muted mb-2 text-sm">
                   Service Name *
                 </label>
                 <input
@@ -170,7 +170,7 @@ export function ServiceManagement({ shopId }: ServiceManagementProps) {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-botanical-muted mb-2">
+                <label className="block font-medium text-botanical-muted mb-2 text-sm">
                   Duration (minutes) *
                 </label>
                 <input
@@ -187,7 +187,7 @@ export function ServiceManagement({ shopId }: ServiceManagementProps) {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-botanical-muted mb-2">
+                <label className="block font-medium text-botanical-muted mb-2 text-sm">
                   Price ($) *
                 </label>
                 <input
@@ -204,7 +204,7 @@ export function ServiceManagement({ shopId }: ServiceManagementProps) {
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-botanical-muted mb-2">
+                <label className="block font-medium text-botanical-muted mb-2 text-sm">
                   Service Type *
                 </label>
                 <select
@@ -218,7 +218,7 @@ export function ServiceManagement({ shopId }: ServiceManagementProps) {
               </div>
 
               <div className="md:col-span-2">
-                <label className="block text-sm font-medium text-botanical-muted mb-2">
+                <label className="block font-medium text-botanical-muted mb-2 text-sm">
                   Description (optional)
                 </label>
                 <input
@@ -239,7 +239,7 @@ export function ServiceManagement({ shopId }: ServiceManagementProps) {
                 onChange={(e) => setNewService({ ...newService, trackInventory: e.target.checked })}
                 className="w-4 h-4 accent-blue-600 bg-botanical-bg border-botanical-border rounded"
               />
-              <label htmlFor="trackInventory" className="text-sm text-botanical-muted cursor-pointer select-none">
+              <label htmlFor="trackInventory" className="text-botanical-muted cursor-pointer select-none text-sm">
                 Enable Inventory Tracking for this service (e.g., track hair products used)
               </label>
             </div>
@@ -256,10 +256,10 @@ export function ServiceManagement({ shopId }: ServiceManagementProps) {
 
         {/* Services List */}
         <div>
-          <h3 className="text-lg font-bold text-botanical-text mb-4">Current Services</h3>
+          <h3 className="font-bold text-botanical-text mb-4 text-2xl md:text-3xl">Current Services</h3>
           {services.length === 0 ? (
             <div className="bg-botanical-surface p-8 rounded-lg border border-botanical-border shadow-sm text-center">
-              <p className="text-botanical-muted">No services added yet. Create one above to get started!</p>
+              <p className="text-botanical-muted text-base md:text-lg">No services added yet. Create one above to get started!</p>
             </div>
           ) : (
             <div className="space-y-3">
@@ -271,7 +271,7 @@ export function ServiceManagement({ shopId }: ServiceManagementProps) {
                   <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center flex-wrap gap-2 mb-1">
-                          <h4 className="font-semibold text-botanical-text text-sm sm:text-lg">{service.name}</h4>
+                          <h4 className="font-semibold text-botanical-text text-xl md:text-2xl">{service.name}</h4>
                           <div className={`text-sm sm:text-xs font-semibold px-2 py-0.5 sm:py-1 rounded border ${service.type === 'INTERNAL' ? 'bg-purple-900/50 text-purple-300 border-purple-500/30' : 'bg-green-900/50 text-green-300 border-green-500/30'}`}>
                               {service.type}
                           </div>
@@ -280,7 +280,7 @@ export function ServiceManagement({ shopId }: ServiceManagementProps) {
                           </div>
                       </div>
                       {service.description && (
-                        <p className="text-botanical-muted text-xs sm:text-sm mt-1">{service.description}</p>
+                        <p className="text-botanical-muted mt-1 text-base md:text-lg">{service.description}</p>
                       )}
                       <div className="flex gap-4 sm:gap-6 mt-2 text-xs sm:text-sm text-botanical-muted">
                         <span>💰 ${service.price.toFixed(2)}</span>
@@ -303,7 +303,7 @@ export function ServiceManagement({ shopId }: ServiceManagementProps) {
 
         {/* Info Box */}
         <div className="bg-blue-500/10 border border-blue-500/30 rounded-lg p-4 mt-6">
-          <h4 className="text-blue-400 font-semibold mb-2">ℹ️ Service Management Tips</h4>
+          <h4 className="text-blue-400 font-semibold mb-2 text-xl md:text-2xl">ℹ️ Service Management Tips</h4>
           <ul className="text-sm text-blue-300 space-y-1">
             <li>• <strong>Customer-Facing Services</strong> are displayed on your public shop page for booking.</li>
             <li>• <strong>Internal Services</strong> are hidden from the public page, used for tracking inventory or add-ons.</li>

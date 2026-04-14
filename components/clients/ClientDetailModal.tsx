@@ -146,12 +146,12 @@ export default function ClientDetailModal({ shopId, clientId, clientName, onClos
       <div className="bg-botanical-surface rounded-xl p-6 w-full max-w-2xl border border-botanical-border shadow-sm shadow-2xl max-h-[90vh] overflow-y-auto custom-scrollbar" onClick={e => e.stopPropagation()}>
         <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-start mb-6 border-b border-botanical-border pb-4">
           <div>
-            <h3 className="text-xl font-bold text-botanical-accent">{clientName}</h3>
+            <h3 className="font-bold text-botanical-accent text-2xl md:text-3xl">{clientName}</h3>
             {client && (
               <div className="text-xs text-botanical-muted mt-1 space-y-1">
-                <p>{client.email?.startsWith('walkin-') ? 'Walk-in Client' : client.email}</p>
-                {client.phone && <p>📱 {client.phone}</p>}
-                {client.referralCode && <p className="text-botanical-accent/60">🔗 Referral: {client.referralCode}</p>}
+                <p className="text-base md:text-lg">{client.email?.startsWith('walkin-') ? 'Walk-in Client' : client.email}</p>
+                {client.phone && <p className="text-base md:text-lg">📱 {client.phone}</p>}
+                {client.referralCode && <p className="text-botanical-accent/60 text-base md:text-lg">🔗 Referral: {client.referralCode}</p>}
               </div>
             )}
           </div>
@@ -159,7 +159,7 @@ export default function ClientDetailModal({ shopId, clientId, clientName, onClos
         </div>
 
         {loading ? (
-          <p className="text-botanical-muted text-center py-8">Loading...</p>
+          <p className="text-botanical-muted text-center py-8 text-base md:text-lg">Loading...</p>
         ) : client ? (
           <div className="flex flex-col h-full">
             {/* Tabs */}
@@ -186,7 +186,7 @@ export default function ClientDetailModal({ shopId, clientId, clientName, onClos
                 <div className="space-y-4 bg-botanical-surface p-4 rounded-xl border border-botanical-border shadow-sm">
                   <div className="space-y-3">
                     <div>
-                      <label className="block text-sm text-botanical-muted mb-1 uppercase tracking-wider">General Notes</label>
+                      <label className="block text-botanical-muted mb-1 uppercase tracking-wider text-sm">General Notes</label>
                       <textarea
                         name="clientNotes"
                         value={formData.clientNotes}
@@ -197,7 +197,7 @@ export default function ClientDetailModal({ shopId, clientId, clientName, onClos
                       />
                     </div>
                     <div>
-                      <label className="block text-sm text-botanical-muted mb-1 uppercase tracking-wider">Preferences</label>
+                      <label className="block text-botanical-muted mb-1 uppercase tracking-wider text-sm">Preferences</label>
                       <input
                         type="text"
                         name="preferences"
@@ -208,7 +208,7 @@ export default function ClientDetailModal({ shopId, clientId, clientName, onClos
                       />
                     </div>
                     <div>
-                      <label className="block text-sm text-red-400/80 mb-1 uppercase tracking-wider">Allergies / Warnings</label>
+                      <label className="block text-red-400/80 mb-1 uppercase tracking-wider text-sm">Allergies / Warnings</label>
                       <input
                         type="text"
                         name="allergies"
@@ -219,18 +219,18 @@ export default function ClientDetailModal({ shopId, clientId, clientName, onClos
                       />
                     </div>
                     <div className="space-y-2 pt-2 border-t border-botanical-border mt-3">
-                      <label className="flex items-center space-x-2 cursor-pointer">
+                      <label className="flex items-center space-x-2 cursor-pointer text-sm">
                           <input type="checkbox" name="marketingConsent" checked={formData.marketingConsent} onChange={handleChange} className="rounded border-botanical-border bg-botanical-surface text-botanical-accent focus:ring-botanical-primary" />
                           <span className="text-sm text-botanical-muted">Accepts Email Marketing</span>
                       </label>
-                      <label className="flex items-center space-x-2 cursor-pointer">
+                      <label className="flex items-center space-x-2 cursor-pointer text-sm">
                           <input type="checkbox" name="smsConsent" checked={formData.smsConsent} onChange={handleChange} className="rounded border-botanical-border bg-botanical-surface text-botanical-accent focus:ring-botanical-primary" />
                           <span className="text-sm text-botanical-muted">Accepts SMS Reminders/Promos</span>
                       </label>
                     </div>
                   </div>
                   <div className="pt-4 flex items-center justify-between border-t border-botanical-border mt-4">
-                    <p className="text-sm text-botanical-muted">Member since {new Date(client.createdAt).toLocaleDateString()}</p>
+                    <p className="text-botanical-muted text-base md:text-lg">Member since {new Date(client.createdAt).toLocaleDateString()}</p>
                     <button onClick={saveCrmData} disabled={savingNotes} className="bg-botanical-primary text-white px-5 py-2 rounded-md text-sm font-bold hover:bg-yellow-400 disabled:opacity-50 transition-colors">
                       {savingNotes ? 'Saving...' : savedNotes ? '✓ Saved' : 'Save Profile'}
                     </button>
@@ -242,20 +242,20 @@ export default function ClientDetailModal({ shopId, clientId, clientName, onClos
                 <div className="space-y-6">
                   <div className="grid grid-cols-3 gap-2">
                     <div className="bg-botanical-surface p-3 rounded-lg text-center border border-botanical-border shadow-sm">
-                      <p className="text-xl font-bold text-botanical-text">{client._count?.clientAppointments || 0}</p>
-                      <p className="text-xs text-botanical-muted uppercase tracking-wider">Visits</p>
+                      <p className="font-bold text-botanical-text text-base md:text-lg">{client._count?.clientAppointments || 0}</p>
+                      <p className="text-botanical-muted uppercase tracking-wider text-base md:text-lg">Visits</p>
                     </div>
                     <div className="bg-botanical-surface p-3 rounded-lg text-center border border-botanical-border shadow-sm">
-                      <p className="text-xl font-bold text-green-400">
+                      <p className="font-bold text-green-400 text-base md:text-lg">
                         ${client.clientAppointments?.filter((a: any) => a.status === 'COMPLETED').reduce((sum: number, a: any) => sum + (a.totalAmount > 0 ? a.totalAmount : (a.service?.price || 0)), 0).toFixed(0) || '0'}
                       </p>
-                      <p className="text-xs text-botanical-muted uppercase tracking-wider">Spent</p>
+                      <p className="text-botanical-muted uppercase tracking-wider text-base md:text-lg">Spent</p>
                     </div>
                     <div className="bg-botanical-surface p-3 rounded-lg text-center border border-botanical-border shadow-sm">
-                      <p className="text-xl font-bold text-amber-400">
+                      <p className="font-bold text-amber-400 text-base md:text-lg">
                         {client.clientAppointments?.filter((a: any) => a.status === 'NO_SHOW').length || 0}
                       </p>
-                      <p className="text-xs text-botanical-muted uppercase tracking-wider">No-Shows</p>
+                      <p className="text-botanical-muted uppercase tracking-wider text-base md:text-lg">No-Shows</p>
                     </div>
                   </div>
                   {loyaltyData && (
@@ -263,42 +263,42 @@ export default function ClientDetailModal({ shopId, clientId, clientName, onClos
                       <div className="flex items-center gap-2">
                         <span className="text-lg">⭐</span>
                         <div>
-                          <p className="text-xs text-botanical-muted uppercase tracking-wider">Loyalty Points</p>
-                          <p className="text-xl font-black text-botanical-accent">{loyaltyData.pointsBalance}</p>
+                          <p className="text-botanical-muted uppercase tracking-wider text-base md:text-lg">Loyalty Points</p>
+                          <p className="font-black text-botanical-accent text-base md:text-lg">{loyaltyData.pointsBalance}</p>
                         </div>
                       </div>
                       <div className="text-right text-sm text-botanical-muted">
-                        <p>Earned: <span className="text-green-400 font-semibold">{loyaltyData.totalEarned}</span></p>
-                        <p>Redeemed: <span className="text-red-400 font-semibold">{loyaltyData.totalRedeemed}</span></p>
+                        <p className="text-base md:text-lg">Earned: <span className="text-green-400 font-semibold">{loyaltyData.totalEarned}</span></p>
+                        <p className="text-base md:text-lg">Redeemed: <span className="text-red-400 font-semibold">{loyaltyData.totalRedeemed}</span></p>
                       </div>
                     </div>
                   )}
-                  <h4 className="text-sm font-semibold text-botanical-text mb-3 mt-4">Past Appointments</h4>
+                  <h4 className="font-semibold text-botanical-text mb-3 mt-4 text-xl md:text-2xl">Past Appointments</h4>
                   {client.clientAppointments?.length > 0 ? (
                     <div className="space-y-2">
                       {client.clientAppointments.map((apt: any) => (
                         <div key={apt.id} className="bg-botanical-surface p-3 rounded-lg border border-botanical-border shadow-sm text-sm flex flex-wrap justify-between gap-x-2 gap-y-2 items-start">
                           <div className="min-w-0">
-                            <p className="font-medium text-botanical-text truncate">{apt.service?.name || 'Walkin Service'}</p>
-                            <p className="text-sm text-botanical-muted">
+                            <p className="font-medium text-botanical-text truncate text-base md:text-lg">{apt.service?.name || 'Walkin Service'}</p>
+                            <p className="text-botanical-muted text-base md:text-lg">
                               {new Date(apt.startTime).toLocaleDateString()} {apt.staff?.name && `• ${apt.staff.name}`}
                             </p>
                           </div>
                           <div className="text-right shrink-0 ml-2">
-                            <p className="font-bold text-green-400">${(apt.totalAmount > 0 ? apt.totalAmount : (apt.service?.price || 0)).toFixed(2)}</p>
+                            <p className="font-bold text-green-400 text-base md:text-lg">${(apt.totalAmount > 0 ? apt.totalAmount : (apt.service?.price || 0)).toFixed(2)}</p>
                             {getStatusBadge(apt.status)}
                           </div>
                         </div>
                       ))}
                     </div>
-                  ) : <p className="text-botanical-muted text-sm italic py-2">No history yet.</p>}
+                  ) : <p className="text-botanical-muted italic py-2 text-base md:text-lg">No history yet.</p>}
                 </div>
               )}
 
               {activeTab === 'formulas' && (
                 <div className="space-y-6">
                   <form onSubmit={saveFormula} className="bg-botanical-surface p-4 rounded-xl border border-botanical-border shadow-sm">
-                    <h4 className="text-sm font-semibold text-botanical-text mb-3">Add New Formula</h4>
+                    <h4 className="font-semibold text-botanical-text mb-3 text-xl md:text-2xl">Add New Formula</h4>
                     <div className="space-y-3">
                       <textarea value={newFormula} onChange={e => setNewFormula(e.target.value)} placeholder="e.g. 2oz 5N + 1oz 6G + 20vol" className="w-full bg-botanical-surface border border-botanical-border shadow-sm rounded-md p-2 text-sm text-botanical-text focus:border-brand-gold resize-y" rows={2} required />
                       <input type="text" value={newNotes} onChange={e => setNewNotes(e.target.value)} placeholder="Additional notes..." className="w-full bg-botanical-surface border border-botanical-border shadow-sm rounded-md p-2 text-sm text-botanical-text focus:border-brand-gold" />
@@ -308,20 +308,20 @@ export default function ClientDetailModal({ shopId, clientId, clientName, onClos
                     </div>
                   </form>
                   <div>
-                    <h4 className="text-sm font-semibold text-botanical-text mb-3">Formula History</h4>
+                    <h4 className="font-semibold text-botanical-text mb-3 text-xl md:text-2xl">Formula History</h4>
                     {client.clientFormulas?.length > 0 ? (
                       <div className="space-y-3">
                         {client.clientFormulas.map((f: any) => (
                           <div key={f.id} className="p-3 bg-botanical-surface rounded-lg border border-botanical-border shadow-sm">
                             <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-start mb-2">
-                              <p className="text-sm text-botanical-muted">{new Date(f.date).toLocaleDateString()} by {f.staff?.name}</p>
+                              <p className="text-botanical-muted text-base md:text-lg">{new Date(f.date).toLocaleDateString()} by {f.staff?.name}</p>
                             </div>
-                            <p className="text-sm text-botanical-accent font-mono mb-1">{f.formula}</p>
-                            {f.notes && <p className="text-xs text-botanical-muted italic">{f.notes}</p>}
+                            <p className="text-botanical-accent font-mono mb-1 text-base md:text-lg">{f.formula}</p>
+                            {f.notes && <p className="text-botanical-muted italic text-base md:text-lg">{f.notes}</p>}
                           </div>
                         ))}
                       </div>
-                    ) : <p className="text-botanical-muted text-sm italic">No formulas saved yet.</p>}
+                    ) : <p className="text-botanical-muted italic text-base md:text-lg">No formulas saved yet.</p>}
                   </div>
                 </div>
               )}
@@ -375,18 +375,18 @@ export default function ClientDetailModal({ shopId, clientId, clientName, onClos
                           {/* eslint-disable-next-line @next/next/no-img-element */}
                           <img src={img.imageUrl} alt="Client history" className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" />
                           <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 p-2">
-                            <p className="text-sm text-botanical-text">{new Date(img.date).toLocaleDateString()}</p>
+                            <p className="text-botanical-text text-base md:text-lg">{new Date(img.date).toLocaleDateString()}</p>
                           </div>
                         </div>
                       ))}
                     </div>
-                  ) : <p className="text-botanical-muted text-sm italic">No photos uploaded yet.</p>}
+                  ) : <p className="text-botanical-muted italic text-base md:text-lg">No photos uploaded yet.</p>}
                 </div>
               )}
             </div>
           </div>
         ) : (
-          <p className="text-red-400 text-center py-8">Failed to load client details.</p>
+          <p className="text-red-400 text-center py-8 text-base md:text-lg">Failed to load client details.</p>
         )}
       </div>
     </div>

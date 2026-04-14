@@ -124,8 +124,8 @@ export default async function SitePage({ params }: { params: Promise<{ site: str
     return (
       <div className="h-[100dvh] overflow-y-auto overflow-x-hidden flex items-center justify-center">
         <div className="text-center">
-          <h1 className="text-4xl font-bold text-botanical-text mb-4">Shop Not Found</h1>
-          <p className="text-botanical-muted">We couldn't find the shop for this domain ({site}).</p>
+          <h1 className="font-bold text-botanical-text mb-4 text-4xl md:text-5xl lg:text-6xl">Shop Not Found</h1>
+          <p className="text-botanical-muted text-base md:text-lg">We couldn't find the shop for this domain ({site}).</p>
         </div>
       </div>
     );

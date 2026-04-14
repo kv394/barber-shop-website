@@ -39,8 +39,8 @@ export default function ResourceManagement({ shopId }: { shopId: string }) {
 
   return (
     <div className="bg-botanical-surface border border-botanical-border shadow-sm rounded-xl p-6">
-      <h3 className="text-lg font-bold text-botanical-text mb-2">🪑 Shop Resources</h3>
-      <p className="text-sm text-botanical-muted mb-6">
+      <h3 className="font-bold text-botanical-text mb-2 text-2xl md:text-3xl">🪑 Shop Resources</h3>
+      <p className="text-botanical-muted mb-6 text-base md:text-lg">
         Add physical resources like pedicure chairs, laser machines, or massage rooms. Appointments can be configured to require these resources.
       </p>
 
@@ -74,7 +74,7 @@ export default function ResourceManagement({ shopId }: { shopId: string }) {
       </form>
 
       {resources.length === 0 ? (
-        <p className="text-botanical-muted text-sm text-center py-4">No resources added yet.</p>
+        <p className="text-botanical-muted text-center py-4 text-base md:text-lg">No resources added yet.</p>
       ) : (
         <div className="space-y-2">
           {resources.map(r => (

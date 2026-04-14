@@ -83,8 +83,8 @@ function RecoverPasswordForm() {
     <div className="flex min-h-[80vh] items-center justify-center p-4">
       <div className="w-full max-w-md bg-botanical-surface border border-botanical-border shadow-sm rounded-2xl shadow-2xl p-8 mt-12 mb-12">
         <div className="text-center mb-8">
-          <h1 className="font-serif text-3xl font-bold text-botanical-text mb-2">Recover Password</h1>
-          <p className="text-botanical-muted">Choose how you want to reset your password</p>
+          <h1 className="font-serif font-bold text-botanical-text mb-2 text-4xl md:text-5xl lg:text-6xl">Recover Password</h1>
+          <p className="text-botanical-muted text-base md:text-lg">Choose how you want to reset your password</p>
         </div>
 
         {error && <div className="bg-red-500/10 border border-red-500/30 text-red-400 p-3 rounded-lg mb-6 text-sm text-center">{error}</div>}
@@ -108,7 +108,7 @@ function RecoverPasswordForm() {
         {method === 'email' ? (
           <form onSubmit={handleEmailRecover} className="space-y-5">
             <div>
-              <label className="block text-sm font-medium text-botanical-muted mb-1.5">Email Address</label>
+              <label className="block font-medium text-botanical-muted mb-1.5 text-sm">Email Address</label>
               <input 
                 name="email" 
                 type="email" 
@@ -126,7 +126,7 @@ function RecoverPasswordForm() {
         ) : (
           <form onSubmit={handleTotpRecover} className="space-y-5">
             <div>
-              <label className="block text-sm font-medium text-botanical-muted mb-1.5">Email Address</label>
+              <label className="block font-medium text-botanical-muted mb-1.5 text-sm">Email Address</label>
               <input 
                 type="email" 
                 required 
@@ -137,7 +137,7 @@ function RecoverPasswordForm() {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-botanical-muted mb-1.5">6-Digit Code</label>
+              <label className="block font-medium text-botanical-muted mb-1.5 text-sm">6-Digit Code</label>
               <input 
                 type="text" 
                 maxLength={6}
@@ -149,7 +149,7 @@ function RecoverPasswordForm() {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-botanical-muted mb-1.5">New Password</label>
+              <label className="block font-medium text-botanical-muted mb-1.5 text-sm">New Password</label>
               <input 
                 type="password" 
                 required 
@@ -166,7 +166,7 @@ function RecoverPasswordForm() {
           </form>
         )}
 
-        <p className="text-center text-sm text-botanical-muted mt-8">Remember your password? <Link href="/sign-in" className="text-botanical-accent hover:underline">Sign In</Link></p>
+        <p className="text-center text-botanical-muted mt-8 text-base md:text-lg">Remember your password? <Link href="/sign-in" className="text-botanical-accent hover:underline">Sign In</Link></p>
       </div>
     </div>
   );

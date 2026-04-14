@@ -90,7 +90,7 @@ export default function MyAppointmentsPage() {
       <div className="h-[100dvh] overflow-y-auto overflow-x-hidden flex items-center justify-center bg-botanical-surface">
         <div className="flex flex-col items-center gap-4">
           <div className="w-12 h-12 border-4 border-brand-gold border-t-transparent rounded-full animate-spin"></div>
-          <p className="text-botanical-accent text-sm animate-pulse font-medium tracking-wide uppercase">Loading Appointments...</p>
+          <p className="text-botanical-accent animate-pulse font-medium tracking-wide uppercase text-base md:text-lg">Loading Appointments...</p>
         </div>
       </div>
     );
@@ -102,8 +102,8 @@ export default function MyAppointmentsPage() {
       <header className="bg-botanical-surface backdrop-blur-md border-b border-botanical-border sticky top-0 z-20">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
           <div>
-            <h1 className="text-xl sm:text-2xl font-bold text-botanical-text">My Appointments</h1>
-            <p className="text-xs text-botanical-muted">Manage your upcoming bookings</p>
+            <h1 className="font-bold text-botanical-text text-4xl md:text-5xl lg:text-6xl">My Appointments</h1>
+            <p className="text-botanical-muted text-base md:text-lg">Manage your upcoming bookings</p>
           </div>
           <div className="flex gap-2">
             {user?.role === 'SITE_ADMIN' ? (
@@ -152,15 +152,15 @@ export default function MyAppointmentsPage() {
         <section>
           <div className="flex items-center gap-3 mb-5">
             <div className="w-2 h-8 bg-blue-500 rounded-full" />
-            <h2 className="text-lg font-bold text-botanical-text">
+            <h2 className="font-bold text-botanical-text text-3xl md:text-4xl">
               Upcoming ({upcoming.length})
             </h2>
           </div>
 
           {upcoming.length === 0 ? (
             <div className="text-center py-12 border border-dashed border-botanical-border rounded-xl">
-              <p className="text-4xl mb-3">📅</p>
-              <p className="text-botanical-muted text-sm">No upcoming appointments</p>
+              <p className="mb-3 text-base md:text-lg">📅</p>
+              <p className="text-botanical-muted text-base md:text-lg">No upcoming appointments</p>
               <Link
                 href="/shops"
                 className="inline-block mt-4 text-botanical-accent hover:text-botanical-text text-sm font-semibold transition-colors"
@@ -188,14 +188,14 @@ export default function MyAppointmentsPage() {
         <section>
           <div className="flex items-center gap-3 mb-5">
             <div className="w-2 h-8 bg-botanical-border rounded-full" />
-            <h2 className="text-lg font-bold text-botanical-text">
+            <h2 className="font-bold text-botanical-text text-3xl md:text-4xl">
               Past ({past.length})
             </h2>
           </div>
 
           {past.length === 0 ? (
             <div className="text-center py-12 border border-dashed border-botanical-border rounded-xl">
-              <p className="text-botanical-muted text-sm italic">No past appointments yet.</p>
+              <p className="text-botanical-muted italic text-base md:text-lg">No past appointments yet.</p>
             </div>
           ) : (
             <div className="space-y-3">

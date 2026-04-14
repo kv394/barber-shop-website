@@ -58,15 +58,15 @@ export default function PortfolioManager({ shopId, currentUserId, userRole }: { 
 
   return (
     <div className="bg-botanical-surface border border-botanical-border shadow-sm rounded-xl p-6">
-      <h3 className="text-lg font-bold text-botanical-text mb-2">📸 Staff Portfolio</h3>
-      <p className="text-sm text-botanical-muted mb-6">
+      <h3 className="font-bold text-botanical-text mb-2 text-2xl md:text-3xl">📸 Staff Portfolio</h3>
+      <p className="text-botanical-muted mb-6 text-base md:text-lg">
         Upload photos of your best work (fade, nail art, coloring, etc.). Clients can view these when booking.
       </p>
 
       {/* Admin Staff Selector */}
       {(userRole === 'SHOP_ADMIN' || userRole === 'SITE_ADMIN') && staffList.length > 0 && (
         <div className="mb-6 p-4 bg-botanical-surface rounded-lg border border-botanical-border shadow-sm">
-          <label className="block text-xs text-botanical-muted mb-2 uppercase tracking-wider">Select Staff Member Portfolio</label>
+          <label className="block text-botanical-muted mb-2 uppercase tracking-wider text-sm">Select Staff Member Portfolio</label>
           <select 
             value={selectedStaffId}
             onChange={(e) => setSelectedStaffId(e.target.value)}
@@ -82,10 +82,10 @@ export default function PortfolioManager({ shopId, currentUserId, userRole }: { 
       {msg && <div className="mb-4 p-2 bg-green-900/30 border border-green-500/30 text-green-300 rounded text-sm">{msg}</div>}
 
       <form onSubmit={addImage} className="mb-8 p-4 bg-botanical-bg/50 rounded-lg border border-botanical-border shadow-sm space-y-4">
-        <h4 className="text-sm font-semibold text-botanical-text">Add New Photo</h4>
+        <h4 className="font-semibold text-botanical-text text-xl md:text-2xl">Add New Photo</h4>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label className="block text-xs text-botanical-muted mb-1">Image File or URL</label>
+            <label className="block text-botanical-muted mb-1 text-sm">Image File or URL</label>
             <div className="flex gap-2">
               <input 
                 type="url" 
@@ -125,7 +125,7 @@ export default function PortfolioManager({ shopId, currentUserId, userRole }: { 
             </div>
           </div>
           <div>
-            <label className="block text-xs text-botanical-muted mb-1">Caption (Optional)</label>
+            <label className="block text-botanical-muted mb-1 text-sm">Caption (Optional)</label>
             <input 
               type="text" 
               value={caption} 
@@ -147,7 +147,7 @@ export default function PortfolioManager({ shopId, currentUserId, userRole }: { 
       {loading ? (
         <div className="animate-pulse text-botanical-muted py-4">Loading portfolio...</div>
       ) : images.length === 0 ? (
-        <p className="text-botanical-muted text-sm text-center py-8 border border-dashed border-botanical-border rounded-lg">No photos in portfolio yet.</p>
+        <p className="text-botanical-muted text-center py-8 border border-dashed border-botanical-border rounded-lg text-base md:text-lg">No photos in portfolio yet.</p>
       ) : (
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
           {images.map(img => (
@@ -164,7 +164,7 @@ export default function PortfolioManager({ shopId, currentUserId, userRole }: { 
                   </button>
                 </div>
                 {img.caption && (
-                  <p className="text-xs text-botanical-text font-medium truncate">{img.caption}</p>
+                  <p className="text-botanical-text font-medium truncate text-base md:text-lg">{img.caption}</p>
                 )}
               </div>
             </div>

@@ -59,8 +59,8 @@ export default function SiteAdminTiersPage() {
     <div>
       <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-8">
         <div>
-          <h1 className="text-3xl font-serif font-bold text-botanical-accent mb-2">SaaS Pricing Tiers</h1>
-          <p className="text-botanical-muted">Manage limits and base fees for subscription packages.</p>
+          <h1 className="font-serif font-bold text-botanical-accent mb-2 text-4xl md:text-5xl lg:text-6xl">SaaS Pricing Tiers</h1>
+          <p className="text-botanical-muted text-base md:text-lg">Manage limits and base fees for subscription packages.</p>
         </div>
         <button
           onClick={handleSave}
@@ -96,7 +96,7 @@ export default function SiteAdminTiersPage() {
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
               <div>
-                <label className="block text-xs text-botanical-accent uppercase tracking-wider mb-1 font-bold">Max Appointments</label>
+                <label className="block text-botanical-accent uppercase tracking-wider mb-1 font-bold text-sm">Max Appointments</label>
                 <input
                   type="number"
                   value={tier.maxAppointments}
@@ -105,7 +105,7 @@ export default function SiteAdminTiersPage() {
                 />
               </div>
               <div>
-                <label className="block text-xs text-botanical-accent uppercase tracking-wider mb-1 font-bold">Max Users</label>
+                <label className="block text-botanical-accent uppercase tracking-wider mb-1 font-bold text-sm">Max Users</label>
                 <input
                   type="number"
                   value={tier.maxUsers}
@@ -114,7 +114,7 @@ export default function SiteAdminTiersPage() {
                 />
               </div>
               <div>
-                <label className="block text-xs text-botanical-accent uppercase tracking-wider mb-1 font-bold">Max Intake Forms</label>
+                <label className="block text-botanical-accent uppercase tracking-wider mb-1 font-bold text-sm">Max Intake Forms</label>
                 <input
                   type="number"
                   value={tier.maxFormSubmissions}
@@ -123,7 +123,7 @@ export default function SiteAdminTiersPage() {
                 />
               </div>
               <div>
-                <label className="block text-xs text-botanical-accent uppercase tracking-wider mb-1 font-bold">Storage Limit (MB)</label>
+                <label className="block text-botanical-accent uppercase tracking-wider mb-1 font-bold text-sm">Storage Limit (MB)</label>
                 <input
                   type="number"
                   value={tier.storageLimitMB}
@@ -132,7 +132,7 @@ export default function SiteAdminTiersPage() {
                 />
               </div>
               <div>
-                <label className="block text-xs text-botanical-accent uppercase tracking-wider mb-1 font-bold">Overage Fee (per 100MB)</label>
+                <label className="block text-botanical-accent uppercase tracking-wider mb-1 font-bold text-sm">Overage Fee (per 100MB)</label>
                 <div className="relative">
                   <span className="absolute left-2 top-2 text-botanical-muted">$</span>
                   <input
@@ -146,7 +146,7 @@ export default function SiteAdminTiersPage() {
             </div>
 
             <div>
-              <label className="block text-xs text-botanical-muted mb-1">Marketing Description</label>
+              <label className="block text-botanical-muted mb-1 text-sm">Marketing Description</label>
               <input
                 type="text"
                 value={tier.description || ''}

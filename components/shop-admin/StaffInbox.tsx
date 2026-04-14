@@ -41,7 +41,7 @@ export default function StaffInbox({ shopId, userId }: { shopId: string, userId:
     return (
       <div className="bg-botanical-surface p-6 rounded-xl border border-botanical-border shadow-sm text-center">
         <span className="text-3xl mb-2 block">📭</span>
-        <p className="text-botanical-muted text-sm">No new notifications</p>
+        <p className="text-botanical-muted text-base md:text-lg">No new notifications</p>
       </div>
     );
   }
@@ -49,7 +49,7 @@ export default function StaffInbox({ shopId, userId }: { shopId: string, userId:
   return (
     <div className="bg-botanical-bg/80 backdrop-blur-xl rounded-2xl shadow-lg border border-botanical-border shadow-sm overflow-hidden">
       <div className="p-4 sm:p-5 border-b border-botanical-border flex items-center justify-between">
-        <h3 className="text-botanical-text text-lg font-bold flex items-center gap-2">
+        <h3 className="text-botanical-text font-bold flex items-center gap-2 text-2xl md:text-3xl">
           <span>🔔</span> My Notifications
         </h3>
         <span className="bg-botanical-primary text-white text-xs font-bold px-3 py-1 rounded-full">{items.length} New</span>
@@ -58,12 +58,12 @@ export default function StaffInbox({ shopId, userId }: { shopId: string, userId:
         {items.map(item => (
           <div key={item.id} className="p-4 sm:p-5 hover:bg-botanical-surface transition-colors group active:bg-botanical-border">
             <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-start mb-2 gap-3">
-              <h4 className="text-base sm:text-sm font-semibold text-botanical-text group-hover:text-botanical-accent transition-colors">{item.title}</h4>
+              <h4 className="font-semibold text-botanical-text group-hover:text-botanical-accent transition-colors text-xl md:text-2xl">{item.title}</h4>
               <span className="text-xs text-botanical-muted font-mono shrink-0 pt-0.5">
                 {new Date(item.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
               </span>
             </div>
-            <p className="text-sm sm:text-xs text-botanical-muted leading-relaxed">{item.message}</p>
+            <p className="text-botanical-muted leading-relaxed text-base md:text-lg">{item.message}</p>
           </div>
         ))}
       </div>

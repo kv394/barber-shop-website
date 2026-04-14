@@ -33,18 +33,18 @@ export default function DepositSettings({
 
   return (
     <div className="bg-botanical-surface p-6 rounded-lg border border-botanical-border shadow-sm mb-6">
-      <h3 className="text-lg font-bold text-botanical-text mb-1">🛡️ No-Show Deposit</h3>
-      <p className="text-xs text-botanical-muted mb-4">Require a card hold for new bookings. Captured if the client doesn&apos;t show up.</p>
+      <h3 className="font-bold text-botanical-text mb-1 text-2xl md:text-3xl">🛡️ No-Show Deposit</h3>
+      <p className="text-botanical-muted mb-4 text-base md:text-lg">Require a card hold for new bookings. Captured if the client doesn&apos;t show up.</p>
 
       <div className="space-y-4">
-        <label className="flex items-center gap-3 cursor-pointer">
+        <label className="flex items-center gap-3 cursor-pointer text-sm">
           <input type="checkbox" checked={depositRequired} onChange={e => setDepositRequired(e.target.checked)} className="w-4 h-4 accent-brand-gold" />
           <span className="text-sm text-botanical-muted">Require deposit for online bookings</span>
         </label>
 
         {depositRequired && (
           <div>
-            <label className="block text-xs text-botanical-muted mb-1">Deposit Amount ($)</label>
+            <label className="block text-botanical-muted mb-1 text-sm">Deposit Amount ($)</label>
             <input
               type="number" min="0" step="0.50"
               value={depositAmount}
