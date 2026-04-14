@@ -217,13 +217,13 @@ export default function Home() {
                 <h2 className="font-serif text-botanical-text mb-2 text-3xl md:text-4xl">Site Admin Control Panel</h2>
                 <p className="text-botanical-muted mb-6 text-base md:text-lg">Manage the entire platform from the dedicated dashboard.</p>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                  <Link href="/siteadmin" className="bg-botanical-primary text-white px-6 py-4 rounded-lg font-semibold hover:bg-white hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 transition-colors text-center">
+                  <Link href="/siteadmin" className="bg-botanical-primary text-white px-6 py-4 rounded-lg font-semibold hover:bg-botanical-surface hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 transition-colors text-center">
                     📊 Platform Dashboard
                   </Link>
                   <Link href="/siteadmin/shops" className="bg-botanical-surface text-botanical-text px-6 py-4 rounded-lg font-semibold hover:bg-botanical-surface transition-colors text-center">
                     🏪 Manage Shops
                   </Link>
-                  <Link href="/siteadmin/logs" className="bg-red-900/30 text-red-400 px-6 py-4 rounded-lg font-semibold hover:bg-red-800/50 transition-colors text-center border border-red-500/30">
+                  <Link href="/siteadmin/logs" className="bg-red-900/30 text-status-cancelled px-6 py-4 rounded-lg font-semibold hover:bg-red-800/50 transition-colors text-center border border-status-cancelled/30">
                     🚨 System Logs
                   </Link>
                 </div>
@@ -235,7 +235,7 @@ export default function Home() {
                 <p className="text-botanical-muted mb-4 text-base md:text-lg">Provision a new tenant workspace.</p>
 
                 {createError && (
-                    <div className="mb-4 p-3 bg-red-900/50 border border-red-500 text-red-200 rounded text-sm">
+                    <div className="mb-4 p-3 bg-red-900/50 border border-status-cancelled text-red-200 rounded text-sm">
                         {createError}
                     </div>
                 )}
@@ -275,7 +275,7 @@ export default function Home() {
                           />
                       </div>
                   </div>
-                  <button type="submit" className="w-full bg-botanical-primary text-white px-8 py-3 rounded-md font-semibold hover:bg-white hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 transition-colors">
+                  <button type="submit" className="w-full bg-botanical-primary text-white px-8 py-3 rounded-md font-semibold hover:bg-botanical-surface hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 transition-colors">
                       Create Shop Workspace
                   </button>
                 </form>
@@ -297,7 +297,7 @@ export default function Home() {
                               <div className="flex-grow min-w-0">
                                   <div className="flex items-center gap-2 sm:gap-4 flex-wrap">
                                       <h3 className="font-semibold text-botanical-text truncate text-2xl md:text-3xl">{shop.name}</h3>
-                                      <span className={`px-2 sm:px-3 py-0.5 sm:py-1 rounded-full text-xs sm:text-sm font-bold ${hasAdmin ? 'bg-green-500/20 text-green-400' : 'bg-amber-500/20 text-amber-400'}`}>
+                                      <span className={`px-2 sm:px-3 py-0.5 sm:py-1 rounded-full text-xs sm:text-sm font-bold ${hasAdmin ? 'bg-status-confirmed/20 text-status-confirmed' : 'bg-status-pending/20 text-status-pending'}`}>
                                           {hasAdmin ? 'Active' : 'Needs Admin'}
                                       </span>
                                   </div>

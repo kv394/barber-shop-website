@@ -54,7 +54,7 @@ export function TemplateSelector({ currentTemplate, shopId, dynamicTemplates = [
   return (
     <div className="space-y-6">
       {error && (
-        <div className="bg-red-500/10 border border-red-500 text-red-400 p-4 rounded-lg">
+        <div className="bg-status-cancelled/10 border border-status-cancelled text-status-cancelled p-4 rounded-lg">
           {error}
         </div>
       )}
@@ -66,7 +66,7 @@ export function TemplateSelector({ currentTemplate, shopId, dynamicTemplates = [
             className={`
               p-4 rounded-lg border-2 cursor-pointer transition-all
               ${selectedTemplate === template.id 
-                ? 'border-blue-500 bg-blue-500/10' 
+                ? 'border-status-info bg-status-info/10' 
                 : 'border-botanical-border bg-botanical-surface hover:border-slate-500'}
             `}
             onClick={() => setSelectedTemplate(template.id)}
@@ -74,8 +74,8 @@ export function TemplateSelector({ currentTemplate, shopId, dynamicTemplates = [
             <div className="flex items-center justify-between mb-2">
               <h3 className="font-bold text-botanical-text text-2xl md:text-3xl">{template.name}</h3>
               {selectedTemplate === template.id && (
-                <div className="w-4 h-4 rounded-full bg-blue-500 flex items-center justify-center">
-                  <div className="w-2 h-2 rounded-full bg-white"></div>
+                <div className="w-4 h-4 rounded-full bg-status-info flex items-center justify-center">
+                  <div className="w-2 h-2 rounded-full bg-botanical-surface"></div>
                 </div>
               )}
             </div>
@@ -90,7 +90,7 @@ export function TemplateSelector({ currentTemplate, shopId, dynamicTemplates = [
         className={`
           w-full py-3 rounded-lg font-bold transition-colors
           ${selectedTemplate !== currentTemplate 
-            ? 'bg-botanical-primary text-white hover:bg-white hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30' 
+            ? 'bg-botanical-primary text-white hover:bg-botanical-surface hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30' 
             : 'bg-botanical-surface text-botanical-muted cursor-not-allowed'}
         `}
       >

@@ -78,7 +78,7 @@ export function EditorialCustomizationForm({ shopId, customization, onUpdate }: 
                   alert('Upload failed: ' + err.message);
                 }
               }} 
-              className="flex-1 bg-botanical-surface border border-botanical-border shadow-sm rounded px-3 py-2 text-botanical-text text-sm focus:outline-none focus:border-brand-gold file:mr-4 file:py-1 file:px-4 file:rounded file:border-0 file:text-sm file:bg-botanical-primary/20 file:text-botanical-primary hover:file:bg-botanical-primary/30" 
+              className="flex-1 bg-botanical-surface border border-botanical-border shadow-sm rounded px-3 py-2 text-botanical-text text-sm focus:outline-none focus:border-brand-gold file:mr-4 file:py-1 file:px-4 file:rounded file:border-0 file:text-sm file:bg-botanical-primary/20 file:text-botanical-primary hover:file:bg-botanical-primary/30 hover:opacity-90" 
             />
           </div>
         </div>

@@ -17,9 +17,9 @@ const DEFAULT_TIERS: Tier[] = [
 ];
 
 const TIER_COLORS: Record<string, string> = {
-  Bronze: 'bg-amber-800/30 text-amber-400 border-amber-600/40',
+  Bronze: 'bg-amber-800/30 text-status-pending border-status-pending/40',
   Silver: 'bg-botanical-border/20 text-botanical-muted border-botanical-border/40',
-  Gold: 'bg-botanical-primary/20 text-yellow-400 border-yellow-500/40',
+  Gold: 'bg-botanical-primary/20 text-status-pending border-status-pending/40',
   Platinum: 'bg-purple-500/20 text-purple-300 border-purple-400/40',
 };
 const TIER_ICONS: Record<string, string> = { Bronze: '🥉', Silver: '🥈', Gold: '🥇', Platinum: '💎' };
@@ -106,7 +106,7 @@ export default function LoyaltyDashboard({ shopId }: { shopId: string }) {
           <button
             onClick={() => setForm(f => ({ ...f, isActive: !f.isActive }))}
             className={`px-3 py-1.5 rounded-full text-xs font-bold border transition-colors ${
-              form.isActive ? 'bg-green-900/50 text-green-300 border-green-500/30' : 'bg-botanical-surface text-botanical-muted border-botanical-border'
+              form.isActive ? 'bg-green-900/50 text-green-300 border-status-confirmed/30' : 'bg-botanical-surface text-botanical-muted border-botanical-border'
             }`}
           >
             {form.isActive ? '● Active' : '○ Inactive'}
@@ -147,14 +147,14 @@ export default function LoyaltyDashboard({ shopId }: { shopId: string }) {
           </div>
         </div>
 
-        <div className="mt-4 p-3 bg-botanical-primary/5 border border-brand-gold/20 rounded-lg text-sm text-botanical-muted">
+        <div className="mt-4 p-3 bg-botanical-primary/5 border border-brand-gold/20 rounded-lg text-sm text-botanical-muted hover:opacity-90">
           <strong className="text-botanical-accent">How it works:</strong> Clients earn <strong>{form.pointsPerVisit} pts</strong> per visit + <strong>{form.pointsPerDollar} pts</strong> per $1 spent (base rate, multiplied by tier).
           Redeem at <strong>{form.redeemThreshold} pts</strong> for <strong>${form.redeemValue.toFixed(2)}</strong> off.
           {form.pointExpiryDays > 0 && <> Points expire after <strong>{form.pointExpiryDays} days</strong>.</>}
         </div>
 
         <button onClick={saveProgram} disabled={saving}
-          className="mt-4 bg-botanical-primary text-white px-6 py-2 rounded-md text-sm font-bold hover:bg-yellow-400 disabled:opacity-50">
+          className="mt-4 bg-botanical-primary text-white px-6 py-2 rounded-md text-sm font-bold hover:bg-status-pending disabled:opacity-50">
           {saving ? 'Saving...' : program ? 'Update Program' : 'Activate Program'}
         </button>
       </div>
@@ -200,7 +200,7 @@ export default function LoyaltyDashboard({ shopId }: { shopId: string }) {
               </div>
             ))}
             <button onClick={saveProgram} disabled={saving}
-              className="bg-botanical-primary text-white px-5 py-2 rounded-md text-sm font-bold hover:bg-yellow-400 disabled:opacity-50">
+              className="bg-botanical-primary text-white px-5 py-2 rounded-md text-sm font-bold hover:bg-status-pending disabled:opacity-50">
               {saving ? 'Saving...' : 'Save Tiers'}
             </button>
           </div>
@@ -235,11 +235,11 @@ export default function LoyaltyDashboard({ shopId }: { shopId: string }) {
             {accounts.map((acc: any, idx: number) => (
               <div key={acc.id} className="flex items-center gap-3 bg-botanical-surface p-3 rounded-lg border border-botanical-border shadow-sm">
                 <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-black ${
-                  idx === 0 ? 'bg-botanical-primary/20 text-yellow-400' :
+                  idx === 0 ? 'bg-botanical-primary/20 text-status-pending' :
                   idx === 1 ? 'bg-botanical-border/20 text-botanical-muted' :
-                  idx === 2 ? 'bg-amber-700/20 text-amber-500' :
+                  idx === 2 ? 'bg-amber-700/20 text-status-pending' :
                   'bg-botanical-surface text-botanical-muted'
-                }`}>
+                } hover:opacity-90`}>
                   {idx + 1}
                 </div>
                 <div className="flex-1 min-w-0">
@@ -258,15 +258,15 @@ export default function LoyaltyDashboard({ shopId }: { shopId: string }) {
                   <p className="text-botanical-muted uppercase text-base md:text-lg">balance</p>
                 </div>
                 <div className="text-right hidden sm:block">
-                  <p className="text-blue-400 text-base md:text-lg">{acc.lifetimePoints || acc.totalEarned}</p>
+                  <p className="text-status-info text-base md:text-lg">{acc.lifetimePoints || acc.totalEarned}</p>
                   <p className="text-botanical-muted uppercase text-base md:text-lg">lifetime</p>
                 </div>
                 <div className="text-right hidden sm:block">
-                  <p className="text-green-400 text-base md:text-lg">{acc.totalEarned}</p>
+                  <p className="text-status-confirmed text-base md:text-lg">{acc.totalEarned}</p>
                   <p className="text-botanical-muted uppercase text-base md:text-lg">earned</p>
                 </div>
                 <div className="text-right hidden md:block">
-                  <p className="text-red-400 text-base md:text-lg">{acc.totalRedeemed}</p>
+                  <p className="text-status-cancelled text-base md:text-lg">{acc.totalRedeemed}</p>
                   <p className="text-botanical-muted uppercase text-base md:text-lg">redeemed</p>
                 </div>
               </div>

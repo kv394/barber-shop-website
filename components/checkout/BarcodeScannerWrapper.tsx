@@ -158,7 +158,7 @@ export default function BarcodeScannerWrapper({ shopId, services = [] }: { shopI
     <>
       <button
         onClick={() => { resetAll(); setIsScanning(true); }}
-        className="bg-botanical-primary text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-white hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 transition-colors flex items-center gap-2"
+        className="bg-botanical-primary text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-botanical-surface hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 transition-colors flex items-center gap-2"
       >
         <span>📷</span> Scan QR / Barcode
       </button>
@@ -185,9 +185,9 @@ export default function BarcodeScannerWrapper({ shopId, services = [] }: { shopI
 
             {/* Attendance result */}
             {attendanceMessage && (
-              <div className={`p-5 rounded-lg text-center border ${attendanceMessage.type === 'success' ? 'bg-green-900/20 border-green-500/50' : 'bg-red-900/20 border-red-500/50'}`}>
+              <div className={`p-5 rounded-lg text-center border ${attendanceMessage.type === 'success' ? 'bg-green-900/20 border-status-confirmed/50' : 'bg-red-900/20 border-status-cancelled/50'}`}>
                 {attendanceMessage.type === 'success' && <div className="text-4xl mb-3">✅</div>}
-                <h4 className={`${` font-bold mb-1 ${attendanceMessage.type === 'success' ? 'text-green-400' : 'text-red-400'} text-xl md:text-2xl`}`}>
+                <h4 className={`${` font-bold mb-1 ${attendanceMessage.type === 'success' ? 'text-status-confirmed' : 'text-status-cancelled'} text-xl md:text-2xl`}`}>
                   {attendanceMessage.text}
                 </h4>
                 {attendanceMessage.user && <p className="text-botanical-text text-base md:text-lg">{attendanceMessage.user}</p>}
@@ -201,7 +201,7 @@ export default function BarcodeScannerWrapper({ shopId, services = [] }: { shopI
             {attendanceMessage && (
               <button
                 onClick={() => { resetAll(); setIsScanning(true); }}
-                className="w-full mt-4 bg-botanical-primary text-white py-2.5 rounded-lg font-semibold text-sm hover:bg-white hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 transition-colors"
+                className="w-full mt-4 bg-botanical-primary text-white py-2.5 rounded-lg font-semibold text-sm hover:bg-botanical-surface hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 transition-colors"
               >
                 Scan Next Person
               </button>
@@ -213,7 +213,7 @@ export default function BarcodeScannerWrapper({ shopId, services = [] }: { shopI
                 <p className="text-botanical-accent font-mono mb-4 bg-botanical-surface p-2 rounded truncate text-base md:text-lg">Code: {scannedCode}</p>
 
                 {actionError && (
-                  <div className="bg-red-900/30 border border-red-500/50 text-red-300 p-3 rounded-lg mb-4 text-sm">
+                  <div className="bg-red-900/30 border border-status-cancelled/50 text-red-300 p-3 rounded-lg mb-4 text-sm">
                     {actionError}
                   </div>
                 )}
@@ -226,11 +226,11 @@ export default function BarcodeScannerWrapper({ shopId, services = [] }: { shopI
                     </div>
                     <div className="flex gap-3">
                       <button onClick={() => handleUpdateInventory(-1)} disabled={isUpdating || matchedService.inventoryCount <= 0}
-                        className="flex-1 bg-red-900/50 hover:bg-red-800 text-red-200 py-3 rounded-lg font-bold disabled:opacity-50 transition-colors border border-red-500/30">
+                        className="flex-1 bg-red-900/50 hover:bg-red-800 text-red-200 py-3 rounded-lg font-bold disabled:opacity-50 transition-colors border border-status-cancelled/30">
                         − Remove 1
                       </button>
                       <button onClick={() => handleUpdateInventory(1)} disabled={isUpdating}
-                        className="flex-1 bg-green-900/50 hover:bg-green-800 text-green-200 py-3 rounded-lg font-bold disabled:opacity-50 transition-colors border border-green-500/30">
+                        className="flex-1 bg-green-900/50 hover:bg-green-800 text-green-200 py-3 rounded-lg font-bold disabled:opacity-50 transition-colors border border-status-confirmed/30">
                         + Add 1
                       </button>
                     </div>
@@ -241,7 +241,7 @@ export default function BarcodeScannerWrapper({ shopId, services = [] }: { shopI
                   </div>
                 ) : (
                   <div className="bg-botanical-surface border border-botanical-border shadow-sm p-4 rounded-lg">
-                    <p className="text-amber-400 font-semibold mb-1 text-base md:text-lg">Item not recognized.</p>
+                    <p className="text-status-pending font-semibold mb-1 text-base md:text-lg">Item not recognized.</p>
                     <p className="text-botanical-muted mb-4 text-base md:text-lg">Map this barcode to an inventory item:</p>
                     {unmatchedServices.length > 0 ? (
                       <div className="space-y-3">
@@ -253,12 +253,12 @@ export default function BarcodeScannerWrapper({ shopId, services = [] }: { shopI
                           ))}
                         </select>
                         <button onClick={handleAssignBarcode} disabled={!selectedServiceToAssign || isUpdating}
-                          className="w-full bg-botanical-primary text-white py-2.5 rounded font-semibold disabled:opacity-50 hover:bg-white hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 transition-colors text-sm">
+                          className="w-full bg-botanical-primary text-white py-2.5 rounded font-semibold disabled:opacity-50 hover:bg-botanical-surface hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 transition-colors text-sm">
                           {isUpdating ? 'Linking…' : 'Map Barcode to Item'}
                         </button>
                       </div>
                     ) : (
-                      <p className="text-red-400 bg-red-900/20 p-3 rounded text-base md:text-lg">No inventory items found. Create one in the dashboard first.</p>
+                      <p className="text-status-cancelled bg-red-900/20 p-3 rounded text-base md:text-lg">No inventory items found. Create one in the dashboard first.</p>
                     )}
                   </div>
                 )}

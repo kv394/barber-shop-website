@@ -32,25 +32,25 @@ export default function Error({
   }, [error]);
 
   return (
-    <div className="flex h-[calc(100vh-200px)] min-h-[400px] flex-col items-center justify-center rounded-xl border border-red-500/20 bg-red-500/5 p-8 text-center text-botanical-text shadow-lg mx-auto w-full max-w-2xl mt-12">
-      <div className="flex h-16 w-16 items-center justify-center rounded-full bg-red-500/20 mb-6 border border-red-500/30">
+    <div className="flex h-[calc(100vh-200px)] min-h-[400px] flex-col items-center justify-center rounded-xl border border-status-cancelled/20 bg-status-cancelled/5 p-8 text-center text-botanical-text shadow-lg mx-auto w-full max-w-2xl mt-12">
+      <div className="flex h-16 w-16 items-center justify-center rounded-full bg-status-cancelled/20 mb-6 border border-status-cancelled/30">
         <span className="text-3xl">⚠️</span>
       </div>
-      <h2 className="mb-3 font-bold text-red-500 text-3xl md:text-4xl">Something went wrong!</h2>
-      <p className="mb-8 max-w-[400px] text-zinc-400 text-base md:text-lg">
+      <h2 className="mb-3 font-bold text-status-cancelled text-3xl md:text-4xl">Something went wrong!</h2>
+      <p className="mb-8 max-w-[400px] text-botanical-muted text-base md:text-lg">
         We apologize for the inconvenience. Our system has automatically been notified about this technical issue.
       </p>
       
       <div className="flex gap-4">
         <button
           onClick={() => reset()}
-          className="rounded-lg bg-botanical-primary text-white transition-all hover:scale-105 active:scale-95"
+          className="rounded-lg bg-botanical-primary text-white transition-all hover:scale-105 active:scale-95 hover:opacity-90"
         >
           Try Again
         </button>
         <button
           onClick={() => window.location.reload()}
-          className="rounded-lg border border-zinc-600 bg-zinc-800 px-6 py-2.5 font-bold text-botanical-text transition-all hover:bg-zinc-700"
+          className="rounded-lg border border-zinc-600 bg-botanical-darkBase px-6 py-2.5 font-bold text-botanical-text transition-all hover:bg-zinc-700"
         >
           Reload Page
         </button>

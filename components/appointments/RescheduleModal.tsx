@@ -154,7 +154,7 @@ export default function RescheduleModal({
         <h3 className="font-bold text-botanical-text mb-1 text-2xl md:text-3xl">Reschedule Appointment</h3>
         <p className="text-botanical-accent font-semibold mb-6 text-base md:text-lg">{serviceName}</p>
 
-        {error && <p className="text-red-400 bg-red-900/20 p-3 rounded mb-4 text-base md:text-lg">{error}</p>}
+        {error && <p className="text-status-cancelled bg-red-900/20 p-3 rounded mb-4 text-base md:text-lg">{error}</p>}
 
         <div className="space-y-5">
           {/* Date */}
@@ -207,7 +207,7 @@ export default function RescheduleModal({
                   ))}
                 </select>
               ) : (
-                <p className="text-amber-400 bg-amber-900/20 p-3 rounded text-base md:text-lg">No slots available for this date/staff.</p>
+                <p className="text-status-pending bg-amber-900/20 p-3 rounded text-base md:text-lg">No slots available for this date/staff.</p>
               )}
             </div>
           )}
@@ -219,7 +219,7 @@ export default function RescheduleModal({
             <button
               onClick={handleReschedule}
               disabled={!selectedTime || isSubmitting}
-              className="flex-1 bg-botanical-primary text-white font-bold py-3 rounded-lg hover:bg-white hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 transition-colors disabled:opacity-50"
+              className="flex-1 bg-botanical-primary text-white font-bold py-3 rounded-lg hover:bg-botanical-surface hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 transition-colors disabled:opacity-50"
             >
               {isSubmitting ? 'Rescheduling...' : 'Confirm Reschedule'}
             </button>

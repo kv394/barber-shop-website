@@ -106,12 +106,12 @@ export default async function SiteAdminDashboard() {
 
 function KpiCard({ label, value, color }: { label: string; value: string | number; color: string }) {
   const colorMap: Record<string, string> = {
-    blue: 'from-blue-900/40 to-blue-800/20 border-blue-500/30 text-blue-400',
+    blue: 'from-blue-900/40 to-blue-800/20 border-status-info/30 text-status-info',
     purple: 'from-purple-900/40 to-purple-800/20 border-purple-500/30 text-purple-400',
-    green: 'from-green-900/40 to-green-800/20 border-green-500/30 text-green-400',
-    amber: 'from-amber-900/40 to-amber-800/20 border-amber-500/30 text-amber-400',
+    green: 'from-green-900/40 to-green-800/20 border-status-confirmed/30 text-status-confirmed',
+    amber: 'from-amber-900/40 to-amber-800/20 border-status-pending/30 text-status-pending',
     cyan: 'from-cyan-900/40 to-cyan-800/20 border-cyan-500/30 text-cyan-400',
-    red: 'from-red-900/40 to-red-800/20 border-red-500/30 text-red-400',
+    red: 'from-red-900/40 to-red-800/20 border-status-cancelled/30 text-status-cancelled',
   };
   const classes = colorMap[color] || colorMap.blue;
   const textColor = classes.split(' ').pop() || 'text-botanical-text';

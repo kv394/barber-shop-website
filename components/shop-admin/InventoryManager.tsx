@@ -56,11 +56,11 @@ export default function InventoryManager({
     handleUpdate(quantity);
   };
 
-  let colorClass = 'text-green-400';
+  let colorClass = 'text-status-confirmed';
   if (currentCount < lowStockThreshold) {
-      colorClass = 'text-red-500 font-bold';
+      colorClass = 'text-status-cancelled font-bold';
   } else if (currentCount <= mediumStockThreshold) {
-      colorClass = 'text-amber-400';
+      colorClass = 'text-status-pending';
   }
 
   return (
@@ -80,7 +80,7 @@ export default function InventoryManager({
       <button 
         onClick={handleAdd} 
         disabled={isUpdating}
-        className="px-2 py-1 text-xs bg-botanical-primary text-white hover:bg-white hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 rounded-md font-semibold disabled:opacity-50"
+        className="px-2 py-1 text-xs bg-botanical-primary text-white hover:bg-botanical-surface hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 rounded-md font-semibold disabled:opacity-50"
       >
         Add
       </button>

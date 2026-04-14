@@ -92,10 +92,10 @@ export default async function ShopBillingPage({ params }: { params: Promise<{ sh
         <div className="space-y-6">
           <div className="bg-botanical-bg/80 backdrop-blur-xl shadow-2xl rounded-2xl border border-botanical-border shadow-sm flex flex-col md:flex-row md:flex-wrap lg:flex-nowrap divide-y md:divide-y-0 md:divide-x divide-white/10 relative z-20 overflow-hidden transform sm:-translate-y-6 sm:-mx-2 mb-2 sm:mb-6 mt-6 sm:mt-10">
             {[
-              { label: 'Appointments', val: metrics.appointmentCount, colorClass: 'text-blue-500', bgClass: 'bg-blue-500/80', icon: '📅' },
-              { label: 'Users', val: metrics.userCount, colorClass: 'text-green-500', bgClass: 'bg-green-500/80', icon: '👥' },
+              { label: 'Appointments', val: metrics.appointmentCount, colorClass: 'text-status-info', bgClass: 'bg-status-info/80', icon: '📅' },
+              { label: 'Users', val: metrics.userCount, colorClass: 'text-status-confirmed', bgClass: 'bg-status-confirmed/80', icon: '👥' },
               { label: 'Intake Forms', val: metrics.formSubmissionCount, colorClass: 'text-purple-500', bgClass: 'bg-purple-500/80', icon: '📝' },
-              { label: 'Images', val: metrics.portfolioImageCount + metrics.clientHistoryImageCount, colorClass: 'text-amber-500', bgClass: 'bg-amber-500/80', icon: '📸' },
+              { label: 'Images', val: metrics.portfolioImageCount + metrics.clientHistoryImageCount, colorClass: 'text-status-pending', bgClass: 'bg-status-pending/80', icon: '📸' },
             ].map(m => (
               <div key={m.label} className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-botanical-surface transition-all duration-300 min-w-0 border-t md:border-t-0 md:border-l border-botanical-border first:border-0">
                 <div className={`absolute top-0 left-0 w-full h-1 ${m.bgClass}`}></div>
@@ -109,7 +109,7 @@ export default async function ShopBillingPage({ params }: { params: Promise<{ sh
           </div>
 
           <div className="bg-botanical-bg/50 p-6 rounded-xl border border-botanical-border shadow-sm shadow-lg relative overflow-hidden transition-all duration-300">
-            <div className="absolute top-0 left-0 w-full h-1 bg-botanical-primary/80"></div>
+            <div className="absolute top-0 left-0 w-full h-1 bg-botanical-primary/80 hover:opacity-90 text-white"></div>
             <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 mb-6">
               <div>
                 <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-2">

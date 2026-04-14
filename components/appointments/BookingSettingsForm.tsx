@@ -27,7 +27,7 @@ export default function BookingSettingsForm({ shopId }: { shopId: string }) {
   return (
     <div className="bg-botanical-surface border border-botanical-border shadow-sm rounded-xl p-6 space-y-5">
       <h3 className="font-bold text-botanical-text text-2xl md:text-3xl">📅 Online Booking Settings</h3>
-      {msg && <div className="p-3 bg-green-900/30 border border-green-500/30 text-green-300 rounded-lg text-sm">{msg}</div>}
+      {msg && <div className="p-3 bg-green-900/30 border border-status-confirmed/30 text-green-300 rounded-lg text-sm">{msg}</div>}
 
       <label className="flex items-center justify-between p-4 bg-botanical-surface rounded-lg cursor-pointer text-sm">
         <div>
@@ -81,7 +81,7 @@ export default function BookingSettingsForm({ shopId }: { shopId: string }) {
         <p className="text-botanical-muted mt-1 text-base md:text-lg">Displayed on the booking portal and confirmation emails</p>
       </div>
 
-      <button onClick={save} disabled={saving} className="w-full bg-botanical-primary text-white font-bold py-3 rounded-lg hover:bg-white hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 transition disabled:opacity-50">
+      <button onClick={save} disabled={saving} className="w-full bg-botanical-primary text-white font-bold py-3 rounded-lg hover:bg-botanical-surface hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 transition disabled:opacity-50">
         {saving ? 'Saving…' : 'Save Booking Settings'}
       </button>
     </div>

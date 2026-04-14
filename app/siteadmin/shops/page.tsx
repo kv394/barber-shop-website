@@ -50,7 +50,7 @@ export default function SiteAdminShopsPage() {
         </div>
         <Link
           href="/"
-          className="bg-botanical-primary text-white px-6 py-2.5 rounded-lg font-semibold hover:bg-white hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 transition-colors text-sm"
+          className="bg-botanical-primary text-white px-6 py-2.5 rounded-lg font-semibold hover:bg-botanical-surface hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 transition-colors text-sm"
         >
           + Create New Shop
         </Link>
@@ -82,8 +82,8 @@ export default function SiteAdminShopsPage() {
                     <h3 className="font-bold text-botanical-text truncate text-2xl md:text-3xl">{shop.name}</h3>
                     <span className={`px-2 py-0.5 rounded-full text-xs font-bold ${
                       hasAdmin
-                        ? 'bg-green-500/20 text-green-400 border border-green-500/30'
-                        : 'bg-amber-500/20 text-amber-400 border border-amber-500/30'
+                        ? 'bg-status-confirmed/20 text-status-confirmed border border-status-confirmed/30'
+                        : 'bg-status-pending/20 text-status-pending border border-status-pending/30'
                     }`}>
                       {hasAdmin ? 'Active' : 'Needs Admin'}
                     </span>
@@ -123,7 +123,7 @@ export default function SiteAdminShopsPage() {
                   </button>
                   <Link
                     href={`/shop/${shop.id}/settings/team`}
-                    className="bg-botanical-primary text-white px-4 py-2 rounded-lg text-xs font-bold hover:bg-white hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 transition-colors"
+                    className="bg-botanical-primary text-white px-4 py-2 rounded-lg text-xs font-bold hover:bg-botanical-surface hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 transition-colors"
                   >
                     Assign Team
                   </Link>

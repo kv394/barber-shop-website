@@ -8,9 +8,9 @@ function StarBar({ rating, count, total }: { rating: number; count: number; tota
   return (
     <div className="flex items-center gap-2 text-sm">
       <span className="w-4 text-botanical-muted">{rating}</span>
-      <span className="text-yellow-400">★</span>
+      <span className="text-status-pending">★</span>
       <div className="flex-1 bg-botanical-surface rounded-full h-2">
-        <div className="bg-yellow-400 h-2 rounded-full transition-all" style={{ width: `${pct}%` }} />
+        <div className="bg-status-pending h-2 rounded-full transition-all" style={{ width: `${pct}%` }} />
       </div>
       <span className="w-8 text-botanical-muted text-right">{count}</span>
     </div>
@@ -63,14 +63,14 @@ export default function ReviewsClient({ shopId }: { shopId: string }) {
 
   return (
     <div className="space-y-6">
-      {msg && <div className="p-3 bg-green-900/30 border border-green-500/30 text-green-300 rounded-lg text-sm">{msg}</div>}
+      {msg && <div className="p-3 bg-green-900/30 border border-status-confirmed/30 text-green-300 rounded-lg text-sm">{msg}</div>}
 
       {/* ── Summary card ── */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="bg-botanical-surface border border-botanical-border shadow-sm rounded-xl p-6 flex flex-col items-center justify-center gap-2">
           <div className="text-6xl font-black text-botanical-text">{avg.toFixed(1)}</div>
           <div className="flex gap-0.5 text-2xl">
-            {STARS.map(s => <span key={s} className={s <= Math.round(avg) ? 'text-yellow-400' : 'text-gray-600'}>★</span>)}
+            {STARS.map(s => <span key={s} className={s <= Math.round(avg) ? 'text-status-pending' : 'text-botanical-muted'}>★</span>)}
           </div>
           <div className="text-botanical-muted text-sm">{reviews.length} review{reviews.length !== 1 ? 's' : ''}</div>
         </div>
@@ -81,11 +81,11 @@ export default function ReviewsClient({ shopId }: { shopId: string }) {
 
       {/* ── Filter tabs ── */}
       <div className="flex gap-2 flex-wrap">
-        <button onClick={() => setFilter(null)} className={`px-3 py-1.5 rounded-lg text-sm font-medium transition ${!filter ? 'bg-botanical-primary text-black' : 'bg-botanical-surface text-botanical-muted hover:text-botanical-text'}`}>All ({reviews.length})</button>
+        <button onClick={() => setFilter(null)} className={`px-3 py-1.5 rounded-lg text-sm font-medium transition ${!filter ? 'bg-botanical-primary text-botanical-text' : 'bg-botanical-surface text-botanical-muted hover:text-botanical-text'} hover:opacity-90`}>All ({reviews.length})</button>
         {[5,4,3,2,1].map(s => {
           const cnt = reviews.filter(r => r.rating === s).length;
           return (
-            <button key={s} onClick={() => setFilter(filter === s ? null : s)} className={`px-3 py-1.5 rounded-lg text-sm font-medium transition ${filter === s ? 'bg-botanical-primary text-black' : 'bg-botanical-surface text-botanical-muted hover:text-botanical-text'}`}>
+            <button key={s} onClick={() => setFilter(filter === s ? null : s)} className={`px-3 py-1.5 rounded-lg text-sm font-medium transition ${filter === s ? 'bg-botanical-primary text-botanical-text' : 'bg-botanical-surface text-botanical-muted hover:text-botanical-text'} hover:opacity-90`}>
               {s}★ ({cnt})
             </button>
           );
@@ -108,7 +108,7 @@ export default function ReviewsClient({ shopId }: { shopId: string }) {
             <div className="flex items-start justify-between mb-3">
               <div>
                 <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-full bg-botanical-primary/20 text-botanical-accent flex items-center justify-center font-bold text-sm">
+                  <div className="w-8 h-8 rounded-full bg-botanical-primary/20 text-botanical-accent flex items-center justify-center font-bold text-sm hover:opacity-90">
                     {(r.user?.name || 'A')[0].toUpperCase()}
                   </div>
                   <div>
@@ -119,7 +119,7 @@ export default function ReviewsClient({ shopId }: { shopId: string }) {
               </div>
               <div className="text-right">
                 <div className="flex gap-0.5 justify-end">
-                  {STARS.map(s => <span key={s} className={s <= r.rating ? 'text-yellow-400' : 'text-gray-600'}>★</span>)}
+                  {STARS.map(s => <span key={s} className={s <= r.rating ? 'text-status-pending' : 'text-botanical-muted'}>★</span>)}
                 </div>
                 <div className="text-botanical-muted text-xs mt-1">{new Date(r.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</div>
               </div>
@@ -135,7 +135,7 @@ export default function ReviewsClient({ shopId }: { shopId: string }) {
                 <p className="text-botanical-muted text-base md:text-lg">{r.ownerResponse}</p>
                 <div className="flex gap-2 mt-2">
                   <button onClick={() => { setResponding(r.id); setResponseText(r.ownerResponse); }} className="text-xs text-botanical-muted hover:text-botanical-text transition">Edit</button>
-                  <button onClick={() => deleteResponse(r.id)} className="text-xs text-red-500 hover:text-red-300 transition">Delete</button>
+                  <button onClick={() => deleteResponse(r.id)} className="text-xs text-status-cancelled hover:text-red-300 transition">Delete</button>
                 </div>
               </div>
             )}
@@ -151,7 +151,7 @@ export default function ReviewsClient({ shopId }: { shopId: string }) {
                   className="w-full bg-botanical-surface border border-botanical-border shadow-sm rounded-lg p-3 text-sm text-botanical-text placeholder-gray-500 focus:outline-none focus:border-brand-gold resize-none"
                 />
                 <div className="flex gap-2">
-                  <button onClick={() => submitResponse(r.id)} disabled={saving || !responseText.trim()} className="px-4 py-2 bg-botanical-primary text-black rounded-lg text-sm font-semibold disabled:opacity-50">
+                  <button onClick={() => submitResponse(r.id)} disabled={saving || !responseText.trim()} className="px-4 py-2 bg-botanical-primary text-botanical-text rounded-lg text-sm font-semibold disabled:opacity-50 hover:opacity-90">
                     {saving ? 'Saving…' : 'Post Response'}
                   </button>
                   <button onClick={() => { setResponding(null); setResponseText(''); }} className="px-4 py-2 bg-botanical-surface text-botanical-muted rounded-lg text-sm">Cancel</button>

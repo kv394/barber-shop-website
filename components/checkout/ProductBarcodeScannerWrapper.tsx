@@ -102,7 +102,7 @@ export default function ProductBarcodeScannerWrapper({ shopId, products = [] }: 
     <>
       <button
         onClick={() => { resetAll(); setIsScanning(true); }}
-        className="bg-botanical-primary text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-white hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 transition-colors flex items-center gap-2"
+        className="bg-botanical-primary text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-botanical-surface hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 transition-colors flex items-center gap-2"
       >
         <span>📷</span> Scan Product
       </button>
@@ -133,7 +133,7 @@ export default function ProductBarcodeScannerWrapper({ shopId, products = [] }: 
                 <p className="text-botanical-accent font-mono mb-4 bg-botanical-surface p-2 rounded truncate text-base md:text-lg">Code: {scannedCode}</p>
 
                 {actionError && (
-                  <div className="bg-red-900/30 border border-red-500/50 text-red-300 p-3 rounded-lg mb-4 text-sm">
+                  <div className="bg-red-900/30 border border-status-cancelled/50 text-red-300 p-3 rounded-lg mb-4 text-sm">
                     {actionError}
                   </div>
                 )}
@@ -146,11 +146,11 @@ export default function ProductBarcodeScannerWrapper({ shopId, products = [] }: 
                     </div>
                     <div className="flex gap-3">
                       <button onClick={() => handleUpdateInventory(-1)} disabled={isUpdating || matchedProduct.inventoryCount <= 0}
-                        className="flex-1 bg-red-900/50 hover:bg-red-800 text-red-200 py-3 rounded-lg font-bold disabled:opacity-50 transition-colors border border-red-500/30">
+                        className="flex-1 bg-red-900/50 hover:bg-red-800 text-red-200 py-3 rounded-lg font-bold disabled:opacity-50 transition-colors border border-status-cancelled/30">
                         − Remove 1
                       </button>
                       <button onClick={() => handleUpdateInventory(1)} disabled={isUpdating}
-                        className="flex-1 bg-green-900/50 hover:bg-green-800 text-green-200 py-3 rounded-lg font-bold disabled:opacity-50 transition-colors border border-green-500/30">
+                        className="flex-1 bg-green-900/50 hover:bg-green-800 text-green-200 py-3 rounded-lg font-bold disabled:opacity-50 transition-colors border border-status-confirmed/30">
                         + Add 1
                       </button>
                     </div>
@@ -161,7 +161,7 @@ export default function ProductBarcodeScannerWrapper({ shopId, products = [] }: 
                   </div>
                 ) : (
                   <div className="bg-botanical-surface border border-botanical-border shadow-sm p-4 rounded-lg">
-                    <p className="text-amber-400 font-semibold mb-1 text-base md:text-lg">Product not recognized.</p>
+                    <p className="text-status-pending font-semibold mb-1 text-base md:text-lg">Product not recognized.</p>
                     <p className="text-botanical-muted mb-4 text-base md:text-lg">Map this barcode to a product:</p>
                     {unmatchedProducts.length > 0 ? (
                       <div className="space-y-3">
@@ -173,12 +173,12 @@ export default function ProductBarcodeScannerWrapper({ shopId, products = [] }: 
                           ))}
                         </select>
                         <button onClick={handleAssignBarcode} disabled={!selectedProductToAssign || isUpdating}
-                          className="w-full bg-botanical-primary text-white py-2.5 rounded font-semibold disabled:opacity-50 hover:bg-white hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 transition-colors text-sm">
+                          className="w-full bg-botanical-primary text-white py-2.5 rounded font-semibold disabled:opacity-50 hover:bg-botanical-surface hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 transition-colors text-sm">
                           {isUpdating ? 'Linking…' : 'Map Barcode to Product'}
                         </button>
                       </div>
                     ) : (
-                      <p className="text-red-400 bg-red-900/20 p-3 rounded text-base md:text-lg">No products found. Create one first.</p>
+                      <p className="text-status-cancelled bg-red-900/20 p-3 rounded text-base md:text-lg">No products found. Create one first.</p>
                     )}
                   </div>
                 )}

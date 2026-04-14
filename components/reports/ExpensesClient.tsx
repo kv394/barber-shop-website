@@ -70,11 +70,11 @@ export default function ExpensesClient({ shopId }: { shopId: string }) {
             className="w-full border border-botanical-border shadow-sm rounded p-2.5 text-sm focus:outline-none focus:border-brand-gold " />
         </div>
         <div className="bg-botanical-surface backdrop-blur-xl shadow-2xl rounded-2xl border border-botanical-border shadow-sm flex-1 relative overflow-hidden group hover:bg-botanical-surface transition-all duration-300 z-20">
-          <div className="absolute top-0 left-0 w-full h-1 bg-red-500/80"></div>
+          <div className="absolute top-0 left-0 w-full h-1 bg-status-cancelled/80"></div>
           <div className="p-5 sm:p-6">
             <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-2 sm:mb-3">
               <h3 className="text-botanical-muted uppercase tracking-widest font-semibold truncate text-2xl md:text-3xl">Total Expenses</h3>
-              <span className="text-red-500 text-sm">💸</span>
+              <span className="text-status-cancelled text-sm">💸</span>
             </div>
             <p className="font-black text-botanical-text break-words leading-tight text-base md:text-lg">${total.toFixed(2)}</p>
           </div>
@@ -109,7 +109,7 @@ export default function ExpensesClient({ shopId }: { shopId: string }) {
           <input type="date" value={date} onChange={e => setDate(e.target.value)} style={inputStyle}
             className="border border-botanical-border shadow-sm rounded p-2 text-sm focus:outline-none focus:border-brand-gold " />
         </div>
-        <button type="submit" disabled={adding} className="bg-red-600 hover:bg-red-500 text-botanical-text font-bold py-2 px-6 rounded text-sm disabled:opacity-50 transition-colors">
+        <button type="submit" disabled={adding} className="bg-status-cancelled hover:bg-status-cancelled text-botanical-text font-bold py-2 px-6 rounded text-sm disabled:opacity-50 transition-colors">
           {adding ? 'Adding...' : 'Add Expense'}
         </button>
       </form>
@@ -131,8 +131,8 @@ export default function ExpensesClient({ shopId }: { shopId: string }) {
                 </div>
               </div>
               <div className="flex items-center gap-3">
-                <span className="font-bold text-red-400">${exp.amount.toFixed(2)}</span>
-                <button onClick={() => handleDelete(exp.id)} className="text-botanical-muted hover:text-red-400 text-xs">✕</button>
+                <span className="font-bold text-status-cancelled">${exp.amount.toFixed(2)}</span>
+                <button onClick={() => handleDelete(exp.id)} className="text-botanical-muted hover:text-status-cancelled text-xs">✕</button>
               </div>
             </div>
           ))}

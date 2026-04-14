@@ -60,7 +60,7 @@ export default function NotificationsPage() {
       </header>
 
       <div className="max-w-2xl mx-auto px-4 sm:px-6 py-8">
-        {msg && <div className="mb-4 p-3 rounded-lg bg-green-900/30 border border-green-500/30 text-green-300 text-sm">{msg}</div>}
+        {msg && <div className="mb-4 p-3 rounded-lg bg-green-900/30 border border-status-confirmed/30 text-green-300 text-sm">{msg}</div>}
 
         <div className="bg-botanical-surface border border-botanical-border shadow-sm rounded-xl p-6 space-y-4">
           {[
@@ -98,7 +98,7 @@ export default function NotificationsPage() {
             </select>
           </div>
 
-          <button onClick={handleSave} disabled={saving} className="w-full bg-botanical-primary text-white font-bold py-3 rounded-lg hover:bg-white hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 transition-colors disabled:opacity-50 mt-4">
+          <button onClick={handleSave} disabled={saving} className="w-full bg-botanical-primary text-white font-bold py-3 rounded-lg hover:bg-botanical-surface hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 transition-colors disabled:opacity-50 mt-4">
             {saving ? 'Saving…' : 'Save Preferences'}
           </button>
         </div>

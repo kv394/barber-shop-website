@@ -50,15 +50,15 @@ export default async function UpdatePasswordPage({
           <p className="text-botanical-muted text-base md:text-lg">Enter your new password below</p>
         </div>
 
-        {error && <div className="bg-red-500/10 border border-red-500/30 text-red-400 p-3 rounded-lg mb-6 text-sm text-center">{error}</div>}
-        {message && <div className="bg-green-500/10 border border-green-500/30 text-green-400 p-3 rounded-lg mb-6 text-sm text-center">{message}</div>}
+        {error && <div className="bg-status-cancelled/10 border border-status-cancelled/30 text-status-cancelled p-3 rounded-lg mb-6 text-sm text-center">{error}</div>}
+        {message && <div className="bg-status-confirmed/10 border border-status-confirmed/30 text-status-confirmed p-3 rounded-lg mb-6 text-sm text-center">{message}</div>}
 
         <form action={updatePasswordAction} className="space-y-5">
           <div>
             <label className="block font-medium text-botanical-muted mb-1.5 text-sm">New Password</label>
             <input name="password" type="password" required placeholder="••••••••" minLength={6} className="w-full bg-botanical-surface border border-botanical-border shadow-sm rounded-lg p-3 text-botanical-text focus:ring-2 focus:ring-botanical-primary focus:border-transparent outline-none" />
           </div>
-          <button type="submit" className="w-full bg-botanical-primary text-white font-bold py-3 rounded-lg hover:bg-white hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 transition-colors mt-2">Update Password</button>
+          <button type="submit" className="w-full bg-botanical-primary text-white font-bold py-3 rounded-lg hover:bg-botanical-surface hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 transition-colors mt-2">Update Password</button>
         </form>
       </div>
     </div>

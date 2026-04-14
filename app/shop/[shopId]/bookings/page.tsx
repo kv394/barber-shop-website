@@ -65,7 +65,7 @@ export default async function BookingsPage({ params }: { params: Promise<{ shopI
       return (
         <div className="h-[100dvh] overflow-y-auto overflow-x-hidden">
             <div className="text-center">
-                <h1 className="font-bold text-red-500 mb-4 text-4xl md:text-5xl lg:text-6xl">Access Denied</h1>
+                <h1 className="font-bold text-status-cancelled mb-4 text-4xl md:text-5xl lg:text-6xl">Access Denied</h1>
                 <p className="text-botanical-muted text-base md:text-lg">You do not have permission to view this page.</p>
             </div>
         </div>
@@ -95,7 +95,7 @@ export default async function BookingsPage({ params }: { params: Promise<{ shopI
             <h2 className="font-bold text-botanical-text text-3xl md:text-4xl">Upcoming Bookings</h2>
             <BookingDatePicker dates={Object.keys(groupedAppointments)} />
           </div>
-          <Link href={`/shops/${shopSlug}`} target="_blank" className="bg-botanical-primary text-white font-bold px-4 py-2 rounded-lg text-xs sm:text-sm transition-colors whitespace-nowrap shadow-lg">+ Add Booking</Link>
+          <Link href={`/shops/${shopSlug}`} target="_blank" className="bg-botanical-primary text-white font-bold px-4 py-2 rounded-lg text-xs sm:text-sm transition-colors whitespace-nowrap shadow-lg hover:opacity-90">+ Add Booking</Link>
         </div>
 
         {Object.keys(groupedAppointments).length === 0 ? (
@@ -121,13 +121,13 @@ export default async function BookingsPage({ params }: { params: Promise<{ shopI
                     const statusBadge = isScheduled ? (
                       <span className="px-2 py-0.5 text-sm uppercase font-bold rounded bg-botanical-surface text-botanical-text border border-slate-600 whitespace-nowrap">Scheduled</span>
                     ) : isAccepted ? (
-                      <span className="px-2 py-0.5 text-sm uppercase font-bold rounded bg-blue-900/50 text-blue-300 border border-blue-500/30 whitespace-nowrap">Accepted</span>
+                      <span className="px-2 py-0.5 text-sm uppercase font-bold rounded bg-blue-900/50 text-blue-300 border border-status-info/30 whitespace-nowrap">Accepted</span>
                     ) : isWorkCompleted ? (
-                      <span className="px-2 py-0.5 text-sm uppercase font-bold rounded bg-botanical-primary/20 text-botanical-accent border border-brand-gold/30 whitespace-nowrap">Ready for Checkout</span>
+                      <span className="px-2 py-0.5 text-sm uppercase font-bold rounded bg-botanical-primary/20 text-botanical-accent border border-brand-gold/30 whitespace-nowrap hover:opacity-90">Ready for Checkout</span>
                     ) : null;
 
                     return (
-                      <div key={apt.id} className={`bg-botanical-surface p-5 rounded-lg border ${isNow ? 'border-green-500/50 shadow-[0_0_15px_rgba(34,197,94,0.2)]' : 'border-botanical-border'}`}>
+                      <div key={apt.id} className={`bg-botanical-surface p-5 rounded-lg border ${isNow ? 'border-status-confirmed/50 shadow-[0_0_15px_rgba(34,197,94,0.2)]' : 'border-botanical-border'}`}>
                                            <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-start mb-3 gap-2">
                                                <div className="flex flex-col items-start gap-1">
                                                    <div className="flex flex-wrap items-center gap-2">
@@ -155,8 +155,8 @@ export default async function BookingsPage({ params }: { params: Promise<{ shopI
                                                </div>
                                            </div>
                                            {isNow && (isScheduled || isAccepted) && (
-                                             <div className="mt-3 text-xs text-green-400 font-bold tracking-widest uppercase flex items-center gap-2">
-                                               <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span> IN PROGRESS
+                                             <div className="mt-3 text-xs text-status-confirmed font-bold tracking-widest uppercase flex items-center gap-2">
+                                               <span className="w-2 h-2 rounded-full bg-status-confirmed animate-pulse"></span> IN PROGRESS
                                              </div>
                                            )}
                                            <AppointmentNotes 

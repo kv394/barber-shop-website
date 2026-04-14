@@ -77,13 +77,13 @@ export function CustomizationForm({
       </h2>
 
       {error && (
-        <div className="bg-red-500/10 border border-red-500 text-red-400 p-3 sm:p-4 rounded-lg mb-4 sm:mb-6 text-sm">
+        <div className="bg-status-cancelled/10 border border-status-cancelled text-status-cancelled p-3 sm:p-4 rounded-lg mb-4 sm:mb-6 text-sm">
           {error}
         </div>
       )}
 
       {success && (
-        <div className="bg-green-500/10 border border-green-500 text-green-400 p-3 sm:p-4 rounded-lg mb-4 sm:mb-6 text-sm">
+        <div className="bg-status-confirmed/10 border border-status-confirmed text-status-confirmed p-3 sm:p-4 rounded-lg mb-4 sm:mb-6 text-sm">
           Information saved successfully!
         </div>
       )}
@@ -126,7 +126,7 @@ export function CustomizationForm({
                         setIsLoading(false);
                       }
                     }} 
-                    className="flex-1 bg-botanical-surface border border-botanical-border shadow-sm rounded px-3 py-2 text-botanical-text text-sm focus:outline-none focus:border-brand-gold file:mr-4 file:py-1 file:px-4 file:rounded file:border-0 file:text-sm file:bg-botanical-primary/20 file:text-botanical-primary hover:file:bg-botanical-primary/30" 
+                    className="flex-1 bg-botanical-surface border border-botanical-border shadow-sm rounded px-3 py-2 text-botanical-text text-sm focus:outline-none focus:border-brand-gold file:mr-4 file:py-1 file:px-4 file:rounded file:border-0 file:text-sm file:bg-botanical-primary/20 file:text-botanical-primary hover:file:bg-botanical-primary/30 hover:opacity-90" 
                   />
                 </div>
               </div>
@@ -164,7 +164,7 @@ export function CustomizationForm({
                         setIsLoading(false);
                       }
                     }} 
-                    className="flex-1 bg-botanical-surface border border-botanical-border shadow-sm rounded px-3 py-2 text-botanical-text text-sm focus:outline-none focus:border-brand-gold file:mr-4 file:py-1 file:px-4 file:rounded file:border-0 file:text-sm file:bg-botanical-primary/20 file:text-botanical-primary hover:file:bg-botanical-primary/30" 
+                    className="flex-1 bg-botanical-surface border border-botanical-border shadow-sm rounded px-3 py-2 text-botanical-text text-sm focus:outline-none focus:border-brand-gold file:mr-4 file:py-1 file:px-4 file:rounded file:border-0 file:text-sm file:bg-botanical-primary/20 file:text-botanical-primary hover:file:bg-botanical-primary/30 hover:opacity-90" 
                   />
                 </div>
               </div>
@@ -366,7 +366,7 @@ export function CustomizationForm({
         <button
           onClick={handleSave}
           disabled={isLoading}
-          className="w-full bg-botanical-primary text-white hover:bg-white hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 disabled:opacity-50 font-bold py-3 rounded-lg transition-colors"
+          className="w-full bg-botanical-primary text-white hover:bg-botanical-surface hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 disabled:opacity-50 font-bold py-3 rounded-lg transition-colors"
         >
           {isLoading ? 'Saving...' : 'Save Information'}
         </button>

@@ -26,7 +26,7 @@ export default async function SiteAdminLayout({ children }: { children: React.Re
             <Link href="/" className="font-serif text-2xl font-bold">
               <span className="text-botanical-text">Barber</span><span className="text-botanical-accent">SaaS</span>
             </Link>
-            <span className="text-xs bg-red-500/20 text-red-400 border border-red-500/30 px-2 py-0.5 rounded-full font-bold uppercase tracking-wider">
+            <span className="text-xs bg-status-cancelled/20 text-status-cancelled border border-status-cancelled/30 px-2 py-0.5 rounded-full font-bold uppercase tracking-wider">
               Site Admin
             </span>
           </div>

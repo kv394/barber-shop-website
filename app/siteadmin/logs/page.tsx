@@ -16,7 +16,7 @@ export default async function SiteAdminLogsPage() {
 
   const dbUser = await prisma.user.findFirst({ where: { OR: [{ id: userId }, { email: user?.email || '' }] } });
   if (dbUser?.role !== "SITE_ADMIN") {
-    return <div className="text-red-400 p-8">Unauthorized access.</div>;
+    return <div className="text-status-cancelled p-8">Unauthorized access.</div>;
   }
 
   const logs = await prisma.systemLog.findMany({
@@ -94,7 +94,7 @@ export default async function SiteAdminLogsPage() {
                     {new Date(log.createdAt).toLocaleString()}
                   </td>
                   <td className="px-6 py-4 text-sm text-botanical-text">
-                    <span className={`font-semibold ${log.level === 'ERROR' ? 'text-red-400' : log.level === 'WARN' ? 'text-amber-400' : 'text-blue-400'}`}>{log.level}</span>
+                    <span className={`font-semibold ${log.level === 'ERROR' ? 'text-status-cancelled' : log.level === 'WARN' ? 'text-status-pending' : 'text-status-info'}`}>{log.level}</span>
                     <br />
                     <span className="text-botanical-muted text-xs">{log.path || "N/A"}</span>
                   </td>
@@ -111,11 +111,11 @@ export default async function SiteAdminLogsPage() {
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm">
                     {log.isResolved ? (
-                      <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-500/20 text-green-400">
+                      <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-status-confirmed/20 text-status-confirmed">
                         Resolved
                       </span>
                     ) : (
-                      <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-500/20 text-red-400">
+                      <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-status-cancelled/20 text-status-cancelled">
                         Open
                       </span>
                     )}
@@ -132,7 +132,7 @@ export default async function SiteAdminLogsPage() {
                        )}
                        <form action={deleteLog}>
                          <input type="hidden" name="id" value={log.id} />
-                         <button type="submit" className="text-red-400 hover:text-red-300">
+                         <button type="submit" className="text-status-cancelled hover:text-red-300">
                            Delete
                          </button>
                        </form>

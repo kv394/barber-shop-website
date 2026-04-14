@@ -142,7 +142,7 @@ export default function LeaveManager({ shopId, userId }: { shopId: string, userI
           <button 
             type="submit" 
             disabled={saving}
-            className="bg-botanical-primary text-white font-bold px-4 py-2 rounded hover:bg-yellow-400 transition-colors disabled:opacity-50"
+            className="bg-botanical-primary text-white font-bold px-4 py-2 rounded hover:bg-status-pending transition-colors disabled:opacity-50"
           >
             {saving ? 'Submitting...' : 'Submit Request'}
           </button>
@@ -168,7 +168,7 @@ export default function LeaveManager({ shopId, userId }: { shopId: string, userI
                 </div>
                 <button 
                   onClick={() => handleDelete(leave.id)}
-                  className="text-red-400 hover:text-red-300 text-xs font-bold uppercase tracking-wider px-2 py-1"
+                  className="text-status-cancelled hover:text-red-300 text-xs font-bold uppercase tracking-wider px-2 py-1"
                 >
                   Cancel
                 </button>

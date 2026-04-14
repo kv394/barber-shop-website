@@ -63,21 +63,21 @@ export default function GiftCardManager({ shopId }: { shopId: string }) {
           </div>
           <div>
             <p className="text-botanical-muted uppercase text-base md:text-lg">Outstanding</p>
-            <p className="font-bold text-green-400 text-base md:text-lg">${totalValue.toFixed(0)}</p>
+            <p className="font-bold text-status-confirmed text-base md:text-lg">${totalValue.toFixed(0)}</p>
           </div>
           <div>
             <p className="text-botanical-muted uppercase text-base md:text-lg">Cards Issued</p>
             <p className="font-bold text-botanical-text text-base md:text-lg">{cards.length}</p>
           </div>
         </div>
-        <button onClick={() => setShowForm(!showForm)} className="bg-botanical-primary text-white font-bold px-4 py-2 rounded-lg text-sm hover:bg-white hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 transition-colors">
+        <button onClick={() => setShowForm(!showForm)} className="bg-botanical-primary text-white font-bold px-4 py-2 rounded-lg text-sm hover:bg-botanical-surface hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 transition-colors">
           {showForm ? 'Cancel' : '+ Create Gift Card'}
         </button>
       </div>
 
       {showForm && (
         <div className="bg-botanical-surface p-6 rounded-lg border border-botanical-border shadow-sm space-y-4">
-          {error && <p className="text-red-400 text-base md:text-lg">{error}</p>}
+          {error && <p className="text-status-cancelled text-base md:text-lg">{error}</p>}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block text-botanical-muted mb-1 text-sm">Amount ($) *</label>
@@ -96,7 +96,7 @@ export default function GiftCardManager({ shopId }: { shopId: string }) {
               <input type="email" value={purchaserEmail} onChange={e => setPurchaserEmail(e.target.value)} placeholder="buyer@email.com" className="w-full bg-botanical-surface border border-botanical-border shadow-sm rounded p-2 text-botanical-text text-sm placeholder-gray-600 focus:outline-none focus:border-brand-gold" />
             </div>
           </div>
-          <button onClick={handleCreate} disabled={creating || !amount} className="bg-botanical-primary text-white font-bold px-6 py-2 rounded-lg text-sm hover:bg-white hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 transition-colors disabled:opacity-50">
+          <button onClick={handleCreate} disabled={creating || !amount} className="bg-botanical-primary text-white font-bold px-6 py-2 rounded-lg text-sm hover:bg-botanical-surface hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 transition-colors disabled:opacity-50">
             {creating ? 'Creating…' : 'Create & Send Gift Card'}
           </button>
         </div>
@@ -125,7 +125,7 @@ export default function GiftCardManager({ shopId }: { shopId: string }) {
                   <td className="p-3 font-mono text-botanical-accent font-bold tracking-wider text-xs">{card.code}</td>
                   <td className="p-3 text-botanical-muted">{card.recipientName || card.recipientEmail || '—'}</td>
                   <td className="p-3 text-right text-botanical-text">${card.initialBalance.toFixed(2)}</td>
-                  <td className="p-3 text-right font-semibold text-green-400">${card.currentBalance.toFixed(2)}</td>
+                  <td className="p-3 text-right font-semibold text-status-confirmed">${card.currentBalance.toFixed(2)}</td>
                   <td className="p-3 text-center">
                     <span className={`text-sm font-bold px-2 py-0.5 rounded-full ${card.status === 'ACTIVE' ? 'bg-green-900/40 text-green-300' : card.status === 'REDEEMED' ? 'bg-blue-900/40 text-blue-300' : 'bg-botanical-surface/40 text-botanical-muted'}`}>
                       {card.status}

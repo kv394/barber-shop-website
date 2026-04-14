@@ -69,7 +69,7 @@ export default function LoyaltyPage() {
                 <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center">
                   <div>
                     <h2 className="font-bold text-botanical-text text-3xl md:text-4xl">{acct.shopName}</h2>
-                    <span className="text-xs bg-botanical-primary/20 text-botanical-accent px-2 py-0.5 rounded-full font-semibold">{acct.currentTier}</span>
+                    <span className="text-xs bg-botanical-primary/20 text-botanical-accent px-2 py-0.5 rounded-full font-semibold hover:opacity-90">{acct.currentTier}</span>
                   </div>
                   <div className="text-right">
                     <p className="font-black text-botanical-accent text-base md:text-lg">{acct.pointsBalance}</p>
@@ -77,8 +77,8 @@ export default function LoyaltyPage() {
                   </div>
                 </div>
                 <div className="flex gap-6 mt-4 text-xs text-botanical-muted">
-                  <span>Earned: <span className="text-green-400 font-semibold">{acct.totalEarned}</span></span>
-                  <span>Redeemed: <span className="text-amber-400 font-semibold">{acct.totalRedeemed}</span></span>
+                  <span>Earned: <span className="text-status-confirmed font-semibold">{acct.totalEarned}</span></span>
+                  <span>Redeemed: <span className="text-status-pending font-semibold">{acct.totalRedeemed}</span></span>
                 </div>
               </div>
               {acct.transactions.length > 0 && (
@@ -90,7 +90,7 @@ export default function LoyaltyPage() {
                         <span className="text-sm text-botanical-muted">{tx.description || tx.type}</span>
                         <span className="text-xs text-botanical-muted ml-2">{new Date(tx.createdAt).toLocaleDateString()}</span>
                       </div>
-                      <span className={`text-sm font-semibold ${tx.points >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+                      <span className={`text-sm font-semibold ${tx.points >= 0 ? 'text-status-confirmed' : 'text-status-cancelled'}`}>
                         {tx.points >= 0 ? '+' : ''}{tx.points}
                       </span>
                     </div>

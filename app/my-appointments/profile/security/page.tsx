@@ -65,7 +65,7 @@ export default function SecurityProfilePage() {
         </p>
 
         {error && (
-          <div className="bg-red-500/10 border border-red-500/20 text-red-400 p-4 rounded-lg mb-6 text-sm">
+          <div className="bg-status-cancelled/10 border border-status-cancelled/20 text-status-cancelled p-4 rounded-lg mb-6 text-sm">
             {error}
           </div>
         )}
@@ -74,7 +74,7 @@ export default function SecurityProfilePage() {
           <button
             onClick={handleBeginSetup}
             disabled={loading}
-            className="bg-botanical-primary text-white font-semibold py-2 px-6 rounded-lg hover:bg-white hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 transition-colors disabled:opacity-50"
+            className="bg-botanical-primary text-white font-semibold py-2 px-6 rounded-lg hover:bg-botanical-surface hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 transition-colors disabled:opacity-50"
           >
             {loading ? 'Initializing...' : 'Set Up Authenticator'}
           </button>
@@ -82,7 +82,7 @@ export default function SecurityProfilePage() {
 
         {setupState === 'scanning' && (
           <div className="space-y-6">
-            <div className="bg-white p-4 inline-block rounded-xl">
+            <div className="bg-botanical-surface p-4 inline-block rounded-xl">
               <Image src={qrCode} alt="QR Code" width={200} height={200} />
             </div>
             
@@ -106,7 +106,7 @@ export default function SecurityProfilePage() {
                 <button
                   onClick={handleVerify}
                   disabled={loading || verificationCode.length !== 6}
-                  className="bg-botanical-primary text-white font-semibold py-2 px-6 rounded-lg hover:bg-white hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 transition-colors disabled:opacity-50"
+                  className="bg-botanical-primary text-white font-semibold py-2 px-6 rounded-lg hover:bg-botanical-surface hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 transition-colors disabled:opacity-50"
                 >
                   {loading ? 'Verifying...' : 'Verify & Save'}
                 </button>
@@ -116,7 +116,7 @@ export default function SecurityProfilePage() {
         )}
 
         {setupState === 'linked' && (
-          <div className="bg-green-500/10 border border-green-500/20 text-green-400 p-4 rounded-lg flex items-center gap-3">
+          <div className="bg-status-confirmed/10 border border-status-confirmed/20 text-status-confirmed p-4 rounded-lg flex items-center gap-3">
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
             </svg>

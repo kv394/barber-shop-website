@@ -68,13 +68,13 @@ export function CustomPagesForm({ shopId, customization }: { shopId: string; cus
       </div>
 
       {error && (
-        <div className="bg-red-500/10 border border-red-500 text-red-400 p-4 rounded-lg mb-6 text-sm">
+        <div className="bg-status-cancelled/10 border border-status-cancelled text-status-cancelled p-4 rounded-lg mb-6 text-sm">
           {error}
         </div>
       )}
 
       {success && (
-        <div className="bg-green-500/10 border border-green-500 text-green-400 p-4 rounded-lg mb-6 text-sm">
+        <div className="bg-status-confirmed/10 border border-status-confirmed text-status-confirmed p-4 rounded-lg mb-6 text-sm">
           Pages saved successfully!
         </div>
       )}
@@ -91,7 +91,7 @@ export function CustomPagesForm({ shopId, customization }: { shopId: string; cus
                 <h3 className="font-bold text-botanical-text text-2xl md:text-3xl">Page {index + 1}</h3>
                 <button
                   onClick={() => removePage(index)}
-                  className="text-red-400 hover:text-red-300 text-sm"
+                  className="text-status-cancelled hover:text-red-300 text-sm"
                 >
                   Remove
                 </button>
@@ -144,7 +144,7 @@ export function CustomPagesForm({ shopId, customization }: { shopId: string; cus
           <button
             onClick={handleSave}
             disabled={isLoading}
-            className="w-full bg-botanical-primary text-white hover:bg-white hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 disabled:opacity-50 font-bold py-3 rounded-lg transition-colors"
+            className="w-full bg-botanical-primary text-white hover:bg-botanical-surface hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 disabled:opacity-50 font-bold py-3 rounded-lg transition-colors"
           >
             {isLoading ? 'Saving...' : 'Save Pages'}
           </button>

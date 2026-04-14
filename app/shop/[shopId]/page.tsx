@@ -157,7 +157,7 @@ export default async function ShopDashboardPage({ params }: { params: Promise<{ 
     return (
         <div className="h-[100dvh] overflow-y-auto overflow-x-hidden">
             <div className="text-center">
-                <h1 className="font-bold text-red-500 mb-4 text-4xl md:text-5xl lg:text-6xl">Access Denied</h1>
+                <h1 className="font-bold text-status-cancelled mb-4 text-4xl md:text-5xl lg:text-6xl">Access Denied</h1>
                 <p className="text-botanical-muted text-base md:text-lg">You do not have permission to view this page.</p>
             </div>
         </div>
@@ -189,8 +189,8 @@ export default async function ShopDashboardPage({ params }: { params: Promise<{ 
       {isShopAdmin && billingAlert && (
         <div className={`mb-6 p-4 rounded-xl border flex items-start gap-3 ${
           billingAlert.type === 'warning' 
-            ? 'bg-amber-900/20 border-amber-500/30 text-amber-200' 
-            : 'bg-red-900/20 border-red-500/30 text-red-200'
+            ? 'bg-amber-900/20 border-status-pending/30 text-amber-200' 
+            : 'bg-red-900/20 border-status-cancelled/30 text-red-200'
         }`}>
           <span className="text-base mt-0.5">⚠️</span>
           <div className="flex-1">
@@ -207,14 +207,14 @@ export default async function ShopDashboardPage({ params }: { params: Promise<{ 
       {isShopAdmin && (
         <div className="flex flex-col sm:flex-row gap-3 mb-6">
           {/* Online booking link */}
-          <div className="flex-1 bg-botanical-primary/10 border border-brand-gold/30 rounded-xl p-4 flex items-center gap-4">
+          <div className="flex-1 bg-botanical-primary/10 border border-brand-gold/30 rounded-xl p-4 flex items-center gap-4 hover:opacity-90 text-white">
             <span className="text-base">🔗</span>
             <div className="min-w-0 flex-1">
               <p className="text-botanical-muted mb-0.5 text-base md:text-lg">Your Booking Portal</p>
               <p className="text-botanical-text font-mono truncate text-base md:text-lg">/shops/{resolvedSlug}</p>
             </div>
             <Link href={`/shops/${resolvedSlug}`} target="_blank"
-              className="flex-shrink-0 px-3 py-1.5 bg-botanical-primary text-white text-xs font-bold rounded-lg hover:bg-white hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 transition-colors">
+              className="flex-shrink-0 px-3 py-1.5 bg-botanical-primary text-white text-xs font-bold rounded-lg hover:bg-botanical-surface hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 transition-colors">
               Open →
             </Link>
           </div>
@@ -291,26 +291,26 @@ export default async function ShopDashboardPage({ params }: { params: Promise<{ 
           <h2 className="font-bold text-botanical-text mb-4 text-3xl md:text-4xl">📊 Today&apos;s Snapshot</h2>
           <div className="grid grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-4 mb-4 sm:mb-8">
             <div className="bg-botanical-surface backdrop-blur-md shadow-[0_4px_30px_rgba(0,0,0,0.1)] rounded-2xl border border-botanical-border shadow-sm p-4 sm:p-6 relative overflow-hidden group hover:bg-botanical-border hover:shadow-[0_8px_30px_rgba(0,0,0,0.15)] hover:-translate-y-1 transition-all duration-300 min-w-0">
-              <div className="absolute top-0 left-0 w-full h-1 bg-blue-500/80"></div>
+              <div className="absolute top-0 left-0 w-full h-1 bg-status-info/80"></div>
               <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-2 sm:mb-3">
                 <h3 className="text-botanical-muted uppercase tracking-widest font-semibold truncate text-2xl md:text-3xl">Bookings</h3>
-                <span className="text-blue-500 text-sm sm:text-base">📅</span>
+                <span className="text-status-info text-sm sm:text-base">📅</span>
               </div>
               <p className="font-black text-botanical-text break-words leading-tight text-base md:text-lg">{todayStats.totalBookings}</p>
             </div>
             <div className="bg-botanical-surface backdrop-blur-md shadow-[0_4px_30px_rgba(0,0,0,0.1)] rounded-2xl border border-botanical-border shadow-sm p-4 sm:p-6 relative overflow-hidden group hover:bg-botanical-border hover:shadow-[0_8px_30px_rgba(0,0,0,0.15)] hover:-translate-y-1 transition-all duration-300 min-w-0">
-              <div className="absolute top-0 left-0 w-full h-1 bg-green-500/80"></div>
+              <div className="absolute top-0 left-0 w-full h-1 bg-status-confirmed/80"></div>
               <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-2 sm:mb-3">
                 <h3 className="text-botanical-muted uppercase tracking-widest font-semibold truncate text-2xl md:text-3xl">Revenue</h3>
-                <span className="text-green-500 text-sm sm:text-base">💵</span>
+                <span className="text-status-confirmed text-sm sm:text-base">💵</span>
               </div>
               <p className="font-black text-botanical-text break-words leading-tight text-base md:text-lg">${todayStats.revenue.toFixed(0)}</p>
             </div>
             <div className="bg-botanical-surface backdrop-blur-md shadow-[0_4px_30px_rgba(0,0,0,0.1)] rounded-2xl border border-botanical-border shadow-sm p-4 sm:p-6 relative overflow-hidden group hover:bg-botanical-border hover:shadow-[0_8px_30px_rgba(0,0,0,0.15)] hover:-translate-y-1 transition-all duration-300 min-w-0">
-              <div className="absolute top-0 left-0 w-full h-1 bg-amber-500/80"></div>
+              <div className="absolute top-0 left-0 w-full h-1 bg-status-pending/80"></div>
               <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-2 sm:mb-3">
                 <h3 className="text-botanical-muted uppercase tracking-widest font-semibold truncate text-2xl md:text-3xl">Tips</h3>
-                <span className="text-amber-500 text-sm sm:text-base">🪙</span>
+                <span className="text-status-pending text-sm sm:text-base">🪙</span>
               </div>
               <p className="font-black text-botanical-text break-words leading-tight text-base md:text-lg">${todayStats.tips.toFixed(0)}</p>
             </div>

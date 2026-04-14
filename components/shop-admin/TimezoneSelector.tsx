@@ -60,7 +60,7 @@ export default function TimezoneSelector({
           ))}
         </select>
         {saving && <span className="text-xs text-botanical-muted animate-pulse">Saving…</span>}
-        {saved && <span className="text-xs text-green-400">✓ Saved</span>}
+        {saved && <span className="text-xs text-status-confirmed">✓ Saved</span>}
       </div>
     </div>
   );

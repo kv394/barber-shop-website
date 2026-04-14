@@ -78,7 +78,7 @@ export default function SupabaseAuthButton({
       <>
         {/* Dark overlay for mobile, invisible on desktop */}
         <div 
-          className="fixed inset-0 bg-black/60 sm:bg-transparent transition-opacity" 
+          className="fixed inset-0 bg-botanical-darkBase/60 sm:bg-transparent transition-opacity" 
           style={{ zIndex: 99998 }}
           onClick={() => setIsOpen(false)} 
         />
@@ -93,7 +93,7 @@ export default function SupabaseAuthButton({
              <div className="w-12 h-1.5 bg-gray-300 rounded-full mb-5 sm:hidden absolute top-3"></div>
              
              <p className="text-botanical-muted truncate mb-4 sm:mb-3 w-full text-center mt-2 sm:mt-0 text-base md:text-lg">{user.email}</p>
-             <div className="bg-white p-3 sm:p-2 rounded-2xl shadow-inner inline-block border border-botanical-border shadow-sm">
+             <div className="bg-botanical-surface p-3 sm:p-2 rounded-2xl shadow-inner inline-block border border-botanical-border shadow-sm">
                {/* QR Code scales down slightly on desktop */}
                <QRCodeSVG value={profile?.barcode || user.id} size={160} className="sm:w-[120px] sm:h-[120px]" level="L" />
              </div>
@@ -116,7 +116,7 @@ export default function SupabaseAuthButton({
               
               <button 
                 onClick={() => { setIsOpen(false); handleSignOut(); }} 
-                className="block w-full text-center sm:text-left px-4 py-4 sm:py-2 text-base sm:text-sm text-red-600 hover:text-red-700 hover:bg-red-50 rounded-xl transition-colors font-bold border border-red-200 sm:border-transparent bg-red-50 sm:bg-transparent"
+                className="block w-full text-center sm:text-left px-4 py-4 sm:py-2 text-base sm:text-sm text-status-cancelled hover:text-red-700 hover:bg-red-50 rounded-xl transition-colors font-bold border border-red-200 sm:border-transparent bg-red-50 sm:bg-transparent"
               >
                 Sign Out
               </button>
@@ -131,7 +131,7 @@ export default function SupabaseAuthButton({
           onClick={() => setIsOpen(!isOpen)}
           className="flex items-center gap-2 bg-botanical-surface hover:bg-botanical-bg border border-botanical-border shadow-sm px-3 py-1.5 rounded-full transition-colors shadow-sm"
         >
-          <div className="w-6 h-6 rounded-full bg-botanical-primary flex items-center justify-center text-white font-bold text-xs shadow-inner">
+          <div className="w-6 h-6 rounded-full bg-botanical-primary flex items-center justify-center text-white font-bold text-xs shadow-inner hover:opacity-90">
             {user.email?.charAt(0).toUpperCase() || 'U'}
           </div>
         </button>

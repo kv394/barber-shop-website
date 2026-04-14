@@ -139,13 +139,13 @@ export function ServiceManagement({ shopId }: ServiceManagementProps) {
         <h2 className="font-bold text-botanical-text mb-4 sm:mb-6 text-3xl md:text-4xl">Manage Services</h2>
 
         {error && (
-          <div className="bg-red-500/10 border border-red-500 text-red-400 p-3 sm:p-4 rounded-lg mb-4 sm:mb-6 text-sm">
+          <div className="bg-status-cancelled/10 border border-status-cancelled text-status-cancelled p-3 sm:p-4 rounded-lg mb-4 sm:mb-6 text-sm">
             {error}
           </div>
         )}
 
         {success && (
-          <div className="bg-green-500/10 border border-green-500 text-green-400 p-3 sm:p-4 rounded-lg mb-4 sm:mb-6 text-sm">
+          <div className="bg-status-confirmed/10 border border-status-confirmed text-status-confirmed p-3 sm:p-4 rounded-lg mb-4 sm:mb-6 text-sm">
             {success}
           </div>
         )}
@@ -247,7 +247,7 @@ export function ServiceManagement({ shopId }: ServiceManagementProps) {
             <button
               type="submit"
               disabled={isSubmitting || !newService.name || !newService.price || !newService.duration}
-              className="w-full bg-botanical-primary text-white hover:bg-white hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 disabled:opacity-50 font-bold py-2 rounded-lg transition-colors"
+              className="w-full bg-botanical-primary text-white hover:bg-botanical-surface hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 disabled:opacity-50 font-bold py-2 rounded-lg transition-colors"
             >
               {isSubmitting ? 'Adding Service...' : 'Add Service'}
             </button>
@@ -272,10 +272,10 @@ export function ServiceManagement({ shopId }: ServiceManagementProps) {
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center flex-wrap gap-2 mb-1">
                           <h4 className="font-semibold text-botanical-text text-xl md:text-2xl">{service.name}</h4>
-                          <div className={`text-sm sm:text-xs font-semibold px-2 py-0.5 sm:py-1 rounded border ${service.type === 'INTERNAL' ? 'bg-purple-900/50 text-purple-300 border-purple-500/30' : 'bg-green-900/50 text-green-300 border-green-500/30'}`}>
+                          <div className={`text-sm sm:text-xs font-semibold px-2 py-0.5 sm:py-1 rounded border ${service.type === 'INTERNAL' ? 'bg-purple-900/50 text-purple-300 border-purple-500/30' : 'bg-green-900/50 text-green-300 border-status-confirmed/30'}`}>
                               {service.type}
                           </div>
-                          <div className={`text-sm sm:text-xs font-semibold px-2 py-0.5 sm:py-1 rounded border ${service.trackInventory ? 'bg-blue-900/50 text-blue-300 border-blue-500/30' : 'bg-botanical-surface text-botanical-muted border-botanical-border'}`}>
+                          <div className={`text-sm sm:text-xs font-semibold px-2 py-0.5 sm:py-1 rounded border ${service.trackInventory ? 'bg-blue-900/50 text-blue-300 border-status-info/30' : 'bg-botanical-surface text-botanical-muted border-botanical-border'}`}>
                               Inventory: {service.trackInventory ? 'ON' : 'OFF'}
                           </div>
                       </div>
@@ -290,7 +290,7 @@ export function ServiceManagement({ shopId }: ServiceManagementProps) {
 
                     <button
                       onClick={() => handleDeleteService(service.id, service.name)}
-                      className="bg-red-600/20 hover:bg-red-600/40 text-red-400 px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg transition-colors text-xs sm:text-sm shrink-0 self-start"
+                      className="bg-status-cancelled/20 hover:bg-status-cancelled/40 text-status-cancelled px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg transition-colors text-xs sm:text-sm shrink-0 self-start"
                     >
                       Delete
                     </button>
@@ -302,8 +302,8 @@ export function ServiceManagement({ shopId }: ServiceManagementProps) {
         </div>
 
         {/* Info Box */}
-        <div className="bg-blue-500/10 border border-blue-500/30 rounded-lg p-4 mt-6">
-          <h4 className="text-blue-400 font-semibold mb-2 text-xl md:text-2xl">ℹ️ Service Management Tips</h4>
+        <div className="bg-status-info/10 border border-status-info/30 rounded-lg p-4 mt-6">
+          <h4 className="text-status-info font-semibold mb-2 text-xl md:text-2xl">ℹ️ Service Management Tips</h4>
           <ul className="text-sm text-blue-300 space-y-1">
             <li>• <strong>Customer-Facing Services</strong> are displayed on your public shop page for booking.</li>
             <li>• <strong>Internal Services</strong> are hidden from the public page, used for tracking inventory or add-ons.</li>

@@ -104,10 +104,10 @@ export default function StaffWorkingReport({ staffMembers }: { staffMembers: Sta
       {/* Floating Summary Bar */}
       <div className="bg-botanical-surface backdrop-blur-xl shadow-2xl rounded-2xl border border-botanical-border shadow-sm mb-8 flex flex-col lg:flex-row divide-y lg:divide-y-0 lg:divide-x divide-white/10 relative z-20 transform sm:-translate-y-6 sm:-mx-2">
         <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-botanical-surface transition-all duration-300 min-w-0">
-          <div className="absolute top-0 left-0 w-full h-1 bg-blue-500/80"></div>
+          <div className="absolute top-0 left-0 w-full h-1 bg-status-info/80"></div>
           <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-3">
             <h3 className="text-botanical-muted uppercase tracking-widest font-semibold truncate text-2xl md:text-3xl">Total Staff</h3>
-            <span className="text-blue-500 text-sm">👥</span>
+            <span className="text-status-info text-sm">👥</span>
           </div>
           <p className="font-black text-botanical-text break-words leading-tight text-base md:text-lg">{staffMembers.length}</p>
           <p className="text-botanical-muted mt-2 truncate text-base md:text-lg">
@@ -124,19 +124,19 @@ export default function StaffWorkingReport({ staffMembers }: { staffMembers: Sta
           {isFiltered && <p className="text-botanical-muted mt-2 truncate opacity-0 group-hover:opacity-100 transition-opacity text-base md:text-lg">In selected date range</p>}
         </div>
         <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-botanical-surface transition-all duration-300 min-w-0">
-          <div className="absolute top-0 left-0 w-full h-1 bg-green-500/80"></div>
+          <div className="absolute top-0 left-0 w-full h-1 bg-status-confirmed/80"></div>
           <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-3">
             <h3 className="text-botanical-muted uppercase tracking-widest font-semibold truncate text-2xl md:text-3xl">Clients Served</h3>
-            <span className="text-green-500 text-sm">✂️</span>
+            <span className="text-status-confirmed text-sm">✂️</span>
           </div>
           <p className="font-black text-botanical-text break-words leading-tight text-base md:text-lg">{totalClients}</p>
           {isFiltered && <p className="text-botanical-muted mt-2 truncate opacity-0 group-hover:opacity-100 transition-opacity text-base md:text-lg">In selected date range</p>}
         </div>
         <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-botanical-surface transition-all duration-300 min-w-0">
-          <div className="absolute top-0 left-0 w-full h-1 bg-amber-500/80"></div>
+          <div className="absolute top-0 left-0 w-full h-1 bg-status-pending/80"></div>
           <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-3">
             <h3 className="text-botanical-muted uppercase tracking-widest font-semibold truncate text-2xl md:text-3xl">Revenue Generated</h3>
-            <span className="text-amber-500 text-sm">💰</span>
+            <span className="text-status-pending text-sm">💰</span>
           </div>
           <p className="font-black text-botanical-text break-words leading-tight text-base md:text-lg">${totalRevenue.toFixed(2)}</p>
           {isFiltered && <p className="text-botanical-muted mt-2 truncate opacity-0 group-hover:opacity-100 transition-opacity text-base md:text-lg">In selected date range</p>}
@@ -185,14 +185,14 @@ export default function StaffWorkingReport({ staffMembers }: { staffMembers: Sta
                 >
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-full bg-botanical-primary/20 flex items-center justify-center text-botanical-accent font-bold text-lg shrink-0">
+                      <div className="w-10 h-10 rounded-full bg-botanical-primary/20 flex items-center justify-center text-botanical-accent font-bold text-lg shrink-0 hover:opacity-90">
                         {staff.name.charAt(0).toUpperCase()}
                       </div>
                       <div>
                         <h4 className="font-bold text-botanical-text flex items-center gap-2 text-xl md:text-2xl">
                           {staff.name}
                           {staff.isActive && (
-                            <span className="text-sm text-green-400 bg-green-900/50 px-2 py-0.5 rounded-full font-bold animate-pulse">
+                            <span className="text-sm text-status-confirmed bg-green-900/50 px-2 py-0.5 rounded-full font-bold animate-pulse">
                               ACTIVE
                             </span>
                           )}
@@ -207,11 +207,11 @@ export default function StaffWorkingReport({ staffMembers }: { staffMembers: Sta
                       </div>
                       <div>
                         <p className="text-botanical-muted uppercase tracking-wider text-base md:text-lg">Clients</p>
-                        <p className="font-bold text-green-400 text-base md:text-lg">{staff.clients}</p>
+                        <p className="font-bold text-status-confirmed text-base md:text-lg">{staff.clients}</p>
                       </div>
                       <div>
                         <p className="text-botanical-muted uppercase tracking-wider text-base md:text-lg">Revenue</p>
-                        <p className="font-bold text-amber-400 text-base md:text-lg">${staff.revenue.toFixed(2)}</p>
+                        <p className="font-bold text-status-pending text-base md:text-lg">${staff.revenue.toFixed(2)}</p>
                       </div>
                     </div>
                   </div>
@@ -233,7 +233,7 @@ export default function StaffWorkingReport({ staffMembers }: { staffMembers: Sta
                         <span>{clientsPct.toFixed(1)}%</span>
                       </div>
                       <div className="w-full bg-botanical-surface rounded-full h-1.5">
-                        <div className="bg-green-500 h-1.5 rounded-full transition-all" style={{ width: `${clientsPct}%` }} />
+                        <div className="bg-status-confirmed h-1.5 rounded-full transition-all" style={{ width: `${clientsPct}%` }} />
                       </div>
                     </div>
                   </div>
@@ -275,11 +275,11 @@ export default function StaffWorkingReport({ staffMembers }: { staffMembers: Sta
                                     <span className="text-botanical-text font-mono">
                                       {clockOut
                                         ? clockOut.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' })
-                                        : <span className="text-green-400 animate-pulse">Active</span>
+                                        : <span className="text-status-confirmed animate-pulse">Active</span>
                                       }
                                     </span>
                                   </div>
-                                  <span className={`font-semibold ${clockOut ? 'text-purple-400' : 'text-green-400'}`}>
+                                  <span className={`font-semibold ${clockOut ? 'text-purple-400' : 'text-status-confirmed'}`}>
                                     {duration}
                                   </span>
                                 </div>
@@ -291,7 +291,7 @@ export default function StaffWorkingReport({ staffMembers }: { staffMembers: Sta
 
                       {/* Clients Served */}
                       <div>
-                        <h5 className="text-sm font-semibold text-green-400 mb-3 flex items-center gap-2">
+                        <h5 className="text-sm font-semibold text-status-confirmed mb-3 flex items-center gap-2">
                           ✂️ Clients Served
                           <span className="text-sm text-botanical-muted font-normal">
                             ({selectedStaffData.filteredAppointments.length} completed)
@@ -310,7 +310,7 @@ export default function StaffWorkingReport({ staffMembers }: { staffMembers: Sta
                                   <span className="text-botanical-text ml-2">{apt.user?.name || apt.user?.email || 'Guest'}</span>
                                   <span className="text-botanical-accent ml-2">— {apt.service.name}</span>
                                 </div>
-                                <span className="font-semibold text-green-400">${apt.service.price.toFixed(2)}</span>
+                                <span className="font-semibold text-status-confirmed">${apt.service.price.toFixed(2)}</span>
                               </div>
                             ))}
                           </div>

@@ -217,7 +217,7 @@ export default function BarcodeScanner({ onScan, onClose }: BarcodeScannerProps)
         </p>
 
         {error && (
-          <div className="mb-4 p-3 bg-red-900/50 border border-red-500 text-red-200 rounded text-sm">
+          <div className="mb-4 p-3 bg-red-900/50 border border-status-cancelled text-red-200 rounded text-sm">
             {error}
           </div>
         )}
@@ -246,7 +246,7 @@ export default function BarcodeScanner({ onScan, onClose }: BarcodeScannerProps)
                 <span className="absolute top-0 right-0 w-8 h-8 border-t-4 border-r-4 border-brand-gold rounded-tr" />
                 <span className="absolute bottom-0 left-0 w-8 h-8 border-b-4 border-l-4 border-brand-gold rounded-bl" />
                 <span className="absolute bottom-0 right-0 w-8 h-8 border-b-4 border-r-4 border-brand-gold rounded-br" />
-                <div className="absolute inset-x-0 top-0 h-0.5 bg-botanical-primary/70 animate-[scan_2s_linear_infinite]" />
+                <div className="absolute inset-x-0 top-0 h-0.5 bg-botanical-primary/70 animate-[scan_2s_linear_infinite] hover:opacity-90 text-white" />
               </div>
             </div>
           )}

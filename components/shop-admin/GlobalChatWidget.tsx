@@ -73,12 +73,12 @@ export default function GlobalChatWidget({ shopId, currentUserId, userRole }: { 
       {/* Floating Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="fixed bottom-32 sm:bottom-8 right-4 sm:right-8 w-14 h-14 bg-botanical-primary text-white rounded-full shadow-[0_0_20px_rgba(0,0,0,0.5)] flex items-center justify-center text-3xl hover:bg-yellow-400 hover:scale-105 active:scale-95 transition-all z-[90]"
+        className="fixed bottom-32 sm:bottom-8 right-4 sm:right-8 w-14 h-14 bg-botanical-primary text-white rounded-full shadow-[0_0_20px_rgba(0,0,0,0.5)] flex items-center justify-center text-3xl hover:bg-status-pending hover:scale-105 active:scale-95 transition-all z-[90]"
         title="Team Chat"
       >
         💬
         {unreadCount > 0 && !isOpen && (
-          <span className="absolute -top-1 -right-1 bg-red-500 text-botanical-text text-sm font-black w-6 h-6 flex items-center justify-center rounded-full border-2 border-white shadow-md animate-bounce">
+          <span className="absolute -top-1 -right-1 bg-status-cancelled text-botanical-text text-sm font-black w-6 h-6 flex items-center justify-center rounded-full border-2 border-white shadow-md animate-bounce">
             {unreadCount > 9 ? '9+' : unreadCount}
           </span>
         )}
@@ -91,7 +91,7 @@ export default function GlobalChatWidget({ shopId, currentUserId, userRole }: { 
             {/* Close button layered over the chat header */}
             <button 
                 onClick={() => setIsOpen(false)}
-                className="absolute top-3 right-4 text-white hover:text-gray-200 z-10 w-8 h-8 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center transition-colors"
+                className="absolute top-3 right-4 text-white hover:text-gray-200 z-10 w-8 h-8 bg-botanical-surface/10 hover:bg-botanical-surface/20 rounded-full flex items-center justify-center transition-colors"
             >
                 ✕
             </button>

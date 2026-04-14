@@ -73,7 +73,7 @@ export function ShopNav({ shopId, userRole, activeTab }: { shopId: string, userR
   if (isSiteAdmin) {
     return (
       <div className="mb-6 sm:mb-8">
-        <nav className="flex w-full overflow-x-auto scrollbar-none bg-white rounded-2xl border border-botanical-border shadow-sm">
+        <nav className="flex w-full overflow-x-auto scrollbar-none bg-botanical-surface rounded-2xl border border-botanical-border shadow-sm">
           <Link href="/siteadmin" className="flex-1 min-w-max px-4 py-3 text-base md:text-lg font-bold text-botanical-muted hover:text-botanical-text hover:bg-gray-50 transition-colors whitespace-nowrap border-r border-botanical-border flex items-center justify-center">
             ← Site Admin
           </Link>
@@ -90,7 +90,7 @@ export function ShopNav({ shopId, userRole, activeTab }: { shopId: string, userR
     <>
       {/* Desktop/Tablet Navigation */}
       <div className={`mb-6 sm:mb-8 hidden sm:block`}>
-        <nav className="flex w-full overflow-x-auto scrollbar-none bg-white rounded-2xl border border-botanical-border shadow-sm">
+        <nav className="flex w-full overflow-x-auto scrollbar-none bg-botanical-surface rounded-2xl border border-botanical-border shadow-sm">
           {(isShopAdmin || isStaff) && (
             <>
               <Link href={`/shop/${shopId}`} aria-current={activeTab === 'dashboard' ? 'page' : undefined} className={mainTabClass('dashboard')}>
@@ -175,7 +175,7 @@ export function ShopNav({ shopId, userRole, activeTab }: { shopId: string, userR
             const mobileLink = (href: string, tabId: string, icon: string, label: string, isGroupMatch = false) => {
               const isActive = activeTab === tabId || isGroupMatch;
               return (
-                <Link href={href} aria-current={isActive ? 'page' : undefined} className={`flex-shrink-0 flex flex-col items-center justify-center w-[72px] h-full rounded-2xl space-y-1 ${isActive ? 'text-botanical-text shadow-sm bg-gray-100 border border-botanical-border' : 'text-botanical-muted hover:text-slate-700 hover:bg-gray-50 transition-colors'}`}>
+                <Link href={href} aria-current={isActive ? 'page' : undefined} className={`flex-shrink-0 flex flex-col items-center justify-center w-[72px] h-full rounded-2xl space-y-1 ${isActive ? 'text-botanical-text shadow-sm bg-botanical-bg border border-botanical-border' : 'text-botanical-muted hover:text-botanical-text hover:bg-gray-50 transition-colors'}`}>
                   <span className="text-[1.35rem]" aria-hidden="true">{icon}</span>
                   <span className="text-[10px] font-bold tracking-wide text-center leading-tight">{label}</span>
                 </Link>

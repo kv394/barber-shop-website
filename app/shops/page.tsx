@@ -110,7 +110,7 @@ export default async function ShopsDirectoryPage({
 
                       {/* Shop Info */}
                       <div className="p-6 flex flex-col flex-grow">
-                        <h3 className="font-bold text-botanical-text group-hover:text-blue-400 transition-colors mb-2 text-2xl md:text-3xl">
+                        <h3 className="font-bold text-botanical-text group-hover:text-status-info transition-colors mb-2 text-2xl md:text-3xl">
                           {shop.name}
                         </h3>
 
@@ -141,7 +141,7 @@ export default async function ShopsDirectoryPage({
                         </div>
 
                         {/* CTA */}
-                        <button className="w-full mt-4 bg-botanical-primary text-white hover:bg-white hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 font-semibold py-2 rounded-lg transition-colors">
+                        <button className="w-full mt-4 bg-botanical-primary text-white hover:bg-botanical-surface hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 font-semibold py-2 rounded-lg transition-colors">
                           View Shop →
                         </button>
                       </div>
@@ -249,7 +249,7 @@ export default async function ShopsDirectoryPage({
             Browse our shops, find the perfect service, and book your appointment
             today.
           </p>
-          <button className="bg-white hover:bg-gray-100 text-blue-600 font-bold py-3 px-8 rounded-lg transition-colors text-lg">
+          <button className="bg-botanical-surface hover:bg-gray-100 text-status-info font-bold py-3 px-8 rounded-lg transition-colors text-lg">
             Explore Shops
           </button>
         </div>

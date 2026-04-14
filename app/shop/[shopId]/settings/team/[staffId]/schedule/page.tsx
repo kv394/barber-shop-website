@@ -132,7 +132,7 @@ export default function SchedulePage() {
             </div>
           </div>
           <div className="md:col-span-3">
-            <button type="submit" className="bg-botanical-primary text-white font-bold py-2.5 px-8 rounded-lg hover:bg-white hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 transition-colors shadow-lg">
+            <button type="submit" className="bg-botanical-primary text-white font-bold py-2.5 px-8 rounded-lg hover:bg-botanical-surface hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 transition-colors shadow-lg">
               Save Details
             </button>
           </div>
@@ -189,7 +189,7 @@ export default function SchedulePage() {
               <button 
                 type="submit" 
                 disabled={isSaving}
-                className="bg-botanical-primary text-white font-bold py-3 px-8 rounded-lg hover:bg-white hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 transition-colors disabled:opacity-50"
+                className="bg-botanical-primary text-white font-bold py-3 px-8 rounded-lg hover:bg-botanical-surface hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 transition-colors disabled:opacity-50"
               >
                 {isSaving ? 'Saving...' : 'Save Weekly Schedule'}
               </button>
@@ -214,7 +214,7 @@ export default function SchedulePage() {
               <input type="time" name="endTime" defaultValue="17:00" required className="w-full bg-botanical-surface p-2 rounded border border-botanical-border shadow-sm text-botanical-text" />
             </div>
             <input type="text" name="reason" placeholder="Reason (optional)" className="w-full bg-botanical-surface p-2 rounded border border-botanical-border shadow-sm text-botanical-text" />
-            <button type="submit" className="w-full bg-botanical-primary hover:bg-white text-white hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 p-2 rounded text-sm font-bold transition-colors">Add Leave Day</button>
+            <button type="submit" className="w-full bg-botanical-primary hover:bg-botanical-surface text-white hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 p-2 rounded text-sm font-bold transition-colors">Add Leave Day</button>
           </form>
           <div className="space-y-2">
             <h4 className="font-semibold text-botanical-muted border-b border-botanical-border pb-2 text-xl md:text-2xl">Upcoming Leave</h4>
@@ -233,7 +233,7 @@ export default function SchedulePage() {
                   <input type="hidden" name="leaveId" value={leave.id} />
                   <input type="hidden" name="staffId" value={staffMember.id} />
                   <input type="hidden" name="shopId" value={shop.id} />
-                  <button type="submit" className="text-red-500 hover:text-red-400 text-xs font-semibold">DELETE</button>
+                  <button type="submit" className="text-status-cancelled hover:text-status-cancelled text-xs font-semibold">DELETE</button>
                 </form>
               </div>
             ))}

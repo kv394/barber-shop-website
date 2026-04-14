@@ -15,15 +15,15 @@ export default function ReferralTracker({ shopId }: { shopId: string }) {
   }, [shopId]);
 
   if (loading) return <p className="text-botanical-muted text-center py-12 text-base md:text-lg">Loading referrals...</p>;
-  if (!data) return <p className="text-red-400 text-center py-12 text-base md:text-lg">Failed to load referral data.</p>;
+  if (!data) return <p className="text-status-cancelled text-center py-12 text-base md:text-lg">Failed to load referral data.</p>;
 
   const { referrals, stats } = data;
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'REWARDED': return 'bg-green-900/50 text-green-300 border-green-500/30';
-      case 'COMPLETED': return 'bg-blue-900/50 text-blue-300 border-blue-500/30';
-      default: return 'bg-amber-900/50 text-amber-300 border-amber-500/30';
+      case 'REWARDED': return 'bg-green-900/50 text-green-300 border-status-confirmed/30';
+      case 'COMPLETED': return 'bg-blue-900/50 text-blue-300 border-status-info/30';
+      default: return 'bg-amber-900/50 text-amber-300 border-status-pending/30';
     }
   };
 
@@ -32,26 +32,26 @@ export default function ReferralTracker({ shopId }: { shopId: string }) {
       {stats && (
         <div className="bg-botanical-surface backdrop-blur-xl shadow-2xl rounded-2xl border border-botanical-border shadow-sm flex flex-col md:flex-row divide-y md:divide-y-0 md:divide-x divide-white/10 relative z-20 overflow-hidden transform sm:-translate-y-6 sm:-mx-2 mb-2 sm:mb-6">
           <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-botanical-surface transition-all duration-300 min-w-0">
-            <div className="absolute top-0 left-0 w-full h-1 bg-blue-500/80"></div>
+            <div className="absolute top-0 left-0 w-full h-1 bg-status-info/80"></div>
             <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-3">
               <h3 className="text-botanical-muted uppercase tracking-widest font-semibold truncate text-2xl md:text-3xl">Total Referrals</h3>
-              <span className="text-blue-500 text-sm">👥</span>
+              <span className="text-status-info text-sm">👥</span>
             </div>
             <p className="font-black text-botanical-text break-words leading-tight text-base md:text-lg">{stats.total}</p>
           </div>
           <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-botanical-surface transition-all duration-300 min-w-0">
-            <div className="absolute top-0 left-0 w-full h-1 bg-green-500/80"></div>
+            <div className="absolute top-0 left-0 w-full h-1 bg-status-confirmed/80"></div>
             <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-3">
               <h3 className="text-botanical-muted uppercase tracking-widest font-semibold truncate text-2xl md:text-3xl">Completed</h3>
-              <span className="text-green-500 text-sm">✅</span>
+              <span className="text-status-confirmed text-sm">✅</span>
             </div>
             <p className="font-black text-botanical-text break-words leading-tight text-base md:text-lg">{stats.completed}</p>
           </div>
           <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-botanical-surface transition-all duration-300 min-w-0">
-            <div className="absolute top-0 left-0 w-full h-1 bg-amber-500/80"></div>
+            <div className="absolute top-0 left-0 w-full h-1 bg-status-pending/80"></div>
             <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-3">
               <h3 className="text-botanical-muted uppercase tracking-widest font-semibold truncate text-2xl md:text-3xl">Pending</h3>
-              <span className="text-amber-500 text-sm">⏳</span>
+              <span className="text-status-pending text-sm">⏳</span>
             </div>
             <p className="font-black text-botanical-text break-words leading-tight text-base md:text-lg">{stats.pending}</p>
           </div>

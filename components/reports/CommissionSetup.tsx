@@ -53,12 +53,12 @@ export default function CommissionSetup({ shopId }: { shopId: string }) {
     <div className="bg-botanical-surface border border-botanical-border shadow-sm rounded-xl p-6 space-y-4">
       <h3 className="font-bold text-botanical-text text-2xl md:text-3xl">💼 Commission Rates</h3>
       <p className="text-botanical-muted text-base md:text-lg">Set service and retail product commission rates per staff member.</p>
-      {msg && <div className="p-2 bg-green-900/30 border border-green-500/30 text-green-300 rounded text-sm">{msg}</div>}
+      {msg && <div className="p-2 bg-green-900/30 border border-status-confirmed/30 text-green-300 rounded text-sm">{msg}</div>}
       <div className="space-y-3">
         {staff.map((s: any) => (
           <div key={s.id} className="flex flex-wrap items-center gap-3 p-4 bg-botanical-surface rounded-lg">
             <div className="flex items-center gap-2 min-w-[140px]">
-              <div className="w-8 h-8 rounded-full bg-botanical-primary/20 text-botanical-accent flex items-center justify-center font-bold text-sm">
+              <div className="w-8 h-8 rounded-full bg-botanical-primary/20 text-botanical-accent flex items-center justify-center font-bold text-sm hover:opacity-90">
                 {(s.name || 'S')[0]}
               </div>
               <span className="text-botanical-text text-sm font-medium">{s.name}</span>
@@ -82,7 +82,7 @@ export default function CommissionSetup({ shopId }: { shopId: string }) {
               </div>
             </div>
             <button onClick={() => save(s.id)} disabled={saving === s.id}
-              className="ml-auto px-3 py-1.5 bg-botanical-primary text-white transition disabled:opacity-50">
+              className="ml-auto px-3 py-1.5 bg-botanical-primary text-white transition disabled:opacity-50 hover:opacity-90">
               {saving === s.id ? '…' : 'Save'}
             </button>
           </div>

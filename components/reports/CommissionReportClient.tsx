@@ -95,26 +95,26 @@ export default function CommissionReportClient({
       {/* Totals Floating Bar */}
       <div className="bg-botanical-surface backdrop-blur-xl shadow-2xl rounded-2xl border border-botanical-border shadow-sm flex flex-col sm:flex-row divide-y sm:divide-y-0 sm:divide-x divide-white/10 relative z-20 overflow-hidden transform sm:-translate-y-6 sm:-mx-2 mb-2 sm:mb-6">
         <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-botanical-surface transition-all duration-300 min-w-0">
-          <div className="absolute top-0 left-0 w-full h-1 bg-green-500/80"></div>
+          <div className="absolute top-0 left-0 w-full h-1 bg-status-confirmed/80"></div>
           <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-3">
             <h3 className="text-botanical-muted uppercase tracking-widest font-semibold truncate text-2xl md:text-3xl">{isPersonalView ? 'My Revenue' : 'Gross Revenue'}</h3>
-            <span className="text-green-500 text-sm">💵</span>
+            <span className="text-status-confirmed text-sm">💵</span>
           </div>
           <p className="font-black text-botanical-text break-words leading-tight text-base md:text-lg">${totalRevenue.toFixed(0)}</p>
         </div>
         <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-botanical-surface transition-all duration-300 min-w-0">
-          <div className="absolute top-0 left-0 w-full h-1 bg-blue-500/80"></div>
+          <div className="absolute top-0 left-0 w-full h-1 bg-status-info/80"></div>
           <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-3">
             <h3 className="text-botanical-muted uppercase tracking-widest font-semibold truncate text-2xl md:text-3xl">{isPersonalView ? 'My Commission' : 'Commission'}</h3>
-            <span className="text-blue-500 text-sm">💎</span>
+            <span className="text-status-info text-sm">💎</span>
           </div>
           <p className="font-black text-botanical-text break-words leading-tight text-base md:text-lg">${totalCommission.toFixed(0)}</p>
         </div>
         <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-botanical-surface transition-all duration-300 min-w-0">
-          <div className="absolute top-0 left-0 w-full h-1 bg-amber-500/80"></div>
+          <div className="absolute top-0 left-0 w-full h-1 bg-status-pending/80"></div>
           <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-3">
             <h3 className="text-botanical-muted uppercase tracking-widest font-semibold truncate text-2xl md:text-3xl">{isPersonalView ? 'My Tips' : 'Tips'}</h3>
-            <span className="text-amber-500 text-sm">🪙</span>
+            <span className="text-status-pending text-sm">🪙</span>
           </div>
           <p className="font-black text-botanical-text break-words leading-tight text-base md:text-lg">${totalTips.toFixed(0)}</p>
         </div>
@@ -153,8 +153,8 @@ export default function CommissionReportClient({
                     <td className="p-3 font-medium text-botanical-text">{s.staffName}</td>
                     <td className="p-3 text-right text-botanical-muted">{s.servicesCount}</td>
                     <td className="p-3 text-right text-botanical-muted">${s.grossRevenue.toFixed(2)}</td>
-                    <td className="p-3 text-right text-blue-400">${s.totalCommission.toFixed(2)}</td>
-                    <td className="p-3 text-right text-amber-400">${s.totalTips.toFixed(2)}</td>
+                    <td className="p-3 text-right text-status-info">${s.totalCommission.toFixed(2)}</td>
+                    <td className="p-3 text-right text-status-pending">${s.totalTips.toFixed(2)}</td>
                     <td className="p-3 text-right text-botanical-accent font-bold">${s.totalPayout.toFixed(2)}</td>
                   </tr>
                 ))}
@@ -186,8 +186,8 @@ export default function CommissionReportClient({
                       <td className="p-2 text-botanical-muted">{d.staffName}</td>
                       <td className="p-2 text-botanical-muted">{d.serviceName}</td>
                       <td className="p-2 text-right text-botanical-muted">${d.serviceAmount.toFixed(2)}</td>
-                      <td className="p-2 text-right text-amber-400">${d.tipAmount.toFixed(2)}</td>
-                      <td className="p-2 text-right text-blue-400">${d.commission.toFixed(2)}</td>
+                      <td className="p-2 text-right text-status-pending">${d.tipAmount.toFixed(2)}</td>
+                      <td className="p-2 text-right text-status-info">${d.commission.toFixed(2)}</td>
                       <td className="p-2 text-botanical-muted">{d.rateValue}{d.rateType === 'PERCENTAGE' ? '%' : ' flat'} ({d.commissionSource})</td>
                     </tr>
                   ))}

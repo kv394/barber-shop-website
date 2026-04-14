@@ -87,8 +87,8 @@ function RecoverPasswordForm() {
           <p className="text-botanical-muted text-base md:text-lg">Choose how you want to reset your password</p>
         </div>
 
-        {error && <div className="bg-red-500/10 border border-red-500/30 text-red-400 p-3 rounded-lg mb-6 text-sm text-center">{error}</div>}
-        {message && <div className="bg-green-500/10 border border-green-500/30 text-green-400 p-3 rounded-lg mb-6 text-sm text-center">{message}</div>}
+        {error && <div className="bg-status-cancelled/10 border border-status-cancelled/30 text-status-cancelled p-3 rounded-lg mb-6 text-sm text-center">{error}</div>}
+        {message && <div className="bg-status-confirmed/10 border border-status-confirmed/30 text-status-confirmed p-3 rounded-lg mb-6 text-sm text-center">{message}</div>}
 
         <div className="flex gap-2 mb-6 bg-botanical-surface p-1 rounded-lg border border-botanical-border shadow-sm">
           <button
@@ -119,7 +119,7 @@ function RecoverPasswordForm() {
                 className="w-full bg-botanical-surface border border-botanical-border shadow-sm rounded-lg p-3 text-botanical-text focus:ring-2 focus:ring-botanical-primary focus:border-transparent outline-none" 
               />
             </div>
-            <button type="submit" disabled={loading} className="w-full bg-botanical-primary text-white font-bold py-3 rounded-lg hover:bg-white hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 transition-colors mt-2 disabled:opacity-50">
+            <button type="submit" disabled={loading} className="w-full bg-botanical-primary text-white font-bold py-3 rounded-lg hover:bg-botanical-surface hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 transition-colors mt-2 disabled:opacity-50">
               {loading ? 'Sending...' : 'Send Reset Link'}
             </button>
           </form>
@@ -160,7 +160,7 @@ function RecoverPasswordForm() {
                 className="w-full bg-botanical-surface border border-botanical-border shadow-sm rounded-lg p-3 text-botanical-text focus:ring-2 focus:ring-botanical-primary focus:border-transparent outline-none" 
               />
             </div>
-            <button type="submit" disabled={loading || totpCode.length !== 6 || newPassword.length < 8} className="w-full bg-botanical-primary text-white font-bold py-3 rounded-lg hover:bg-white hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 transition-colors mt-2 disabled:opacity-50">
+            <button type="submit" disabled={loading || totpCode.length !== 6 || newPassword.length < 8} className="w-full bg-botanical-primary text-white font-bold py-3 rounded-lg hover:bg-botanical-surface hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 transition-colors mt-2 disabled:opacity-50">
               {loading ? 'Recovering...' : 'Reset Password'}
             </button>
           </form>

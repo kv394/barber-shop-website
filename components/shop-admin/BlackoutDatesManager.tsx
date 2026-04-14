@@ -50,7 +50,7 @@ export default function BlackoutDatesManager({ shopId }: { shopId: string }) {
     <div className="bg-botanical-surface border border-botanical-border shadow-sm rounded-xl p-6 space-y-5">
       <h3 className="font-bold text-botanical-text text-2xl md:text-3xl">🚫 Blackout Dates & Holidays</h3>
       <p className="text-botanical-muted text-base md:text-lg">Mark days when your shop is closed. Online booking will be disabled for these dates.</p>
-      {msg && <div className="p-3 bg-green-900/30 border border-green-500/30 text-green-300 rounded-lg text-sm">{msg}</div>}
+      {msg && <div className="p-3 bg-green-900/30 border border-status-confirmed/30 text-green-300 rounded-lg text-sm">{msg}</div>}
 
       {/* Add form */}
       <div className="flex flex-col sm:flex-row gap-3">
@@ -63,7 +63,7 @@ export default function BlackoutDatesManager({ shopId }: { shopId: string }) {
           {REASONS.map(r => <option key={r} value={r}>{r}</option>)}
         </select>
         <button onClick={addDate} disabled={!newDate || adding}
-          className="px-4 py-2 bg-botanical-primary text-white rounded-lg text-sm font-bold disabled:opacity-50 flex-shrink-0">
+          className="px-4 py-2 bg-botanical-primary text-white rounded-lg text-sm font-bold disabled:opacity-50 flex-shrink-0 hover:opacity-90">
           {adding ? 'Adding…' : '+ Add Date'}
         </button>
       </div>
@@ -81,7 +81,7 @@ export default function BlackoutDatesManager({ shopId }: { shopId: string }) {
               return (
                 <div key={d.id} className="flex items-center justify-between p-3 bg-botanical-surface rounded-lg">
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-lg bg-red-900/40 border border-red-500/30 flex flex-col items-center justify-center">
+                    <div className="w-10 h-10 rounded-lg bg-red-900/40 border border-status-cancelled/30 flex flex-col items-center justify-center">
                       <span className="text-red-300 text-xs font-bold leading-none">{MONTHS[dt.getUTCMonth()]}</span>
                       <span className="text-red-200 text-base font-black leading-none">{dt.getUTCDate()}</span>
                     </div>
@@ -90,7 +90,7 @@ export default function BlackoutDatesManager({ shopId }: { shopId: string }) {
                       <p className="text-botanical-muted text-base md:text-lg">{dayName}{d.reason ? ` · ${d.reason}` : ''}</p>
                     </div>
                   </div>
-                  <button onClick={() => remove(d.id)} className="text-botanical-muted hover:text-red-400 text-lg transition">×</button>
+                  <button onClick={() => remove(d.id)} className="text-botanical-muted hover:text-status-cancelled text-lg transition">×</button>
                 </div>
               );
             })}
@@ -110,7 +110,7 @@ export default function BlackoutDatesManager({ shopId }: { shopId: string }) {
             {past.map(d => (
               <div key={d.id} className="flex items-center justify-between px-3 py-2 text-botanical-muted text-xs">
                 <span>{fmt(d.date)}{d.reason ? ` — ${d.reason}` : ''}</span>
-                <button onClick={() => remove(d.id)} className="hover:text-red-400 ml-2">×</button>
+                <button onClick={() => remove(d.id)} className="hover:text-status-cancelled ml-2">×</button>
               </div>
             ))}
           </div>

@@ -73,7 +73,7 @@ export default function CreateServiceForm({ shopId }: { shopId: string }) {
         {isInternal ? 'Add Inventory Item' : 'Add New Service'}
       </h3>
       
-      {error && <div className="p-3 bg-red-900/50 border border-red-500 text-red-200 rounded text-sm mb-4">{error}</div>}
+      {error && <div className="p-3 bg-red-900/50 border border-status-cancelled text-red-200 rounded text-sm mb-4">{error}</div>}
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <select 
@@ -207,7 +207,7 @@ export default function CreateServiceForm({ shopId }: { shopId: string }) {
       <button 
         type="submit" 
         disabled={isSubmitting || !name || !price || (!isInternal && !duration)} 
-        className="w-full bg-botanical-primary text-white font-semibold py-3 rounded-lg hover:bg-white hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 transition-colors disabled:opacity-50 disabled:cursor-not-allowed mt-4"
+        className="w-full bg-botanical-primary text-white font-semibold py-3 rounded-lg hover:bg-botanical-surface hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 transition-colors disabled:opacity-50 disabled:cursor-not-allowed mt-4"
       >
         {isSubmitting ? 'Saving...' : (isInternal ? 'Save Inventory Item' : 'Save Service')}
       </button>

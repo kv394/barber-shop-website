@@ -43,7 +43,7 @@ export default function NotificationSettingsForm({ shopId }: { shopId: string })
     <div className="bg-botanical-surface border border-botanical-border shadow-sm rounded-xl p-6 space-y-4">
       <h3 className="font-bold text-botanical-text text-2xl md:text-3xl">🔔 Notification Settings</h3>
       <p className="text-botanical-muted text-base md:text-lg">Configure automated messages sent to clients and staff.</p>
-      {msg && <div className="p-3 bg-green-900/30 border border-green-500/30 text-green-300 rounded-lg text-sm">{msg}</div>}
+      {msg && <div className="p-3 bg-green-900/30 border border-status-confirmed/30 text-green-300 rounded-lg text-sm">{msg}</div>}
 
       <div className="space-y-2">
         <p className="text-botanical-muted uppercase tracking-widest font-semibold pt-2 text-base md:text-lg">Client Notifications</p>
@@ -103,7 +103,7 @@ export default function NotificationSettingsForm({ shopId }: { shopId: string })
         </div>
       </div>
 
-      <button onClick={save} disabled={saving} className="w-full bg-botanical-primary text-white font-bold py-3 rounded-lg hover:bg-white hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 transition disabled:opacity-50">
+      <button onClick={save} disabled={saving} className="w-full bg-botanical-primary text-white font-bold py-3 rounded-lg hover:bg-botanical-surface hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 transition disabled:opacity-50">
         {saving ? 'Saving…' : 'Save Notification Settings'}
       </button>
     </div>

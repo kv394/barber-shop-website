@@ -27,11 +27,11 @@ export default function StaffProfileModalWrapper({ staff, children }: { staff: a
                 )}
               </div>
               <h2 className="font-bold text-botanical-text mb-1 text-center text-3xl md:text-4xl">{staff.name || staff.email || 'Unnamed Staff'}</h2>
-              <span className="text-xs bg-botanical-primary/20 text-botanical-accent px-3 py-1 rounded-full uppercase tracking-wider font-bold mb-6">
+              <span className="text-xs bg-botanical-primary/20 text-botanical-accent px-3 py-1 rounded-full uppercase tracking-wider font-bold mb-6 hover:opacity-90">
                 {staff.role?.replace('_', ' ')}
               </span>
 
-              <div className="bg-white p-3 rounded-xl mb-6 shadow-sm">
+              <div className="bg-botanical-surface p-3 rounded-xl mb-6 shadow-sm">
                 <QRCodeSVG value={staff.barcode || staff.id} size={120} level="H" />
                 <p className="text-center text-botanical-muted font-mono mt-2 tracking-wider text-base md:text-lg">{staff.barcode || 'NO_CODE'}</p>
               </div>
@@ -53,7 +53,7 @@ export default function StaffProfileModalWrapper({ staff, children }: { staff: a
             </div>
             
             <div className="mt-6">
-              <button onClick={() => setIsOpen(false)} className="w-full py-3 bg-botanical-primary text-white rounded-xl hover:bg-yellow-400 transition-colors font-bold shadow-lg">
+              <button onClick={() => setIsOpen(false)} className="w-full py-3 bg-botanical-primary text-white rounded-xl hover:bg-status-pending transition-colors font-bold shadow-lg">
                 Close Profile
               </button>
             </div>

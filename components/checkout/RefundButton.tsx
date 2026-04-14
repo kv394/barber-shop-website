@@ -49,7 +49,7 @@ export default function RefundButton({
           max={totalAmount}
           className="w-20 bg-botanical-surface border border-botanical-border shadow-sm rounded px-2 py-1 text-xs text-botanical-text"
         />
-        <button onClick={handleRefund} disabled={isRefunding} className="bg-amber-600/80 text-botanical-text text-sm px-2 py-1 rounded hover:bg-amber-500 disabled:opacity-50">
+        <button onClick={handleRefund} disabled={isRefunding} className="bg-status-pending/80 text-botanical-text text-sm px-2 py-1 rounded hover:bg-status-pending disabled:opacity-50">
           {isRefunding ? '...' : '💸'}
         </button>
         <button onClick={() => setShowForm(false)} className="text-botanical-muted text-sm px-1 hover:text-botanical-text">✕</button>
@@ -60,7 +60,7 @@ export default function RefundButton({
   return (
     <button
       onClick={() => setShowForm(true)}
-      className="text-amber-400 text-sm hover:text-amber-300 px-2 py-1 bg-amber-900/20 border border-amber-500/20 rounded"
+      className="text-status-pending text-sm hover:text-amber-300 px-2 py-1 bg-amber-900/20 border border-status-pending/20 rounded"
       title="Refund"
     >
       💸 Refund

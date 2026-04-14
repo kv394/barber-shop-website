@@ -42,7 +42,7 @@ export default function AppointmentNotes({ shopId, appointmentId, initialNotes, 
     return (
       <button
         onClick={() => setIsOpen(true)}
-        className={`text-sm sm:text-xs transition-colors flex items-center gap-1 mt-2 ${hasClientInfo ? 'text-amber-400 hover:text-amber-300' : 'text-botanical-muted hover:text-botanical-text'}`}
+        className={`text-sm sm:text-xs transition-colors flex items-center gap-1 mt-2 ${hasClientInfo ? 'text-status-pending hover:text-amber-300' : 'text-botanical-muted hover:text-botanical-text'}`}
         title="View Notes"
       >
         📝 {hasClientInfo ? 'View Client Notes' : initialNotes ? 'View Appointment Notes' : 'Add Notes'}
@@ -53,11 +53,11 @@ export default function AppointmentNotes({ shopId, appointmentId, initialNotes, 
   return (
     <div className="mt-3 pt-3 border-t border-botanical-border space-y-3">
       {hasClientInfo && (
-        <div className="bg-botanical-surface p-2 rounded border border-amber-500/20">
-          <h5 className="text-sm uppercase tracking-wider text-amber-500 font-bold mb-1">Client Profile</h5>
+        <div className="bg-botanical-surface p-2 rounded border border-status-pending/20">
+          <h5 className="text-sm uppercase tracking-wider text-status-pending font-bold mb-1">Client Profile</h5>
           {clientNotes && <p className="text-botanical-muted mb-1 text-base md:text-lg"><span className="text-botanical-muted font-semibold">Notes:</span> {clientNotes}</p>}
           {preferences && <p className="text-botanical-muted mb-1 text-base md:text-lg"><span className="text-botanical-muted font-semibold">Prefs:</span> {preferences}</p>}
-          {allergies && <p className="text-red-400 text-base md:text-lg"><span className="text-red-500 font-semibold">Allergies:</span> {allergies}</p>}
+          {allergies && <p className="text-status-cancelled text-base md:text-lg"><span className="text-status-cancelled font-semibold">Allergies:</span> {allergies}</p>}
         </div>
       )}
 

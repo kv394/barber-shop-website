@@ -100,8 +100,8 @@ export default async function SignInPage({
           <p className="text-botanical-muted text-base md:text-lg">Sign in to manage your appointments</p>
         </div>
         
-        {error && <div className="bg-red-500/10 border border-red-500/30 text-red-400 p-3 rounded-lg mb-6 text-sm text-center">{error}</div>}
-        {message && <div className="bg-green-500/10 border border-green-500/30 text-green-400 p-3 rounded-lg mb-6 text-sm text-center">{message}</div>}
+        {error && <div className="bg-status-cancelled/10 border border-status-cancelled/30 text-status-cancelled p-3 rounded-lg mb-6 text-sm text-center">{error}</div>}
+        {message && <div className="bg-status-confirmed/10 border border-status-confirmed/30 text-status-confirmed p-3 rounded-lg mb-6 text-sm text-center">{message}</div>}
 
         <form action={signInAction} className="space-y-5">
           <div>
@@ -115,7 +115,7 @@ export default async function SignInPage({
               Forgot password?
             </Link>
           </div>
-          <button type="submit" className="w-full bg-botanical-primary text-white font-bold py-3 rounded-lg hover:bg-white hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 transition-colors mt-2">Sign In</button>
+          <button type="submit" className="w-full bg-botanical-primary text-white font-bold py-3 rounded-lg hover:bg-botanical-surface hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 transition-colors mt-2">Sign In</button>
         </form>
         
         <p className="text-center text-botanical-muted mt-8 text-base md:text-lg">Don't have an account? <Link href="/sign-up" className="text-botanical-accent hover:underline">Sign Up</Link></p>

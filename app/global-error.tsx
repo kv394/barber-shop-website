@@ -25,9 +25,9 @@ export default function GlobalError({
   return (
     <html>
       <body>
-        <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4 py-12">
-          <div className="text-center max-w-md w-full bg-white p-8 rounded-lg shadow-sm border border-red-100">
-            <h2 className="font-bold text-gray-900 mb-4 text-3xl md:text-4xl">Something went wrong</h2>
+        <div className="flex min-h-screen items-center justify-center bg-botanical-bg px-4 py-12">
+          <div className="text-center max-w-md w-full bg-botanical-surface p-8 rounded-lg shadow-sm border border-red-100">
+            <h2 className="font-bold text-botanical-text mb-4 text-3xl md:text-4xl">Something went wrong</h2>
             <p className="text-botanical-muted mb-6 text-base md:text-lg">
               A critical error occurred. Our team has been notified.
             </p>

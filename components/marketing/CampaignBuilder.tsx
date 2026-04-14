@@ -62,9 +62,9 @@ export default function CampaignBuilder({ shopId }: { shopId: string }) {
   const getStatusBadge = (status: string) => {
     const colors: Record<string, string> = {
       DRAFT: 'bg-botanical-surface text-botanical-muted border-botanical-border',
-      SCHEDULED: 'bg-blue-900/50 text-blue-300 border-blue-500/30',
-      SENT: 'bg-green-900/50 text-green-300 border-green-500/30',
-      CANCELLED: 'bg-red-900/50 text-red-300 border-red-500/30',
+      SCHEDULED: 'bg-blue-900/50 text-blue-300 border-status-info/30',
+      SENT: 'bg-green-900/50 text-green-300 border-status-confirmed/30',
+      CANCELLED: 'bg-red-900/50 text-red-300 border-status-cancelled/30',
     };
     return <span className={`px-2 py-0.5 rounded text-sm font-bold border ${colors[status] || colors.DRAFT}`}>{status}</span>;
   };
@@ -88,7 +88,7 @@ export default function CampaignBuilder({ shopId }: { shopId: string }) {
         </h3>
         <button
           onClick={() => setShowCreate(!showCreate)}
-          className="bg-botanical-primary text-white px-4 py-2 rounded-md text-sm font-bold hover:bg-yellow-400"
+          className="bg-botanical-primary text-white px-4 py-2 rounded-md text-sm font-bold hover:bg-status-pending"
         >
           {showCreate ? '✕ Cancel' : '+ New Campaign'}
         </button>
@@ -161,7 +161,7 @@ export default function CampaignBuilder({ shopId }: { shopId: string }) {
 
           <button
             onClick={createCampaign}
-            className="bg-botanical-primary text-white px-6 py-2 rounded-md text-sm font-bold hover:bg-yellow-400"
+            className="bg-botanical-primary text-white px-6 py-2 rounded-md text-sm font-bold hover:bg-status-pending"
           >
             Create Campaign
           </button>
@@ -194,7 +194,7 @@ export default function CampaignBuilder({ shopId }: { shopId: string }) {
                 <button
                   onClick={() => sendCampaign(c.id)}
                   disabled={sending === c.id}
-                  className="bg-green-600 text-botanical-text px-4 py-2 rounded-md text-xs font-bold hover:bg-green-500 disabled:opacity-50 shrink-0"
+                  className="bg-status-confirmed text-botanical-text px-4 py-2 rounded-md text-xs font-bold hover:bg-status-confirmed disabled:opacity-50 shrink-0"
                 >
                   {sending === c.id ? 'Sending...' : '🚀 Send Now'}
                 </button>

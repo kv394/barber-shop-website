@@ -15,7 +15,7 @@ export default function EngagementAnalytics({ shopId }: { shopId: string }) {
   }, [shopId]);
 
   if (loading) return <p className="text-botanical-muted text-center py-12 text-base md:text-lg">Loading analytics...</p>;
-  if (!data || data.error) return <p className="text-red-400 text-center py-12 text-base md:text-lg">Failed to load analytics.</p>;
+  if (!data || data.error) return <p className="text-status-cancelled text-center py-12 text-base md:text-lg">Failed to load analytics.</p>;
 
   const { overview, loyalty, referrals, campaigns, topClients } = data;
 
@@ -24,14 +24,14 @@ export default function EngagementAnalytics({ shopId }: { shopId: string }) {
       {/* Overview Floating Bar */}
       <div className="bg-botanical-surface backdrop-blur-xl shadow-2xl rounded-2xl border border-botanical-border shadow-sm grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 relative z-20 overflow-hidden transform sm:-translate-y-6 sm:-mx-2 mb-2 sm:mb-6">
         <div className="p-4 sm:p-5 relative overflow-hidden group hover:bg-gray-50 transition-all duration-300 min-w-0 border-b lg:border-b-0 lg:border-r border-botanical-border border-r md:border-r-0 flex flex-col items-center justify-center text-center">
-          <div className="absolute top-0 left-0 w-full h-1 bg-blue-500/80"></div>
-          <span className="text-blue-500 text-xl sm:text-2xl mb-1 sm:mb-2 flex-shrink-0">👥</span>
+          <div className="absolute top-0 left-0 w-full h-1 bg-status-info/80"></div>
+          <span className="text-status-info text-xl sm:text-2xl mb-1 sm:mb-2 flex-shrink-0">👥</span>
           <h3 className="text-botanical-muted text-[10px] uppercase tracking-widest font-semibold leading-tight mb-1 w-full truncate text-2xl md:text-3xl">Total Clients</h3>
           <p className="font-black text-botanical-text break-words leading-tight w-full text-base md:text-lg">{overview.totalClients}</p>
         </div>
         <div className="p-4 sm:p-5 relative overflow-hidden group hover:bg-gray-50 transition-all duration-300 min-w-0 border-b lg:border-b-0 lg:border-r border-botanical-border md:border-r flex flex-col items-center justify-center text-center">
-          <div className="absolute top-0 left-0 w-full h-1 bg-green-500/80"></div>
-          <span className="text-green-500 text-xl sm:text-2xl mb-1 sm:mb-2 flex-shrink-0">🔥</span>
+          <div className="absolute top-0 left-0 w-full h-1 bg-status-confirmed/80"></div>
+          <span className="text-status-confirmed text-xl sm:text-2xl mb-1 sm:mb-2 flex-shrink-0">🔥</span>
           <h3 className="text-botanical-muted text-[10px] uppercase tracking-widest font-semibold leading-tight mb-1 w-full truncate text-2xl md:text-3xl">Active (30d)</h3>
           <p className="font-black text-botanical-text break-words leading-tight w-full text-base md:text-lg">{overview.activeLastMonth}</p>
         </div>
@@ -48,14 +48,14 @@ export default function EngagementAnalytics({ shopId }: { shopId: string }) {
           <p className="font-black text-botanical-text break-words leading-tight w-full text-base md:text-lg">{overview.retentionRate}%</p>
         </div>
         <div className="p-4 sm:p-5 relative overflow-hidden group hover:bg-gray-50 transition-all duration-300 min-w-0 border-r border-botanical-border flex flex-col items-center justify-center text-center">
-          <div className="absolute top-0 left-0 w-full h-1 bg-amber-500/80"></div>
-          <span className="text-amber-500 text-xl sm:text-2xl mb-1 sm:mb-2 flex-shrink-0">📅</span>
+          <div className="absolute top-0 left-0 w-full h-1 bg-status-pending/80"></div>
+          <span className="text-status-pending text-xl sm:text-2xl mb-1 sm:mb-2 flex-shrink-0">📅</span>
           <h3 className="text-botanical-muted text-[10px] uppercase tracking-widest font-semibold leading-tight mb-1 w-full truncate text-2xl md:text-3xl">Appts (30d)</h3>
           <p className="font-black text-botanical-text break-words leading-tight w-full text-base md:text-lg">{overview.completedAppointments}</p>
         </div>
         <div className="p-4 sm:p-5 relative overflow-hidden group hover:bg-gray-50 transition-all duration-300 min-w-0 flex flex-col items-center justify-center text-center">
-          <div className="absolute top-0 left-0 w-full h-1 bg-botanical-primary/80"></div>
-          <span className="text-yellow-500 text-xl sm:text-2xl mb-1 sm:mb-2 flex-shrink-0">⭐</span>
+          <div className="absolute top-0 left-0 w-full h-1 bg-botanical-primary/80 hover:opacity-90 text-white"></div>
+          <span className="text-status-pending text-xl sm:text-2xl mb-1 sm:mb-2 flex-shrink-0">⭐</span>
           <h3 className="text-botanical-muted text-[10px] uppercase tracking-widest font-semibold leading-tight mb-1 w-full truncate text-2xl md:text-3xl">Avg Rating</h3>
           <p className="font-black text-botanical-text break-words leading-tight w-full text-base md:text-lg">{overview.averageRating}</p>
         </div>
@@ -70,7 +70,7 @@ export default function EngagementAnalytics({ shopId }: { shopId: string }) {
           <div className="space-y-2">
             <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 text-sm">
               <span className="text-botanical-muted">Status</span>
-              <span className={loyalty.isActive ? 'text-green-400 font-semibold' : 'text-red-400'}>
+              <span className={loyalty.isActive ? 'text-status-confirmed font-semibold' : 'text-status-cancelled'}>
                 {loyalty.isActive ? '● Active' : '● Inactive'}
               </span>
             </div>
@@ -92,7 +92,7 @@ export default function EngagementAnalytics({ shopId }: { shopId: string }) {
             </div>
             <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 text-sm">
               <span className="text-botanical-muted">Completed</span>
-              <span className="text-green-400 font-semibold">{referrals.completed}</span>
+              <span className="text-status-confirmed font-semibold">{referrals.completed}</span>
             </div>
           </div>
         </div>
@@ -140,8 +140,8 @@ export default function EngagementAnalytics({ shopId }: { shopId: string }) {
                       <p className="text-botanical-text font-medium truncate max-w-[200px] text-base md:text-lg">{c.name || 'Guest'}</p>
                       <p className="text-botanical-muted truncate text-base md:text-lg">{c.email}</p>
                     </td>
-                    <td className="py-2 px-2 text-right text-blue-400 font-semibold">{c.visitCount}</td>
-                    <td className="py-2 px-2 text-right text-green-400 font-semibold">${c.totalSpend.toFixed(0)}</td>
+                    <td className="py-2 px-2 text-right text-status-info font-semibold">{c.visitCount}</td>
+                    <td className="py-2 px-2 text-right text-status-confirmed font-semibold">${c.totalSpend.toFixed(0)}</td>
                     <td className="py-2 px-2 text-right text-botanical-accent font-semibold">{c.loyaltyPoints}</td>
                   </tr>
                 ))}

@@ -117,7 +117,7 @@ export default function MyAppointmentsPage() {
             ) : null}
             <Link
               href="/shops"
-              className="bg-botanical-primary text-white font-bold px-4 py-2 rounded-lg text-sm hover:bg-white hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 transition-colors"
+              className="bg-botanical-primary text-white font-bold px-4 py-2 rounded-lg text-sm hover:bg-botanical-surface hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 transition-colors"
             >
               Book New
             </Link>
@@ -143,7 +143,7 @@ export default function MyAppointmentsPage() {
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8 space-y-10">
         {error && (
-          <div className="bg-red-900/30 border border-red-500/30 text-red-300 px-4 py-3 rounded-lg text-sm">
+          <div className="bg-red-900/30 border border-status-cancelled/30 text-red-300 px-4 py-3 rounded-lg text-sm">
             {error}
           </div>
         )}
@@ -151,7 +151,7 @@ export default function MyAppointmentsPage() {
         {/* ═══ Upcoming ═══ */}
         <section>
           <div className="flex items-center gap-3 mb-5">
-            <div className="w-2 h-8 bg-blue-500 rounded-full" />
+            <div className="w-2 h-8 bg-status-info rounded-full" />
             <h2 className="font-bold text-botanical-text text-3xl md:text-4xl">
               Upcoming ({upcoming.length})
             </h2>
@@ -277,7 +277,7 @@ function AppointmentCard({
           {apt.status === 'COMPLETED' && apt.totalAmount > 0 && (
             <div className="flex items-center gap-3 text-xs text-botanical-muted">
               <span>Total: <span className="text-botanical-text font-semibold">${apt.totalAmount.toFixed(2)}</span></span>
-              {apt.tipAmount > 0 && <span>Tip: <span className="text-green-400">${apt.tipAmount.toFixed(2)}</span></span>}
+              {apt.tipAmount > 0 && <span>Tip: <span className="text-status-confirmed">${apt.tipAmount.toFixed(2)}</span></span>}
             </div>
           )}
         </div>
@@ -289,7 +289,7 @@ function AppointmentCard({
               {onReschedule && (
                 <button
                   onClick={onReschedule}
-                  className="px-4 py-2 text-sm font-semibold bg-blue-600/20 text-blue-400 border border-blue-500/30 rounded-lg hover:bg-blue-600/40 transition-all"
+                  className="px-4 py-2 text-sm font-semibold bg-status-info/20 text-status-info border border-status-info/30 rounded-lg hover:bg-status-info/40 transition-all"
                 >
                   Reschedule
                 </button>
@@ -297,7 +297,7 @@ function AppointmentCard({
               <button
                 onClick={() => onCancel(apt.id)}
                 disabled={cancelling}
-                className="px-4 py-2 text-sm font-semibold bg-red-600/20 text-red-400 border border-red-500/30 rounded-lg hover:bg-red-600/40 hover:text-red-300 transition-all disabled:opacity-50 disabled:cursor-wait"
+                className="px-4 py-2 text-sm font-semibold bg-status-cancelled/20 text-status-cancelled border border-status-cancelled/30 rounded-lg hover:bg-status-cancelled/40 hover:text-red-300 transition-all disabled:opacity-50 disabled:cursor-wait"
               >
                 {cancelling ? 'Cancelling…' : 'Cancel'}
               </button>
@@ -320,7 +320,7 @@ function AppointmentCard({
             </Link>
           )}
           {apt.review && (
-            <span className="px-4 py-2 text-sm text-green-400/70 text-center">✅ Reviewed</span>
+            <span className="px-4 py-2 text-sm text-status-confirmed/70 text-center">✅ Reviewed</span>
           )}
         </div>
       </div>

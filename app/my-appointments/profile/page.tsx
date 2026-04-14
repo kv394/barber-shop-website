@@ -84,14 +84,14 @@ function ProfileContent() {
 
       <div className="max-w-2xl mx-auto px-4 sm:px-6 py-8 space-y-6">
         {msg && (
-          <div className={`px-4 py-3 rounded-lg text-sm ${msg.type === 'success' ? 'bg-green-900/30 border border-green-500/30 text-green-300' : 'bg-red-900/30 border border-red-500/30 text-red-300'}`}>
+          <div className={`px-4 py-3 rounded-lg text-sm ${msg.type === 'success' ? 'bg-green-900/30 border border-status-confirmed/30 text-green-300' : 'bg-red-900/30 border border-status-cancelled/30 text-red-300'}`}>
             {msg.text}
           </div>
         )}
 
         <div className="bg-botanical-surface border border-botanical-border shadow-sm rounded-xl p-6 flex flex-col items-center justify-center space-y-4 print:bg-white print:border-none print:shadow-none print:text-black">
           <h2 className="font-semibold text-botanical-text print:text-black text-3xl md:text-4xl">My Check-in Code</h2>
-          <div className="bg-white p-4 rounded-xl">
+          <div className="bg-botanical-surface p-4 rounded-xl">
             <QRCodeSVG value={profile?.barcode || profile?.id || 'NO_ID'} size={150} level="H" />
           </div>
           <p className="text-botanical-muted print:text-botanical-muted text-center max-w-xs text-base md:text-lg">
@@ -139,7 +139,7 @@ function ProfileContent() {
             </label>
           </div>
 
-          <button onClick={handleSave} disabled={saving} className="w-full bg-botanical-primary text-white font-bold py-3 rounded-lg hover:bg-white hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 transition-colors disabled:opacity-50 mt-4">
+          <button onClick={handleSave} disabled={saving} className="w-full bg-botanical-primary text-white font-bold py-3 rounded-lg hover:bg-botanical-surface hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 transition-colors disabled:opacity-50 mt-4">
             {saving ? 'Saving…' : 'Save Changes'}
           </button>
 

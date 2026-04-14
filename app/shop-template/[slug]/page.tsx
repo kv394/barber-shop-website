@@ -559,7 +559,7 @@ export default async function PublicShopPage({
             Schedule your appointment today and get the best service in town.
           </p>
           <button 
-            className="bg-white font-bold py-3 px-8 rounded-lg transition-colors text-lg"
+            className="bg-botanical-surface font-bold py-3 px-8 rounded-lg transition-colors text-lg"
             style={{ color: primaryColor }}
           >
             Book an Appointment

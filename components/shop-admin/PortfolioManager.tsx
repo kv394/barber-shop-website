@@ -79,7 +79,7 @@ export default function PortfolioManager({ shopId, currentUserId, userRole }: { 
         </div>
       )}
 
-      {msg && <div className="mb-4 p-2 bg-green-900/30 border border-green-500/30 text-green-300 rounded text-sm">{msg}</div>}
+      {msg && <div className="mb-4 p-2 bg-green-900/30 border border-status-confirmed/30 text-green-300 rounded text-sm">{msg}</div>}
 
       <form onSubmit={addImage} className="mb-8 p-4 bg-botanical-bg/50 rounded-lg border border-botanical-border shadow-sm space-y-4">
         <h4 className="font-semibold text-botanical-text text-xl md:text-2xl">Add New Photo</h4>
@@ -120,7 +120,7 @@ export default function PortfolioManager({ shopId, currentUserId, userRole }: { 
                     setSaving(false);
                   }
                 }} 
-                className="flex-1 bg-botanical-surface border border-botanical-border shadow-sm rounded px-3 py-2 text-botanical-text text-sm focus:outline-none focus:border-brand-gold file:mr-4 file:py-1 file:px-4 file:rounded file:border-0 file:text-sm file:bg-botanical-primary/20 file:text-botanical-primary hover:file:bg-botanical-primary/30" 
+                className="flex-1 bg-botanical-surface border border-botanical-border shadow-sm rounded px-3 py-2 text-botanical-text text-sm focus:outline-none focus:border-brand-gold file:mr-4 file:py-1 file:px-4 file:rounded file:border-0 file:text-sm file:bg-botanical-primary/20 file:text-botanical-primary hover:file:bg-botanical-primary/30 hover:opacity-90" 
               />
             </div>
           </div>
@@ -138,7 +138,7 @@ export default function PortfolioManager({ shopId, currentUserId, userRole }: { 
         <button 
           type="submit" 
           disabled={saving || !imageUrl.trim()} 
-          className="px-4 py-2 bg-botanical-primary text-white rounded text-sm font-bold hover:bg-white hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 transition disabled:opacity-50"
+          className="px-4 py-2 bg-botanical-primary text-white rounded text-sm font-bold hover:bg-botanical-surface hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 transition disabled:opacity-50"
         >
           {saving ? 'Uploading...' : 'Add to Portfolio'}
         </button>
@@ -158,7 +158,7 @@ export default function PortfolioManager({ shopId, currentUserId, userRole }: { 
                 <div className="text-right">
                   <button 
                     onClick={() => removeImage(img.id)}
-                    className="bg-red-500/80 hover:bg-red-500 text-botanical-text w-8 h-8 rounded-full flex items-center justify-center text-xs shadow-lg backdrop-blur-md"
+                    className="bg-status-cancelled/80 hover:bg-status-cancelled text-botanical-text w-8 h-8 rounded-full flex items-center justify-center text-xs shadow-lg backdrop-blur-md"
                   >
                     ✕
                   </button>

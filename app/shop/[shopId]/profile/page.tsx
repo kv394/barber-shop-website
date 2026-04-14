@@ -40,13 +40,13 @@ export default async function ProfilePage({ params }: { params: Promise<{ shopId
         
         {/* Profile Header */}
         <div className="bg-botanical-bg/80 backdrop-blur-xl border border-botanical-border shadow-sm rounded-2xl p-6 flex items-center gap-6 shadow-lg">
-          <div className="w-20 h-20 rounded-full bg-botanical-primary/20 flex items-center justify-center text-4xl border-2 border-brand-gold/50 shadow-inner overflow-hidden shrink-0">
+          <div className="w-20 h-20 rounded-full bg-botanical-primary/20 flex items-center justify-center text-4xl border-2 border-brand-gold/50 shadow-inner overflow-hidden shrink-0 hover:opacity-90">
             {dbUser.name ? dbUser.name.charAt(0).toUpperCase() : '👤'}
           </div>
           <div>
             <h2 className="font-bold text-botanical-text mb-1 text-3xl md:text-4xl">{dbUser.name || 'Unnamed Staff'}</h2>
             <p className="text-botanical-muted mb-2 text-base md:text-lg">{dbUser.email}</p>
-            <span className="inline-block px-3 py-1 bg-botanical-primary/10 border border-brand-gold/30 text-botanical-accent text-xs font-bold rounded-full uppercase tracking-wider">
+            <span className="inline-block px-3 py-1 bg-botanical-primary/10 border border-brand-gold/30 text-botanical-accent text-xs font-bold rounded-full uppercase tracking-wider hover:opacity-90">
               {dbUser.role === 'STAFF' ? 'Staff Member' : dbUser.role}
             </span>
           </div>
@@ -68,7 +68,7 @@ export default async function ProfilePage({ params }: { params: Promise<{ shopId
         <div className="bg-botanical-bg/80 backdrop-blur-xl border border-botanical-border shadow-sm rounded-2xl shadow-lg overflow-hidden divide-y divide-white/5">
           <Link href={`/shop/${shopId}/waitlist`} className="flex items-center justify-between p-5 hover:bg-botanical-surface transition-colors active:bg-botanical-border">
             <div className="flex items-center gap-4">
-              <span className="text-xl bg-blue-500/20 text-blue-400 w-10 h-10 rounded-full flex items-center justify-center">📋</span>
+              <span className="text-xl bg-status-info/20 text-status-info w-10 h-10 rounded-full flex items-center justify-center">📋</span>
               <div>
                 <h3 className="text-botanical-text font-semibold text-2xl md:text-3xl">Walk-in Waitlist</h3>
                 <p className="text-botanical-muted text-base md:text-lg">Manage walk-ins and wait times</p>
@@ -79,7 +79,7 @@ export default async function ProfilePage({ params }: { params: Promise<{ shopId
           
           <Link href={`/shop/${shopId}/leave`} className="flex items-center justify-between p-5 hover:bg-botanical-surface transition-colors active:bg-botanical-border">
             <div className="flex items-center gap-4">
-              <span className="text-xl bg-amber-500/20 text-amber-400 w-10 h-10 rounded-full flex items-center justify-center">🏖️</span>
+              <span className="text-xl bg-status-pending/20 text-status-pending w-10 h-10 rounded-full flex items-center justify-center">🏖️</span>
               <div>
                 <h3 className="text-botanical-text font-semibold text-2xl md:text-3xl">Time Off & Leave</h3>
                 <p className="text-botanical-muted text-base md:text-lg">Request vacations and manage absences</p>
@@ -90,7 +90,7 @@ export default async function ProfilePage({ params }: { params: Promise<{ shopId
           
           <Link href={`/shop/${shopId}/reports/commissions`} className="flex items-center justify-between p-5 hover:bg-botanical-surface transition-colors active:bg-botanical-border">
             <div className="flex items-center gap-4">
-              <span className="text-xl bg-green-500/20 text-green-400 w-10 h-10 rounded-full flex items-center justify-center">💰</span>
+              <span className="text-xl bg-status-confirmed/20 text-status-confirmed w-10 h-10 rounded-full flex items-center justify-center">💰</span>
               <div>
                 <h3 className="text-botanical-text font-semibold text-2xl md:text-3xl">My Earnings</h3>
                 <p className="text-botanical-muted text-base md:text-lg">Track your commissions and tips</p>
@@ -123,7 +123,7 @@ export default async function ProfilePage({ params }: { params: Promise<{ shopId
         </div>
         
         <div className="pt-4 pb-8">
-            <Link href="/logout" className="w-full flex items-center justify-center gap-2 py-4 bg-red-900/20 hover:bg-red-900/40 text-red-400 font-bold rounded-xl border border-red-500/20 transition-colors">
+            <Link href="/logout" className="w-full flex items-center justify-center gap-2 py-4 bg-red-900/20 hover:bg-red-900/40 text-status-cancelled font-bold rounded-xl border border-status-cancelled/20 transition-colors">
                 <span>🚪</span> Sign Out
             </Link>
         </div>

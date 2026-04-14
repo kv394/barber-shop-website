@@ -118,7 +118,7 @@ export default async function ShopLayout({
               <Link
                 href={`/shops/${data.shopSlug}?preview=true`}
                 target="_blank"
-                className="bg-botanical-primary text-white hover:bg-white hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 px-4 sm:px-6 py-2.5 rounded-xl transition-all duration-200 text-xs sm:text-sm font-semibold whitespace-nowrap shadow-sm hover:shadow-md hover:-translate-y-0.5"
+                className="bg-botanical-primary text-white hover:bg-botanical-surface hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 px-4 sm:px-6 py-2.5 rounded-xl transition-all duration-200 text-xs sm:text-sm font-semibold whitespace-nowrap shadow-sm hover:shadow-md hover:-translate-y-0.5"
               >
                 View Public Page ↗
               </Link>

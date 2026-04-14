@@ -64,18 +64,18 @@ export default function WaitlistClient({ shopId, services, staff }: { shopId: st
     <div>
       <div className="bg-botanical-surface backdrop-blur-xl shadow-2xl rounded-2xl border border-botanical-border shadow-sm flex flex-col md:flex-row divide-y md:divide-y-0 md:divide-x divide-white/10 relative z-20 overflow-hidden transform sm:-translate-y-6 sm:-mx-2 mb-2 sm:mb-6">
         <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-botanical-surface transition-all duration-300 min-w-0">
-          <div className="absolute top-0 left-0 w-full h-1 bg-blue-500/80"></div>
+          <div className="absolute top-0 left-0 w-full h-1 bg-status-info/80"></div>
           <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-2 sm:mb-3">
             <h3 className="text-botanical-muted uppercase tracking-widest font-semibold truncate text-2xl md:text-3xl">Waiting</h3>
-            <span className="text-blue-500 text-sm">⏳</span>
+            <span className="text-status-info text-sm">⏳</span>
           </div>
           <p className="font-black text-botanical-text break-words leading-tight text-base md:text-lg">{waiting.length}</p>
         </div>
         <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-botanical-surface transition-all duration-300 min-w-0">
-          <div className="absolute top-0 left-0 w-full h-1 bg-green-500/80"></div>
+          <div className="absolute top-0 left-0 w-full h-1 bg-status-confirmed/80"></div>
           <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-2 sm:mb-3">
             <h3 className="text-botanical-muted uppercase tracking-widest font-semibold truncate text-2xl md:text-3xl">Being Served</h3>
-            <span className="text-green-500 text-sm">✂️</span>
+            <span className="text-status-confirmed text-sm">✂️</span>
           </div>
           <p className="font-black text-botanical-text break-words leading-tight text-base md:text-lg">{serving.length}</p>
         </div>
@@ -102,24 +102,24 @@ export default function WaitlistClient({ shopId, services, staff }: { shopId: st
             <option value="">No Preference</option>
             {staff.map(s => <option key={s.id} value={s.id}>{s.name || (s.email ? s.email.split('@')[0] : 'Staff')}</option>)}
           </select>
-          <button type="submit" disabled={adding} className="bg-botanical-primary text-white hover:bg-white hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 font-bold py-2.5 rounded text-sm disabled:opacity-50">{adding ? 'Adding...' : 'Add'}</button>
+          <button type="submit" disabled={adding} className="bg-botanical-primary text-white hover:bg-botanical-surface hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 font-bold py-2.5 rounded text-sm disabled:opacity-50">{adding ? 'Adding...' : 'Add'}</button>
         </div>
       </form>
 
       {loading ? <p className="text-botanical-muted text-center py-8 text-base md:text-lg">Loading...</p> : (
         <div className="space-y-3">
           {serving.map(entry => (
-            <div key={entry.id} className="bg-green-900/20 p-4 rounded-lg border border-green-500/30 flex flex-wrap justify-between gap-x-2 gap-y-2 items-center">
+            <div key={entry.id} className="bg-green-900/20 p-4 rounded-lg border border-status-confirmed/30 flex flex-wrap justify-between gap-x-2 gap-y-2 items-center">
               <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-full bg-green-600 flex items-center justify-center text-botanical-text font-bold text-sm">✂️</div>
+                <div className="w-8 h-8 rounded-full bg-status-confirmed flex items-center justify-center text-botanical-text font-bold text-sm">✂️</div>
                 <div>
                   <p className="font-bold text-botanical-text text-base md:text-lg">{entry.clientName}</p>
-                  <p className="text-green-400 text-base md:text-lg">Being served · {getWaitTime(entry.createdAt)} ago</p>
+                  <p className="text-status-confirmed text-base md:text-lg">Being served · {getWaitTime(entry.createdAt)} ago</p>
                   {entry.staffId && <p className="text-purple-400 text-base md:text-lg">✂️ {getStaffName(entry.staffId)}</p>}
                   {entry.clientPhone && <p className="text-botanical-muted text-base md:text-lg">📱 {entry.clientPhone}</p>}
                 </div>
               </div>
-              <button onClick={() => updateStatus(entry.id, 'DONE')} className="bg-green-600 hover:bg-green-500 text-botanical-text text-xs font-bold px-3 py-1.5 rounded">Done ✓</button>
+              <button onClick={() => updateStatus(entry.id, 'DONE')} className="bg-status-confirmed hover:bg-status-confirmed text-botanical-text text-xs font-bold px-3 py-1.5 rounded">Done ✓</button>
             </div>
           ))}
           {waiting.map((entry, idx) => (
@@ -136,7 +136,7 @@ export default function WaitlistClient({ shopId, services, staff }: { shopId: st
                 </div>
                 <div className="flex gap-2">
                   <button onClick={() => setAssigningId(entry.id)} className="bg-purple-900/50 hover:bg-purple-800/50 text-purple-300 border border-purple-500/30 text-xs px-2 py-1.5 rounded">Reassign Barber</button>
-                  <button onClick={() => handleServe(entry.id)} className="bg-botanical-primary text-white hover:bg-white hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 text-xs font-bold px-3 py-1.5 rounded">Serve</button>
+                  <button onClick={() => handleServe(entry.id)} className="bg-botanical-primary text-white hover:bg-botanical-surface hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 text-xs font-bold px-3 py-1.5 rounded">Serve</button>
                   <button onClick={() => updateStatus(entry.id, 'LEFT')} className="bg-botanical-surface hover:bg-botanical-border text-botanical-muted text-xs px-2 py-1.5 rounded">Left</button>
                 </div>
               </div>

@@ -128,7 +128,7 @@ export default function TeamChat({ shopId, currentUserId }: { shopId: string, cu
         {parts.map((part, i) => {
           if (part.startsWith('@')) {
             return (
-              <span key={i} className={`font-bold ${isMe ? 'text-botanical-text underline decoration-white/50 underline-offset-2' : 'text-botanical-accent bg-botanical-primary/10 px-1 rounded'}`}>
+              <span key={i} className={`font-bold ${isMe ? 'text-botanical-text underline decoration-white/50 underline-offset-2' : 'text-botanical-accent bg-botanical-primary/10 px-1 rounded'} hover:opacity-90`}>
                 {part}
               </span>
             );
@@ -146,7 +146,7 @@ export default function TeamChat({ shopId, currentUserId }: { shopId: string, cu
   return (
     <div className="flex flex-col h-[calc(100dvh-180px)] sm:h-[600px] bg-botanical-surface rounded-t-3xl sm:rounded-2xl border border-botanical-border shadow-sm overflow-hidden shadow-2xl relative">
       {/* Header */}
-      <div className="p-4 sm:p-5 bg-botanical-primary z-10 shadow-sm relative">
+      <div className="p-4 sm:p-5 bg-botanical-primary z-10 shadow-sm relative hover:opacity-90 text-white">
         <h3 className="font-bold text-white flex items-center gap-2 text-2xl md:text-3xl">
           <span>💬</span> Team Chat
         </h3>
@@ -169,11 +169,11 @@ export default function TeamChat({ shopId, currentUserId }: { shopId: string, cu
                 {!isMe && (
                   <span className="text-xs text-botanical-muted mb-1 ml-1 flex items-center gap-1 font-medium">
                     {msg.sender.name || 'User'} 
-                    {isAdmin && <span className="bg-botanical-primary text-white text-xs font-bold px-1.5 py-0.5 rounded uppercase">Admin</span>}
+                    {isAdmin && <span className="bg-botanical-primary text-white text-xs font-bold px-1.5 py-0.5 rounded uppercase hover:opacity-90">Admin</span>}
                   </span>
                 )}
                 
-                <div className={`max-w-[85%] sm:max-w-[80%] p-2 rounded-2xl ${isMe ? 'bg-botanical-primary text-white rounded-br-sm' : 'bg-botanical-surface border border-botanical-border shadow-sm text-botanical-text rounded-bl-sm'} shadow-sm flex flex-col gap-2 overflow-hidden`}>
+                <div className={`max-w-[85%] sm:max-w-[80%] p-2 rounded-2xl ${isMe ? 'bg-botanical-primary text-white rounded-br-sm' : 'bg-botanical-surface border border-botanical-border shadow-sm text-botanical-text rounded-bl-sm'} shadow-sm flex flex-col gap-2 overflow-hidden hover:opacity-90`}>
                   {msg.imageUrl && (
                     // eslint-disable-next-line @next/next/no-img-element
                     <img src={msg.imageUrl} alt="Shared image" className="max-w-full rounded-xl object-contain max-h-60" loading="lazy" />
@@ -204,7 +204,7 @@ export default function TeamChat({ shopId, currentUserId }: { shopId: string, cu
               onClick={() => insertMention(u.name.split(' ')[0])}
               className="w-full text-left px-4 py-3 hover:bg-botanical-bg border-b border-gray-50 last:border-0 flex items-center gap-3 transition-colors"
             >
-              <div className="w-8 h-8 rounded-full bg-botanical-primary/20 text-botanical-accent font-bold flex items-center justify-center shrink-0">
+              <div className="w-8 h-8 rounded-full bg-botanical-primary/20 text-botanical-accent font-bold flex items-center justify-center shrink-0 hover:opacity-90">
                 {u.name.charAt(0).toUpperCase()}
               </div>
               <div>
@@ -249,12 +249,12 @@ export default function TeamChat({ shopId, currentUserId }: { shopId: string, cu
                   setSending(false);
                 }
               }} 
-              className="w-48 bg-botanical-surface border border-botanical-border shadow-sm rounded px-2 py-1 text-botanical-text text-xs focus:outline-none focus:border-brand-gold file:mr-2 file:py-1 file:px-2 file:rounded file:border-0 file:text-xs file:bg-botanical-primary/20 file:text-botanical-primary hover:file:bg-botanical-primary/30" 
+              className="w-48 bg-botanical-surface border border-botanical-border shadow-sm rounded px-2 py-1 text-botanical-text text-xs focus:outline-none focus:border-brand-gold file:mr-2 file:py-1 file:px-2 file:rounded file:border-0 file:text-xs file:bg-botanical-primary/20 file:text-botanical-primary hover:file:bg-botanical-primary/30 hover:opacity-90" 
             />
             <button
               type="button"
               onClick={() => { setImageUrl(''); setShowImageInput(false); }}
-              className="text-botanical-muted hover:text-red-500 font-bold px-2"
+              className="text-botanical-muted hover:text-status-cancelled font-bold px-2"
             >
               ✕
             </button>

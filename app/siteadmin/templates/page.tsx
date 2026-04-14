@@ -207,7 +207,7 @@ export default function TemplatesPage() {
               className="w-full bg-botanical-surface border border-botanical-border shadow-sm p-2 rounded text-botanical-text" 
             />
           </div>
-          <button disabled={uploading || !uploadFiles || uploadFiles.length === 0 || !uploadName || !uploadShopId} type="submit" className="w-full md:w-auto bg-green-600 text-white px-6 py-2 rounded font-semibold disabled:opacity-50 transition">
+          <button disabled={uploading || !uploadFiles || uploadFiles.length === 0 || !uploadName || !uploadShopId} type="submit" className="w-full md:w-auto bg-status-confirmed text-white px-6 py-2 rounded font-semibold disabled:opacity-50 transition">
             {uploading ? 'Uploading...' : 'Upload Files'}
           </button>
         </form>
@@ -271,7 +271,7 @@ export default function TemplatesPage() {
             />
             <p className="text-botanical-muted mt-1 text-base md:text-lg">These will be uploaded to Google Drive and their URLs passed to the AI.</p>
           </div>
-          <button disabled={generating || !targetShopId} type="submit" className="bg-botanical-primary text-white px-6 py-2 rounded font-semibold disabled:opacity-50 transition">
+          <button disabled={generating || !targetShopId} type="submit" className="bg-botanical-primary text-white px-6 py-2 rounded font-semibold disabled:opacity-50 transition hover:opacity-90">
             {generating ? 'Generating via Gemini...' : 'Generate Template'}
           </button>
         </form>
@@ -288,9 +288,9 @@ export default function TemplatesPage() {
                   {t.shop && <span className="text-xs bg-indigo-500/20 text-indigo-300 px-2 py-0.5 rounded-full">For: {t.shop.name}</span>}
                 </div>
                 <div className="flex space-x-2">
-                  <a href={`/siteadmin/templates/${t.id}/preview`} target="_blank" rel="noopener noreferrer" className="text-xs bg-green-500/20 text-green-400 px-2 py-1 rounded hover:bg-green-500/40 transition">Preview</a>
-                  <button onClick={() => setEditingTemplate(t)} className="text-xs bg-blue-500/20 text-blue-400 px-2 py-1 rounded hover:bg-blue-500/40 transition">Edit</button>
-                  <button onClick={() => handleDelete(t.id)} className="text-xs bg-red-500/20 text-red-400 px-2 py-1 rounded hover:bg-red-500/40 transition">Delete</button>
+                  <a href={`/siteadmin/templates/${t.id}/preview`} target="_blank" rel="noopener noreferrer" className="text-xs bg-status-confirmed/20 text-status-confirmed px-2 py-1 rounded hover:bg-status-confirmed/40 transition">Preview</a>
+                  <button onClick={() => setEditingTemplate(t)} className="text-xs bg-status-info/20 text-status-info px-2 py-1 rounded hover:bg-status-info/40 transition">Edit</button>
+                  <button onClick={() => handleDelete(t.id)} className="text-xs bg-status-cancelled/20 text-status-cancelled px-2 py-1 rounded hover:bg-status-cancelled/40 transition">Delete</button>
                 </div>
               </div>
               <p className="text-botanical-muted mb-4 flex-grow text-base md:text-lg">{t.description}</p>
@@ -348,7 +348,7 @@ export default function TemplatesPage() {
 
               <div className="flex justify-end space-x-3 pt-4">
                 <button type="button" onClick={() => setEditingTemplate(null)} className="px-4 py-2 text-sm text-botanical-muted hover:text-botanical-text">Cancel</button>
-                <button disabled={savingEdit} type="submit" className="bg-botanical-primary text-white px-6 py-2 rounded font-semibold disabled:opacity-50 transition">
+                <button disabled={savingEdit} type="submit" className="bg-botanical-primary text-white px-6 py-2 rounded font-semibold disabled:opacity-50 transition hover:opacity-90">
                   {savingEdit ? 'Saving...' : 'Save Changes'}
                 </button>
               </div>

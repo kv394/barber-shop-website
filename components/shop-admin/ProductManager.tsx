@@ -102,7 +102,7 @@ export default function ProductManager({ shopId, products }: { shopId: string, p
             } else {
               setIsAdding(true);
             }
-          }} className="bg-botanical-primary text-white px-4 py-2 rounded-lg font-bold hover:bg-yellow-400 transition-colors shrink-0">
+          }} className="bg-botanical-primary text-white px-4 py-2 rounded-lg font-bold hover:bg-status-pending transition-colors shrink-0">
             {isAdding ? 'Cancel' : 'Add Product'}
           </button>
         </div>
@@ -154,7 +154,7 @@ export default function ProductManager({ shopId, products }: { shopId: string, p
             </div>
           </div>
           <div className="flex justify-end pt-4">
-            <button type="submit" disabled={isSubmitting} className="bg-botanical-primary text-white px-6 py-2 rounded-lg font-bold hover:bg-yellow-400 transition-colors disabled:opacity-50">
+            <button type="submit" disabled={isSubmitting} className="bg-botanical-primary text-white px-6 py-2 rounded-lg font-bold hover:bg-status-pending transition-colors disabled:opacity-50">
               {isSubmitting ? 'Saving...' : editingProduct ? 'Save Changes' : 'Save Product'}
             </button>
           </div>
@@ -186,7 +186,7 @@ export default function ProductManager({ shopId, products }: { shopId: string, p
                     {product.barcode && <p className="text-botanical-muted font-mono mt-1 text-base md:text-lg">{product.barcode}</p>}
                     
                     <div className="absolute left-0 top-full mt-2 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-opacity z-50">
-                      <div className="bg-white p-4 rounded-xl shadow-2xl border border-botanical-border shadow-sm min-w-[200px] flex flex-col items-center">
+                      <div className="bg-botanical-surface p-4 rounded-xl shadow-2xl border border-botanical-border shadow-sm min-w-[200px] flex flex-col items-center">
                         <Barcode value={product.barcode || product.id} displayValue={false} height={60} width={2} margin={0} background="transparent" />
                         <p className="text-center text-botanical-muted font-mono mt-3 truncate max-w-full px-2 text-base md:text-lg">{product.barcode || product.id}</p>
                       </div>
@@ -195,7 +195,7 @@ export default function ProductManager({ shopId, products }: { shopId: string, p
                 </td>
                 <td className="px-6 py-4">${product.price.toFixed(2)}</td>
                 <td className="px-6 py-4">
-                  <span className={`px-2 py-1 rounded-full text-xs font-medium ${product.type === 'RETAIL' ? 'bg-blue-500/20 text-blue-400' : 'bg-purple-500/20 text-purple-400'}`}>
+                  <span className={`px-2 py-1 rounded-full text-xs font-medium ${product.type === 'RETAIL' ? 'bg-status-info/20 text-status-info' : 'bg-purple-500/20 text-purple-400'}`}>
                     {product.type}
                   </span>
                 </td>
@@ -212,7 +212,7 @@ export default function ProductManager({ shopId, products }: { shopId: string, p
                   )}
                 </td>
                 <td className="px-6 py-4 text-right">
-                  <button onClick={() => handleDelete(product.id)} className="text-red-400 hover:text-red-300 transition-colors">
+                  <button onClick={() => handleDelete(product.id)} className="text-status-cancelled hover:text-red-300 transition-colors">
                     Delete
                   </button>
                 </td>

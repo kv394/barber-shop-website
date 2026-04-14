@@ -126,10 +126,10 @@ export default function ClientDetailModal({ shopId, clientId, clientName, onClos
 
   const getStatusBadge = (status: string) => {
     switch (status) {
-      case 'COMPLETED': return <span className="bg-green-900/50 text-green-300 px-2 py-0.5 rounded text-sm font-bold border border-green-500/30">COMPLETED</span>;
-      case 'NO_SHOW': return <span className="bg-amber-900/50 text-amber-300 px-2 py-0.5 rounded text-sm font-bold border border-amber-500/30">NO-SHOW</span>;
-      case 'CANCELLED': return <span className="bg-red-900/50 text-red-300 px-2 py-0.5 rounded text-sm font-bold border border-red-500/30">CANCELLED</span>;
-      default: return <span className="bg-blue-900/50 text-blue-300 px-2 py-0.5 rounded text-sm font-bold border border-blue-500/30">SCHEDULED</span>;
+      case 'COMPLETED': return <span className="bg-green-900/50 text-green-300 px-2 py-0.5 rounded text-sm font-bold border border-status-confirmed/30">COMPLETED</span>;
+      case 'NO_SHOW': return <span className="bg-amber-900/50 text-amber-300 px-2 py-0.5 rounded text-sm font-bold border border-status-pending/30">NO-SHOW</span>;
+      case 'CANCELLED': return <span className="bg-red-900/50 text-red-300 px-2 py-0.5 rounded text-sm font-bold border border-status-cancelled/30">CANCELLED</span>;
+      default: return <span className="bg-blue-900/50 text-blue-300 px-2 py-0.5 rounded text-sm font-bold border border-status-info/30">SCHEDULED</span>;
     }
   };
 
@@ -208,14 +208,14 @@ export default function ClientDetailModal({ shopId, clientId, clientName, onClos
                       />
                     </div>
                     <div>
-                      <label className="block text-red-400/80 mb-1 uppercase tracking-wider text-sm">Allergies / Warnings</label>
+                      <label className="block text-status-cancelled/80 mb-1 uppercase tracking-wider text-sm">Allergies / Warnings</label>
                       <input
                         type="text"
                         name="allergies"
                         value={formData.allergies}
                         onChange={handleChange}
                         placeholder="e.g. allergic to almond oil products"
-                        className="w-full bg-botanical-surface border border-red-500/30 rounded-md p-2 text-sm text-botanical-text placeholder-gray-600 focus:outline-none focus:border-red-500"
+                        className="w-full bg-botanical-surface border border-status-cancelled/30 rounded-md p-2 text-sm text-botanical-text placeholder-gray-600 focus:outline-none focus:border-red-500"
                       />
                     </div>
                     <div className="space-y-2 pt-2 border-t border-botanical-border mt-3">
@@ -231,7 +231,7 @@ export default function ClientDetailModal({ shopId, clientId, clientName, onClos
                   </div>
                   <div className="pt-4 flex items-center justify-between border-t border-botanical-border mt-4">
                     <p className="text-botanical-muted text-base md:text-lg">Member since {new Date(client.createdAt).toLocaleDateString()}</p>
-                    <button onClick={saveCrmData} disabled={savingNotes} className="bg-botanical-primary text-white px-5 py-2 rounded-md text-sm font-bold hover:bg-yellow-400 disabled:opacity-50 transition-colors">
+                    <button onClick={saveCrmData} disabled={savingNotes} className="bg-botanical-primary text-white px-5 py-2 rounded-md text-sm font-bold hover:bg-status-pending disabled:opacity-50 transition-colors">
                       {savingNotes ? 'Saving...' : savedNotes ? '✓ Saved' : 'Save Profile'}
                     </button>
                   </div>
@@ -246,13 +246,13 @@ export default function ClientDetailModal({ shopId, clientId, clientName, onClos
                       <p className="text-botanical-muted uppercase tracking-wider text-base md:text-lg">Visits</p>
                     </div>
                     <div className="bg-botanical-surface p-3 rounded-lg text-center border border-botanical-border shadow-sm">
-                      <p className="font-bold text-green-400 text-base md:text-lg">
+                      <p className="font-bold text-status-confirmed text-base md:text-lg">
                         ${client.clientAppointments?.filter((a: any) => a.status === 'COMPLETED').reduce((sum: number, a: any) => sum + (a.totalAmount > 0 ? a.totalAmount : (a.service?.price || 0)), 0).toFixed(0) || '0'}
                       </p>
                       <p className="text-botanical-muted uppercase tracking-wider text-base md:text-lg">Spent</p>
                     </div>
                     <div className="bg-botanical-surface p-3 rounded-lg text-center border border-botanical-border shadow-sm">
-                      <p className="font-bold text-amber-400 text-base md:text-lg">
+                      <p className="font-bold text-status-pending text-base md:text-lg">
                         {client.clientAppointments?.filter((a: any) => a.status === 'NO_SHOW').length || 0}
                       </p>
                       <p className="text-botanical-muted uppercase tracking-wider text-base md:text-lg">No-Shows</p>
@@ -268,8 +268,8 @@ export default function ClientDetailModal({ shopId, clientId, clientName, onClos
                         </div>
                       </div>
                       <div className="text-right text-sm text-botanical-muted">
-                        <p className="text-base md:text-lg">Earned: <span className="text-green-400 font-semibold">{loyaltyData.totalEarned}</span></p>
-                        <p className="text-base md:text-lg">Redeemed: <span className="text-red-400 font-semibold">{loyaltyData.totalRedeemed}</span></p>
+                        <p className="text-base md:text-lg">Earned: <span className="text-status-confirmed font-semibold">{loyaltyData.totalEarned}</span></p>
+                        <p className="text-base md:text-lg">Redeemed: <span className="text-status-cancelled font-semibold">{loyaltyData.totalRedeemed}</span></p>
                       </div>
                     </div>
                   )}
@@ -285,7 +285,7 @@ export default function ClientDetailModal({ shopId, clientId, clientName, onClos
                             </p>
                           </div>
                           <div className="text-right shrink-0 ml-2">
-                            <p className="font-bold text-green-400 text-base md:text-lg">${(apt.totalAmount > 0 ? apt.totalAmount : (apt.service?.price || 0)).toFixed(2)}</p>
+                            <p className="font-bold text-status-confirmed text-base md:text-lg">${(apt.totalAmount > 0 ? apt.totalAmount : (apt.service?.price || 0)).toFixed(2)}</p>
                             {getStatusBadge(apt.status)}
                           </div>
                         </div>
@@ -302,7 +302,7 @@ export default function ClientDetailModal({ shopId, clientId, clientName, onClos
                     <div className="space-y-3">
                       <textarea value={newFormula} onChange={e => setNewFormula(e.target.value)} placeholder="e.g. 2oz 5N + 1oz 6G + 20vol" className="w-full bg-botanical-surface border border-botanical-border shadow-sm rounded-md p-2 text-sm text-botanical-text focus:border-brand-gold resize-y" rows={2} required />
                       <input type="text" value={newNotes} onChange={e => setNewNotes(e.target.value)} placeholder="Additional notes..." className="w-full bg-botanical-surface border border-botanical-border shadow-sm rounded-md p-2 text-sm text-botanical-text focus:border-brand-gold" />
-                      <button type="submit" disabled={savingFormula || !newFormula.trim()} className="bg-botanical-primary text-white px-4 py-2 rounded text-xs font-bold hover:bg-white hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 disabled:opacity-50 transition">
+                      <button type="submit" disabled={savingFormula || !newFormula.trim()} className="bg-botanical-primary text-white px-4 py-2 rounded text-xs font-bold hover:bg-botanical-surface hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 disabled:opacity-50 transition">
                         {savingFormula ? 'Saving...' : 'Save Formula'}
                       </button>
                     </div>
@@ -358,12 +358,12 @@ export default function ClientDetailModal({ shopId, clientId, clientName, onClos
                           setSavingImage(false);
                         }
                       }} 
-                      className="flex-1 w-full bg-botanical-surface border border-botanical-border shadow-sm rounded px-3 py-1.5 text-botanical-text text-sm focus:outline-none focus:border-brand-gold file:mr-2 file:py-1 file:px-3 file:rounded file:border-0 file:text-xs file:bg-botanical-primary/20 file:text-botanical-primary hover:file:bg-botanical-primary/30" 
+                      className="flex-1 w-full bg-botanical-surface border border-botanical-border shadow-sm rounded px-3 py-1.5 text-botanical-text text-sm focus:outline-none focus:border-brand-gold file:mr-2 file:py-1 file:px-3 file:rounded file:border-0 file:text-xs file:bg-botanical-primary/20 file:text-botanical-primary hover:file:bg-botanical-primary/30 hover:opacity-90" 
                     />
                     <button 
                       onClick={saveImage} 
                       disabled={savingImage || !newImageUrl.trim()} 
-                      className="w-full sm:w-auto bg-botanical-primary text-white px-4 py-2 rounded text-xs font-bold hover:bg-white hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 disabled:opacity-50"
+                      className="w-full sm:w-auto bg-botanical-primary text-white px-4 py-2 rounded text-xs font-bold hover:bg-botanical-surface hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 disabled:opacity-50"
                     >
                       {savingImage ? 'Adding...' : 'Add Photo'}
                     </button>
@@ -386,7 +386,7 @@ export default function ClientDetailModal({ shopId, clientId, clientName, onClos
             </div>
           </div>
         ) : (
-          <p className="text-red-400 text-center py-8 text-base md:text-lg">Failed to load client details.</p>
+          <p className="text-status-cancelled text-center py-8 text-base md:text-lg">Failed to load client details.</p>
         )}
       </div>
     </div>

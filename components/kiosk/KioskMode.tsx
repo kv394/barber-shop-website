@@ -86,9 +86,9 @@ export default function KioskMode({ userProfile }: { userProfile: UserProfile })
                     {/* Scanner Section (Left Side on Large Screens) */}
                     <div className="lg:col-span-5 bg-botanical-surface p-6 md:p-8 lg:p-12 rounded-3xl border border-botanical-border shadow-sm shadow-2xl flex flex-col items-center justify-center relative overflow-hidden group">
                         {/* Decorative background glow */}
-                        <div className="absolute inset-0 bg-botanical-primary/5 blur-[100px] rounded-full pointer-events-none group-hover:bg-botanical-primary/10 transition-colors duration-700"></div>
+                        <div className="absolute inset-0 bg-botanical-primary/5 blur-[100px] rounded-full pointer-events-none group-hover:bg-botanical-primary/10 transition-colors duration-700 text-white"></div>
 
-                        <div className="bg-botanical-primary/10 text-botanical-accent p-4 rounded-full mb-6 z-10 border border-brand-gold/20">
+                        <div className="bg-botanical-primary/10 text-botanical-accent p-4 rounded-full mb-6 z-10 border border-brand-gold/20 hover:opacity-90">
                             <svg className="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm14 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"></path>
                             </svg>
@@ -97,11 +97,11 @@ export default function KioskMode({ userProfile }: { userProfile: UserProfile })
                         <p className="text-botanical-muted mb-8 md:mb-12 text-center z-10 max-w-xs text-base md:text-lg">Staff members, please scan your personal QR code to clock in or out.</p>
                         
                         {userProfile?.shopId ? (
-                            <div className="transform scale-125 md:scale-150 lg:scale-[1.7] origin-center inline-block bg-white p-3 rounded-xl shadow-[0_0_40px_rgba(0,0,0,0.5)] z-10 border-4 border-slate-200">
+                            <div className="transform scale-125 md:scale-150 lg:scale-[1.7] origin-center inline-block bg-botanical-surface p-3 rounded-xl shadow-[0_0_40px_rgba(0,0,0,0.5)] z-10 border-4 border-botanical-border">
                                 <BarcodeScannerWrapper shopId={userProfile.shopId} services={[]} />
                             </div>
                         ) : (
-                            <p className="text-red-400 bg-red-900/20 p-4 rounded-lg border border-red-500/30 z-10 text-base md:text-lg">Error: Kiosk not assigned to a shop.</p>
+                            <p className="text-status-cancelled bg-red-900/20 p-4 rounded-lg border border-status-cancelled/30 z-10 text-base md:text-lg">Error: Kiosk not assigned to a shop.</p>
                         )}
                     </div>
 
@@ -111,9 +111,9 @@ export default function KioskMode({ userProfile }: { userProfile: UserProfile })
                         {/* Clocked In Staff */}
                         <div className="flex-1 bg-botanical-surface p-6 md:p-8 rounded-3xl border border-botanical-border shadow-sm shadow-2xl flex flex-col max-h-[50vh] lg:max-h-[350px]">
                             <div className="flex items-center gap-4 mb-6 shrink-0">
-                                <div className="w-12 h-12 rounded-xl bg-blue-500/20 flex items-center justify-center text-2xl border border-blue-500/30">👥</div>
+                                <div className="w-12 h-12 rounded-xl bg-status-info/20 flex items-center justify-center text-2xl border border-status-info/30">👥</div>
                                 <h3 className="font-serif text-botanical-text text-2xl md:text-3xl">Currently Clocked In</h3>
-                                <span className="ml-auto bg-blue-500/20 text-blue-300 px-4 py-1.5 rounded-full text-sm font-bold border border-blue-500/30">
+                                <span className="ml-auto bg-status-info/20 text-blue-300 px-4 py-1.5 rounded-full text-sm font-bold border border-status-info/30">
                                     {activeLogs.length} Staff
                                 </span>
                             </div>
@@ -167,9 +167,9 @@ export default function KioskMode({ userProfile }: { userProfile: UserProfile })
                                 ) : waitlist.length > 0 ? (
                                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                                         {waitlist.map(entry => (
-                                            <div key={entry.id} className={`p-4 rounded-xl flex justify-between items-center gap-3 border ${entry.status === 'SERVING' ? 'bg-green-900/20 border-green-500/30' : 'bg-botanical-surface border-botanical-border'}`}>
+                                            <div key={entry.id} className={`p-4 rounded-xl flex justify-between items-center gap-3 border ${entry.status === 'SERVING' ? 'bg-green-900/20 border-status-confirmed/30' : 'bg-botanical-surface border-botanical-border'}`}>
                                                 <div className="flex items-center gap-4 min-w-0">
-                                                    <div className={`w-10 h-10 rounded-full flex items-center justify-center font-mono font-bold text-lg shrink-0 border ${entry.status === 'SERVING' ? 'bg-green-500/20 text-green-400 border-green-500/50' : 'bg-botanical-surface text-botanical-muted border-botanical-border'}`}>
+                                                    <div className={`w-10 h-10 rounded-full flex items-center justify-center font-mono font-bold text-lg shrink-0 border ${entry.status === 'SERVING' ? 'bg-status-confirmed/20 text-status-confirmed border-status-confirmed/50' : 'bg-botanical-surface text-botanical-muted border-botanical-border'}`}>
                                                         {entry.position}
                                                     </div>
                                                     <div className="min-w-0">
@@ -177,7 +177,7 @@ export default function KioskMode({ userProfile }: { userProfile: UserProfile })
                                                         <p className="text-botanical-muted text-base md:text-lg">Arrived {new Date(entry.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
                                                     </div>
                                                 </div>
-                                                <span className={`shrink-0 text-sm font-bold px-3 py-1.5 rounded-lg uppercase tracking-wider ${entry.status === 'SERVING' ? 'bg-green-500/20 text-green-400 border border-green-500/30' : 'bg-amber-500/20 text-amber-400 border border-amber-500/30'}`}>
+                                                <span className={`shrink-0 text-sm font-bold px-3 py-1.5 rounded-lg uppercase tracking-wider ${entry.status === 'SERVING' ? 'bg-status-confirmed/20 text-status-confirmed border border-status-confirmed/30' : 'bg-status-pending/20 text-status-pending border border-status-pending/30'}`}>
                                                     {entry.status}
                                                 </span>
                                             </div>

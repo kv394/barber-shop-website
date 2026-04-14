@@ -145,7 +145,7 @@ export default function CheckoutButton({
     <>
       <button
         onClick={() => setIsOpen(true)}
-        className="bg-green-600 hover:bg-green-500 text-botanical-text text-xs font-bold px-4 py-2 rounded uppercase tracking-wider transition-colors"
+        className="bg-status-confirmed hover:bg-status-confirmed text-botanical-text text-xs font-bold px-4 py-2 rounded uppercase tracking-wider transition-colors"
       >
         Checkout
       </button>
@@ -183,7 +183,7 @@ export default function CheckoutButton({
                       {item.id !== 'primary-service' && (
                         <button
                           onClick={() => removeFromCart(item.id)}
-                          className="text-red-400 hover:text-red-300 text-xs shrink-0 w-5 h-5 flex items-center justify-center"
+                          className="text-status-cancelled hover:text-red-300 text-xs shrink-0 w-5 h-5 flex items-center justify-center"
                         >✕</button>
                       )}
                     </div>
@@ -204,7 +204,7 @@ export default function CheckoutButton({
                             className="text-left bg-botanical-surface hover:bg-botanical-surface border border-botanical-border shadow-sm rounded-lg p-2 transition-colors relative"
                           >
                             {inCart && (
-                              <span className="absolute top-1 right-1 bg-botanical-primary text-white text-xs font-black w-4 h-4 rounded-full flex items-center justify-center">
+                              <span className="absolute top-1 right-1 bg-botanical-primary text-white text-xs font-black w-4 h-4 rounded-full flex items-center justify-center hover:opacity-90">
                                 {inCart.quantity}
                               </span>
                             )}
@@ -235,7 +235,7 @@ export default function CheckoutButton({
                       {t === 0 ? 'No Tip' : `$${t}`}
                     </button>
                   ))}
-                  <div className={`flex items-center gap-1 rounded-lg px-3 py-1.5 border transition-colors ${customTip ? 'bg-botanical-primary/10 border-brand-gold/40' : 'bg-botanical-surface border-transparent'}`}>
+                  <div className={`flex items-center gap-1 rounded-lg px-3 py-1.5 border transition-colors ${customTip ? 'bg-botanical-primary/10 border-brand-gold/40' : 'bg-botanical-surface border-transparent'} hover:opacity-90 text-white`}>
                     <span className="text-botanical-muted text-sm">$</span>
                     <input
                       type="number" min={0} step={0.5}
@@ -275,7 +275,7 @@ export default function CheckoutButton({
                       key={m}
                       onClick={() => setPaymentMethod(m)}
                       className={`flex-1 py-2 rounded-lg text-sm font-semibold transition-colors ${
-                        paymentMethod === m ? 'bg-green-600 text-botanical-text shadow-lg' : 'bg-botanical-surface text-botanical-muted hover:text-botanical-text'
+                        paymentMethod === m ? 'bg-status-confirmed text-botanical-text shadow-lg' : 'bg-botanical-surface text-botanical-muted hover:text-botanical-text'
                       }`}
                     >
                       {m === 'CASH' ? '💵 Cash' : m === 'CARD' ? '💳 Card' : '📱 Mobile'}
@@ -290,12 +290,12 @@ export default function CheckoutButton({
                   <span>Subtotal</span><span>${subtotal.toFixed(2)}</span>
                 </div>
                 {effectiveDiscount > 0 && (
-                  <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 text-sm text-red-400">
+                  <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 text-sm text-status-cancelled">
                     <span>Discount</span><span>−${effectiveDiscount.toFixed(2)}</span>
                   </div>
                 )}
                 {tipAmount > 0 && (
-                  <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 text-sm text-amber-400">
+                  <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 text-sm text-status-pending">
                     <span>Tip</span><span>+${tipAmount.toFixed(2)}</span>
                   </div>
                 )}
@@ -309,7 +309,7 @@ export default function CheckoutButton({
               <button
                 onClick={handleMarkAsPaid}
                 disabled={isProcessing}
-                className="w-full bg-green-600 hover:bg-green-500 disabled:opacity-50 text-botanical-text font-bold py-3.5 rounded-xl text-sm uppercase tracking-wider transition-colors"
+                className="w-full bg-status-confirmed hover:bg-status-confirmed disabled:opacity-50 text-botanical-text font-bold py-3.5 rounded-xl text-sm uppercase tracking-wider transition-colors"
               >
                 {isProcessing ? 'Processing…' : `Confirm ${paymentMethod === 'CASH' ? '💵' : paymentMethod === 'CARD' ? '💳' : '📱'} · $${finalTotal.toFixed(2)}`}
               </button>

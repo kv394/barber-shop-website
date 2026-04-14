@@ -64,7 +64,7 @@ export default function AssignTemplateModal({
   };
 
   return (
-    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <div className="fixed inset-0 bg-botanical-darkBase/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
       <div className="bg-botanical-surface w-full max-w-md rounded-2xl border border-botanical-border shadow-2xl p-6">
         <h2 className="font-bold text-botanical-text mb-2 text-3xl md:text-4xl">Assign Template</h2>
         <p className="text-botanical-muted mb-6 text-base md:text-lg">Select a template for <strong>{shopName}</strong></p>
@@ -104,7 +104,7 @@ export default function AssignTemplateModal({
               <button
                 onClick={handleSave}
                 disabled={saving}
-                className="bg-botanical-primary text-white px-6 py-2 rounded-lg text-sm font-bold hover:bg-white hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 transition disabled:opacity-50"
+                className="bg-botanical-primary text-white px-6 py-2 rounded-lg text-sm font-bold hover:bg-botanical-surface hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 transition disabled:opacity-50"
               >
                 {saving ? 'Saving...' : 'Assign Template'}
               </button>

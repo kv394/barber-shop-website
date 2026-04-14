@@ -40,14 +40,14 @@ function ReviewsSection({ reviews, variant = 'dark' }: { reviews: any[]; variant
   const avgRating = reviews.reduce((sum: number, r: any) => sum + r.rating, 0) / reviews.length;
 
   const bgClass = variant === 'light'
-    ? 'bg-gray-50'
+    ? 'bg-botanical-bg'
     : variant === 'warm'
       ? 'bg-[#f5efe6]'
       : 'bg-botanical-surface';
-  const textClass = variant === 'light' ? 'text-gray-900' : variant === 'warm' ? 'text-[#2c1e16]' : 'text-botanical-text';
+  const textClass = variant === 'light' ? 'text-botanical-text' : variant === 'warm' ? 'text-[#2c1e16]' : 'text-botanical-text';
   const subTextClass = variant === 'light' ? 'text-botanical-muted' : variant === 'warm' ? 'text-[#5a4634]' : 'text-botanical-muted';
   const cardClass = variant === 'light'
-    ? 'bg-white border border-botanical-border shadow-sm shadow-sm'
+    ? 'bg-botanical-surface border border-botanical-border shadow-sm shadow-sm'
     : variant === 'warm'
       ? 'bg-[#fdfbf7] border border-[#e6d9c6]'
       : 'bg-botanical-surface border border-botanical-border shadow-sm';
@@ -160,7 +160,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
 
     if (templateType === 'sporty') {
         return (
-            <main className="h-[100dvh] overflow-y-auto overflow-x-hidden bg-white text-gray-900 font-sans relative">
+            <main className="h-[100dvh] overflow-y-auto overflow-x-hidden bg-botanical-surface text-botanical-text font-sans relative">
                 {/* Top Bar - Contact Info & Auth */}
                 <div className="bg-botanical-surface text-botanical-text text-xs py-2 px-4 flex justify-end items-center space-x-4">
                     {shopPhone && <span>{shopPhone}</span>}
@@ -171,7 +171,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                 </div>
     
                 {/* Header / Nav */}
-                <header className="border-b-4 border-botanical-border sticky top-0 bg-white z-40 shadow-sm">
+                <header className="border-b-4 border-botanical-border sticky top-0 bg-botanical-surface z-40 shadow-sm">
                     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center overflow-x-auto hide-scrollbar">
                         {logoUrl ? (
                             <img src={logoUrl} alt={shop.name} className="h-10 shrink-0 mr-6 object-contain" />
@@ -182,9 +182,9 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                         )}
                         {pages.filter((p: any) => p.isVisible).length > 0 && (
                             <nav className="flex gap-4 sm:gap-6 shrink-0">
-                                <button onClick={() => setActivePageId(null)} className={`text-sm font-bold uppercase transition-colors ${!activePageId ? 'text-black' : 'text-botanical-muted hover:text-black'}`}>Home</button>
+                                <button onClick={() => setActivePageId(null)} className={`text-sm font-bold uppercase transition-colors ${!activePageId ? 'text-botanical-text' : 'text-botanical-muted hover:text-black'}`}>Home</button>
                                 {pages.filter((p: any) => p.isVisible).map((p: any) => (
-                                    <button key={p.id} onClick={() => setActivePageId(p.id)} className={`text-sm font-bold uppercase transition-colors ${activePageId === p.id ? 'text-black' : 'text-botanical-muted hover:text-black'}`}>{p.title}</button>
+                                    <button key={p.id} onClick={() => setActivePageId(p.id)} className={`text-sm font-bold uppercase transition-colors ${activePageId === p.id ? 'text-botanical-text' : 'text-botanical-muted hover:text-black'}`}>{p.title}</button>
                                 ))}
                             </nav>
                         )}
@@ -194,18 +194,18 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                 {activePage ? (
                     <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 min-h-[60vh]">
                         <h1 className="font-black uppercase italic mb-8 text-4xl md:text-5xl lg:text-6xl" style={{ color: sportRed }}>{activePage.title}</h1>
-                        <div className="prose prose-lg max-w-none text-gray-800" dangerouslySetInnerHTML={{ __html: activePage.content || '' }} />
+                        <div className="prose prose-lg max-w-none text-botanical-text" dangerouslySetInnerHTML={{ __html: activePage.content || '' }} />
                     </section>
                 ) : (
                     <>
                         {/* Hero Section */}
-                <section className="bg-gray-100 border-b border-botanical-border relative bg-cover bg-center" style={{ backgroundImage: heroImageUrl ? `url(${heroImageUrl})` : undefined }}><div className={heroImageUrl ? "absolute inset-0 bg-white/80" : ""} />
+                <section className="bg-botanical-bg border-b border-botanical-border relative bg-cover bg-center" style={{ backgroundImage: heroImageUrl ? `url(${heroImageUrl})` : undefined }}><div className={heroImageUrl ? "absolute inset-0 bg-botanical-surface/80" : ""} />
                     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24 text-center md:text-left flex flex-col md:flex-row items-center relative z-10">
                         <div className="md:w-1/2 mb-8 md:mb-0">
                             <h2 className="font-black uppercase italic leading-none mb-6 text-3xl md:text-4xl">
                                 The MVP <br/> Haircut <br/> Experience.
                             </h2>
-                            <p className="text-gray-700 font-semibold mb-8 max-w-lg text-base md:text-lg">
+                            <p className="text-botanical-text font-semibold mb-8 max-w-lg text-base md:text-lg">
                                 {shop.description || "Precision cuts, legendary service, and the ultimate environment."}
                             </p>
                         </div>
@@ -228,9 +228,9 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
     
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                         {shop.services?.map((service: any) => (
-                            <div key={service.id} className="bg-white border-2 border-botanical-border p-8 text-center hover:border-botanical-border transition-colors shadow-sm hover:shadow-lg group flex flex-col justify-between">
+                            <div key={service.id} className="bg-botanical-surface border-2 border-botanical-border p-8 text-center hover:border-botanical-border transition-colors shadow-sm hover:shadow-lg group flex flex-col justify-between">
                                 <div>
-                                    <h3 className="font-black uppercase italic mb-4 group-hover:text-red-600 transition-colors text-2xl md:text-3xl" style={{ color: 'black' }}>
+                                    <h3 className="font-black uppercase italic mb-4 group-hover:text-status-cancelled transition-colors text-2xl md:text-3xl" style={{ color: 'black' }}>
                                         {service.name}
                                     </h3>
                                     <div className="text-3xl font-bold mb-4" style={{ color: sportRed }}>
@@ -273,15 +273,15 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                             <div>
                                 <h4 className="font-bold mb-6 text-botanical-muted text-xl md:text-2xl">Quick Links</h4>
                                 <ul className="space-y-4 font-bold">
-                                    <li><a href="#" className="hover:text-red-500 transition-colors">Services</a></li>
+                                    <li><a href="#" className="hover:text-status-cancelled transition-colors">Services</a></li>
                                 </ul>
                             </div>
                             <div>
                                 <h4 className="font-bold mb-6 text-botanical-muted text-xl md:text-2xl">Connect</h4>
                                 <div className="flex flex-col space-y-4 font-bold">
-                                    {shopFB && <a href={shopFB} className="hover:text-red-500 transition-colors">Facebook</a>}
-                                    {shopIG && <a href={shopIG.startsWith('http') ? shopIG : `https://instagram.com/${shopIG.replace('@','')}`} className="hover:text-red-500 transition-colors">Instagram</a>}
-                                    {shopTW && <a href={shopTW} className="hover:text-red-500 transition-colors">Twitter</a>}
+                                    {shopFB && <a href={shopFB} className="hover:text-status-cancelled transition-colors">Facebook</a>}
+                                    {shopIG && <a href={shopIG.startsWith('http') ? shopIG : `https://instagram.com/${shopIG.replace('@','')}`} className="hover:text-status-cancelled transition-colors">Instagram</a>}
+                                    {shopTW && <a href={shopTW} className="hover:text-status-cancelled transition-colors">Twitter</a>}
                                 </div>
                             </div>
                         </div>
@@ -306,15 +306,15 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
       
       if (templateType === 'corporate') {
         return (
-          <main className="h-[100dvh] overflow-y-auto overflow-x-hidden bg-gray-100 text-gray-800 font-sans relative">
-            <header className="bg-white shadow-md relative z-40">
+          <main className="h-[100dvh] overflow-y-auto overflow-x-hidden bg-botanical-bg text-botanical-text font-sans relative">
+            <header className="bg-botanical-surface shadow-md relative z-40">
               <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center py-4 overflow-x-auto hide-scrollbar">
                 {logoUrl ? <img src={logoUrl} alt={shop.name} className="h-10 shrink-0 mr-6 object-contain" /> : <h1 className="font-bold shrink-0 mr-6 text-4xl md:text-5xl lg:text-6xl" style={{ color: primaryColor }}>{shop.name}</h1>}
                 {pages.filter((p: any) => p.isVisible).length > 0 && (
                     <nav className="flex gap-4 sm:gap-6 shrink-0 mr-6">
-                        <button onClick={() => setActivePageId(null)} className={`text-sm font-bold transition-colors ${!activePageId ? 'text-gray-900' : 'text-botanical-muted hover:text-gray-900'}`}>Home</button>
+                        <button onClick={() => setActivePageId(null)} className={`text-sm font-bold transition-colors ${!activePageId ? 'text-botanical-text' : 'text-botanical-muted hover:text-botanical-text'}`}>Home</button>
                         {pages.filter((p: any) => p.isVisible).map((p: any) => (
-                            <button key={p.id} onClick={() => setActivePageId(p.id)} className={`text-sm font-bold transition-colors ${activePageId === p.id ? 'text-gray-900' : 'text-botanical-muted hover:text-gray-900'}`}>{p.title}</button>
+                            <button key={p.id} onClick={() => setActivePageId(p.id)} className={`text-sm font-bold transition-colors ${activePageId === p.id ? 'text-botanical-text' : 'text-botanical-muted hover:text-botanical-text'}`}>{p.title}</button>
                         ))}
                     </nav>
                 )}
@@ -326,25 +326,25 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
 
             {activePage ? (
                 <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 min-h-[60vh]">
-                    <h1 className="font-bold text-gray-900 mb-8 text-4xl md:text-5xl lg:text-6xl" style={{ color: primaryColor }}>{activePage.title}</h1>
-                    <div className="prose prose-lg max-w-none text-gray-700" dangerouslySetInnerHTML={{ __html: activePage.content || '' }} />
+                    <h1 className="font-bold text-botanical-text mb-8 text-4xl md:text-5xl lg:text-6xl" style={{ color: primaryColor }}>{activePage.title}</h1>
+                    <div className="prose prose-lg max-w-none text-botanical-text" dangerouslySetInnerHTML={{ __html: activePage.content || '' }} />
                 </section>
             ) : (
                 <>
-            <section className="bg-white relative bg-cover bg-center" style={{ backgroundImage: heroImageUrl ? `url(${heroImageUrl})` : undefined }}><div className={heroImageUrl ? "absolute inset-0 bg-white/70" : ""} />
+            <section className="bg-botanical-surface relative bg-cover bg-center" style={{ backgroundImage: heroImageUrl ? `url(${heroImageUrl})` : undefined }}><div className={heroImageUrl ? "absolute inset-0 bg-botanical-surface/70" : ""} />
                 <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center relative z-10">
-                    <h2 className="font-extrabold text-gray-900 mb-4 text-3xl md:text-4xl">{shop.description || "Quality Service, Every Time."}</h2>
+                    <h2 className="font-extrabold text-botanical-text mb-4 text-3xl md:text-4xl">{shop.description || "Quality Service, Every Time."}</h2>
                     <p className="text-botanical-muted text-base md:text-lg">Find your perfect look with our expert stylists.</p>
                 </div>
             </section>
     
             <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-              <h2 className="font-bold text-center text-gray-900 mb-12 text-3xl md:text-4xl">Our Services</h2>
+              <h2 className="font-bold text-center text-botanical-text mb-12 text-3xl md:text-4xl">Our Services</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {shop.services?.map((service: any) => (
-                  <div key={service.id} className="bg-white rounded-lg shadow-lg overflow-hidden border border-botanical-border shadow-sm hover:shadow-xl transition-shadow flex flex-col">
+                  <div key={service.id} className="bg-botanical-surface rounded-lg shadow-lg overflow-hidden border border-botanical-border shadow-sm hover:shadow-xl transition-shadow flex flex-col">
                     <div className="p-6 flex-grow">
-                      <h3 className="font-bold text-gray-900 mb-2 text-2xl md:text-3xl">{service.name}</h3>
+                      <h3 className="font-bold text-botanical-text mb-2 text-2xl md:text-3xl">{service.name}</h3>
                       <p className="text-botanical-muted mb-4 text-base md:text-lg">{service.description}</p>
                       <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-4">
                         <span className="text-lg font-bold" style={{ color: primaryColor }}>${service.price.toFixed(2)}</span>
@@ -450,7 +450,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                           <div className="text-xl font-bold">${service.price.toFixed(2)}</div>
                           <button
                             onClick={() => handleBookClick(service)}
-                            className="border border-white text-botanical-text hover:bg-white hover:text-black px-4 py-1 uppercase text-xs tracking-widest transition-all duration-300 hover:scale-105 active:scale-95 shadow-[0_0_10px_rgba(255,255,255,0.1)] hover:shadow-[0_0_15px_rgba(255,255,255,0.3)]"
+                            className="border border-white text-botanical-text hover:bg-botanical-surface hover:text-black px-4 py-1 uppercase text-xs tracking-widest transition-all duration-300 hover:scale-105 active:scale-95 shadow-[0_0_10px_rgba(255,255,255,0.1)] hover:shadow-[0_0_15px_rgba(255,255,255,0.3)]"
                           >
                             Book
                           </button>                      </div>
@@ -817,13 +817,13 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
     
       if (templateType === 'minimal') {
         return (
-          <main className="h-[100dvh] overflow-y-auto overflow-x-hidden bg-white text-gray-900 font-sans relative">
+          <main className="h-[100dvh] overflow-y-auto overflow-x-hidden bg-botanical-surface text-botanical-text font-sans relative">
             <div className="absolute top-6 left-6 z-50">
                 {pages.filter((p: any) => p.isVisible).length > 0 && (
                     <nav className="flex gap-4 sm:gap-6 font-semibold text-sm">
-                        <button onClick={() => setActivePageId(null)} className={`transition-colors ${!activePageId ? 'text-gray-900' : 'text-botanical-muted hover:text-gray-900'}`}>Home</button>
+                        <button onClick={() => setActivePageId(null)} className={`transition-colors ${!activePageId ? 'text-botanical-text' : 'text-botanical-muted hover:text-botanical-text'}`}>Home</button>
                         {pages.filter((p: any) => p.isVisible).map((p: any) => (
-                            <button key={p.id} onClick={() => setActivePageId(p.id)} className={`transition-colors ${activePageId === p.id ? 'text-gray-900' : 'text-botanical-muted hover:text-gray-900'}`}>{p.title}</button>
+                            <button key={p.id} onClick={() => setActivePageId(p.id)} className={`transition-colors ${activePageId === p.id ? 'text-botanical-text' : 'text-botanical-muted hover:text-botanical-text'}`}>{p.title}</button>
                         ))}
                     </nav>
                 )}
@@ -1010,7 +1010,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                 className="relative bg-cover bg-center border-b border-botanical-border pt-16 md:pt-8"
                 style={{ borderBottomColor: primaryColor, backgroundImage: heroImageUrl ? `url(${heroImageUrl})` : undefined }}
               >
-                <div className={heroImageUrl ? "absolute inset-0 bg-slate-900/80" : "absolute inset-0 bg-botanical-surface backdrop-blur-md"} />
+                <div className={heroImageUrl ? "absolute inset-0 bg-botanical-darkBase/80" : "absolute inset-0 bg-botanical-surface backdrop-blur-md"} />
                 <div className="relative z-10">
             <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
               <div className="text-center">

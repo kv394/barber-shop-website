@@ -110,12 +110,12 @@ export default function ReportsClient({
         
         {/* Revenue */}
         <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-botanical-surface transition-all duration-300 min-w-0">
-          <div className="absolute top-0 left-0 w-full h-1 bg-green-500/80"></div>
+          <div className="absolute top-0 left-0 w-full h-1 bg-status-confirmed/80"></div>
           <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-3">
             <h3 className="text-botanical-muted uppercase tracking-widest font-semibold truncate text-2xl md:text-3xl">
               {isFiltered ? 'Filtered Revenue' : 'Total Revenue'}
             </h3>
-            <span className="text-green-500 text-sm">💵</span>
+            <span className="text-status-confirmed text-sm">💵</span>
           </div>
           <p className="font-black text-botanical-text break-words leading-tight text-base md:text-lg">{formatCurrency(filteredRevenue)}</p>
           {isFiltered && <p className="text-botanical-muted mt-2 truncate text-base md:text-lg">All-time: <span className="text-botanical-muted">{formatCurrency(allTimeRevenue)}</span></p>}
@@ -123,10 +123,10 @@ export default function ReportsClient({
 
         {/* Tips */}
         <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-botanical-surface transition-all duration-300 min-w-0">
-          <div className="absolute top-0 left-0 w-full h-1 bg-amber-500/80"></div>
+          <div className="absolute top-0 left-0 w-full h-1 bg-status-pending/80"></div>
           <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-3">
             <h3 className="text-botanical-muted uppercase tracking-widest font-semibold truncate text-2xl md:text-3xl">Tips</h3>
-            <span className="text-amber-500 text-sm">💰</span>
+            <span className="text-status-pending text-sm">💰</span>
           </div>
           <p className="font-black text-botanical-text break-words leading-tight text-base md:text-lg">{formatCurrency(filteredTips)}</p>
           {isFiltered && <p className="text-botanical-muted mt-2 truncate text-base md:text-lg">All-time: <span className="text-botanical-muted">{formatCurrency(allTimeTips)}</span></p>}
@@ -134,10 +134,10 @@ export default function ReportsClient({
 
         {/* Completed */}
         <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-botanical-surface transition-all duration-300 min-w-0">
-          <div className="absolute top-0 left-0 w-full h-1 bg-blue-500/80"></div>
+          <div className="absolute top-0 left-0 w-full h-1 bg-status-info/80"></div>
           <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-3">
             <h3 className="text-botanical-muted uppercase tracking-widest font-semibold truncate text-2xl md:text-3xl">Completed</h3>
-            <span className="text-blue-500 text-sm">✂️</span>
+            <span className="text-status-info text-sm">✂️</span>
           </div>
           <p className="font-black text-botanical-text break-words leading-tight text-base md:text-lg">{filtered.length.toLocaleString('en-US')}</p>
           <p className="text-botanical-muted mt-2 truncate opacity-0 group-hover:opacity-100 transition-opacity text-base md:text-lg">Appointments</p>
@@ -158,7 +158,7 @@ export default function ReportsClient({
 
         {/* Export */}
         <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-botanical-surface transition-all duration-300 flex flex-col justify-center min-w-0">
-          <div className="absolute top-0 left-0 w-full h-1 bg-botanical-primary/80"></div>
+          <div className="absolute top-0 left-0 w-full h-1 bg-botanical-primary/80 hover:opacity-90 text-white"></div>
           <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-3">
             <h3 className="text-botanical-muted uppercase tracking-widest font-semibold truncate text-2xl md:text-3xl">Export Data</h3>
           </div>
@@ -223,9 +223,9 @@ export default function ReportsClient({
                         </div>
                         <div className="text-right shrink-0 ml-2">
                           {isRefunded ? (
-                            <span className="font-bold text-amber-400 text-sm line-through">${paid.toFixed(2)}</span>
+                            <span className="font-bold text-status-pending text-sm line-through">${paid.toFixed(2)}</span>
                           ) : (
-                            <span className="font-bold text-green-400 text-sm">${paid.toFixed(2)}</span>
+                            <span className="font-bold text-status-confirmed text-sm">${paid.toFixed(2)}</span>
                           )}
                         </div>
                       </div>
@@ -234,7 +234,7 @@ export default function ReportsClient({
                           {new Date(apt.updatedAt).toLocaleString(undefined, { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
                         </span>
                         {isRefunded ? (
-                          <span className="text-sm text-amber-400 bg-amber-900/20 px-2 py-0.5 rounded border border-amber-500/20">
+                          <span className="text-sm text-status-pending bg-amber-900/20 px-2 py-0.5 rounded border border-status-pending/20">
                             💸 Refunded
                           </span>
                         ) : (
@@ -270,20 +270,20 @@ export default function ReportsClient({
                           <td className="p-3 sm:p-4 text-botanical-text font-medium">{apt.user.name || apt.user.email}</td>
                           <td className="p-3 sm:p-4 text-botanical-accent">
                             <div>{apt.service.name}</div>
-                            {apt.tipAmount > 0 && <div className="text-sm text-amber-400">+${apt.tipAmount.toFixed(2)} tip</div>}
-                            {apt.discount > 0 && <div className="text-sm text-red-400">-${apt.discount.toFixed(2)} disc.</div>}
+                            {apt.tipAmount > 0 && <div className="text-sm text-status-pending">+${apt.tipAmount.toFixed(2)} tip</div>}
+                            {apt.discount > 0 && <div className="text-sm text-status-cancelled">-${apt.discount.toFixed(2)} disc.</div>}
                           </td>
                           <td className="p-3 sm:p-4 text-purple-300">{apt.staff?.name || '—'}</td>
                           <td className="p-3 sm:p-4 text-right font-bold">
                             {isRefunded ? (
-                              <span className="text-amber-400 line-through">${paid.toFixed(2)}</span>
+                              <span className="text-status-pending line-through">${paid.toFixed(2)}</span>
                             ) : (
-                              <span className="text-green-400">${paid.toFixed(2)}</span>
+                              <span className="text-status-confirmed">${paid.toFixed(2)}</span>
                             )}
                           </td>
                           <td className="p-3 sm:p-4 text-right">
                             {isRefunded ? (
-                              <span className="text-sm text-amber-400 bg-amber-900/20 border border-amber-500/20 px-2 py-1 rounded">
+                              <span className="text-sm text-status-pending bg-amber-900/20 border border-status-pending/20 px-2 py-1 rounded">
                                 💸 Refunded ${(apt.refundAmount || 0).toFixed(2)}
                               </span>
                             ) : (
@@ -316,12 +316,12 @@ export default function ReportsClient({
                     <p className="text-botanical-muted text-base md:text-lg">{staff.count} services completed</p>
                   </div>
                   <div className="text-right">
-                    <p className="font-bold text-green-400 text-base md:text-lg">${staff.revenue.toFixed(2)}</p>
+                    <p className="font-bold text-status-confirmed text-base md:text-lg">${staff.revenue.toFixed(2)}</p>
                     <p className="text-botanical-muted text-base md:text-lg">{pct.toFixed(1)}% of total</p>
                   </div>
                 </div>
                 <div className="w-full bg-botanical-surface rounded-full h-2">
-                  <div className="bg-green-500 h-2 rounded-full transition-all" style={{ width: `${pct}%` }} />
+                  <div className="bg-status-confirmed h-2 rounded-full transition-all" style={{ width: `${pct}%` }} />
                 </div>
               </div>
             );
@@ -344,12 +344,12 @@ export default function ReportsClient({
                     <p className="text-botanical-muted text-base md:text-lg">{svc.count} times booked</p>
                   </div>
                   <div className="text-right">
-                    <p className="font-bold text-green-400 text-base md:text-lg">${svc.revenue.toFixed(2)}</p>
+                    <p className="font-bold text-status-confirmed text-base md:text-lg">${svc.revenue.toFixed(2)}</p>
                     <p className="text-botanical-muted text-base md:text-lg">{pct.toFixed(1)}% of total</p>
                   </div>
                 </div>
                 <div className="w-full bg-botanical-surface rounded-full h-2">
-                  <div className="bg-botanical-primary h-2 rounded-full transition-all" style={{ width: `${pct}%` }} />
+                  <div className="bg-botanical-primary h-2 rounded-full transition-all hover:opacity-90 text-white" style={{ width: `${pct}%` }} />
                 </div>
               </div>
             );

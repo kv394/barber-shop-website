@@ -85,12 +85,12 @@ export default function SiteAdminUsersPage() {
 
       {/* Alerts */}
       {actionError && (
-        <div className="mb-4 p-3 bg-red-900/50 border border-red-500 text-red-200 rounded-lg text-sm">
+        <div className="mb-4 p-3 bg-red-900/50 border border-status-cancelled text-red-200 rounded-lg text-sm">
           {actionError}
         </div>
       )}
       {actionSuccess && (
-        <div className="mb-4 p-3 bg-green-900/50 border border-green-500 text-green-200 rounded-lg text-sm">
+        <div className="mb-4 p-3 bg-green-900/50 border border-status-confirmed text-green-200 rounded-lg text-sm">
           {actionSuccess}
         </div>
       )}
@@ -107,7 +107,7 @@ export default function SiteAdminUsersPage() {
           />
           <button
             type="submit"
-            className="bg-botanical-primary text-white px-6 py-2.5 rounded-lg font-semibold text-sm hover:bg-white hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 transition-colors"
+            className="bg-botanical-primary text-white px-6 py-2.5 rounded-lg font-semibold text-sm hover:bg-botanical-surface hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 transition-colors"
           >
             Search
           </button>
@@ -149,10 +149,10 @@ export default function SiteAdminUsersPage() {
               <tbody className="divide-y divide-white/5">
                 {filteredUsers.map(user => {
                   const roleColors: Record<string, string> = {
-                    SITE_ADMIN: 'bg-red-500/20 text-red-400 border-red-500/30',
+                    SITE_ADMIN: 'bg-status-cancelled/20 text-status-cancelled border-status-cancelled/30',
                     SHOP_ADMIN: 'bg-botanical-primary/20 text-botanical-accent border-brand-gold/30',
                     STAFF: 'bg-purple-500/20 text-purple-400 border-purple-500/30',
-                    CLIENT: 'bg-blue-500/20 text-blue-400 border-blue-500/30',
+                    CLIENT: 'bg-status-info/20 text-status-info border-status-info/30',
                     ATTENDANCE_KIOSK: 'bg-cyan-500/20 text-cyan-400 border-cyan-500/30',
                   };
 
@@ -178,7 +178,7 @@ export default function SiteAdminUsersPage() {
                             </select>
                             <button
                               onClick={() => handleRoleChange(user.id, editRole)}
-                              className="text-green-400 text-xs hover:underline"
+                              className="text-status-confirmed text-xs hover:underline"
                             >
                               Save
                             </button>

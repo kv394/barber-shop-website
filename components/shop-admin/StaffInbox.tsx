@@ -52,7 +52,7 @@ export default function StaffInbox({ shopId, userId }: { shopId: string, userId:
         <h3 className="text-botanical-text font-bold flex items-center gap-2 text-2xl md:text-3xl">
           <span>🔔</span> My Notifications
         </h3>
-        <span className="bg-botanical-primary text-white text-xs font-bold px-3 py-1 rounded-full">{items.length} New</span>
+        <span className="bg-botanical-primary text-white text-xs font-bold px-3 py-1 rounded-full hover:opacity-90">{items.length} New</span>
       </div>
       <div className="divide-y divide-white/5 max-h-[60vh] sm:max-h-96 overflow-y-auto">
         {items.map(item => (
