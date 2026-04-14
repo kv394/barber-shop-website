@@ -156,19 +156,9 @@ export default function ReportsClient({
           <p className="text-botanical-muted mt-2 truncate opacity-0 group-hover:opacity-100 transition-opacity text-base md:text-lg">Per Service</p>
         </div>
 
-        {/* Export */}
-        <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-botanical-surface transition-all duration-300 flex flex-col justify-center min-w-0">
-          <div className="absolute top-0 left-0 w-full h-1 bg-botanical-primary/80 hover:opacity-90 text-white"></div>
-          <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-3">
-            <h3 className="text-botanical-muted uppercase tracking-widest font-semibold truncate text-xs">Export Data</h3>
-          </div>
-          <button onClick={exportCSV} className="bg-botanical-surface hover:bg-botanical-primary text-white font-bold py-2 sm:py-3 px-3 rounded-lg transition-all w-full text-xs sm:text-sm truncate flex items-center justify-center gap-2">
-            <span>📥</span> Download CSV
-          </button>
-        </div>
       </div>
 
-      {/* Date Filters */}
+      {/* Date Filters & Export */}
       <div className="flex flex-col sm:flex-row gap-3 mb-6 p-4 bg-botanical-surface rounded-lg border border-botanical-border shadow-sm">
         <div className="flex-1">
           <label className="block text-botanical-muted uppercase tracking-wider mb-1 text-sm">From Date</label>
@@ -187,6 +177,11 @@ export default function ReportsClient({
             </button>
           </div>
         )}
+        <div className="flex items-end">
+          <button onClick={exportCSV} className="text-sm bg-botanical-surface border border-botanical-border shadow-sm hover:bg-botanical-primary hover:text-white text-botanical-text font-medium px-4 py-2 rounded transition-all flex items-center justify-center gap-2 w-full sm:w-auto">
+            <span>📥</span> Download CSV
+          </button>
+        </div>
       </div>
 
       {/* View Tabs */}
