@@ -85,15 +85,44 @@ export default function PortfolioManager({ shopId, currentUserId, userRole }: { 
         <h4 className="text-sm font-semibold text-botanical-text">Add New Photo</h4>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label className="block text-xs text-botanical-muted mb-1">Image URL</label>
-            <input 
-              type="url" 
-              value={imageUrl} 
-              onChange={e => setImageUrl(e.target.value)} 
-              placeholder="e.g. https://example.com/image.jpg" 
-              className="w-full bg-botanical-surface border border-botanical-border shadow-sm rounded px-3 py-2 text-botanical-text text-sm focus:outline-none focus:border-brand-gold" 
-              required 
-            />
+            <label className="block text-xs text-botanical-muted mb-1">Image File or URL</label>
+            <div className="flex gap-2">
+              <input 
+                type="url" 
+                value={imageUrl} 
+                onChange={e => setImageUrl(e.target.value)} 
+                placeholder="e.g. https://..." 
+                className="flex-1 bg-botanical-surface border border-botanical-border shadow-sm rounded px-3 py-2 text-botanical-text text-sm focus:outline-none focus:border-brand-gold" 
+              />
+              <span className="text-botanical-muted py-2 text-sm">OR</span>
+              <input 
+                type="file" 
+                accept="image/*"
+                onChange={async (e) => {
+                  const file = e.target.files?.[0];
+                  if (!file) return;
+                  setSaving(true);
+                  try {
+                    const formData = new FormData();
+                    formData.append('file', file);
+                    formData.append('type', 'portfolio');
+                    
+                    const res = await fetch(`/api/shops/${shopId}/upload`, {
+                      method: 'POST',
+                      body: formData,
+                    });
+                    const data = await res.json();
+                    if (data.error) throw new Error(data.error);
+                    setImageUrl(data.url);
+                  } catch (err: any) {
+                    alert('Upload failed: ' + err.message);
+                  } finally {
+                    setSaving(false);
+                  }
+                }} 
+                className="flex-1 bg-botanical-surface border border-botanical-border shadow-sm rounded px-3 py-2 text-botanical-text text-sm focus:outline-none focus:border-brand-gold file:mr-4 file:py-1 file:px-4 file:rounded file:border-0 file:text-sm file:bg-botanical-primary/20 file:text-botanical-primary hover:file:bg-botanical-primary/30" 
+              />
+            </div>
           </div>
           <div>
             <label className="block text-xs text-botanical-muted mb-1">Caption (Optional)</label>

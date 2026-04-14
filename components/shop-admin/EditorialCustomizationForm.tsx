@@ -2,11 +2,12 @@ import { useState } from 'react';
 import { Customization } from '@/lib/templates';
 
 interface EditorialCustomizationFormProps {
+  shopId: string;
   customization: Customization;
   onUpdate: (field: string, value: any) => void;
 }
 
-export function EditorialCustomizationForm({ customization, onUpdate }: EditorialCustomizationFormProps) {
+export function EditorialCustomizationForm({ shopId, customization, onUpdate }: EditorialCustomizationFormProps) {
   const editorial = customization.editorialCustomization || {} as any;
 
   const handleChange = (key: string, value: any) => {
@@ -52,12 +53,34 @@ export function EditorialCustomizationForm({ customization, onUpdate }: Editoria
         </div>
         <div>
           <label className="block text-sm font-medium text-botanical-muted mb-2">Hero Image URL</label>
-          <input
-            type="text"
-            value={editorial.heroImage || ''}
-            onChange={(e) => handleChange('heroImage', e.target.value)}
-            className="w-full bg-botanical-bg border border-botanical-border shadow-sm rounded px-4 py-2 text-botanical-text"
-          />
+          <div className="flex gap-2">
+            <input
+              type="text"
+              value={editorial.heroImage || ''}
+              onChange={(e) => handleChange('heroImage', e.target.value)}
+              className="flex-1 w-full bg-botanical-bg border border-botanical-border shadow-sm rounded px-4 py-2 text-botanical-text"
+            />
+            <input 
+              type="file" 
+              accept="image/*"
+              onChange={async (e) => {
+                const file = e.target.files?.[0];
+                if (!file) return;
+                try {
+                  const fd = new FormData();
+                  fd.append('file', file);
+                  fd.append('type', 'editorial');
+                  const res = await fetch(`/api/shops/${shopId}/upload`, { method: 'POST', body: fd });
+                  const data = await res.json();
+                  if (data.error) throw new Error(data.error);
+                  handleChange('heroImage', data.url);
+                } catch (err: any) {
+                  alert('Upload failed: ' + err.message);
+                }
+              }} 
+              className="flex-1 bg-botanical-surface border border-botanical-border shadow-sm rounded px-3 py-2 text-botanical-text text-sm focus:outline-none focus:border-brand-gold file:mr-4 file:py-1 file:px-4 file:rounded file:border-0 file:text-sm file:bg-botanical-primary/20 file:text-botanical-primary hover:file:bg-botanical-primary/30" 
+            />
+          </div>
         </div>
         
         <div>

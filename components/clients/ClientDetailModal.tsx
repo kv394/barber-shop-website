@@ -328,12 +328,46 @@ export default function ClientDetailModal({ shopId, clientId, clientName, onClos
 
               {activeTab === 'gallery' && (
                 <div className="space-y-6">
-                  <form onSubmit={saveImage} className="flex gap-2">
-                    <input type="url" value={newImageUrl} onChange={e => setNewImageUrl(e.target.value)} placeholder="Image URL (e.g. https://...)" className="flex-1 bg-botanical-surface border border-botanical-border shadow-sm rounded px-3 py-2 text-sm text-botanical-text focus:border-brand-gold" required />
-                    <button type="submit" disabled={savingImage || !newImageUrl.trim()} className="bg-botanical-primary text-white px-4 py-2 rounded text-xs font-bold hover:bg-white hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 disabled:opacity-50">
+                  <div className="flex flex-col sm:flex-row gap-2 items-center bg-botanical-bg p-3 rounded-lg border border-botanical-border shadow-sm">
+                    <input 
+                      type="url" 
+                      value={newImageUrl} 
+                      onChange={e => setNewImageUrl(e.target.value)} 
+                      placeholder="Image URL (e.g. https://...)" 
+                      className="flex-1 w-full bg-botanical-surface border border-botanical-border shadow-sm rounded px-3 py-2 text-sm text-botanical-text focus:border-brand-gold" 
+                    />
+                    <span className="text-botanical-muted text-xs mx-2">OR</span>
+                    <input 
+                      type="file" 
+                      accept="image/*"
+                      onChange={async (e) => {
+                        const file = e.target.files?.[0];
+                        if (!file) return;
+                        setSavingImage(true);
+                        try {
+                          const fd = new FormData();
+                          fd.append('file', file);
+                          fd.append('type', 'client-history');
+                          const res = await fetch(`/api/shops/${shopId}/upload`, { method: 'POST', body: fd });
+                          const data = await res.json();
+                          if (data.error) throw new Error(data.error);
+                          setNewImageUrl(data.url);
+                        } catch (err: any) {
+                          alert('Upload failed: ' + err.message);
+                        } finally {
+                          setSavingImage(false);
+                        }
+                      }} 
+                      className="flex-1 w-full bg-botanical-surface border border-botanical-border shadow-sm rounded px-3 py-1.5 text-botanical-text text-sm focus:outline-none focus:border-brand-gold file:mr-2 file:py-1 file:px-3 file:rounded file:border-0 file:text-xs file:bg-botanical-primary/20 file:text-botanical-primary hover:file:bg-botanical-primary/30" 
+                    />
+                    <button 
+                      onClick={saveImage} 
+                      disabled={savingImage || !newImageUrl.trim()} 
+                      className="w-full sm:w-auto bg-botanical-primary text-white px-4 py-2 rounded text-xs font-bold hover:bg-white hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 disabled:opacity-50"
+                    >
                       {savingImage ? 'Adding...' : 'Add Photo'}
                     </button>
-                  </form>
+                  </div>
                   {client.clientHistoryImages?.length > 0 ? (
                     <div className="grid grid-cols-2 gap-3">
                       {client.clientHistoryImages.map((img: any) => (

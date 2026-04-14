@@ -94,6 +94,8 @@ export async function uploadFileToFolder(folderId: string, fileName: string, mim
     body: stream,
   };
 
+  let uploadedFileId: string | null = null;
+
   if (response.data.files && response.data.files.length > 0) {
     // Update existing file
     const fileId = response.data.files[0].id!;
@@ -102,7 +104,7 @@ export async function uploadFileToFolder(folderId: string, fileName: string, mim
       media,
       fields: 'id',
     });
-    return file.data.id || null;
+    uploadedFileId = file.data.id || null;
   } else {
     // Create new file
     const fileMetadata = {
@@ -114,8 +116,25 @@ export async function uploadFileToFolder(folderId: string, fileName: string, mim
       media,
       fields: 'id',
     });
-    return file.data.id || null;
+    uploadedFileId = file.data.id || null;
   }
+
+  // Make the file publicly accessible so we don't have to proxy it through our API and Redis
+  if (uploadedFileId) {
+    try {
+      await drive.permissions.create({
+        fileId: uploadedFileId,
+        requestBody: {
+          role: 'reader',
+          type: 'anyone',
+        },
+      });
+    } catch (e) {
+      console.error('Failed to make Google Drive file public:', e);
+    }
+  }
+
+  return uploadedFileId;
 }
 
 export async function uploadFileToDrive(tenantId: string, fileName: string, mimeType: string, buffer: Buffer): Promise<string | null> {

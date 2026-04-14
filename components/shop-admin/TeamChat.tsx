@@ -227,6 +227,30 @@ export default function TeamChat({ shopId, currentUserId }: { shopId: string, cu
               placeholder="Paste image URL here..."
               className="flex-1 bg-transparent text-sm text-botanical-text placeholder-gray-500 focus:outline-none px-2"
             />
+            <span className="text-botanical-muted text-xs mx-1">OR</span>
+            <input 
+              type="file" 
+              accept="image/*"
+              onChange={async (e) => {
+                const file = e.target.files?.[0];
+                if (!file) return;
+                setSending(true);
+                try {
+                  const fd = new FormData();
+                  fd.append('file', file);
+                  fd.append('type', 'chat');
+                  const res = await fetch(`/api/shops/${shopId}/upload`, { method: 'POST', body: fd });
+                  const data = await res.json();
+                  if (data.error) throw new Error(data.error);
+                  setImageUrl(data.url);
+                } catch (err: any) {
+                  alert('Upload failed: ' + err.message);
+                } finally {
+                  setSending(false);
+                }
+              }} 
+              className="w-48 bg-botanical-surface border border-botanical-border shadow-sm rounded px-2 py-1 text-botanical-text text-xs focus:outline-none focus:border-brand-gold file:mr-2 file:py-1 file:px-2 file:rounded file:border-0 file:text-xs file:bg-botanical-primary/20 file:text-botanical-primary hover:file:bg-botanical-primary/30" 
+            />
             <button
               type="button"
               onClick={() => { setImageUrl(''); setShowImageInput(false); }}

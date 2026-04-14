@@ -97,26 +97,76 @@ export function CustomizationForm({
                 <label className="block text-sm font-medium text-botanical-muted mb-2">
                   Logo URL
                 </label>
-                <input
-                  type="url"
-                  value={formData.logoUrl || ''}
-                  onChange={(e) => handleInputChange('logoUrl', e.target.value)}
-                  placeholder="https://example.com/logo.png"
-                  className="w-full bg-botanical-bg border border-botanical-border shadow-sm rounded px-4 py-2 text-botanical-text placeholder-gray-500"
-                />
+                <div className="flex gap-2">
+                  <input
+                    type="url"
+                    value={formData.logoUrl || ''}
+                    onChange={(e) => handleInputChange('logoUrl', e.target.value)}
+                    placeholder="https://example.com/logo.png"
+                    className="flex-1 w-full bg-botanical-bg border border-botanical-border shadow-sm rounded px-4 py-2 text-botanical-text placeholder-gray-500"
+                  />
+                  <input 
+                    type="file" 
+                    accept="image/*"
+                    onChange={async (e) => {
+                      const file = e.target.files?.[0];
+                      if (!file) return;
+                      setIsLoading(true);
+                      try {
+                        const fd = new FormData();
+                        fd.append('file', file);
+                        fd.append('type', 'logos');
+                        const res = await fetch(`/api/shops/${shopId}/upload`, { method: 'POST', body: fd });
+                        const data = await res.json();
+                        if (data.error) throw new Error(data.error);
+                        handleInputChange('logoUrl', data.url);
+                      } catch (err: any) {
+                        alert('Upload failed: ' + err.message);
+                      } finally {
+                        setIsLoading(false);
+                      }
+                    }} 
+                    className="flex-1 bg-botanical-surface border border-botanical-border shadow-sm rounded px-3 py-2 text-botanical-text text-sm focus:outline-none focus:border-brand-gold file:mr-4 file:py-1 file:px-4 file:rounded file:border-0 file:text-sm file:bg-botanical-primary/20 file:text-botanical-primary hover:file:bg-botanical-primary/30" 
+                  />
+                </div>
               </div>
 
               <div>
                 <label className="block text-sm font-medium text-botanical-muted mb-2">
                   Hero / Banner Image URL
                 </label>
-                <input
-                  type="url"
-                  value={formData.heroImageUrl || ''}
-                  onChange={(e) => handleInputChange('heroImageUrl', e.target.value)}
-                  placeholder="https://example.com/banner.jpg"
-                  className="w-full bg-botanical-bg border border-botanical-border shadow-sm rounded px-4 py-2 text-botanical-text placeholder-gray-500"
-                />
+                <div className="flex gap-2">
+                  <input
+                    type="url"
+                    value={formData.heroImageUrl || ''}
+                    onChange={(e) => handleInputChange('heroImageUrl', e.target.value)}
+                    placeholder="https://example.com/banner.jpg"
+                    className="flex-1 w-full bg-botanical-bg border border-botanical-border shadow-sm rounded px-4 py-2 text-botanical-text placeholder-gray-500"
+                  />
+                  <input 
+                    type="file" 
+                    accept="image/*"
+                    onChange={async (e) => {
+                      const file = e.target.files?.[0];
+                      if (!file) return;
+                      setIsLoading(true);
+                      try {
+                        const fd = new FormData();
+                        fd.append('file', file);
+                        fd.append('type', 'banners');
+                        const res = await fetch(`/api/shops/${shopId}/upload`, { method: 'POST', body: fd });
+                        const data = await res.json();
+                        if (data.error) throw new Error(data.error);
+                        handleInputChange('heroImageUrl', data.url);
+                      } catch (err: any) {
+                        alert('Upload failed: ' + err.message);
+                      } finally {
+                        setIsLoading(false);
+                      }
+                    }} 
+                    className="flex-1 bg-botanical-surface border border-botanical-border shadow-sm rounded px-3 py-2 text-botanical-text text-sm focus:outline-none focus:border-brand-gold file:mr-4 file:py-1 file:px-4 file:rounded file:border-0 file:text-sm file:bg-botanical-primary/20 file:text-botanical-primary hover:file:bg-botanical-primary/30" 
+                  />
+                </div>
               </div>
             </div>
             <h3 className="text-lg font-bold text-botanical-text mb-4">Brand Colors</h3>
@@ -275,7 +325,7 @@ export function CustomizationForm({
         </div>
 
         {currentTemplate === 'editorial' && (
-          <EditorialCustomizationForm customization={formData} onUpdate={handleInputChange} />
+          <EditorialCustomizationForm customization={formData} onUpdate={handleInputChange} shopId={shopId} />
         )}
 
         {activeVariables.length > 0 && (
