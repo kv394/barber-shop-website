@@ -293,42 +293,42 @@ export default async function ShopDashboardPage({ params }: { params: Promise<{ 
             <div className="bg-botanical-surface backdrop-blur-md shadow-[0_4px_30px_rgba(0,0,0,0.1)] rounded-2xl border border-botanical-border shadow-sm p-4 sm:p-6 relative overflow-hidden group hover:bg-botanical-border hover:shadow-[0_8px_30px_rgba(0,0,0,0.15)] hover:-translate-y-1 transition-all duration-300 min-w-0">
               <div className="absolute top-0 left-0 w-full h-1 bg-status-info/80"></div>
               <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-2 sm:mb-3">
-                <h3 className="text-botanical-muted uppercase tracking-widest font-semibold truncate text-2xl md:text-3xl">Bookings</h3>
+                <h3 className="text-xs text-botanical-muted uppercase tracking-widest font-semibold truncate">Bookings</h3>
                 <span className="text-status-info text-sm sm:text-base">📅</span>
               </div>
-              <p className="font-black text-botanical-text break-words leading-tight text-base md:text-lg">{todayStats.totalBookings}</p>
+              <p className="font-black text-botanical-text break-words leading-tight text-3xl md:text-4xl">{todayStats.totalBookings}</p>
             </div>
             <div className="bg-botanical-surface backdrop-blur-md shadow-[0_4px_30px_rgba(0,0,0,0.1)] rounded-2xl border border-botanical-border shadow-sm p-4 sm:p-6 relative overflow-hidden group hover:bg-botanical-border hover:shadow-[0_8px_30px_rgba(0,0,0,0.15)] hover:-translate-y-1 transition-all duration-300 min-w-0">
               <div className="absolute top-0 left-0 w-full h-1 bg-status-confirmed/80"></div>
               <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-2 sm:mb-3">
-                <h3 className="text-botanical-muted uppercase tracking-widest font-semibold truncate text-2xl md:text-3xl">Revenue</h3>
+                <h3 className="text-xs text-botanical-muted uppercase tracking-widest font-semibold truncate">Revenue</h3>
                 <span className="text-status-confirmed text-sm sm:text-base">💵</span>
               </div>
-              <p className="font-black text-botanical-text break-words leading-tight text-base md:text-lg">${todayStats.revenue.toFixed(0)}</p>
+              <p className="font-black text-botanical-text break-words leading-tight text-3xl md:text-4xl">${todayStats.revenue.toFixed(0)}</p>
             </div>
             <div className="bg-botanical-surface backdrop-blur-md shadow-[0_4px_30px_rgba(0,0,0,0.1)] rounded-2xl border border-botanical-border shadow-sm p-4 sm:p-6 relative overflow-hidden group hover:bg-botanical-border hover:shadow-[0_8px_30px_rgba(0,0,0,0.15)] hover:-translate-y-1 transition-all duration-300 min-w-0">
               <div className="absolute top-0 left-0 w-full h-1 bg-status-pending/80"></div>
               <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-2 sm:mb-3">
-                <h3 className="text-botanical-muted uppercase tracking-widest font-semibold truncate text-2xl md:text-3xl">Tips</h3>
+                <h3 className="text-xs text-botanical-muted uppercase tracking-widest font-semibold truncate">Tips</h3>
                 <span className="text-status-pending text-sm sm:text-base">🪙</span>
               </div>
-              <p className="font-black text-botanical-text break-words leading-tight text-base md:text-lg">${todayStats.tips.toFixed(0)}</p>
+              <p className="font-black text-botanical-text break-words leading-tight text-3xl md:text-4xl">${todayStats.tips.toFixed(0)}</p>
             </div>
             <div className="bg-botanical-surface backdrop-blur-md shadow-[0_4px_30px_rgba(0,0,0,0.1)] rounded-2xl border border-botanical-border shadow-sm p-4 sm:p-6 relative overflow-hidden group hover:bg-botanical-border hover:shadow-[0_8px_30px_rgba(0,0,0,0.15)] hover:-translate-y-1 transition-all duration-300 min-w-0">
               <div className="absolute top-0 left-0 w-full h-1 bg-purple-500/80"></div>
               <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-2 sm:mb-3">
-                <h3 className="text-botanical-muted uppercase tracking-widest font-semibold truncate text-2xl md:text-3xl">Completed</h3>
+                <h3 className="text-xs text-botanical-muted uppercase tracking-widest font-semibold truncate">Completed</h3>
                 <span className="text-purple-500 text-sm sm:text-base">✅</span>
               </div>
-              <p className="font-black text-botanical-text break-words leading-tight text-base md:text-lg">{todayStats.completedCount}</p>
+              <p className="font-black text-botanical-text break-words leading-tight text-3xl md:text-4xl">{todayStats.completedCount}</p>
             </div>
             <div className="col-span-2 lg:col-span-1 bg-botanical-surface backdrop-blur-md shadow-[0_4px_30px_rgba(0,0,0,0.1)] rounded-2xl border border-botanical-border shadow-sm p-4 sm:p-6 relative overflow-hidden group hover:bg-botanical-border hover:shadow-[0_8px_30px_rgba(0,0,0,0.15)] hover:-translate-y-1 transition-all duration-300 min-w-0">
               <div className="absolute top-0 left-0 w-full h-1 bg-cyan-500/80"></div>
               <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-2 sm:mb-3">
-                <h3 className="text-botanical-muted uppercase tracking-widest font-semibold truncate text-2xl md:text-3xl">Upcoming</h3>
+                <h3 className="text-xs text-botanical-muted uppercase tracking-widest font-semibold truncate">Upcoming</h3>
                 <span className="text-cyan-500 text-sm sm:text-base">⏳</span>
               </div>
-              <p className="font-black text-botanical-text break-words leading-tight text-base md:text-lg">{todayStats.upcomingCount}</p>
+              <p className="font-black text-botanical-text break-words leading-tight text-3xl md:text-4xl">{todayStats.upcomingCount}</p>
             </div>
           </div>
         </div>

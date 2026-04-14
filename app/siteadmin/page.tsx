@@ -118,8 +118,8 @@ function KpiCard({ label, value, color }: { label: string; value: string | numbe
 
   return (
     <div className={`bg-gradient-to-br ${classes} border p-4 rounded-xl text-center`}>
-      <p className={`${` font-black ${textColor} text-base md:text-lg`}`}>{value}</p>
-      <p className="text-botanical-muted uppercase tracking-wider mt-1 text-base md:text-lg">{label}</p>
+      <p className={`font-black ${textColor} text-3xl sm:text-4xl`}>{value}</p>
+      <p className="text-xs text-botanical-muted uppercase tracking-wider mt-1">{label}</p>
     </div>
   );
 }
