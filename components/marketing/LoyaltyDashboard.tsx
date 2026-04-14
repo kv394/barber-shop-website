@@ -20,7 +20,7 @@ const TIER_COLORS: Record<string, string> = {
   Bronze: 'bg-amber-800/30 text-status-pending border-status-pending/40',
   Silver: 'bg-botanical-border/20 text-botanical-muted border-botanical-border/40',
   Gold: 'bg-botanical-primary/20 text-status-pending border-status-pending/40',
-  Platinum: 'bg-purple-500/20 text-purple-300 border-purple-400/40',
+  Platinum: 'bg-botanical-accent/20 text-botanical-accent border-botanical-accent/30',
 };
 const TIER_ICONS: Record<string, string> = { Bronze: '🥉', Silver: '🥈', Gold: '🥇', Platinum: '💎' };
 
@@ -106,7 +106,7 @@ export default function LoyaltyDashboard({ shopId }: { shopId: string }) {
           <button
             onClick={() => setForm(f => ({ ...f, isActive: !f.isActive }))}
             className={`px-3 py-1.5 rounded-full text-xs font-bold border transition-colors ${
-              form.isActive ? 'bg-green-900/50 text-green-300 border-status-confirmed/30' : 'bg-botanical-surface text-botanical-muted border-botanical-border'
+              form.isActive ? 'bg-status-confirmed/20 text-status-confirmed border-status-confirmed/30' : 'bg-botanical-surface text-botanical-muted border-botanical-border'
             }`}
           >
             {form.isActive ? '● Active' : '○ Inactive'}

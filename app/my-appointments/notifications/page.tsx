@@ -60,7 +60,7 @@ export default function NotificationsPage() {
       </header>
 
       <div className="max-w-2xl mx-auto px-4 sm:px-6 py-8">
-        {msg && <div className="mb-4 p-3 rounded-lg bg-green-900/30 border border-status-confirmed/30 text-green-300 text-sm">{msg}</div>}
+        {msg && <div className="mb-4 p-3 rounded-lg bg-status-confirmed/20 border border-status-confirmed/30 text-status-confirmed text-sm">{msg}</div>}
 
         <div className="bg-botanical-surface border border-botanical-border shadow-sm rounded-xl p-6 space-y-4">
           {[

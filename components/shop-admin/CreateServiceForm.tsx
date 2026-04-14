@@ -73,7 +73,7 @@ export default function CreateServiceForm({ shopId }: { shopId: string }) {
         {isInternal ? 'Add Inventory Item' : 'Add New Service'}
       </h3>
       
-      {error && <div className="p-3 bg-red-900/50 border border-status-cancelled text-red-200 rounded text-sm mb-4">{error}</div>}
+      {error && <div className="p-3 bg-status-cancelled/20 border border-status-cancelled text-red-200 rounded text-sm mb-4">{error}</div>}
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <select 
@@ -199,7 +199,7 @@ export default function CreateServiceForm({ shopId }: { shopId: string }) {
       )}
 
       {isInternal && (
-          <div className="py-4 mt-4 text-sm text-blue-300">
+          <div className="py-4 mt-4 text-sm text-status-info">
               ℹ️ Inventory tracking is automatically enabled for internal items.
           </div>
       )}

@@ -19,9 +19,9 @@ interface ReferralData {
 }
 
 const STATUS_STYLES: Record<string, { bg: string; text: string; label: string }> = {
-  PENDING:   { bg: 'bg-blue-900/40',   text: 'text-blue-300',   label: 'Pending' },
+  PENDING:   { bg: 'bg-status-info/20',   text: 'text-status-info',   label: 'Pending' },
   COMPLETED: { bg: 'bg-amber-900/40',  text: 'text-amber-300',  label: 'Completed' },
-  REWARDED:  { bg: 'bg-green-900/40',  text: 'text-green-300',  label: 'Rewarded' },
+  REWARDED:  { bg: 'bg-status-confirmed/20',  text: 'text-status-confirmed',  label: 'Rewarded' },
 };
 
 export default function ReferralsPage() {

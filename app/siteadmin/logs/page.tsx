@@ -89,7 +89,7 @@ export default async function SiteAdminLogsPage() {
               </tr>
             ) : (
               logs.map((log: any) => (
-                <tr key={log.id} className={log.level === "ERROR" && !log.isResolved ? "bg-red-900/20" : "hover:bg-botanical-surface"}>
+                <tr key={log.id} className={log.level === "ERROR" && !log.isResolved ? "bg-status-cancelled/20" : "hover:bg-botanical-surface"}>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-botanical-muted">
                     {new Date(log.createdAt).toLocaleString()}
                   </td>
@@ -132,7 +132,7 @@ export default async function SiteAdminLogsPage() {
                        )}
                        <form action={deleteLog}>
                          <input type="hidden" name="id" value={log.id} />
-                         <button type="submit" className="text-status-cancelled hover:text-red-300">
+                         <button type="submit" className="text-status-cancelled hover:text-status-cancelled">
                            Delete
                          </button>
                        </form>

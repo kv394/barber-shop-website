@@ -50,7 +50,7 @@ export default function BlackoutDatesManager({ shopId }: { shopId: string }) {
     <div className="bg-botanical-surface border border-botanical-border shadow-sm rounded-xl p-6 space-y-5">
       <h3 className="font-bold text-botanical-text text-2xl md:text-3xl">🚫 Blackout Dates & Holidays</h3>
       <p className="text-botanical-muted text-base md:text-lg">Mark days when your shop is closed. Online booking will be disabled for these dates.</p>
-      {msg && <div className="p-3 bg-green-900/30 border border-status-confirmed/30 text-green-300 rounded-lg text-sm">{msg}</div>}
+      {msg && <div className="p-3 bg-status-confirmed/20 border border-status-confirmed/30 text-status-confirmed rounded-lg text-sm">{msg}</div>}
 
       {/* Add form */}
       <div className="flex flex-col sm:flex-row gap-3">
@@ -81,8 +81,8 @@ export default function BlackoutDatesManager({ shopId }: { shopId: string }) {
               return (
                 <div key={d.id} className="flex items-center justify-between p-3 bg-botanical-surface rounded-lg">
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-lg bg-red-900/40 border border-status-cancelled/30 flex flex-col items-center justify-center">
-                      <span className="text-red-300 text-xs font-bold leading-none">{MONTHS[dt.getUTCMonth()]}</span>
+                    <div className="w-10 h-10 rounded-lg bg-status-cancelled/20 border border-status-cancelled/30 flex flex-col items-center justify-center">
+                      <span className="text-status-cancelled text-xs font-bold leading-none">{MONTHS[dt.getUTCMonth()]}</span>
                       <span className="text-red-200 text-base font-black leading-none">{dt.getUTCDate()}</span>
                     </div>
                     <div>

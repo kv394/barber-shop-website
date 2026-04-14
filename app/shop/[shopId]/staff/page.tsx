@@ -184,13 +184,13 @@ export default async function StaffBookingPage({
                 </StaffProfileModalWrapper>
                 <div className="flex flex-col gap-1 items-end shrink-0">
                   {staffMember.using === 'default' && <span className="text-sm sm:text-xs bg-amber-900/50 text-amber-300 px-2 py-0.5 sm:py-1 rounded-full">Default Hours</span>}
-                  {staffMember.using === 'shop' && <span className="text-sm sm:text-xs bg-blue-900/50 text-blue-300 px-2 py-0.5 sm:py-1 rounded-full">Shop Hours</span>}
+                  {staffMember.using === 'shop' && <span className="text-sm sm:text-xs bg-status-info/20 text-status-info px-2 py-0.5 sm:py-1 rounded-full">Shop Hours</span>}
                 </div>
               </div>
               <div className="flex-grow max-h-80 overflow-y-auto pr-1 sm:pr-2 space-y-1">
                 {isOnLeave ? (
-                  <div className="text-center py-4 h-full flex flex-col justify-center items-center rounded-md bg-red-900/50">
-                    <p className="font-bold text-red-300 text-base md:text-lg">ON LEAVE</p>
+                  <div className="text-center py-4 h-full flex flex-col justify-center items-center rounded-md bg-status-cancelled/20">
+                    <p className="font-bold text-status-cancelled text-base md:text-lg">ON LEAVE</p>
                   </div>
                 ) : isNotWorking ? (
                     <div className="text-center py-4 h-full flex flex-col justify-center items-center rounded-md bg-botanical-surface">
@@ -198,10 +198,10 @@ export default async function StaffBookingPage({
                     </div>
                 ) : staffMember.schedule.length > 0 ? (
                   staffMember.schedule.map((slot: any) => (
-                    <div key={slot.time} className={`p-2 rounded-md text-xs sm:text-sm flex justify-between items-center ${slot.isBooked ? 'bg-amber-800/60' : 'bg-green-800/40'}`}>
+                    <div key={slot.time} className={`p-2 rounded-md text-xs sm:text-sm flex justify-between items-center ${slot.isBooked ? 'bg-amber-800/60' : 'bg-status-confirmed/20'}`}>
                       <span className="font-mono text-botanical-muted">{slot.time}</span>
                       <div className="flex items-center">
-                        {slot.isBooked ? <span className="font-bold text-amber-300">Booked</span> : <span className="font-semibold text-green-300">Available</span>}
+                        {slot.isBooked ? <span className="font-bold text-amber-300">Booked</span> : <span className="font-semibold text-status-confirmed">Available</span>}
                         {!slot.isBooked && (userRole === 'SHOP_ADMIN' || userRole === 'SITE_ADMIN' || staffMember.id === actualUserId) && (
                           <BlockTimeButton shopId={shopId} staffId={staffMember.id} date={selectedDate} time={slot.isoTime} />
                         )}

@@ -101,7 +101,7 @@ export default async function ProfilePage({ params }: { params: Promise<{ shopId
 
           <Link href={`/shop/${shopId}/portfolio`} className="flex items-center justify-between p-5 hover:bg-botanical-surface transition-colors active:bg-botanical-border">
             <div className="flex items-center gap-4">
-              <span className="text-xl bg-purple-500/20 text-purple-400 w-10 h-10 rounded-full flex items-center justify-center">📸</span>
+              <span className="text-xl bg-botanical-accent/20 text-botanical-accent w-10 h-10 rounded-full flex items-center justify-center">📸</span>
               <div>
                 <h3 className="text-botanical-text font-semibold text-2xl md:text-3xl">My Portfolio</h3>
                 <p className="text-botanical-muted text-base md:text-lg">Manage your gallery of haircuts</p>
@@ -123,7 +123,7 @@ export default async function ProfilePage({ params }: { params: Promise<{ shopId
         </div>
         
         <div className="pt-4 pb-8">
-            <Link href="/logout" className="w-full flex items-center justify-center gap-2 py-4 bg-red-900/20 hover:bg-red-900/40 text-status-cancelled font-bold rounded-xl border border-status-cancelled/20 transition-colors">
+            <Link href="/logout" className="w-full flex items-center justify-center gap-2 py-4 bg-status-cancelled/20 hover:bg-status-cancelled/20 text-status-cancelled font-bold rounded-xl border border-status-cancelled/20 transition-colors">
                 <span>🚪</span> Sign Out
             </Link>
         </div>

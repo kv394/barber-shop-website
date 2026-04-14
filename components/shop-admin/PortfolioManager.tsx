@@ -79,7 +79,7 @@ export default function PortfolioManager({ shopId, currentUserId, userRole }: { 
         </div>
       )}
 
-      {msg && <div className="mb-4 p-2 bg-green-900/30 border border-status-confirmed/30 text-green-300 rounded text-sm">{msg}</div>}
+      {msg && <div className="mb-4 p-2 bg-status-confirmed/20 border border-status-confirmed/30 text-status-confirmed rounded text-sm">{msg}</div>}
 
       <form onSubmit={addImage} className="mb-8 p-4 bg-botanical-bg/50 rounded-lg border border-botanical-border shadow-sm space-y-4">
         <h4 className="font-semibold text-botanical-text text-xl md:text-2xl">Add New Photo</h4>

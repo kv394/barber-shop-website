@@ -145,10 +145,10 @@ export default function ReportsClient({
 
         {/* Avg Service */}
         <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-botanical-surface transition-all duration-300 min-w-0">
-          <div className="absolute top-0 left-0 w-full h-1 bg-purple-500/80"></div>
+          <div className="absolute top-0 left-0 w-full h-1 bg-botanical-accent/80"></div>
           <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-3">
             <h3 className="text-botanical-muted uppercase tracking-widest font-semibold truncate text-2xl md:text-3xl">Avg Ticket</h3>
-            <span className="text-purple-500 text-sm">📈</span>
+            <span className="text-botanical-accent text-sm">📈</span>
           </div>
           <p className="font-black text-botanical-text break-words leading-tight text-base md:text-lg">
             {formatCurrency(filtered.length > 0 ? (filteredRevenue / filtered.length) : 0)}
@@ -219,7 +219,7 @@ export default function ReportsClient({
                         <div className="min-w-0">
                           <p className="font-medium text-botanical-text truncate text-base md:text-lg">{apt.user.name || apt.user.email}</p>
                           <p className="text-botanical-accent text-base md:text-lg">{apt.service.name}</p>
-                          {apt.staff?.name && <p className="text-purple-400 text-base md:text-lg">✂️ {apt.staff.name}</p>}
+                          {apt.staff?.name && <p className="text-botanical-accent text-base md:text-lg">✂️ {apt.staff.name}</p>}
                         </div>
                         <div className="text-right shrink-0 ml-2">
                           {isRefunded ? (
@@ -273,7 +273,7 @@ export default function ReportsClient({
                             {apt.tipAmount > 0 && <div className="text-sm text-status-pending">+${apt.tipAmount.toFixed(2)} tip</div>}
                             {apt.discount > 0 && <div className="text-sm text-status-cancelled">-${apt.discount.toFixed(2)} disc.</div>}
                           </td>
-                          <td className="p-3 sm:p-4 text-purple-300">{apt.staff?.name || '—'}</td>
+                          <td className="p-3 sm:p-4 text-botanical-accent">{apt.staff?.name || '—'}</td>
                           <td className="p-3 sm:p-4 text-right font-bold">
                             {isRefunded ? (
                               <span className="text-status-pending line-through">${paid.toFixed(2)}</span>

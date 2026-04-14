@@ -62,9 +62,9 @@ export default function CampaignBuilder({ shopId }: { shopId: string }) {
   const getStatusBadge = (status: string) => {
     const colors: Record<string, string> = {
       DRAFT: 'bg-botanical-surface text-botanical-muted border-botanical-border',
-      SCHEDULED: 'bg-blue-900/50 text-blue-300 border-status-info/30',
-      SENT: 'bg-green-900/50 text-green-300 border-status-confirmed/30',
-      CANCELLED: 'bg-red-900/50 text-red-300 border-status-cancelled/30',
+      SCHEDULED: 'bg-status-info/20 text-status-info border-status-info/30',
+      SENT: 'bg-status-confirmed/20 text-status-confirmed border-status-confirmed/30',
+      CANCELLED: 'bg-status-cancelled/20 text-status-cancelled border-status-cancelled/30',
     };
     return <span className={`px-2 py-0.5 rounded text-sm font-bold border ${colors[status] || colors.DRAFT}`}>{status}</span>;
   };

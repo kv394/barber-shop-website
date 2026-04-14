@@ -154,7 +154,7 @@ export default function RescheduleModal({
         <h3 className="font-bold text-botanical-text mb-1 text-2xl md:text-3xl">Reschedule Appointment</h3>
         <p className="text-botanical-accent font-semibold mb-6 text-base md:text-lg">{serviceName}</p>
 
-        {error && <p className="text-status-cancelled bg-red-900/20 p-3 rounded mb-4 text-base md:text-lg">{error}</p>}
+        {error && <p className="text-status-cancelled bg-status-cancelled/20 p-3 rounded mb-4 text-base md:text-lg">{error}</p>}
 
         <div className="space-y-5">
           {/* Date */}

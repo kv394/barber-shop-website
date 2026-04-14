@@ -406,7 +406,7 @@ export default function BookingModal({ shopId, service, onClose, shopHours }: Bo
           <h3 className="font-bold text-botanical-text mb-1 text-2xl md:text-3xl">Review Your Booking</h3>
           <p className="text-botanical-muted mb-5 text-base md:text-lg">Please confirm the details below.</p>
 
-          {error && <p className="text-status-cancelled bg-red-900/20 p-3 rounded mb-4 text-base md:text-lg">{error}</p>}
+          {error && <p className="text-status-cancelled bg-status-cancelled/20 p-3 rounded mb-4 text-base md:text-lg">{error}</p>}
 
           <div className="bg-botanical-surface rounded-lg border border-botanical-border shadow-sm divide-y divide-white/10 mb-6">
             <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center p-4">
@@ -485,14 +485,14 @@ export default function BookingModal({ shopId, service, onClose, shopHours }: Bo
             </div>
         ) : (
             <div className="space-y-6">
-                {error && <p className="text-status-cancelled bg-red-900/20 p-3 rounded text-base md:text-lg">{error}</p>}
+                {error && <p className="text-status-cancelled bg-status-cancelled/20 p-3 rounded text-base md:text-lg">{error}</p>}
                 
                 {/* ──── Walk-in Section (Staff/Admin only) ──── */}
                 {userRole && (
-                    <div className="bg-blue-900/20 border border-status-info/30 p-4 rounded-lg space-y-3">
+                    <div className="bg-status-info/20 border border-status-info/30 p-4 rounded-lg space-y-3">
                         <div className="flex items-center space-x-2">
                             <input type="checkbox" id="walkInToggle" checked={isWalkIn} onChange={(e) => { setIsWalkIn(e.target.checked); handleClearSelectedClient(); }} className="w-4 h-4 accent-brand-gold bg-botanical-surface border-botanical-border rounded" />
-                            <label htmlFor="walkInToggle" className="font-semibold text-blue-300 cursor-pointer text-sm">I am booking on behalf of a client</label>
+                            <label htmlFor="walkInToggle" className="font-semibold text-status-info cursor-pointer text-sm">I am booking on behalf of a client</label>
                         </div>
                         {isWalkIn && (
                             <div className="space-y-3 pt-2">
@@ -527,9 +527,9 @@ export default function BookingModal({ shopId, service, onClose, shopHours }: Bo
                                     </div>
                                   </>
                                 ) : (
-                                  <div className="flex items-center justify-between bg-green-900/20 border border-status-confirmed/30 rounded p-2">
+                                  <div className="flex items-center justify-between bg-status-confirmed/20 border border-status-confirmed/30 rounded p-2">
                                     <div>
-                                      <span className="text-green-300 text-sm font-semibold">{selectedExistingClient.name}</span>
+                                      <span className="text-status-confirmed text-sm font-semibold">{selectedExistingClient.name}</span>
                                       <span className="text-botanical-muted text-xs ml-2">{selectedExistingClient.email}</span>
                                     </div>
                                     <button onClick={handleClearSelectedClient} className="text-botanical-muted hover:text-botanical-text text-xs underline">Change</button>

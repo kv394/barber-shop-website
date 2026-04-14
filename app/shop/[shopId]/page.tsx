@@ -190,7 +190,7 @@ export default async function ShopDashboardPage({ params }: { params: Promise<{ 
         <div className={`mb-6 p-4 rounded-xl border flex items-start gap-3 ${
           billingAlert.type === 'warning' 
             ? 'bg-amber-900/20 border-status-pending/30 text-amber-200' 
-            : 'bg-red-900/20 border-status-cancelled/30 text-red-200'
+            : 'bg-status-cancelled/20 border-status-cancelled/30 text-red-200'
         }`}>
           <span className="text-base mt-0.5">⚠️</span>
           <div className="flex-1">
@@ -231,18 +231,18 @@ export default async function ShopDashboardPage({ params }: { params: Promise<{ 
           </div>
           {/* Low-stock alert */}
           {lowStockItems.length > 0 && (
-            <div className="flex-1 bg-orange-900/20 border border-orange-500/30 rounded-xl p-4">
-              <p className="text-orange-300 font-semibold mb-2 text-base md:text-lg">⚠️ {lowStockItems.length} Low-Stock Item{lowStockItems.length > 1 ? 's' : ''}</p>
+            <div className="flex-1 bg-status-pending/10 border border-status-pending/30 rounded-xl p-4">
+              <p className="text-status-pending font-semibold mb-2 text-base md:text-lg">⚠️ {lowStockItems.length} Low-Stock Item{lowStockItems.length > 1 ? 's' : ''}</p>
               <div className="space-y-1">
                 {lowStockItems.slice(0, 3).map((item: any) => (
                   <div key={item.id} className="flex flex-wrap justify-between gap-x-2 gap-y-2 text-xs">
                     <span className="text-botanical-muted truncate">{item.name}</span>
-                    <span className="text-orange-300 font-mono ml-2 flex-shrink-0">{item.inventoryCount} left</span>
+                    <span className="text-status-pending font-mono ml-2 flex-shrink-0">{item.inventoryCount} left</span>
                   </div>
                 ))}
                 {lowStockItems.length > 3 && <p className="text-botanical-muted text-base md:text-lg">+{lowStockItems.length - 3} more</p>}
               </div>
-              <Link href={`/shop/${shopId}/config/products`} className="text-orange-300 hover:text-orange-200 text-xs underline mt-2 inline-block">
+              <Link href={`/shop/${shopId}/config/products`} className="text-status-pending hover:text-botanical-text transition-colors text-xs underline mt-2 inline-block">
                 Restock now →
               </Link>
             </div>
@@ -315,10 +315,10 @@ export default async function ShopDashboardPage({ params }: { params: Promise<{ 
               <p className="font-black text-botanical-text break-words leading-tight text-3xl md:text-4xl">${todayStats.tips.toFixed(0)}</p>
             </div>
             <div className="bg-botanical-surface backdrop-blur-md shadow-[0_4px_30px_rgba(0,0,0,0.1)] rounded-2xl border border-botanical-border shadow-sm p-4 sm:p-6 relative overflow-hidden group hover:bg-botanical-border hover:shadow-[0_8px_30px_rgba(0,0,0,0.15)] hover:-translate-y-1 transition-all duration-300 min-w-0">
-              <div className="absolute top-0 left-0 w-full h-1 bg-purple-500/80"></div>
+              <div className="absolute top-0 left-0 w-full h-1 bg-botanical-accent/80"></div>
               <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-2 sm:mb-3">
                 <h3 className="text-xs text-botanical-muted uppercase tracking-widest font-semibold truncate">Completed</h3>
-                <span className="text-purple-500 text-sm sm:text-base">✅</span>
+                <span className="text-botanical-accent text-sm sm:text-base">✅</span>
               </div>
               <p className="font-black text-botanical-text break-words leading-tight text-3xl md:text-4xl">{todayStats.completedCount}</p>
             </div>

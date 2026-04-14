@@ -42,8 +42,8 @@ export default function EngagementAnalytics({ shopId }: { shopId: string }) {
           <p className="font-black text-botanical-text break-words leading-tight w-full text-base md:text-lg">{overview.newLastMonth}</p>
         </div>
         <div className="p-4 sm:p-5 relative overflow-hidden group hover:bg-gray-50 transition-all duration-300 min-w-0 border-b md:border-b-0 lg:border-r border-botanical-border md:border-r flex flex-col items-center justify-center text-center">
-          <div className="absolute top-0 left-0 w-full h-1 bg-purple-500/80"></div>
-          <span className="text-purple-500 text-xl sm:text-2xl mb-1 sm:mb-2 flex-shrink-0">🔄</span>
+          <div className="absolute top-0 left-0 w-full h-1 bg-botanical-accent/80"></div>
+          <span className="text-botanical-accent text-xl sm:text-2xl mb-1 sm:mb-2 flex-shrink-0">🔄</span>
           <h3 className="text-botanical-muted text-[10px] uppercase tracking-widest font-semibold leading-tight mb-1 w-full truncate text-2xl md:text-3xl">Retention</h3>
           <p className="font-black text-botanical-text break-words leading-tight w-full text-base md:text-lg">{overview.retentionRate}%</p>
         </div>

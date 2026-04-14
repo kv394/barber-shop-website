@@ -46,7 +46,7 @@ export default function UsageAnalysisModal({ shopId, shopName, onClose }: UsageA
             <p className="text-botanical-muted animate-pulse text-base md:text-lg">Aggregating metrics and calculating SaaS costs...</p>
           </div>
         ) : error ? (
-          <div className="p-4 bg-red-900/30 border border-status-cancelled/30 rounded-lg text-status-cancelled text-sm">
+          <div className="p-4 bg-status-cancelled/20 border border-status-cancelled/30 rounded-lg text-status-cancelled text-sm">
             {error}
           </div>
         ) : data ? (

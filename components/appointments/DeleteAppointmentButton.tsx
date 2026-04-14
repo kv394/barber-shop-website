@@ -37,7 +37,7 @@ export default function DeleteAppointmentButton({ shopId, appointmentId, userNam
     <button 
       onClick={handleDelete} 
       disabled={isDeleting}
-      className="text-status-cancelled hover:text-red-300 text-xs font-semibold uppercase tracking-wider disabled:opacity-50"
+      className="text-status-cancelled hover:text-status-cancelled text-xs font-semibold uppercase tracking-wider disabled:opacity-50"
     >
       {isDeleting ? 'Canceling...' : 'Cancel'}
     </button>

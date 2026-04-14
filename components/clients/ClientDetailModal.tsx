@@ -126,10 +126,10 @@ export default function ClientDetailModal({ shopId, clientId, clientName, onClos
 
   const getStatusBadge = (status: string) => {
     switch (status) {
-      case 'COMPLETED': return <span className="bg-green-900/50 text-green-300 px-2 py-0.5 rounded text-sm font-bold border border-status-confirmed/30">COMPLETED</span>;
+      case 'COMPLETED': return <span className="bg-status-confirmed/20 text-status-confirmed px-2 py-0.5 rounded text-sm font-bold border border-status-confirmed/30">COMPLETED</span>;
       case 'NO_SHOW': return <span className="bg-amber-900/50 text-amber-300 px-2 py-0.5 rounded text-sm font-bold border border-status-pending/30">NO-SHOW</span>;
-      case 'CANCELLED': return <span className="bg-red-900/50 text-red-300 px-2 py-0.5 rounded text-sm font-bold border border-status-cancelled/30">CANCELLED</span>;
-      default: return <span className="bg-blue-900/50 text-blue-300 px-2 py-0.5 rounded text-sm font-bold border border-status-info/30">SCHEDULED</span>;
+      case 'CANCELLED': return <span className="bg-status-cancelled/20 text-status-cancelled px-2 py-0.5 rounded text-sm font-bold border border-status-cancelled/30">CANCELLED</span>;
+      default: return <span className="bg-status-info/20 text-status-info px-2 py-0.5 rounded text-sm font-bold border border-status-info/30">SCHEDULED</span>;
     }
   };
 

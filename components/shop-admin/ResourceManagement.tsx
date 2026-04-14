@@ -44,7 +44,7 @@ export default function ResourceManagement({ shopId }: { shopId: string }) {
         Add physical resources like pedicure chairs, laser machines, or massage rooms. Appointments can be configured to require these resources.
       </p>
 
-      {msg && <div className="mb-4 p-2 bg-green-900/30 border border-status-confirmed/30 text-green-300 rounded text-sm">{msg}</div>}
+      {msg && <div className="mb-4 p-2 bg-status-confirmed/20 border border-status-confirmed/30 text-status-confirmed rounded text-sm">{msg}</div>}
 
       <form onSubmit={addResource} className="flex gap-3 mb-6">
         <input 
@@ -85,7 +85,7 @@ export default function ResourceManagement({ shopId }: { shopId: string }) {
               </div>
               <button 
                 onClick={() => remove(r.id)} 
-                className="text-status-cancelled hover:text-red-300 text-sm font-medium"
+                className="text-status-cancelled hover:text-status-cancelled text-sm font-medium"
               >
                 Remove
               </button>

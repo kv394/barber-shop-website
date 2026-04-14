@@ -115,10 +115,10 @@ export default function StaffWorkingReport({ staffMembers }: { staffMembers: Sta
           </p>
         </div>
         <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-botanical-surface transition-all duration-300 min-w-0">
-          <div className="absolute top-0 left-0 w-full h-1 bg-purple-500/80"></div>
+          <div className="absolute top-0 left-0 w-full h-1 bg-botanical-accent/80"></div>
           <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-3">
             <h3 className="text-botanical-muted uppercase tracking-widest font-semibold truncate text-2xl md:text-3xl">Total Hours</h3>
-            <span className="text-purple-500 text-sm">⏱️</span>
+            <span className="text-botanical-accent text-sm">⏱️</span>
           </div>
           <p className="font-black text-botanical-text break-words leading-tight text-base md:text-lg">{formatDuration(totalHoursMs)}</p>
           {isFiltered && <p className="text-botanical-muted mt-2 truncate opacity-0 group-hover:opacity-100 transition-opacity text-base md:text-lg">In selected date range</p>}
@@ -192,7 +192,7 @@ export default function StaffWorkingReport({ staffMembers }: { staffMembers: Sta
                         <h4 className="font-bold text-botanical-text flex items-center gap-2 text-xl md:text-2xl">
                           {staff.name}
                           {staff.isActive && (
-                            <span className="text-sm text-status-confirmed bg-green-900/50 px-2 py-0.5 rounded-full font-bold animate-pulse">
+                            <span className="text-sm text-status-confirmed bg-status-confirmed/20 px-2 py-0.5 rounded-full font-bold animate-pulse">
                               ACTIVE
                             </span>
                           )}
@@ -203,7 +203,7 @@ export default function StaffWorkingReport({ staffMembers }: { staffMembers: Sta
                     <div className="grid grid-cols-3 gap-4 sm:gap-8 text-center sm:text-right">
                       <div>
                         <p className="text-botanical-muted uppercase tracking-wider text-base md:text-lg">Hours</p>
-                        <p className="font-bold text-purple-400 text-base md:text-lg">{staff.hours}</p>
+                        <p className="font-bold text-botanical-accent text-base md:text-lg">{staff.hours}</p>
                       </div>
                       <div>
                         <p className="text-botanical-muted uppercase tracking-wider text-base md:text-lg">Clients</p>
@@ -245,7 +245,7 @@ export default function StaffWorkingReport({ staffMembers }: { staffMembers: Sta
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                       {/* Time Logs */}
                       <div>
-                        <h5 className="text-sm font-semibold text-purple-400 mb-3 flex items-center gap-2">
+                        <h5 className="text-sm font-semibold text-botanical-accent mb-3 flex items-center gap-2">
                           ⏱️ Attendance Logs
                           <span className="text-sm text-botanical-muted font-normal">
                             ({selectedStaffData.filteredLogs.length} entries)
@@ -279,7 +279,7 @@ export default function StaffWorkingReport({ staffMembers }: { staffMembers: Sta
                                       }
                                     </span>
                                   </div>
-                                  <span className={`font-semibold ${clockOut ? 'text-purple-400' : 'text-status-confirmed'}`}>
+                                  <span className={`font-semibold ${clockOut ? 'text-botanical-accent' : 'text-status-confirmed'}`}>
                                     {duration}
                                   </span>
                                 </div>

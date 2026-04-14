@@ -101,7 +101,7 @@ export default function KioskMode({ userProfile }: { userProfile: UserProfile })
                                 <BarcodeScannerWrapper shopId={userProfile.shopId} services={[]} />
                             </div>
                         ) : (
-                            <p className="text-status-cancelled bg-red-900/20 p-4 rounded-lg border border-status-cancelled/30 z-10 text-base md:text-lg">Error: Kiosk not assigned to a shop.</p>
+                            <p className="text-status-cancelled bg-status-cancelled/20 p-4 rounded-lg border border-status-cancelled/30 z-10 text-base md:text-lg">Error: Kiosk not assigned to a shop.</p>
                         )}
                     </div>
 
@@ -113,7 +113,7 @@ export default function KioskMode({ userProfile }: { userProfile: UserProfile })
                             <div className="flex items-center gap-4 mb-6 shrink-0">
                                 <div className="w-12 h-12 rounded-xl bg-status-info/20 flex items-center justify-center text-2xl border border-status-info/30">👥</div>
                                 <h3 className="font-serif text-botanical-text text-2xl md:text-3xl">Currently Clocked In</h3>
-                                <span className="ml-auto bg-status-info/20 text-blue-300 px-4 py-1.5 rounded-full text-sm font-bold border border-status-info/30">
+                                <span className="ml-auto bg-status-info/20 text-status-info px-4 py-1.5 rounded-full text-sm font-bold border border-status-info/30">
                                     {activeLogs.length} Staff
                                 </span>
                             </div>
@@ -152,9 +152,9 @@ export default function KioskMode({ userProfile }: { userProfile: UserProfile })
                         {/* Checked-In Clients */}
                         <div className="flex-1 bg-botanical-surface p-6 md:p-8 rounded-3xl border border-botanical-border shadow-sm shadow-2xl flex flex-col max-h-[50vh] lg:max-h-[350px]">
                             <div className="flex items-center gap-4 mb-6 shrink-0">
-                                <div className="w-12 h-12 rounded-xl bg-purple-500/20 flex items-center justify-center text-2xl border border-purple-500/30">🛋️</div>
+                                <div className="w-12 h-12 rounded-xl bg-botanical-accent/20 flex items-center justify-center text-2xl border border-botanical-accent/30">🛋️</div>
                                 <h3 className="font-serif text-botanical-text text-2xl md:text-3xl">Checked-In Clients</h3>
-                                <span className="ml-auto bg-purple-500/20 text-purple-300 px-4 py-1.5 rounded-full text-sm font-bold border border-purple-500/30">
+                                <span className="ml-auto bg-botanical-accent/20 text-botanical-accent px-4 py-1.5 rounded-full text-sm font-bold border border-botanical-accent/30">
                                     {waitlist.length} Waiting
                                 </span>
                             </div>
@@ -167,7 +167,7 @@ export default function KioskMode({ userProfile }: { userProfile: UserProfile })
                                 ) : waitlist.length > 0 ? (
                                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                                         {waitlist.map(entry => (
-                                            <div key={entry.id} className={`p-4 rounded-xl flex justify-between items-center gap-3 border ${entry.status === 'SERVING' ? 'bg-green-900/20 border-status-confirmed/30' : 'bg-botanical-surface border-botanical-border'}`}>
+                                            <div key={entry.id} className={`p-4 rounded-xl flex justify-between items-center gap-3 border ${entry.status === 'SERVING' ? 'bg-status-confirmed/20 border-status-confirmed/30' : 'bg-botanical-surface border-botanical-border'}`}>
                                                 <div className="flex items-center gap-4 min-w-0">
                                                     <div className={`w-10 h-10 rounded-full flex items-center justify-center font-mono font-bold text-lg shrink-0 border ${entry.status === 'SERVING' ? 'bg-status-confirmed/20 text-status-confirmed border-status-confirmed/50' : 'bg-botanical-surface text-botanical-muted border-botanical-border'}`}>
                                                         {entry.position}

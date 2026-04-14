@@ -183,7 +183,7 @@ export default function CheckoutButton({
                       {item.id !== 'primary-service' && (
                         <button
                           onClick={() => removeFromCart(item.id)}
-                          className="text-status-cancelled hover:text-red-300 text-xs shrink-0 w-5 h-5 flex items-center justify-center"
+                          className="text-status-cancelled hover:text-status-cancelled text-xs shrink-0 w-5 h-5 flex items-center justify-center"
                         >✕</button>
                       )}
                     </div>

@@ -94,7 +94,7 @@ export default async function ShopBillingPage({ params }: { params: Promise<{ sh
             {[
               { label: 'Appointments', val: metrics.appointmentCount, colorClass: 'text-status-info', bgClass: 'bg-status-info/80', icon: '📅' },
               { label: 'Users', val: metrics.userCount, colorClass: 'text-status-confirmed', bgClass: 'bg-status-confirmed/80', icon: '👥' },
-              { label: 'Intake Forms', val: metrics.formSubmissionCount, colorClass: 'text-purple-500', bgClass: 'bg-purple-500/80', icon: '📝' },
+              { label: 'Intake Forms', val: metrics.formSubmissionCount, colorClass: 'text-botanical-accent', bgClass: 'bg-botanical-accent/80', icon: '📝' },
               { label: 'Images', val: metrics.portfolioImageCount + metrics.clientHistoryImageCount, colorClass: 'text-status-pending', bgClass: 'bg-status-pending/80', icon: '📸' },
             ].map(m => (
               <div key={m.label} className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-botanical-surface transition-all duration-300 min-w-0 border-t md:border-t-0 md:border-l border-botanical-border first:border-0">

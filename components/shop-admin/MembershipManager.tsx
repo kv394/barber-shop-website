@@ -48,7 +48,7 @@ export default function MembershipManager({ shopId }: { shopId: string }) {
         Create recurring subscription plans (e.g. VIP Barber Club: $100/mo for unlimited cuts).
       </p>
 
-      {msg && <div className="mb-4 p-2 bg-green-900/30 border border-status-confirmed/30 text-green-300 rounded text-sm">{msg}</div>}
+      {msg && <div className="mb-4 p-2 bg-status-confirmed/20 border border-status-confirmed/30 text-status-confirmed rounded text-sm">{msg}</div>}
 
       <form onSubmit={addTier} className="mb-8 space-y-4">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -125,7 +125,7 @@ export default function MembershipManager({ shopId }: { shopId: string }) {
               </div>
               <button 
                 onClick={() => remove(t.id)} 
-                className="text-status-cancelled hover:text-red-300 text-xs font-medium shrink-0"
+                className="text-status-cancelled hover:text-status-cancelled text-xs font-medium shrink-0"
               >
                 Delete
               </button>

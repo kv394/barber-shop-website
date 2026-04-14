@@ -185,7 +185,7 @@ export default function BarcodeScannerWrapper({ shopId, services = [] }: { shopI
 
             {/* Attendance result */}
             {attendanceMessage && (
-              <div className={`p-5 rounded-lg text-center border ${attendanceMessage.type === 'success' ? 'bg-green-900/20 border-status-confirmed/50' : 'bg-red-900/20 border-status-cancelled/50'}`}>
+              <div className={`p-5 rounded-lg text-center border ${attendanceMessage.type === 'success' ? 'bg-status-confirmed/20 border-status-confirmed/50' : 'bg-status-cancelled/20 border-status-cancelled/50'}`}>
                 {attendanceMessage.type === 'success' && <div className="text-4xl mb-3">✅</div>}
                 <h4 className={`${` font-bold mb-1 ${attendanceMessage.type === 'success' ? 'text-status-confirmed' : 'text-status-cancelled'} text-xl md:text-2xl`}`}>
                   {attendanceMessage.text}
@@ -213,7 +213,7 @@ export default function BarcodeScannerWrapper({ shopId, services = [] }: { shopI
                 <p className="text-botanical-accent font-mono mb-4 bg-botanical-surface p-2 rounded truncate text-base md:text-lg">Code: {scannedCode}</p>
 
                 {actionError && (
-                  <div className="bg-red-900/30 border border-status-cancelled/50 text-red-300 p-3 rounded-lg mb-4 text-sm">
+                  <div className="bg-status-cancelled/20 border border-status-cancelled/50 text-status-cancelled p-3 rounded-lg mb-4 text-sm">
                     {actionError}
                   </div>
                 )}
@@ -226,11 +226,11 @@ export default function BarcodeScannerWrapper({ shopId, services = [] }: { shopI
                     </div>
                     <div className="flex gap-3">
                       <button onClick={() => handleUpdateInventory(-1)} disabled={isUpdating || matchedService.inventoryCount <= 0}
-                        className="flex-1 bg-red-900/50 hover:bg-red-800 text-red-200 py-3 rounded-lg font-bold disabled:opacity-50 transition-colors border border-status-cancelled/30">
+                        className="flex-1 bg-status-cancelled/20 hover:bg-red-800 text-red-200 py-3 rounded-lg font-bold disabled:opacity-50 transition-colors border border-status-cancelled/30">
                         − Remove 1
                       </button>
                       <button onClick={() => handleUpdateInventory(1)} disabled={isUpdating}
-                        className="flex-1 bg-green-900/50 hover:bg-green-800 text-green-200 py-3 rounded-lg font-bold disabled:opacity-50 transition-colors border border-status-confirmed/30">
+                        className="flex-1 bg-status-confirmed/20 hover:bg-green-800 text-green-200 py-3 rounded-lg font-bold disabled:opacity-50 transition-colors border border-status-confirmed/30">
                         + Add 1
                       </button>
                     </div>
@@ -258,7 +258,7 @@ export default function BarcodeScannerWrapper({ shopId, services = [] }: { shopI
                         </button>
                       </div>
                     ) : (
-                      <p className="text-status-cancelled bg-red-900/20 p-3 rounded text-base md:text-lg">No inventory items found. Create one in the dashboard first.</p>
+                      <p className="text-status-cancelled bg-status-cancelled/20 p-3 rounded text-base md:text-lg">No inventory items found. Create one in the dashboard first.</p>
                     )}
                   </div>
                 )}

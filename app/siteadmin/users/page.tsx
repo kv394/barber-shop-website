@@ -85,12 +85,12 @@ export default function SiteAdminUsersPage() {
 
       {/* Alerts */}
       {actionError && (
-        <div className="mb-4 p-3 bg-red-900/50 border border-status-cancelled text-red-200 rounded-lg text-sm">
+        <div className="mb-4 p-3 bg-status-cancelled/20 border border-status-cancelled text-red-200 rounded-lg text-sm">
           {actionError}
         </div>
       )}
       {actionSuccess && (
-        <div className="mb-4 p-3 bg-green-900/50 border border-status-confirmed text-green-200 rounded-lg text-sm">
+        <div className="mb-4 p-3 bg-status-confirmed/20 border border-status-confirmed text-green-200 rounded-lg text-sm">
           {actionSuccess}
         </div>
       )}
@@ -151,7 +151,7 @@ export default function SiteAdminUsersPage() {
                   const roleColors: Record<string, string> = {
                     SITE_ADMIN: 'bg-status-cancelled/20 text-status-cancelled border-status-cancelled/30',
                     SHOP_ADMIN: 'bg-botanical-primary/20 text-botanical-accent border-brand-gold/30',
-                    STAFF: 'bg-purple-500/20 text-purple-400 border-purple-500/30',
+                    STAFF: 'bg-botanical-accent/20 text-botanical-accent border-botanical-accent/30',
                     CLIENT: 'bg-status-info/20 text-status-info border-status-info/30',
                     ATTENDANCE_KIOSK: 'bg-cyan-500/20 text-cyan-400 border-cyan-500/30',
                   };

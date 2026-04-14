@@ -24,9 +24,9 @@ interface Appointment {
 }
 
 const STATUS_STYLES: Record<string, { bg: string; text: string; label: string }> = {
-  SCHEDULED:  { bg: 'bg-blue-900/40',   text: 'text-blue-300',   label: 'Upcoming' },
-  COMPLETED:  { bg: 'bg-green-900/40',  text: 'text-green-300',  label: 'Completed' },
-  CANCELLED:  { bg: 'bg-red-900/40',    text: 'text-red-300',    label: 'Cancelled' },
+  SCHEDULED:  { bg: 'bg-status-info/20',   text: 'text-status-info',   label: 'Upcoming' },
+  COMPLETED:  { bg: 'bg-status-confirmed/20',  text: 'text-status-confirmed',  label: 'Completed' },
+  CANCELLED:  { bg: 'bg-status-cancelled/20',    text: 'text-status-cancelled',    label: 'Cancelled' },
   NO_SHOW:    { bg: 'bg-amber-900/40',  text: 'text-amber-300',  label: 'No-show' },
 };
 
@@ -143,7 +143,7 @@ export default function MyAppointmentsPage() {
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8 space-y-10">
         {error && (
-          <div className="bg-red-900/30 border border-status-cancelled/30 text-red-300 px-4 py-3 rounded-lg text-sm">
+          <div className="bg-status-cancelled/20 border border-status-cancelled/30 text-status-cancelled px-4 py-3 rounded-lg text-sm">
             {error}
           </div>
         )}
@@ -297,7 +297,7 @@ function AppointmentCard({
               <button
                 onClick={() => onCancel(apt.id)}
                 disabled={cancelling}
-                className="px-4 py-2 text-sm font-semibold bg-status-cancelled/20 text-status-cancelled border border-status-cancelled/30 rounded-lg hover:bg-status-cancelled/40 hover:text-red-300 transition-all disabled:opacity-50 disabled:cursor-wait"
+                className="px-4 py-2 text-sm font-semibold bg-status-cancelled/20 text-status-cancelled border border-status-cancelled/30 rounded-lg hover:bg-status-cancelled/40 hover:text-status-cancelled transition-all disabled:opacity-50 disabled:cursor-wait"
               >
                 {cancelling ? 'Cancelling…' : 'Cancel'}
               </button>
@@ -314,7 +314,7 @@ function AppointmentCard({
           {showRebook && apt.status === 'COMPLETED' && !apt.review && (
             <Link
               href={`/my-appointments/review/${apt.id}`}
-              className="px-4 py-2 text-sm font-semibold bg-purple-600/20 text-purple-400 border border-purple-500/30 rounded-lg hover:bg-purple-600/40 transition-all text-center"
+              className="px-4 py-2 text-sm font-semibold bg-purple-600/20 text-botanical-accent border border-botanical-accent/30 rounded-lg hover:bg-purple-600/40 transition-all text-center"
             >
               ⭐ Leave Review
             </Link>

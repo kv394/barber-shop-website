@@ -53,7 +53,7 @@ export default function CommissionSetup({ shopId }: { shopId: string }) {
     <div className="bg-botanical-surface border border-botanical-border shadow-sm rounded-xl p-6 space-y-4">
       <h3 className="font-bold text-botanical-text text-2xl md:text-3xl">💼 Commission Rates</h3>
       <p className="text-botanical-muted text-base md:text-lg">Set service and retail product commission rates per staff member.</p>
-      {msg && <div className="p-2 bg-green-900/30 border border-status-confirmed/30 text-green-300 rounded text-sm">{msg}</div>}
+      {msg && <div className="p-2 bg-status-confirmed/20 border border-status-confirmed/30 text-status-confirmed rounded text-sm">{msg}</div>}
       <div className="space-y-3">
         {staff.map((s: any) => (
           <div key={s.id} className="flex flex-wrap items-center gap-3 p-4 bg-botanical-surface rounded-lg">

@@ -119,10 +119,10 @@ export default function CommissionReportClient({
           <p className="font-black text-botanical-text break-words leading-tight text-base md:text-lg">${totalTips.toFixed(0)}</p>
         </div>
         <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-botanical-surface transition-all duration-300 min-w-0">
-          <div className="absolute top-0 left-0 w-full h-1 bg-purple-500/80"></div>
+          <div className="absolute top-0 left-0 w-full h-1 bg-botanical-accent/80"></div>
           <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-3">
             <h3 className="text-botanical-muted uppercase tracking-widest font-semibold truncate text-2xl md:text-3xl">{isPersonalView ? 'My Total Pay' : 'Total Payout'}</h3>
-            <span className="text-purple-500 text-sm">💳</span>
+            <span className="text-botanical-accent text-sm">💳</span>
           </div>
           <p className="font-black text-botanical-text break-words leading-tight text-base md:text-lg">${totalPayout.toFixed(0)}</p>
         </div>

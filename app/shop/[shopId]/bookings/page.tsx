@@ -121,7 +121,7 @@ export default async function BookingsPage({ params }: { params: Promise<{ shopI
                     const statusBadge = isScheduled ? (
                       <span className="px-2 py-0.5 text-sm uppercase font-bold rounded bg-botanical-surface text-botanical-text border border-slate-600 whitespace-nowrap">Scheduled</span>
                     ) : isAccepted ? (
-                      <span className="px-2 py-0.5 text-sm uppercase font-bold rounded bg-blue-900/50 text-blue-300 border border-status-info/30 whitespace-nowrap">Accepted</span>
+                      <span className="px-2 py-0.5 text-sm uppercase font-bold rounded bg-status-info/20 text-status-info border border-status-info/30 whitespace-nowrap">Accepted</span>
                     ) : isWorkCompleted ? (
                       <span className="px-2 py-0.5 text-sm uppercase font-bold rounded bg-botanical-primary/20 text-botanical-accent border border-brand-gold/30 whitespace-nowrap hover:opacity-90">Ready for Checkout</span>
                     ) : null;

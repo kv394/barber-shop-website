@@ -195,7 +195,7 @@ export default function ProductManager({ shopId, products }: { shopId: string, p
                 </td>
                 <td className="px-6 py-4">${product.price.toFixed(2)}</td>
                 <td className="px-6 py-4">
-                  <span className={`px-2 py-1 rounded-full text-xs font-medium ${product.type === 'RETAIL' ? 'bg-status-info/20 text-status-info' : 'bg-purple-500/20 text-purple-400'}`}>
+                  <span className={`px-2 py-1 rounded-full text-xs font-medium ${product.type === 'RETAIL' ? 'bg-status-info/20 text-status-info' : 'bg-botanical-accent/20 text-botanical-accent'}`}>
                     {product.type}
                   </span>
                 </td>
@@ -212,7 +212,7 @@ export default function ProductManager({ shopId, products }: { shopId: string, p
                   )}
                 </td>
                 <td className="px-6 py-4 text-right">
-                  <button onClick={() => handleDelete(product.id)} className="text-status-cancelled hover:text-red-300 transition-colors">
+                  <button onClick={() => handleDelete(product.id)} className="text-status-cancelled hover:text-status-cancelled transition-colors">
                     Delete
                   </button>
                 </td>

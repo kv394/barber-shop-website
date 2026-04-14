@@ -27,10 +27,10 @@ export default function KioskSetupClient({ shopId, shopName }: { shopId: string;
 
   return (
     <div className="space-y-6">
-      {msg && <div className="p-3 bg-green-900/30 border border-status-confirmed/30 text-green-300 rounded-lg text-sm">{msg}</div>}
+      {msg && <div className="p-3 bg-status-confirmed/20 border border-status-confirmed/30 text-status-confirmed rounded-lg text-sm">{msg}</div>}
 
-      <div className="bg-blue-900/20 border border-status-info/20 rounded-xl p-5">
-        <h4 className="text-blue-300 font-semibold mb-2 text-xl md:text-2xl">ℹ️ What is the Attendance Kiosk?</h4>
+      <div className="bg-status-info/20 border border-status-info/20 rounded-xl p-5">
+        <h4 className="text-status-info font-semibold mb-2 text-xl md:text-2xl">ℹ️ What is the Attendance Kiosk?</h4>
         <p className="text-botanical-muted leading-relaxed text-base md:text-lg">Set up a tablet or screen in your shop for staff to scan their QR/barcode to clock in and out. PIN-protected, no login required.</p>
       </div>
 

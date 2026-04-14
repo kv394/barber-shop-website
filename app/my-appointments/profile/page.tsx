@@ -84,7 +84,7 @@ function ProfileContent() {
 
       <div className="max-w-2xl mx-auto px-4 sm:px-6 py-8 space-y-6">
         {msg && (
-          <div className={`px-4 py-3 rounded-lg text-sm ${msg.type === 'success' ? 'bg-green-900/30 border border-status-confirmed/30 text-green-300' : 'bg-red-900/30 border border-status-cancelled/30 text-red-300'}`}>
+          <div className={`px-4 py-3 rounded-lg text-sm ${msg.type === 'success' ? 'bg-status-confirmed/20 border border-status-confirmed/30 text-status-confirmed' : 'bg-status-cancelled/20 border border-status-cancelled/30 text-status-cancelled'}`}>
             {msg.text}
           </div>
         )}

@@ -168,7 +168,7 @@ export default function LeaveManager({ shopId, userId }: { shopId: string, userI
                 </div>
                 <button 
                   onClick={() => handleDelete(leave.id)}
-                  className="text-status-cancelled hover:text-red-300 text-xs font-bold uppercase tracking-wider px-2 py-1"
+                  className="text-status-cancelled hover:text-status-cancelled text-xs font-bold uppercase tracking-wider px-2 py-1"
                 >
                   Cancel
                 </button>

@@ -47,7 +47,7 @@ export default function FormBuilder({ shopId }: { shopId: string }) {
         Create waivers, consultation forms, and medical histories. Clients will be prompted to sign these before their appointment.
       </p>
 
-      {msg && <div className="mb-4 p-2 bg-green-900/30 border border-status-confirmed/30 text-green-300 rounded text-sm">{msg}</div>}
+      {msg && <div className="mb-4 p-2 bg-status-confirmed/20 border border-status-confirmed/30 text-status-confirmed rounded text-sm">{msg}</div>}
 
       <form onSubmit={addForm} className="mb-8 space-y-4">
         <div>
@@ -101,13 +101,13 @@ export default function FormBuilder({ shopId }: { shopId: string }) {
               <div>
                 <div className="flex items-center gap-2 mb-1">
                   <h5 className="text-botanical-text font-medium text-sm">{f.name}</h5>
-                  {f.isRequired && <span className="text-sm uppercase font-bold tracking-wider bg-red-900/50 text-red-300 px-1.5 py-0.5 rounded">Required</span>}
+                  {f.isRequired && <span className="text-sm uppercase font-bold tracking-wider bg-status-cancelled/20 text-status-cancelled px-1.5 py-0.5 rounded">Required</span>}
                 </div>
                 <p className="text-botanical-muted line-clamp-2 text-base md:text-lg">{f.content}</p>
               </div>
               <button 
                 onClick={() => remove(f.id)} 
-                className="text-status-cancelled hover:text-red-300 text-xs font-medium shrink-0"
+                className="text-status-cancelled hover:text-status-cancelled text-xs font-medium shrink-0"
               >
                 Delete
               </button>

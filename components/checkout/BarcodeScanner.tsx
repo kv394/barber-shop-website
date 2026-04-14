@@ -217,7 +217,7 @@ export default function BarcodeScanner({ onScan, onClose }: BarcodeScannerProps)
         </p>
 
         {error && (
-          <div className="mb-4 p-3 bg-red-900/50 border border-status-cancelled text-red-200 rounded text-sm">
+          <div className="mb-4 p-3 bg-status-cancelled/20 border border-status-cancelled text-red-200 rounded text-sm">
             {error}
           </div>
         )}

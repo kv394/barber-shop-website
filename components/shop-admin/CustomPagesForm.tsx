@@ -91,7 +91,7 @@ export function CustomPagesForm({ shopId, customization }: { shopId: string; cus
                 <h3 className="font-bold text-botanical-text text-2xl md:text-3xl">Page {index + 1}</h3>
                 <button
                   onClick={() => removePage(index)}
-                  className="text-status-cancelled hover:text-red-300 text-sm"
+                  className="text-status-cancelled hover:text-status-cancelled text-sm"
                 >
                   Remove
                 </button>

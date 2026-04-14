@@ -80,10 +80,10 @@ export default function WaitlistClient({ shopId, services, staff }: { shopId: st
           <p className="font-black text-botanical-text break-words leading-tight text-base md:text-lg">{serving.length}</p>
         </div>
         <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-botanical-surface transition-all duration-300 min-w-0">
-          <div className="absolute top-0 left-0 w-full h-1 bg-purple-500/80"></div>
+          <div className="absolute top-0 left-0 w-full h-1 bg-botanical-accent/80"></div>
           <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-2 sm:mb-3">
             <h3 className="text-botanical-muted uppercase tracking-widest font-semibold truncate text-2xl md:text-3xl">Est. Wait</h3>
-            <span className="text-purple-500 text-sm">⏱️</span>
+            <span className="text-botanical-accent text-sm">⏱️</span>
           </div>
           <p className="font-black text-botanical-text break-words leading-tight text-base md:text-lg">{waiting.length > 0 ? `~${waiting.length * 15}m` : '0m'}</p>
         </div>
@@ -109,13 +109,13 @@ export default function WaitlistClient({ shopId, services, staff }: { shopId: st
       {loading ? <p className="text-botanical-muted text-center py-8 text-base md:text-lg">Loading...</p> : (
         <div className="space-y-3">
           {serving.map(entry => (
-            <div key={entry.id} className="bg-green-900/20 p-4 rounded-lg border border-status-confirmed/30 flex flex-wrap justify-between gap-x-2 gap-y-2 items-center">
+            <div key={entry.id} className="bg-status-confirmed/20 p-4 rounded-lg border border-status-confirmed/30 flex flex-wrap justify-between gap-x-2 gap-y-2 items-center">
               <div className="flex items-center gap-3">
                 <div className="w-8 h-8 rounded-full bg-status-confirmed flex items-center justify-center text-botanical-text font-bold text-sm">✂️</div>
                 <div>
                   <p className="font-bold text-botanical-text text-base md:text-lg">{entry.clientName}</p>
                   <p className="text-status-confirmed text-base md:text-lg">Being served · {getWaitTime(entry.createdAt)} ago</p>
-                  {entry.staffId && <p className="text-purple-400 text-base md:text-lg">✂️ {getStaffName(entry.staffId)}</p>}
+                  {entry.staffId && <p className="text-botanical-accent text-base md:text-lg">✂️ {getStaffName(entry.staffId)}</p>}
                   {entry.clientPhone && <p className="text-botanical-muted text-base md:text-lg">📱 {entry.clientPhone}</p>}
                 </div>
               </div>
@@ -130,12 +130,12 @@ export default function WaitlistClient({ shopId, services, staff }: { shopId: st
                   <div>
                     <p className="font-bold text-botanical-text text-base md:text-lg">{entry.clientName}</p>
                     <p className="text-botanical-muted text-base md:text-lg">Waiting · {getWaitTime(entry.createdAt)}</p>
-                    {entry.staffId && <p className="text-purple-400 text-base md:text-lg">✂️ {getStaffName(entry.staffId)}</p>}
+                    {entry.staffId && <p className="text-botanical-accent text-base md:text-lg">✂️ {getStaffName(entry.staffId)}</p>}
                     {entry.clientPhone && <p className="text-botanical-muted text-base md:text-lg">📱 {entry.clientPhone}</p>}
                   </div>
                 </div>
                 <div className="flex gap-2">
-                  <button onClick={() => setAssigningId(entry.id)} className="bg-purple-900/50 hover:bg-purple-800/50 text-purple-300 border border-purple-500/30 text-xs px-2 py-1.5 rounded">Reassign Barber</button>
+                  <button onClick={() => setAssigningId(entry.id)} className="bg-botanical-accent/20 hover:bg-botanical-accent/20 text-botanical-accent border border-botanical-accent/30 text-xs px-2 py-1.5 rounded">Reassign Barber</button>
                   <button onClick={() => handleServe(entry.id)} className="bg-botanical-primary text-white hover:bg-botanical-surface hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 text-xs font-bold px-3 py-1.5 rounded">Serve</button>
                   <button onClick={() => updateStatus(entry.id, 'LEFT')} className="bg-botanical-surface hover:bg-botanical-border text-botanical-muted text-xs px-2 py-1.5 rounded">Left</button>
                 </div>
@@ -147,7 +147,7 @@ export default function WaitlistClient({ shopId, services, staff }: { shopId: st
                   <div className="flex flex-wrap gap-2">
                     {staff.map(s => (
                       <button key={s.id} onClick={() => updateStatus(entry.id, undefined, s.id)}
-                        className="bg-purple-900/50 hover:bg-purple-800/50 text-purple-300 border border-purple-500/30 text-xs font-bold px-3 py-1.5 rounded transition-colors">
+                        className="bg-botanical-accent/20 hover:bg-botanical-accent/20 text-botanical-accent border border-botanical-accent/30 text-xs font-bold px-3 py-1.5 rounded transition-colors">
                         ✂️ {s.name || (s.email ? s.email.split('@')[0] : 'Staff')}
                       </button>
                     ))}

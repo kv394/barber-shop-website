@@ -223,7 +223,7 @@ export default function Home() {
                   <Link href="/siteadmin/shops" className="bg-botanical-surface text-botanical-text px-6 py-4 rounded-lg font-semibold hover:bg-botanical-surface transition-colors text-center">
                     🏪 Manage Shops
                   </Link>
-                  <Link href="/siteadmin/logs" className="bg-red-900/30 text-status-cancelled px-6 py-4 rounded-lg font-semibold hover:bg-red-800/50 transition-colors text-center border border-status-cancelled/30">
+                  <Link href="/siteadmin/logs" className="bg-status-cancelled/20 text-status-cancelled px-6 py-4 rounded-lg font-semibold hover:bg-red-800/50 transition-colors text-center border border-status-cancelled/30">
                     🚨 System Logs
                   </Link>
                 </div>
@@ -235,7 +235,7 @@ export default function Home() {
                 <p className="text-botanical-muted mb-4 text-base md:text-lg">Provision a new tenant workspace.</p>
 
                 {createError && (
-                    <div className="mb-4 p-3 bg-red-900/50 border border-status-cancelled text-red-200 rounded text-sm">
+                    <div className="mb-4 p-3 bg-status-cancelled/20 border border-status-cancelled text-red-200 rounded text-sm">
                         {createError}
                     </div>
                 )}

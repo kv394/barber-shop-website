@@ -21,8 +21,8 @@ export default function ReferralTracker({ shopId }: { shopId: string }) {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'REWARDED': return 'bg-green-900/50 text-green-300 border-status-confirmed/30';
-      case 'COMPLETED': return 'bg-blue-900/50 text-blue-300 border-status-info/30';
+      case 'REWARDED': return 'bg-status-confirmed/20 text-status-confirmed border-status-confirmed/30';
+      case 'COMPLETED': return 'bg-status-info/20 text-status-info border-status-info/30';
       default: return 'bg-amber-900/50 text-amber-300 border-status-pending/30';
     }
   };

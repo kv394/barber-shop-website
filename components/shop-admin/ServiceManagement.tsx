@@ -272,10 +272,10 @@ export function ServiceManagement({ shopId }: ServiceManagementProps) {
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center flex-wrap gap-2 mb-1">
                           <h4 className="font-semibold text-botanical-text text-xl md:text-2xl">{service.name}</h4>
-                          <div className={`text-sm sm:text-xs font-semibold px-2 py-0.5 sm:py-1 rounded border ${service.type === 'INTERNAL' ? 'bg-purple-900/50 text-purple-300 border-purple-500/30' : 'bg-green-900/50 text-green-300 border-status-confirmed/30'}`}>
+                          <div className={`text-sm sm:text-xs font-semibold px-2 py-0.5 sm:py-1 rounded border ${service.type === 'INTERNAL' ? 'bg-botanical-accent/20 text-botanical-accent border-botanical-accent/30' : 'bg-status-confirmed/20 text-status-confirmed border-status-confirmed/30'}`}>
                               {service.type}
                           </div>
-                          <div className={`text-sm sm:text-xs font-semibold px-2 py-0.5 sm:py-1 rounded border ${service.trackInventory ? 'bg-blue-900/50 text-blue-300 border-status-info/30' : 'bg-botanical-surface text-botanical-muted border-botanical-border'}`}>
+                          <div className={`text-sm sm:text-xs font-semibold px-2 py-0.5 sm:py-1 rounded border ${service.trackInventory ? 'bg-status-info/20 text-status-info border-status-info/30' : 'bg-botanical-surface text-botanical-muted border-botanical-border'}`}>
                               Inventory: {service.trackInventory ? 'ON' : 'OFF'}
                           </div>
                       </div>
@@ -304,7 +304,7 @@ export function ServiceManagement({ shopId }: ServiceManagementProps) {
         {/* Info Box */}
         <div className="bg-status-info/10 border border-status-info/30 rounded-lg p-4 mt-6">
           <h4 className="text-status-info font-semibold mb-2 text-xl md:text-2xl">ℹ️ Service Management Tips</h4>
-          <ul className="text-sm text-blue-300 space-y-1">
+          <ul className="text-sm text-status-info space-y-1">
             <li>• <strong>Customer-Facing Services</strong> are displayed on your public shop page for booking.</li>
             <li>• <strong>Internal Services</strong> are hidden from the public page, used for tracking inventory or add-ons.</li>
             <li>• Customers will see the service name, price, and duration.</li>

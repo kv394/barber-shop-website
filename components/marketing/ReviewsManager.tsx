@@ -63,7 +63,7 @@ export default function ReviewsClient({ shopId }: { shopId: string }) {
 
   return (
     <div className="space-y-6">
-      {msg && <div className="p-3 bg-green-900/30 border border-status-confirmed/30 text-green-300 rounded-lg text-sm">{msg}</div>}
+      {msg && <div className="p-3 bg-status-confirmed/20 border border-status-confirmed/30 text-status-confirmed rounded-lg text-sm">{msg}</div>}
 
       {/* ── Summary card ── */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -92,7 +92,7 @@ export default function ReviewsClient({ shopId }: { shopId: string }) {
         })}
         <div className="ml-auto flex items-center gap-2">
           {reviews.filter(r => !r.ownerResponse).length > 0 && (
-            <span className="px-2 py-1 bg-orange-900/30 border border-orange-500/30 text-orange-300 rounded text-xs">
+            <span className="px-2 py-1 bg-status-pending/20 border border-status-pending/30 text-status-pending rounded text-xs">
               ⚠️ {reviews.filter(r => !r.ownerResponse).length} unanswered
             </span>
           )}
@@ -135,7 +135,7 @@ export default function ReviewsClient({ shopId }: { shopId: string }) {
                 <p className="text-botanical-muted text-base md:text-lg">{r.ownerResponse}</p>
                 <div className="flex gap-2 mt-2">
                   <button onClick={() => { setResponding(r.id); setResponseText(r.ownerResponse); }} className="text-xs text-botanical-muted hover:text-botanical-text transition">Edit</button>
-                  <button onClick={() => deleteResponse(r.id)} className="text-xs text-status-cancelled hover:text-red-300 transition">Delete</button>
+                  <button onClick={() => deleteResponse(r.id)} className="text-xs text-status-cancelled hover:text-status-cancelled transition">Delete</button>
                 </div>
               </div>
             )}

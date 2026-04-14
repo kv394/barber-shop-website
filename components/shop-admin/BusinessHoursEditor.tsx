@@ -50,7 +50,7 @@ export default function BusinessHoursEditor({ shopId }: { shopId: string }) {
     <div className="bg-botanical-surface border border-botanical-border shadow-sm rounded-xl p-6">
       <h3 className="font-bold text-botanical-text mb-1 text-2xl md:text-3xl">🕐 Business Hours</h3>
       <p className="text-botanical-muted mb-5 text-base md:text-lg">Set your shop's open and close times per day. Toggle a day off to mark it as closed.</p>
-      {msg && <div className="mb-4 p-3 bg-green-900/30 border border-status-confirmed/30 text-green-300 rounded-lg text-sm">{msg}</div>}
+      {msg && <div className="mb-4 p-3 bg-status-confirmed/20 border border-status-confirmed/30 text-status-confirmed rounded-lg text-sm">{msg}</div>}
       <div className="space-y-3">
         {DAYS.map(day => {
           const open = !!hours[day];

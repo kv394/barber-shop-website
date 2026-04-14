@@ -481,10 +481,10 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
           <main className="h-[100dvh] overflow-y-auto overflow-x-hidden bg-gradient-to-br from-purple-900 via-black to-orange-900 text-botanical-text font-sans relative">
             <div className="absolute w-full top-0 left-0 p-4 sm:p-6 flex flex-wrap justify-between gap-x-2 gap-y-2 items-center z-50">
              {pages.filter((p: any) => p.isVisible).length > 0 ? (
-                 <nav className="flex gap-4 sm:gap-6 bg-botanical-surface px-4 sm:px-6 py-2 rounded-full backdrop-blur-md border border-orange-500/20 overflow-x-auto max-w-[calc(100vw-100px)] hide-scrollbar">
-                    <button onClick={() => setActivePageId(null)} className={`text-sm font-medium transition-colors whitespace-nowrap ${!activePageId ? 'text-orange-400' : 'text-botanical-muted hover:text-orange-400'}`}>Home</button>
+                 <nav className="flex gap-4 sm:gap-6 bg-botanical-surface px-4 sm:px-6 py-2 rounded-full backdrop-blur-md border border-status-pending/30 overflow-x-auto max-w-[calc(100vw-100px)] hide-scrollbar">
+                    <button onClick={() => setActivePageId(null)} className={`text-sm font-medium transition-colors whitespace-nowrap ${!activePageId ? 'text-status-pending' : 'text-botanical-muted hover:text-status-pending'}`}>Home</button>
                     {pages.filter((p: any) => p.isVisible).map((p: any) => (
-                        <button key={p.id} onClick={() => setActivePageId(p.id)} className={`text-sm font-medium transition-colors whitespace-nowrap ${activePageId === p.id ? 'text-orange-400' : 'text-botanical-muted hover:text-orange-400'}`}>{p.title}</button>
+                        <button key={p.id} onClick={() => setActivePageId(p.id)} className={`text-sm font-medium transition-colors whitespace-nowrap ${activePageId === p.id ? 'text-status-pending' : 'text-botanical-muted hover:text-status-pending'}`}>{p.title}</button>
                     ))}
                  </nav>
              ) : (
@@ -496,7 +496,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
             <div className="p-8 md:p-12 pt-24 md:pt-32">
               {activePage ? (
                 <section className="max-w-4xl mx-auto min-h-[60vh]">
-                    <div className="bg-botanical-surface backdrop-blur-sm border border-orange-500/30 rounded-lg p-8 md:p-12">
+                    <div className="bg-botanical-surface backdrop-blur-sm border border-status-pending/30 rounded-lg p-8 md:p-12">
                         <h1 className="font-bold bg-clip-text text-transparent bg-gradient-to-r from-orange-400 to-purple-400 mb-8 text-4xl md:text-5xl lg:text-6xl">{activePage.title}</h1>
                         <div className="prose prose-invert prose-lg max-w-none text-purple-200/80" dangerouslySetInnerHTML={{ __html: activePage.content || '' }} />
                     </div>
@@ -511,16 +511,16 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
               <section className="max-w-4xl mx-auto">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {shop.services?.map((service: any) => (
-                    <div key={service.id} className="bg-botanical-surface backdrop-blur-sm border border-orange-500/30 rounded-lg p-6 hover:border-orange-500 transition-colors flex flex-col">
-                      <h3 className="font-bold text-orange-300 text-2xl md:text-3xl">{service.name}</h3>
+                    <div key={service.id} className="bg-botanical-surface backdrop-blur-sm border border-status-pending/30 rounded-lg p-6 hover:border-orange-500 transition-colors flex flex-col">
+                      <h3 className="font-bold text-status-pending text-2xl md:text-3xl">{service.name}</h3>
                       <p className="text-purple-200/60 mt-1 mb-4 flex-grow text-base md:text-lg">{service.description}</p>
-                      <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center border-t border-orange-500/20 pt-4 mb-4">
+                      <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center border-t border-status-pending/30 pt-4 mb-4">
                         <span className="text-sm text-botanical-muted">{service.duration} mins</span>
-                        <span className="text-xl font-bold text-orange-400">${service.price.toFixed(2)}</span>
+                        <span className="text-xl font-bold text-status-pending">${service.price.toFixed(2)}</span>
                       </div>
                       <button
                         onClick={() => handleBookClick(service)}
-                        className="w-full bg-gradient-to-r from-orange-500/20 to-purple-500/20 hover:from-orange-500 hover:to-purple-600 border border-orange-500/50 text-botanical-text font-semibold py-2 rounded transition-all duration-300 hover:scale-[1.02] active:scale-95 hover:shadow-[0_0_20px_rgba(249,115,22,0.4)]"
+                        className="w-full bg-gradient-to-r from-orange-500/20 to-purple-500/20 hover:from-orange-500 hover:to-purple-600 border border-status-pending/30 text-botanical-text font-semibold py-2 rounded transition-all duration-300 hover:scale-[1.02] active:scale-95 hover:shadow-[0_0_20px_rgba(249,115,22,0.4)]"
                       >
                         Book
                       </button>                    </div>
