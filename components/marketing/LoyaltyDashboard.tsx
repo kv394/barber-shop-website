@@ -210,7 +210,7 @@ export default function LoyaltyDashboard({ shopId }: { shopId: string }) {
               <div key={tier.name}
                 className={`p-4 rounded-lg border text-center ${TIER_COLORS[tier.name] || 'bg-botanical-surface text-botanical-text border-botanical-border'}`}>
                 <div className="text-2xl mb-1">{TIER_ICONS[tier.name] || '⭐'}</div>
-                <p className="font-bold text-base md:text-lg">{tier.name}</p>
+                <p className="font-bold text-3xl md:text-4xl">{tier.name}</p>
                 <p className="opacity-70 mt-0.5 text-base md:text-lg">{tier.minPoints}+ lifetime pts</p>
                 <p className="font-semibold mt-1 text-base md:text-lg">{tier.earnMultiplier}x earn rate</p>
                 <p className="opacity-60 mt-1 text-base md:text-lg">{tier.perks}</p>
@@ -254,7 +254,7 @@ export default function LoyaltyDashboard({ shopId }: { shopId: string }) {
                   <p className="text-botanical-muted truncate text-base md:text-lg">{acc.user?.email}</p>
                 </div>
                 <div className="text-right">
-                  <p className="font-black text-botanical-accent text-base md:text-lg">{acc.pointsBalance}</p>
+                  <p className="font-black text-botanical-accent text-3xl md:text-4xl">{acc.pointsBalance}</p>
                   <p className="text-botanical-muted uppercase text-base md:text-lg">balance</p>
                 </div>
                 <div className="text-right hidden sm:block">

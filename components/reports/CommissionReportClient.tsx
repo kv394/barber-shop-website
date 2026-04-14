@@ -97,34 +97,34 @@ export default function CommissionReportClient({
         <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-botanical-surface transition-all duration-300 min-w-0">
           <div className="absolute top-0 left-0 w-full h-1 bg-status-confirmed/80"></div>
           <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-3">
-            <h3 className="text-botanical-muted uppercase tracking-widest font-semibold truncate text-2xl md:text-3xl">{isPersonalView ? 'My Revenue' : 'Gross Revenue'}</h3>
+            <h3 className="text-botanical-muted uppercase tracking-widest font-semibold truncate text-xs">{isPersonalView ? 'My Revenue' : 'Gross Revenue'}</h3>
             <span className="text-status-confirmed text-sm">💵</span>
           </div>
-          <p className="font-black text-botanical-text break-words leading-tight text-base md:text-lg">${totalRevenue.toFixed(0)}</p>
+          <p className="font-black text-botanical-text break-words leading-tight text-3xl md:text-4xl">${totalRevenue.toFixed(0)}</p>
         </div>
         <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-botanical-surface transition-all duration-300 min-w-0">
           <div className="absolute top-0 left-0 w-full h-1 bg-status-info/80"></div>
           <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-3">
-            <h3 className="text-botanical-muted uppercase tracking-widest font-semibold truncate text-2xl md:text-3xl">{isPersonalView ? 'My Commission' : 'Commission'}</h3>
+            <h3 className="text-botanical-muted uppercase tracking-widest font-semibold truncate text-xs">{isPersonalView ? 'My Commission' : 'Commission'}</h3>
             <span className="text-status-info text-sm">💎</span>
           </div>
-          <p className="font-black text-botanical-text break-words leading-tight text-base md:text-lg">${totalCommission.toFixed(0)}</p>
+          <p className="font-black text-botanical-text break-words leading-tight text-3xl md:text-4xl">${totalCommission.toFixed(0)}</p>
         </div>
         <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-botanical-surface transition-all duration-300 min-w-0">
           <div className="absolute top-0 left-0 w-full h-1 bg-status-pending/80"></div>
           <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-3">
-            <h3 className="text-botanical-muted uppercase tracking-widest font-semibold truncate text-2xl md:text-3xl">{isPersonalView ? 'My Tips' : 'Tips'}</h3>
+            <h3 className="text-botanical-muted uppercase tracking-widest font-semibold truncate text-xs">{isPersonalView ? 'My Tips' : 'Tips'}</h3>
             <span className="text-status-pending text-sm">🪙</span>
           </div>
-          <p className="font-black text-botanical-text break-words leading-tight text-base md:text-lg">${totalTips.toFixed(0)}</p>
+          <p className="font-black text-botanical-text break-words leading-tight text-3xl md:text-4xl">${totalTips.toFixed(0)}</p>
         </div>
         <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-botanical-surface transition-all duration-300 min-w-0">
           <div className="absolute top-0 left-0 w-full h-1 bg-botanical-accent/80"></div>
           <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-3">
-            <h3 className="text-botanical-muted uppercase tracking-widest font-semibold truncate text-2xl md:text-3xl">{isPersonalView ? 'My Total Pay' : 'Total Payout'}</h3>
+            <h3 className="text-botanical-muted uppercase tracking-widest font-semibold truncate text-xs">{isPersonalView ? 'My Total Pay' : 'Total Payout'}</h3>
             <span className="text-botanical-accent text-sm">💳</span>
           </div>
-          <p className="font-black text-botanical-text break-words leading-tight text-base md:text-lg">${totalPayout.toFixed(0)}</p>
+          <p className="font-black text-botanical-text break-words leading-tight text-3xl md:text-4xl">${totalPayout.toFixed(0)}</p>
         </div>
       </div>
 

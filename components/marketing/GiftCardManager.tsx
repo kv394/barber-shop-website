@@ -59,15 +59,15 @@ export default function GiftCardManager({ shopId }: { shopId: string }) {
         <div className="flex gap-6">
           <div>
             <p className="text-botanical-muted uppercase text-base md:text-lg">Total Sold</p>
-            <p className="font-bold text-botanical-accent text-base md:text-lg">${totalSold.toFixed(0)}</p>
+            <p className="font-bold text-botanical-accent text-3xl md:text-4xl">${totalSold.toFixed(0)}</p>
           </div>
           <div>
             <p className="text-botanical-muted uppercase text-base md:text-lg">Outstanding</p>
-            <p className="font-bold text-status-confirmed text-base md:text-lg">${totalValue.toFixed(0)}</p>
+            <p className="font-bold text-status-confirmed text-3xl md:text-4xl">${totalValue.toFixed(0)}</p>
           </div>
           <div>
             <p className="text-botanical-muted uppercase text-base md:text-lg">Cards Issued</p>
-            <p className="font-bold text-botanical-text text-base md:text-lg">{cards.length}</p>
+            <p className="font-bold text-botanical-text text-3xl md:text-4xl">{cards.length}</p>
           </div>
         </div>
         <button onClick={() => setShowForm(!showForm)} className="bg-botanical-primary text-white font-bold px-4 py-2 rounded-lg text-sm hover:bg-botanical-surface hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 transition-colors">

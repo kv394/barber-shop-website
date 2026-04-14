@@ -106,10 +106,10 @@ export default function StaffWorkingReport({ staffMembers }: { staffMembers: Sta
         <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-botanical-surface transition-all duration-300 min-w-0">
           <div className="absolute top-0 left-0 w-full h-1 bg-status-info/80"></div>
           <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-3">
-            <h3 className="text-botanical-muted uppercase tracking-widest font-semibold truncate text-2xl md:text-3xl">Total Staff</h3>
+            <h3 className="text-botanical-muted uppercase tracking-widest font-semibold truncate text-xs">Total Staff</h3>
             <span className="text-status-info text-sm">👥</span>
           </div>
-          <p className="font-black text-botanical-text break-words leading-tight text-base md:text-lg">{staffMembers.length}</p>
+          <p className="font-black text-botanical-text break-words leading-tight text-3xl md:text-4xl">{staffMembers.length}</p>
           <p className="text-botanical-muted mt-2 truncate text-base md:text-lg">
             <span className="text-botanical-muted">{staffData.filter(s => s.isActive).length}</span> currently active
           </p>
@@ -117,28 +117,28 @@ export default function StaffWorkingReport({ staffMembers }: { staffMembers: Sta
         <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-botanical-surface transition-all duration-300 min-w-0">
           <div className="absolute top-0 left-0 w-full h-1 bg-botanical-accent/80"></div>
           <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-3">
-            <h3 className="text-botanical-muted uppercase tracking-widest font-semibold truncate text-2xl md:text-3xl">Total Hours</h3>
+            <h3 className="text-botanical-muted uppercase tracking-widest font-semibold truncate text-xs">Total Hours</h3>
             <span className="text-botanical-accent text-sm">⏱️</span>
           </div>
-          <p className="font-black text-botanical-text break-words leading-tight text-base md:text-lg">{formatDuration(totalHoursMs)}</p>
+          <p className="font-black text-botanical-text break-words leading-tight text-3xl md:text-4xl">{formatDuration(totalHoursMs)}</p>
           {isFiltered && <p className="text-botanical-muted mt-2 truncate opacity-0 group-hover:opacity-100 transition-opacity text-base md:text-lg">In selected date range</p>}
         </div>
         <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-botanical-surface transition-all duration-300 min-w-0">
           <div className="absolute top-0 left-0 w-full h-1 bg-status-confirmed/80"></div>
           <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-3">
-            <h3 className="text-botanical-muted uppercase tracking-widest font-semibold truncate text-2xl md:text-3xl">Clients Served</h3>
+            <h3 className="text-botanical-muted uppercase tracking-widest font-semibold truncate text-xs">Clients Served</h3>
             <span className="text-status-confirmed text-sm">✂️</span>
           </div>
-          <p className="font-black text-botanical-text break-words leading-tight text-base md:text-lg">{totalClients}</p>
+          <p className="font-black text-botanical-text break-words leading-tight text-3xl md:text-4xl">{totalClients}</p>
           {isFiltered && <p className="text-botanical-muted mt-2 truncate opacity-0 group-hover:opacity-100 transition-opacity text-base md:text-lg">In selected date range</p>}
         </div>
         <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-botanical-surface transition-all duration-300 min-w-0">
           <div className="absolute top-0 left-0 w-full h-1 bg-status-pending/80"></div>
           <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-3">
-            <h3 className="text-botanical-muted uppercase tracking-widest font-semibold truncate text-2xl md:text-3xl">Revenue Generated</h3>
+            <h3 className="text-botanical-muted uppercase tracking-widest font-semibold truncate text-xs">Revenue Generated</h3>
             <span className="text-status-pending text-sm">💰</span>
           </div>
-          <p className="font-black text-botanical-text break-words leading-tight text-base md:text-lg">${totalRevenue.toFixed(2)}</p>
+          <p className="font-black text-botanical-text break-words leading-tight text-3xl md:text-4xl">${totalRevenue.toFixed(2)}</p>
           {isFiltered && <p className="text-botanical-muted mt-2 truncate opacity-0 group-hover:opacity-100 transition-opacity text-base md:text-lg">In selected date range</p>}
         </div>
       </div>
@@ -203,15 +203,15 @@ export default function StaffWorkingReport({ staffMembers }: { staffMembers: Sta
                     <div className="grid grid-cols-3 gap-4 sm:gap-8 text-center sm:text-right">
                       <div>
                         <p className="text-botanical-muted uppercase tracking-wider text-base md:text-lg">Hours</p>
-                        <p className="font-bold text-botanical-accent text-base md:text-lg">{staff.hours}</p>
+                        <p className="font-bold text-botanical-accent text-3xl md:text-4xl">{staff.hours}</p>
                       </div>
                       <div>
                         <p className="text-botanical-muted uppercase tracking-wider text-base md:text-lg">Clients</p>
-                        <p className="font-bold text-status-confirmed text-base md:text-lg">{staff.clients}</p>
+                        <p className="font-bold text-status-confirmed text-3xl md:text-4xl">{staff.clients}</p>
                       </div>
                       <div>
                         <p className="text-botanical-muted uppercase tracking-wider text-base md:text-lg">Revenue</p>
-                        <p className="font-bold text-status-pending text-base md:text-lg">${staff.revenue.toFixed(2)}</p>
+                        <p className="font-bold text-status-pending text-3xl md:text-4xl">${staff.revenue.toFixed(2)}</p>
                       </div>
                     </div>
                   </div>

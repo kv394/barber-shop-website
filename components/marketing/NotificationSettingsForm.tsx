@@ -46,7 +46,7 @@ export default function NotificationSettingsForm({ shopId }: { shopId: string })
       {msg && <div className="p-3 bg-status-confirmed/20 border border-status-confirmed/30 text-status-confirmed rounded-lg text-sm">{msg}</div>}
 
       <div className="space-y-2">
-        <p className="text-botanical-muted uppercase tracking-widest font-semibold pt-2 text-base md:text-lg">Client Notifications</p>
+        <p className="text-botanical-muted uppercase tracking-widest font-semibold pt-2 text-xs">Client Notifications</p>
         <Toggle k="appointmentReminders" label="Appointment Reminders" desc="Send reminders before upcoming appointments" />
       {settings.appointmentReminders && (
           <div className="ml-4 flex gap-3 flex-wrap">
@@ -72,14 +72,14 @@ export default function NotificationSettingsForm({ shopId }: { shopId: string })
       </div>
 
       <div className="space-y-2">
-        <p className="text-botanical-muted uppercase tracking-widest font-semibold pt-2 text-base md:text-lg">Admin Alerts</p>
+        <p className="text-botanical-muted uppercase tracking-widest font-semibold pt-2 text-xs">Admin Alerts</p>
         <Toggle k="newBookingAlert" label="New Booking Alert" desc="Notify admin when a client books online" />
         <Toggle k="cancellationAlert" label="Cancellation Alert" desc="Notify admin when a client cancels" />
         <Toggle k="noShowAlerts" label="No-Show Alerts" desc="Notify admin when a client doesn't show up" />
       </div>
 
       <div className="space-y-3">
-        <p className="text-botanical-muted uppercase tracking-widest font-semibold pt-2 text-base md:text-lg">Delivery Channel</p>
+        <p className="text-botanical-muted uppercase tracking-widest font-semibold pt-2 text-xs">Delivery Channel</p>
         <div>
           <label className="text-botanical-muted block mb-1 text-sm">Default Channel</label>
         <select value={settings.channel} onChange={e => updateSetting('channel', e.target.value)}

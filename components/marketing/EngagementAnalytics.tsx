@@ -26,38 +26,38 @@ export default function EngagementAnalytics({ shopId }: { shopId: string }) {
         <div className="p-4 sm:p-5 relative overflow-hidden group hover:bg-gray-50 transition-all duration-300 min-w-0 border-b lg:border-b-0 lg:border-r border-botanical-border border-r md:border-r-0 flex flex-col items-center justify-center text-center">
           <div className="absolute top-0 left-0 w-full h-1 bg-status-info/80"></div>
           <span className="text-status-info text-xl sm:text-2xl mb-1 sm:mb-2 flex-shrink-0">👥</span>
-          <h3 className="text-botanical-muted text-[10px] uppercase tracking-widest font-semibold leading-tight mb-1 w-full truncate text-2xl md:text-3xl">Total Clients</h3>
-          <p className="font-black text-botanical-text break-words leading-tight w-full text-base md:text-lg">{overview.totalClients}</p>
+          <h3 className="text-botanical-muted uppercase tracking-widest font-semibold leading-tight mb-1 w-full truncate text-xs">Total Clients</h3>
+          <p className="font-black text-botanical-text break-words leading-tight w-full text-3xl md:text-4xl">{overview.totalClients}</p>
         </div>
         <div className="p-4 sm:p-5 relative overflow-hidden group hover:bg-gray-50 transition-all duration-300 min-w-0 border-b lg:border-b-0 lg:border-r border-botanical-border md:border-r flex flex-col items-center justify-center text-center">
           <div className="absolute top-0 left-0 w-full h-1 bg-status-confirmed/80"></div>
           <span className="text-status-confirmed text-xl sm:text-2xl mb-1 sm:mb-2 flex-shrink-0">🔥</span>
-          <h3 className="text-botanical-muted text-[10px] uppercase tracking-widest font-semibold leading-tight mb-1 w-full truncate text-2xl md:text-3xl">Active (30d)</h3>
-          <p className="font-black text-botanical-text break-words leading-tight w-full text-base md:text-lg">{overview.activeLastMonth}</p>
+          <h3 className="text-botanical-muted uppercase tracking-widest font-semibold leading-tight mb-1 w-full truncate text-xs">Active (30d)</h3>
+          <p className="font-black text-botanical-text break-words leading-tight w-full text-3xl md:text-4xl">{overview.activeLastMonth}</p>
         </div>
         <div className="p-4 sm:p-5 relative overflow-hidden group hover:bg-gray-50 transition-all duration-300 min-w-0 border-b lg:border-b-0 lg:border-r border-botanical-border border-r md:border-r-0 flex flex-col items-center justify-center text-center">
           <div className="absolute top-0 left-0 w-full h-1 bg-cyan-500/80"></div>
           <span className="text-cyan-500 text-xl sm:text-2xl mb-1 sm:mb-2 flex-shrink-0">🌟</span>
-          <h3 className="text-botanical-muted text-[10px] uppercase tracking-widest font-semibold leading-tight mb-1 w-full truncate text-2xl md:text-3xl">New (30d)</h3>
-          <p className="font-black text-botanical-text break-words leading-tight w-full text-base md:text-lg">{overview.newLastMonth}</p>
+          <h3 className="text-botanical-muted uppercase tracking-widest font-semibold leading-tight mb-1 w-full truncate text-xs">New (30d)</h3>
+          <p className="font-black text-botanical-text break-words leading-tight w-full text-3xl md:text-4xl">{overview.newLastMonth}</p>
         </div>
         <div className="p-4 sm:p-5 relative overflow-hidden group hover:bg-gray-50 transition-all duration-300 min-w-0 border-b md:border-b-0 lg:border-r border-botanical-border md:border-r flex flex-col items-center justify-center text-center">
           <div className="absolute top-0 left-0 w-full h-1 bg-botanical-accent/80"></div>
           <span className="text-botanical-accent text-xl sm:text-2xl mb-1 sm:mb-2 flex-shrink-0">🔄</span>
-          <h3 className="text-botanical-muted text-[10px] uppercase tracking-widest font-semibold leading-tight mb-1 w-full truncate text-2xl md:text-3xl">Retention</h3>
-          <p className="font-black text-botanical-text break-words leading-tight w-full text-base md:text-lg">{overview.retentionRate}%</p>
+          <h3 className="text-botanical-muted uppercase tracking-widest font-semibold leading-tight mb-1 w-full truncate text-xs">Retention</h3>
+          <p className="font-black text-botanical-text break-words leading-tight w-full text-3xl md:text-4xl">{overview.retentionRate}%</p>
         </div>
         <div className="p-4 sm:p-5 relative overflow-hidden group hover:bg-gray-50 transition-all duration-300 min-w-0 border-r border-botanical-border flex flex-col items-center justify-center text-center">
           <div className="absolute top-0 left-0 w-full h-1 bg-status-pending/80"></div>
           <span className="text-status-pending text-xl sm:text-2xl mb-1 sm:mb-2 flex-shrink-0">📅</span>
-          <h3 className="text-botanical-muted text-[10px] uppercase tracking-widest font-semibold leading-tight mb-1 w-full truncate text-2xl md:text-3xl">Appts (30d)</h3>
-          <p className="font-black text-botanical-text break-words leading-tight w-full text-base md:text-lg">{overview.completedAppointments}</p>
+          <h3 className="text-botanical-muted uppercase tracking-widest font-semibold leading-tight mb-1 w-full truncate text-xs">Appts (30d)</h3>
+          <p className="font-black text-botanical-text break-words leading-tight w-full text-3xl md:text-4xl">{overview.completedAppointments}</p>
         </div>
         <div className="p-4 sm:p-5 relative overflow-hidden group hover:bg-gray-50 transition-all duration-300 min-w-0 flex flex-col items-center justify-center text-center">
           <div className="absolute top-0 left-0 w-full h-1 bg-botanical-primary/80 hover:opacity-90 text-white"></div>
           <span className="text-status-pending text-xl sm:text-2xl mb-1 sm:mb-2 flex-shrink-0">⭐</span>
-          <h3 className="text-botanical-muted text-[10px] uppercase tracking-widest font-semibold leading-tight mb-1 w-full truncate text-2xl md:text-3xl">Avg Rating</h3>
-          <p className="font-black text-botanical-text break-words leading-tight w-full text-base md:text-lg">{overview.averageRating}</p>
+          <h3 className="text-botanical-muted uppercase tracking-widest font-semibold leading-tight mb-1 w-full truncate text-xs">Avg Rating</h3>
+          <p className="font-black text-botanical-text break-words leading-tight w-full text-3xl md:text-4xl">{overview.averageRating}</p>
         </div>
       </div>
 

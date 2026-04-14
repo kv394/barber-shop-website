@@ -73,10 +73,10 @@ export default function ExpensesClient({ shopId }: { shopId: string }) {
           <div className="absolute top-0 left-0 w-full h-1 bg-status-cancelled/80"></div>
           <div className="p-5 sm:p-6">
             <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-2 sm:mb-3">
-              <h3 className="text-botanical-muted uppercase tracking-widest font-semibold truncate text-2xl md:text-3xl">Total Expenses</h3>
+              <h3 className="text-botanical-muted uppercase tracking-widest font-semibold truncate text-xs">Total Expenses</h3>
               <span className="text-status-cancelled text-sm">💸</span>
             </div>
-            <p className="font-black text-botanical-text break-words leading-tight text-base md:text-lg">${total.toFixed(2)}</p>
+            <p className="font-black text-botanical-text break-words leading-tight text-3xl md:text-4xl">${total.toFixed(2)}</p>
           </div>
         </div>
       </div>
@@ -88,7 +88,7 @@ export default function ExpensesClient({ shopId }: { shopId: string }) {
             <div key={c.cat} className="bg-botanical-surface p-3 rounded-lg border border-botanical-border shadow-sm text-center">
               <p className="text-base md:text-lg">{catEmojis[c.cat]}</p>
               <p className="text-botanical-muted text-base md:text-lg">{c.cat}</p>
-              <p className="font-bold text-botanical-text text-base md:text-lg">${c.total.toFixed(2)}</p>
+              <p className="font-bold text-botanical-text text-3xl md:text-4xl">${c.total.toFixed(2)}</p>
             </div>
           ))}
         </div>

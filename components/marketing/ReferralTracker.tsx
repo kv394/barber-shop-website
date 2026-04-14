@@ -34,26 +34,26 @@ export default function ReferralTracker({ shopId }: { shopId: string }) {
           <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-botanical-surface transition-all duration-300 min-w-0">
             <div className="absolute top-0 left-0 w-full h-1 bg-status-info/80"></div>
             <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-3">
-              <h3 className="text-botanical-muted uppercase tracking-widest font-semibold truncate text-2xl md:text-3xl">Total Referrals</h3>
+              <h3 className="text-botanical-muted uppercase tracking-widest font-semibold truncate text-xs">Total Referrals</h3>
               <span className="text-status-info text-sm">👥</span>
             </div>
-            <p className="font-black text-botanical-text break-words leading-tight text-base md:text-lg">{stats.total}</p>
+            <p className="font-black text-botanical-text break-words leading-tight text-3xl md:text-4xl">{stats.total}</p>
           </div>
           <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-botanical-surface transition-all duration-300 min-w-0">
             <div className="absolute top-0 left-0 w-full h-1 bg-status-confirmed/80"></div>
             <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-3">
-              <h3 className="text-botanical-muted uppercase tracking-widest font-semibold truncate text-2xl md:text-3xl">Completed</h3>
+              <h3 className="text-botanical-muted uppercase tracking-widest font-semibold truncate text-xs">Completed</h3>
               <span className="text-status-confirmed text-sm">✅</span>
             </div>
-            <p className="font-black text-botanical-text break-words leading-tight text-base md:text-lg">{stats.completed}</p>
+            <p className="font-black text-botanical-text break-words leading-tight text-3xl md:text-4xl">{stats.completed}</p>
           </div>
           <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-botanical-surface transition-all duration-300 min-w-0">
             <div className="absolute top-0 left-0 w-full h-1 bg-status-pending/80"></div>
             <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-3">
-              <h3 className="text-botanical-muted uppercase tracking-widest font-semibold truncate text-2xl md:text-3xl">Pending</h3>
+              <h3 className="text-botanical-muted uppercase tracking-widest font-semibold truncate text-xs">Pending</h3>
               <span className="text-status-pending text-sm">⏳</span>
             </div>
-            <p className="font-black text-botanical-text break-words leading-tight text-base md:text-lg">{stats.pending}</p>
+            <p className="font-black text-botanical-text break-words leading-tight text-3xl md:text-4xl">{stats.pending}</p>
           </div>
         </div>
       )}

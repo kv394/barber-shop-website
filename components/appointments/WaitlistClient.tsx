@@ -66,26 +66,26 @@ export default function WaitlistClient({ shopId, services, staff }: { shopId: st
         <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-botanical-surface transition-all duration-300 min-w-0">
           <div className="absolute top-0 left-0 w-full h-1 bg-status-info/80"></div>
           <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-2 sm:mb-3">
-            <h3 className="text-botanical-muted uppercase tracking-widest font-semibold truncate text-2xl md:text-3xl">Waiting</h3>
+            <h3 className="text-botanical-muted uppercase tracking-widest font-semibold truncate text-xs">Waiting</h3>
             <span className="text-status-info text-sm">⏳</span>
           </div>
-          <p className="font-black text-botanical-text break-words leading-tight text-base md:text-lg">{waiting.length}</p>
+          <p className="font-black text-botanical-text break-words leading-tight text-3xl md:text-4xl">{waiting.length}</p>
         </div>
         <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-botanical-surface transition-all duration-300 min-w-0">
           <div className="absolute top-0 left-0 w-full h-1 bg-status-confirmed/80"></div>
           <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-2 sm:mb-3">
-            <h3 className="text-botanical-muted uppercase tracking-widest font-semibold truncate text-2xl md:text-3xl">Being Served</h3>
+            <h3 className="text-botanical-muted uppercase tracking-widest font-semibold truncate text-xs">Being Served</h3>
             <span className="text-status-confirmed text-sm">✂️</span>
           </div>
-          <p className="font-black text-botanical-text break-words leading-tight text-base md:text-lg">{serving.length}</p>
+          <p className="font-black text-botanical-text break-words leading-tight text-3xl md:text-4xl">{serving.length}</p>
         </div>
         <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-botanical-surface transition-all duration-300 min-w-0">
           <div className="absolute top-0 left-0 w-full h-1 bg-botanical-accent/80"></div>
           <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-2 sm:mb-3">
-            <h3 className="text-botanical-muted uppercase tracking-widest font-semibold truncate text-2xl md:text-3xl">Est. Wait</h3>
+            <h3 className="text-botanical-muted uppercase tracking-widest font-semibold truncate text-xs">Est. Wait</h3>
             <span className="text-botanical-accent text-sm">⏱️</span>
           </div>
-          <p className="font-black text-botanical-text break-words leading-tight text-base md:text-lg">{waiting.length > 0 ? `~${waiting.length * 15}m` : '0m'}</p>
+          <p className="font-black text-botanical-text break-words leading-tight text-3xl md:text-4xl">{waiting.length > 0 ? `~${waiting.length * 15}m` : '0m'}</p>
         </div>
       </div>
 
@@ -113,7 +113,7 @@ export default function WaitlistClient({ shopId, services, staff }: { shopId: st
               <div className="flex items-center gap-3">
                 <div className="w-8 h-8 rounded-full bg-status-confirmed flex items-center justify-center text-botanical-text font-bold text-sm">✂️</div>
                 <div>
-                  <p className="font-bold text-botanical-text text-base md:text-lg">{entry.clientName}</p>
+                  <p className="font-bold text-botanical-text text-3xl md:text-4xl">{entry.clientName}</p>
                   <p className="text-status-confirmed text-base md:text-lg">Being served · {getWaitTime(entry.createdAt)} ago</p>
                   {entry.staffId && <p className="text-botanical-accent text-base md:text-lg">✂️ {getStaffName(entry.staffId)}</p>}
                   {entry.clientPhone && <p className="text-botanical-muted text-base md:text-lg">📱 {entry.clientPhone}</p>}
@@ -128,7 +128,7 @@ export default function WaitlistClient({ shopId, services, staff }: { shopId: st
                 <div className="flex items-center gap-3">
                   <div className="w-8 h-8 rounded-full bg-botanical-surface flex items-center justify-center text-botanical-text font-bold text-sm">{idx + 1}</div>
                   <div>
-                    <p className="font-bold text-botanical-text text-base md:text-lg">{entry.clientName}</p>
+                    <p className="font-bold text-botanical-text text-3xl md:text-4xl">{entry.clientName}</p>
                     <p className="text-botanical-muted text-base md:text-lg">Waiting · {getWaitTime(entry.createdAt)}</p>
                     {entry.staffId && <p className="text-botanical-accent text-base md:text-lg">✂️ {getStaffName(entry.staffId)}</p>}
                     {entry.clientPhone && <p className="text-botanical-muted text-base md:text-lg">📱 {entry.clientPhone}</p>}
