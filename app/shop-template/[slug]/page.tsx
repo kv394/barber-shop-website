@@ -1,5 +1,6 @@
 import { prisma } from '@/lib/prisma';
 import { Metadata } from 'next';
+import Script from 'next/script';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 60;
@@ -126,6 +127,7 @@ export default async function PublicShopPage({
             <style dangerouslySetInnerHTML={{ __html: dynamicTemplate.cssCode }} />
           )}
           <div dangerouslySetInnerHTML={{ __html: html }} />
+          <Script src="https://cdn.tailwindcss.com?plugins=forms,container-queries" strategy="afterInteractive" />
         </main>
       );
     }
