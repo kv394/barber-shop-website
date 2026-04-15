@@ -233,7 +233,7 @@ export async function GET() {
         where: { id: shop.id },
         data: { template: 'heritage-haircuts-template' }
       });
-      return NextResponse.json({ message: \`Successfully updated shop \${shop.name} to use the heritage-haircuts-template!\` });
+      return NextResponse.json({ message: `Successfully updated shop ${shop.name} to use the heritage-haircuts-template!` });
     }
 
     return NextResponse.json({ message: 'Template created but shop not found.' });
