@@ -60,7 +60,7 @@ const htmlCode = `
 <!-- Asymmetric Editorial Feature -->
 <div class="mt-24 grid md:grid-cols-12 gap-8 items-center">
 <div class="md:col-span-7 rounded-xl overflow-hidden h-[400px]">
-<img class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700" data-alt="Macro detail of a vintage straight razor" src="https://images.unsplash.com/photo-1621605815971-fbc98d665033?q=80&w=1000&auto=format&fit=crop" />
+<img class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700" data-alt="Macro detail of a vintage straight razor" src="https://drive.google.com/uc?export=view&id=1MBtJSfFxBCwdG6lPUeQywW-gRcN6rOof" />
 </div>
 <div class="md:col-span-5 p-4 md:pl-12">
 <h3 class="font-serif text-3xl font-bold mb-6 italic">The Ritual</h3>
@@ -87,7 +87,7 @@ const htmlCode = `
 <!-- Barber Card: Elena -->
 <div class="group">
 <div class="aspect-[3/4] rounded-xl overflow-hidden mb-6 bg-surface-container-high shadow-lg">
-<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Portrait of Elena" src="https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=1000&auto=format&fit=crop" />
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Portrait of Elena" src="https://drive.google.com/uc?export=view&id=1ZkPgbMSphJlUKT5jR_TpgtWU3B5Xlojv" />
 </div>
 <h4 class="font-serif text-xl font-bold text-on-surface">Elena</h4>
 <p class="text-primary font-label text-sm uppercase tracking-wider mb-2">Master Stylist</p>
@@ -96,7 +96,7 @@ const htmlCode = `
 <!-- Barber Card: Jasmine -->
 <div class="group">
 <div class="aspect-[3/4] rounded-xl overflow-hidden mb-6 bg-surface-container-high shadow-lg">
-<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Portrait of Jasmine" src="https://images.unsplash.com/photo-1605497788044-5a32c7078486?q=80&w=1000&auto=format&fit=crop" />
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Portrait of Jasmine" src="https://drive.google.com/uc?export=view&id=17d5dQPskN9Ug8DmdeKuLpfGAxthOUttb" />
 </div>
 <h4 class="font-serif text-xl font-bold text-on-surface">Jasmine</h4>
 <p class="text-primary font-label text-sm uppercase tracking-wider mb-2">Artisan Barber</p>
@@ -105,7 +105,7 @@ const htmlCode = `
 <!-- Barber Card: Marcus -->
 <div class="group">
 <div class="aspect-[3/4] rounded-xl overflow-hidden mb-6 bg-surface-container-high shadow-lg">
-<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Portrait of Marcus" src="https://images.unsplash.com/photo-1593702275687-f8b402bf1fb5?q=80&w=1000&auto=format&fit=crop" />
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Portrait of Marcus" src="https://drive.google.com/uc?export=view&id=1bKTnbQViH1bhPixO0w0bsu6jHMfY_j4q" />
 </div>
 <h4 class="font-serif text-xl font-bold text-on-surface">Marcus</h4>
 <p class="text-primary font-label text-sm uppercase tracking-wider mb-2">Senior Barber</p>
@@ -114,7 +114,7 @@ const htmlCode = `
 <!-- Barber Card: Nape -->
 <div class="group">
 <div class="aspect-[3/4] rounded-xl overflow-hidden mb-6 bg-surface-container-high shadow-lg">
-<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Portrait of Nape" src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?q=80&w=1000&auto=format&fit=crop" />
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Portrait of Nape" src="https://drive.google.com/uc?export=view&id=170WZ_MHWPq3WxoU7bikwpTOEBGy34bws" />
 </div>
 <h4 class="font-serif text-xl font-bold text-on-surface">Nape</h4>
 <p class="text-primary font-label text-sm uppercase tracking-wider mb-2">Technical Lead</p>
