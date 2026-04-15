@@ -60,7 +60,7 @@ const htmlCode = `
 <!-- Asymmetric Editorial Feature -->
 <div class="mt-24 grid md:grid-cols-12 gap-8 items-center">
 <div class="md:col-span-7 rounded-xl overflow-hidden h-[400px]">
-<img class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700" data-alt="Macro detail of a vintage straight razor resting on a clean white towel with water droplets and dramatic lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC8RmZwqlQe3EBY4lEJVZozMuHgWsM7oJZNSqCsRQHcqglHidR6yig2bIOKBn6vrqJJ1z_foadw08U-GQmMQ_356_P2IAFsK0m_MopE8YDVhMCP4_t_04OQb4porPgn18IOLUKKnI0alcIghO_ey60GCz0b6zeIMetsO9HbMOTaIeCOCT-8WS3d0jAR4OLR44_beXhiAg6Q_I4jH8WCrVkupI58TFtd-CP9cEea4Wk02B4fPEmsAAvlTnLxUFR9TDI7e97AbBkY9Ppt"/>
+<img class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700" data-alt="Macro detail of a vintage straight razor" src="https://images.unsplash.com/photo-1621605815971-fbc98d665033?q=80&w=1000&auto=format&fit=crop" />
 </div>
 <div class="md:col-span-5 p-4 md:pl-12">
 <h3 class="font-serif text-3xl font-bold mb-6 italic">The Ritual</h3>
@@ -87,7 +87,7 @@ const htmlCode = `
 <!-- Barber Card: Elena -->
 <div class="group">
 <div class="aspect-[3/4] rounded-xl overflow-hidden mb-6 bg-surface-container-high shadow-lg">
-<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Portrait of Elena" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDfusQmiwnZvnfdhNv6l9re2fGMda44jqazLgn0A_059V2TxwKIQG_uGlnMXqNM_NJVeLbxpw9Nahz3drye4l57kJsPllmbIOcO87NwOdMHvM9ecZYx8AgasmK8apBk78mWTxEm51-myL3O8KfDX51QjdQYB1b3hyeS_5a6S5k69fSzn445foZI8VJFbiwxlSTW4V1P8bxGrBeXzvkySLDw7RopZZDedywq4IQYY17HiSitmV8ETIPygoXw5d3c6tWnO5tnfA7b2EyU"/>
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Portrait of Elena" src="https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=1000&auto=format&fit=crop" />
 </div>
 <h4 class="font-serif text-xl font-bold text-on-surface">Elena</h4>
 <p class="text-primary font-label text-sm uppercase tracking-wider mb-2">Master Stylist</p>
@@ -96,7 +96,7 @@ const htmlCode = `
 <!-- Barber Card: Jasmine -->
 <div class="group">
 <div class="aspect-[3/4] rounded-xl overflow-hidden mb-6 bg-surface-container-high shadow-lg">
-<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Portrait of Jasmine" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD2FNlBXacccmrpPGs0jPqsizHMPP70amLdFIZSh4eDEGkoZ8KR6i60MKhUPY70e6weQU9RBnf3M_eV27xGFNdQTLi2pdH38ktclI0nYCjmLyuvonN21Iss59cC5mriTKAPfr456HSmFo9cHs9KiVhVscINNs8ePuKxxGgOmPte2ULNpDoqcrOyNn_542JdwutGTVRCDh_sdsbnPA4U7-DQkVJ0UH5e7W87kxB0t8IiRnZ2lJFiQPx5lSik1Ad0I1Z5NoYZKcy4HwpJ"/>
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Portrait of Jasmine" src="https://images.unsplash.com/photo-1605497788044-5a32c7078486?q=80&w=1000&auto=format&fit=crop" />
 </div>
 <h4 class="font-serif text-xl font-bold text-on-surface">Jasmine</h4>
 <p class="text-primary font-label text-sm uppercase tracking-wider mb-2">Artisan Barber</p>
@@ -105,7 +105,7 @@ const htmlCode = `
 <!-- Barber Card: Marcus -->
 <div class="group">
 <div class="aspect-[3/4] rounded-xl overflow-hidden mb-6 bg-surface-container-high shadow-lg">
-<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Portrait of Marcus" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAEGy4M4U3mXTtHPth62m-S0WuZReNoHD8SudddB6yL2Vz4tPsO1oNnIxZVET6oesYtfoPNwE-cTbkGalaPIJPI0Uh5yaTqbU6TJhbVz5uvHOnMx96M6w3lh0C54dcXiHVyl8wStnTM1wRtfTZA74eXfmEDHKdP72bSVGv9mmvKVgTN4z9TOkQ8hoEHHDZQQ2pIrsrnZlOSQqbQ4dLxWHP7vg59JtOigoogesFdkr-MI4I6bgPHXp7rqofD-Lse2TakwWCWHREoup3p"/>
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Portrait of Marcus" src="https://images.unsplash.com/photo-1593702275687-f8b402bf1fb5?q=80&w=1000&auto=format&fit=crop" />
 </div>
 <h4 class="font-serif text-xl font-bold text-on-surface">Marcus</h4>
 <p class="text-primary font-label text-sm uppercase tracking-wider mb-2">Senior Barber</p>
@@ -114,7 +114,7 @@ const htmlCode = `
 <!-- Barber Card: Nape -->
 <div class="group">
 <div class="aspect-[3/4] rounded-xl overflow-hidden mb-6 bg-surface-container-high shadow-lg">
-<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Portrait of Nape" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBpsI5Fgj0CMbBOySXpjuQiroJgfJtdWT79tk0cOOxMlWbHkVnHKqqa3ykSZBKrSmDnFwNREfVimdZ3eQBaHr0HKLJsbyxNZS5bXBWP14M--AACowaxslxQ59tO6CdbxJ47nboOkKg_BUw56-jxpofotzVSPDJLGGmoeYE2FyK5hbbOo-yhKXZ0xuQYRRxP1jTWJqnlqBIok9DwpLqAFfzKlzneIi_OrchZxgN9R4C3ox5s9b9r_1oecux96Op_QZFwLSTMgh_nKH-g"/>
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Portrait of Nape" src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?q=80&w=1000&auto=format&fit=crop" />
 </div>
 <h4 class="font-serif text-xl font-bold text-on-surface">Nape</h4>
 <p class="text-primary font-label text-sm uppercase tracking-wider mb-2">Technical Lead</p>
