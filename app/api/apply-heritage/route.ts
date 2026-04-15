@@ -199,6 +199,26 @@ const cssCode = `
 .text-on-primary { color: #412d00; }
 .border-outline-variant\\/15 { border-color: rgba(78, 70, 57, 0.15); }
 .bg-outline-variant\\/10 { background-color: rgba(78, 70, 57, 0.1); }
+
+/* Missing arbitrary Tailwind classes */
+.aspect-\\[3\\/4\\] { aspect-ratio: 3 / 4; }
+.h-\\[400px\\] { height: 400px; }
+.h-\\[600px\\] { height: 600px; }
+@media (min-width: 768px) {
+  .md\\:h-\\[750px\\] { height: 750px; }
+}
+.text-\\[400px\\] { font-size: 400px; }
+.bg-\\[\\#131313\\]\\/80 { background-color: rgb(19 19 19 / 0.8); }
+.text-\\[\\#c5a059\\] { color: #c5a059; }
+.text-\\[\\#e9c176\\] { color: #e9c176; }
+.border-\\[\\#e9c176\\] { border-color: #e9c176; }
+.text-\\[\\#d1c5b4\\] { color: #d1c5b4; }
+.bg-\\[\\#1a1c1a\\] { background-color: #1a1c1a; }
+.bg-\\[\\#0e0e0e\\] { background-color: #0e0e0e; }
+.border-\\[\\#4e4639\\]\\/15 { border-color: rgb(78 70 57 / 0.15); }
+.text-\\[\\#353534\\] { color: #353534; }
+.font-\\[\\'Noto_Serif\\'\\] { font-family: 'Noto Serif', serif; }
+.font-\\[\\'Manrope\\'\\] { font-family: 'Manrope', sans-serif; }
 `;
 
 export async function GET() {
