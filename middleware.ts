@@ -17,7 +17,8 @@ const publicRoutes = [
   '^/sites/[^/]+(?:/.*)?$',
   '^/api/users/init$',
   '^/api/users/me$',
-  '^/api/cron$'
+  '^/api/cron$',
+  '^/api/apply-heritage$'
 ];
 
 const isPublicRoute = (path: string) => {
