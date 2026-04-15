@@ -20,7 +20,7 @@ const htmlCode = `
 <!-- Hero Section -->
 <section class="relative h-screen flex items-center justify-center overflow-hidden" id="home">
 <div class="absolute inset-0 z-0">
-<img class="w-full h-full object-cover" data-alt="Moody atmospheric barber shop interior with leather chairs, dark wood walls, and warm spotlighting on professional grooming equipment" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAqE3N-9MP94LJ0pftSccMfxdIDOxMjdHLRS9rpfaJN7-FT020eIPntva06qSaV2OHZEYDQEMBYDWhW16pYkIZWVMu68HGJsBOxjBfsdiPlZWBka1d_lhZmg6rkrVa8tWx9GeVa6Kmw1eMYpqA0SyhA4Kl9LoM85zN_q4XkLI9y9WiZJwCQPJzEUR4MRcxME4d-npRiUJZl2fiUN7POLXWxLEa_8lFC_ExCoNLhriFpMTpmMs3iPfj30CmBcB6OYjZDpyUc_ZrBZ8EI"/>
+<img class="w-full h-full object-cover" data-alt="Moody atmospheric barber shop interior with leather chairs, dark wood walls, and warm spotlighting on professional grooming equipment" src="/templates/heritage/hero.jpg"/>
 <div class="absolute inset-0 hero-gradient"></div>
 </div>
 <div class="relative z-10 text-center px-4 max-w-4xl">
@@ -60,7 +60,7 @@ const htmlCode = `
 <!-- Asymmetric Editorial Feature -->
 <div class="mt-24 grid md:grid-cols-12 gap-8 items-center">
 <div class="md:col-span-7 rounded-xl overflow-hidden h-[400px]">
-<img class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700" data-alt="Macro detail of a vintage straight razor" src="https://drive.google.com/uc?export=view&id=1MBtJSfFxBCwdG6lPUeQywW-gRcN6rOof" />
+<img class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700" data-alt="Macro detail of a vintage straight razor" src="/templates/heritage/detail.jpg" />
 </div>
 <div class="md:col-span-5 p-4 md:pl-12">
 <h3 class="font-serif text-3xl font-bold mb-6 italic">The Ritual</h3>
@@ -87,7 +87,7 @@ const htmlCode = `
 <!-- Barber Card: Elena -->
 <div class="group">
 <div class="aspect-[3/4] rounded-xl overflow-hidden mb-6 bg-surface-container-high shadow-lg">
-<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Portrait of Elena" src="https://drive.google.com/uc?export=view&id=1ZkPgbMSphJlUKT5jR_TpgtWU3B5Xlojv" />
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Portrait of Elena" src="/templates/heritage/elena.jpg" />
 </div>
 <h4 class="font-serif text-xl font-bold text-on-surface">Elena</h4>
 <p class="text-primary font-label text-sm uppercase tracking-wider mb-2">Master Stylist</p>
@@ -96,7 +96,7 @@ const htmlCode = `
 <!-- Barber Card: Jasmine -->
 <div class="group">
 <div class="aspect-[3/4] rounded-xl overflow-hidden mb-6 bg-surface-container-high shadow-lg">
-<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Portrait of Jasmine" src="https://drive.google.com/uc?export=view&id=17d5dQPskN9Ug8DmdeKuLpfGAxthOUttb" />
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Portrait of Jasmine" src="/templates/heritage/jasmine.jpg" />
 </div>
 <h4 class="font-serif text-xl font-bold text-on-surface">Jasmine</h4>
 <p class="text-primary font-label text-sm uppercase tracking-wider mb-2">Artisan Barber</p>
@@ -105,7 +105,7 @@ const htmlCode = `
 <!-- Barber Card: Marcus -->
 <div class="group">
 <div class="aspect-[3/4] rounded-xl overflow-hidden mb-6 bg-surface-container-high shadow-lg">
-<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Portrait of Marcus" src="https://drive.google.com/uc?export=view&id=1bKTnbQViH1bhPixO0w0bsu6jHMfY_j4q" />
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Portrait of Marcus" src="/templates/heritage/marcus.jpg" />
 </div>
 <h4 class="font-serif text-xl font-bold text-on-surface">Marcus</h4>
 <p class="text-primary font-label text-sm uppercase tracking-wider mb-2">Senior Barber</p>
@@ -114,7 +114,7 @@ const htmlCode = `
 <!-- Barber Card: Nape -->
 <div class="group">
 <div class="aspect-[3/4] rounded-xl overflow-hidden mb-6 bg-surface-container-high shadow-lg">
-<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Portrait of Nape" src="https://drive.google.com/uc?export=view&id=170WZ_MHWPq3WxoU7bikwpTOEBGy34bws" />
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Portrait of Nape" src="/templates/heritage/nape.jpg" />
 </div>
 <h4 class="font-serif text-xl font-bold text-on-surface">Nape</h4>
 <p class="text-primary font-label text-sm uppercase tracking-wider mb-2">Technical Lead</p>
