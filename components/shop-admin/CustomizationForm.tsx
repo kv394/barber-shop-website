@@ -72,7 +72,7 @@ export function CustomizationForm({
 
   return (
     <div className="w-full">
-      <h2 className="font-bold text-botanical-text mb-4 sm:mb-6 text-3xl md:text-4xl">
+      <h2 className="font-bold text-crm-text mb-4 sm:mb-6 text-3xl md:text-4xl">
         {isSiteAdmin ? "Customize Your Shop Appearance" : "Update Contact Information"}
       </h2>
 
@@ -88,13 +88,13 @@ export function CustomizationForm({
         </div>
       )}
 
-      <div className="space-y-6 bg-botanical-surface p-4 sm:p-6 md:p-8 rounded-lg border border-botanical-border shadow-sm">
+      <div className="space-y-6 bg-crm-surface p-4 sm:p-6 md:p-8 rounded-lg border border-crm-border shadow-sm">
         
         <div>
-            <h3 className="font-bold text-botanical-text mb-4 text-2xl md:text-3xl">Brand Look & Feel</h3>
+            <h3 className="font-bold text-crm-text mb-4 text-2xl md:text-3xl">Brand Look & Feel</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
               <div>
-                <label className="block font-medium text-botanical-muted mb-2 text-sm">
+                <label className="block font-medium text-crm-muted mb-2 text-sm">
                   Logo URL
                 </label>
                 <div className="flex gap-2">
@@ -103,7 +103,7 @@ export function CustomizationForm({
                     value={formData.logoUrl || ''}
                     onChange={(e) => handleInputChange('logoUrl', e.target.value)}
                     placeholder="https://example.com/logo.png"
-                    className="flex-1 w-full bg-botanical-bg border border-botanical-border shadow-sm rounded px-4 py-2 text-botanical-text placeholder-gray-500"
+                    className="flex-1 w-full bg-crm-bg border border-crm-border shadow-sm rounded px-4 py-2 text-crm-text placeholder-gray-500"
                   />
                   <input 
                     type="file" 
@@ -126,13 +126,13 @@ export function CustomizationForm({
                         setIsLoading(false);
                       }
                     }} 
-                    className="flex-1 bg-botanical-surface border border-botanical-border shadow-sm rounded px-3 py-2 text-botanical-text text-sm focus:outline-none focus:border-brand-gold file:mr-4 file:py-1 file:px-4 file:rounded file:border-0 file:text-sm file:bg-botanical-primary/20 file:text-botanical-primary hover:file:bg-botanical-primary/30 hover:opacity-90" 
+                    className="flex-1 bg-crm-surface border border-crm-border shadow-sm rounded px-3 py-2 text-crm-text text-sm focus:outline-none focus:border-brand-gold file:mr-4 file:py-1 file:px-4 file:rounded file:border-0 file:text-sm file:bg-crm-primary/20 file:text-crm-primary hover:file:bg-crm-primary/30 hover:opacity-90" 
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block font-medium text-botanical-muted mb-2 text-sm">
+                <label className="block font-medium text-crm-muted mb-2 text-sm">
                   Hero / Banner Image URL
                 </label>
                 <div className="flex gap-2">
@@ -141,7 +141,7 @@ export function CustomizationForm({
                     value={formData.heroImageUrl || ''}
                     onChange={(e) => handleInputChange('heroImageUrl', e.target.value)}
                     placeholder="https://example.com/banner.jpg"
-                    className="flex-1 w-full bg-botanical-bg border border-botanical-border shadow-sm rounded px-4 py-2 text-botanical-text placeholder-gray-500"
+                    className="flex-1 w-full bg-crm-bg border border-crm-border shadow-sm rounded px-4 py-2 text-crm-text placeholder-gray-500"
                   />
                   <input 
                     type="file" 
@@ -164,15 +164,15 @@ export function CustomizationForm({
                         setIsLoading(false);
                       }
                     }} 
-                    className="flex-1 bg-botanical-surface border border-botanical-border shadow-sm rounded px-3 py-2 text-botanical-text text-sm focus:outline-none focus:border-brand-gold file:mr-4 file:py-1 file:px-4 file:rounded file:border-0 file:text-sm file:bg-botanical-primary/20 file:text-botanical-primary hover:file:bg-botanical-primary/30 hover:opacity-90" 
+                    className="flex-1 bg-crm-surface border border-crm-border shadow-sm rounded px-3 py-2 text-crm-text text-sm focus:outline-none focus:border-brand-gold file:mr-4 file:py-1 file:px-4 file:rounded file:border-0 file:text-sm file:bg-crm-primary/20 file:text-crm-primary hover:file:bg-crm-primary/30 hover:opacity-90" 
                   />
                 </div>
               </div>
             </div>
-            <h3 className="font-bold text-botanical-text mb-4 text-2xl md:text-3xl">Brand Colors</h3>
+            <h3 className="font-bold text-crm-text mb-4 text-2xl md:text-3xl">Brand Colors</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <label className="block font-medium text-botanical-muted mb-2 text-sm">
+                <label className="block font-medium text-crm-muted mb-2 text-sm">
                   Primary Color
                 </label>
                 <div className="flex gap-2">
@@ -190,13 +190,13 @@ export function CustomizationForm({
                     onChange={(e) =>
                       handleInputChange('primaryColor', e.target.value)
                     }
-                    className="flex-1 bg-botanical-bg border border-botanical-border shadow-sm rounded px-3 py-2 text-botanical-text"
+                    className="flex-1 bg-crm-bg border border-crm-border shadow-sm rounded px-3 py-2 text-crm-text"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block font-medium text-botanical-muted mb-2 text-sm">
+                <label className="block font-medium text-crm-muted mb-2 text-sm">
                   Secondary Color
                 </label>
                 <div className="flex gap-2">
@@ -214,7 +214,7 @@ export function CustomizationForm({
                     onChange={(e) =>
                       handleInputChange('secondaryColor', e.target.value)
                     }
-                    className="flex-1 bg-botanical-bg border border-botanical-border shadow-sm rounded px-3 py-2 text-botanical-text"
+                    className="flex-1 bg-crm-bg border border-crm-border shadow-sm rounded px-3 py-2 text-crm-text"
                   />
                 </div>
               </div>
@@ -222,10 +222,10 @@ export function CustomizationForm({
           </div>
 
         <div>
-          <h3 className="font-bold text-botanical-text mb-4 text-2xl md:text-3xl">Contact Information</h3>
+          <h3 className="font-bold text-crm-text mb-4 text-2xl md:text-3xl">Contact Information</h3>
           <div className="space-y-4">
             <div>
-              <label className="block font-medium text-botanical-muted mb-2 text-sm">
+              <label className="block font-medium text-crm-muted mb-2 text-sm">
                 Phone Number
               </label>
               <input
@@ -233,12 +233,12 @@ export function CustomizationForm({
                 value={formData.phone || ''}
                 onChange={(e) => handleInputChange('phone', e.target.value)}
                 placeholder="+1 (555) 000-0000"
-                className="w-full bg-botanical-bg border border-botanical-border shadow-sm rounded px-4 py-2 text-botanical-text placeholder-gray-500"
+                className="w-full bg-crm-bg border border-crm-border shadow-sm rounded px-4 py-2 text-crm-text placeholder-gray-500"
               />
             </div>
 
             <div>
-              <label className="block font-medium text-botanical-muted mb-2 text-sm">
+              <label className="block font-medium text-crm-muted mb-2 text-sm">
                 Email Address
               </label>
               <input
@@ -246,12 +246,12 @@ export function CustomizationForm({
                 value={formData.email || ''}
                 onChange={(e) => handleInputChange('email', e.target.value)}
                 placeholder="contact@shop.com"
-                className="w-full bg-botanical-bg border border-botanical-border shadow-sm rounded px-4 py-2 text-botanical-text placeholder-gray-500"
+                className="w-full bg-crm-bg border border-crm-border shadow-sm rounded px-4 py-2 text-crm-text placeholder-gray-500"
               />
             </div>
 
             <div>
-              <label className="block font-medium text-botanical-muted mb-2 text-sm">
+              <label className="block font-medium text-crm-muted mb-2 text-sm">
                 Business Address
               </label>
               <input
@@ -259,17 +259,17 @@ export function CustomizationForm({
                 value={formData.address || ''}
                 onChange={(e) => handleInputChange('address', e.target.value)}
                 placeholder="123 Main St, City, State"
-                className="w-full bg-botanical-bg border border-botanical-border shadow-sm rounded px-4 py-2 text-botanical-text placeholder-gray-500"
+                className="w-full bg-crm-bg border border-crm-border shadow-sm rounded px-4 py-2 text-crm-text placeholder-gray-500"
               />
             </div>
           </div>
         </div>
 
         <div>
-          <h3 className="font-bold text-botanical-text mb-4 text-2xl md:text-3xl">Social Media Links</h3>
+          <h3 className="font-bold text-crm-text mb-4 text-2xl md:text-3xl">Social Media Links</h3>
           <div className="space-y-4">
             <div>
-              <label className="block font-medium text-botanical-muted mb-2 text-sm">
+              <label className="block font-medium text-crm-muted mb-2 text-sm">
                 Facebook URL
               </label>
               <input
@@ -282,12 +282,12 @@ export function CustomizationForm({
                   })
                 }
                 placeholder="https://facebook.com/yourpage"
-                className="w-full bg-botanical-bg border border-botanical-border shadow-sm rounded px-4 py-2 text-botanical-text placeholder-gray-500"
+                className="w-full bg-crm-bg border border-crm-border shadow-sm rounded px-4 py-2 text-crm-text placeholder-gray-500"
               />
             </div>
 
             <div>
-              <label className="block font-medium text-botanical-muted mb-2 text-sm">
+              <label className="block font-medium text-crm-muted mb-2 text-sm">
                 Instagram URL
               </label>
               <input
@@ -300,12 +300,12 @@ export function CustomizationForm({
                   })
                 }
                 placeholder="https://instagram.com/yourpage"
-                className="w-full bg-botanical-bg border border-botanical-border shadow-sm rounded px-4 py-2 text-botanical-text placeholder-gray-500"
+                className="w-full bg-crm-bg border border-crm-border shadow-sm rounded px-4 py-2 text-crm-text placeholder-gray-500"
               />
             </div>
 
             <div>
-              <label className="block font-medium text-botanical-muted mb-2 text-sm">
+              <label className="block font-medium text-crm-muted mb-2 text-sm">
                 Twitter URL
               </label>
               <input
@@ -318,7 +318,7 @@ export function CustomizationForm({
                   })
                 }
                 placeholder="https://twitter.com/yourpage"
-                className="w-full bg-botanical-bg border border-botanical-border shadow-sm rounded px-4 py-2 text-botanical-text placeholder-gray-500"
+                className="w-full bg-crm-bg border border-crm-border shadow-sm rounded px-4 py-2 text-crm-text placeholder-gray-500"
               />
             </div>
           </div>
@@ -330,14 +330,14 @@ export function CustomizationForm({
 
         {activeVariables.length > 0 && (
           <div>
-            <h3 className="font-bold text-botanical-text mb-4 text-2xl md:text-3xl">Template Custom Variables</h3>
-            <p className="text-botanical-muted mb-4 text-base md:text-lg">
+            <h3 className="font-bold text-crm-text mb-4 text-2xl md:text-3xl">Template Custom Variables</h3>
+            <p className="text-crm-muted mb-4 text-base md:text-lg">
               These fields were automatically detected from your selected custom template. Fill them in to customize your landing page.
             </p>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {activeVariables.map((variable) => (
                 <div key={variable}>
-                  <label className="block font-medium text-botanical-muted mb-2 capitalize text-sm">
+                  <label className="block font-medium text-crm-muted mb-2 capitalize text-sm">
                     {variable.replace(/([A-Z])/g, ' $1').trim()}
                   </label>
                   {variable.toLowerCase().includes('image') || variable.toLowerCase().includes('url') ? (
@@ -346,7 +346,7 @@ export function CustomizationForm({
                        value={formData[variable] || ''}
                        onChange={(e) => handleInputChange(variable, e.target.value)}
                        placeholder="https://..."
-                       className="w-full bg-botanical-bg border border-botanical-border shadow-sm rounded px-4 py-2 text-botanical-text placeholder-gray-500"
+                       className="w-full bg-crm-bg border border-crm-border shadow-sm rounded px-4 py-2 text-crm-text placeholder-gray-500"
                      />
                   ) : (
                      <textarea
@@ -354,7 +354,7 @@ export function CustomizationForm({
                        onChange={(e) => handleInputChange(variable, e.target.value)}
                        placeholder={`Enter ${variable}...`}
                        rows={variable.toLowerCase().includes('text') || variable.toLowerCase().includes('description') ? 4 : 1}
-                       className="w-full bg-botanical-bg border border-botanical-border shadow-sm rounded px-4 py-2 text-botanical-text placeholder-gray-500"
+                       className="w-full bg-crm-bg border border-crm-border shadow-sm rounded px-4 py-2 text-crm-text placeholder-gray-500"
                      />
                   )}
                 </div>
@@ -366,7 +366,7 @@ export function CustomizationForm({
         <button
           onClick={handleSave}
           disabled={isLoading}
-          className="w-full bg-botanical-primary text-white hover:bg-botanical-surface hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 disabled:opacity-50 font-bold py-3 rounded-lg transition-colors"
+          className="w-full bg-crm-primary text-white hover:bg-crm-surface hover:text-crm-primary border border-transparent hover:border-crm-primary/30 disabled:opacity-50 font-bold py-3 rounded-lg transition-colors"
         >
           {isLoading ? 'Saving...' : 'Save Information'}
         </button>

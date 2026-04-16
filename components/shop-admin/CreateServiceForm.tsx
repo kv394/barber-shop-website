@@ -68,8 +68,8 @@ export default function CreateServiceForm({ shopId }: { shopId: string }) {
   const isInternal = serviceType === 'INTERNAL';
 
   return (
-    <form onSubmit={handleSubmit} className="mt-8 pt-6 border-t border-botanical-border" noValidate>
-      <h3 className="font-serif text-botanical-accent mb-6 text-2xl md:text-3xl">
+    <form onSubmit={handleSubmit} className="mt-8 pt-6 border-t border-crm-border" noValidate>
+      <h3 className="font-serif text-crm-accent mb-6 text-2xl md:text-3xl">
         {isInternal ? 'Add Inventory Item' : 'Add New Service'}
       </h3>
       
@@ -79,7 +79,7 @@ export default function CreateServiceForm({ shopId }: { shopId: string }) {
         <select 
           value={serviceType} 
           onChange={e => setServiceType(e.target.value as 'CUSTOMER' | 'INTERNAL')} 
-          className="bg-botanical-surface border border-botanical-border shadow-sm rounded p-3 text-botanical-text focus:outline-none focus:ring-1 focus:ring-botanical-primary md:col-span-2"
+          className="bg-crm-surface border border-crm-border shadow-sm rounded p-3 text-crm-text focus:outline-none focus:ring-1 focus:ring-crm-primary md:col-span-2"
         >
           <option value="CUSTOMER">Customer-Facing Service</option>
           <option value="INTERNAL">Internal Inventory Item</option>
@@ -90,7 +90,7 @@ export default function CreateServiceForm({ shopId }: { shopId: string }) {
           placeholder={isInternal ? "Item Name (e.g. Pomade, Towel)" : "Service Name (e.g. Classic Cut)"} 
           value={name} 
           onChange={e => setName(e.target.value)} 
-          className="bg-botanical-surface border border-botanical-border shadow-sm rounded p-3 text-botanical-text placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-botanical-primary" 
+          className="bg-crm-surface border border-crm-border shadow-sm rounded p-3 text-crm-text placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-crm-primary" 
         />
         
         <input 
@@ -98,7 +98,7 @@ export default function CreateServiceForm({ shopId }: { shopId: string }) {
           placeholder={isInternal ? "Cost per unit ($)" : "Price ($)"} 
           value={price} 
           onChange={e => { const val = e.target.value; if (val === '' || /^\d*\.?\d*$/.test(val)) setPrice(val); }} 
-          className="bg-botanical-surface border border-botanical-border shadow-sm rounded p-3 text-botanical-text placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-botanical-primary" 
+          className="bg-crm-surface border border-crm-border shadow-sm rounded p-3 text-crm-text placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-crm-primary" 
         />
         
         {/* Render different fields based on type */}
@@ -109,28 +109,28 @@ export default function CreateServiceForm({ shopId }: { shopId: string }) {
               placeholder="Initial Active Time (minutes)" 
               value={duration} 
               onChange={e => { const val = e.target.value; if (val === '' || /^\d+$/.test(val)) setDuration(val); }} 
-              className="bg-botanical-surface border border-botanical-border shadow-sm rounded p-3 text-botanical-text placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-botanical-primary" 
+              className="bg-crm-surface border border-crm-border shadow-sm rounded p-3 text-crm-text placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-crm-primary" 
             />
             <input 
               type="text" 
               placeholder="Processing Time (minutes, optional)" 
               value={processingTime} 
               onChange={e => { const val = e.target.value; if (val === '' || /^\d+$/.test(val)) setProcessingTime(val); }} 
-              className="bg-botanical-surface border border-botanical-border shadow-sm rounded p-3 text-botanical-text placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-botanical-primary" 
+              className="bg-crm-surface border border-crm-border shadow-sm rounded p-3 text-crm-text placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-crm-primary" 
             />
             <input 
               type="text" 
               placeholder="Finishing Time (minutes, optional)" 
               value={finishingTime} 
               onChange={e => { const val = e.target.value; if (val === '' || /^\d+$/.test(val)) setFinishingTime(val); }} 
-              className="bg-botanical-surface border border-botanical-border shadow-sm rounded p-3 text-botanical-text placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-botanical-primary" 
+              className="bg-crm-surface border border-crm-border shadow-sm rounded p-3 text-crm-text placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-crm-primary" 
             />
             <input
               type="text"
               placeholder="Buffer time between bookings (mins, optional)"
               value={bufferMinutes}
               onChange={e => { const val = e.target.value; if (val === '' || /^\d+$/.test(val)) setBufferMinutes(val); }}
-              className="bg-botanical-surface border border-botanical-border shadow-sm rounded p-3 text-botanical-text placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-botanical-primary"
+              className="bg-crm-surface border border-crm-border shadow-sm rounded p-3 text-crm-text placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-crm-primary"
             />
             <div className="md:col-span-1">
               <input 
@@ -138,7 +138,7 @@ export default function CreateServiceForm({ shopId }: { shopId: string }) {
                 placeholder="Short Description (optional)" 
                 value={description} 
                 onChange={e => setDescription(e.target.value)} 
-                className="w-full bg-botanical-surface border border-botanical-border shadow-sm rounded p-3 text-botanical-text placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-botanical-primary" 
+                className="w-full bg-crm-surface border border-crm-border shadow-sm rounded p-3 text-crm-text placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-crm-primary" 
               />
             </div>
             <div className="md:col-span-1">
@@ -147,7 +147,7 @@ export default function CreateServiceForm({ shopId }: { shopId: string }) {
                 placeholder="Image URL (optional)"
                 value={imageUrl}
                 onChange={e => setImageUrl(e.target.value)}
-                className="w-full bg-botanical-surface border border-botanical-border shadow-sm rounded p-3 text-botanical-text placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-botanical-primary"
+                className="w-full bg-crm-surface border border-crm-border shadow-sm rounded p-3 text-crm-text placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-crm-primary"
               />
             </div>
           </>
@@ -158,14 +158,14 @@ export default function CreateServiceForm({ shopId }: { shopId: string }) {
               placeholder="Item Type (e.g. Shampoo, Gel)" 
               value={itemType} 
               onChange={e => setItemType(e.target.value)} 
-              className="bg-botanical-surface border border-botanical-border shadow-sm rounded p-3 text-botanical-text placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-botanical-primary" 
+              className="bg-crm-surface border border-crm-border shadow-sm rounded p-3 text-crm-text placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-crm-primary" 
             />
             <input 
               type="text" 
               placeholder="Brand (e.g. American Crew)" 
               value={brand} 
               onChange={e => setBrand(e.target.value)} 
-              className="bg-botanical-surface border border-botanical-border shadow-sm rounded p-3 text-botanical-text placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-botanical-primary" 
+              className="bg-crm-surface border border-crm-border shadow-sm rounded p-3 text-crm-text placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-crm-primary" 
             />
             <div className="md:col-span-2">
                 <input 
@@ -173,7 +173,7 @@ export default function CreateServiceForm({ shopId }: { shopId: string }) {
                 placeholder="Barcode (Optional) - Type or Scan later" 
                 value={barcode} 
                 onChange={e => setBarcode(e.target.value)} 
-                className="w-full bg-botanical-surface border border-botanical-border shadow-sm rounded p-3 text-botanical-text placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-botanical-primary font-mono" 
+                className="w-full bg-crm-surface border border-crm-border shadow-sm rounded p-3 text-crm-text placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-crm-primary font-mono" 
                 />
             </div>
              <div className="md:col-span-2">
@@ -182,7 +182,7 @@ export default function CreateServiceForm({ shopId }: { shopId: string }) {
                 placeholder="Notes / Description (optional)" 
                 value={description} 
                 onChange={e => setDescription(e.target.value)} 
-                className="w-full bg-botanical-surface border border-botanical-border shadow-sm rounded p-3 text-botanical-text placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-botanical-primary" 
+                className="w-full bg-crm-surface border border-crm-border shadow-sm rounded p-3 text-crm-text placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-crm-primary" 
               />
             </div>
           </>
@@ -191,8 +191,8 @@ export default function CreateServiceForm({ shopId }: { shopId: string }) {
 
       {!isInternal && (
         <div className="flex items-center space-x-3 py-4 mt-4">
-          <input type="checkbox" id="trackInventory" checked={trackInventory} onChange={(e) => setTrackInventory(e.target.checked)} className="w-4 h-4 accent-brand-gold bg-botanical-border border-botanical-border shadow-sm rounded focus:ring-botanical-primary" />
-          <label htmlFor="trackInventory" className="text-botanical-muted cursor-pointer select-none text-sm">
+          <input type="checkbox" id="trackInventory" checked={trackInventory} onChange={(e) => setTrackInventory(e.target.checked)} className="w-4 h-4 accent-brand-gold bg-crm-border border-crm-border shadow-sm rounded focus:ring-crm-primary" />
+          <label htmlFor="trackInventory" className="text-crm-muted cursor-pointer select-none text-sm">
             Enable Inventory Tracking for this service
           </label>
         </div>
@@ -207,7 +207,7 @@ export default function CreateServiceForm({ shopId }: { shopId: string }) {
       <button 
         type="submit" 
         disabled={isSubmitting || !name || !price || (!isInternal && !duration)} 
-        className="w-full bg-botanical-primary text-white font-semibold py-3 rounded-lg hover:bg-botanical-surface hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 transition-colors disabled:opacity-50 disabled:cursor-not-allowed mt-4"
+        className="w-full bg-crm-primary text-white font-semibold py-3 rounded-lg hover:bg-crm-surface hover:text-crm-primary border border-transparent hover:border-crm-primary/30 transition-colors disabled:opacity-50 disabled:cursor-not-allowed mt-4"
       >
         {isSubmitting ? 'Saving...' : (isInternal ? 'Save Inventory Item' : 'Save Service')}
       </button>

@@ -145,41 +145,41 @@ export default function CheckoutButton({
     <>
       <button
         onClick={() => setIsOpen(true)}
-        className="bg-status-confirmed hover:bg-status-confirmed text-botanical-text text-xs font-bold px-4 py-2 rounded uppercase tracking-wider transition-colors"
+        className="bg-status-confirmed hover:bg-status-confirmed text-crm-text text-xs font-bold px-4 py-2 rounded uppercase tracking-wider transition-colors"
       >
         Checkout
       </button>
 
       {isOpen && (
         <div
-          className="fixed inset-0 bg-botanical-surface z-[200] flex items-center justify-center p-3 backdrop-blur-sm"
+          className="fixed inset-0 bg-crm-surface z-[200] flex items-center justify-center p-3 backdrop-blur-sm"
           onClick={() => !isProcessing && setIsOpen(false)}
         >
           <div
-            className="bg-botanical-surface border border-botanical-border shadow-sm rounded-2xl shadow-2xl w-full max-w-lg max-h-[92vh] overflow-y-auto"
+            className="bg-crm-surface border border-crm-border shadow-sm rounded-2xl shadow-2xl w-full max-w-lg max-h-[92vh] overflow-y-auto"
             onClick={e => e.stopPropagation()}
           >
             {/* ── Header ── */}
-            <div className="flex items-center justify-between px-5 py-4 border-b border-botanical-border sticky top-0 bg-botanical-surface z-10">
-              <h2 className="font-bold text-botanical-text text-3xl md:text-4xl">💳 Point of Sale</h2>
+            <div className="flex items-center justify-between px-5 py-4 border-b border-crm-border sticky top-0 bg-crm-surface z-10">
+              <h2 className="font-bold text-crm-text text-3xl md:text-4xl">💳 Point of Sale</h2>
               <button
                 onClick={() => setIsOpen(false)}
-                className="text-botanical-muted hover:text-botanical-text w-8 h-8 flex items-center justify-center rounded-full bg-botanical-surface text-sm"
+                className="text-crm-muted hover:text-crm-text w-8 h-8 flex items-center justify-center rounded-full bg-crm-surface text-sm"
               >✕</button>
             </div>
 
             <div className="p-5 space-y-5">
               {/* ── Cart ── */}
               <section>
-                <h3 className="font-semibold text-botanical-muted uppercase tracking-wider mb-2 text-2xl md:text-3xl">Cart</h3>
+                <h3 className="font-semibold text-crm-muted uppercase tracking-wider mb-2 text-2xl md:text-3xl">Cart</h3>
                 <div className="space-y-2">
                   {cart.map(item => (
-                    <div key={item.id} className="flex items-center gap-3 bg-botanical-surface rounded-lg px-3 py-2">
+                    <div key={item.id} className="flex items-center gap-3 bg-crm-surface rounded-lg px-3 py-2">
                       <div className="flex-1 min-w-0">
-                        <p className="text-botanical-text font-medium truncate text-base md:text-lg">{item.name}</p>
-                        <p className="text-botanical-muted text-base md:text-lg">${item.price.toFixed(2)} × {item.quantity}</p>
+                        <p className="text-crm-text font-medium truncate text-base md:text-lg">{item.name}</p>
+                        <p className="text-crm-muted text-base md:text-lg">${item.price.toFixed(2)} × {item.quantity}</p>
                       </div>
-                      <span className="text-sm font-bold text-botanical-text shrink-0">${(item.price * item.quantity).toFixed(2)}</span>
+                      <span className="text-sm font-bold text-crm-text shrink-0">${(item.price * item.quantity).toFixed(2)}</span>
                       {item.id !== 'primary-service' && (
                         <button
                           onClick={() => removeFromCart(item.id)}
@@ -193,7 +193,7 @@ export default function CheckoutButton({
                 {/* Add products */}
                 {products.length > 0 && (
                   <div className="mt-3">
-                    <p className="text-botanical-muted mb-2 uppercase tracking-wider text-base md:text-lg">Add Products</p>
+                    <p className="text-crm-muted mb-2 uppercase tracking-wider text-base md:text-lg">Add Products</p>
                     <div className="grid grid-cols-2 gap-2 max-h-32 overflow-y-auto pr-1">
                       {products.map(p => {
                         const inCart = cart.find(i => i.productId === p.id);
@@ -201,15 +201,15 @@ export default function CheckoutButton({
                           <button
                             key={p.id}
                             onClick={() => addToCart(p)}
-                            className="text-left bg-botanical-surface hover:bg-botanical-surface border border-botanical-border shadow-sm rounded-lg p-2 transition-colors relative"
+                            className="text-left bg-crm-surface hover:bg-crm-surface border border-crm-border shadow-sm rounded-lg p-2 transition-colors relative"
                           >
                             {inCart && (
-                              <span className="absolute top-1 right-1 bg-botanical-primary text-white text-xs font-black w-4 h-4 rounded-full flex items-center justify-center hover:opacity-90">
+                              <span className="absolute top-1 right-1 bg-crm-primary text-white text-xs font-black w-4 h-4 rounded-full flex items-center justify-center hover:opacity-90">
                                 {inCart.quantity}
                               </span>
                             )}
-                            <p className="font-medium text-botanical-text truncate pr-4 text-base md:text-lg">{p.name}</p>
-                            <p className="text-botanical-accent text-base md:text-lg">${p.price.toFixed(2)}</p>
+                            <p className="font-medium text-crm-text truncate pr-4 text-base md:text-lg">{p.name}</p>
+                            <p className="text-crm-accent text-base md:text-lg">${p.price.toFixed(2)}</p>
                           </button>
                         );
                       })}
@@ -220,7 +220,7 @@ export default function CheckoutButton({
 
               {/* ── Tip ── */}
               <section>
-                <h3 className="font-semibold text-botanical-muted uppercase tracking-wider mb-2 text-2xl md:text-3xl">Tip</h3>
+                <h3 className="font-semibold text-crm-muted uppercase tracking-wider mb-2 text-2xl md:text-3xl">Tip</h3>
                 <div className="flex gap-2 flex-wrap">
                   {TIP_PRESETS.map(t => (
                     <button
@@ -228,15 +228,15 @@ export default function CheckoutButton({
                       onClick={() => { setTipAmount(t); setCustomTip(''); }}
                       className={`px-3 py-1.5 rounded-lg text-sm font-semibold transition-colors ${
                         tipAmount === t && customTip === ''
-                          ? 'bg-botanical-primary text-white'
-                          : 'bg-botanical-surface text-botanical-muted hover:bg-botanical-surface'
+                          ? 'bg-crm-primary text-white'
+                          : 'bg-crm-surface text-crm-muted hover:bg-crm-surface'
                       }`}
                     >
                       {t === 0 ? 'No Tip' : `$${t}`}
                     </button>
                   ))}
-                  <div className={`flex items-center gap-1 rounded-lg px-3 py-1.5 border transition-colors ${customTip ? 'bg-botanical-primary/10 border-brand-gold/40' : 'bg-botanical-surface border-transparent'} hover:opacity-90 text-white`}>
-                    <span className="text-botanical-muted text-sm">$</span>
+                  <div className={`flex items-center gap-1 rounded-lg px-3 py-1.5 border transition-colors ${customTip ? 'bg-crm-primary/10 border-brand-gold/40' : 'bg-crm-surface border-transparent'} hover:opacity-90 text-white`}>
+                    <span className="text-crm-muted text-sm">$</span>
                     <input
                       type="number" min={0} step={0.5}
                       value={customTip}
@@ -245,7 +245,7 @@ export default function CheckoutButton({
                         setTipAmount(parseFloat(e.target.value) || 0);
                       }}
                       placeholder="Custom"
-                      className="w-16 bg-transparent text-botanical-text text-sm focus:outline-none placeholder-gray-600"
+                      className="w-16 bg-transparent text-crm-text text-sm focus:outline-none placeholder-gray-600"
                     />
                   </div>
                 </div>
@@ -253,29 +253,29 @@ export default function CheckoutButton({
 
               {/* ── Discount ── */}
               <section>
-                <h3 className="font-semibold text-botanical-muted uppercase tracking-wider mb-2 text-2xl md:text-3xl">Discount</h3>
-                <div className="flex items-center gap-1 bg-botanical-surface rounded-lg px-3 py-2 w-36 border border-transparent focus-within:border-brand-gold/40 transition-colors">
-                  <span className="text-botanical-muted text-sm">$</span>
+                <h3 className="font-semibold text-crm-muted uppercase tracking-wider mb-2 text-2xl md:text-3xl">Discount</h3>
+                <div className="flex items-center gap-1 bg-crm-surface rounded-lg px-3 py-2 w-36 border border-transparent focus-within:border-brand-gold/40 transition-colors">
+                  <span className="text-crm-muted text-sm">$</span>
                   <input
                     type="number" min={0} step={0.5} max={subtotal}
                     value={discount || ''}
                     onChange={e => setDiscount(parseFloat(e.target.value) || 0)}
                     placeholder="0.00"
-                    className="w-full bg-transparent text-botanical-text text-sm focus:outline-none placeholder-gray-600"
+                    className="w-full bg-transparent text-crm-text text-sm focus:outline-none placeholder-gray-600"
                   />
                 </div>
               </section>
 
               {/* ── Payment Method ── */}
               <section>
-                <h3 className="font-semibold text-botanical-muted uppercase tracking-wider mb-2 text-2xl md:text-3xl">Payment Method</h3>
+                <h3 className="font-semibold text-crm-muted uppercase tracking-wider mb-2 text-2xl md:text-3xl">Payment Method</h3>
                 <div className="flex gap-2">
                   {(['CASH', 'CARD', 'MOBILE'] as const).map(m => (
                     <button
                       key={m}
                       onClick={() => setPaymentMethod(m)}
                       className={`flex-1 py-2 rounded-lg text-sm font-semibold transition-colors ${
-                        paymentMethod === m ? 'bg-status-confirmed text-botanical-text shadow-lg' : 'bg-botanical-surface text-botanical-muted hover:text-botanical-text'
+                        paymentMethod === m ? 'bg-status-confirmed text-crm-text shadow-lg' : 'bg-crm-surface text-crm-muted hover:text-crm-text'
                       }`}
                     >
                       {m === 'CASH' ? '💵 Cash' : m === 'CARD' ? '💳 Card' : '📱 Mobile'}
@@ -285,8 +285,8 @@ export default function CheckoutButton({
               </section>
 
               {/* ── Total Summary ── */}
-              <section className="bg-botanical-surface rounded-xl p-4 space-y-1.5 border border-botanical-border shadow-sm">
-                <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 text-sm text-botanical-muted">
+              <section className="bg-crm-surface rounded-xl p-4 space-y-1.5 border border-crm-border shadow-sm">
+                <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 text-sm text-crm-muted">
                   <span>Subtotal</span><span>${subtotal.toFixed(2)}</span>
                 </div>
                 {effectiveDiscount > 0 && (
@@ -299,9 +299,9 @@ export default function CheckoutButton({
                     <span>Tip</span><span>+${tipAmount.toFixed(2)}</span>
                   </div>
                 )}
-                <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 text-xl font-black text-botanical-text border-t border-botanical-border pt-2 mt-1">
+                <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 text-xl font-black text-crm-text border-t border-crm-border pt-2 mt-1">
                   <span>Total</span>
-                  <span className="text-botanical-accent">${finalTotal.toFixed(2)}</span>
+                  <span className="text-crm-accent">${finalTotal.toFixed(2)}</span>
                 </div>
               </section>
 
@@ -309,7 +309,7 @@ export default function CheckoutButton({
               <button
                 onClick={handleMarkAsPaid}
                 disabled={isProcessing}
-                className="w-full bg-status-confirmed hover:bg-status-confirmed disabled:opacity-50 text-botanical-text font-bold py-3.5 rounded-xl text-sm uppercase tracking-wider transition-colors"
+                className="w-full bg-status-confirmed hover:bg-status-confirmed disabled:opacity-50 text-crm-text font-bold py-3.5 rounded-xl text-sm uppercase tracking-wider transition-colors"
               >
                 {isProcessing ? 'Processing…' : `Confirm ${paymentMethod === 'CASH' ? '💵' : paymentMethod === 'CARD' ? '💳' : '📱'} · $${finalTotal.toFixed(2)}`}
               </button>

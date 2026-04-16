@@ -35,12 +35,12 @@ export default function ResourceManagement({ shopId }: { shopId: string }) {
     setResources(prev => prev.filter(r => r.id !== id));
   };
 
-  if (loading) return <div className="animate-pulse text-botanical-muted py-4">Loading resources…</div>;
+  if (loading) return <div className="animate-pulse text-crm-muted py-4">Loading resources…</div>;
 
   return (
-    <div className="bg-botanical-surface border border-botanical-border shadow-sm rounded-xl p-6">
-      <h3 className="font-bold text-botanical-text mb-2 text-2xl md:text-3xl">🪑 Shop Resources</h3>
-      <p className="text-botanical-muted mb-6 text-base md:text-lg">
+    <div className="bg-crm-surface border border-crm-border shadow-sm rounded-xl p-6">
+      <h3 className="font-bold text-crm-text mb-2 text-2xl md:text-3xl">🪑 Shop Resources</h3>
+      <p className="text-crm-muted mb-6 text-base md:text-lg">
         Add physical resources like pedicure chairs, laser machines, or massage rooms. Appointments can be configured to require these resources.
       </p>
 
@@ -52,13 +52,13 @@ export default function ResourceManagement({ shopId }: { shopId: string }) {
           value={name} 
           onChange={e => setName(e.target.value)} 
           placeholder="Resource Name (e.g. Chair 1, Room A)" 
-          className="flex-1 bg-botanical-surface border border-botanical-border shadow-sm rounded px-3 py-2 text-botanical-text text-sm focus:outline-none focus:border-brand-gold" 
+          className="flex-1 bg-crm-surface border border-crm-border shadow-sm rounded px-3 py-2 text-crm-text text-sm focus:outline-none focus:border-brand-gold" 
           required 
         />
         <select 
           value={type} 
           onChange={e => setType(e.target.value)} 
-          className="w-40 bg-botanical-surface border border-botanical-border shadow-sm rounded px-3 py-2 text-botanical-text text-sm focus:outline-none focus:border-brand-gold"
+          className="w-40 bg-crm-surface border border-crm-border shadow-sm rounded px-3 py-2 text-crm-text text-sm focus:outline-none focus:border-brand-gold"
         >
           <option value="CHAIR">Chair / Station</option>
           <option value="ROOM">Room</option>
@@ -67,21 +67,21 @@ export default function ResourceManagement({ shopId }: { shopId: string }) {
         <button 
           type="submit" 
           disabled={saving || !name.trim()} 
-          className="px-4 py-2 bg-botanical-primary text-white rounded text-sm font-bold hover:bg-botanical-surface hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 transition disabled:opacity-50"
+          className="px-4 py-2 bg-crm-primary text-white rounded text-sm font-bold hover:bg-crm-surface hover:text-crm-primary border border-transparent hover:border-crm-primary/30 transition disabled:opacity-50"
         >
           {saving ? 'Adding...' : 'Add'}
         </button>
       </form>
 
       {resources.length === 0 ? (
-        <p className="text-botanical-muted text-center py-4 text-base md:text-lg">No resources added yet.</p>
+        <p className="text-crm-muted text-center py-4 text-base md:text-lg">No resources added yet.</p>
       ) : (
         <div className="space-y-2">
           {resources.map(r => (
-            <div key={r.id} className="flex items-center justify-between p-3 bg-botanical-surface rounded-lg border border-botanical-border shadow-sm">
+            <div key={r.id} className="flex items-center justify-between p-3 bg-crm-surface rounded-lg border border-crm-border shadow-sm">
               <div className="flex flex-col">
-                <span className="text-botanical-text font-medium">{r.name}</span>
-                <span className="text-xs text-botanical-muted uppercase tracking-wider">{r.type}</span>
+                <span className="text-crm-text font-medium">{r.name}</span>
+                <span className="text-xs text-crm-muted uppercase tracking-wider">{r.type}</span>
               </div>
               <button 
                 onClick={() => remove(r.id)} 

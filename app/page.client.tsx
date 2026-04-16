@@ -8,7 +8,7 @@ import BarcodeScannerWrapper from '@/components/checkout/BarcodeScannerWrapper';
 import { useRouter } from 'next/navigation';
 import dynamic from 'next/dynamic';
 
-const KioskMode = dynamic(() => import('@/components/kiosk/KioskMode'), { ssr: false, loading: () => <div className="h-[100dvh] flex items-center justify-center bg-botanical-bg text-botanical-accent">Loading Kiosk...</div> });
+const KioskMode = dynamic(() => import('@/components/kiosk/KioskMode'), { ssr: false, loading: () => <div className="h-[100dvh] flex items-center justify-center bg-crm-bg text-crm-accent">Loading Kiosk...</div> });
 
 type Shop = {
   id: string;
@@ -153,10 +153,10 @@ export default function Home() {
 
   if (isLoading) {
     return (
-      <div className="h-[100dvh] overflow-y-auto overflow-x-hidden flex items-center justify-center bg-botanical-bg">
+      <div className="h-[100dvh] overflow-y-auto overflow-x-hidden flex items-center justify-center bg-crm-bg">
         <div className="flex flex-col items-center gap-4">
           <div className="w-12 h-12 border-4 border-brand-gold border-t-transparent rounded-full animate-spin"></div>
-          <p className="text-botanical-muted animate-pulse font-medium tracking-wide uppercase text-base md:text-lg">Initializing Platform...</p>
+          <p className="text-crm-muted animate-pulse font-medium tracking-wide uppercase text-base md:text-lg">Initializing Platform...</p>
         </div>
       </div>
     );
@@ -170,10 +170,10 @@ export default function Home() {
   // We can return a loading state while the redirect happens
   if (userProfile?.shopId && userProfile.role !== 'SITE_ADMIN') {
     return (
-      <div className="h-[100dvh] overflow-y-auto overflow-x-hidden flex items-center justify-center bg-botanical-bg">
+      <div className="h-[100dvh] overflow-y-auto overflow-x-hidden flex items-center justify-center bg-crm-bg">
         <div className="flex flex-col items-center gap-4">
           <div className="w-12 h-12 border-4 border-brand-gold border-t-transparent rounded-full animate-spin"></div>
-          <p className="text-botanical-accent animate-pulse font-medium tracking-wide uppercase text-base md:text-lg">Entering Shop Portal...</p>
+          <p className="text-crm-accent animate-pulse font-medium tracking-wide uppercase text-base md:text-lg">Entering Shop Portal...</p>
         </div>
       </div>
     );
@@ -182,17 +182,17 @@ export default function Home() {
   const isSignedIn = !!userProfile;
 
   return (
-    <main className="h-[100dvh] overflow-y-auto overflow-x-hidden bg-botanical-bg">
+    <main className="h-[100dvh] overflow-y-auto overflow-x-hidden bg-crm-bg">
       <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
         
         <header className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-12 sm:mb-20">
           <h1 className="font-serif font-bold tracking-tight text-4xl md:text-5xl lg:text-6xl">
             {userProfile?.role === 'SITE_ADMIN' ? (
-                <><span className="text-botanical-text">Barber</span><span className="text-botanical-accent">SaaS</span></>
+                <><span className="text-crm-text">Barber</span><span className="text-crm-accent">SaaS</span></>
             ) : userProfile?.shop?.name ? (
-                <span className="text-botanical-accent">{userProfile.shop.name}</span>
+                <span className="text-crm-accent">{userProfile.shop.name}</span>
             ) : (
-                <><span className="text-botanical-text">Booking</span> <span className="text-botanical-accent">Portal</span></>
+                <><span className="text-crm-text">Booking</span> <span className="text-crm-accent">Portal</span></>
             )}
           </h1>
           <div>
@@ -201,10 +201,10 @@ export default function Home() {
         </header>
 
         <div className="text-center mb-12 sm:mb-20">
-          <h2 className="font-serif font-bold leading-tight tracking-tight text-botanical-text max-w-4xl mx-auto drop-shadow-sm text-3xl md:text-4xl">
+          <h2 className="font-serif font-bold leading-tight tracking-tight text-crm-text max-w-4xl mx-auto drop-shadow-sm text-3xl md:text-4xl">
             {isSignedIn ? `Welcome, ${userProfile?.name || 'User'}` : "Book Your Next Appointment"}
           </h2>
-          <p className="mt-4 sm:mt-6 text-botanical-accent/80 font-medium tracking-wide text-base md:text-lg">
+          <p className="mt-4 sm:mt-6 text-crm-accent/80 font-medium tracking-wide text-base md:text-lg">
             {userProfile ? (userProfile.role === 'SITE_ADMIN' ? 'Platform Administrator Dashboard' : '') : (isSignedIn ? 'Loading...' : 'Please sign in to continue.')}
           </p>
         </div>
@@ -213,14 +213,14 @@ export default function Home() {
           {userProfile?.role === 'SITE_ADMIN' && (
             <div className="space-y-6">
               {/* Quick Actions */}
-              <div className="bg-botanical-surface p-6 sm:p-8 rounded-lg border border-botanical-border shadow-sm">
-                <h2 className="font-serif text-botanical-text mb-2 text-3xl md:text-4xl">Site Admin Control Panel</h2>
-                <p className="text-botanical-muted mb-6 text-base md:text-lg">Manage the entire platform from the dedicated dashboard.</p>
+              <div className="bg-crm-surface p-6 sm:p-8 rounded-lg border border-crm-border shadow-sm">
+                <h2 className="font-serif text-crm-text mb-2 text-3xl md:text-4xl">Site Admin Control Panel</h2>
+                <p className="text-crm-muted mb-6 text-base md:text-lg">Manage the entire platform from the dedicated dashboard.</p>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                  <Link href="/siteadmin" className="bg-botanical-primary text-white px-6 py-4 rounded-lg font-semibold hover:bg-botanical-surface hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 transition-colors text-center">
+                  <Link href="/siteadmin" className="bg-crm-primary text-white px-6 py-4 rounded-lg font-semibold hover:bg-crm-surface hover:text-crm-primary border border-transparent hover:border-crm-primary/30 transition-colors text-center">
                     📊 Platform Dashboard
                   </Link>
-                  <Link href="/siteadmin/shops" className="bg-botanical-surface text-botanical-text px-6 py-4 rounded-lg font-semibold hover:bg-botanical-surface transition-colors text-center">
+                  <Link href="/siteadmin/shops" className="bg-crm-surface text-crm-text px-6 py-4 rounded-lg font-semibold hover:bg-crm-surface transition-colors text-center">
                     🏪 Manage Shops
                   </Link>
                   <Link href="/siteadmin/logs" className="bg-status-cancelled/20 text-status-cancelled px-6 py-4 rounded-lg font-semibold hover:bg-red-800/50 transition-colors text-center border border-status-cancelled/30">
@@ -230,9 +230,9 @@ export default function Home() {
               </div>
 
               {/* Quick Shop Create */}
-              <div className="bg-botanical-surface p-4 sm:p-6 md:p-8 rounded-lg border border-botanical-border shadow-sm">
-                <h2 className="font-serif text-botanical-text mb-1 text-3xl md:text-4xl">Quick Create Shop</h2>
-                <p className="text-botanical-muted mb-4 text-base md:text-lg">Provision a new tenant workspace.</p>
+              <div className="bg-crm-surface p-4 sm:p-6 md:p-8 rounded-lg border border-crm-border shadow-sm">
+                <h2 className="font-serif text-crm-text mb-1 text-3xl md:text-4xl">Quick Create Shop</h2>
+                <p className="text-crm-muted mb-4 text-base md:text-lg">Provision a new tenant workspace.</p>
 
                 {createError && (
                     <div className="mb-4 p-3 bg-status-cancelled/20 border border-status-cancelled text-red-200 rounded text-sm">
@@ -243,39 +243,39 @@ export default function Home() {
                 <form onSubmit={handleCreateShop} className="space-y-4">
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                       <div>
-                          <label className="block text-botanical-muted mb-1 text-sm">Shop Name *</label>
+                          <label className="block text-crm-muted mb-1 text-sm">Shop Name *</label>
                           <input 
                               type="text" 
                               value={newShopName} 
                               onChange={(e) => setNewShopName(e.target.value)} 
                               placeholder="e.g., Downtown Barbers" 
-                              className="w-full bg-botanical-surface border border-botanical-border shadow-sm rounded-md py-3 px-4 text-botanical-text placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-botanical-primary" 
+                              className="w-full bg-crm-surface border border-crm-border shadow-sm rounded-md py-3 px-4 text-crm-text placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-crm-primary" 
                               required
                           />
                       </div>
                       <div>
-                          <label className="block text-botanical-muted mb-1 text-sm">Kiosk Email *</label>
+                          <label className="block text-crm-muted mb-1 text-sm">Kiosk Email *</label>
                           <input
                               type="email" 
                               value={kioskEmail} 
                               onChange={(e) => setKioskEmail(e.target.value)} 
                               placeholder="kiosk@example.com" 
-                              className="w-full bg-botanical-surface border border-botanical-border shadow-sm rounded-md py-3 px-4 text-botanical-text placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-botanical-primary" 
+                              className="w-full bg-crm-surface border border-crm-border shadow-sm rounded-md py-3 px-4 text-crm-text placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-crm-primary" 
                               required
                           />
                       </div>
                       <div>
-                          <label className="block text-botanical-muted mb-1 text-sm">Admin Email (Optional)</label>
+                          <label className="block text-crm-muted mb-1 text-sm">Admin Email (Optional)</label>
                           <input
                               type="email" 
                               value={newShopAdminEmail} 
                               onChange={(e) => setNewShopAdminEmail(e.target.value)} 
                               placeholder="admin@shop.com" 
-                              className="w-full bg-botanical-surface border border-botanical-border shadow-sm rounded-md py-3 px-4 text-botanical-text placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-botanical-primary" 
+                              className="w-full bg-crm-surface border border-crm-border shadow-sm rounded-md py-3 px-4 text-crm-text placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-crm-primary" 
                           />
                       </div>
                   </div>
-                  <button type="submit" className="w-full bg-botanical-primary text-white px-8 py-3 rounded-md font-semibold hover:bg-botanical-surface hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 transition-colors">
+                  <button type="submit" className="w-full bg-crm-primary text-white px-8 py-3 rounded-md font-semibold hover:bg-crm-surface hover:text-crm-primary border border-transparent hover:border-crm-primary/30 transition-colors">
                       Create Shop Workspace
                   </button>
                 </form>
@@ -286,22 +286,22 @@ export default function Home() {
                 <div>
                   <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-4">
                     <h2 className="font-serif text-3xl md:text-4xl">Shops ({shops.length})</h2>
-                    <Link href="/siteadmin/shops" className="text-botanical-accent text-sm hover:underline">View All →</Link>
+                    <Link href="/siteadmin/shops" className="text-crm-accent text-sm hover:underline">View All →</Link>
                   </div>
                   <div className="space-y-3">
                     {shops.slice(0, 5).map((shop) => {
                        const hasAdmin = (shop.users || []).some(u => u.role === 'SHOP_ADMIN');
                        return (
-                          <div key={shop.id} className="bg-botanical-surface p-4 sm:p-6 rounded-lg hover:bg-botanical-surface transition-colors border border-botanical-border shadow-sm shadow-md">
+                          <div key={shop.id} className="bg-crm-surface p-4 sm:p-6 rounded-lg hover:bg-crm-surface transition-colors border border-crm-border shadow-sm shadow-md">
                             <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3">
                               <div className="flex-grow min-w-0">
                                   <div className="flex items-center gap-2 sm:gap-4 flex-wrap">
-                                      <h3 className="font-semibold text-botanical-text truncate text-2xl md:text-3xl">{shop.name}</h3>
+                                      <h3 className="font-semibold text-crm-text truncate text-2xl md:text-3xl">{shop.name}</h3>
                                       <span className={`px-2 sm:px-3 py-0.5 sm:py-1 rounded-full text-xs sm:text-sm font-bold ${hasAdmin ? 'bg-status-confirmed/20 text-status-confirmed' : 'bg-status-pending/20 text-status-pending'}`}>
                                           {hasAdmin ? 'Active' : 'Needs Admin'}
                                       </span>
                                   </div>
-                                  <Link href={`/shop/${shop.id}/settings/team`} className="text-xs sm:text-sm text-botanical-accent hover:underline mt-1 inline-block">
+                                  <Link href={`/shop/${shop.id}/settings/team`} className="text-xs sm:text-sm text-crm-accent hover:underline mt-1 inline-block">
                                       Assign Team
                                   </Link>
                               </div>
@@ -320,11 +320,11 @@ export default function Home() {
           
           {/* CLIENT Fallback (if they don't have a shopId yet) */}
           {userProfile?.role === 'CLIENT' && !userProfile.shopId && (
-            <div className="bg-botanical-surface p-8 rounded-lg text-center border border-botanical-border shadow-sm">
+            <div className="bg-crm-surface p-8 rounded-lg text-center border border-crm-border shadow-sm">
               <h2 className="font-serif mb-4 text-3xl md:text-4xl">Welcome back!</h2>
-              <p className="text-botanical-muted mb-6 text-base md:text-lg">Browse available shops and book your appointments.</p>
+              <p className="text-crm-muted mb-6 text-base md:text-lg">Browse available shops and book your appointments.</p>
               <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                <Link href="/shops" className="inline-block bg-botanical-surface text-botanical-text px-8 py-3 rounded-md font-semibold hover:bg-botanical-surface transition-colors">
+                <Link href="/shops" className="inline-block bg-crm-surface text-crm-text px-8 py-3 rounded-md font-semibold hover:bg-crm-surface transition-colors">
                   Browse Shops
                 </Link>
               </div>
@@ -332,16 +332,16 @@ export default function Home() {
           )}
           
           {!userProfile && isSignedIn && (
-            <div className="bg-botanical-surface p-8 rounded-lg text-center border border-botanical-border shadow-sm">
-              <p className="text-botanical-muted text-base md:text-lg">Your profile is being set up. Please refresh the page.</p>
+            <div className="bg-crm-surface p-8 rounded-lg text-center border border-crm-border shadow-sm">
+              <p className="text-crm-muted text-base md:text-lg">Your profile is being set up. Please refresh the page.</p>
             </div>
           )}
           
           {!isSignedIn && (
-            <div className="bg-botanical-surface p-8 rounded-lg text-center border border-botanical-border shadow-sm">
-              <p className="text-botanical-muted mb-6 text-base md:text-lg">Sign in to access your portal or browse available shops.</p>
+            <div className="bg-crm-surface p-8 rounded-lg text-center border border-crm-border shadow-sm">
+              <p className="text-crm-muted mb-6 text-base md:text-lg">Sign in to access your portal or browse available shops.</p>
               <div className="flex gap-4 justify-center">
-                <Link href="/shops" className="inline-block bg-botanical-surface text-botanical-text px-8 py-3 rounded-md font-semibold hover:bg-botanical-surface transition-colors">
+                <Link href="/shops" className="inline-block bg-crm-surface text-crm-text px-8 py-3 rounded-md font-semibold hover:bg-crm-surface transition-colors">
                   Browse Shops
                 </Link>
               </div>

@@ -52,7 +52,7 @@ export default function ShopAdminLayout({
   return (
     <div className="pb-20 sm:pb-0">
       {pageTitle && (
-        <p className="text-botanical-muted mb-6 sm:mb-8 px-3 sm:px-0 mt-2 sm:mt-0 sm:-mt-8 text-base md:text-lg">{pageTitle}</p>
+        <p className="text-crm-muted mb-6 sm:mb-8 px-3 sm:px-0 mt-2 sm:mt-0 sm:-mt-8 text-base md:text-lg">{pageTitle}</p>
       )}
 
       <ShopNav shopId={shopId} userRole={userRole} activeTab={activeTab} />
@@ -60,17 +60,17 @@ export default function ShopAdminLayout({
       {isSplitLayout ? (
         <div className="flex flex-col md:flex-row gap-4 md:gap-6 items-start">
           {/* Sidebar */}
-          <div className="w-full md:w-64 shrink-0 bg-botanical-surface rounded-xl border border-botanical-border p-2 md:p-0 shadow-lg md:shadow-sm relative overflow-hidden">
+          <div className="w-full md:w-64 shrink-0 bg-crm-surface rounded-xl border border-crm-border p-2 md:p-0 shadow-lg md:shadow-sm relative overflow-hidden">
             <SectionSidebar activeTab={activeTab} shopId={shopId} section={activeSection} userRole={userRole} />
           </div>
           
           {/* Main Content Area */}
-          <div className="flex-1 w-full bg-botanical-surface p-3 sm:p-4 md:p-8 rounded-xl border border-botanical-border shadow-lg min-w-0">
+          <div className="flex-1 w-full bg-crm-surface p-3 sm:p-4 md:p-8 rounded-xl border border-crm-border shadow-lg min-w-0">
             {children}
           </div>
         </div>
       ) : (
-        <div className="shadow-lg bg-transparent sm:bg-botanical-surface p-3 sm:p-4 md:p-8 border-0 sm:border sm:rounded-xl border-botanical-border">
+        <div className="shadow-lg bg-transparent sm:bg-crm-surface p-3 sm:p-4 md:p-8 border-0 sm:border sm:rounded-xl border-crm-border">
           {children}
         </div>
       )}

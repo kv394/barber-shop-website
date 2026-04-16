@@ -158,7 +158,7 @@ export default async function ShopDashboardPage({ params }: { params: Promise<{ 
         <div className="h-[100dvh] overflow-y-auto overflow-x-hidden">
             <div className="text-center">
                 <h1 className="font-bold text-status-cancelled mb-4 text-4xl md:text-5xl lg:text-6xl">Access Denied</h1>
-                <p className="text-botanical-muted text-base md:text-lg">You do not have permission to view this page.</p>
+                <p className="text-crm-muted text-base md:text-lg">You do not have permission to view this page.</p>
             </div>
         </div>
     )
@@ -207,25 +207,25 @@ export default async function ShopDashboardPage({ params }: { params: Promise<{ 
       {isShopAdmin && (
         <div className="flex flex-col sm:flex-row gap-3 mb-6">
           {/* Online booking link */}
-          <div className="flex-1 bg-botanical-primary/10 border border-brand-gold/30 rounded-xl p-4 flex items-center gap-4 hover:opacity-90 text-white">
+          <div className="flex-1 bg-crm-primary/10 border border-brand-gold/30 rounded-xl p-4 flex items-center gap-4 hover:opacity-90 text-white">
             <span className="text-base">🔗</span>
             <div className="min-w-0 flex-1">
-              <p className="text-botanical-muted mb-0.5 text-base md:text-lg">Your Booking Portal</p>
-              <p className="text-botanical-text font-mono truncate text-base md:text-lg">/shops/{resolvedSlug}</p>
+              <p className="text-crm-muted mb-0.5 text-base md:text-lg">Your Booking Portal</p>
+              <p className="text-crm-text font-mono truncate text-base md:text-lg">/shops/{resolvedSlug}</p>
             </div>
             <Link href={`/shops/${resolvedSlug}`} target="_blank"
-              className="flex-shrink-0 px-3 py-1.5 bg-botanical-primary text-white text-xs font-bold rounded-lg hover:bg-botanical-surface hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 transition-colors">
+              className="flex-shrink-0 px-3 py-1.5 bg-crm-primary text-white text-xs font-bold rounded-lg hover:bg-crm-surface hover:text-crm-primary border border-transparent hover:border-crm-primary/30 transition-colors">
               Open →
             </Link>
           </div>
           {/* Quick Actions */}
-          <div className="flex-1 bg-botanical-bg/50 border border-botanical-border shadow-sm rounded-xl p-4 flex items-center justify-between">
+          <div className="flex-1 bg-crm-bg/50 border border-crm-border shadow-sm rounded-xl p-4 flex items-center justify-between">
             <div>
-              <p className="text-botanical-text font-semibold mb-0.5 text-base md:text-lg">👥 Team Management</p>
-              <p className="text-botanical-muted text-base md:text-lg">Onboard staff or set working hours</p>
+              <p className="text-crm-text font-semibold mb-0.5 text-base md:text-lg">👥 Team Management</p>
+              <p className="text-crm-muted text-base md:text-lg">Onboard staff or set working hours</p>
             </div>
             <Link href={`/shop/${shopId}/settings/team`}
-              className="flex-shrink-0 px-3 py-1.5 bg-botanical-border text-botanical-text text-xs font-bold rounded-lg hover:bg-botanical-surface transition-colors">
+              className="flex-shrink-0 px-3 py-1.5 bg-crm-border text-crm-text text-xs font-bold rounded-lg hover:bg-crm-surface transition-colors">
               Manage Team →
             </Link>
           </div>
@@ -236,13 +236,13 @@ export default async function ShopDashboardPage({ params }: { params: Promise<{ 
               <div className="space-y-1">
                 {lowStockItems.slice(0, 3).map((item: any) => (
                   <div key={item.id} className="flex flex-wrap justify-between gap-x-2 gap-y-2 text-xs">
-                    <span className="text-botanical-muted truncate">{item.name}</span>
+                    <span className="text-crm-muted truncate">{item.name}</span>
                     <span className="text-status-pending font-mono ml-2 flex-shrink-0">{item.inventoryCount} left</span>
                   </div>
                 ))}
-                {lowStockItems.length > 3 && <p className="text-botanical-muted text-base md:text-lg">+{lowStockItems.length - 3} more</p>}
+                {lowStockItems.length > 3 && <p className="text-crm-muted text-base md:text-lg">+{lowStockItems.length - 3} more</p>}
               </div>
-              <Link href={`/shop/${shopId}/config/products`} className="text-status-pending hover:text-botanical-text transition-colors text-xs underline mt-2 inline-block">
+              <Link href={`/shop/${shopId}/config/products`} className="text-status-pending hover:text-crm-text transition-colors text-xs underline mt-2 inline-block">
                 Restock now →
               </Link>
             </div>
@@ -251,7 +251,7 @@ export default async function ShopDashboardPage({ params }: { params: Promise<{ 
       )}
       {/* ── Predictive Action Surface: Up Next (STAFF & ADMIN) ── */}
       {todayStats && todayStats.nextAppointment && (
-        <div className="mb-6 sm:mb-8 bg-gradient-to-br from-brand-gold to-yellow-600 rounded-3xl p-6 sm:p-8 shadow-[0_10px_40px_rgba(234,179,8,0.2)] text-botanical-text relative overflow-hidden group">
+        <div className="mb-6 sm:mb-8 bg-gradient-to-br from-brand-gold to-yellow-600 rounded-3xl p-6 sm:p-8 shadow-[0_10px_40px_rgba(234,179,8,0.2)] text-crm-text relative overflow-hidden group">
           <div className="absolute top-0 right-0 p-8 opacity-10 transform translate-x-4 -translate-y-4 group-hover:scale-110 transition-transform duration-700">
             <span className="text-8xl">✂️</span>
           </div>
@@ -277,7 +277,7 @@ export default async function ShopDashboardPage({ params }: { params: Promise<{ 
               )}
             </div>
             <div className="flex gap-3">
-              <Link href={`/shop/${shopId}/bookings`} className="bg-botanical-bg text-botanical-text px-6 py-3 rounded-xl font-bold hover:bg-botanical-surface transition-colors shadow-lg active:scale-95">
+              <Link href={`/shop/${shopId}/bookings`} className="bg-crm-bg text-crm-text px-6 py-3 rounded-xl font-bold hover:bg-crm-surface transition-colors shadow-lg active:scale-95">
                 View Details
               </Link>
             </div>
@@ -288,47 +288,47 @@ export default async function ShopDashboardPage({ params }: { params: Promise<{ 
       {/* Today's Snapshot */}
       {todayStats && (
         <div className="mb-6 sm:mb-8">
-          <h2 className="font-bold text-botanical-text mb-4 text-3xl md:text-4xl">📊 Today&apos;s Snapshot</h2>
+          <h2 className="font-bold text-crm-text mb-4 text-3xl md:text-4xl">📊 Today&apos;s Snapshot</h2>
           <div className="grid grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-4 mb-4 sm:mb-8">
-            <div className="bg-botanical-surface backdrop-blur-md shadow-[0_4px_30px_rgba(0,0,0,0.1)] rounded-2xl border border-botanical-border shadow-sm p-4 sm:p-6 relative overflow-hidden group hover:bg-botanical-border hover:shadow-[0_8px_30px_rgba(0,0,0,0.15)] hover:-translate-y-1 transition-all duration-300 min-w-0">
+            <div className="bg-crm-surface backdrop-blur-md shadow-[0_4px_30px_rgba(0,0,0,0.1)] rounded-2xl border border-crm-border shadow-sm p-4 sm:p-6 relative overflow-hidden group hover:bg-crm-border hover:shadow-[0_8px_30px_rgba(0,0,0,0.15)] hover:-translate-y-1 transition-all duration-300 min-w-0">
               <div className="absolute top-0 left-0 w-full h-1 bg-status-info/80"></div>
               <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-2 sm:mb-3">
-                <h3 className="text-xs text-botanical-muted uppercase tracking-widest font-semibold truncate">Bookings</h3>
+                <h3 className="text-xs text-crm-muted uppercase tracking-widest font-semibold truncate">Bookings</h3>
                 <span className="text-status-info text-sm sm:text-base">📅</span>
               </div>
-              <p className="font-black text-botanical-text break-words leading-tight text-3xl md:text-4xl">{todayStats.totalBookings}</p>
+              <p className="font-black text-crm-text break-words leading-tight text-3xl md:text-4xl">{todayStats.totalBookings}</p>
             </div>
-            <div className="bg-botanical-surface backdrop-blur-md shadow-[0_4px_30px_rgba(0,0,0,0.1)] rounded-2xl border border-botanical-border shadow-sm p-4 sm:p-6 relative overflow-hidden group hover:bg-botanical-border hover:shadow-[0_8px_30px_rgba(0,0,0,0.15)] hover:-translate-y-1 transition-all duration-300 min-w-0">
+            <div className="bg-crm-surface backdrop-blur-md shadow-[0_4px_30px_rgba(0,0,0,0.1)] rounded-2xl border border-crm-border shadow-sm p-4 sm:p-6 relative overflow-hidden group hover:bg-crm-border hover:shadow-[0_8px_30px_rgba(0,0,0,0.15)] hover:-translate-y-1 transition-all duration-300 min-w-0">
               <div className="absolute top-0 left-0 w-full h-1 bg-status-confirmed/80"></div>
               <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-2 sm:mb-3">
-                <h3 className="text-xs text-botanical-muted uppercase tracking-widest font-semibold truncate">Revenue</h3>
+                <h3 className="text-xs text-crm-muted uppercase tracking-widest font-semibold truncate">Revenue</h3>
                 <span className="text-status-confirmed text-sm sm:text-base">💵</span>
               </div>
-              <p className="font-black text-botanical-text break-words leading-tight text-3xl md:text-4xl">${todayStats.revenue.toFixed(0)}</p>
+              <p className="font-black text-crm-text break-words leading-tight text-3xl md:text-4xl">${todayStats.revenue.toFixed(0)}</p>
             </div>
-            <div className="bg-botanical-surface backdrop-blur-md shadow-[0_4px_30px_rgba(0,0,0,0.1)] rounded-2xl border border-botanical-border shadow-sm p-4 sm:p-6 relative overflow-hidden group hover:bg-botanical-border hover:shadow-[0_8px_30px_rgba(0,0,0,0.15)] hover:-translate-y-1 transition-all duration-300 min-w-0">
+            <div className="bg-crm-surface backdrop-blur-md shadow-[0_4px_30px_rgba(0,0,0,0.1)] rounded-2xl border border-crm-border shadow-sm p-4 sm:p-6 relative overflow-hidden group hover:bg-crm-border hover:shadow-[0_8px_30px_rgba(0,0,0,0.15)] hover:-translate-y-1 transition-all duration-300 min-w-0">
               <div className="absolute top-0 left-0 w-full h-1 bg-status-pending/80"></div>
               <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-2 sm:mb-3">
-                <h3 className="text-xs text-botanical-muted uppercase tracking-widest font-semibold truncate">Tips</h3>
+                <h3 className="text-xs text-crm-muted uppercase tracking-widest font-semibold truncate">Tips</h3>
                 <span className="text-status-pending text-sm sm:text-base">🪙</span>
               </div>
-              <p className="font-black text-botanical-text break-words leading-tight text-3xl md:text-4xl">${todayStats.tips.toFixed(0)}</p>
+              <p className="font-black text-crm-text break-words leading-tight text-3xl md:text-4xl">${todayStats.tips.toFixed(0)}</p>
             </div>
-            <div className="bg-botanical-surface backdrop-blur-md shadow-[0_4px_30px_rgba(0,0,0,0.1)] rounded-2xl border border-botanical-border shadow-sm p-4 sm:p-6 relative overflow-hidden group hover:bg-botanical-border hover:shadow-[0_8px_30px_rgba(0,0,0,0.15)] hover:-translate-y-1 transition-all duration-300 min-w-0">
-              <div className="absolute top-0 left-0 w-full h-1 bg-botanical-accent/80"></div>
+            <div className="bg-crm-surface backdrop-blur-md shadow-[0_4px_30px_rgba(0,0,0,0.1)] rounded-2xl border border-crm-border shadow-sm p-4 sm:p-6 relative overflow-hidden group hover:bg-crm-border hover:shadow-[0_8px_30px_rgba(0,0,0,0.15)] hover:-translate-y-1 transition-all duration-300 min-w-0">
+              <div className="absolute top-0 left-0 w-full h-1 bg-crm-accent/80"></div>
               <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-2 sm:mb-3">
-                <h3 className="text-xs text-botanical-muted uppercase tracking-widest font-semibold truncate">Completed</h3>
-                <span className="text-botanical-accent text-sm sm:text-base">✅</span>
+                <h3 className="text-xs text-crm-muted uppercase tracking-widest font-semibold truncate">Completed</h3>
+                <span className="text-crm-accent text-sm sm:text-base">✅</span>
               </div>
-              <p className="font-black text-botanical-text break-words leading-tight text-3xl md:text-4xl">{todayStats.completedCount}</p>
+              <p className="font-black text-crm-text break-words leading-tight text-3xl md:text-4xl">{todayStats.completedCount}</p>
             </div>
-            <div className="col-span-2 lg:col-span-1 bg-botanical-surface backdrop-blur-md shadow-[0_4px_30px_rgba(0,0,0,0.1)] rounded-2xl border border-botanical-border shadow-sm p-4 sm:p-6 relative overflow-hidden group hover:bg-botanical-border hover:shadow-[0_8px_30px_rgba(0,0,0,0.15)] hover:-translate-y-1 transition-all duration-300 min-w-0">
+            <div className="col-span-2 lg:col-span-1 bg-crm-surface backdrop-blur-md shadow-[0_4px_30px_rgba(0,0,0,0.1)] rounded-2xl border border-crm-border shadow-sm p-4 sm:p-6 relative overflow-hidden group hover:bg-crm-border hover:shadow-[0_8px_30px_rgba(0,0,0,0.15)] hover:-translate-y-1 transition-all duration-300 min-w-0">
               <div className="absolute top-0 left-0 w-full h-1 bg-cyan-500/80"></div>
               <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-2 sm:mb-3">
-                <h3 className="text-xs text-botanical-muted uppercase tracking-widest font-semibold truncate">Upcoming</h3>
+                <h3 className="text-xs text-crm-muted uppercase tracking-widest font-semibold truncate">Upcoming</h3>
                 <span className="text-cyan-500 text-sm sm:text-base">⏳</span>
               </div>
-              <p className="font-black text-botanical-text break-words leading-tight text-3xl md:text-4xl">{todayStats.upcomingCount}</p>
+              <p className="font-black text-crm-text break-words leading-tight text-3xl md:text-4xl">{todayStats.upcomingCount}</p>
             </div>
           </div>
         </div>

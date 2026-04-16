@@ -128,7 +128,7 @@ export default function TeamChat({ shopId, currentUserId }: { shopId: string, cu
         {parts.map((part, i) => {
           if (part.startsWith('@')) {
             return (
-              <span key={i} className={`font-bold ${isMe ? 'text-botanical-text underline decoration-white/50 underline-offset-2' : 'text-botanical-accent bg-botanical-primary/10 px-1 rounded'} hover:opacity-90`}>
+              <span key={i} className={`font-bold ${isMe ? 'text-crm-text underline decoration-white/50 underline-offset-2' : 'text-crm-accent bg-crm-primary/10 px-1 rounded'} hover:opacity-90`}>
                 {part}
               </span>
             );
@@ -140,13 +140,13 @@ export default function TeamChat({ shopId, currentUserId }: { shopId: string, cu
   };
 
   if (loading) {
-    return <div className="p-4 text-center text-botanical-muted">Loading chat...</div>;
+    return <div className="p-4 text-center text-crm-muted">Loading chat...</div>;
   }
 
   return (
-    <div className="flex flex-col h-[calc(100dvh-180px)] sm:h-[600px] bg-botanical-surface rounded-t-3xl sm:rounded-2xl border border-botanical-border shadow-sm overflow-hidden shadow-2xl relative">
+    <div className="flex flex-col h-[calc(100dvh-180px)] sm:h-[600px] bg-crm-surface rounded-t-3xl sm:rounded-2xl border border-crm-border shadow-sm overflow-hidden shadow-2xl relative">
       {/* Header */}
-      <div className="p-4 sm:p-5 bg-botanical-primary z-10 shadow-sm relative hover:opacity-90 text-white">
+      <div className="p-4 sm:p-5 bg-crm-primary z-10 shadow-sm relative hover:opacity-90 text-white">
         <h3 className="font-bold text-white flex items-center gap-2 text-2xl md:text-3xl">
           <span>💬</span> Team Chat
         </h3>
@@ -154,9 +154,9 @@ export default function TeamChat({ shopId, currentUserId }: { shopId: string, cu
       </div>
 
       {/* Messages Area */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-4 scroll-smooth bg-botanical-bg relative">
+      <div className="flex-1 overflow-y-auto p-4 space-y-4 scroll-smooth bg-crm-bg relative">
         {messages.length === 0 ? (
-          <div className="h-full flex items-center justify-center text-botanical-muted italic text-sm">
+          <div className="h-full flex items-center justify-center text-crm-muted italic text-sm">
             No messages yet. Start the conversation!
           </div>
         ) : (
@@ -167,13 +167,13 @@ export default function TeamChat({ shopId, currentUserId }: { shopId: string, cu
             return (
               <div key={msg.id} className={`flex flex-col ${isMe ? 'items-end' : 'items-start'}`}>
                 {!isMe && (
-                  <span className="text-xs text-botanical-muted mb-1 ml-1 flex items-center gap-1 font-medium">
+                  <span className="text-xs text-crm-muted mb-1 ml-1 flex items-center gap-1 font-medium">
                     {msg.sender.name || 'User'} 
-                    {isAdmin && <span className="bg-botanical-primary text-white text-xs font-bold px-1.5 py-0.5 rounded uppercase hover:opacity-90">Admin</span>}
+                    {isAdmin && <span className="bg-crm-primary text-white text-xs font-bold px-1.5 py-0.5 rounded uppercase hover:opacity-90">Admin</span>}
                   </span>
                 )}
                 
-                <div className={`max-w-[85%] sm:max-w-[80%] p-2 rounded-2xl ${isMe ? 'bg-botanical-primary text-white rounded-br-sm' : 'bg-botanical-surface border border-botanical-border shadow-sm text-botanical-text rounded-bl-sm'} shadow-sm flex flex-col gap-2 overflow-hidden hover:opacity-90`}>
+                <div className={`max-w-[85%] sm:max-w-[80%] p-2 rounded-2xl ${isMe ? 'bg-crm-primary text-white rounded-br-sm' : 'bg-crm-surface border border-crm-border shadow-sm text-crm-text rounded-bl-sm'} shadow-sm flex flex-col gap-2 overflow-hidden hover:opacity-90`}>
                   {msg.imageUrl && (
                     // eslint-disable-next-line @next/next/no-img-element
                     <img src={msg.imageUrl} alt="Shared image" className="max-w-full rounded-xl object-contain max-h-60" loading="lazy" />
@@ -181,7 +181,7 @@ export default function TeamChat({ shopId, currentUserId }: { shopId: string, cu
                   {msg.content && renderContent(msg.content, isMe)}
                 </div>
                 
-                <span className={`text-sm text-botanical-muted mt-1 ${isMe ? 'mr-1' : 'ml-1'}`}>
+                <span className={`text-sm text-crm-muted mt-1 ${isMe ? 'mr-1' : 'ml-1'}`}>
                   {new Date(msg.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                 </span>
               </div>
@@ -193,8 +193,8 @@ export default function TeamChat({ shopId, currentUserId }: { shopId: string, cu
 
       {/* Mention Dropdown */}
       {mentionSearch !== null && filteredUsers.length > 0 && (
-        <div className="absolute bottom-[72px] sm:bottom-[80px] left-4 right-4 bg-botanical-surface border border-botanical-border shadow-sm shadow-xl rounded-xl z-20 overflow-hidden max-h-48 overflow-y-auto">
-          <div className="px-3 py-2 bg-botanical-bg text-xs font-bold text-botanical-muted border-b border-gray-100 uppercase tracking-wider">
+        <div className="absolute bottom-[72px] sm:bottom-[80px] left-4 right-4 bg-crm-surface border border-crm-border shadow-sm shadow-xl rounded-xl z-20 overflow-hidden max-h-48 overflow-y-auto">
+          <div className="px-3 py-2 bg-crm-bg text-xs font-bold text-crm-muted border-b border-gray-100 uppercase tracking-wider">
             Mention a Team Member
           </div>
           {filteredUsers.map(u => (
@@ -202,14 +202,14 @@ export default function TeamChat({ shopId, currentUserId }: { shopId: string, cu
               key={u.id}
               type="button"
               onClick={() => insertMention(u.name.split(' ')[0])}
-              className="w-full text-left px-4 py-3 hover:bg-botanical-bg border-b border-gray-50 last:border-0 flex items-center gap-3 transition-colors"
+              className="w-full text-left px-4 py-3 hover:bg-crm-bg border-b border-gray-50 last:border-0 flex items-center gap-3 transition-colors"
             >
-              <div className="w-8 h-8 rounded-full bg-botanical-primary/20 text-botanical-accent font-bold flex items-center justify-center shrink-0 hover:opacity-90">
+              <div className="w-8 h-8 rounded-full bg-crm-primary/20 text-crm-accent font-bold flex items-center justify-center shrink-0 hover:opacity-90">
                 {u.name.charAt(0).toUpperCase()}
               </div>
               <div>
-                <div className="font-semibold text-botanical-text text-sm">{u.name}</div>
-                <div className="text-xs text-botanical-muted">{u.role.replace('_', ' ')}</div>
+                <div className="font-semibold text-crm-text text-sm">{u.name}</div>
+                <div className="text-xs text-crm-muted">{u.role.replace('_', ' ')}</div>
               </div>
             </button>
           ))}
@@ -217,17 +217,17 @@ export default function TeamChat({ shopId, currentUserId }: { shopId: string, cu
       )}
 
       {/* Input Area */}
-      <div className="p-3 sm:p-4 bg-botanical-surface border-t border-botanical-border z-10 pb-safe flex flex-col gap-2">
+      <div className="p-3 sm:p-4 bg-crm-surface border-t border-crm-border z-10 pb-safe flex flex-col gap-2">
         {showImageInput && (
-          <div className="flex gap-2 items-center bg-botanical-bg p-2 rounded-lg border border-botanical-border shadow-sm mb-1">
+          <div className="flex gap-2 items-center bg-crm-bg p-2 rounded-lg border border-crm-border shadow-sm mb-1">
             <input
               type="url"
               value={imageUrl}
               onChange={(e) => setImageUrl(e.target.value)}
               placeholder="Paste image URL here..."
-              className="flex-1 bg-transparent text-sm text-botanical-text placeholder-gray-500 focus:outline-none px-2"
+              className="flex-1 bg-transparent text-sm text-crm-text placeholder-gray-500 focus:outline-none px-2"
             />
-            <span className="text-botanical-muted text-xs mx-1">OR</span>
+            <span className="text-crm-muted text-xs mx-1">OR</span>
             <input 
               type="file" 
               accept="image/*"
@@ -249,12 +249,12 @@ export default function TeamChat({ shopId, currentUserId }: { shopId: string, cu
                   setSending(false);
                 }
               }} 
-              className="w-48 bg-botanical-surface border border-botanical-border shadow-sm rounded px-2 py-1 text-botanical-text text-xs focus:outline-none focus:border-brand-gold file:mr-2 file:py-1 file:px-2 file:rounded file:border-0 file:text-xs file:bg-botanical-primary/20 file:text-botanical-primary hover:file:bg-botanical-primary/30 hover:opacity-90" 
+              className="w-48 bg-crm-surface border border-crm-border shadow-sm rounded px-2 py-1 text-crm-text text-xs focus:outline-none focus:border-brand-gold file:mr-2 file:py-1 file:px-2 file:rounded file:border-0 file:text-xs file:bg-crm-primary/20 file:text-crm-primary hover:file:bg-crm-primary/30 hover:opacity-90" 
             />
             <button
               type="button"
               onClick={() => { setImageUrl(''); setShowImageInput(false); }}
-              className="text-botanical-muted hover:text-status-cancelled font-bold px-2"
+              className="text-crm-muted hover:text-status-cancelled font-bold px-2"
             >
               ✕
             </button>
@@ -264,7 +264,7 @@ export default function TeamChat({ shopId, currentUserId }: { shopId: string, cu
           <button
             type="button"
             onClick={() => setShowImageInput(!showImageInput)}
-            className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 transition-colors ${showImageInput || imageUrl ? 'bg-botanical-primary/20 text-botanical-primary' : 'bg-botanical-border/30 text-botanical-muted hover:bg-botanical-border'}`}
+            className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 transition-colors ${showImageInput || imageUrl ? 'bg-crm-primary/20 text-crm-primary' : 'bg-crm-border/30 text-crm-muted hover:bg-crm-border'}`}
             title="Attach Image URL"
           >
             📸
@@ -275,12 +275,12 @@ export default function TeamChat({ shopId, currentUserId }: { shopId: string, cu
             value={newMessage}
             onChange={handleInputChange}
             placeholder="Type a message..."
-            className="flex-1 bg-botanical-border/30 border border-botanical-border shadow-sm rounded-full px-4 py-2.5 text-sm text-botanical-text placeholder-gray-500 focus:outline-none focus:border-brand-gold focus:ring-1 focus:ring-botanical-primary transition-shadow"
+            className="flex-1 bg-crm-border/30 border border-crm-border shadow-sm rounded-full px-4 py-2.5 text-sm text-crm-text placeholder-gray-500 focus:outline-none focus:border-brand-gold focus:ring-1 focus:ring-crm-primary transition-shadow"
           />
           <button 
             type="submit" 
             disabled={sending || (!newMessage.trim() && !imageUrl.trim())}
-            className="bg-botanical-primary text-white rounded-full w-11 h-11 flex items-center justify-center flex-shrink-0 disabled:opacity-50 transition-opacity hover:opacity-90 shadow-sm"
+            className="bg-crm-primary text-white rounded-full w-11 h-11 flex items-center justify-center flex-shrink-0 disabled:opacity-50 transition-opacity hover:opacity-90 shadow-sm"
           >
             {sending ? '...' : '➤'}
           </button>

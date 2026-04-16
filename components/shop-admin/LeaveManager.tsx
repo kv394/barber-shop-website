@@ -90,81 +90,81 @@ export default function LeaveManager({ shopId, userId }: { shopId: string, userI
     }
   };
 
-  if (loading) return <div className="text-botanical-text">Loading leaves...</div>;
+  if (loading) return <div className="text-crm-text">Loading leaves...</div>;
 
   return (
     <div className="space-y-8">
-      <div className="bg-botanical-surface p-6 rounded-xl border border-botanical-border shadow-sm">
-        <h3 className="font-bold text-botanical-text mb-4 text-2xl md:text-3xl">Request Time Off</h3>
+      <div className="bg-crm-surface p-6 rounded-xl border border-crm-border shadow-sm">
+        <h3 className="font-bold text-crm-text mb-4 text-2xl md:text-3xl">Request Time Off</h3>
         <form onSubmit={handleAddLeave} className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
-              <label className="block text-botanical-muted mb-1 text-sm">Date</label>
+              <label className="block text-crm-muted mb-1 text-sm">Date</label>
               <input 
                 type="date" 
                 required 
                 value={date} 
                 onChange={e => setDate(e.target.value)}
-                className="w-full bg-botanical-surface border border-botanical-border shadow-sm rounded-lg px-3 py-2 text-botanical-text focus:border-brand-gold outline-none"
+                className="w-full bg-crm-surface border border-crm-border shadow-sm rounded-lg px-3 py-2 text-crm-text focus:border-brand-gold outline-none"
               />
             </div>
             <div>
-              <label className="block text-botanical-muted mb-1 text-sm">Start Time</label>
+              <label className="block text-crm-muted mb-1 text-sm">Start Time</label>
               <input 
                 type="time" 
                 required 
                 value={startTime} 
                 onChange={e => setStartTime(e.target.value)}
-                className="w-full bg-botanical-surface border border-botanical-border shadow-sm rounded-lg px-3 py-2 text-botanical-text focus:border-brand-gold outline-none"
+                className="w-full bg-crm-surface border border-crm-border shadow-sm rounded-lg px-3 py-2 text-crm-text focus:border-brand-gold outline-none"
               />
             </div>
             <div>
-              <label className="block text-botanical-muted mb-1 text-sm">End Time</label>
+              <label className="block text-crm-muted mb-1 text-sm">End Time</label>
               <input 
                 type="time" 
                 required 
                 value={endTime} 
                 onChange={e => setEndTime(e.target.value)}
-                className="w-full bg-botanical-surface border border-botanical-border shadow-sm rounded-lg px-3 py-2 text-botanical-text focus:border-brand-gold outline-none"
+                className="w-full bg-crm-surface border border-crm-border shadow-sm rounded-lg px-3 py-2 text-crm-text focus:border-brand-gold outline-none"
               />
             </div>
           </div>
           <div>
-            <label className="block text-botanical-muted mb-1 text-sm">Reason (Optional)</label>
+            <label className="block text-crm-muted mb-1 text-sm">Reason (Optional)</label>
             <input 
               type="text" 
               value={reason} 
               onChange={e => setReason(e.target.value)}
               placeholder="e.g. Doctor appointment, Sick, Vacation"
-              className="w-full bg-botanical-surface border border-botanical-border shadow-sm rounded-lg px-3 py-2 text-botanical-text focus:border-brand-gold outline-none"
+              className="w-full bg-crm-surface border border-crm-border shadow-sm rounded-lg px-3 py-2 text-crm-text focus:border-brand-gold outline-none"
             />
           </div>
           <button 
             type="submit" 
             disabled={saving}
-            className="bg-botanical-primary text-white font-bold px-4 py-2 rounded hover:bg-status-pending transition-colors disabled:opacity-50"
+            className="bg-crm-primary text-white font-bold px-4 py-2 rounded hover:bg-status-pending transition-colors disabled:opacity-50"
           >
             {saving ? 'Submitting...' : 'Submit Request'}
           </button>
         </form>
       </div>
 
-      <div className="bg-botanical-surface p-6 rounded-xl border border-botanical-border shadow-sm">
-        <h3 className="font-bold text-botanical-text mb-4 text-2xl md:text-3xl">Upcoming & Past Leaves</h3>
+      <div className="bg-crm-surface p-6 rounded-xl border border-crm-border shadow-sm">
+        <h3 className="font-bold text-crm-text mb-4 text-2xl md:text-3xl">Upcoming & Past Leaves</h3>
         {leaves.length === 0 ? (
-          <p className="text-botanical-muted italic text-base md:text-lg">No leaves recorded.</p>
+          <p className="text-crm-muted italic text-base md:text-lg">No leaves recorded.</p>
         ) : (
           <div className="space-y-3">
             {leaves.map(leave => (
-              <div key={leave.id} className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center bg-botanical-surface p-4 rounded-lg border border-botanical-border shadow-sm">
+              <div key={leave.id} className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center bg-crm-surface p-4 rounded-lg border border-crm-border shadow-sm">
                 <div>
-                  <p className="font-bold text-botanical-accent text-base md:text-lg">
+                  <p className="font-bold text-crm-accent text-base md:text-lg">
                     {new Date(leave.date).toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' })}
                   </p>
-                  <p className="text-botanical-text text-base md:text-lg">
+                  <p className="text-crm-text text-base md:text-lg">
                     {new Date(leave.startTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} - {new Date(leave.endTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                   </p>
-                  {leave.reason && <p className="text-botanical-muted mt-1 text-base md:text-lg">Note: {leave.reason}</p>}
+                  {leave.reason && <p className="text-crm-muted mt-1 text-base md:text-lg">Note: {leave.reason}</p>}
                 </div>
                 <button 
                   onClick={() => handleDelete(leave.id)}

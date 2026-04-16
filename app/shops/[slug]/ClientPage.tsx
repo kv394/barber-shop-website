@@ -8,7 +8,7 @@ import { usePathname } from 'next/navigation';
 // Lazy-load the BookingModal component
 const BookingModal = dynamic(() => import('@/components/appointments/BookingModal'), {
     ssr: false, // This component will only be rendered on the client side
-    loading: () => <div className="fixed inset-0 bg-botanical-surface z-[100] flex items-center justify-center"><p className="text-botanical-text text-base md:text-lg">Loading...</p></div>
+    loading: () => <div className="fixed inset-0 bg-crm-surface z-[100] flex items-center justify-center"><p className="text-crm-text text-base md:text-lg">Loading...</p></div>
 });
 
 /** Format the address object (or legacy string) into a single readable line */
@@ -40,17 +40,17 @@ function ReviewsSection({ reviews, variant = 'dark' }: { reviews: any[]; variant
   const avgRating = reviews.reduce((sum: number, r: any) => sum + r.rating, 0) / reviews.length;
 
   const bgClass = variant === 'light'
-    ? 'bg-botanical-bg'
+    ? 'bg-crm-bg'
     : variant === 'warm'
       ? 'bg-[#f5efe6]'
-      : 'bg-botanical-surface';
-  const textClass = variant === 'light' ? 'text-botanical-text' : variant === 'warm' ? 'text-[#2c1e16]' : 'text-botanical-text';
-  const subTextClass = variant === 'light' ? 'text-botanical-muted' : variant === 'warm' ? 'text-[#5a4634]' : 'text-botanical-muted';
+      : 'bg-crm-surface';
+  const textClass = variant === 'light' ? 'text-crm-text' : variant === 'warm' ? 'text-[#2c1e16]' : 'text-crm-text';
+  const subTextClass = variant === 'light' ? 'text-crm-muted' : variant === 'warm' ? 'text-[#5a4634]' : 'text-crm-muted';
   const cardClass = variant === 'light'
-    ? 'bg-botanical-surface border border-botanical-border shadow-sm shadow-sm'
+    ? 'bg-crm-surface border border-crm-border shadow-sm shadow-sm'
     : variant === 'warm'
       ? 'bg-[#fdfbf7] border border-[#e6d9c6]'
-      : 'bg-botanical-surface border border-botanical-border shadow-sm';
+      : 'bg-crm-surface border border-crm-border shadow-sm';
 
   return (
     <section className={`${bgClass} py-16`}>
@@ -141,7 +141,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
 
     if (dynamicTemplateHtml) {
         return (
-            <main className="h-[100dvh] overflow-y-auto overflow-x-hidden bg-botanical-surface text-botanical-text font-sans relative" onClick={handleDynamicTemplateClick}>
+            <main className="h-[100dvh] overflow-y-auto overflow-x-hidden bg-crm-surface text-crm-text font-sans relative" onClick={handleDynamicTemplateClick}>
                 {authButton}
                 {dynamicTemplateCss && <style dangerouslySetInnerHTML={{ __html: dynamicTemplateCss }} />}
                 <div dangerouslySetInnerHTML={{ __html: dynamicTemplateHtml }} />
@@ -160,9 +160,9 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
 
     if (templateType === 'sporty') {
         return (
-            <main className="h-[100dvh] overflow-y-auto overflow-x-hidden bg-botanical-surface text-botanical-text font-sans relative">
+            <main className="h-[100dvh] overflow-y-auto overflow-x-hidden bg-crm-surface text-crm-text font-sans relative">
                 {/* Top Bar - Contact Info & Auth */}
-                <div className="bg-botanical-surface text-botanical-text text-xs py-2 px-4 flex justify-end items-center space-x-4">
+                <div className="bg-crm-surface text-crm-text text-xs py-2 px-4 flex justify-end items-center space-x-4">
                     {shopPhone && <span>{shopPhone}</span>}
                     {shopEmail && <span>{shopEmail}</span>}
                     <div className="relative">
@@ -171,7 +171,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                 </div>
     
                 {/* Header / Nav */}
-                <header className="border-b-4 border-botanical-border sticky top-0 bg-botanical-surface z-40 shadow-sm">
+                <header className="border-b-4 border-crm-border sticky top-0 bg-crm-surface z-40 shadow-sm">
                     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center overflow-x-auto hide-scrollbar">
                         {logoUrl ? (
                             <img src={logoUrl} alt={shop.name} className="h-10 shrink-0 mr-6 object-contain" />
@@ -182,9 +182,9 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                         )}
                         {pages.filter((p: any) => p.isVisible).length > 0 && (
                             <nav className="flex gap-4 sm:gap-6 shrink-0">
-                                <button onClick={() => setActivePageId(null)} className={`text-sm font-bold uppercase transition-colors ${!activePageId ? 'text-botanical-text' : 'text-botanical-muted hover:text-black'}`}>Home</button>
+                                <button onClick={() => setActivePageId(null)} className={`text-sm font-bold uppercase transition-colors ${!activePageId ? 'text-crm-text' : 'text-crm-muted hover:text-black'}`}>Home</button>
                                 {pages.filter((p: any) => p.isVisible).map((p: any) => (
-                                    <button key={p.id} onClick={() => setActivePageId(p.id)} className={`text-sm font-bold uppercase transition-colors ${activePageId === p.id ? 'text-botanical-text' : 'text-botanical-muted hover:text-black'}`}>{p.title}</button>
+                                    <button key={p.id} onClick={() => setActivePageId(p.id)} className={`text-sm font-bold uppercase transition-colors ${activePageId === p.id ? 'text-crm-text' : 'text-crm-muted hover:text-black'}`}>{p.title}</button>
                                 ))}
                             </nav>
                         )}
@@ -194,24 +194,24 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                 {activePage ? (
                     <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 min-h-[60vh]">
                         <h1 className="font-black uppercase italic mb-8 text-4xl md:text-5xl lg:text-6xl" style={{ color: sportRed }}>{activePage.title}</h1>
-                        <div className="prose prose-lg max-w-none text-botanical-text" dangerouslySetInnerHTML={{ __html: activePage.content || '' }} />
+                        <div className="prose prose-lg max-w-none text-crm-text" dangerouslySetInnerHTML={{ __html: activePage.content || '' }} />
                     </section>
                 ) : (
                     <>
                         {/* Hero Section */}
-                <section className="bg-botanical-bg border-b border-botanical-border relative bg-cover bg-center" style={{ backgroundImage: heroImageUrl ? `url(${heroImageUrl})` : undefined }}><div className={heroImageUrl ? "absolute inset-0 bg-botanical-surface/80" : ""} />
+                <section className="bg-crm-bg border-b border-crm-border relative bg-cover bg-center" style={{ backgroundImage: heroImageUrl ? `url(${heroImageUrl})` : undefined }}><div className={heroImageUrl ? "absolute inset-0 bg-crm-surface/80" : ""} />
                     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24 text-center md:text-left flex flex-col md:flex-row items-center relative z-10">
                         <div className="md:w-1/2 mb-8 md:mb-0">
                             <h2 className="font-black uppercase italic leading-none mb-6 text-3xl md:text-4xl">
                                 The MVP <br/> Haircut <br/> Experience.
                             </h2>
-                            <p className="text-botanical-text font-semibold mb-8 max-w-lg text-base md:text-lg">
+                            <p className="text-crm-text font-semibold mb-8 max-w-lg text-base md:text-lg">
                                 {shop.description || "Precision cuts, legendary service, and the ultimate environment."}
                             </p>
                         </div>
                         <div className="md:w-1/2 flex justify-center">
                             <div className="w-full max-w-md aspect-square bg-gray-300 transform -rotate-3 overflow-hidden shadow-2xl border-8 border-white">
-                                 <div className="w-full h-full bg-botanical-surface flex items-center justify-center">
+                                 <div className="w-full h-full bg-crm-surface flex items-center justify-center">
                                      <span className="text-6xl" style={{ color: sportRed }}>💈</span>
                                  </div>
                             </div>
@@ -228,7 +228,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
     
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                         {shop.services?.map((service: any) => (
-                            <div key={service.id} className="bg-botanical-surface border-2 border-botanical-border p-8 text-center hover:border-botanical-border transition-colors shadow-sm hover:shadow-lg group flex flex-col justify-between">
+                            <div key={service.id} className="bg-crm-surface border-2 border-crm-border p-8 text-center hover:border-crm-border transition-colors shadow-sm hover:shadow-lg group flex flex-col justify-between">
                                 <div>
                                     <h3 className="font-black uppercase italic mb-4 group-hover:text-status-cancelled transition-colors text-2xl md:text-3xl" style={{ color: 'black' }}>
                                         {service.name}
@@ -236,17 +236,17 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                                     <div className="text-3xl font-bold mb-4" style={{ color: sportRed }}>
                                         ${service.price.toFixed(2)}
                                     </div>
-                                    <p className="text-botanical-muted mb-6 min-h-[3rem] text-base md:text-lg">
+                                    <p className="text-crm-muted mb-6 min-h-[3rem] text-base md:text-lg">
                                         {service.description}
                                     </p>
                                 </div>
                                 <div>
-                                    <div className="text-sm font-bold text-botanical-muted uppercase tracking-widest border-t border-botanical-border pt-4 mb-4">
+                                    <div className="text-sm font-bold text-crm-muted uppercase tracking-widest border-t border-crm-border pt-4 mb-4">
                                         Est. Time: {service.duration} mins
                                     </div>
                                     <button
                                         onClick={() => handleBookClick(service)}
-                                        className="w-full text-botanical-text font-bold py-3 uppercase tracking-wider transition-all duration-300 hover:scale-[1.02] active:scale-95 shadow-md hover:shadow-lg"
+                                        className="w-full text-crm-text font-bold py-3 uppercase tracking-wider transition-all duration-300 hover:scale-[1.02] active:scale-95 shadow-md hover:shadow-lg"
                                         style={{ backgroundColor: sportRed }}
                                     >
                                         Book This
@@ -261,23 +261,23 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                 )}
 
                 {/* Footer */}
-                <footer className="bg-botanical-surface text-botanical-text py-16 uppercase text-sm tracking-widest">
+                <footer className="bg-crm-surface text-crm-text py-16 uppercase text-sm tracking-widest">
                     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
                             <div className="md:col-span-2">
                                 <h3 className="font-black italic mb-6 text-2xl md:text-3xl" style={{ color: sportRed }}>{shop.name}</h3>
-                                <p className="text-botanical-muted normal-case tracking-normal mb-6 max-w-sm text-base md:text-lg">
+                                <p className="text-crm-muted normal-case tracking-normal mb-6 max-w-sm text-base md:text-lg">
                                     {shop.description}
                                 </p>
                             </div>
                             <div>
-                                <h4 className="font-bold mb-6 text-botanical-muted text-xl md:text-2xl">Quick Links</h4>
+                                <h4 className="font-bold mb-6 text-crm-muted text-xl md:text-2xl">Quick Links</h4>
                                 <ul className="space-y-4 font-bold">
                                     <li><a href="#" className="hover:text-status-cancelled transition-colors">Services</a></li>
                                 </ul>
                             </div>
                             <div>
-                                <h4 className="font-bold mb-6 text-botanical-muted text-xl md:text-2xl">Connect</h4>
+                                <h4 className="font-bold mb-6 text-crm-muted text-xl md:text-2xl">Connect</h4>
                                 <div className="flex flex-col space-y-4 font-bold">
                                     {shopFB && <a href={shopFB} className="hover:text-status-cancelled transition-colors">Facebook</a>}
                                     {shopIG && <a href={shopIG.startsWith('http') ? shopIG : `https://instagram.com/${shopIG.replace('@','')}`} className="hover:text-status-cancelled transition-colors">Instagram</a>}
@@ -285,7 +285,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                                 </div>
                             </div>
                         </div>
-                        <div className="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center text-botanical-muted font-bold text-xs">
+                        <div className="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center text-crm-muted font-bold text-xs">
                             <p className="text-base md:text-lg">&copy; {new Date().getFullYear()} {shop.name}. All rights reserved.</p>
                             {shopAddress && <p className="mt-4 md:mt-0 text-base md:text-lg">{shopAddress}</p>}
                         </div>
@@ -306,15 +306,15 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
       
       if (templateType === 'corporate') {
         return (
-          <main className="h-[100dvh] overflow-y-auto overflow-x-hidden bg-botanical-bg text-botanical-text font-sans relative">
-            <header className="bg-botanical-surface shadow-md relative z-40">
+          <main className="h-[100dvh] overflow-y-auto overflow-x-hidden bg-crm-bg text-crm-text font-sans relative">
+            <header className="bg-crm-surface shadow-md relative z-40">
               <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center py-4 overflow-x-auto hide-scrollbar">
                 {logoUrl ? <img src={logoUrl} alt={shop.name} className="h-10 shrink-0 mr-6 object-contain" /> : <h1 className="font-bold shrink-0 mr-6 text-4xl md:text-5xl lg:text-6xl" style={{ color: primaryColor }}>{shop.name}</h1>}
                 {pages.filter((p: any) => p.isVisible).length > 0 && (
                     <nav className="flex gap-4 sm:gap-6 shrink-0 mr-6">
-                        <button onClick={() => setActivePageId(null)} className={`text-sm font-bold transition-colors ${!activePageId ? 'text-botanical-text' : 'text-botanical-muted hover:text-botanical-text'}`}>Home</button>
+                        <button onClick={() => setActivePageId(null)} className={`text-sm font-bold transition-colors ${!activePageId ? 'text-crm-text' : 'text-crm-muted hover:text-crm-text'}`}>Home</button>
                         {pages.filter((p: any) => p.isVisible).map((p: any) => (
-                            <button key={p.id} onClick={() => setActivePageId(p.id)} className={`text-sm font-bold transition-colors ${activePageId === p.id ? 'text-botanical-text' : 'text-botanical-muted hover:text-botanical-text'}`}>{p.title}</button>
+                            <button key={p.id} onClick={() => setActivePageId(p.id)} className={`text-sm font-bold transition-colors ${activePageId === p.id ? 'text-crm-text' : 'text-crm-muted hover:text-crm-text'}`}>{p.title}</button>
                         ))}
                     </nav>
                 )}
@@ -326,35 +326,35 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
 
             {activePage ? (
                 <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 min-h-[60vh]">
-                    <h1 className="font-bold text-botanical-text mb-8 text-4xl md:text-5xl lg:text-6xl" style={{ color: primaryColor }}>{activePage.title}</h1>
-                    <div className="prose prose-lg max-w-none text-botanical-text" dangerouslySetInnerHTML={{ __html: activePage.content || '' }} />
+                    <h1 className="font-bold text-crm-text mb-8 text-4xl md:text-5xl lg:text-6xl" style={{ color: primaryColor }}>{activePage.title}</h1>
+                    <div className="prose prose-lg max-w-none text-crm-text" dangerouslySetInnerHTML={{ __html: activePage.content || '' }} />
                 </section>
             ) : (
                 <>
-            <section className="bg-botanical-surface relative bg-cover bg-center" style={{ backgroundImage: heroImageUrl ? `url(${heroImageUrl})` : undefined }}><div className={heroImageUrl ? "absolute inset-0 bg-botanical-surface/70" : ""} />
+            <section className="bg-crm-surface relative bg-cover bg-center" style={{ backgroundImage: heroImageUrl ? `url(${heroImageUrl})` : undefined }}><div className={heroImageUrl ? "absolute inset-0 bg-crm-surface/70" : ""} />
                 <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center relative z-10">
-                    <h2 className="font-extrabold text-botanical-text mb-4 text-3xl md:text-4xl">{shop.description || "Quality Service, Every Time."}</h2>
-                    <p className="text-botanical-muted text-base md:text-lg">Find your perfect look with our expert stylists.</p>
+                    <h2 className="font-extrabold text-crm-text mb-4 text-3xl md:text-4xl">{shop.description || "Quality Service, Every Time."}</h2>
+                    <p className="text-crm-muted text-base md:text-lg">Find your perfect look with our expert stylists.</p>
                 </div>
             </section>
     
             <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-              <h2 className="font-bold text-center text-botanical-text mb-12 text-3xl md:text-4xl">Our Services</h2>
+              <h2 className="font-bold text-center text-crm-text mb-12 text-3xl md:text-4xl">Our Services</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {shop.services?.map((service: any) => (
-                  <div key={service.id} className="bg-botanical-surface rounded-lg shadow-lg overflow-hidden border border-botanical-border shadow-sm hover:shadow-xl transition-shadow flex flex-col">
+                  <div key={service.id} className="bg-crm-surface rounded-lg shadow-lg overflow-hidden border border-crm-border shadow-sm hover:shadow-xl transition-shadow flex flex-col">
                     <div className="p-6 flex-grow">
-                      <h3 className="font-bold text-botanical-text mb-2 text-2xl md:text-3xl">{service.name}</h3>
-                      <p className="text-botanical-muted mb-4 text-base md:text-lg">{service.description}</p>
+                      <h3 className="font-bold text-crm-text mb-2 text-2xl md:text-3xl">{service.name}</h3>
+                      <p className="text-crm-muted mb-4 text-base md:text-lg">{service.description}</p>
                       <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-4">
                         <span className="text-lg font-bold" style={{ color: primaryColor }}>${service.price.toFixed(2)}</span>
-                        <span className="text-sm text-botanical-muted">{service.duration} min</span>
+                        <span className="text-sm text-crm-muted">{service.duration} min</span>
                       </div>
                     </div>
                     <div className="px-6 pb-6 mt-auto">
                          <button
                             onClick={() => handleBookClick(service)}
-                            className="w-full text-botanical-text font-bold py-2 rounded transition-all duration-300 hover:opacity-90 hover:scale-[1.02] active:scale-95 shadow-sm hover:shadow-md"
+                            className="w-full text-crm-text font-bold py-2 rounded transition-all duration-300 hover:opacity-90 hover:scale-[1.02] active:scale-95 shadow-sm hover:shadow-md"
                             style={{ backgroundColor: primaryColor }}
                          >
                             Book Service
@@ -368,28 +368,28 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
             </>
             )}
 
-            <footer className="bg-botanical-surface text-botanical-text">
+            <footer className="bg-crm-surface text-crm-text">
               <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
                   <div>
                     <h3 className="font-bold mb-4 text-2xl md:text-3xl">{shop.name}</h3>
-                    {shopAddress && <p className="text-botanical-muted text-base md:text-lg">{shopAddress}</p>}
+                    {shopAddress && <p className="text-crm-muted text-base md:text-lg">{shopAddress}</p>}
                   </div>
                   <div>
                     <h4 className="font-bold mb-4 text-xl md:text-2xl">Contact</h4>
-                    {shopPhone && <p className="text-botanical-muted text-base md:text-lg">{shopPhone}</p>}
-                    {shopEmail && <p className="text-botanical-muted text-base md:text-lg">{shopEmail}</p>}
+                    {shopPhone && <p className="text-crm-muted text-base md:text-lg">{shopPhone}</p>}
+                    {shopEmail && <p className="text-crm-muted text-base md:text-lg">{shopEmail}</p>}
                   </div>
                   <div>
                     <h4 className="font-bold mb-4 text-xl md:text-2xl">Follow Us</h4>
                     <div className="flex gap-4">
-                      {shopFB && <a href={shopFB} className="text-botanical-muted hover:text-botanical-text">Facebook</a>}
-                      {shopIG && <a href={shopIG.startsWith('http') ? shopIG : `https://instagram.com/${shopIG.replace('@','')}`} className="text-botanical-muted hover:text-botanical-text">Instagram</a>}
-                      {shopTW && <a href={shopTW} className="text-botanical-muted hover:text-botanical-text">Twitter</a>}
+                      {shopFB && <a href={shopFB} className="text-crm-muted hover:text-crm-text">Facebook</a>}
+                      {shopIG && <a href={shopIG.startsWith('http') ? shopIG : `https://instagram.com/${shopIG.replace('@','')}`} className="text-crm-muted hover:text-crm-text">Instagram</a>}
+                      {shopTW && <a href={shopTW} className="text-crm-muted hover:text-crm-text">Twitter</a>}
                     </div>
                   </div>
                 </div>
-                <div className="border-t border-gray-700 mt-8 pt-8 text-center text-botanical-muted text-sm">
+                <div className="border-t border-gray-700 mt-8 pt-8 text-center text-crm-muted text-sm">
                   <p className="text-base md:text-lg">&copy; {new Date().getFullYear()} {shop.name}. All rights reserved.</p>
                 </div>
               </div>
@@ -409,13 +409,13 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
     
       if (templateType === 'noir') {
         return (
-          <main className="h-[100dvh] overflow-y-auto overflow-x-hidden bg-botanical-surface text-botanical-text font-serif relative">
+          <main className="h-[100dvh] overflow-y-auto overflow-x-hidden bg-crm-surface text-crm-text font-serif relative">
             <div className="absolute top-6 left-8 z-50">
                 {pages.filter((p: any) => p.isVisible).length > 0 && (
                     <nav className="flex gap-6 font-sans text-xs uppercase tracking-[0.2em]">
-                        <button onClick={() => setActivePageId(null)} className={`transition-colors ${!activePageId ? 'text-botanical-text' : 'text-botanical-muted hover:text-botanical-text'}`}>Home</button>
+                        <button onClick={() => setActivePageId(null)} className={`transition-colors ${!activePageId ? 'text-crm-text' : 'text-crm-muted hover:text-crm-text'}`}>Home</button>
                         {pages.filter((p: any) => p.isVisible).map((p: any) => (
-                            <button key={p.id} onClick={() => setActivePageId(p.id)} className={`transition-colors ${activePageId === p.id ? 'text-botanical-text' : 'text-botanical-muted hover:text-botanical-text'}`}>{p.title}</button>
+                            <button key={p.id} onClick={() => setActivePageId(p.id)} className={`transition-colors ${activePageId === p.id ? 'text-crm-text' : 'text-crm-muted hover:text-crm-text'}`}>{p.title}</button>
                         ))}
                     </nav>
                 )}
@@ -428,29 +428,29 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                 {activePage ? (
                     <section className="max-w-3xl mx-auto min-h-[60vh]">
                         <h1 className="font-black uppercase tracking-tighter mb-8 text-center text-4xl md:text-5xl lg:text-6xl">{activePage.title}</h1>
-                        <div className="prose prose-invert prose-lg max-w-none text-botanical-muted font-sans" dangerouslySetInnerHTML={{ __html: activePage.content || '' }} />
+                        <div className="prose prose-invert prose-lg max-w-none text-crm-muted font-sans" dangerouslySetInnerHTML={{ __html: activePage.content || '' }} />
                     </section>
                 ) : (
                     <>
               <header className="text-center mb-16">
                 {logoUrl ? <img src={logoUrl} alt={shop.name} className="h-24 md:h-32 mx-auto object-contain mb-4" /> : <h1 className="font-black uppercase tracking-tighter text-4xl md:text-5xl lg:text-6xl">{shop.name}</h1>}
-                <p className="text-botanical-muted mt-2 text-base md:text-lg">{shop.description}</p>
+                <p className="text-crm-muted mt-2 text-base md:text-lg">{shop.description}</p>
               </header>
     
               <section className="max-w-3xl mx-auto">
-                <h2 className="text-center uppercase tracking-[0.3em] text-botanical-muted mb-10 text-3xl md:text-4xl">Services</h2>
+                <h2 className="text-center uppercase tracking-[0.3em] text-crm-muted mb-10 text-3xl md:text-4xl">Services</h2>
                 <div className="space-y-6">
                   {shop.services?.map((service: any) => (
-                    <div key={service.id} className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center border border-gray-800 p-4 hover:bg-botanical-surface transition-colors">
+                    <div key={service.id} className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center border border-gray-800 p-4 hover:bg-crm-surface transition-colors">
                       <div>
                         <h3 className="font-bold text-2xl md:text-3xl">{service.name}</h3>
-                        <p className="text-botanical-muted text-base md:text-lg">{service.duration} minutes</p>
+                        <p className="text-crm-muted text-base md:text-lg">{service.duration} minutes</p>
                       </div>
                       <div className="flex items-center gap-6">
                           <div className="text-xl font-bold">${service.price.toFixed(2)}</div>
                           <button
                             onClick={() => handleBookClick(service)}
-                            className="border border-white text-botanical-text hover:bg-botanical-surface hover:text-black px-4 py-1 uppercase text-xs tracking-widest transition-all duration-300 hover:scale-105 active:scale-95 shadow-[0_0_10px_rgba(255,255,255,0.1)] hover:shadow-[0_0_15px_rgba(255,255,255,0.3)]"
+                            className="border border-white text-crm-text hover:bg-crm-surface hover:text-black px-4 py-1 uppercase text-xs tracking-widest transition-all duration-300 hover:scale-105 active:scale-95 shadow-[0_0_10px_rgba(255,255,255,0.1)] hover:shadow-[0_0_15px_rgba(255,255,255,0.3)]"
                           >
                             Book
                           </button>                      </div>
@@ -478,13 +478,13 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
     
       if (templateType === 'sunset') {
         return (
-          <main className="h-[100dvh] overflow-y-auto overflow-x-hidden bg-gradient-to-br from-purple-900 via-black to-orange-900 text-botanical-text font-sans relative">
+          <main className="h-[100dvh] overflow-y-auto overflow-x-hidden bg-gradient-to-br from-purple-900 via-black to-orange-900 text-crm-text font-sans relative">
             <div className="absolute w-full top-0 left-0 p-4 sm:p-6 flex flex-wrap justify-between gap-x-2 gap-y-2 items-center z-50">
              {pages.filter((p: any) => p.isVisible).length > 0 ? (
-                 <nav className="flex gap-4 sm:gap-6 bg-botanical-surface px-4 sm:px-6 py-2 rounded-full backdrop-blur-md border border-status-pending/30 overflow-x-auto max-w-[calc(100vw-100px)] hide-scrollbar">
-                    <button onClick={() => setActivePageId(null)} className={`text-sm font-medium transition-colors whitespace-nowrap ${!activePageId ? 'text-status-pending' : 'text-botanical-muted hover:text-status-pending'}`}>Home</button>
+                 <nav className="flex gap-4 sm:gap-6 bg-crm-surface px-4 sm:px-6 py-2 rounded-full backdrop-blur-md border border-status-pending/30 overflow-x-auto max-w-[calc(100vw-100px)] hide-scrollbar">
+                    <button onClick={() => setActivePageId(null)} className={`text-sm font-medium transition-colors whitespace-nowrap ${!activePageId ? 'text-status-pending' : 'text-crm-muted hover:text-status-pending'}`}>Home</button>
                     {pages.filter((p: any) => p.isVisible).map((p: any) => (
-                        <button key={p.id} onClick={() => setActivePageId(p.id)} className={`text-sm font-medium transition-colors whitespace-nowrap ${activePageId === p.id ? 'text-status-pending' : 'text-botanical-muted hover:text-status-pending'}`}>{p.title}</button>
+                        <button key={p.id} onClick={() => setActivePageId(p.id)} className={`text-sm font-medium transition-colors whitespace-nowrap ${activePageId === p.id ? 'text-status-pending' : 'text-crm-muted hover:text-status-pending'}`}>{p.title}</button>
                     ))}
                  </nav>
              ) : (
@@ -496,7 +496,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
             <div className="p-8 md:p-12 pt-24 md:pt-32">
               {activePage ? (
                 <section className="max-w-4xl mx-auto min-h-[60vh]">
-                    <div className="bg-botanical-surface backdrop-blur-sm border border-status-pending/30 rounded-lg p-8 md:p-12">
+                    <div className="bg-crm-surface backdrop-blur-sm border border-status-pending/30 rounded-lg p-8 md:p-12">
                         <h1 className="font-bold bg-clip-text text-transparent bg-gradient-to-r from-orange-400 to-purple-400 mb-8 text-4xl md:text-5xl lg:text-6xl">{activePage.title}</h1>
                         <div className="prose prose-invert prose-lg max-w-none text-purple-200/80" dangerouslySetInnerHTML={{ __html: activePage.content || '' }} />
                     </div>
@@ -511,16 +511,16 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
               <section className="max-w-4xl mx-auto">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {shop.services?.map((service: any) => (
-                    <div key={service.id} className="bg-botanical-surface backdrop-blur-sm border border-status-pending/30 rounded-lg p-6 hover:border-orange-500 transition-colors flex flex-col">
+                    <div key={service.id} className="bg-crm-surface backdrop-blur-sm border border-status-pending/30 rounded-lg p-6 hover:border-orange-500 transition-colors flex flex-col">
                       <h3 className="font-bold text-status-pending text-2xl md:text-3xl">{service.name}</h3>
                       <p className="text-purple-200/60 mt-1 mb-4 flex-grow text-base md:text-lg">{service.description}</p>
                       <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center border-t border-status-pending/30 pt-4 mb-4">
-                        <span className="text-sm text-botanical-muted">{service.duration} mins</span>
+                        <span className="text-sm text-crm-muted">{service.duration} mins</span>
                         <span className="text-xl font-bold text-status-pending">${service.price.toFixed(2)}</span>
                       </div>
                       <button
                         onClick={() => handleBookClick(service)}
-                        className="w-full bg-gradient-to-r from-orange-500/20 to-purple-500/20 hover:from-orange-500 hover:to-purple-600 border border-status-pending/30 text-botanical-text font-semibold py-2 rounded transition-all duration-300 hover:scale-[1.02] active:scale-95 hover:shadow-[0_0_20px_rgba(249,115,22,0.4)]"
+                        className="w-full bg-gradient-to-r from-orange-500/20 to-purple-500/20 hover:from-orange-500 hover:to-purple-600 border border-status-pending/30 text-crm-text font-semibold py-2 rounded transition-all duration-300 hover:scale-[1.02] active:scale-95 hover:shadow-[0_0_20px_rgba(249,115,22,0.4)]"
                       >
                         Book
                       </button>                    </div>
@@ -817,13 +817,13 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
     
       if (templateType === 'minimal') {
         return (
-          <main className="h-[100dvh] overflow-y-auto overflow-x-hidden bg-botanical-surface text-botanical-text font-sans relative">
+          <main className="h-[100dvh] overflow-y-auto overflow-x-hidden bg-crm-surface text-crm-text font-sans relative">
             <div className="absolute top-6 left-6 z-50">
                 {pages.filter((p: any) => p.isVisible).length > 0 && (
                     <nav className="flex gap-4 sm:gap-6 font-semibold text-sm">
-                        <button onClick={() => setActivePageId(null)} className={`transition-colors ${!activePageId ? 'text-botanical-text' : 'text-botanical-muted hover:text-botanical-text'}`}>Home</button>
+                        <button onClick={() => setActivePageId(null)} className={`transition-colors ${!activePageId ? 'text-crm-text' : 'text-crm-muted hover:text-crm-text'}`}>Home</button>
                         {pages.filter((p: any) => p.isVisible).map((p: any) => (
-                            <button key={p.id} onClick={() => setActivePageId(p.id)} className={`transition-colors ${activePageId === p.id ? 'text-botanical-text' : 'text-botanical-muted hover:text-botanical-text'}`}>{p.title}</button>
+                            <button key={p.id} onClick={() => setActivePageId(p.id)} className={`transition-colors ${activePageId === p.id ? 'text-crm-text' : 'text-crm-muted hover:text-crm-text'}`}>{p.title}</button>
                         ))}
                     </nav>
                 )}
@@ -835,35 +835,35 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
             {activePage ? (
                 <section className="max-w-4xl mx-auto px-6 py-32 min-h-[60vh]">
                     <h1 className="font-light tracking-tight mb-12 text-4xl md:text-5xl lg:text-6xl" style={{ color: primaryColor }}>{activePage.title}</h1>
-                    <div className="prose prose-lg max-w-none text-botanical-muted" dangerouslySetInnerHTML={{ __html: activePage.content || '' }} />
+                    <div className="prose prose-lg max-w-none text-crm-muted" dangerouslySetInnerHTML={{ __html: activePage.content || '' }} />
                 </section>
             ) : (
                 <>
             <header className="max-w-4xl mx-auto px-6 pt-24 pb-12 border-b border-gray-100 flex flex-col md:flex-row justify-between items-end md:items-center">
               <div>
                 {logoUrl ? <img src={logoUrl} alt={shop.name} className="h-12 object-contain" /> : <h1 className="font-light tracking-tight text-4xl md:text-5xl lg:text-6xl" style={{ color: primaryColor }}>{shop.name}</h1>}
-                {shop.description && <p className="text-botanical-muted mt-2 text-base md:text-lg">{shop.description}</p>}
+                {shop.description && <p className="text-crm-muted mt-2 text-base md:text-lg">{shop.description}</p>}
               </div>
-              <div className="text-right mt-6 md:mt-0 text-sm text-botanical-muted">
+              <div className="text-right mt-6 md:mt-0 text-sm text-crm-muted">
                  {shopPhone && <p className="text-base md:text-lg">{shopPhone}</p>}
                  {shopAddress && <p className="text-base md:text-lg">{shopAddress}</p>}
               </div>
             </header>
     
             <section className="max-w-4xl mx-auto px-6 py-16">
-              <h2 className="font-semibold tracking-widest uppercase text-botanical-muted mb-10 text-3xl md:text-4xl">Service Menu</h2>
+              <h2 className="font-semibold tracking-widest uppercase text-crm-muted mb-10 text-3xl md:text-4xl">Service Menu</h2>
               {shop.services && shop.services.length > 0 ? (
                 <div className="space-y-8">
                   {shop.services.map((service: any) => (
                     <div key={service.id} className="flex flex-col md:flex-row justify-between md:items-baseline group border-b border-gray-100 pb-4">
                       <div className="flex-1 mr-4 mb-4 md:mb-0">
                         <h3 className="font-medium transition-colors text-2xl md:text-3xl" style={{ color: primaryColor }}>{service.name}</h3>
-                        {service.description && <p className="text-botanical-muted mt-1 text-base md:text-lg">{service.description}</p>}
+                        {service.description && <p className="text-crm-muted mt-1 text-base md:text-lg">{service.description}</p>}
                       </div>
                       <div className="flex items-center gap-4">
-                        <div className="text-right mr-4 border-r border-botanical-border pr-4">
+                        <div className="text-right mr-4 border-r border-crm-border pr-4">
                             <span className="font-medium block">${service.price.toFixed(2)}</span>
-                            <span className="text-botanical-muted text-xs">{service.duration}m</span>
+                            <span className="text-crm-muted text-xs">{service.duration}m</span>
                         </div>
                         <button
                             onClick={() => handleBookClick(service)}
@@ -876,7 +876,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                   ))}
                 </div>
               ) : (
-                <p className="text-botanical-muted italic text-base md:text-lg">No services listed.</p>
+                <p className="text-crm-muted italic text-base md:text-lg">No services listed.</p>
               )}
             </section>
             </>
@@ -984,10 +984,10 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
         <main className="h-[100dvh] overflow-y-auto overflow-x-hidden bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 relative">
           <header className="absolute w-full top-0 left-0 p-4 sm:p-6 flex flex-wrap justify-between gap-x-2 gap-y-2 items-center z-50">
              {pages.filter((p: any) => p.isVisible).length > 0 ? (
-                 <nav className="flex gap-4 sm:gap-6 bg-botanical-surface px-4 sm:px-6 py-2 rounded-full backdrop-blur-md border border-botanical-border shadow-sm overflow-x-auto max-w-[calc(100vw-100px)] hide-scrollbar">
-                    <button onClick={() => setActivePageId(null)} className={`text-sm font-medium transition-colors whitespace-nowrap ${!activePageId ? 'text-botanical-text' : 'text-botanical-muted hover:text-botanical-text'}`}>Home</button>
+                 <nav className="flex gap-4 sm:gap-6 bg-crm-surface px-4 sm:px-6 py-2 rounded-full backdrop-blur-md border border-crm-border shadow-sm overflow-x-auto max-w-[calc(100vw-100px)] hide-scrollbar">
+                    <button onClick={() => setActivePageId(null)} className={`text-sm font-medium transition-colors whitespace-nowrap ${!activePageId ? 'text-crm-text' : 'text-crm-muted hover:text-crm-text'}`}>Home</button>
                     {pages.filter((p: any) => p.isVisible).map((p: any) => (
-                        <button key={p.id} onClick={() => setActivePageId(p.id)} className={`text-sm font-medium transition-colors whitespace-nowrap ${activePageId === p.id ? 'text-botanical-text' : 'text-botanical-muted hover:text-botanical-text'}`}>{p.title}</button>
+                        <button key={p.id} onClick={() => setActivePageId(p.id)} className={`text-sm font-medium transition-colors whitespace-nowrap ${activePageId === p.id ? 'text-crm-text' : 'text-crm-muted hover:text-crm-text'}`}>{p.title}</button>
                     ))}
                  </nav>
              ) : (
@@ -998,19 +998,19 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
 
           {activePage ? (
             <section className="pt-32 pb-20 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto min-h-[80vh]">
-               <div className="bg-botanical-surface p-8 md:p-12 rounded-2xl border border-botanical-border shadow-sm shadow-xl">
+               <div className="bg-crm-surface p-8 md:p-12 rounded-2xl border border-crm-border shadow-sm shadow-xl">
                   <h1 className="font-bold mb-8 text-4xl md:text-5xl lg:text-6xl" style={{ color: primaryColor }}>{activePage.title}</h1>
-                  <div className="prose prose-invert prose-lg max-w-none text-botanical-muted" dangerouslySetInnerHTML={{ __html: activePage.content || '' }} />
+                  <div className="prose prose-invert prose-lg max-w-none text-crm-muted" dangerouslySetInnerHTML={{ __html: activePage.content || '' }} />
                </div>
             </section>
           ) : (
             <>
               {/* Hero Section */}
               <section 
-                className="relative bg-cover bg-center border-b border-botanical-border pt-16 md:pt-8"
+                className="relative bg-cover bg-center border-b border-crm-border pt-16 md:pt-8"
                 style={{ borderBottomColor: primaryColor, backgroundImage: heroImageUrl ? `url(${heroImageUrl})` : undefined }}
               >
-                <div className={heroImageUrl ? "absolute inset-0 bg-botanical-darkBase/80" : "absolute inset-0 bg-botanical-surface backdrop-blur-md"} />
+                <div className={heroImageUrl ? "absolute inset-0 bg-crm-darkBase/80" : "absolute inset-0 bg-crm-surface backdrop-blur-md"} />
                 <div className="relative z-10">
             <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
               <div className="text-center">
@@ -1025,7 +1025,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                   </h1>
                 )}
                 {shop.description && (
-                  <p className="text-botanical-muted max-w-2xl mx-auto text-base md:text-lg">
+                  <p className="text-crm-muted max-w-2xl mx-auto text-base md:text-lg">
                     {shop.description}
                   </p>
                 )}
@@ -1037,7 +1037,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
           {/* Services Section */}
           <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
             <div className="mb-16">
-              <h2 className="font-bold text-botanical-text mb-4 text-3xl md:text-4xl">Our Services</h2>
+              <h2 className="font-bold text-crm-text mb-4 text-3xl md:text-4xl">Our Services</h2>
               <div 
                 className="w-20 h-1 rounded-full"
                 style={{ background: `linear-gradient(to right, ${primaryColor}, ${secondaryColor})` }}
@@ -1049,10 +1049,10 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                 {shop.services.map((service: any) => (
                   <div
                     key={service.id}
-                    className="group bg-gradient-to-br from-slate-800 to-slate-900 rounded-xl p-8 border border-botanical-border shadow-sm transition-all duration-300 hover:shadow-lg flex flex-col"
+                    className="group bg-gradient-to-br from-slate-800 to-slate-900 rounded-xl p-8 border border-crm-border shadow-sm transition-all duration-300 hover:shadow-lg flex flex-col"
                   >
                     <div className="flex items-start justify-between mb-4">
-                      <h3 className="font-bold text-botanical-text transition-colors text-2xl md:text-3xl">
+                      <h3 className="font-bold text-crm-text transition-colors text-2xl md:text-3xl">
                         {service.name}
                       </h3>
                       <div 
@@ -1064,18 +1064,18 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                     </div>
     
                     {service.description && (
-                      <p className="text-botanical-muted mb-4 leading-relaxed flex-grow text-base md:text-lg">
+                      <p className="text-crm-muted mb-4 leading-relaxed flex-grow text-base md:text-lg">
                         {service.description}
                       </p>
                     )}
     
-                    <div className="flex items-center justify-between pt-4 border-t border-botanical-border mt-auto">
-                      <div className="text-botanical-muted text-sm">
+                    <div className="flex items-center justify-between pt-4 border-t border-crm-border mt-auto">
+                      <div className="text-crm-muted text-sm">
                         ⏱️ {service.duration} minutes
                       </div>
                       <button
                         onClick={() => handleBookClick(service)}
-                        className="text-botanical-text px-4 py-2 rounded-lg font-semibold transition-all duration-300 hover:scale-105 active:scale-95 shadow-md hover:shadow-lg text-sm"
+                        className="text-crm-text px-4 py-2 rounded-lg font-semibold transition-all duration-300 hover:scale-105 active:scale-95 shadow-md hover:shadow-lg text-sm"
                         style={{ backgroundColor: primaryColor }}
                       >
                         Book
@@ -1085,7 +1085,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
               </div>
             ) : (
               <div className="text-center py-16">
-                <p className="text-botanical-muted text-base md:text-lg">
+                <p className="text-crm-muted text-base md:text-lg">
                   No services available at the moment. Please check back later.
                 </p>
               </div>
@@ -1097,58 +1097,58 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
           )}
 
           {/* Footer */}
-          <footer className="bg-botanical-surface border-t border-botanical-border py-12">
+          <footer className="bg-crm-surface border-t border-crm-border py-12">
             <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
                 <div>
-                  <h3 className="text-botanical-text font-bold mb-4 text-2xl md:text-3xl">{shop.name}</h3>
-                  <p className="text-botanical-muted mb-4 text-base md:text-lg">
+                  <h3 className="text-crm-text font-bold mb-4 text-2xl md:text-3xl">{shop.name}</h3>
+                  <p className="text-crm-muted mb-4 text-base md:text-lg">
                     {shop.description || 'Your trusted service provider'}
                   </p>
                   {shopAddress && (
-                    <p className="text-botanical-muted text-base md:text-lg">{shopAddress}</p>
+                    <p className="text-crm-muted text-base md:text-lg">{shopAddress}</p>
                   )}
                 </div>
                 <div>
-                  <h4 className="text-botanical-text font-bold mb-4 text-xl md:text-2xl">Contact</h4>
-                  <ul className="space-y-2 text-botanical-muted text-sm">
+                  <h4 className="text-crm-text font-bold mb-4 text-xl md:text-2xl">Contact</h4>
+                  <ul className="space-y-2 text-crm-muted text-sm">
                     {shopPhone && (
                       <li>
-                        <a href={`tel:${shopPhone}`} className="hover:text-botanical-text transition">
+                        <a href={`tel:${shopPhone}`} className="hover:text-crm-text transition">
                           📞 {shopPhone}
                         </a>
                       </li>
                     )}
                     {shopEmail && (
                       <li>
-                        <a href={`mailto:${shopEmail}`} className="hover:text-botanical-text transition">
+                        <a href={`mailto:${shopEmail}`} className="hover:text-crm-text transition">
                           ✉️ {shopEmail}
                         </a>
                       </li>
                     )}
                     {shopWebsite && (
                       <li>
-                        <a href={shopWebsite} target="_blank" rel="noopener noreferrer" className="hover:text-botanical-text transition">
+                        <a href={shopWebsite} target="_blank" rel="noopener noreferrer" className="hover:text-crm-text transition">
                           🌐 Website
                         </a>
                       </li>
                     )}
                     <li>
-                      <a href="#services" className="hover:text-botanical-text transition">
+                      <a href="#services" className="hover:text-crm-text transition">
                         Services
                       </a>
                     </li>
                   </ul>
                 </div>
                 <div>
-                  <h4 className="text-botanical-text font-bold mb-4 text-xl md:text-2xl">Follow Us</h4>
+                  <h4 className="text-crm-text font-bold mb-4 text-xl md:text-2xl">Follow Us</h4>
                   <div className="flex gap-4">
                     {shopFB && (
                       <a
                         href={shopFB}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-botanical-muted hover:text-botanical-text transition"
+                        className="text-crm-muted hover:text-crm-text transition"
                       >
                         Facebook
                       </a>
@@ -1158,7 +1158,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                         href={shopIG.startsWith('http') ? shopIG : `https://instagram.com/${shopIG.replace('@','')}`}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-botanical-muted hover:text-botanical-text transition"
+                        className="text-crm-muted hover:text-crm-text transition"
                       >
                         Instagram
                       </a>
@@ -1168,7 +1168,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                         href={shopTW}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-botanical-muted hover:text-botanical-text transition"
+                        className="text-crm-muted hover:text-crm-text transition"
                       >
                         Twitter
                       </a>
@@ -1176,7 +1176,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                   </div>
                 </div>
               </div>
-              <div className="border-t border-botanical-border pt-8 text-center text-botanical-muted text-sm">
+              <div className="border-t border-crm-border pt-8 text-center text-crm-muted text-sm">
                 <p className="text-base md:text-lg">
                   &copy; {new Date().getFullYear()} {shop.name}. All rights reserved.
                 </p>

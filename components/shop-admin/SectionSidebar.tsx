@@ -119,14 +119,14 @@ export default function SectionSidebar({ activeTab, shopId, section, userRole }:
               href={l.href}
               ref={isActive ? activeLinkRef : null}
               aria-current={isActive ? 'page' : undefined}
-              className={`px-3 md:px-4 py-2 md:py-4 rounded-xl md:rounded-none text-sm font-bold md:font-medium whitespace-nowrap transition-all duration-150 relative w-full text-left md:border-b md:border-botanical-border md:last:border-b-0 ${
+              className={`px-3 md:px-4 py-2 md:py-4 rounded-xl md:rounded-none text-sm font-bold md:font-medium whitespace-nowrap transition-all duration-150 relative w-full text-left md:border-b md:border-crm-border md:last:border-b-0 ${
                 isActive 
-                  ? 'bg-botanical-bg/80 md:bg-botanical-primary/5 text-botanical-text md:text-botanical-primary shadow-sm md:shadow-none border border-botanical-border md:border-transparent md:border-b-botanical-border transform translate-y-0.5 md:transform-none' 
-                  : 'bg-botanical-surface md:bg-transparent text-botanical-muted hover:bg-gray-50 md:hover:bg-black/5 md:hover:text-botanical-text border border-botanical-border md:border-transparent md:border-b-botanical-border shadow-sm md:shadow-none'
+                  ? 'bg-crm-bg/80 md:bg-crm-primary/5 text-crm-text md:text-crm-primary shadow-sm md:shadow-none border border-crm-border md:border-transparent md:border-b-crm-border transform translate-y-0.5 md:transform-none' 
+                  : 'bg-crm-surface md:bg-transparent text-crm-muted hover:bg-gray-50 md:hover:bg-black/5 md:hover:text-crm-text border border-crm-border md:border-transparent md:border-b-crm-border shadow-sm md:shadow-none'
               }`}
             >
               {isActive && (
-                 <div className="hidden md:block absolute left-0 top-1/2 -translate-y-1/2 w-1 h-3/5 bg-botanical-primary rounded-r-full hover:opacity-90 text-white" />
+                 <div className="hidden md:block absolute left-0 top-1/2 -translate-y-1/2 w-1 h-3/5 bg-crm-primary rounded-r-full hover:opacity-90 text-white" />
               )}
               {l.label}
             </Link>
@@ -140,8 +140,8 @@ export default function SectionSidebar({ activeTab, shopId, section, userRole }:
           showLeftIndicator ? 'opacity-100' : 'opacity-0'
         }`}
       >
-        <div className="w-6 h-6 bg-botanical-surface shadow-sm border border-botanical-border rounded-full flex items-center justify-center animate-pulse">
-          <span className="text-botanical-text font-black text-lg leading-none -mt-0.5 mr-0.5">‹</span>
+        <div className="w-6 h-6 bg-crm-surface shadow-sm border border-crm-border rounded-full flex items-center justify-center animate-pulse">
+          <span className="text-crm-text font-black text-lg leading-none -mt-0.5 mr-0.5">‹</span>
         </div>
       </div>
 
@@ -152,8 +152,8 @@ export default function SectionSidebar({ activeTab, shopId, section, userRole }:
           showRightIndicator ? 'opacity-100' : 'opacity-0'
         }`}
       >
-        <div className="w-6 h-6 bg-botanical-surface shadow-sm border border-botanical-border rounded-full flex items-center justify-center animate-pulse">
-          <span className="text-botanical-text font-black text-lg leading-none -mt-0.5 ml-0.5">›</span>
+        <div className="w-6 h-6 bg-crm-surface shadow-sm border border-crm-border rounded-full flex items-center justify-center animate-pulse">
+          <span className="text-crm-text font-black text-lg leading-none -mt-0.5 ml-0.5">›</span>
         </div>
       </div>
     </div>

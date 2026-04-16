@@ -128,7 +128,7 @@ export function ServiceManagement({ shopId }: ServiceManagementProps) {
   if (isLoading) {
     return (
       <div className="text-center py-8">
-        <p className="text-botanical-muted text-base md:text-lg">Loading services...</p>
+        <p className="text-crm-muted text-base md:text-lg">Loading services...</p>
       </div>
     );
   }
@@ -136,7 +136,7 @@ export function ServiceManagement({ shopId }: ServiceManagementProps) {
   return (
     <div className="w-full space-y-6 sm:space-y-8">
       <div>
-        <h2 className="font-bold text-botanical-text mb-4 sm:mb-6 text-3xl md:text-4xl">Manage Services</h2>
+        <h2 className="font-bold text-crm-text mb-4 sm:mb-6 text-3xl md:text-4xl">Manage Services</h2>
 
         {error && (
           <div className="bg-status-cancelled/10 border border-status-cancelled text-status-cancelled p-3 sm:p-4 rounded-lg mb-4 sm:mb-6 text-sm">
@@ -151,12 +151,12 @@ export function ServiceManagement({ shopId }: ServiceManagementProps) {
         )}
 
         {/* Add Service Form */}
-        <div className="bg-botanical-surface p-4 sm:p-6 rounded-lg border border-botanical-border shadow-sm mb-6 sm:mb-8">
-          <h3 className="font-bold text-botanical-text mb-4 text-2xl md:text-3xl">Add New Service</h3>
+        <div className="bg-crm-surface p-4 sm:p-6 rounded-lg border border-crm-border shadow-sm mb-6 sm:mb-8">
+          <h3 className="font-bold text-crm-text mb-4 text-2xl md:text-3xl">Add New Service</h3>
           <form onSubmit={handleAddService} className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block font-medium text-botanical-muted mb-2 text-sm">
+                <label className="block font-medium text-crm-muted mb-2 text-sm">
                   Service Name *
                 </label>
                 <input
@@ -165,12 +165,12 @@ export function ServiceManagement({ shopId }: ServiceManagementProps) {
                   onChange={(e) => setNewService({ ...newService, name: e.target.value })}
                   placeholder="e.g., Haircut, Shave, Beard Trim"
                   required
-                  className="w-full bg-botanical-bg border border-botanical-border shadow-sm rounded px-4 py-2 text-botanical-text placeholder-gray-500"
+                  className="w-full bg-crm-bg border border-crm-border shadow-sm rounded px-4 py-2 text-crm-text placeholder-gray-500"
                 />
               </div>
 
               <div>
-                <label className="block font-medium text-botanical-muted mb-2 text-sm">
+                <label className="block font-medium text-crm-muted mb-2 text-sm">
                   Duration (minutes) *
                 </label>
                 <input
@@ -182,12 +182,12 @@ export function ServiceManagement({ shopId }: ServiceManagementProps) {
                   }}
                   placeholder="30"
                   required
-                  className="w-full bg-botanical-bg border border-botanical-border shadow-sm rounded px-4 py-2 text-botanical-text placeholder-gray-500"
+                  className="w-full bg-crm-bg border border-crm-border shadow-sm rounded px-4 py-2 text-crm-text placeholder-gray-500"
                 />
               </div>
 
               <div>
-                <label className="block font-medium text-botanical-muted mb-2 text-sm">
+                <label className="block font-medium text-crm-muted mb-2 text-sm">
                   Price ($) *
                 </label>
                 <input
@@ -199,18 +199,18 @@ export function ServiceManagement({ shopId }: ServiceManagementProps) {
                   }}
                   placeholder="25.00"
                   required
-                  className="w-full bg-botanical-bg border border-botanical-border shadow-sm rounded px-4 py-2 text-botanical-text placeholder-gray-500"
+                  className="w-full bg-crm-bg border border-crm-border shadow-sm rounded px-4 py-2 text-crm-text placeholder-gray-500"
                 />
               </div>
               
               <div>
-                <label className="block font-medium text-botanical-muted mb-2 text-sm">
+                <label className="block font-medium text-crm-muted mb-2 text-sm">
                   Service Type *
                 </label>
                 <select
                   value={newService.type}
                   onChange={(e) => setNewService({ ...newService, type: e.target.value as 'CUSTOMER' | 'INTERNAL' })}
-                  className="w-full bg-botanical-bg border border-botanical-border shadow-sm rounded px-4 py-2 text-botanical-text"
+                  className="w-full bg-crm-bg border border-crm-border shadow-sm rounded px-4 py-2 text-crm-text"
                 >
                   <option value="CUSTOMER">Customer-Facing Service</option>
                   <option value="INTERNAL">Internal / Add-on Service</option>
@@ -218,7 +218,7 @@ export function ServiceManagement({ shopId }: ServiceManagementProps) {
               </div>
 
               <div className="md:col-span-2">
-                <label className="block font-medium text-botanical-muted mb-2 text-sm">
+                <label className="block font-medium text-crm-muted mb-2 text-sm">
                   Description (optional)
                 </label>
                 <input
@@ -226,7 +226,7 @@ export function ServiceManagement({ shopId }: ServiceManagementProps) {
                   value={newService.description}
                   onChange={(e) => setNewService({ ...newService, description: e.target.value })}
                   placeholder="Brief description of the service"
-                  className="w-full bg-botanical-bg border border-botanical-border shadow-sm rounded px-4 py-2 text-botanical-text placeholder-gray-500"
+                  className="w-full bg-crm-bg border border-crm-border shadow-sm rounded px-4 py-2 text-crm-text placeholder-gray-500"
                 />
               </div>
             </div>
@@ -237,9 +237,9 @@ export function ServiceManagement({ shopId }: ServiceManagementProps) {
                 id="trackInventory" 
                 checked={newService.trackInventory} 
                 onChange={(e) => setNewService({ ...newService, trackInventory: e.target.checked })}
-                className="w-4 h-4 accent-blue-600 bg-botanical-bg border-botanical-border rounded"
+                className="w-4 h-4 accent-blue-600 bg-crm-bg border-crm-border rounded"
               />
-              <label htmlFor="trackInventory" className="text-botanical-muted cursor-pointer select-none text-sm">
+              <label htmlFor="trackInventory" className="text-crm-muted cursor-pointer select-none text-sm">
                 Enable Inventory Tracking for this service (e.g., track hair products used)
               </label>
             </div>
@@ -247,7 +247,7 @@ export function ServiceManagement({ shopId }: ServiceManagementProps) {
             <button
               type="submit"
               disabled={isSubmitting || !newService.name || !newService.price || !newService.duration}
-              className="w-full bg-botanical-primary text-white hover:bg-botanical-surface hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 disabled:opacity-50 font-bold py-2 rounded-lg transition-colors"
+              className="w-full bg-crm-primary text-white hover:bg-crm-surface hover:text-crm-primary border border-transparent hover:border-crm-primary/30 disabled:opacity-50 font-bold py-2 rounded-lg transition-colors"
             >
               {isSubmitting ? 'Adding Service...' : 'Add Service'}
             </button>
@@ -256,33 +256,33 @@ export function ServiceManagement({ shopId }: ServiceManagementProps) {
 
         {/* Services List */}
         <div>
-          <h3 className="font-bold text-botanical-text mb-4 text-2xl md:text-3xl">Current Services</h3>
+          <h3 className="font-bold text-crm-text mb-4 text-2xl md:text-3xl">Current Services</h3>
           {services.length === 0 ? (
-            <div className="bg-botanical-surface p-8 rounded-lg border border-botanical-border shadow-sm text-center">
-              <p className="text-botanical-muted text-base md:text-lg">No services added yet. Create one above to get started!</p>
+            <div className="bg-crm-surface p-8 rounded-lg border border-crm-border shadow-sm text-center">
+              <p className="text-crm-muted text-base md:text-lg">No services added yet. Create one above to get started!</p>
             </div>
           ) : (
             <div className="space-y-3">
               {services.map((service) => (
                 <div
                   key={service.id}
-                  className="bg-botanical-surface p-3 sm:p-4 rounded-lg border border-botanical-border shadow-sm"
+                  className="bg-crm-surface p-3 sm:p-4 rounded-lg border border-crm-border shadow-sm"
                 >
                   <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center flex-wrap gap-2 mb-1">
-                          <h4 className="font-semibold text-botanical-text text-xl md:text-2xl">{service.name}</h4>
-                          <div className={`text-sm sm:text-xs font-semibold px-2 py-0.5 sm:py-1 rounded border ${service.type === 'INTERNAL' ? 'bg-botanical-accent/20 text-botanical-accent border-botanical-accent/30' : 'bg-status-confirmed/20 text-status-confirmed border-status-confirmed/30'}`}>
+                          <h4 className="font-semibold text-crm-text text-xl md:text-2xl">{service.name}</h4>
+                          <div className={`text-sm sm:text-xs font-semibold px-2 py-0.5 sm:py-1 rounded border ${service.type === 'INTERNAL' ? 'bg-crm-accent/20 text-crm-accent border-crm-accent/30' : 'bg-status-confirmed/20 text-status-confirmed border-status-confirmed/30'}`}>
                               {service.type}
                           </div>
-                          <div className={`text-sm sm:text-xs font-semibold px-2 py-0.5 sm:py-1 rounded border ${service.trackInventory ? 'bg-status-info/20 text-status-info border-status-info/30' : 'bg-botanical-surface text-botanical-muted border-botanical-border'}`}>
+                          <div className={`text-sm sm:text-xs font-semibold px-2 py-0.5 sm:py-1 rounded border ${service.trackInventory ? 'bg-status-info/20 text-status-info border-status-info/30' : 'bg-crm-surface text-crm-muted border-crm-border'}`}>
                               Inventory: {service.trackInventory ? 'ON' : 'OFF'}
                           </div>
                       </div>
                       {service.description && (
-                        <p className="text-botanical-muted mt-1 text-base md:text-lg">{service.description}</p>
+                        <p className="text-crm-muted mt-1 text-base md:text-lg">{service.description}</p>
                       )}
-                      <div className="flex gap-4 sm:gap-6 mt-2 text-xs sm:text-sm text-botanical-muted">
+                      <div className="flex gap-4 sm:gap-6 mt-2 text-xs sm:text-sm text-crm-muted">
                         <span>💰 ${service.price.toFixed(2)}</span>
                         <span>⏱️ {service.duration} minutes</span>
                       </div>

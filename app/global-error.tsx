@@ -25,15 +25,15 @@ export default function GlobalError({
   return (
     <html>
       <body>
-        <div className="flex min-h-screen items-center justify-center bg-botanical-bg px-4 py-12">
-          <div className="text-center max-w-md w-full bg-botanical-surface p-8 rounded-lg shadow-sm border border-red-100">
-            <h2 className="font-bold text-botanical-text mb-4 text-3xl md:text-4xl">Something went wrong</h2>
-            <p className="text-botanical-muted mb-6 text-base md:text-lg">
+        <div className="flex min-h-screen items-center justify-center bg-crm-bg px-4 py-12">
+          <div className="text-center max-w-md w-full bg-crm-surface p-8 rounded-lg shadow-sm border border-red-100">
+            <h2 className="font-bold text-crm-text mb-4 text-3xl md:text-4xl">Something went wrong</h2>
+            <p className="text-crm-muted mb-6 text-base md:text-lg">
               A critical error occurred. Our team has been notified.
             </p>
             <button
               onClick={() => reset()}
-              className="bg-botanical-surface text-botanical-text px-4 py-2 rounded font-medium w-full hover:bg-botanical-surface transition-colors"
+              className="bg-crm-surface text-crm-text px-4 py-2 rounded font-medium w-full hover:bg-crm-surface transition-colors"
             >
               Try again
             </button>

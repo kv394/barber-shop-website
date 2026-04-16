@@ -158,7 +158,7 @@ export default function BarcodeScannerWrapper({ shopId, services = [] }: { shopI
     <>
       <button
         onClick={() => { resetAll(); setIsScanning(true); }}
-        className="bg-botanical-primary text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-botanical-surface hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 transition-colors flex items-center gap-2"
+        className="bg-crm-primary text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-crm-surface hover:text-crm-primary border border-transparent hover:border-crm-primary/30 transition-colors flex items-center gap-2"
       >
         <span>📷</span> Scan QR / Barcode
       </button>
@@ -170,14 +170,14 @@ export default function BarcodeScannerWrapper({ shopId, services = [] }: { shopI
       {/* Results overlay */}
       {showOverlay && (
         <div className="fixed bottom-0 left-0 right-0 p-4 z-[60] flex justify-center pointer-events-none">
-          <div className="bg-botanical-surface border border-brand-gold rounded-xl p-5 shadow-2xl max-w-sm w-full pointer-events-auto">
+          <div className="bg-crm-surface border border-brand-gold rounded-xl p-5 shadow-2xl max-w-sm w-full pointer-events-auto">
             <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-start mb-4">
-              <h3 className="font-bold text-botanical-text text-2xl md:text-3xl">Scan Result</h3>
-              <button onClick={resetAll} className="text-botanical-muted hover:text-botanical-text text-xl leading-none">✕</button>
+              <h3 className="font-bold text-crm-text text-2xl md:text-3xl">Scan Result</h3>
+              <button onClick={resetAll} className="text-crm-muted hover:text-crm-text text-xl leading-none">✕</button>
             </div>
 
             {isUpdating && (
-              <div className="flex items-center gap-2 text-botanical-accent mb-4 text-sm animate-pulse">
+              <div className="flex items-center gap-2 text-crm-accent mb-4 text-sm animate-pulse">
                 <div className="w-4 h-4 border-2 border-brand-gold border-t-transparent rounded-full animate-spin" />
                 Processing…
               </div>
@@ -190,9 +190,9 @@ export default function BarcodeScannerWrapper({ shopId, services = [] }: { shopI
                 <h4 className={`${` font-bold mb-1 ${attendanceMessage.type === 'success' ? 'text-status-confirmed' : 'text-status-cancelled'} text-xl md:text-2xl`}`}>
                   {attendanceMessage.text}
                 </h4>
-                {attendanceMessage.user && <p className="text-botanical-text text-base md:text-lg">{attendanceMessage.user}</p>}
+                {attendanceMessage.user && <p className="text-crm-text text-base md:text-lg">{attendanceMessage.user}</p>}
                 {attendanceMessage.type === 'success' && (
-                  <p className="text-botanical-muted mt-3 text-base md:text-lg">Auto-closing in {ATTENDANCE_AUTO_DISMISS_MS / 1000}s…</p>
+                  <p className="text-crm-muted mt-3 text-base md:text-lg">Auto-closing in {ATTENDANCE_AUTO_DISMISS_MS / 1000}s…</p>
                 )}
               </div>
             )}
@@ -201,7 +201,7 @@ export default function BarcodeScannerWrapper({ shopId, services = [] }: { shopI
             {attendanceMessage && (
               <button
                 onClick={() => { resetAll(); setIsScanning(true); }}
-                className="w-full mt-4 bg-botanical-primary text-white py-2.5 rounded-lg font-semibold text-sm hover:bg-botanical-surface hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 transition-colors"
+                className="w-full mt-4 bg-crm-primary text-white py-2.5 rounded-lg font-semibold text-sm hover:bg-crm-surface hover:text-crm-primary border border-transparent hover:border-crm-primary/30 transition-colors"
               >
                 Scan Next Person
               </button>
@@ -210,7 +210,7 @@ export default function BarcodeScannerWrapper({ shopId, services = [] }: { shopI
             {/* Inventory match */}
             {scannedCode && !attendanceMessage && shopId && (
               <>
-                <p className="text-botanical-accent font-mono mb-4 bg-botanical-surface p-2 rounded truncate text-base md:text-lg">Code: {scannedCode}</p>
+                <p className="text-crm-accent font-mono mb-4 bg-crm-surface p-2 rounded truncate text-base md:text-lg">Code: {scannedCode}</p>
 
                 {actionError && (
                   <div className="bg-status-cancelled/20 border border-status-cancelled/50 text-status-cancelled p-3 rounded-lg mb-4 text-sm">
@@ -220,9 +220,9 @@ export default function BarcodeScannerWrapper({ shopId, services = [] }: { shopI
 
                 {matchedService ? (
                   <div>
-                    <div className="bg-botanical-surface p-4 rounded-lg mb-4 border border-botanical-border shadow-sm">
-                      <h4 className="font-semibold text-botanical-text text-xl md:text-2xl">{matchedService.name}</h4>
-                      <p className="text-botanical-muted mt-1 text-base md:text-lg">Stock: <span className="font-mono text-botanical-text text-lg ml-1">{matchedService.inventoryCount}</span></p>
+                    <div className="bg-crm-surface p-4 rounded-lg mb-4 border border-crm-border shadow-sm">
+                      <h4 className="font-semibold text-crm-text text-xl md:text-2xl">{matchedService.name}</h4>
+                      <p className="text-crm-muted mt-1 text-base md:text-lg">Stock: <span className="font-mono text-crm-text text-lg ml-1">{matchedService.inventoryCount}</span></p>
                     </div>
                     <div className="flex gap-3">
                       <button onClick={() => handleUpdateInventory(-1)} disabled={isUpdating || matchedService.inventoryCount <= 0}
@@ -235,17 +235,17 @@ export default function BarcodeScannerWrapper({ shopId, services = [] }: { shopI
                       </button>
                     </div>
                     <button onClick={() => { resetAll(); setIsScanning(true); }}
-                      className="w-full mt-3 text-sm text-botanical-muted hover:text-botanical-text transition-colors py-2">
+                      className="w-full mt-3 text-sm text-crm-muted hover:text-crm-text transition-colors py-2">
                       Scan Another
                     </button>
                   </div>
                 ) : (
-                  <div className="bg-botanical-surface border border-botanical-border shadow-sm p-4 rounded-lg">
+                  <div className="bg-crm-surface border border-crm-border shadow-sm p-4 rounded-lg">
                     <p className="text-status-pending font-semibold mb-1 text-base md:text-lg">Item not recognized.</p>
-                    <p className="text-botanical-muted mb-4 text-base md:text-lg">Map this barcode to an inventory item:</p>
+                    <p className="text-crm-muted mb-4 text-base md:text-lg">Map this barcode to an inventory item:</p>
                     {unmatchedServices.length > 0 ? (
                       <div className="space-y-3">
-                        <select className="w-full bg-botanical-surface border border-botanical-border shadow-sm rounded p-2.5 text-sm text-botanical-text focus:ring-1 focus:ring-botanical-primary"
+                        <select className="w-full bg-crm-surface border border-crm-border shadow-sm rounded p-2.5 text-sm text-crm-text focus:ring-1 focus:ring-crm-primary"
                           value={selectedServiceToAssign} onChange={(e) => setSelectedServiceToAssign(e.target.value)}>
                           <option value="">-- Select Item --</option>
                           {unmatchedServices.map(s => (
@@ -253,7 +253,7 @@ export default function BarcodeScannerWrapper({ shopId, services = [] }: { shopI
                           ))}
                         </select>
                         <button onClick={handleAssignBarcode} disabled={!selectedServiceToAssign || isUpdating}
-                          className="w-full bg-botanical-primary text-white py-2.5 rounded font-semibold disabled:opacity-50 hover:bg-botanical-surface hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 transition-colors text-sm">
+                          className="w-full bg-crm-primary text-white py-2.5 rounded font-semibold disabled:opacity-50 hover:bg-crm-surface hover:text-crm-primary border border-transparent hover:border-crm-primary/30 transition-colors text-sm">
                           {isUpdating ? 'Linking…' : 'Map Barcode to Item'}
                         </button>
                       </div>
@@ -266,8 +266,8 @@ export default function BarcodeScannerWrapper({ shopId, services = [] }: { shopI
             )}
 
             {scannedCode && !attendanceMessage && !shopId && (
-              <div className="bg-botanical-surface border border-botanical-border shadow-sm p-4 rounded-lg">
-                <p className="text-botanical-text font-mono break-all text-base md:text-lg">{scannedCode}</p>
+              <div className="bg-crm-surface border border-crm-border shadow-sm p-4 rounded-lg">
+                <p className="text-crm-text font-mono break-all text-base md:text-lg">{scannedCode}</p>
               </div>
             )}
           </div>

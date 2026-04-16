@@ -62,10 +62,10 @@ export function ShopNav({ shopId, userRole, activeTab }: { shopId: string, userR
   // Main tab: active if exact match OR if activeTab is in the group
   const mainTabClass = (tabName: string, groupTabs?: string[]) => {
     const isActive = activeTab === tabName || (groupTabs && groupTabs.includes(activeTab));
-    return `flex-1 min-w-max px-4 py-3 text-base md:text-lg font-bold whitespace-nowrap transition-colors border-r border-botanical-border last:border-r-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-botanical-primary relative flex items-center justify-center ${
+    return `flex-1 min-w-max px-4 py-3 text-base md:text-lg font-bold whitespace-nowrap transition-colors border-r border-crm-border last:border-r-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-crm-primary relative flex items-center justify-center ${
       isActive 
-        ? "bg-botanical-primary/5 text-botanical-primary shadow-[inset_0_-3px_0_0_#3A5A40]" 
-        : "bg-transparent text-botanical-muted hover:bg-gray-50 hover:text-botanical-text"
+        ? "bg-crm-primary/5 text-crm-primary shadow-[inset_0_-3px_0_0_#3A5A40]" 
+        : "bg-transparent text-crm-muted hover:bg-gray-50 hover:text-crm-text"
     }`;
   };
 
@@ -73,8 +73,8 @@ export function ShopNav({ shopId, userRole, activeTab }: { shopId: string, userR
   if (isSiteAdmin) {
     return (
       <div className="mb-6 sm:mb-8">
-        <nav className="flex w-full overflow-x-auto scrollbar-none bg-botanical-surface rounded-2xl border border-botanical-border shadow-sm">
-          <Link href="/siteadmin" className="flex-1 min-w-max px-4 py-3 text-base md:text-lg font-bold text-botanical-muted hover:text-botanical-text hover:bg-gray-50 transition-colors whitespace-nowrap border-r border-botanical-border flex items-center justify-center">
+        <nav className="flex w-full overflow-x-auto scrollbar-none bg-crm-surface rounded-2xl border border-crm-border shadow-sm">
+          <Link href="/siteadmin" className="flex-1 min-w-max px-4 py-3 text-base md:text-lg font-bold text-crm-muted hover:text-crm-text hover:bg-gray-50 transition-colors whitespace-nowrap border-r border-crm-border flex items-center justify-center">
             ← Site Admin
           </Link>
           <Link href={`/shop/${shopId}/settings/team`} className={mainTabClass('team')}>
@@ -90,7 +90,7 @@ export function ShopNav({ shopId, userRole, activeTab }: { shopId: string, userR
     <>
       {/* Desktop/Tablet Navigation */}
       <div className={`mb-6 sm:mb-8 hidden sm:block`}>
-        <nav className="flex w-full overflow-x-auto scrollbar-none bg-botanical-surface rounded-2xl border border-botanical-border shadow-sm">
+        <nav className="flex w-full overflow-x-auto scrollbar-none bg-crm-surface rounded-2xl border border-crm-border shadow-sm">
           {(isShopAdmin || isStaff) && (
             <>
               <Link href={`/shop/${shopId}`} aria-current={activeTab === 'dashboard' ? 'page' : undefined} className={mainTabClass('dashboard')}>
@@ -142,12 +142,12 @@ export function ShopNav({ shopId, userRole, activeTab }: { shopId: string, userR
       </div>
 
       {/* ── Mobile App Bottom Navigation ── */}
-      <div className="sm:hidden fixed bottom-0 left-0 right-0 bg-botanical-surface backdrop-blur-xl border-t border-botanical-border z-[100] pb-safe shadow-[0_-4px_25px_-5px_rgba(0,0,0,0.1)]">
+      <div className="sm:hidden fixed bottom-0 left-0 right-0 bg-crm-surface backdrop-blur-xl border-t border-crm-border z-[100] pb-safe shadow-[0_-4px_25px_-5px_rgba(0,0,0,0.1)]">
         {canScrollLeft && (
-          <div className="absolute left-0 top-0 bottom-0 w-12 bg-gradient-to-r from-botanical-surface/90 to-transparent flex items-center justify-start pointer-events-none z-10 pb-safe">
+          <div className="absolute left-0 top-0 bottom-0 w-12 bg-gradient-to-r from-crm-surface/90 to-transparent flex items-center justify-start pointer-events-none z-10 pb-safe">
             <button 
               onClick={() => scrollBy(-150)} 
-              className="w-6 h-10 flex items-center justify-center text-botanical-primary pointer-events-auto bg-botanical-surface backdrop-blur-md rounded-r-lg border border-l-0 border-botanical-border shadow-md active:bg-gray-100 transition-colors"
+              className="w-6 h-10 flex items-center justify-center text-crm-primary pointer-events-auto bg-crm-surface backdrop-blur-md rounded-r-lg border border-l-0 border-crm-border shadow-md active:bg-gray-100 transition-colors"
               aria-label="Scroll left"
             >
               <span className="text-xl font-black leading-none -mt-0.5">‹</span>
@@ -155,10 +155,10 @@ export function ShopNav({ shopId, userRole, activeTab }: { shopId: string, userR
           </div>
         )}
         {canScrollRight && (
-          <div className="absolute right-0 top-0 bottom-0 w-12 bg-gradient-to-l from-botanical-surface/90 to-transparent flex items-center justify-end pointer-events-none z-10 pb-safe">
+          <div className="absolute right-0 top-0 bottom-0 w-12 bg-gradient-to-l from-crm-surface/90 to-transparent flex items-center justify-end pointer-events-none z-10 pb-safe">
             <button 
               onClick={() => scrollBy(150)} 
-              className="w-6 h-10 flex items-center justify-center text-botanical-primary pointer-events-auto bg-botanical-surface backdrop-blur-md rounded-l-lg border border-r-0 border-botanical-border shadow-md active:bg-gray-100 transition-colors"
+              className="w-6 h-10 flex items-center justify-center text-crm-primary pointer-events-auto bg-crm-surface backdrop-blur-md rounded-l-lg border border-r-0 border-crm-border shadow-md active:bg-gray-100 transition-colors"
               aria-label="Scroll right"
             >
               <span className="text-xl font-black leading-none -mt-0.5">›</span>
@@ -175,7 +175,7 @@ export function ShopNav({ shopId, userRole, activeTab }: { shopId: string, userR
             const mobileLink = (href: string, tabId: string, icon: string, label: string, isGroupMatch = false) => {
               const isActive = activeTab === tabId || isGroupMatch;
               return (
-                <Link href={href} aria-current={isActive ? 'page' : undefined} className={`flex-shrink-0 flex flex-col items-center justify-center w-[72px] h-full rounded-2xl space-y-1 ${isActive ? 'text-botanical-text shadow-sm bg-botanical-bg border border-botanical-border' : 'text-botanical-muted hover:text-botanical-text hover:bg-gray-50 transition-colors'}`}>
+                <Link href={href} aria-current={isActive ? 'page' : undefined} className={`flex-shrink-0 flex flex-col items-center justify-center w-[72px] h-full rounded-2xl space-y-1 ${isActive ? 'text-crm-text shadow-sm bg-crm-bg border border-crm-border' : 'text-crm-muted hover:text-crm-text hover:bg-gray-50 transition-colors'}`}>
                   <span className="text-[1.35rem]" aria-hidden="true">{icon}</span>
                   <span className="text-[10px] font-bold tracking-wide text-center leading-tight">{label}</span>
                 </Link>

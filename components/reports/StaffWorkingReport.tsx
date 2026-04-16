@@ -102,62 +102,62 @@ export default function StaffWorkingReport({ staffMembers }: { staffMembers: Sta
   return (
     <div>
       {/* Floating Summary Bar */}
-      <div className="bg-botanical-surface backdrop-blur-xl shadow-2xl rounded-2xl border border-botanical-border shadow-sm mb-8 flex flex-col lg:flex-row divide-y lg:divide-y-0 lg:divide-x divide-white/10 relative z-20 transform sm:-translate-y-6 sm:-mx-2">
-        <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-botanical-surface transition-all duration-300 min-w-0">
+      <div className="bg-crm-surface backdrop-blur-xl shadow-2xl rounded-2xl border border-crm-border shadow-sm mb-8 flex flex-col lg:flex-row divide-y lg:divide-y-0 lg:divide-x divide-white/10 relative z-20 transform sm:-translate-y-6 sm:-mx-2">
+        <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-crm-surface transition-all duration-300 min-w-0">
           <div className="absolute top-0 left-0 w-full h-1 bg-status-info/80"></div>
           <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-3">
-            <h3 className="text-botanical-muted uppercase tracking-widest font-semibold truncate text-xs">Total Staff</h3>
+            <h3 className="text-crm-muted uppercase tracking-widest font-semibold truncate text-xs">Total Staff</h3>
             <span className="text-status-info text-sm">👥</span>
           </div>
-          <p className="font-black text-botanical-text break-words leading-tight text-3xl md:text-4xl">{staffMembers.length}</p>
-          <p className="text-botanical-muted mt-2 truncate text-base md:text-lg">
-            <span className="text-botanical-muted">{staffData.filter(s => s.isActive).length}</span> currently active
+          <p className="font-black text-crm-text break-words leading-tight text-3xl md:text-4xl">{staffMembers.length}</p>
+          <p className="text-crm-muted mt-2 truncate text-base md:text-lg">
+            <span className="text-crm-muted">{staffData.filter(s => s.isActive).length}</span> currently active
           </p>
         </div>
-        <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-botanical-surface transition-all duration-300 min-w-0">
-          <div className="absolute top-0 left-0 w-full h-1 bg-botanical-accent/80"></div>
+        <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-crm-surface transition-all duration-300 min-w-0">
+          <div className="absolute top-0 left-0 w-full h-1 bg-crm-accent/80"></div>
           <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-3">
-            <h3 className="text-botanical-muted uppercase tracking-widest font-semibold truncate text-xs">Total Hours</h3>
-            <span className="text-botanical-accent text-sm">⏱️</span>
+            <h3 className="text-crm-muted uppercase tracking-widest font-semibold truncate text-xs">Total Hours</h3>
+            <span className="text-crm-accent text-sm">⏱️</span>
           </div>
-          <p className="font-black text-botanical-text break-words leading-tight text-3xl md:text-4xl">{formatDuration(totalHoursMs)}</p>
-          {isFiltered && <p className="text-botanical-muted mt-2 truncate opacity-0 group-hover:opacity-100 transition-opacity text-base md:text-lg">In selected date range</p>}
+          <p className="font-black text-crm-text break-words leading-tight text-3xl md:text-4xl">{formatDuration(totalHoursMs)}</p>
+          {isFiltered && <p className="text-crm-muted mt-2 truncate opacity-0 group-hover:opacity-100 transition-opacity text-base md:text-lg">In selected date range</p>}
         </div>
-        <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-botanical-surface transition-all duration-300 min-w-0">
+        <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-crm-surface transition-all duration-300 min-w-0">
           <div className="absolute top-0 left-0 w-full h-1 bg-status-confirmed/80"></div>
           <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-3">
-            <h3 className="text-botanical-muted uppercase tracking-widest font-semibold truncate text-xs">Clients Served</h3>
+            <h3 className="text-crm-muted uppercase tracking-widest font-semibold truncate text-xs">Clients Served</h3>
             <span className="text-status-confirmed text-sm">✂️</span>
           </div>
-          <p className="font-black text-botanical-text break-words leading-tight text-3xl md:text-4xl">{totalClients}</p>
-          {isFiltered && <p className="text-botanical-muted mt-2 truncate opacity-0 group-hover:opacity-100 transition-opacity text-base md:text-lg">In selected date range</p>}
+          <p className="font-black text-crm-text break-words leading-tight text-3xl md:text-4xl">{totalClients}</p>
+          {isFiltered && <p className="text-crm-muted mt-2 truncate opacity-0 group-hover:opacity-100 transition-opacity text-base md:text-lg">In selected date range</p>}
         </div>
-        <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-botanical-surface transition-all duration-300 min-w-0">
+        <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-crm-surface transition-all duration-300 min-w-0">
           <div className="absolute top-0 left-0 w-full h-1 bg-status-pending/80"></div>
           <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-3">
-            <h3 className="text-botanical-muted uppercase tracking-widest font-semibold truncate text-xs">Revenue Generated</h3>
+            <h3 className="text-crm-muted uppercase tracking-widest font-semibold truncate text-xs">Revenue Generated</h3>
             <span className="text-status-pending text-sm">💰</span>
           </div>
-          <p className="font-black text-botanical-text break-words leading-tight text-3xl md:text-4xl">${totalRevenue.toFixed(2)}</p>
-          {isFiltered && <p className="text-botanical-muted mt-2 truncate opacity-0 group-hover:opacity-100 transition-opacity text-base md:text-lg">In selected date range</p>}
+          <p className="font-black text-crm-text break-words leading-tight text-3xl md:text-4xl">${totalRevenue.toFixed(2)}</p>
+          {isFiltered && <p className="text-crm-muted mt-2 truncate opacity-0 group-hover:opacity-100 transition-opacity text-base md:text-lg">In selected date range</p>}
         </div>
       </div>
 
       {/* Date Filters */}
-      <div className="flex flex-col sm:flex-row gap-3 mb-6 p-4 bg-botanical-surface rounded-lg border border-botanical-border shadow-sm">
+      <div className="flex flex-col sm:flex-row gap-3 mb-6 p-4 bg-crm-surface rounded-lg border border-crm-border shadow-sm">
         <div className="flex-1">
-          <label className="block text-botanical-muted uppercase tracking-wider mb-1 text-sm">From Date</label>
+          <label className="block text-crm-muted uppercase tracking-wider mb-1 text-sm">From Date</label>
           <input type="date" value={dateFrom} onChange={e => setDateFrom(e.target.value)} style={inputStyle}
-            className="w-full border border-botanical-border shadow-sm rounded p-2 text-sm focus:outline-none focus:border-brand-gold " />
+            className="w-full border border-crm-border shadow-sm rounded p-2 text-sm focus:outline-none focus:border-brand-gold " />
         </div>
         <div className="flex-1">
-          <label className="block text-botanical-muted uppercase tracking-wider mb-1 text-sm">To Date</label>
+          <label className="block text-crm-muted uppercase tracking-wider mb-1 text-sm">To Date</label>
           <input type="date" value={dateTo} onChange={e => setDateTo(e.target.value)} style={inputStyle}
-            className="w-full border border-botanical-border shadow-sm rounded p-2 text-sm focus:outline-none focus:border-brand-gold " />
+            className="w-full border border-crm-border shadow-sm rounded p-2 text-sm focus:outline-none focus:border-brand-gold " />
         </div>
         {isFiltered && (
           <div className="flex items-end">
-            <button onClick={() => { setDateFrom(''); setDateTo(''); }} className="text-xs text-botanical-muted hover:text-botanical-text px-4 py-2 border border-botanical-border shadow-sm rounded">
+            <button onClick={() => { setDateFrom(''); setDateTo(''); }} className="text-xs text-crm-muted hover:text-crm-text px-4 py-2 border border-crm-border shadow-sm rounded">
               Clear Filters
             </button>
           </div>
@@ -166,7 +166,7 @@ export default function StaffWorkingReport({ staffMembers }: { staffMembers: Sta
 
       {/* Staff Cards */}
       {staffData.length === 0 ? (
-        <p className="text-botanical-muted italic text-center py-8 sm:py-12 border border-dashed border-botanical-border rounded text-base md:text-lg">
+        <p className="text-crm-muted italic text-center py-8 sm:py-12 border border-dashed border-crm-border rounded text-base md:text-lg">
           No staff members found.
         </p>
       ) : (
@@ -177,19 +177,19 @@ export default function StaffWorkingReport({ staffMembers }: { staffMembers: Sta
             const isExpanded = selectedStaff === staff.id;
 
             return (
-              <div key={staff.id} className="bg-botanical-surface rounded-xl border border-botanical-border shadow-sm overflow-hidden">
+              <div key={staff.id} className="bg-crm-surface rounded-xl border border-crm-border shadow-sm overflow-hidden">
                 {/* Staff Summary Row */}
                 <button
                   onClick={() => setSelectedStaff(isExpanded ? null : staff.id)}
-                  className="w-full p-4 sm:p-5 text-left hover:bg-botanical-surface transition-colors"
+                  className="w-full p-4 sm:p-5 text-left hover:bg-crm-surface transition-colors"
                 >
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-full bg-botanical-primary/20 flex items-center justify-center text-botanical-accent font-bold text-lg shrink-0 hover:opacity-90">
+                      <div className="w-10 h-10 rounded-full bg-crm-primary/20 flex items-center justify-center text-crm-accent font-bold text-lg shrink-0 hover:opacity-90">
                         {staff.name.charAt(0).toUpperCase()}
                       </div>
                       <div>
-                        <h4 className="font-bold text-botanical-text flex items-center gap-2 text-xl md:text-2xl">
+                        <h4 className="font-bold text-crm-text flex items-center gap-2 text-xl md:text-2xl">
                           {staff.name}
                           {staff.isActive && (
                             <span className="text-sm text-status-confirmed bg-status-confirmed/20 px-2 py-0.5 rounded-full font-bold animate-pulse">
@@ -202,15 +202,15 @@ export default function StaffWorkingReport({ staffMembers }: { staffMembers: Sta
 
                     <div className="grid grid-cols-3 gap-4 sm:gap-8 text-center sm:text-right">
                       <div>
-                        <p className="text-botanical-muted uppercase tracking-wider text-base md:text-lg">Hours</p>
-                        <p className="font-bold text-botanical-accent text-3xl md:text-4xl">{staff.hours}</p>
+                        <p className="text-crm-muted uppercase tracking-wider text-base md:text-lg">Hours</p>
+                        <p className="font-bold text-crm-accent text-3xl md:text-4xl">{staff.hours}</p>
                       </div>
                       <div>
-                        <p className="text-botanical-muted uppercase tracking-wider text-base md:text-lg">Clients</p>
+                        <p className="text-crm-muted uppercase tracking-wider text-base md:text-lg">Clients</p>
                         <p className="font-bold text-status-confirmed text-3xl md:text-4xl">{staff.clients}</p>
                       </div>
                       <div>
-                        <p className="text-botanical-muted uppercase tracking-wider text-base md:text-lg">Revenue</p>
+                        <p className="text-crm-muted uppercase tracking-wider text-base md:text-lg">Revenue</p>
                         <p className="font-bold text-status-pending text-3xl md:text-4xl">${staff.revenue.toFixed(2)}</p>
                       </div>
                     </div>
@@ -219,20 +219,20 @@ export default function StaffWorkingReport({ staffMembers }: { staffMembers: Sta
                   {/* Progress Bars */}
                   <div className="mt-3 grid grid-cols-2 gap-3">
                     <div>
-                      <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 text-sm text-botanical-muted mb-1">
+                      <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 text-sm text-crm-muted mb-1">
                         <span>Hours share</span>
                         <span>{hoursPct.toFixed(1)}%</span>
                       </div>
-                      <div className="w-full bg-botanical-surface rounded-full h-1.5">
+                      <div className="w-full bg-crm-surface rounded-full h-1.5">
                         <div className="bg-purple-500 h-1.5 rounded-full transition-all" style={{ width: `${hoursPct}%` }} />
                       </div>
                     </div>
                     <div>
-                      <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 text-sm text-botanical-muted mb-1">
+                      <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 text-sm text-crm-muted mb-1">
                         <span>Client share</span>
                         <span>{clientsPct.toFixed(1)}%</span>
                       </div>
-                      <div className="w-full bg-botanical-surface rounded-full h-1.5">
+                      <div className="w-full bg-crm-surface rounded-full h-1.5">
                         <div className="bg-status-confirmed h-1.5 rounded-full transition-all" style={{ width: `${clientsPct}%` }} />
                       </div>
                     </div>
@@ -241,18 +241,18 @@ export default function StaffWorkingReport({ staffMembers }: { staffMembers: Sta
 
                 {/* Expanded Detail View */}
                 {isExpanded && selectedStaffData && (
-                  <div className="border-t border-botanical-border p-4 sm:p-5 bg-botanical-bg/50">
+                  <div className="border-t border-crm-border p-4 sm:p-5 bg-crm-bg/50">
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                       {/* Time Logs */}
                       <div>
-                        <h5 className="text-sm font-semibold text-botanical-accent mb-3 flex items-center gap-2">
+                        <h5 className="text-sm font-semibold text-crm-accent mb-3 flex items-center gap-2">
                           ⏱️ Attendance Logs
-                          <span className="text-sm text-botanical-muted font-normal">
+                          <span className="text-sm text-crm-muted font-normal">
                             ({selectedStaffData.filteredLogs.length} entries)
                           </span>
                         </h5>
                         {selectedStaffData.filteredLogs.length === 0 ? (
-                          <p className="text-botanical-muted italic text-base md:text-lg">No attendance logs found{isFiltered ? ' for this date range' : ''}.</p>
+                          <p className="text-crm-muted italic text-base md:text-lg">No attendance logs found{isFiltered ? ' for this date range' : ''}.</p>
                         ) : (
                           <div className="space-y-2 max-h-64 overflow-y-auto pr-1">
                             {selectedStaffData.filteredLogs.slice(0, 50).map(log => {
@@ -263,23 +263,23 @@ export default function StaffWorkingReport({ staffMembers }: { staffMembers: Sta
                                 : 'In Progress';
 
                               return (
-                                <div key={log.id} className="flex items-center justify-between bg-botanical-surface px-3 py-2 rounded-lg text-xs border border-botanical-border shadow-sm">
+                                <div key={log.id} className="flex items-center justify-between bg-crm-surface px-3 py-2 rounded-lg text-xs border border-crm-border shadow-sm">
                                   <div>
-                                    <span className="text-botanical-muted">
+                                    <span className="text-crm-muted">
                                       {clockIn.toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}
                                     </span>
-                                    <span className="text-botanical-text font-mono ml-2">
+                                    <span className="text-crm-text font-mono ml-2">
                                       {clockIn.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' })}
                                     </span>
-                                    <span className="text-botanical-muted mx-1">→</span>
-                                    <span className="text-botanical-text font-mono">
+                                    <span className="text-crm-muted mx-1">→</span>
+                                    <span className="text-crm-text font-mono">
                                       {clockOut
                                         ? clockOut.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' })
                                         : <span className="text-status-confirmed animate-pulse">Active</span>
                                       }
                                     </span>
                                   </div>
-                                  <span className={`font-semibold ${clockOut ? 'text-botanical-accent' : 'text-status-confirmed'}`}>
+                                  <span className={`font-semibold ${clockOut ? 'text-crm-accent' : 'text-status-confirmed'}`}>
                                     {duration}
                                   </span>
                                 </div>
@@ -293,22 +293,22 @@ export default function StaffWorkingReport({ staffMembers }: { staffMembers: Sta
                       <div>
                         <h5 className="text-sm font-semibold text-status-confirmed mb-3 flex items-center gap-2">
                           ✂️ Clients Served
-                          <span className="text-sm text-botanical-muted font-normal">
+                          <span className="text-sm text-crm-muted font-normal">
                             ({selectedStaffData.filteredAppointments.length} completed)
                           </span>
                         </h5>
                         {selectedStaffData.filteredAppointments.length === 0 ? (
-                          <p className="text-botanical-muted italic text-base md:text-lg">No completed appointments{isFiltered ? ' for this date range' : ''}.</p>
+                          <p className="text-crm-muted italic text-base md:text-lg">No completed appointments{isFiltered ? ' for this date range' : ''}.</p>
                         ) : (
                           <div className="space-y-2 max-h-64 overflow-y-auto pr-1">
                             {selectedStaffData.filteredAppointments.slice(0, 50).map(apt => (
-                              <div key={apt.id} className="flex items-center justify-between bg-botanical-surface px-3 py-2 rounded-lg text-xs border border-botanical-border shadow-sm">
+                              <div key={apt.id} className="flex items-center justify-between bg-crm-surface px-3 py-2 rounded-lg text-xs border border-crm-border shadow-sm">
                                 <div>
-                                  <span className="text-botanical-muted">
+                                  <span className="text-crm-muted">
                                     {new Date(apt.startTime).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}
                                   </span>
-                                  <span className="text-botanical-text ml-2">{apt.user?.name || apt.user?.email || 'Guest'}</span>
-                                  <span className="text-botanical-accent ml-2">— {apt.service.name}</span>
+                                  <span className="text-crm-text ml-2">{apt.user?.name || apt.user?.email || 'Guest'}</span>
+                                  <span className="text-crm-accent ml-2">— {apt.service.name}</span>
                                 </div>
                                 <span className="font-semibold text-status-confirmed">${apt.service.price.toFixed(2)}</span>
                               </div>

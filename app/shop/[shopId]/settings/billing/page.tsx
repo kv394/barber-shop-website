@@ -83,67 +83,67 @@ export default async function ShopBillingPage({ params }: { params: Promise<{ sh
     >
       <div className="max-w-4xl mx-auto">
         <div className="mb-8">
-          <h2 className="font-bold text-botanical-text mb-2 flex items-center gap-2 text-3xl md:text-4xl">
+          <h2 className="font-bold text-crm-text mb-2 flex items-center gap-2 text-3xl md:text-4xl">
             <span>💳</span> Usage & Billing Report
           </h2>
-          <p className="text-botanical-muted text-base md:text-lg">Review your current usage and estimated monthly billing tier.</p>
+          <p className="text-crm-muted text-base md:text-lg">Review your current usage and estimated monthly billing tier.</p>
         </div>
 
         <div className="space-y-6">
-          <div className="bg-botanical-bg/80 backdrop-blur-xl shadow-2xl rounded-2xl border border-botanical-border shadow-sm flex flex-col md:flex-row md:flex-wrap lg:flex-nowrap divide-y md:divide-y-0 md:divide-x divide-white/10 relative z-20 overflow-hidden transform sm:-translate-y-6 sm:-mx-2 mb-2 sm:mb-6 mt-6 sm:mt-10">
+          <div className="bg-crm-bg/80 backdrop-blur-xl shadow-2xl rounded-2xl border border-crm-border shadow-sm flex flex-col md:flex-row md:flex-wrap lg:flex-nowrap divide-y md:divide-y-0 md:divide-x divide-white/10 relative z-20 overflow-hidden transform sm:-translate-y-6 sm:-mx-2 mb-2 sm:mb-6 mt-6 sm:mt-10">
             {[
               { label: 'Appointments', val: metrics.appointmentCount, colorClass: 'text-status-info', bgClass: 'bg-status-info/80', icon: '📅' },
               { label: 'Users', val: metrics.userCount, colorClass: 'text-status-confirmed', bgClass: 'bg-status-confirmed/80', icon: '👥' },
-              { label: 'Intake Forms', val: metrics.formSubmissionCount, colorClass: 'text-botanical-accent', bgClass: 'bg-botanical-accent/80', icon: '📝' },
+              { label: 'Intake Forms', val: metrics.formSubmissionCount, colorClass: 'text-crm-accent', bgClass: 'bg-crm-accent/80', icon: '📝' },
               { label: 'Images', val: metrics.portfolioImageCount + metrics.clientHistoryImageCount, colorClass: 'text-status-pending', bgClass: 'bg-status-pending/80', icon: '📸' },
             ].map(m => (
-              <div key={m.label} className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-botanical-surface transition-all duration-300 min-w-0 border-t md:border-t-0 md:border-l border-botanical-border first:border-0">
+              <div key={m.label} className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-crm-surface transition-all duration-300 min-w-0 border-t md:border-t-0 md:border-l border-crm-border first:border-0">
                 <div className={`absolute top-0 left-0 w-full h-1 ${m.bgClass}`}></div>
                 <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-2 sm:mb-3">
-                  <h3 className="text-botanical-muted uppercase tracking-widest font-semibold truncate text-2xl md:text-3xl">{m.label}</h3>
+                  <h3 className="text-crm-muted uppercase tracking-widest font-semibold truncate text-2xl md:text-3xl">{m.label}</h3>
                   <span className={`${m.colorClass} text-sm`}>{m.icon}</span>
                 </div>
-                <p className="font-black text-botanical-text break-words leading-tight text-base md:text-lg">{m.val}</p>
+                <p className="font-black text-crm-text break-words leading-tight text-base md:text-lg">{m.val}</p>
               </div>
             ))}
           </div>
 
-          <div className="bg-botanical-bg/50 p-6 rounded-xl border border-botanical-border shadow-sm shadow-lg relative overflow-hidden transition-all duration-300">
-            <div className="absolute top-0 left-0 w-full h-1 bg-botanical-primary/80 hover:opacity-90 text-white"></div>
+          <div className="bg-crm-bg/50 p-6 rounded-xl border border-crm-border shadow-sm shadow-lg relative overflow-hidden transition-all duration-300">
+            <div className="absolute top-0 left-0 w-full h-1 bg-crm-primary/80 hover:opacity-90 text-white"></div>
             <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 mb-6">
               <div>
                 <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-2">
-                   <p className="text-botanical-accent uppercase tracking-widest font-semibold text-base md:text-lg">Current Tier</p>
+                   <p className="text-crm-accent uppercase tracking-widest font-semibold text-base md:text-lg">Current Tier</p>
                 </div>
-                <h3 className="font-black text-botanical-text leading-tight text-2xl md:text-3xl">{analysis.pricingTierName}</h3>
+                <h3 className="font-black text-crm-text leading-tight text-2xl md:text-3xl">{analysis.pricingTierName}</h3>
               </div>
               <div className="md:text-right">
-                <p className="text-botanical-accent uppercase tracking-widest font-semibold mb-2 text-base md:text-lg">Estimated Monthly Fee</p>
-                <p className="font-black text-botanical-text leading-tight text-base md:text-lg">${analysis.suggestedMonthlyFeeUSD}<span className="text-sm text-botanical-muted font-medium">/mo</span></p>
+                <p className="text-crm-accent uppercase tracking-widest font-semibold mb-2 text-base md:text-lg">Estimated Monthly Fee</p>
+                <p className="font-black text-crm-text leading-tight text-base md:text-lg">${analysis.suggestedMonthlyFeeUSD}<span className="text-sm text-crm-muted font-medium">/mo</span></p>
               </div>
             </div>
 
-            <div className="bg-botanical-surface p-4 rounded-lg mt-4 border border-botanical-border shadow-sm">
-              <p className="text-botanical-muted leading-relaxed text-base md:text-lg">
+            <div className="bg-crm-surface p-4 rounded-lg mt-4 border border-crm-border shadow-sm">
+              <p className="text-crm-muted leading-relaxed text-base md:text-lg">
                 {analysis.strategyReasoning}
               </p>
             </div>
             <div className="mt-6 pt-4 border-t border-brand-gold/10 flex flex-wrap justify-between gap-x-2 gap-y-2 items-center text-xs">
-              <span className="text-botanical-muted">Estimated Database Storage:</span>
-              <span className="font-mono text-botanical-text bg-botanical-surface px-2 py-1 rounded">~{analysis.estimatedStorageMB} MB</span>
+              <span className="text-crm-muted">Estimated Database Storage:</span>
+              <span className="font-mono text-crm-text bg-crm-surface px-2 py-1 rounded">~{analysis.estimatedStorageMB} MB</span>
             </div>
           </div>
 
-          <div className="bg-botanical-surface p-6 rounded-xl border border-botanical-border shadow-sm mt-6">
-            <h3 className="font-bold text-botanical-text mb-4 text-2xl md:text-3xl">Usage Limits & Overage</h3>
-            <p className="text-botanical-muted mb-4 leading-relaxed text-base md:text-lg">
+          <div className="bg-crm-surface p-6 rounded-xl border border-crm-border shadow-sm mt-6">
+            <h3 className="font-bold text-crm-text mb-4 text-2xl md:text-3xl">Usage Limits & Overage</h3>
+            <p className="text-crm-muted mb-4 leading-relaxed text-base md:text-lg">
               Your tier is automatically determined by your usage volume. 
               Storage over 500MB incurs a $1 fee per additional 100MB.
             </p>
-            <ul className="text-sm text-botanical-muted space-y-2 list-disc list-inside ml-4">
+            <ul className="text-sm text-crm-muted space-y-2 list-disc list-inside ml-4">
               {tiers.map(t => (
                 <li key={t.id}>
-                  <strong className="text-botanical-text">{t.name} (${t.baseFeeUSD}/mo):</strong>{' '}
+                  <strong className="text-crm-text">{t.name} (${t.baseFeeUSD}/mo):</strong>{' '}
                   {t.maxAppointments < 999999 ? `Up to ${t.maxAppointments} appointments` : 'Unlimited appointments'},{' '}
                   {t.maxUsers < 999 ? `up to ${t.maxUsers} users` : 'unlimited users'},{' '}
                   {t.maxFormSubmissions < 999999 ? `up to ${t.maxFormSubmissions} intake forms` : 'unlimited forms'}.

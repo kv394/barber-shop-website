@@ -31,46 +31,46 @@ export default function KioskSetupClient({ shopId, shopName }: { shopId: string;
 
       <div className="bg-status-info/20 border border-status-info/20 rounded-xl p-5">
         <h4 className="text-status-info font-semibold mb-2 text-xl md:text-2xl">ℹ️ What is the Attendance Kiosk?</h4>
-        <p className="text-botanical-muted leading-relaxed text-base md:text-lg">Set up a tablet or screen in your shop for staff to scan their QR/barcode to clock in and out. PIN-protected, no login required.</p>
+        <p className="text-crm-muted leading-relaxed text-base md:text-lg">Set up a tablet or screen in your shop for staff to scan their QR/barcode to clock in and out. PIN-protected, no login required.</p>
       </div>
 
-      <div className="bg-botanical-surface border border-botanical-border shadow-sm rounded-xl p-6 space-y-4">
-        <h3 className="font-bold text-botanical-text text-2xl md:text-3xl">📱 Kiosk URL</h3>
-        <p className="text-botanical-muted text-base md:text-lg">Open on a tablet or dedicated screen in your shop.</p>
+      <div className="bg-crm-surface border border-crm-border shadow-sm rounded-xl p-6 space-y-4">
+        <h3 className="font-bold text-crm-text text-2xl md:text-3xl">📱 Kiosk URL</h3>
+        <p className="text-crm-muted text-base md:text-lg">Open on a tablet or dedicated screen in your shop.</p>
         <div className="flex gap-2">
-          <input readOnly value={kioskUrl} className="flex-1 bg-botanical-surface border border-botanical-border shadow-sm rounded-lg px-3 py-2.5 text-botanical-text text-sm font-mono focus:outline-none" />
-          <button onClick={copyUrl} className={`px-4 py-2 rounded-lg text-sm font-semibold transition-colors ${copied ? 'bg-status-confirmed text-white' : 'bg-botanical-primary text-white hover:bg-botanical-surface'}`}>
+          <input readOnly value={kioskUrl} className="flex-1 bg-crm-surface border border-crm-border shadow-sm rounded-lg px-3 py-2.5 text-crm-text text-sm font-mono focus:outline-none" />
+          <button onClick={copyUrl} className={`px-4 py-2 rounded-lg text-sm font-semibold transition-colors ${copied ? 'bg-status-confirmed text-white' : 'bg-crm-primary text-white hover:bg-crm-surface'}`}>
             {copied ? '✓ Copied!' : 'Copy'}
           </button>
         </div>
-        <a href={kioskUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 text-botanical-accent hover:underline text-sm">🚀 Open kiosk in new tab →</a>
+        <a href={kioskUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 text-crm-accent hover:underline text-sm">🚀 Open kiosk in new tab →</a>
       </div>
 
-      <div className="bg-botanical-surface border border-botanical-border shadow-sm rounded-xl p-6 space-y-4">
-        <h3 className="font-bold text-botanical-text text-2xl md:text-3xl">🔐 Kiosk PIN</h3>
-        <p className="text-botanical-muted text-base md:text-lg">Protect the kiosk with a 4–8 digit PIN.</p>
+      <div className="bg-crm-surface border border-crm-border shadow-sm rounded-xl p-6 space-y-4">
+        <h3 className="font-bold text-crm-text text-2xl md:text-3xl">🔐 Kiosk PIN</h3>
+        <p className="text-crm-muted text-base md:text-lg">Protect the kiosk with a 4–8 digit PIN.</p>
         <div className="flex gap-3">
           <input type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="Enter new PIN (4–8 digits)" maxLength={8}
-            className="w-48 bg-botanical-surface border border-botanical-border shadow-sm rounded-lg px-3 py-2.5 text-botanical-text text-sm focus:outline-none focus:border-brand-gold" />
+            className="w-48 bg-crm-surface border border-crm-border shadow-sm rounded-lg px-3 py-2.5 text-crm-text text-sm focus:outline-none focus:border-brand-gold" />
           <button onClick={savePassword} disabled={saving || !password.trim()}
-            className="px-4 py-2 bg-botanical-primary text-white rounded-lg text-sm font-bold disabled:opacity-50 hover:bg-botanical-surface hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 transition-colors">
+            className="px-4 py-2 bg-crm-primary text-white rounded-lg text-sm font-bold disabled:opacity-50 hover:bg-crm-surface hover:text-crm-primary border border-transparent hover:border-crm-primary/30 transition-colors">
             {saving ? 'Saving…' : 'Set PIN'}
           </button>
         </div>
       </div>
 
-      <div className="bg-botanical-surface border border-botanical-border shadow-sm rounded-xl p-6 space-y-3">
-        <h3 className="font-bold text-botanical-text text-2xl md:text-3xl">🪪 Staff QR / Barcode Cards</h3>
-        <p className="text-botanical-muted text-base md:text-lg">Each staff member has a unique QR code. Go to Team Management to view and print.</p>
-        <a href={`/shop/${shopId}/settings/team`} className="inline-block px-4 py-2 bg-botanical-surface border border-botanical-border shadow-sm text-botanical-muted rounded-lg text-sm hover:bg-botanical-border transition-colors">👥 Go to Team Management →</a>
+      <div className="bg-crm-surface border border-crm-border shadow-sm rounded-xl p-6 space-y-3">
+        <h3 className="font-bold text-crm-text text-2xl md:text-3xl">🪪 Staff QR / Barcode Cards</h3>
+        <p className="text-crm-muted text-base md:text-lg">Each staff member has a unique QR code. Go to Team Management to view and print.</p>
+        <a href={`/shop/${shopId}/settings/team`} className="inline-block px-4 py-2 bg-crm-surface border border-crm-border shadow-sm text-crm-muted rounded-lg text-sm hover:bg-crm-border transition-colors">👥 Go to Team Management →</a>
       </div>
 
-      <div className="bg-botanical-surface border border-botanical-border shadow-sm rounded-xl p-6">
-        <h3 className="font-bold text-botanical-text mb-4 text-2xl md:text-3xl">📋 Setup Instructions</h3>
-        <ol className="space-y-3 text-sm text-botanical-muted">
+      <div className="bg-crm-surface border border-crm-border shadow-sm rounded-xl p-6">
+        <h3 className="font-bold text-crm-text mb-4 text-2xl md:text-3xl">📋 Setup Instructions</h3>
+        <ol className="space-y-3 text-sm text-crm-muted">
           {['Set your kiosk PIN above.','Open the Kiosk URL on a tablet in your shop.','Enter the PIN to activate kiosk mode.','Staff scan their QR or barcode to clock in/out.','View logs under Staff → Attendance.'].map((step, i) => (
             <li key={i} className="flex gap-3">
-              <span className="flex-shrink-0 w-6 h-6 rounded-full bg-botanical-primary/20 text-botanical-accent text-xs font-bold flex items-center justify-center hover:opacity-90">{i + 1}</span>
+              <span className="flex-shrink-0 w-6 h-6 rounded-full bg-crm-primary/20 text-crm-accent text-xs font-bold flex items-center justify-center hover:opacity-90">{i + 1}</span>
               <span>{step}</span>
             </li>
           ))}

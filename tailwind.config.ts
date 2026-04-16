@@ -14,36 +14,36 @@ const config: Config = {
         serif: ['var(--font-serif)', 'serif'],
       },
       colors: {
-        botanical: {
-          bg: '#F8F6F3',       // Warm Alabaster (App Background)
-          surface: '#FFFFFF',  // Pure White (Card/Calendar Surface)
-          border: '#E2E0D9',   // Oatmeal (Borders/Dividers)
-          text: '#2A2C31',     // Deep Charcoal (Primary Text)
-          muted: '#68707A',    // Muted Slate (Secondary Text)
-          primary: '#3A5A40',  // Deep Sage Green (Primary Action/CTA)
-          accent: '#D4A373',   // Soft Clay (Secondary Accent)
-          darkBase: '#1A1D21', // Dark Mode Base
+        crm: {
+          bg: '#F8FAFC',       // Slate 50
+          surface: '#FFFFFF',  // Pure White
+          border: '#E2E8F0',   // Slate 200
+          text: '#0F172A',     // Slate 900
+          muted: '#64748B',    // Slate 500
+          primary: '#2563EB',  // Blue 600
+          accent: '#4F46E5',   // Indigo 600
+          darkBase: '#020617', // Slate 950
         },
         status: {
-          confirmed: '#2D7D53', // Muted Emerald
-          pending: '#D9822B',   // Earthy Amber
-          cancelled: '#C54E4E', // Soft Crimson
-          info: '#3A7CA5',      // Calm Steel Blue
+          confirmed: '#16A34A', // Green 600
+          pending: '#D97706',   // Amber 600
+          cancelled: '#DC2626', // Red 600
+          info: '#2563EB',      // Blue 600
         },
         brand: {
-          dark: '#2A2C31',     // Deep Charcoal
-          light: '#F8F6F3',    // Warm Alabaster
-          gold: '#D4A373',     // Soft Clay (replacing old gold)
-          gray: '#E2E0D9'      // Oatmeal
+          dark: '#0F172A',     // Slate 900
+          light: '#F8FAFC',    // Slate 50
+          gold: '#4F46E5',     // Indigo 600 (replacing gold with indigo)
+          gray: '#E2E8F0'      // Slate 200
         }
       },
       boxShadow: {
-        'sm': '0 2px 0 0 #E2E0D9, 0 3px 6px rgba(0,0,0,0.02)',
-        DEFAULT: '0 4px 0 0 #E2E0D9, 0 5px 10px rgba(0,0,0,0.05)',
-        'md': '0 6px 0 0 #E2E0D9, 0 8px 15px rgba(0,0,0,0.05)',
-        'lg': '0 8px 0 0 #E2E0D9, 0 10px 20px rgba(0,0,0,0.05)',
-        'xl': '0 12px 0 0 #E2E0D9, 0 15px 25px rgba(0,0,0,0.05)',
-        '2xl': '0 16px 0 0 #E2E0D9, 0 20px 30px rgba(0,0,0,0.05)',
+        'sm': '0 1px 2px 0 rgba(0,0,0,0.05)',
+        DEFAULT: '0 1px 3px 0 rgba(0,0,0,0.1), 0 1px 2px -1px rgba(0,0,0,0.1)',
+        'md': '0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -2px rgba(0,0,0,0.1)',
+        'lg': '0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -4px rgba(0,0,0,0.1)',
+        'xl': '0 20px 25px -5px rgba(0,0,0,0.1), 0 8px 10px -6px rgba(0,0,0,0.1)',
+        '2xl': '0 25px 50px -12px rgba(0,0,0,0.25)',
       }
     },
   },

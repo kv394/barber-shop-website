@@ -167,30 +167,30 @@ export default function TemplatesPage() {
   };
 
   return (
-    <div className="p-6 text-botanical-text">
+    <div className="p-6 text-crm-text">
       <h1 className="font-bold mb-6 text-4xl md:text-5xl lg:text-6xl">AI Template Generator</h1>
 
-      <div className="bg-botanical-surface p-6 rounded-xl border border-botanical-border shadow-sm mb-8">
+      <div className="bg-crm-surface p-6 rounded-xl border border-crm-border shadow-sm mb-8">
         <h2 className="font-semibold mb-4 text-3xl md:text-4xl">Upload Template Files</h2>
-        <p className="text-botanical-muted mb-4 text-base md:text-lg">
+        <p className="text-crm-muted mb-4 text-base md:text-lg">
           Select a single .zip file (containing HTML, CSS, images) OR multiple files. 
           The system will automatically upload images to Google Drive, extract Handlebars {"{{variables}}"}, and create the template.
         </p>
         <form onSubmit={handleUpload} className="space-y-4 flex flex-col md:flex-row md:space-y-0 md:space-x-4 items-end">
           <div className="flex-1 w-full">
-            <label className="block text-botanical-muted mb-1 text-sm">Template Name</label>
+            <label className="block text-crm-muted mb-1 text-sm">Template Name</label>
             <input 
               required
               type="text" 
               placeholder="e.g. Vintage Barber"
               value={uploadName}
               onChange={e => setUploadName(e.target.value)} 
-              className="w-full bg-botanical-surface border border-botanical-border shadow-sm p-2 rounded text-botanical-text" 
+              className="w-full bg-crm-surface border border-crm-border shadow-sm p-2 rounded text-crm-text" 
             />
           </div>
           <div className="flex-1 w-full">
-            <label className="block text-botanical-muted mb-1 text-sm">Target Shop (Required)</label>
-            <select value={uploadShopId} onChange={e => setUploadShopId(e.target.value)} required className="w-full bg-botanical-surface border border-botanical-border shadow-sm p-2 rounded text-botanical-text">
+            <label className="block text-crm-muted mb-1 text-sm">Target Shop (Required)</label>
+            <select value={uploadShopId} onChange={e => setUploadShopId(e.target.value)} required className="w-full bg-crm-surface border border-crm-border shadow-sm p-2 rounded text-crm-text">
               <option value="">Select Shop</option>
               {shops.map((s: any) => (
                 <option key={s.id} value={s.id}>{s.name}</option>
@@ -198,13 +198,13 @@ export default function TemplatesPage() {
             </select>
           </div>
           <div className="flex-1 w-full">
-            <label className="block text-botanical-muted mb-1 text-sm">Select Files</label>
+            <label className="block text-crm-muted mb-1 text-sm">Select Files</label>
             <input 
               required
               type="file" 
               multiple 
               onChange={e => setUploadFiles(e.target.files)} 
-              className="w-full bg-botanical-surface border border-botanical-border shadow-sm p-2 rounded text-botanical-text" 
+              className="w-full bg-crm-surface border border-crm-border shadow-sm p-2 rounded text-crm-text" 
             />
           </div>
           <button disabled={uploading || !uploadFiles || uploadFiles.length === 0 || !uploadName || !uploadShopId} type="submit" className="w-full md:w-auto bg-status-confirmed text-white px-6 py-2 rounded font-semibold disabled:opacity-50 transition">
@@ -213,12 +213,12 @@ export default function TemplatesPage() {
         </form>
       </div>
       
-      <div className="bg-botanical-surface p-6 rounded-xl border border-botanical-border shadow-sm mb-8">
+      <div className="bg-crm-surface p-6 rounded-xl border border-crm-border shadow-sm mb-8">
         <h2 className="font-semibold mb-4 text-3xl md:text-4xl">Generate New Template with AI</h2>
         <form onSubmit={handleGenerate} className="space-y-4">
           <div>
-            <label className="block text-botanical-muted mb-1 text-sm">Target Shop (Required)</label>
-            <select value={targetShopId} onChange={e => setTargetShopId(e.target.value)} required className="w-full bg-botanical-surface border border-botanical-border shadow-sm p-2 rounded text-botanical-text">
+            <label className="block text-crm-muted mb-1 text-sm">Target Shop (Required)</label>
+            <select value={targetShopId} onChange={e => setTargetShopId(e.target.value)} required className="w-full bg-crm-surface border border-crm-border shadow-sm p-2 rounded text-crm-text">
               <option value="">Select Target Shop</option>
               {shops.map((s: any) => (
                 <option key={s.id} value={s.id}>{s.name}</option>
@@ -226,8 +226,8 @@ export default function TemplatesPage() {
             </select>
           </div>
           <div>
-            <label className="block text-botanical-muted mb-1 text-sm">Base Template (Optional)</label>
-            <select value={baseTemplateId} onChange={e => setBaseTemplateId(e.target.value)} className="w-full bg-botanical-surface border border-botanical-border shadow-sm p-2 rounded text-botanical-text">
+            <label className="block text-crm-muted mb-1 text-sm">Base Template (Optional)</label>
+            <select value={baseTemplateId} onChange={e => setBaseTemplateId(e.target.value)} className="w-full bg-crm-surface border border-crm-border shadow-sm p-2 rounded text-crm-text">
               <option value="">None (Generate from scratch)</option>
               {templates.map((t: any) => (
                 <option key={t.id} value={t.id}>{t.name}</option>
@@ -235,20 +235,20 @@ export default function TemplatesPage() {
             </select>
           </div>
           <div>
-            <label className="block text-botanical-muted mb-1 text-sm">Template Identifier (e.g. neon-dark)</label>
-            <input required value={name} onChange={e => setName(e.target.value)} className="w-full bg-botanical-surface border border-botanical-border shadow-sm p-2 rounded text-botanical-text" />
+            <label className="block text-crm-muted mb-1 text-sm">Template Identifier (e.g. neon-dark)</label>
+            <input required value={name} onChange={e => setName(e.target.value)} className="w-full bg-crm-surface border border-crm-border shadow-sm p-2 rounded text-crm-text" />
           </div>
           <div>
-            <label className="block text-botanical-muted mb-1 text-sm">Description</label>
-            <input value={description} onChange={e => setDescription(e.target.value)} className="w-full bg-botanical-surface border border-botanical-border shadow-sm p-2 rounded text-botanical-text" />
+            <label className="block text-crm-muted mb-1 text-sm">Description</label>
+            <input value={description} onChange={e => setDescription(e.target.value)} className="w-full bg-crm-surface border border-crm-border shadow-sm p-2 rounded text-crm-text" />
           </div>
           <div>
-            <label className="block text-botanical-muted mb-1 text-sm">Prompt for Gemini</label>
-            <textarea required value={prompt} onChange={e => setPrompt(e.target.value)} rows={4} className="w-full bg-botanical-surface border border-botanical-border shadow-sm p-2 rounded text-botanical-text" placeholder="Describe the layout, colors, elements, styling... Handlebars syntax will be used for injection." />
+            <label className="block text-crm-muted mb-1 text-sm">Prompt for Gemini</label>
+            <textarea required value={prompt} onChange={e => setPrompt(e.target.value)} rows={4} className="w-full bg-crm-surface border border-crm-border shadow-sm p-2 rounded text-crm-text" placeholder="Describe the layout, colors, elements, styling... Handlebars syntax will be used for injection." />
           </div>
           <div>
-            <label className="block text-botanical-muted mb-1 text-sm">AI Model</label>
-            <select value={model} onChange={e => setModel(e.target.value)} className="w-full bg-botanical-surface border border-botanical-border shadow-sm p-2 rounded text-botanical-text">
+            <label className="block text-crm-muted mb-1 text-sm">AI Model</label>
+            <select value={model} onChange={e => setModel(e.target.value)} className="w-full bg-crm-surface border border-crm-border shadow-sm p-2 rounded text-crm-text">
               <option value="gemini-2.5-flash">Gemini 2.5 Flash (Fast, Free Tier)</option>
               <option value="gemini-2.5-pro">Gemini 2.5 Pro (Advanced)</option>
               <option value="gemini-1.5-flash">Gemini 1.5 Flash</option>
@@ -262,29 +262,29 @@ export default function TemplatesPage() {
             </select>
           </div>
           <div>
-            <label className="block text-botanical-muted mb-1 text-sm">Optional Assets (Images, Logos)</label>
+            <label className="block text-crm-muted mb-1 text-sm">Optional Assets (Images, Logos)</label>
             <input 
               type="file" 
               multiple 
               onChange={e => setGenerateFiles(e.target.files)} 
-              className="w-full bg-botanical-surface border border-botanical-border shadow-sm p-2 rounded text-botanical-text" 
+              className="w-full bg-crm-surface border border-crm-border shadow-sm p-2 rounded text-crm-text" 
             />
-            <p className="text-botanical-muted mt-1 text-base md:text-lg">These will be uploaded to Google Drive and their URLs passed to the AI.</p>
+            <p className="text-crm-muted mt-1 text-base md:text-lg">These will be uploaded to Google Drive and their URLs passed to the AI.</p>
           </div>
-          <button disabled={generating || !targetShopId} type="submit" className="bg-botanical-primary text-white px-6 py-2 rounded font-semibold disabled:opacity-50 transition hover:opacity-90">
+          <button disabled={generating || !targetShopId} type="submit" className="bg-crm-primary text-white px-6 py-2 rounded font-semibold disabled:opacity-50 transition hover:opacity-90">
             {generating ? 'Generating via Gemini...' : 'Generate Template'}
           </button>
         </form>
       </div>
 
       <h2 className="font-bold mb-4 text-3xl md:text-4xl">Generated Templates</h2>
-      {loading ? <p className="text-botanical-muted text-base md:text-lg">Loading templates...</p> : (
+      {loading ? <p className="text-crm-muted text-base md:text-lg">Loading templates...</p> : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {templates.map((t: any) => (
-            <div key={t.id} className="bg-botanical-surface p-4 rounded-xl border border-botanical-border shadow-sm flex flex-col">
+            <div key={t.id} className="bg-crm-surface p-4 rounded-xl border border-crm-border shadow-sm flex flex-col">
               <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-start mb-2">
                 <div>
-                  <h3 className="font-bold text-botanical-accent text-2xl md:text-3xl">{t.name}</h3>
+                  <h3 className="font-bold text-crm-accent text-2xl md:text-3xl">{t.name}</h3>
                   {t.shop && <span className="text-xs bg-indigo-500/20 text-indigo-300 px-2 py-0.5 rounded-full">For: {t.shop.name}</span>}
                 </div>
                 <div className="flex space-x-2">
@@ -293,62 +293,62 @@ export default function TemplatesPage() {
                   <button onClick={() => handleDelete(t.id)} className="text-xs bg-status-cancelled/20 text-status-cancelled px-2 py-1 rounded hover:bg-status-cancelled/40 transition">Delete</button>
                 </div>
               </div>
-              <p className="text-botanical-muted mb-4 flex-grow text-base md:text-lg">{t.description}</p>
-              <div className="text-xs text-botanical-muted overflow-hidden h-24 relative bg-botanical-surface p-2 rounded">
+              <p className="text-crm-muted mb-4 flex-grow text-base md:text-lg">{t.description}</p>
+              <div className="text-xs text-crm-muted overflow-hidden h-24 relative bg-crm-surface p-2 rounded">
                 <div className="absolute inset-0 bg-gradient-to-b from-transparent to-slate-900 pointer-events-none"></div>
                 <pre className="whitespace-pre-wrap">{t.htmlCode}</pre>
               </div>
             </div>
           ))}
-          {templates.length === 0 && <p className="text-botanical-muted text-base md:text-lg">No templates generated yet.</p>}
+          {templates.length === 0 && <p className="text-crm-muted text-base md:text-lg">No templates generated yet.</p>}
         </div>
       )}
 
       {/* Edit Modal */}
       {editingTemplate && (
-        <div className="fixed inset-0 bg-botanical-surface flex items-center justify-center p-4 z-50">
-          <div className="bg-botanical-surface border border-botanical-border shadow-sm p-6 rounded-xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+        <div className="fixed inset-0 bg-crm-surface flex items-center justify-center p-4 z-50">
+          <div className="bg-crm-surface border border-crm-border shadow-sm p-6 rounded-xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
             <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-4">
               <h2 className="font-bold text-3xl md:text-4xl">Edit Template: {editingTemplate.name}</h2>
-              <button onClick={() => setEditingTemplate(null)} className="text-botanical-muted hover:text-botanical-text">✕</button>
+              <button onClick={() => setEditingTemplate(null)} className="text-crm-muted hover:text-crm-text">✕</button>
             </div>
             
             <form onSubmit={handleEditSubmit} className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-botanical-muted mb-1 text-sm">Name</label>
-                  <input required value={editingTemplate.name} onChange={e => setEditingTemplate({...editingTemplate, name: e.target.value})} className="w-full bg-botanical-surface border border-botanical-border shadow-sm p-2 rounded text-botanical-text" />
+                  <label className="block text-crm-muted mb-1 text-sm">Name</label>
+                  <input required value={editingTemplate.name} onChange={e => setEditingTemplate({...editingTemplate, name: e.target.value})} className="w-full bg-crm-surface border border-crm-border shadow-sm p-2 rounded text-crm-text" />
                 </div>
                 <div>
-                  <label className="block text-botanical-muted mb-1 text-sm">Description</label>
-                  <input value={editingTemplate.description || ''} onChange={e => setEditingTemplate({...editingTemplate, description: e.target.value})} className="w-full bg-botanical-surface border border-botanical-border shadow-sm p-2 rounded text-botanical-text" />
+                  <label className="block text-crm-muted mb-1 text-sm">Description</label>
+                  <input value={editingTemplate.description || ''} onChange={e => setEditingTemplate({...editingTemplate, description: e.target.value})} className="w-full bg-crm-surface border border-crm-border shadow-sm p-2 rounded text-crm-text" />
                 </div>
               </div>
               
               <div>
-                <label className="block text-botanical-muted mb-1 text-sm">HTML (Handlebars)</label>
+                <label className="block text-crm-muted mb-1 text-sm">HTML (Handlebars)</label>
                 <textarea 
                   required 
                   value={editingTemplate.htmlCode} 
                   onChange={e => setEditingTemplate({...editingTemplate, htmlCode: e.target.value})} 
                   rows={10} 
-                  className="w-full font-mono text-sm bg-botanical-surface border border-botanical-border shadow-sm p-2 rounded text-botanical-text" 
+                  className="w-full font-mono text-sm bg-crm-surface border border-crm-border shadow-sm p-2 rounded text-crm-text" 
                 />
               </div>
 
               <div>
-                <label className="block text-botanical-muted mb-1 text-sm">CSS (Tailwind or custom CSS)</label>
+                <label className="block text-crm-muted mb-1 text-sm">CSS (Tailwind or custom CSS)</label>
                 <textarea 
                   value={editingTemplate.cssCode || ''} 
                   onChange={e => setEditingTemplate({...editingTemplate, cssCode: e.target.value})} 
                   rows={5} 
-                  className="w-full font-mono text-sm bg-botanical-surface border border-botanical-border shadow-sm p-2 rounded text-botanical-text" 
+                  className="w-full font-mono text-sm bg-crm-surface border border-crm-border shadow-sm p-2 rounded text-crm-text" 
                 />
               </div>
 
               <div className="flex justify-end space-x-3 pt-4">
-                <button type="button" onClick={() => setEditingTemplate(null)} className="px-4 py-2 text-sm text-botanical-muted hover:text-botanical-text">Cancel</button>
-                <button disabled={savingEdit} type="submit" className="bg-botanical-primary text-white px-6 py-2 rounded font-semibold disabled:opacity-50 transition hover:opacity-90">
+                <button type="button" onClick={() => setEditingTemplate(null)} className="px-4 py-2 text-sm text-crm-muted hover:text-crm-text">Cancel</button>
+                <button disabled={savingEdit} type="submit" className="bg-crm-primary text-white px-6 py-2 rounded font-semibold disabled:opacity-50 transition hover:opacity-90">
                   {savingEdit ? 'Saving...' : 'Save Changes'}
                 </button>
               </div>

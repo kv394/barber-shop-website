@@ -66,44 +66,44 @@ export default async function SiteAdminLogsPage() {
   return (
     <div>
       <div className="mb-8">
-        <h1 className="font-serif font-bold text-botanical-accent mb-2 text-4xl md:text-5xl lg:text-6xl">System Logs</h1>
-        <p className="text-botanical-muted text-base md:text-lg">{logs.length} log entr{logs.length !== 1 ? 'ies' : 'y'} • {logs.filter((l: any) => !l.isResolved).length} unresolved</p>
+        <h1 className="font-serif font-bold text-crm-accent mb-2 text-4xl md:text-5xl lg:text-6xl">System Logs</h1>
+        <p className="text-crm-muted text-base md:text-lg">{logs.length} log entr{logs.length !== 1 ? 'ies' : 'y'} • {logs.filter((l: any) => !l.isResolved).length} unresolved</p>
       </div>
-      <div className="bg-botanical-surface rounded-xl border border-botanical-border shadow-sm overflow-hidden">
-        <table className="min-w-full divide-y divide-white/10 text-botanical-text">
-          <thead className="bg-botanical-surface">
+      <div className="bg-crm-surface rounded-xl border border-crm-border shadow-sm overflow-hidden">
+        <table className="min-w-full divide-y divide-white/10 text-crm-text">
+          <thead className="bg-crm-surface">
             <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-botanical-muted uppercase tracking-wider">Time</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-botanical-muted uppercase tracking-wider">Level & Path</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-botanical-muted uppercase tracking-wider">Message</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-botanical-muted uppercase tracking-wider">Status</th>
-              <th className="px-6 py-3 text-right text-xs font-medium text-botanical-muted uppercase tracking-wider">Actions</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-crm-muted uppercase tracking-wider">Time</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-crm-muted uppercase tracking-wider">Level & Path</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-crm-muted uppercase tracking-wider">Message</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-crm-muted uppercase tracking-wider">Status</th>
+              <th className="px-6 py-3 text-right text-xs font-medium text-crm-muted uppercase tracking-wider">Actions</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-white/5">
             {logs.length === 0 ? (
               <tr>
-                <td colSpan={5} className="px-6 py-4 text-center text-sm text-botanical-muted">
+                <td colSpan={5} className="px-6 py-4 text-center text-sm text-crm-muted">
                   No logs found.
                 </td>
               </tr>
             ) : (
               logs.map((log: any) => (
-                <tr key={log.id} className={log.level === "ERROR" && !log.isResolved ? "bg-status-cancelled/20" : "hover:bg-botanical-surface"}>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-botanical-muted">
+                <tr key={log.id} className={log.level === "ERROR" && !log.isResolved ? "bg-status-cancelled/20" : "hover:bg-crm-surface"}>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-crm-muted">
                     {new Date(log.createdAt).toLocaleString()}
                   </td>
-                  <td className="px-6 py-4 text-sm text-botanical-text">
+                  <td className="px-6 py-4 text-sm text-crm-text">
                     <span className={`font-semibold ${log.level === 'ERROR' ? 'text-status-cancelled' : log.level === 'WARN' ? 'text-status-pending' : 'text-status-info'}`}>{log.level}</span>
                     <br />
-                    <span className="text-botanical-muted text-xs">{log.path || "N/A"}</span>
+                    <span className="text-crm-muted text-xs">{log.path || "N/A"}</span>
                   </td>
-                  <td className="px-6 py-4 text-sm text-botanical-muted break-words max-w-md">
+                  <td className="px-6 py-4 text-sm text-crm-muted break-words max-w-md">
                     <div className="font-medium">{log.message}</div>
                     {log.stack && (
                       <details className="mt-1">
-                        <summary className="text-xs text-botanical-accent cursor-pointer">View Stack</summary>
-                        <pre className="mt-2 text-xs bg-botanical-surface p-2 rounded overflow-x-auto text-botanical-muted">
+                        <summary className="text-xs text-crm-accent cursor-pointer">View Stack</summary>
+                        <pre className="mt-2 text-xs bg-crm-surface p-2 rounded overflow-x-auto text-crm-muted">
                           {log.stack}
                         </pre>
                       </details>
@@ -125,7 +125,7 @@ export default async function SiteAdminLogsPage() {
                        {!log.isResolved && (
                          <form action={resolveLog}>
                            <input type="hidden" name="id" value={log.id} />
-                           <button type="submit" className="text-botanical-accent hover:text-botanical-text">
+                           <button type="submit" className="text-crm-accent hover:text-crm-text">
                              Resolve
                            </button>
                          </form>

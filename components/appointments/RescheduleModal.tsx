@@ -147,40 +147,40 @@ export default function RescheduleModal({
   };
 
   return (
-    <div className="fixed inset-0 bg-botanical-surface z-[100] flex items-center justify-center p-4 backdrop-blur-sm">
-      <div className="bg-botanical-surface rounded-xl p-6 w-full max-w-md border border-botanical-border shadow-sm shadow-2xl relative text-left max-h-[90vh] overflow-y-auto">
-        <button onClick={onClose} className="absolute top-4 right-4 text-botanical-muted hover:text-botanical-text bg-botanical-surface rounded-full w-8 h-8 flex items-center justify-center">✕</button>
+    <div className="fixed inset-0 bg-crm-surface z-[100] flex items-center justify-center p-4 backdrop-blur-sm">
+      <div className="bg-crm-surface rounded-xl p-6 w-full max-w-md border border-crm-border shadow-sm shadow-2xl relative text-left max-h-[90vh] overflow-y-auto">
+        <button onClick={onClose} className="absolute top-4 right-4 text-crm-muted hover:text-crm-text bg-crm-surface rounded-full w-8 h-8 flex items-center justify-center">✕</button>
 
-        <h3 className="font-bold text-botanical-text mb-1 text-2xl md:text-3xl">Reschedule Appointment</h3>
-        <p className="text-botanical-accent font-semibold mb-6 text-base md:text-lg">{serviceName}</p>
+        <h3 className="font-bold text-crm-text mb-1 text-2xl md:text-3xl">Reschedule Appointment</h3>
+        <p className="text-crm-accent font-semibold mb-6 text-base md:text-lg">{serviceName}</p>
 
         {error && <p className="text-status-cancelled bg-status-cancelled/20 p-3 rounded mb-4 text-base md:text-lg">{error}</p>}
 
         <div className="space-y-5">
           {/* Date */}
           <div>
-            <label className="block text-botanical-muted mb-2 text-sm">New Date</label>
+            <label className="block text-crm-muted mb-2 text-sm">New Date</label>
             <input
               type="date"
               value={selectedDate}
               onChange={(e) => { setSelectedDate(e.target.value); setSelectedTime(''); }}
               min={new Date().toISOString().split('T')[0]}
              
-              className="w-full bg-botanical-surface border border-botanical-border shadow-sm rounded p-3 text-botanical-text focus:outline-none focus:border-brand-gold"
+              className="w-full bg-crm-surface border border-crm-border shadow-sm rounded p-3 text-crm-text focus:outline-none focus:border-brand-gold"
             />
           </div>
 
           {/* Staff */}
           <div>
-            <label className="block text-botanical-muted mb-2 text-sm">Staff</label>
+            <label className="block text-crm-muted mb-2 text-sm">Staff</label>
             {isLoading ? (
-              <p className="text-botanical-muted text-base md:text-lg">Loading...</p>
+              <p className="text-crm-muted text-base md:text-lg">Loading...</p>
             ) : (
               <select
                 value={selectedStaff}
                 onChange={(e) => { setSelectedStaff(e.target.value); setSelectedTime(''); }}
                
-                className="w-full bg-botanical-surface border border-botanical-border shadow-sm rounded p-3 text-botanical-text focus:outline-none focus:border-brand-gold"
+                className="w-full bg-crm-surface border border-crm-border shadow-sm rounded p-3 text-crm-text focus:outline-none focus:border-brand-gold"
               >
                 <option value="">— Select staff —</option>
                 {allStaff.map(s => (
@@ -193,13 +193,13 @@ export default function RescheduleModal({
           {/* Time */}
           {selectedStaff && (
             <div>
-              <label className="block text-botanical-muted mb-2 text-sm">New Time</label>
+              <label className="block text-crm-muted mb-2 text-sm">New Time</label>
               {availableSlots.length > 0 ? (
                 <select
                   value={selectedTime}
                   onChange={(e) => setSelectedTime(e.target.value)}
                  
-                  className="w-full bg-botanical-surface border border-botanical-border shadow-sm rounded p-3 text-botanical-text focus:outline-none focus:border-brand-gold"
+                  className="w-full bg-crm-surface border border-crm-border shadow-sm rounded p-3 text-crm-text focus:outline-none focus:border-brand-gold"
                 >
                   <option value="">— Choose a time —</option>
                   {availableSlots.map(t => (
@@ -212,14 +212,14 @@ export default function RescheduleModal({
             </div>
           )}
 
-          <div className="flex gap-3 pt-4 border-t border-botanical-border">
-            <button onClick={onClose} className="flex-1 border border-botanical-border shadow-sm text-botanical-text font-semibold py-3 rounded-lg hover:bg-botanical-surface transition-colors">
+          <div className="flex gap-3 pt-4 border-t border-crm-border">
+            <button onClick={onClose} className="flex-1 border border-crm-border shadow-sm text-crm-text font-semibold py-3 rounded-lg hover:bg-crm-surface transition-colors">
               Cancel
             </button>
             <button
               onClick={handleReschedule}
               disabled={!selectedTime || isSubmitting}
-              className="flex-1 bg-botanical-primary text-white font-bold py-3 rounded-lg hover:bg-botanical-surface hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 transition-colors disabled:opacity-50"
+              className="flex-1 bg-crm-primary text-white font-bold py-3 rounded-lg hover:bg-crm-surface hover:text-crm-primary border border-transparent hover:border-crm-primary/30 transition-colors disabled:opacity-50"
             >
               {isSubmitting ? 'Rescheduling...' : 'Confirm Reschedule'}
             </button>

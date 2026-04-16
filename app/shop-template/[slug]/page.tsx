@@ -91,8 +91,8 @@ export default async function PublicShopPage({
     return (
       <div className="h-[100dvh] overflow-y-auto overflow-x-hidden">
         <div className="text-center">
-          <h1 className="font-bold text-botanical-text mb-4 text-4xl md:text-5xl lg:text-6xl">Shop Not Found</h1>
-          <p className="text-botanical-muted text-base md:text-lg">We couldn't find the shop you're looking for.</p>
+          <h1 className="font-bold text-crm-text mb-4 text-4xl md:text-5xl lg:text-6xl">Shop Not Found</h1>
+          <p className="text-crm-muted text-base md:text-lg">We couldn't find the shop you're looking for.</p>
         </div>
       </div>
     );
@@ -374,39 +374,39 @@ export default async function PublicShopPage({
         <header className="max-w-4xl mx-auto px-6 py-12 border-b border-gray-100 flex flex-col md:flex-row justify-between items-end md:items-center">
           <div>
             <h1 className="font-light tracking-tight text-4xl md:text-5xl lg:text-6xl" style={{ color: primaryColor }}>{shop.name}</h1>
-            {shop.description && <p className="text-botanical-muted mt-2 text-base md:text-lg">{shop.description}</p>}
+            {shop.description && <p className="text-crm-muted mt-2 text-base md:text-lg">{shop.description}</p>}
           </div>
-          <div className="text-right mt-6 md:mt-0 text-sm text-botanical-muted">
+          <div className="text-right mt-6 md:mt-0 text-sm text-crm-muted">
              {shop.customization?.phone && <p className="text-base md:text-lg">{shop.customization.phone}</p>}
              {shop.customization?.address && <p className="text-base md:text-lg">{shop.customization.address}</p>}
           </div>
         </header>
 
         <section className="max-w-4xl mx-auto px-6 py-16">
-          <h2 className="font-semibold tracking-widest uppercase text-botanical-muted mb-10 text-3xl md:text-4xl">Service Menu</h2>
+          <h2 className="font-semibold tracking-widest uppercase text-crm-muted mb-10 text-3xl md:text-4xl">Service Menu</h2>
           {shop.services && shop.services.length > 0 ? (
             <div className="space-y-8">
               {shop.services.map((service: any) => (
                 <div key={service.id} className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-baseline group cursor-pointer">
-                  <div className="flex-1 border-b border-dotted border-botanical-border pb-1 mr-4">
+                  <div className="flex-1 border-b border-dotted border-crm-border pb-1 mr-4">
                     <h3 className="font-medium transition-colors text-2xl md:text-3xl" style={{ color: primaryColor }}>{service.name}</h3>
-                    {service.description && <p className="text-botanical-muted mt-1 text-base md:text-lg">{service.description}</p>}
+                    {service.description && <p className="text-crm-muted mt-1 text-base md:text-lg">{service.description}</p>}
                   </div>
                   <div className="text-right">
                     <span className="font-medium">${service.price.toFixed(2)}</span>
-                    <span className="text-botanical-muted text-xs ml-2">{service.duration}m</span>
+                    <span className="text-crm-muted text-xs ml-2">{service.duration}m</span>
                   </div>
                 </div>
               ))}
             </div>
           ) : (
-            <p className="text-botanical-muted italic text-base md:text-lg">No services listed.</p>
+            <p className="text-crm-muted italic text-base md:text-lg">No services listed.</p>
           )}
         </section>
 
         <section className="max-w-4xl mx-auto px-6 pb-20 text-center">
             <button 
-              className="px-8 py-3 text-botanical-text transition-colors text-sm font-medium tracking-wide uppercase rounded-md"
+              className="px-8 py-3 text-crm-text transition-colors text-sm font-medium tracking-wide uppercase rounded-md"
               style={{ backgroundColor: primaryColor }}
             >
               Make an Appointment
@@ -470,7 +470,7 @@ export default async function PublicShopPage({
     <main className="h-[100dvh] overflow-y-auto overflow-x-hidden">
       {/* Hero Section */}
       <section 
-        className="bg-botanical-surface backdrop-blur-md border-b border-botanical-border"
+        className="bg-crm-surface backdrop-blur-md border-b border-crm-border"
         style={{ borderBottomColor: primaryColor }}
       >
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
@@ -482,7 +482,7 @@ export default async function PublicShopPage({
               {shop.name}
             </h1>
             {shop.description && (
-              <p className="text-botanical-muted max-w-2xl mx-auto text-base md:text-lg">
+              <p className="text-crm-muted max-w-2xl mx-auto text-base md:text-lg">
                 {shop.description}
               </p>
             )}
@@ -493,7 +493,7 @@ export default async function PublicShopPage({
       {/* Services Section */}
       <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
         <div className="mb-16">
-          <h2 className="font-bold text-botanical-text mb-4 text-3xl md:text-4xl">Our Services</h2>
+          <h2 className="font-bold text-crm-text mb-4 text-3xl md:text-4xl">Our Services</h2>
           <div 
             className="w-20 h-1 rounded-full"
             style={{ background: `linear-gradient(to right, ${primaryColor}, ${secondaryColor})` }}
@@ -505,10 +505,10 @@ export default async function PublicShopPage({
             {shop.services.map((service: any) => (
               <div
                 key={service.id}
-                className="group bg-gradient-to-br from-slate-800 to-slate-900 rounded-xl p-8 border border-botanical-border shadow-sm transition-all duration-300 hover:shadow-lg"
+                className="group bg-gradient-to-br from-slate-800 to-slate-900 rounded-xl p-8 border border-crm-border shadow-sm transition-all duration-300 hover:shadow-lg"
               >
                 <div className="flex items-start justify-between mb-4">
-                  <h3 className="font-bold text-botanical-text transition-colors text-2xl md:text-3xl">
+                  <h3 className="font-bold text-crm-text transition-colors text-2xl md:text-3xl">
                     {service.name}
                   </h3>
                   <div 
@@ -520,17 +520,17 @@ export default async function PublicShopPage({
                 </div>
 
                 {service.description && (
-                  <p className="text-botanical-muted mb-4 leading-relaxed text-base md:text-lg">
+                  <p className="text-crm-muted mb-4 leading-relaxed text-base md:text-lg">
                     {service.description}
                   </p>
                 )}
 
-                <div className="flex items-center justify-between pt-4 border-t border-botanical-border">
-                  <div className="text-botanical-muted text-sm">
+                <div className="flex items-center justify-between pt-4 border-t border-crm-border">
+                  <div className="text-crm-muted text-sm">
                     ⏱️ {service.duration} minutes
                   </div>
                   <button 
-                    className="text-botanical-text px-4 py-2 rounded-lg font-semibold transition-opacity hover:opacity-90 text-sm"
+                    className="text-crm-text px-4 py-2 rounded-lg font-semibold transition-opacity hover:opacity-90 text-sm"
                     style={{ backgroundColor: primaryColor }}
                   >
                     Book Now
@@ -541,7 +541,7 @@ export default async function PublicShopPage({
           </div>
         ) : (
           <div className="text-center py-16">
-            <p className="text-botanical-muted text-base md:text-lg">
+            <p className="text-crm-muted text-base md:text-lg">
               No services available at the moment. Please check back later.
             </p>
           </div>
@@ -554,14 +554,14 @@ export default async function PublicShopPage({
         style={{ background: `linear-gradient(to right, ${primaryColor}, ${secondaryColor})` }}
       >
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="font-bold text-botanical-text mb-6 text-3xl md:text-4xl">
+          <h2 className="font-bold text-crm-text mb-6 text-3xl md:text-4xl">
             Ready to Book?
           </h2>
-          <p className="text-botanical-text mb-8 text-base md:text-lg">
+          <p className="text-crm-text mb-8 text-base md:text-lg">
             Schedule your appointment today and get the best service in town.
           </p>
           <button 
-            className="bg-botanical-surface font-bold py-3 px-8 rounded-lg transition-colors text-lg"
+            className="bg-crm-surface font-bold py-3 px-8 rounded-lg transition-colors text-lg"
             style={{ color: primaryColor }}
           >
             Book an Appointment
@@ -570,51 +570,51 @@ export default async function PublicShopPage({
       </section>
 
       {/* Footer */}
-      <footer className="bg-botanical-surface border-t border-botanical-border py-12">
+      <footer className="bg-crm-surface border-t border-crm-border py-12">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
             <div>
-              <h3 className="text-botanical-text font-bold mb-4 text-2xl md:text-3xl">{shop.name}</h3>
-              <p className="text-botanical-muted mb-4 text-base md:text-lg">
+              <h3 className="text-crm-text font-bold mb-4 text-2xl md:text-3xl">{shop.name}</h3>
+              <p className="text-crm-muted mb-4 text-base md:text-lg">
                 {shop.description || 'Your trusted service provider'}
               </p>
               {shop.customization?.address && (
-                <p className="text-botanical-muted text-base md:text-lg">{shop.customization.address}</p>
+                <p className="text-crm-muted text-base md:text-lg">{shop.customization.address}</p>
               )}
             </div>
             <div>
-              <h4 className="text-botanical-text font-bold mb-4 text-xl md:text-2xl">Contact</h4>
-              <ul className="space-y-2 text-botanical-muted text-sm">
+              <h4 className="text-crm-text font-bold mb-4 text-xl md:text-2xl">Contact</h4>
+              <ul className="space-y-2 text-crm-muted text-sm">
                 {shop.customization?.phone && (
                   <li>
-                    <a href={`tel:${shop.customization.phone}`} className="hover:text-botanical-text transition">
+                    <a href={`tel:${shop.customization.phone}`} className="hover:text-crm-text transition">
                       📞 {shop.customization.phone}
                     </a>
                   </li>
                 )}
                 {shop.customization?.email && (
                   <li>
-                    <a href={`mailto:${shop.customization.email}`} className="hover:text-botanical-text transition">
+                    <a href={`mailto:${shop.customization.email}`} className="hover:text-crm-text transition">
                       ✉️ {shop.customization.email}
                     </a>
                   </li>
                 )}
                 <li>
-                  <a href="#services" className="hover:text-botanical-text transition">
+                  <a href="#services" className="hover:text-crm-text transition">
                     Services
                   </a>
                 </li>
               </ul>
             </div>
             <div>
-              <h4 className="text-botanical-text font-bold mb-4 text-xl md:text-2xl">Follow Us</h4>
+              <h4 className="text-crm-text font-bold mb-4 text-xl md:text-2xl">Follow Us</h4>
               <div className="flex gap-4">
                 {shop.customization?.social?.facebook && (
                   <a
                     href={shop.customization.social.facebook}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-botanical-muted hover:text-botanical-text transition"
+                    className="text-crm-muted hover:text-crm-text transition"
                   >
                     Facebook
                   </a>
@@ -624,7 +624,7 @@ export default async function PublicShopPage({
                     href={shop.customization.social.instagram}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-botanical-muted hover:text-botanical-text transition"
+                    className="text-crm-muted hover:text-crm-text transition"
                   >
                     Instagram
                   </a>
@@ -634,7 +634,7 @@ export default async function PublicShopPage({
                     href={shop.customization.social.twitter}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-botanical-muted hover:text-botanical-text transition"
+                    className="text-crm-muted hover:text-crm-text transition"
                   >
                     Twitter
                   </a>
@@ -642,7 +642,7 @@ export default async function PublicShopPage({
               </div>
             </div>
           </div>
-          <div className="border-t border-botanical-border pt-8 text-center text-botanical-muted text-sm">
+          <div className="border-t border-crm-border pt-8 text-center text-crm-muted text-sm">
             <p className="text-base md:text-lg">
               &copy; {new Date().getFullYear()} {shop.name}. All rights reserved.
             </p>

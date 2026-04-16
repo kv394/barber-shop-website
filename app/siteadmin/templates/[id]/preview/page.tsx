@@ -55,14 +55,14 @@ export default async function TemplatePreviewPage({ params }: { params: Promise<
   return (
     <main className="h-[100dvh] overflow-y-auto overflow-x-hidden">
       {/* Site Admin Preview Header */}
-      <div className="bg-botanical-surface text-botanical-text p-3 border-b border-botanical-border flex flex-wrap justify-between gap-x-2 gap-y-2 items-center sticky top-0 z-50">
+      <div className="bg-crm-surface text-crm-text p-3 border-b border-crm-border flex flex-wrap justify-between gap-x-2 gap-y-2 items-center sticky top-0 z-50">
         <div>
-          <span className="font-bold text-botanical-accent mr-3">Previewing Template:</span>
+          <span className="font-bold text-crm-accent mr-3">Previewing Template:</span>
           <span>{template.name}</span>
         </div>
         <Link 
           href="/siteadmin/templates"
-          className="text-xs bg-botanical-surface hover:bg-botanical-surface px-3 py-1.5 rounded transition"
+          className="text-xs bg-crm-surface hover:bg-crm-surface px-3 py-1.5 rounded transition"
         >
           Close Preview
         </Link>

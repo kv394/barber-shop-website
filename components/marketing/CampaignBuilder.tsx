@@ -61,7 +61,7 @@ export default function CampaignBuilder({ shopId }: { shopId: string }) {
 
   const getStatusBadge = (status: string) => {
     const colors: Record<string, string> = {
-      DRAFT: 'bg-botanical-surface text-botanical-muted border-botanical-border',
+      DRAFT: 'bg-crm-surface text-crm-muted border-crm-border',
       SCHEDULED: 'bg-status-info/20 text-status-info border-status-info/30',
       SENT: 'bg-status-confirmed/20 text-status-confirmed border-status-confirmed/30',
       CANCELLED: 'bg-status-cancelled/20 text-status-cancelled border-status-cancelled/30',
@@ -77,53 +77,53 @@ export default function CampaignBuilder({ shopId }: { shopId: string }) {
     BIRTHDAY_THIS_MONTH: '🎂 Birthday This Month',
   };
 
-  if (loading) return <p className="text-botanical-muted text-center py-12 text-base md:text-lg">Loading campaigns...</p>;
+  if (loading) return <p className="text-crm-muted text-center py-12 text-base md:text-lg">Loading campaigns...</p>;
 
   return (
     <div className="space-y-8">
       {/* Create Campaign */}
       <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center">
-        <h3 className="font-bold text-botanical-text flex items-center gap-2 text-2xl md:text-3xl">
+        <h3 className="font-bold text-crm-text flex items-center gap-2 text-2xl md:text-3xl">
           <span>📣</span> Campaigns
         </h3>
         <button
           onClick={() => setShowCreate(!showCreate)}
-          className="bg-botanical-primary text-white px-4 py-2 rounded-md text-sm font-bold hover:bg-status-pending"
+          className="bg-crm-primary text-white px-4 py-2 rounded-md text-sm font-bold hover:bg-status-pending"
         >
           {showCreate ? '✕ Cancel' : '+ New Campaign'}
         </button>
       </div>
 
       {showCreate && (
-        <div className="bg-botanical-surface p-6 rounded-xl border border-botanical-border shadow-sm space-y-4">
+        <div className="bg-crm-surface p-6 rounded-xl border border-crm-border shadow-sm space-y-4">
           <div>
-            <label className="block text-botanical-muted mb-1 uppercase tracking-wider text-sm">Campaign Name</label>
+            <label className="block text-crm-muted mb-1 uppercase tracking-wider text-sm">Campaign Name</label>
             <input
               value={form.name}
               onChange={(e) => setForm(f => ({ ...f, name: e.target.value }))}
               placeholder="e.g. Summer Sale 20% Off"
-              className="w-full bg-botanical-surface border border-botanical-border shadow-sm rounded-md p-2.5 text-sm text-botanical-text focus:outline-none focus:border-brand-gold"
+              className="w-full bg-crm-surface border border-crm-border shadow-sm rounded-md p-2.5 text-sm text-crm-text focus:outline-none focus:border-brand-gold"
             />
           </div>
 
           <div>
-            <label className="block text-botanical-muted mb-1 uppercase tracking-wider text-sm">Message</label>
+            <label className="block text-crm-muted mb-1 uppercase tracking-wider text-sm">Message</label>
             <textarea
               value={form.message}
               onChange={(e) => setForm(f => ({ ...f, message: e.target.value }))}
               placeholder="Write your promotional message here..."
               rows={4}
-              className="w-full bg-botanical-surface border border-botanical-border shadow-sm rounded-md p-2.5 text-sm text-botanical-text focus:outline-none focus:border-brand-gold resize-y"
+              className="w-full bg-crm-surface border border-crm-border shadow-sm rounded-md p-2.5 text-sm text-crm-text focus:outline-none focus:border-brand-gold resize-y"
             />
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div>
-              <label className="block text-botanical-muted mb-1 uppercase tracking-wider text-sm">Type</label>
+              <label className="block text-crm-muted mb-1 uppercase tracking-wider text-sm">Type</label>
               <select
                 value={form.type}
                 onChange={(e) => setForm(f => ({ ...f, type: e.target.value }))}
-                className="w-full bg-botanical-surface border border-botanical-border shadow-sm rounded-md p-2.5 text-sm text-botanical-text focus:outline-none focus:border-brand-gold"
+                className="w-full bg-crm-surface border border-crm-border shadow-sm rounded-md p-2.5 text-sm text-crm-text focus:outline-none focus:border-brand-gold"
               >
                 <option value="PROMO">Promotion</option>
                 <option value="RE_ENGAGEMENT">Re-engagement</option>
@@ -133,11 +133,11 @@ export default function CampaignBuilder({ shopId }: { shopId: string }) {
             </div>
 
             <div>
-              <label className="block text-botanical-muted mb-1 uppercase tracking-wider text-sm">Channel</label>
+              <label className="block text-crm-muted mb-1 uppercase tracking-wider text-sm">Channel</label>
               <select
                 value={form.channel}
                 onChange={(e) => setForm(f => ({ ...f, channel: e.target.value }))}
-                className="w-full bg-botanical-surface border border-botanical-border shadow-sm rounded-md p-2.5 text-sm text-botanical-text focus:outline-none focus:border-brand-gold"
+                className="w-full bg-crm-surface border border-crm-border shadow-sm rounded-md p-2.5 text-sm text-crm-text focus:outline-none focus:border-brand-gold"
               >
                 <option value="EMAIL">Email</option>
                 <option value="SMS">SMS</option>
@@ -146,11 +146,11 @@ export default function CampaignBuilder({ shopId }: { shopId: string }) {
             </div>
 
             <div>
-              <label className="block text-botanical-muted mb-1 uppercase tracking-wider text-sm">Target Audience</label>
+              <label className="block text-crm-muted mb-1 uppercase tracking-wider text-sm">Target Audience</label>
               <select
                 value={form.targetSegment}
                 onChange={(e) => setForm(f => ({ ...f, targetSegment: e.target.value }))}
-                className="w-full bg-botanical-surface border border-botanical-border shadow-sm rounded-md p-2.5 text-sm text-botanical-text focus:outline-none focus:border-brand-gold"
+                className="w-full bg-crm-surface border border-crm-border shadow-sm rounded-md p-2.5 text-sm text-crm-text focus:outline-none focus:border-brand-gold"
               >
                 {Object.entries(segmentLabels).map(([key, label]) => (
                   <option key={key} value={key}>{label}</option>
@@ -161,7 +161,7 @@ export default function CampaignBuilder({ shopId }: { shopId: string }) {
 
           <button
             onClick={createCampaign}
-            className="bg-botanical-primary text-white px-6 py-2 rounded-md text-sm font-bold hover:bg-status-pending"
+            className="bg-crm-primary text-white px-6 py-2 rounded-md text-sm font-bold hover:bg-status-pending"
           >
             Create Campaign
           </button>
@@ -170,20 +170,20 @@ export default function CampaignBuilder({ shopId }: { shopId: string }) {
 
       {/* Campaign List */}
       {campaigns.length === 0 ? (
-        <p className="text-botanical-muted italic text-center py-8 border border-dashed border-botanical-border rounded bg-botanical-surface text-base md:text-lg">
+        <p className="text-crm-muted italic text-center py-8 border border-dashed border-crm-border rounded bg-crm-surface text-base md:text-lg">
           No campaigns yet. Create one to start engaging your clients!
         </p>
       ) : (
         <div className="space-y-3">
           {campaigns.map((c: any) => (
-            <div key={c.id} className="bg-botanical-surface p-4 rounded-xl border border-botanical-border shadow-sm flex flex-col sm:flex-row sm:items-center gap-3">
+            <div key={c.id} className="bg-crm-surface p-4 rounded-xl border border-crm-border shadow-sm flex flex-col sm:flex-row sm:items-center gap-3">
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2 mb-1">
-                  <h4 className="font-semibold text-botanical-text truncate text-xl md:text-2xl">{c.name}</h4>
+                  <h4 className="font-semibold text-crm-text truncate text-xl md:text-2xl">{c.name}</h4>
                   {getStatusBadge(c.status)}
                 </div>
-                <p className="text-botanical-muted truncate text-base md:text-lg">{c.message}</p>
-                <div className="flex gap-3 mt-1 text-sm text-botanical-muted">
+                <p className="text-crm-muted truncate text-base md:text-lg">{c.message}</p>
+                <div className="flex gap-3 mt-1 text-sm text-crm-muted">
                   <span>📧 {c.channel}</span>
                   <span>🎯 {segmentLabels[c.targetSegment] || c.targetSegment}</span>
                   {c.recipientCount > 0 && <span>👥 {c.recipientCount} sent</span>}
@@ -194,7 +194,7 @@ export default function CampaignBuilder({ shopId }: { shopId: string }) {
                 <button
                   onClick={() => sendCampaign(c.id)}
                   disabled={sending === c.id}
-                  className="bg-status-confirmed text-botanical-text px-4 py-2 rounded-md text-xs font-bold hover:bg-status-confirmed disabled:opacity-50 shrink-0"
+                  className="bg-status-confirmed text-crm-text px-4 py-2 rounded-md text-xs font-bold hover:bg-status-confirmed disabled:opacity-50 shrink-0"
                 >
                   {sending === c.id ? 'Sending...' : '🚀 Send Now'}
                 </button>

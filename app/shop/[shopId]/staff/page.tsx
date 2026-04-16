@@ -140,7 +140,7 @@ export default async function StaffBookingPage({
   const shopData = await getShopData(shopId, userId, selectedDate, fromTime, toTime);
 
   if (!shopData) {
-    return <div className="p-8 text-botanical-text">You do not have access to this page.</div>;
+    return <div className="p-8 text-crm-text">You do not have access to this page.</div>;
   }
 
   const { shop, shopSlug, userRole, staff, isClockedIn, actualUserId } = shopData;
@@ -156,7 +156,7 @@ export default async function StaffBookingPage({
     >
       <div className="flex justify-end mb-4">
         {userRole === 'SHOP_ADMIN' && (
-          <a href={`/shop/${shopId}/settings/team`} className="bg-botanical-primary text-white px-4 py-2 rounded-lg font-bold hover:bg-status-pending transition-colors">
+          <a href={`/shop/${shopId}/settings/team`} className="bg-crm-primary text-white px-4 py-2 rounded-lg font-bold hover:bg-status-pending transition-colors">
             + Onboard Staff
           </a>
         )}
@@ -168,18 +168,18 @@ export default async function StaffBookingPage({
           const isOnLeave = staffMember.isOnLeave;
           const isNotWorking = staffMember.using === 'not-working';
           return (
-            <div key={staffMember.id} className="bg-botanical-bg/70 border border-botanical-border shadow-sm rounded-lg p-3 sm:p-4 flex flex-col">
+            <div key={staffMember.id} className="bg-crm-bg/70 border border-crm-border shadow-sm rounded-lg p-3 sm:p-4 flex flex-col">
               <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-start mb-2 gap-2">
                 <StaffProfileModalWrapper staff={staffMember}>
                   <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-full overflow-hidden bg-botanical-surface border border-brand-gold/50 flex items-center justify-center shrink-0">
+                    <div className="w-8 h-8 rounded-full overflow-hidden bg-crm-surface border border-brand-gold/50 flex items-center justify-center shrink-0">
                       {staffMember.imageUrl ? (
                         <img src={staffMember.imageUrl} alt={staffMember.name} className="w-full h-full object-cover" />
                       ) : (
                         <span className="text-xs">👤</span>
                       )}
                     </div>
-                    <h2 className="font-semibold text-botanical-accent truncate text-3xl md:text-4xl">{staffMember.name || staffMember.email || 'Unnamed Staff'}</h2>
+                    <h2 className="font-semibold text-crm-accent truncate text-3xl md:text-4xl">{staffMember.name || staffMember.email || 'Unnamed Staff'}</h2>
                   </div>
                 </StaffProfileModalWrapper>
                 <div className="flex flex-col gap-1 items-end shrink-0">
@@ -193,13 +193,13 @@ export default async function StaffBookingPage({
                     <p className="font-bold text-status-cancelled text-base md:text-lg">ON LEAVE</p>
                   </div>
                 ) : isNotWorking ? (
-                    <div className="text-center py-4 h-full flex flex-col justify-center items-center rounded-md bg-botanical-surface">
-                        <p className="font-bold text-botanical-muted text-base md:text-lg">NOT WORKING</p>
+                    <div className="text-center py-4 h-full flex flex-col justify-center items-center rounded-md bg-crm-surface">
+                        <p className="font-bold text-crm-muted text-base md:text-lg">NOT WORKING</p>
                     </div>
                 ) : staffMember.schedule.length > 0 ? (
                   staffMember.schedule.map((slot: any) => (
                     <div key={slot.time} className={`p-2 rounded-md text-xs sm:text-sm flex justify-between items-center ${slot.isBooked ? 'bg-amber-800/60' : 'bg-status-confirmed/20'}`}>
-                      <span className="font-mono text-botanical-muted">{slot.time}</span>
+                      <span className="font-mono text-crm-muted">{slot.time}</span>
                       <div className="flex items-center">
                         {slot.isBooked ? <span className="font-bold text-amber-300">Booked</span> : <span className="font-semibold text-status-confirmed">Available</span>}
                         {!slot.isBooked && (userRole === 'SHOP_ADMIN' || userRole === 'SITE_ADMIN' || staffMember.id === actualUserId) && (
@@ -209,8 +209,8 @@ export default async function StaffBookingPage({
                     </div>
                   ))
                 ) : (
-                  <div className="text-center py-4 h-full flex flex-col justify-center items-center rounded-md bg-botanical-surface">
-                    <p className="text-botanical-muted italic text-base md:text-lg">No slots in selected range.</p>
+                  <div className="text-center py-4 h-full flex flex-col justify-center items-center rounded-md bg-crm-surface">
+                    <p className="text-crm-muted italic text-base md:text-lg">No slots in selected range.</p>
                   </div>
                 )}
               </div>

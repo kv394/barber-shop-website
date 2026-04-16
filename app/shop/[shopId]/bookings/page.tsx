@@ -66,7 +66,7 @@ export default async function BookingsPage({ params }: { params: Promise<{ shopI
         <div className="h-[100dvh] overflow-y-auto overflow-x-hidden">
             <div className="text-center">
                 <h1 className="font-bold text-status-cancelled mb-4 text-4xl md:text-5xl lg:text-6xl">Access Denied</h1>
-                <p className="text-botanical-muted text-base md:text-lg">You do not have permission to view this page.</p>
+                <p className="text-crm-muted text-base md:text-lg">You do not have permission to view this page.</p>
             </div>
         </div>
       )
@@ -92,19 +92,19 @@ export default async function BookingsPage({ params }: { params: Promise<{ shopI
       >
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-4 sm:mb-6">
           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-            <h2 className="font-bold text-botanical-text text-3xl md:text-4xl">Upcoming Bookings</h2>
+            <h2 className="font-bold text-crm-text text-3xl md:text-4xl">Upcoming Bookings</h2>
             <BookingDatePicker dates={Object.keys(groupedAppointments)} />
           </div>
-          <Link href={`/shops/${shopSlug}`} target="_blank" className="bg-botanical-primary text-white font-bold px-4 py-2 rounded-lg text-xs sm:text-sm transition-colors whitespace-nowrap shadow-lg hover:opacity-90">+ Add Booking</Link>
+          <Link href={`/shops/${shopSlug}`} target="_blank" className="bg-crm-primary text-white font-bold px-4 py-2 rounded-lg text-xs sm:text-sm transition-colors whitespace-nowrap shadow-lg hover:opacity-90">+ Add Booking</Link>
         </div>
 
         {Object.keys(groupedAppointments).length === 0 ? (
-          <p className="text-botanical-muted italic text-center py-8 sm:py-12 border border-dashed border-botanical-border rounded text-base md:text-lg">No upcoming appointments scheduled.</p>
+          <p className="text-crm-muted italic text-center py-8 sm:py-12 border border-dashed border-crm-border rounded text-base md:text-lg">No upcoming appointments scheduled.</p>
         ) : (
           <div className="space-y-6 sm:space-y-8">
             {Object.keys(groupedAppointments).map((date) => (
               <div key={date} id={`date-${date.replace(/\s+/g, '-')}`} className="scroll-mt-24">
-                <h3 className="font-bold text-botanical-accent border-b border-botanical-border pb-2 mb-3 sm:mb-4 text-2xl md:text-3xl">{date}</h3>
+                <h3 className="font-bold text-crm-accent border-b border-crm-border pb-2 mb-3 sm:mb-4 text-2xl md:text-3xl">{date}</h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
                   {groupedAppointments[date].map((apt: any) => {
                     const start = new Date(apt.startTime);
@@ -119,32 +119,32 @@ export default async function BookingsPage({ params }: { params: Promise<{ shopI
                     const isActive = isScheduled || isAccepted || isWorkCompleted;
 
                     const statusBadge = isScheduled ? (
-                      <span className="px-2 py-0.5 text-sm uppercase font-bold rounded bg-botanical-surface text-botanical-text border border-slate-600 whitespace-nowrap">Scheduled</span>
+                      <span className="px-2 py-0.5 text-sm uppercase font-bold rounded bg-crm-surface text-crm-text border border-slate-600 whitespace-nowrap">Scheduled</span>
                     ) : isAccepted ? (
                       <span className="px-2 py-0.5 text-sm uppercase font-bold rounded bg-status-info/20 text-status-info border border-status-info/30 whitespace-nowrap">Accepted</span>
                     ) : isWorkCompleted ? (
-                      <span className="px-2 py-0.5 text-sm uppercase font-bold rounded bg-botanical-primary/20 text-botanical-accent border border-brand-gold/30 whitespace-nowrap hover:opacity-90">Ready for Checkout</span>
+                      <span className="px-2 py-0.5 text-sm uppercase font-bold rounded bg-crm-primary/20 text-crm-accent border border-brand-gold/30 whitespace-nowrap hover:opacity-90">Ready for Checkout</span>
                     ) : null;
 
                     return (
-                      <div key={apt.id} className={`bg-botanical-surface p-5 rounded-lg border ${isNow ? 'border-status-confirmed/50 shadow-[0_0_15px_rgba(34,197,94,0.2)]' : 'border-botanical-border'}`}>
+                      <div key={apt.id} className={`bg-crm-surface p-5 rounded-lg border ${isNow ? 'border-status-confirmed/50 shadow-[0_0_15px_rgba(34,197,94,0.2)]' : 'border-crm-border'}`}>
                                            <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-start mb-3 gap-2">
                                                <div className="flex flex-col items-start gap-1">
                                                    <div className="flex flex-wrap items-center gap-2">
                                                        <h4 className="font-bold leading-tight text-xl md:text-2xl">{apt.user?.name || "Guest"}</h4>
                                                        {statusBadge}
                                                    </div>
-                                                   <p className="text-botanical-muted text-base md:text-lg">{apt.user?.email || "No email"}</p>
+                                                   <p className="text-crm-muted text-base md:text-lg">{apt.user?.email || "No email"}</p>
                                                </div>
                                                <div className="text-right">
-                                                   <p className="font-mono text-botanical-accent text-base md:text-lg">{start.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
-                                                   <p className="text-botanical-muted text-base md:text-lg">{apt.service.duration} mins</p>
+                                                   <p className="font-mono text-crm-accent text-base md:text-lg">{start.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
+                                                   <p className="text-crm-muted text-base md:text-lg">{apt.service.duration} mins</p>
                                                </div>
                                            </div>
-                                           <div className="pt-2 sm:pt-3 border-t border-botanical-border flex flex-col sm:flex-row justify-between items-start sm:items-end gap-2">
+                                           <div className="pt-2 sm:pt-3 border-t border-crm-border flex flex-col sm:flex-row justify-between items-start sm:items-end gap-2">
                                                <div>
-                                                   <p className="font-semibold text-botanical-muted text-base md:text-lg">{apt.service.name}</p>
-                                                   <p className="text-botanical-muted text-base md:text-lg">${apt.service.price.toFixed(2)}</p>
+                                                   <p className="font-semibold text-crm-muted text-base md:text-lg">{apt.service.name}</p>
+                                                   <p className="text-crm-muted text-base md:text-lg">${apt.service.price.toFixed(2)}</p>
                                                </div>
                                                <div className="flex flex-wrap items-center justify-end gap-4 shrink-0 mt-3 sm:mt-0 w-full sm:w-auto">
                                                  {isActive && <NoShowButton shopId={shop.id} appointmentId={apt.id} userName={apt.user?.name || apt.user?.email || "Guest"} />}
@@ -178,6 +178,6 @@ export default async function BookingsPage({ params }: { params: Promise<{ shopI
       </ShopAdminLayout>
     );
   } catch (error: any) {
-    return <div className="text-botanical-text p-12"><h1 className="text-4xl md:text-5xl lg:text-6xl">Error compiling</h1><pre>{error.stack || error.toString()}</pre></div>;
+    return <div className="text-crm-text p-12"><h1 className="text-4xl md:text-5xl lg:text-6xl">Error compiling</h1><pre>{error.stack || error.toString()}</pre></div>;
   }
 }

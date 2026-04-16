@@ -25,7 +25,7 @@ export default async function MyAppointmentsLayout({
   }
 
   return (
-    <div className="bg-botanical-surface h-[100dvh] overflow-y-auto overflow-x-hidden text-botanical-text font-sans">
+    <div className="bg-crm-surface h-[100dvh] overflow-y-auto overflow-x-hidden text-crm-text font-sans">
       {children}
     </div>
   );

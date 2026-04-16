@@ -18,7 +18,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${plusJakarta.variable} ${cormorant.variable} font-sans antialiased text-botanical-text bg-botanical-bg`}>
+      <body className={`${plusJakarta.variable} ${cormorant.variable} font-sans antialiased text-crm-text bg-crm-bg`}>
         {children}
         <Analytics />
       </body>

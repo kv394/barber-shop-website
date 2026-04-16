@@ -87,10 +87,10 @@ export default function MyAppointmentsPage() {
 
   if (loading) {
     return (
-      <div className="h-[100dvh] overflow-y-auto overflow-x-hidden flex items-center justify-center bg-botanical-surface">
+      <div className="h-[100dvh] overflow-y-auto overflow-x-hidden flex items-center justify-center bg-crm-surface">
         <div className="flex flex-col items-center gap-4">
           <div className="w-12 h-12 border-4 border-brand-gold border-t-transparent rounded-full animate-spin"></div>
-          <p className="text-botanical-accent animate-pulse font-medium tracking-wide uppercase text-base md:text-lg">Loading Appointments...</p>
+          <p className="text-crm-accent animate-pulse font-medium tracking-wide uppercase text-base md:text-lg">Loading Appointments...</p>
         </div>
       </div>
     );
@@ -99,25 +99,25 @@ export default function MyAppointmentsPage() {
   return (
     <main className="h-[100dvh] overflow-y-auto overflow-x-hidden">
       {/* Header */}
-      <header className="bg-botanical-surface backdrop-blur-md border-b border-botanical-border sticky top-0 z-20">
+      <header className="bg-crm-surface backdrop-blur-md border-b border-crm-border sticky top-0 z-20">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
           <div>
-            <h1 className="font-bold text-botanical-text text-4xl md:text-5xl lg:text-6xl">My Appointments</h1>
-            <p className="text-botanical-muted text-base md:text-lg">Manage your upcoming bookings</p>
+            <h1 className="font-bold text-crm-text text-4xl md:text-5xl lg:text-6xl">My Appointments</h1>
+            <p className="text-crm-muted text-base md:text-lg">Manage your upcoming bookings</p>
           </div>
           <div className="flex gap-2">
             {user?.role === 'SITE_ADMIN' ? (
-              <Link href="/siteadmin" className="bg-botanical-surface border border-slate-600 text-botanical-text font-bold px-4 py-2 rounded-lg text-sm hover:bg-botanical-surface transition-colors">
+              <Link href="/siteadmin" className="bg-crm-surface border border-slate-600 text-crm-text font-bold px-4 py-2 rounded-lg text-sm hover:bg-crm-surface transition-colors">
                 Back to Siteadmin
               </Link>
             ) : user?.shopId && (user?.role === 'SHOP_ADMIN' || user?.role === 'STAFF') ? (
-              <Link href={`/shop/${user.shopId}`} className="bg-botanical-surface border border-slate-600 text-botanical-text font-bold px-4 py-2 rounded-lg text-sm hover:bg-botanical-surface transition-colors">
+              <Link href={`/shop/${user.shopId}`} className="bg-crm-surface border border-slate-600 text-crm-text font-bold px-4 py-2 rounded-lg text-sm hover:bg-crm-surface transition-colors">
                 Back to Dashboard
               </Link>
             ) : null}
             <Link
               href="/shops"
-              className="bg-botanical-primary text-white font-bold px-4 py-2 rounded-lg text-sm hover:bg-botanical-surface hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 transition-colors"
+              className="bg-crm-primary text-white font-bold px-4 py-2 rounded-lg text-sm hover:bg-crm-surface hover:text-crm-primary border border-transparent hover:border-crm-primary/30 transition-colors"
             >
               Book New
             </Link>
@@ -152,18 +152,18 @@ export default function MyAppointmentsPage() {
         <section>
           <div className="flex items-center gap-3 mb-5">
             <div className="w-2 h-8 bg-status-info rounded-full" />
-            <h2 className="font-bold text-botanical-text text-3xl md:text-4xl">
+            <h2 className="font-bold text-crm-text text-3xl md:text-4xl">
               Upcoming ({upcoming.length})
             </h2>
           </div>
 
           {upcoming.length === 0 ? (
-            <div className="text-center py-12 border border-dashed border-botanical-border rounded-xl">
+            <div className="text-center py-12 border border-dashed border-crm-border rounded-xl">
               <p className="mb-3 text-base md:text-lg">📅</p>
-              <p className="text-botanical-muted text-base md:text-lg">No upcoming appointments</p>
+              <p className="text-crm-muted text-base md:text-lg">No upcoming appointments</p>
               <Link
                 href="/shops"
-                className="inline-block mt-4 text-botanical-accent hover:text-botanical-text text-sm font-semibold transition-colors"
+                className="inline-block mt-4 text-crm-accent hover:text-crm-text text-sm font-semibold transition-colors"
               >
                 Browse shops to book →
               </Link>
@@ -187,15 +187,15 @@ export default function MyAppointmentsPage() {
         {/* ═══ Past ═══ */}
         <section>
           <div className="flex items-center gap-3 mb-5">
-            <div className="w-2 h-8 bg-botanical-border rounded-full" />
-            <h2 className="font-bold text-botanical-text text-3xl md:text-4xl">
+            <div className="w-2 h-8 bg-crm-border rounded-full" />
+            <h2 className="font-bold text-crm-text text-3xl md:text-4xl">
               Past ({past.length})
             </h2>
           </div>
 
           {past.length === 0 ? (
-            <div className="text-center py-12 border border-dashed border-botanical-border rounded-xl">
-              <p className="text-botanical-muted italic text-base md:text-lg">No past appointments yet.</p>
+            <div className="text-center py-12 border border-dashed border-crm-border rounded-xl">
+              <p className="text-crm-muted italic text-base md:text-lg">No past appointments yet.</p>
             </div>
           ) : (
             <div className="space-y-3">
@@ -237,13 +237,13 @@ function AppointmentCard({
   const shopSlug = apt.shop?.name?.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '') || '';
 
   return (
-    <div className="bg-botanical-surface border border-botanical-border shadow-sm rounded-xl p-4 sm:p-5 hover:border-botanical-border transition-colors">
+    <div className="bg-crm-surface border border-crm-border shadow-sm rounded-xl p-4 sm:p-5 hover:border-crm-border transition-colors">
       <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3">
         {/* Left: Info */}
         <div className="flex-1 min-w-0 space-y-2">
           {/* Shop name + status */}
           <div className="flex items-center gap-2 flex-wrap">
-            <span className="font-bold text-botanical-text text-sm sm:text-base truncate">
+            <span className="font-bold text-crm-text text-sm sm:text-base truncate">
               {apt.shop?.name || 'Unknown Shop'}
             </span>
             <span className={`text-sm font-bold px-2 py-0.5 rounded-full ${style.bg} ${style.text}`}>
@@ -253,30 +253,30 @@ function AppointmentCard({
 
           {/* Service + Staff */}
           <div className="flex items-center gap-2 text-sm">
-            <span className="text-botanical-muted">{apt.service?.name || 'Service'}</span>
+            <span className="text-crm-muted">{apt.service?.name || 'Service'}</span>
             {apt.staff?.name && (
               <>
-                <span className="text-botanical-muted">·</span>
-                <span className="text-botanical-muted">with {apt.staff.name}</span>
+                <span className="text-crm-muted">·</span>
+                <span className="text-crm-muted">with {apt.staff.name}</span>
               </>
             )}
           </div>
 
           {/* Date / Time */}
           <div className="flex items-center gap-2">
-            <span className="text-xs text-botanical-muted">📅</span>
-            <span className="text-sm font-mono text-botanical-accent">
+            <span className="text-xs text-crm-muted">📅</span>
+            <span className="text-sm font-mono text-crm-accent">
               {formatDateTimeInShopTz(apt.startTime, tz)}
             </span>
             {apt.service?.duration && (
-              <span className="text-xs text-botanical-muted">({apt.service.duration} min)</span>
+              <span className="text-xs text-crm-muted">({apt.service.duration} min)</span>
             )}
           </div>
 
           {/* Price */}
           {apt.status === 'COMPLETED' && apt.totalAmount > 0 && (
-            <div className="flex items-center gap-3 text-xs text-botanical-muted">
-              <span>Total: <span className="text-botanical-text font-semibold">${apt.totalAmount.toFixed(2)}</span></span>
+            <div className="flex items-center gap-3 text-xs text-crm-muted">
+              <span>Total: <span className="text-crm-text font-semibold">${apt.totalAmount.toFixed(2)}</span></span>
               {apt.tipAmount > 0 && <span>Tip: <span className="text-status-confirmed">${apt.tipAmount.toFixed(2)}</span></span>}
             </div>
           )}
@@ -306,7 +306,7 @@ function AppointmentCard({
           {showRebook && apt.service && shopSlug && (
             <Link
               href={`/shops/${shopSlug}?service=${apt.service.id}`}
-              className="px-4 py-2 text-sm font-semibold bg-botanical-primary/20 text-botanical-accent border border-brand-gold/30 rounded-lg hover:bg-botanical-primary/40 transition-all text-center"
+              className="px-4 py-2 text-sm font-semibold bg-crm-primary/20 text-crm-accent border border-brand-gold/30 rounded-lg hover:bg-crm-primary/40 transition-all text-center"
             >
               Rebook
             </Link>
@@ -314,7 +314,7 @@ function AppointmentCard({
           {showRebook && apt.status === 'COMPLETED' && !apt.review && (
             <Link
               href={`/my-appointments/review/${apt.id}`}
-              className="px-4 py-2 text-sm font-semibold bg-purple-600/20 text-botanical-accent border border-botanical-accent/30 rounded-lg hover:bg-purple-600/40 transition-all text-center"
+              className="px-4 py-2 text-sm font-semibold bg-purple-600/20 text-crm-accent border border-crm-accent/30 rounded-lg hover:bg-purple-600/40 transition-all text-center"
             >
               ⭐ Leave Review
             </Link>

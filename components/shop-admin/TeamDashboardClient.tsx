@@ -34,7 +34,7 @@ export default function TeamDashboardClient({
   return (
     <>
       <div className="flex justify-end mb-4">
-        <Link href={`/shop/${shopId}/portfolio`} className="bg-botanical-surface text-botanical-text border border-botanical-border shadow-sm px-4 py-2 rounded-lg hover:bg-gray-50 transition-colors font-bold uppercase tracking-wider flex items-center gap-2 shadow-lg">
+        <Link href={`/shop/${shopId}/portfolio`} className="bg-crm-surface text-crm-text border border-crm-border shadow-sm px-4 py-2 rounded-lg hover:bg-gray-50 transition-colors font-bold uppercase tracking-wider flex items-center gap-2 shadow-lg">
           📸 Shop Portfolio Gallery
         </Link>
       </div>
@@ -50,12 +50,12 @@ export default function TeamDashboardClient({
           const defaultClose = staffMember.closeTime || "17:00";
 
           return (
-            <div key={staffMember.id} className={`bg-botanical-surface border border-botanical-border shadow-sm rounded-2xl p-5 flex flex-col shadow-lg transition-all duration-200 hover:shadow-xl hover:border-botanical-border ${isOnLeave ? 'ring-1 ring-status-cancelled/50' : ''}`}>
+            <div key={staffMember.id} className={`bg-crm-surface border border-crm-border shadow-sm rounded-2xl p-5 flex flex-col shadow-lg transition-all duration-200 hover:shadow-xl hover:border-crm-border ${isOnLeave ? 'ring-1 ring-status-cancelled/50' : ''}`}>
               
               <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-start mb-4">
                 <StaffProfileModalWrapper staff={staffMember}>
                   <div className="flex items-center gap-3 text-left">
-                    <div className="w-10 h-10 rounded-full overflow-hidden bg-botanical-surface border border-botanical-border shadow-sm flex items-center justify-center shrink-0">
+                    <div className="w-10 h-10 rounded-full overflow-hidden bg-crm-surface border border-crm-border shadow-sm flex items-center justify-center shrink-0">
                       {staffMember.imageUrl ? (
                         <img src={staffMember.imageUrl} alt={staffMember.name} className="w-full h-full object-cover" />
                       ) : (
@@ -63,11 +63,11 @@ export default function TeamDashboardClient({
                       )}
                     </div>
                     <div>
-                      <h2 className="font-bold text-botanical-text mb-0.5 flex items-center gap-2 text-3xl md:text-4xl">
+                      <h2 className="font-bold text-crm-text mb-0.5 flex items-center gap-2 text-3xl md:text-4xl">
                         {staffMember.name || staffMember.email.split('@')[0]}
-                        {staffMember.role === 'SHOP_ADMIN' && <span className="text-xs bg-botanical-primary/20 text-botanical-primary px-1.5 py-0.5 rounded uppercase tracking-wider font-bold hover:opacity-90">Admin</span>}
+                        {staffMember.role === 'SHOP_ADMIN' && <span className="text-xs bg-crm-primary/20 text-crm-primary px-1.5 py-0.5 rounded uppercase tracking-wider font-bold hover:opacity-90">Admin</span>}
                       </h2>
-                      <p className="text-botanical-muted text-base md:text-lg">{staffMember.email}</p>
+                      <p className="text-crm-muted text-base md:text-lg">{staffMember.email}</p>
                     </div>
                   </div>
                 </StaffProfileModalWrapper>
@@ -77,7 +77,7 @@ export default function TeamDashboardClient({
                   {isOnLeave ? (
                     <span className="text-sm bg-red-50 text-red-700 border border-red-200 px-2.5 py-1 rounded-full font-bold uppercase tracking-wider">On Leave</span>
                   ) : isNotWorking ? (
-                    <span className="text-sm bg-botanical-surface text-botanical-text border border-botanical-border shadow-sm px-2.5 py-1 rounded-full font-bold uppercase tracking-wider">Day Off</span>
+                    <span className="text-sm bg-crm-surface text-crm-text border border-crm-border shadow-sm px-2.5 py-1 rounded-full font-bold uppercase tracking-wider">Day Off</span>
                   ) : staffMember.isClockedIn ? (
                     <span className="text-sm bg-emerald-50 text-emerald-700 border border-emerald-200 px-2.5 py-1 rounded-full font-bold uppercase tracking-wider flex items-center gap-1.5">
                       <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> Clocked In
@@ -89,7 +89,7 @@ export default function TeamDashboardClient({
               </div>
 
               {/* Schedule / Leave Display */}
-              <div className="flex-grow bg-botanical-surface rounded-xl p-3 mb-4 min-h-[120px] flex flex-col">
+              <div className="flex-grow bg-crm-surface rounded-xl p-3 mb-4 min-h-[120px] flex flex-col">
                 {isOnLeave ? (
                   <div className="flex-grow flex flex-col justify-center items-center text-center">
                     <span className="text-3xl mb-2">🏖️</span>
@@ -108,10 +108,10 @@ export default function TeamDashboardClient({
                 ) : isNotWorking ? (
                   <div className="flex-grow flex flex-col justify-center items-center text-center">
                     <span className="text-3xl mb-2">💤</span>
-                    <p className="font-medium text-botanical-muted mb-4 text-base md:text-lg">Scheduled Day Off</p>
+                    <p className="font-medium text-crm-muted mb-4 text-base md:text-lg">Scheduled Day Off</p>
                     
                     {/* Quick Add Shift form with editable times */}
-                    <form action={updateDayHoursAction} className="w-full space-y-2 border-t border-botanical-border pt-3">
+                    <form action={updateDayHoursAction} className="w-full space-y-2 border-t border-crm-border pt-3">
                         <input type="hidden" name="staffId" value={staffMember.id} />
                         <input type="hidden" name="shopId" value={shopId} />
                         <input type="hidden" name="dayOfWeek" value={staffMember.dayOfWeek} />
@@ -124,36 +124,36 @@ export default function TeamDashboardClient({
                                 name="openTime" 
                                 value={getTimeValue(staffMember.id, 'open', defaultOpen)}
                                 onChange={(e) => handleTimeChange(staffMember.id, 'open', e.target.value)}
-                                className="bg-botanical-surface text-botanical-text text-xs p-1 rounded border border-botanical-border shadow-sm outline-none focus:ring-1 focus:ring-botanical-primary"
+                                className="bg-crm-surface text-crm-text text-xs p-1 rounded border border-crm-border shadow-sm outline-none focus:ring-1 focus:ring-crm-primary"
                             />
-                            <span className="text-botanical-muted text-xs">to</span>
+                            <span className="text-crm-muted text-xs">to</span>
                             <input 
                                 type="time" 
                                 name="closeTime" 
                                 value={getTimeValue(staffMember.id, 'close', defaultClose)}
                                 onChange={(e) => handleTimeChange(staffMember.id, 'close', e.target.value)}
-                                className="bg-botanical-surface text-botanical-text text-xs p-1 rounded border border-botanical-border shadow-sm outline-none focus:ring-1 focus:ring-botanical-primary"
+                                className="bg-crm-surface text-crm-text text-xs p-1 rounded border border-crm-border shadow-sm outline-none focus:ring-1 focus:ring-crm-primary"
                             />
                         </div>
-                        <button type="submit" className="w-full text-xs text-botanical-primary bg-botanical-primary/10 hover:bg-botanical-primary hover:text-white py-1.5 rounded transition-colors border border-botanical-primary/20 font-bold">Add Shift</button>
+                        <button type="submit" className="w-full text-xs text-crm-primary bg-crm-primary/10 hover:bg-crm-primary hover:text-white py-1.5 rounded transition-colors border border-crm-primary/20 font-bold">Add Shift</button>
                     </form>
                   </div>
                 ) : (
                   <>
-                    <div className="flex items-center justify-between mb-3 pb-2 border-b border-botanical-border">
-                        <span className="text-xs font-semibold text-botanical-muted uppercase tracking-wider">Today's Hours</span>
-                        <span className="text-sm font-mono text-botanical-primary">
+                    <div className="flex items-center justify-between mb-3 pb-2 border-b border-crm-border">
+                        <span className="text-xs font-semibold text-crm-muted uppercase tracking-wider">Today's Hours</span>
+                        <span className="text-sm font-mono text-crm-primary">
                             {new Date(`1970-01-01T${staffMember.openTime}Z`).toLocaleTimeString([], {hour: 'numeric', minute:'2-digit'})} - {new Date(`1970-01-01T${staffMember.closeTime}Z`).toLocaleTimeString([], {hour: 'numeric', minute:'2-digit'})}
                         </span>
                     </div>
                     
-                    <div className="space-y-1.5 max-h-[160px] overflow-y-auto pr-1 scrollbar-thin scrollbar-thumb-botanical-border scrollbar-track-transparent">
+                    <div className="space-y-1.5 max-h-[160px] overflow-y-auto pr-1 scrollbar-thin scrollbar-thumb-crm-border scrollbar-track-transparent">
                       {staffMember.schedule.length === 0 ? (
-                          <p className="text-botanical-muted text-center py-4 text-base md:text-lg">No working slots configured.</p>
+                          <p className="text-crm-muted text-center py-4 text-base md:text-lg">No working slots configured.</p>
                       ) : (
                           staffMember.schedule.map((slot: any) => (
-                            <div key={slot.time} className={`px-2.5 py-1.5 rounded text-xs flex justify-between items-center ${slot.isBooked ? 'bg-amber-50 border border-amber-200' : staffMember.isClockedIn ? 'bg-emerald-50 border border-emerald-200' : 'bg-botanical-surface border border-transparent'}`}>
-                              <span className="font-mono text-botanical-muted">{slot.time}</span>
+                            <div key={slot.time} className={`px-2.5 py-1.5 rounded text-xs flex justify-between items-center ${slot.isBooked ? 'bg-amber-50 border border-amber-200' : staffMember.isClockedIn ? 'bg-emerald-50 border border-emerald-200' : 'bg-crm-surface border border-transparent'}`}>
+                              <span className="font-mono text-crm-muted">{slot.time}</span>
                               {slot.isBooked ? (
                                 <span className="font-bold text-amber-700">Booked</span>
                               ) : (
@@ -173,7 +173,7 @@ export default function TeamDashboardClient({
               <div className="flex flex-col gap-3 mt-auto pt-4">
                 <Link
                     href={`/shop/${shopId}/settings/team/${staffMember.id}/schedule`}
-                    className="w-full text-center bg-botanical-surface hover:bg-gray-50 text-botanical-text text-xs font-semibold py-2.5 rounded-lg transition-colors border border-botanical-border shadow-sm flex items-center justify-center"
+                    className="w-full text-center bg-crm-surface hover:bg-gray-50 text-crm-text text-xs font-semibold py-2.5 rounded-lg transition-colors border border-crm-border shadow-sm flex items-center justify-center"
                 >
                     Edit Schedule
                 </Link>
@@ -189,14 +189,14 @@ export default function TeamDashboardClient({
                                 name="startTime" 
                                 value={getTimeValue(staffMember.id, 'open', defaultOpen)}
                                 onChange={(e) => handleTimeChange(staffMember.id, 'open', e.target.value)}
-                                className="w-full bg-botanical-surface text-botanical-muted text-sm p-1 rounded border border-botanical-border shadow-sm outline-none focus:ring-1 focus:ring-botanical-primary"
+                                className="w-full bg-crm-surface text-crm-muted text-sm p-1 rounded border border-crm-border shadow-sm outline-none focus:ring-1 focus:ring-crm-primary"
                             />
                              <input 
                                 type="time" 
                                 name="endTime" 
                                 value={getTimeValue(staffMember.id, 'close', defaultClose)}
                                 onChange={(e) => handleTimeChange(staffMember.id, 'close', e.target.value)}
-                                className="w-full bg-botanical-surface text-botanical-muted text-sm p-1 rounded border border-botanical-border shadow-sm outline-none focus:ring-1 focus:ring-botanical-primary"
+                                className="w-full bg-crm-surface text-crm-muted text-sm p-1 rounded border border-crm-border shadow-sm outline-none focus:ring-1 focus:ring-crm-primary"
                             />
                         </div>
 

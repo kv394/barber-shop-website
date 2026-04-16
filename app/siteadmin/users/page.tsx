@@ -79,8 +79,8 @@ export default function SiteAdminUsersPage() {
   return (
     <div>
       <div className="mb-8">
-        <h1 className="font-serif font-bold text-botanical-accent mb-2 text-4xl md:text-5xl lg:text-6xl">User Management</h1>
-        <p className="text-botanical-muted text-base md:text-lg">Manage all users across the platform. {users.length} user{users.length !== 1 ? 's' : ''} found.</p>
+        <h1 className="font-serif font-bold text-crm-accent mb-2 text-4xl md:text-5xl lg:text-6xl">User Management</h1>
+        <p className="text-crm-muted text-base md:text-lg">Manage all users across the platform. {users.length} user{users.length !== 1 ? 's' : ''} found.</p>
       </div>
 
       {/* Alerts */}
@@ -103,11 +103,11 @@ export default function SiteAdminUsersPage() {
             value={search}
             onChange={e => setSearch(e.target.value)}
             placeholder="Search by name or email..."
-            className="flex-1 bg-botanical-surface border border-botanical-border shadow-sm rounded-lg px-4 py-2.5 text-botanical-text text-sm placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-botanical-primary"
+            className="flex-1 bg-crm-surface border border-crm-border shadow-sm rounded-lg px-4 py-2.5 text-crm-text text-sm placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-crm-primary"
           />
           <button
             type="submit"
-            className="bg-botanical-primary text-white px-6 py-2.5 rounded-lg font-semibold text-sm hover:bg-botanical-surface hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 transition-colors"
+            className="bg-crm-primary text-white px-6 py-2.5 rounded-lg font-semibold text-sm hover:bg-crm-surface hover:text-crm-primary border border-transparent hover:border-crm-primary/30 transition-colors"
           >
             Search
           </button>
@@ -119,8 +119,8 @@ export default function SiteAdminUsersPage() {
               onClick={() => { setRoleFilter(role); setLoading(true); }}
               className={`px-3 py-2 text-xs font-bold rounded-lg whitespace-nowrap transition ${
                 roleFilter === role
-                  ? 'bg-botanical-primary text-white'
-                  : 'bg-botanical-surface text-botanical-muted hover:bg-botanical-surface hover:text-botanical-text'
+                  ? 'bg-crm-primary text-white'
+                  : 'bg-crm-surface text-crm-muted hover:bg-crm-surface hover:text-crm-text'
               }`}
             >
               {role.replace(/_/g, ' ')}
@@ -131,13 +131,13 @@ export default function SiteAdminUsersPage() {
 
       {/* Users Table */}
       {loading ? (
-        <div className="text-center py-12 text-botanical-muted">Loading users...</div>
+        <div className="text-center py-12 text-crm-muted">Loading users...</div>
       ) : (
-        <div className="bg-botanical-surface rounded-xl border border-botanical-border shadow-sm overflow-hidden">
+        <div className="bg-crm-surface rounded-xl border border-crm-border shadow-sm overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="text-botanical-muted text-left border-b border-botanical-border bg-botanical-surface">
+                <tr className="text-crm-muted text-left border-b border-crm-border bg-crm-surface">
                   <th className="px-4 py-3 font-medium">User</th>
                   <th className="px-4 py-3 font-medium">Role</th>
                   <th className="px-4 py-3 font-medium">Shop</th>
@@ -150,18 +150,18 @@ export default function SiteAdminUsersPage() {
                 {filteredUsers.map(user => {
                   const roleColors: Record<string, string> = {
                     SITE_ADMIN: 'bg-status-cancelled/20 text-status-cancelled border-status-cancelled/30',
-                    SHOP_ADMIN: 'bg-botanical-primary/20 text-botanical-accent border-brand-gold/30',
-                    STAFF: 'bg-botanical-accent/20 text-botanical-accent border-botanical-accent/30',
+                    SHOP_ADMIN: 'bg-crm-primary/20 text-crm-accent border-brand-gold/30',
+                    STAFF: 'bg-crm-accent/20 text-crm-accent border-crm-accent/30',
                     CLIENT: 'bg-status-info/20 text-status-info border-status-info/30',
                     ATTENDANCE_KIOSK: 'bg-cyan-500/20 text-cyan-400 border-cyan-500/30',
                   };
 
                   return (
-                    <tr key={user.id} className="hover:bg-botanical-surface transition">
+                    <tr key={user.id} className="hover:bg-crm-surface transition">
                       <td className="px-4 py-3">
                         <div>
-                          <p className="text-botanical-text font-medium text-base md:text-lg">{user.name || '—'}</p>
-                          <p className="text-botanical-muted text-base md:text-lg">{user.email}</p>
+                          <p className="text-crm-text font-medium text-base md:text-lg">{user.name || '—'}</p>
+                          <p className="text-crm-muted text-base md:text-lg">{user.email}</p>
                         </div>
                       </td>
                       <td className="px-4 py-3">
@@ -170,7 +170,7 @@ export default function SiteAdminUsersPage() {
                             <select
                               value={editRole}
                               onChange={e => setEditRole(e.target.value)}
-                              className="bg-botanical-surface text-botanical-text text-xs rounded px-2 py-1 border border-botanical-border shadow-sm"
+                              className="bg-crm-surface text-crm-text text-xs rounded px-2 py-1 border border-crm-border shadow-sm"
                             >
                               {ROLES.filter(r => r !== 'ALL').map(r => (
                                 <option key={r} value={r}>{r.replace(/_/g, ' ')}</option>
@@ -184,31 +184,31 @@ export default function SiteAdminUsersPage() {
                             </button>
                             <button
                               onClick={() => setEditingUser(null)}
-                              className="text-botanical-muted text-xs hover:underline"
+                              className="text-crm-muted text-xs hover:underline"
                             >
                               Cancel
                             </button>
                           </div>
                         ) : (
-                          <span className={`px-2 py-0.5 rounded-full text-xs font-bold border ${roleColors[user.role] || 'bg-botanical-surface text-botanical-muted'}`}>
+                          <span className={`px-2 py-0.5 rounded-full text-xs font-bold border ${roleColors[user.role] || 'bg-crm-surface text-crm-muted'}`}>
                             {user.role.replace(/_/g, ' ')}
                           </span>
                         )}
                       </td>
-                      <td className="px-4 py-3 text-botanical-muted text-xs">
-                        {user.shopName || <span className="text-botanical-muted">—</span>}
+                      <td className="px-4 py-3 text-crm-muted text-xs">
+                        {user.shopName || <span className="text-crm-muted">—</span>}
                       </td>
-                      <td className="px-4 py-3 text-botanical-muted text-xs font-mono">
+                      <td className="px-4 py-3 text-crm-muted text-xs font-mono">
                         {user.phone || '—'}
                       </td>
-                      <td className="px-4 py-3 text-botanical-muted text-xs">
+                      <td className="px-4 py-3 text-crm-muted text-xs">
                         {new Date(user.createdAt).toLocaleDateString()}
                       </td>
                       <td className="px-4 py-3 text-right">
                         {editingUser !== user.id && (
                           <button
                             onClick={() => { setEditingUser(user.id); setEditRole(user.role); setActionError(null); setActionSuccess(null); }}
-                            className="text-botanical-accent text-xs hover:underline"
+                            className="text-crm-accent text-xs hover:underline"
                           >
                             Change Role
                           </button>
@@ -221,7 +221,7 @@ export default function SiteAdminUsersPage() {
             </table>
           </div>
           {filteredUsers.length === 0 && (
-            <div className="text-center py-12 text-botanical-muted">
+            <div className="text-center py-12 text-crm-muted">
               No users found matching your criteria.
             </div>
           )}

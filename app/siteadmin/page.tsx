@@ -37,8 +37,8 @@ export default async function SiteAdminDashboard() {
   return (
     <div>
       <div className="mb-8">
-        <h1 className="font-serif font-bold text-botanical-accent mb-2 text-4xl md:text-5xl lg:text-6xl">Platform Dashboard</h1>
-        <p className="text-botanical-muted text-base md:text-lg">Overview of all shops and users across the platform.</p>
+        <h1 className="font-serif font-bold text-crm-accent mb-2 text-4xl md:text-5xl lg:text-6xl">Platform Dashboard</h1>
+        <p className="text-crm-muted text-base md:text-lg">Overview of all shops and users across the platform.</p>
       </div>
 
       {/* KPI Cards */}
@@ -50,13 +50,13 @@ export default async function SiteAdminDashboard() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
         {/* User Breakdown */}
-        <div className="bg-botanical-surface rounded-xl border border-botanical-border shadow-sm p-6">
-          <h2 className="font-bold text-botanical-text mb-4 text-3xl md:text-4xl">👥 Users by Role</h2>
+        <div className="bg-crm-surface rounded-xl border border-crm-border shadow-sm p-6">
+          <h2 className="font-bold text-crm-text mb-4 text-3xl md:text-4xl">👥 Users by Role</h2>
           <div className="space-y-3">
             {(['SITE_ADMIN', 'SHOP_ADMIN', 'STAFF', 'CLIENT', 'ATTENDANCE_KIOSK'] as const).map(role => (
               <div key={role} className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center">
-                <span className="text-sm text-botanical-muted">{role.replace(/_/g, ' ')}</span>
-                <span className="text-sm font-mono text-botanical-text bg-botanical-surface px-3 py-1 rounded-lg">
+                <span className="text-sm text-crm-muted">{role.replace(/_/g, ' ')}</span>
+                <span className="text-sm font-mono text-crm-text bg-crm-surface px-3 py-1 rounded-lg">
                   {roleCounts[role] || 0}
                 </span>
               </div>
@@ -65,17 +65,17 @@ export default async function SiteAdminDashboard() {
         </div>
 
         {/* Recent Shops */}
-        <div className="bg-botanical-surface rounded-xl border border-botanical-border shadow-sm p-6">
+        <div className="bg-crm-surface rounded-xl border border-crm-border shadow-sm p-6">
           <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-4">
-            <h2 className="font-bold text-botanical-text text-3xl md:text-4xl">🏪 Recent Shops</h2>
-            <Link href="/siteadmin/shops" className="text-botanical-accent text-sm hover:underline">
+            <h2 className="font-bold text-crm-text text-3xl md:text-4xl">🏪 Recent Shops</h2>
+            <Link href="/siteadmin/shops" className="text-crm-accent text-sm hover:underline">
               View All →
             </Link>
           </div>
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="text-botanical-muted text-left border-b border-botanical-border">
+                <tr className="text-crm-muted text-left border-b border-crm-border">
                   <th className="pb-3 font-medium">Shop Name</th>
                   <th className="pb-3 font-medium">Users</th>
                   <th className="pb-3 font-medium">Created</th>
@@ -84,12 +84,12 @@ export default async function SiteAdminDashboard() {
               </thead>
               <tbody className="divide-y divide-white/5">
                 {recentShops.map((shop: any) => (
-                  <tr key={shop.id} className="hover:bg-botanical-surface transition">
-                    <td className="py-3 text-botanical-text font-medium">{shop.name}</td>
-                    <td className="py-3 text-botanical-muted">{shop._count.users}</td>
-                    <td className="py-3 text-botanical-muted">{new Date(shop.createdAt).toLocaleDateString()}</td>
+                  <tr key={shop.id} className="hover:bg-crm-surface transition">
+                    <td className="py-3 text-crm-text font-medium">{shop.name}</td>
+                    <td className="py-3 text-crm-muted">{shop._count.users}</td>
+                    <td className="py-3 text-crm-muted">{new Date(shop.createdAt).toLocaleDateString()}</td>
                     <td className="py-3 text-right">
-                      <Link href={`/shop/${shop.id}/settings/team`} className="text-botanical-accent hover:underline text-xs">
+                      <Link href={`/shop/${shop.id}/settings/team`} className="text-crm-accent hover:underline text-xs">
                         Assign Team →
                       </Link>
                     </td>
@@ -107,19 +107,19 @@ export default async function SiteAdminDashboard() {
 function KpiCard({ label, value, color }: { label: string; value: string | number; color: string }) {
   const colorMap: Record<string, string> = {
     blue: 'from-blue-900/40 to-blue-800/20 border-status-info/30 text-status-info',
-    purple: 'from-purple-900/40 to-purple-800/20 border-botanical-accent/30 text-botanical-accent',
+    purple: 'from-purple-900/40 to-purple-800/20 border-crm-accent/30 text-crm-accent',
     green: 'from-green-900/40 to-green-800/20 border-status-confirmed/30 text-status-confirmed',
     amber: 'from-amber-900/40 to-amber-800/20 border-status-pending/30 text-status-pending',
     cyan: 'from-cyan-900/40 to-cyan-800/20 border-cyan-500/30 text-cyan-400',
     red: 'from-red-900/40 to-red-800/20 border-status-cancelled/30 text-status-cancelled',
   };
   const classes = colorMap[color] || colorMap.blue;
-  const textColor = classes.split(' ').pop() || 'text-botanical-text';
+  const textColor = classes.split(' ').pop() || 'text-crm-text';
 
   return (
     <div className={`bg-gradient-to-br ${classes} border p-4 rounded-xl text-center`}>
       <p className={`font-black ${textColor} text-3xl sm:text-4xl`}>{value}</p>
-      <p className="text-xs text-botanical-muted uppercase tracking-wider mt-1">{label}</p>
+      <p className="text-xs text-crm-muted uppercase tracking-wider mt-1">{label}</p>
     </div>
   );
 }

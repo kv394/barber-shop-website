@@ -42,7 +42,7 @@ export default function DeleteServiceButton({ shopId, serviceId }: { shopId: str
     <button 
       onClick={handleDelete} 
       disabled={isDeleting}
-      className="bg-status-cancelled/20 text-status-cancelled hover:bg-status-cancelled hover:text-botanical-text px-3 py-1 rounded text-xs transition-colors disabled:opacity-50"
+      className="bg-status-cancelled/20 text-status-cancelled hover:bg-status-cancelled hover:text-crm-text px-3 py-1 rounded text-xs transition-colors disabled:opacity-50"
     >
       {isDeleting ? 'Deleting...' : 'Delete'}
     </button>

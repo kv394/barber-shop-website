@@ -371,24 +371,24 @@ export default function BookingModal({ shopId, service, onClose, shopHours }: Bo
   // ────────────── SUCCESS SCREEN ──────────────
   if (success) {
       return (
-        <div className="fixed inset-0 bg-botanical-surface z-[100] flex items-center justify-center p-4 backdrop-blur-sm">
-            <div className="bg-botanical-surface rounded-xl p-8 max-w-md w-full border border-status-confirmed shadow-2xl text-center">
+        <div className="fixed inset-0 bg-crm-surface z-[100] flex items-center justify-center p-4 backdrop-blur-sm">
+            <div className="bg-crm-surface rounded-xl p-8 max-w-md w-full border border-status-confirmed shadow-2xl text-center">
                 <div className="text-6xl mb-4">🎉</div>
-                <h3 className="font-bold text-botanical-text mb-2 text-2xl md:text-3xl">Booking Confirmed!</h3>
-                <p className="text-botanical-muted mb-2 text-base md:text-lg">The appointment for <span className="text-botanical-accent font-semibold">{service.name}</span> has been scheduled.</p>
+                <h3 className="font-bold text-crm-text mb-2 text-2xl md:text-3xl">Booking Confirmed!</h3>
+                <p className="text-crm-muted mb-2 text-base md:text-lg">The appointment for <span className="text-crm-accent font-semibold">{service.name}</span> has been scheduled.</p>
                 {confirmedStartTime && (
-                  <div className="bg-botanical-surface rounded-lg p-4 mb-6 border border-botanical-border shadow-sm text-sm text-left space-y-1">
-                    <p className="text-botanical-muted text-base md:text-lg">📅 <span className="text-botanical-text">{formattedDate}</span></p>
-                    <p className="text-botanical-muted text-base md:text-lg">🕐 <span className="text-botanical-text">{selectedTime}</span></p>
-                    <p className="text-botanical-muted text-base md:text-lg">💈 <span className="text-botanical-text">{confirmedStaffName}</span></p>
-                    <p className="text-botanical-muted text-base md:text-lg">💰 <span className="text-botanical-text">${service.price.toFixed(2)}</span></p>
+                  <div className="bg-crm-surface rounded-lg p-4 mb-6 border border-crm-border shadow-sm text-sm text-left space-y-1">
+                    <p className="text-crm-muted text-base md:text-lg">📅 <span className="text-crm-text">{formattedDate}</span></p>
+                    <p className="text-crm-muted text-base md:text-lg">🕐 <span className="text-crm-text">{selectedTime}</span></p>
+                    <p className="text-crm-muted text-base md:text-lg">💈 <span className="text-crm-text">{confirmedStaffName}</span></p>
+                    <p className="text-crm-muted text-base md:text-lg">💰 <span className="text-crm-text">${service.price.toFixed(2)}</span></p>
                   </div>
                 )}
                 <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                  <button onClick={handleAddToCalendar} className="border border-botanical-border shadow-sm text-botanical-text px-5 py-2 rounded-lg hover:bg-botanical-surface transition-colors text-sm font-semibold flex items-center justify-center gap-2">
+                  <button onClick={handleAddToCalendar} className="border border-crm-border shadow-sm text-crm-text px-5 py-2 rounded-lg hover:bg-crm-surface transition-colors text-sm font-semibold flex items-center justify-center gap-2">
                     📅 Add to Calendar
                   </button>
-                  <button onClick={handleDone} className="bg-botanical-primary text-white font-bold px-6 py-2 rounded-lg hover:bg-botanical-surface hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 transition-colors">
+                  <button onClick={handleDone} className="bg-crm-primary text-white font-bold px-6 py-2 rounded-lg hover:bg-crm-surface hover:text-crm-primary border border-transparent hover:border-crm-primary/30 transition-colors">
                     {userRole ? 'Go to Bookings' : 'Done'}
                   </button>
                 </div>
@@ -400,59 +400,59 @@ export default function BookingModal({ shopId, service, onClose, shopHours }: Bo
   // ────────────── SUMMARY / REVIEW SCREEN ──────────────
   if (showSummary) {
     return (
-      <div className="fixed inset-0 bg-botanical-surface z-[100] flex items-center justify-center p-4 backdrop-blur-sm">
-        <div className="bg-botanical-surface rounded-xl p-6 w-full max-w-md border border-botanical-border shadow-sm shadow-2xl relative text-left">
-          <button onClick={() => setShowSummary(false)} className="absolute top-4 right-4 text-botanical-muted hover:text-botanical-text bg-botanical-surface rounded-full w-8 h-8 flex items-center justify-center z-10">←</button>
-          <h3 className="font-bold text-botanical-text mb-1 text-2xl md:text-3xl">Review Your Booking</h3>
-          <p className="text-botanical-muted mb-5 text-base md:text-lg">Please confirm the details below.</p>
+      <div className="fixed inset-0 bg-crm-surface z-[100] flex items-center justify-center p-4 backdrop-blur-sm">
+        <div className="bg-crm-surface rounded-xl p-6 w-full max-w-md border border-crm-border shadow-sm shadow-2xl relative text-left">
+          <button onClick={() => setShowSummary(false)} className="absolute top-4 right-4 text-crm-muted hover:text-crm-text bg-crm-surface rounded-full w-8 h-8 flex items-center justify-center z-10">←</button>
+          <h3 className="font-bold text-crm-text mb-1 text-2xl md:text-3xl">Review Your Booking</h3>
+          <p className="text-crm-muted mb-5 text-base md:text-lg">Please confirm the details below.</p>
 
           {error && <p className="text-status-cancelled bg-status-cancelled/20 p-3 rounded mb-4 text-base md:text-lg">{error}</p>}
 
-          <div className="bg-botanical-surface rounded-lg border border-botanical-border shadow-sm divide-y divide-white/10 mb-6">
+          <div className="bg-crm-surface rounded-lg border border-crm-border shadow-sm divide-y divide-white/10 mb-6">
             <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center p-4">
-              <span className="text-botanical-muted text-sm">Service</span>
-              <span className="text-botanical-text font-semibold">{service.name}</span>
+              <span className="text-crm-muted text-sm">Service</span>
+              <span className="text-crm-text font-semibold">{service.name}</span>
             </div>
             <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center p-4">
-              <span className="text-botanical-muted text-sm">Date</span>
-              <span className="text-botanical-text">{formattedDate}</span>
+              <span className="text-crm-muted text-sm">Date</span>
+              <span className="text-crm-text">{formattedDate}</span>
             </div>
             <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center p-4">
-              <span className="text-botanical-muted text-sm">Time</span>
-              <span className="text-botanical-text">{selectedTime}</span>
+              <span className="text-crm-muted text-sm">Time</span>
+              <span className="text-crm-text">{selectedTime}</span>
             </div>
             <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center p-4">
-              <span className="text-botanical-muted text-sm">Staff</span>
-              <span className="text-botanical-text">{getStaffNameById(selectedStaff)}</span>
+              <span className="text-crm-muted text-sm">Staff</span>
+              <span className="text-crm-text">{getStaffNameById(selectedStaff)}</span>
             </div>
             <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center p-4">
-              <span className="text-botanical-muted text-sm">Duration</span>
-              <span className="text-botanical-text">{service.duration} mins</span>
+              <span className="text-crm-muted text-sm">Duration</span>
+              <span className="text-crm-text">{service.duration} mins</span>
             </div>
             {/* Price is now calculated on the server */}
             {/* <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center p-4">
-              <span className="text-botanical-muted text-sm">Price</span>
-              <span className="text-botanical-accent font-bold text-lg">${service.price.toFixed(2)}</span>
+              <span className="text-crm-muted text-sm">Price</span>
+              <span className="text-crm-accent font-bold text-lg">${service.price.toFixed(2)}</span>
             </div> */}
             {isWalkIn && (clientName || selectedExistingClient) && (
               <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center p-4">
-                <span className="text-botanical-muted text-sm">Client</span>
-                <span className="text-botanical-text">{selectedExistingClient?.name || clientName}</span>
+                <span className="text-crm-muted text-sm">Client</span>
+                <span className="text-crm-text">{selectedExistingClient?.name || clientName}</span>
               </div>
             )}
             {bookingNotes && (
               <div className="p-4">
-                <span className="text-botanical-muted text-sm block mb-1">Notes</span>
-                <span className="text-botanical-text text-sm">{bookingNotes}</span>
+                <span className="text-crm-muted text-sm block mb-1">Notes</span>
+                <span className="text-crm-text text-sm">{bookingNotes}</span>
               </div>
             )}
           </div>
 
           <div className="flex gap-3">
-            <button onClick={() => setShowSummary(false)} className="flex-1 border border-botanical-border shadow-sm text-botanical-text font-semibold py-3 rounded-lg hover:bg-botanical-surface transition-colors">
+            <button onClick={() => setShowSummary(false)} className="flex-1 border border-crm-border shadow-sm text-crm-text font-semibold py-3 rounded-lg hover:bg-crm-surface transition-colors">
               Edit
             </button>
-            <button onClick={handleBook} disabled={isBooking} className="flex-1 bg-botanical-primary text-white font-bold py-3 rounded-lg hover:bg-botanical-surface hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 transition-colors disabled:opacity-50">
+            <button onClick={handleBook} disabled={isBooking} className="flex-1 bg-crm-primary text-white font-bold py-3 rounded-lg hover:bg-crm-surface hover:text-crm-primary border border-transparent hover:border-crm-primary/30 transition-colors disabled:opacity-50">
               {isBooking ? (
                 <span className="flex items-center justify-center gap-2">
                   <span className="w-4 h-4 border-2 border-brand-dark border-t-transparent rounded-full animate-spin"></span>
@@ -468,18 +468,18 @@ export default function BookingModal({ shopId, service, onClose, shopHours }: Bo
 
   // ────────────── MAIN BOOKING FORM ──────────────
   return (
-    <div className="fixed inset-0 bg-botanical-surface z-[100] flex items-center justify-center p-4 backdrop-blur-sm">
-      <div className="bg-botanical-surface rounded-xl p-6 w-full max-w-md border border-botanical-border shadow-sm shadow-2xl relative text-left max-h-[90vh] overflow-y-auto custom-scrollbar">
-        <button onClick={onClose} className="absolute top-4 right-4 text-botanical-muted hover:text-botanical-text bg-botanical-surface rounded-full w-8 h-8 flex items-center justify-center z-10">✕</button>
-        <h3 className="font-bold text-botanical-text mb-1 text-2xl md:text-3xl">Book Appointment</h3>
-        <p className="text-botanical-accent font-semibold mb-6 text-base md:text-lg">{service.name} <span className="text-botanical-muted font-normal ml-2">({service.duration} mins • ${service.price})</span></p>
+    <div className="fixed inset-0 bg-crm-surface z-[100] flex items-center justify-center p-4 backdrop-blur-sm">
+      <div className="bg-crm-surface rounded-xl p-6 w-full max-w-md border border-crm-border shadow-sm shadow-2xl relative text-left max-h-[90vh] overflow-y-auto custom-scrollbar">
+        <button onClick={onClose} className="absolute top-4 right-4 text-crm-muted hover:text-crm-text bg-crm-surface rounded-full w-8 h-8 flex items-center justify-center z-10">✕</button>
+        <h3 className="font-bold text-crm-text mb-1 text-2xl md:text-3xl">Book Appointment</h3>
+        <p className="text-crm-accent font-semibold mb-6 text-base md:text-lg">{service.name} <span className="text-crm-muted font-normal ml-2">({service.duration} mins • ${service.price})</span></p>
 
         {!isLoaded ? (
-             <p className="text-botanical-muted text-center py-8 text-base md:text-lg">Loading...</p>
+             <p className="text-crm-muted text-center py-8 text-base md:text-lg">Loading...</p>
         ) : !isSignedIn ? (
-            <div className="text-center py-6 bg-botanical-surface rounded-lg border border-botanical-border shadow-sm flex flex-col items-center">
-                <p className="text-botanical-muted mb-4 text-base md:text-lg">Please sign in or create an account to book an appointment.</p>
-                <a href={`/sign-in?redirect_url=${encodeURIComponent(currentPath)}`} className="bg-botanical-primary text-white px-6 py-2 rounded font-bold hover:bg-botanical-surface hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 transition-colors inline-block text-center">
+            <div className="text-center py-6 bg-crm-surface rounded-lg border border-crm-border shadow-sm flex flex-col items-center">
+                <p className="text-crm-muted mb-4 text-base md:text-lg">Please sign in or create an account to book an appointment.</p>
+                <a href={`/sign-in?redirect_url=${encodeURIComponent(currentPath)}`} className="bg-crm-primary text-white px-6 py-2 rounded font-bold hover:bg-crm-surface hover:text-crm-primary border border-transparent hover:border-crm-primary/30 transition-colors inline-block text-center">
                   Sign In to Book
                 </a>
             </div>
@@ -491,7 +491,7 @@ export default function BookingModal({ shopId, service, onClose, shopHours }: Bo
                 {userRole && (
                     <div className="bg-status-info/20 border border-status-info/30 p-4 rounded-lg space-y-3">
                         <div className="flex items-center space-x-2">
-                            <input type="checkbox" id="walkInToggle" checked={isWalkIn} onChange={(e) => { setIsWalkIn(e.target.checked); handleClearSelectedClient(); }} className="w-4 h-4 accent-brand-gold bg-botanical-surface border-botanical-border rounded" />
+                            <input type="checkbox" id="walkInToggle" checked={isWalkIn} onChange={(e) => { setIsWalkIn(e.target.checked); handleClearSelectedClient(); }} className="w-4 h-4 accent-brand-gold bg-crm-surface border-crm-border rounded" />
                             <label htmlFor="walkInToggle" className="font-semibold text-status-info cursor-pointer text-sm">I am booking on behalf of a client</label>
                         </div>
                         {isWalkIn && (
@@ -500,55 +500,55 @@ export default function BookingModal({ shopId, service, onClose, shopHours }: Bo
                                 {!selectedExistingClient ? (
                                   <>
                                     <div className="relative">
-                                      <label className="block text-botanical-muted mb-1 text-sm">Search Existing Clients</label>
+                                      <label className="block text-crm-muted mb-1 text-sm">Search Existing Clients</label>
                                       <input
                                         type="text"
                                         placeholder="Type name or email..."
                                         value={clientSearchQuery}
                                         onChange={(e) => setClientSearchQuery(e.target.value)}
-                                        className="w-full bg-botanical-surface border border-botanical-border shadow-sm rounded p-2 text-sm text-botanical-text focus:outline-none focus:border-brand-gold"
+                                        className="w-full bg-crm-surface border border-crm-border shadow-sm rounded p-2 text-sm text-crm-text focus:outline-none focus:border-brand-gold"
                                       />
                                       {isSearchingClients && <div className="absolute right-3 top-8 w-3 h-3 border-2 border-brand-gold border-t-transparent rounded-full animate-spin"></div>}
                                       {clientSearchResults.length > 0 && (
-                                        <div className="absolute z-20 w-full mt-1 bg-botanical-surface border border-botanical-border shadow-sm rounded-lg shadow-xl max-h-40 overflow-y-auto">
+                                        <div className="absolute z-20 w-full mt-1 bg-crm-surface border border-crm-border shadow-sm rounded-lg shadow-xl max-h-40 overflow-y-auto">
                                           {clientSearchResults.map(c => (
-                                            <button key={c.id} onClick={() => handleSelectExistingClient(c)} className="w-full text-left px-3 py-2 hover:bg-botanical-surface transition-colors border-b border-botanical-border last:border-0">
-                                              <span className="text-botanical-text text-sm font-medium">{c.name || 'No name'}</span>
-                                              <span className="text-botanical-muted text-xs ml-2">{c.email}</span>
+                                            <button key={c.id} onClick={() => handleSelectExistingClient(c)} className="w-full text-left px-3 py-2 hover:bg-crm-surface transition-colors border-b border-crm-border last:border-0">
+                                              <span className="text-crm-text text-sm font-medium">{c.name || 'No name'}</span>
+                                              <span className="text-crm-muted text-xs ml-2">{c.email}</span>
                                             </button>
                                           ))}
                                         </div>
                                       )}
                                     </div>
-                                    <div className="relative flex items-center gap-2 text-xs text-botanical-muted">
-                                      <div className="flex-1 border-t border-botanical-border"></div>
+                                    <div className="relative flex items-center gap-2 text-xs text-crm-muted">
+                                      <div className="flex-1 border-t border-crm-border"></div>
                                       <span>or enter new client</span>
-                                      <div className="flex-1 border-t border-botanical-border"></div>
+                                      <div className="flex-1 border-t border-crm-border"></div>
                                     </div>
                                   </>
                                 ) : (
                                   <div className="flex items-center justify-between bg-status-confirmed/20 border border-status-confirmed/30 rounded p-2">
                                     <div>
                                       <span className="text-status-confirmed text-sm font-semibold">{selectedExistingClient.name}</span>
-                                      <span className="text-botanical-muted text-xs ml-2">{selectedExistingClient.email}</span>
+                                      <span className="text-crm-muted text-xs ml-2">{selectedExistingClient.email}</span>
                                     </div>
-                                    <button onClick={handleClearSelectedClient} className="text-botanical-muted hover:text-botanical-text text-xs underline">Change</button>
+                                    <button onClick={handleClearSelectedClient} className="text-crm-muted hover:text-crm-text text-xs underline">Change</button>
                                   </div>
                                 )}
 
                                 {!selectedExistingClient && (
                                   <>
                                     <div>
-                                      <label className="block text-botanical-muted mb-1 text-sm">Client Name *</label>
-                                      <input type="text" placeholder="John Doe" value={clientName} onChange={(e) => setClientName(e.target.value)} className="w-full bg-botanical-surface border border-botanical-border shadow-sm rounded p-2 text-sm text-botanical-text focus:outline-none focus:border-brand-gold" />
+                                      <label className="block text-crm-muted mb-1 text-sm">Client Name *</label>
+                                      <input type="text" placeholder="John Doe" value={clientName} onChange={(e) => setClientName(e.target.value)} className="w-full bg-crm-surface border border-crm-border shadow-sm rounded p-2 text-sm text-crm-text focus:outline-none focus:border-brand-gold" />
                                     </div>
                                     <div>
-                                      <label className="block text-botanical-muted mb-1 text-sm">Client Email (Optional)</label>
-                                      <input type="email" placeholder="john@example.com" value={clientEmail} onChange={(e) => setClientEmail(e.target.value)} className="w-full bg-botanical-surface border border-botanical-border shadow-sm rounded p-2 text-sm text-botanical-text focus:outline-none focus:border-brand-gold" />
+                                      <label className="block text-crm-muted mb-1 text-sm">Client Email (Optional)</label>
+                                      <input type="email" placeholder="john@example.com" value={clientEmail} onChange={(e) => setClientEmail(e.target.value)} className="w-full bg-crm-surface border border-crm-border shadow-sm rounded p-2 text-sm text-crm-text focus:outline-none focus:border-brand-gold" />
                                     </div>
                                     <div>
-                                      <label className="block text-botanical-muted mb-1 text-sm">Client Phone (Optional)</label>
-                                      <input type="tel" placeholder="+1 555-123-4567" value={clientPhone} onChange={(e) => setClientPhone(e.target.value)} className="w-full bg-botanical-surface border border-botanical-border shadow-sm rounded p-2 text-sm text-botanical-text focus:outline-none focus:border-brand-gold" />
+                                      <label className="block text-crm-muted mb-1 text-sm">Client Phone (Optional)</label>
+                                      <input type="tel" placeholder="+1 555-123-4567" value={clientPhone} onChange={(e) => setClientPhone(e.target.value)} className="w-full bg-crm-surface border border-crm-border shadow-sm rounded p-2 text-sm text-crm-text focus:outline-none focus:border-brand-gold" />
                                     </div>
                                   </>
                                 )}
@@ -559,15 +559,15 @@ export default function BookingModal({ shopId, service, onClose, shopHours }: Bo
 
                 {/* ──── Step 1: Date ──── */}
                 <div>
-                    <label className="block text-botanical-muted mb-2 text-sm">1. Select Date</label>
-                    <input type="date" value={selectedDate} onChange={(e) => { setSelectedDate(e.target.value); setSelectedTime(''); setSelectedStaff(''); }} min={new Date().toISOString().split('T')[0]} className="w-full border border-botanical-border shadow-sm rounded p-3 text-botanical-text focus:outline-none focus:border-brand-gold" />
+                    <label className="block text-crm-muted mb-2 text-sm">1. Select Date</label>
+                    <input type="date" value={selectedDate} onChange={(e) => { setSelectedDate(e.target.value); setSelectedTime(''); setSelectedStaff(''); }} min={new Date().toISOString().split('T')[0]} className="w-full border border-crm-border shadow-sm rounded p-3 text-crm-text focus:outline-none focus:border-brand-gold" />
                 </div>
 
                 {/* ──── Step 2: Time ──── */}
                 <div>
-                    <label className="block text-botanical-muted mb-2 text-sm">2. Select Time</label>
+                    <label className="block text-crm-muted mb-2 text-sm">2. Select Time</label>
                     {isLoading ? (
-                      <div className="flex items-center gap-2 text-botanical-muted text-sm py-3">
+                      <div className="flex items-center gap-2 text-crm-muted text-sm py-3">
                         <div className="w-4 h-4 border-2 border-brand-gold border-t-transparent rounded-full animate-spin"></div>
                         Loading availability...
                       </div>
@@ -576,7 +576,7 @@ export default function BookingModal({ shopId, service, onClose, shopHours }: Bo
                           value={selectedTime}
                           onChange={(e) => { setSelectedTime(e.target.value); setSelectedStaff(''); }}
                          
-                          className="w-full border border-botanical-border shadow-sm rounded p-3 text-botanical-text text-sm focus:outline-none focus:border-brand-gold cursor-pointer"
+                          className="w-full border border-crm-border shadow-sm rounded p-3 text-crm-text text-sm focus:outline-none focus:border-brand-gold cursor-pointer"
                         >
                           <option value="">— Choose a time —</option>
                           {availableTimeSlots.map(time => (
@@ -591,13 +591,13 @@ export default function BookingModal({ shopId, service, onClose, shopHours }: Bo
                 {/* ──── Step 3: Staff ──── */}
                 {selectedTime && (
                     <div>
-                        <label className="block text-botanical-muted mb-2 text-sm">3. Select Staff</label>
+                        <label className="block text-crm-muted mb-2 text-sm">3. Select Staff</label>
                         {staffAtSelectedTime.length > 0 ? (
                             <select
                               value={selectedStaff}
                               onChange={(e) => setSelectedStaff(e.target.value)}
                              
-                              className="w-full border border-botanical-border shadow-sm rounded p-3 text-botanical-text text-sm focus:outline-none focus:border-brand-gold cursor-pointer"
+                              className="w-full border border-crm-border shadow-sm rounded p-3 text-crm-text text-sm focus:outline-none focus:border-brand-gold cursor-pointer"
                             >
                               <option value="">— Choose a barber —</option>
                               <option value={ANY_STAFF_VALUE}>🔀 Any Available (First Free)</option>
@@ -612,24 +612,24 @@ export default function BookingModal({ shopId, service, onClose, shopHours }: Bo
                 {/* ──── Step 4: Notes ──── */}
                 {selectedStaff && (
                   <div>
-                    <label className="block text-botanical-muted mb-2 text-sm">4. Special Requests <span className="text-botanical-muted">(optional)</span></label>
+                    <label className="block text-crm-muted mb-2 text-sm">4. Special Requests <span className="text-crm-muted">(optional)</span></label>
                     <textarea
                       value={bookingNotes}
                       onChange={(e) => setBookingNotes(e.target.value)}
                       placeholder="e.g. skin fade, allergies, preferred products..."
                       rows={2}
                       maxLength={500}
-                      className="w-full bg-botanical-surface border border-botanical-border shadow-sm rounded p-3 text-sm text-botanical-text focus:outline-none focus:border-brand-gold resize-none placeholder-gray-600"
+                      className="w-full bg-crm-surface border border-crm-border shadow-sm rounded p-3 text-sm text-crm-text focus:outline-none focus:border-brand-gold resize-none placeholder-gray-600"
                     />
                   </div>
                 )}
 
                 {/* ──── Review & Book Button ──── */}
-                <div className="pt-4 border-t border-botanical-border">
+                <div className="pt-4 border-t border-crm-border">
                     <button
                       onClick={handleReviewBooking}
                       disabled={!selectedDate || !selectedTime || !selectedStaff || (isWalkIn && !clientName.trim() && !selectedExistingClient)}
-                      className="w-full bg-botanical-primary text-white font-bold py-3 rounded-lg hover:bg-botanical-surface hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="w-full bg-crm-primary text-white font-bold py-3 rounded-lg hover:bg-crm-surface hover:text-crm-primary border border-transparent hover:border-crm-primary/30 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       Review Booking
                     </button>

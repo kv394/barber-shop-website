@@ -44,43 +44,43 @@ export default function BusinessHoursEditor({ shopId }: { shopId: string }) {
     setTimeout(() => setMsg(''), 3000);
   };
 
-  if (loading) return <div className="animate-pulse text-botanical-muted py-4">Loading hours…</div>;
+  if (loading) return <div className="animate-pulse text-crm-muted py-4">Loading hours…</div>;
 
   return (
-    <div className="bg-botanical-surface border border-botanical-border shadow-sm rounded-xl p-6">
-      <h3 className="font-bold text-botanical-text mb-1 text-2xl md:text-3xl">🕐 Business Hours</h3>
-      <p className="text-botanical-muted mb-5 text-base md:text-lg">Set your shop's open and close times per day. Toggle a day off to mark it as closed.</p>
+    <div className="bg-crm-surface border border-crm-border shadow-sm rounded-xl p-6">
+      <h3 className="font-bold text-crm-text mb-1 text-2xl md:text-3xl">🕐 Business Hours</h3>
+      <p className="text-crm-muted mb-5 text-base md:text-lg">Set your shop's open and close times per day. Toggle a day off to mark it as closed.</p>
       {msg && <div className="mb-4 p-3 bg-status-confirmed/20 border border-status-confirmed/30 text-status-confirmed rounded-lg text-sm">{msg}</div>}
       <div className="space-y-3">
         {DAYS.map(day => {
           const open = !!hours[day];
           const dh = hours[day];
           return (
-            <div key={day} className={`flex items-center gap-3 p-3 rounded-lg transition ${open ? 'bg-botanical-surface' : 'bg-botanical-surface opacity-60'}`}>
-              <button onClick={() => toggle(day)} className={`w-11 h-6 rounded-full transition-colors relative flex-shrink-0 ${open ? 'bg-botanical-primary' : 'bg-botanical-border'} hover:opacity-90 text-white`}>
-                <span className={`absolute top-0.5 w-5 h-5 bg-botanical-surface rounded-full shadow transition-transform ${open ? 'translate-x-5' : 'translate-x-0.5'}`} />
+            <div key={day} className={`flex items-center gap-3 p-3 rounded-lg transition ${open ? 'bg-crm-surface' : 'bg-crm-surface opacity-60'}`}>
+              <button onClick={() => toggle(day)} className={`w-11 h-6 rounded-full transition-colors relative flex-shrink-0 ${open ? 'bg-crm-primary' : 'bg-crm-border'} hover:opacity-90 text-white`}>
+                <span className={`absolute top-0.5 w-5 h-5 bg-crm-surface rounded-full shadow transition-transform ${open ? 'translate-x-5' : 'translate-x-0.5'}`} />
               </button>
-              <span className="w-10 text-sm font-semibold text-botanical-text">{DAY_LABELS[day]}</span>
+              <span className="w-10 text-sm font-semibold text-crm-text">{DAY_LABELS[day]}</span>
               {open && dh ? (
                 <>
                   <select value={dh.open} onChange={e => setField(day, 'open', e.target.value)}
-                    className="bg-botanical-surface border border-botanical-border shadow-sm rounded text-botanical-text text-sm px-2 py-1.5 focus:outline-none focus:border-brand-gold">
+                    className="bg-crm-surface border border-crm-border shadow-sm rounded text-crm-text text-sm px-2 py-1.5 focus:outline-none focus:border-brand-gold">
                     {TIMES.map(t => <option key={t} value={t}>{t}</option>)}
                   </select>
-                  <span className="text-botanical-muted text-sm">to</span>
+                  <span className="text-crm-muted text-sm">to</span>
                   <select value={dh.close} onChange={e => setField(day, 'close', e.target.value)}
-                    className="bg-botanical-surface border border-botanical-border shadow-sm rounded text-botanical-text text-sm px-2 py-1.5 focus:outline-none focus:border-brand-gold">
+                    className="bg-crm-surface border border-crm-border shadow-sm rounded text-crm-text text-sm px-2 py-1.5 focus:outline-none focus:border-brand-gold">
                     {TIMES.filter(t => t > dh.open).map(t => <option key={t} value={t}>{t}</option>)}
                   </select>
                 </>
               ) : (
-                <span className="text-botanical-muted text-sm italic">Closed</span>
+                <span className="text-crm-muted text-sm italic">Closed</span>
               )}
             </div>
           );
         })}
       </div>
-      <button onClick={save} disabled={saving} className="mt-5 w-full bg-botanical-primary text-white font-bold py-3 rounded-lg hover:bg-botanical-surface hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 transition disabled:opacity-50">
+      <button onClick={save} disabled={saving} className="mt-5 w-full bg-crm-primary text-white font-bold py-3 rounded-lg hover:bg-crm-surface hover:text-crm-primary border border-transparent hover:border-crm-primary/30 transition disabled:opacity-50">
         {saving ? 'Saving…' : 'Save Business Hours'}
       </button>
     </div>

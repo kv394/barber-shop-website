@@ -82,80 +82,80 @@ export default function CommissionReportClient({
       {/* Filters */}
       <div className="flex flex-wrap gap-4 items-end">
         <div>
-          <label className="block text-botanical-muted mb-1 text-sm">Start Date</label>
-          <input type="date" value={startDate} onChange={e => setStartDate(e.target.value)} className="bg-botanical-surface border border-botanical-border shadow-sm rounded p-2 text-botanical-text text-sm focus:outline-none focus:border-brand-gold" />
+          <label className="block text-crm-muted mb-1 text-sm">Start Date</label>
+          <input type="date" value={startDate} onChange={e => setStartDate(e.target.value)} className="bg-crm-surface border border-crm-border shadow-sm rounded p-2 text-crm-text text-sm focus:outline-none focus:border-brand-gold" />
         </div>
         <div>
-          <label className="block text-botanical-muted mb-1 text-sm">End Date</label>
-          <input type="date" value={endDate} onChange={e => setEndDate(e.target.value)} className="bg-botanical-surface border border-botanical-border shadow-sm rounded p-2 text-botanical-text text-sm focus:outline-none focus:border-brand-gold" />
+          <label className="block text-crm-muted mb-1 text-sm">End Date</label>
+          <input type="date" value={endDate} onChange={e => setEndDate(e.target.value)} className="bg-crm-surface border border-crm-border shadow-sm rounded p-2 text-crm-text text-sm focus:outline-none focus:border-brand-gold" />
         </div>
-        <button onClick={exportCSV} className="bg-botanical-surface hover:bg-botanical-surface text-botanical-text px-4 py-2 rounded text-sm transition-colors">📥 Export CSV</button>
+        <button onClick={exportCSV} className="bg-crm-surface hover:bg-crm-surface text-crm-text px-4 py-2 rounded text-sm transition-colors">📥 Export CSV</button>
       </div>
 
       {/* Totals Floating Bar */}
-      <div className="bg-botanical-surface backdrop-blur-xl shadow-2xl rounded-2xl border border-botanical-border shadow-sm flex flex-col sm:flex-row divide-y sm:divide-y-0 sm:divide-x divide-white/10 relative z-20 overflow-hidden transform sm:-translate-y-6 sm:-mx-2 mb-2 sm:mb-6">
-        <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-botanical-surface transition-all duration-300 min-w-0">
+      <div className="bg-crm-surface backdrop-blur-xl shadow-2xl rounded-2xl border border-crm-border shadow-sm flex flex-col sm:flex-row divide-y sm:divide-y-0 sm:divide-x divide-white/10 relative z-20 overflow-hidden transform sm:-translate-y-6 sm:-mx-2 mb-2 sm:mb-6">
+        <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-crm-surface transition-all duration-300 min-w-0">
           <div className="absolute top-0 left-0 w-full h-1 bg-status-confirmed/80"></div>
           <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-3">
-            <h3 className="text-botanical-muted uppercase tracking-widest font-semibold truncate text-xs">{isPersonalView ? 'My Revenue' : 'Gross Revenue'}</h3>
+            <h3 className="text-crm-muted uppercase tracking-widest font-semibold truncate text-xs">{isPersonalView ? 'My Revenue' : 'Gross Revenue'}</h3>
             <span className="text-status-confirmed text-sm">💵</span>
           </div>
-          <p className="font-black text-botanical-text break-words leading-tight text-3xl md:text-4xl">${totalRevenue.toFixed(0)}</p>
+          <p className="font-black text-crm-text break-words leading-tight text-3xl md:text-4xl">${totalRevenue.toFixed(0)}</p>
         </div>
-        <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-botanical-surface transition-all duration-300 min-w-0">
+        <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-crm-surface transition-all duration-300 min-w-0">
           <div className="absolute top-0 left-0 w-full h-1 bg-status-info/80"></div>
           <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-3">
-            <h3 className="text-botanical-muted uppercase tracking-widest font-semibold truncate text-xs">{isPersonalView ? 'My Commission' : 'Commission'}</h3>
+            <h3 className="text-crm-muted uppercase tracking-widest font-semibold truncate text-xs">{isPersonalView ? 'My Commission' : 'Commission'}</h3>
             <span className="text-status-info text-sm">💎</span>
           </div>
-          <p className="font-black text-botanical-text break-words leading-tight text-3xl md:text-4xl">${totalCommission.toFixed(0)}</p>
+          <p className="font-black text-crm-text break-words leading-tight text-3xl md:text-4xl">${totalCommission.toFixed(0)}</p>
         </div>
-        <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-botanical-surface transition-all duration-300 min-w-0">
+        <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-crm-surface transition-all duration-300 min-w-0">
           <div className="absolute top-0 left-0 w-full h-1 bg-status-pending/80"></div>
           <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-3">
-            <h3 className="text-botanical-muted uppercase tracking-widest font-semibold truncate text-xs">{isPersonalView ? 'My Tips' : 'Tips'}</h3>
+            <h3 className="text-crm-muted uppercase tracking-widest font-semibold truncate text-xs">{isPersonalView ? 'My Tips' : 'Tips'}</h3>
             <span className="text-status-pending text-sm">🪙</span>
           </div>
-          <p className="font-black text-botanical-text break-words leading-tight text-3xl md:text-4xl">${totalTips.toFixed(0)}</p>
+          <p className="font-black text-crm-text break-words leading-tight text-3xl md:text-4xl">${totalTips.toFixed(0)}</p>
         </div>
-        <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-botanical-surface transition-all duration-300 min-w-0">
-          <div className="absolute top-0 left-0 w-full h-1 bg-botanical-accent/80"></div>
+        <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-crm-surface transition-all duration-300 min-w-0">
+          <div className="absolute top-0 left-0 w-full h-1 bg-crm-accent/80"></div>
           <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-3">
-            <h3 className="text-botanical-muted uppercase tracking-widest font-semibold truncate text-xs">{isPersonalView ? 'My Total Pay' : 'Total Payout'}</h3>
-            <span className="text-botanical-accent text-sm">💳</span>
+            <h3 className="text-crm-muted uppercase tracking-widest font-semibold truncate text-xs">{isPersonalView ? 'My Total Pay' : 'Total Payout'}</h3>
+            <span className="text-crm-accent text-sm">💳</span>
           </div>
-          <p className="font-black text-botanical-text break-words leading-tight text-3xl md:text-4xl">${totalPayout.toFixed(0)}</p>
+          <p className="font-black text-crm-text break-words leading-tight text-3xl md:text-4xl">${totalPayout.toFixed(0)}</p>
         </div>
       </div>
 
       {loading ? (
-        <p className="text-botanical-muted text-center py-8 animate-pulse text-base md:text-lg">Calculating commissions…</p>
+        <p className="text-crm-muted text-center py-8 animate-pulse text-base md:text-lg">Calculating commissions…</p>
       ) : summary.length === 0 ? (
-        <p className="text-botanical-muted italic text-center py-8 border border-dashed border-botanical-border rounded text-base md:text-lg">No completed appointments in this date range.</p>
+        <p className="text-crm-muted italic text-center py-8 border border-dashed border-crm-border rounded text-base md:text-lg">No completed appointments in this date range.</p>
       ) : (
         <>
           {/* Staff Summary Table */}
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-botanical-border text-botanical-muted text-xs uppercase">
+                <tr className="border-b border-crm-border text-crm-muted text-xs uppercase">
                   <th className="text-left p-3">Staff</th>
                   <th className="text-right p-3">Services</th>
                   <th className="text-right p-3">Revenue</th>
                   <th className="text-right p-3">Commission</th>
                   <th className="text-right p-3">Tips</th>
-                  <th className="text-right p-3 text-botanical-accent">Payout</th>
+                  <th className="text-right p-3 text-crm-accent">Payout</th>
                 </tr>
               </thead>
               <tbody>
                 {summary.map(s => (
-                  <tr key={s.staffId} className="border-b border-botanical-border hover:bg-botanical-surface">
-                    <td className="p-3 font-medium text-botanical-text">{s.staffName}</td>
-                    <td className="p-3 text-right text-botanical-muted">{s.servicesCount}</td>
-                    <td className="p-3 text-right text-botanical-muted">${s.grossRevenue.toFixed(2)}</td>
+                  <tr key={s.staffId} className="border-b border-crm-border hover:bg-crm-surface">
+                    <td className="p-3 font-medium text-crm-text">{s.staffName}</td>
+                    <td className="p-3 text-right text-crm-muted">{s.servicesCount}</td>
+                    <td className="p-3 text-right text-crm-muted">${s.grossRevenue.toFixed(2)}</td>
                     <td className="p-3 text-right text-status-info">${s.totalCommission.toFixed(2)}</td>
                     <td className="p-3 text-right text-status-pending">${s.totalTips.toFixed(2)}</td>
-                    <td className="p-3 text-right text-botanical-accent font-bold">${s.totalPayout.toFixed(2)}</td>
+                    <td className="p-3 text-right text-crm-accent font-bold">${s.totalPayout.toFixed(2)}</td>
                   </tr>
                 ))}
               </tbody>
@@ -163,7 +163,7 @@ export default function CommissionReportClient({
           </div>
 
           {/* Detail Toggle */}
-          <button onClick={() => setShowDetails(!showDetails)} className="text-sm text-botanical-muted hover:text-botanical-text transition-colors">
+          <button onClick={() => setShowDetails(!showDetails)} className="text-sm text-crm-muted hover:text-crm-text transition-colors">
             {showDetails ? '▼ Hide Details' : '▶ Show Line-by-Line Details'}
           </button>
 
@@ -171,7 +171,7 @@ export default function CommissionReportClient({
             <div className="overflow-x-auto max-h-80 overflow-y-auto">
               <table className="w-full text-xs">
                 <thead>
-                  <tr className="border-b border-botanical-border text-botanical-muted uppercase sticky top-0 bg-botanical-surface">
+                  <tr className="border-b border-crm-border text-crm-muted uppercase sticky top-0 bg-crm-surface">
                     <th className="text-left p-2">Staff</th>
                     <th className="text-left p-2">Service</th>
                     <th className="text-right p-2">Amount</th>
@@ -182,13 +182,13 @@ export default function CommissionReportClient({
                 </thead>
                 <tbody>
                   {details.map((d, i) => (
-                    <tr key={i} className="border-b border-botanical-border">
-                      <td className="p-2 text-botanical-muted">{d.staffName}</td>
-                      <td className="p-2 text-botanical-muted">{d.serviceName}</td>
-                      <td className="p-2 text-right text-botanical-muted">${d.serviceAmount.toFixed(2)}</td>
+                    <tr key={i} className="border-b border-crm-border">
+                      <td className="p-2 text-crm-muted">{d.staffName}</td>
+                      <td className="p-2 text-crm-muted">{d.serviceName}</td>
+                      <td className="p-2 text-right text-crm-muted">${d.serviceAmount.toFixed(2)}</td>
                       <td className="p-2 text-right text-status-pending">${d.tipAmount.toFixed(2)}</td>
                       <td className="p-2 text-right text-status-info">${d.commission.toFixed(2)}</td>
-                      <td className="p-2 text-botanical-muted">{d.rateValue}{d.rateType === 'PERCENTAGE' ? '%' : ' flat'} ({d.commissionSource})</td>
+                      <td className="p-2 text-crm-muted">{d.rateValue}{d.rateType === 'PERCENTAGE' ? '%' : ' flat'} ({d.commissionSource})</td>
                     </tr>
                   ))}
                 </tbody>

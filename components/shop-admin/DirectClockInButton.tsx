@@ -43,8 +43,8 @@ export default function DirectClockInButton({ shopId, initialIsClockedIn }: { sh
       disabled={clockingIn}
       className={`w-full sm:w-auto px-8 py-4 sm:py-3 rounded-2xl sm:rounded-xl font-black text-lg sm:text-sm shadow-xl transition-all transform hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:scale-100 flex items-center justify-center gap-3 ${
         isClockedIn 
-          ? 'bg-status-cancelled/90 hover:bg-status-cancelled text-botanical-text border border-status-cancelled/50' 
-          : 'bg-status-confirmed/90 hover:bg-status-confirmed text-botanical-text border border-status-confirmed/50'
+          ? 'bg-status-cancelled/90 hover:bg-status-cancelled text-crm-text border border-status-cancelled/50' 
+          : 'bg-status-confirmed/90 hover:bg-status-confirmed text-crm-text border border-status-confirmed/50'
       }`}
     >
       <span className="text-2xl sm:text-xl">{isClockedIn ? '⏹️' : '⏱️'}</span>

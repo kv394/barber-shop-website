@@ -64,23 +64,23 @@ export default function AssignTemplateModal({
   };
 
   return (
-    <div className="fixed inset-0 bg-botanical-darkBase/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-      <div className="bg-botanical-surface w-full max-w-md rounded-2xl border border-botanical-border shadow-2xl p-6">
-        <h2 className="font-bold text-botanical-text mb-2 text-3xl md:text-4xl">Assign Template</h2>
-        <p className="text-botanical-muted mb-6 text-base md:text-lg">Select a template for <strong>{shopName}</strong></p>
+    <div className="fixed inset-0 bg-crm-darkBase/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+      <div className="bg-crm-surface w-full max-w-md rounded-2xl border border-crm-border shadow-2xl p-6">
+        <h2 className="font-bold text-crm-text mb-2 text-3xl md:text-4xl">Assign Template</h2>
+        <p className="text-crm-muted mb-6 text-base md:text-lg">Select a template for <strong>{shopName}</strong></p>
 
         {loading ? (
-          <div className="py-4 text-center text-sm text-botanical-muted">Loading templates...</div>
+          <div className="py-4 text-center text-sm text-crm-muted">Loading templates...</div>
         ) : (
           <div className="space-y-4">
             <div>
-              <label className="block font-bold text-botanical-muted mb-2 uppercase tracking-wider text-sm">
+              <label className="block font-bold text-crm-muted mb-2 uppercase tracking-wider text-sm">
                 Select Template
               </label>
               <select
                 value={selectedTemplate}
                 onChange={(e) => setSelectedTemplate(e.target.value)}
-                className="w-full bg-botanical-bg border border-botanical-border rounded-lg p-3 text-sm text-botanical-text focus:ring-2 focus:ring-botanical-primary focus:outline-none"
+                className="w-full bg-crm-bg border border-crm-border rounded-lg p-3 text-sm text-crm-text focus:ring-2 focus:ring-crm-primary focus:outline-none"
               >
                 <option value="modern">Modern (Default Built-in)</option>
                 <option value="classic">Classic (Built-in)</option>
@@ -93,18 +93,18 @@ export default function AssignTemplateModal({
               </select>
             </div>
 
-            <div className="flex justify-end gap-3 pt-4 border-t border-botanical-border">
+            <div className="flex justify-end gap-3 pt-4 border-t border-crm-border">
               <button
                 onClick={onClose}
                 disabled={saving}
-                className="px-4 py-2 rounded-lg text-sm font-semibold text-botanical-muted hover:bg-botanical-bg hover:text-botanical-text transition"
+                className="px-4 py-2 rounded-lg text-sm font-semibold text-crm-muted hover:bg-crm-bg hover:text-crm-text transition"
               >
                 Cancel
               </button>
               <button
                 onClick={handleSave}
                 disabled={saving}
-                className="bg-botanical-primary text-white px-6 py-2 rounded-lg text-sm font-bold hover:bg-botanical-surface hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30 transition disabled:opacity-50"
+                className="bg-crm-primary text-white px-6 py-2 rounded-lg text-sm font-bold hover:bg-crm-surface hover:text-crm-primary border border-transparent hover:border-crm-primary/30 transition disabled:opacity-50"
               >
                 {saving ? 'Saving...' : 'Assign Template'}
               </button>

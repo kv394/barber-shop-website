@@ -67,19 +67,19 @@ export function TemplateSelector({ currentTemplate, shopId, dynamicTemplates = [
               p-4 rounded-lg border-2 cursor-pointer transition-all
               ${selectedTemplate === template.id 
                 ? 'border-status-info bg-status-info/10' 
-                : 'border-botanical-border bg-botanical-surface hover:border-slate-500'}
+                : 'border-crm-border bg-crm-surface hover:border-slate-500'}
             `}
             onClick={() => setSelectedTemplate(template.id)}
           >
             <div className="flex items-center justify-between mb-2">
-              <h3 className="font-bold text-botanical-text text-2xl md:text-3xl">{template.name}</h3>
+              <h3 className="font-bold text-crm-text text-2xl md:text-3xl">{template.name}</h3>
               {selectedTemplate === template.id && (
                 <div className="w-4 h-4 rounded-full bg-status-info flex items-center justify-center">
-                  <div className="w-2 h-2 rounded-full bg-botanical-surface"></div>
+                  <div className="w-2 h-2 rounded-full bg-crm-surface"></div>
                 </div>
               )}
             </div>
-            <p className="text-botanical-muted text-base md:text-lg">{template.description}</p>
+            <p className="text-crm-muted text-base md:text-lg">{template.description}</p>
           </div>
         ))}
       </div>
@@ -90,8 +90,8 @@ export function TemplateSelector({ currentTemplate, shopId, dynamicTemplates = [
         className={`
           w-full py-3 rounded-lg font-bold transition-colors
           ${selectedTemplate !== currentTemplate 
-            ? 'bg-botanical-primary text-white hover:bg-botanical-surface hover:text-botanical-primary border border-transparent hover:border-botanical-primary/30' 
-            : 'bg-botanical-surface text-botanical-muted cursor-not-allowed'}
+            ? 'bg-crm-primary text-white hover:bg-crm-surface hover:text-crm-primary border border-transparent hover:border-crm-primary/30' 
+            : 'bg-crm-surface text-crm-muted cursor-not-allowed'}
         `}
       >
         {isSaving ? 'Saving...' : 'Save Template Selection'}
