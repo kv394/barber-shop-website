@@ -4,7 +4,8 @@
 
 body {
   font-family: var(--font-sans), sans-serif;
-  color-scheme: dark;
+  color-scheme: light;
+  background-color: #F9FAFB;
 }
 
 /* Slightly increase base font size on mobile for better legibility */
@@ -17,8 +18,7 @@ body {
 /* ===== Modern Gradient Backgrounds ===== */
 @layer utilities {
   .bg-modern-gradient {
-    background: radial-gradient(circle at top left, #1e293b, #020617, #0f172a);
-    background-attachment: fixed;
+    background: #F9FAFB;
   }
 }
 

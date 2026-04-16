@@ -15,20 +15,24 @@ const config: Config = {
       },
       colors: {
         crm: {
-          bg: '#F8FAFC',       // Slate 50
-          surface: '#FFFFFF',  // Pure White
-          border: '#E2E8F0',   // Slate 200
-          text: '#0F172A',     // Slate 900
-          muted: '#64748B',    // Slate 500
-          primary: '#2563EB',  // Blue 600
-          accent: '#4F46E5',   // Indigo 600
-          darkBase: '#020617', // Slate 950
+          bg: '#F9FAFB',       // Light gray (app bg)
+          surface: '#FFFFFF',  // Pure White (cards, sidebars)
+          border: '#E5E7EB',   // Soft Gray
+          text: '#111827',     // Dark text
+          muted: '#6B7280',    // Muted text
+          primary: '#F97316',  // Orange 500
+          accent: '#EA580C',   // Orange 600
+          darkBase: '#020617', // Keep for compatibility
         },
         status: {
           confirmed: '#16A34A', // Green 600
-          pending: '#D97706',   // Amber 600
+          pending: '#F59E0B',   // Amber 500
           cancelled: '#DC2626', // Red 600
-          info: '#2563EB',      // Blue 600
+          info: '#3B82F6',      // Blue 500
+          hot: '#EF4444',       // Red 500
+          open: '#3B82F6',      // Blue 500
+          new: '#10B981',       // Emerald 500
+          qualified: '#8B5CF6', // Violet 500
         },
         brand: {
           dark: '#0F172A',     // Slate 900
