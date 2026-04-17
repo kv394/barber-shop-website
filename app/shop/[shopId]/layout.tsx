@@ -201,8 +201,7 @@ export default async function ShopLayout({
                 </Link>
                 <Link href={`/shop/${shopId}/profile`} className="block px-3 py-2 rounded-lg text-sm font-medium text-crm-muted hover:text-crm-text hover:bg-crm-bg transition-colors">
                   Profile
-                </Link>
-              </div>
+                </Link>              </div>
             )}
           </nav>
           <div className="p-4 border-t border-crm-border">

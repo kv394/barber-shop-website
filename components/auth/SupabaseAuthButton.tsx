@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { QRCodeSVG } from 'qrcode.react';
 import { createPortal } from 'react-dom';
+import CustomerProfileOverlay from '@/components/dashboard/CustomerProfileOverlay';
 
 export default function SupabaseAuthButton({ 
   redirectUrl 
@@ -18,6 +19,7 @@ export default function SupabaseAuthButton({
   const [isOpen, setIsOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [isOverlayOpen, setIsOverlayOpen] = useState(false);
   const router = useRouter();
   const supabase = createClient();
 
@@ -105,9 +107,9 @@ export default function SupabaseAuthButton({
               <Link onClick={() => setIsOpen(false)} href="/my-appointments" className="block w-full text-center sm:text-left px-4 py-3.5 sm:py-2 text-base sm:text-sm text-crm-text hover:text-crm-primary hover:bg-crm-bg rounded-xl transition-colors font-medium">
                 My Appointments
               </Link>
-              <Link onClick={() => setIsOpen(false)} href="/my-appointments/profile" className="block w-full text-center sm:text-left px-4 py-3.5 sm:py-2 text-base sm:text-sm text-crm-text hover:text-crm-primary hover:bg-crm-bg rounded-xl transition-colors font-medium">
-                Edit Profile
-              </Link>
+              <button onClick={() => { setIsOpen(false); setIsOverlayOpen(true); }} className="block w-full text-center sm:text-left px-4 py-3.5 sm:py-2 text-base sm:text-sm text-crm-text hover:text-crm-primary hover:bg-crm-bg rounded-xl transition-colors font-medium">
+                Profile
+              </button>
               <Link onClick={() => setIsOpen(false)} href="/update-password" className="block w-full text-center sm:text-left px-4 py-3.5 sm:py-2 text-base sm:text-sm text-crm-text hover:text-crm-primary hover:bg-crm-bg rounded-xl transition-colors font-medium">
                 Change Password
               </Link>
@@ -128,7 +130,11 @@ export default function SupabaseAuthButton({
     return (
       <div className="relative inline-block z-50">
         <button 
-          onClick={() => setIsOpen(!isOpen)}
+          onClick={() => {
+            // For the user request, let's open the profile overlay directly
+            setIsOverlayOpen(true);
+            // setIsOpen(!isOpen); // Keep dropdown or override it entirely? Let's just open overlay directly to be safe and match "click on the profile".
+          }}
           className="flex items-center gap-2 bg-crm-surface hover:bg-crm-bg border border-crm-border shadow-sm px-3 py-1.5 rounded-full transition-colors shadow-sm"
         >
           <div className="w-6 h-6 rounded-full bg-crm-primary flex items-center justify-center text-white font-bold text-xs shadow-inner hover:opacity-90">
@@ -137,6 +143,13 @@ export default function SupabaseAuthButton({
         </button>
 
         {isOpen && (mounted && isMobile ? createPortal(menuContent, document.body) : menuContent)}
+        
+        <CustomerProfileOverlay 
+          isOpen={isOverlayOpen} 
+          onClose={() => setIsOverlayOpen(false)} 
+          customerName={user.email?.split('@')[0]}
+          customerEmail={user.email}
+        />
       </div>
     );
   }
