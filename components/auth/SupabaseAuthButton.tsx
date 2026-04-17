@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { createClient } from '@/utils/supabase/client';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
@@ -17,6 +17,11 @@ export default function SupabaseAuthButton({
   const [loading, setLoading] = useState(true);
   const [isOpen, setIsOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [menuStyle, setMenuStyle] = useState<React.CSSProperties>({});
+  
+  const buttonRef = useRef<HTMLButtonElement>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
+  
   const router = useRouter();
   const supabase = createClient();
 
@@ -53,6 +58,40 @@ export default function SupabaseAuthButton({
     };
   }, [supabase.auth]);
 
+  // Update position when menu opens or window resizes
+  useEffect(() => {
+    const updatePosition = () => {
+      if (isOpen && buttonRef.current) {
+        const rect = buttonRef.current.getBoundingClientRect();
+        const spaceBelow = window.innerHeight - rect.bottom;
+        const spaceAbove = rect.top;
+        
+        // If there's more space above than below, and space below is tight (< 400px), open upwards
+        if (spaceBelow < 400 && spaceAbove > spaceBelow) {
+          setMenuStyle({
+            bottom: window.innerHeight - rect.top + 8,
+            right: window.innerWidth - rect.right,
+          });
+        } else {
+          // Open downwards
+          setMenuStyle({
+            top: rect.bottom + 8,
+            right: window.innerWidth - rect.right,
+          });
+        }
+      }
+    };
+
+    updatePosition();
+    window.addEventListener('resize', updatePosition);
+    window.addEventListener('scroll', updatePosition, true);
+    
+    return () => {
+      window.removeEventListener('resize', updatePosition);
+      window.removeEventListener('scroll', updatePosition, true);
+    };
+  }, [isOpen]);
+
   const handleSignOut = async () => {
     await supabase.auth.signOut();
     setUser(null);
@@ -71,47 +110,48 @@ export default function SupabaseAuthButton({
   if (user) {
     const menuContent = (
       <>
-        {/* Dark overlay for both mobile and desktop */}
+        {/* Invisible overlay just to catch clicks outside */}
         <div 
-          className="fixed inset-0 bg-black/40 backdrop-blur-sm transition-opacity" 
+          className="fixed inset-0" 
           style={{ zIndex: 99998 }}
           onClick={() => setIsOpen(false)} 
         />
         
-        {/* Responsive Menu: Centered Modal Overlay */}
+        {/* Floating Menu Pop-up with Animation */}
         <div 
-          className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90%] max-w-sm bg-crm-surface border border-crm-border shadow-2xl rounded-2xl overflow-hidden"
-          style={{ zIndex: 99999 }}
+          ref={menuRef}
+          className="fixed w-72 bg-crm-surface border border-crm-border shadow-2xl rounded-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-200"
+          style={{ zIndex: 99999, ...menuStyle }}
         >
-           <div className="p-6 border-b border-crm-border flex flex-col items-center bg-crm-bg relative">
-             <button onClick={() => setIsOpen(false)} className="absolute top-4 right-4 text-gray-400 hover:text-gray-600">
-               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+           <div className="p-5 border-b border-crm-border flex flex-col items-center bg-crm-bg relative">
+             <button onClick={() => setIsOpen(false)} className="absolute top-3 right-3 text-gray-400 hover:text-gray-600 transition-colors">
+               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
              </button>
              
-             <p className="text-crm-text font-bold truncate mb-5 w-full text-center text-lg">{user.email}</p>
-             <div className="bg-crm-surface p-4 rounded-2xl shadow-inner inline-block border border-crm-border">
-               <QRCodeSVG value={profile?.barcode || user.id} size={160} level="L" />
+             <p className="text-crm-text font-bold truncate mb-4 w-full text-center text-sm">{user.email}</p>
+             <div className="bg-crm-surface p-3 rounded-2xl shadow-inner inline-block border border-crm-border">
+               <QRCodeSVG value={profile?.barcode || user.id} size={120} level="L" />
              </div>
-             <p className="text-crm-muted mt-5 text-center uppercase tracking-widest font-bold text-xs">My Check-in Code</p>
+             <p className="text-crm-muted mt-4 text-center uppercase tracking-widest font-bold text-[10px]">My Check-in Code</p>
            </div>
            
            {/* Menu Actions */}
-           <div className="p-3 space-y-1.5 bg-crm-surface">
-              <Link onClick={() => setIsOpen(false)} href="/my-appointments" className="block w-full text-center px-4 py-3 text-sm text-crm-text hover:text-crm-primary hover:bg-crm-bg rounded-xl transition-colors font-semibold">
+           <div className="p-2 space-y-1 bg-crm-surface">
+              <Link onClick={() => setIsOpen(false)} href="/my-appointments" className="block w-full text-left px-3 py-2.5 text-sm text-crm-text hover:text-crm-primary hover:bg-crm-bg rounded-xl transition-colors font-semibold">
                 My Appointments
               </Link>
-              <Link onClick={() => setIsOpen(false)} href="/my-appointments/profile" className="block w-full text-center px-4 py-3 text-sm text-crm-text hover:text-crm-primary hover:bg-crm-bg rounded-xl transition-colors font-semibold">
+              <Link onClick={() => setIsOpen(false)} href="/my-appointments/profile" className="block w-full text-left px-3 py-2.5 text-sm text-crm-text hover:text-crm-primary hover:bg-crm-bg rounded-xl transition-colors font-semibold">
                 Edit Profile
               </Link>
-              <Link onClick={() => setIsOpen(false)} href="/update-password" className="block w-full text-center px-4 py-3 text-sm text-crm-text hover:text-crm-primary hover:bg-crm-bg rounded-xl transition-colors font-semibold">
+              <Link onClick={() => setIsOpen(false)} href="/update-password" className="block w-full text-left px-3 py-2.5 text-sm text-crm-text hover:text-crm-primary hover:bg-crm-bg rounded-xl transition-colors font-semibold">
                 Change Password
               </Link>
               
-              <div className="h-px bg-crm-border my-2" />
+              <div className="h-px bg-crm-border my-1.5" />
               
               <button 
                 onClick={() => { setIsOpen(false); handleSignOut(); }} 
-                className="block w-full text-center px-4 py-3 text-sm text-red-600 hover:text-red-700 hover:bg-red-50 rounded-xl transition-colors font-bold"
+                className="block w-full text-left px-3 py-2.5 text-sm text-red-600 hover:text-red-700 hover:bg-red-50 rounded-xl transition-colors font-bold"
               >
                 Sign Out
               </button>
@@ -123,7 +163,8 @@ export default function SupabaseAuthButton({
     return (
       <div className="relative inline-block z-50">
         <button 
-          onClick={() => setIsOpen(true)}
+          ref={buttonRef}
+          onClick={() => setIsOpen(!isOpen)}
           className="flex items-center gap-2 bg-crm-surface hover:bg-crm-bg border border-crm-border shadow-sm px-3 py-1.5 rounded-full transition-colors"
         >
           <div className="w-6 h-6 rounded-full bg-crm-primary flex items-center justify-center text-white font-bold text-xs shadow-inner hover:opacity-90">
