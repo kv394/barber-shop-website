@@ -235,7 +235,7 @@ export default async function ShopLayout({
                 <span className="text-crm-muted font-medium">{data.shop.name}</span>
               </h1>
             ) : (
-              <h1 className="font-semibold text-xl text-crm-text">Sales Performance</h1>
+              <ShopHeaderTitle />
             )}
           </div>
           
@@ -259,6 +259,13 @@ export default async function ShopLayout({
             {children}
           </div>
         </main>
+      </div>
+
+      <GlobalChatWidget shopId={shopId} currentUserId={userId} userRole={data.userRole} />
+    </div>
+  );
+}
+n>
       </div>
 
       <GlobalChatWidget shopId={shopId} currentUserId={userId} userRole={data.userRole} />
