@@ -1,6 +1,7 @@
 "use client";
 import Link from 'next/link';
-import React from 'react';
+import React, { useState } from 'react';
+import CustomerProfileOverlay from './CustomerProfileOverlay';
 
 // Icons
 const LogoIcon = () => (
@@ -109,6 +110,8 @@ const PlusIcon = () => (
 );
 
 export default function LeftSidebar() {
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
+
   return (
     <aside className="fixed left-0 top-0 h-screen w-[260px] bg-[#f8f9fa] border-r border-gray-200 flex flex-col font-sans">
       
@@ -277,7 +280,10 @@ export default function LeftSidebar() {
       </nav>
 
       {/* Footer Profile Area */}
-      <div className="p-4 border-t border-gray-200/60 m-2 mt-auto rounded-xl hover:bg-gray-100 transition-colors cursor-pointer group">
+      <div 
+        className="p-4 border-t border-gray-200/60 m-2 mt-auto rounded-xl hover:bg-gray-100 transition-colors cursor-pointer group"
+        onClick={() => setIsProfileOpen(true)}
+      >
         <div className="flex items-center gap-3">
           <img src="https://i.pravatar.cc/150?u=aiden" alt="Aiden Hudson" className="w-9 h-9 rounded-full shrink-0 border border-gray-200" />
           <div className="flex flex-col min-w-0 flex-1">
@@ -291,6 +297,13 @@ export default function LeftSidebar() {
           </svg>
         </div>
       </div>
+
+      <CustomerProfileOverlay 
+        isOpen={isProfileOpen} 
+        onClose={() => setIsProfileOpen(false)} 
+        customerName="Aiden Hudson"
+        customerEmail="ahudson@gmail.com"
+      />
     </aside>
   );
 }
