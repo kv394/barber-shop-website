@@ -78,6 +78,7 @@ function ChevronUpIcon(props: React.SVGProps<SVGSVGElement>) {
 
 export default function LeadQualityRow({ lead }: { lead: Lead }) {
   const [isExpanded, setIsExpanded] = useState(false);
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
 
   const rowContent = (
     <div className="grid grid-cols-6 items-center px-4 py-3 cursor-pointer w-full">
