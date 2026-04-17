@@ -265,10 +265,3 @@ export default async function ShopLayout({
     </div>
   );
 }
-n>
-      </div>
-
-      <GlobalChatWidget shopId={shopId} currentUserId={userId} userRole={data.userRole} />
-    </div>
-  );
-}
