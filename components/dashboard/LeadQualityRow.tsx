@@ -1,5 +1,6 @@
 "use client";
 import React, { useState } from 'react';
+import CustomerProfileOverlay from './CustomerProfileOverlay';
 
 type LeadStatus = 'GOOD' | 'NEEDS REVIEW';
 
