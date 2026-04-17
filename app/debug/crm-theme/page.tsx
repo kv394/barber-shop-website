@@ -13,6 +13,7 @@ const SettingsIcon = () => <svg className="w-5 h-5" fill="none" stroke="currentC
 export default function CRMDashboard() {
   const [selectedLeads, setSelectedLeads] = useState<number[]>([1, 4, 5]);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const [profileView, setProfileView] = useState<{name: string, email: string} | null>(null);
 
   const toggleLead = (id: number) => {
     if (selectedLeads.includes(id)) {
@@ -102,7 +103,7 @@ export default function CRMDashboard() {
         {/* Bottom Profile */}
         <div 
           className="p-4 border-t border-crm-border cursor-pointer hover:bg-crm-bg transition-colors"
-          onClick={() => setIsProfileOpen(true)}
+          onClick={() => setProfileView({ name: 'Aiden Hudson', email: 'ahudson@gmail.com' })}
         >
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 rounded-full bg-gray-200 overflow-hidden"><img src="https://i.pravatar.cc/150?u=aiden" alt="User" /></div>
@@ -115,10 +116,10 @@ export default function CRMDashboard() {
         </div>
 
         <CustomerProfileOverlay 
-          isOpen={isProfileOpen} 
-          onClose={() => setIsProfileOpen(false)} 
-          customerName="Aiden Hudson"
-          customerEmail="ahudson@gmail.com"
+          isOpen={!!profileView || isProfileOpen} 
+          onClose={() => { setProfileView(null); setIsProfileOpen(false); }} 
+          customerName={profileView?.name || "Aiden Hudson"}
+          customerEmail={profileView?.email || "ahudson@gmail.com"}
         />
       </aside>
 
@@ -248,10 +249,10 @@ export default function CRMDashboard() {
                         className="rounded border-gray-300 text-crm-primary focus:ring-crm-primary" 
                       />
                     </td>
-                    <td className="py-3 px-6">
+                    <td className="py-3 px-6 cursor-pointer group" onClick={() => setProfileView({ name: lead.name, email: lead.email })}>
                       <div className="flex items-center gap-3">
                         <img src={`https://i.pravatar.cc/150?u=${lead.id + 10}`} className="w-8 h-8 rounded-full bg-gray-200" alt="" />
-                        <span className="font-semibold text-sm text-crm-text">{lead.name}</span>
+                        <span className="font-semibold text-sm text-crm-text group-hover:text-orange-500 transition-colors">{lead.name}</span>
                       </div>
                     </td>
                     <td className="py-3 px-6 text-sm text-crm-muted">{lead.company}</td>
