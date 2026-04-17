@@ -15,14 +15,14 @@ const config: Config = {
       },
       colors: {
         crm: {
-          bg: '#F9FAFB',       // Light gray (app bg)
+          bg: '#f4f5f7',       // Pale cool gray (app bg)
           surface: '#FFFFFF',  // Pure White (cards, sidebars)
-          border: '#E5E7EB',   // Soft Gray
-          text: '#111827',     // Dark text
-          muted: '#6B7280',    // Muted text
-          primary: '#F97316',  // Orange 500
-          accent: '#EA580C',   // Orange 600
-          darkBase: '#020617', // Keep for compatibility
+          border: '#f3f4f6',   // Gray-100
+          text: '#1f2937',     // Gray-800
+          muted: '#6b7280',    // Gray-500
+          primary: '#f05a28',  // Vibrant coral/orange
+          accent: '#ea580c',   // Orange-600
+          darkBase: '#111827', // Gray-900
         },
         status: {
           confirmed: '#16A34A', // Green 600

@@ -61,7 +61,7 @@ export default function LeadQualityRow({ lead }: { lead: Lead }) {
 
       {/* Expanded State */}
       {isExpanded && (
-        <div className="border-t-2 border-[#f05a28] bg-gray-50 p-6 shadow-inner">
+        <div className="border-t-2 border-orange-500 bg-gray-50 p-6 shadow-inner relative mt-[-1px]">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
             {/* Services Required */}
             <div>

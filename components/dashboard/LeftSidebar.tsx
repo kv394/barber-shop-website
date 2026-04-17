@@ -56,7 +56,7 @@ export default function LeftSidebar() {
       {/* Navigation */}
       <nav className="flex-1 overflow-y-auto pb-4">
         {categories.map((category) => (
-          <div key={category.title} className="mb-2">
+          <div key={category.title}>
             <h2 className="text-[10px] uppercase text-gray-400 font-bold mt-6 mb-2 px-6">
               {category.title}
             </h2>
