@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
+import CustomerProfileOverlay from '@/components/dashboard/CustomerProfileOverlay';
 
 // SVG Icons
 const SearchIcon = () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>;
@@ -11,6 +12,7 @@ const SettingsIcon = () => <svg className="w-5 h-5" fill="none" stroke="currentC
 
 export default function CRMDashboard() {
   const [selectedLeads, setSelectedLeads] = useState<number[]>([1, 4, 5]);
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
 
   const toggleLead = (id: number) => {
     if (selectedLeads.includes(id)) {
@@ -98,9 +100,12 @@ export default function CRMDashboard() {
         </nav>
 
         {/* Bottom Profile */}
-        <div className="p-4 border-t border-crm-border">
+        <div 
+          className="p-4 border-t border-crm-border cursor-pointer hover:bg-crm-bg transition-colors"
+          onClick={() => setIsProfileOpen(true)}
+        >
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-full bg-gray-200 overflow-hidden"><img src="https://i.pravatar.cc/150?u=a" alt="User" /></div>
+            <div className="w-8 h-8 rounded-full bg-gray-200 overflow-hidden"><img src="https://i.pravatar.cc/150?u=aiden" alt="User" /></div>
             <div className="flex-1 min-w-0">
               <div className="text-sm font-semibold text-crm-text truncate">Aiden Hudson</div>
               <div className="text-xs text-crm-muted truncate">ahudson@gmail.com</div>
@@ -108,6 +113,13 @@ export default function CRMDashboard() {
             <button className="text-crm-muted hover:text-crm-text"><SettingsIcon /></button>
           </div>
         </div>
+
+        <CustomerProfileOverlay 
+          isOpen={isProfileOpen} 
+          onClose={() => setIsProfileOpen(false)} 
+          customerName="Aiden Hudson"
+          customerEmail="ahudson@gmail.com"
+        />
       </aside>
 
       {/* Main Content Area */}
