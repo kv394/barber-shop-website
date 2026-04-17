@@ -86,7 +86,15 @@ export default function LeadQualityRow({ lead }: { lead: Lead }) {
         <div className={`text-sm ${lead.isNew ? 'font-semibold text-gray-900' : 'font-medium text-gray-600'}`}>{lead.date}</div>
       </div>
       <div className={`text-sm ${lead.company !== '-' ? 'font-medium text-gray-900' : 'text-gray-400'} col-span-1`}>{lead.company}</div>
-      <div className="text-sm font-normal text-gray-600 col-span-1">{lead.email}</div>
+      <div 
+        className="text-sm font-normal text-gray-600 col-span-1 hover:text-orange-500 transition-colors"
+        onClick={(e) => {
+          e.stopPropagation();
+          setIsProfileOpen(true);
+        }}
+      >
+        {lead.email}
+      </div>
       <div className="text-sm font-normal text-gray-400 underline decoration-gray-300 underline-offset-2 col-span-1">{lead.utmLink}</div>
       <div className="col-span-1">
         <span className={`inline-flex items-center px-2 py-0.5 rounded text-[10px] uppercase font-bold tracking-wide border ${
@@ -202,6 +210,13 @@ export default function LeadQualityRow({ lead }: { lead: Lead }) {
             </button>
           </div>
         </div>
+
+        <CustomerProfileOverlay 
+          isOpen={isProfileOpen} 
+          onClose={() => setIsProfileOpen(false)} 
+          customerEmail={lead.email}
+          customerName={lead.company !== '-' ? lead.company : lead.email.split('@')[0]}
+        />
       </div>
     );
   }
@@ -211,6 +226,13 @@ export default function LeadQualityRow({ lead }: { lead: Lead }) {
       <div onClick={() => setIsExpanded(true)}>
         {rowContent}
       </div>
+      
+      <CustomerProfileOverlay 
+        isOpen={isProfileOpen} 
+        onClose={() => setIsProfileOpen(false)} 
+        customerEmail={lead.email}
+        customerName={lead.company !== '-' ? lead.company : lead.email.split('@')[0]}
+      />
     </div>
   );
 }
