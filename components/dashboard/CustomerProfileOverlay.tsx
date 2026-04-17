@@ -1,5 +1,6 @@
 "use client";
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
 
 // Icons
 const GripVertical = () => (
@@ -128,10 +129,16 @@ export default function CustomerProfileOverlay({
   customerName = "Emma Johansson",
   customerEmail = "emma@nordicsoft.io"
 }: CustomerProfileOverlayProps) {
-  if (!isOpen) return null;
+  const [mounted, setMounted] = useState(false);
 
-  return (
-    <div className="fixed right-6 top-20 w-[360px] bg-white rounded-xl shadow-2xl border border-gray-200 z-50 flex flex-col max-h-[85vh] overflow-hidden font-sans">
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!isOpen || !mounted) return null;
+
+  const overlayContent = (
+    <div className="fixed right-6 top-20 w-[360px] bg-white rounded-xl shadow-2xl border border-gray-200 z-[9999] flex flex-col max-h-[85vh] overflow-hidden font-sans">
       
       {/* Header */}
       <div className="flex items-center justify-between px-4 py-3 border-b border-gray-100">
@@ -267,4 +274,6 @@ export default function CustomerProfileOverlay({
 
     </div>
   );
+
+  return createPortal(overlayContent, document.body);
 }
