@@ -6,6 +6,7 @@ import { headers } from 'next/headers';
 import Link from 'next/link';
 import SupabaseAuthButton from '@/components/auth/SupabaseAuthButton';
 import GlobalChatWidget from '@/components/shop-admin/GlobalChatWidget';
+import ShopHeaderTitle from '@/components/shop-admin/ShopHeaderTitle';
 
 export const dynamic = 'force-dynamic';
 
