@@ -16,6 +16,7 @@ export default function SupabaseAuthButton({
   const [profile, setProfile] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [isOpen, setIsOpen] = useState(false);
+  const [isRendered, setIsRendered] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [menuStyle, setMenuStyle] = useState<React.CSSProperties>({});
   
@@ -24,6 +25,15 @@ export default function SupabaseAuthButton({
   
   const router = useRouter();
   const supabase = createClient();
+
+  useEffect(() => {
+    if (isOpen) {
+      setIsRendered(true);
+    } else {
+      const timeout = setTimeout(() => setIsRendered(false), 200);
+      return () => clearTimeout(timeout);
+    }
+  }, [isOpen]);
 
   useEffect(() => {
     setMounted(true);
@@ -118,15 +128,15 @@ export default function SupabaseAuthButton({
       <>
         {/* Invisible overlay just to catch clicks outside */}
         <div 
-          className="fixed inset-0" 
-          style={{ zIndex: 99998 }}
+          className={`fixed inset-0 transition-opacity duration-200 ${isOpen ? 'opacity-100' : 'opacity-0'}`} 
+          style={{ zIndex: 99998, pointerEvents: isOpen ? 'auto' : 'none' }}
           onClick={() => setIsOpen(false)} 
         />
         
         {/* Floating Menu Pop-up with Animation */}
         <div 
           ref={menuRef}
-          className="fixed w-72 bg-crm-surface border border-crm-border shadow-2xl rounded-2xl overflow-hidden animate-in fade-in slide-in-from-bottom-4 duration-300"
+          className={`fixed w-72 bg-crm-surface border border-crm-border shadow-2xl rounded-2xl overflow-hidden transition-all duration-200 ${isOpen ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2 pointer-events-none'}`}
           style={{ zIndex: 99999, ...menuStyle }}
         >
            <div className="p-5 border-b border-crm-border flex flex-col items-center bg-crm-bg relative">
@@ -178,7 +188,7 @@ export default function SupabaseAuthButton({
           </div>
         </button>
 
-        {isOpen && mounted && createPortal(menuContent, document.body)}
+        {isRendered && mounted && createPortal(menuContent, document.body)}
       </div>
     );
   }
