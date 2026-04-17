@@ -138,17 +138,15 @@ export default function CustomerProfileOverlay({
   if (!isOpen || !mounted) return null;
 
   const overlayContent = (
-    <div className="fixed inset-0 z-[99999] flex justify-end font-sans">
-      <div className="absolute inset-0 bg-black/20 backdrop-blur-sm transition-opacity" onClick={onClose}></div>
-      <div className="relative w-[380px] h-full bg-white shadow-2xl border-l border-gray-200 flex flex-col animate-in slide-in-from-right duration-300">
+    <div className="fixed right-6 top-20 w-[360px] bg-white rounded-xl shadow-2xl border border-gray-200 z-[99999] flex flex-col max-h-[85vh] overflow-hidden font-sans">
       
       {/* Header */}
-      <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100">
+      <div className="flex items-center justify-between px-4 py-3 border-b border-gray-100">
         <div className="flex items-center gap-2 text-gray-500">
           <GripVertical />
           <span className="text-sm font-semibold text-gray-700">Customer Profile</span>
         </div>
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3">
           <ExternalLink />
           <XIcon onClick={onClose} />
         </div>
@@ -156,31 +154,31 @@ export default function CustomerProfileOverlay({
 
       <div className="flex-1 overflow-y-auto scrollbar-hide flex flex-col">
         {/* Profile Info */}
-        <div className="flex flex-col items-center pt-8 px-6 pb-6">
-          <img src="https://i.pravatar.cc/150?u=emma" alt={customerName} className="w-20 h-20 rounded-full border-4 border-white shadow-sm mb-4" />
-          <h2 className="text-xl font-bold text-gray-900 leading-tight mb-4">{customerName}</h2>
+        <div className="flex flex-col items-center pt-6 px-6 pb-4">
+          <img src="https://i.pravatar.cc/150?u=emma" alt={customerName} className="w-16 h-16 rounded-full border-2 border-white shadow-sm mb-3" />
+          <h2 className="text-lg font-bold text-gray-900 leading-tight mb-3">{customerName}</h2>
           
-          <div className="flex flex-col gap-3 w-full ml-10">
-            <div className="flex items-center gap-3 text-sm text-gray-600">
+          <div className="flex flex-col gap-2 w-full ml-10">
+            <div className="flex items-center gap-2 text-sm text-gray-600">
               <BuildingIcon />
-              <span className="font-medium text-gray-800">Nordic Soft AB</span>
+              <span>Nordic Soft AB</span>
             </div>
-            <div className="flex items-center gap-3 text-sm text-gray-600">
+            <div className="flex items-center gap-2 text-sm text-gray-600">
               <MailIcon />
-              <span className="font-medium text-gray-800">{customerEmail}</span>
+              <span className="truncate">{customerEmail}</span>
             </div>
-            <div className="flex items-center gap-3 text-sm text-gray-600">
+            <div className="flex items-center gap-2 text-sm text-gray-600">
               <PhoneIcon />
-              <span className="font-medium text-gray-800">+1 (202) 555-0198</span>
+              <span>+1 (202) 555-0198</span>
             </div>
           </div>
 
-          <div className="flex items-center gap-3 w-full mt-6">
-            <button className="flex-1 bg-orange-500 hover:bg-orange-600 text-white py-2.5 rounded-lg text-sm font-medium transition-colors shadow-sm flex items-center justify-center gap-2">
+          <div className="flex items-center gap-3 w-full mt-5">
+            <button className="flex-1 bg-orange-500 hover:bg-orange-600 text-white py-2 rounded-lg text-sm font-medium transition-colors shadow-sm flex items-center justify-center gap-2">
               <CalendarIcon />
               Schedule a Call
             </button>
-            <button className="flex-1 bg-gray-50 hover:bg-gray-100 text-gray-700 border border-gray-200 py-2.5 rounded-lg text-sm font-medium transition-colors flex items-center justify-center gap-2">
+            <button className="flex-1 bg-gray-50 hover:bg-gray-100 text-gray-700 border border-gray-200 py-2 rounded-lg text-sm font-medium transition-colors flex items-center justify-center gap-2">
               <Edit2Icon />
               Edit Profile
             </button>
@@ -192,7 +190,7 @@ export default function CustomerProfileOverlay({
           {['Activity', 'Notes', 'Deals', 'Docs'].map(tab => (
             <div 
               key={tab} 
-              className={`flex-1 text-center py-3 text-sm font-medium cursor-pointer relative transition-colors ${
+              className={`flex-1 text-center py-3 text-sm font-medium cursor-pointer relative ${
                 tab === 'Notes' ? 'text-orange-500' : 'text-gray-500 hover:text-gray-700'
               }`}
             >
@@ -205,70 +203,75 @@ export default function CustomerProfileOverlay({
         </div>
 
         {/* Notes Content */}
-        <div className="flex-1 bg-gray-50/50 p-6 flex flex-col gap-6 overflow-y-auto">
+        <div className="flex-1 bg-gray-50/50 p-5 flex flex-col gap-5 overflow-y-auto">
           {/* Note 1 */}
           <div className="flex gap-3">
-            <img src="https://i.pravatar.cc/150?u=jacob" alt="Jacob Müller" className="w-7 h-7 rounded-full shrink-0 shadow-sm" />
+            <img src="https://i.pravatar.cc/150?u=jacob" alt="Jacob Müller" className="w-6 h-6 rounded-full shrink-0" />
             <div className="flex flex-col">
               <div className="flex items-baseline gap-2 mb-1">
-                <span className="text-sm font-bold text-gray-900">Jacob Müller</span>
-                <span className="text-[11px] text-gray-400 font-medium">15 mins ago</span>
+                <span className="text-xs font-bold text-gray-900">Jacob Müller</span>
+                <span className="text-[10px] text-gray-400">15 mins ago</span>
               </div>
-              <p className="text-sm text-gray-700 leading-relaxed bg-white p-3 border border-gray-100 rounded-xl rounded-tl-none shadow-sm mb-2">
+              <p className="text-xs text-gray-600 leading-relaxed bg-white p-2.5 border border-gray-100 rounded-lg rounded-tl-none shadow-sm mb-1.5">
                 Got it. I'll send the update after my meeting this afternoon.
               </p>
               <div className="flex">
-                <button className="flex items-center gap-1.5 bg-white border border-gray-200 rounded-full px-2 py-1 text-xs font-medium text-gray-600 hover:bg-gray-50 transition-colors shadow-sm">
+                <button className="flex items-center gap-1 bg-white border border-gray-200 rounded-full px-1.5 py-0.5 text-[10px] text-gray-600 hover:bg-gray-50">
                   <span>🎯</span> 1
                 </button>
               </div>
+            </div>
+            <div className="ml-auto text-gray-300">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="1"></circle><circle cx="19" cy="12" r="1"></circle><circle cx="5" cy="12" r="1"></circle></svg>
             </div>
           </div>
 
           {/* Note 2 */}
           <div className="flex gap-3">
-            <img src="https://i.pravatar.cc/150?u=aiden" alt="Aiden Hudson" className="w-7 h-7 rounded-full shrink-0 shadow-sm" />
+            <img src="https://i.pravatar.cc/150?u=aiden" alt="Aiden Hudson" className="w-6 h-6 rounded-full shrink-0" />
             <div className="flex flex-col">
               <div className="flex items-baseline gap-2 mb-1">
-                <span className="text-sm font-bold text-gray-900">Aiden Hudson</span>
-                <span className="text-[11px] text-gray-400 font-medium">Yesterday</span>
+                <span className="text-xs font-bold text-gray-900">Aiden Hudson</span>
+                <span className="text-[10px] text-gray-400">Yesterday</span>
               </div>
-              <p className="text-sm text-gray-700 leading-relaxed bg-white p-3 border border-gray-100 rounded-xl rounded-tl-none shadow-sm mb-2">
+              <p className="text-xs text-gray-600 leading-relaxed bg-white p-2.5 border border-gray-100 rounded-lg rounded-tl-none shadow-sm mb-1.5">
                 Please prepare an update for Emma on the onboarding timeline.
               </p>
               <div className="flex">
-                <button className="flex items-center gap-1.5 bg-white border border-gray-200 rounded-full px-2 py-1 text-xs font-medium text-gray-600 hover:bg-gray-50 transition-colors shadow-sm">
+                <button className="flex items-center gap-1 bg-white border border-gray-200 rounded-full px-1.5 py-0.5 text-[10px] text-gray-600 hover:bg-gray-50">
                   <span>🎯</span> 2
                 </button>
               </div>
+            </div>
+            <div className="ml-auto text-gray-300">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="1"></circle><circle cx="19" cy="12" r="1"></circle><circle cx="5" cy="12" r="1"></circle></svg>
             </div>
           </div>
         </div>
       </div>
 
       {/* Input Area */}
-      <div className="p-4 bg-white border-t border-gray-100 shadow-[0_-4px_10px_rgba(0,0,0,0.02)]">
-        <div className="bg-gray-50 border border-gray-200 rounded-xl flex flex-col p-2.5 transition-colors focus-within:border-orange-300 focus-within:bg-white focus-within:ring-2 focus-within:ring-orange-100">
+      <div className="p-3 bg-white border-t border-gray-100">
+        <div className="bg-gray-50 border border-gray-200 rounded-lg flex flex-col p-2">
           <textarea 
             placeholder="Write a note..." 
-            className="bg-transparent border-none outline-none text-sm text-gray-800 placeholder:text-gray-400 resize-none h-12 w-full px-2"
+            className="bg-transparent border-none outline-none text-sm text-gray-800 placeholder:text-gray-400 resize-none h-10 w-full px-1"
             defaultValue="Perfect. Ke|"
           />
-          <div className="flex items-center justify-between mt-2 pt-2 border-t border-gray-100">
-            <div className="flex items-center gap-3 px-1">
-              <button className="text-gray-400 hover:text-gray-600 transition-colors"><PaperclipIcon /></button>
-              <button className="text-gray-400 hover:text-gray-600 transition-colors"><MicIcon /></button>
-              <button className="text-gray-400 hover:text-gray-600 transition-colors"><AtIcon /></button>
-              <button className="text-gray-400 hover:text-gray-600 transition-colors"><SlidersIcon /></button>
+          <div className="flex items-center justify-between mt-2">
+            <div className="flex items-center gap-2.5 px-1">
+              <PaperclipIcon />
+              <MicIcon />
+              <AtIcon />
+              <SlidersIcon />
             </div>
-            <button className="bg-orange-500 hover:bg-orange-600 w-8 h-8 rounded-lg flex items-center justify-center transition-all hover:scale-105 shadow-sm">
+            <button className="bg-orange-500 hover:bg-orange-600 w-7 h-7 rounded-md flex items-center justify-center transition-colors">
               <SendIcon />
             </button>
           </div>
         </div>
       </div>
 
-      </div>
     </div>
   );
 
