@@ -65,20 +65,26 @@ export default function SupabaseAuthButton({
         const rect = buttonRef.current.getBoundingClientRect();
         const spaceBelow = window.innerHeight - rect.bottom;
         const spaceAbove = rect.top;
+        const alignRight = rect.left > window.innerWidth / 2;
+        
+        let style: React.CSSProperties = {};
         
         // If there's more space above than below, and space below is tight (< 400px), open upwards
         if (spaceBelow < 400 && spaceAbove > spaceBelow) {
-          setMenuStyle({
-            bottom: window.innerHeight - rect.top + 8,
-            right: window.innerWidth - rect.right,
-          });
+          style.bottom = window.innerHeight - rect.top + 8;
         } else {
           // Open downwards
-          setMenuStyle({
-            top: rect.bottom + 8,
-            right: window.innerWidth - rect.right,
-          });
+          style.top = rect.bottom + 8;
         }
+
+        // Align horizontally
+        if (alignRight) {
+          style.right = window.innerWidth - rect.right;
+        } else {
+          style.left = rect.left;
+        }
+
+        setMenuStyle(style);
       }
     };
 
@@ -120,7 +126,7 @@ export default function SupabaseAuthButton({
         {/* Floating Menu Pop-up with Animation */}
         <div 
           ref={menuRef}
-          className="fixed w-72 bg-crm-surface border border-crm-border shadow-2xl rounded-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-200"
+          className="fixed w-72 bg-crm-surface border border-crm-border shadow-2xl rounded-2xl overflow-hidden animate-in fade-in slide-in-from-bottom-4 duration-300"
           style={{ zIndex: 99999, ...menuStyle }}
         >
            <div className="p-5 border-b border-crm-border flex flex-col items-center bg-crm-bg relative">
