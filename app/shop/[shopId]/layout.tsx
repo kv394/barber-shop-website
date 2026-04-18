@@ -6,7 +6,6 @@ import { headers } from 'next/headers';
 import Link from 'next/link';
 import SupabaseAuthButton from '@/components/auth/SupabaseAuthButton';
 import GlobalChatWidget from '@/components/shop-admin/GlobalChatWidget';
-import ShopHeaderTitle from '@/components/shop-admin/ShopHeaderTitle';
 
 export const dynamic = 'force-dynamic';
 
@@ -201,9 +200,21 @@ export default async function ShopLayout({
                 </Link>              </div>
             )}
           </nav>
-          <div className="p-4 border-t border-crm-border">
-             <span className="block text-xs font-semibold text-crm-muted uppercase tracking-wider mb-2">{data.userRole.replace('_', ' ')}</span>
-             <SupabaseAuthButton redirectUrl={fallbackRedirect} />
+          <div className="p-4 border-t border-crm-border flex items-center justify-between">
+            <div>
+               <span className="block text-xs font-semibold text-crm-muted uppercase tracking-wider mb-2">{data.userRole.replace('_', ' ')}</span>
+               <SupabaseAuthButton redirectUrl={fallbackRedirect} />
+            </div>
+            {!isSiteAdmin && (
+              <Link
+                href={`/shops/${data.shopSlug}?preview=true`}
+                target="_blank"
+                className="text-crm-muted hover:text-crm-text transition-colors p-2"
+                title="View Public Page"
+              >
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+              </Link>
+            )}
           </div>
         </aside>
       )}
@@ -222,36 +233,8 @@ export default async function ShopLayout({
           </header>
         )}
 
-        {/* Desktop Topbar */}
-        <header className="hidden md:flex h-16 shrink-0 items-center justify-between px-8 bg-crm-surface border-b border-crm-border z-10 shadow-sm">
-          <div className="flex items-center">
-            {isSiteAdmin ? (
-              <h1 className="font-bold text-2xl flex items-center gap-2">
-                <Link href="/siteadmin" className="text-crm-text hover:opacity-80">Barber<span className="text-crm-primary">SaaS</span></Link>
-                <span className="text-crm-muted font-normal">/</span>
-                <span className="text-crm-muted font-medium">{data.shop.name}</span>
-              </h1>
-            ) : (
-              <ShopHeaderTitle />
-            )}
-          </div>
-          
-          <div className="flex items-center gap-4 shrink-0">
-            {!isSiteAdmin && (
-              <Link
-                href={`/shops/${data.shopSlug}?preview=true`}
-                target="_blank"
-                className="bg-crm-surface border border-crm-border text-crm-text hover:bg-crm-bg px-4 py-2 rounded-lg transition-colors text-sm font-medium shadow-sm"
-              >
-                View Public Page ↗
-              </Link>
-            )}
-            {isSiteAdmin && <SupabaseAuthButton redirectUrl="/" />}
-          </div>
-        </header>
-
         {/* Main Scrolling Area */}
-        <main className="flex-1 overflow-y-auto bg-crm-bg p-4 md:p-8">
+        <main className="flex-1 overflow-y-auto bg-crm-bg p-4 md:p-8 pt-8">
           <div className="mx-auto max-w-7xl">
             {children}
           </div>
