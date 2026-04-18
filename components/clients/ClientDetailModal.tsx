@@ -10,7 +10,7 @@ interface ClientDetailProps {
   onClose: () => void;
 }
 
-export default function ClientDetailModal({ shopId, clientId, clientName, onClose }: ClientDetailProps) {
+export default function ClientDetailModal({ shopId, clientId, clientName, onClose }: ClientDetailProps): React.ReactNode {
   const [client, setClient] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [loyaltyData, setLoyaltyData] = useState<any>(null);
@@ -409,4 +409,6 @@ export default function ClientDetailModal({ shopId, clientId, clientName, onClos
       </div>
     </div>
   );
+
+  return isRendered && mounted ? createPortal(modalContent, document.body) : null;
 }
