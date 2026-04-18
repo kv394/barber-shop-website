@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 
 interface ClientDetailProps {
   shopId: string;
@@ -19,8 +20,10 @@ export default function ClientDetailModal({ shopId, clientId, clientName, onClos
   // Animation state
   const [isOpen, setIsOpen] = useState(false);
   const [isRendered, setIsRendered] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
     setIsRendered(true);
     const t = setTimeout(() => setIsOpen(true), 10);
     return () => clearTimeout(t);
@@ -156,9 +159,9 @@ export default function ClientDetailModal({ shopId, clientId, clientName, onClos
     }));
   };
 
-  return (
-    <div className="fixed inset-0 bg-crm-surface z-[100] flex items-center justify-center p-4 backdrop-blur-sm" onClick={onClose}>
-      <div className="bg-crm-surface rounded-xl p-6 w-full max-w-2xl border border-crm-border shadow-sm shadow-2xl max-h-[90vh] overflow-y-auto custom-scrollbar" onClick={e => e.stopPropagation()}>
+  const modalContent = (
+    <div className="fixed inset-0 bg-black/60 z-[100] flex items-center justify-center p-4 backdrop-blur-sm" onClick={handleClose}>
+      <div className={`bg-crm-surface rounded-xl p-6 w-full max-w-2xl border border-crm-border shadow-sm shadow-2xl max-h-[90vh] overflow-y-auto custom-scrollbar transition-all duration-300 transform ${isOpen ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`} onClick={e => e.stopPropagation()}>
         <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-start mb-6 border-b border-crm-border pb-4">
           <div>
             <h3 className="font-bold text-crm-accent text-lg font-bold">{clientName}</h3>
@@ -170,7 +173,7 @@ export default function ClientDetailModal({ shopId, clientId, clientName, onClos
               </div>
             )}
           </div>
-          <button onClick={onClose} className="text-crm-muted hover:text-crm-text bg-crm-surface rounded-full w-8 h-8 flex items-center justify-center">✕</button>
+          <button onClick={handleClose} className="text-crm-muted hover:text-crm-text bg-crm-surface rounded-full w-8 h-8 flex items-center justify-center">✕</button>
         </div>
 
         {loading ? (
