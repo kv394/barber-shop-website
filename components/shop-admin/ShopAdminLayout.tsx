@@ -21,10 +21,6 @@ export default function ShopAdminLayout({
 
   return (
     <div className="pb-20 sm:pb-0">
-      {pageTitle && (!tabs || tabs.length === 0) && (
-        <p className="text-crm-muted mb-6 sm:mb-8 px-3 sm:px-0 mt-2 sm:mt-0 sm:-mt-8 text-[13px]">{pageTitle}</p>
-      )}
-
       {tabs && tabs.length > 0 && (
         <div className="flex items-end justify-between relative z-10 w-full pl-2 mt-2 sm:-mt-6">
           <div className="flex items-end">
