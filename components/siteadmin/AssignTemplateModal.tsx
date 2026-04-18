@@ -65,7 +65,8 @@ export default function AssignTemplateModal({
 
   return (
     <div className="fixed inset-0 bg-crm-darkBase/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-      <div className="bg-crm-surface w-full max-w-md rounded-2xl border border-crm-border shadow-2xl p-6">
+      <div className="bg-crm-surface w-full max-w-md rounded-2xl border border-crm-border shadow-2xl p-6 relative">
+        <button onClick={onClose} className="absolute top-4 right-4 text-crm-muted hover:text-crm-text bg-crm-bg rounded-full w-8 h-8 flex items-center justify-center">✕</button>
         <h2 className="font-bold text-crm-text mb-2 text-xl font-bold">Assign Template</h2>
         <p className="text-crm-muted mb-6 text-[13px]">Select a template for <strong>{shopName}</strong></p>
 

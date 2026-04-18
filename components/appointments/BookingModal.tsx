@@ -372,7 +372,8 @@ export default function BookingModal({ shopId, service, onClose, shopHours }: Bo
   if (success) {
       return (
         <div className="fixed inset-0 bg-crm-surface z-[100] flex items-center justify-center p-4 backdrop-blur-sm">
-            <div className="bg-crm-surface rounded-xl p-8 max-w-md w-full border border-status-confirmed shadow-2xl text-center">
+            <div className="bg-crm-surface rounded-xl p-8 max-w-md w-full border border-status-confirmed shadow-2xl text-center relative">
+                <button onClick={onClose} className="absolute top-4 right-4 text-crm-muted hover:text-crm-text bg-crm-surface rounded-full w-8 h-8 flex items-center justify-center z-10">✕</button>
                 <div className="text-6xl mb-4">🎉</div>
                 <h3 className="font-bold text-crm-text mb-2 text-lg font-bold">Booking Confirmed!</h3>
                 <p className="text-crm-muted mb-2 text-[13px]">The appointment for <span className="text-crm-accent font-semibold">{service.name}</span> has been scheduled.</p>
@@ -402,9 +403,10 @@ export default function BookingModal({ shopId, service, onClose, shopHours }: Bo
     return (
       <div className="fixed inset-0 bg-crm-surface z-[100] flex items-center justify-center p-4 backdrop-blur-sm">
         <div className="bg-crm-surface rounded-xl p-6 w-full max-w-md border border-crm-border shadow-sm shadow-2xl relative text-left">
-          <button onClick={() => setShowSummary(false)} className="absolute top-4 right-4 text-crm-muted hover:text-crm-text bg-crm-surface rounded-full w-8 h-8 flex items-center justify-center z-10">←</button>
-          <h3 className="font-bold text-crm-text mb-1 text-lg font-bold">Review Your Booking</h3>
-          <p className="text-crm-muted mb-5 text-[13px]">Please confirm the details below.</p>
+          <button onClick={() => setShowSummary(false)} className="absolute top-4 left-4 text-crm-muted hover:text-crm-text bg-crm-surface rounded-full w-8 h-8 flex items-center justify-center z-10">←</button>
+          <button onClick={onClose} className="absolute top-4 right-4 text-crm-muted hover:text-crm-text bg-crm-surface rounded-full w-8 h-8 flex items-center justify-center z-10">✕</button>
+          <h3 className="font-bold text-crm-text mb-1 text-lg font-bold text-center mt-2">Review Your Booking</h3>
+          <p className="text-crm-muted mb-5 text-[13px] text-center">Please confirm the details below.</p>
 
           {error && <p className="text-status-cancelled bg-status-cancelled/20 p-3 rounded mb-4 text-[13px]">{error}</p>}
 
