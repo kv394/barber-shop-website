@@ -16,6 +16,21 @@ export default function ClientDetailModal({ shopId, clientId, clientName, onClos
 
   const [activeTab, setActiveTab] = useState<'crm' | 'history' | 'formulas' | 'gallery'>('crm');
   
+  // Animation state
+  const [isOpen, setIsOpen] = useState(false);
+  const [isRendered, setIsRendered] = useState(false);
+
+  useEffect(() => {
+    setIsRendered(true);
+    const t = setTimeout(() => setIsOpen(true), 10);
+    return () => clearTimeout(t);
+  }, []);
+
+  const handleClose = () => {
+    setIsOpen(false);
+    setTimeout(onClose, 200);
+  };
+  
   // CRM Form fields
   const [formData, setFormData] = useState({
     clientNotes: '',

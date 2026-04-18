@@ -130,15 +130,27 @@ export default function CustomerProfileOverlay({
   customerEmail = "emma@nordicsoft.io"
 }: CustomerProfileOverlayProps) {
   const [mounted, setMounted] = useState(false);
+  const [isRendered, setIsRendered] = useState(false);
+
+  useEffect(() => {
+    if (isOpen) {
+      setIsRendered(true);
+    } else {
+      const timeout = setTimeout(() => setIsRendered(false), 200);
+      return () => clearTimeout(timeout);
+    }
+  }, [isOpen]);
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  if (!isOpen || !mounted) return null;
+  if (!isRendered || !mounted) return null;
 
   const overlayContent = (
-    <div className="fixed right-6 top-20 w-[360px] bg-white rounded-xl shadow-2xl border border-gray-200 z-[99999] flex flex-col max-h-[85vh] overflow-hidden font-sans">
+    <div 
+      className={`fixed right-6 top-20 w-[360px] bg-white rounded-xl shadow-2xl border border-gray-200 z-[99999] flex flex-col max-h-[85vh] overflow-hidden font-sans transition-all duration-300 origin-top-right ${isOpen ? 'opacity-100 scale-100 translate-y-0' : 'opacity-0 scale-95 translate-y-4 pointer-events-none'}`}
+    >
       
       {/* Header */}
       <div className="flex items-center justify-between px-4 py-3 border-b border-gray-100">
