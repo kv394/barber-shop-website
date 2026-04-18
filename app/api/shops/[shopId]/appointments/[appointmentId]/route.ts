@@ -95,6 +95,7 @@ export async function PATCH(
     // Fetch current appointment for deposit handling
     const currentAppointment = await prisma.appointment.findUnique({
       where: { id: appointmentId, shopId },
+      include: { user: true, service: true },
     });
 
     if (!currentAppointment) {
@@ -102,17 +103,31 @@ export async function PATCH(
     }
 
     // C5: Handle deposit capture/release on status change
-    if (currentAppointment.depositPaymentIntentId && updateData.status) {
+    if (updateData.status) {
       try {
         if (updateData.status === 'NO_SHOW') {
-          const { captureDeposit } = await import('@/lib/stripe');
-          await captureDeposit(currentAppointment.depositPaymentIntentId);
-        } else if (updateData.status === 'CANCELLED') {
+          if (currentAppointment.depositPaymentIntentId) {
+            const { captureDeposit } = await import('@/lib/stripe');
+            await captureDeposit(currentAppointment.depositPaymentIntentId);
+          } else if (currentAppointment.user?.stripeCustomerId && currentAppointment.user?.stripePaymentMethodId && currentAppointment.service) {
+            // Charge 50% cancellation fee
+            const { chargeNoShowFee } = await import('@/lib/stripe');
+            const feeAmount = currentAppointment.service.price * 0.50;
+            if (feeAmount > 0) {
+              await chargeNoShowFee(
+                currentAppointment.user.stripeCustomerId,
+                currentAppointment.user.stripePaymentMethodId,
+                feeAmount,
+                { appointmentId: currentAppointment.id, shopId: currentAppointment.shopId }
+              );
+            }
+          }
+        } else if (updateData.status === 'CANCELLED' && currentAppointment.depositPaymentIntentId) {
           const { releaseDeposit } = await import('@/lib/stripe');
           await releaseDeposit(currentAppointment.depositPaymentIntentId);
         }
       } catch (stripeErr) {
-        logger.error('Deposit capture/release failed (non-critical):', stripeErr);
+        logger.error('Deposit capture/release or no-show fee failed (non-critical):', stripeErr);
       }
     }
 

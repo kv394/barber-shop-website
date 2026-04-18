@@ -82,6 +82,10 @@ model User {
   marketingConsent Boolean   @default(false)
   smsConsent       Boolean   @default(false)
 
+  // Stripe Card on File (No-Show Protection)
+  stripeCustomerId      String?
+  stripePaymentMethodId String?
+
   // Referral
   referralCode String? @unique
 

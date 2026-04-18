@@ -74,3 +74,42 @@ export async function createGiftCardPaymentIntent(
   };
 }
 
+/**
+ * Create a Stripe SetupIntent to save a card on file for No-Show protection.
+ */
+export async function createSetupIntent(customerId: string, metadata: Record<string, string>) {
+  const setupIntent = await stripe.setupIntents.create({
+    customer: customerId,
+    payment_method_types: ['card'],
+    metadata,
+  });
+  return {
+    clientSecret: setupIntent.client_secret,
+    setupIntentId: setupIntent.id,
+  };
+}
+
+/**
+ * Charge a saved card on file for a No-Show fee.
+ */
+export async function chargeNoShowFee(customerId: string, paymentMethodId: string, amount: number, metadata: Record<string, string>) {
+  const paymentIntent = await stripe.paymentIntents.create({
+    amount: Math.round(amount * 100),
+    currency: 'usd',
+    customer: customerId,
+    payment_method: paymentMethodId,
+    off_session: true,
+    confirm: true,
+    metadata,
+  });
+  return paymentIntent;
+}
+
+/**
+ * Create a Stripe Terminal ConnectionToken for BBPOS / Tap to Pay.
+ */
+export async function createTerminalConnectionToken() {
+  const connectionToken = await stripe.terminal.connectionTokens.create();
+  return connectionToken.secret;
+}
+

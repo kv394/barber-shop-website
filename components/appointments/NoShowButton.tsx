@@ -6,7 +6,7 @@ export default function NoShowButton({ shopId, appointmentId, userName }: { shop
   const [loading, setLoading] = useState(false);
 
   const handleNoShow = async () => {
-    if (!confirm(`Mark ${userName}'s appointment as No-Show?`)) return;
+    if (!confirm(`Mark ${userName}'s appointment as No-Show?\n\nIf they have a card on file, they will automatically be charged a 50% cancellation fee.`)) return;
     setLoading(true);
     try {
       const res = await fetch(`/api/shops/${shopId}/appointments/${appointmentId}`, {
