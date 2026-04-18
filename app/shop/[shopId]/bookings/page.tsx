@@ -131,7 +131,16 @@ export default async function BookingsPage({ params }: { params: Promise<{ shopI
                                            <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-start mb-3 gap-2">
                                                <div className="flex flex-col items-start gap-1">
                                                    <div className="flex flex-wrap items-center gap-2">
-                                                       <h4 className="font-bold leading-tight text-base font-semibold">{apt.user?.name || "Guest"}</h4>
+                                                       {apt.userId ? (
+                                                         <ClientNameClickable 
+                                                           shopId={shop.id} 
+                                                           clientId={apt.userId} 
+                                                           clientName={apt.user?.name || "Guest"} 
+                                                           className="font-bold leading-tight text-base font-semibold"
+                                                         />
+                                                       ) : (
+                                                         <h4 className="font-bold leading-tight text-base font-semibold">{apt.user?.name || "Guest"}</h4>
+                                                       )}
                                                        {statusBadge}
                                                    </div>
                                                    <p className="text-crm-muted text-[13px]">{apt.user?.email || "No email"}</p>

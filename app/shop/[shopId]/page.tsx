@@ -7,6 +7,7 @@ import Link from 'next/link';
 import ShopAdminLayout from '@/components/shop-admin/ShopAdminLayout';
 import StaffInbox from '@/components/shop-admin/StaffInbox';
 import DirectClockInButton from '@/components/shop-admin/DirectClockInButton';
+import ClientNameClickable from '@/components/clients/ClientNameClickable';
 import { calculateUsageCostStrategy, getSaaSTiers } from '@/lib/cost-calculator';
 
 export const dynamic = 'force-dynamic';
@@ -329,6 +330,22 @@ export default async function ShopDashboardPage({ params }: { params: Promise<{ 
                 <span className="text-cyan-500 text-[13px] sm:text-base">⏳</span>
               </div>
               <p className="font-black text-crm-text break-words leading-tight text-xl font-bold">{todayStats.upcomingCount}</p>
+            </div>
+          </div>
+        </div>
+      )}
+      
+      {/* ── Inbox / Notifications (STAFF only) ── */}
+      {isStaff && (
+        <div className="mb-6 sm:mb-8">
+          <StaffInbox shopId={shopId} userId={userId} />
+        </div>
+      )}
+
+    </ShopAdminLayout>
+  );
+}
+>{todayStats.upcomingCount}</p>
             </div>
           </div>
         </div>
