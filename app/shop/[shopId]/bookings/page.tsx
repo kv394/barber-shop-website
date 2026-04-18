@@ -12,6 +12,7 @@ import BookingDatePicker from '@/components/appointments/BookingDatePicker';
 import ShopAdminLayout from '@/components/shop-admin/ShopAdminLayout';
 import AcceptAppointmentButton from '@/components/appointments/AcceptAppointmentButton';
 import CompleteWorkButton from '@/components/appointments/CompleteWorkButton';
+import ClientNameClickable from '@/components/clients/ClientNameClickable';
 
 export const dynamic = 'force-dynamic';
 
