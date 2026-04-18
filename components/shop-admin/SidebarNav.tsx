@@ -6,19 +6,59 @@ import { usePathname } from 'next/navigation';
 export default function SidebarNav({ shopId, userRole, shopName, authButton }: { shopId: string, userRole: string, shopName: string, authButton?: React.ReactNode }) {
   const pathname = usePathname();
 
-  const isActive = (path: string) => {
+  const isActive = (path: string, label: string) => {
     if (path === `/shop/${shopId}` && pathname === `/shop/${shopId}`) return true;
+    
+    if (label === 'Settings') {
+      const settingsPrefix = `/shop/${shopId}/settings`;
+      const configPaths = ['/booking', '/resources', '/forms', '/memberships'];
+      const teamPaths = ['/team'];
+      
+      if (pathname.startsWith(settingsPrefix)) {
+        const subPath = pathname.replace(settingsPrefix, '');
+        if (configPaths.some(p => subPath.startsWith(p))) return false;
+        if (teamPaths.some(p => subPath.startsWith(p))) return false;
+        return true;
+      }
+      return false;
+    }
+
+    if (label === 'Configuration') {
+      if (pathname.startsWith(`/shop/${shopId}/config`)) return true;
+      const configPaths = ['/settings/booking', '/settings/resources', '/settings/forms', '/settings/memberships'];
+      if (configPaths.some(p => pathname.startsWith(`/shop/${shopId}${p}`))) return true;
+      return false;
+    }
+
+    if (label === 'Team') {
+      if (pathname.startsWith(`/shop/${shopId}/settings/team`)) return true;
+      if (pathname.startsWith(`/shop/${shopId}/portfolio`)) return true;
+      return false;
+    }
+
+    if (label === 'Reports') {
+      if (pathname.startsWith(`/shop/${shopId}/reports`)) return true;
+      if (pathname.startsWith(`/shop/${shopId}/expenses`)) return true;
+      return false;
+    }
+
+    if (label === 'Analytics' || label === 'Engagement') {
+      const engagementPaths = ['/engagement', '/loyalty', '/referrals', '/campaigns', '/gift-cards', '/reviews'];
+      if (engagementPaths.some(p => pathname.startsWith(`/shop/${shopId}${p}`))) return true;
+      return false;
+    }
+
     if (path !== `/shop/${shopId}` && pathname.startsWith(path)) return true;
     return false;
   };
 
   const navItem = (path: string, label: string, icon: React.ReactNode, badge?: string) => {
-    const active = isActive(path);
+    const active = isActive(path, label);
     return (
       <Link href={path} className={`flex items-center gap-3 px-3 py-2 rounded-lg text-[13px] font-medium transition-colors mb-0.5 ${
-        active ? 'bg-orange-50 text-orange-600' : 'text-crm-muted hover:text-crm-text hover:bg-crm-bg'
+        active ? 'bg-[#FFF5F2] text-[#ea580c] font-semibold' : 'text-crm-muted hover:text-crm-text hover:bg-crm-bg'
       }`}>
-        <div className={active ? 'text-orange-500' : 'text-crm-muted'}>{icon}</div>
+        <div className={active ? 'text-[#ea580c]' : 'text-crm-muted'}>{icon}</div>
         <span className="flex-1">{label}</span>
         {badge && (
           <span className="bg-crm-surface text-crm-muted px-1.5 py-0.5 rounded text-[10px] font-bold">{badge}</span>
