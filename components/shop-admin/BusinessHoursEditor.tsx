@@ -48,9 +48,9 @@ export default function BusinessHoursEditor({ shopId }: { shopId: string }) {
 
   return (
     <div className="bg-crm-surface border border-crm-border shadow-sm rounded-xl p-6">
-      <h3 className="font-bold text-crm-text mb-1 text-2xl md:text-3xl">🕐 Business Hours</h3>
-      <p className="text-crm-muted mb-5 text-base md:text-lg">Set your shop's open and close times per day. Toggle a day off to mark it as closed.</p>
-      {msg && <div className="mb-4 p-3 bg-status-confirmed/20 border border-status-confirmed/30 text-status-confirmed rounded-lg text-sm">{msg}</div>}
+      <h3 className="font-bold text-crm-text mb-1 text-lg font-bold">🕐 Business Hours</h3>
+      <p className="text-crm-muted mb-5 text-[13px]">Set your shop's open and close times per day. Toggle a day off to mark it as closed.</p>
+      {msg && <div className="mb-4 p-3 bg-status-confirmed/20 border border-status-confirmed/30 text-status-confirmed rounded-lg text-[13px]">{msg}</div>}
       <div className="space-y-3">
         {DAYS.map(day => {
           const open = !!hours[day];
@@ -60,21 +60,21 @@ export default function BusinessHoursEditor({ shopId }: { shopId: string }) {
               <button onClick={() => toggle(day)} className={`w-11 h-6 rounded-full transition-colors relative flex-shrink-0 ${open ? 'bg-crm-primary' : 'bg-crm-border'} hover:opacity-90 text-white`}>
                 <span className={`absolute top-0.5 w-5 h-5 bg-crm-surface rounded-full shadow transition-transform ${open ? 'translate-x-5' : 'translate-x-0.5'}`} />
               </button>
-              <span className="w-10 text-sm font-semibold text-crm-text">{DAY_LABELS[day]}</span>
+              <span className="w-10 text-[13px] font-semibold text-crm-text">{DAY_LABELS[day]}</span>
               {open && dh ? (
                 <>
                   <select value={dh.open} onChange={e => setField(day, 'open', e.target.value)}
-                    className="bg-crm-surface border border-crm-border shadow-sm rounded text-crm-text text-sm px-2 py-1.5 focus:outline-none focus:border-brand-gold">
+                    className="bg-crm-surface border border-crm-border shadow-sm rounded text-crm-text text-[13px] px-2 py-1.5 focus:outline-none focus:border-brand-gold">
                     {TIMES.map(t => <option key={t} value={t}>{t}</option>)}
                   </select>
-                  <span className="text-crm-muted text-sm">to</span>
+                  <span className="text-crm-muted text-[13px]">to</span>
                   <select value={dh.close} onChange={e => setField(day, 'close', e.target.value)}
-                    className="bg-crm-surface border border-crm-border shadow-sm rounded text-crm-text text-sm px-2 py-1.5 focus:outline-none focus:border-brand-gold">
+                    className="bg-crm-surface border border-crm-border shadow-sm rounded text-crm-text text-[13px] px-2 py-1.5 focus:outline-none focus:border-brand-gold">
                     {TIMES.filter(t => t > dh.open).map(t => <option key={t} value={t}>{t}</option>)}
                   </select>
                 </>
               ) : (
-                <span className="text-crm-muted text-sm italic">Closed</span>
+                <span className="text-crm-muted text-[13px] italic">Closed</span>
               )}
             </div>
           );

@@ -23,7 +23,7 @@ export default function MyAppointmentsNav() {
             <Link
               key={link.href}
               href={link.href}
-              className={`flex items-center gap-1 px-4 py-1.5 rounded-full text-base md:text-lg font-semibold whitespace-nowrap transition-all ${
+              className={`flex items-center gap-1 px-4 py-1.5 rounded-full text-[13px] font-semibold whitespace-nowrap transition-all ${
                 isActive 
                   ? 'bg-crm-primary text-white shadow-lg shadow-brand-gold/20' 
                   : 'bg-crm-surface hover:bg-crm-surface text-crm-muted hover:text-crm-text border border-crm-border shadow-sm'

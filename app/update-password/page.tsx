@@ -46,16 +46,16 @@ export default async function UpdatePasswordPage({
           <BackButton />
         </div>
         <div className="text-center mb-8">
-          <h1 className="font-serif font-bold text-crm-text mb-2 text-4xl md:text-5xl lg:text-6xl">Update Password</h1>
-          <p className="text-crm-muted text-base md:text-lg">Enter your new password below</p>
+          <h1 className="font-serif font-bold text-crm-text mb-2 text-2xl font-bold">Update Password</h1>
+          <p className="text-crm-muted text-[13px]">Enter your new password below</p>
         </div>
 
-        {error && <div className="bg-status-cancelled/10 border border-status-cancelled/30 text-status-cancelled p-3 rounded-lg mb-6 text-sm text-center">{error}</div>}
-        {message && <div className="bg-status-confirmed/10 border border-status-confirmed/30 text-status-confirmed p-3 rounded-lg mb-6 text-sm text-center">{message}</div>}
+        {error && <div className="bg-status-cancelled/10 border border-status-cancelled/30 text-status-cancelled p-3 rounded-lg mb-6 text-[13px] text-center">{error}</div>}
+        {message && <div className="bg-status-confirmed/10 border border-status-confirmed/30 text-status-confirmed p-3 rounded-lg mb-6 text-[13px] text-center">{message}</div>}
 
         <form action={updatePasswordAction} className="space-y-5">
           <div>
-            <label className="block font-medium text-crm-muted mb-1.5 text-sm">New Password</label>
+            <label className="block font-medium text-crm-muted mb-1.5 text-[13px]">New Password</label>
             <input name="password" type="password" required placeholder="••••••••" minLength={6} className="w-full bg-crm-surface border border-crm-border shadow-sm rounded-lg p-3 text-crm-text focus:ring-2 focus:ring-crm-primary focus:border-transparent outline-none" />
           </div>
           <button type="submit" className="w-full bg-crm-primary text-white font-bold py-3 rounded-lg hover:bg-crm-surface hover:text-crm-primary border border-transparent hover:border-crm-primary/30 transition-colors mt-2">Update Password</button>

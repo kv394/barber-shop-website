@@ -206,18 +206,18 @@ export default function BarcodeScanner({ onScan, onClose }: BarcodeScannerProps)
       <div className="bg-crm-surface rounded-xl p-5 w-full max-w-sm border border-crm-border shadow-sm shadow-2xl relative">
         <button
           onClick={handleClose}
-          className="absolute top-3 right-3 text-crm-muted hover:text-crm-text bg-crm-surface rounded-full w-8 h-8 flex items-center justify-center z-10 text-sm"
+          className="absolute top-3 right-3 text-crm-muted hover:text-crm-text bg-crm-surface rounded-full w-8 h-8 flex items-center justify-center z-10 text-[13px]"
         >
           ✕
         </button>
 
-        <h3 className="font-bold text-crm-text mb-1 text-2xl md:text-3xl">Scan QR / Barcode</h3>
-        <p className="text-crm-muted mb-4 text-base md:text-lg">
+        <h3 className="font-bold text-crm-text mb-1 text-lg font-bold">Scan QR / Barcode</h3>
+        <p className="text-crm-muted mb-4 text-[13px]">
           Point the camera at a barcode or QR code.
         </p>
 
         {error && (
-          <div className="mb-4 p-3 bg-status-cancelled/20 border border-status-cancelled text-red-200 rounded text-sm">
+          <div className="mb-4 p-3 bg-status-cancelled/20 border border-status-cancelled text-red-200 rounded text-[13px]">
             {error}
           </div>
         )}
@@ -235,7 +235,7 @@ export default function BarcodeScanner({ onScan, onClose }: BarcodeScannerProps)
           {isStarting && !error && (
             <div className="absolute inset-0 flex flex-col items-center justify-center bg-crm-surface text-crm-text gap-3">
               <div className="w-8 h-8 border-2 border-brand-gold border-t-transparent rounded-full animate-spin" />
-              <p className="text-crm-muted text-base md:text-lg">Starting camera…</p>
+              <p className="text-crm-muted text-[13px]">Starting camera…</p>
             </div>
           )}
 
@@ -252,7 +252,7 @@ export default function BarcodeScanner({ onScan, onClose }: BarcodeScannerProps)
           )}
         </div>
 
-        <p className="text-center text-crm-muted mt-3 text-base md:text-lg">
+        <p className="text-center text-crm-muted mt-3 text-[13px]">
           Hold steady — scanning automatically
         </p>
       </div>

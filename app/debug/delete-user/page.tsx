@@ -55,9 +55,9 @@ export default function DeleteUserPage() {
 
   return (
     <div style={{ padding: '20px', fontFamily: 'sans-serif' }}>
-      <h1 className="text-4xl md:text-5xl lg:text-6xl">Account Fix Utility</h1>
-      <p className="text-base md:text-lg">{message}</p>
-      {error && <p style={{ color: 'red' }} className="text-base md:text-lg">Error: {error}</p>}
+      <h1 className="text-2xl font-bold">Account Fix Utility</h1>
+      <p className="text-[13px]">{message}</p>
+      {error && <p style={{ color: 'red' }} className="text-[13px]">Error: {error}</p>}
     </div>
   );
 }

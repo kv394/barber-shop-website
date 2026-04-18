@@ -22,7 +22,7 @@ export default function ShopAdminLayout({
   return (
     <div className="pb-20 sm:pb-0">
       {pageTitle && (!tabs || tabs.length === 0) && (
-        <p className="text-crm-muted mb-6 sm:mb-8 px-3 sm:px-0 mt-2 sm:mt-0 sm:-mt-8 text-base md:text-lg">{pageTitle}</p>
+        <p className="text-crm-muted mb-6 sm:mb-8 px-3 sm:px-0 mt-2 sm:mt-0 sm:-mt-8 text-[13px]">{pageTitle}</p>
       )}
 
       {tabs && tabs.length > 0 && (
@@ -40,7 +40,7 @@ export default function ShopAdminLayout({
                   )}
                   <Link
                     href={tab.href}
-                    className={`text-sm transition-colors px-6 py-3 relative ${
+                    className={`text-[13px] transition-colors px-6 py-3 relative ${
                       isActive
                         ? "bg-crm-surface text-crm-text font-semibold rounded-t-2xl translate-y-[1px] z-20 shadow-[0_-2px_4px_-1px_rgba(0,0,0,0.05)] pb-4 before:content-[''] before:absolute before:bottom-0 before:-right-4 before:w-4 before:h-4 before:bg-[radial-gradient(circle_at_top_right,transparent_16px,#FFFFFF_16px)]"
                         : "text-crm-muted hover:text-crm-text mb-1 pb-3"

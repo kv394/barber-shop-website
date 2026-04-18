@@ -36,8 +36,8 @@ export default function Error({
       <div className="flex h-16 w-16 items-center justify-center rounded-full bg-status-cancelled/20 mb-6 border border-status-cancelled/30">
         <span className="text-3xl">⚠️</span>
       </div>
-      <h2 className="mb-3 font-bold text-status-cancelled text-3xl md:text-4xl">Something went wrong!</h2>
-      <p className="mb-8 max-w-[400px] text-crm-muted text-base md:text-lg">
+      <h2 className="mb-3 font-bold text-status-cancelled text-xl font-bold">Something went wrong!</h2>
+      <p className="mb-8 max-w-[400px] text-crm-muted text-[13px]">
         We apologize for the inconvenience. Our system has automatically been notified about this technical issue.
       </p>
       

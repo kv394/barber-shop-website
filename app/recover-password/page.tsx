@@ -83,23 +83,23 @@ function RecoverPasswordForm() {
     <div className="flex min-h-[80vh] items-center justify-center p-4">
       <div className="w-full max-w-md bg-crm-surface border border-crm-border shadow-sm rounded-2xl shadow-2xl p-8 mt-12 mb-12">
         <div className="text-center mb-8">
-          <h1 className="font-serif font-bold text-crm-text mb-2 text-4xl md:text-5xl lg:text-6xl">Recover Password</h1>
-          <p className="text-crm-muted text-base md:text-lg">Choose how you want to reset your password</p>
+          <h1 className="font-serif font-bold text-crm-text mb-2 text-2xl font-bold">Recover Password</h1>
+          <p className="text-crm-muted text-[13px]">Choose how you want to reset your password</p>
         </div>
 
-        {error && <div className="bg-status-cancelled/10 border border-status-cancelled/30 text-status-cancelled p-3 rounded-lg mb-6 text-sm text-center">{error}</div>}
-        {message && <div className="bg-status-confirmed/10 border border-status-confirmed/30 text-status-confirmed p-3 rounded-lg mb-6 text-sm text-center">{message}</div>}
+        {error && <div className="bg-status-cancelled/10 border border-status-cancelled/30 text-status-cancelled p-3 rounded-lg mb-6 text-[13px] text-center">{error}</div>}
+        {message && <div className="bg-status-confirmed/10 border border-status-confirmed/30 text-status-confirmed p-3 rounded-lg mb-6 text-[13px] text-center">{message}</div>}
 
         <div className="flex gap-2 mb-6 bg-crm-surface p-1 rounded-lg border border-crm-border shadow-sm">
           <button
             onClick={() => setMethod('email')}
-            className={`flex-1 py-2 text-sm font-medium rounded-md transition-colors ${method === 'email' ? 'bg-crm-surface text-crm-text' : 'text-crm-muted hover:text-crm-text'}`}
+            className={`flex-1 py-2 text-[13px] font-medium rounded-md transition-colors ${method === 'email' ? 'bg-crm-surface text-crm-text' : 'text-crm-muted hover:text-crm-text'}`}
           >
             Email Link
           </button>
           <button
             onClick={() => setMethod('totp')}
-            className={`flex-1 py-2 text-sm font-medium rounded-md transition-colors ${method === 'totp' ? 'bg-crm-surface text-crm-text' : 'text-crm-muted hover:text-crm-text'}`}
+            className={`flex-1 py-2 text-[13px] font-medium rounded-md transition-colors ${method === 'totp' ? 'bg-crm-surface text-crm-text' : 'text-crm-muted hover:text-crm-text'}`}
           >
             Authenticator App
           </button>
@@ -108,7 +108,7 @@ function RecoverPasswordForm() {
         {method === 'email' ? (
           <form onSubmit={handleEmailRecover} className="space-y-5">
             <div>
-              <label className="block font-medium text-crm-muted mb-1.5 text-sm">Email Address</label>
+              <label className="block font-medium text-crm-muted mb-1.5 text-[13px]">Email Address</label>
               <input 
                 name="email" 
                 type="email" 
@@ -126,7 +126,7 @@ function RecoverPasswordForm() {
         ) : (
           <form onSubmit={handleTotpRecover} className="space-y-5">
             <div>
-              <label className="block font-medium text-crm-muted mb-1.5 text-sm">Email Address</label>
+              <label className="block font-medium text-crm-muted mb-1.5 text-[13px]">Email Address</label>
               <input 
                 type="email" 
                 required 
@@ -137,7 +137,7 @@ function RecoverPasswordForm() {
               />
             </div>
             <div>
-              <label className="block font-medium text-crm-muted mb-1.5 text-sm">6-Digit Code</label>
+              <label className="block font-medium text-crm-muted mb-1.5 text-[13px]">6-Digit Code</label>
               <input 
                 type="text" 
                 maxLength={6}
@@ -149,7 +149,7 @@ function RecoverPasswordForm() {
               />
             </div>
             <div>
-              <label className="block font-medium text-crm-muted mb-1.5 text-sm">New Password</label>
+              <label className="block font-medium text-crm-muted mb-1.5 text-[13px]">New Password</label>
               <input 
                 type="password" 
                 required 
@@ -166,7 +166,7 @@ function RecoverPasswordForm() {
           </form>
         )}
 
-        <p className="text-center text-crm-muted mt-8 text-base md:text-lg">Remember your password? <Link href="/sign-in" className="text-crm-accent hover:underline">Sign In</Link></p>
+        <p className="text-center text-crm-muted mt-8 text-[13px]">Remember your password? <Link href="/sign-in" className="text-crm-accent hover:underline">Sign In</Link></p>
       </div>
     </div>
   );

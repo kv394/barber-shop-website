@@ -6,7 +6,7 @@ const htmlCode = `
 <!-- TopNavBar -->
 <nav class="fixed top-0 w-full z-50 bg-[#131313]/80 backdrop-blur-md shadow-2xl shadow-black/40 flex justify-between items-center px-8 py-4 max-w-full">
 <div class="font-['Noto_Serif'] text-2xl font-bold text-[#c5a059]">{{shop.name}}</div>
-<div class="hidden md:flex items-center gap-8 font-['Noto_Serif'] tracking-wide uppercase text-sm">
+<div class="hidden md:flex items-center gap-8 font-['Noto_Serif'] tracking-wide uppercase text-[13px]">
 <a class="text-[#e9c176] border-b-2 border-[#e9c176] pb-1" href="#home">Home</a>
 <a class="text-[#d1c5b4] hover:text-[#e9c176] transition-all duration-300" href="#services">Services</a>
 <a class="text-[#d1c5b4] hover:text-[#e9c176] transition-all duration-300" href="#barbers">Barbers</a>
@@ -27,7 +27,7 @@ const htmlCode = `
 <h1 class="font-serif text-5xl md:text-7xl lg:text-8xl font-bold text-on-surface mb-6 tracking-tight leading-tight">
             The Art of <span class="text-primary italic">Precision</span> Grooming
         </h1>
-<p class="font-body text-lg md:text-xl text-on-surface-variant max-w-2xl mx-auto mb-10 leading-relaxed">
+<p class="font-body text-sm font-semibold text-on-surface-variant max-w-2xl mx-auto mb-10 leading-relaxed">
             {{shop.description}}
         </p>
 <div class="flex flex-col sm:flex-row gap-4 justify-center">
@@ -41,8 +41,8 @@ const htmlCode = `
 <section class="py-24 px-8 bg-surface" id="services">
 <div class="max-w-7xl mx-auto">
 <div class="mb-16">
-<span class="text-primary font-label uppercase tracking-widest text-sm mb-4 block">The Apothecary Menu</span>
-<h2 class="font-serif text-4xl md:text-5xl font-bold text-on-surface">Curated Services</h2>
+<span class="text-primary font-label uppercase tracking-widest text-[13px] mb-4 block">The Apothecary Menu</span>
+<h2 class="font-serif text-2xl font-bold font-bold text-on-surface">Curated Services</h2>
 </div>
 
 <div class="grid grid-cols-1 md:grid-cols-2 gap-px bg-outline-variant/10 rounded-xl overflow-hidden">
@@ -69,7 +69,7 @@ const htmlCode = `
                 </p>
 <div class="flex items-center gap-4 text-primary">
 <span class="material-symbols-outlined">brush</span>
-<span class="font-label uppercase tracking-widest text-xs">Traditional Methods / Modern Precision</span>
+<span class="font-label uppercase tracking-widest text-[11px]">Traditional Methods / Modern Precision</span>
 </div>
 </div>
 </div>
@@ -80,8 +80,8 @@ const htmlCode = `
 <section class="py-24 px-8 bg-surface-container-lowest" id="barbers">
 <div class="max-w-7xl mx-auto">
 <div class="text-center mb-20">
-<span class="text-primary font-label uppercase tracking-widest text-sm mb-4 block">Masters of the Craft</span>
-<h2 class="font-serif text-4xl md:text-5xl font-bold text-on-surface">Meet Our Barbers</h2>
+<span class="text-primary font-label uppercase tracking-widest text-[13px] mb-4 block">Masters of the Craft</span>
+<h2 class="font-serif text-2xl font-bold font-bold text-on-surface">Meet Our Barbers</h2>
 </div>
 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
 <!-- Barber Card: Elena -->
@@ -90,8 +90,8 @@ const htmlCode = `
 <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Portrait of Elena" src="/templates/heritage/elena.jpg" />
 </div>
 <h4 class="font-serif text-xl font-bold text-on-surface">Elena</h4>
-<p class="text-primary font-label text-sm uppercase tracking-wider mb-2">Master Stylist</p>
-<p class="text-on-surface-variant text-sm italic">Specialist in modern fades and textured finishes.</p>
+<p class="text-primary font-label text-[13px] uppercase tracking-wider mb-2">Master Stylist</p>
+<p class="text-on-surface-variant text-[13px] italic">Specialist in modern fades and textured finishes.</p>
 </div>
 <!-- Barber Card: Jasmine -->
 <div class="group">
@@ -99,8 +99,8 @@ const htmlCode = `
 <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Portrait of Jasmine" src="/templates/heritage/jasmine.jpg" />
 </div>
 <h4 class="font-serif text-xl font-bold text-on-surface">Jasmine</h4>
-<p class="text-primary font-label text-sm uppercase tracking-wider mb-2">Artisan Barber</p>
-<p class="text-on-surface-variant text-sm italic">Expert in classic straight-razor shaves and beard sculpting.</p>
+<p class="text-primary font-label text-[13px] uppercase tracking-wider mb-2">Artisan Barber</p>
+<p class="text-on-surface-variant text-[13px] italic">Expert in classic straight-razor shaves and beard sculpting.</p>
 </div>
 <!-- Barber Card: Marcus -->
 <div class="group">
@@ -108,8 +108,8 @@ const htmlCode = `
 <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Portrait of Marcus" src="/templates/heritage/marcus.jpg" />
 </div>
 <h4 class="font-serif text-xl font-bold text-on-surface">Marcus</h4>
-<p class="text-primary font-label text-sm uppercase tracking-wider mb-2">Senior Barber</p>
-<p class="text-on-surface-variant text-sm italic">The authority on traditional heritage cuts and styling.</p>
+<p class="text-primary font-label text-[13px] uppercase tracking-wider mb-2">Senior Barber</p>
+<p class="text-on-surface-variant text-[13px] italic">The authority on traditional heritage cuts and styling.</p>
 </div>
 <!-- Barber Card: Nape -->
 <div class="group">
@@ -117,8 +117,8 @@ const htmlCode = `
 <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Portrait of Nape" src="/templates/heritage/nape.jpg" />
 </div>
 <h4 class="font-serif text-xl font-bold text-on-surface">Nape</h4>
-<p class="text-primary font-label text-sm uppercase tracking-wider mb-2">Technical Lead</p>
-<p class="text-on-surface-variant text-sm italic">Master of precision line-ups and avant-garde designs.</p>
+<p class="text-primary font-label text-[13px] uppercase tracking-wider mb-2">Technical Lead</p>
+<p class="text-on-surface-variant text-[13px] italic">Master of precision line-ups and avant-garde designs.</p>
 </div>
 </div>
 </div>
@@ -144,15 +144,15 @@ const htmlCode = `
 <div class="mt-16 flex flex-wrap justify-center gap-12 grayscale opacity-40">
 <div class="flex items-center gap-2">
 <span class="material-symbols-outlined">stars</span>
-<span class="font-label text-xs uppercase tracking-widest">5.0 Star Rated</span>
+<span class="font-label text-[11px] uppercase tracking-widest">5.0 Star Rated</span>
 </div>
 <div class="flex items-center gap-2">
 <span class="material-symbols-outlined">verified</span>
-<span class="font-label text-xs uppercase tracking-widest">Master Certified</span>
+<span class="font-label text-[11px] uppercase tracking-widest">Master Certified</span>
 </div>
 <div class="flex items-center gap-2">
 <span class="material-symbols-outlined">history</span>
-<span class="font-label text-xs uppercase tracking-widest">Since 1924</span>
+<span class="font-label text-[11px] uppercase tracking-widest">Since 1924</span>
 </div>
 </div>
 </div>
@@ -161,13 +161,13 @@ const htmlCode = `
 <!-- Footer -->
 <footer class="bg-[#0e0e0e] w-full py-12 px-8 flex flex-col md:flex-row justify-between items-center gap-6 border-t border-[#4e4639]/15">
 <div class="font-['Noto_Serif'] italic text-[#c5a059] text-xl">{{shop.name}}.</div>
-<div class="flex flex-wrap justify-center gap-8 font-['Manrope'] text-xs uppercase tracking-widest text-[#d1c5b4]">
+<div class="flex flex-wrap justify-center gap-8 font-['Manrope'] text-[11px] uppercase tracking-widest text-[#d1c5b4]">
 <a class="hover:text-[#c5a059] transition-colors" href="#">Instagram</a>
 <a class="hover:text-[#c5a059] transition-colors" href="#">Facebook</a>
 <a class="hover:text-[#c5a059] transition-colors" href="#">Twitter</a>
 <a class="hover:text-[#c5a059] transition-colors" href="#">Contact Us</a>
 </div>
-<div class="font-['Manrope'] text-xs uppercase tracking-widest text-[#353534]">
+<div class="font-['Manrope'] text-[11px] uppercase tracking-widest text-[#353534]">
         © 2024 {{shop.name}}. The Modern Apothecary.
     </div>
 </footer>

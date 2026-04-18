@@ -82,14 +82,14 @@ export default function CommissionReportClient({
       {/* Filters */}
       <div className="flex flex-wrap gap-4 items-end">
         <div>
-          <label className="block text-crm-muted mb-1 text-sm">Start Date</label>
-          <input type="date" value={startDate} onChange={e => setStartDate(e.target.value)} className="bg-crm-surface border border-crm-border shadow-sm rounded p-2 text-crm-text text-sm focus:outline-none focus:border-brand-gold" />
+          <label className="block text-crm-muted mb-1 text-[13px]">Start Date</label>
+          <input type="date" value={startDate} onChange={e => setStartDate(e.target.value)} className="bg-crm-surface border border-crm-border shadow-sm rounded p-2 text-crm-text text-[13px] focus:outline-none focus:border-brand-gold" />
         </div>
         <div>
-          <label className="block text-crm-muted mb-1 text-sm">End Date</label>
-          <input type="date" value={endDate} onChange={e => setEndDate(e.target.value)} className="bg-crm-surface border border-crm-border shadow-sm rounded p-2 text-crm-text text-sm focus:outline-none focus:border-brand-gold" />
+          <label className="block text-crm-muted mb-1 text-[13px]">End Date</label>
+          <input type="date" value={endDate} onChange={e => setEndDate(e.target.value)} className="bg-crm-surface border border-crm-border shadow-sm rounded p-2 text-crm-text text-[13px] focus:outline-none focus:border-brand-gold" />
         </div>
-        <button onClick={exportCSV} className="bg-crm-surface hover:bg-crm-surface text-crm-text px-4 py-2 rounded text-sm transition-colors">📥 Export CSV</button>
+        <button onClick={exportCSV} className="bg-crm-surface hover:bg-crm-surface text-crm-text px-4 py-2 rounded text-[13px] transition-colors">📥 Export CSV</button>
       </div>
 
       {/* Totals Floating Bar */}
@@ -97,48 +97,48 @@ export default function CommissionReportClient({
         <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-crm-surface transition-all duration-300 min-w-0">
           <div className="absolute top-0 left-0 w-full h-1 bg-status-confirmed/80"></div>
           <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-3">
-            <h3 className="text-crm-muted uppercase tracking-widest font-semibold truncate text-xs">{isPersonalView ? 'My Revenue' : 'Gross Revenue'}</h3>
-            <span className="text-status-confirmed text-sm">💵</span>
+            <h3 className="text-crm-muted uppercase tracking-widest font-semibold truncate text-[11px]">{isPersonalView ? 'My Revenue' : 'Gross Revenue'}</h3>
+            <span className="text-status-confirmed text-[13px]">💵</span>
           </div>
-          <p className="font-black text-crm-text break-words leading-tight text-3xl md:text-4xl">${totalRevenue.toFixed(0)}</p>
+          <p className="font-black text-crm-text break-words leading-tight text-xl font-bold">${totalRevenue.toFixed(0)}</p>
         </div>
         <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-crm-surface transition-all duration-300 min-w-0">
           <div className="absolute top-0 left-0 w-full h-1 bg-status-info/80"></div>
           <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-3">
-            <h3 className="text-crm-muted uppercase tracking-widest font-semibold truncate text-xs">{isPersonalView ? 'My Commission' : 'Commission'}</h3>
-            <span className="text-status-info text-sm">💎</span>
+            <h3 className="text-crm-muted uppercase tracking-widest font-semibold truncate text-[11px]">{isPersonalView ? 'My Commission' : 'Commission'}</h3>
+            <span className="text-status-info text-[13px]">💎</span>
           </div>
-          <p className="font-black text-crm-text break-words leading-tight text-3xl md:text-4xl">${totalCommission.toFixed(0)}</p>
+          <p className="font-black text-crm-text break-words leading-tight text-xl font-bold">${totalCommission.toFixed(0)}</p>
         </div>
         <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-crm-surface transition-all duration-300 min-w-0">
           <div className="absolute top-0 left-0 w-full h-1 bg-status-pending/80"></div>
           <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-3">
-            <h3 className="text-crm-muted uppercase tracking-widest font-semibold truncate text-xs">{isPersonalView ? 'My Tips' : 'Tips'}</h3>
-            <span className="text-status-pending text-sm">🪙</span>
+            <h3 className="text-crm-muted uppercase tracking-widest font-semibold truncate text-[11px]">{isPersonalView ? 'My Tips' : 'Tips'}</h3>
+            <span className="text-status-pending text-[13px]">🪙</span>
           </div>
-          <p className="font-black text-crm-text break-words leading-tight text-3xl md:text-4xl">${totalTips.toFixed(0)}</p>
+          <p className="font-black text-crm-text break-words leading-tight text-xl font-bold">${totalTips.toFixed(0)}</p>
         </div>
         <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-crm-surface transition-all duration-300 min-w-0">
           <div className="absolute top-0 left-0 w-full h-1 bg-crm-accent/80"></div>
           <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-3">
-            <h3 className="text-crm-muted uppercase tracking-widest font-semibold truncate text-xs">{isPersonalView ? 'My Total Pay' : 'Total Payout'}</h3>
-            <span className="text-crm-accent text-sm">💳</span>
+            <h3 className="text-crm-muted uppercase tracking-widest font-semibold truncate text-[11px]">{isPersonalView ? 'My Total Pay' : 'Total Payout'}</h3>
+            <span className="text-crm-accent text-[13px]">💳</span>
           </div>
-          <p className="font-black text-crm-text break-words leading-tight text-3xl md:text-4xl">${totalPayout.toFixed(0)}</p>
+          <p className="font-black text-crm-text break-words leading-tight text-xl font-bold">${totalPayout.toFixed(0)}</p>
         </div>
       </div>
 
       {loading ? (
-        <p className="text-crm-muted text-center py-8 animate-pulse text-base md:text-lg">Calculating commissions…</p>
+        <p className="text-crm-muted text-center py-8 animate-pulse text-[13px]">Calculating commissions…</p>
       ) : summary.length === 0 ? (
-        <p className="text-crm-muted italic text-center py-8 border border-dashed border-crm-border rounded text-base md:text-lg">No completed appointments in this date range.</p>
+        <p className="text-crm-muted italic text-center py-8 border border-dashed border-crm-border rounded text-[13px]">No completed appointments in this date range.</p>
       ) : (
         <>
           {/* Staff Summary Table */}
           <div className="overflow-x-auto">
-            <table className="w-full text-sm">
+            <table className="w-full text-[13px]">
               <thead>
-                <tr className="border-b border-crm-border text-crm-muted text-xs uppercase">
+                <tr className="border-b border-crm-border text-crm-muted text-[11px] uppercase">
                   <th className="text-left p-3">Staff</th>
                   <th className="text-right p-3">Services</th>
                   <th className="text-right p-3">Revenue</th>
@@ -163,13 +163,13 @@ export default function CommissionReportClient({
           </div>
 
           {/* Detail Toggle */}
-          <button onClick={() => setShowDetails(!showDetails)} className="text-sm text-crm-muted hover:text-crm-text transition-colors">
+          <button onClick={() => setShowDetails(!showDetails)} className="text-[13px] text-crm-muted hover:text-crm-text transition-colors">
             {showDetails ? '▼ Hide Details' : '▶ Show Line-by-Line Details'}
           </button>
 
           {showDetails && (
             <div className="overflow-x-auto max-h-80 overflow-y-auto">
-              <table className="w-full text-xs">
+              <table className="w-full text-[11px]">
                 <thead>
                   <tr className="border-b border-crm-border text-crm-muted uppercase sticky top-0 bg-crm-surface">
                     <th className="text-left p-2">Staff</th>

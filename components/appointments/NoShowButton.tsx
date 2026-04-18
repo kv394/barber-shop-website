@@ -27,7 +27,7 @@ export default function NoShowButton({ shopId, appointmentId, userName }: { shop
     <button
       onClick={handleNoShow}
       disabled={loading}
-      className="text-status-pending hover:text-status-pending text-xs font-semibold uppercase tracking-wider disabled:opacity-50 transition-colors mr-2"
+      className="text-status-pending hover:text-status-pending text-[11px] font-semibold uppercase tracking-wider disabled:opacity-50 transition-colors mr-2"
       title="Mark as No-Show"
     >
       {loading ? '...' : 'No-Show'}

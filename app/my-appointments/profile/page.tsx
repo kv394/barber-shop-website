@@ -49,7 +49,7 @@ function ProfileContent() {
   if (loading) {
     return (
       <div className="h-[100dvh] overflow-y-auto overflow-x-hidden">
-        <p className="text-crm-muted animate-pulse text-base md:text-lg">Loading profile…</p>
+        <p className="text-crm-muted animate-pulse text-[13px]">Loading profile…</p>
       </div>
     );
   }
@@ -59,83 +59,83 @@ function ProfileContent() {
       <header className="bg-crm-surface backdrop-blur-md border-b border-crm-border sticky top-0 z-20 print:hidden">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 py-4 flex flex-wrap justify-between gap-x-2 gap-y-2 items-center">
           <div>
-            <h1 className="font-bold text-crm-text text-4xl md:text-5xl lg:text-6xl">My Profile</h1>
-            <p className="text-crm-muted text-base md:text-lg">Update your personal information</p>
+            <h1 className="font-bold text-crm-text text-2xl font-bold">My Profile</h1>
+            <p className="text-crm-muted text-[13px]">Update your personal information</p>
           </div>
           
           {profile?.role === 'SITE_ADMIN' ? (
-            <Link href="/siteadmin" className="text-sm bg-crm-surface hover:bg-crm-surface border border-slate-600 text-crm-text px-4 py-2 rounded-lg font-semibold transition-colors">
+            <Link href="/siteadmin" className="text-[13px] bg-crm-surface hover:bg-crm-surface border border-slate-600 text-crm-text px-4 py-2 rounded-lg font-semibold transition-colors">
               Back to Siteadmin
             </Link>
           ) : profile?.shopId && (profile?.role === 'SHOP_ADMIN' || profile?.role === 'STAFF') ? (
-            <Link href={`/shop/${profile.shopId}`} className="text-sm bg-crm-surface hover:bg-crm-surface border border-slate-600 text-crm-text px-4 py-2 rounded-lg font-semibold transition-colors">
+            <Link href={`/shop/${profile.shopId}`} className="text-[13px] bg-crm-surface hover:bg-crm-surface border border-slate-600 text-crm-text px-4 py-2 rounded-lg font-semibold transition-colors">
               Back to Dashboard
             </Link>
           ) : null}
         </div>
         <div className="max-w-4xl mx-auto px-4 sm:px-6 pb-2 flex gap-4 overflow-x-auto scrollbar-none">
-          <Link href="/my-appointments" className="text-sm text-crm-muted hover:text-crm-text px-1 pb-1 whitespace-nowrap transition-colors">📅 Appointments</Link>
-          <Link href="/my-appointments/profile" className="text-sm text-crm-accent border-b-2 border-brand-gold px-1 pb-1 font-semibold whitespace-nowrap">👤 Profile</Link>
-          <Link href="/my-appointments/loyalty" className="text-sm text-crm-muted hover:text-crm-text px-1 pb-1 whitespace-nowrap transition-colors">⭐ Loyalty</Link>
-          <Link href="/my-appointments/notifications" className="text-sm text-crm-muted hover:text-crm-text px-1 pb-1 whitespace-nowrap transition-colors">🔔 Notifications</Link>
-          <Link href="/my-appointments/referrals" className="text-sm text-crm-muted hover:text-crm-text px-1 pb-1 whitespace-nowrap transition-colors">🔗 Referrals</Link>
+          <Link href="/my-appointments" className="text-[13px] text-crm-muted hover:text-crm-text px-1 pb-1 whitespace-nowrap transition-colors">📅 Appointments</Link>
+          <Link href="/my-appointments/profile" className="text-[13px] text-crm-accent border-b-2 border-brand-gold px-1 pb-1 font-semibold whitespace-nowrap">👤 Profile</Link>
+          <Link href="/my-appointments/loyalty" className="text-[13px] text-crm-muted hover:text-crm-text px-1 pb-1 whitespace-nowrap transition-colors">⭐ Loyalty</Link>
+          <Link href="/my-appointments/notifications" className="text-[13px] text-crm-muted hover:text-crm-text px-1 pb-1 whitespace-nowrap transition-colors">🔔 Notifications</Link>
+          <Link href="/my-appointments/referrals" className="text-[13px] text-crm-muted hover:text-crm-text px-1 pb-1 whitespace-nowrap transition-colors">🔗 Referrals</Link>
         </div>
       </header>
 
       <div className="max-w-2xl mx-auto px-4 sm:px-6 py-8 space-y-6">
         {msg && (
-          <div className={`px-4 py-3 rounded-lg text-sm ${msg.type === 'success' ? 'bg-status-confirmed/20 border border-status-confirmed/30 text-status-confirmed' : 'bg-status-cancelled/20 border border-status-cancelled/30 text-status-cancelled'}`}>
+          <div className={`px-4 py-3 rounded-lg text-[13px] ${msg.type === 'success' ? 'bg-status-confirmed/20 border border-status-confirmed/30 text-status-confirmed' : 'bg-status-cancelled/20 border border-status-cancelled/30 text-status-cancelled'}`}>
             {msg.text}
           </div>
         )}
 
         <div className="bg-crm-surface border border-crm-border shadow-sm rounded-xl p-6 flex flex-col items-center justify-center space-y-4 print:bg-white print:border-none print:shadow-none print:text-black">
-          <h2 className="font-semibold text-crm-text print:text-black text-3xl md:text-4xl">My Check-in Code</h2>
+          <h2 className="font-semibold text-crm-text print:text-black text-xl font-bold">My Check-in Code</h2>
           <div className="bg-crm-surface p-4 rounded-xl">
             <QRCodeSVG value={profile?.barcode || profile?.id || 'NO_ID'} size={150} level="H" />
           </div>
-          <p className="text-crm-muted print:text-crm-muted text-center max-w-xs text-base md:text-lg">
+          <p className="text-crm-muted print:text-crm-muted text-center max-w-xs text-[13px]">
             Present this code at the kiosk or to your barber for quick check-in.
           </p>
-          <button onClick={handlePrint} className="bg-crm-surface hover:bg-crm-border text-crm-text px-4 py-2 rounded-lg text-sm font-medium transition-colors print:hidden">
+          <button onClick={handlePrint} className="bg-crm-surface hover:bg-crm-border text-crm-text px-4 py-2 rounded-lg text-[13px] font-medium transition-colors print:hidden">
             Print QR Code
           </button>
         </div>
 
         <div className="bg-crm-surface border border-crm-border shadow-sm rounded-xl p-6 space-y-5 print:hidden">
           <div>
-            <label className="block text-crm-muted mb-1 text-sm">Name</label>
+            <label className="block text-crm-muted mb-1 text-[13px]">Name</label>
             <input type="text" value={profile?.name || ''} onChange={(e) => setProfile({ ...profile, name: e.target.value })} className="w-full bg-crm-surface border border-crm-border shadow-sm rounded p-3 text-crm-text focus:outline-none focus:border-brand-gold" />
           </div>
           <div>
-            <label className="block text-crm-muted mb-1 text-sm">Email</label>
+            <label className="block text-crm-muted mb-1 text-[13px]">Email</label>
             <input type="email" value={profile?.email || ''} disabled className="w-full bg-crm-surface border border-crm-border shadow-sm rounded p-3 text-crm-muted cursor-not-allowed" />
           </div>
           <div>
-            <label className="block text-crm-muted mb-1 text-sm">Phone</label>
+            <label className="block text-crm-muted mb-1 text-[13px]">Phone</label>
             <input type="tel" value={profile?.phone || ''} onChange={(e) => setProfile({ ...profile, phone: e.target.value })} placeholder="+1 555-123-4567" className="w-full bg-crm-surface border border-crm-border shadow-sm rounded p-3 text-crm-text placeholder-gray-600 focus:outline-none focus:border-brand-gold" />
           </div>
           <div>
-            <label className="block text-crm-muted mb-1 text-sm">Birthday</label>
+            <label className="block text-crm-muted mb-1 text-[13px]">Birthday</label>
             <input type="date" value={profile?.birthday ? new Date(profile.birthday).toISOString().split('T')[0] : ''} onChange={(e) => setProfile({ ...profile, birthday: e.target.value || null })} className="w-full bg-crm-surface border border-crm-border shadow-sm rounded p-3 text-crm-text focus:outline-none focus:border-brand-gold" />
           </div>
           <div>
-            <label className="block text-crm-muted mb-1 text-sm">Preferences (e.g., skin fade, longer on top)</label>
+            <label className="block text-crm-muted mb-1 text-[13px]">Preferences (e.g., skin fade, longer on top)</label>
             <textarea value={profile?.preferences || ''} onChange={(e) => setProfile({ ...profile, preferences: e.target.value })} rows={2} className="w-full bg-crm-surface border border-crm-border shadow-sm rounded p-3 text-crm-text placeholder-gray-600 focus:outline-none focus:border-brand-gold resize-none" />
           </div>
           <div>
-            <label className="block text-crm-muted mb-1 text-sm">Allergies / Sensitivities</label>
+            <label className="block text-crm-muted mb-1 text-[13px]">Allergies / Sensitivities</label>
             <textarea value={profile?.allergies || ''} onChange={(e) => setProfile({ ...profile, allergies: e.target.value })} rows={2} className="w-full bg-crm-surface border border-crm-border shadow-sm rounded p-3 text-crm-text placeholder-gray-600 focus:outline-none focus:border-brand-gold resize-none" />
           </div>
 
           <div className="pt-4 border-t border-crm-border space-y-3">
-            <label className="flex items-center gap-3 cursor-pointer text-sm">
+            <label className="flex items-center gap-3 cursor-pointer text-[13px]">
               <input type="checkbox" checked={profile?.marketingConsent || false} onChange={(e) => setProfile({ ...profile, marketingConsent: e.target.checked })} className="w-4 h-4 accent-brand-gold" />
-              <span className="text-sm text-crm-muted">I agree to receive marketing emails and promotions</span>
+              <span className="text-[13px] text-crm-muted">I agree to receive marketing emails and promotions</span>
             </label>
-            <label className="flex items-center gap-3 cursor-pointer text-sm">
+            <label className="flex items-center gap-3 cursor-pointer text-[13px]">
               <input type="checkbox" checked={profile?.smsConsent || false} onChange={(e) => setProfile({ ...profile, smsConsent: e.target.checked })} className="w-4 h-4 accent-brand-gold" />
-              <span className="text-sm text-crm-muted">I agree to receive SMS appointment reminders</span>
+              <span className="text-[13px] text-crm-muted">I agree to receive SMS appointment reminders</span>
             </label>
           </div>
 
@@ -144,11 +144,11 @@ function ProfileContent() {
           </button>
 
           <div className="pt-6 mt-6 border-t border-crm-border">
-            <h3 className="font-semibold text-crm-text mb-2 text-2xl md:text-3xl">Security</h3>
-            <Link href="/update-password" className="inline-block px-4 py-2 bg-crm-surface hover:bg-crm-border text-crm-text text-sm font-medium rounded-lg transition-colors border border-slate-600">
+            <h3 className="font-semibold text-crm-text mb-2 text-lg font-bold">Security</h3>
+            <Link href="/update-password" className="inline-block px-4 py-2 bg-crm-surface hover:bg-crm-border text-crm-text text-[13px] font-medium rounded-lg transition-colors border border-slate-600">
               Change Password
             </Link>
-            <Link href="/my-appointments/profile/security" className="inline-block ml-3 px-4 py-2 bg-crm-surface hover:bg-crm-border text-crm-text text-sm font-medium rounded-lg transition-colors border border-slate-600">
+            <Link href="/my-appointments/profile/security" className="inline-block ml-3 px-4 py-2 bg-crm-surface hover:bg-crm-border text-crm-text text-[13px] font-medium rounded-lg transition-colors border border-slate-600">
               Security & Recovery
             </Link>
           </div>
@@ -160,7 +160,7 @@ function ProfileContent() {
 
 export default function ProfilePage() {
   return (
-    <Suspense fallback={<div className="h-[100dvh] overflow-y-auto overflow-x-hidden"><p className="text-crm-muted text-base md:text-lg">Loading...</p></div>}>
+    <Suspense fallback={<div className="h-[100dvh] overflow-y-auto overflow-x-hidden"><p className="text-crm-muted text-[13px]">Loading...</p></div>}>
       <ProfileContent />
     </Suspense>
   );

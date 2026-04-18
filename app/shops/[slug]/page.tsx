@@ -141,8 +141,8 @@ export default async function PublicShopPage({
     return (
       <div className="h-[100dvh] overflow-y-auto overflow-x-hidden">
         <div className="text-center">
-          <h1 className="font-bold text-crm-text mb-4 text-4xl md:text-5xl lg:text-6xl">Shop Not Found</h1>
-          <p className="text-crm-muted text-base md:text-lg">We couldn't find the shop you're looking for.</p>
+          <h1 className="font-bold text-crm-text mb-4 text-2xl font-bold">Shop Not Found</h1>
+          <p className="text-crm-muted text-[13px]">We couldn't find the shop you're looking for.</p>
         </div>
       </div>
     );

@@ -34,7 +34,7 @@ export default function ClientGrid({ clients, shopId }: { clients: any[]; shopId
       </div>
 
       {filteredClients.length === 0 ? (
-        <p className="text-crm-muted italic text-center py-8 bg-crm-surface rounded-xl border border-dashed border-crm-border text-base md:text-lg">No clients match your search.</p>
+        <p className="text-crm-muted italic text-center py-8 bg-crm-surface rounded-xl border border-dashed border-crm-border text-[13px]">No clients match your search.</p>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
           {filteredClients.map((client: any) => (
@@ -45,8 +45,8 @@ export default function ClientGrid({ clients, shopId }: { clients: any[]; shopId
             >
               <div className="flex justify-between items-start mb-3 sm:mb-4 gap-2">
                 <div className="min-w-0">
-                  <h4 className="font-bold text-crm-accent truncate group-hover:text-crm-text transition-colors text-xl md:text-2xl">{client.name || "Guest User"}</h4>
-                  <p className="text-crm-muted truncate text-base md:text-lg">{client.email.startsWith('walkin-') ? 'Walk-in (No Email)' : client.email}</p>
+                  <h4 className="font-bold text-crm-accent truncate group-hover:text-crm-text transition-colors text-base font-semibold">{client.name || "Guest User"}</h4>
+                  <p className="text-crm-muted truncate text-[13px]">{client.email.startsWith('walkin-') ? 'Walk-in (No Email)' : client.email}</p>
                 </div>
                 {client.barcode && (
                   <div className="shrink-0">
@@ -56,7 +56,7 @@ export default function ClientGrid({ clients, shopId }: { clients: any[]; shopId
               </div>
               
               <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-end mt-auto pt-4 border-t border-crm-border">
-                <div className="text-xs text-crm-muted">
+                <div className="text-[11px] text-crm-muted">
                   <div>Total Visits: <span className="font-bold text-crm-text ml-1">{client._count?.clientAppointments || 0}</span></div>
                   {client.lastVisit && (
                     <div className="mt-1">Last: <span className="text-crm-muted">{new Date(client.lastVisit).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}</span></div>
@@ -65,12 +65,12 @@ export default function ClientGrid({ clients, shopId }: { clients: any[]; shopId
               </div>
               
               {client.barcode && (
-                <div className="mt-2 text-sm text-crm-muted font-mono tracking-widest break-all">
+                <div className="mt-2 text-[13px] text-crm-muted font-mono tracking-widest break-all">
                   ID: {client.barcode}
                 </div>
               )}
 
-              <p className="mt-2 text-crm-muted group-hover:text-crm-accent transition-colors text-base md:text-lg">Click to view details →</p>
+              <p className="mt-2 text-crm-muted group-hover:text-crm-accent transition-colors text-[13px]">Click to view details →</p>
             </div>
           ))}
         </div>

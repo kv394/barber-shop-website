@@ -39,7 +39,7 @@ export default function NotificationsPage() {
   if (loading) {
     return (
       <div className="h-[100dvh] overflow-y-auto overflow-x-hidden">
-        <p className="text-crm-muted animate-pulse text-base md:text-lg">Loading…</p>
+        <p className="text-crm-muted animate-pulse text-[13px]">Loading…</p>
       </div>
     );
   }
@@ -51,8 +51,8 @@ export default function NotificationsPage() {
       <header className="bg-crm-surface backdrop-blur-md border-b border-crm-border sticky top-0 z-20">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 py-4 flex flex-wrap justify-between gap-x-2 gap-y-2 items-center">
           <div>
-            <h1 className="font-bold text-crm-text text-4xl md:text-5xl lg:text-6xl">Notification Preferences</h1>
-            <p className="text-crm-muted text-base md:text-lg">Control what emails and texts you receive</p>
+            <h1 className="font-bold text-crm-text text-2xl font-bold">Notification Preferences</h1>
+            <p className="text-crm-muted text-[13px]">Control what emails and texts you receive</p>
           </div>
           <BackButton />
         </div>
@@ -60,7 +60,7 @@ export default function NotificationsPage() {
       </header>
 
       <div className="max-w-2xl mx-auto px-4 sm:px-6 py-8">
-        {msg && <div className="mb-4 p-3 rounded-lg bg-status-confirmed/20 border border-status-confirmed/30 text-status-confirmed text-sm">{msg}</div>}
+        {msg && <div className="mb-4 p-3 rounded-lg bg-status-confirmed/20 border border-status-confirmed/30 text-status-confirmed text-[13px]">{msg}</div>}
 
         <div className="bg-crm-surface border border-crm-border shadow-sm rounded-xl p-6 space-y-4">
           {[
@@ -70,10 +70,10 @@ export default function NotificationsPage() {
             { key: 'birthdayMessages', label: 'Birthday Messages', desc: 'Receive a special message on your birthday' },
             { key: 'loyaltyUpdates', label: 'Loyalty Updates', desc: 'Points earned, tier changes, and reward alerts' },
           ].map(item => (
-            <label key={item.key} className="flex items-center justify-between p-4 bg-crm-surface rounded-lg cursor-pointer hover:bg-crm-surface transition-colors text-sm">
+            <label key={item.key} className="flex items-center justify-between p-4 bg-crm-surface rounded-lg cursor-pointer hover:bg-crm-surface transition-colors text-[13px]">
               <div>
-                <p className="text-crm-text font-medium text-base md:text-lg">{item.label}</p>
-                <p className="text-crm-muted text-base md:text-lg">{item.desc}</p>
+                <p className="text-crm-text font-medium text-[13px]">{item.label}</p>
+                <p className="text-crm-muted text-[13px]">{item.desc}</p>
               </div>
               <input
                 type="checkbox"
@@ -85,7 +85,7 @@ export default function NotificationsPage() {
           ))}
 
           <div className="pt-4 border-t border-crm-border">
-            <label className="block text-crm-muted mb-2 text-sm">Preferred Channel</label>
+            <label className="block text-crm-muted mb-2 text-[13px]">Preferred Channel</label>
             <select
               value={prefs?.preferredChannel || 'EMAIL'}
               onChange={(e) => setPrefs({ ...prefs, preferredChannel: e.target.value })}

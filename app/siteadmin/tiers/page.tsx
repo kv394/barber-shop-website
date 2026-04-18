@@ -59,8 +59,8 @@ export default function SiteAdminTiersPage() {
     <div>
       <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-8">
         <div>
-          <h1 className="font-serif font-bold text-crm-accent mb-2 text-4xl md:text-5xl lg:text-6xl">SaaS Pricing Tiers</h1>
-          <p className="text-crm-muted text-base md:text-lg">Manage limits and base fees for subscription packages.</p>
+          <h1 className="font-serif font-bold text-crm-accent mb-2 text-2xl font-bold">SaaS Pricing Tiers</h1>
+          <p className="text-crm-muted text-[13px]">Manage limits and base fees for subscription packages.</p>
         </div>
         <button
           onClick={handleSave}
@@ -81,7 +81,7 @@ export default function SiteAdminTiersPage() {
                 onChange={e => handleUpdate(index, 'name', e.target.value)}
                 className="bg-transparent text-xl font-bold text-crm-text border-b border-transparent hover:border-brand-gold focus:border-brand-gold outline-none w-48"
               />
-              <span className="text-crm-muted text-sm flex-1">{tier.id}</span>
+              <span className="text-crm-muted text-[13px] flex-1">{tier.id}</span>
               <div className="flex items-center gap-2">
                 <span className="text-crm-muted font-bold">$</span>
                 <input
@@ -90,68 +90,68 @@ export default function SiteAdminTiersPage() {
                   onChange={e => handleUpdate(index, 'baseFeeUSD', e.target.value)}
                   className="bg-crm-surface border border-crm-border shadow-sm rounded p-1 w-20 text-crm-text font-mono text-center outline-none focus:border-brand-gold"
                 />
-                <span className="text-crm-muted text-sm">/mo</span>
+                <span className="text-crm-muted text-[13px]">/mo</span>
               </div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
               <div>
-                <label className="block text-crm-accent uppercase tracking-wider mb-1 font-bold text-sm">Max Appointments</label>
+                <label className="block text-crm-accent uppercase tracking-wider mb-1 font-bold text-[13px]">Max Appointments</label>
                 <input
                   type="number"
                   value={tier.maxAppointments}
                   onChange={e => handleUpdate(index, 'maxAppointments', e.target.value)}
-                  className="w-full bg-crm-surface border border-crm-border shadow-sm rounded p-2 text-crm-text text-sm outline-none focus:border-brand-gold"
+                  className="w-full bg-crm-surface border border-crm-border shadow-sm rounded p-2 text-crm-text text-[13px] outline-none focus:border-brand-gold"
                 />
               </div>
               <div>
-                <label className="block text-crm-accent uppercase tracking-wider mb-1 font-bold text-sm">Max Users</label>
+                <label className="block text-crm-accent uppercase tracking-wider mb-1 font-bold text-[13px]">Max Users</label>
                 <input
                   type="number"
                   value={tier.maxUsers}
                   onChange={e => handleUpdate(index, 'maxUsers', e.target.value)}
-                  className="w-full bg-crm-surface border border-crm-border shadow-sm rounded p-2 text-crm-text text-sm outline-none focus:border-brand-gold"
+                  className="w-full bg-crm-surface border border-crm-border shadow-sm rounded p-2 text-crm-text text-[13px] outline-none focus:border-brand-gold"
                 />
               </div>
               <div>
-                <label className="block text-crm-accent uppercase tracking-wider mb-1 font-bold text-sm">Max Intake Forms</label>
+                <label className="block text-crm-accent uppercase tracking-wider mb-1 font-bold text-[13px]">Max Intake Forms</label>
                 <input
                   type="number"
                   value={tier.maxFormSubmissions}
                   onChange={e => handleUpdate(index, 'maxFormSubmissions', e.target.value)}
-                  className="w-full bg-crm-surface border border-crm-border shadow-sm rounded p-2 text-crm-text text-sm outline-none focus:border-brand-gold"
+                  className="w-full bg-crm-surface border border-crm-border shadow-sm rounded p-2 text-crm-text text-[13px] outline-none focus:border-brand-gold"
                 />
               </div>
               <div>
-                <label className="block text-crm-accent uppercase tracking-wider mb-1 font-bold text-sm">Storage Limit (MB)</label>
+                <label className="block text-crm-accent uppercase tracking-wider mb-1 font-bold text-[13px]">Storage Limit (MB)</label>
                 <input
                   type="number"
                   value={tier.storageLimitMB}
                   onChange={e => handleUpdate(index, 'storageLimitMB', e.target.value)}
-                  className="w-full bg-crm-surface border border-crm-border shadow-sm rounded p-2 text-crm-text text-sm outline-none focus:border-brand-gold"
+                  className="w-full bg-crm-surface border border-crm-border shadow-sm rounded p-2 text-crm-text text-[13px] outline-none focus:border-brand-gold"
                 />
               </div>
               <div>
-                <label className="block text-crm-accent uppercase tracking-wider mb-1 font-bold text-sm">Overage Fee (per 100MB)</label>
+                <label className="block text-crm-accent uppercase tracking-wider mb-1 font-bold text-[13px]">Overage Fee (per 100MB)</label>
                 <div className="relative">
                   <span className="absolute left-2 top-2 text-crm-muted">$</span>
                   <input
                     type="number"
                     value={tier.overageFeePer100MB}
                     onChange={e => handleUpdate(index, 'overageFeePer100MB', e.target.value)}
-                    className="w-full bg-crm-surface border border-crm-border shadow-sm rounded p-2 pl-6 text-crm-text text-sm outline-none focus:border-brand-gold"
+                    className="w-full bg-crm-surface border border-crm-border shadow-sm rounded p-2 pl-6 text-crm-text text-[13px] outline-none focus:border-brand-gold"
                   />
                 </div>
               </div>
             </div>
 
             <div>
-              <label className="block text-crm-muted mb-1 text-sm">Marketing Description</label>
+              <label className="block text-crm-muted mb-1 text-[13px]">Marketing Description</label>
               <input
                 type="text"
                 value={tier.description || ''}
                 onChange={e => handleUpdate(index, 'description', e.target.value)}
-                className="w-full bg-crm-surface border border-crm-border shadow-sm rounded p-2 text-crm-muted text-sm outline-none focus:border-brand-gold"
+                className="w-full bg-crm-surface border border-crm-border shadow-sm rounded p-2 text-crm-muted text-[13px] outline-none focus:border-brand-gold"
               />
             </div>
           </div>

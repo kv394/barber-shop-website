@@ -19,8 +19,8 @@ export default async function ExpensesPage({ params }: { params: Promise<{ shopI
     return (
       <div className="h-[100dvh] overflow-y-auto overflow-x-hidden">
         <div className="text-center">
-          <h1 className="font-bold text-status-cancelled mb-4 text-4xl md:text-5xl lg:text-6xl">Access Denied</h1>
-          <p className="text-crm-muted text-base md:text-lg">You do not have permission to view this page.</p>
+          <h1 className="font-bold text-status-cancelled mb-4 text-2xl font-bold">Access Denied</h1>
+          <p className="text-crm-muted text-[13px]">You do not have permission to view this page.</p>
         </div>
       </div>
     );

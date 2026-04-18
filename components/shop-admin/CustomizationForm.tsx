@@ -72,18 +72,18 @@ export function CustomizationForm({
 
   return (
     <div className="w-full">
-      <h2 className="font-bold text-crm-text mb-4 sm:mb-6 text-3xl md:text-4xl">
+      <h2 className="font-bold text-crm-text mb-4 sm:mb-6 text-xl font-bold">
         {isSiteAdmin ? "Customize Your Shop Appearance" : "Update Contact Information"}
       </h2>
 
       {error && (
-        <div className="bg-status-cancelled/10 border border-status-cancelled text-status-cancelled p-3 sm:p-4 rounded-lg mb-4 sm:mb-6 text-sm">
+        <div className="bg-status-cancelled/10 border border-status-cancelled text-status-cancelled p-3 sm:p-4 rounded-lg mb-4 sm:mb-6 text-[13px]">
           {error}
         </div>
       )}
 
       {success && (
-        <div className="bg-status-confirmed/10 border border-status-confirmed text-status-confirmed p-3 sm:p-4 rounded-lg mb-4 sm:mb-6 text-sm">
+        <div className="bg-status-confirmed/10 border border-status-confirmed text-status-confirmed p-3 sm:p-4 rounded-lg mb-4 sm:mb-6 text-[13px]">
           Information saved successfully!
         </div>
       )}
@@ -91,10 +91,10 @@ export function CustomizationForm({
       <div className="space-y-6 bg-crm-surface p-4 sm:p-6 md:p-8 rounded-lg border border-crm-border shadow-sm">
         
         <div>
-            <h3 className="font-bold text-crm-text mb-4 text-2xl md:text-3xl">Brand Look & Feel</h3>
+            <h3 className="font-bold text-crm-text mb-4 text-lg font-bold">Brand Look & Feel</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
               <div>
-                <label className="block font-medium text-crm-muted mb-2 text-sm">
+                <label className="block font-medium text-crm-muted mb-2 text-[13px]">
                   Logo URL
                 </label>
                 <div className="flex gap-2">
@@ -126,13 +126,13 @@ export function CustomizationForm({
                         setIsLoading(false);
                       }
                     }} 
-                    className="flex-1 bg-crm-surface border border-crm-border shadow-sm rounded px-3 py-2 text-crm-text text-sm focus:outline-none focus:border-brand-gold file:mr-4 file:py-1 file:px-4 file:rounded file:border-0 file:text-sm file:bg-crm-primary/20 file:text-crm-primary hover:file:bg-crm-primary/30 hover:opacity-90" 
+                    className="flex-1 bg-crm-surface border border-crm-border shadow-sm rounded px-3 py-2 text-crm-text text-[13px] focus:outline-none focus:border-brand-gold file:mr-4 file:py-1 file:px-4 file:rounded file:border-0 file:text-[13px] file:bg-crm-primary/20 file:text-crm-primary hover:file:bg-crm-primary/30 hover:opacity-90" 
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block font-medium text-crm-muted mb-2 text-sm">
+                <label className="block font-medium text-crm-muted mb-2 text-[13px]">
                   Hero / Banner Image URL
                 </label>
                 <div className="flex gap-2">
@@ -164,15 +164,15 @@ export function CustomizationForm({
                         setIsLoading(false);
                       }
                     }} 
-                    className="flex-1 bg-crm-surface border border-crm-border shadow-sm rounded px-3 py-2 text-crm-text text-sm focus:outline-none focus:border-brand-gold file:mr-4 file:py-1 file:px-4 file:rounded file:border-0 file:text-sm file:bg-crm-primary/20 file:text-crm-primary hover:file:bg-crm-primary/30 hover:opacity-90" 
+                    className="flex-1 bg-crm-surface border border-crm-border shadow-sm rounded px-3 py-2 text-crm-text text-[13px] focus:outline-none focus:border-brand-gold file:mr-4 file:py-1 file:px-4 file:rounded file:border-0 file:text-[13px] file:bg-crm-primary/20 file:text-crm-primary hover:file:bg-crm-primary/30 hover:opacity-90" 
                   />
                 </div>
               </div>
             </div>
-            <h3 className="font-bold text-crm-text mb-4 text-2xl md:text-3xl">Brand Colors</h3>
+            <h3 className="font-bold text-crm-text mb-4 text-lg font-bold">Brand Colors</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <label className="block font-medium text-crm-muted mb-2 text-sm">
+                <label className="block font-medium text-crm-muted mb-2 text-[13px]">
                   Primary Color
                 </label>
                 <div className="flex gap-2">
@@ -196,7 +196,7 @@ export function CustomizationForm({
               </div>
 
               <div>
-                <label className="block font-medium text-crm-muted mb-2 text-sm">
+                <label className="block font-medium text-crm-muted mb-2 text-[13px]">
                   Secondary Color
                 </label>
                 <div className="flex gap-2">
@@ -222,10 +222,10 @@ export function CustomizationForm({
           </div>
 
         <div>
-          <h3 className="font-bold text-crm-text mb-4 text-2xl md:text-3xl">Contact Information</h3>
+          <h3 className="font-bold text-crm-text mb-4 text-lg font-bold">Contact Information</h3>
           <div className="space-y-4">
             <div>
-              <label className="block font-medium text-crm-muted mb-2 text-sm">
+              <label className="block font-medium text-crm-muted mb-2 text-[13px]">
                 Phone Number
               </label>
               <input
@@ -238,7 +238,7 @@ export function CustomizationForm({
             </div>
 
             <div>
-              <label className="block font-medium text-crm-muted mb-2 text-sm">
+              <label className="block font-medium text-crm-muted mb-2 text-[13px]">
                 Email Address
               </label>
               <input
@@ -251,7 +251,7 @@ export function CustomizationForm({
             </div>
 
             <div>
-              <label className="block font-medium text-crm-muted mb-2 text-sm">
+              <label className="block font-medium text-crm-muted mb-2 text-[13px]">
                 Business Address
               </label>
               <input
@@ -266,10 +266,10 @@ export function CustomizationForm({
         </div>
 
         <div>
-          <h3 className="font-bold text-crm-text mb-4 text-2xl md:text-3xl">Social Media Links</h3>
+          <h3 className="font-bold text-crm-text mb-4 text-lg font-bold">Social Media Links</h3>
           <div className="space-y-4">
             <div>
-              <label className="block font-medium text-crm-muted mb-2 text-sm">
+              <label className="block font-medium text-crm-muted mb-2 text-[13px]">
                 Facebook URL
               </label>
               <input
@@ -287,7 +287,7 @@ export function CustomizationForm({
             </div>
 
             <div>
-              <label className="block font-medium text-crm-muted mb-2 text-sm">
+              <label className="block font-medium text-crm-muted mb-2 text-[13px]">
                 Instagram URL
               </label>
               <input
@@ -305,7 +305,7 @@ export function CustomizationForm({
             </div>
 
             <div>
-              <label className="block font-medium text-crm-muted mb-2 text-sm">
+              <label className="block font-medium text-crm-muted mb-2 text-[13px]">
                 Twitter URL
               </label>
               <input
@@ -330,14 +330,14 @@ export function CustomizationForm({
 
         {activeVariables.length > 0 && (
           <div>
-            <h3 className="font-bold text-crm-text mb-4 text-2xl md:text-3xl">Template Custom Variables</h3>
-            <p className="text-crm-muted mb-4 text-base md:text-lg">
+            <h3 className="font-bold text-crm-text mb-4 text-lg font-bold">Template Custom Variables</h3>
+            <p className="text-crm-muted mb-4 text-[13px]">
               These fields were automatically detected from your selected custom template. Fill them in to customize your landing page.
             </p>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {activeVariables.map((variable) => (
                 <div key={variable}>
-                  <label className="block font-medium text-crm-muted mb-2 capitalize text-sm">
+                  <label className="block font-medium text-crm-muted mb-2 capitalize text-[13px]">
                     {variable.replace(/([A-Z])/g, ' $1').trim()}
                   </label>
                   {variable.toLowerCase().includes('image') || variable.toLowerCase().includes('url') ? (

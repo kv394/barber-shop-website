@@ -66,21 +66,21 @@ export default function AssignTemplateModal({
   return (
     <div className="fixed inset-0 bg-crm-darkBase/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
       <div className="bg-crm-surface w-full max-w-md rounded-2xl border border-crm-border shadow-2xl p-6">
-        <h2 className="font-bold text-crm-text mb-2 text-3xl md:text-4xl">Assign Template</h2>
-        <p className="text-crm-muted mb-6 text-base md:text-lg">Select a template for <strong>{shopName}</strong></p>
+        <h2 className="font-bold text-crm-text mb-2 text-xl font-bold">Assign Template</h2>
+        <p className="text-crm-muted mb-6 text-[13px]">Select a template for <strong>{shopName}</strong></p>
 
         {loading ? (
-          <div className="py-4 text-center text-sm text-crm-muted">Loading templates...</div>
+          <div className="py-4 text-center text-[13px] text-crm-muted">Loading templates...</div>
         ) : (
           <div className="space-y-4">
             <div>
-              <label className="block font-bold text-crm-muted mb-2 uppercase tracking-wider text-sm">
+              <label className="block font-bold text-crm-muted mb-2 uppercase tracking-wider text-[13px]">
                 Select Template
               </label>
               <select
                 value={selectedTemplate}
                 onChange={(e) => setSelectedTemplate(e.target.value)}
-                className="w-full bg-crm-bg border border-crm-border rounded-lg p-3 text-sm text-crm-text focus:ring-2 focus:ring-crm-primary focus:outline-none"
+                className="w-full bg-crm-bg border border-crm-border rounded-lg p-3 text-[13px] text-crm-text focus:ring-2 focus:ring-crm-primary focus:outline-none"
               >
                 <option value="modern">Modern (Default Built-in)</option>
                 <option value="classic">Classic (Built-in)</option>
@@ -97,14 +97,14 @@ export default function AssignTemplateModal({
               <button
                 onClick={onClose}
                 disabled={saving}
-                className="px-4 py-2 rounded-lg text-sm font-semibold text-crm-muted hover:bg-crm-bg hover:text-crm-text transition"
+                className="px-4 py-2 rounded-lg text-[13px] font-semibold text-crm-muted hover:bg-crm-bg hover:text-crm-text transition"
               >
                 Cancel
               </button>
               <button
                 onClick={handleSave}
                 disabled={saving}
-                className="bg-crm-primary text-white px-6 py-2 rounded-lg text-sm font-bold hover:bg-crm-surface hover:text-crm-primary border border-transparent hover:border-crm-primary/30 transition disabled:opacity-50"
+                className="bg-crm-primary text-white px-6 py-2 rounded-lg text-[13px] font-bold hover:bg-crm-surface hover:text-crm-primary border border-transparent hover:border-crm-primary/30 transition disabled:opacity-50"
               >
                 {saving ? 'Saving...' : 'Assign Template'}
               </button>

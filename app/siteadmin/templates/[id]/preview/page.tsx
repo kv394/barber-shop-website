@@ -49,7 +49,7 @@ export default async function TemplatePreviewPage({ params }: { params: Promise<
       secondaryColor
     });
   } catch (err: any) {
-    html = `<div style="padding: 2rem; color: red;"><h2 className="text-3xl md:text-4xl">Handlebars Compilation Error</h2><pre>${err.message}</pre></div>`;
+    html = `<div style="padding: 2rem; color: red;"><h2 className="text-xl font-bold">Handlebars Compilation Error</h2><pre>${err.message}</pre></div>`;
   }
 
   return (
@@ -62,7 +62,7 @@ export default async function TemplatePreviewPage({ params }: { params: Promise<
         </div>
         <Link 
           href="/siteadmin/templates"
-          className="text-xs bg-crm-surface hover:bg-crm-surface px-3 py-1.5 rounded transition"
+          className="text-[11px] bg-crm-surface hover:bg-crm-surface px-3 py-1.5 rounded transition"
         >
           Close Preview
         </Link>

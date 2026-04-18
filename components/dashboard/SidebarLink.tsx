@@ -21,7 +21,7 @@ export default function SidebarLink({
   return (
     <Link
       href={href}
-      className={`flex items-center gap-3 px-6 py-2 text-sm transition-colors border-l-4 ${
+      className={`flex items-center gap-3 px-6 py-2 text-[13px] transition-colors border-l-4 ${
         isActive
           ? 'text-crm-darkBase font-semibold border-crm-primary'
           : 'text-crm-muted hover:text-crm-darkBase border-transparent'

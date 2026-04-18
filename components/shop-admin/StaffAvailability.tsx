@@ -74,27 +74,27 @@ export default function StaffAvailability({ defaultDate, defaultFrom, defaultTo,
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl bg-crm-primary/20 flex items-center justify-center text-xl hover:opacity-90">📅</div>
             <div>
-              <h3 className="font-bold text-crm-text text-2xl md:text-3xl">{dayName}</h3>
-              <p className="text-crm-muted text-base md:text-lg">{dateStr}</p>
+              <h3 className="font-bold text-crm-text text-lg font-bold">{dayName}</h3>
+              <p className="text-crm-muted text-[13px]">{dateStr}</p>
             </div>
             {isToday && (
-              <span className="text-sm bg-crm-primary/20 text-crm-primary px-2.5 py-0.5 rounded-full font-bold uppercase tracking-wider hover:opacity-90">Today</span>
+              <span className="text-[13px] bg-crm-primary/20 text-crm-primary px-2.5 py-0.5 rounded-full font-bold uppercase tracking-wider hover:opacity-90">Today</span>
             )}
           </div>
 
           <div className="flex items-center gap-2">
             {!isToday && (
               <button onClick={goToToday}
-                className="text-sm text-crm-primary hover:text-crm-text bg-crm-primary/10 hover:bg-crm-primary/20 border border-crm-primary/20 transition-all duration-200">
+                className="text-[13px] text-crm-primary hover:text-crm-text bg-crm-primary/10 hover:bg-crm-primary/20 border border-crm-primary/20 transition-all duration-200">
                 Today
               </button>
             )}
             <button onClick={() => navigateDays(-1)}
-              className="w-9 h-9 flex items-center justify-center rounded-xl bg-crm-surface border border-crm-border shadow-sm hover:border-crm-primary/40 text-crm-muted hover:text-crm-text transition-all duration-200 text-sm font-bold">
+              className="w-9 h-9 flex items-center justify-center rounded-xl bg-crm-surface border border-crm-border shadow-sm hover:border-crm-primary/40 text-crm-muted hover:text-crm-text transition-all duration-200 text-[13px] font-bold">
               ←
             </button>
             <button onClick={() => navigateDays(1)}
-              className="w-9 h-9 flex items-center justify-center rounded-xl bg-crm-surface border border-crm-border shadow-sm hover:border-crm-primary/40 text-crm-muted hover:text-crm-text transition-all duration-200 text-sm font-bold">
+              className="w-9 h-9 flex items-center justify-center rounded-xl bg-crm-surface border border-crm-border shadow-sm hover:border-crm-primary/40 text-crm-muted hover:text-crm-text transition-all duration-200 text-[13px] font-bold">
               →
             </button>
           </div>
@@ -103,37 +103,37 @@ export default function StaffAvailability({ defaultDate, defaultFrom, defaultTo,
         {/* Inputs row */}
         <div className={`grid grid-cols-1 ${showTimeFilters ? 'md:grid-cols-3' : 'md:grid-cols-1'} gap-3`}>
           <div>
-            <label className="block text-crm-muted mb-1 font-semibold uppercase tracking-wider text-sm">📅 Date</label>
+            <label className="block text-crm-muted mb-1 font-semibold uppercase tracking-wider text-[13px]">📅 Date</label>
             <input
               type="date"
               value={defaultDate}
               onChange={handleDateChange}
               style={timeStyle}
-              className="w-full p-2.5 rounded-lg border border-crm-border shadow-sm text-crm-text text-sm focus:ring-2 focus:ring-crm-primary focus:outline-none transition-all"
+              className="w-full p-2.5 rounded-lg border border-crm-border shadow-sm text-crm-text text-[13px] focus:ring-2 focus:ring-crm-primary focus:outline-none transition-all"
             />
           </div>
           {showTimeFilters && (
             <>
               <div>
-                <label className="block text-crm-muted mb-1 font-semibold uppercase tracking-wider text-sm">🕐 From</label>
+                <label className="block text-crm-muted mb-1 font-semibold uppercase tracking-wider text-[13px]">🕐 From</label>
                 <input
                   type="time"
                   name="from"
                   value={defaultFrom}
                   onChange={handleTimeChange}
                   style={timeStyle}
-                  className="w-full p-2.5 rounded-lg border border-crm-border shadow-sm text-crm-text text-sm focus:ring-2 focus:ring-crm-primary focus:outline-none transition-all"
+                  className="w-full p-2.5 rounded-lg border border-crm-border shadow-sm text-crm-text text-[13px] focus:ring-2 focus:ring-crm-primary focus:outline-none transition-all"
                 />
               </div>
               <div>
-                <label className="block text-crm-muted mb-1 font-semibold uppercase tracking-wider text-sm">🕐 To</label>
+                <label className="block text-crm-muted mb-1 font-semibold uppercase tracking-wider text-[13px]">🕐 To</label>
                 <input
                   type="time"
                   name="to"
                   value={defaultTo}
                   onChange={handleTimeChange}
                   style={timeStyle}
-                  className="w-full p-2.5 rounded-lg border border-crm-border shadow-sm text-crm-text text-sm focus:ring-2 focus:ring-crm-primary focus:outline-none transition-all"
+                  className="w-full p-2.5 rounded-lg border border-crm-border shadow-sm text-crm-text text-[13px] focus:ring-2 focus:ring-crm-primary focus:outline-none transition-all"
                 />
               </div>
             </>

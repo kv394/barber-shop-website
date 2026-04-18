@@ -66,61 +66,61 @@ export default async function SiteAdminLogsPage() {
   return (
     <div>
       <div className="mb-8">
-        <h1 className="font-serif font-bold text-crm-accent mb-2 text-4xl md:text-5xl lg:text-6xl">System Logs</h1>
-        <p className="text-crm-muted text-base md:text-lg">{logs.length} log entr{logs.length !== 1 ? 'ies' : 'y'} • {logs.filter((l: any) => !l.isResolved).length} unresolved</p>
+        <h1 className="font-serif font-bold text-crm-accent mb-2 text-2xl font-bold">System Logs</h1>
+        <p className="text-crm-muted text-[13px]">{logs.length} log entr{logs.length !== 1 ? 'ies' : 'y'} • {logs.filter((l: any) => !l.isResolved).length} unresolved</p>
       </div>
       <div className="bg-crm-surface rounded-xl border border-crm-border shadow-sm overflow-hidden">
         <table className="min-w-full divide-y divide-white/10 text-crm-text">
           <thead className="bg-crm-surface">
             <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-crm-muted uppercase tracking-wider">Time</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-crm-muted uppercase tracking-wider">Level & Path</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-crm-muted uppercase tracking-wider">Message</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-crm-muted uppercase tracking-wider">Status</th>
-              <th className="px-6 py-3 text-right text-xs font-medium text-crm-muted uppercase tracking-wider">Actions</th>
+              <th className="px-6 py-3 text-left text-[11px] font-medium text-crm-muted uppercase tracking-wider">Time</th>
+              <th className="px-6 py-3 text-left text-[11px] font-medium text-crm-muted uppercase tracking-wider">Level & Path</th>
+              <th className="px-6 py-3 text-left text-[11px] font-medium text-crm-muted uppercase tracking-wider">Message</th>
+              <th className="px-6 py-3 text-left text-[11px] font-medium text-crm-muted uppercase tracking-wider">Status</th>
+              <th className="px-6 py-3 text-right text-[11px] font-medium text-crm-muted uppercase tracking-wider">Actions</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-white/5">
             {logs.length === 0 ? (
               <tr>
-                <td colSpan={5} className="px-6 py-4 text-center text-sm text-crm-muted">
+                <td colSpan={5} className="px-6 py-4 text-center text-[13px] text-crm-muted">
                   No logs found.
                 </td>
               </tr>
             ) : (
               logs.map((log: any) => (
                 <tr key={log.id} className={log.level === "ERROR" && !log.isResolved ? "bg-status-cancelled/20" : "hover:bg-crm-surface"}>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-crm-muted">
+                  <td className="px-6 py-4 whitespace-nowrap text-[13px] text-crm-muted">
                     {new Date(log.createdAt).toLocaleString()}
                   </td>
-                  <td className="px-6 py-4 text-sm text-crm-text">
+                  <td className="px-6 py-4 text-[13px] text-crm-text">
                     <span className={`font-semibold ${log.level === 'ERROR' ? 'text-status-cancelled' : log.level === 'WARN' ? 'text-status-pending' : 'text-status-info'}`}>{log.level}</span>
                     <br />
-                    <span className="text-crm-muted text-xs">{log.path || "N/A"}</span>
+                    <span className="text-crm-muted text-[11px]">{log.path || "N/A"}</span>
                   </td>
-                  <td className="px-6 py-4 text-sm text-crm-muted break-words max-w-md">
+                  <td className="px-6 py-4 text-[13px] text-crm-muted break-words max-w-md">
                     <div className="font-medium">{log.message}</div>
                     {log.stack && (
                       <details className="mt-1">
-                        <summary className="text-xs text-crm-accent cursor-pointer">View Stack</summary>
-                        <pre className="mt-2 text-xs bg-crm-surface p-2 rounded overflow-x-auto text-crm-muted">
+                        <summary className="text-[11px] text-crm-accent cursor-pointer">View Stack</summary>
+                        <pre className="mt-2 text-[11px] bg-crm-surface p-2 rounded overflow-x-auto text-crm-muted">
                           {log.stack}
                         </pre>
                       </details>
                     )}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm">
+                  <td className="px-6 py-4 whitespace-nowrap text-[13px]">
                     {log.isResolved ? (
-                      <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-status-confirmed/20 text-status-confirmed">
+                      <span className="px-2 inline-flex text-[11px] leading-5 font-semibold rounded-full bg-status-confirmed/20 text-status-confirmed">
                         Resolved
                       </span>
                     ) : (
-                      <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-status-cancelled/20 text-status-cancelled">
+                      <span className="px-2 inline-flex text-[11px] leading-5 font-semibold rounded-full bg-status-cancelled/20 text-status-cancelled">
                         Open
                       </span>
                     )}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                  <td className="px-6 py-4 whitespace-nowrap text-right text-[13px] font-medium">
                     <div className="flex justify-end space-x-2">
                        {!log.isResolved && (
                          <form action={resolveLog}>

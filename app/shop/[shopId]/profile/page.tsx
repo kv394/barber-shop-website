@@ -44,9 +44,9 @@ export default async function ProfilePage({ params }: { params: Promise<{ shopId
             {dbUser.name ? dbUser.name.charAt(0).toUpperCase() : '👤'}
           </div>
           <div>
-            <h2 className="font-bold text-crm-text mb-1 text-3xl md:text-4xl">{dbUser.name || 'Unnamed Staff'}</h2>
-            <p className="text-crm-muted mb-2 text-base md:text-lg">{dbUser.email}</p>
-            <span className="inline-block px-3 py-1 bg-crm-primary/10 border border-brand-gold/30 text-crm-accent text-xs font-bold rounded-full uppercase tracking-wider hover:opacity-90">
+            <h2 className="font-bold text-crm-text mb-1 text-xl font-bold">{dbUser.name || 'Unnamed Staff'}</h2>
+            <p className="text-crm-muted mb-2 text-[13px]">{dbUser.email}</p>
+            <span className="inline-block px-3 py-1 bg-crm-primary/10 border border-brand-gold/30 text-crm-accent text-[11px] font-bold rounded-full uppercase tracking-wider hover:opacity-90">
               {dbUser.role === 'STAFF' ? 'Staff Member' : dbUser.role}
             </span>
           </div>
@@ -56,11 +56,11 @@ export default async function ProfilePage({ params }: { params: Promise<{ shopId
         <div className="grid grid-cols-2 gap-4">
           <div className="bg-crm-bg/80 backdrop-blur-xl border border-crm-border shadow-sm rounded-2xl p-5 shadow-lg flex flex-col items-center justify-center">
             <span className="text-3xl font-black text-crm-text mb-1">{totalAppointments}</span>
-            <span className="text-xs text-crm-muted uppercase tracking-widest font-semibold">Total Bookings</span>
+            <span className="text-[11px] text-crm-muted uppercase tracking-widest font-semibold">Total Bookings</span>
           </div>
           <div className="bg-crm-bg/80 backdrop-blur-xl border border-crm-border shadow-sm rounded-2xl p-5 shadow-lg flex flex-col items-center justify-center">
             <span className="text-3xl font-black text-crm-accent mb-1">{completedAppointments}</span>
-            <span className="text-xs text-crm-muted uppercase tracking-widest font-semibold">Completed</span>
+            <span className="text-[11px] text-crm-muted uppercase tracking-widest font-semibold">Completed</span>
           </div>
         </div>
 
@@ -70,8 +70,8 @@ export default async function ProfilePage({ params }: { params: Promise<{ shopId
             <div className="flex items-center gap-4">
               <span className="text-xl bg-status-info/20 text-status-info w-10 h-10 rounded-full flex items-center justify-center">📋</span>
               <div>
-                <h3 className="text-crm-text font-semibold text-2xl md:text-3xl">Walk-in Waitlist</h3>
-                <p className="text-crm-muted text-base md:text-lg">Manage walk-ins and wait times</p>
+                <h3 className="text-crm-text font-semibold text-lg font-bold">Walk-in Waitlist</h3>
+                <p className="text-crm-muted text-[13px]">Manage walk-ins and wait times</p>
               </div>
             </div>
             <span className="text-crm-muted">→</span>
@@ -81,8 +81,8 @@ export default async function ProfilePage({ params }: { params: Promise<{ shopId
             <div className="flex items-center gap-4">
               <span className="text-xl bg-status-pending/20 text-status-pending w-10 h-10 rounded-full flex items-center justify-center">🏖️</span>
               <div>
-                <h3 className="text-crm-text font-semibold text-2xl md:text-3xl">Time Off & Leave</h3>
-                <p className="text-crm-muted text-base md:text-lg">Request vacations and manage absences</p>
+                <h3 className="text-crm-text font-semibold text-lg font-bold">Time Off & Leave</h3>
+                <p className="text-crm-muted text-[13px]">Request vacations and manage absences</p>
               </div>
             </div>
             <span className="text-crm-muted">→</span>
@@ -92,8 +92,8 @@ export default async function ProfilePage({ params }: { params: Promise<{ shopId
             <div className="flex items-center gap-4">
               <span className="text-xl bg-status-confirmed/20 text-status-confirmed w-10 h-10 rounded-full flex items-center justify-center">💰</span>
               <div>
-                <h3 className="text-crm-text font-semibold text-2xl md:text-3xl">My Earnings</h3>
-                <p className="text-crm-muted text-base md:text-lg">Track your commissions and tips</p>
+                <h3 className="text-crm-text font-semibold text-lg font-bold">My Earnings</h3>
+                <p className="text-crm-muted text-[13px]">Track your commissions and tips</p>
               </div>
             </div>
             <span className="text-crm-muted">→</span>
@@ -103,8 +103,8 @@ export default async function ProfilePage({ params }: { params: Promise<{ shopId
             <div className="flex items-center gap-4">
               <span className="text-xl bg-crm-accent/20 text-crm-accent w-10 h-10 rounded-full flex items-center justify-center">📸</span>
               <div>
-                <h3 className="text-crm-text font-semibold text-2xl md:text-3xl">My Portfolio</h3>
-                <p className="text-crm-muted text-base md:text-lg">Manage your gallery of haircuts</p>
+                <h3 className="text-crm-text font-semibold text-lg font-bold">My Portfolio</h3>
+                <p className="text-crm-muted text-[13px]">Manage your gallery of haircuts</p>
               </div>
             </div>
             <span className="text-crm-muted">→</span>
@@ -114,8 +114,8 @@ export default async function ProfilePage({ params }: { params: Promise<{ shopId
             <div className="flex items-center gap-4">
               <span className="text-xl bg-crm-border text-crm-muted w-10 h-10 rounded-full flex items-center justify-center">⚙️</span>
               <div>
-                <h3 className="text-crm-text font-semibold text-2xl md:text-3xl">Account Settings</h3>
-                <p className="text-crm-muted text-base md:text-lg">Update password and global details</p>
+                <h3 className="text-crm-text font-semibold text-lg font-bold">Account Settings</h3>
+                <p className="text-crm-muted text-[13px]">Update password and global details</p>
               </div>
             </div>
             <span className="text-crm-muted">→</span>

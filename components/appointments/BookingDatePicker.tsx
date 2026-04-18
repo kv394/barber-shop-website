@@ -18,7 +18,7 @@ export default function BookingDatePicker({ dates }: { dates: string[] }) {
       <span className="text-crm-muted pl-2">📅</span>
       <select 
         onChange={handleDateChange} 
-        className="bg-transparent text-crm-text text-sm focus:outline-none cursor-pointer pr-2 appearance-none w-full sm:w-auto font-semibold"
+        className="bg-transparent text-crm-text text-[13px] focus:outline-none cursor-pointer pr-2 appearance-none w-full sm:w-auto font-semibold"
       >
         <option value="" className="bg-crm-surface text-crm-muted">Jump to specific date...</option>
         {dates.map((date) => (

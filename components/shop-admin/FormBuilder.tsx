@@ -42,33 +42,33 @@ export default function FormBuilder({ shopId }: { shopId: string }) {
 
   return (
     <div className="bg-crm-surface border border-crm-border shadow-sm rounded-xl p-6">
-      <h3 className="font-bold text-crm-text mb-2 text-2xl md:text-3xl">📝 Digital Intake Forms</h3>
-      <p className="text-crm-muted mb-6 text-base md:text-lg">
+      <h3 className="font-bold text-crm-text mb-2 text-lg font-bold">📝 Digital Intake Forms</h3>
+      <p className="text-crm-muted mb-6 text-[13px]">
         Create waivers, consultation forms, and medical histories. Clients will be prompted to sign these before their appointment.
       </p>
 
-      {msg && <div className="mb-4 p-2 bg-status-confirmed/20 border border-status-confirmed/30 text-status-confirmed rounded text-sm">{msg}</div>}
+      {msg && <div className="mb-4 p-2 bg-status-confirmed/20 border border-status-confirmed/30 text-status-confirmed rounded text-[13px]">{msg}</div>}
 
       <form onSubmit={addForm} className="mb-8 space-y-4">
         <div>
-          <label className="block text-crm-muted mb-1 text-sm">Form Name</label>
+          <label className="block text-crm-muted mb-1 text-[13px]">Form Name</label>
           <input 
             type="text" 
             value={name} 
             onChange={e => setName(e.target.value)} 
             placeholder="e.g. Laser Hair Removal Waiver" 
-            className="w-full bg-crm-surface border border-crm-border shadow-sm rounded px-3 py-2 text-crm-text text-sm focus:outline-none focus:border-brand-gold" 
+            className="w-full bg-crm-surface border border-crm-border shadow-sm rounded px-3 py-2 text-crm-text text-[13px] focus:outline-none focus:border-brand-gold" 
             required 
           />
         </div>
         <div>
-          <label className="block text-crm-muted mb-1 text-sm">Form Content / Questions</label>
+          <label className="block text-crm-muted mb-1 text-[13px]">Form Content / Questions</label>
           <textarea 
             value={content} 
             onChange={e => setContent(e.target.value)} 
             placeholder="Enter your form terms, or list questions separated by newlines." 
             rows={4}
-            className="w-full bg-crm-surface border border-crm-border shadow-sm rounded px-3 py-2 text-crm-text text-sm focus:outline-none focus:border-brand-gold" 
+            className="w-full bg-crm-surface border border-crm-border shadow-sm rounded px-3 py-2 text-crm-text text-[13px] focus:outline-none focus:border-brand-gold" 
             required 
           />
         </div>
@@ -80,34 +80,34 @@ export default function FormBuilder({ shopId }: { shopId: string }) {
             onChange={e => setIsRequired(e.target.checked)} 
             className="accent-brand-gold w-4 h-4"
           />
-          <label htmlFor="isRequired" className="text-crm-text text-sm">Require digital signature before appointment</label>
+          <label htmlFor="isRequired" className="text-crm-text text-[13px]">Require digital signature before appointment</label>
         </div>
         <button 
           type="submit" 
           disabled={saving || !name.trim() || !content.trim()} 
-          className="px-4 py-2 bg-crm-primary text-white rounded text-sm font-bold hover:bg-crm-surface hover:text-crm-primary border border-transparent hover:border-crm-primary/30 transition disabled:opacity-50"
+          className="px-4 py-2 bg-crm-primary text-white rounded text-[13px] font-bold hover:bg-crm-surface hover:text-crm-primary border border-transparent hover:border-crm-primary/30 transition disabled:opacity-50"
         >
           {saving ? 'Saving...' : 'Create Form'}
         </button>
       </form>
 
-      <h4 className="text-crm-text font-medium mb-3 text-xl md:text-2xl">Existing Forms</h4>
+      <h4 className="text-crm-text font-medium mb-3 text-base font-semibold">Existing Forms</h4>
       {forms.length === 0 ? (
-        <p className="text-crm-muted py-2 text-base md:text-lg">No forms created yet.</p>
+        <p className="text-crm-muted py-2 text-[13px]">No forms created yet.</p>
       ) : (
         <div className="space-y-3">
           {forms.map(f => (
             <div key={f.id} className="p-4 bg-crm-surface rounded-lg border border-crm-border shadow-sm flex flex-wrap justify-between gap-x-2 gap-y-2 items-start gap-4">
               <div>
                 <div className="flex items-center gap-2 mb-1">
-                  <h5 className="text-crm-text font-medium text-sm">{f.name}</h5>
-                  {f.isRequired && <span className="text-sm uppercase font-bold tracking-wider bg-status-cancelled/20 text-status-cancelled px-1.5 py-0.5 rounded">Required</span>}
+                  <h5 className="text-crm-text font-medium text-[13px]">{f.name}</h5>
+                  {f.isRequired && <span className="text-[13px] uppercase font-bold tracking-wider bg-status-cancelled/20 text-status-cancelled px-1.5 py-0.5 rounded">Required</span>}
                 </div>
-                <p className="text-crm-muted line-clamp-2 text-base md:text-lg">{f.content}</p>
+                <p className="text-crm-muted line-clamp-2 text-[13px]">{f.content}</p>
               </div>
               <button 
                 onClick={() => remove(f.id)} 
-                className="text-status-cancelled hover:text-status-cancelled text-xs font-medium shrink-0"
+                className="text-status-cancelled hover:text-status-cancelled text-[11px] font-medium shrink-0"
               >
                 Delete
               </button>

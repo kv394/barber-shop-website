@@ -290,10 +290,10 @@ export default async function TeamDashboardPage({ params, searchParams }: { para
 
       {kioskUser && (
          <div className="bg-blue-50 border border-blue-200 p-5 rounded-2xl shadow-lg mb-8">
-             <h3 className="text-blue-800 font-bold mb-2 flex items-center gap-2 text-2xl md:text-3xl"><span>📱</span> Tablet Kiosk Setup</h3>
-             <p className="text-crm-muted mb-4 text-base md:text-lg">To set up the front desk attendance tablet, sign up for a new account on that device using this exact email:</p>
+             <h3 className="text-blue-800 font-bold mb-2 flex items-center gap-2 text-lg font-bold"><span>📱</span> Tablet Kiosk Setup</h3>
+             <p className="text-crm-muted mb-4 text-[13px]">To set up the front desk attendance tablet, sign up for a new account on that device using this exact email:</p>
              <div className="bg-crm-surface p-3 rounded-lg text-center mb-3 border border-crm-border shadow-sm"><code className="text-crm-primary font-mono font-bold tracking-wider">{kioskUser.email}</code></div>
-             <p className="text-blue-700 text-base md:text-lg">Once an account is created with this email, that account will instantly inherit kiosk privileges for this shop.</p>
+             <p className="text-blue-700 text-[13px]">Once an account is created with this email, that account will instantly inherit kiosk privileges for this shop.</p>
          </div>
       )}
 
@@ -304,22 +304,22 @@ export default async function TeamDashboardPage({ params, searchParams }: { para
           <div className="flex items-center gap-3 mb-5">
             <div className="w-10 h-10 rounded-xl bg-crm-primary/10 flex items-center justify-center text-xl hover:opacity-90">✉️</div>
             <div>
-              <h3 className="font-bold text-crm-text text-2xl md:text-3xl">Invite Team Member</h3>
-              <p className="text-crm-muted text-base md:text-lg">Add staff or admins to your shop</p>
+              <h3 className="font-bold text-crm-text text-lg font-bold">Invite Team Member</h3>
+              <p className="text-crm-muted text-[13px]">Add staff or admins to your shop</p>
             </div>
           </div>
 
           <form action={inviteUser} className="grid grid-cols-1 md:grid-cols-12 gap-3 items-end">
             <input type="hidden" name="shopId" value={shop.id} />
             <div className="md:col-span-6">
-              <label className="block text-crm-muted mb-1 font-semibold uppercase tracking-wider text-sm">📧 Email</label>
+              <label className="block text-crm-muted mb-1 font-semibold uppercase tracking-wider text-[13px]">📧 Email</label>
               <input type="email" name="email" required placeholder="team@example.com"
-                className="w-full p-2.5 rounded-lg border border-crm-border shadow-sm bg-crm-surface text-crm-text text-sm placeholder-gray-400 focus:ring-2 focus:ring-crm-primary focus:outline-none transition-all" />
+                className="w-full p-2.5 rounded-lg border border-crm-border shadow-sm bg-crm-surface text-crm-text text-[13px] placeholder-gray-400 focus:ring-2 focus:ring-crm-primary focus:outline-none transition-all" />
             </div>
             <div className="md:col-span-3">
-              <label className="block text-crm-muted mb-1 font-semibold uppercase tracking-wider text-sm">👤 Role</label>
+              <label className="block text-crm-muted mb-1 font-semibold uppercase tracking-wider text-[13px]">👤 Role</label>
               <select name="role" defaultValue={userRole === 'SITE_ADMIN' ? 'SHOP_ADMIN' : 'STAFF'}
-                className="w-full p-2.5 rounded-lg border border-crm-border shadow-sm bg-crm-surface text-crm-text text-sm focus:ring-2 focus:ring-crm-primary focus:outline-none transition-all">
+                className="w-full p-2.5 rounded-lg border border-crm-border shadow-sm bg-crm-surface text-crm-text text-[13px] focus:ring-2 focus:ring-crm-primary focus:outline-none transition-all">
                 {userRole === 'SHOP_ADMIN' && <option value="STAFF">Staff</option>}
                 {userRole === 'SITE_ADMIN' && (
                   <>
@@ -331,14 +331,14 @@ export default async function TeamDashboardPage({ params, searchParams }: { para
             </div>
             <div className="md:col-span-3">
               <button type="submit" disabled={userRole === 'SITE_ADMIN' && !canAddShopAdmin}
-                className="w-full bg-crm-primary text-white font-bold py-2.5 px-6 rounded-xl hover:bg-crm-primary/90 hover:scale-[1.02] active:scale-95 transition-all duration-200 shadow-md text-sm disabled:opacity-50 disabled:cursor-not-allowed">
+                className="w-full bg-crm-primary text-white font-bold py-2.5 px-6 rounded-xl hover:bg-crm-primary/90 hover:scale-[1.02] active:scale-95 transition-all duration-200 shadow-md text-[13px] disabled:opacity-50 disabled:cursor-not-allowed">
                 Invite Member
               </button>
             </div>
           </form>
 
           {!canAddShopAdmin && userRole === 'SITE_ADMIN' && (
-            <div className="mt-3 flex items-center gap-2 text-xs text-amber-700 bg-amber-50 px-3 py-2 rounded-lg border border-amber-200">
+            <div className="mt-3 flex items-center gap-2 text-[11px] text-amber-700 bg-amber-50 px-3 py-2 rounded-lg border border-amber-200">
               <span>⚠️</span>
               <span>A Shop Admin already exists. Remove them to assign a new one.</span>
             </div>
@@ -352,26 +352,26 @@ export default async function TeamDashboardPage({ params, searchParams }: { para
             <div key={staffMember.id} className="bg-crm-surface border border-crm-border shadow-sm rounded-2xl p-5 flex flex-col shadow-lg">
               <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-start mb-4">
                 <div>
-                  <h2 className="font-bold text-crm-text mb-1 flex items-center gap-2 text-3xl md:text-4xl">
+                  <h2 className="font-bold text-crm-text mb-1 flex items-center gap-2 text-xl font-bold">
                     {staffMember.name || staffMember.email.split('@')[0]}
-                    <span className={`text-xs px-1.5 py-0.5 rounded uppercase tracking-wider font-bold ${staffMember.role === 'SHOP_ADMIN' ? 'bg-crm-primary/10 text-crm-primary border border-crm-primary/20' : 'bg-blue-50 text-blue-700 border border-blue-200'} hover:opacity-90`}>
+                    <span className={`text-[11px] px-1.5 py-0.5 rounded uppercase tracking-wider font-bold ${staffMember.role === 'SHOP_ADMIN' ? 'bg-crm-primary/10 text-crm-primary border border-crm-primary/20' : 'bg-blue-50 text-blue-700 border border-blue-200'} hover:opacity-90`}>
                       {staffMember.role.replace('_', ' ')}
                     </span>
                   </h2>
-                  <p className="text-crm-muted text-base md:text-lg">{staffMember.email}</p>
+                  <p className="text-crm-muted text-[13px]">{staffMember.email}</p>
                 </div>
               </div>
               <form action={removeUser} className="mt-auto">
                 <input type="hidden" name="userId" value={staffMember.id} />
                 <input type="hidden" name="shopId" value={shop.id} />
-                <button type="submit" className="w-full text-xs text-red-700 bg-red-50 hover:bg-red-100 hover:text-red-800 py-2 rounded-lg transition-colors border border-red-200">
+                <button type="submit" className="w-full text-[11px] text-red-700 bg-red-50 hover:bg-red-100 hover:text-red-800 py-2 rounded-lg transition-colors border border-red-200">
                   Remove from Shop
                 </button>
               </form>
             </div>
           ))}
           {staff.length === 0 && (
-            <p className="text-crm-muted italic text-base md:text-lg">No assigned admins or kiosks.</p>
+            <p className="text-crm-muted italic text-[13px]">No assigned admins or kiosks.</p>
           )}
         </div>
       ) : (

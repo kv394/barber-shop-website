@@ -21,10 +21,10 @@ export default function UserQRCode({ barcode, userName, showText = true, size = 
         includeMargin={true}
       />      {showText && (
           <>
-            <p className="text-crm-text font-semibold mt-2 text-center text-base md:text-lg">
+            <p className="text-crm-text font-semibold mt-2 text-center text-[13px]">
                 {userName}
             </p>
-            <p className="text-crm-muted font-mono tracking-widest mt-1 text-base md:text-lg">
+            <p className="text-crm-muted font-mono tracking-widest mt-1 text-[13px]">
                 {barcode}
             </p>
           </>

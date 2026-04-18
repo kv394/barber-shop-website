@@ -79,18 +79,18 @@ export default function SiteAdminUsersPage() {
   return (
     <div>
       <div className="mb-8">
-        <h1 className="font-serif font-bold text-crm-accent mb-2 text-4xl md:text-5xl lg:text-6xl">User Management</h1>
-        <p className="text-crm-muted text-base md:text-lg">Manage all users across the platform. {users.length} user{users.length !== 1 ? 's' : ''} found.</p>
+        <h1 className="font-serif font-bold text-crm-accent mb-2 text-2xl font-bold">User Management</h1>
+        <p className="text-crm-muted text-[13px]">Manage all users across the platform. {users.length} user{users.length !== 1 ? 's' : ''} found.</p>
       </div>
 
       {/* Alerts */}
       {actionError && (
-        <div className="mb-4 p-3 bg-status-cancelled/20 border border-status-cancelled text-red-200 rounded-lg text-sm">
+        <div className="mb-4 p-3 bg-status-cancelled/20 border border-status-cancelled text-red-200 rounded-lg text-[13px]">
           {actionError}
         </div>
       )}
       {actionSuccess && (
-        <div className="mb-4 p-3 bg-status-confirmed/20 border border-status-confirmed text-green-200 rounded-lg text-sm">
+        <div className="mb-4 p-3 bg-status-confirmed/20 border border-status-confirmed text-green-200 rounded-lg text-[13px]">
           {actionSuccess}
         </div>
       )}
@@ -103,11 +103,11 @@ export default function SiteAdminUsersPage() {
             value={search}
             onChange={e => setSearch(e.target.value)}
             placeholder="Search by name or email..."
-            className="flex-1 bg-crm-surface border border-crm-border shadow-sm rounded-lg px-4 py-2.5 text-crm-text text-sm placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-crm-primary"
+            className="flex-1 bg-crm-surface border border-crm-border shadow-sm rounded-lg px-4 py-2.5 text-crm-text text-[13px] placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-crm-primary"
           />
           <button
             type="submit"
-            className="bg-crm-primary text-white px-6 py-2.5 rounded-lg font-semibold text-sm hover:bg-crm-surface hover:text-crm-primary border border-transparent hover:border-crm-primary/30 transition-colors"
+            className="bg-crm-primary text-white px-6 py-2.5 rounded-lg font-semibold text-[13px] hover:bg-crm-surface hover:text-crm-primary border border-transparent hover:border-crm-primary/30 transition-colors"
           >
             Search
           </button>
@@ -117,7 +117,7 @@ export default function SiteAdminUsersPage() {
             <button
               key={role}
               onClick={() => { setRoleFilter(role); setLoading(true); }}
-              className={`px-3 py-2 text-xs font-bold rounded-lg whitespace-nowrap transition ${
+              className={`px-3 py-2 text-[11px] font-bold rounded-lg whitespace-nowrap transition ${
                 roleFilter === role
                   ? 'bg-crm-primary text-white'
                   : 'bg-crm-surface text-crm-muted hover:bg-crm-surface hover:text-crm-text'
@@ -135,7 +135,7 @@ export default function SiteAdminUsersPage() {
       ) : (
         <div className="bg-crm-surface rounded-xl border border-crm-border shadow-sm overflow-hidden">
           <div className="overflow-x-auto">
-            <table className="w-full text-sm">
+            <table className="w-full text-[13px]">
               <thead>
                 <tr className="text-crm-muted text-left border-b border-crm-border bg-crm-surface">
                   <th className="px-4 py-3 font-medium">User</th>
@@ -160,8 +160,8 @@ export default function SiteAdminUsersPage() {
                     <tr key={user.id} className="hover:bg-crm-surface transition">
                       <td className="px-4 py-3">
                         <div>
-                          <p className="text-crm-text font-medium text-base md:text-lg">{user.name || '—'}</p>
-                          <p className="text-crm-muted text-base md:text-lg">{user.email}</p>
+                          <p className="text-crm-text font-medium text-[13px]">{user.name || '—'}</p>
+                          <p className="text-crm-muted text-[13px]">{user.email}</p>
                         </div>
                       </td>
                       <td className="px-4 py-3">
@@ -170,7 +170,7 @@ export default function SiteAdminUsersPage() {
                             <select
                               value={editRole}
                               onChange={e => setEditRole(e.target.value)}
-                              className="bg-crm-surface text-crm-text text-xs rounded px-2 py-1 border border-crm-border shadow-sm"
+                              className="bg-crm-surface text-crm-text text-[11px] rounded px-2 py-1 border border-crm-border shadow-sm"
                             >
                               {ROLES.filter(r => r !== 'ALL').map(r => (
                                 <option key={r} value={r}>{r.replace(/_/g, ' ')}</option>
@@ -178,37 +178,37 @@ export default function SiteAdminUsersPage() {
                             </select>
                             <button
                               onClick={() => handleRoleChange(user.id, editRole)}
-                              className="text-status-confirmed text-xs hover:underline"
+                              className="text-status-confirmed text-[11px] hover:underline"
                             >
                               Save
                             </button>
                             <button
                               onClick={() => setEditingUser(null)}
-                              className="text-crm-muted text-xs hover:underline"
+                              className="text-crm-muted text-[11px] hover:underline"
                             >
                               Cancel
                             </button>
                           </div>
                         ) : (
-                          <span className={`px-2 py-0.5 rounded-full text-xs font-bold border ${roleColors[user.role] || 'bg-crm-surface text-crm-muted'}`}>
+                          <span className={`px-2 py-0.5 rounded-full text-[11px] font-bold border ${roleColors[user.role] || 'bg-crm-surface text-crm-muted'}`}>
                             {user.role.replace(/_/g, ' ')}
                           </span>
                         )}
                       </td>
-                      <td className="px-4 py-3 text-crm-muted text-xs">
+                      <td className="px-4 py-3 text-crm-muted text-[11px]">
                         {user.shopName || <span className="text-crm-muted">—</span>}
                       </td>
-                      <td className="px-4 py-3 text-crm-muted text-xs font-mono">
+                      <td className="px-4 py-3 text-crm-muted text-[11px] font-mono">
                         {user.phone || '—'}
                       </td>
-                      <td className="px-4 py-3 text-crm-muted text-xs">
+                      <td className="px-4 py-3 text-crm-muted text-[11px]">
                         {new Date(user.createdAt).toLocaleDateString()}
                       </td>
                       <td className="px-4 py-3 text-right">
                         {editingUser !== user.id && (
                           <button
                             onClick={() => { setEditingUser(user.id); setEditRole(user.role); setActionError(null); setActionSuccess(null); }}
-                            className="text-crm-accent text-xs hover:underline"
+                            className="text-crm-accent text-[11px] hover:underline"
                           >
                             Change Role
                           </button>

@@ -156,7 +156,7 @@ export default function Home() {
       <div className="h-[100dvh] overflow-y-auto overflow-x-hidden flex items-center justify-center bg-crm-bg">
         <div className="flex flex-col items-center gap-4">
           <div className="w-12 h-12 border-4 border-brand-gold border-t-transparent rounded-full animate-spin"></div>
-          <p className="text-crm-muted animate-pulse font-medium tracking-wide uppercase text-base md:text-lg">Initializing Platform...</p>
+          <p className="text-crm-muted animate-pulse font-medium tracking-wide uppercase text-[13px]">Initializing Platform...</p>
         </div>
       </div>
     );
@@ -173,7 +173,7 @@ export default function Home() {
       <div className="h-[100dvh] overflow-y-auto overflow-x-hidden flex items-center justify-center bg-crm-bg">
         <div className="flex flex-col items-center gap-4">
           <div className="w-12 h-12 border-4 border-brand-gold border-t-transparent rounded-full animate-spin"></div>
-          <p className="text-crm-accent animate-pulse font-medium tracking-wide uppercase text-base md:text-lg">Entering Shop Portal...</p>
+          <p className="text-crm-accent animate-pulse font-medium tracking-wide uppercase text-[13px]">Entering Shop Portal...</p>
         </div>
       </div>
     );
@@ -186,7 +186,7 @@ export default function Home() {
       <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
         
         <header className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-12 sm:mb-20">
-          <h1 className="font-serif font-bold tracking-tight text-4xl md:text-5xl lg:text-6xl">
+          <h1 className="font-serif font-bold tracking-tight text-2xl font-bold">
             {userProfile?.role === 'SITE_ADMIN' ? (
                 <><span className="text-crm-text">Barber</span><span className="text-crm-accent">SaaS</span></>
             ) : userProfile?.shop?.name ? (
@@ -201,10 +201,10 @@ export default function Home() {
         </header>
 
         <div className="text-center mb-12 sm:mb-20">
-          <h2 className="font-serif font-bold leading-tight tracking-tight text-crm-text max-w-4xl mx-auto drop-shadow-sm text-3xl md:text-4xl">
+          <h2 className="font-serif font-bold leading-tight tracking-tight text-crm-text max-w-4xl mx-auto drop-shadow-sm text-xl font-bold">
             {isSignedIn ? `Welcome, ${userProfile?.name || 'User'}` : "Book Your Next Appointment"}
           </h2>
-          <p className="mt-4 sm:mt-6 text-crm-accent/80 font-medium tracking-wide text-base md:text-lg">
+          <p className="mt-4 sm:mt-6 text-crm-accent/80 font-medium tracking-wide text-[13px]">
             {userProfile ? (userProfile.role === 'SITE_ADMIN' ? 'Platform Administrator Dashboard' : '') : (isSignedIn ? 'Loading...' : 'Please sign in to continue.')}
           </p>
         </div>
@@ -214,8 +214,8 @@ export default function Home() {
             <div className="space-y-6">
               {/* Quick Actions */}
               <div className="bg-crm-surface p-6 sm:p-8 rounded-lg border border-crm-border shadow-sm">
-                <h2 className="font-serif text-crm-text mb-2 text-3xl md:text-4xl">Site Admin Control Panel</h2>
-                <p className="text-crm-muted mb-6 text-base md:text-lg">Manage the entire platform from the dedicated dashboard.</p>
+                <h2 className="font-serif text-crm-text mb-2 text-xl font-bold">Site Admin Control Panel</h2>
+                <p className="text-crm-muted mb-6 text-[13px]">Manage the entire platform from the dedicated dashboard.</p>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                   <Link href="/siteadmin" className="bg-crm-primary text-white px-6 py-4 rounded-lg font-semibold hover:bg-crm-surface hover:text-crm-primary border border-transparent hover:border-crm-primary/30 transition-colors text-center">
                     📊 Platform Dashboard
@@ -231,11 +231,11 @@ export default function Home() {
 
               {/* Quick Shop Create */}
               <div className="bg-crm-surface p-4 sm:p-6 md:p-8 rounded-lg border border-crm-border shadow-sm">
-                <h2 className="font-serif text-crm-text mb-1 text-3xl md:text-4xl">Quick Create Shop</h2>
-                <p className="text-crm-muted mb-4 text-base md:text-lg">Provision a new tenant workspace.</p>
+                <h2 className="font-serif text-crm-text mb-1 text-xl font-bold">Quick Create Shop</h2>
+                <p className="text-crm-muted mb-4 text-[13px]">Provision a new tenant workspace.</p>
 
                 {createError && (
-                    <div className="mb-4 p-3 bg-status-cancelled/20 border border-status-cancelled text-red-200 rounded text-sm">
+                    <div className="mb-4 p-3 bg-status-cancelled/20 border border-status-cancelled text-red-200 rounded text-[13px]">
                         {createError}
                     </div>
                 )}
@@ -243,7 +243,7 @@ export default function Home() {
                 <form onSubmit={handleCreateShop} className="space-y-4">
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                       <div>
-                          <label className="block text-crm-muted mb-1 text-sm">Shop Name *</label>
+                          <label className="block text-crm-muted mb-1 text-[13px]">Shop Name *</label>
                           <input 
                               type="text" 
                               value={newShopName} 
@@ -254,7 +254,7 @@ export default function Home() {
                           />
                       </div>
                       <div>
-                          <label className="block text-crm-muted mb-1 text-sm">Kiosk Email *</label>
+                          <label className="block text-crm-muted mb-1 text-[13px]">Kiosk Email *</label>
                           <input
                               type="email" 
                               value={kioskEmail} 
@@ -265,7 +265,7 @@ export default function Home() {
                           />
                       </div>
                       <div>
-                          <label className="block text-crm-muted mb-1 text-sm">Admin Email (Optional)</label>
+                          <label className="block text-crm-muted mb-1 text-[13px]">Admin Email (Optional)</label>
                           <input
                               type="email" 
                               value={newShopAdminEmail} 
@@ -285,8 +285,8 @@ export default function Home() {
               {shops && shops.length > 0 && (
                 <div>
                   <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-4">
-                    <h2 className="font-serif text-3xl md:text-4xl">Shops ({shops.length})</h2>
-                    <Link href="/siteadmin/shops" className="text-crm-accent text-sm hover:underline">View All →</Link>
+                    <h2 className="font-serif text-xl font-bold">Shops ({shops.length})</h2>
+                    <Link href="/siteadmin/shops" className="text-crm-accent text-[13px] hover:underline">View All →</Link>
                   </div>
                   <div className="space-y-3">
                     {shops.slice(0, 5).map((shop) => {
@@ -296,12 +296,12 @@ export default function Home() {
                             <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3">
                               <div className="flex-grow min-w-0">
                                   <div className="flex items-center gap-2 sm:gap-4 flex-wrap">
-                                      <h3 className="font-semibold text-crm-text truncate text-2xl md:text-3xl">{shop.name}</h3>
-                                      <span className={`px-2 sm:px-3 py-0.5 sm:py-1 rounded-full text-xs sm:text-sm font-bold ${hasAdmin ? 'bg-status-confirmed/20 text-status-confirmed' : 'bg-status-pending/20 text-status-pending'}`}>
+                                      <h3 className="font-semibold text-crm-text truncate text-lg font-bold">{shop.name}</h3>
+                                      <span className={`px-2 sm:px-3 py-0.5 sm:py-1 rounded-full text-[11px] sm:text-[13px] font-bold ${hasAdmin ? 'bg-status-confirmed/20 text-status-confirmed' : 'bg-status-pending/20 text-status-pending'}`}>
                                           {hasAdmin ? 'Active' : 'Needs Admin'}
                                       </span>
                                   </div>
-                                  <Link href={`/shop/${shop.id}/settings/team`} className="text-xs sm:text-sm text-crm-accent hover:underline mt-1 inline-block">
+                                  <Link href={`/shop/${shop.id}/settings/team`} className="text-[11px] sm:text-[13px] text-crm-accent hover:underline mt-1 inline-block">
                                       Assign Team
                                   </Link>
                               </div>
@@ -321,8 +321,8 @@ export default function Home() {
           {/* CLIENT Fallback (if they don't have a shopId yet) */}
           {userProfile?.role === 'CLIENT' && !userProfile.shopId && (
             <div className="bg-crm-surface p-8 rounded-lg text-center border border-crm-border shadow-sm">
-              <h2 className="font-serif mb-4 text-3xl md:text-4xl">Welcome back!</h2>
-              <p className="text-crm-muted mb-6 text-base md:text-lg">Browse available shops and book your appointments.</p>
+              <h2 className="font-serif mb-4 text-xl font-bold">Welcome back!</h2>
+              <p className="text-crm-muted mb-6 text-[13px]">Browse available shops and book your appointments.</p>
               <div className="flex flex-col sm:flex-row gap-3 justify-center">
                 <Link href="/shops" className="inline-block bg-crm-surface text-crm-text px-8 py-3 rounded-md font-semibold hover:bg-crm-surface transition-colors">
                   Browse Shops
@@ -333,13 +333,13 @@ export default function Home() {
           
           {!userProfile && isSignedIn && (
             <div className="bg-crm-surface p-8 rounded-lg text-center border border-crm-border shadow-sm">
-              <p className="text-crm-muted text-base md:text-lg">Your profile is being set up. Please refresh the page.</p>
+              <p className="text-crm-muted text-[13px]">Your profile is being set up. Please refresh the page.</p>
             </div>
           )}
           
           {!isSignedIn && (
             <div className="bg-crm-surface p-8 rounded-lg text-center border border-crm-border shadow-sm">
-              <p className="text-crm-muted mb-6 text-base md:text-lg">Sign in to access your portal or browse available shops.</p>
+              <p className="text-crm-muted mb-6 text-[13px]">Sign in to access your portal or browse available shops.</p>
               <div className="flex gap-4 justify-center">
                 <Link href="/shops" className="inline-block bg-crm-surface text-crm-text px-8 py-3 rounded-md font-semibold hover:bg-crm-surface transition-colors">
                   Browse Shops

@@ -23,7 +23,7 @@ export default function BackButton() {
 
   if (user?.role === 'SITE_ADMIN') {
     return (
-      <Link href="/siteadmin" className="text-sm bg-crm-surface hover:bg-crm-surface border border-slate-600 text-crm-text px-4 py-2 rounded-lg font-semibold transition-colors shadow-sm">
+      <Link href="/siteadmin" className="text-[13px] bg-crm-surface hover:bg-crm-surface border border-slate-600 text-crm-text px-4 py-2 rounded-lg font-semibold transition-colors shadow-sm">
         Back to Siteadmin
       </Link>
     );
@@ -31,14 +31,14 @@ export default function BackButton() {
 
   if (user?.shopId && (user?.role === 'SHOP_ADMIN' || user?.role === 'STAFF')) {
     return (
-      <Link href={`/shop/${user.shopId}`} className="text-sm bg-crm-surface hover:bg-crm-surface border border-slate-600 text-crm-text px-4 py-2 rounded-lg font-semibold transition-colors shadow-sm">
+      <Link href={`/shop/${user.shopId}`} className="text-[13px] bg-crm-surface hover:bg-crm-surface border border-slate-600 text-crm-text px-4 py-2 rounded-lg font-semibold transition-colors shadow-sm">
         Back to Dashboard
       </Link>
     );
   }
 
   return (
-    <Link href="/my-appointments" className="text-sm bg-crm-surface hover:bg-crm-surface border border-slate-600 text-crm-text px-4 py-2 rounded-lg font-semibold transition-colors shadow-sm">
+    <Link href="/my-appointments" className="text-[13px] bg-crm-surface hover:bg-crm-surface border border-slate-600 text-crm-text px-4 py-2 rounded-lg font-semibold transition-colors shadow-sm">
       Back to Appointments
     </Link>
   );

@@ -176,29 +176,29 @@ export default async function StaffBookingPage({
                       {staffMember.imageUrl ? (
                         <img src={staffMember.imageUrl} alt={staffMember.name} className="w-full h-full object-cover" />
                       ) : (
-                        <span className="text-xs">👤</span>
+                        <span className="text-[11px]">👤</span>
                       )}
                     </div>
-                    <h2 className="font-semibold text-crm-accent truncate text-3xl md:text-4xl">{staffMember.name || staffMember.email || 'Unnamed Staff'}</h2>
+                    <h2 className="font-semibold text-crm-accent truncate text-xl font-bold">{staffMember.name || staffMember.email || 'Unnamed Staff'}</h2>
                   </div>
                 </StaffProfileModalWrapper>
                 <div className="flex flex-col gap-1 items-end shrink-0">
-                  {staffMember.using === 'default' && <span className="text-sm sm:text-xs bg-amber-900/50 text-amber-300 px-2 py-0.5 sm:py-1 rounded-full">Default Hours</span>}
-                  {staffMember.using === 'shop' && <span className="text-sm sm:text-xs bg-status-info/20 text-status-info px-2 py-0.5 sm:py-1 rounded-full">Shop Hours</span>}
+                  {staffMember.using === 'default' && <span className="text-[13px] sm:text-[11px] bg-amber-900/50 text-amber-300 px-2 py-0.5 sm:py-1 rounded-full">Default Hours</span>}
+                  {staffMember.using === 'shop' && <span className="text-[13px] sm:text-[11px] bg-status-info/20 text-status-info px-2 py-0.5 sm:py-1 rounded-full">Shop Hours</span>}
                 </div>
               </div>
               <div className="flex-grow max-h-80 overflow-y-auto pr-1 sm:pr-2 space-y-1">
                 {isOnLeave ? (
                   <div className="text-center py-4 h-full flex flex-col justify-center items-center rounded-md bg-status-cancelled/20">
-                    <p className="font-bold text-status-cancelled text-base md:text-lg">ON LEAVE</p>
+                    <p className="font-bold text-status-cancelled text-[13px]">ON LEAVE</p>
                   </div>
                 ) : isNotWorking ? (
                     <div className="text-center py-4 h-full flex flex-col justify-center items-center rounded-md bg-crm-surface">
-                        <p className="font-bold text-crm-muted text-base md:text-lg">NOT WORKING</p>
+                        <p className="font-bold text-crm-muted text-[13px]">NOT WORKING</p>
                     </div>
                 ) : staffMember.schedule.length > 0 ? (
                   staffMember.schedule.map((slot: any) => (
-                    <div key={slot.time} className={`p-2 rounded-md text-xs sm:text-sm flex justify-between items-center ${slot.isBooked ? 'bg-amber-800/60' : 'bg-status-confirmed/20'}`}>
+                    <div key={slot.time} className={`p-2 rounded-md text-[11px] sm:text-[13px] flex justify-between items-center ${slot.isBooked ? 'bg-amber-800/60' : 'bg-status-confirmed/20'}`}>
                       <span className="font-mono text-crm-muted">{slot.time}</span>
                       <div className="flex items-center">
                         {slot.isBooked ? <span className="font-bold text-amber-300">Booked</span> : <span className="font-semibold text-status-confirmed">Available</span>}
@@ -210,7 +210,7 @@ export default async function StaffBookingPage({
                   ))
                 ) : (
                   <div className="text-center py-4 h-full flex flex-col justify-center items-center rounded-md bg-crm-surface">
-                    <p className="text-crm-muted italic text-base md:text-lg">No slots in selected range.</p>
+                    <p className="text-crm-muted italic text-[13px]">No slots in selected range.</p>
                   </div>
                 )}
               </div>

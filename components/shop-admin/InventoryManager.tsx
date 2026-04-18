@@ -80,7 +80,7 @@ export default function InventoryManager({
       <button 
         onClick={handleAdd} 
         disabled={isUpdating}
-        className="px-2 py-1 text-xs bg-crm-primary text-white hover:bg-crm-surface hover:text-crm-primary border border-transparent hover:border-crm-primary/30 rounded-md font-semibold disabled:opacity-50"
+        className="px-2 py-1 text-[11px] bg-crm-primary text-white hover:bg-crm-surface hover:text-crm-primary border border-transparent hover:border-crm-primary/30 rounded-md font-semibold disabled:opacity-50"
       >
         Add
       </button>
@@ -88,7 +88,7 @@ export default function InventoryManager({
       <button 
         onClick={handleSet} 
         disabled={isUpdating}
-        className="px-2 py-1 text-xs bg-purple-600 hover:bg-purple-500 text-crm-text rounded-md font-semibold disabled:opacity-50"
+        className="px-2 py-1 text-[11px] bg-purple-600 hover:bg-purple-500 text-crm-text rounded-md font-semibold disabled:opacity-50"
       >
         Set
       </button>

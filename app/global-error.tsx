@@ -27,8 +27,8 @@ export default function GlobalError({
       <body>
         <div className="flex min-h-screen items-center justify-center bg-crm-bg px-4 py-12">
           <div className="text-center max-w-md w-full bg-crm-surface p-8 rounded-lg shadow-sm border border-red-100">
-            <h2 className="font-bold text-crm-text mb-4 text-3xl md:text-4xl">Something went wrong</h2>
-            <p className="text-crm-muted mb-6 text-base md:text-lg">
+            <h2 className="font-bold text-crm-text mb-4 text-xl font-bold">Something went wrong</h2>
+            <p className="text-crm-muted mb-6 text-[13px]">
               A critical error occurred. Our team has been notified.
             </p>
             <button

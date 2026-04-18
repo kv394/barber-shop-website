@@ -168,17 +168,17 @@ export default function TemplatesPage() {
 
   return (
     <div className="p-6 text-crm-text">
-      <h1 className="font-bold mb-6 text-4xl md:text-5xl lg:text-6xl">AI Template Generator</h1>
+      <h1 className="font-bold mb-6 text-2xl font-bold">AI Template Generator</h1>
 
       <div className="bg-crm-surface p-6 rounded-xl border border-crm-border shadow-sm mb-8">
-        <h2 className="font-semibold mb-4 text-3xl md:text-4xl">Upload Template Files</h2>
-        <p className="text-crm-muted mb-4 text-base md:text-lg">
+        <h2 className="font-semibold mb-4 text-xl font-bold">Upload Template Files</h2>
+        <p className="text-crm-muted mb-4 text-[13px]">
           Select a single .zip file (containing HTML, CSS, images) OR multiple files. 
           The system will automatically upload images to Google Drive, extract Handlebars {"{{variables}}"}, and create the template.
         </p>
         <form onSubmit={handleUpload} className="space-y-4 flex flex-col md:flex-row md:space-y-0 md:space-x-4 items-end">
           <div className="flex-1 w-full">
-            <label className="block text-crm-muted mb-1 text-sm">Template Name</label>
+            <label className="block text-crm-muted mb-1 text-[13px]">Template Name</label>
             <input 
               required
               type="text" 
@@ -189,7 +189,7 @@ export default function TemplatesPage() {
             />
           </div>
           <div className="flex-1 w-full">
-            <label className="block text-crm-muted mb-1 text-sm">Target Shop (Required)</label>
+            <label className="block text-crm-muted mb-1 text-[13px]">Target Shop (Required)</label>
             <select value={uploadShopId} onChange={e => setUploadShopId(e.target.value)} required className="w-full bg-crm-surface border border-crm-border shadow-sm p-2 rounded text-crm-text">
               <option value="">Select Shop</option>
               {shops.map((s: any) => (
@@ -198,7 +198,7 @@ export default function TemplatesPage() {
             </select>
           </div>
           <div className="flex-1 w-full">
-            <label className="block text-crm-muted mb-1 text-sm">Select Files</label>
+            <label className="block text-crm-muted mb-1 text-[13px]">Select Files</label>
             <input 
               required
               type="file" 
@@ -214,10 +214,10 @@ export default function TemplatesPage() {
       </div>
       
       <div className="bg-crm-surface p-6 rounded-xl border border-crm-border shadow-sm mb-8">
-        <h2 className="font-semibold mb-4 text-3xl md:text-4xl">Generate New Template with AI</h2>
+        <h2 className="font-semibold mb-4 text-xl font-bold">Generate New Template with AI</h2>
         <form onSubmit={handleGenerate} className="space-y-4">
           <div>
-            <label className="block text-crm-muted mb-1 text-sm">Target Shop (Required)</label>
+            <label className="block text-crm-muted mb-1 text-[13px]">Target Shop (Required)</label>
             <select value={targetShopId} onChange={e => setTargetShopId(e.target.value)} required className="w-full bg-crm-surface border border-crm-border shadow-sm p-2 rounded text-crm-text">
               <option value="">Select Target Shop</option>
               {shops.map((s: any) => (
@@ -226,7 +226,7 @@ export default function TemplatesPage() {
             </select>
           </div>
           <div>
-            <label className="block text-crm-muted mb-1 text-sm">Base Template (Optional)</label>
+            <label className="block text-crm-muted mb-1 text-[13px]">Base Template (Optional)</label>
             <select value={baseTemplateId} onChange={e => setBaseTemplateId(e.target.value)} className="w-full bg-crm-surface border border-crm-border shadow-sm p-2 rounded text-crm-text">
               <option value="">None (Generate from scratch)</option>
               {templates.map((t: any) => (
@@ -235,19 +235,19 @@ export default function TemplatesPage() {
             </select>
           </div>
           <div>
-            <label className="block text-crm-muted mb-1 text-sm">Template Identifier (e.g. neon-dark)</label>
+            <label className="block text-crm-muted mb-1 text-[13px]">Template Identifier (e.g. neon-dark)</label>
             <input required value={name} onChange={e => setName(e.target.value)} className="w-full bg-crm-surface border border-crm-border shadow-sm p-2 rounded text-crm-text" />
           </div>
           <div>
-            <label className="block text-crm-muted mb-1 text-sm">Description</label>
+            <label className="block text-crm-muted mb-1 text-[13px]">Description</label>
             <input value={description} onChange={e => setDescription(e.target.value)} className="w-full bg-crm-surface border border-crm-border shadow-sm p-2 rounded text-crm-text" />
           </div>
           <div>
-            <label className="block text-crm-muted mb-1 text-sm">Prompt for Gemini</label>
+            <label className="block text-crm-muted mb-1 text-[13px]">Prompt for Gemini</label>
             <textarea required value={prompt} onChange={e => setPrompt(e.target.value)} rows={4} className="w-full bg-crm-surface border border-crm-border shadow-sm p-2 rounded text-crm-text" placeholder="Describe the layout, colors, elements, styling... Handlebars syntax will be used for injection." />
           </div>
           <div>
-            <label className="block text-crm-muted mb-1 text-sm">AI Model</label>
+            <label className="block text-crm-muted mb-1 text-[13px]">AI Model</label>
             <select value={model} onChange={e => setModel(e.target.value)} className="w-full bg-crm-surface border border-crm-border shadow-sm p-2 rounded text-crm-text">
               <option value="gemini-2.5-flash">Gemini 2.5 Flash (Fast, Free Tier)</option>
               <option value="gemini-2.5-pro">Gemini 2.5 Pro (Advanced)</option>
@@ -262,14 +262,14 @@ export default function TemplatesPage() {
             </select>
           </div>
           <div>
-            <label className="block text-crm-muted mb-1 text-sm">Optional Assets (Images, Logos)</label>
+            <label className="block text-crm-muted mb-1 text-[13px]">Optional Assets (Images, Logos)</label>
             <input 
               type="file" 
               multiple 
               onChange={e => setGenerateFiles(e.target.files)} 
               className="w-full bg-crm-surface border border-crm-border shadow-sm p-2 rounded text-crm-text" 
             />
-            <p className="text-crm-muted mt-1 text-base md:text-lg">These will be uploaded to Google Drive and their URLs passed to the AI.</p>
+            <p className="text-crm-muted mt-1 text-[13px]">These will be uploaded to Google Drive and their URLs passed to the AI.</p>
           </div>
           <button disabled={generating || !targetShopId} type="submit" className="bg-crm-primary text-white px-6 py-2 rounded font-semibold disabled:opacity-50 transition hover:opacity-90">
             {generating ? 'Generating via Gemini...' : 'Generate Template'}
@@ -277,30 +277,30 @@ export default function TemplatesPage() {
         </form>
       </div>
 
-      <h2 className="font-bold mb-4 text-3xl md:text-4xl">Generated Templates</h2>
-      {loading ? <p className="text-crm-muted text-base md:text-lg">Loading templates...</p> : (
+      <h2 className="font-bold mb-4 text-xl font-bold">Generated Templates</h2>
+      {loading ? <p className="text-crm-muted text-[13px]">Loading templates...</p> : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {templates.map((t: any) => (
             <div key={t.id} className="bg-crm-surface p-4 rounded-xl border border-crm-border shadow-sm flex flex-col">
               <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-start mb-2">
                 <div>
-                  <h3 className="font-bold text-crm-accent text-2xl md:text-3xl">{t.name}</h3>
-                  {t.shop && <span className="text-xs bg-indigo-500/20 text-indigo-300 px-2 py-0.5 rounded-full">For: {t.shop.name}</span>}
+                  <h3 className="font-bold text-crm-accent text-lg font-bold">{t.name}</h3>
+                  {t.shop && <span className="text-[11px] bg-indigo-500/20 text-indigo-300 px-2 py-0.5 rounded-full">For: {t.shop.name}</span>}
                 </div>
                 <div className="flex space-x-2">
-                  <a href={`/siteadmin/templates/${t.id}/preview`} target="_blank" rel="noopener noreferrer" className="text-xs bg-status-confirmed/20 text-status-confirmed px-2 py-1 rounded hover:bg-status-confirmed/40 transition">Preview</a>
-                  <button onClick={() => setEditingTemplate(t)} className="text-xs bg-status-info/20 text-status-info px-2 py-1 rounded hover:bg-status-info/40 transition">Edit</button>
-                  <button onClick={() => handleDelete(t.id)} className="text-xs bg-status-cancelled/20 text-status-cancelled px-2 py-1 rounded hover:bg-status-cancelled/40 transition">Delete</button>
+                  <a href={`/siteadmin/templates/${t.id}/preview`} target="_blank" rel="noopener noreferrer" className="text-[11px] bg-status-confirmed/20 text-status-confirmed px-2 py-1 rounded hover:bg-status-confirmed/40 transition">Preview</a>
+                  <button onClick={() => setEditingTemplate(t)} className="text-[11px] bg-status-info/20 text-status-info px-2 py-1 rounded hover:bg-status-info/40 transition">Edit</button>
+                  <button onClick={() => handleDelete(t.id)} className="text-[11px] bg-status-cancelled/20 text-status-cancelled px-2 py-1 rounded hover:bg-status-cancelled/40 transition">Delete</button>
                 </div>
               </div>
-              <p className="text-crm-muted mb-4 flex-grow text-base md:text-lg">{t.description}</p>
-              <div className="text-xs text-crm-muted overflow-hidden h-24 relative bg-crm-surface p-2 rounded">
+              <p className="text-crm-muted mb-4 flex-grow text-[13px]">{t.description}</p>
+              <div className="text-[11px] text-crm-muted overflow-hidden h-24 relative bg-crm-surface p-2 rounded">
                 <div className="absolute inset-0 bg-gradient-to-b from-transparent to-slate-900 pointer-events-none"></div>
                 <pre className="whitespace-pre-wrap">{t.htmlCode}</pre>
               </div>
             </div>
           ))}
-          {templates.length === 0 && <p className="text-crm-muted text-base md:text-lg">No templates generated yet.</p>}
+          {templates.length === 0 && <p className="text-crm-muted text-[13px]">No templates generated yet.</p>}
         </div>
       )}
 
@@ -309,45 +309,45 @@ export default function TemplatesPage() {
         <div className="fixed inset-0 bg-crm-surface flex items-center justify-center p-4 z-50">
           <div className="bg-crm-surface border border-crm-border shadow-sm p-6 rounded-xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
             <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-4">
-              <h2 className="font-bold text-3xl md:text-4xl">Edit Template: {editingTemplate.name}</h2>
+              <h2 className="font-bold text-xl font-bold">Edit Template: {editingTemplate.name}</h2>
               <button onClick={() => setEditingTemplate(null)} className="text-crm-muted hover:text-crm-text">✕</button>
             </div>
             
             <form onSubmit={handleEditSubmit} className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-crm-muted mb-1 text-sm">Name</label>
+                  <label className="block text-crm-muted mb-1 text-[13px]">Name</label>
                   <input required value={editingTemplate.name} onChange={e => setEditingTemplate({...editingTemplate, name: e.target.value})} className="w-full bg-crm-surface border border-crm-border shadow-sm p-2 rounded text-crm-text" />
                 </div>
                 <div>
-                  <label className="block text-crm-muted mb-1 text-sm">Description</label>
+                  <label className="block text-crm-muted mb-1 text-[13px]">Description</label>
                   <input value={editingTemplate.description || ''} onChange={e => setEditingTemplate({...editingTemplate, description: e.target.value})} className="w-full bg-crm-surface border border-crm-border shadow-sm p-2 rounded text-crm-text" />
                 </div>
               </div>
               
               <div>
-                <label className="block text-crm-muted mb-1 text-sm">HTML (Handlebars)</label>
+                <label className="block text-crm-muted mb-1 text-[13px]">HTML (Handlebars)</label>
                 <textarea 
                   required 
                   value={editingTemplate.htmlCode} 
                   onChange={e => setEditingTemplate({...editingTemplate, htmlCode: e.target.value})} 
                   rows={10} 
-                  className="w-full font-mono text-sm bg-crm-surface border border-crm-border shadow-sm p-2 rounded text-crm-text" 
+                  className="w-full font-mono text-[13px] bg-crm-surface border border-crm-border shadow-sm p-2 rounded text-crm-text" 
                 />
               </div>
 
               <div>
-                <label className="block text-crm-muted mb-1 text-sm">CSS (Tailwind or custom CSS)</label>
+                <label className="block text-crm-muted mb-1 text-[13px]">CSS (Tailwind or custom CSS)</label>
                 <textarea 
                   value={editingTemplate.cssCode || ''} 
                   onChange={e => setEditingTemplate({...editingTemplate, cssCode: e.target.value})} 
                   rows={5} 
-                  className="w-full font-mono text-sm bg-crm-surface border border-crm-border shadow-sm p-2 rounded text-crm-text" 
+                  className="w-full font-mono text-[13px] bg-crm-surface border border-crm-border shadow-sm p-2 rounded text-crm-text" 
                 />
               </div>
 
               <div className="flex justify-end space-x-3 pt-4">
-                <button type="button" onClick={() => setEditingTemplate(null)} className="px-4 py-2 text-sm text-crm-muted hover:text-crm-text">Cancel</button>
+                <button type="button" onClick={() => setEditingTemplate(null)} className="px-4 py-2 text-[13px] text-crm-muted hover:text-crm-text">Cancel</button>
                 <button disabled={savingEdit} type="submit" className="bg-crm-primary text-white px-6 py-2 rounded font-semibold disabled:opacity-50 transition hover:opacity-90">
                   {savingEdit ? 'Saving...' : 'Save Changes'}
                 </button>

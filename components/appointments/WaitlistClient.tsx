@@ -66,97 +66,97 @@ export default function WaitlistClient({ shopId, services, staff }: { shopId: st
         <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-crm-surface transition-all duration-300 min-w-0">
           <div className="absolute top-0 left-0 w-full h-1 bg-status-info/80"></div>
           <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-2 sm:mb-3">
-            <h3 className="text-crm-muted uppercase tracking-widest font-semibold truncate text-xs">Waiting</h3>
-            <span className="text-status-info text-sm">⏳</span>
+            <h3 className="text-crm-muted uppercase tracking-widest font-semibold truncate text-[11px]">Waiting</h3>
+            <span className="text-status-info text-[13px]">⏳</span>
           </div>
-          <p className="font-black text-crm-text break-words leading-tight text-3xl md:text-4xl">{waiting.length}</p>
+          <p className="font-black text-crm-text break-words leading-tight text-xl font-bold">{waiting.length}</p>
         </div>
         <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-crm-surface transition-all duration-300 min-w-0">
           <div className="absolute top-0 left-0 w-full h-1 bg-status-confirmed/80"></div>
           <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-2 sm:mb-3">
-            <h3 className="text-crm-muted uppercase tracking-widest font-semibold truncate text-xs">Being Served</h3>
-            <span className="text-status-confirmed text-sm">✂️</span>
+            <h3 className="text-crm-muted uppercase tracking-widest font-semibold truncate text-[11px]">Being Served</h3>
+            <span className="text-status-confirmed text-[13px]">✂️</span>
           </div>
-          <p className="font-black text-crm-text break-words leading-tight text-3xl md:text-4xl">{serving.length}</p>
+          <p className="font-black text-crm-text break-words leading-tight text-xl font-bold">{serving.length}</p>
         </div>
         <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-crm-surface transition-all duration-300 min-w-0">
           <div className="absolute top-0 left-0 w-full h-1 bg-crm-accent/80"></div>
           <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-2 sm:mb-3">
-            <h3 className="text-crm-muted uppercase tracking-widest font-semibold truncate text-xs">Est. Wait</h3>
-            <span className="text-crm-accent text-sm">⏱️</span>
+            <h3 className="text-crm-muted uppercase tracking-widest font-semibold truncate text-[11px]">Est. Wait</h3>
+            <span className="text-crm-accent text-[13px]">⏱️</span>
           </div>
-          <p className="font-black text-crm-text break-words leading-tight text-3xl md:text-4xl">{waiting.length > 0 ? `~${waiting.length * 15}m` : '0m'}</p>
+          <p className="font-black text-crm-text break-words leading-tight text-xl font-bold">{waiting.length > 0 ? `~${waiting.length * 15}m` : '0m'}</p>
         </div>
       </div>
 
       <form onSubmit={handleAdd} className="bg-crm-surface p-4 rounded-lg border border-crm-border shadow-sm mb-6 space-y-3">
-        <h3 className="font-bold text-crm-text text-2xl md:text-3xl">+ Add Walk-in</h3>
+        <h3 className="font-bold text-crm-text text-lg font-bold">+ Add Walk-in</h3>
         <div className="grid grid-cols-1 sm:grid-cols-5 gap-3">
-          <input type="text" value={clientName} onChange={e => setClientName(e.target.value)} placeholder="Client Name *" required style={inputStyle} className="border border-crm-border shadow-sm rounded p-2.5 text-sm focus:outline-none focus:border-brand-gold" />
-          <input type="tel" value={clientPhone} onChange={e => setClientPhone(e.target.value)} placeholder="Phone (optional)" style={inputStyle} className="border border-crm-border shadow-sm rounded p-2.5 text-sm focus:outline-none focus:border-brand-gold" />
-          <select value={serviceId} onChange={e => setServiceId(e.target.value)} style={inputStyle} className="border border-crm-border shadow-sm rounded p-2.5 text-sm focus:outline-none focus:border-brand-gold">
+          <input type="text" value={clientName} onChange={e => setClientName(e.target.value)} placeholder="Client Name *" required style={inputStyle} className="border border-crm-border shadow-sm rounded p-2.5 text-[13px] focus:outline-none focus:border-brand-gold" />
+          <input type="tel" value={clientPhone} onChange={e => setClientPhone(e.target.value)} placeholder="Phone (optional)" style={inputStyle} className="border border-crm-border shadow-sm rounded p-2.5 text-[13px] focus:outline-none focus:border-brand-gold" />
+          <select value={serviceId} onChange={e => setServiceId(e.target.value)} style={inputStyle} className="border border-crm-border shadow-sm rounded p-2.5 text-[13px] focus:outline-none focus:border-brand-gold">
             <option value="">Any Service</option>
             {services.map(s => <option key={s.id} value={s.id}>{s.name} ({s.duration}m)</option>)}
           </select>
-          <select value={staffId} onChange={e => setStaffId(e.target.value)} style={inputStyle} className="border border-crm-border shadow-sm rounded p-2.5 text-sm focus:outline-none focus:border-brand-gold">
+          <select value={staffId} onChange={e => setStaffId(e.target.value)} style={inputStyle} className="border border-crm-border shadow-sm rounded p-2.5 text-[13px] focus:outline-none focus:border-brand-gold">
             <option value="">No Preference</option>
             {staff.map(s => <option key={s.id} value={s.id}>{s.name || (s.email ? s.email.split('@')[0] : 'Staff')}</option>)}
           </select>
-          <button type="submit" disabled={adding} className="bg-crm-primary text-white hover:bg-crm-surface hover:text-crm-primary border border-transparent hover:border-crm-primary/30 font-bold py-2.5 rounded text-sm disabled:opacity-50">{adding ? 'Adding...' : 'Add'}</button>
+          <button type="submit" disabled={adding} className="bg-crm-primary text-white hover:bg-crm-surface hover:text-crm-primary border border-transparent hover:border-crm-primary/30 font-bold py-2.5 rounded text-[13px] disabled:opacity-50">{adding ? 'Adding...' : 'Add'}</button>
         </div>
       </form>
 
-      {loading ? <p className="text-crm-muted text-center py-8 text-base md:text-lg">Loading...</p> : (
+      {loading ? <p className="text-crm-muted text-center py-8 text-[13px]">Loading...</p> : (
         <div className="space-y-3">
           {serving.map(entry => (
             <div key={entry.id} className="bg-status-confirmed/20 p-4 rounded-lg border border-status-confirmed/30 flex flex-wrap justify-between gap-x-2 gap-y-2 items-center">
               <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-full bg-status-confirmed flex items-center justify-center text-crm-text font-bold text-sm">✂️</div>
+                <div className="w-8 h-8 rounded-full bg-status-confirmed flex items-center justify-center text-crm-text font-bold text-[13px]">✂️</div>
                 <div>
-                  <p className="font-bold text-crm-text text-3xl md:text-4xl">{entry.clientName}</p>
-                  <p className="text-status-confirmed text-base md:text-lg">Being served · {getWaitTime(entry.createdAt)} ago</p>
-                  {entry.staffId && <p className="text-crm-accent text-base md:text-lg">✂️ {getStaffName(entry.staffId)}</p>}
-                  {entry.clientPhone && <p className="text-crm-muted text-base md:text-lg">📱 {entry.clientPhone}</p>}
+                  <p className="font-bold text-crm-text text-xl font-bold">{entry.clientName}</p>
+                  <p className="text-status-confirmed text-[13px]">Being served · {getWaitTime(entry.createdAt)} ago</p>
+                  {entry.staffId && <p className="text-crm-accent text-[13px]">✂️ {getStaffName(entry.staffId)}</p>}
+                  {entry.clientPhone && <p className="text-crm-muted text-[13px]">📱 {entry.clientPhone}</p>}
                 </div>
               </div>
-              <button onClick={() => updateStatus(entry.id, 'DONE')} className="bg-status-confirmed hover:bg-status-confirmed text-crm-text text-xs font-bold px-3 py-1.5 rounded">Done ✓</button>
+              <button onClick={() => updateStatus(entry.id, 'DONE')} className="bg-status-confirmed hover:bg-status-confirmed text-crm-text text-[11px] font-bold px-3 py-1.5 rounded">Done ✓</button>
             </div>
           ))}
           {waiting.map((entry, idx) => (
             <div key={entry.id} className="bg-crm-surface p-4 rounded-lg border border-crm-border shadow-sm">
               <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center">
                 <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-full bg-crm-surface flex items-center justify-center text-crm-text font-bold text-sm">{idx + 1}</div>
+                  <div className="w-8 h-8 rounded-full bg-crm-surface flex items-center justify-center text-crm-text font-bold text-[13px]">{idx + 1}</div>
                   <div>
-                    <p className="font-bold text-crm-text text-3xl md:text-4xl">{entry.clientName}</p>
-                    <p className="text-crm-muted text-base md:text-lg">Waiting · {getWaitTime(entry.createdAt)}</p>
-                    {entry.staffId && <p className="text-crm-accent text-base md:text-lg">✂️ {getStaffName(entry.staffId)}</p>}
-                    {entry.clientPhone && <p className="text-crm-muted text-base md:text-lg">📱 {entry.clientPhone}</p>}
+                    <p className="font-bold text-crm-text text-xl font-bold">{entry.clientName}</p>
+                    <p className="text-crm-muted text-[13px]">Waiting · {getWaitTime(entry.createdAt)}</p>
+                    {entry.staffId && <p className="text-crm-accent text-[13px]">✂️ {getStaffName(entry.staffId)}</p>}
+                    {entry.clientPhone && <p className="text-crm-muted text-[13px]">📱 {entry.clientPhone}</p>}
                   </div>
                 </div>
                 <div className="flex gap-2">
-                  <button onClick={() => setAssigningId(entry.id)} className="bg-crm-accent/20 hover:bg-crm-accent/20 text-crm-accent border border-crm-accent/30 text-xs px-2 py-1.5 rounded">Reassign Barber</button>
-                  <button onClick={() => handleServe(entry.id)} className="bg-crm-primary text-white hover:bg-crm-surface hover:text-crm-primary border border-transparent hover:border-crm-primary/30 text-xs font-bold px-3 py-1.5 rounded">Serve</button>
-                  <button onClick={() => updateStatus(entry.id, 'LEFT')} className="bg-crm-surface hover:bg-crm-border text-crm-muted text-xs px-2 py-1.5 rounded">Left</button>
+                  <button onClick={() => setAssigningId(entry.id)} className="bg-crm-accent/20 hover:bg-crm-accent/20 text-crm-accent border border-crm-accent/30 text-[11px] px-2 py-1.5 rounded">Reassign Barber</button>
+                  <button onClick={() => handleServe(entry.id)} className="bg-crm-primary text-white hover:bg-crm-surface hover:text-crm-primary border border-transparent hover:border-crm-primary/30 text-[11px] font-bold px-3 py-1.5 rounded">Serve</button>
+                  <button onClick={() => updateStatus(entry.id, 'LEFT')} className="bg-crm-surface hover:bg-crm-border text-crm-muted text-[11px] px-2 py-1.5 rounded">Left</button>
                 </div>
               </div>
               {/* Staff Picker Dropdown */}
               {assigningId === entry.id && (
                 <div className="mt-3 pt-3 border-t border-crm-border">
-                  <p className="text-crm-muted uppercase tracking-wider mb-2 text-base md:text-lg">Assign barber:</p>
+                  <p className="text-crm-muted uppercase tracking-wider mb-2 text-[13px]">Assign barber:</p>
                   <div className="flex flex-wrap gap-2">
                     {staff.map(s => (
                       <button key={s.id} onClick={() => updateStatus(entry.id, undefined, s.id)}
-                        className="bg-crm-accent/20 hover:bg-crm-accent/20 text-crm-accent border border-crm-accent/30 text-xs font-bold px-3 py-1.5 rounded transition-colors">
+                        className="bg-crm-accent/20 hover:bg-crm-accent/20 text-crm-accent border border-crm-accent/30 text-[11px] font-bold px-3 py-1.5 rounded transition-colors">
                         ✂️ {s.name || (s.email ? s.email.split('@')[0] : 'Staff')}
                       </button>
                     ))}
                     <button onClick={() => updateStatus(entry.id, undefined, null)}
-                      className="bg-crm-surface hover:bg-crm-surface text-crm-muted text-xs px-3 py-1.5 rounded border border-crm-border shadow-sm transition-colors">
+                      className="bg-crm-surface hover:bg-crm-surface text-crm-muted text-[11px] px-3 py-1.5 rounded border border-crm-border shadow-sm transition-colors">
                       Remove assignment
                     </button>
                     <button onClick={() => setAssigningId(null)}
-                      className="text-crm-muted hover:text-crm-text text-xs px-2 py-1.5">
+                      className="text-crm-muted hover:text-crm-text text-[11px] px-2 py-1.5">
                       Cancel
                     </button>
                   </div>
@@ -165,7 +165,7 @@ export default function WaitlistClient({ shopId, services, staff }: { shopId: st
             </div>
           ))}
           {waiting.length === 0 && serving.length === 0 && (
-            <p className="text-crm-muted italic text-center py-8 border border-dashed border-crm-border rounded text-base md:text-lg">No one in the queue. Add walk-in clients above.</p>
+            <p className="text-crm-muted italic text-center py-8 border border-dashed border-crm-border rounded text-[13px]">No one in the queue. Add walk-in clients above.</p>
           )}
         </div>
       )}

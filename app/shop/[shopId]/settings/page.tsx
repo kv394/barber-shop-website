@@ -67,8 +67,8 @@ export default async function ShopSettingsPage({
 
       {data.isSiteAdmin && (
         <div className="bg-crm-bg/50 p-6 rounded-xl border border-crm-border shadow-sm mb-6">
-          <h2 className="font-bold text-crm-text mb-2 text-3xl md:text-4xl">Booking Portal Template</h2>
-          <p className="text-crm-muted mb-6 text-base md:text-lg">Choose the layout and style for your public booking portal.</p>
+          <h2 className="font-bold text-crm-text mb-2 text-xl font-bold">Booking Portal Template</h2>
+          <p className="text-crm-muted mb-6 text-[13px]">Choose the layout and style for your public booking portal.</p>
           <TemplateSelector
             currentTemplate={data.shop.template || 'modern'}
             shopId={shopId}
@@ -93,15 +93,15 @@ export default async function ShopSettingsPage({
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <Link href={`/shop/${shopId}/config/services`} className="group">
           <div className="bg-crm-bg/50 p-6 rounded-lg border border-crm-border shadow-sm group-hover:border-brand-gold/50 transition-colors">
-            <h3 className="font-bold text-crm-text mb-2 group-hover:text-crm-accent text-2xl md:text-3xl">💇‍♀️ Services</h3>
-            <p className="text-crm-muted text-base md:text-lg">Manage your service menu, pricing, and duration.</p>
+            <h3 className="font-bold text-crm-text mb-2 group-hover:text-crm-accent text-lg font-bold">💇‍♀️ Services</h3>
+            <p className="text-crm-muted text-[13px]">Manage your service menu, pricing, and duration.</p>
           </div>
         </Link>
 
         <Link href={`/shop/${shopId}/config/products`} className="group">
           <div className="bg-crm-bg/50 p-6 rounded-lg border border-crm-border shadow-sm group-hover:border-brand-gold/50 transition-colors">
-            <h3 className="font-bold text-crm-text mb-2 group-hover:text-crm-accent text-2xl md:text-3xl">🛍️ Products</h3>
-            <p className="text-crm-muted text-base md:text-lg">Manage retail and backbar inventory, SKUs, and pricing.</p>
+            <h3 className="font-bold text-crm-text mb-2 group-hover:text-crm-accent text-lg font-bold">🛍️ Products</h3>
+            <p className="text-crm-muted text-[13px]">Manage retail and backbar inventory, SKUs, and pricing.</p>
           </div>
         </Link>
 
@@ -109,26 +109,26 @@ export default async function ShopSettingsPage({
           <>
             <Link href={`/shop/${shopId}/settings/booking`} className="group">
               <div className="bg-crm-bg/50 p-6 rounded-lg border border-crm-border shadow-sm group-hover:border-brand-gold/50 transition-colors">
-                <h3 className="font-bold text-crm-text mb-2 group-hover:text-crm-accent text-2xl md:text-3xl">📅 Booking & Hours</h3>
-                <p className="text-crm-muted text-base md:text-lg">Business hours, online booking rules, buffer times, blackout dates.</p>
+                <h3 className="font-bold text-crm-text mb-2 group-hover:text-crm-accent text-lg font-bold">📅 Booking & Hours</h3>
+                <p className="text-crm-muted text-[13px]">Business hours, online booking rules, buffer times, blackout dates.</p>
               </div>
             </Link>
             <Link href={`/shop/${shopId}/settings/notifications`} className="group">
               <div className="bg-crm-bg/50 p-6 rounded-lg border border-crm-border shadow-sm group-hover:border-brand-gold/50 transition-colors">
-                <h3 className="font-bold text-crm-text mb-2 group-hover:text-crm-accent text-2xl md:text-3xl">🔔 Notifications</h3>
-                <p className="text-crm-muted text-base md:text-lg">Configure automated reminders, review requests, and admin alerts.</p>
+                <h3 className="font-bold text-crm-text mb-2 group-hover:text-crm-accent text-lg font-bold">🔔 Notifications</h3>
+                <p className="text-crm-muted text-[13px]">Configure automated reminders, review requests, and admin alerts.</p>
               </div>
             </Link>
             <Link href={`/shop/${shopId}/settings/commissions`} className="group">
               <div className="bg-crm-bg/50 p-6 rounded-lg border border-crm-border shadow-sm group-hover:border-brand-gold/50 transition-colors">
-                <h3 className="font-bold text-crm-text mb-2 group-hover:text-crm-accent text-2xl md:text-3xl">💼 Commissions</h3>
-                <p className="text-crm-muted text-base md:text-lg">Set service and product commission rates per staff member.</p>
+                <h3 className="font-bold text-crm-text mb-2 group-hover:text-crm-accent text-lg font-bold">💼 Commissions</h3>
+                <p className="text-crm-muted text-[13px]">Set service and product commission rates per staff member.</p>
               </div>
             </Link>
             <Link href={`/shop/${shopId}/settings/kiosk`} className="group">
               <div className="bg-crm-bg/50 p-6 rounded-lg border border-crm-border shadow-sm group-hover:border-brand-gold/50 transition-colors">
-                <h3 className="font-bold text-crm-text mb-2 group-hover:text-crm-accent text-2xl md:text-3xl">📱 Kiosk Setup</h3>
-                <p className="text-crm-muted text-base md:text-lg">Configure attendance kiosk URL and PIN for staff check-in.</p>
+                <h3 className="font-bold text-crm-text mb-2 group-hover:text-crm-accent text-lg font-bold">📱 Kiosk Setup</h3>
+                <p className="text-crm-muted text-[13px]">Configure attendance kiosk URL and PIN for staff check-in.</p>
               </div>
             </Link>
           </>

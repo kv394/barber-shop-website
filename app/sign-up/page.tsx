@@ -135,30 +135,30 @@ export default async function SignUpPage({
     <div className="flex min-h-[80vh] items-center justify-center p-4">
       <div className="w-full max-w-md bg-crm-surface border border-crm-border shadow-sm rounded-2xl shadow-2xl p-8 mt-12 mb-12">
         <div className="text-center mb-8">
-          <h1 className="font-serif font-bold text-crm-text mb-2 text-4xl md:text-5xl lg:text-6xl">Create Account</h1>
-          <p className="text-crm-muted text-base md:text-lg">Join to book your next appointment</p>
+          <h1 className="font-serif font-bold text-crm-text mb-2 text-2xl font-bold">Create Account</h1>
+          <p className="text-crm-muted text-[13px]">Join to book your next appointment</p>
         </div>
 
         {error && (
-          <div className="bg-status-cancelled/10 border border-status-cancelled/30 text-status-cancelled p-3 rounded-lg mb-6 text-sm text-center">{error}</div>
+          <div className="bg-status-cancelled/10 border border-status-cancelled/30 text-status-cancelled p-3 rounded-lg mb-6 text-[13px] text-center">{error}</div>
         )}
 
         <form action={signUpAction} className="space-y-5">
           <div>
-            <label className="block font-medium text-crm-muted mb-1.5 text-sm">Full Name</label>
+            <label className="block font-medium text-crm-muted mb-1.5 text-[13px]">Full Name</label>
             <input name="name" type="text" required placeholder="John Doe" className="w-full bg-crm-surface border border-crm-border shadow-sm rounded-lg p-3 text-crm-text focus:ring-2 focus:ring-crm-primary focus:border-transparent outline-none" />
           </div>
           <div>
-            <label className="block font-medium text-crm-muted mb-1.5 text-sm">Email Address</label>
+            <label className="block font-medium text-crm-muted mb-1.5 text-[13px]">Email Address</label>
             <input name="email" type="email" required placeholder="you@example.com" className="w-full bg-crm-surface border border-crm-border shadow-sm rounded-lg p-3 text-crm-text focus:ring-2 focus:ring-crm-primary focus:border-transparent outline-none" />
           </div>
           <div>
-            <label className="block font-medium text-crm-muted mb-1.5 text-sm">Password</label>
+            <label className="block font-medium text-crm-muted mb-1.5 text-[13px]">Password</label>
             <input name="password" type="password" required minLength={8} placeholder="••••••••" className="w-full bg-crm-surface border border-crm-border shadow-sm rounded-lg p-3 text-crm-text focus:ring-2 focus:ring-crm-primary focus:border-transparent outline-none" />
           </div>
           <button type="submit" className="w-full bg-crm-primary text-white font-bold py-3 rounded-lg hover:bg-crm-surface hover:text-crm-primary border border-transparent hover:border-crm-primary/30 transition-colors mt-2">Sign Up</button>
         </form>
-        <p className="text-center text-crm-muted mt-8 text-base md:text-lg">Already have an account? <Link href="/sign-in" className="text-crm-accent hover:underline">Sign In</Link></p>
+        <p className="text-center text-crm-muted mt-8 text-[13px]">Already have an account? <Link href="/sign-in" className="text-crm-accent hover:underline">Sign In</Link></p>
       </div>
     </div>
   );

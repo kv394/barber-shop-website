@@ -85,11 +85,11 @@ export default function LeadQualityRow({ lead }: { lead: Lead }) {
     <div className="grid grid-cols-6 items-center px-4 py-3 cursor-pointer w-full">
       <div className="flex items-center gap-3 col-span-1">
         <div className={`w-1.5 h-1.5 rounded-full ${lead.isNew ? 'bg-red-500' : 'bg-transparent'}`}></div>
-        <div className={`text-[13px] ${lead.isNew ? 'font-semibold text-gray-900' : 'font-medium text-gray-600'}`}>{lead.date}</div>
+        <div className={`text-[13px] ${lead.isNew ? 'font-semibold text-crm-text' : 'font-medium text-crm-muted'}`}>{lead.date}</div>
       </div>
-      <div className={`text-[13px] ${lead.company !== '-' ? 'font-medium text-gray-900' : 'text-gray-400'} col-span-1`}>{lead.company}</div>
+      <div className={`text-[13px] ${lead.company !== '-' ? 'font-medium text-crm-text' : 'text-crm-muted'} col-span-1`}>{lead.company}</div>
       <div 
-        className="text-[13px] font-normal text-gray-600 col-span-1 hover:text-orange-500 transition-colors"
+        className="text-[13px] font-normal text-crm-muted col-span-1 hover:text-orange-500 transition-colors"
         onClick={(e) => {
           e.stopPropagation();
           setIsProfileOpen(true);
@@ -97,7 +97,7 @@ export default function LeadQualityRow({ lead }: { lead: Lead }) {
       >
         {lead.email}
       </div>
-      <div className="text-[13px] font-normal text-gray-400 underline decoration-gray-300 underline-offset-2 col-span-1">{lead.utmLink}</div>
+      <div className="text-[13px] font-normal text-crm-muted underline decoration-gray-300 underline-offset-2 col-span-1">{lead.utmLink}</div>
       <div className="col-span-1">
         <span className={`inline-flex items-center px-2 py-0.5 rounded text-[10px] uppercase font-bold tracking-wide border ${
           lead.status === 'GOOD' 
@@ -108,8 +108,8 @@ export default function LeadQualityRow({ lead }: { lead: Lead }) {
         </span>
       </div>
       <div className="flex items-center justify-between col-span-1">
-        <div className="text-[13px] font-medium text-gray-700">{lead.country}</div>
-        <div className="text-gray-400">
+        <div className="text-[13px] font-medium text-crm-text">{lead.country}</div>
+        <div className="text-crm-muted">
           {isExpanded ? <ChevronUpIcon /> : <ChevronDownIcon />}
         </div>
       </div>
@@ -118,7 +118,7 @@ export default function LeadQualityRow({ lead }: { lead: Lead }) {
 
   if (isExpanded) {
     return (
-      <div className="my-2 bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden relative">
+      <div className="my-2 bg-white rounded-xl shadow-sm border border-crm-border overflow-hidden relative">
         {/* Top Orange Border */}
         <div className="absolute top-0 left-0 right-0 h-0.5 bg-orange-500 z-10"></div>
         
@@ -127,20 +127,20 @@ export default function LeadQualityRow({ lead }: { lead: Lead }) {
         </div>
 
         <div className="px-6 pb-6 pt-2">
-          <div className="border-t border-gray-100 mb-6 w-[calc(100%-80px)]"></div>
+          <div className="border-t border-crm-border mb-6 w-[calc(100%-80px)]"></div>
           
           <div className="flex justify-between">
             {/* Left Data Area */}
             <div className="flex gap-12">
               {/* Labels */}
               <div className="flex flex-col gap-3">
-                <div className="text-sm text-gray-500">Services Required</div>
-                <div className="text-sm text-gray-500">Referrer Source</div>
-                <div className="flex items-center gap-1.5 text-sm text-gray-500">
-                  Potential Revenue <span className="inline-flex items-center px-1 rounded text-[9px] font-bold border border-gray-200 text-gray-400">AI</span>
+                <div className="text-[13px] text-crm-muted">Services Required</div>
+                <div className="text-[13px] text-crm-muted">Referrer Source</div>
+                <div className="flex items-center gap-1.5 text-[13px] text-crm-muted">
+                  Potential Revenue <span className="inline-flex items-center px-1 rounded text-[9px] font-bold border border-crm-border text-crm-muted">AI</span>
                 </div>
-                <div className="flex items-center gap-1.5 text-sm text-gray-500">
-                  Lead Score <span className="inline-flex items-center px-1 rounded text-[9px] font-bold border border-gray-200 text-gray-400">AI</span>
+                <div className="flex items-center gap-1.5 text-[13px] text-crm-muted">
+                  Lead Score <span className="inline-flex items-center px-1 rounded text-[9px] font-bold border border-crm-border text-crm-muted">AI</span>
                 </div>
               </div>
 
@@ -148,27 +148,27 @@ export default function LeadQualityRow({ lead }: { lead: Lead }) {
               <div className="flex flex-col gap-3">
                 <div className="flex flex-wrap gap-2 h-5 items-center">
                   {lead.servicesRequired.map((service, idx) => (
-                    <span key={idx} className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium border border-blue-200 text-blue-700 bg-white">
+                    <span key={idx} className="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-medium border border-blue-200 text-blue-700 bg-white">
                       {service}
                     </span>
                   ))}
                 </div>
-                <div className="text-sm font-medium text-gray-900 h-5 flex items-center">{lead.referrerSource}</div>
-                <div className="flex items-center gap-2 text-sm font-bold text-gray-900 h-5">
-                  ${lead.potentialRevenue.toLocaleString()} <span className="text-gray-500 font-normal">({lead.potentialRevenueText})</span>
-                  <button className="text-gray-400 hover:text-gray-600 transition-colors ml-1"><EditIcon /></button>
+                <div className="text-[13px] font-medium text-crm-text h-5 flex items-center">{lead.referrerSource}</div>
+                <div className="flex items-center gap-2 text-[13px] font-bold text-crm-text h-5">
+                  ${lead.potentialRevenue.toLocaleString()} <span className="text-crm-muted font-normal">({lead.potentialRevenueText})</span>
+                  <button className="text-crm-muted hover:text-crm-muted transition-colors ml-1"><EditIcon /></button>
                 </div>
-                <div className="text-sm font-medium text-gray-900 h-5 flex items-center">{lead.aiScore} <span className="text-gray-500 font-normal ml-1">({lead.leadScoreText})</span></div>
+                <div className="text-[13px] font-medium text-crm-text h-5 flex items-center">{lead.aiScore} <span className="text-crm-muted font-normal ml-1">({lead.leadScoreText})</span></div>
               </div>
 
               {/* Notes Area */}
               <div className="ml-12 w-64">
                 <div className="flex items-center gap-2 mb-2">
-                  <span className="text-sm font-medium text-gray-900 underline decoration-gray-300 underline-offset-4">Note</span>
-                  <span className="text-sm text-gray-500">(Aug 3, 15:17)</span>
-                  <button className="text-gray-400 hover:text-gray-600 transition-colors ml-1"><EditIcon /></button>
+                  <span className="text-[13px] font-medium text-crm-text underline decoration-gray-300 underline-offset-4">Note</span>
+                  <span className="text-[13px] text-crm-muted">(Aug 3, 15:17)</span>
+                  <button className="text-crm-muted hover:text-crm-muted transition-colors ml-1"><EditIcon /></button>
                 </div>
-                <div className="text-sm text-gray-400 flex items-center gap-1 cursor-pointer hover:text-gray-600 transition-colors mt-4">
+                <div className="text-[13px] text-crm-muted flex items-center gap-1 cursor-pointer hover:text-crm-muted transition-colors mt-4">
                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 5v14M5 12h14"/></svg> New Note
                 </div>
               </div>
@@ -186,8 +186,8 @@ export default function LeadQualityRow({ lead }: { lead: Lead }) {
                   />
                 </svg>
                 <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
-                  <span className="text-xl font-bold text-gray-900 leading-none">{lead.aiScore}</span>
-                  <span className="text-[9px] font-bold text-gray-500 mt-0.5">AI Score</span>
+                  <span className="text-xl font-bold text-crm-text leading-none">{lead.aiScore}</span>
+                  <span className="text-[9px] font-bold text-crm-muted mt-0.5">AI Score</span>
                 </div>
               </div>
             </div>
@@ -196,17 +196,17 @@ export default function LeadQualityRow({ lead }: { lead: Lead }) {
           {/* Bottom Actions */}
           <div className="flex items-center justify-between mt-8">
             <div className="flex items-center gap-3">
-              <button className="flex items-center justify-center gap-1.5 bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors shadow-sm">
+              <button className="flex items-center justify-center gap-1.5 bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg text-[13px] font-medium transition-colors shadow-sm">
                 View Campaign
                 <ArrowUpRightIcon />
               </button>
-              <button className="flex items-center justify-center gap-1.5 bg-orange-50 hover:bg-orange-100 text-orange-600 px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+              <button className="flex items-center justify-center gap-1.5 bg-orange-50 hover:bg-orange-100 text-orange-600 px-4 py-2 rounded-lg text-[13px] font-medium transition-colors">
                 Assign to Team
                 <UsersIcon />
               </button>
             </div>
             
-            <button className="flex items-center justify-center gap-2 bg-white border border-gray-200 hover:bg-gray-50 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+            <button className="flex items-center justify-center gap-2 bg-white border border-crm-border hover:bg-crm-bg text-crm-text px-4 py-2 rounded-lg text-[13px] font-medium transition-colors">
               Archive Lead
               <TrashIcon />
             </button>
@@ -224,7 +224,7 @@ export default function LeadQualityRow({ lead }: { lead: Lead }) {
   }
 
   return (
-    <div className="border-b border-gray-100 bg-transparent hover:bg-gray-50 transition-colors group">
+    <div className="border-b border-crm-border bg-transparent hover:bg-crm-bg transition-colors group">
       <div onClick={() => setIsExpanded(true)}>
         {rowContent}
       </div>

@@ -200,7 +200,7 @@ export default async function ShopLayout({
           </nav>
           <div className="p-4 border-t border-crm-border flex items-center justify-between">
             <div>
-               <span className="block text-xs font-semibold text-crm-muted uppercase tracking-wider mb-2">{data.userRole.replace('_', ' ')}</span>
+               <span className="block text-[11px] font-semibold text-crm-muted uppercase tracking-wider mb-2">{data.userRole.replace('_', ' ')}</span>
                <SupabaseAuthButton redirectUrl={fallbackRedirect} />
             </div>
             {!isSiteAdmin && (

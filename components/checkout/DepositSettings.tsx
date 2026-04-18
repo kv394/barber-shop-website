@@ -33,32 +33,32 @@ export default function DepositSettings({
 
   return (
     <div className="bg-crm-surface p-6 rounded-lg border border-crm-border shadow-sm mb-6">
-      <h3 className="font-bold text-crm-text mb-1 text-2xl md:text-3xl">🛡️ No-Show Deposit</h3>
-      <p className="text-crm-muted mb-4 text-base md:text-lg">Require a card hold for new bookings. Captured if the client doesn&apos;t show up.</p>
+      <h3 className="font-bold text-crm-text mb-1 text-lg font-bold">🛡️ No-Show Deposit</h3>
+      <p className="text-crm-muted mb-4 text-[13px]">Require a card hold for new bookings. Captured if the client doesn&apos;t show up.</p>
 
       <div className="space-y-4">
-        <label className="flex items-center gap-3 cursor-pointer text-sm">
+        <label className="flex items-center gap-3 cursor-pointer text-[13px]">
           <input type="checkbox" checked={depositRequired} onChange={e => setDepositRequired(e.target.checked)} className="w-4 h-4 accent-brand-gold" />
-          <span className="text-sm text-crm-muted">Require deposit for online bookings</span>
+          <span className="text-[13px] text-crm-muted">Require deposit for online bookings</span>
         </label>
 
         {depositRequired && (
           <div>
-            <label className="block text-crm-muted mb-1 text-sm">Deposit Amount ($)</label>
+            <label className="block text-crm-muted mb-1 text-[13px]">Deposit Amount ($)</label>
             <input
               type="number" min="0" step="0.50"
               value={depositAmount}
               onChange={e => setDepositAmount(e.target.value)}
-              className="w-48 bg-crm-surface border border-crm-border shadow-sm rounded p-2 text-crm-text text-sm focus:outline-none focus:border-brand-gold"
+              className="w-48 bg-crm-surface border border-crm-border shadow-sm rounded p-2 text-crm-text text-[13px] focus:outline-none focus:border-brand-gold"
             />
           </div>
         )}
 
         <div className="flex items-center gap-3">
-          <button onClick={handleSave} disabled={saving} className="bg-crm-primary text-white font-semibold px-6 py-2 rounded hover:bg-crm-surface hover:text-crm-primary border border-transparent hover:border-crm-primary/30 transition-colors disabled:opacity-50 text-sm">
+          <button onClick={handleSave} disabled={saving} className="bg-crm-primary text-white font-semibold px-6 py-2 rounded hover:bg-crm-surface hover:text-crm-primary border border-transparent hover:border-crm-primary/30 transition-colors disabled:opacity-50 text-[13px]">
             {saving ? 'Saving…' : 'Save Deposit Settings'}
           </button>
-          {msg && <span className="text-xs text-status-confirmed">{msg}</span>}
+          {msg && <span className="text-[11px] text-status-confirmed">{msg}</span>}
         </div>
       </div>
     </div>

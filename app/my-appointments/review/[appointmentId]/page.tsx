@@ -79,7 +79,7 @@ export default function ReviewPage({ params }: { params: Promise<{ appointmentId
   if (loading) {
     return (
       <div className="h-[100dvh] overflow-y-auto overflow-x-hidden">
-        <p className="text-crm-muted animate-pulse text-base md:text-lg">Loading…</p>
+        <p className="text-crm-muted animate-pulse text-[13px]">Loading…</p>
       </div>
     );
   }
@@ -88,10 +88,10 @@ export default function ReviewPage({ params }: { params: Promise<{ appointmentId
     return (
       <div className="h-[100dvh] overflow-y-auto overflow-x-hidden">
         <div className="text-center">
-          <p className="mb-4 text-base md:text-lg">🎉</p>
-          <h2 className="font-bold text-crm-text mb-2 text-3xl md:text-4xl">Thank You!</h2>
-          <p className="text-crm-muted text-base md:text-lg">Your review has been submitted.</p>
-          <p className="text-crm-muted mt-2 text-base md:text-lg">Redirecting…</p>
+          <p className="mb-4 text-[13px]">🎉</p>
+          <h2 className="font-bold text-crm-text mb-2 text-xl font-bold">Thank You!</h2>
+          <p className="text-crm-muted text-[13px]">Your review has been submitted.</p>
+          <p className="text-crm-muted mt-2 text-[13px]">Redirecting…</p>
         </div>
       </div>
     );
@@ -103,54 +103,54 @@ export default function ReviewPage({ params }: { params: Promise<{ appointmentId
     <main className="h-[100dvh] overflow-y-auto overflow-x-hidden">
       <header className="bg-crm-surface backdrop-blur-md border-b border-crm-border sticky top-0 z-20">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 py-4">
-          <h1 className="font-bold text-crm-text text-4xl md:text-5xl lg:text-6xl">Leave a Review</h1>
-          <p className="text-crm-muted text-base md:text-lg">Share your experience</p>
+          <h1 className="font-bold text-crm-text text-2xl font-bold">Leave a Review</h1>
+          <p className="text-crm-muted text-[13px]">Share your experience</p>
         </div>
         <div className="max-w-4xl mx-auto px-4 sm:px-6 pb-2 flex gap-4 overflow-x-auto scrollbar-none">
-          <Link href="/my-appointments" className="text-sm text-crm-muted hover:text-crm-text px-1 pb-1 whitespace-nowrap transition-colors">📅 Appointments</Link>
-          <Link href="/my-appointments/profile" className="text-sm text-crm-muted hover:text-crm-text px-1 pb-1 whitespace-nowrap transition-colors">👤 Profile</Link>
-          <Link href="/my-appointments/loyalty" className="text-sm text-crm-muted hover:text-crm-text px-1 pb-1 whitespace-nowrap transition-colors">⭐ Loyalty</Link>
-          <Link href="/my-appointments/notifications" className="text-sm text-crm-muted hover:text-crm-text px-1 pb-1 whitespace-nowrap transition-colors">🔔 Notifications</Link>
+          <Link href="/my-appointments" className="text-[13px] text-crm-muted hover:text-crm-text px-1 pb-1 whitespace-nowrap transition-colors">📅 Appointments</Link>
+          <Link href="/my-appointments/profile" className="text-[13px] text-crm-muted hover:text-crm-text px-1 pb-1 whitespace-nowrap transition-colors">👤 Profile</Link>
+          <Link href="/my-appointments/loyalty" className="text-[13px] text-crm-muted hover:text-crm-text px-1 pb-1 whitespace-nowrap transition-colors">⭐ Loyalty</Link>
+          <Link href="/my-appointments/notifications" className="text-[13px] text-crm-muted hover:text-crm-text px-1 pb-1 whitespace-nowrap transition-colors">🔔 Notifications</Link>
         </div>
       </header>
 
       <div className="max-w-2xl mx-auto px-4 sm:px-6 py-8">
         {error && (
-          <div className="mb-6 bg-status-cancelled/20 border border-status-cancelled/30 text-status-cancelled px-4 py-3 rounded-lg text-sm">
+          <div className="mb-6 bg-status-cancelled/20 border border-status-cancelled/30 text-status-cancelled px-4 py-3 rounded-lg text-[13px]">
             {error}
           </div>
         )}
 
         {!appointment ? (
           <div className="text-center py-12">
-            <p className="text-crm-muted text-base md:text-lg">Appointment not found.</p>
-            <Link href="/my-appointments" className="text-crm-accent hover:text-crm-text text-sm mt-4 inline-block">← Back to appointments</Link>
+            <p className="text-crm-muted text-[13px]">Appointment not found.</p>
+            <Link href="/my-appointments" className="text-crm-accent hover:text-crm-text text-[13px] mt-4 inline-block">← Back to appointments</Link>
           </div>
         ) : alreadyReviewed ? (
           <div className="text-center py-12 bg-crm-surface border border-crm-border shadow-sm rounded-xl p-8">
-            <p className="mb-4 text-base md:text-lg">✅</p>
-            <h2 className="font-bold text-crm-text mb-2 text-3xl md:text-4xl">Already Reviewed</h2>
-            <p className="text-crm-muted text-base md:text-lg">You&apos;ve already left a review for this appointment.</p>
-            <Link href="/my-appointments" className="text-crm-accent hover:text-crm-text text-sm mt-4 inline-block">← Back to appointments</Link>
+            <p className="mb-4 text-[13px]">✅</p>
+            <h2 className="font-bold text-crm-text mb-2 text-xl font-bold">Already Reviewed</h2>
+            <p className="text-crm-muted text-[13px]">You&apos;ve already left a review for this appointment.</p>
+            <Link href="/my-appointments" className="text-crm-accent hover:text-crm-text text-[13px] mt-4 inline-block">← Back to appointments</Link>
           </div>
         ) : appointment.status !== 'COMPLETED' ? (
           <div className="text-center py-12 bg-crm-surface border border-crm-border shadow-sm rounded-xl p-8">
-            <p className="mb-4 text-base md:text-lg">⏳</p>
-            <h2 className="font-bold text-crm-text mb-2 text-3xl md:text-4xl">Not Yet Completed</h2>
-            <p className="text-crm-muted text-base md:text-lg">You can only review completed appointments.</p>
-            <Link href="/my-appointments" className="text-crm-accent hover:text-crm-text text-sm mt-4 inline-block">← Back to appointments</Link>
+            <p className="mb-4 text-[13px]">⏳</p>
+            <h2 className="font-bold text-crm-text mb-2 text-xl font-bold">Not Yet Completed</h2>
+            <p className="text-crm-muted text-[13px]">You can only review completed appointments.</p>
+            <Link href="/my-appointments" className="text-crm-accent hover:text-crm-text text-[13px] mt-4 inline-block">← Back to appointments</Link>
           </div>
         ) : (
           <div className="bg-crm-surface border border-crm-border shadow-sm rounded-xl overflow-hidden">
             {/* Appointment Summary */}
             <div className="p-6 bg-gradient-to-r from-purple-600/10 to-brand-gold/10 border-b border-crm-border">
-              <h2 className="font-bold text-crm-text text-3xl md:text-4xl">{appointment.shop.name}</h2>
+              <h2 className="font-bold text-crm-text text-xl font-bold">{appointment.shop.name}</h2>
               <div className="mt-2 space-y-1">
-                <p className="text-crm-muted text-base md:text-lg">
+                <p className="text-crm-muted text-[13px]">
                   {appointment.service?.name || 'Service'}
                   {appointment.staff?.name && <span className="text-crm-muted"> · with {appointment.staff.name}</span>}
                 </p>
-                <p className="text-crm-muted text-base md:text-lg">
+                <p className="text-crm-muted text-[13px]">
                   {new Date(appointment.startTime).toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
                 </p>
               </div>
@@ -159,7 +159,7 @@ export default function ReviewPage({ params }: { params: Promise<{ appointmentId
             {/* Rating */}
             <div className="p-6 space-y-6">
               <div>
-                <label className="block text-crm-muted mb-3 text-sm">How was your experience?</label>
+                <label className="block text-crm-muted mb-3 text-[13px]">How was your experience?</label>
                 <div className="flex gap-2 justify-center">
                   {[1, 2, 3, 4, 5].map((star) => (
                     <button
@@ -177,7 +177,7 @@ export default function ReviewPage({ params }: { params: Promise<{ appointmentId
                   ))}
                 </div>
                 {rating > 0 && (
-                  <p className="text-center text-crm-muted mt-2 text-base md:text-lg">
+                  <p className="text-center text-crm-muted mt-2 text-[13px]">
                     {rating === 1 && 'Poor'}
                     {rating === 2 && 'Fair'}
                     {rating === 3 && 'Good'}
@@ -189,7 +189,7 @@ export default function ReviewPage({ params }: { params: Promise<{ appointmentId
 
               {/* Comment */}
               <div>
-                <label className="block text-crm-muted mb-2 text-sm">Leave a comment (optional)</label>
+                <label className="block text-crm-muted mb-2 text-[13px]">Leave a comment (optional)</label>
                 <textarea
                   value={comment}
                   onChange={(e) => setComment(e.target.value)}
@@ -198,7 +198,7 @@ export default function ReviewPage({ params }: { params: Promise<{ appointmentId
                   maxLength={1000}
                   className="w-full bg-crm-surface border border-crm-border shadow-sm rounded-lg p-3 text-crm-text placeholder-gray-600 focus:outline-none focus:border-brand-gold resize-none"
                 />
-                <p className="text-crm-muted text-right mt-1 text-base md:text-lg">{comment.length}/1000</p>
+                <p className="text-crm-muted text-right mt-1 text-[13px]">{comment.length}/1000</p>
               </div>
 
               {/* Submit */}

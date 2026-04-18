@@ -44,7 +44,7 @@ export default function CRMDashboard() {
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 bg-crm-text rounded-lg flex items-center justify-center text-white font-bold text-lg">C</div>
             <div>
-              <div className="font-bold text-sm leading-tight text-crm-text">Conceptzilla</div>
+              <div className="font-bold text-[13px] leading-tight text-crm-text">Conceptzilla</div>
               <div className="text-[10px] text-crm-muted font-medium">Free Workflow</div>
             </div>
           </div>
@@ -56,8 +56,8 @@ export default function CRMDashboard() {
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-crm-muted">
               <SearchIcon />
             </div>
-            <input type="text" placeholder="Search" className="block w-full pl-9 pr-3 py-1.5 text-sm bg-crm-bg border-none rounded-md focus:ring-1 focus:ring-crm-primary" />
-            <div className="absolute inset-y-0 right-0 pr-2 flex items-center pointer-events-none text-crm-muted text-xs">/</div>
+            <input type="text" placeholder="Search" className="block w-full pl-9 pr-3 py-1.5 text-[13px] bg-crm-bg border-none rounded-md focus:ring-1 focus:ring-crm-primary" />
+            <div className="absolute inset-y-0 right-0 pr-2 flex items-center pointer-events-none text-crm-muted text-[11px]">/</div>
           </div>
         </div>
 
@@ -67,23 +67,23 @@ export default function CRMDashboard() {
           <div>
             <div className="text-[10px] font-bold text-crm-muted tracking-wider uppercase mb-2 px-2">Sales Operations</div>
             <ul className="space-y-1">
-              <li><a href="#" className="flex items-center gap-3 px-2 py-1.5 text-sm font-medium text-crm-muted hover:text-crm-text rounded-md hover:bg-crm-bg transition-colors"><span>⏱</span> Dashboard</a></li>
+              <li><a href="#" className="flex items-center gap-3 px-2 py-1.5 text-[13px] font-medium text-crm-muted hover:text-crm-text rounded-md hover:bg-crm-bg transition-colors"><span>⏱</span> Dashboard</a></li>
               <li>
-                <a href="#" className="flex items-center justify-between px-2 py-1.5 text-sm font-semibold text-crm-text bg-crm-bg rounded-md">
+                <a href="#" className="flex items-center justify-between px-2 py-1.5 text-[13px] font-semibold text-crm-text bg-crm-bg rounded-md">
                   <div className="flex items-center gap-3">
                     <UserIcon /> Leads
                   </div>
                   <div className="w-1.5 h-1.5 rounded-full bg-crm-primary"></div>
                 </a>
               </li>
-              <li><a href="#" className="flex items-center gap-3 px-2 py-1.5 text-sm font-medium text-crm-muted hover:text-crm-text rounded-md hover:bg-crm-bg transition-colors"><span>📦</span> Orders</a></li>
-              <li><a href="#" className="flex items-center gap-3 px-2 py-1.5 text-sm font-medium text-crm-muted hover:text-crm-text rounded-md hover:bg-crm-bg transition-colors"><span>👥</span> Customers</a></li>
+              <li><a href="#" className="flex items-center gap-3 px-2 py-1.5 text-[13px] font-medium text-crm-muted hover:text-crm-text rounded-md hover:bg-crm-bg transition-colors"><span>📦</span> Orders</a></li>
+              <li><a href="#" className="flex items-center gap-3 px-2 py-1.5 text-[13px] font-medium text-crm-muted hover:text-crm-text rounded-md hover:bg-crm-bg transition-colors"><span>👥</span> Customers</a></li>
               <li>
-                <a href="#" className="flex items-center justify-between px-2 py-1.5 text-sm font-medium text-crm-muted hover:text-crm-text rounded-md hover:bg-crm-bg transition-colors">
+                <a href="#" className="flex items-center justify-between px-2 py-1.5 text-[13px] font-medium text-crm-muted hover:text-crm-text rounded-md hover:bg-crm-bg transition-colors">
                   <div className="flex items-center gap-3">
                     <span>💬</span> Messages
                   </div>
-                  <span className="text-xs bg-crm-bg px-1.5 py-0.5 rounded text-crm-muted">4</span>
+                  <span className="text-[11px] bg-crm-bg px-1.5 py-0.5 rounded text-crm-muted">4</span>
                 </a>
               </li>
             </ul>
@@ -94,9 +94,9 @@ export default function CRMDashboard() {
               Workspaces <button className="text-crm-muted hover:text-crm-text">+</button>
             </div>
             <ul className="space-y-1">
-              <li><a href="#" className="flex items-center gap-3 px-2 py-1.5 text-sm font-medium text-crm-muted hover:text-crm-text rounded-md hover:bg-crm-bg transition-colors"><div className="w-1.5 h-1.5 rounded-full bg-crm-primary"></div> Sales</a></li>
-              <li><a href="#" className="flex items-center gap-3 px-2 py-1.5 text-sm font-medium text-crm-muted hover:text-crm-text rounded-md hover:bg-crm-bg transition-colors"><div className="w-1.5 h-1.5 rounded-full bg-yellow-500"></div> Account Management</a></li>
-              <li><a href="#" className="flex items-center gap-3 px-2 py-1.5 text-sm font-medium text-crm-muted hover:text-crm-text rounded-md hover:bg-crm-bg transition-colors"><div className="w-1.5 h-1.5 rounded-full bg-green-500"></div> Support & Success</a></li>
+              <li><a href="#" className="flex items-center gap-3 px-2 py-1.5 text-[13px] font-medium text-crm-muted hover:text-crm-text rounded-md hover:bg-crm-bg transition-colors"><div className="w-1.5 h-1.5 rounded-full bg-crm-primary"></div> Sales</a></li>
+              <li><a href="#" className="flex items-center gap-3 px-2 py-1.5 text-[13px] font-medium text-crm-muted hover:text-crm-text rounded-md hover:bg-crm-bg transition-colors"><div className="w-1.5 h-1.5 rounded-full bg-yellow-500"></div> Account Management</a></li>
+              <li><a href="#" className="flex items-center gap-3 px-2 py-1.5 text-[13px] font-medium text-crm-muted hover:text-crm-text rounded-md hover:bg-crm-bg transition-colors"><div className="w-1.5 h-1.5 rounded-full bg-green-500"></div> Support & Success</a></li>
             </ul>
           </div>
 
@@ -110,8 +110,8 @@ export default function CRMDashboard() {
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 rounded-full bg-gray-200 overflow-hidden"><img src="https://i.pravatar.cc/150?u=aiden" alt="User" /></div>
             <div className="flex-1 min-w-0">
-              <div className="text-sm font-semibold text-crm-text truncate">Aiden Hudson</div>
-              <div className="text-xs text-crm-muted truncate">ahudson@gmail.com</div>
+              <div className="text-[13px] font-semibold text-crm-text truncate">Aiden Hudson</div>
+              <div className="text-[11px] text-crm-muted truncate">ahudson@gmail.com</div>
             </div>
             <button className="text-crm-muted hover:text-crm-text transition-colors" title="View Public Page">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
@@ -192,7 +192,7 @@ export default function CRMDashboard() {
                     )}
                     <button
                       onClick={() => setActiveTab(tab)}
-                      className={`text-sm transition-colors px-6 py-3 relative ${
+                      className={`text-[13px] transition-colors px-6 py-3 relative ${
                         isActive
                           ? "bg-crm-surface text-crm-text font-semibold rounded-t-2xl translate-y-[1px] z-20 shadow-[0_-2px_4px_-1px_rgba(0,0,0,0.05)] pb-4 before:content-[''] before:absolute before:bottom-0 before:-right-4 before:w-4 before:h-4 before:bg-[radial-gradient(circle_at_top_right,transparent_16px,#FFFFFF_16px)]"
                           : "text-crm-muted hover:text-crm-text mb-1 pb-3"
@@ -218,7 +218,7 @@ export default function CRMDashboard() {
                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-crm-muted">
                     <SearchIcon />
                  </div>
-                 <input type="text" placeholder="Search" className="block w-full pl-9 pr-3 py-1.5 text-sm bg-crm-bg border-none rounded-md focus:ring-1 focus:ring-crm-primary" />
+                 <input type="text" placeholder="Search" className="block w-full pl-9 pr-3 py-1.5 text-[13px] bg-crm-bg border-none rounded-md focus:ring-1 focus:ring-crm-primary" />
               </div>
               <div className="flex gap-2">
                  <button className="p-1.5 text-crm-muted hover:bg-crm-bg rounded"><svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" /></svg></button>
@@ -272,7 +272,7 @@ export default function CRMDashboard() {
                           {[1,2,3,4,5,6,7,8,9,10].map(i => (
                             <div key={i} className={`w-1 h-3 rounded-full ${i <= lead.score ? (lead.score > 7 ? 'bg-green-500' : lead.score > 4 ? 'bg-yellow-400' : 'bg-red-400') : 'bg-gray-200'}`}></div>
                           ))}
-                          <span className="ml-2 text-xs font-semibold text-crm-muted border rounded px-1">{lead.score}/10</span>
+                          <span className="ml-2 text-[11px] font-semibold text-crm-muted border rounded px-1">{lead.score}/10</span>
                        </div>
                     </td>
                   </tr>
@@ -284,12 +284,12 @@ export default function CRMDashboard() {
           {/* Floating Action Bar */}
           {selectedLeads.length > 0 && (
             <div className="fixed bottom-8 left-1/2 transform -translate-x-1/2 bg-gray-900 text-white px-6 py-3 rounded-xl shadow-xl flex items-center gap-6 z-50 animate-in slide-in-from-bottom-10 fade-in duration-200">
-              <span className="text-sm font-semibold">Selected: {selectedLeads.length}</span>
+              <span className="text-[13px] font-semibold">Selected: {selectedLeads.length}</span>
               <div className="w-px h-4 bg-gray-700"></div>
-              <button className="flex items-center gap-2 text-sm font-medium hover:text-crm-primary transition-colors"><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" /></svg> Edit</button>
-              <button className="flex items-center gap-2 text-sm font-medium hover:text-crm-primary transition-colors"><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 5l7 7-7 7M5 5l7 7-7 7" /></svg> Assign to</button>
-              <button className="flex items-center gap-2 text-sm font-medium hover:text-red-400 transition-colors"><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg> Delete</button>
-              <button className="bg-white text-gray-900 px-3 py-1.5 rounded-md text-sm font-semibold hover:bg-gray-100 transition-colors ml-4" onClick={() => setSelectedLeads([])}>Discard</button>
+              <button className="flex items-center gap-2 text-[13px] font-medium hover:text-crm-primary transition-colors"><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" /></svg> Edit</button>
+              <button className="flex items-center gap-2 text-[13px] font-medium hover:text-crm-primary transition-colors"><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 5l7 7-7 7M5 5l7 7-7 7" /></svg> Assign to</button>
+              <button className="flex items-center gap-2 text-[13px] font-medium hover:text-red-400 transition-colors"><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg> Delete</button>
+              <button className="bg-white text-crm-text px-3 py-1.5 rounded-md text-[13px] font-semibold hover:bg-crm-surface transition-colors ml-4" onClick={() => setSelectedLeads([])}>Discard</button>
             </div>
           )}
 

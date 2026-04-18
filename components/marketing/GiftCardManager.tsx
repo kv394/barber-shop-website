@@ -58,59 +58,59 @@ export default function GiftCardManager({ shopId }: { shopId: string }) {
       <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center">
         <div className="flex gap-6">
           <div>
-            <p className="text-crm-muted uppercase text-base md:text-lg">Total Sold</p>
-            <p className="font-bold text-crm-accent text-3xl md:text-4xl">${totalSold.toFixed(0)}</p>
+            <p className="text-crm-muted uppercase text-[13px]">Total Sold</p>
+            <p className="font-bold text-crm-accent text-xl font-bold">${totalSold.toFixed(0)}</p>
           </div>
           <div>
-            <p className="text-crm-muted uppercase text-base md:text-lg">Outstanding</p>
-            <p className="font-bold text-status-confirmed text-3xl md:text-4xl">${totalValue.toFixed(0)}</p>
+            <p className="text-crm-muted uppercase text-[13px]">Outstanding</p>
+            <p className="font-bold text-status-confirmed text-xl font-bold">${totalValue.toFixed(0)}</p>
           </div>
           <div>
-            <p className="text-crm-muted uppercase text-base md:text-lg">Cards Issued</p>
-            <p className="font-bold text-crm-text text-3xl md:text-4xl">{cards.length}</p>
+            <p className="text-crm-muted uppercase text-[13px]">Cards Issued</p>
+            <p className="font-bold text-crm-text text-xl font-bold">{cards.length}</p>
           </div>
         </div>
-        <button onClick={() => setShowForm(!showForm)} className="bg-crm-primary text-white font-bold px-4 py-2 rounded-lg text-sm hover:bg-crm-surface hover:text-crm-primary border border-transparent hover:border-crm-primary/30 transition-colors">
+        <button onClick={() => setShowForm(!showForm)} className="bg-crm-primary text-white font-bold px-4 py-2 rounded-lg text-[13px] hover:bg-crm-surface hover:text-crm-primary border border-transparent hover:border-crm-primary/30 transition-colors">
           {showForm ? 'Cancel' : '+ Create Gift Card'}
         </button>
       </div>
 
       {showForm && (
         <div className="bg-crm-surface p-6 rounded-lg border border-crm-border shadow-sm space-y-4">
-          {error && <p className="text-status-cancelled text-base md:text-lg">{error}</p>}
+          {error && <p className="text-status-cancelled text-[13px]">{error}</p>}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-crm-muted mb-1 text-sm">Amount ($) *</label>
-              <input type="number" min="5" step="5" value={amount} onChange={e => setAmount(e.target.value)} className="w-full bg-crm-surface border border-crm-border shadow-sm rounded p-2 text-crm-text text-sm focus:outline-none focus:border-brand-gold" />
+              <label className="block text-crm-muted mb-1 text-[13px]">Amount ($) *</label>
+              <input type="number" min="5" step="5" value={amount} onChange={e => setAmount(e.target.value)} className="w-full bg-crm-surface border border-crm-border shadow-sm rounded p-2 text-crm-text text-[13px] focus:outline-none focus:border-brand-gold" />
             </div>
             <div>
-              <label className="block text-crm-muted mb-1 text-sm">Recipient Name</label>
-              <input type="text" value={recipientName} onChange={e => setRecipientName(e.target.value)} placeholder="John Doe" className="w-full bg-crm-surface border border-crm-border shadow-sm rounded p-2 text-crm-text text-sm placeholder-gray-600 focus:outline-none focus:border-brand-gold" />
+              <label className="block text-crm-muted mb-1 text-[13px]">Recipient Name</label>
+              <input type="text" value={recipientName} onChange={e => setRecipientName(e.target.value)} placeholder="John Doe" className="w-full bg-crm-surface border border-crm-border shadow-sm rounded p-2 text-crm-text text-[13px] placeholder-gray-600 focus:outline-none focus:border-brand-gold" />
             </div>
             <div>
-              <label className="block text-crm-muted mb-1 text-sm">Recipient Email (sends card)</label>
-              <input type="email" value={recipientEmail} onChange={e => setRecipientEmail(e.target.value)} placeholder="recipient@email.com" className="w-full bg-crm-surface border border-crm-border shadow-sm rounded p-2 text-crm-text text-sm placeholder-gray-600 focus:outline-none focus:border-brand-gold" />
+              <label className="block text-crm-muted mb-1 text-[13px]">Recipient Email (sends card)</label>
+              <input type="email" value={recipientEmail} onChange={e => setRecipientEmail(e.target.value)} placeholder="recipient@email.com" className="w-full bg-crm-surface border border-crm-border shadow-sm rounded p-2 text-crm-text text-[13px] placeholder-gray-600 focus:outline-none focus:border-brand-gold" />
             </div>
             <div>
-              <label className="block text-crm-muted mb-1 text-sm">Purchaser Email</label>
-              <input type="email" value={purchaserEmail} onChange={e => setPurchaserEmail(e.target.value)} placeholder="buyer@email.com" className="w-full bg-crm-surface border border-crm-border shadow-sm rounded p-2 text-crm-text text-sm placeholder-gray-600 focus:outline-none focus:border-brand-gold" />
+              <label className="block text-crm-muted mb-1 text-[13px]">Purchaser Email</label>
+              <input type="email" value={purchaserEmail} onChange={e => setPurchaserEmail(e.target.value)} placeholder="buyer@email.com" className="w-full bg-crm-surface border border-crm-border shadow-sm rounded p-2 text-crm-text text-[13px] placeholder-gray-600 focus:outline-none focus:border-brand-gold" />
             </div>
           </div>
-          <button onClick={handleCreate} disabled={creating || !amount} className="bg-crm-primary text-white font-bold px-6 py-2 rounded-lg text-sm hover:bg-crm-surface hover:text-crm-primary border border-transparent hover:border-crm-primary/30 transition-colors disabled:opacity-50">
+          <button onClick={handleCreate} disabled={creating || !amount} className="bg-crm-primary text-white font-bold px-6 py-2 rounded-lg text-[13px] hover:bg-crm-surface hover:text-crm-primary border border-transparent hover:border-crm-primary/30 transition-colors disabled:opacity-50">
             {creating ? 'Creating…' : 'Create & Send Gift Card'}
           </button>
         </div>
       )}
 
       {loading ? (
-        <p className="text-crm-muted text-center py-8 animate-pulse text-base md:text-lg">Loading…</p>
+        <p className="text-crm-muted text-center py-8 animate-pulse text-[13px]">Loading…</p>
       ) : cards.length === 0 ? (
-        <p className="text-crm-muted italic text-center py-8 border border-dashed border-crm-border rounded text-base md:text-lg">No gift cards created yet.</p>
+        <p className="text-crm-muted italic text-center py-8 border border-dashed border-crm-border rounded text-[13px]">No gift cards created yet.</p>
       ) : (
         <div className="overflow-x-auto">
-          <table className="w-full text-sm">
+          <table className="w-full text-[13px]">
             <thead>
-              <tr className="border-b border-crm-border text-crm-muted text-xs uppercase">
+              <tr className="border-b border-crm-border text-crm-muted text-[11px] uppercase">
                 <th className="text-left p-3">Code</th>
                 <th className="text-left p-3">Recipient</th>
                 <th className="text-right p-3">Value</th>
@@ -122,16 +122,16 @@ export default function GiftCardManager({ shopId }: { shopId: string }) {
             <tbody>
               {cards.map(card => (
                 <tr key={card.id} className="border-b border-crm-border hover:bg-crm-surface">
-                  <td className="p-3 font-mono text-crm-accent font-bold tracking-wider text-xs">{card.code}</td>
+                  <td className="p-3 font-mono text-crm-accent font-bold tracking-wider text-[11px]">{card.code}</td>
                   <td className="p-3 text-crm-muted">{card.recipientName || card.recipientEmail || '—'}</td>
                   <td className="p-3 text-right text-crm-text">${card.initialBalance.toFixed(2)}</td>
                   <td className="p-3 text-right font-semibold text-status-confirmed">${card.currentBalance.toFixed(2)}</td>
                   <td className="p-3 text-center">
-                    <span className={`text-sm font-bold px-2 py-0.5 rounded-full ${card.status === 'ACTIVE' ? 'bg-status-confirmed/20 text-status-confirmed' : card.status === 'REDEEMED' ? 'bg-status-info/20 text-status-info' : 'bg-crm-surface/40 text-crm-muted'}`}>
+                    <span className={`text-[13px] font-bold px-2 py-0.5 rounded-full ${card.status === 'ACTIVE' ? 'bg-status-confirmed/20 text-status-confirmed' : card.status === 'REDEEMED' ? 'bg-status-info/20 text-status-info' : 'bg-crm-surface/40 text-crm-muted'}`}>
                       {card.status}
                     </span>
                   </td>
-                  <td className="p-3 text-right text-crm-muted text-xs">{new Date(card.createdAt).toLocaleDateString()}</td>
+                  <td className="p-3 text-right text-crm-muted text-[11px]">{new Date(card.createdAt).toLocaleDateString()}</td>
                 </tr>
               ))}
             </tbody>

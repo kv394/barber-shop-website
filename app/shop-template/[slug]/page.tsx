@@ -91,8 +91,8 @@ export default async function PublicShopPage({
     return (
       <div className="h-[100dvh] overflow-y-auto overflow-x-hidden">
         <div className="text-center">
-          <h1 className="font-bold text-crm-text mb-4 text-4xl md:text-5xl lg:text-6xl">Shop Not Found</h1>
-          <p className="text-crm-muted text-base md:text-lg">We couldn't find the shop you're looking for.</p>
+          <h1 className="font-bold text-crm-text mb-4 text-2xl font-bold">Shop Not Found</h1>
+          <p className="text-crm-muted text-[13px]">We couldn't find the shop you're looking for.</p>
         </div>
       </div>
     );
@@ -154,10 +154,10 @@ export default async function PublicShopPage({
             </div>
             {/* Desktop Navigation */}
             <div className="hidden md:flex items-center gap-10">
-              <a className="text-stone-400 hover:text-white transition-colors font-body text-sm tracking-wide uppercase" href="#services">Services</a>
-              <a className="text-stone-400 hover:text-white transition-colors font-body text-sm tracking-wide uppercase" href="#gallery">Gallery</a>
-              <a className="text-stone-400 hover:text-white transition-colors font-body text-sm tracking-wide uppercase" href="#about">About</a>
-              <a className="text-stone-400 hover:text-white transition-colors font-body text-sm tracking-wide uppercase" href="#contact">Contact</a>
+              <a className="text-stone-400 hover:text-white transition-colors font-body text-[13px] tracking-wide uppercase" href="#services">Services</a>
+              <a className="text-stone-400 hover:text-white transition-colors font-body text-[13px] tracking-wide uppercase" href="#gallery">Gallery</a>
+              <a className="text-stone-400 hover:text-white transition-colors font-body text-[13px] tracking-wide uppercase" href="#about">About</a>
+              <a className="text-stone-400 hover:text-white transition-colors font-body text-[13px] tracking-wide uppercase" href="#contact">Contact</a>
             </div>
             <div className="flex items-center gap-6">
               <button 
@@ -175,14 +175,14 @@ export default async function PublicShopPage({
           <section className="relative min-h-[921px] flex items-center px-8 md:px-16 overflow-hidden">
             <div className="max-w-7xl mx-auto w-full grid grid-cols-1 md:grid-cols-12 gap-12 items-center">
               <div className="md:col-span-6 z-10">
-                <span className="font-label tracking-[0.2em] uppercase text-xs mb-6 block" style={{ color: primaryColor }}>
+                <span className="font-label tracking-[0.2em] uppercase text-[11px] mb-6 block" style={{ color: primaryColor }}>
                   {editorial.heroTagline || 'Editorial Excellence'}
                 </span>
                 <h1 
-                  className="font-headline leading-[1.1] mb-8 tracking-tight text-4xl md:text-5xl lg:text-6xl"
+                  className="font-headline leading-[1.1] mb-8 tracking-tight text-2xl font-bold"
                   dangerouslySetInnerHTML={{ __html: editorial.heroTitle || `Your Sanctuary of <br/> <span class="italic" style="color: ${primaryColor}">Sophisticated Care</span>` }}
                 />
-                <p className="text-[#d0c5af] font-body max-w-md mb-10 leading-relaxed text-base md:text-lg">
+                <p className="text-[#d0c5af] font-body max-w-md mb-10 leading-relaxed text-[13px]">
                   {editorial.heroSubtitle || 'Experience beauty as an art form. Our atelier provides a curated space for those who appreciate the finer details of self-ceremony.'}
                 </p>
                 <div className="flex items-center gap-4">
@@ -206,7 +206,7 @@ export default async function PublicShopPage({
                   src={editorial.heroImage || "https://lh3.googleusercontent.com/aida-public/AB6AXuAPRu8QRu8seSz1ZA0n6LiPGRgqS7aZEcjxutc8fOcO1ZIkoJH2Umtws1TFTbdJwWCpmXEE_T0bVF00Q1EwlHR5KpYdbkMHCu2nUg2NAe5C2pfVotvKBcYkKM63pa2s4XXMCSh4EVxf389QPikRuNYPp_EHSwR5QQSbPcaysTObNr3wOBttSWwh41x9HEbYtenN4fQFtQfUC-criMC9c8Li4jj4D1-zB8_8LZYeg0ReRDBSudtfcTLc4qJDHasnl5yxlX6EAv0YYbw"}
                 />
                 <div className="absolute bottom-12 -left-12 bg-[#0d0f0d] p-6 rounded-2xl shadow-lg hidden lg:block">
-                  <p className="font-headline italic text-base md:text-lg" style={{ color: primaryColor }}>"The standard of beauty refined."</p>
+                  <p className="font-headline italic text-[13px]" style={{ color: primaryColor }}>"The standard of beauty refined."</p>
                 </div>
               </div>
             </div>
@@ -216,9 +216,9 @@ export default async function PublicShopPage({
           <section id="services" className="py-32 px-8 bg-[#1a1c1a]">
             <div className="max-w-7xl mx-auto">
               <div className="text-center mb-20">
-                <h2 className="font-headline mb-4 text-3xl md:text-4xl">{editorial.servicesTitle || 'Our Services'}</h2>
+                <h2 className="font-headline mb-4 text-xl font-bold">{editorial.servicesTitle || 'Our Services'}</h2>
                 <div className="w-24 h-px mx-auto mb-6" style={{ backgroundColor: primaryColor }}></div>
-                <p className="font-body text-[#d0c5af] max-w-xl mx-auto text-base md:text-lg">{editorial.servicesSubtitle || "A curated selection of rituals designed to restore your glow and refine your natural elegance."}</p>
+                <p className="font-body text-[#d0c5af] max-w-xl mx-auto text-[13px]">{editorial.servicesSubtitle || "A curated selection of rituals designed to restore your glow and refine your natural elegance."}</p>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                 {shop.services?.map((service: any, index: number) => (
@@ -226,12 +226,12 @@ export default async function PublicShopPage({
                     <div className="w-16 h-16 bg-[#292a29] rounded-full flex items-center justify-center mb-8 text-[#d0c5af]">
                       <span className="material-symbols-outlined text-3xl">{['spa', 'face', 'fluid_med'][index % 3] || 'spa'}</span>
                     </div>
-                    <h3 className="font-headline mb-4 text-2xl md:text-3xl">{service.name}</h3>
-                    <p className="text-[#d0c5af] mb-8 leading-relaxed text-base md:text-lg">{service.description}</p>
-                    <div className="text-sm font-bold text-white mb-4">${service.price.toFixed(2)} &bull; {service.duration}m</div>
+                    <h3 className="font-headline mb-4 text-lg font-bold">{service.name}</h3>
+                    <p className="text-[#d0c5af] mb-8 leading-relaxed text-[13px]">{service.description}</p>
+                    <div className="text-[13px] font-bold text-white mb-4">${service.price.toFixed(2)} &bull; {service.duration}m</div>
                     <button className="font-semibold flex items-center gap-2 group/link" style={{ color: primaryColor }}>
                       Book This
-                      <span className="material-symbols-outlined text-sm group-hover/link:translate-x-1 transition-transform">east</span>
+                      <span className="material-symbols-outlined text-[13px] group-hover/link:translate-x-1 transition-transform">east</span>
                     </button>
                   </div>
                 ))}
@@ -244,8 +244,8 @@ export default async function PublicShopPage({
             <div className="max-w-7xl mx-auto">
               <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
                 <div>
-                  <span className="font-label tracking-widest uppercase text-xs mb-2 block" style={{ color: primaryColor }}>{editorial.gallerySubtitle || 'Our Work'}</span>
-                  <h2 className="font-headline text-3xl md:text-4xl">{editorial.galleryTitle || 'The Gallery'}</h2>
+                  <span className="font-label tracking-widest uppercase text-[11px] mb-2 block" style={{ color: primaryColor }}>{editorial.gallerySubtitle || 'Our Work'}</span>
+                  <h2 className="font-headline text-xl font-bold">{editorial.galleryTitle || 'The Gallery'}</h2>
                 </div>
               </div>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 auto-rows-[200px]">
@@ -281,7 +281,7 @@ export default async function PublicShopPage({
                 <div className="grid grid-cols-1 md:grid-cols-12 gap-16 items-center">
                   <div className="md:col-span-4">
                     <h2 
-                      className="font-headline mb-6 leading-tight text-3xl md:text-4xl"
+                      className="font-headline mb-6 leading-tight text-xl font-bold"
                       dangerouslySetInnerHTML={{ __html: editorial.testimonialsTitle || `Reflections <br/>from Our <br/><span class="italic" style="color: ${primaryColor}">Atelier Guests</span>` }}
                     />
                   </div>
@@ -289,12 +289,12 @@ export default async function PublicShopPage({
                     {editorial.testimonials.slice(0,2).map((t: any, i: number) => (
                       <div key={i} className={`bg-[#0d0f0d] p-10 rounded-3xl shadow-sm max-w-sm ${i === 1 ? 'hidden md:block opacity-60' : ''}`}>
                         <span className="material-symbols-outlined text-5xl mb-6" style={{ color: secondaryColor }}>format_quote</span>
-                        <p className="font-body italic text-[#e3e2e0] mb-8 leading-relaxed text-base md:text-lg">"{t.quote}"</p>
+                        <p className="font-body italic text-[#e3e2e0] mb-8 leading-relaxed text-[13px]">"{t.quote}"</p>
                         <div className="flex items-center gap-4">
                           <div className="w-12 h-12 rounded-full bg-[#292a29]"></div>
                           <div>
-                            <p className="font-bold text-[#e3e2e0] text-base md:text-lg">{t.author}</p>
-                            <p className="text-[#d0c5af] uppercase tracking-widest text-base md:text-lg">{t.role}</p>
+                            <p className="font-bold text-[#e3e2e0] text-[13px]">{t.author}</p>
+                            <p className="text-[#d0c5af] uppercase tracking-widest text-[13px]">{t.role}</p>
                           </div>
                         </div>
                       </div>
@@ -310,20 +310,20 @@ export default async function PublicShopPage({
             <div className="max-w-7xl mx-auto">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
                 <div>
-                  <h2 className="font-headline mb-12 text-3xl md:text-4xl">{editorial.visitUsTitle || 'Visit the Atelier'}</h2>
+                  <h2 className="font-headline mb-12 text-xl font-bold">{editorial.visitUsTitle || 'Visit the Atelier'}</h2>
                   <div className="space-y-12">
                     <div className="flex gap-6">
                       <span className="material-symbols-outlined" style={{ color: primaryColor }}>location_on</span>
                       <div>
-                        <h4 className="font-bold mb-2 text-xl md:text-2xl">Our Location</h4>
-                        <p className="text-[#d0c5af] text-base md:text-lg">{shop.customization?.address || 'Address not provided'}</p>
+                        <h4 className="font-bold mb-2 text-base font-semibold">Our Location</h4>
+                        <p className="text-[#d0c5af] text-[13px]">{shop.customization?.address || 'Address not provided'}</p>
                       </div>
                     </div>
                     <div className="flex gap-6">
                       <span className="material-symbols-outlined" style={{ color: primaryColor }}>call</span>
                       <div>
-                        <h4 className="font-bold mb-2 text-xl md:text-2xl">Contact Details</h4>
-                        <p className="text-[#d0c5af] text-base md:text-lg">{shop.customization?.phone || 'Phone not provided'}<br/>{shop.customization?.email || 'Email not provided'}</p>
+                        <h4 className="font-bold mb-2 text-base font-semibold">Contact Details</h4>
+                        <p className="text-[#d0c5af] text-[13px]">{shop.customization?.phone || 'Phone not provided'}<br/>{shop.customization?.email || 'Email not provided'}</p>
                       </div>
                     </div>
                   </div>
@@ -337,7 +337,7 @@ export default async function PublicShopPage({
                       <div className="w-12 h-12 rounded-full mx-auto mb-4 flex items-center justify-center" style={{ backgroundColor: primaryColor }}>
                         <span className="material-symbols-outlined text-[#121412]">pin_drop</span>
                       </div>
-                      <p className="font-headline text-base md:text-lg">{shop.name}</p>
+                      <p className="font-headline text-[13px]">{shop.name}</p>
                     </div>
                   </div>
                 </div>
@@ -351,14 +351,14 @@ export default async function PublicShopPage({
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12 px-12 py-16 max-w-7xl mx-auto">
             <div className="space-y-6">
               <div className="text-xl font-headline text-stone-200">{shop.name}</div>
-              <p className="text-stone-400 font-body leading-relaxed text-base md:text-lg">{shop.description || "A destination for curated beauty and refined wellness."}</p>
+              <p className="text-stone-400 font-body leading-relaxed text-[13px]">{shop.description || "A destination for curated beauty and refined wellness."}</p>
             </div>
             <div className="flex flex-col items-start md:items-end space-y-6 md:col-start-3">
               <div className="flex gap-6">
                 <a className="hover:opacity-70 transition-all" style={{ color: primaryColor }} href="#"><span className="material-symbols-outlined">public</span></a>
                 <a className="hover:opacity-70 transition-all" style={{ color: primaryColor }} href="#"><span className="material-symbols-outlined">photo_camera</span></a>
               </div>
-              <p className="text-stone-400 font-body tracking-wide uppercase text-right text-base md:text-lg">
+              <p className="text-stone-400 font-body tracking-wide uppercase text-right text-[13px]">
                 &copy; {new Date().getFullYear()} {shop.name}.
               </p>
             </div>
@@ -371,42 +371,42 @@ export default async function PublicShopPage({
   if (templateType === 'minimal') {
     return (
       <main className="h-[100dvh] overflow-y-auto overflow-x-hidden">
-        <header className="max-w-4xl mx-auto px-6 py-12 border-b border-gray-100 flex flex-col md:flex-row justify-between items-end md:items-center">
+        <header className="max-w-4xl mx-auto px-6 py-12 border-b border-crm-border flex flex-col md:flex-row justify-between items-end md:items-center">
           <div>
-            <h1 className="font-light tracking-tight text-4xl md:text-5xl lg:text-6xl" style={{ color: primaryColor }}>{shop.name}</h1>
-            {shop.description && <p className="text-crm-muted mt-2 text-base md:text-lg">{shop.description}</p>}
+            <h1 className="font-light tracking-tight text-2xl font-bold" style={{ color: primaryColor }}>{shop.name}</h1>
+            {shop.description && <p className="text-crm-muted mt-2 text-[13px]">{shop.description}</p>}
           </div>
-          <div className="text-right mt-6 md:mt-0 text-sm text-crm-muted">
-             {shop.customization?.phone && <p className="text-base md:text-lg">{shop.customization.phone}</p>}
-             {shop.customization?.address && <p className="text-base md:text-lg">{shop.customization.address}</p>}
+          <div className="text-right mt-6 md:mt-0 text-[13px] text-crm-muted">
+             {shop.customization?.phone && <p className="text-[13px]">{shop.customization.phone}</p>}
+             {shop.customization?.address && <p className="text-[13px]">{shop.customization.address}</p>}
           </div>
         </header>
 
         <section className="max-w-4xl mx-auto px-6 py-16">
-          <h2 className="font-semibold tracking-widest uppercase text-crm-muted mb-10 text-3xl md:text-4xl">Service Menu</h2>
+          <h2 className="font-semibold tracking-widest uppercase text-crm-muted mb-10 text-xl font-bold">Service Menu</h2>
           {shop.services && shop.services.length > 0 ? (
             <div className="space-y-8">
               {shop.services.map((service: any) => (
                 <div key={service.id} className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-baseline group cursor-pointer">
                   <div className="flex-1 border-b border-dotted border-crm-border pb-1 mr-4">
-                    <h3 className="font-medium transition-colors text-2xl md:text-3xl" style={{ color: primaryColor }}>{service.name}</h3>
-                    {service.description && <p className="text-crm-muted mt-1 text-base md:text-lg">{service.description}</p>}
+                    <h3 className="font-medium transition-colors text-lg font-bold" style={{ color: primaryColor }}>{service.name}</h3>
+                    {service.description && <p className="text-crm-muted mt-1 text-[13px]">{service.description}</p>}
                   </div>
                   <div className="text-right">
                     <span className="font-medium">${service.price.toFixed(2)}</span>
-                    <span className="text-crm-muted text-xs ml-2">{service.duration}m</span>
+                    <span className="text-crm-muted text-[11px] ml-2">{service.duration}m</span>
                   </div>
                 </div>
               ))}
             </div>
           ) : (
-            <p className="text-crm-muted italic text-base md:text-lg">No services listed.</p>
+            <p className="text-crm-muted italic text-[13px]">No services listed.</p>
           )}
         </section>
 
         <section className="max-w-4xl mx-auto px-6 pb-20 text-center">
             <button 
-              className="px-8 py-3 text-crm-text transition-colors text-sm font-medium tracking-wide uppercase rounded-md"
+              className="px-8 py-3 text-crm-text transition-colors text-[13px] font-medium tracking-wide uppercase rounded-md"
               style={{ backgroundColor: primaryColor }}
             >
               Make an Appointment
@@ -420,17 +420,17 @@ export default async function PublicShopPage({
     return (
       <main className="h-[100dvh] overflow-y-auto overflow-x-hidden">
         <header className="border-b-4 border-[#2c1e16] py-16 text-center bg-[url('https://www.transparenttextures.com/patterns/aged-paper.png')]">
-          <h1 className="font-bold uppercase tracking-widest mb-4 text-4xl md:text-5xl lg:text-6xl" style={{ color: primaryColor }}>{shop.name}</h1>
+          <h1 className="font-bold uppercase tracking-widest mb-4 text-2xl font-bold" style={{ color: primaryColor }}>{shop.name}</h1>
           <div className="flex items-center justify-center space-x-4 mb-4">
             <div className="h-px w-16 bg-[#2c1e16]"></div>
             <span className="italic text-lg">Est. {new Date(shop.createdAt).getFullYear()}</span>
             <div className="h-px w-16 bg-[#2c1e16]"></div>
           </div>
-          {shop.description && <p className="max-w-xl mx-auto text-[#5a4634] text-base md:text-lg">{shop.description}</p>}
+          {shop.description && <p className="max-w-xl mx-auto text-[#5a4634] text-[13px]">{shop.description}</p>}
         </header>
 
         <section className="max-w-5xl mx-auto px-8 py-20">
-          <h2 className="font-bold text-center uppercase tracking-widest mb-16 relative text-3xl md:text-4xl">
+          <h2 className="font-bold text-center uppercase tracking-widest mb-16 relative text-xl font-bold">
             <span className="bg-[#fdfbf7] px-6 relative z-10">Our Services</span>
             <div className="absolute left-0 top-1/2 w-full h-px bg-[#e6d9c6] -z-0"></div>
           </h2>
@@ -438,11 +438,11 @@ export default async function PublicShopPage({
           <div className="grid md:grid-cols-2 gap-x-16 gap-y-12">
             {shop.services?.map((service: any) => (
               <div key={service.id} className="text-center">
-                <h3 className="font-bold mb-2 text-2xl md:text-3xl" style={{ color: primaryColor }}>{service.name}</h3>
-                <div className="font-sans text-[#8b7355] text-sm tracking-widest uppercase mb-3">
+                <h3 className="font-bold mb-2 text-lg font-bold" style={{ color: primaryColor }}>{service.name}</h3>
+                <div className="font-sans text-[#8b7355] text-[13px] tracking-widest uppercase mb-3">
                   ${service.price.toFixed(2)} &bull; {service.duration} MINS
                 </div>
-                {service.description && <p className="text-[#5a4634] italic text-base md:text-lg">{service.description}</p>}
+                {service.description && <p className="text-[#5a4634] italic text-[13px]">{service.description}</p>}
               </div>
             ))}
           </div>
@@ -457,9 +457,9 @@ export default async function PublicShopPage({
           </div>
         </section>
         
-        <footer className="bg-[#2c1e16] text-[#e6d9c6] py-12 text-center text-sm font-sans tracking-widest uppercase">
-             <p className="mb-2 text-base md:text-lg">{shop.customization?.address || 'Visit us today'}</p>
-             <p className="text-base md:text-lg">{shop.customization?.phone} | {shop.customization?.email}</p>
+        <footer className="bg-[#2c1e16] text-[#e6d9c6] py-12 text-center text-[13px] font-sans tracking-widest uppercase">
+             <p className="mb-2 text-[13px]">{shop.customization?.address || 'Visit us today'}</p>
+             <p className="text-[13px]">{shop.customization?.phone} | {shop.customization?.email}</p>
         </footer>
       </main>
     );
@@ -476,13 +476,13 @@ export default async function PublicShopPage({
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
           <div className="text-center">
             <h1 
-              className="font-bold mb-6 text-4xl md:text-5xl lg:text-6xl"
+              className="font-bold mb-6 text-2xl font-bold"
               style={{ color: primaryColor }}
             >
               {shop.name}
             </h1>
             {shop.description && (
-              <p className="text-crm-muted max-w-2xl mx-auto text-base md:text-lg">
+              <p className="text-crm-muted max-w-2xl mx-auto text-[13px]">
                 {shop.description}
               </p>
             )}
@@ -493,7 +493,7 @@ export default async function PublicShopPage({
       {/* Services Section */}
       <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
         <div className="mb-16">
-          <h2 className="font-bold text-crm-text mb-4 text-3xl md:text-4xl">Our Services</h2>
+          <h2 className="font-bold text-crm-text mb-4 text-xl font-bold">Our Services</h2>
           <div 
             className="w-20 h-1 rounded-full"
             style={{ background: `linear-gradient(to right, ${primaryColor}, ${secondaryColor})` }}
@@ -508,11 +508,11 @@ export default async function PublicShopPage({
                 className="group bg-gradient-to-br from-slate-800 to-slate-900 rounded-xl p-8 border border-crm-border shadow-sm transition-all duration-300 hover:shadow-lg"
               >
                 <div className="flex items-start justify-between mb-4">
-                  <h3 className="font-bold text-crm-text transition-colors text-2xl md:text-3xl">
+                  <h3 className="font-bold text-crm-text transition-colors text-lg font-bold">
                     {service.name}
                   </h3>
                   <div 
-                    className="px-3 py-1 rounded-full text-sm font-semibold"
+                    className="px-3 py-1 rounded-full text-[13px] font-semibold"
                     style={{ backgroundColor: `${primaryColor}20`, color: primaryColor }}
                   >
                     ${service.price.toFixed(2)}
@@ -520,17 +520,17 @@ export default async function PublicShopPage({
                 </div>
 
                 {service.description && (
-                  <p className="text-crm-muted mb-4 leading-relaxed text-base md:text-lg">
+                  <p className="text-crm-muted mb-4 leading-relaxed text-[13px]">
                     {service.description}
                   </p>
                 )}
 
                 <div className="flex items-center justify-between pt-4 border-t border-crm-border">
-                  <div className="text-crm-muted text-sm">
+                  <div className="text-crm-muted text-[13px]">
                     ⏱️ {service.duration} minutes
                   </div>
                   <button 
-                    className="text-crm-text px-4 py-2 rounded-lg font-semibold transition-opacity hover:opacity-90 text-sm"
+                    className="text-crm-text px-4 py-2 rounded-lg font-semibold transition-opacity hover:opacity-90 text-[13px]"
                     style={{ backgroundColor: primaryColor }}
                   >
                     Book Now
@@ -541,7 +541,7 @@ export default async function PublicShopPage({
           </div>
         ) : (
           <div className="text-center py-16">
-            <p className="text-crm-muted text-base md:text-lg">
+            <p className="text-crm-muted text-[13px]">
               No services available at the moment. Please check back later.
             </p>
           </div>
@@ -554,10 +554,10 @@ export default async function PublicShopPage({
         style={{ background: `linear-gradient(to right, ${primaryColor}, ${secondaryColor})` }}
       >
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="font-bold text-crm-text mb-6 text-3xl md:text-4xl">
+          <h2 className="font-bold text-crm-text mb-6 text-xl font-bold">
             Ready to Book?
           </h2>
-          <p className="text-crm-text mb-8 text-base md:text-lg">
+          <p className="text-crm-text mb-8 text-[13px]">
             Schedule your appointment today and get the best service in town.
           </p>
           <button 
@@ -574,17 +574,17 @@ export default async function PublicShopPage({
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
             <div>
-              <h3 className="text-crm-text font-bold mb-4 text-2xl md:text-3xl">{shop.name}</h3>
-              <p className="text-crm-muted mb-4 text-base md:text-lg">
+              <h3 className="text-crm-text font-bold mb-4 text-lg font-bold">{shop.name}</h3>
+              <p className="text-crm-muted mb-4 text-[13px]">
                 {shop.description || 'Your trusted service provider'}
               </p>
               {shop.customization?.address && (
-                <p className="text-crm-muted text-base md:text-lg">{shop.customization.address}</p>
+                <p className="text-crm-muted text-[13px]">{shop.customization.address}</p>
               )}
             </div>
             <div>
-              <h4 className="text-crm-text font-bold mb-4 text-xl md:text-2xl">Contact</h4>
-              <ul className="space-y-2 text-crm-muted text-sm">
+              <h4 className="text-crm-text font-bold mb-4 text-base font-semibold">Contact</h4>
+              <ul className="space-y-2 text-crm-muted text-[13px]">
                 {shop.customization?.phone && (
                   <li>
                     <a href={`tel:${shop.customization.phone}`} className="hover:text-crm-text transition">
@@ -607,7 +607,7 @@ export default async function PublicShopPage({
               </ul>
             </div>
             <div>
-              <h4 className="text-crm-text font-bold mb-4 text-xl md:text-2xl">Follow Us</h4>
+              <h4 className="text-crm-text font-bold mb-4 text-base font-semibold">Follow Us</h4>
               <div className="flex gap-4">
                 {shop.customization?.social?.facebook && (
                   <a
@@ -642,8 +642,8 @@ export default async function PublicShopPage({
               </div>
             </div>
           </div>
-          <div className="border-t border-crm-border pt-8 text-center text-crm-muted text-sm">
-            <p className="text-base md:text-lg">
+          <div className="border-t border-crm-border pt-8 text-center text-crm-muted text-[13px]">
+            <p className="text-[13px]">
               &copy; {new Date().getFullYear()} {shop.name}. All rights reserved.
             </p>
           </div>

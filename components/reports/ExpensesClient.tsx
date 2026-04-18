@@ -65,18 +65,18 @@ export default function ExpensesClient({ shopId }: { shopId: string }) {
       {/* Month Picker + Total */}
       <div className="flex flex-col sm:flex-row gap-4 mb-6">
         <div className="flex-1">
-          <label className="block text-crm-muted uppercase tracking-wider mb-1 text-sm">Month</label>
+          <label className="block text-crm-muted uppercase tracking-wider mb-1 text-[13px]">Month</label>
           <input type="month" value={month} onChange={e => setMonth(e.target.value)} style={inputStyle}
-            className="w-full border border-crm-border shadow-sm rounded p-2.5 text-sm focus:outline-none focus:border-brand-gold " />
+            className="w-full border border-crm-border shadow-sm rounded p-2.5 text-[13px] focus:outline-none focus:border-brand-gold " />
         </div>
         <div className="bg-crm-surface backdrop-blur-xl shadow-2xl rounded-2xl border border-crm-border shadow-sm flex-1 relative overflow-hidden group hover:bg-crm-surface transition-all duration-300 z-20">
           <div className="absolute top-0 left-0 w-full h-1 bg-status-cancelled/80"></div>
           <div className="p-5 sm:p-6">
             <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-2 sm:mb-3">
-              <h3 className="text-crm-muted uppercase tracking-widest font-semibold truncate text-xs">Total Expenses</h3>
-              <span className="text-status-cancelled text-sm">💸</span>
+              <h3 className="text-crm-muted uppercase tracking-widest font-semibold truncate text-[11px]">Total Expenses</h3>
+              <span className="text-status-cancelled text-[13px]">💸</span>
             </div>
-            <p className="font-black text-crm-text break-words leading-tight text-3xl md:text-4xl">${total.toFixed(2)}</p>
+            <p className="font-black text-crm-text break-words leading-tight text-xl font-bold">${total.toFixed(2)}</p>
           </div>
         </div>
       </div>
@@ -86,9 +86,9 @@ export default function ExpensesClient({ shopId }: { shopId: string }) {
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-6">
           {byCategory.map(c => (
             <div key={c.cat} className="bg-crm-surface p-3 rounded-lg border border-crm-border shadow-sm text-center">
-              <p className="text-base md:text-lg">{catEmojis[c.cat]}</p>
-              <p className="text-crm-muted text-base md:text-lg">{c.cat}</p>
-              <p className="font-bold text-crm-text text-3xl md:text-4xl">${c.total.toFixed(2)}</p>
+              <p className="text-[13px]">{catEmojis[c.cat]}</p>
+              <p className="text-crm-muted text-[13px]">{c.cat}</p>
+              <p className="font-bold text-crm-text text-xl font-bold">${c.total.toFixed(2)}</p>
             </div>
           ))}
         </div>
@@ -96,29 +96,29 @@ export default function ExpensesClient({ shopId }: { shopId: string }) {
 
       {/* Add Expense Form */}
       <form onSubmit={handleAdd} className="bg-crm-surface p-4 rounded-lg border border-crm-border shadow-sm mb-6 space-y-3">
-        <h3 className="font-bold text-crm-text mb-2 text-2xl md:text-3xl">+ Add Expense</h3>
+        <h3 className="font-bold text-crm-text mb-2 text-lg font-bold">+ Add Expense</h3>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
           <input type="number" step="0.01" min="0" value={amount} onChange={e => setAmount(e.target.value)} placeholder="Amount" required style={inputStyle}
-            className="border border-crm-border shadow-sm rounded p-2 text-sm focus:outline-none focus:border-brand-gold" />
+            className="border border-crm-border shadow-sm rounded p-2 text-[13px] focus:outline-none focus:border-brand-gold" />
           <select value={category} onChange={e => setCategory(e.target.value)} style={inputStyle}
-            className="border border-crm-border shadow-sm rounded p-2 text-sm focus:outline-none focus:border-brand-gold">
+            className="border border-crm-border shadow-sm rounded p-2 text-[13px] focus:outline-none focus:border-brand-gold">
             {CATEGORIES.map(c => <option key={c} value={c}>{catEmojis[c]} {c}</option>)}
           </select>
           <input type="text" value={description} onChange={e => setDescription(e.target.value)} placeholder="Description (optional)" style={inputStyle}
-            className="border border-crm-border shadow-sm rounded p-2 text-sm focus:outline-none focus:border-brand-gold" />
+            className="border border-crm-border shadow-sm rounded p-2 text-[13px] focus:outline-none focus:border-brand-gold" />
           <input type="date" value={date} onChange={e => setDate(e.target.value)} style={inputStyle}
-            className="border border-crm-border shadow-sm rounded p-2 text-sm focus:outline-none focus:border-brand-gold " />
+            className="border border-crm-border shadow-sm rounded p-2 text-[13px] focus:outline-none focus:border-brand-gold " />
         </div>
-        <button type="submit" disabled={adding} className="bg-status-cancelled hover:bg-status-cancelled text-crm-text font-bold py-2 px-6 rounded text-sm disabled:opacity-50 transition-colors">
+        <button type="submit" disabled={adding} className="bg-status-cancelled hover:bg-status-cancelled text-crm-text font-bold py-2 px-6 rounded text-[13px] disabled:opacity-50 transition-colors">
           {adding ? 'Adding...' : 'Add Expense'}
         </button>
       </form>
 
       {/* Expense List */}
       {loading ? (
-        <p className="text-crm-muted text-center py-8 text-base md:text-lg">Loading...</p>
+        <p className="text-crm-muted text-center py-8 text-[13px]">Loading...</p>
       ) : expenses.length === 0 ? (
-        <p className="text-crm-muted italic text-center py-8 border border-dashed border-crm-border rounded text-base md:text-lg">No expenses recorded for this month.</p>
+        <p className="text-crm-muted italic text-center py-8 border border-dashed border-crm-border rounded text-[13px]">No expenses recorded for this month.</p>
       ) : (
         <div className="space-y-2">
           {expenses.map(exp => (
@@ -126,13 +126,13 @@ export default function ExpensesClient({ shopId }: { shopId: string }) {
               <div className="flex items-center gap-3">
                 <span className="text-lg">{catEmojis[exp.category] || '📦'}</span>
                 <div>
-                  <p className="text-crm-text font-medium text-base md:text-lg">{exp.description || exp.category}</p>
-                  <p className="text-crm-muted text-base md:text-lg">{new Date(exp.date).toLocaleDateString()} · {exp.category}</p>
+                  <p className="text-crm-text font-medium text-[13px]">{exp.description || exp.category}</p>
+                  <p className="text-crm-muted text-[13px]">{new Date(exp.date).toLocaleDateString()} · {exp.category}</p>
                 </div>
               </div>
               <div className="flex items-center gap-3">
                 <span className="font-bold text-status-cancelled">${exp.amount.toFixed(2)}</span>
-                <button onClick={() => handleDelete(exp.id)} className="text-crm-muted hover:text-status-cancelled text-xs">✕</button>
+                <button onClick={() => handleDelete(exp.id)} className="text-crm-muted hover:text-status-cancelled text-[11px]">✕</button>
               </div>
             </div>
           ))}

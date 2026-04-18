@@ -69,11 +69,11 @@ export default function CreateServiceForm({ shopId }: { shopId: string }) {
 
   return (
     <form onSubmit={handleSubmit} className="mt-8 pt-6 border-t border-crm-border" noValidate>
-      <h3 className="font-serif text-crm-accent mb-6 text-2xl md:text-3xl">
+      <h3 className="font-serif text-crm-accent mb-6 text-lg font-bold">
         {isInternal ? 'Add Inventory Item' : 'Add New Service'}
       </h3>
       
-      {error && <div className="p-3 bg-status-cancelled/20 border border-status-cancelled text-red-200 rounded text-sm mb-4">{error}</div>}
+      {error && <div className="p-3 bg-status-cancelled/20 border border-status-cancelled text-red-200 rounded text-[13px] mb-4">{error}</div>}
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <select 
@@ -192,14 +192,14 @@ export default function CreateServiceForm({ shopId }: { shopId: string }) {
       {!isInternal && (
         <div className="flex items-center space-x-3 py-4 mt-4">
           <input type="checkbox" id="trackInventory" checked={trackInventory} onChange={(e) => setTrackInventory(e.target.checked)} className="w-4 h-4 accent-brand-gold bg-crm-border border-crm-border shadow-sm rounded focus:ring-crm-primary" />
-          <label htmlFor="trackInventory" className="text-crm-muted cursor-pointer select-none text-sm">
+          <label htmlFor="trackInventory" className="text-crm-muted cursor-pointer select-none text-[13px]">
             Enable Inventory Tracking for this service
           </label>
         </div>
       )}
 
       {isInternal && (
-          <div className="py-4 mt-4 text-sm text-status-info">
+          <div className="py-4 mt-4 text-[13px] text-status-info">
               ℹ️ Inventory tracking is automatically enabled for internal items.
           </div>
       )}

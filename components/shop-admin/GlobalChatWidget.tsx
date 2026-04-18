@@ -78,7 +78,7 @@ export default function GlobalChatWidget({ shopId, currentUserId, userRole }: { 
       >
         💬
         {unreadCount > 0 && !isOpen && (
-          <span className="absolute -top-1 -right-1 bg-status-cancelled text-crm-text text-sm font-black w-6 h-6 flex items-center justify-center rounded-full border-2 border-white shadow-md animate-bounce">
+          <span className="absolute -top-1 -right-1 bg-status-cancelled text-crm-text text-[13px] font-black w-6 h-6 flex items-center justify-center rounded-full border-2 border-white shadow-md animate-bounce">
             {unreadCount > 9 ? '9+' : unreadCount}
           </span>
         )}

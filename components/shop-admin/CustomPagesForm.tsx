@@ -58,7 +58,7 @@ export function CustomPagesForm({ shopId, customization }: { shopId: string; cus
   return (
     <div className="w-full mt-8">
       <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-6">
-        <h2 className="font-bold text-crm-text text-3xl md:text-4xl">Custom Pages (Menus)</h2>
+        <h2 className="font-bold text-crm-text text-xl font-bold">Custom Pages (Menus)</h2>
         <button
           onClick={addPage}
           className="bg-crm-primary text-white px-4 py-2 rounded font-bold hover:bg-crm-primary transition-colors"
@@ -68,13 +68,13 @@ export function CustomPagesForm({ shopId, customization }: { shopId: string; cus
       </div>
 
       {error && (
-        <div className="bg-status-cancelled/10 border border-status-cancelled text-status-cancelled p-4 rounded-lg mb-6 text-sm">
+        <div className="bg-status-cancelled/10 border border-status-cancelled text-status-cancelled p-4 rounded-lg mb-6 text-[13px]">
           {error}
         </div>
       )}
 
       {success && (
-        <div className="bg-status-confirmed/10 border border-status-confirmed text-status-confirmed p-4 rounded-lg mb-6 text-sm">
+        <div className="bg-status-confirmed/10 border border-status-confirmed text-status-confirmed p-4 rounded-lg mb-6 text-[13px]">
           Pages saved successfully!
         </div>
       )}
@@ -88,17 +88,17 @@ export function CustomPagesForm({ shopId, customization }: { shopId: string; cus
           {pages.map((page, index) => (
             <div key={page.id} className="bg-crm-surface p-6 rounded-lg border border-crm-border shadow-sm">
               <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-start mb-4">
-                <h3 className="font-bold text-crm-text text-2xl md:text-3xl">Page {index + 1}</h3>
+                <h3 className="font-bold text-crm-text text-lg font-bold">Page {index + 1}</h3>
                 <button
                   onClick={() => removePage(index)}
-                  className="text-status-cancelled hover:text-status-cancelled text-sm"
+                  className="text-status-cancelled hover:text-status-cancelled text-[13px]"
                 >
                   Remove
                 </button>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                 <div>
-                  <label className="block font-medium text-crm-muted mb-1 text-sm">Title (Menu Label)</label>
+                  <label className="block font-medium text-crm-muted mb-1 text-[13px]">Title (Menu Label)</label>
                   <input
                     type="text"
                     value={page.title}
@@ -107,7 +107,7 @@ export function CustomPagesForm({ shopId, customization }: { shopId: string; cus
                   />
                 </div>
                 <div>
-                  <label className="block font-medium text-crm-muted mb-1 text-sm">URL Slug / ID</label>
+                  <label className="block font-medium text-crm-muted mb-1 text-[13px]">URL Slug / ID</label>
                   <input
                     type="text"
                     value={page.id}
@@ -117,7 +117,7 @@ export function CustomPagesForm({ shopId, customization }: { shopId: string; cus
                 </div>
               </div>
               <div className="mb-4">
-                <label className="block font-medium text-crm-muted mb-1 text-sm">Content</label>
+                <label className="block font-medium text-crm-muted mb-1 text-[13px]">Content</label>
                 <textarea
                   value={page.content}
                   onChange={(e) => updatePage(index, 'content', e.target.value)}
@@ -134,7 +134,7 @@ export function CustomPagesForm({ shopId, customization }: { shopId: string; cus
                   onChange={(e) => updatePage(index, 'isVisible', e.target.checked)}
                   className="w-4 h-4 rounded border-crm-border text-crm-accent focus:ring-crm-primary bg-crm-bg"
                 />
-                <label htmlFor={`visible-${page.id}`} className="text-crm-muted text-sm">
+                <label htmlFor={`visible-${page.id}`} className="text-crm-muted text-[13px]">
                   Visible in public menu
                 </label>
               </div>

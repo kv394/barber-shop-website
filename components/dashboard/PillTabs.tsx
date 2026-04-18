@@ -19,10 +19,10 @@ export default function PillTabs() {
             )}
             <button
               onClick={() => setActiveTab(tab)}
-              className={`text-sm transition-colors px-5 py-3 ${
+              className={`text-[13px] transition-colors px-5 py-3 ${
                 isActive
-                  ? "bg-white text-gray-900 font-medium rounded-t-xl shadow-[0_-4px_6px_-2px_rgba(0,0,0,0.05)] relative z-10"
-                  : "text-gray-500 hover:text-gray-700"
+                  ? "bg-white text-crm-text font-medium rounded-t-xl shadow-[0_-4px_6px_-2px_rgba(0,0,0,0.05)] relative z-10"
+                  : "text-crm-muted hover:text-crm-text"
               }`}
             >
               {tab}

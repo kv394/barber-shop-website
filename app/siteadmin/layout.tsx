@@ -78,7 +78,7 @@ function NavLink({ href, label }: { href: string; label: string }) {
   return (
     <Link
       href={href}
-      className="block px-3 py-2 rounded-lg text-sm font-medium text-crm-muted hover:text-crm-text hover:bg-crm-bg transition-colors"
+      className="block px-3 py-2 rounded-lg text-[13px] font-medium text-crm-muted hover:text-crm-text hover:bg-crm-bg transition-colors"
     >
       {label}
     </Link>

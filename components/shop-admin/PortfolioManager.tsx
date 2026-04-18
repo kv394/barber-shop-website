@@ -58,19 +58,19 @@ export default function PortfolioManager({ shopId, currentUserId, userRole }: { 
 
   return (
     <div className="bg-crm-surface border border-crm-border shadow-sm rounded-xl p-6">
-      <h3 className="font-bold text-crm-text mb-2 text-2xl md:text-3xl">📸 Staff Portfolio</h3>
-      <p className="text-crm-muted mb-6 text-base md:text-lg">
+      <h3 className="font-bold text-crm-text mb-2 text-lg font-bold">📸 Staff Portfolio</h3>
+      <p className="text-crm-muted mb-6 text-[13px]">
         Upload photos of your best work (fade, nail art, coloring, etc.). Clients can view these when booking.
       </p>
 
       {/* Admin Staff Selector */}
       {(userRole === 'SHOP_ADMIN' || userRole === 'SITE_ADMIN') && staffList.length > 0 && (
         <div className="mb-6 p-4 bg-crm-surface rounded-lg border border-crm-border shadow-sm">
-          <label className="block text-crm-muted mb-2 uppercase tracking-wider text-sm">Select Staff Member Portfolio</label>
+          <label className="block text-crm-muted mb-2 uppercase tracking-wider text-[13px]">Select Staff Member Portfolio</label>
           <select 
             value={selectedStaffId}
             onChange={(e) => setSelectedStaffId(e.target.value)}
-            className="w-full bg-crm-surface border border-crm-border shadow-sm rounded px-3 py-2 text-crm-text text-sm focus:outline-none focus:border-brand-gold"
+            className="w-full bg-crm-surface border border-crm-border shadow-sm rounded px-3 py-2 text-crm-text text-[13px] focus:outline-none focus:border-brand-gold"
           >
             {staffList.map(s => (
               <option key={s.id} value={s.id}>{s.name} ({s.email})</option>
@@ -79,22 +79,22 @@ export default function PortfolioManager({ shopId, currentUserId, userRole }: { 
         </div>
       )}
 
-      {msg && <div className="mb-4 p-2 bg-status-confirmed/20 border border-status-confirmed/30 text-status-confirmed rounded text-sm">{msg}</div>}
+      {msg && <div className="mb-4 p-2 bg-status-confirmed/20 border border-status-confirmed/30 text-status-confirmed rounded text-[13px]">{msg}</div>}
 
       <form onSubmit={addImage} className="mb-8 p-4 bg-crm-bg/50 rounded-lg border border-crm-border shadow-sm space-y-4">
-        <h4 className="font-semibold text-crm-text text-xl md:text-2xl">Add New Photo</h4>
+        <h4 className="font-semibold text-crm-text text-base font-semibold">Add New Photo</h4>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label className="block text-crm-muted mb-1 text-sm">Image File or URL</label>
+            <label className="block text-crm-muted mb-1 text-[13px]">Image File or URL</label>
             <div className="flex gap-2">
               <input 
                 type="url" 
                 value={imageUrl} 
                 onChange={e => setImageUrl(e.target.value)} 
                 placeholder="e.g. https://..." 
-                className="flex-1 bg-crm-surface border border-crm-border shadow-sm rounded px-3 py-2 text-crm-text text-sm focus:outline-none focus:border-brand-gold" 
+                className="flex-1 bg-crm-surface border border-crm-border shadow-sm rounded px-3 py-2 text-crm-text text-[13px] focus:outline-none focus:border-brand-gold" 
               />
-              <span className="text-crm-muted py-2 text-sm">OR</span>
+              <span className="text-crm-muted py-2 text-[13px]">OR</span>
               <input 
                 type="file" 
                 accept="image/*"
@@ -120,25 +120,25 @@ export default function PortfolioManager({ shopId, currentUserId, userRole }: { 
                     setSaving(false);
                   }
                 }} 
-                className="flex-1 bg-crm-surface border border-crm-border shadow-sm rounded px-3 py-2 text-crm-text text-sm focus:outline-none focus:border-brand-gold file:mr-4 file:py-1 file:px-4 file:rounded file:border-0 file:text-sm file:bg-crm-primary/20 file:text-crm-primary hover:file:bg-crm-primary/30 hover:opacity-90" 
+                className="flex-1 bg-crm-surface border border-crm-border shadow-sm rounded px-3 py-2 text-crm-text text-[13px] focus:outline-none focus:border-brand-gold file:mr-4 file:py-1 file:px-4 file:rounded file:border-0 file:text-[13px] file:bg-crm-primary/20 file:text-crm-primary hover:file:bg-crm-primary/30 hover:opacity-90" 
               />
             </div>
           </div>
           <div>
-            <label className="block text-crm-muted mb-1 text-sm">Caption (Optional)</label>
+            <label className="block text-crm-muted mb-1 text-[13px]">Caption (Optional)</label>
             <input 
               type="text" 
               value={caption} 
               onChange={e => setCaption(e.target.value)} 
               placeholder="e.g. Balayage & Cut" 
-              className="w-full bg-crm-surface border border-crm-border shadow-sm rounded px-3 py-2 text-crm-text text-sm focus:outline-none focus:border-brand-gold" 
+              className="w-full bg-crm-surface border border-crm-border shadow-sm rounded px-3 py-2 text-crm-text text-[13px] focus:outline-none focus:border-brand-gold" 
             />
           </div>
         </div>
         <button 
           type="submit" 
           disabled={saving || !imageUrl.trim()} 
-          className="px-4 py-2 bg-crm-primary text-white rounded text-sm font-bold hover:bg-crm-surface hover:text-crm-primary border border-transparent hover:border-crm-primary/30 transition disabled:opacity-50"
+          className="px-4 py-2 bg-crm-primary text-white rounded text-[13px] font-bold hover:bg-crm-surface hover:text-crm-primary border border-transparent hover:border-crm-primary/30 transition disabled:opacity-50"
         >
           {saving ? 'Uploading...' : 'Add to Portfolio'}
         </button>
@@ -147,7 +147,7 @@ export default function PortfolioManager({ shopId, currentUserId, userRole }: { 
       {loading ? (
         <div className="animate-pulse text-crm-muted py-4">Loading portfolio...</div>
       ) : images.length === 0 ? (
-        <p className="text-crm-muted text-center py-8 border border-dashed border-crm-border rounded-lg text-base md:text-lg">No photos in portfolio yet.</p>
+        <p className="text-crm-muted text-center py-8 border border-dashed border-crm-border rounded-lg text-[13px]">No photos in portfolio yet.</p>
       ) : (
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
           {images.map(img => (
@@ -158,13 +158,13 @@ export default function PortfolioManager({ shopId, currentUserId, userRole }: { 
                 <div className="text-right">
                   <button 
                     onClick={() => removeImage(img.id)}
-                    className="bg-status-cancelled/80 hover:bg-status-cancelled text-crm-text w-8 h-8 rounded-full flex items-center justify-center text-xs shadow-lg backdrop-blur-md"
+                    className="bg-status-cancelled/80 hover:bg-status-cancelled text-crm-text w-8 h-8 rounded-full flex items-center justify-center text-[11px] shadow-lg backdrop-blur-md"
                   >
                     ✕
                   </button>
                 </div>
                 {img.caption && (
-                  <p className="text-crm-text font-medium truncate text-base md:text-lg">{img.caption}</p>
+                  <p className="text-crm-text font-medium truncate text-[13px]">{img.caption}</p>
                 )}
               </div>
             </div>

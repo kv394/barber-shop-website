@@ -128,7 +128,7 @@ export function ServiceManagement({ shopId }: ServiceManagementProps) {
   if (isLoading) {
     return (
       <div className="text-center py-8">
-        <p className="text-crm-muted text-base md:text-lg">Loading services...</p>
+        <p className="text-crm-muted text-[13px]">Loading services...</p>
       </div>
     );
   }
@@ -136,27 +136,27 @@ export function ServiceManagement({ shopId }: ServiceManagementProps) {
   return (
     <div className="w-full space-y-6 sm:space-y-8">
       <div>
-        <h2 className="font-bold text-crm-text mb-4 sm:mb-6 text-3xl md:text-4xl">Manage Services</h2>
+        <h2 className="font-bold text-crm-text mb-4 sm:mb-6 text-xl font-bold">Manage Services</h2>
 
         {error && (
-          <div className="bg-status-cancelled/10 border border-status-cancelled text-status-cancelled p-3 sm:p-4 rounded-lg mb-4 sm:mb-6 text-sm">
+          <div className="bg-status-cancelled/10 border border-status-cancelled text-status-cancelled p-3 sm:p-4 rounded-lg mb-4 sm:mb-6 text-[13px]">
             {error}
           </div>
         )}
 
         {success && (
-          <div className="bg-status-confirmed/10 border border-status-confirmed text-status-confirmed p-3 sm:p-4 rounded-lg mb-4 sm:mb-6 text-sm">
+          <div className="bg-status-confirmed/10 border border-status-confirmed text-status-confirmed p-3 sm:p-4 rounded-lg mb-4 sm:mb-6 text-[13px]">
             {success}
           </div>
         )}
 
         {/* Add Service Form */}
         <div className="bg-crm-surface p-4 sm:p-6 rounded-lg border border-crm-border shadow-sm mb-6 sm:mb-8">
-          <h3 className="font-bold text-crm-text mb-4 text-2xl md:text-3xl">Add New Service</h3>
+          <h3 className="font-bold text-crm-text mb-4 text-lg font-bold">Add New Service</h3>
           <form onSubmit={handleAddService} className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block font-medium text-crm-muted mb-2 text-sm">
+                <label className="block font-medium text-crm-muted mb-2 text-[13px]">
                   Service Name *
                 </label>
                 <input
@@ -170,7 +170,7 @@ export function ServiceManagement({ shopId }: ServiceManagementProps) {
               </div>
 
               <div>
-                <label className="block font-medium text-crm-muted mb-2 text-sm">
+                <label className="block font-medium text-crm-muted mb-2 text-[13px]">
                   Duration (minutes) *
                 </label>
                 <input
@@ -187,7 +187,7 @@ export function ServiceManagement({ shopId }: ServiceManagementProps) {
               </div>
 
               <div>
-                <label className="block font-medium text-crm-muted mb-2 text-sm">
+                <label className="block font-medium text-crm-muted mb-2 text-[13px]">
                   Price ($) *
                 </label>
                 <input
@@ -204,7 +204,7 @@ export function ServiceManagement({ shopId }: ServiceManagementProps) {
               </div>
               
               <div>
-                <label className="block font-medium text-crm-muted mb-2 text-sm">
+                <label className="block font-medium text-crm-muted mb-2 text-[13px]">
                   Service Type *
                 </label>
                 <select
@@ -218,7 +218,7 @@ export function ServiceManagement({ shopId }: ServiceManagementProps) {
               </div>
 
               <div className="md:col-span-2">
-                <label className="block font-medium text-crm-muted mb-2 text-sm">
+                <label className="block font-medium text-crm-muted mb-2 text-[13px]">
                   Description (optional)
                 </label>
                 <input
@@ -239,7 +239,7 @@ export function ServiceManagement({ shopId }: ServiceManagementProps) {
                 onChange={(e) => setNewService({ ...newService, trackInventory: e.target.checked })}
                 className="w-4 h-4 accent-blue-600 bg-crm-bg border-crm-border rounded"
               />
-              <label htmlFor="trackInventory" className="text-crm-muted cursor-pointer select-none text-sm">
+              <label htmlFor="trackInventory" className="text-crm-muted cursor-pointer select-none text-[13px]">
                 Enable Inventory Tracking for this service (e.g., track hair products used)
               </label>
             </div>
@@ -256,10 +256,10 @@ export function ServiceManagement({ shopId }: ServiceManagementProps) {
 
         {/* Services List */}
         <div>
-          <h3 className="font-bold text-crm-text mb-4 text-2xl md:text-3xl">Current Services</h3>
+          <h3 className="font-bold text-crm-text mb-4 text-lg font-bold">Current Services</h3>
           {services.length === 0 ? (
             <div className="bg-crm-surface p-8 rounded-lg border border-crm-border shadow-sm text-center">
-              <p className="text-crm-muted text-base md:text-lg">No services added yet. Create one above to get started!</p>
+              <p className="text-crm-muted text-[13px]">No services added yet. Create one above to get started!</p>
             </div>
           ) : (
             <div className="space-y-3">
@@ -271,18 +271,18 @@ export function ServiceManagement({ shopId }: ServiceManagementProps) {
                   <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center flex-wrap gap-2 mb-1">
-                          <h4 className="font-semibold text-crm-text text-xl md:text-2xl">{service.name}</h4>
-                          <div className={`text-sm sm:text-xs font-semibold px-2 py-0.5 sm:py-1 rounded border ${service.type === 'INTERNAL' ? 'bg-crm-accent/20 text-crm-accent border-crm-accent/30' : 'bg-status-confirmed/20 text-status-confirmed border-status-confirmed/30'}`}>
+                          <h4 className="font-semibold text-crm-text text-base font-semibold">{service.name}</h4>
+                          <div className={`text-[13px] sm:text-[11px] font-semibold px-2 py-0.5 sm:py-1 rounded border ${service.type === 'INTERNAL' ? 'bg-crm-accent/20 text-crm-accent border-crm-accent/30' : 'bg-status-confirmed/20 text-status-confirmed border-status-confirmed/30'}`}>
                               {service.type}
                           </div>
-                          <div className={`text-sm sm:text-xs font-semibold px-2 py-0.5 sm:py-1 rounded border ${service.trackInventory ? 'bg-status-info/20 text-status-info border-status-info/30' : 'bg-crm-surface text-crm-muted border-crm-border'}`}>
+                          <div className={`text-[13px] sm:text-[11px] font-semibold px-2 py-0.5 sm:py-1 rounded border ${service.trackInventory ? 'bg-status-info/20 text-status-info border-status-info/30' : 'bg-crm-surface text-crm-muted border-crm-border'}`}>
                               Inventory: {service.trackInventory ? 'ON' : 'OFF'}
                           </div>
                       </div>
                       {service.description && (
-                        <p className="text-crm-muted mt-1 text-base md:text-lg">{service.description}</p>
+                        <p className="text-crm-muted mt-1 text-[13px]">{service.description}</p>
                       )}
-                      <div className="flex gap-4 sm:gap-6 mt-2 text-xs sm:text-sm text-crm-muted">
+                      <div className="flex gap-4 sm:gap-6 mt-2 text-[11px] sm:text-[13px] text-crm-muted">
                         <span>💰 ${service.price.toFixed(2)}</span>
                         <span>⏱️ {service.duration} minutes</span>
                       </div>
@@ -290,7 +290,7 @@ export function ServiceManagement({ shopId }: ServiceManagementProps) {
 
                     <button
                       onClick={() => handleDeleteService(service.id, service.name)}
-                      className="bg-status-cancelled/20 hover:bg-status-cancelled/40 text-status-cancelled px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg transition-colors text-xs sm:text-sm shrink-0 self-start"
+                      className="bg-status-cancelled/20 hover:bg-status-cancelled/40 text-status-cancelled px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg transition-colors text-[11px] sm:text-[13px] shrink-0 self-start"
                     >
                       Delete
                     </button>
@@ -303,8 +303,8 @@ export function ServiceManagement({ shopId }: ServiceManagementProps) {
 
         {/* Info Box */}
         <div className="bg-status-info/10 border border-status-info/30 rounded-lg p-4 mt-6">
-          <h4 className="text-status-info font-semibold mb-2 text-xl md:text-2xl">ℹ️ Service Management Tips</h4>
-          <ul className="text-sm text-status-info space-y-1">
+          <h4 className="text-status-info font-semibold mb-2 text-base font-semibold">ℹ️ Service Management Tips</h4>
+          <ul className="text-[13px] text-status-info space-y-1">
             <li>• <strong>Customer-Facing Services</strong> are displayed on your public shop page for booking.</li>
             <li>• <strong>Internal Services</strong> are hidden from the public page, used for tracking inventory or add-ons.</li>
             <li>• Customers will see the service name, price, and duration.</li>

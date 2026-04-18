@@ -27,7 +27,7 @@ export default function CompleteWorkButton({ shopId, appointmentId, userName }: 
     <button
       onClick={handleCompleteWork}
       disabled={loading}
-      className="bg-crm-primary text-white text-xs font-bold px-4 py-2 rounded uppercase tracking-wider transition-colors disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap hover:opacity-90"
+      className="bg-crm-primary text-white text-[11px] font-bold px-4 py-2 rounded uppercase tracking-wider transition-colors disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap hover:opacity-90"
       title="Complete Work"
     >
       {loading ? '...' : 'Complete Work'}

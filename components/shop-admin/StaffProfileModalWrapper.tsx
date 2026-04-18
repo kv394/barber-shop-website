@@ -43,17 +43,17 @@ export default function StaffProfileModalWrapper({ staff, children }: { staff: a
               <span className="text-4xl">👤</span>
             )}
           </div>
-          <h2 className="font-bold text-crm-text mb-1 text-center text-3xl md:text-4xl">{staff.name || staff.email || 'Unnamed Staff'}</h2>
-          <span className="text-xs bg-crm-primary/20 text-crm-accent px-3 py-1 rounded-full uppercase tracking-wider font-bold mb-6 hover:opacity-90">
+          <h2 className="font-bold text-crm-text mb-1 text-center text-xl font-bold">{staff.name || staff.email || 'Unnamed Staff'}</h2>
+          <span className="text-[11px] bg-crm-primary/20 text-crm-accent px-3 py-1 rounded-full uppercase tracking-wider font-bold mb-6 hover:opacity-90">
             {staff.role?.replace('_', ' ')}
           </span>
 
           <div className="bg-crm-surface p-3 rounded-xl mb-6 shadow-sm">
             <QRCodeSVG value={staff.barcode || staff.id} size={120} level="H" />
-            <p className="text-center text-crm-muted font-mono mt-2 tracking-wider text-base md:text-lg">{staff.barcode || 'NO_CODE'}</p>
+            <p className="text-center text-crm-muted font-mono mt-2 tracking-wider text-[13px]">{staff.barcode || 'NO_CODE'}</p>
           </div>
           
-          <div className="w-full space-y-4 text-sm bg-crm-surface p-4 rounded-xl border border-crm-border shadow-sm">
+          <div className="w-full space-y-4 text-[13px] bg-crm-surface p-4 rounded-xl border border-crm-border shadow-sm">
             <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center border-b border-crm-border pb-3">
               <span className="text-crm-muted font-medium">Email</span>
               <span className="text-crm-text font-medium truncate ml-4">{staff.email}</span>

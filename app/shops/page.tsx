@@ -66,10 +66,10 @@ export default async function ShopsDirectoryPage({
       <section className="bg-crm-surface backdrop-blur-md border-b border-crm-border">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16 md:py-24">
           <div className="text-center">
-            <h1 className="font-bold text-crm-text mb-4 sm:mb-6 text-4xl md:text-5xl lg:text-6xl">
+            <h1 className="font-bold text-crm-text mb-4 sm:mb-6 text-2xl font-bold">
               Discover Top Shops
             </h1>
-            <p className="text-crm-muted max-w-2xl mx-auto text-base md:text-lg">
+            <p className="text-crm-muted max-w-2xl mx-auto text-[13px]">
               Find the best services near you. Browse through our network of
               quality shops and book your appointment today.
             </p>
@@ -83,11 +83,11 @@ export default async function ShopsDirectoryPage({
           <>
             <div className="mb-8 sm:mb-16 flex flex-col sm:flex-row sm:justify-between sm:items-end gap-2">
               <div>
-                <h2 className="font-bold text-crm-text mb-2 sm:mb-4 text-3xl md:text-4xl">
+                <h2 className="font-bold text-crm-text mb-2 sm:mb-4 text-xl font-bold">
                   Featured Shops
                 </h2>
                 <div className="w-20 h-1 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full"></div>
-                <p className="text-crm-muted mt-2 sm:mt-4 text-base md:text-lg">
+                <p className="text-crm-muted mt-2 sm:mt-4 text-[13px]">
                   Showing {shops.length} of {totalCount} shop{totalCount !== 1 ? 's' : ''}
                 </p>
               </div>
@@ -110,12 +110,12 @@ export default async function ShopsDirectoryPage({
 
                       {/* Shop Info */}
                       <div className="p-6 flex flex-col flex-grow">
-                        <h3 className="font-bold text-crm-text group-hover:text-status-info transition-colors mb-2 text-2xl md:text-3xl">
+                        <h3 className="font-bold text-crm-text group-hover:text-status-info transition-colors mb-2 text-lg font-bold">
                           {shop.name}
                         </h3>
 
                         {shop.description && (
-                          <p className="text-crm-muted mb-4 line-clamp-2 flex-grow text-base md:text-lg">
+                          <p className="text-crm-muted mb-4 line-clamp-2 flex-grow text-[13px]">
                             {shop.description}
                           </p>
                         )}
@@ -123,18 +123,18 @@ export default async function ShopsDirectoryPage({
                         {/* Stats */}
                         <div className="flex gap-4 py-4 border-t border-b border-crm-border mt-auto">
                           <div className="flex-1">
-                            <p className="text-crm-muted uppercase tracking-wider text-base md:text-lg">
+                            <p className="text-crm-muted uppercase tracking-wider text-[13px]">
                               Services
                             </p>
-                            <p className="text-crm-text font-bold text-base md:text-lg">
+                            <p className="text-crm-text font-bold text-[13px]">
                               {shop._count?.services || 0}
                             </p>
                           </div>
                           <div className="flex-1">
-                            <p className="text-crm-muted uppercase tracking-wider text-base md:text-lg">
+                            <p className="text-crm-muted uppercase tracking-wider text-[13px]">
                               Team
                             </p>
-                            <p className="text-crm-text font-bold text-base md:text-lg">
+                            <p className="text-crm-text font-bold text-[13px]">
                               {shop._count?.users || 0}
                             </p>
                           </div>
@@ -157,29 +157,29 @@ export default async function ShopsDirectoryPage({
                 {currentPage > 1 ? (
                   <Link 
                     href={`/shops?page=${currentPage - 1}`}
-                    className="px-5 sm:px-6 py-2 bg-crm-surface hover:bg-crm-surface text-crm-text rounded-lg transition-colors border border-slate-600 text-sm w-full sm:w-auto text-center"
+                    className="px-5 sm:px-6 py-2 bg-crm-surface hover:bg-crm-surface text-crm-text rounded-lg transition-colors border border-slate-600 text-[13px] w-full sm:w-auto text-center"
                   >
                     ← Previous
                   </Link>
                 ) : (
-                  <span className="px-5 sm:px-6 py-2 bg-crm-surface text-crm-muted rounded-lg border border-crm-border shadow-sm cursor-not-allowed text-sm w-full sm:w-auto text-center">
+                  <span className="px-5 sm:px-6 py-2 bg-crm-surface text-crm-muted rounded-lg border border-crm-border shadow-sm cursor-not-allowed text-[13px] w-full sm:w-auto text-center">
                     ← Previous
                   </span>
                 )}
                 
-                <span className="text-crm-muted text-sm">
+                <span className="text-crm-muted text-[13px]">
                   Page <span className="text-crm-text font-bold">{currentPage}</span> of {totalPages}
                 </span>
 
                 {currentPage < totalPages ? (
                   <Link 
                     href={`/shops?page=${currentPage + 1}`}
-                    className="px-5 sm:px-6 py-2 bg-crm-surface hover:bg-crm-surface text-crm-text rounded-lg transition-colors border border-slate-600 text-sm w-full sm:w-auto text-center"
+                    className="px-5 sm:px-6 py-2 bg-crm-surface hover:bg-crm-surface text-crm-text rounded-lg transition-colors border border-slate-600 text-[13px] w-full sm:w-auto text-center"
                   >
                     Next →
                   </Link>
                 ) : (
-                  <span className="px-5 sm:px-6 py-2 bg-crm-surface text-crm-muted rounded-lg border border-crm-border shadow-sm cursor-not-allowed text-sm w-full sm:w-auto text-center">
+                  <span className="px-5 sm:px-6 py-2 bg-crm-surface text-crm-muted rounded-lg border border-crm-border shadow-sm cursor-not-allowed text-[13px] w-full sm:w-auto text-center">
                     Next →
                   </span>
                 )}
@@ -188,8 +188,8 @@ export default async function ShopsDirectoryPage({
           </>
         ) : (
           <div className="text-center py-20">
-            <p className="text-crm-muted mb-4 text-base md:text-lg">No shops available yet.</p>
-            <p className="text-crm-muted text-base md:text-lg">
+            <p className="text-crm-muted mb-4 text-[13px]">No shops available yet.</p>
+            <p className="text-crm-muted text-[13px]">
               Check back soon for new shops to explore!
             </p>
           </div>
@@ -199,7 +199,7 @@ export default async function ShopsDirectoryPage({
       {/* Features Section */}
       <section className="bg-crm-surface py-12 sm:py-20 border-t border-crm-border">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="font-bold text-crm-text text-center mb-8 sm:mb-16 text-3xl md:text-4xl">
+          <h2 className="font-bold text-crm-text text-center mb-8 sm:mb-16 text-xl font-bold">
             Why Choose Us?
           </h2>
 
@@ -229,10 +229,10 @@ export default async function ShopsDirectoryPage({
                 className="text-center bg-crm-surface rounded-lg p-6 sm:p-8 border border-crm-border shadow-sm hover:border-blue-500 transition-colors"
               >
                 <div className="text-3xl sm:text-4xl mb-3 sm:mb-4">{feature.icon}</div>
-                <h3 className="font-bold text-crm-text mb-2 sm:mb-3 text-2xl md:text-3xl">
+                <h3 className="font-bold text-crm-text mb-2 sm:mb-3 text-lg font-bold">
                   {feature.title}
                 </h3>
-                <p className="text-crm-muted text-base md:text-lg">{feature.description}</p>
+                <p className="text-crm-muted text-[13px]">{feature.description}</p>
               </div>
             ))}
           </div>
@@ -242,14 +242,14 @@ export default async function ShopsDirectoryPage({
       {/* CTA Section */}
       <section className="bg-gradient-to-r from-blue-600 to-cyan-600 py-10 sm:py-16">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="font-bold text-crm-text mb-4 sm:mb-6 text-3xl md:text-4xl">
+          <h2 className="font-bold text-crm-text mb-4 sm:mb-6 text-xl font-bold">
             Ready to Start?
           </h2>
-          <p className="text-blue-100 mb-6 sm:mb-8 text-base md:text-lg">
+          <p className="text-blue-100 mb-6 sm:mb-8 text-[13px]">
             Browse our shops, find the perfect service, and book your appointment
             today.
           </p>
-          <button className="bg-crm-surface hover:bg-gray-100 text-status-info font-bold py-3 px-8 rounded-lg transition-colors text-lg">
+          <button className="bg-crm-surface hover:bg-crm-surface text-status-info font-bold py-3 px-8 rounded-lg transition-colors text-lg">
             Explore Shops
           </button>
         </div>
@@ -260,13 +260,13 @@ export default async function ShopsDirectoryPage({
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
             <div>
-              <h3 className="text-crm-text font-bold mb-4 text-2xl md:text-3xl">ShopHub</h3>
-              <p className="text-crm-muted text-base md:text-lg">
+              <h3 className="text-crm-text font-bold mb-4 text-lg font-bold">ShopHub</h3>
+              <p className="text-crm-muted text-[13px]">
                 Your one-stop destination for quality services.
               </p>
             </div>
             <div>
-              <h4 className="text-crm-text font-bold mb-4 text-xl md:text-2xl">Quick Links</h4>
+              <h4 className="text-crm-text font-bold mb-4 text-base font-semibold">Quick Links</h4>
               <ul className="space-y-2 text-crm-muted">
                 <li>
                   <a href="#" className="hover:text-crm-text transition">
@@ -286,7 +286,7 @@ export default async function ShopsDirectoryPage({
               </ul>
             </div>
             <div>
-              <h4 className="text-crm-text font-bold mb-4 text-xl md:text-2xl">Follow Us</h4>
+              <h4 className="text-crm-text font-bold mb-4 text-base font-semibold">Follow Us</h4>
               <div className="flex gap-4">
                 <a
                   href="#"
@@ -309,8 +309,8 @@ export default async function ShopsDirectoryPage({
               </div>
             </div>
           </div>
-          <div className="border-t border-crm-border pt-8 text-center text-crm-muted text-sm">
-            <p className="text-base md:text-lg">&copy; {new Date().getFullYear()} ShopHub. All rights reserved.</p>
+          <div className="border-t border-crm-border pt-8 text-center text-crm-muted text-[13px]">
+            <p className="text-[13px]">&copy; {new Date().getFullYear()} ShopHub. All rights reserved.</p>
           </div>
         </div>
       </footer>

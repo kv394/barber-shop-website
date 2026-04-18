@@ -151,15 +151,15 @@ export default function RescheduleModal({
       <div className="bg-crm-surface rounded-xl p-6 w-full max-w-md border border-crm-border shadow-sm shadow-2xl relative text-left max-h-[90vh] overflow-y-auto">
         <button onClick={onClose} className="absolute top-4 right-4 text-crm-muted hover:text-crm-text bg-crm-surface rounded-full w-8 h-8 flex items-center justify-center">✕</button>
 
-        <h3 className="font-bold text-crm-text mb-1 text-2xl md:text-3xl">Reschedule Appointment</h3>
-        <p className="text-crm-accent font-semibold mb-6 text-base md:text-lg">{serviceName}</p>
+        <h3 className="font-bold text-crm-text mb-1 text-lg font-bold">Reschedule Appointment</h3>
+        <p className="text-crm-accent font-semibold mb-6 text-[13px]">{serviceName}</p>
 
-        {error && <p className="text-status-cancelled bg-status-cancelled/20 p-3 rounded mb-4 text-base md:text-lg">{error}</p>}
+        {error && <p className="text-status-cancelled bg-status-cancelled/20 p-3 rounded mb-4 text-[13px]">{error}</p>}
 
         <div className="space-y-5">
           {/* Date */}
           <div>
-            <label className="block text-crm-muted mb-2 text-sm">New Date</label>
+            <label className="block text-crm-muted mb-2 text-[13px]">New Date</label>
             <input
               type="date"
               value={selectedDate}
@@ -172,9 +172,9 @@ export default function RescheduleModal({
 
           {/* Staff */}
           <div>
-            <label className="block text-crm-muted mb-2 text-sm">Staff</label>
+            <label className="block text-crm-muted mb-2 text-[13px]">Staff</label>
             {isLoading ? (
-              <p className="text-crm-muted text-base md:text-lg">Loading...</p>
+              <p className="text-crm-muted text-[13px]">Loading...</p>
             ) : (
               <select
                 value={selectedStaff}
@@ -193,7 +193,7 @@ export default function RescheduleModal({
           {/* Time */}
           {selectedStaff && (
             <div>
-              <label className="block text-crm-muted mb-2 text-sm">New Time</label>
+              <label className="block text-crm-muted mb-2 text-[13px]">New Time</label>
               {availableSlots.length > 0 ? (
                 <select
                   value={selectedTime}
@@ -207,7 +207,7 @@ export default function RescheduleModal({
                   ))}
                 </select>
               ) : (
-                <p className="text-status-pending bg-amber-900/20 p-3 rounded text-base md:text-lg">No slots available for this date/staff.</p>
+                <p className="text-status-pending bg-amber-900/20 p-3 rounded text-[13px]">No slots available for this date/staff.</p>
               )}
             </div>
           )}
