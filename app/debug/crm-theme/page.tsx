@@ -135,44 +135,44 @@ export default function CRMDashboard() {
           
           {/* Stats Row */}
           <div className="grid grid-cols-4 gap-4 mb-8">
-            <div className="bg-crm-surface rounded-xl p-5 border border-crm-border shadow-sm flex flex-col justify-between">
-              <div className="text-sm text-crm-muted font-medium mb-2">New Leads</div>
-              <div className="flex items-end justify-between">
-                <div className="text-3xl font-bold text-crm-text">42</div>
-                <div className="flex flex-col items-end">
-                  <div className="text-green-500 text-xs font-bold flex items-center">↗ 12%</div>
-                  <div className="w-16 h-8 opacity-50 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMzAiPjxwYXRoIGQ9Ik0wLDMwIEwxMCwyMCBMMjAsMjUgTDMwLDE1IEw0MCwxMCBMNTAsMTggTDYwLDUgTDcwLDEyIEw4MCwwIEw5MCwxMCBMMTAwLDUiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2Y5NzMxNiIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+PC9zdmc+')] bg-no-repeat bg-contain"></div>
-                </div>
+            <div className="bg-crm-surface rounded-2xl p-5 border border-crm-border shadow-sm flex flex-col justify-between">
+              <div className="text-[13px] text-crm-muted font-medium mb-1">New Leads</div>
+              <div className="flex items-center gap-2">
+                <div className="text-2xl font-bold text-crm-text tracking-tight">42</div>
+                <div className="text-emerald-500 text-[13px] font-semibold">↗ 12%</div>
+              </div>
+              <div className="flex justify-end mt-2">
+                <div className="w-16 h-8 opacity-50 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMzAiPjxwYXRoIGQ9Ik0wLDMwIEwxMCwyMCBMMjAsMjUgTDMwLDE1IEw0MCwxMCBMNTAsMTggTDYwLDUgTDcwLDEyIEw4MCwwIEw5MCwxMCBMMTAwLDUiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2Y5NzMxNiIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+PC9zdmc+')] bg-no-repeat bg-contain"></div>
               </div>
             </div>
-            <div className="bg-crm-surface rounded-xl p-5 border border-crm-border shadow-sm flex flex-col justify-between">
-              <div className="text-sm text-crm-muted font-medium mb-2">Qualified Leads</div>
-              <div className="flex items-end justify-between">
-                <div className="text-3xl font-bold text-crm-text">18</div>
-                <div className="flex flex-col items-end">
-                  <div className="text-green-500 text-xs font-bold flex items-center">↗ 4.2%</div>
-                  <div className="w-16 h-8 opacity-50 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMzAiPjxwYXRoIGQ9Ik0wLDMwIEwxMCwyMCBMMjAsMjUgTDMwLDE1IEw0MCwxMCBMNTAsMTggTDYwLDUgTDcwLDEyIEw4MCwwIEw5MCwxMCBMMTAwLDUiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2Y5NzMxNiIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+PC9zdmc+')] bg-no-repeat bg-contain"></div>
-                </div>
+            <div className="bg-crm-surface rounded-2xl p-5 border border-crm-border shadow-sm flex flex-col justify-between">
+              <div className="text-[13px] text-crm-muted font-medium mb-1">Qualified Leads</div>
+              <div className="flex items-center gap-2">
+                <div className="text-2xl font-bold text-crm-text tracking-tight">18</div>
+                <div className="text-emerald-500 text-[13px] font-semibold">↗ 4.2%</div>
+              </div>
+              <div className="flex justify-end mt-2">
+                <div className="w-16 h-8 opacity-50 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMzAiPjxwYXRoIGQ9Ik0wLDMwIEwxMCwyMCBMMjAsMjUgTDMwLDE1IEw0MCwxMCBMNTAsMTggTDYwLDUgTDcwLDEyIEw4MCwwIEw5MCwxMCBMMTAwLDUiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2Y5NzMxNiIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+PC9zdmc+')] bg-no-repeat bg-contain"></div>
               </div>
             </div>
-            <div className="bg-crm-surface rounded-xl p-5 border border-crm-border shadow-sm flex flex-col justify-between">
-              <div className="text-sm text-crm-muted font-medium mb-2">Avg Response Time</div>
-              <div className="flex items-end justify-between">
-                <div className="text-3xl font-bold text-crm-text">1.8h</div>
-                <div className="flex flex-col items-end">
-                  <div className="text-green-500 text-xs font-bold flex items-center">↗ 15%</div>
-                  <div className="w-16 h-8 opacity-50 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMzAiPjxwYXRoIGQ9Ik0wLDMwIEwxMCwyMCBMMjAsMjUgTDMwLDE1IEw0MCwxMCBMNTAsMTggTDYwLDUgTDcwLDEyIEw4MCwwIEw5MCwxMCBMMTAwLDUiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2Y5NzMxNiIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+PC9zdmc+')] bg-no-repeat bg-contain"></div>
-                </div>
+            <div className="bg-crm-surface rounded-2xl p-5 border border-crm-border shadow-sm flex flex-col justify-between">
+              <div className="text-[13px] text-crm-muted font-medium mb-1">Avg Response Time</div>
+              <div className="flex items-center gap-2">
+                <div className="text-2xl font-bold text-crm-text tracking-tight">1.8h</div>
+                <div className="text-emerald-500 text-[13px] font-semibold">↗ 15%</div>
+              </div>
+              <div className="flex justify-end mt-2">
+                <div className="w-16 h-8 opacity-50 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMzAiPjxwYXRoIGQ9Ik0wLDMwIEwxMCwyMCBMMjAsMjUgTDMwLDE1IEw0MCwxMCBMNTAsMTggTDYwLDUgTDcwLDEyIEw4MCwwIEw5MCwxMCBMMTAwLDUiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2Y5NzMxNiIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+PC9zdmc+')] bg-no-repeat bg-contain"></div>
               </div>
             </div>
-            <div className="bg-crm-surface rounded-xl p-5 border border-crm-border shadow-sm flex flex-col justify-between">
-              <div className="text-sm text-crm-muted font-medium mb-2">Hot Leads</div>
-              <div className="flex items-end justify-between">
-                <div className="text-3xl font-bold text-crm-text">9</div>
-                <div className="flex flex-col items-end">
-                  <div className="text-red-500 text-xs font-bold flex items-center">↘ 2%</div>
-                  <div className="w-16 h-8 opacity-50 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMzAiPjxwYXRoIGQ9Ik0wLDMwIEwxMCwyMCBMMjAsMjUgTDMwLDE1IEw0MCwxMCBMNTAsMTggTDYwLDUgTDcwLDEyIEw4MCwwIEw5MCwxMCBMMTAwLDUiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2Y5NzMxNiIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+PC9zdmc+')] bg-no-repeat bg-contain"></div>
-                </div>
+            <div className="bg-crm-surface rounded-2xl p-5 border border-crm-border shadow-sm flex flex-col justify-between">
+              <div className="text-[13px] text-crm-muted font-medium mb-1">Hot Leads</div>
+              <div className="flex items-center gap-2">
+                <div className="text-2xl font-bold text-crm-text tracking-tight">9</div>
+                <div className="text-red-500 text-[13px] font-semibold">↘ 2%</div>
+              </div>
+              <div className="flex justify-end mt-2">
+                <div className="w-16 h-8 opacity-50 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMzAiPjxwYXRoIGQ9Ik0wLDMwIEwxMCwyMCBMMjAsMjUgTDMwLDE1IEw0MCwxMCBMNTAsMTggTDYwLDUgTDcwLDEyIEw4MCwwIEw5MCwxMCBMMTAwLDUiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2Y5NzMxNiIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+PC9zdmc+')] bg-no-repeat bg-contain"></div>
               </div>
             </div>
           </div>
@@ -255,18 +255,18 @@ export default function CRMDashboard() {
                     <td className="py-3 px-6 cursor-pointer group" onClick={() => setProfileView({ name: lead.name, email: lead.email })}>
                       <div className="flex items-center gap-3">
                         <img src={`https://i.pravatar.cc/150?u=${lead.id + 10}`} className="w-8 h-8 rounded-full bg-gray-200" alt="" />
-                        <span className="font-semibold text-sm text-crm-text group-hover:text-orange-500 transition-colors">{lead.name}</span>
+                        <span className="font-semibold text-[13px] text-crm-text group-hover:text-orange-500 transition-colors">{lead.name}</span>
                       </div>
                     </td>
-                    <td className="py-3 px-6 text-sm text-crm-muted">{lead.company}</td>
-                    <td className="py-3 px-6 text-sm text-crm-muted">{lead.email}</td>
+                    <td className="py-3 px-6 text-[13px] text-crm-muted">{lead.company}</td>
+                    <td className="py-3 px-6 text-[13px] text-crm-muted">{lead.email}</td>
                     <td className="py-3 px-6">
                       <span className={`inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold border tracking-wider ${lead.statusColor}`}>
                         {lead.status}
                       </span>
                     </td>
-                    <td className="py-3 px-6 text-sm font-medium text-crm-text">{lead.manager}</td>
-                    <td className="py-3 px-6 text-sm text-crm-muted">{lead.source}</td>
+                    <td className="py-3 px-6 text-[13px] font-medium text-crm-text">{lead.manager}</td>
+                    <td className="py-3 px-6 text-[13px] text-crm-muted">{lead.source}</td>
                     <td className="py-3 px-6 text-right">
                        <div className="flex items-center justify-end gap-1">
                           {[1,2,3,4,5,6,7,8,9,10].map(i => (
