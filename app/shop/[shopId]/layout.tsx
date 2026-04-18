@@ -105,50 +105,14 @@ export default async function ShopLayout({
                   <Link href={`/shop/${shopId}/reports`} className="block px-3 py-2 rounded-lg text-[13px] font-medium text-crm-muted hover:text-crm-text hover:bg-crm-bg transition-colors">
                     Reports
                   </Link>
+                  <Link href={`/shop/${shopId}/settings`} className="block px-3 py-2 rounded-lg text-[13px] font-medium text-crm-muted hover:text-crm-text hover:bg-crm-bg transition-colors">
+                    Settings
+                  </Link>
                 </>
               )}
             </div>
             
-            {data.userRole === 'SHOP_ADMIN' ? (
-              <>
-                <div className="mb-6 space-y-1">
-                  <h3 className="px-3 text-[10px] font-bold text-crm-muted uppercase tracking-wider mb-2">Settings</h3>
-                  <Link href={`/shop/${shopId}/settings`} className="block px-3 py-2 rounded-lg text-[13px] font-medium text-crm-muted hover:text-crm-text hover:bg-crm-bg transition-colors">
-                    Appearance
-                  </Link>
-                  <Link href={`/shop/${shopId}/settings/booking`} className="block px-3 py-2 rounded-lg text-[13px] font-medium text-crm-muted hover:text-crm-text hover:bg-crm-bg transition-colors">
-                    Booking & Hours
-                  </Link>
-                  <Link href={`/shop/${shopId}/config/services`} className="block px-3 py-2 rounded-lg text-[13px] font-medium text-crm-muted hover:text-crm-text hover:bg-crm-bg transition-colors">
-                    Services
-                  </Link>
-                  <Link href={`/shop/${shopId}/config/products`} className="block px-3 py-2 rounded-lg text-[13px] font-medium text-crm-muted hover:text-crm-text hover:bg-crm-bg transition-colors">
-                    Products
-                  </Link>
-                  <Link href={`/shop/${shopId}/settings/resources`} className="block px-3 py-2 rounded-lg text-[13px] font-medium text-crm-muted hover:text-crm-text hover:bg-crm-bg transition-colors">
-                    Resources
-                  </Link>
-                  <Link href={`/shop/${shopId}/settings/forms`} className="block px-3 py-2 rounded-lg text-[13px] font-medium text-crm-muted hover:text-crm-text hover:bg-crm-bg transition-colors">
-                    Intake Forms
-                  </Link>
-                  <Link href={`/shop/${shopId}/settings/memberships`} className="block px-3 py-2 rounded-lg text-[13px] font-medium text-crm-muted hover:text-crm-text hover:bg-crm-bg transition-colors">
-                    Memberships
-                  </Link>
-                  <Link href={`/shop/${shopId}/settings/notifications`} className="block px-3 py-2 rounded-lg text-[13px] font-medium text-crm-muted hover:text-crm-text hover:bg-crm-bg transition-colors">
-                    Notifications
-                  </Link>
-                  <Link href={`/shop/${shopId}/settings/commissions`} className="block px-3 py-2 rounded-lg text-[13px] font-medium text-crm-muted hover:text-crm-text hover:bg-crm-bg transition-colors">
-                    Commissions
-                  </Link>
-                  <Link href={`/shop/${shopId}/settings/kiosk`} className="block px-3 py-2 rounded-lg text-[13px] font-medium text-crm-muted hover:text-crm-text hover:bg-crm-bg transition-colors">
-                    Kiosk
-                  </Link>
-                  <Link href={`/shop/${shopId}/settings/billing`} className="block px-3 py-2 rounded-lg text-[13px] font-medium text-crm-muted hover:text-crm-text hover:bg-crm-bg transition-colors">
-                    Billing
-                  </Link>
-                </div>
-              </>
-            ) : (
+            {data.userRole !== 'SHOP_ADMIN' && (
               <div className="mb-6 space-y-1">
                 <h3 className="px-3 text-[10px] font-bold text-crm-muted uppercase tracking-wider mb-2">My Area</h3>
                 <Link href={`/shop/${shopId}/staff`} className="block px-3 py-2 rounded-lg text-[13px] font-medium text-crm-muted hover:text-crm-text hover:bg-crm-bg transition-colors">
