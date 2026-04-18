@@ -345,19 +345,3 @@ export default async function ShopDashboardPage({ params }: { params: Promise<{ 
     </ShopAdminLayout>
   );
 }
->{todayStats.upcomingCount}</p>
-            </div>
-          </div>
-        </div>
-      )}
-      
-      {/* ── Inbox / Notifications (STAFF only) ── */}
-      {isStaff && (
-        <div className="mb-6 sm:mb-8">
-          <StaffInbox shopId={shopId} userId={userId} />
-        </div>
-      )}
-
-    </ShopAdminLayout>
-  );
-}
