@@ -111,16 +111,7 @@ export default async function ShopLayout({
                 <div className="mb-6 space-y-1">
                   <h3 className="px-3 text-[10px] font-bold text-crm-muted uppercase tracking-wider mb-2">Reports</h3>
                   <Link href={`/shop/${shopId}/reports`} className="block px-3 py-2 rounded-lg text-[13px] font-medium text-crm-muted hover:text-crm-text hover:bg-crm-bg transition-colors">
-                    Financial
-                  </Link>
-                  <Link href={`/shop/${shopId}/reports/staff-working`} className="block px-3 py-2 rounded-lg text-[13px] font-medium text-crm-muted hover:text-crm-text hover:bg-crm-bg transition-colors">
-                    Staff Performance
-                  </Link>
-                  <Link href={`/shop/${shopId}/expenses`} className="block px-3 py-2 rounded-lg text-[13px] font-medium text-crm-muted hover:text-crm-text hover:bg-crm-bg transition-colors">
-                    Expenses
-                  </Link>
-                  <Link href={`/shop/${shopId}/reports/commissions`} className="block px-3 py-2 rounded-lg text-[13px] font-medium text-crm-muted hover:text-crm-text hover:bg-crm-bg transition-colors">
-                    Commissions
+                    Reports
                   </Link>
                 </div>
                 

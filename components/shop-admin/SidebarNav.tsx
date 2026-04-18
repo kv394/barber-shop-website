@@ -96,11 +96,7 @@ export default function SidebarNav({ shopId, userRole, shopName, authButton }: {
             {sectionHeader('INSIGHTS & MANAGEMENT', null)}
             <div className="space-y-0.5">
               {navItem(`/shop/${shopId}/settings/team`, 'Team', dotIcon('bg-orange-500'))}
-              {navItem(`/shop/${shopId}/portfolio`, 'Portfolio', dotIcon('bg-yellow-400'))}
-              {navItem(`/shop/${shopId}/reports`, 'Financial', dotIcon('bg-green-500'))}
-              {navItem(`/shop/${shopId}/reports/staff-working`, 'Staff Performance', dotIcon('bg-blue-500'))}
-              {navItem(`/shop/${shopId}/expenses`, 'Expenses', dotIcon('bg-purple-500'))}
-              {navItem(`/shop/${shopId}/reports/commissions`, 'Commissions', dotIcon('bg-pink-500'))}
+              {navItem(`/shop/${shopId}/reports`, 'Reports', dotIcon('bg-green-500'))}
             </div>
 
             {sectionHeader('WORKSPACES', plusIcon)}

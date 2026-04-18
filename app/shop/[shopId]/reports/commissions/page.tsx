@@ -30,11 +30,19 @@ export default async function CommissionReportsPage({ params }: { params: Promis
   // STAFF sees only their own earnings; admins see all staff
   const staffId = data.isStaff ? data.user.id : undefined;
 
+  const reportTabs = [
+    { id: 'reports', label: 'Financial', href: `/shop/${shopId}/reports` },
+    { id: 'staff-report', label: 'Staff Performance', href: `/shop/${shopId}/reports/staff-working` },
+    { id: 'expenses', label: 'Expenses', href: `/shop/${shopId}/expenses` },
+    { id: 'commissions', label: 'Commissions', href: `/shop/${shopId}/reports/commissions` }
+  ];
+
   return (
     <ShopAdminLayout
       shopName={data.shop.name}
       shopSlug={data.shopSlug}
       pageTitle={data.isStaff ? 'My Earnings' : 'Commission & Payroll Reports'}
+      tabs={data.userRole === 'SITE_ADMIN' || data.isStaff ? undefined : reportTabs}
       shopId={shopId}
       userRole={data.userRole}
       activeTab="commissions"

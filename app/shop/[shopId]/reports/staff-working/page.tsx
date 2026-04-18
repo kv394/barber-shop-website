@@ -98,11 +98,19 @@ export default async function StaffWorkingPage({ params }: { params: Promise<{ s
 
   const shopSlug = shop.name.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '');
 
+  const reportTabs = [
+    { id: 'reports', label: 'Financial', href: `/shop/${shopId}/reports` },
+    { id: 'staff-report', label: 'Staff Performance', href: `/shop/${shopId}/reports/staff-working` },
+    { id: 'expenses', label: 'Expenses', href: `/shop/${shopId}/expenses` },
+    { id: 'commissions', label: 'Commissions', href: `/shop/${shopId}/reports/commissions` }
+  ];
+
   return (
     <ShopAdminLayout
       shopName={shop.name}
       shopSlug={shopSlug}
       pageTitle="Staff Working Report"
+      tabs={userRole === 'SITE_ADMIN' ? undefined : reportTabs}
       shopId={shopId}
       userRole={userRole as string}
       activeTab="staff-report"
