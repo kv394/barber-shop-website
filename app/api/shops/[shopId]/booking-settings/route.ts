@@ -19,6 +19,14 @@ export async function GET(_: NextRequest, { params }: { params: Promise<{ shopId
     bufferBetweenAppointments:c.bookingSettings?.bufferBetweenAppointments?? 0,
     cancellationPolicy:       c.bookingSettings?.cancellationPolicy       ?? '',
     autoConfirm:              c.bookingSettings?.autoConfirm              ?? true,
+    // New Advanced Features
+    surgePricingEnabled:      c.bookingSettings?.surgePricingEnabled      ?? false,
+    surgeMultiplier:          c.bookingSettings?.surgeMultiplier          ?? 1.2,
+    surgeStartHour:           c.bookingSettings?.surgeStartHour           ?? '17:00',
+    surgeEndHour:             c.bookingSettings?.surgeEndHour             ?? '20:00',
+    aiReceptionistEnabled:    c.bookingSettings?.aiReceptionistEnabled    ?? false,
+    aiReceptionistPrompt:     c.bookingSettings?.aiReceptionistPrompt     ?? 'You are a helpful AI receptionist for a premium barbershop. Be polite and concise.',
+    autoFillWaitlist:         c.bookingSettings?.autoFillWaitlist         ?? false,
   });
 }
 
@@ -38,6 +46,13 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ shop
     bufferBetweenAppointments: (v) => Math.max(0, parseInt(v) || 0),
     cancellationPolicy: (v) => typeof v === 'string' ? v.slice(0, 2000) : '',
     autoConfirm: (v) => Boolean(v),
+    surgePricingEnabled: (v) => Boolean(v),
+    surgeMultiplier: (v) => Math.max(1.0, parseFloat(v) || 1.2),
+    surgeStartHour: (v) => typeof v === 'string' ? v.slice(0, 5) : '17:00',
+    surgeEndHour: (v) => typeof v === 'string' ? v.slice(0, 5) : '20:00',
+    aiReceptionistEnabled: (v) => Boolean(v),
+    aiReceptionistPrompt: (v) => typeof v === 'string' ? v.slice(0, 2000) : '',
+    autoFillWaitlist: (v) => Boolean(v),
   };
   const sanitized: Record<string, any> = {};
   for (const [key, transform] of Object.entries(allowedFields)) {

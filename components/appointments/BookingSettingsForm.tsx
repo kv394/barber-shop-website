@@ -81,6 +81,72 @@ export default function BookingSettingsForm({ shopId }: { shopId: string }) {
         <p className="text-crm-muted mt-1 text-[13px]">Displayed on the booking portal and confirmation emails</p>
       </div>
 
+      <div className="border-t border-crm-border pt-6 mt-6">
+        <h4 className="font-bold text-crm-text text-md mb-4 flex items-center gap-2">
+          ⚡ Dynamic / Surge Pricing
+          <span className="bg-brand-gold/10 text-brand-gold text-[10px] px-2 py-0.5 rounded uppercase font-bold tracking-wider">Pro</span>
+        </h4>
+        <label className="flex items-center justify-between p-4 bg-crm-surface rounded-lg cursor-pointer text-[13px] border border-crm-border mb-4">
+          <div>
+            <p className="font-medium text-crm-text text-[13px]">Enable Peak Hours Pricing</p>
+            <p className="text-crm-muted text-[13px]">Automatically increase service prices during busy hours</p>
+          </div>
+          <input type="checkbox" checked={settings.surgePricingEnabled} onChange={e => upd('surgePricingEnabled', e.target.checked)} className="w-5 h-5 accent-brand-gold" />
+        </label>
+        
+        {settings.surgePricingEnabled && (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-4 bg-crm-surface border border-crm-border rounded-lg">
+            <div>
+              <label className="text-crm-muted block mb-1 text-[13px]">Price Multiplier</label>
+              <select value={settings.surgeMultiplier} onChange={e => upd('surgeMultiplier', parseFloat(e.target.value))} className="w-full bg-crm-background border border-crm-border shadow-sm rounded px-3 py-2 text-crm-text text-[13px] focus:outline-none focus:border-brand-gold">
+                <option value={1.1}>+10%</option>
+                <option value={1.2}>+20%</option>
+                <option value={1.25}>+25%</option>
+                <option value={1.5}>+50%</option>
+              </select>
+            </div>
+            <div>
+              <label className="text-crm-muted block mb-1 text-[13px]">Peak Start Time</label>
+              <input type="time" value={settings.surgeStartHour} onChange={e => upd('surgeStartHour', e.target.value)} className="w-full bg-crm-background border border-crm-border shadow-sm rounded px-3 py-2 text-crm-text text-[13px] focus:outline-none focus:border-brand-gold" />
+            </div>
+            <div>
+              <label className="text-crm-muted block mb-1 text-[13px]">Peak End Time</label>
+              <input type="time" value={settings.surgeEndHour} onChange={e => upd('surgeEndHour', e.target.value)} className="w-full bg-crm-background border border-crm-border shadow-sm rounded px-3 py-2 text-crm-text text-[13px] focus:outline-none focus:border-brand-gold" />
+            </div>
+          </div>
+        )}
+      </div>
+
+      <div className="border-t border-crm-border pt-6 mt-6">
+        <h4 className="font-bold text-crm-text text-md mb-4 flex items-center gap-2">
+          🤖 AI Virtual Receptionist
+          <span className="bg-brand-gold/10 text-brand-gold text-[10px] px-2 py-0.5 rounded uppercase font-bold tracking-wider">Pro</span>
+        </h4>
+        <label className="flex items-center justify-between p-4 bg-crm-surface rounded-lg cursor-pointer text-[13px] border border-crm-border mb-4">
+          <div>
+            <p className="font-medium text-crm-text text-[13px]">Enable SMS Auto-Replies</p>
+            <p className="text-crm-muted text-[13px]">Use AI to answer client questions about hours, location, and services</p>
+          </div>
+          <input type="checkbox" checked={settings.aiReceptionistEnabled} onChange={e => upd('aiReceptionistEnabled', e.target.checked)} className="w-5 h-5 accent-brand-gold" />
+        </label>
+
+        {settings.aiReceptionistEnabled && (
+          <div className="p-4 bg-crm-surface border border-crm-border rounded-lg space-y-4">
+            <div>
+              <label className="text-crm-muted block mb-1 text-[13px]">AI Persona / Prompt</label>
+              <textarea rows={3} value={settings.aiReceptionistPrompt} onChange={e => upd('aiReceptionistPrompt', e.target.value)}
+                placeholder="You are a helpful AI receptionist..."
+                className="w-full bg-crm-background border border-crm-border shadow-sm rounded px-3 py-2 text-crm-text text-[13px] placeholder-gray-600 focus:outline-none focus:border-brand-gold resize-none" />
+              <p className="text-crm-muted mt-1 text-[11px]">Tell your AI how it should behave and talk to clients.</p>
+            </div>
+            <label className="flex items-center gap-3 cursor-pointer text-[13px]">
+              <input type="checkbox" checked={settings.autoFillWaitlist} onChange={e => upd('autoFillWaitlist', e.target.checked)} className="w-4 h-4 accent-brand-gold" />
+              <span className="text-crm-text">Auto-offer Waitlist spots when fully booked</span>
+            </label>
+          </div>
+        )}
+      </div>
+
       <button onClick={save} disabled={saving} className="w-full bg-crm-primary text-white font-bold py-3 rounded-lg hover:bg-crm-surface hover:text-crm-primary border border-transparent hover:border-crm-primary/30 transition disabled:opacity-50">
         {saving ? 'Saving…' : 'Save Booking Settings'}
       </button>
