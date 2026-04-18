@@ -118,7 +118,7 @@ export default async function ShopLayout({
         )}
 
         {/* Main Scrolling Area */}
-        <main className="flex-1 overflow-y-auto bg-crm-bg p-4 md:p-8 pt-8">
+        <main className="flex-1 overflow-y-auto bg-gradient-to-br from-gray-50 to-gray-200 p-4 md:p-8 pt-8">
           <div className="mx-auto max-w-7xl">
             {children}
           </div>
