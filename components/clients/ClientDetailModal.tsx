@@ -163,13 +163,20 @@ export default function ClientDetailModal({ shopId, clientId, clientName, onClos
     <div className="fixed inset-0 bg-black/60 z-[100] flex items-center justify-center p-4 backdrop-blur-sm" onClick={handleClose}>
       <div className={`bg-crm-surface rounded-xl p-6 w-full max-w-2xl border border-crm-border shadow-sm shadow-2xl max-h-[90vh] overflow-y-auto custom-scrollbar transition-all duration-300 transform ${isOpen ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`} onClick={e => e.stopPropagation()}>
         <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-start mb-6 border-b border-crm-border pb-4">
-          <div>
-            <h3 className="font-bold text-crm-accent text-lg font-bold">{clientName}</h3>
-            {client && (
-              <div className="text-[11px] text-crm-muted mt-1 space-y-1">
-                <p className="text-[13px]">{client.email?.startsWith('walkin-') ? 'Walk-in Client' : client.email}</p>
-                {client.phone && <p className="text-[13px]">📱 {client.phone}</p>}
-                {client.referralCode && <p className="text-crm-accent/60 text-[13px]">🔗 Referral: {client.referralCode}</p>}
+          <div className="flex gap-4">
+            <div>
+              <h3 className="font-bold text-crm-accent text-lg font-bold">{clientName}</h3>
+              {client && (
+                <div className="text-[11px] text-crm-muted mt-1 space-y-1">
+                  <p className="text-[13px]">{client.email?.startsWith('walkin-') ? 'Walk-in Client' : client.email}</p>
+                  {client.phone && <p className="text-[13px]">📱 {client.phone}</p>}
+                  {client.referralCode && <p className="text-crm-accent/60 text-[13px]">🔗 Referral: {client.referralCode}</p>}
+                </div>
+              )}
+            </div>
+            {client?.barcode && (
+              <div className="shrink-0 flex items-start border-l border-crm-border pl-4 ml-2">
+                <UserQRCode barcode={client.barcode} userName={client.name || clientName} showText={false} size={64} />
               </div>
             )}
           </div>
