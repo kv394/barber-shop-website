@@ -16,9 +16,9 @@ export default function SidebarNav({ shopId, userRole, shopName, authButton }: {
     const active = isActive(path);
     return (
       <Link href={path} className={`flex items-center gap-3 px-3 py-2 rounded-lg text-[13px] font-medium transition-colors mb-0.5 ${
-        active ? 'bg-crm-surface text-crm-text' : 'text-crm-muted hover:text-crm-text hover:bg-crm-bg'
+        active ? 'bg-orange-50 text-orange-600' : 'text-crm-muted hover:text-crm-text hover:bg-crm-bg'
       }`}>
-        <div className={active ? 'text-crm-text' : 'text-crm-muted'}>{icon}</div>
+        <div className={active ? 'text-orange-500' : 'text-crm-muted'}>{icon}</div>
         <span className="flex-1">{label}</span>
         {badge && (
           <span className="bg-crm-surface text-crm-muted px-1.5 py-0.5 rounded text-[10px] font-bold">{badge}</span>
