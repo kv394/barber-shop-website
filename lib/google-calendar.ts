@@ -188,3 +188,44 @@ export async function deleteCalendarEvent(userId: string, eventId: string) {
   }
 }
 
+/**
+ * Fetch busy time slots from Google Calendar for a given date range.
+ * Uses the freeBusy API to get blocks of time where the user is marked as busy.
+ */
+export async function getCalendarBusySlots(userId: string, timeMin: Date, timeMax: Date): Promise<{startTime: Date, endTime: Date}[]> {
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+    select: { googleRefreshToken: true },
+  });
+  if (!user?.googleRefreshToken) return [];
+
+  const accessToken = await getAccessToken(user.googleRefreshToken);
+  if (!accessToken) return [];
+
+  try {
+    const res = await fetch(`https://www.googleapis.com/calendar/v3/freeBusy`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        timeMin: timeMin.toISOString(),
+        timeMax: timeMax.toISOString(),
+        items: [{ id: 'primary' }],
+      }),
+    });
+
+    if (!res.ok) return [];
+    const data = await res.json();
+    const busy = data.calendars?.primary?.busy || [];
+    return busy.map((b: any) => ({
+      startTime: new Date(b.start),
+      endTime: new Date(b.end)
+    }));
+  } catch (error) {
+    logger.error('Failed to get Google Calendar busy slots:', error);
+    return [];
+  }
+}
+

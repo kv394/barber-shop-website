@@ -6,6 +6,7 @@ import crypto from 'crypto';
 import { toShopTzDayBounds } from '@/lib/timezone';
 import { z } from 'zod';
 import { rateLimit } from '@/lib/rate-limiter';
+import { getCalendarBusySlots } from '@/lib/google-calendar';
 
 // Define the validation schema for booking an appointment
 const bookingSchema = z.object({
@@ -45,8 +46,34 @@ export async function GET(
       },
       select: { startTime: true, endTime: true, staffId: true },
     });
+
+    // Fetch staff in this shop to check for Google Calendar sync
+    const staffMembers = await prisma.user.findMany({
+      where: {
+        shopId: shopId,
+        role: { in: ['SHOP_ADMIN', 'STAFF'] },
+        googleRefreshToken: { not: null }
+      },
+      select: { id: true }
+    });
+
+    // Fetch busy slots from Google Calendar for each linked staff member
+    const googleBusySlotsPromises = staffMembers.map(async (staff) => {
+      const busySlots = await getCalendarBusySlots(staff.id, startOfDay, endOfDay);
+      return busySlots.map(slot => ({
+        startTime: slot.startTime,
+        endTime: slot.endTime,
+        staffId: staff.id,
+        isGoogleCalendarBlock: true
+      }));
+    });
+
+    const googleBusySlotsNested = await Promise.all(googleBusySlotsPromises);
+    const googleBusySlots = googleBusySlotsNested.flat();
+
+    const allBusySlots = [...appointments, ...googleBusySlots];
     
-    return NextResponse.json(appointments);
+    return NextResponse.json(allBusySlots);
   } catch (error) {
     logger.error("Error fetching appointments:", error);
     return NextResponse.json({ error: 'Failed to fetch appointments' }, { status: 500 });
@@ -205,6 +232,7 @@ export async function POST(
     // Send booking confirmation + schedule reminder (fire-and-forget)
     try {
       const { NotificationService } = await import('@/lib/notifications');
+      const { createCalendarEvent } = await import('@/lib/google-calendar');
       const shop = await prisma.shop.findUnique({ where: { id: shopId }, select: { name: true, timezone: true } });
       const staffUser = await prisma.user.findUnique({ where: { id: staffId }, select: { name: true } });
       if (shop) {
@@ -219,6 +247,15 @@ export async function POST(
         NotificationService.scheduleAppointmentReminder(
           shopId, targetUserId, start, service.name, shop.name
         ).catch(() => {});
+        
+        // Push event to Google Calendar for Staff if linked
+        createCalendarEvent(staffId, {
+          startTime: start,
+          endTime: end,
+          serviceName: service.name,
+          staffName: staffUser?.name || 'Staff',
+          shopName: shop.name
+        }).catch(() => {});
       }
     } catch {
       // Non-critical
