@@ -191,13 +191,3 @@ export default async function BookingsPage({ params }: { params: Promise<{ shopI
     return <div className="text-crm-text p-12"><h1 className="text-2xl font-bold">Error compiling</h1><pre>{error.stack || error.toString()}</pre></div>;
   }
 }
-  </div>
-            ))}
-          </div>
-        )}
-      </ShopAdminLayout>
-    );
-  } catch (error: any) {
-    return <div className="text-crm-text p-12"><h1 className="text-2xl font-bold">Error compiling</h1><pre>{error.stack || error.toString()}</pre></div>;
-  }
-}
