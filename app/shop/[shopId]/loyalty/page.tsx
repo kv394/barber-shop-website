@@ -17,11 +17,21 @@ export default async function LoyaltyPage({ params }: { params: Promise<{ shopId
   const data = await getShopLayoutData(userId, shopId);
   if (!data || (!data.isSiteAdmin && !data.isShopAdmin)) return redirect('/');
 
+  const engagementTabs = [
+    { id: 'engagement', label: 'Analytics', href: `/shop/${shopId}/engagement` },
+    { id: 'loyalty', label: 'Loyalty', href: `/shop/${shopId}/loyalty` },
+    { id: 'referrals', label: 'Referrals', href: `/shop/${shopId}/referrals` },
+    { id: 'campaigns', label: 'Campaigns', href: `/shop/${shopId}/campaigns` },
+    { id: 'gift-cards', label: 'Gift Cards', href: `/shop/${shopId}/gift-cards` },
+    { id: 'reviews', label: 'Reviews', href: `/shop/${shopId}/reviews` }
+  ];
+
   return (
     <ShopAdminLayout
       shopName={data.shop.name}
       shopSlug={data.shopSlug}
-      pageTitle="Loyalty Program"
+      pageTitle={undefined}
+      tabs={engagementTabs}
       shopId={shopId}
       userRole={data.userRole}
       activeTab="loyalty"
