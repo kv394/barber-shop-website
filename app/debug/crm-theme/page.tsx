@@ -113,7 +113,9 @@ export default function CRMDashboard() {
               <div className="text-sm font-semibold text-crm-text truncate">Aiden Hudson</div>
               <div className="text-xs text-crm-muted truncate">ahudson@gmail.com</div>
             </div>
-            <button className="text-crm-muted hover:text-crm-text"><SettingsIcon /></button>
+            <button className="text-crm-muted hover:text-crm-text transition-colors" title="View Public Page">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+            </button>
           </div>
         </div>
 
@@ -128,27 +130,6 @@ export default function CRMDashboard() {
       {/* Main Content Area */}
       <div className="flex-1 flex flex-col min-w-0 bg-crm-bg">
         
-        {/* Header */}
-        <header className="h-16 bg-crm-surface border-b border-crm-border flex items-center justify-between px-8 shadow-sm">
-          <div className="flex items-center gap-2">
-            <h1 className="text-xl font-bold text-crm-text">Leads</h1>
-            <span className="text-sm text-crm-muted font-medium">248</span>
-          </div>
-          <div className="flex items-center gap-4">
-            <button className="text-crm-muted hover:text-crm-text"><InfoIcon /></button>
-            <button className="text-crm-muted hover:text-crm-text"><BellIcon /></button>
-            <div className="flex -space-x-2">
-              <img className="w-8 h-8 rounded-full border-2 border-white" src="https://i.pravatar.cc/150?u=1" alt=""/>
-              <img className="w-8 h-8 rounded-full border-2 border-white" src="https://i.pravatar.cc/150?u=2" alt=""/>
-              <img className="w-8 h-8 rounded-full border-2 border-white" src="https://i.pravatar.cc/150?u=3" alt=""/>
-              <div className="w-8 h-8 rounded-full border-2 border-white bg-orange-100 flex items-center justify-center text-xs font-bold text-crm-primary">+5</div>
-            </div>
-            <button className="bg-crm-primary hover:bg-crm-accent text-white px-4 py-1.5 rounded-md text-sm font-semibold flex items-center gap-2 transition-colors">
-               <span>Share Access</span>
-            </button>
-          </div>
-        </header>
-
         {/* Dashboard Content */}
         <main className="flex-1 overflow-auto p-8 relative">
           
