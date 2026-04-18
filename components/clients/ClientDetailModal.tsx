@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
+import UserQRCode from '@/components/clients/UserQRCode';
 
 interface ClientDetailProps {
   shopId: string;
