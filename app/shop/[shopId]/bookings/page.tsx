@@ -96,7 +96,7 @@ export default async function BookingsPage({ params }: { params: Promise<{ shopI
             <h2 className="font-bold text-crm-text text-xl font-bold">Upcoming Bookings</h2>
             <BookingDatePicker dates={Object.keys(groupedAppointments)} />
           </div>
-          <Link href={`/shops/${shopSlug}`} target="_blank" className="bg-crm-primary text-white font-bold px-4 py-2 rounded-lg text-[11px] sm:text-[13px] transition-colors whitespace-nowrap shadow-lg hover:opacity-90">+ Add Booking</Link>
+          <AddBookingWrapper shopId={shopId} />
         </div>
 
         {Object.keys(groupedAppointments).length === 0 ? (
@@ -182,6 +182,16 @@ export default async function BookingsPage({ params }: { params: Promise<{ shopI
                   })}
                 </div>
               </div>
+            ))}
+          </div>
+        )}
+      </ShopAdminLayout>
+    );
+  } catch (error: any) {
+    return <div className="text-crm-text p-12"><h1 className="text-2xl font-bold">Error compiling</h1><pre>{error.stack || error.toString()}</pre></div>;
+  }
+}
+  </div>
             ))}
           </div>
         )}
