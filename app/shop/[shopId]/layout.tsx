@@ -82,120 +82,118 @@ export default async function ShopLayout({
           </div>
           <nav className="flex-1 overflow-y-auto py-4 px-3">
             <div className="mb-6 space-y-1">
-              <Link href={`/shop/${shopId}`} className="block px-3 py-2 rounded-lg text-sm font-medium text-crm-text hover:bg-crm-bg transition-colors">
+              <Link href={`/shop/${shopId}`} className="block px-3 py-2 rounded-lg text-[13px] font-medium text-crm-text hover:bg-crm-bg transition-colors">
                 Dashboard
               </Link>
-              <Link href={`/shop/${shopId}/bookings`} className="block px-3 py-2 rounded-lg text-sm font-medium text-crm-muted hover:text-crm-text hover:bg-crm-bg transition-colors">
+              <Link href={`/shop/${shopId}/bookings`} className="block px-3 py-2 rounded-lg text-[13px] font-medium text-crm-muted hover:text-crm-text hover:bg-crm-bg transition-colors">
                 Bookings
               </Link>
-              <Link href={`/shop/${shopId}/waitlist`} className="block px-3 py-2 rounded-lg text-sm font-medium text-crm-muted hover:text-crm-text hover:bg-crm-bg transition-colors">
+              <Link href={`/shop/${shopId}/waitlist`} className="block px-3 py-2 rounded-lg text-[13px] font-medium text-crm-muted hover:text-crm-text hover:bg-crm-bg transition-colors">
                 Waitlist
               </Link>
-              <Link href={`/shop/${shopId}/clients`} className="block px-3 py-2 rounded-lg text-sm font-medium text-crm-muted hover:text-crm-text hover:bg-crm-bg transition-colors">
+              <Link href={`/shop/${shopId}/clients`} className="block px-3 py-2 rounded-lg text-[13px] font-medium text-crm-muted hover:text-crm-text hover:bg-crm-bg transition-colors">
                 Clients
               </Link>
+              {data.userRole === 'SHOP_ADMIN' && (
+                <Link href={`/shop/${shopId}/settings/team`} className="block px-3 py-2 rounded-lg text-[13px] font-medium text-crm-muted hover:text-crm-text hover:bg-crm-bg transition-colors">
+                  Team
+                </Link>
+              )}
             </div>
             
             {data.userRole === 'SHOP_ADMIN' ? (
               <>
                 <div className="mb-6 space-y-1">
-                  <h3 className="px-3 text-[11px] font-bold text-crm-muted uppercase tracking-wider mb-2">Team</h3>
-                  <Link href={`/shop/${shopId}/settings/team`} className="block px-3 py-2 rounded-lg text-sm font-medium text-crm-muted hover:text-crm-text hover:bg-crm-bg transition-colors">
-                    Team
-                  </Link>
-                </div>
-                
-                <div className="mb-6 space-y-1">
-                  <h3 className="px-3 text-[11px] font-bold text-crm-muted uppercase tracking-wider mb-2">Engagement</h3>
-                  <Link href={`/shop/${shopId}/engagement`} className="block px-3 py-2 rounded-lg text-sm font-medium text-crm-muted hover:text-crm-text hover:bg-crm-bg transition-colors">
+                  <h3 className="px-3 text-[10px] font-bold text-crm-muted uppercase tracking-wider mb-2">Engagement</h3>
+                  <Link href={`/shop/${shopId}/engagement`} className="block px-3 py-2 rounded-lg text-[13px] font-medium text-crm-muted hover:text-crm-text hover:bg-crm-bg transition-colors">
                     Analytics
                   </Link>
-                  <Link href={`/shop/${shopId}/loyalty`} className="block px-3 py-2 rounded-lg text-sm font-medium text-crm-muted hover:text-crm-text hover:bg-crm-bg transition-colors">
+                  <Link href={`/shop/${shopId}/loyalty`} className="block px-3 py-2 rounded-lg text-[13px] font-medium text-crm-muted hover:text-crm-text hover:bg-crm-bg transition-colors">
                     Loyalty
                   </Link>
-                  <Link href={`/shop/${shopId}/referrals`} className="block px-3 py-2 rounded-lg text-sm font-medium text-crm-muted hover:text-crm-text hover:bg-crm-bg transition-colors">
+                  <Link href={`/shop/${shopId}/referrals`} className="block px-3 py-2 rounded-lg text-[13px] font-medium text-crm-muted hover:text-crm-text hover:bg-crm-bg transition-colors">
                     Referrals
                   </Link>
-                  <Link href={`/shop/${shopId}/campaigns`} className="block px-3 py-2 rounded-lg text-sm font-medium text-crm-muted hover:text-crm-text hover:bg-crm-bg transition-colors">
+                  <Link href={`/shop/${shopId}/campaigns`} className="block px-3 py-2 rounded-lg text-[13px] font-medium text-crm-muted hover:text-crm-text hover:bg-crm-bg transition-colors">
                     Campaigns
                   </Link>
-                  <Link href={`/shop/${shopId}/gift-cards`} className="block px-3 py-2 rounded-lg text-sm font-medium text-crm-muted hover:text-crm-text hover:bg-crm-bg transition-colors">
+                  <Link href={`/shop/${shopId}/gift-cards`} className="block px-3 py-2 rounded-lg text-[13px] font-medium text-crm-muted hover:text-crm-text hover:bg-crm-bg transition-colors">
                     Gift Cards
                   </Link>
-                  <Link href={`/shop/${shopId}/reviews`} className="block px-3 py-2 rounded-lg text-sm font-medium text-crm-muted hover:text-crm-text hover:bg-crm-bg transition-colors">
+                  <Link href={`/shop/${shopId}/reviews`} className="block px-3 py-2 rounded-lg text-[13px] font-medium text-crm-muted hover:text-crm-text hover:bg-crm-bg transition-colors">
                     Reviews
                   </Link>
                 </div>
                 
                 <div className="mb-6 space-y-1">
-                  <h3 className="px-3 text-[11px] font-bold text-crm-muted uppercase tracking-wider mb-2">Reports</h3>
-                  <Link href={`/shop/${shopId}/reports`} className="block px-3 py-2 rounded-lg text-sm font-medium text-crm-muted hover:text-crm-text hover:bg-crm-bg transition-colors">
+                  <h3 className="px-3 text-[10px] font-bold text-crm-muted uppercase tracking-wider mb-2">Reports</h3>
+                  <Link href={`/shop/${shopId}/reports`} className="block px-3 py-2 rounded-lg text-[13px] font-medium text-crm-muted hover:text-crm-text hover:bg-crm-bg transition-colors">
                     Financial
                   </Link>
-                  <Link href={`/shop/${shopId}/reports/staff-working`} className="block px-3 py-2 rounded-lg text-sm font-medium text-crm-muted hover:text-crm-text hover:bg-crm-bg transition-colors">
+                  <Link href={`/shop/${shopId}/reports/staff-working`} className="block px-3 py-2 rounded-lg text-[13px] font-medium text-crm-muted hover:text-crm-text hover:bg-crm-bg transition-colors">
                     Staff Performance
                   </Link>
-                  <Link href={`/shop/${shopId}/expenses`} className="block px-3 py-2 rounded-lg text-sm font-medium text-crm-muted hover:text-crm-text hover:bg-crm-bg transition-colors">
+                  <Link href={`/shop/${shopId}/expenses`} className="block px-3 py-2 rounded-lg text-[13px] font-medium text-crm-muted hover:text-crm-text hover:bg-crm-bg transition-colors">
                     Expenses
                   </Link>
-                  <Link href={`/shop/${shopId}/reports/commissions`} className="block px-3 py-2 rounded-lg text-sm font-medium text-crm-muted hover:text-crm-text hover:bg-crm-bg transition-colors">
+                  <Link href={`/shop/${shopId}/reports/commissions`} className="block px-3 py-2 rounded-lg text-[13px] font-medium text-crm-muted hover:text-crm-text hover:bg-crm-bg transition-colors">
                     Commissions
                   </Link>
                 </div>
                 
                 <div className="mb-6 space-y-1">
-                  <h3 className="px-3 text-[11px] font-bold text-crm-muted uppercase tracking-wider mb-2">Settings</h3>
-                  <Link href={`/shop/${shopId}/settings`} className="block px-3 py-2 rounded-lg text-sm font-medium text-crm-muted hover:text-crm-text hover:bg-crm-bg transition-colors">
+                  <h3 className="px-3 text-[10px] font-bold text-crm-muted uppercase tracking-wider mb-2">Settings</h3>
+                  <Link href={`/shop/${shopId}/settings`} className="block px-3 py-2 rounded-lg text-[13px] font-medium text-crm-muted hover:text-crm-text hover:bg-crm-bg transition-colors">
                     Appearance
                   </Link>
-                  <Link href={`/shop/${shopId}/settings/booking`} className="block px-3 py-2 rounded-lg text-sm font-medium text-crm-muted hover:text-crm-text hover:bg-crm-bg transition-colors">
+                  <Link href={`/shop/${shopId}/settings/booking`} className="block px-3 py-2 rounded-lg text-[13px] font-medium text-crm-muted hover:text-crm-text hover:bg-crm-bg transition-colors">
                     Booking & Hours
                   </Link>
-                  <Link href={`/shop/${shopId}/config/services`} className="block px-3 py-2 rounded-lg text-sm font-medium text-crm-muted hover:text-crm-text hover:bg-crm-bg transition-colors">
+                  <Link href={`/shop/${shopId}/config/services`} className="block px-3 py-2 rounded-lg text-[13px] font-medium text-crm-muted hover:text-crm-text hover:bg-crm-bg transition-colors">
                     Services
                   </Link>
-                  <Link href={`/shop/${shopId}/config/products`} className="block px-3 py-2 rounded-lg text-sm font-medium text-crm-muted hover:text-crm-text hover:bg-crm-bg transition-colors">
+                  <Link href={`/shop/${shopId}/config/products`} className="block px-3 py-2 rounded-lg text-[13px] font-medium text-crm-muted hover:text-crm-text hover:bg-crm-bg transition-colors">
                     Products
                   </Link>
-                  <Link href={`/shop/${shopId}/settings/resources`} className="block px-3 py-2 rounded-lg text-sm font-medium text-crm-muted hover:text-crm-text hover:bg-crm-bg transition-colors">
+                  <Link href={`/shop/${shopId}/settings/resources`} className="block px-3 py-2 rounded-lg text-[13px] font-medium text-crm-muted hover:text-crm-text hover:bg-crm-bg transition-colors">
                     Resources
                   </Link>
-                  <Link href={`/shop/${shopId}/settings/forms`} className="block px-3 py-2 rounded-lg text-sm font-medium text-crm-muted hover:text-crm-text hover:bg-crm-bg transition-colors">
+                  <Link href={`/shop/${shopId}/settings/forms`} className="block px-3 py-2 rounded-lg text-[13px] font-medium text-crm-muted hover:text-crm-text hover:bg-crm-bg transition-colors">
                     Intake Forms
                   </Link>
-                  <Link href={`/shop/${shopId}/settings/memberships`} className="block px-3 py-2 rounded-lg text-sm font-medium text-crm-muted hover:text-crm-text hover:bg-crm-bg transition-colors">
+                  <Link href={`/shop/${shopId}/settings/memberships`} className="block px-3 py-2 rounded-lg text-[13px] font-medium text-crm-muted hover:text-crm-text hover:bg-crm-bg transition-colors">
                     Memberships
                   </Link>
-                  <Link href={`/shop/${shopId}/settings/notifications`} className="block px-3 py-2 rounded-lg text-sm font-medium text-crm-muted hover:text-crm-text hover:bg-crm-bg transition-colors">
+                  <Link href={`/shop/${shopId}/settings/notifications`} className="block px-3 py-2 rounded-lg text-[13px] font-medium text-crm-muted hover:text-crm-text hover:bg-crm-bg transition-colors">
                     Notifications
                   </Link>
-                  <Link href={`/shop/${shopId}/settings/commissions`} className="block px-3 py-2 rounded-lg text-sm font-medium text-crm-muted hover:text-crm-text hover:bg-crm-bg transition-colors">
+                  <Link href={`/shop/${shopId}/settings/commissions`} className="block px-3 py-2 rounded-lg text-[13px] font-medium text-crm-muted hover:text-crm-text hover:bg-crm-bg transition-colors">
                     Commissions
                   </Link>
-                  <Link href={`/shop/${shopId}/settings/kiosk`} className="block px-3 py-2 rounded-lg text-sm font-medium text-crm-muted hover:text-crm-text hover:bg-crm-bg transition-colors">
+                  <Link href={`/shop/${shopId}/settings/kiosk`} className="block px-3 py-2 rounded-lg text-[13px] font-medium text-crm-muted hover:text-crm-text hover:bg-crm-bg transition-colors">
                     Kiosk
                   </Link>
-                  <Link href={`/shop/${shopId}/settings/billing`} className="block px-3 py-2 rounded-lg text-sm font-medium text-crm-muted hover:text-crm-text hover:bg-crm-bg transition-colors">
+                  <Link href={`/shop/${shopId}/settings/billing`} className="block px-3 py-2 rounded-lg text-[13px] font-medium text-crm-muted hover:text-crm-text hover:bg-crm-bg transition-colors">
                     Billing
                   </Link>
                 </div>
               </>
             ) : (
               <div className="mb-6 space-y-1">
-                <h3 className="px-3 text-[11px] font-bold text-crm-muted uppercase tracking-wider mb-2">My Area</h3>
-                <Link href={`/shop/${shopId}/staff`} className="block px-3 py-2 rounded-lg text-sm font-medium text-crm-muted hover:text-crm-text hover:bg-crm-bg transition-colors">
+                <h3 className="px-3 text-[10px] font-bold text-crm-muted uppercase tracking-wider mb-2">My Area</h3>
+                <Link href={`/shop/${shopId}/staff`} className="block px-3 py-2 rounded-lg text-[13px] font-medium text-crm-muted hover:text-crm-text hover:bg-crm-bg transition-colors">
                   My Schedule
                 </Link>
-                <Link href={`/shop/${shopId}/leave`} className="block px-3 py-2 rounded-lg text-sm font-medium text-crm-muted hover:text-crm-text hover:bg-crm-bg transition-colors">
+                <Link href={`/shop/${shopId}/leave`} className="block px-3 py-2 rounded-lg text-[13px] font-medium text-crm-muted hover:text-crm-text hover:bg-crm-bg transition-colors">
                   My Leave
                 </Link>
-                <Link href={`/shop/${shopId}/portfolio`} className="block px-3 py-2 rounded-lg text-sm font-medium text-crm-muted hover:text-crm-text hover:bg-crm-bg transition-colors">
+                <Link href={`/shop/${shopId}/portfolio`} className="block px-3 py-2 rounded-lg text-[13px] font-medium text-crm-muted hover:text-crm-text hover:bg-crm-bg transition-colors">
                   My Portfolio
                 </Link>
-                <Link href={`/shop/${shopId}/reports/commissions`} className="block px-3 py-2 rounded-lg text-sm font-medium text-crm-muted hover:text-crm-text hover:bg-crm-bg transition-colors">
+                <Link href={`/shop/${shopId}/reports/commissions`} className="block px-3 py-2 rounded-lg text-[13px] font-medium text-crm-muted hover:text-crm-text hover:bg-crm-bg transition-colors">
                   My Earnings
                 </Link>
-                <Link href={`/shop/${shopId}/profile`} className="block px-3 py-2 rounded-lg text-sm font-medium text-crm-muted hover:text-crm-text hover:bg-crm-bg transition-colors">
+                <Link href={`/shop/${shopId}/profile`} className="block px-3 py-2 rounded-lg text-[13px] font-medium text-crm-muted hover:text-crm-text hover:bg-crm-bg transition-colors">
                   Profile
                 </Link>              </div>
             )}
