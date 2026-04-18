@@ -14,6 +14,8 @@ export default function CRMDashboard() {
   const [selectedLeads, setSelectedLeads] = useState<number[]>([1, 4, 5]);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [profileView, setProfileView] = useState<{name: string, email: string} | null>(null);
+  const [activeTab, setActiveTab] = useState('All');
+  const tabs = ['All', 'Favourite', 'New', 'Assigned to me', 'Overdue', 'Hot'];
 
   const toggleLead = (id: number) => {
     if (selectedLeads.includes(id)) {
@@ -194,21 +196,41 @@ export default function CRMDashboard() {
             </div>
           </div>
 
-          {/* Table Area */}
-          <div className="bg-crm-surface rounded-xl border border-crm-border shadow-sm overflow-hidden flex flex-col">
-            
-            {/* Tabs & Toolbar */}
-            <div className="flex items-center justify-between px-6 border-b border-crm-border">
-              <div className="flex space-x-6">
-                <button className="py-4 text-sm font-semibold text-crm-primary border-b-2 border-crm-primary">All</button>
-                <button className="py-4 text-sm font-medium text-crm-muted hover:text-crm-text">Favourite</button>
-                <button className="py-4 text-sm font-medium text-crm-muted hover:text-crm-text">New</button>
-                <button className="py-4 text-sm font-medium text-crm-muted hover:text-crm-text">Assigned to me</button>
-                <button className="py-4 text-sm font-medium text-crm-muted hover:text-crm-text">Overdue</button>
-                <button className="py-4 text-sm font-medium text-crm-muted hover:text-crm-text">Hot</button>
-              </div>
-            </div>
+          {/* Tabs */}
+          <div className="flex items-end justify-between relative z-10 w-full pl-2">
+            <div className="flex items-end">
+              {tabs.map((tab, index) => {
+                const isActive = activeTab === tab;
+                const isPrevActive = index > 0 && tabs[index - 1] === activeTab;
+                const showSeparator = index > 0 && !isActive && !isPrevActive;
 
+                return (
+                  <div key={tab} className="flex items-center h-full">
+                    {showSeparator && (
+                      <div className="h-3 w-px bg-gray-300 mx-2 mb-3"></div>
+                    )}
+                    <button
+                      onClick={() => setActiveTab(tab)}
+                      className={`text-sm transition-colors px-6 py-3 ${
+                        isActive
+                          ? "bg-crm-surface text-crm-text font-semibold rounded-t-2xl translate-y-[1px] relative z-20 shadow-[0_-2px_4px_-1px_rgba(0,0,0,0.05)] pb-4"
+                          : "text-crm-muted hover:text-crm-text mb-1 pb-3"
+                      }`}
+                    >
+                      {tab}
+                    </button>
+                  </div>
+                );
+              })}
+            </div>
+            <div className="pb-3 pr-2 flex gap-4 text-crm-muted hover:text-crm-text cursor-pointer">
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" /></svg>
+            </div>
+          </div>
+
+          {/* Table Area */}
+          <div className={`bg-crm-surface rounded-2xl ${activeTab === 'All' ? 'rounded-tl-none' : ''} shadow-sm overflow-hidden flex flex-col relative z-0`}>
+            
             {/* Table Header Filter (Simulated) */}
             <div className="px-6 py-3 flex items-center gap-4 bg-crm-surface">
               <div className="relative flex-1 max-w-sm">
