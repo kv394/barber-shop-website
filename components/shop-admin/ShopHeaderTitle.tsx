@@ -19,7 +19,7 @@ export default function ShopHeaderTitle() {
       case 'waitlist': title = 'Waitlist'; break;
       case 'clients': title = 'Clients'; break;
       case 'settings':
-        if (subSegment === 'team') title = 'Team & Availability';
+        if (subSegment === 'team') title = '';
         else if (subSegment === 'booking') title = 'Booking Settings';
         else if (subSegment === 'resources') title = 'Resources';
         else if (subSegment === 'forms') title = 'Forms';
@@ -56,6 +56,8 @@ export default function ShopHeaderTitle() {
         title = segment.charAt(0).toUpperCase() + segment.slice(1).replace(/-/g, ' ');
     }
   }
+
+  if (!title) return null;
 
   return <h1 className="font-semibold text-xl text-crm-text">{title}</h1>;
 }
