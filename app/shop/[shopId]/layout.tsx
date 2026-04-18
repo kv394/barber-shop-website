@@ -82,59 +82,7 @@ export default async function ShopLayout({
              <span className="font-bold text-xl truncate tracking-tight text-crm-text">{data.shop.name}</span>
           </div>
           <nav className="flex-1 overflow-y-auto py-4 px-3">
-            <div className="mb-6 space-y-1">
-              <Link href={`/shop/${shopId}`} className="block px-3 py-2 rounded-lg text-[13px] font-medium text-crm-text hover:bg-crm-bg transition-colors">
-                Dashboard
-              </Link>
-              <Link href={`/shop/${shopId}/bookings`} className="block px-3 py-2 rounded-lg text-[13px] font-medium text-crm-muted hover:text-crm-text hover:bg-crm-bg transition-colors">
-                Bookings
-              </Link>
-              <Link href={`/shop/${shopId}/waitlist`} className="block px-3 py-2 rounded-lg text-[13px] font-medium text-crm-muted hover:text-crm-text hover:bg-crm-bg transition-colors">
-                Waitlist
-              </Link>
-              <Link href={`/shop/${shopId}/clients`} className="block px-3 py-2 rounded-lg text-[13px] font-medium text-crm-muted hover:text-crm-text hover:bg-crm-bg transition-colors">
-                Clients
-              </Link>
-              {data.userRole === 'SHOP_ADMIN' && (
-                <>
-                  <Link href={`/shop/${shopId}/settings/team`} className="block px-3 py-2 rounded-lg text-[13px] font-medium text-crm-muted hover:text-crm-text hover:bg-crm-bg transition-colors">
-                    Team
-                  </Link>
-                  <Link href={`/shop/${shopId}/engagement`} className="block px-3 py-2 rounded-lg text-[13px] font-medium text-crm-muted hover:text-crm-text hover:bg-crm-bg transition-colors">
-                    Engagement
-                  </Link>
-                  <Link href={`/shop/${shopId}/reports`} className="block px-3 py-2 rounded-lg text-[13px] font-medium text-crm-muted hover:text-crm-text hover:bg-crm-bg transition-colors">
-                    Reports
-                  </Link>
-                  <Link href={`/shop/${shopId}/config/services`} className="block px-3 py-2 rounded-lg text-[13px] font-medium text-crm-muted hover:text-crm-text hover:bg-crm-bg transition-colors">
-                    Configuration
-                  </Link>
-                  <Link href={`/shop/${shopId}/settings`} className="block px-3 py-2 rounded-lg text-[13px] font-medium text-crm-muted hover:text-crm-text hover:bg-crm-bg transition-colors">
-                    Settings
-                  </Link>
-                </>
-              )}
-            </div>
-            
-            {data.userRole !== 'SHOP_ADMIN' && (
-              <div className="mb-6 space-y-1">
-                <h3 className="px-3 text-[10px] font-bold text-crm-muted uppercase tracking-wider mb-2">My Area</h3>
-                <Link href={`/shop/${shopId}/staff`} className="block px-3 py-2 rounded-lg text-[13px] font-medium text-crm-muted hover:text-crm-text hover:bg-crm-bg transition-colors">
-                  My Schedule
-                </Link>
-                <Link href={`/shop/${shopId}/leave`} className="block px-3 py-2 rounded-lg text-[13px] font-medium text-crm-muted hover:text-crm-text hover:bg-crm-bg transition-colors">
-                  My Leave
-                </Link>
-                <Link href={`/shop/${shopId}/portfolio`} className="block px-3 py-2 rounded-lg text-[13px] font-medium text-crm-muted hover:text-crm-text hover:bg-crm-bg transition-colors">
-                  My Portfolio
-                </Link>
-                <Link href={`/shop/${shopId}/reports/commissions`} className="block px-3 py-2 rounded-lg text-[13px] font-medium text-crm-muted hover:text-crm-text hover:bg-crm-bg transition-colors">
-                  My Earnings
-                </Link>
-                <Link href={`/shop/${shopId}/profile`} className="block px-3 py-2 rounded-lg text-[13px] font-medium text-crm-muted hover:text-crm-text hover:bg-crm-bg transition-colors">
-                  Profile
-                </Link>              </div>
-            )}
+            <ShopSidebarLinks shopId={shopId} userRole={data.userRole} />
           </nav>
           <div className="p-4 border-t border-crm-border flex items-center justify-between">
             <div>
