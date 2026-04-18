@@ -102,19 +102,15 @@ export default async function ShopLayout({
                   <Link href={`/shop/${shopId}/engagement`} className="block px-3 py-2 rounded-lg text-[13px] font-medium text-crm-muted hover:text-crm-text hover:bg-crm-bg transition-colors">
                     Engagement
                   </Link>
+                  <Link href={`/shop/${shopId}/reports`} className="block px-3 py-2 rounded-lg text-[13px] font-medium text-crm-muted hover:text-crm-text hover:bg-crm-bg transition-colors">
+                    Reports
+                  </Link>
                 </>
               )}
             </div>
             
             {data.userRole === 'SHOP_ADMIN' ? (
               <>
-                <div className="mb-6 space-y-1">
-                  <h3 className="px-3 text-[10px] font-bold text-crm-muted uppercase tracking-wider mb-2">Reports</h3>
-                  <Link href={`/shop/${shopId}/reports`} className="block px-3 py-2 rounded-lg text-[13px] font-medium text-crm-muted hover:text-crm-text hover:bg-crm-bg transition-colors">
-                    Reports
-                  </Link>
-                </div>
-                
                 <div className="mb-6 space-y-1">
                   <h3 className="px-3 text-[10px] font-bold text-crm-muted uppercase tracking-wider mb-2">Settings</h3>
                   <Link href={`/shop/${shopId}/settings`} className="block px-3 py-2 rounded-lg text-[13px] font-medium text-crm-muted hover:text-crm-text hover:bg-crm-bg transition-colors">
