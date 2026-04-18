@@ -280,8 +280,13 @@ export default async function TeamDashboardPage({ params, searchParams }: { para
 
   const canAddShopAdmin = userRole === 'SITE_ADMIN' && !staff.some((s: any) => s.role === 'SHOP_ADMIN');
 
+  const teamTabs = [
+    { id: 'team', label: 'Team & Availability', href: `/shop/${shopId}/settings/team` },
+    { id: 'portfolio', label: 'Portfolio', href: `/shop/${shopId}/portfolio` }
+  ];
+
   return (
-    <ShopAdminLayout shopName={shop.name} shopSlug={shopSlug} pageTitle={userRole === 'SITE_ADMIN' ? 'Assign Shop Admin & Kiosk' : 'Team & Availability'} shopId={shopId} userRole={userRole} activeTab="team">
+    <ShopAdminLayout shopName={shop.name} shopSlug={shopSlug} pageTitle={userRole === 'SITE_ADMIN' ? 'Assign Shop Admin & Kiosk' : undefined} tabs={userRole === 'SITE_ADMIN' ? undefined : teamTabs} shopId={shopId} userRole={userRole} activeTab="team">
 
       {kioskUser && (
          <div className="bg-blue-50 border border-blue-200 p-5 rounded-2xl shadow-lg mb-8">

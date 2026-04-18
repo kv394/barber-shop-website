@@ -17,8 +17,13 @@ export default async function StaffPortfolioPage({ params }: { params: Promise<{
   const data = await getShopLayoutData(userId, shopId);
   if (!data || (!data.isSiteAdmin && !data.isShopAdmin && !data.isStaff)) notFound();
   
+  const teamTabs = [
+    { id: 'team', label: 'Team & Availability', href: `/shop/${shopId}/settings/team` },
+    { id: 'portfolio', label: 'Portfolio', href: `/shop/${shopId}/portfolio` }
+  ];
+
   return (
-    <ShopAdminLayout shopName={data.shop.name} shopSlug={data.shopSlug} pageTitle="Staff Portfolio" shopId={shopId} userRole={data.userRole} activeTab="portfolio">
+    <ShopAdminLayout shopName={data.shop.name} shopSlug={data.shopSlug} pageTitle={data.isSiteAdmin ? 'Staff Portfolio' : undefined} tabs={data.isSiteAdmin ? undefined : teamTabs} shopId={shopId} userRole={data.userRole} activeTab="portfolio">
       <PortfolioManager shopId={shopId} currentUserId={userId} userRole={data.userRole as string} />
     </ShopAdminLayout>
   );

@@ -79,6 +79,11 @@ export default function SchedulePage() {
   const shopSlug = shop.name.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '');
   const initialHours = staffMember.workingHours || {};
 
+  const teamTabs = [
+    { id: 'team', label: 'Team & Availability', href: `/shop/${shop.id}/settings/team` },
+    { id: 'portfolio', label: 'Portfolio', href: `/shop/${shop.id}/portfolio` }
+  ];
+
   return (
     <ShopAdminLayout
       shopName={shop.name}
@@ -87,6 +92,7 @@ export default function SchedulePage() {
       shopId={shop.id}
       userRole={userRole || ''}
       activeTab="team"
+      tabs={userRole === 'SITE_ADMIN' ? undefined : teamTabs}
     >
       <div className="bg-crm-bg/50 p-6 rounded-lg border border-crm-border shadow-sm mb-8">
         <h3 className="font-bold mb-6 text-crm-text text-2xl md:text-3xl">Staff Details</h3>
