@@ -26,18 +26,13 @@ export default async function ConfigProductsPage({ params }: { params: Promise<{
     orderBy: { createdAt: 'desc' },
   });
 
-  const settingsTabs = [
-    { id: 'settings', label: 'Appearance', href: `/shop/${shopId}/settings` },
-    { id: 'settings-booking', label: 'Booking & Hours', href: `/shop/${shopId}/settings/booking` },
+  const configTabs = [
     { id: 'services', label: 'Services', href: `/shop/${shopId}/config/services` },
     { id: 'products', label: 'Products', href: `/shop/${shopId}/config/products` },
-    { id: 'settings-resources', label: 'Resources', href: `/shop/${shopId}/settings/resources` },
-    { id: 'settings-forms', label: 'Intake Forms', href: `/shop/${shopId}/settings/forms` },
     { id: 'settings-memberships', label: 'Memberships', href: `/shop/${shopId}/settings/memberships` },
-    { id: 'settings-notifications', label: 'Notifications', href: `/shop/${shopId}/settings/notifications` },
-    { id: 'settings-commissions', label: 'Commissions', href: `/shop/${shopId}/settings/commissions` },
-    { id: 'settings-kiosk', label: 'Kiosk', href: `/shop/${shopId}/settings/kiosk` },
-    { id: 'settings-billing', label: 'Billing', href: `/shop/${shopId}/settings/billing` }
+    { id: 'settings-booking', label: 'Booking & Hours', href: `/shop/${shopId}/settings/booking` },
+    { id: 'settings-resources', label: 'Resources', href: `/shop/${shopId}/settings/resources` },
+    { id: 'settings-forms', label: 'Intake Forms', href: `/shop/${shopId}/settings/forms` }
   ];
 
   return (
@@ -45,7 +40,7 @@ export default async function ConfigProductsPage({ params }: { params: Promise<{
       shopName={shop.name}
       shopSlug={data.shopSlug}
       pageTitle="Products & Inventory"
-      tabs={userRole === 'SITE_ADMIN' ? undefined : settingsTabs}
+      tabs={userRole === 'SITE_ADMIN' ? undefined : configTabs}
       shopId={shopId}
       userRole={userRole}
       activeTab="products"

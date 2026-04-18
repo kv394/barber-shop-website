@@ -105,6 +105,9 @@ export default async function ShopLayout({
                   <Link href={`/shop/${shopId}/reports`} className="block px-3 py-2 rounded-lg text-[13px] font-medium text-crm-muted hover:text-crm-text hover:bg-crm-bg transition-colors">
                     Reports
                   </Link>
+                  <Link href={`/shop/${shopId}/config/services`} className="block px-3 py-2 rounded-lg text-[13px] font-medium text-crm-muted hover:text-crm-text hover:bg-crm-bg transition-colors">
+                    Configuration
+                  </Link>
                   <Link href={`/shop/${shopId}/settings`} className="block px-3 py-2 rounded-lg text-[13px] font-medium text-crm-muted hover:text-crm-text hover:bg-crm-bg transition-colors">
                     Settings
                   </Link>

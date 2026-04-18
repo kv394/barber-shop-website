@@ -20,12 +20,6 @@ export default async function NotificationsSettingsPage({ params }: { params: Pr
 
   const settingsTabs = [
     { id: 'settings', label: 'Appearance', href: `/shop/${shopId}/settings` },
-    { id: 'settings-booking', label: 'Booking & Hours', href: `/shop/${shopId}/settings/booking` },
-    { id: 'services', label: 'Services', href: `/shop/${shopId}/config/services` },
-    { id: 'products', label: 'Products', href: `/shop/${shopId}/config/products` },
-    { id: 'settings-resources', label: 'Resources', href: `/shop/${shopId}/settings/resources` },
-    { id: 'settings-forms', label: 'Intake Forms', href: `/shop/${shopId}/settings/forms` },
-    { id: 'settings-memberships', label: 'Memberships', href: `/shop/${shopId}/settings/memberships` },
     { id: 'settings-notifications', label: 'Notifications', href: `/shop/${shopId}/settings/notifications` },
     { id: 'settings-commissions', label: 'Commissions', href: `/shop/${shopId}/settings/commissions` },
     { id: 'settings-kiosk', label: 'Kiosk', href: `/shop/${shopId}/settings/kiosk` },

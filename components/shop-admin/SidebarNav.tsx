@@ -97,6 +97,7 @@ export default function SidebarNav({ shopId, userRole, shopName, authButton }: {
             <div className="space-y-0.5">
               {navItem(`/shop/${shopId}/settings/team`, 'Team', dotIcon('bg-orange-500'))}
               {navItem(`/shop/${shopId}/reports`, 'Reports', dotIcon('bg-green-500'))}
+              {navItem(`/shop/${shopId}/config/services`, 'Configuration', dotIcon('bg-blue-500'))}
               {navItem(`/shop/${shopId}/settings`, 'Settings', dotIcon('bg-purple-500'))}
             </div>
 
