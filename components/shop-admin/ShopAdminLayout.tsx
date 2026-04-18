@@ -34,17 +34,17 @@ export default function ShopAdminLayout({
               const showSeparator = index > 0 && !isActive && !isPrevActive;
 
               return (
-                <div key={tab.id} className="flex items-center h-full">
+                <div key={tab.id} className="flex items-center h-full relative">
                   {showSeparator && (
                     <div className="h-3 w-px bg-gray-300 mx-2 mb-3"></div>
                   )}
                   <Link
                     href={tab.href}
-                    className={`text-sm transition-colors px-6 py-3 ${
+                    className={`text-sm transition-colors px-6 py-3 relative ${
                       isActive
-                        ? "bg-crm-surface text-crm-text font-semibold rounded-t-2xl translate-y-[1px] relative z-20 shadow-[0_-2px_4px_-1px_rgba(0,0,0,0.05)] pb-4"
+                        ? "bg-crm-surface text-crm-text font-semibold rounded-t-2xl translate-y-[1px] z-20 shadow-[0_-2px_4px_-1px_rgba(0,0,0,0.05)] pb-4 before:content-[''] before:absolute before:bottom-0 before:-right-4 before:w-4 before:h-4 before:bg-transparent before:rounded-bl-xl before:shadow-[-8px_0_0_0_#FFFFFF]"
                         : "text-crm-muted hover:text-crm-text mb-1 pb-3"
-                    }`}
+                    } ${isActive && index !== 0 ? "after:content-[''] after:absolute after:bottom-0 after:-left-4 after:w-4 after:h-4 after:bg-transparent after:rounded-br-xl after:shadow-[8px_0_0_0_#FFFFFF]" : ""}`}
                   >
                     {tab.label}
                   </Link>
