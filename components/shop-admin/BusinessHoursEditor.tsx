@@ -62,7 +62,7 @@ export default function BusinessHoursEditor({ shopId }: { shopId: string }) {
                 onClick={() => toggle(day)} 
                 className={`w-11 h-6 rounded-full transition-colors relative flex-shrink-0 ${open ? 'bg-crm-primary' : 'bg-crm-border'} hover:opacity-90 text-white cursor-pointer`}
               >
-                <span className={`absolute top-0.5 w-5 h-5 bg-crm-surface rounded-full shadow transition-transform pointer-events-none ${open ? 'translate-x-5' : 'translate-x-0.5'}`} />
+                <span className={`absolute top-0.5 left-0.5 w-5 h-5 bg-crm-surface rounded-full shadow transition-transform pointer-events-none ${open ? 'translate-x-5' : 'translate-x-0'}`} />
               </button>
               <span className="w-10 text-[13px] font-semibold text-crm-text cursor-pointer select-none" onClick={() => toggle(day)}>{DAY_LABELS[day]}</span>
               {open && dh ? (
