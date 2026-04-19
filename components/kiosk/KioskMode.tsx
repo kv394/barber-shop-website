@@ -62,12 +62,6 @@ export default function KioskMode({ userProfile }: { userProfile: UserProfile })
 
         channel.on('broadcast', { event: 'DISCOUNT_SCAN_RESULT' }, (payload) => {
            setScanResult({ success: payload.payload.success, message: payload.payload.message });
-           if (payload.payload.success) {
-               setTimeout(() => {
-                   setDiscountScanRequest(null);
-                   setScanResult(null);
-               }, 3000); // clear on success after 3 seconds
-           }
         });
 
         channel.subscribe();
@@ -174,8 +168,10 @@ export default function KioskMode({ userProfile }: { userProfile: UserProfile })
                                     <div className={`mt-4 mb-8 p-4 w-full rounded-xl border text-center ${scanResult.success ? 'bg-status-confirmed/20 border-status-confirmed text-green-300' : 'bg-status-cancelled/20 border-status-cancelled text-red-300'}`}>
                                         <p className="font-bold text-lg mb-1">{scanResult.success ? 'Success! 🎉' : 'Oops!'}</p>
                                         <p className="text-[14px]">{scanResult.message}</p>
-                                        {!scanResult.success && (
+                                        {!scanResult.success ? (
                                             <button onClick={() => setScanResult(null)} className="mt-6 w-full bg-crm-surface text-crm-text py-3 rounded-xl text-[14px] font-bold border border-crm-border hover:bg-crm-border transition-colors">Try Another Code</button>
+                                        ) : (
+                                            <button onClick={() => { setDiscountScanRequest(null); setScanResult(null); }} className="mt-6 w-full bg-status-confirmed text-crm-bg py-3 rounded-xl text-[14px] font-bold hover:bg-green-400 transition-colors">OK</button>
                                         )}
                                     </div>
                                 ) : (
