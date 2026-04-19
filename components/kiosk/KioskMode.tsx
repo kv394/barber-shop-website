@@ -118,7 +118,7 @@ export default function KioskMode({ userProfile }: { userProfile: UserProfile })
                                 </span>
                             </div>
                             
-                            <div className="flex-grow overflow-y-auto pr-2 custom-scrollbar">
+                            <div className="flex-grow overflow-y-auto pr-2 scrollbar-hide">
                                 {isLoadingLogs ? (
                                     <div className="flex justify-center items-center h-full min-h-[100px]">
                                         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-brand-gold"></div>
@@ -159,7 +159,7 @@ export default function KioskMode({ userProfile }: { userProfile: UserProfile })
                                 </span>
                             </div>
                             
-                            <div className="flex-grow overflow-y-auto pr-2 custom-scrollbar">
+                            <div className="flex-grow overflow-y-auto pr-2 scrollbar-hide">
                                 {isLoadingLogs ? (
                                     <div className="flex justify-center items-center h-full min-h-[100px]">
                                         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-brand-gold"></div>

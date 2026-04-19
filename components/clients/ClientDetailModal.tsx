@@ -207,7 +207,7 @@ export default function ClientDetailModal({ shopId, clientId, clientName, onClos
             </div>
 
             {/* Tab Contents */}
-            <div className="flex-1 overflow-y-auto custom-scrollbar pr-2 pb-4">
+            <div className="flex-1 overflow-y-auto scrollbar-hide pr-2 pb-4">
               {activeTab === 'crm' && (
                 <div className="space-y-4 bg-crm-surface p-4 rounded-xl border border-crm-border shadow-sm">
                   <div className="space-y-3">
