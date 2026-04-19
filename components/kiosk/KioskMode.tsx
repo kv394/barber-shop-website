@@ -37,6 +37,7 @@ export default function KioskMode({ userProfile }: { userProfile: UserProfile })
     const [waitlist, setWaitlist] = useState<WaitlistEntry[]>([]);
     const [isLoadingLogs, setIsLoadingLogs] = useState(true);
     const [discountScanRequest, setDiscountScanRequest] = useState<{ appointmentId: string, clientName?: string } | null>(null);
+    const [isScannerOpen, setIsScannerOpen] = useState(false);
 
     // Stabilize the supabase client so we don't recreate it on every render
     const [supabase] = useState(() => createClient());
@@ -48,10 +49,12 @@ export default function KioskMode({ userProfile }: { userProfile: UserProfile })
         
         channel.on('broadcast', { event: 'REQUEST_DISCOUNT_SCAN' }, (payload) => {
            setDiscountScanRequest(payload.payload as { appointmentId: string, clientName?: string });
+           setIsScannerOpen(false);
         });
 
         channel.on('broadcast', { event: 'CANCEL_DISCOUNT_SCAN' }, () => {
            setDiscountScanRequest(null);
+           setIsScannerOpen(false);
         });
 
         channel.subscribe();
@@ -72,6 +75,7 @@ export default function KioskMode({ userProfile }: { userProfile: UserProfile })
         });
         
         setDiscountScanRequest(null);
+        setIsScannerOpen(false);
     };
 
     const handleCloseScanner = async () => {
@@ -85,6 +89,7 @@ export default function KioskMode({ userProfile }: { userProfile: UserProfile })
         });
         
         setDiscountScanRequest(null);
+        setIsScannerOpen(false);
     };
 
     const fetchKioskData = async () => {
@@ -154,11 +159,28 @@ export default function KioskMode({ userProfile }: { userProfile: UserProfile })
                                     Apply Your Discount
                                 </p>
                                 <p className="text-crm-muted mb-8 text-center text-[13px]">
-                                    Please scan your QR code or gift card barcode below to apply it to your checkout total.
+                                    Please tap the button below and scan your QR code or gift card barcode to apply it to your checkout total.
                                 </p>
-                                <div className="inline-block bg-crm-surface p-3 rounded-xl shadow-[0_0_40px_rgba(0,0,0,0.5)] border-4 border-status-pending">
-                                    <BarcodeScanner onScan={handleDiscountScanned} onClose={handleCloseScanner} />
-                                </div>
+                                {isScannerOpen ? (
+                                    <div className="inline-block bg-crm-surface p-3 rounded-xl shadow-[0_0_40px_rgba(0,0,0,0.5)] border-4 border-status-pending">
+                                        <BarcodeScanner onScan={handleDiscountScanned} onClose={handleCloseScanner} />
+                                    </div>
+                                ) : (
+                                    <div className="flex flex-col gap-3 w-full">
+                                        <button 
+                                            onClick={() => setIsScannerOpen(true)}
+                                            className="w-full bg-brand-gold text-crm-bg font-bold py-4 rounded-xl shadow-[0_0_20px_rgba(212,175,55,0.4)] animate-pulse hover:scale-105 active:scale-95 transition-all text-base"
+                                        >
+                                            📷 Tap to Open Scanner
+                                        </button>
+                                        <button 
+                                            onClick={handleCloseScanner}
+                                            className="w-full bg-crm-surface border border-crm-border text-crm-text font-bold py-3 rounded-xl hover:bg-crm-border transition-colors text-[13px]"
+                                        >
+                                            Cancel
+                                        </button>
+                                    </div>
+                                )}
                             </div>
                         ) : userProfile?.shopId ? (
                             <div className="flex flex-col items-center z-10 w-full">
