@@ -104,12 +104,25 @@ export default function CheckoutButton({
             if (res.ok && data.valid) {
               setDiscountCode(data.code);
               setDiscount(Math.min(data.balance, subtotal));
-              alert(data.message);
+              
+              await channel.send({
+                type: 'broadcast',
+                event: 'DISCOUNT_SCAN_RESULT',
+                payload: { appointmentId, success: true, message: data.message }
+              });
             } else {
-              alert(data.error || 'Invalid discount code.');
+              await channel.send({
+                type: 'broadcast',
+                event: 'DISCOUNT_SCAN_RESULT',
+                payload: { appointmentId, success: false, message: data.error || 'Invalid discount code.' }
+              });
             }
           } catch (e) {
-             alert('Network error validating discount code.');
+             await channel.send({
+               type: 'broadcast',
+               event: 'DISCOUNT_SCAN_RESULT',
+               payload: { appointmentId, success: false, message: 'Network error validating discount code.' }
+             });
           }
 
           setIsScanningDiscount(false);

@@ -38,6 +38,7 @@ export default function KioskMode({ userProfile }: { userProfile: UserProfile })
     const [isLoadingLogs, setIsLoadingLogs] = useState(true);
     const [discountScanRequest, setDiscountScanRequest] = useState<{ appointmentId: string, clientName?: string } | null>(null);
     const [isScannerOpen, setIsScannerOpen] = useState(false);
+    const [scanResult, setScanResult] = useState<{ success: boolean, message: string } | null>(null);
 
     // Stabilize the supabase client so we don't recreate it on every render
     const [supabase] = useState(() => createClient());
@@ -50,11 +51,23 @@ export default function KioskMode({ userProfile }: { userProfile: UserProfile })
         channel.on('broadcast', { event: 'REQUEST_DISCOUNT_SCAN' }, (payload) => {
            setDiscountScanRequest(payload.payload as { appointmentId: string, clientName?: string });
            setIsScannerOpen(false);
+           setScanResult(null);
         });
 
         channel.on('broadcast', { event: 'CANCEL_DISCOUNT_SCAN' }, () => {
            setDiscountScanRequest(null);
            setIsScannerOpen(false);
+           setScanResult(null);
+        });
+
+        channel.on('broadcast', { event: 'DISCOUNT_SCAN_RESULT' }, (payload) => {
+           setScanResult({ success: payload.payload.success, message: payload.payload.message });
+           if (payload.payload.success) {
+               setTimeout(() => {
+                   setDiscountScanRequest(null);
+                   setScanResult(null);
+               }, 3000); // clear on success after 3 seconds
+           }
         });
 
         channel.subscribe();
@@ -74,7 +87,6 @@ export default function KioskMode({ userProfile }: { userProfile: UserProfile })
           payload: { appointmentId: discountScanRequest.appointmentId, code }
         });
         
-        setDiscountScanRequest(null);
         setIsScannerOpen(false);
     };
 
@@ -158,28 +170,40 @@ export default function KioskMode({ userProfile }: { userProfile: UserProfile })
                                 <p className="text-crm-text font-semibold mb-2 text-center text-base">
                                     Apply Your Discount
                                 </p>
-                                <p className="text-crm-muted mb-8 text-center text-[13px]">
-                                    Please tap the button below and scan your QR code or gift card barcode to apply it to your checkout total.
-                                </p>
-                                {isScannerOpen ? (
-                                    <div className="inline-block bg-crm-surface p-3 rounded-xl shadow-[0_0_40px_rgba(0,0,0,0.5)] border-4 border-status-pending">
-                                        <BarcodeScanner onScan={handleDiscountScanned} onClose={handleCloseScanner} />
+                                {scanResult ? (
+                                    <div className={`mt-4 mb-8 p-4 w-full rounded-xl border text-center ${scanResult.success ? 'bg-status-confirmed/20 border-status-confirmed text-green-300' : 'bg-status-cancelled/20 border-status-cancelled text-red-300'}`}>
+                                        <p className="font-bold text-lg mb-1">{scanResult.success ? 'Success! 🎉' : 'Oops!'}</p>
+                                        <p className="text-[14px]">{scanResult.message}</p>
+                                        {!scanResult.success && (
+                                            <button onClick={() => setScanResult(null)} className="mt-6 w-full bg-crm-surface text-crm-text py-3 rounded-xl text-[14px] font-bold border border-crm-border hover:bg-crm-border transition-colors">Try Another Code</button>
+                                        )}
                                     </div>
                                 ) : (
-                                    <div className="flex flex-col gap-3 w-full">
-                                        <button 
-                                            onClick={() => setIsScannerOpen(true)}
-                                            className="w-full bg-brand-gold text-crm-bg font-bold py-4 rounded-xl shadow-[0_0_20px_rgba(212,175,55,0.4)] animate-pulse hover:scale-105 active:scale-95 transition-all text-base"
-                                        >
-                                            📷 Tap to Open Scanner
-                                        </button>
-                                        <button 
-                                            onClick={handleCloseScanner}
-                                            className="w-full bg-crm-surface border border-crm-border text-crm-text font-bold py-3 rounded-xl hover:bg-crm-border transition-colors text-[13px]"
-                                        >
-                                            Cancel
-                                        </button>
-                                    </div>
+                                    <>
+                                        <p className="text-crm-muted mb-8 text-center text-[13px]">
+                                            Please tap the button below and scan your QR code or gift card barcode to apply it to your checkout total.
+                                        </p>
+                                        {isScannerOpen ? (
+                                            <div className="inline-block bg-crm-surface p-3 rounded-xl shadow-[0_0_40px_rgba(0,0,0,0.5)] border-4 border-status-pending">
+                                                <BarcodeScanner onScan={handleDiscountScanned} onClose={handleCloseScanner} />
+                                            </div>
+                                        ) : (
+                                            <div className="flex flex-col gap-3 w-full">
+                                                <button 
+                                                    onClick={() => setIsScannerOpen(true)}
+                                                    className="w-full bg-brand-gold text-crm-bg font-bold py-4 rounded-xl shadow-[0_0_20px_rgba(212,175,55,0.4)] animate-pulse hover:scale-105 active:scale-95 transition-all text-base"
+                                                >
+                                                    📷 Tap to Open Scanner
+                                                </button>
+                                                <button 
+                                                    onClick={handleCloseScanner}
+                                                    className="w-full bg-crm-surface border border-crm-border text-crm-text font-bold py-3 rounded-xl hover:bg-crm-border transition-colors text-[13px]"
+                                                >
+                                                    Cancel
+                                                </button>
+                                            </div>
+                                        )}
+                                    </>
                                 )}
                             </div>
                         ) : userProfile?.shopId ? (
