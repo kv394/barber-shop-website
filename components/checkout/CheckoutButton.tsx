@@ -100,6 +100,12 @@ export default function CheckoutButton({
        }
     });
 
+    channel.on('broadcast', { event: 'DISCOUNT_SCAN_CANCELLED' }, (payload) => {
+       if (payload.payload?.appointmentId === appointmentId) {
+          setIsScanningDiscount(false);
+       }
+    });
+
     channel.subscribe(async (status) => {
       if (status === 'SUBSCRIBED') {
         await channel.send({

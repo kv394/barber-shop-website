@@ -38,7 +38,8 @@ export default function KioskMode({ userProfile }: { userProfile: UserProfile })
     const [isLoadingLogs, setIsLoadingLogs] = useState(true);
     const [discountScanRequest, setDiscountScanRequest] = useState<{ appointmentId: string } | null>(null);
 
-    const supabase = createClient();
+    // Stabilize the supabase client so we don't recreate it on every render
+    const [supabase] = useState(() => createClient());
 
     useEffect(() => {
         if (!userProfile?.shopId) return;
@@ -68,6 +69,19 @@ export default function KioskMode({ userProfile }: { userProfile: UserProfile })
           type: 'broadcast',
           event: 'DISCOUNT_CODE_SCANNED',
           payload: { appointmentId: discountScanRequest.appointmentId, code }
+        });
+        
+        setDiscountScanRequest(null);
+    };
+
+    const handleCloseScanner = async () => {
+        if (!discountScanRequest || !userProfile?.shopId) return;
+        
+        const channel = supabase.channel(`kiosk-commands-${userProfile.shopId}`);
+        await channel.send({
+          type: 'broadcast',
+          event: 'DISCOUNT_SCAN_CANCELLED',
+          payload: { appointmentId: discountScanRequest.appointmentId }
         });
         
         setDiscountScanRequest(null);
@@ -136,7 +150,7 @@ export default function KioskMode({ userProfile }: { userProfile: UserProfile })
                                 <h3 className="font-bold text-crm-text mb-3 text-center text-xl text-status-pending">Scan Discount</h3>
                                 <p className="text-crm-muted mb-8 text-center text-[13px]">Please scan your QR code or Barcode for the discount.</p>
                                 <div className="inline-block bg-crm-surface p-3 rounded-xl shadow-[0_0_40px_rgba(0,0,0,0.5)] border-4 border-status-pending">
-                                    <BarcodeScanner onScan={handleDiscountScanned} onClose={() => setDiscountScanRequest(null)} />
+                                    <BarcodeScanner onScan={handleDiscountScanned} onClose={handleCloseScanner} />
                                 </div>
                             </div>
                         ) : userProfile?.shopId ? (
