@@ -32,7 +32,7 @@ const generateCsp = () => {
   const csp = `
     default-src 'self';
     script-src 'self' 'unsafe-inline' 'unsafe-eval' https://*.stripe.com;
-    connect-src 'self' https://*.supabase.co https://*.stripe.com;
+    connect-src 'self' https://*.supabase.co wss://*.supabase.co https://*.stripe.com;
     img-src 'self' data: https://images.unsplash.com https://cdn.pixabay.com;
     style-src 'self' 'unsafe-inline';
     frame-src 'self' https://js.stripe.com https://hooks.stripe.com;
