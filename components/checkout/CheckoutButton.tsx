@@ -2,6 +2,9 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import dynamic from 'next/dynamic';
+
+const BarcodeScanner = dynamic(() => import('@/components/checkout/BarcodeScanner'), { ssr: false });
 
 interface CartItem {
   id: string;
@@ -39,6 +42,7 @@ export default function CheckoutButton({
   const [paymentMethod, setPaymentMethod] = useState('CASH');
   const [products, setProducts] = useState<any[]>([]);
   const [cart, setCart] = useState<CartItem[]>([]);
+  const [isScanningDiscount, setIsScanningDiscount] = useState(false);
   const router = useRouter();
 
   const TIP_PRESETS = [0, 2, 5, 10];
@@ -254,15 +258,23 @@ export default function CheckoutButton({
               {/* ── Discount ── */}
               <section>
                 <h3 className="font-semibold text-crm-muted uppercase tracking-wider mb-2 text-lg font-bold">Discount</h3>
-                <div className="flex items-center gap-1 bg-crm-surface rounded-lg px-3 py-2 w-36 border border-transparent focus-within:border-brand-gold/40 transition-colors">
-                  <span className="text-crm-muted text-[13px]">$</span>
-                  <input
-                    type="number" min={0} step={0.5} max={subtotal}
-                    value={discount || ''}
-                    onChange={e => setDiscount(parseFloat(e.target.value) || 0)}
-                    placeholder="0.00"
-                    className="w-full bg-transparent text-crm-text text-[13px] focus:outline-none placeholder-gray-600"
-                  />
+                <div className="flex flex-wrap gap-2">
+                  <div className="flex items-center gap-1 bg-crm-surface rounded-lg px-3 py-2 w-36 border border-transparent focus-within:border-brand-gold/40 transition-colors shadow-sm">
+                    <span className="text-crm-muted text-[13px]">$</span>
+                    <input
+                      type="number" min={0} step={0.5} max={subtotal}
+                      value={discount || ''}
+                      onChange={e => setDiscount(parseFloat(e.target.value) || 0)}
+                      placeholder="0.00"
+                      className="w-full bg-transparent text-crm-text text-[13px] focus:outline-none placeholder-gray-600"
+                    />
+                  </div>
+                  <button
+                    onClick={() => setIsScanningDiscount(true)}
+                    className="px-4 py-2 bg-crm-surface shadow-sm border border-crm-border rounded-lg text-[13px] font-semibold text-crm-text hover:bg-crm-primary/10 hover:text-crm-primary hover:border-crm-primary/40 transition-colors flex items-center gap-2"
+                  >
+                    📷 Scan QR
+                  </button>
                 </div>
               </section>
 
@@ -314,6 +326,32 @@ export default function CheckoutButton({
                 {isProcessing ? 'Processing…' : `Confirm ${paymentMethod === 'CASH' ? '💵' : paymentMethod === 'CARD' ? '💳' : '📱'} · $${finalTotal.toFixed(2)}`}
               </button>
             </div>
+          </div>
+        </div>
+      )}
+      {/* ── QR Scanner Overlay for Discount ── */}
+      {isScanningDiscount && (
+        <div className="fixed inset-0 bg-black/90 z-[110] flex flex-col items-center justify-center pointer-events-auto backdrop-blur-sm p-4">
+          <div className="w-full max-w-sm relative">
+            <h2 className="text-white text-center font-bold text-xl mb-4 tracking-wide">Scan Discount Code</h2>
+            <BarcodeScanner
+              onScan={(result) => {
+                const val = parseFloat(result.replace(/[^0-9.]/g, ''));
+                if (!isNaN(val) && val > 0) {
+                  setDiscount(Math.min(val, subtotal));
+                  setIsScanningDiscount(false);
+                } else {
+                  alert('Invalid discount code. Could not parse amount.');
+                }
+              }}
+              onClose={() => setIsScanningDiscount(false)}
+            />
+            <button
+              onClick={() => setIsScanningDiscount(false)}
+              className="absolute -top-12 right-0 text-white bg-white/20 hover:bg-white/30 rounded-full w-8 h-8 flex items-center justify-center transition-colors"
+            >
+              ✕
+            </button>
           </div>
         </div>
       )}
