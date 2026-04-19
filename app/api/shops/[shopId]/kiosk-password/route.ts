@@ -49,38 +49,51 @@ export async function POST(
     );
 
     // Create or update user in Supabase
-    let targetSupabaseId = targetUser.id; // Initially assume the Prisma ID is the Supabase ID
+    let targetSupabaseId: string | null = null;
 
-    // Let's try to update the user first, assuming they exist and the ID is in sync
-    const { data: updatedUser, error: updateError } = await supabaseAdmin.auth.admin.updateUserById(targetSupabaseId, {
-      password: password,
-      email_confirm: true,
-    });
+    // Supabase Admin API listUsers is paginated. We must paginate to find the user by email.
+    let page = 1;
+    while (true) {
+        const { data: usersData, error: listError } = await supabaseAdmin.auth.admin.listUsers({ page, perPage: 100 });
+        if (listError) throw listError;
+        
+        const users = usersData.users || [];
+        const existing = users.find((u: any) => u.email === email);
+        
+        if (existing) {
+            targetSupabaseId = existing.id;
+            break;
+        }
+        
+        if (users.length < 100) break;
+        page++;
+    }
 
-    if (updateError) {
-       // If update fails (e.g. user not found), try to create them instead
-       const { data: newUser, error: createError } = await supabaseAdmin.auth.admin.createUser({
-          email: email,
-          password: password,
-          email_confirm: true,
-       });
-
-       if (createError) {
-          // If creation fails because they already exist, we need to find them and update them
-          // Since we can't reliably use listUsers, let's use the Admin API to get the user by email
-          // Wait, there's no direct "getUserByEmail" in Supabase JS v2 Admin API.
-          // But we can just use the create user error to see if it exists.
-          logger.error('Supabase createUser error:', createError);
-          throw createError;
-       }
-       targetSupabaseId = newUser.user.id;
+    if (targetSupabaseId) {
+        // User exists, update password
+        const { error: updateError } = await supabaseAdmin.auth.admin.updateUserById(targetSupabaseId, {
+            password: password,
+            email_confirm: true,
+        });
+        if (updateError) throw updateError;
+    } else {
+        // User does not exist, create them
+        const { data: newUser, error: createError } = await supabaseAdmin.auth.admin.createUser({
+            email: email,
+            password: password,
+            email_confirm: true,
+        });
+        if (createError) throw createError;
+        targetSupabaseId = newUser.user.id;
     }
     
     // Ensure our local DB is synced with the correct Supabase ID
-    await prisma.user.update({
-        where: { email: email },
-        data: { id: targetSupabaseId }
-    });
+    if (targetSupabaseId) {
+      await prisma.user.update({
+          where: { email: email },
+          data: { id: targetSupabaseId }
+      });
+    }
 
     return NextResponse.json({ success: true, message: 'Kiosk password set successfully.' });
 
