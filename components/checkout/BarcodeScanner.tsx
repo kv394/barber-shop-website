@@ -130,7 +130,12 @@ export default function BarcodeScanner({ onScan, onClose }: BarcodeScannerProps)
 
         video.srcObject = stream;
         video.setAttribute('playsinline', 'true');
-        await video.play();
+        
+        try {
+          await video.play();
+        } catch (playErr) {
+          console.warn('[BarcodeScanner] video.play() error/interrupted:', playErr);
+        }
 
         if (cancelled) {
           killGlobalStream();
@@ -228,11 +233,10 @@ export default function BarcodeScanner({ onScan, onClose }: BarcodeScannerProps)
         <div className="relative bg-crm-surface rounded-lg overflow-hidden border border-crm-border shadow-sm" style={{ minHeight: 280 }}>
           <video
             ref={videoRef}
-            className="w-full h-auto"
+            className={`w-full h-auto transition-opacity duration-300 ${isStarting ? 'opacity-0' : 'opacity-100'}`}
             autoPlay
             muted
             playsInline
-            style={{ display: isStarting ? 'none' : 'block' }}
           />
           <canvas ref={canvasRef} className="hidden" />
 
