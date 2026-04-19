@@ -76,23 +76,60 @@ export async function POST(
             email_confirm: true,
         });
         if (updateError) throw updateError;
+        
+        // Ensure our local DB is synced with the correct Supabase ID
+        await prisma.user.update({
+            where: { email: email },
+            data: { id: targetSupabaseId }
+        });
     } else {
         // User does not exist, create them
+        const existingPrismaUser = await prisma.user.findUnique({ where: { email: email }});
+        
+        let tempEmail = '';
+        if (existingPrismaUser) {
+           // Temporarily rename the email to bypass the Supabase trigger unique constraint
+           tempEmail = `temp_${Date.now()}_${email}`;
+           await prisma.user.update({
+             where: { email: email },
+             data: { email: tempEmail },
+           });
+        }
+
         const { data: newUser, error: createError } = await supabaseAdmin.auth.admin.createUser({
             email: email,
             password: password,
             email_confirm: true,
+            user_metadata: { name: existingPrismaUser?.name || 'Kiosk' }
         });
-        if (createError) throw createError;
+        
+        if (createError) {
+           // If it failed, try to restore the original user's email
+           if (existingPrismaUser) {
+               await prisma.user.update({ where: { id: existingPrismaUser.id }, data: { email: email }});
+           }
+           throw createError;
+        }
+        
         targetSupabaseId = newUser.user.id;
-    }
-    
-    // Ensure our local DB is synced with the correct Supabase ID
-    if (targetSupabaseId) {
-      await prisma.user.update({
-          where: { email: email },
-          data: { id: targetSupabaseId }
-      });
+
+        if (existingPrismaUser) {
+            // The DB trigger might have created a new row for the new Supabase ID.
+            // Delete the new row (if it exists) and update the original row to link it to the new Supabase ID.
+            await prisma.user.delete({ where: { id: targetSupabaseId! } }).catch(() => {});
+
+            await prisma.user.update({
+                where: { id: existingPrismaUser.id },
+                data: {
+                    id: targetSupabaseId!,
+                    email: email,
+                    role: existingPrismaUser.role,
+                    shopId: existingPrismaUser.shopId,
+                    barcode: existingPrismaUser.barcode,
+                    name: existingPrismaUser.name
+                } as any
+            });
+        }
     }
 
     return NextResponse.json({ success: true, message: 'Kiosk password set successfully.' });
