@@ -47,6 +47,7 @@ export default function BarcodeScanner({ onScan, onClose }: BarcodeScannerProps)
   const [error, setError] = useState<string | null>(null);
   const [isStarting, setIsStarting] = useState(true);
   const [needsUserGesture, setNeedsUserGesture] = useState(false);
+  const [debugMsg, setDebugMsg] = useState('Init');
 
   /* Guaranteed cleanup — kills camera globally */
   const cleanup = useCallback(() => {
@@ -119,6 +120,7 @@ export default function BarcodeScanner({ onScan, onClose }: BarcodeScannerProps)
           return;
         }
 
+        setDebugMsg('Got stream');
         // Store in global singleton & kill any prior stream
         killGlobalStream();
         globalStream = stream;
@@ -132,12 +134,23 @@ export default function BarcodeScanner({ onScan, onClose }: BarcodeScannerProps)
         video.srcObject = stream;
         video.setAttribute('playsinline', 'true');
         
-        try {
-          await video.play();
-        } catch (playErr) {
-          console.warn('[BarcodeScanner] video.play() error/interrupted:', playErr);
-          setNeedsUserGesture(true);
+        setDebugMsg('Calling play()');
+        const playPromise = video.play();
+        if (playPromise !== undefined) {
+          playPromise.catch((playErr) => {
+            console.warn('[BarcodeScanner] video.play() error/interrupted:', playErr);
+            setDebugMsg('play() rejected');
+            setNeedsUserGesture(true);
+          });
         }
+
+        // If Safari hangs on the play promise without rejecting, force the button after 1s
+        setTimeout(() => {
+          if (videoRef.current && videoRef.current.paused) {
+            setDebugMsg('play() timeout fallback');
+            setNeedsUserGesture(true);
+          }
+        }, 1000);
 
         if (cancelled) {
           killGlobalStream();
@@ -146,6 +159,7 @@ export default function BarcodeScanner({ onScan, onClose }: BarcodeScannerProps)
         }
 
         setIsStarting(false);
+        setDebugMsg('Loop started');
 
         // Scan loop
         const canvas = canvasRef.current;
@@ -232,6 +246,8 @@ export default function BarcodeScanner({ onScan, onClose }: BarcodeScannerProps)
           </div>
         )}
 
+        <div className="text-[10px] text-crm-muted font-mono mb-2 text-right">Debug: {debugMsg}</div>
+
         <div className="relative bg-crm-surface rounded-lg overflow-hidden border border-crm-border shadow-sm" style={{ minHeight: 280 }}>
           <video
             ref={videoRef}
@@ -242,21 +258,27 @@ export default function BarcodeScanner({ onScan, onClose }: BarcodeScannerProps)
           />
           <canvas ref={canvasRef} className="hidden" />
 
-          {isStarting && !error && (
+          {isStarting && !error && !needsUserGesture && (
             <div className="absolute inset-0 flex flex-col items-center justify-center bg-crm-surface text-crm-text gap-3">
               <div className="w-8 h-8 border-2 border-brand-gold border-t-transparent rounded-full animate-spin" />
               <p className="text-crm-muted text-[13px]">Starting camera…</p>
             </div>
           )}
 
-          {needsUserGesture && !error && (
+          {needsUserGesture && (
             <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/60 rounded-lg backdrop-blur-sm">
               <button
                 onClick={() => {
                   if (videoRef.current) {
+                    setDebugMsg('User tapped button');
                     videoRef.current.play().then(() => {
+                      setDebugMsg('Button play() success');
                       setNeedsUserGesture(false);
-                    }).catch(e => console.error(e));
+                      setIsStarting(false);
+                    }).catch(e => {
+                      console.error(e);
+                      setDebugMsg('Button play() error: ' + String(e));
+                    });
                   }
                 }}
                 className="bg-brand-gold text-crm-bg px-6 py-3 rounded-full font-bold text-base shadow-[0_0_20px_rgba(212,175,55,0.4)] animate-pulse hover:scale-105 active:scale-95 transition-all"
