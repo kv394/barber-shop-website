@@ -108,7 +108,20 @@ export default function ProductBarcodeScannerWrapper({ shopId, products = [] }: 
       </button>
 
       {isScanning && (
-        <BarcodeScanner onScan={handleScan} onClose={() => setIsScanning(false)} />
+        <div className="fixed inset-0 z-[100] bg-crm-bg flex flex-col items-center justify-center p-4">
+            <div className="w-full max-w-sm relative">
+                <h3 className="font-bold text-crm-text text-xl mb-4 text-center">Scan Product Barcode</h3>
+                <div className="bg-crm-surface p-3 rounded-xl border border-crm-border shadow-2xl">
+                    <BarcodeScanner onScan={handleScan} onClose={() => setIsScanning(false)} />
+                </div>
+                <button 
+                  onClick={() => setIsScanning(false)}
+                  className="mt-6 w-full bg-crm-surface border border-crm-border text-crm-text font-bold py-3 rounded-xl hover:bg-crm-border transition-colors"
+                >
+                    Cancel Scan
+                </button>
+            </div>
+        </div>
       )}
 
       {/* Results overlay */}
