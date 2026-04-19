@@ -77,10 +77,15 @@ export default function BarcodeScanner({ onScan, onClose }: BarcodeScannerProps)
     try {
       detector = new BarcodeDetector({ formats: [...BARCODE_FORMATS] });
     } catch (e) {
-      console.error('[BarcodeScanner] Failed to create BarcodeDetector:', e);
-      setError('Barcode detection is not supported on this browser.');
-      setIsStarting(false);
-      return;
+      console.warn('[BarcodeScanner] Formats not supported, falling back to default formats:', e);
+      try {
+        detector = new BarcodeDetector();
+      } catch (e2) {
+        console.error('[BarcodeScanner] Failed to create BarcodeDetector:', e2);
+        setError('Barcode detection is not supported on this browser.');
+        setIsStarting(false);
+        return;
+      }
     }
 
     const decode = async (source: HTMLCanvasElement): Promise<string | null> => {
@@ -103,9 +108,7 @@ export default function BarcodeScanner({ onScan, onClose }: BarcodeScannerProps)
         // Higher resolution helps 1-D barcode detection
         const stream = await navigator.mediaDevices.getUserMedia({
           video: {
-            facingMode: 'environment',
-            width: { ideal: 1280 },
-            height: { ideal: 720 },
+            facingMode: { ideal: 'environment' }
           },
           audio: false,
         });
@@ -226,6 +229,7 @@ export default function BarcodeScanner({ onScan, onClose }: BarcodeScannerProps)
           <video
             ref={videoRef}
             className="w-full h-auto"
+            autoPlay
             muted
             playsInline
             style={{ display: isStarting ? 'none' : 'block' }}

@@ -48,6 +48,10 @@ export default function CheckoutButton({
 
   const TIP_PRESETS = [0, 2, 5, 10];
 
+  const subtotal = cart.reduce((s, i) => s + i.price * i.quantity, 0);
+  const effectiveDiscount = Math.min(discount, subtotal);
+  const finalTotal = Math.max(0, subtotal - effectiveDiscount + tipAmount);
+
   // When modal opens, seed cart with primary service and load retail products
   useEffect(() => {
     if (!isOpen) return;
@@ -144,10 +148,6 @@ export default function CheckoutButton({
       return prev.filter(i => i.id !== id);
     });
   };
-
-  const subtotal = cart.reduce((s, i) => s + i.price * i.quantity, 0);
-  const effectiveDiscount = Math.min(discount, subtotal);
-  const finalTotal = Math.max(0, subtotal - effectiveDiscount + tipAmount);
 
   const handleMarkAsPaid = async () => {
     setIsProcessing(true);
