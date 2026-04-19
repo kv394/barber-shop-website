@@ -46,6 +46,7 @@ export default function BarcodeScanner({ onScan, onClose }: BarcodeScannerProps)
   const hasScannedRef = useRef(false);
   const [error, setError] = useState<string | null>(null);
   const [isStarting, setIsStarting] = useState(true);
+  const [needsUserGesture, setNeedsUserGesture] = useState(false);
 
   /* Guaranteed cleanup — kills camera globally */
   const cleanup = useCallback(() => {
@@ -135,6 +136,7 @@ export default function BarcodeScanner({ onScan, onClose }: BarcodeScannerProps)
           await video.play();
         } catch (playErr) {
           console.warn('[BarcodeScanner] video.play() error/interrupted:', playErr);
+          setNeedsUserGesture(true);
         }
 
         if (cancelled) {
@@ -247,7 +249,24 @@ export default function BarcodeScanner({ onScan, onClose }: BarcodeScannerProps)
             </div>
           )}
 
-          {!isStarting && !error && (
+          {needsUserGesture && !error && (
+            <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/60 rounded-lg backdrop-blur-sm">
+              <button
+                onClick={() => {
+                  if (videoRef.current) {
+                    videoRef.current.play().then(() => {
+                      setNeedsUserGesture(false);
+                    }).catch(e => console.error(e));
+                  }
+                }}
+                className="bg-brand-gold text-crm-bg px-6 py-3 rounded-full font-bold text-base shadow-[0_0_20px_rgba(212,175,55,0.4)] animate-pulse hover:scale-105 active:scale-95 transition-all"
+              >
+                Tap to Start Camera
+              </button>
+            </div>
+          )}
+
+          {!isStarting && !error && !needsUserGesture && (
             <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
               <div className="relative w-[260px] h-[260px]">
                 <span className="absolute top-0 left-0 w-8 h-8 border-t-4 border-l-4 border-brand-gold rounded-tl" />
