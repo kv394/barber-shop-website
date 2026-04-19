@@ -371,7 +371,7 @@ export default function BookingModal({ shopId, service, onClose, shopHours }: Bo
   // ────────────── SUCCESS SCREEN ──────────────
   if (success) {
       return (
-        <div className="fixed inset-0 bg-crm-surface z-[100] flex items-center justify-center p-4 backdrop-blur-sm">
+        <div className="fixed inset-0 bg-black/60 z-[100] flex items-center justify-center p-4 backdrop-blur-sm">
             <div className="bg-crm-surface rounded-xl p-8 max-w-md w-full border border-status-confirmed shadow-2xl text-center relative">
                 <button onClick={onClose} className="absolute top-4 right-4 text-crm-muted hover:text-crm-text bg-crm-surface rounded-full w-8 h-8 flex items-center justify-center z-10">✕</button>
                 <div className="text-6xl mb-4">🎉</div>
@@ -398,7 +398,7 @@ export default function BookingModal({ shopId, service, onClose, shopHours }: Bo
   // ────────────── SUMMARY / REVIEW SCREEN ──────────────
   if (showSummary) {
     return (
-      <div className="fixed inset-0 bg-crm-surface z-[100] flex items-center justify-center p-4 backdrop-blur-sm">
+      <div className="fixed inset-0 bg-black/60 z-[100] flex items-center justify-center p-4 backdrop-blur-sm">
         <div className="bg-crm-surface rounded-xl p-6 w-full max-w-md border border-crm-border shadow-sm shadow-2xl relative text-left">
           <button onClick={() => setShowSummary(false)} className="absolute top-4 left-4 text-crm-muted hover:text-crm-text bg-crm-surface rounded-full w-8 h-8 flex items-center justify-center z-10">←</button>
           <button onClick={onClose} className="absolute top-4 right-4 text-crm-muted hover:text-crm-text bg-crm-surface rounded-full w-8 h-8 flex items-center justify-center z-10">✕</button>
@@ -467,7 +467,7 @@ export default function BookingModal({ shopId, service, onClose, shopHours }: Bo
 
   // ────────────── MAIN BOOKING FORM ──────────────
   return (
-    <div className="fixed inset-0 bg-crm-surface z-[100] flex items-center justify-center p-4 backdrop-blur-sm">
+    <div className="fixed inset-0 bg-black/60 z-[100] flex items-center justify-center p-4 backdrop-blur-sm">
       <div className="bg-crm-surface rounded-xl p-6 w-full max-w-md border border-crm-border shadow-sm shadow-2xl relative text-left max-h-[90vh] overflow-y-auto custom-scrollbar">
         <button onClick={onClose} className="absolute top-4 right-4 text-crm-muted hover:text-crm-text bg-crm-surface rounded-full w-8 h-8 flex items-center justify-center z-10">✕</button>
         <h3 className="font-bold text-crm-text mb-1 text-lg font-bold">Book Appointment</h3>
