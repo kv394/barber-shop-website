@@ -27,6 +27,7 @@ export default function CheckoutButton({
   serviceName,
   serviceId,
   shopName: _shopName,
+  clientName,
 }: {
   shopId: string;
   appointmentId: string;
@@ -34,6 +35,7 @@ export default function CheckoutButton({
   serviceName?: string;
   serviceId?: string;
   shopName?: string;
+  clientName?: string;
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
@@ -125,7 +127,7 @@ export default function CheckoutButton({
         await channel.send({
           type: 'broadcast',
           event: 'REQUEST_DISCOUNT_SCAN',
-          payload: { appointmentId }
+          payload: { appointmentId, clientName: clientName || 'Guest' }
         });
       }
     });

@@ -36,7 +36,7 @@ export default function KioskMode({ userProfile }: { userProfile: UserProfile })
     const [activeLogs, setActiveLogs] = useState<ActiveLog[]>([]);
     const [waitlist, setWaitlist] = useState<WaitlistEntry[]>([]);
     const [isLoadingLogs, setIsLoadingLogs] = useState(true);
-    const [discountScanRequest, setDiscountScanRequest] = useState<{ appointmentId: string } | null>(null);
+    const [discountScanRequest, setDiscountScanRequest] = useState<{ appointmentId: string, clientName?: string } | null>(null);
 
     // Stabilize the supabase client so we don't recreate it on every render
     const [supabase] = useState(() => createClient());
@@ -47,7 +47,7 @@ export default function KioskMode({ userProfile }: { userProfile: UserProfile })
         const channel = supabase.channel(`kiosk-commands-${userProfile.shopId}`);
         
         channel.on('broadcast', { event: 'REQUEST_DISCOUNT_SCAN' }, (payload) => {
-           setDiscountScanRequest(payload.payload as { appointmentId: string });
+           setDiscountScanRequest(payload.payload as { appointmentId: string, clientName?: string });
         });
 
         channel.on('broadcast', { event: 'CANCEL_DISCOUNT_SCAN' }, () => {
@@ -146,9 +146,16 @@ export default function KioskMode({ userProfile }: { userProfile: UserProfile })
                             </svg>
                         </div>
                         {discountScanRequest ? (
-                            <div className="flex flex-col items-center z-10 animate-fade-in w-full max-w-[280px]">
-                                <h3 className="font-bold text-crm-text mb-3 text-center text-xl text-status-pending">Scan Discount</h3>
-                                <p className="text-crm-muted mb-8 text-center text-[13px]">Please scan your QR code or Barcode for the discount.</p>
+                            <div className="flex flex-col items-center z-10 animate-fade-in w-full max-w-[320px]">
+                                <h3 className="font-serif font-bold text-crm-text mb-1 text-center text-2xl text-status-pending">
+                                    Hello, {discountScanRequest.clientName ? discountScanRequest.clientName.split(' ')[0] : 'Guest'}! 👋
+                                </h3>
+                                <p className="text-crm-text font-semibold mb-2 text-center text-base">
+                                    Apply Your Discount
+                                </p>
+                                <p className="text-crm-muted mb-8 text-center text-[13px]">
+                                    Please scan your QR code or gift card barcode below to apply it to your checkout total.
+                                </p>
                                 <div className="inline-block bg-crm-surface p-3 rounded-xl shadow-[0_0_40px_rgba(0,0,0,0.5)] border-4 border-status-pending">
                                     <BarcodeScanner onScan={handleDiscountScanned} onClose={handleCloseScanner} />
                                 </div>
