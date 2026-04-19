@@ -31,6 +31,15 @@ export default function GlobalError({
             <p className="text-crm-muted mb-6 text-[13px]">
               A critical error occurred. Our team has been notified.
             </p>
+
+            {/* DEBUG: Show detailed error stack */}
+            <div className="mb-6 w-full max-w-full overflow-auto bg-black/50 p-4 rounded-lg text-left">
+              <p className="text-red-400 font-mono text-sm mb-2">{error?.message || String(error)}</p>
+              <pre className="text-gray-300 font-mono text-[11px] whitespace-pre-wrap">
+                {error?.stack}
+              </pre>
+            </div>
+
             <button
               onClick={() => reset()}
               className="bg-crm-surface text-crm-text px-4 py-2 rounded font-medium w-full hover:bg-crm-surface transition-colors"
