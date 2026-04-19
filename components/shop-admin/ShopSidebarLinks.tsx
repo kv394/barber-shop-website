@@ -56,7 +56,7 @@ export default function ShopSidebarLinks({ shopId, userRole }: { shopId: string,
     return (
       <Link 
         href={href} 
-        className={`block px-3 py-2 rounded-lg text-[13px] font-medium transition-colors ${
+        className={`block px-3 py-2 rounded-lg text-[14px] font-medium transition-colors ${
           active 
             ? 'bg-[#FFF5F2] text-[#ea580c] font-semibold' 
             : 'text-crm-muted hover:text-crm-text hover:bg-crm-bg'
@@ -87,7 +87,7 @@ export default function ShopSidebarLinks({ shopId, userRole }: { shopId: string,
       
       {userRole !== 'SHOP_ADMIN' && (
         <div className="mb-6 space-y-1">
-          <h3 className="px-3 text-[10px] font-bold text-crm-muted uppercase tracking-wider mb-2">My Area</h3>
+          <h3 className="px-3 text-[11px] font-bold text-crm-muted uppercase tracking-wider mb-2">My Area</h3>
           {navLink(`/shop/${shopId}/staff`, 'My Schedule')}
           {navLink(`/shop/${shopId}/leave`, 'My Leave')}
           {navLink(`/shop/${shopId}/portfolio`, 'My Portfolio')}
