@@ -47,6 +47,7 @@ export default function CheckoutButton({
   const [products, setProducts] = useState<any[]>([]);
   const [cart, setCart] = useState<CartItem[]>([]);
   const [isScanningDiscount, setIsScanningDiscount] = useState(false);
+  const [discountMessage, setDiscountMessage] = useState<{ text: string, type: 'success' | 'error' } | null>(null);
   const scanProcessedRef = useRef(false);
   const router = useRouter();
 
@@ -72,6 +73,7 @@ export default function CheckoutButton({
     setCustomTip('');
     setDiscount(0);
     setDiscountCode(null);
+    setDiscountMessage(null);
     setPaymentMethod('CASH');
 
     fetch(`/api/shops/${shopId}/products`)
@@ -107,6 +109,7 @@ export default function CheckoutButton({
             if (res.ok && data.valid) {
               setDiscountCode(data.code);
               setDiscount(Math.min(data.balance, subtotal));
+              setDiscountMessage({ text: data.message, type: 'success' });
               
               await channel.send({
                 type: 'broadcast',
@@ -114,13 +117,16 @@ export default function CheckoutButton({
                 payload: { appointmentId, success: true, message: data.message }
               });
             } else {
+              const errMsg = data.error || 'Invalid discount code.';
+              setDiscountMessage({ text: errMsg, type: 'error' });
               await channel.send({
                 type: 'broadcast',
                 event: 'DISCOUNT_SCAN_RESULT',
-                payload: { appointmentId, success: false, message: data.error || 'Invalid discount code.' }
+                payload: { appointmentId, success: false, message: errMsg }
               });
             }
           } catch (e) {
+             setDiscountMessage({ text: 'Network error validating discount code.', type: 'error' });
              await channel.send({
                type: 'broadcast',
                event: 'DISCOUNT_SCAN_RESULT',
@@ -361,6 +367,11 @@ export default function CheckoutButton({
                     📷 Scan QR
                   </button>
                 </div>
+                {discountMessage && (
+                  <p className={`mt-2 text-[12px] font-semibold ${discountMessage.type === 'success' ? 'text-status-confirmed' : 'text-status-cancelled'}`}>
+                    {discountMessage.type === 'success' ? '✅ ' : '❌ '}{discountMessage.text}
+                  </p>
+                )}
               </section>
 
               {/* ── Payment Method ── */}
