@@ -389,9 +389,6 @@ export default function BookingModal({ shopId, service, onClose, shopHours }: Bo
                   <button onClick={handleAddToCalendar} className="border border-crm-border shadow-sm text-crm-text px-5 py-2 rounded-lg hover:bg-crm-surface transition-colors text-[13px] font-semibold flex items-center justify-center gap-2">
                     📅 Add to Calendar
                   </button>
-                  <button onClick={handleDone} className="bg-crm-primary text-white font-bold px-6 py-2 rounded-lg hover:bg-crm-surface hover:text-crm-primary border border-transparent hover:border-crm-primary/30 transition-colors">
-                    {'Done'}
-                  </button>
                 </div>
             </div>
         </div>
