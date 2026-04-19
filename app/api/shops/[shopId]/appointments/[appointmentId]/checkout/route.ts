@@ -43,6 +43,7 @@ export async function POST(
 
     // Parse optional checkout fields
     let tipAmount = 0, discount = 0, paymentMethod = 'CASH';
+    let discountCode: string | null = null;
     let cartItems: any[] = [];
     let payments: any[] = [];
 
@@ -50,6 +51,7 @@ export async function POST(
       const body = await request.json();
       tipAmount = Math.max(0, parseFloat(body.tipAmount) || 0);
       discount = Math.max(0, parseFloat(body.discount) || 0);
+      discountCode = body.discountCode ? String(body.discountCode).trim() : null;
       paymentMethod = typeof body.paymentMethod === 'string' ? body.paymentMethod.slice(0, 50) : 'CASH';
       cartItems = Array.isArray(body.cartItems) ? body.cartItems : [];
       payments = Array.isArray(body.payments) ? body.payments : [];
@@ -95,6 +97,29 @@ export async function POST(
       }
       if (freshAppointment.status === 'COMPLETED') {
         throw new Error('ALREADY_COMPLETED');
+      }
+
+      // 0. Process Discount/Gift Card Redemption
+      if (discountCode && discount > 0) {
+        const giftCard = await tx.giftCard.findUnique({
+          where: { code: discountCode }
+        });
+
+        if (!giftCard || giftCard.shopId !== shopId) {
+          throw new Error('INVALID_DISCOUNT');
+        }
+        if (giftCard.status !== 'ACTIVE' || (giftCard.expiresAt && giftCard.expiresAt < new Date()) || giftCard.currentBalance < discount) {
+          throw new Error('DISCOUNT_NOT_APPLICABLE');
+        }
+
+        const newBalance = giftCard.currentBalance - discount;
+        await tx.giftCard.update({
+          where: { id: giftCard.id },
+          data: {
+            currentBalance: newBalance,
+            status: newBalance <= 0 ? 'REDEEMED' : 'ACTIVE'
+          }
+        });
       }
 
       // 1. Mark appointment as completed
@@ -212,6 +237,12 @@ export async function POST(
   } catch (error: any) {
     if (error?.message === 'ALREADY_COMPLETED') {
       return NextResponse.json({ error: 'This appointment has already been checked out.' }, { status: 400 });
+    }
+    if (error?.message === 'INVALID_DISCOUNT') {
+      return NextResponse.json({ error: 'Invalid discount or gift card code.' }, { status: 400 });
+    }
+    if (error?.message === 'DISCOUNT_NOT_APPLICABLE') {
+      return NextResponse.json({ error: 'Discount code is inactive, expired, or has insufficient balance.' }, { status: 400 });
     }
     if (error?.message === 'INSUFFICIENT_INVENTORY') {
       return NextResponse.json({ error: 'Insufficient inventory for one or more products.' }, { status: 400 });

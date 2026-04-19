@@ -40,6 +40,7 @@ export default function CheckoutButton({
   const [tipAmount, setTipAmount] = useState(0);
   const [customTip, setCustomTip] = useState('');
   const [discount, setDiscount] = useState(0);
+  const [discountCode, setDiscountCode] = useState<string | null>(null);
   const [paymentMethod, setPaymentMethod] = useState('CASH');
   const [products, setProducts] = useState<any[]>([]);
   const [cart, setCart] = useState<CartItem[]>([]);
@@ -67,6 +68,7 @@ export default function CheckoutButton({
     setTipAmount(0);
     setCustomTip('');
     setDiscount(0);
+    setDiscountCode(null);
     setPaymentMethod('CASH');
 
     fetch(`/api/shops/${shopId}/products`)
@@ -85,17 +87,29 @@ export default function CheckoutButton({
     const supabase = createClient();
     const channel = supabase.channel(`kiosk-commands-${shopId}`);
 
-    channel.on('broadcast', { event: 'DISCOUNT_CODE_SCANNED' }, (payload) => {
+    channel.on('broadcast', { event: 'DISCOUNT_CODE_SCANNED' }, async (payload) => {
        if (payload.payload?.appointmentId === appointmentId) {
-          const val = parseFloat(payload.payload.code.replace(/[^0-9.]/g, ''));
-          if (!isNaN(val) && val > 0) {
-            // Can't use subtotal easily inside effect unless we use an updater function, but we can just use the outer state.
-            // Wait, subtotal changes, but this effect depends on subtotal if we add it to deps.
-            // That's fine.
-            setDiscount(Math.min(val, subtotal));
-          } else {
-            alert('Invalid discount code. Could not parse amount.');
+          const code = payload.payload.code;
+          
+          try {
+            const res = await fetch(`/api/shops/${shopId}/gift-cards/validate`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ code })
+            });
+            const data = await res.json();
+            
+            if (res.ok && data.valid) {
+              setDiscountCode(data.code);
+              setDiscount(Math.min(data.balance, subtotal));
+              alert(data.message);
+            } else {
+              alert(data.error || 'Invalid discount code.');
+            }
+          } catch (e) {
+             alert('Network error validating discount code.');
           }
+
           setIsScanningDiscount(false);
        }
     });
@@ -164,6 +178,7 @@ export default function CheckoutButton({
         body: JSON.stringify({
           tipAmount,
           discount: effectiveDiscount,
+          discountCode,
           paymentMethod,
           cartItems: cart.map(c => ({
             productId: c.productId || null,
