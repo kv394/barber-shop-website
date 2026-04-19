@@ -146,7 +146,7 @@ export default function TeamChat({ shopId, currentUserId }: { shopId: string, cu
   return (
     <div className="flex flex-col h-[calc(100dvh-180px)] sm:h-[600px] bg-crm-surface rounded-t-3xl sm:rounded-2xl border border-crm-border shadow-sm overflow-hidden shadow-2xl relative">
       {/* Header */}
-      <div className="p-4 sm:p-5 bg-crm-primary z-10 shadow-sm relative hover:opacity-90 text-white">
+      <div className="py-2 px-4 sm:px-5 bg-crm-primary z-10 shadow-sm relative hover:opacity-90 text-white">
         <h3 className="font-bold text-white flex items-center gap-2 text-lg font-bold">
           <span>💬</span> Team Chat
         </h3>
