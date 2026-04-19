@@ -108,7 +108,58 @@ export async function POST(
       }
     }
 
-    // Check if they are already clocked in/checked in (have a TimeLog with no clockOut)
+    // If the scanned user is a CLIENT, they are checking in to the waitlist, not clocking in for a shift
+    if (user.role === 'CLIENT') {
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+
+      // Check if they are already on the waitlist today
+      const existingEntry = await prisma.waitlist.findFirst({
+        where: {
+          shopId: shopId,
+          clientName: user.name || user.email,
+          createdAt: { gte: today },
+          status: { in: ['WAITING', 'SERVING'] }
+        }
+      });
+
+      if (existingEntry) {
+        return NextResponse.json({ 
+          message: 'You are already on the waitlist!', 
+          user: { name: user.name || user.email }, 
+          role: user.role,
+          action: 'IN',
+          time: existingEntry.createdAt
+        }, { status: 200 });
+      }
+
+      // Add to waitlist
+      const newEntry = await prisma.$transaction(async (tx: any) => {
+        const lastEntry = await tx.waitlist.findFirst({
+          where: { shopId: shopId, createdAt: { gte: today } },
+          orderBy: { position: 'desc' },
+        });
+
+        return tx.waitlist.create({
+          data: {
+            clientName: (user.name || user.email).slice(0, 200),
+            position: (lastEntry?.position || 0) + 1,
+            shopId: shopId,
+            status: 'WAITING'
+          },
+        });
+      }, { isolationLevel: 'Serializable' });
+
+      return NextResponse.json({ 
+        message: 'Added to the waitlist successfully!',
+        user: { name: user.name || user.email },
+        role: user.role,
+        action: 'IN',
+        time: newEntry.createdAt
+      }, { status: 200 });
+    }
+
+    // Staff / Admin logic: Check if they are already clocked in (have a TimeLog with no clockOut)
     const activeLog = await prisma.timeLog.findFirst({
       where: {
         userId: user.id,
