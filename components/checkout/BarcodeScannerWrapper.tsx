@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from 'react';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
+import { createPortal } from 'react-dom';
 
 const BarcodeScanner = dynamic(() => import('@/components/checkout/BarcodeScanner'), { ssr: false });
 
@@ -163,25 +164,14 @@ export default function BarcodeScannerWrapper({ shopId, services = [] }: { shopI
         <span>📷</span> Scan QR / Barcode
       </button>
 
-      {isScanning && (
-        <div className="fixed inset-0 z-[100] bg-crm-bg flex flex-col items-center justify-center p-4">
-            <div className="w-full max-w-sm relative">
-                <h3 className="font-bold text-crm-text text-xl mb-4 text-center">Scan QR / Barcode</h3>
-                <div className="bg-crm-surface p-3 rounded-xl border border-crm-border shadow-2xl">
-                    <BarcodeScanner onScan={handleScan} onClose={() => setIsScanning(false)} />
-                </div>
-                <button 
-                  onClick={() => setIsScanning(false)}
-                  className="mt-6 w-full bg-crm-surface border border-crm-border text-crm-text font-bold py-3 rounded-xl hover:bg-crm-border transition-colors"
-                >
-                    Cancel Scan
-                </button>
-            </div>
-        </div>
+      {isScanning && typeof document !== 'undefined' && createPortal(
+        <div className="fixed inset-0 z-[100] bg-crm-bg/90 backdrop-blur-sm flex flex-col items-center justify-center p-4">
+            <BarcodeScanner onScan={handleScan} onClose={() => setIsScanning(false)} />
+        </div>, document.body
       )}
 
       {/* Results overlay */}
-      {showOverlay && (
+      {showOverlay && typeof document !== 'undefined' && createPortal(
         <div className="fixed bottom-0 left-0 right-0 p-4 z-[60] flex justify-center pointer-events-none">
           <div className="bg-crm-surface border border-brand-gold rounded-xl p-5 shadow-2xl max-w-sm w-full pointer-events-auto relative">
             <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-start mb-4">
@@ -284,7 +274,7 @@ export default function BarcodeScannerWrapper({ shopId, services = [] }: { shopI
               </div>
             )}
           </div>
-        </div>
+        </div>, document.body
       )}
     </>
   );

@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState, useCallback } from 'react';
+import { createPortal } from 'react-dom';
 
 interface BarcodeScannerProps {
   onScan: (decodedText: string) => void;
@@ -257,85 +258,83 @@ export default function BarcodeScanner({ onScan, onClose }: BarcodeScannerProps)
   }, []); // mount once
 
   return (
-    <div className="fixed inset-0 bg-crm-surface z-[100] flex items-center justify-center p-4 backdrop-blur-sm">
-      <div className="bg-crm-surface rounded-xl p-5 w-full max-w-sm border border-crm-border shadow-sm shadow-2xl relative">
-        <button
-          onClick={handleClose}
-          className="absolute top-3 right-3 text-crm-muted hover:text-crm-text bg-crm-surface rounded-full w-8 h-8 flex items-center justify-center z-10 text-[13px]"
-        >
-          ✕
-        </button>
+    <div className="bg-crm-surface rounded-xl p-5 w-full max-w-sm relative">
+      <button
+        onClick={handleClose}
+        className="absolute top-3 right-3 text-crm-muted hover:text-crm-text bg-crm-surface rounded-full w-8 h-8 flex items-center justify-center z-10 text-[13px]"
+      >
+        ✕
+      </button>
 
-        <h3 className="font-bold text-crm-text mb-1 text-lg font-bold">Scan QR / Barcode</h3>
-        <p className="text-crm-muted mb-4 text-[13px]">
-          Point the camera at a barcode or QR code.
-        </p>
+      <h3 className="font-bold text-crm-text mb-1 text-lg">Scan QR / Barcode</h3>
+      <p className="text-crm-muted mb-4 text-[13px]">
+        Point the camera at a barcode or QR code.
+      </p>
 
-        {error && (
-          <div className="mb-4 p-3 bg-status-cancelled/20 border border-status-cancelled text-red-200 rounded text-[13px]">
-            {error}
+      {error && (
+        <div className="mb-4 p-3 bg-status-cancelled/20 border border-status-cancelled text-red-200 rounded text-[13px]">
+          {error}
+        </div>
+      )}
+
+      <div className="text-[10px] text-crm-muted font-mono mb-2 text-right">Debug: {debugMsg}</div>
+
+      <div className="relative bg-crm-surface rounded-lg overflow-hidden border border-crm-border shadow-sm" style={{ minHeight: 280 }}>
+        <video
+          ref={videoRef}
+          className={`w-full h-auto transition-opacity duration-300 ${isStarting ? 'opacity-0' : 'opacity-100'}`}
+          autoPlay
+          muted
+          playsInline
+        />
+        <canvas ref={canvasRef} className="hidden" />
+
+        {isStarting && !error && !needsUserGesture && (
+          <div className="absolute inset-0 flex flex-col items-center justify-center bg-crm-surface text-crm-text gap-3">
+            <div className="w-8 h-8 border-2 border-brand-gold border-t-transparent rounded-full animate-spin" />
+            <p className="text-crm-muted text-[13px]">Starting camera…</p>
           </div>
         )}
 
-        <div className="text-[10px] text-crm-muted font-mono mb-2 text-right">Debug: {debugMsg}</div>
+        {needsUserGesture && (
+          <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/60 rounded-lg backdrop-blur-sm">
+            <button
+              onClick={() => {
+                if (videoRef.current) {
+                  setDebugMsg('User tapped button');
+                  videoRef.current.play().then(() => {
+                    setDebugMsg('Button play() success');
+                    setNeedsUserGesture(false);
+                    setIsStarting(false);
+                  }).catch(e => {
+                    console.error(e);
+                    setDebugMsg('Button play() error: ' + String(e));
+                  });
+                }
+              }}
+              className="bg-brand-gold text-crm-bg px-6 py-3 rounded-full font-bold text-base shadow-[0_0_20px_rgba(212,175,55,0.4)] animate-pulse hover:scale-105 active:scale-95 transition-all"
+            >
+              Tap to Start Camera
+            </button>
+          </div>
+        )}
 
-        <div className="relative bg-crm-surface rounded-lg overflow-hidden border border-crm-border shadow-sm" style={{ minHeight: 280 }}>
-          <video
-            ref={videoRef}
-            className={`w-full h-auto transition-opacity duration-300 ${isStarting ? 'opacity-0' : 'opacity-100'}`}
-            autoPlay
-            muted
-            playsInline
-          />
-          <canvas ref={canvasRef} className="hidden" />
-
-          {isStarting && !error && !needsUserGesture && (
-            <div className="absolute inset-0 flex flex-col items-center justify-center bg-crm-surface text-crm-text gap-3">
-              <div className="w-8 h-8 border-2 border-brand-gold border-t-transparent rounded-full animate-spin" />
-              <p className="text-crm-muted text-[13px]">Starting camera…</p>
+        {!isStarting && !error && !needsUserGesture && (
+          <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
+            <div className="relative w-[260px] h-[260px]">
+              <span className="absolute top-0 left-0 w-8 h-8 border-t-4 border-l-4 border-brand-gold rounded-tl" />
+              <span className="absolute top-0 right-0 w-8 h-8 border-t-4 border-r-4 border-brand-gold rounded-tr" />
+              <span className="absolute bottom-0 left-0 w-8 h-8 border-b-4 border-l-4 border-brand-gold rounded-bl" />
+              <span className="absolute bottom-0 right-0 w-8 h-8 border-b-4 border-r-4 border-brand-gold rounded-br" />
+              <div className="absolute inset-x-0 top-0 h-0.5 bg-crm-primary/70 animate-[scan_2s_linear_infinite] hover:opacity-90 text-white" />
             </div>
-          )}
-
-          {needsUserGesture && (
-            <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/60 rounded-lg backdrop-blur-sm">
-              <button
-                onClick={() => {
-                  if (videoRef.current) {
-                    setDebugMsg('User tapped button');
-                    videoRef.current.play().then(() => {
-                      setDebugMsg('Button play() success');
-                      setNeedsUserGesture(false);
-                      setIsStarting(false);
-                    }).catch(e => {
-                      console.error(e);
-                      setDebugMsg('Button play() error: ' + String(e));
-                    });
-                  }
-                }}
-                className="bg-brand-gold text-crm-bg px-6 py-3 rounded-full font-bold text-base shadow-[0_0_20px_rgba(212,175,55,0.4)] animate-pulse hover:scale-105 active:scale-95 transition-all"
-              >
-                Tap to Start Camera
-              </button>
-            </div>
-          )}
-
-          {!isStarting && !error && !needsUserGesture && (
-            <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
-              <div className="relative w-[260px] h-[260px]">
-                <span className="absolute top-0 left-0 w-8 h-8 border-t-4 border-l-4 border-brand-gold rounded-tl" />
-                <span className="absolute top-0 right-0 w-8 h-8 border-t-4 border-r-4 border-brand-gold rounded-tr" />
-                <span className="absolute bottom-0 left-0 w-8 h-8 border-b-4 border-l-4 border-brand-gold rounded-bl" />
-                <span className="absolute bottom-0 right-0 w-8 h-8 border-b-4 border-r-4 border-brand-gold rounded-br" />
-                <div className="absolute inset-x-0 top-0 h-0.5 bg-crm-primary/70 animate-[scan_2s_linear_infinite] hover:opacity-90 text-white" />
-              </div>
-            </div>
-          )}
-        </div>
-
-        <p className="text-center text-crm-muted mt-3 text-[13px]">
-          Hold steady — scanning automatically
-        </p>
+          </div>
+        )}
       </div>
+
+      <p className="text-center text-crm-muted mt-3 text-[13px]">
+        Hold steady — scanning automatically
+      </p>
 
       <style jsx>{`
         @keyframes scan {

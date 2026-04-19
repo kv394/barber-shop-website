@@ -180,9 +180,7 @@ export default function KioskMode({ userProfile }: { userProfile: UserProfile })
                                             Please tap the button below and scan your QR code or gift card barcode to apply it to your checkout total.
                                         </p>
                                         {isScannerOpen ? (
-                                            <div className="inline-block bg-crm-surface p-3 rounded-xl shadow-[0_0_40px_rgba(0,0,0,0.5)] border-4 border-status-pending">
-                                                <BarcodeScanner onScan={handleDiscountScanned} onClose={handleCloseScanner} />
-                                            </div>
+                                            <BarcodeScanner onScan={handleDiscountScanned} onClose={handleCloseScanner} />
                                         ) : (
                                             <div className="flex flex-col gap-3 w-full">
                                                 <button 
