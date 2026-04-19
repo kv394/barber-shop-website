@@ -166,7 +166,7 @@ export default function ClientDetailModal({ shopId, clientId, clientName, onClos
         <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-start mb-6 border-b border-crm-border pb-4 shrink-0">
           <div className="flex gap-4">
             <div>
-              <h3 className="font-bold text-crm-accent text-lg font-bold">{clientName}</h3>
+              <h3 className="font-bold text-crm-primary text-lg">{clientName}</h3>
               {client && (
                 <div className="text-[11px] text-crm-muted mt-1 space-y-1">
                   <p className="text-[13px]">{client.email?.startsWith('walkin-') ? 'Walk-in Client' : client.email}</p>
@@ -180,11 +180,11 @@ export default function ClientDetailModal({ shopId, clientId, clientName, onClos
                 <UserQRCode barcode={client.barcode} userName={client.name || clientName} showText={false} size={64} />
               </div>
             )}
-          </div>
-          <button onClick={handleClose} className="text-crm-muted hover:text-crm-text bg-crm-surface rounded-full w-8 h-8 flex items-center justify-center">✕</button>
-        </div>
+            </div>
+            <button onClick={handleClose} className="absolute top-6 right-6 text-crm-primary bg-white hover:bg-gray-100 shadow-sm z-10 w-7 h-7 rounded-full flex items-center justify-center transition-colors font-bold text-[13px]">✕</button>
+            </div>
 
-        {loading ? (
+            {/* Content Area */}
           <p className="text-crm-muted text-center py-8 text-[13px]">Loading...</p>
         ) : client ? (
           <div className="flex flex-col h-full min-h-0">

@@ -28,15 +28,14 @@ export default function UsageAnalysisModal({ shopId, shopName, onClose }: UsageA
   return (
     <div className="fixed inset-0 bg-crm-surface z-[100] flex items-center justify-center p-4 backdrop-blur-sm" onClick={onClose}>
       <div className="bg-crm-surface rounded-xl p-6 w-full max-w-2xl border border-crm-border shadow-sm shadow-2xl relative" onClick={e => e.stopPropagation()}>
-        <button 
-          onClick={onClose} 
-          className="absolute top-4 right-4 text-crm-muted hover:text-crm-text bg-crm-surface rounded-full w-8 h-8 flex items-center justify-center"
+        <button
+          onClick={onClose}
+          className="absolute top-3 right-4 text-crm-primary bg-white hover:bg-gray-100 shadow-sm z-10 w-7 h-7 rounded-full flex items-center justify-center transition-colors font-bold text-[13px]"
         >
           ✕
         </button>
 
-        <h2 className="font-bold text-crm-accent mb-2 flex items-center gap-2 text-xl font-bold">
-          <span>📊</span> Usage & Cost Analysis
+        <h2 className="font-bold text-crm-primary mb-2 flex items-center gap-2 text-xl">          <span>📊</span> Usage & Cost Analysis
         </h2>
         <p className="text-crm-muted mb-6 text-[13px]">Analyzing resource consumption for <strong>{shopName}</strong></p>
 

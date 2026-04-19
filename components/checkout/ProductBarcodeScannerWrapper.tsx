@@ -114,10 +114,10 @@ export default function ProductBarcodeScannerWrapper({ shopId, products = [] }: 
       {/* Results overlay */}
       {showOverlay && (
         <div className="fixed bottom-0 left-0 right-0 p-4 z-[60] flex justify-center pointer-events-none">
-          <div className="bg-crm-surface border border-brand-gold rounded-xl p-5 shadow-2xl max-w-sm w-full pointer-events-auto">
+          <div className="bg-crm-surface border border-brand-gold rounded-xl p-5 shadow-2xl max-w-sm w-full pointer-events-auto relative">
             <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-start mb-4">
-              <h3 className="font-bold text-crm-text text-lg font-bold">Scan Result</h3>
-              <button onClick={resetAll} className="text-crm-muted hover:text-crm-text text-xl leading-none">✕</button>
+              <h3 className="font-bold text-crm-primary text-lg">Scan Result</h3>
+              <button onClick={resetAll} className="absolute top-3 right-4 text-crm-primary bg-white hover:bg-gray-100 shadow-sm z-10 w-7 h-7 rounded-full flex items-center justify-center transition-colors font-bold text-[13px]">✕</button>
             </div>
 
             {isUpdating && (

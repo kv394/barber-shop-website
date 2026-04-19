@@ -47,9 +47,9 @@ export default function AddBookingWrapper({ shopId, buttonClass }: { shopId: str
   const modalContent = isOpen ? (
     <div className="fixed inset-0 bg-black/60 z-[100] flex items-center justify-center p-4 backdrop-blur-sm" onClick={handleClose}>
       <div className="bg-crm-surface rounded-xl w-full max-w-lg border border-crm-border shadow-2xl flex flex-col max-h-[85vh] overflow-hidden transition-all duration-300" onClick={e => e.stopPropagation()}>
-        <div className="flex justify-between items-center p-6 border-b border-crm-border">
-          <h3 className="font-bold text-crm-text text-xl">Select a Service</h3>
-          <button onClick={handleClose} className="text-crm-muted hover:text-crm-text bg-crm-bg rounded-full w-8 h-8 flex items-center justify-center">✕</button>
+        <div className="flex justify-between items-center p-6 border-b border-crm-border relative">
+          <h3 className="font-bold text-crm-primary text-xl">Select a Service</h3>
+          <button onClick={handleClose} className="absolute top-6 right-6 text-crm-primary bg-white hover:bg-gray-100 shadow-sm z-10 w-7 h-7 rounded-full flex items-center justify-center transition-colors font-bold text-[13px]">✕</button>
         </div>
         <div className="p-6 overflow-y-auto custom-scrollbar flex-1">
           {loading ? (

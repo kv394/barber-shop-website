@@ -373,9 +373,9 @@ export default function BookingModal({ shopId, service, onClose, shopHours }: Bo
       return (
         <div className="fixed inset-0 bg-black/60 z-[100] flex items-center justify-center p-4 backdrop-blur-sm">
             <div className="bg-crm-surface rounded-xl p-8 max-w-md w-full border border-status-confirmed shadow-2xl text-center relative">
-                <button onClick={onClose} className="absolute top-4 right-4 text-crm-muted hover:text-crm-text bg-crm-surface rounded-full w-8 h-8 flex items-center justify-center z-10">✕</button>
+                <button onClick={onClose} className="absolute top-3 right-4 text-crm-primary bg-white hover:bg-gray-100 shadow-sm z-10 w-7 h-7 rounded-full flex items-center justify-center transition-colors font-bold text-[13px]">✕</button>
                 <div className="text-6xl mb-4">🎉</div>
-                <h3 className="font-bold text-crm-text mb-2 text-lg font-bold">Booking Confirmed!</h3>
+                <h3 className="font-bold text-crm-primary mb-2 text-lg">Booking Confirmed!</h3>
                 <p className="text-crm-muted mb-2 text-[13px]">The appointment for <span className="text-crm-accent font-semibold">{service.name}</span> has been scheduled.</p>
                 {confirmedStartTime && (
                   <div className="bg-crm-surface rounded-lg p-4 mb-6 border border-crm-border shadow-sm text-[13px] text-left space-y-1">
@@ -401,8 +401,8 @@ export default function BookingModal({ shopId, service, onClose, shopHours }: Bo
       <div className="fixed inset-0 bg-black/60 z-[100] flex items-center justify-center p-4 backdrop-blur-sm">
         <div className="bg-crm-surface rounded-xl p-6 w-full max-w-md border border-crm-border shadow-sm shadow-2xl relative text-left">
           <button onClick={() => setShowSummary(false)} className="absolute top-4 left-4 text-crm-muted hover:text-crm-text bg-crm-surface rounded-full w-8 h-8 flex items-center justify-center z-10">←</button>
-          <button onClick={onClose} className="absolute top-4 right-4 text-crm-muted hover:text-crm-text bg-crm-surface rounded-full w-8 h-8 flex items-center justify-center z-10">✕</button>
-          <h3 className="font-bold text-crm-text mb-1 text-lg font-bold text-center mt-2">Review Your Booking</h3>
+          <button onClick={onClose} className="absolute top-3 right-4 text-crm-primary bg-white hover:bg-gray-100 shadow-sm z-10 w-7 h-7 rounded-full flex items-center justify-center transition-colors font-bold text-[13px]">✕</button>
+          <h3 className="font-bold text-crm-primary mb-1 text-lg text-center mt-2">Review Your Booking</h3>
           <p className="text-crm-muted mb-5 text-[13px] text-center">Please confirm the details below.</p>
 
           {error && <p className="text-status-cancelled bg-status-cancelled/20 p-3 rounded mb-4 text-[13px]">{error}</p>}
@@ -469,8 +469,8 @@ export default function BookingModal({ shopId, service, onClose, shopHours }: Bo
   return (
     <div className="fixed inset-0 bg-black/60 z-[100] flex items-center justify-center p-4 backdrop-blur-sm">
       <div className="bg-crm-surface rounded-xl p-6 w-full max-w-md border border-crm-border shadow-sm shadow-2xl relative text-left max-h-[90vh] overflow-y-auto scrollbar-hide">
-        <button onClick={onClose} className="absolute top-4 right-4 text-crm-muted hover:text-crm-text bg-crm-surface rounded-full w-8 h-8 flex items-center justify-center z-10">✕</button>
-        <h3 className="font-bold text-crm-text mb-1 text-lg font-bold">Book Appointment</h3>
+        <button onClick={onClose} className="absolute top-3 right-4 text-crm-primary bg-white hover:bg-gray-100 shadow-sm z-10 w-7 h-7 rounded-full flex items-center justify-center transition-colors font-bold text-[13px]">✕</button>
+        <h3 className="font-bold text-crm-primary mb-1 text-lg">Book Appointment</h3>
         <p className="text-crm-accent font-semibold mb-6 text-[13px]">{service.name} <span className="text-crm-muted font-normal ml-2">({service.duration} mins • ${service.price})</span></p>
 
         {!isLoaded ? (

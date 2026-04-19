@@ -32,7 +32,7 @@ export default function StaffProfileModalWrapper({ staff, children }: { staff: a
         className={`bg-crm-bg border border-crm-border shadow-sm rounded-2xl p-6 w-full max-w-sm shadow-2xl relative transition-all duration-200 ${isOpen ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-4 scale-95 pointer-events-none'}`} 
         onClick={e => e.stopPropagation()}
       >
-        <button onClick={() => setIsOpen(false)} className="absolute top-4 right-4 text-crm-muted hover:text-crm-text w-8 h-8 flex items-center justify-center rounded-full hover:bg-crm-border transition-colors">
+        <button onClick={() => setIsOpen(false)} className="absolute top-3 right-4 text-crm-primary bg-white hover:bg-gray-100 shadow-sm z-10 w-7 h-7 rounded-full flex items-center justify-center transition-colors font-bold text-[13px]">
           ✕
         </button>
         <div className="flex flex-col items-center pt-2">
@@ -40,10 +40,10 @@ export default function StaffProfileModalWrapper({ staff, children }: { staff: a
             {staff.imageUrl ? (
               <img src={staff.imageUrl} alt={staff.name} className="w-full h-full object-cover" />
             ) : (
-              <span className="text-4xl">👤</span>
+              <span className="text-4xl text-crm-muted">👤</span>
             )}
           </div>
-          <h2 className="font-bold text-crm-text mb-1 text-center text-xl font-bold">{staff.name || staff.email || 'Unnamed Staff'}</h2>
+          <h2 className="font-bold text-crm-primary mb-1 text-center text-xl">{staff.name || staff.email || 'Unnamed Staff'}</h2>
           <span className="text-[11px] bg-crm-primary/20 text-crm-accent px-3 py-1 rounded-full uppercase tracking-wider font-bold mb-6 hover:opacity-90">
             {staff.role?.replace('_', ' ')}
           </span>

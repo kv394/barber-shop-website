@@ -307,10 +307,10 @@ export default function TemplatesPage() {
       {/* Edit Modal */}
       {editingTemplate && (
         <div className="fixed inset-0 bg-crm-surface flex items-center justify-center p-4 z-50">
-          <div className="bg-crm-surface border border-crm-border shadow-sm p-6 rounded-xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+          <div className="bg-crm-surface border border-crm-border shadow-sm p-6 rounded-xl w-full max-w-4xl max-h-[90vh] overflow-y-auto relative">
             <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-4">
-              <h2 className="font-bold text-xl font-bold">Edit Template: {editingTemplate.name}</h2>
-              <button onClick={() => setEditingTemplate(null)} className="text-crm-muted hover:text-crm-text">✕</button>
+              <h2 className="font-bold text-xl text-crm-primary">Edit Template: {editingTemplate.name}</h2>
+              <button onClick={() => setEditingTemplate(null)} className="absolute top-3 right-4 text-crm-primary bg-white hover:bg-gray-100 shadow-sm z-10 w-7 h-7 rounded-full flex items-center justify-center transition-colors font-bold text-[13px]">✕</button>
             </div>
             
             <form onSubmit={handleEditSubmit} className="space-y-4">

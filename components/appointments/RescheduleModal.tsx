@@ -149,9 +149,9 @@ export default function RescheduleModal({
   return (
     <div className="fixed inset-0 bg-crm-surface z-[100] flex items-center justify-center p-4 backdrop-blur-sm">
       <div className="bg-crm-surface rounded-xl p-6 w-full max-w-md border border-crm-border shadow-sm shadow-2xl relative text-left max-h-[90vh] overflow-y-auto">
-        <button onClick={onClose} className="absolute top-4 right-4 text-crm-muted hover:text-crm-text bg-crm-surface rounded-full w-8 h-8 flex items-center justify-center">✕</button>
+        <button onClick={onClose} className="absolute top-3 right-4 text-crm-primary bg-white hover:bg-gray-100 shadow-sm z-10 w-7 h-7 rounded-full flex items-center justify-center transition-colors font-bold text-[13px]">✕</button>
 
-        <h3 className="font-bold text-crm-text mb-1 text-lg font-bold">Reschedule Appointment</h3>
+        <h3 className="font-bold text-crm-primary mb-1 text-lg">Reschedule Appointment</h3>
         <p className="text-crm-accent font-semibold mb-6 text-[13px]">{serviceName}</p>
 
         {error && <p className="text-status-cancelled bg-status-cancelled/20 p-3 rounded mb-4 text-[13px]">{error}</p>}
