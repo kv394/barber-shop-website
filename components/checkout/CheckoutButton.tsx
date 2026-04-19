@@ -47,6 +47,7 @@ export default function CheckoutButton({
   const [products, setProducts] = useState<any[]>([]);
   const [cart, setCart] = useState<CartItem[]>([]);
   const [isScanningDiscount, setIsScanningDiscount] = useState(false);
+  const scanProcessedRef = useRef(false);
   const router = useRouter();
 
   const TIP_PRESETS = [0, 2, 5, 10];
@@ -86,11 +87,13 @@ export default function CheckoutButton({
   useEffect(() => {
     if (!isScanningDiscount || !shopId) return;
 
+    scanProcessedRef.current = false;
     const supabase = createClient();
     const channel = supabase.channel(`kiosk-commands-${shopId}`);
 
     channel.on('broadcast', { event: 'DISCOUNT_CODE_SCANNED' }, async (payload) => {
        if (payload.payload?.appointmentId === appointmentId) {
+          scanProcessedRef.current = true;
           const code = payload.payload.code;
           
           try {
@@ -131,6 +134,7 @@ export default function CheckoutButton({
 
     channel.on('broadcast', { event: 'DISCOUNT_SCAN_CANCELLED' }, (payload) => {
        if (payload.payload?.appointmentId === appointmentId) {
+          scanProcessedRef.current = true; // also prevent secondary cancel broadcast
           setIsScanningDiscount(false);
        }
     });
@@ -146,13 +150,17 @@ export default function CheckoutButton({
     });
 
     return () => {
-       channel.send({
-          type: 'broadcast',
-          event: 'CANCEL_DISCOUNT_SCAN',
-          payload: { appointmentId }
-       }).then(() => supabase.removeChannel(channel));
+       if (!scanProcessedRef.current) {
+         channel.send({
+            type: 'broadcast',
+            event: 'CANCEL_DISCOUNT_SCAN',
+            payload: { appointmentId }
+         }).then(() => supabase.removeChannel(channel));
+       } else {
+         supabase.removeChannel(channel);
+       }
     };
-  }, [isScanningDiscount, shopId, appointmentId, subtotal]);
+  }, [isScanningDiscount, shopId, appointmentId, subtotal, clientName]);
 
   const addToCart = (product: any) => {
     setCart(prev => {
