@@ -1,6 +1,7 @@
 import { redirect, notFound } from 'next/navigation';
 import { createClient } from '@/utils/supabase/server';
 import { getShopLayoutData } from '@/lib/shop-data';
+import { prisma } from '@/lib/prisma';
 import ShopAdminLayout from '@/components/shop-admin/ShopAdminLayout';
 import KioskSetupClient from '@/components/shop-admin/KioskSetupClient';
 import Link from 'next/link';
@@ -18,6 +19,10 @@ export default async function KioskSettingsPage({ params }: { params: Promise<{ 
   const data = await getShopLayoutData(userId, shopId);
   if (!data || (!data.isSiteAdmin && !data.isShopAdmin)) notFound();
 
+  const kioskUser = await prisma.user.findFirst({
+    where: { shopId, role: 'ATTENDANCE_KIOSK' }
+  });
+
   const settingsTabs = [
     { id: 'settings', label: 'Appearance', href: `/shop/${shopId}/settings` },
     { id: 'settings-notifications', label: 'Notifications', href: `/shop/${shopId}/settings/notifications` },
@@ -28,7 +33,7 @@ export default async function KioskSettingsPage({ params }: { params: Promise<{ 
 
   return (
     <ShopAdminLayout shopName={data.shop.name} shopSlug={data.shopSlug} pageTitle="Kiosk Setup" tabs={data.userRole === 'SITE_ADMIN' ? undefined : settingsTabs} shopId={shopId} userRole={data.userRole} activeTab="settings-kiosk">
-      <KioskSetupClient shopId={shopId} shopName={data.shop.name} />
+      <KioskSetupClient shopId={shopId} shopName={data.shop.name} kioskEmail={kioskUser?.email || ''} />
     </ShopAdminLayout>
   );
 }

@@ -1,26 +1,38 @@
 'use client';
 import { useEffect, useState } from 'react';
 
-export default function KioskSetupClient({ shopId, shopName }: { shopId: string; shopName: string }) {
+export default function KioskSetupClient({ shopId, shopName, kioskEmail }: { shopId: string; shopName: string; kioskEmail: string }) {
   const [kioskUrl, setKioskUrl] = useState('');
   const [password, setPassword] = useState('');
   const [saving, setSaving] = useState(false);
   const [msg, setMsg] = useState('');
+  const [errorMsg, setErrorMsg] = useState('');
   const [copied, setCopied] = useState(false);
 
   useEffect(() => {
-    setKioskUrl(`${window.location.origin}/shop/${shopId}/kiosk`);
+    // Kiosk users login at the main sign-in page and are redirected to the root where the kiosk is rendered
+    setKioskUrl(`${window.location.origin}/sign-in`);
   }, [shopId]);
 
   const savePassword = async () => {
-    if (!password.trim()) return;
+    if (!password.trim() || !kioskEmail) {
+      setErrorMsg('No kiosk email found for this shop. Please contact support.');
+      return;
+    }
     setSaving(true);
-    await fetch(`/api/shops/${shopId}/kiosk-password`, {
+    setErrorMsg('');
+    const res = await fetch(`/api/shops/${shopId}/kiosk-password`, {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ password }),
+      body: JSON.stringify({ email: kioskEmail, password }),
     });
-    setMsg('Kiosk PIN saved!'); setPassword(''); setSaving(false);
-    setTimeout(() => setMsg(''), 3000);
+    const data = await res.json();
+    if (!res.ok) {
+      setErrorMsg(data.error || 'Failed to save password');
+    } else {
+      setMsg('Kiosk PIN saved!'); setPassword('');
+      setTimeout(() => setMsg(''), 3000);
+    }
+    setSaving(false);
   };
 
   const copyUrl = () => { navigator.clipboard.writeText(kioskUrl); setCopied(true); setTimeout(() => setCopied(false), 2000); };
@@ -28,6 +40,7 @@ export default function KioskSetupClient({ shopId, shopName }: { shopId: string;
   return (
     <div className="space-y-6">
       {msg && <div className="p-3 bg-status-confirmed/20 border border-status-confirmed/30 text-status-confirmed rounded-lg text-[13px]">{msg}</div>}
+      {errorMsg && <div className="p-3 bg-status-cancelled/20 border border-status-cancelled/30 text-status-cancelled rounded-lg text-[13px]">{errorMsg}</div>}
 
       <div className="bg-status-info/20 border border-status-info/20 rounded-xl p-5">
         <h4 className="text-status-info font-semibold mb-2 text-base font-semibold">ℹ️ What is the Attendance Kiosk?</h4>
@@ -35,26 +48,30 @@ export default function KioskSetupClient({ shopId, shopName }: { shopId: string;
       </div>
 
       <div className="bg-crm-surface border border-crm-border shadow-sm rounded-xl p-6 space-y-4">
-        <h3 className="font-bold text-crm-text text-lg font-bold">📱 Kiosk URL</h3>
-        <p className="text-crm-muted text-[13px]">Open on a tablet or dedicated screen in your shop.</p>
+        <h3 className="font-bold text-crm-text text-lg font-bold">📱 Kiosk Login</h3>
+        <p className="text-crm-muted text-[13px]">Open the login page on a tablet or dedicated screen in your shop and log in using these credentials:</p>
+        <div className="flex gap-2 mb-2">
+          <span className="text-[13px] text-crm-muted w-16">Email:</span>
+          <code className="text-crm-primary font-mono text-[13px] font-bold">{kioskEmail || 'No kiosk email found'}</code>
+        </div>
         <div className="flex gap-2">
           <input readOnly value={kioskUrl} className="flex-1 bg-crm-surface border border-crm-border shadow-sm rounded-lg px-3 py-2.5 text-crm-text text-[13px] font-mono focus:outline-none" />
           <button onClick={copyUrl} className={`px-4 py-2 rounded-lg text-[13px] font-semibold transition-colors ${copied ? 'bg-status-confirmed text-white' : 'bg-crm-primary text-white hover:bg-crm-surface'}`}>
-            {copied ? '✓ Copied!' : 'Copy'}
+            {copied ? '✓ Copied!' : 'Copy URL'}
           </button>
         </div>
-        <a href={kioskUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 text-crm-accent hover:underline text-[13px]">🚀 Open kiosk in new tab →</a>
+        <a href={kioskUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 text-crm-accent hover:underline text-[13px]">🚀 Open sign in page in new tab →</a>
       </div>
 
       <div className="bg-crm-surface border border-crm-border shadow-sm rounded-xl p-6 space-y-4">
-        <h3 className="font-bold text-crm-text text-lg font-bold">🔐 Kiosk PIN</h3>
-        <p className="text-crm-muted text-[13px]">Protect the kiosk with a 4–8 digit PIN.</p>
+        <h3 className="font-bold text-crm-text text-lg font-bold">🔐 Kiosk Password</h3>
+        <p className="text-crm-muted text-[13px]">Protect the kiosk with an 8+ character password or PIN.</p>
         <div className="flex gap-3">
-          <input type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="Enter new PIN (4–8 digits)" maxLength={8}
-            className="w-48 bg-crm-surface border border-crm-border shadow-sm rounded-lg px-3 py-2.5 text-crm-text text-[13px] focus:outline-none focus:border-brand-gold" />
-          <button onClick={savePassword} disabled={saving || !password.trim()}
+          <input type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="Enter new password (min 8 chars)" minLength={8}
+            className="w-64 bg-crm-surface border border-crm-border shadow-sm rounded-lg px-3 py-2.5 text-crm-text text-[13px] focus:outline-none focus:border-brand-gold" />
+          <button onClick={savePassword} disabled={saving || password.trim().length < 8}
             className="px-4 py-2 bg-crm-primary text-white rounded-lg text-[13px] font-bold disabled:opacity-50 hover:bg-crm-surface hover:text-crm-primary border border-transparent hover:border-crm-primary/30 transition-colors">
-            {saving ? 'Saving…' : 'Set PIN'}
+            {saving ? 'Saving…' : 'Set Password'}
           </button>
         </div>
       </div>
