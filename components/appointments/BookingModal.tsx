@@ -468,7 +468,7 @@ export default function BookingModal({ shopId, service, onClose, shopHours }: Bo
   // ────────────── MAIN BOOKING FORM ──────────────
   return (
     <div className="fixed inset-0 bg-black/60 z-[100] flex items-center justify-center p-4 backdrop-blur-sm">
-      <div className="bg-crm-surface rounded-xl p-6 w-full max-w-md border border-crm-border shadow-sm shadow-2xl relative text-left max-h-[90vh] overflow-y-auto custom-scrollbar">
+      <div className="bg-crm-surface rounded-xl p-6 w-full max-w-md border border-crm-border shadow-sm shadow-2xl relative text-left max-h-[90vh] overflow-y-auto scrollbar-hide">
         <button onClick={onClose} className="absolute top-4 right-4 text-crm-muted hover:text-crm-text bg-crm-surface rounded-full w-8 h-8 flex items-center justify-center z-10">✕</button>
         <h3 className="font-bold text-crm-text mb-1 text-lg font-bold">Book Appointment</h3>
         <p className="text-crm-accent font-semibold mb-6 text-[13px]">{service.name} <span className="text-crm-muted font-normal ml-2">({service.duration} mins • ${service.price})</span></p>
@@ -635,6 +635,13 @@ export default function BookingModal({ shopId, service, onClose, shopHours }: Bo
                 </div>
             </div>
         )}
+
+        {/* Scroll Indicator */}
+        <div className="sticky bottom-[-24px] pointer-events-none w-full flex justify-center py-2 bg-gradient-to-t from-crm-surface via-crm-surface/80 to-transparent mt-4">
+          <div className="bg-crm-surface rounded-full shadow-sm border border-crm-border p-1 animate-bounce">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-crm-primary"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </div>
+        </div>
       </div>
     </div>
   );

@@ -85,13 +85,14 @@ export default function AddBookingWrapper({ shopId, buttonClass }: { shopId: str
       </button>
       
       {mounted && !selectedService && isOpen && createPortal(modalContent, document.body)}
-      {mounted && selectedService && shopHours && (
+      {mounted && selectedService && shopHours && createPortal(
         <BookingModal 
           shopId={shopId} 
           service={selectedService} 
           onClose={handleClose} 
           shopHours={shopHours} 
-        />
+        />,
+        document.body
       )}
     </>
   );
