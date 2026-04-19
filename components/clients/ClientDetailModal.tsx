@@ -180,11 +180,12 @@ export default function ClientDetailModal({ shopId, clientId, clientName, onClos
                 <UserQRCode barcode={client.barcode} userName={client.name || clientName} showText={false} size={64} />
               </div>
             )}
-            </div>
-            <button onClick={handleClose} className="absolute top-6 right-6 text-crm-primary bg-white hover:bg-gray-100 shadow-sm z-10 w-7 h-7 rounded-full flex items-center justify-center transition-colors font-bold text-[13px]">✕</button>
-            </div>
+          </div>
+          <button onClick={handleClose} className="absolute top-6 right-6 text-crm-primary bg-white hover:bg-gray-100 shadow-sm z-10 w-7 h-7 rounded-full flex items-center justify-center transition-colors font-bold text-[13px]">✕</button>
+        </div>
 
-            {/* Content Area */}
+        {/* Content Area */}
+        {loading ? (
           <p className="text-crm-muted text-center py-8 text-[13px]">Loading...</p>
         ) : client ? (
           <div className="flex flex-col h-full min-h-0">

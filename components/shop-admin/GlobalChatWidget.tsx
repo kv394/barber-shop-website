@@ -91,7 +91,7 @@ export default function GlobalChatWidget({ shopId, currentUserId, userRole }: { 
             {/* Close button layered over the chat header */}
             <button 
                 onClick={() => setIsOpen(false)}
-                className="absolute top-3 right-4 text-crm-primary bg-white hover:bg-gray-100 shadow-sm z-10 w-7 h-7 rounded-full flex items-center justify-center transition-colors font-bold text-[13px]"
+                className="absolute top-3 right-4 text-crm-primary bg-white hover:bg-gray-100 shadow-md z-50 w-7 h-7 rounded-full flex items-center justify-center transition-colors font-bold text-[13px]"
             >
                 ✕
             </button>
