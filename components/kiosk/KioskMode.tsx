@@ -135,7 +135,7 @@ export default function KioskMode({ userProfile }: { userProfile: UserProfile })
                             <div className="flex flex-col items-center z-10 animate-fade-in w-full max-w-[280px]">
                                 <h3 className="font-bold text-crm-text mb-3 text-center text-xl text-status-pending">Scan Discount</h3>
                                 <p className="text-crm-muted mb-8 text-center text-[13px]">Please scan your QR code or Barcode for the discount.</p>
-                                <div className="transform scale-125 md:scale-150 lg:scale-[1.7] origin-center inline-block bg-crm-surface p-3 rounded-xl shadow-[0_0_40px_rgba(0,0,0,0.5)] border-4 border-status-pending">
+                                <div className="inline-block bg-crm-surface p-3 rounded-xl shadow-[0_0_40px_rgba(0,0,0,0.5)] border-4 border-status-pending">
                                     <BarcodeScanner onScan={handleDiscountScanned} onClose={() => setDiscountScanRequest(null)} />
                                 </div>
                             </div>
@@ -143,7 +143,7 @@ export default function KioskMode({ userProfile }: { userProfile: UserProfile })
                             <div className="flex flex-col items-center z-10 w-full">
                                 <h3 className="font-bold text-crm-text mb-3 text-center text-lg">Scan ID</h3>
                                 <p className="text-crm-muted mb-8 md:mb-12 text-center max-w-xs text-[13px]">Staff members, please scan your personal QR code to clock in or out.</p>
-                                <div className="transform scale-125 md:scale-150 lg:scale-[1.7] origin-center inline-block bg-crm-surface p-3 rounded-xl shadow-[0_0_40px_rgba(0,0,0,0.5)] border-4 border-crm-border">
+                                <div className="inline-block bg-crm-surface p-3 rounded-xl shadow-[0_0_40px_rgba(0,0,0,0.5)] border-4 border-crm-border">
                                     <BarcodeScannerWrapper shopId={userProfile.shopId} services={[]} />
                                 </div>
                             </div>
