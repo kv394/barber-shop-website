@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useRef, useState, useCallback } from 'react';
-import { BarcodeDetector } from 'barcode-detector';
 
 interface BarcodeScannerProps {
   onScan: (decodedText: string) => void;
@@ -75,37 +74,63 @@ export default function BarcodeScanner({ onScan, onClose }: BarcodeScannerProps)
     // The barcode-detector polyfill uses native BarcodeDetector when
     // available, falls back to ZXing-WASM otherwise. Both handle QR
     // codes AND 1-D barcodes reliably.
-    let detector: InstanceType<typeof BarcodeDetector>;
-    try {
-      detector = new BarcodeDetector({ formats: [...BARCODE_FORMATS] });
-    } catch (e) {
-      console.warn('[BarcodeScanner] Formats not supported, falling back to default formats:', e);
-      try {
-        detector = new BarcodeDetector();
-      } catch (e2) {
-        console.error('[BarcodeScanner] Failed to create BarcodeDetector:', e2);
-        setError('Barcode detection is not supported on this browser.');
-        setIsStarting(false);
-        return;
-      }
-    }
+    let detector: any;
+    let isZxing = false;
 
-    const decode = async (source: HTMLCanvasElement): Promise<string | null> => {
+    const initDetector = async () => {
       try {
-        const results = await detector.detect(source);
-        if (results.length > 0) {
-          console.log('[BarcodeScanner] Detected:', results[0].format, results[0].rawValue);
-          return results[0].rawValue;
+        if ('BarcodeDetector' in window) {
+          detector = new (window as any).BarcodeDetector({ formats: [...BARCODE_FORMATS] });
+        } else {
+          throw new Error('No native BarcodeDetector');
+        }
+      } catch (e) {
+        console.warn('[BarcodeScanner] Native detector failed or missing, falling back to @zxing/browser:', e);
+        try {
+          const { BrowserMultiFormatReader } = await import('@zxing/browser');
+          detector = new BrowserMultiFormatReader();
+          isZxing = true;
+        } catch (e2) {
+          console.error('[BarcodeScanner] Failed to create BarcodeDetector:', e2);
+          setError('Barcode detection is not supported on this browser.');
+          setIsStarting(false);
+          return false;
+        }
+      }
+      return true;
+    };
+
+    const decode = async (source: HTMLVideoElement | HTMLCanvasElement): Promise<string | null> => {
+      try {
+        if (!isZxing && detector.detect) {
+          const results = await detector.detect(source);
+          if (results.length > 0) {
+            console.log('[BarcodeScanner] Detected (Native):', results[0].format, results[0].rawValue);
+            return results[0].rawValue;
+          }
+        } else if (isZxing && detector.decodeFromCanvas) {
+            if (source instanceof HTMLCanvasElement) {
+              const result = detector.decodeFromCanvas(source);
+              if (result) {
+                console.log('[BarcodeScanner] Detected (ZXing):', result.getText());
+                return result.getText();
+              }
+            }
         }
         return null;
-      } catch (err) {
-        // Log detection errors once for debugging, but don't spam
+      } catch (err: any) {
+        if (err && err.name === 'NotFoundException') {
+            return null; // Ignore ZXing spam
+        }
         console.warn('[BarcodeScanner] detect() error:', err);
         return null;
       }
     };
 
     const startCamera = async () => {
+      const initialized = await initDetector();
+      if (!initialized || cancelled) return;
+
       try {
         // Higher resolution helps 1-D barcode detection
         const stream = await navigator.mediaDevices.getUserMedia({
@@ -170,6 +195,8 @@ export default function BarcodeScanner({ onScan, onClose }: BarcodeScannerProps)
         let lastScanTime = 0;
         const SCAN_INTERVAL = 200; // ms between scans — gives detector enough time
 
+        let scanCount = 0;
+
         const scanFrame = async (timestamp: number) => {
           if (cancelled || hasScannedRef.current) return;
 
@@ -179,9 +206,13 @@ export default function BarcodeScanner({ onScan, onClose }: BarcodeScannerProps)
             canvas.height = video.videoHeight;
             ctx.drawImage(video, 0, 0);
 
+            scanCount++;
+            if (scanCount % 10 === 0) setDebugMsg(`Scanning... (x${scanCount})`);
+
             const result = await decode(canvas);
             if (result && !cancelled && !hasScannedRef.current) {
               hasScannedRef.current = true;
+              setDebugMsg(`Found: ${result}`);
               cleanup();
               onScan(result);
               return;

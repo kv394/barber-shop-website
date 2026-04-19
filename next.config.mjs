@@ -6,7 +6,7 @@ const nextConfig = {
   serverExternalPackages: ['@prisma/client', '@prisma/adapter-pg', 'pg', 'handlebars'],
   allowedDevOrigins: ['localhost', '127.0.0.1', '*.local', '192.168.*.*'],
   experimental: {
-    optimizePackageImports: ['ioredis', 'barcode-detector'],
+    optimizePackageImports: ['ioredis'],
   },
   images: {
     formats: ['image/avif', 'image/webp'],
