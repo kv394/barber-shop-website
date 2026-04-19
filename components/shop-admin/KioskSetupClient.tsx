@@ -60,7 +60,10 @@ export default function KioskSetupClient({ shopId, shopName, kioskEmail }: { sho
             {copied ? '✓ Copied!' : 'Copy URL'}
           </button>
         </div>
-        <a href={kioskUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 text-crm-accent hover:underline text-[13px]">🚀 Open sign in page in new tab →</a>
+        <div className="flex flex-col gap-2">
+          <p className="text-status-pending text-[13px] font-semibold">⚠️ Note: Do not log into the Kiosk on your current browser window, or it will log you out of your Admin account. Use a separate tablet or an Incognito window.</p>
+          <a href={kioskUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 text-crm-accent hover:underline text-[13px]">🚀 Open sign in page in new tab →</a>
+        </div>
       </div>
 
       <div className="bg-crm-surface border border-crm-border shadow-sm rounded-xl p-6 space-y-4">
