@@ -49,25 +49,31 @@ export async function POST(
     );
 
     // Create or update user in Supabase
-    let targetSupabaseId: string;
+    let targetSupabaseId = targetUser.id; // Initially assume the Prisma ID is the Supabase ID
 
-    const { data: usersData, error: listError } = await supabaseAdmin.auth.admin.listUsers();
-    const existingSupabaseUser = usersData?.users?.find((u: any) => u.email === email);
+    // Let's try to update the user first, assuming they exist and the ID is in sync
+    const { data: updatedUser, error: updateError } = await supabaseAdmin.auth.admin.updateUserById(targetSupabaseId, {
+      password: password,
+      email_confirm: true,
+    });
 
-    if (existingSupabaseUser) {
-      targetSupabaseId = existingSupabaseUser.id;
-      await supabaseAdmin.auth.admin.updateUserById(targetSupabaseId, {
-        password: password,
-        email_confirm: true,
-      });
-    } else {
-      const { data: newUser, error: createError } = await supabaseAdmin.auth.admin.createUser({
-        email: email,
-        password: password,
-        email_confirm: true,
-      });
-      if (createError) throw createError;
-      targetSupabaseId = newUser.user.id;
+    if (updateError) {
+       // If update fails (e.g. user not found), try to create them instead
+       const { data: newUser, error: createError } = await supabaseAdmin.auth.admin.createUser({
+          email: email,
+          password: password,
+          email_confirm: true,
+       });
+
+       if (createError) {
+          // If creation fails because they already exist, we need to find them and update them
+          // Since we can't reliably use listUsers, let's use the Admin API to get the user by email
+          // Wait, there's no direct "getUserByEmail" in Supabase JS v2 Admin API.
+          // But we can just use the create user error to see if it exists.
+          logger.error('Supabase createUser error:', createError);
+          throw createError;
+       }
+       targetSupabaseId = newUser.user.id;
     }
     
     // Ensure our local DB is synced with the correct Supabase ID
