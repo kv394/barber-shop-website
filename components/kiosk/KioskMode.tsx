@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import SupabaseAuthButton from '@/components/auth/SupabaseAuthButton';
 import BarcodeScannerWrapper from '@/components/checkout/BarcodeScannerWrapper';
 import BarcodeScanner from '@/components/checkout/BarcodeScanner';
@@ -180,7 +181,12 @@ export default function KioskMode({ userProfile }: { userProfile: UserProfile })
                                             Please tap the button below and scan your QR code or gift card barcode to apply it to your checkout total.
                                         </p>
                                         {isScannerOpen ? (
-                                            <BarcodeScanner onScan={handleDiscountScanned} onClose={handleCloseScanner} />
+                                            typeof document !== 'undefined' ? createPortal(
+                                                <div className="fixed inset-0 z-[100] bg-crm-bg/90 backdrop-blur-sm flex flex-col items-center justify-center p-4">
+                                                    <BarcodeScanner onScan={handleDiscountScanned} onClose={handleCloseScanner} />
+                                                </div>,
+                                                document.body
+                                            ) : null
                                         ) : (
                                             <div className="flex flex-col gap-3 w-full">
                                                 <button 
