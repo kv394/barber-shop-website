@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import dynamic from 'next/dynamic';
+import { createClient } from '@/utils/supabase/client';
 
 const BarcodeScanner = dynamic(() => import('@/components/checkout/BarcodeScanner'), { ssr: false });
 
@@ -73,6 +74,46 @@ export default function CheckoutButton({
       })
       .catch(() => {});
   }, [isOpen, shopId, serviceName, servicePrice, serviceId]);
+
+  useEffect(() => {
+    if (!isScanningDiscount || !shopId) return;
+
+    const supabase = createClient();
+    const channel = supabase.channel(`kiosk-commands-${shopId}`);
+
+    channel.on('broadcast', { event: 'DISCOUNT_CODE_SCANNED' }, (payload) => {
+       if (payload.payload?.appointmentId === appointmentId) {
+          const val = parseFloat(payload.payload.code.replace(/[^0-9.]/g, ''));
+          if (!isNaN(val) && val > 0) {
+            // Can't use subtotal easily inside effect unless we use an updater function, but we can just use the outer state.
+            // Wait, subtotal changes, but this effect depends on subtotal if we add it to deps.
+            // That's fine.
+            setDiscount(Math.min(val, subtotal));
+          } else {
+            alert('Invalid discount code. Could not parse amount.');
+          }
+          setIsScanningDiscount(false);
+       }
+    });
+
+    channel.subscribe(async (status) => {
+      if (status === 'SUBSCRIBED') {
+        await channel.send({
+          type: 'broadcast',
+          event: 'REQUEST_DISCOUNT_SCAN',
+          payload: { appointmentId }
+        });
+      }
+    });
+
+    return () => {
+       channel.send({
+          type: 'broadcast',
+          event: 'CANCEL_DISCOUNT_SCAN',
+          payload: { appointmentId }
+       }).then(() => supabase.removeChannel(channel));
+    };
+  }, [isScanningDiscount, shopId, appointmentId, subtotal]);
 
   const addToCart = (product: any) => {
     setCart(prev => {
@@ -332,25 +373,15 @@ export default function CheckoutButton({
       {/* ── QR Scanner Overlay for Discount ── */}
       {isScanningDiscount && (
         <div className="fixed inset-0 bg-black/90 z-[110] flex flex-col items-center justify-center pointer-events-auto backdrop-blur-sm p-4">
-          <div className="w-full max-w-sm relative">
-            <h2 className="text-white text-center font-bold text-xl mb-4 tracking-wide">Scan Discount Code</h2>
-            <BarcodeScanner
-              onScan={(result) => {
-                const val = parseFloat(result.replace(/[^0-9.]/g, ''));
-                if (!isNaN(val) && val > 0) {
-                  setDiscount(Math.min(val, subtotal));
-                  setIsScanningDiscount(false);
-                } else {
-                  alert('Invalid discount code. Could not parse amount.');
-                }
-              }}
-              onClose={() => setIsScanningDiscount(false)}
-            />
+          <div className="w-full max-w-sm relative flex flex-col items-center">
+            <div className="w-16 h-16 border-4 border-brand-gold border-t-transparent rounded-full animate-spin mb-6"></div>
+            <h2 className="text-white text-center font-bold text-2xl mb-2 tracking-wide">Waiting for Kiosk</h2>
+            <p className="text-gray-300 text-center text-[15px] mb-12">Please ask the client to scan their discount code at the kiosk.</p>
             <button
               onClick={() => setIsScanningDiscount(false)}
-              className="absolute -top-12 right-0 text-white bg-white/20 hover:bg-white/30 rounded-full w-8 h-8 flex items-center justify-center transition-colors"
+              className="px-6 py-2.5 bg-white/10 hover:bg-white/20 text-white rounded-full font-bold transition-colors shadow-sm"
             >
-              ✕
+              Cancel Scan
             </button>
           </div>
         </div>

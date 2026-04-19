@@ -3,6 +3,8 @@
 import { useState, useEffect } from 'react';
 import SupabaseAuthButton from '@/components/auth/SupabaseAuthButton';
 import BarcodeScannerWrapper from '@/components/checkout/BarcodeScannerWrapper';
+import BarcodeScanner from '@/components/checkout/BarcodeScanner';
+import { createClient } from '@/utils/supabase/client';
 
 type UserProfile = {
   id: string;
@@ -34,6 +36,42 @@ export default function KioskMode({ userProfile }: { userProfile: UserProfile })
     const [activeLogs, setActiveLogs] = useState<ActiveLog[]>([]);
     const [waitlist, setWaitlist] = useState<WaitlistEntry[]>([]);
     const [isLoadingLogs, setIsLoadingLogs] = useState(true);
+    const [discountScanRequest, setDiscountScanRequest] = useState<{ appointmentId: string } | null>(null);
+
+    const supabase = createClient();
+
+    useEffect(() => {
+        if (!userProfile?.shopId) return;
+
+        const channel = supabase.channel(`kiosk-commands-${userProfile.shopId}`);
+        
+        channel.on('broadcast', { event: 'REQUEST_DISCOUNT_SCAN' }, (payload) => {
+           setDiscountScanRequest(payload.payload as { appointmentId: string });
+        });
+
+        channel.on('broadcast', { event: 'CANCEL_DISCOUNT_SCAN' }, () => {
+           setDiscountScanRequest(null);
+        });
+
+        channel.subscribe();
+
+        return () => {
+            supabase.removeChannel(channel);
+        };
+    }, [userProfile?.shopId, supabase]);
+
+    const handleDiscountScanned = async (code: string) => {
+        if (!discountScanRequest || !userProfile?.shopId) return;
+        
+        const channel = supabase.channel(`kiosk-commands-${userProfile.shopId}`);
+        await channel.send({
+          type: 'broadcast',
+          event: 'DISCOUNT_CODE_SCANNED',
+          payload: { appointmentId: discountScanRequest.appointmentId, code }
+        });
+        
+        setDiscountScanRequest(null);
+    };
 
     const fetchKioskData = async () => {
         if (!userProfile?.shopId) return;
@@ -93,12 +131,21 @@ export default function KioskMode({ userProfile }: { userProfile: UserProfile })
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm14 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"></path>
                             </svg>
                         </div>
-                        <h3 className="font-bold text-crm-text mb-3 text-center z-10 text-lg font-bold">Scan ID</h3>
-                        <p className="text-crm-muted mb-8 md:mb-12 text-center z-10 max-w-xs text-[13px]">Staff members, please scan your personal QR code to clock in or out.</p>
-                        
-                        {userProfile?.shopId ? (
-                            <div className="transform scale-125 md:scale-150 lg:scale-[1.7] origin-center inline-block bg-crm-surface p-3 rounded-xl shadow-[0_0_40px_rgba(0,0,0,0.5)] z-10 border-4 border-crm-border">
-                                <BarcodeScannerWrapper shopId={userProfile.shopId} services={[]} />
+                        {discountScanRequest ? (
+                            <div className="flex flex-col items-center z-10 animate-fade-in w-full max-w-[280px]">
+                                <h3 className="font-bold text-crm-text mb-3 text-center text-xl text-status-pending">Scan Discount</h3>
+                                <p className="text-crm-muted mb-8 text-center text-[13px]">Please scan your QR code or Barcode for the discount.</p>
+                                <div className="transform scale-125 md:scale-150 lg:scale-[1.7] origin-center inline-block bg-crm-surface p-3 rounded-xl shadow-[0_0_40px_rgba(0,0,0,0.5)] border-4 border-status-pending">
+                                    <BarcodeScanner onScan={handleDiscountScanned} onClose={() => setDiscountScanRequest(null)} />
+                                </div>
+                            </div>
+                        ) : userProfile?.shopId ? (
+                            <div className="flex flex-col items-center z-10 w-full">
+                                <h3 className="font-bold text-crm-text mb-3 text-center text-lg">Scan ID</h3>
+                                <p className="text-crm-muted mb-8 md:mb-12 text-center max-w-xs text-[13px]">Staff members, please scan your personal QR code to clock in or out.</p>
+                                <div className="transform scale-125 md:scale-150 lg:scale-[1.7] origin-center inline-block bg-crm-surface p-3 rounded-xl shadow-[0_0_40px_rgba(0,0,0,0.5)] border-4 border-crm-border">
+                                    <BarcodeScannerWrapper shopId={userProfile.shopId} services={[]} />
+                                </div>
                             </div>
                         ) : (
                             <p className="text-status-cancelled bg-status-cancelled/20 p-4 rounded-lg border border-status-cancelled/30 z-10 text-[13px]">Error: Kiosk not assigned to a shop.</p>
