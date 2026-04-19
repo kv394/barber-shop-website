@@ -390,7 +390,7 @@ export default function BookingModal({ shopId, service, onClose, shopHours }: Bo
                     📅 Add to Calendar
                   </button>
                   <button onClick={handleDone} className="bg-crm-primary text-white font-bold px-6 py-2 rounded-lg hover:bg-crm-surface hover:text-crm-primary border border-transparent hover:border-crm-primary/30 transition-colors">
-                    {userRole ? 'Go to Bookings' : 'Done'}
+                    {'Done'}
                   </button>
                 </div>
             </div>
