@@ -82,23 +82,47 @@ export async function POST(
     // Generate a unique barcode for the user based on their email and a secret
     const userBarcode = crypto.randomBytes(6).toString('hex').toUpperCase();
 
-    // Use upsert to handle both creation and updating of existing placeholder users
-    const user = await prisma.user.upsert({
-        where: { email: email },
-        update: {
+    const existingUser = await prisma.user.findUnique({ where: { email } });
+    let user;
+
+    if (existingUser) {
+      if (existingUser.shopId === shopId) {
+        user = await prisma.user.update({
+          where: { email },
+          data: {
+            role: role,
+            canManageInventory: role === 'STAFF' ? Boolean(canManageInventory) : false,
+          }
+        });
+      } else if (existingUser.shopId === null || existingUser.role === 'CLIENT') {
+        user = await prisma.user.update({
+          where: { email },
+          data: {
             role: role,
             canManageInventory: role === 'STAFF' ? Boolean(canManageInventory) : false,
             shopId: shopId,
-        },
-        create: {
-            id: `invited_${crypto.randomBytes(8).toString('hex')}`, // More robust temporary ID
-            email: email,
-            role: role,
-            canManageInventory: role === 'STAFF' ? Boolean(canManageInventory) : false,
-            shopId: shopId,
-            barcode: userBarcode,
-        }
-    });
+          }
+        });
+      } else {
+        await prisma.shopAccess.upsert({
+          where: { userId_shopId: { userId: existingUser.id, shopId } },
+          update: { role },
+          create: { userId: existingUser.id, shopId, role }
+        });
+        user = existingUser;
+      }
+    } else {
+      user = await prisma.user.create({
+          data: {
+              id: `invited_${crypto.randomBytes(8).toString('hex')}`, // More robust temporary ID
+              email: email,
+              role: role,
+              canManageInventory: role === 'STAFF' ? Boolean(canManageInventory) : false,
+              shopId: shopId,
+              barcode: userBarcode,
+          }
+      });
+    }
     
     // Safety check: if an existing user had no barcode, we must add it now
     if (!user.barcode) {
@@ -261,13 +285,19 @@ export async function DELETE(
     }
 
     // Remove user from shop
-    const updatedUser = await prisma.user.update({
-      where: { id: targetUserId },
-      data: {
-        shopId: null,
-        role: 'CLIENT',
-        canManageInventory: false,
-      },
+    if (user.shopId === shopId) {
+      await prisma.user.update({
+        where: { id: targetUserId },
+        data: {
+          shopId: null,
+          role: 'CLIENT',
+          canManageInventory: false,
+        },
+      });
+    }
+
+    await prisma.shopAccess.deleteMany({
+      where: { userId: targetUserId, shopId }
     });
 
     return NextResponse.json({ success: true, userId: targetUserId }, { status: 200 });

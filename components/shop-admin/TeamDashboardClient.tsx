@@ -11,7 +11,8 @@ export default function TeamDashboardClient({
   initialStaff,
   addLeaveAction,
   removeLeaveAction,
-  updateDayHoursAction
+  updateDayHoursAction,
+  removeUserAction
 }: any) {
   // Use state to track the input values for each staff member
   const [formStates, setFormStates] = useState<Record<string, { open: string, close: string }>>({});
@@ -84,6 +85,16 @@ export default function TeamDashboardClient({
                     </span>
                   ) : (
                     <span className="text-[13px] bg-blue-50 text-blue-700 border border-blue-200 px-2.5 py-1 rounded-full font-bold uppercase tracking-wider">Scheduled</span>
+                  )}
+                  
+                  {removeUserAction && (
+                    <form action={removeUserAction}>
+                      <input type="hidden" name="userId" value={staffMember.id} />
+                      <input type="hidden" name="shopId" value={shopId} />
+                      <button type="submit" className="text-[11px] text-red-600 hover:text-red-800 uppercase tracking-wider font-bold transition-colors">
+                        Remove User
+                      </button>
+                    </form>
                   )}
                 </div>
               </div>

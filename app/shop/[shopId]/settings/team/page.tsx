@@ -23,11 +23,17 @@ async function getPageData(shopId: string, userId: string, date: string) {
   
   const [allStaff, kioskUser] = await Promise.all([
     prisma.user.findMany({
-      where: { shopId: shopId, role: { in: rolesToFetch } },
+      where: {
+        OR: [
+          { shopId: shopId, role: { in: rolesToFetch } },
+          { shopAccesses: { some: { shopId: shopId, role: { in: rolesToFetch } } } }
+        ]
+      },
       include: {
         staffAppointments: { where: { startTime: { gte: targetDate, lt: new Date(targetDate.getTime() + 24 * 60 * 60 * 1000) } } },
         leaves: { where: { date: targetDate } },
-        timeLogs: { where: { clockIn: { gte: targetDate, lt: new Date(targetDate.getTime() + 24 * 60 * 60 * 1000) } }, orderBy: { clockIn: 'desc' }, take: 1 }
+        timeLogs: { where: { clockIn: { gte: targetDate, lt: new Date(targetDate.getTime() + 24 * 60 * 60 * 1000) } }, orderBy: { clockIn: 'desc' }, take: 1 },
+        shopAccesses: { where: { shopId } }
       },
     }),
     prisma.user.findFirst({
@@ -100,22 +106,50 @@ async function inviteUser(formData: FormData) {
   if (!userId) return;
   const caller = await prisma.user.findFirst({ where: { OR: [{ id: userId }, { email: user?.email || '' }] } });
   if (!caller) return;
-  if (caller.role !== 'SITE_ADMIN' && (caller.role !== 'SHOP_ADMIN' || caller.shopId !== shopId)) return;
+  
+  let callerHasAccess = false;
+  if (caller.role === 'SITE_ADMIN') {
+    callerHasAccess = true;
+  } else if (caller.role === 'SHOP_ADMIN') {
+    if (caller.shopId === shopId) {
+      callerHasAccess = true;
+    } else {
+      const access = await prisma.shopAccess.findFirst({ where: { userId: caller.id, shopId, role: 'SHOP_ADMIN' } });
+      if (access) callerHasAccess = true;
+    }
+  }
+
+  if (!callerHasAccess) return;
   // Only SITE_ADMIN can assign SHOP_ADMIN or ATTENDANCE_KIOSK roles
   if ((role === 'SHOP_ADMIN' || role === 'ATTENDANCE_KIOSK') && caller.role !== 'SITE_ADMIN') return;
 
-  const userBarcode = crypto.createHash('sha256').update(`${email}-${process.env.JWT_SECRET || 'secret'}`).digest('hex').substring(0, 12).toUpperCase();
-  await prisma.user.upsert({
-    where: { email },
-    update: { role, shopId },
-    create: {
-      id: `invited_${crypto.randomBytes(8).toString('hex')}`,
-      email,
-      role,
-      shopId,
-      barcode: userBarcode,
-    },
-  });
+  const existingUser = await prisma.user.findUnique({ where: { email } });
+  if (existingUser) {
+    if (existingUser.shopId === shopId) {
+      await prisma.user.update({ where: { email }, data: { role } });
+    } else if (existingUser.shopId === null || existingUser.role === 'CLIENT') {
+      // User has no primary shop or is just a client. Set this as primary.
+      await prisma.user.update({ where: { email }, data: { role, shopId } });
+    } else {
+      // User belongs to another shop. Add a shopAccess record.
+      await prisma.shopAccess.upsert({
+        where: { userId_shopId: { userId: existingUser.id, shopId } },
+        update: { role },
+        create: { userId: existingUser.id, shopId, role }
+      });
+    }
+  } else {
+    const userBarcode = crypto.createHash('sha256').update(`${email}-${process.env.JWT_SECRET || 'secret'}`).digest('hex').substring(0, 12).toUpperCase();
+    await prisma.user.create({
+      data: {
+        id: `invited_${crypto.randomBytes(8).toString('hex')}`,
+        email,
+        role,
+        shopId,
+        barcode: userBarcode,
+      }
+    });
+  }
   revalidatePath(`/shop/${shopId}/settings/team`);
 }
 
@@ -132,12 +166,33 @@ async function removeUser(formData: FormData) {
   if (!userId) return;
   const caller = await prisma.user.findFirst({ where: { OR: [{ id: userId }, { email: user?.email || '' }] } });
   if (!caller) return;
-  if (caller.role !== 'SITE_ADMIN' && (caller.role !== 'SHOP_ADMIN' || caller.shopId !== shopId)) return;
+  
+  let callerHasAccess = false;
+  if (caller.role === 'SITE_ADMIN') {
+    callerHasAccess = true;
+  } else if (caller.role === 'SHOP_ADMIN') {
+    if (caller.shopId === shopId) {
+      callerHasAccess = true;
+    } else {
+      const access = await prisma.shopAccess.findFirst({ where: { userId: caller.id, shopId, role: 'SHOP_ADMIN' } });
+      if (access) callerHasAccess = true;
+    }
+  }
 
-  await prisma.user.update({
-    where: { id: targetUserId },
-    data: { shopId: null, role: 'CLIENT' }
+  if (!callerHasAccess) return;
+
+  const targetUser = await prisma.user.findUnique({ where: { id: targetUserId } });
+  if (targetUser?.shopId === shopId) {
+    await prisma.user.update({
+      where: { id: targetUserId },
+      data: { shopId: null, role: 'CLIENT' }
+    });
+  }
+
+  await prisma.shopAccess.deleteMany({
+    where: { userId: targetUserId, shopId }
   });
+
   revalidatePath(`/shop/${shopId}/settings/team`);
 }
 
@@ -159,8 +214,8 @@ async function addLeave(formData: FormData) {
     const data = await getShopLayoutData(userId, shopId);
     if (!data) return;
     // SECURITY: Verify target staff belongs to this shop
-    const targetStaff = await prisma.user.findUnique({ where: { id: staffId } });
-    if (!targetStaff || targetStaff.shopId !== shopId) return;
+    const targetStaff = await prisma.user.findUnique({ where: { id: staffId }, include: { shopAccesses: { where: { shopId } } } });
+    if (!targetStaff || (targetStaff.shopId !== shopId && targetStaff.shopAccesses.length === 0)) return;
 
     const [startHour, startMinute] = startTime.split(':').map(Number);
     const startDate = new Date(date);
@@ -200,8 +255,8 @@ async function removeLeave(formData: FormData) {
     const data = await getShopLayoutData(userId, shopId);
     if (!data) return;
     // SECURITY: Verify target staff belongs to this shop
-    const targetStaff = await prisma.user.findUnique({ where: { id: staffId } });
-    if (!targetStaff || targetStaff.shopId !== shopId) return;
+    const targetStaff = await prisma.user.findUnique({ where: { id: staffId }, include: { shopAccesses: { where: { shopId } } } });
+    if (!targetStaff || (targetStaff.shopId !== shopId && targetStaff.shopAccesses.length === 0)) return;
 
     const [startHour, startMinute] = startTime.split(':').map(Number);
     const startDate = new Date(date);
@@ -245,8 +300,8 @@ async function updateDayHours(formData: FormData) {
     if (!data || data.isStaff) return; // Only admins can change staff hours
 
     // SECURITY: Verify target staff belongs to this shop
-    const staff = await prisma.user.findUnique({ where: { id: staffId }, select: { workingHours: true, shopId: true } });
-    if (!staff || staff.shopId !== shopId) return;
+    const staff = await prisma.user.findUnique({ where: { id: staffId }, select: { workingHours: true, shopId: true, shopAccesses: { where: { shopId } } } });
+    if (!staff || (staff.shopId !== shopId && staff.shopAccesses.length === 0)) return;
     const currentHours = (staff?.workingHours as any) || {};
 
     if (isWorking && openTime && closeTime) {
@@ -305,7 +360,7 @@ export default async function TeamDashboardPage({ params, searchParams }: { para
             <div className="w-10 h-10 rounded-xl bg-crm-primary/10 flex items-center justify-center text-xl hover:opacity-90">✉️</div>
             <div>
               <h3 className="font-bold text-crm-text text-lg font-bold">Invite Team Member</h3>
-              <p className="text-crm-muted text-[13px]">Add staff or admins to your shop</p>
+              <p className="text-crm-muted text-[13px]">Invite a new user, or add an existing user to this location</p>
             </div>
           </div>
 
@@ -383,6 +438,7 @@ export default async function TeamDashboardPage({ params, searchParams }: { para
           addLeaveAction={addLeave}
           removeLeaveAction={removeLeave}
           updateDayHoursAction={updateDayHours}
+          removeUserAction={removeUser}
         />
       )}
     </ShopAdminLayout>
