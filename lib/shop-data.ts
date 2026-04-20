@@ -53,12 +53,14 @@ export const getShopLayoutData = cache(async (userId: string, shopId: string) =>
 
       // Combine primary shop and accessed shops
       const accessibleShopsMap = new Map<string, { id: string, name: string }>();
-      if (allAccesses?.shop) {
-        accessibleShopsMap.set(allAccesses.shop.id, { id: allAccesses.shop.id, name: allAccesses.shop.name });
+      if (allAccesses?.shop?.id) {
+        accessibleShopsMap.set(allAccesses.shop.id, { id: allAccesses.shop.id, name: allAccesses.shop.name || '' });
       }
-      if (allAccesses?.shopAccesses) {
+      if (Array.isArray(allAccesses?.shopAccesses)) {
         allAccesses.shopAccesses.forEach(access => {
-          accessibleShopsMap.set(access.shop.id, { id: access.shop.id, name: access.shop.name });
+          if (access?.shop?.id) {
+            accessibleShopsMap.set(access.shop.id, { id: access.shop.id, name: access.shop.name || '' });
+          }
         });
       }
       const accessibleShops = Array.from(accessibleShopsMap.values());

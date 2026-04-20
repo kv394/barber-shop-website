@@ -40,11 +40,6 @@ export async function requireShopRole(
 
   const userId = user.id;
 
-  // Check role
-  if (!allowedRoles.includes(user.role as Role)) {
-    return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
-  }
-
   // SITE_ADMIN can access any shop
   if (user.role === 'SITE_ADMIN') {
     return { user, userId };
@@ -60,6 +55,11 @@ export async function requireShopRole(
     }
     // Update user role to the access role for this specific request context
     user.role = access.role;
+  }
+
+  // Check role AFTER evaluating ShopAccess role
+  if (!allowedRoles.includes(user.role as Role)) {
+    return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
   }
 
   return { user, userId };

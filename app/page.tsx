@@ -12,7 +12,7 @@ export default async function HomePage() {
   if (user?.email) {
     const dbUser = await prisma.user.findUnique({
       where: { email: user.email },
-      select: { role: true, shopId: true, shop: { select: { name: true } }, shopAccesses: { include: { shop: { select: { name: true } } } } }
+      select: { role: true, shopId: true, shop: { select: { name: true } }, shopAccesses: { select: { shopId: true, shop: { select: { name: true } } } } }
     });
 
     if (dbUser) {
