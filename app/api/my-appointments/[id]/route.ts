@@ -68,8 +68,8 @@ export async function PATCH(
 
       // SECURITY: Validate the staff member belongs to the same shop
       if (newStaffId !== appointment.staffId) {
-        const staffMember = await prisma.user.findUnique({ where: { id: newStaffId } });
-        if (!staffMember || staffMember.shopId !== appointment.shopId || !['STAFF', 'SHOP_ADMIN'].includes(staffMember.role)) {
+        const staffMember = await prisma.user.findUnique({ where: { id: newStaffId }, include: { shopAccesses: { where: { shopId: appointment.shopId } } } });
+        if (!staffMember || (staffMember.shopId !== appointment.shopId && staffMember.shopAccesses.length === 0) || staffMember.role !== 'STAFF') {
           return NextResponse.json({ error: 'Invalid staff member' }, { status: 400 });
         }
       }

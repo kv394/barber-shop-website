@@ -51,8 +51,10 @@ export async function GET(
     // Fetch staff in this shop to check for Google Calendar sync
     const staffMembers = await prisma.user.findMany({
       where: {
-        shopId: shopId,
-        role: { in: ['SHOP_ADMIN', 'STAFF'] },
+        OR: [
+          { shopId: shopId, role: 'STAFF' },
+          { shopAccesses: { some: { shopId: shopId, role: 'STAFF' } } }
+        ],
         googleRefreshToken: { not: null }
       },
       select: { id: true }

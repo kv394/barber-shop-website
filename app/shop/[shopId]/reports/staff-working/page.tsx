@@ -27,10 +27,10 @@ async function getPageData(shopId: string, userId: string, email?: string) {
   const ninetyDaysAgo = new Date();
   ninetyDaysAgo.setDate(ninetyDaysAgo.getDate() - 90);
 
-  const staffMembers = await prisma.user.findMany({
+  const staffUsers = await prisma.user.findMany({
     where: {
       shopId: shopId,
-      role: { in: ['STAFF', 'SHOP_ADMIN'] },
+      role: 'STAFF',
     },
     select: {
       id: true,
@@ -71,7 +71,7 @@ async function getPageData(shopId: string, userId: string, email?: string) {
   return {
     shop: JSON.parse(JSON.stringify(shop)),
     userRole: userFromDb?.role,
-    staffMembers: JSON.parse(JSON.stringify(staffMembers)),
+    staffMembers: JSON.parse(JSON.stringify(staffUsers)),
   };
 }
 

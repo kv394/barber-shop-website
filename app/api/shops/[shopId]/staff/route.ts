@@ -18,8 +18,8 @@ export async function GET(
       const allStaff = await prisma.user.findMany({
         where: {
           OR: [
-            { shopId: shopId, role: { in: ['STAFF', 'SHOP_ADMIN'] } },
-            { shopAccesses: { some: { shopId: shopId, role: { in: ['STAFF', 'SHOP_ADMIN'] } } } }
+            { shopId: shopId, role: 'STAFF' },
+            { shopAccesses: { some: { shopId: shopId, role: 'STAFF' } } }
           ]
         },
         select: {
@@ -45,8 +45,8 @@ export async function GET(
     const staffWithLeave = await prisma.user.findMany({
       where: {
         OR: [
-          { shopId: shopId, role: { in: ['STAFF', 'SHOP_ADMIN'] } },
-          { shopAccesses: { some: { shopId: shopId, role: { in: ['STAFF', 'SHOP_ADMIN'] } } } }
+          { shopId: shopId, role: 'STAFF' },
+          { shopAccesses: { some: { shopId: shopId, role: 'STAFF' } } }
         ]
       },
       select: {

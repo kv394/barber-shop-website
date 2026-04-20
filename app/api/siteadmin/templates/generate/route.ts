@@ -102,11 +102,10 @@ export async function POST(request: NextRequest) {
       include: {
         services: { select: { id: true, name: true, description: true, price: true, duration: true } },
         products: { select: { id: true, name: true, description: true, price: true } },
-        users: { 
-          where: { role: { in: ['STAFF', 'SHOP_ADMIN'] } },
+        users: {
+          where: { role: 'STAFF' },
           select: { id: true, name: true, role: true }
-        },
-        reviews: {
+        },        reviews: {
           select: { id: true, rating: true, comment: true, user: { select: { name: true } } },
           take: 10,
           orderBy: { createdAt: 'desc' }
