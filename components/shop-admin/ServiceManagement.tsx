@@ -38,6 +38,7 @@ export function ServiceManagement({ shopId }: ServiceManagementProps) {
     duration: '',
     trackInventory: false,
     type: 'CUSTOMER' as 'CUSTOMER' | 'INTERNAL',
+    addonIds: [] as string[],
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [editingServiceId, setEditingServiceId] = useState<string | null>(null);
@@ -97,6 +98,7 @@ export function ServiceManagement({ shopId }: ServiceManagementProps) {
           duration: parseInt(newService.duration),
           trackInventory: newService.trackInventory,
           type: newService.type,
+          addonIds: newService.addonIds,
         }),
       });
 
@@ -107,7 +109,7 @@ export function ServiceManagement({ shopId }: ServiceManagementProps) {
 
       const addedService = await response.json();
       setServices([...services, addedService]);
-      setNewService({ name: '', description: '', price: '', duration: '', trackInventory: false, type: 'CUSTOMER' });
+      setNewService({ name: '', description: '', price: '', duration: '', trackInventory: false, type: 'CUSTOMER', addonIds: [] });
       setSuccess(`Service "${newService.name}" added successfully!`);
       setTimeout(() => setSuccess(null), 3000);
     } catch (err) {
@@ -291,6 +293,41 @@ export function ServiceManagement({ shopId }: ServiceManagementProps) {
                 Enable Inventory Tracking for this service (e.g., track hair products used)
               </label>
             </div>
+
+            {allAddons.length > 0 && (
+              <div className="bg-crm-bg p-4 rounded border border-crm-border">
+                <label className="block font-medium text-crm-text mb-3 text-[13px]">
+                  Select Available Add-Ons for this Service
+                </label>
+                <div className="flex flex-wrap gap-2">
+                  {allAddons.map(addon => {
+                    const isSelected = newService.addonIds.includes(addon.id);
+                    return (
+                      <button
+                        type="button"
+                        key={addon.id}
+                        onClick={() => {
+                          setNewService(prev => ({
+                            ...prev,
+                            addonIds: isSelected 
+                              ? prev.addonIds.filter(id => id !== addon.id)
+                              : [...prev.addonIds, addon.id]
+                          }));
+                        }}
+                        className={`text-[12px] px-3 py-1.5 rounded-full border transition-colors flex items-center gap-2 ${
+                          isSelected 
+                            ? 'bg-crm-primary border-crm-primary text-white font-semibold shadow-sm' 
+                            : 'bg-crm-surface border-crm-border text-crm-muted hover:border-crm-primary/50'
+                        }`}
+                      >
+                        {isSelected && <span>✓</span>}
+                        {addon.name} (+${addon.price})
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
 
             <button
               type="submit"

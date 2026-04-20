@@ -62,13 +62,13 @@ export async function POST(
     }
 
     const body = await request.json();
-    const { name, description, price, duration, processingTime, finishingTime, trackInventory, type, itemType, brand, bufferMinutes, imageUrl } = body;
+    const { name, description, price, duration, processingTime, finishingTime, trackInventory, type, itemType, brand, bufferMinutes, imageUrl, addonIds } = body;
 
     if (!name || price === undefined || duration === undefined) {
         return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
-    // SECURITY: Validate numeric fields
+    // ... Validation logic ...
     const parsedPrice = Number(price);
     const parsedDuration = Number(duration);
     const parsedProcessingTime = processingTime ? Number(processingTime) : 0;
@@ -93,8 +93,7 @@ export async function POST(
       }
     }
 
-    const newService = await prisma.service.create({
-      data: {
+    const dataToCreate: any = {
         name: String(name).slice(0, 200),
         description: description ? String(description).slice(0, 2000) : null,
         price: parsedPrice,
@@ -108,7 +107,16 @@ export async function POST(
         bufferMinutes: Math.max(0, Math.min(120, parsedBuffer)),
         imageUrl: imageUrl ? String(imageUrl).slice(0, 500) : null,
         shopId: String(shopId)
-      }
+    };
+
+    if (Array.isArray(addonIds)) {
+       dataToCreate.addons = {
+           connect: addonIds.map(id => ({ id }))
+       };
+    }
+
+    const newService = await prisma.service.create({
+      data: dataToCreate
     });
 
     // Invalidate the cache since we just added a new service
