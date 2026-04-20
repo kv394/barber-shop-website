@@ -19,7 +19,7 @@ export async function GET(
     if (!requestingUser || !['SITE_ADMIN', 'SHOP_ADMIN', 'STAFF'].includes(requestingUser.role)) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });
     }
-    if (requestingUser.role !== 'SITE_ADMIN' && requestingUser.shopId !== shopId) {
+    if (requestingUser.role !== 'SITE_ADMIN' && (requestingUser.shopId !== shopId && !(await prisma.shopAccess.findFirst({ where: { userId: requestingUser.id, shopId } })))) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });
     }
 

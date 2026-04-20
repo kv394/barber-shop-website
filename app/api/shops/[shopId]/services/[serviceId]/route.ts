@@ -16,7 +16,7 @@ export async function PUT(
 
     // Verify ownership
     const service = await prisma.service.findUnique({ where: { id: serviceId } });
-    if (!service || service.shopId !== shopId) {
+    if (!service || (service.shopId !== shopId && !(await prisma.shopAccess.findFirst({ where: { userId: service.id, shopId } })))) {
       return NextResponse.json({ error: 'Service not found' }, { status: 404 });
     }
 
@@ -63,7 +63,7 @@ export async function DELETE(
         where: { id: serviceId }
     });
 
-    if(!service || service.shopId !== shopId) {
+    if(!service || (service.shopId !== shopId && !(await prisma.shopAccess.findFirst({ where: { userId: service.id, shopId } })))) {
         return NextResponse.json({ error: 'Service not found or does not belong to this shop' }, { status: 404 });
     }
 

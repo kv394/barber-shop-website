@@ -26,7 +26,7 @@ export async function GET(
   if (!user || (user.role !== 'SITE_ADMIN' && user.role !== 'SHOP_ADMIN' && !isStaff)) {
     return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
   }
-  if (user.role === 'SHOP_ADMIN' && user.shopId !== shopId) {
+  if (user.role === 'SHOP_ADMIN' && (user.shopId !== shopId && !(await prisma.shopAccess.findFirst({ where: { userId: user.id, shopId } })))) {
     return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
   }
 
@@ -116,7 +116,7 @@ export async function POST(
 
   const { shopId } = await params;
   const user = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
-  if (!user || (user.role !== 'SITE_ADMIN' && (user.role !== 'SHOP_ADMIN' || user.shopId !== shopId))) {
+  if (!user || (user.role !== 'SITE_ADMIN' && (user.role !== 'SHOP_ADMIN' || (user.shopId !== shopId && !(await prisma.shopAccess.findFirst({ where: { userId: user.id, shopId } })))))) {
     return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
   }
 
@@ -138,15 +138,15 @@ export async function POST(
 
   // SECURITY: Verify staffId belongs to this shop (prevent cross-shop commission assignment)
   if (staffId) {
-    const targetStaff = await prisma.user.findUnique({ where: { id: staffId }, select: { shopId: true } });
-    if (!targetStaff || targetStaff.shopId !== shopId) {
+    const targetStaff = await prisma.user.findUnique({ where: { id: staffId }, select: { id: true, shopId: true } });
+    if (!targetStaff || (targetStaff.shopId !== shopId && !(await prisma.shopAccess.findFirst({ where: { userId: targetStaff.id, shopId } })))) {
       return NextResponse.json({ error: 'Staff member not found in this shop' }, { status: 404 });
     }
   }
 
   // SECURITY: Verify serviceId belongs to this shop (prevent cross-shop service reference)
   if (serviceId) {
-    const targetService = await prisma.service.findUnique({ where: { id: serviceId }, select: { shopId: true } });
+    const targetService = await prisma.service.findUnique({ where: { id: serviceId }, select: { id: true, shopId: true } });
     if (!targetService || targetService.shopId !== shopId) {
       return NextResponse.json({ error: 'Service not found in this shop' }, { status: 404 });
     }

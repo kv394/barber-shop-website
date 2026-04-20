@@ -48,7 +48,7 @@ export async function PATCH(
 
     // Verify the target staff member belongs to this shop
     const target = await prisma.user.findUnique({ where: { id: staffId } });
-    if (!target || target.shopId !== shopId) {
+    if (!target || (target.shopId !== shopId && !(await prisma.shopAccess.findFirst({ where: { userId: target.id, shopId } })))) {
       return NextResponse.json({ error: 'Staff member not found in this shop' }, { status: 404 });
     }
 

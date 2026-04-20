@@ -16,7 +16,7 @@ export async function DELETE(
     if (!userId) return new Response('Unauthorized', { status: 401 });
 
     const user = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
-    if (!user || user.shopId !== shopId) {
+    if (!user || (user.shopId !== shopId && !(await prisma.shopAccess.findFirst({ where: { userId: user.id, shopId } })))) {
         return new Response('Forbidden', { status: 403 });
     }
 
@@ -24,7 +24,7 @@ export async function DELETE(
         where: { id: leaveId }
     });
 
-    if (!leave || leave.shopId !== shopId) {
+    if (!leave || (leave.shopId !== shopId && !(await prisma.shopAccess.findFirst({ where: { userId: leave.id, shopId } })))) {
         return new Response('Not Found', { status: 404 });
     }
 

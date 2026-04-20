@@ -17,8 +17,10 @@ export async function GET(
       // Return all staff if no date is provided (for admin/settings use cases)
       const allStaff = await prisma.user.findMany({
         where: {
-          shopId: shopId,
-          role: { in: ['STAFF', 'SHOP_ADMIN'] },
+          OR: [
+            { shopId: shopId, role: { in: ['STAFF', 'SHOP_ADMIN'] } },
+            { shopAccesses: { some: { shopId: shopId, role: { in: ['STAFF', 'SHOP_ADMIN'] } } } }
+          ]
         },
         select: {
           id: true,
@@ -42,8 +44,10 @@ export async function GET(
 
     const staffWithLeave = await prisma.user.findMany({
       where: {
-        shopId: shopId,
-        role: { in: ['STAFF', 'SHOP_ADMIN'] },
+        OR: [
+          { shopId: shopId, role: { in: ['STAFF', 'SHOP_ADMIN'] } },
+          { shopAccesses: { some: { shopId: shopId, role: { in: ['STAFF', 'SHOP_ADMIN'] } } } }
+        ]
       },
       select: {
         id: true,

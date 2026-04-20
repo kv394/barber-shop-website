@@ -26,6 +26,7 @@ model Shop {
   stripeAccountId String?
 
   users           User[]
+  shopAccesses    ShopAccess[]
   services        Service[]
   serviceAddons   ServiceAddon[]
   products        Product[]
@@ -112,6 +113,7 @@ model User {
 
   shopId             String?
   shop               Shop?            @relation(fields: [shopId], references: [id])
+  shopAccesses       ShopAccess[]
   clientAppointments Appointment[]    @relation("ClientAppointments")
   staffAppointments  Appointment[]    @relation("StaffAppointments")
   timeLogs           TimeLog[]
@@ -865,4 +867,18 @@ model Message {
   createdAt DateTime @default(now())
 
   @@index([shopId, createdAt])
+}
+
+model ShopAccess {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  shopId    String
+  shop      Shop     @relation(fields: [shopId], references: [id], onDelete: Cascade)
+  role      UserRole // The role of the user within this specific shop
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, shopId])
+  @@index([shopId])
 }

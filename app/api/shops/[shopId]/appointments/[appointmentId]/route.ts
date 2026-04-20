@@ -43,7 +43,7 @@ export async function DELETE(
         where: { id: appointmentId }
     });
 
-    if (!appointment || appointment.shopId !== shopId) {
+    if (!appointment || (appointment.shopId !== shopId && !(await prisma.shopAccess.findFirst({ where: { userId: appointment.id, shopId } })))) {
         return NextResponse.json({ error: 'Appointment not found or does not belong to this shop.' }, { status: 404 });
     }
 

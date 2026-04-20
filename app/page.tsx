@@ -12,7 +12,7 @@ export default async function HomePage() {
   if (user?.email) {
     const dbUser = await prisma.user.findUnique({
       where: { email: user.email },
-      select: { role: true, shopId: true, shop: { select: { name: true } } }
+      select: { role: true, shopId: true, shop: { select: { name: true } }, shopAccesses: { include: { shop: { select: { name: true } } } } }
     });
 
     if (dbUser) {
@@ -26,6 +26,8 @@ export default async function HomePage() {
       } else if (dbUser.role === 'SHOP_ADMIN' || dbUser.role === 'STAFF') {
         if (dbUser.shopId) {
           redirect(`/shop/${dbUser.shopId}`);
+        } else if (dbUser.shopAccesses && dbUser.shopAccesses.length > 0) {
+          redirect(`/shop/${dbUser.shopAccesses[0].shopId}`);
         }
       }
       // If SITE_ADMIN or KIOSK, we stay here to let them see the platform dashboard / kiosk interface

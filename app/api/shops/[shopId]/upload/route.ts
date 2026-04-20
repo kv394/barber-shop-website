@@ -21,7 +21,7 @@ export async function POST(
     const user = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
     
     // Only SITE_ADMIN, SHOP_ADMIN, or STAFF can upload files to a shop
-    if (!user || (user.role !== 'SITE_ADMIN' && user.shopId !== shopId)) {
+    if (!user || (user.role !== 'SITE_ADMIN' && (user.shopId !== shopId && !(await prisma.shopAccess.findFirst({ where: { userId: user.id, shopId } }))))) {
        return new NextResponse("Forbidden", { status: 403 });
     }
 

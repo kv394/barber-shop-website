@@ -131,7 +131,7 @@ export async function POST(
     if (!service) return NextResponse.json({ error: 'Service not found' }, { status: 404 });
 
     // SECURITY: Verify service belongs to this shop (prevent cross-shop booking/IDOR)
-    if (service.shopId !== shopId) {
+    if ((service.shopId !== shopId && !(await prisma.shopAccess.findFirst({ where: { userId: service.id, shopId } })))) {
       logger.warn(`IDOR attempt: User ${userId} tried to book service ${serviceId} for shop ${shopId} (Service belongs to ${service.shopId})`);
       return NextResponse.json({ error: 'Service not found in this shop' }, { status: 404 });
     }
@@ -152,7 +152,7 @@ export async function POST(
 
     // SECURITY: Verify staff belongs to this shop (prevent cross-shop staff assignment)
     const staffMember = await prisma.user.findUnique({ where: { id: staffId } });
-    if (!staffMember || staffMember.shopId !== shopId) {
+    if (!staffMember || (staffMember.shopId !== shopId && !(await prisma.shopAccess.findFirst({ where: { userId: staffMember.id, shopId } })))) {
       return NextResponse.json({ error: 'Staff member not found in this shop' }, { status: 404 });
     }
 

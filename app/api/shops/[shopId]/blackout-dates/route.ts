@@ -41,7 +41,7 @@ export async function DELETE(req: NextRequest, { params }: { params: Promise<{ s
 
   // Verify blackout date belongs to this shop (prevent cross-shop deletion)
   const entry = await prisma.shopBlackoutDate.findUnique({ where: { id } });
-  if (!entry || entry.shopId !== shopId) {
+  if (!entry || (entry.shopId !== shopId && !(await prisma.shopAccess.findFirst({ where: { userId: entry.id, shopId } })))) {
     return NextResponse.json({ error: 'Not found' }, { status: 404 });
   }
 

@@ -7,6 +7,7 @@ import Link from 'next/link';
 import SupabaseAuthButton from '@/components/auth/SupabaseAuthButton';
 import GlobalChatWidget from '@/components/shop-admin/GlobalChatWidget';
 import ShopSidebarLinks from '@/components/shop-admin/ShopSidebarLinks';
+import ShopSwitcher from '@/components/shop-admin/ShopSwitcher';
 
 export const dynamic = 'force-dynamic';
 
@@ -79,7 +80,7 @@ export default async function ShopLayout({
       {!isSiteAdmin && (
         <aside className="hidden md:flex flex-col w-64 bg-crm-surface border-r border-crm-border flex-shrink-0 z-10 shadow-sm">
           <div className="h-16 flex items-center px-6 border-b border-crm-border">
-             <span className="font-bold text-xl truncate tracking-tight text-crm-text">{data.shop.name}</span>
+             <ShopSwitcher currentShopId={shopId} currentShopName={data.shop.name} shops={(data as any).accessibleShops} />
           </div>
           <nav className="flex-1 overflow-y-auto py-4 px-3">
             <ShopSidebarLinks shopId={shopId} userRole={data.userRole} />
@@ -108,8 +109,8 @@ export default async function ShopLayout({
         {/* Mobile Header (All Roles except Site Admin) */}
         {!isSiteAdmin && (
           <header className="md:hidden sticky top-0 z-[100] flex justify-between items-center bg-crm-surface border-b border-crm-border px-4 py-3 shadow-sm">
-            <div className="flex flex-col min-w-0 pr-4">
-               <span className="text-crm-text font-black text-lg truncate leading-tight">{data.shop.name}</span>
+            <div className="flex flex-col min-w-0 pr-4 flex-1">
+               <ShopSwitcher currentShopId={shopId} currentShopName={data.shop.name} shops={(data as any).accessibleShops} />
             </div>
             <div className="shrink-0">
                <SupabaseAuthButton redirectUrl={fallbackRedirect} />

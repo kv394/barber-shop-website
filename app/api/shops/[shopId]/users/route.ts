@@ -35,7 +35,7 @@ export async function POST(
     }
 
     if (currentUser.role !== 'SITE_ADMIN' && 
-        (currentUser.role !== 'SHOP_ADMIN' || currentUser.shopId !== shopId)) {
+        (currentUser.role !== 'SHOP_ADMIN' || (currentUser.shopId !== shopId && !(await prisma.shopAccess.findFirst({ where: { userId: currentUser.id, shopId } }))))) {
       return NextResponse.json(
         { error: 'Forbidden: You do not have permission to manage this shop' },
         { status: 403 }
@@ -153,8 +153,8 @@ export async function GET(
 
     if (!currentUser || 
         (currentUser.role !== 'SITE_ADMIN' && 
-         (currentUser.role !== 'SHOP_ADMIN' || currentUser.shopId !== shopId) &&
-         (currentUser.role !== 'STAFF' || currentUser.shopId !== shopId))) {
+         (currentUser.role !== 'SHOP_ADMIN' || (currentUser.shopId !== shopId && !(await prisma.shopAccess.findFirst({ where: { userId: currentUser.id, shopId } })))) &&
+         (currentUser.role !== 'STAFF' || (currentUser.shopId !== shopId && !(await prisma.shopAccess.findFirst({ where: { userId: currentUser.id, shopId } })))))) {
       return NextResponse.json(
         { error: 'Forbidden' },
         { status: 403 }
@@ -216,7 +216,7 @@ export async function DELETE(
 
     if (!currentUser || 
         (currentUser.role !== 'SITE_ADMIN' && 
-         (currentUser.role !== 'SHOP_ADMIN' || currentUser.shopId !== shopId))) {
+         (currentUser.role !== 'SHOP_ADMIN' || (currentUser.shopId !== shopId && !(await prisma.shopAccess.findFirst({ where: { userId: currentUser.id, shopId } })))))) {
       return NextResponse.json(
         { error: 'Forbidden' },
         { status: 403 }
@@ -245,7 +245,7 @@ export async function DELETE(
       where: { id: targetUserId },
     });
 
-    if (!user || user.shopId !== shopId) {
+    if (!user || (user.shopId !== shopId && !(await prisma.shopAccess.findFirst({ where: { userId: user.id, shopId } })))) {
       return NextResponse.json(
         { error: 'User not found in this shop' },
         { status: 404 }

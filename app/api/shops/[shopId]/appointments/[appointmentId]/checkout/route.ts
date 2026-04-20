@@ -33,7 +33,7 @@ export async function POST(
         where: { id: appointmentId }
     });
 
-    if (!appointment || appointment.shopId !== shopId) {
+    if (!appointment || (appointment.shopId !== shopId && !(await prisma.shopAccess.findFirst({ where: { userId: appointment.id, shopId } })))) {
         return NextResponse.json({ error: 'Appointment not found.' }, { status: 404 });
     }
 
@@ -92,7 +92,7 @@ export async function POST(
         select: { status: true, shopId: true },
       });
 
-      if (!freshAppointment || freshAppointment.shopId !== shopId) {
+      if (!freshAppointment || (freshAppointment.shopId !== shopId && !(await prisma.shopAccess.findFirst({ where: { userId: freshAppointment.id, shopId } })))) {
         throw new Error('NOT_FOUND');
       }
       if (freshAppointment.status === 'COMPLETED') {
@@ -105,7 +105,7 @@ export async function POST(
           where: { code: discountCode }
         });
 
-        if (!giftCard || giftCard.shopId !== shopId) {
+        if (!giftCard || (giftCard.shopId !== shopId && !(await prisma.shopAccess.findFirst({ where: { userId: giftCard.id, shopId } })))) {
           throw new Error('INVALID_DISCOUNT');
         }
         if (giftCard.status !== 'ACTIVE' || (giftCard.expiresAt && giftCard.expiresAt < new Date()) || giftCard.currentBalance < discount) {
@@ -157,7 +157,7 @@ export async function POST(
                where: { id: item.productId },
                select: { inventoryCount: true, shopId: true },
              });
-             if (!product || product.shopId !== shopId) {
+             if (!product || (product.shopId !== shopId && !(await prisma.shopAccess.findFirst({ where: { userId: product.id, shopId } })))) {
                throw new Error('INVALID_PRODUCT');
              }
              if (product.inventoryCount < item.quantity) {

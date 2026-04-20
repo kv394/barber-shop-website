@@ -18,36 +18,61 @@ export const getShopLayoutData = cache(async (userId: string, shopId: string) =>
   return cacheService.getOrSet(
     cacheKey,
     async () => {
-      const [user, shop] = await Promise.all([
+      const [user, shop, allAccesses] = await Promise.all([
         prisma.user.findFirst({
           where: authUser?.email ? { email: authUser.email } : { id: userId },
-          select: { id: true, role: true, shopId: true, name: true, email: true, canManageInventory: true },
+          select: { id: true, role: true, shopId: true, name: true, email: true, canManageInventory: true, shopAccesses: { where: { shopId } } },
         }),
         prisma.shop.findUnique({
           where: { id: shopId },
           select: { id: true, name: true, customization: true, template: true, timezone: true },
         }),
+        prisma.user.findFirst({
+          where: authUser?.email ? { email: authUser.email } : { id: userId },
+          select: {
+            shop: { select: { id: true, name: true } },
+            shopAccesses: { select: { shop: { select: { id: true, name: true } }, role: true } }
+          }
+        })
       ]);
 
       if (!user || !shop) return null;
 
-      const isSiteAdmin = user.role === 'SITE_ADMIN';
-      const isShopAdmin = user.role === 'SHOP_ADMIN' && user.shopId === shopId;
-      const isStaff = user.role === 'STAFF' && user.shopId === shopId;
+      let effectiveRole = user.role;
+      if (user.shopId !== shopId && user.shopAccesses && user.shopAccesses.length > 0) {
+        effectiveRole = user.shopAccesses[0].role;
+      }
+
+      const isSiteAdmin = effectiveRole === 'SITE_ADMIN';
+      const isShopAdmin = effectiveRole === 'SHOP_ADMIN' && (user.shopId === shopId || (user.shopAccesses && user.shopAccesses.length > 0));
+      const isStaff = effectiveRole === 'STAFF' && (user.shopId === shopId || (user.shopAccesses && user.shopAccesses.length > 0));
 
       if (!isSiteAdmin && !isShopAdmin && !isStaff) return null;
 
       const shopSlug = shop.name.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '');
 
+      // Combine primary shop and accessed shops
+      const accessibleShopsMap = new Map<string, { id: string, name: string }>();
+      if (allAccesses?.shop) {
+        accessibleShopsMap.set(allAccesses.shop.id, { id: allAccesses.shop.id, name: allAccesses.shop.name });
+      }
+      if (allAccesses?.shopAccesses) {
+        allAccesses.shopAccesses.forEach(access => {
+          accessibleShopsMap.set(access.shop.id, { id: access.shop.id, name: access.shop.name });
+        });
+      }
+      const accessibleShops = Array.from(accessibleShopsMap.values());
+
       return {
-        user,
+        user: { ...user, role: effectiveRole },
         shop: JSON.parse(JSON.stringify(shop)),
         shopSlug,
-        userRole: user.role as string,
+        userRole: effectiveRole as string,
         isSiteAdmin,
         isShopAdmin,
         isStaff,
         canManageInventory: user.canManageInventory,
+        accessibleShops,
       };
     },
     // Cache for 10 minutes

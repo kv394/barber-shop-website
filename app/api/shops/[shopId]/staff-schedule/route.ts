@@ -25,7 +25,7 @@ export async function GET(
 
   const user = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
   if (!user || (user.role !== 'SITE_ADMIN' &&
-      (user.shopId !== shopId || !['SHOP_ADMIN', 'STAFF'].includes(user.role)))) {
+      ((user.shopId !== shopId && !(await prisma.shopAccess.findFirst({ where: { userId: user.id, shopId } }))) || !['SHOP_ADMIN', 'STAFF'].includes(user.role)))) {
     return NextResponse.json({ error: 'Access denied' }, { status: 403 });
   }
 

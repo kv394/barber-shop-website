@@ -51,7 +51,7 @@ export async function POST(
       where: { id: appointmentId },
     });
 
-    if (!appointment || appointment.shopId !== shopId || appointment.userId !== userId) {
+    if (!appointment || (appointment.shopId !== shopId && !(await prisma.shopAccess.findFirst({ where: { userId: appointment.id, shopId } }))) || appointment.userId !== userId) {
       return NextResponse.json({ error: 'Appointment not found or not yours' }, { status: 404 });
     }
 

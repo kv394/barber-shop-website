@@ -28,7 +28,7 @@ export async function POST(
       where: { id: userId },
     });
 
-    if (!user || (user.role !== 'SITE_ADMIN' && (user.role !== 'SHOP_ADMIN' || user.shopId !== shopId))) {
+    if (!user || (user.role !== 'SITE_ADMIN' && (user.role !== 'SHOP_ADMIN' || (user.shopId !== shopId && !(await prisma.shopAccess.findFirst({ where: { userId: user.id, shopId } })))))) {
       return NextResponse.json(
         { error: 'Forbidden: You do not have permission to update this shop' },
         { status: 403 }

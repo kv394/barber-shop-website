@@ -114,7 +114,7 @@ export async function DELETE(
 
     // Verify expense belongs to this shop (prevent cross-shop deletion)
     const expense = await prisma.expense.findUnique({ where: { id: expenseId } });
-    if (!expense || expense.shopId !== shopId) {
+    if (!expense || (expense.shopId !== shopId && !(await prisma.shopAccess.findFirst({ where: { userId: expense.id, shopId } })))) {
       return NextResponse.json({ error: 'Expense not found' }, { status: 404 });
     }
 

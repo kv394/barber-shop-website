@@ -85,7 +85,7 @@ export async function PATCH(
     }
 
     const campaign = await prisma.campaign.findUnique({ where: { id: campaignId } });
-    if (!campaign || campaign.shopId !== shopId) {
+    if (!campaign || (campaign.shopId !== shopId && !(await prisma.shopAccess.findFirst({ where: { userId: campaign.id, shopId } })))) {
       return NextResponse.json({ error: 'Campaign not found' }, { status: 404 });
     }
 

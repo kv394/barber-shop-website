@@ -25,7 +25,7 @@ export async function POST(
       where: { code: String(code).trim() }
     });
 
-    if (!giftCard || giftCard.shopId !== shopId) {
+    if (!giftCard || (giftCard.shopId !== shopId && !(await prisma.shopAccess.findFirst({ where: { userId: giftCard.id, shopId } })))) {
       return NextResponse.json({ error: 'Invalid discount or gift card code.' }, { status: 404 });
     }
 

@@ -46,13 +46,13 @@ export async function POST(
     if (!service) return NextResponse.json({ error: 'Service not found' }, { status: 404 });
 
     // SECURITY: Verify service belongs to this shop (prevent cross-shop booking)
-    if (service.shopId !== shopId) {
+    if ((service.shopId !== shopId && !(await prisma.shopAccess.findFirst({ where: { userId: service.id, shopId } })))) {
       return NextResponse.json({ error: 'Service not found in this shop' }, { status: 404 });
     }
 
     // SECURITY: Verify staff belongs to this shop
     const staffMember = await prisma.user.findUnique({ where: { id: staffId } });
-    if (!staffMember || staffMember.shopId !== shopId) {
+    if (!staffMember || (staffMember.shopId !== shopId && !(await prisma.shopAccess.findFirst({ where: { userId: staffMember.id, shopId } })))) {
       return NextResponse.json({ error: 'Staff not found in this shop' }, { status: 404 });
     }
 

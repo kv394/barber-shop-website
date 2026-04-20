@@ -24,7 +24,7 @@ export async function GET(
     }
 
     // If SHOP_ADMIN, ensure they belong to this shop
-    if (user.role === 'SHOP_ADMIN' && user.shopId !== shopId) {
+    if (user.role === 'SHOP_ADMIN' && (user.shopId !== shopId && !(await prisma.shopAccess.findFirst({ where: { userId: user.id, shopId } })))) {
       return new Response("Forbidden", { status: 403 });
     }
 

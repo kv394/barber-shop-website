@@ -32,11 +32,11 @@ export async function GET(
 
     // SECURITY: Verify user has a relationship with this shop
     if (user.role !== 'SITE_ADMIN') {
-      if (['SHOP_ADMIN', 'STAFF'].includes(user.role) && user.shopId !== shopId) {
+      if (['SHOP_ADMIN', 'STAFF'].includes(user.role) && (user.shopId !== shopId && !(await prisma.shopAccess.findFirst({ where: { userId: user.id, shopId } })))) {
         return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
       }
       // For clients, verify they have at least one appointment at this shop or are assigned to it
-      if (user.role === 'CLIENT' && user.shopId !== shopId) {
+      if (user.role === 'CLIENT' && (user.shopId !== shopId && !(await prisma.shopAccess.findFirst({ where: { userId: user.id, shopId } })))) {
         const hasAppointment = await prisma.appointment.findFirst({
           where: { userId: user.id, shopId },
           select: { id: true },
@@ -60,7 +60,7 @@ export async function GET(
     // Admin sees all referrals for the shop
     if (['SITE_ADMIN', 'SHOP_ADMIN'].includes(user.role)) {
       // Tenant isolation: SHOP_ADMIN must belong to this shop
-      if (user.role === 'SHOP_ADMIN' && user.shopId !== shopId) {
+      if (user.role === 'SHOP_ADMIN' && (user.shopId !== shopId && !(await prisma.shopAccess.findFirst({ where: { userId: user.id, shopId } })))) {
         return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
       }
       const referrals = await prisma.referral.findMany({

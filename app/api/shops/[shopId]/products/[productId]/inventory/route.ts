@@ -41,7 +41,7 @@ export async function PATCH(
         where: { id: productId }
     });
 
-    if(!product || product.shopId !== shopId) {
+    if(!product || (product.shopId !== shopId && !(await prisma.shopAccess.findFirst({ where: { userId: product.id, shopId } })))) {
         return NextResponse.json({ error: 'Product not found' }, { status: 404 });
     }
 

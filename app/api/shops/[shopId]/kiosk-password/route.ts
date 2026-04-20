@@ -19,7 +19,7 @@ export async function POST(
 
     // Verify user is SHOP_ADMIN or SITE_ADMIN for this shop
     const currentUser = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
-    if (!currentUser || (currentUser.role !== 'SITE_ADMIN' && (currentUser.role !== 'SHOP_ADMIN' || currentUser.shopId !== shopId))) {
+    if (!currentUser || (currentUser.role !== 'SITE_ADMIN' && (currentUser.role !== 'SHOP_ADMIN' || (currentUser.shopId !== shopId && !(await prisma.shopAccess.findFirst({ where: { userId: currentUser.id, shopId } })))))) {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
 
@@ -38,7 +38,7 @@ export async function POST(
     // SECURITY: Verify the target email belongs to a kiosk user of THIS shop
     // Prevents a SHOP_ADMIN from changing passwords for users in other shops
     const targetUser = await prisma.user.findUnique({ where: { email: String(email).trim().toLowerCase() } });
-    if (!targetUser || targetUser.shopId !== shopId || targetUser.role !== 'ATTENDANCE_KIOSK') {
+    if (!targetUser || (targetUser.shopId !== shopId && !(await prisma.shopAccess.findFirst({ where: { userId: targetUser.id, shopId } }))) || targetUser.role !== 'ATTENDANCE_KIOSK') {
       return NextResponse.json({ error: 'Target user must be a kiosk account for this shop' }, { status: 403 });
     }
 

@@ -30,7 +30,7 @@ export async function POST(
         return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
       }
       // Tenant isolation: non-SITE_ADMIN must belong to this shop
-      if (user.role !== 'SITE_ADMIN' && user.shopId !== shopId) {
+      if (user.role !== 'SITE_ADMIN' && (user.shopId !== shopId && !(await prisma.shopAccess.findFirst({ where: { userId: user.id, shopId } })))) {
         return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
       }
     }

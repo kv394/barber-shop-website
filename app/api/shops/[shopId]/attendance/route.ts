@@ -78,7 +78,7 @@ export async function POST(
     }
 
     // Ensure the scanner is assigned to this shop (unless Site Admin)
-    if (scannerUser.role !== 'SITE_ADMIN' && scannerUser.shopId !== shopId) {
+    if (scannerUser.role !== 'SITE_ADMIN' && (scannerUser.shopId !== shopId && !(await prisma.shopAccess.findFirst({ where: { userId: scannerUser.id, shopId } })))) {
        return NextResponse.json({ error: 'This device is not assigned to this shop.' }, { status: 403 });
     }
 
