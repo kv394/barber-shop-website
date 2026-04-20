@@ -2,6 +2,13 @@
 
 import { useState, useEffect } from 'react';
 
+interface ServiceAddon {
+  id: string;
+  name: string;
+  price: number;
+  durationMin: number;
+}
+
 interface Service {
   id: string;
   name: string;
@@ -10,6 +17,7 @@ interface Service {
   duration: number;
   trackInventory: boolean;
   type: 'CUSTOMER' | 'INTERNAL';
+  addons?: ServiceAddon[];
 }
 
 interface ServiceManagementProps {
@@ -18,6 +26,7 @@ interface ServiceManagementProps {
 
 export function ServiceManagement({ shopId }: ServiceManagementProps) {
   const [services, setServices] = useState<Service[]>([]);
+  const [allAddons, setAllAddons] = useState<ServiceAddon[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
@@ -31,15 +40,24 @@ export function ServiceManagement({ shopId }: ServiceManagementProps) {
     type: 'CUSTOMER' as 'CUSTOMER' | 'INTERNAL',
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [editingServiceId, setEditingServiceId] = useState<string | null>(null);
 
-  // Fetch services
+  // Fetch services and addons
   useEffect(() => {
-    const fetchServices = async () => {
+    const fetchData = async () => {
       try {
-        const response = await fetch(`/api/shops/${shopId}/services`);
-        if (!response.ok) throw new Error('Failed to fetch services');
-        const data = await response.json();
-        setServices(Array.isArray(data) ? data : []);
+        const [servicesRes, addonsRes] = await Promise.all([
+          fetch(`/api/shops/${shopId}/services`),
+          fetch(`/api/shops/${shopId}/services/addons`)
+        ]);
+
+        if (!servicesRes.ok || !addonsRes.ok) throw new Error('Failed to fetch data');
+        
+        const servicesData = await servicesRes.json();
+        const addonsData = await addonsRes.json();
+        
+        setServices(Array.isArray(servicesData) ? servicesData : []);
+        setAllAddons(Array.isArray(addonsData) ? addonsData : []);
       } catch (err) {
         setError(err instanceof Error ? err.message : 'An error occurred');
       } finally {
@@ -47,7 +65,7 @@ export function ServiceManagement({ shopId }: ServiceManagementProps) {
       }
     };
 
-    fetchServices();
+    fetchData();
   }, [shopId]);
 
   const handleAddService = async (e: React.FormEvent) => {
@@ -122,6 +140,36 @@ export function ServiceManagement({ shopId }: ServiceManagementProps) {
       setTimeout(() => setSuccess(null), 3000);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
+    }
+  };
+
+  const handleToggleAddon = async (serviceId: string, addonId: string, currentAddonIds: string[]) => {
+    try {
+      const newAddonIds = currentAddonIds.includes(addonId)
+        ? currentAddonIds.filter(id => id !== addonId)
+        : [...currentAddonIds, addonId];
+      
+      const response = await fetch(`/api/shops/${shopId}/services/${serviceId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ addonIds: newAddonIds })
+      });
+
+      if (!response.ok) throw new Error('Failed to update service addons');
+      
+      const updated = await response.json();
+      // Since our API endpoint might not return the fully populated addons array, we can just update local state manually
+      setServices(services.map(s => {
+        if (s.id === serviceId) {
+          return {
+            ...s,
+            addons: allAddons.filter(a => newAddonIds.includes(a.id))
+          };
+        }
+        return s;
+      }));
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to update addons');
     }
   };
 
@@ -286,6 +334,34 @@ export function ServiceManagement({ shopId }: ServiceManagementProps) {
                         <span>💰 ${service.price.toFixed(2)}</span>
                         <span>⏱️ {service.duration} minutes</span>
                       </div>
+                      
+                      {/* Add-ons Selector */}
+                      {allAddons.length > 0 && (
+                        <div className="mt-4 pt-4 border-t border-crm-border">
+                          <p className="text-[13px] font-semibold text-crm-text mb-2">Available Add-Ons:</p>
+                          <div className="flex flex-wrap gap-2">
+                            {allAddons.map(addon => {
+                              const currentAddonIds = service.addons?.map(a => a.id) || [];
+                              const isSelected = currentAddonIds.includes(addon.id);
+                              
+                              return (
+                                <button
+                                  key={addon.id}
+                                  onClick={() => handleToggleAddon(service.id, addon.id, currentAddonIds)}
+                                  className={`text-[11px] sm:text-[12px] px-2 py-1 rounded-full border transition-colors flex items-center gap-1 ${
+                                    isSelected 
+                                      ? 'bg-crm-primary/20 border-crm-primary text-crm-primary' 
+                                      : 'bg-crm-bg border-crm-border text-crm-muted hover:border-crm-primary/50'
+                                  }`}
+                                >
+                                  {isSelected && <span>✓</span>}
+                                  {addon.name} (+${addon.price})
+                                </button>
+                              );
+                            })}
+                          </div>
+                        </div>
+                      )}
                     </div>
 
                     <button

@@ -19,6 +19,7 @@ const bookingSchema = z.object({
   clientEmail: z.string().email("Invalid email").optional().or(z.literal('')),
   clientPhone: z.string().max(20).optional().or(z.literal('')),
   existingClientId: z.string().optional(),
+  addonIds: z.array(z.string()).optional(),
 });
 
 export async function GET(
@@ -113,7 +114,7 @@ export async function POST(
       return NextResponse.json({ error: 'Invalid input data', details: validationResult.error.format() }, { status: 400 });
     }
 
-    const { serviceId, startTime, staffId, clientName, clientEmail, clientPhone, isWalkIn, notes, existingClientId } = validationResult.data;
+    const { serviceId, startTime, staffId, clientName, clientEmail, clientPhone, isWalkIn, notes, existingClientId, addonIds } = validationResult.data;
 
     // Run user + service lookups in parallel
     const [bookingUser, service] = await Promise.all([
@@ -135,6 +136,20 @@ export async function POST(
       return NextResponse.json({ error: 'Service not found in this shop' }, { status: 404 });
     }
 
+    // Process Addons
+    let addonsJson: any = null;
+    let totalDuration = service.duration;
+    let totalPrice = service.price;
+
+    if (addonIds && addonIds.length > 0) {
+      const dbAddons = await prisma.serviceAddon.findMany({
+        where: { id: { in: addonIds }, shopId }
+      });
+      addonsJson = dbAddons.map(a => ({ id: a.id, name: a.name, price: a.price, durationMin: a.durationMin }));
+      totalDuration += dbAddons.reduce((sum, a) => sum + a.durationMin, 0);
+      totalPrice += dbAddons.reduce((sum, a) => sum + a.price, 0);
+    }
+
     // SECURITY: Verify staff belongs to this shop (prevent cross-shop staff assignment)
     const staffMember = await prisma.user.findUnique({ where: { id: staffId } });
     if (!staffMember || staffMember.shopId !== shopId) {
@@ -142,7 +157,7 @@ export async function POST(
     }
 
     const start = new Date(startTime);
-    const end = new Date(start.getTime() + service.duration * 60000);
+    const end = new Date(start.getTime() + totalDuration * 60000);
     const blockEnd = new Date(end.getTime() + (service.bufferMinutes || 0) * 60000);
 
     // Resolve the target user BEFORE the atomic transaction
@@ -221,6 +236,7 @@ export async function POST(
           startTime: start,
           endTime: end,
           notes: notes || null,
+          addons: addonsJson || null,
         },
       });
     }, { isolationLevel: 'Serializable' });
@@ -239,20 +255,20 @@ export async function POST(
         // Immediate booking confirmation (C8)
         NotificationService.sendBookingConfirmation({
           shopId, userId: targetUserId, shopName: shop.name,
-          serviceName: service.name, staffName: staffUser?.name || 'Staff',
-          dateTime: start, duration: service.duration, price: service.price,
+          serviceName: service.name + (addonsJson?.length ? ` + ${addonsJson.length} Add-on(s)` : ''), staffName: staffUser?.name || 'Staff',
+          dateTime: start, duration: totalDuration, price: totalPrice,
           timezone: shop.timezone || 'America/New_York',
         }).catch(() => {});
         // 24h reminder
         NotificationService.scheduleAppointmentReminder(
-          shopId, targetUserId, start, service.name, shop.name
+          shopId, targetUserId, start, service.name + (addonsJson?.length ? ` + ${addonsJson.length} Add-on(s)` : ''), shop.name
         ).catch(() => {});
         
         // Push event to Google Calendar for Staff if linked
         createCalendarEvent(staffId, {
           startTime: start,
           endTime: end,
-          serviceName: service.name,
+          serviceName: service.name + (addonsJson?.length ? ` + ${addonsJson.length} Add-on(s)` : ''),
           staffName: staffUser?.name || 'Staff',
           shopName: shop.name
         }).catch(() => {});

@@ -4,11 +4,19 @@ import { useState, useEffect, useCallback, useMemo } from 'react';
 // Using Supabase Auth
 import { useRouter } from 'next/navigation';
 
+interface ServiceAddon {
+  id: string;
+  name: string;
+  price: number;
+  durationMin: number;
+}
+
 interface Service {
   id: string;
   name: string;
   price: number;
   duration: number;
+  addons?: ServiceAddon[];
 }
 
 interface Staff {
@@ -104,6 +112,21 @@ export default function BookingModal({ shopId, service, onClose, shopHours }: Bo
   // Store the confirmed booking details for the success screen
   const [confirmedStaffName, setConfirmedStaffName] = useState('');
   const [confirmedStartTime, setConfirmedStartTime] = useState<Date | null>(null);
+
+  const [selectedAddonIds, setSelectedAddonIds] = useState<string[]>([]);
+  
+  const selectedAddons = useMemo(() => {
+    if (!service.addons) return [];
+    return service.addons.filter(a => selectedAddonIds.includes(a.id));
+  }, [service.addons, selectedAddonIds]);
+
+  const totalDuration = useMemo(() => {
+    return service.duration + selectedAddons.reduce((sum, a) => sum + a.durationMin, 0);
+  }, [service.duration, selectedAddons]);
+
+  const totalPrice = useMemo(() => {
+    return service.price + selectedAddons.reduce((sum, a) => sum + a.price, 0);
+  }, [service.price, selectedAddons]);
 
   // Fetch user role
   useEffect(() => {
@@ -204,14 +227,14 @@ export default function BookingModal({ shopId, service, onClose, shopHours }: Bo
     const [h, m] = timeStr.split(':').map(Number);
     const slotStart = new Date(`${selectedDate}T00:00:00Z`);
     slotStart.setUTCHours(h, m, 0, 0);
-    const slotEnd = slotStart.getTime() + service.duration * 60000;
+    const slotEnd = slotStart.getTime() + totalDuration * 60000;
     return !bookedSlots.some(b => {
       if (b.staffId !== staffId) return false;
       const bStart = new Date(b.startTime).getTime();
       const bEnd = new Date(b.endTime).getTime();
       return slotStart.getTime() < bEnd && slotEnd > bStart;
     });
-  }, [selectedDate, service.duration, bookedSlots]);
+  }, [selectedDate, totalDuration, bookedSlots]);
 
   // Compute all unique available time slots (union across all staff)
   const availableTimeSlots = useMemo(() => {
@@ -308,6 +331,7 @@ export default function BookingModal({ shopId, service, onClose, shopHours }: Bo
                 clientEmail: isWalkIn ? (selectedExistingClient?.email || clientEmail.trim()) : undefined,
                 clientPhone: isWalkIn ? clientPhone.trim() : undefined,
                 existingClientId: selectedExistingClient?.id,
+                addonIds: selectedAddonIds,
             })
         });
 
@@ -324,7 +348,7 @@ export default function BookingModal({ shopId, service, onClose, shopHours }: Bo
           setIsBooking(false);
       }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedDate, selectedTime, selectedStaff, isWalkIn, clientName, clientEmail, clientPhone, bookingNotes, selectedExistingClient, shopId, service.id, staffAtSelectedTime]);
+  }, [selectedDate, selectedTime, selectedStaff, isWalkIn, clientName, clientEmail, clientPhone, bookingNotes, selectedExistingClient, shopId, service.id, staffAtSelectedTime, selectedAddonIds]);
 
   const handleDone = () => {
     if (userRole && userShopId) {
@@ -382,7 +406,16 @@ export default function BookingModal({ shopId, service, onClose, shopHours }: Bo
                     <p className="text-crm-muted text-[13px]">📅 <span className="text-crm-text">{formattedDate}</span></p>
                     <p className="text-crm-muted text-[13px]">🕐 <span className="text-crm-text">{selectedTime}</span></p>
                     <p className="text-crm-muted text-[13px]">💈 <span className="text-crm-text">{confirmedStaffName}</span></p>
-                    <p className="text-crm-muted text-[13px]">💰 <span className="text-crm-text">${service.price.toFixed(2)}</span></p>
+                    <p className="text-crm-muted text-[13px]">⏱️ <span className="text-crm-text">{totalDuration} mins</span></p>
+                    <p className="text-crm-muted text-[13px]">💰 <span className="text-crm-text">${totalPrice.toFixed(2)}</span></p>
+                    {selectedAddons.length > 0 && (
+                      <div className="mt-2 pt-2 border-t border-crm-border">
+                        <p className="text-crm-muted text-[12px] mb-1">Add-ons:</p>
+                        <ul className="pl-4 list-disc text-crm-text text-[12px]">
+                          {selectedAddons.map(a => <li key={a.id}>{a.name}</li>)}
+                        </ul>
+                      </div>
+                    )}
                   </div>
                 )}
                 <div className="flex flex-col sm:flex-row gap-3 justify-center">
@@ -426,13 +459,25 @@ export default function BookingModal({ shopId, service, onClose, shopHours }: Bo
             </div>
             <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center p-4">
               <span className="text-crm-muted text-[13px]">Duration</span>
-              <span className="text-crm-text">{service.duration} mins</span>
+              <span className="text-crm-text">{totalDuration} mins</span>
             </div>
-            {/* Price is now calculated on the server */}
-            {/* <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center p-4">
+            <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center p-4">
               <span className="text-crm-muted text-[13px]">Price</span>
-              <span className="text-crm-accent font-bold text-lg">${service.price.toFixed(2)}</span>
-            </div> */}
+              <span className="text-crm-accent font-bold text-lg">${totalPrice.toFixed(2)}</span>
+            </div>
+            {selectedAddons.length > 0 && (
+              <div className="p-4 bg-crm-bg border-y border-crm-border">
+                <span className="text-crm-muted text-[13px] block mb-2">Selected Add-Ons</span>
+                <ul className="space-y-1">
+                  {selectedAddons.map(a => (
+                    <li key={a.id} className="text-crm-text text-[13px] flex justify-between">
+                      <span>+ {a.name}</span>
+                      <span>${a.price.toFixed(2)}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
             {isWalkIn && (clientName || selectedExistingClient) && (
               <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center p-4">
                 <span className="text-crm-muted text-[13px]">Client</span>
@@ -471,7 +516,37 @@ export default function BookingModal({ shopId, service, onClose, shopHours }: Bo
       <div className="bg-crm-surface rounded-xl p-6 w-full max-w-md border border-crm-border shadow-sm shadow-2xl relative text-left max-h-[90vh] overflow-y-auto scrollbar-hide">
         <button onClick={onClose} className="absolute top-3 right-4 text-crm-primary bg-white hover:bg-gray-100 shadow-sm z-10 w-7 h-7 rounded-full flex items-center justify-center transition-colors font-bold text-[13px]">✕</button>
         <h3 className="font-bold text-crm-primary mb-1 text-lg">Book Appointment</h3>
-        <p className="text-crm-accent font-semibold mb-6 text-[13px]">{service.name} <span className="text-crm-muted font-normal ml-2">({service.duration} mins • ${service.price})</span></p>
+        <p className="text-crm-accent font-semibold mb-2 text-[13px]">{service.name} <span className="text-crm-muted font-normal ml-2">({totalDuration} mins • ${totalPrice.toFixed(2)})</span></p>
+
+        {service.addons && service.addons.length > 0 && (
+          <div className="mb-6 p-3 bg-crm-bg rounded-lg border border-crm-border shadow-sm">
+            <p className="text-crm-text text-[12px] font-semibold mb-2">Enhance your service:</p>
+            <div className="space-y-2">
+              {service.addons.map(addon => {
+                const isSelected = selectedAddonIds.includes(addon.id);
+                return (
+                  <label key={addon.id} className={`flex items-center justify-between p-2 rounded border cursor-pointer transition-colors ${isSelected ? 'bg-crm-primary/10 border-crm-primary/50' : 'bg-crm-surface border-crm-border hover:border-crm-primary/30'}`}>
+                    <div className="flex items-center gap-3">
+                      <input 
+                        type="checkbox" 
+                        checked={isSelected}
+                        onChange={(e) => {
+                          if (e.target.checked) setSelectedAddonIds([...selectedAddonIds, addon.id]);
+                          else setSelectedAddonIds(selectedAddonIds.filter(id => id !== addon.id));
+                        }}
+                        className="w-4 h-4 accent-crm-primary rounded border-crm-border"
+                      />
+                      <span className="text-crm-text text-[13px]">{addon.name}</span>
+                    </div>
+                    <span className="text-crm-muted text-[12px] whitespace-nowrap">
+                      +${addon.price.toFixed(2)} {addon.durationMin > 0 ? ` (+${addon.durationMin}m)` : ''}
+                    </span>
+                  </label>
+                );
+              })}
+            </div>
+          </div>
+        )}
 
         {!isLoaded ? (
              <p className="text-crm-muted text-center py-8 text-[13px]">Loading...</p>

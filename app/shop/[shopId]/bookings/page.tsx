@@ -162,7 +162,7 @@ export default async function BookingsPage({ params }: { params: Promise<{ shopI
                                                  {isActive && <DeleteAppointmentButton shopId={shop.id} appointmentId={apt.id} userName={apt.user?.name || apt.user?.email || "Guest"} />}
                                                  {isScheduled && <AcceptAppointmentButton shopId={shop.id} appointmentId={apt.id} userName={apt.user?.name || apt.user?.email || "Guest"} />}
                                                  {isAccepted && <CompleteWorkButton shopId={shop.id} appointmentId={apt.id} userName={apt.user?.name || apt.user?.email || "Guest"} />}
-                                                 {isWorkCompleted && <CheckoutButton shopId={shop.id} appointmentId={apt.id} price={apt.service.price} serviceName={apt.service.name} serviceId={apt.serviceId} shopName={shop.name} clientName={apt.user?.name || apt.user?.email || "Guest"} />}                                               </div>
+                                                 {isWorkCompleted && <CheckoutButton shopId={shop.id} appointmentId={apt.id} price={apt.service.price} serviceName={apt.service.name} serviceId={apt.serviceId} shopName={shop.name} clientName={apt.user?.name || apt.user?.email || "Guest"} addons={apt.addons} />}                                               </div>
                                            </div>
                                            {isNow && (isScheduled || isAccepted) && (
                                              <div className="mt-3 text-[11px] text-status-confirmed font-bold tracking-widest uppercase flex items-center gap-2">

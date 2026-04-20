@@ -29,7 +29,8 @@ export async function GET(
       `shop_services:${shopId}`,
       async () => {
         return await prisma.service.findMany({
-          where: { shopId }
+          where: { shopId },
+          include: { addons: true }
         });
       },
       300 // Cache for 5 minutes

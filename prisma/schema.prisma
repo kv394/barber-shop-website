@@ -27,6 +27,7 @@ model Shop {
 
   users           User[]
   services        Service[]
+  serviceAddons   ServiceAddon[]
   products        Product[]
   appointments    Appointment[]
   timeLogs        TimeLog[]
@@ -183,6 +184,8 @@ model Service {
   brand          String?
   barcode        String?     @unique
 
+  addons         ServiceAddon[] @relation("ServiceToAddons")
+
   shopId           String
   shop             Shop              @relation(fields: [shopId], references: [id])
   appointments     Appointment[]
@@ -193,6 +196,23 @@ model Service {
   updatedAt DateTime @updatedAt
 
   @@index([shopId, type])
+}
+
+model ServiceAddon {
+  id          String   @id @default(cuid())
+  name        String
+  price       Float
+  durationMin Int      @default(0)
+
+  shopId      String
+  shop        Shop     @relation(fields: [shopId], references: [id], onDelete: Cascade)
+
+  services    Service[] @relation("ServiceToAddons")
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([shopId])
 }
 
 model Appointment {
@@ -207,6 +227,7 @@ model Appointment {
   paymentMethod String? // CASH, CARD, MOBILE
   serviceId     String?
   service       Service? @relation(fields: [serviceId], references: [id])
+  addons        Json?    // Stores Array<{ id, name, price, durationMin }> selected during booking
 
   // No-show deposit (C5)
   depositPaymentIntentId String?

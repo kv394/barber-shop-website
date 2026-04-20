@@ -2,6 +2,7 @@ import { notFound, redirect } from 'next/navigation';
 import { createClient } from '@/utils/supabase/server';
 import { getShopLayoutData } from '@/lib/shop-data';
 import { ServiceManagement } from '@/components/shop-admin/ServiceManagement';
+import { AddonManagement } from '@/components/shop-admin/AddonManagement';
 import ShopAdminLayout from '@/components/shop-admin/ShopAdminLayout';
 
 export default async function ServicesConfigPage({ params }: { params: Promise<{ shopId: string }> }) {
@@ -37,6 +38,7 @@ export default async function ServicesConfigPage({ params }: { params: Promise<{
       activeTab="services"
     >
       <ServiceManagement shopId={shopId} />
+      <AddonManagement shopId={shopId} />
     </ShopAdminLayout>
   );
 }

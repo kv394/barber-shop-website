@@ -1,0 +1,53 @@
+import { NextResponse } from 'next/server';
+import { prisma } from '@/lib/prisma';
+import { requireShopRole, isAuthError } from '@/lib/auth';
+
+export async function GET(
+  request: Request,
+  { params }: { params: Promise<{ shopId: string }> }
+) {
+  try {
+    const { shopId } = await params;
+    const authResult = await requireShopRole(shopId, ['SITE_ADMIN', 'SHOP_ADMIN', 'STAFF']);
+    if (isAuthError(authResult)) return authResult;
+
+    const addons = await prisma.serviceAddon.findMany({
+      where: { shopId },
+      orderBy: { name: 'asc' },
+      include: {
+        services: { select: { id: true, name: true } }
+      }
+    });
+
+    return NextResponse.json(addons);
+  } catch (error) {
+    console.error('Error fetching addons:', error);
+    return NextResponse.json({ error: 'Failed to fetch addons' }, { status: 500 });
+  }
+}
+
+export async function POST(
+  request: Request,
+  { params }: { params: Promise<{ shopId: string }> }
+) {
+  try {
+    const { shopId } = await params;
+    const authResult = await requireShopRole(shopId, ['SITE_ADMIN', 'SHOP_ADMIN']);
+    if (isAuthError(authResult)) return authResult;
+
+    const body = await request.json();
+    const addon = await prisma.serviceAddon.create({
+      data: {
+        shopId,
+        name: body.name,
+        price: Number(body.price),
+        durationMin: Number(body.durationMin) || 0,
+      }
+    });
+
+    return NextResponse.json(addon);
+  } catch (error) {
+    console.error('Error creating addon:', error);
+    return NextResponse.json({ error: 'Failed to create addon' }, { status: 500 });
+  }
+}

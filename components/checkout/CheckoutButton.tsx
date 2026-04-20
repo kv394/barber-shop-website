@@ -28,6 +28,7 @@ export default function CheckoutButton({
   serviceId,
   shopName: _shopName,
   clientName,
+  addons,
 }: {
   shopId: string;
   appointmentId: string;
@@ -36,6 +37,7 @@ export default function CheckoutButton({
   serviceId?: string;
   shopName?: string;
   clientName?: string;
+  addons?: any;
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
@@ -61,14 +63,29 @@ export default function CheckoutButton({
   useEffect(() => {
     if (!isOpen) return;
 
-    setCart([{
+    const initialCart: CartItem[] = [{
       id: 'primary-service',
       serviceId: serviceId || null,
       name: serviceName || 'Service',
       price: servicePrice,
       quantity: 1,
       type: 'SERVICE',
-    }]);
+    }];
+
+    if (Array.isArray(addons)) {
+      addons.forEach((addon: any) => {
+        initialCart.push({
+          id: `addon-${addon.id}`,
+          serviceId: null, // Depending on if we want to link it
+          name: `+ ${addon.name}`,
+          price: addon.price,
+          quantity: 1,
+          type: 'SERVICE',
+        });
+      });
+    }
+
+    setCart(initialCart);
     setTipAmount(0);
     setCustomTip('');
     setDiscount(0);
@@ -84,7 +101,7 @@ export default function CheckoutButton({
         }
       })
       .catch(() => {});
-  }, [isOpen, shopId, serviceName, servicePrice, serviceId]);
+  }, [isOpen, shopId, serviceName, servicePrice, serviceId, addons]);
 
   useEffect(() => {
     if (!isScanningDiscount || !shopId) return;
