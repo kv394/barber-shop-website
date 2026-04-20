@@ -90,9 +90,23 @@ export default function ShopSwitcher({ currentShopId, currentShopName, shops, us
   // Group shops by company name
   const companies = new Map<string, Shop[]>();
   
-  if (shops) {
+  if (shops && shops.length > 0) {
+    const isSiteAdmin = userRole === 'SITE_ADMIN';
+    const primaryCompanyName = shops.find(s => s.companyName)?.companyName || shops[0]?.name || 'All Locations';
+    const seenNames = new Set<string>();
+
     shops.forEach(shop => {
-      const cName = shop.companyName || shop.name;
+      // For non-site admins, group under the primary company name if they are missing one
+      let cName = shop.companyName || shop.name;
+      if (!isSiteAdmin && !shop.companyName) {
+        cName = primaryCompanyName;
+      }
+      
+      // Prevent rendering exact duplicate shop names within the same company group
+      const uniqueKey = `${cName}-${shop.name}`;
+      if (seenNames.has(uniqueKey)) return;
+      seenNames.add(uniqueKey);
+
       if (!companies.has(cName)) {
         companies.set(cName, []);
       }
@@ -102,13 +116,21 @@ export default function ShopSwitcher({ currentShopId, currentShopName, shops, us
 
   // Determine current display name
   let displayName = currentShopName;
+  const isSiteAdmin = userRole === 'SITE_ADMIN';
+  const primaryCompanyName = shops && shops.length > 0 ? (shops.find(s => s.companyName)?.companyName || shops[0]?.name) : 'All Locations';
+
   if (currentShopId === 'all') {
-    const firstShop = shops?.[0];
-    displayName = firstShop?.companyName || firstShop?.name || 'All Locations';
-  } else {
+    displayName = primaryCompanyName || 'All Locations';
+  } else if (!isSiteAdmin) {
     const currentShop = shops?.find(s => s.id === currentShopId);
-    if (currentShop?.companyName) {
-      displayName = `${currentShop.companyName} - ${currentShop.name}`;
+    if (currentShop) {
+      // Show "Company - Location" if the location name is different from the company name
+      const cName = currentShop.companyName || primaryCompanyName;
+      if (cName && cName !== currentShop.name) {
+        displayName = `${cName} - ${currentShop.name}`;
+      } else {
+        displayName = currentShop.name;
+      }
     }
   }
 
