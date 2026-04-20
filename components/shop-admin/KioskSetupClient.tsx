@@ -1,8 +1,12 @@
 'use client';
 import { useEffect, useState } from 'react';
 
-export default function KioskSetupClient({ shopId, shopName, kioskEmail }: { shopId: string; shopName: string; kioskEmail: string }) {
+export default function KioskSetupClient({ shopId, shopName, kioskEmail: initialKioskEmail }: { shopId: string; shopName: string; kioskEmail: string }) {
   const [kioskUrl, setKioskUrl] = useState('');
+  const [kioskEmail, setKioskEmail] = useState(initialKioskEmail);
+  const [editingEmail, setEditingEmail] = useState(false);
+  const [newEmail, setNewEmail] = useState(initialKioskEmail);
+  
   const [password, setPassword] = useState('');
   const [saving, setSaving] = useState(false);
   const [msg, setMsg] = useState('');
@@ -13,6 +17,29 @@ export default function KioskSetupClient({ shopId, shopName, kioskEmail }: { sho
     // Kiosk users login at the main sign-in page and are redirected to the root where the kiosk is rendered
     setKioskUrl(`${window.location.origin}/sign-in`);
   }, [shopId]);
+
+  const saveEmail = async () => {
+    if (!newEmail.trim() || !/^\S+@\S+\.\S+$/.test(newEmail)) {
+      setErrorMsg('Please enter a valid email address.');
+      return;
+    }
+    setSaving(true);
+    setErrorMsg('');
+    const res = await fetch(`/api/shops/${shopId}/kiosk-email`, {
+      method: 'PUT', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: newEmail }),
+    });
+    const data = await res.json();
+    if (!res.ok) {
+      setErrorMsg(data.error || 'Failed to update email');
+    } else {
+      setKioskEmail(data.email);
+      setEditingEmail(false);
+      setMsg('Kiosk Email updated!');
+      setTimeout(() => setMsg(''), 3000);
+    }
+    setSaving(false);
+  };
 
   const savePassword = async () => {
     if (!password.trim() || !kioskEmail) {
@@ -48,11 +75,27 @@ export default function KioskSetupClient({ shopId, shopName, kioskEmail }: { sho
       </div>
 
       <div className="bg-crm-surface border border-crm-border shadow-sm rounded-xl p-6 space-y-4">
-        <h3 className="font-bold text-crm-text text-lg font-bold">📱 Kiosk Login</h3>
-        <p className="text-crm-muted text-[13px]">Open the login page on a tablet or dedicated screen in your shop and log in using these credentials:</p>
-        <div className="flex gap-2 mb-2">
+        <div className="flex justify-between items-start">
+          <div>
+            <h3 className="font-bold text-crm-text text-lg font-bold">📱 Kiosk Login</h3>
+            <p className="text-crm-muted text-[13px]">Open the login page on a tablet or dedicated screen in your shop and log in using these credentials:</p>
+          </div>
+        </div>
+        
+        <div className="flex gap-2 mb-2 items-center">
           <span className="text-[13px] text-crm-muted w-16">Email:</span>
-          <code className="text-crm-primary font-mono text-[13px] font-bold">{kioskEmail || 'No kiosk email found'}</code>
+          {editingEmail ? (
+            <div className="flex gap-2 items-center flex-1">
+              <input type="email" value={newEmail} onChange={e => setNewEmail(e.target.value)} className="w-64 bg-crm-surface border border-crm-border shadow-sm rounded-lg px-3 py-1.5 text-crm-text text-[13px] focus:outline-none focus:border-brand-gold" />
+              <button onClick={saveEmail} disabled={saving} className="px-3 py-1.5 bg-crm-primary text-white rounded-lg text-[11px] font-bold disabled:opacity-50">Save</button>
+              <button onClick={() => setEditingEmail(false)} disabled={saving} className="px-3 py-1.5 bg-crm-bg text-crm-text rounded-lg text-[11px] font-bold">Cancel</button>
+            </div>
+          ) : (
+            <div className="flex gap-4 items-center">
+              <code className="text-crm-primary font-mono text-[13px] font-bold">{kioskEmail || 'No kiosk email found'}</code>
+              <button onClick={() => setEditingEmail(true)} className="text-[11px] font-bold text-crm-muted hover:text-crm-primary transition-colors underline">Change Email</button>
+            </div>
+          )}
         </div>
         <div className="flex gap-2">
           <input readOnly value={kioskUrl} className="flex-1 bg-crm-surface border border-crm-border shadow-sm rounded-lg px-3 py-2.5 text-crm-text text-[13px] font-mono focus:outline-none" />

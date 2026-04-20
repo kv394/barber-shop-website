@@ -45,12 +45,13 @@ export default function ShopSwitcher({ currentShopId, currentShopName, shops, us
     const formData = new FormData(e.currentTarget);
     const name = formData.get('name') as string;
     const kioskEmail = formData.get('kioskEmail') as string;
+    const address = formData.get('address') as string;
 
     try {
       const res = await fetch('/api/shops', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, kioskEmail })
+        body: JSON.stringify({ name, kioskEmail, address })
       });
 
       if (!res.ok) {
@@ -136,6 +137,18 @@ export default function ShopSwitcher({ currentShopId, currentShopName, shops, us
                     name="name" 
                     required 
                     placeholder="e.g. Downtown Barbershop" 
+                    className="w-full bg-crm-bg border border-crm-border rounded-lg p-2.5 text-crm-text focus:ring-2 focus:ring-crm-primary outline-none transition-all"
+                  />
+                </div>
+                
+                <div>
+                  <label className="block text-[13px] font-semibold text-crm-muted uppercase tracking-wider mb-1.5">Location Address</label>
+                  <p className="text-[11px] text-crm-muted mb-2">The physical address of this shop.</p>
+                  <input 
+                    type="text" 
+                    name="address" 
+                    required 
+                    placeholder="123 Main St, City, State" 
                     className="w-full bg-crm-bg border border-crm-border rounded-lg p-2.5 text-crm-text focus:ring-2 focus:ring-crm-primary outline-none transition-all"
                   />
                 </div>

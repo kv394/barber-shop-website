@@ -82,11 +82,15 @@ export async function POST(request: Request) {
     }
 
     const body = await request.json();
-    const { name, description, kioskEmail, adminEmail } = body;
+    const { name, description, kioskEmail, adminEmail, address } = body;
 
     // HARDENING: Input validation & sanitization
     if (!name || typeof name !== 'string' || name.trim() === '') {
       return NextResponse.json({ error: 'Valid Shop Name is required' }, { status: 400 });
+    }
+    
+    if (!address || typeof address !== 'string' || address.trim() === '') {
+      return NextResponse.json({ error: 'Valid Shop Location Address is required' }, { status: 400 });
     }
     
     if (!kioskEmail || typeof kioskEmail !== 'string' || !/^\S+@\S+\.\S+$/.test(kioskEmail)) {
@@ -107,14 +111,20 @@ export async function POST(request: Request) {
     }
 
     const sanitizedDesc = description ? String(description).trim() : null;
+    const sanitizedAddress = address.trim();
     const sanitizedKioskEmail = kioskEmail.trim().toLowerCase();
     const sanitizedAdminEmail = adminEmail ? adminEmail.trim().toLowerCase() : null;
+
+    // Load default customization and add address
+    const { DEFAULT_CUSTOMIZATION } = await import('@/lib/templates');
+    const customization = { ...DEFAULT_CUSTOMIZATION, address: sanitizedAddress };
 
     // 1. Create the shop
     const newShop = await prisma.shop.create({
       data: {
         name: sanitizedName,
         description: sanitizedDesc,
+        customization: customization as any,
       },
     });
 
