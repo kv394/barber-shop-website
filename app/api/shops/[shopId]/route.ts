@@ -70,10 +70,26 @@ export async function DELETE(
   const authUserEmail = authUserSession?.email;
     if (!userId) return new Response("Unauthorized", { status: 401 });
 
-    // Verify user is SITE_ADMIN
+    // Verify user is SITE_ADMIN or SHOP_ADMIN with access
     const user = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
-    if (!user || user.role !== 'SITE_ADMIN') {
-       return new Response("Forbidden: Only Site Admins can delete shops", { status: 403 });
+    if (!user) {
+       return new Response("Unauthorized", { status: 401 });
+    }
+
+    let hasAccess = false;
+    if (user.role === 'SITE_ADMIN') {
+      hasAccess = true;
+    } else if (user.role === 'SHOP_ADMIN') {
+      if (user.shopId === shopId) {
+        hasAccess = true;
+      } else {
+        const access = await prisma.shopAccess.findFirst({ where: { userId: user.id, shopId, role: 'SHOP_ADMIN' } });
+        if (access) hasAccess = true;
+      }
+    }
+
+    if (!hasAccess) {
+       return new Response("Forbidden: Only Admins can delete shops", { status: 403 });
     }
 
     // Delete blackout dates separately (Prisma adapter type limitation)
@@ -81,6 +97,7 @@ export async function DELETE(
 
     // SECURITY: Wrap entire cascade in a transaction for atomicity
     await prisma.$transaction(async (tx: any) => {
+      await tx.shopAccess.deleteMany({ where: { shopId } });
       // Delete notifications, reviews, campaigns, referrals first (leaf nodes)
       await tx.notification.deleteMany({ where: { shopId } });
       await tx.review.deleteMany({ where: { shopId } });
@@ -123,6 +140,12 @@ export async function DELETE(
 
     // Revalidate directory
     revalidatePath('/shops');
+    
+    const cacheIdentifier = authUserEmail || userId;
+    if (cacheIdentifier) {
+        const { cacheService } = await import('@/lib/cache');
+        await cacheService.invalidatePattern(`shop_layout:${cacheIdentifier}:*`);
+    }
 
     return NextResponse.json({ success: true }, { status: 200 });
   } catch (error: any) {

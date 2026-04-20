@@ -10,6 +10,7 @@ import TimezoneSelector from '@/components/shop-admin/TimezoneSelector';
 import DepositSettings from '@/components/checkout/DepositSettings';
 import Link from 'next/link';
 import { prisma } from '@/lib/prisma';
+import DeleteLocationButton from '@/components/shop-admin/DeleteLocationButton';
 
 export const dynamic = "force-dynamic";
 
@@ -142,6 +143,12 @@ export default async function ShopSettingsPage({
             </Link>
           </>
         )}
+      </div>
+
+      <div className="mt-12 pt-8 border-t border-crm-border">
+        <h3 className="font-bold text-red-600 mb-2 text-lg">Danger Zone</h3>
+        <p className="text-crm-muted text-[13px] mb-4">Permanently delete this location and all its associated data. This action cannot be undone.</p>
+        <DeleteLocationButton shopId={shopId} shopName={data.shop.name} />
       </div>
     </ShopAdminLayout>
   );
