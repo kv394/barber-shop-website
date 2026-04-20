@@ -18,59 +18,78 @@ export const getShopLayoutData = cache(async (userId: string, shopId: string) =>
   return cacheService.getOrSet(
     cacheKey,
     async () => {
-      const [user, shop, allAccesses] = await Promise.all([
+      const [user, allAccesses] = await Promise.all([
         prisma.user.findFirst({
           where: authUser?.email ? { email: authUser.email } : { id: userId },
-          select: { id: true, role: true, shopId: true, name: true, email: true, canManageInventory: true, shopAccesses: { where: { shopId } } },
-        }),
-        prisma.shop.findUnique({
-          where: { id: shopId },
-          select: { id: true, name: true, customization: true, template: true, timezone: true },
+          select: { id: true, role: true, shopId: true, name: true, email: true, canManageInventory: true, shopAccesses: shopId !== 'all' ? { where: { shopId } } : { select: { shopId: true, role: true } } },
         }),
         prisma.user.findFirst({
           where: authUser?.email ? { email: authUser.email } : { id: userId },
           select: {
-            shop: { select: { id: true, name: true } },
-            shopAccesses: { select: { shop: { select: { id: true, name: true } }, role: true } }
+            shop: { select: { id: true, name: true, companyName: true } },
+            shopAccesses: { select: { shop: { select: { id: true, name: true, companyName: true } }, role: true } }
           }
         })
       ]);
 
-      if (!user || !shop) return null;
+      if (!user) return null;
 
       let effectiveRole = user.role;
-      if (user.shopId !== shopId && user.shopAccesses && user.shopAccesses.length > 0) {
-        effectiveRole = user.shopAccesses[0].role;
+      if (shopId !== 'all' && user.shopId !== shopId && user.shopAccesses && user.shopAccesses.length > 0) {
+        effectiveRole = (user.shopAccesses[0] as any).role;
+      } else if (shopId === 'all' && user.shopAccesses && user.shopAccesses.length > 0 && user.role !== 'SITE_ADMIN') {
+        // Find highest role or just take the first access
+        effectiveRole = user.role === 'SHOP_ADMIN' ? 'SHOP_ADMIN' : ((user.shopAccesses[0] as any).role || user.role);
       }
 
       const isSiteAdmin = effectiveRole === 'SITE_ADMIN';
-      const isShopAdmin = effectiveRole === 'SHOP_ADMIN' && (user.shopId === shopId || (user.shopAccesses && user.shopAccesses.length > 0));
-      const isStaff = effectiveRole === 'STAFF' && (user.shopId === shopId || (user.shopAccesses && user.shopAccesses.length > 0));
+      const isShopAdmin = effectiveRole === 'SHOP_ADMIN'; // Broadened for 'all'
+      const isStaff = effectiveRole === 'STAFF';
 
       if (!isSiteAdmin && !isShopAdmin && !isStaff) return null;
 
-      const shopSlug = shop.name.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '');
-
       // Combine primary shop and accessed shops
-      let accessibleShops: { id: string, name: string }[] = [];
+      let accessibleShops: { id: string, name: string, companyName: string | null }[] = [];
       
       if (isSiteAdmin) {
-        const allShops = await prisma.shop.findMany({ select: { id: true, name: true }, orderBy: { name: 'asc' } });
+        const allShops = await prisma.shop.findMany({ select: { id: true, name: true, companyName: true }, orderBy: { name: 'asc' } });
         accessibleShops = allShops;
       } else {
-        const accessibleShopsMap = new Map<string, { id: string, name: string }>();
+        const accessibleShopsMap = new Map<string, { id: string, name: string, companyName: string | null }>();
         if (allAccesses?.shop?.id) {
-          accessibleShopsMap.set(allAccesses.shop.id, { id: allAccesses.shop.id, name: allAccesses.shop.name || '' });
+          accessibleShopsMap.set(allAccesses.shop.id, { id: allAccesses.shop.id, name: allAccesses.shop.name || '', companyName: allAccesses.shop.companyName });
         }
         if (Array.isArray(allAccesses?.shopAccesses)) {
           allAccesses.shopAccesses.forEach(access => {
             if (access?.shop?.id) {
-              accessibleShopsMap.set(access.shop.id, { id: access.shop.id, name: access.shop.name || '' });
+              accessibleShopsMap.set(access.shop.id, { id: access.shop.id, name: access.shop.name || '', companyName: access.shop.companyName });
             }
           });
         }
         accessibleShops = Array.from(accessibleShopsMap.values());
       }
+
+      let shop;
+      if (shopId === 'all') {
+        const firstShop = accessibleShops[0];
+        if (!firstShop) return null;
+        shop = {
+          id: 'all',
+          name: firstShop.companyName || 'All Locations',
+          companyName: firstShop.companyName,
+          template: 'modern',
+          timezone: 'America/New_York',
+          customization: {}
+        };
+      } else {
+        shop = await prisma.shop.findUnique({
+          where: { id: shopId },
+          select: { id: true, name: true, companyName: true, customization: true, template: true, timezone: true },
+        });
+        if (!shop) return null;
+      }
+
+      const shopSlug = shop.name.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '');
 
       return {
         user: { ...user, role: effectiveRole },

@@ -4,6 +4,7 @@ import { usePathname } from 'next/navigation';
 
 export default function ShopSidebarLinks({ shopId, userRole }: { shopId: string, userRole: string }) {
   const pathname = usePathname();
+  const isAll = shopId === 'all';
 
   const isActive = (path: string, label: string) => {
     if (path === `/shop/${shopId}` && pathname === `/shop/${shopId}`) return true;
@@ -71,10 +72,10 @@ export default function ShopSidebarLinks({ shopId, userRole }: { shopId: string,
     <>
       <div className="mb-6 space-y-1">
         {navLink(`/shop/${shopId}`, 'Dashboard')}
-        {navLink(`/shop/${shopId}/bookings`, 'Bookings')}
-        {navLink(`/shop/${shopId}/waitlist`, 'Waitlist')}
-        {navLink(`/shop/${shopId}/clients`, 'Clients')}
-        {userRole === 'SHOP_ADMIN' && (
+        {!isAll && navLink(`/shop/${shopId}/bookings`, 'Bookings')}
+        {!isAll && navLink(`/shop/${shopId}/waitlist`, 'Waitlist')}
+        {!isAll && navLink(`/shop/${shopId}/clients`, 'Clients')}
+        {userRole === 'SHOP_ADMIN' && !isAll && (
           <>
             {navLink(`/shop/${shopId}/settings/team`, 'Team')}
             {navLink(`/shop/${shopId}/engagement`, 'Engagement')}
@@ -85,7 +86,7 @@ export default function ShopSidebarLinks({ shopId, userRole }: { shopId: string,
         )}
       </div>
       
-      {userRole !== 'SHOP_ADMIN' && (
+      {userRole !== 'SHOP_ADMIN' && !isAll && (
         <div className="mb-6 space-y-1">
           <h3 className="px-3 text-[11px] font-bold text-crm-muted uppercase tracking-wider mb-2">My Area</h3>
           {navLink(`/shop/${shopId}/staff`, 'My Schedule')}

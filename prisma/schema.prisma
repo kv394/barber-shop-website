@@ -13,6 +13,7 @@ datasource db {
 model Shop {
   id            String  @id @default(cuid())
   name          String
+  companyName   String?
   subdomain     String? @unique
   customDomain  String? @unique
   description   String?

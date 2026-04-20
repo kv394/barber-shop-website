@@ -6,6 +6,7 @@ import { useRouter, usePathname } from 'next/navigation';
 interface Shop {
   id: string;
   name: string;
+  companyName?: string | null;
 }
 
 export default function ShopSwitcher({ currentShopId, currentShopName, shops, userRole }: { currentShopId: string, currentShopName: string, shops: Shop[], userRole?: string }) {
@@ -47,11 +48,15 @@ export default function ShopSwitcher({ currentShopId, currentShopName, shops, us
     const kioskEmail = formData.get('kioskEmail') as string;
     const address = formData.get('address') as string;
 
+    // Inherit company name from the first shop, or use the first shop's name as the company name
+    const firstShop = shops?.[0];
+    const companyName = firstShop?.companyName || firstShop?.name || null;
+
     try {
       const res = await fetch('/api/shops', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, kioskEmail, address })
+        body: JSON.stringify({ name, kioskEmail, address, companyName })
       });
 
       if (!res.ok) {
@@ -78,8 +83,33 @@ export default function ShopSwitcher({ currentShopId, currentShopName, shops, us
 
   // Don't show switcher if user only has 1 shop AND they aren't a SHOP_ADMIN who can create more
   const canCreate = userRole === 'SHOP_ADMIN' || userRole === 'SITE_ADMIN';
-  if ((!shops || shops.length <= 1) && !canCreate) {
+  if ((!shops || shops.length <= 1) && !canCreate && currentShopId !== 'all') {
     return <span className="font-bold text-xl truncate tracking-tight text-crm-text">{currentShopName}</span>;
+  }
+
+  // Group shops by company name
+  const companies = new Map<string, Shop[]>();
+  
+  if (shops) {
+    shops.forEach(shop => {
+      const cName = shop.companyName || shop.name;
+      if (!companies.has(cName)) {
+        companies.set(cName, []);
+      }
+      companies.get(cName)!.push(shop);
+    });
+  }
+
+  // Determine current display name
+  let displayName = currentShopName;
+  if (currentShopId === 'all') {
+    const firstShop = shops?.[0];
+    displayName = firstShop?.companyName || firstShop?.name || 'All Locations';
+  } else {
+    const currentShop = shops?.find(s => s.id === currentShopId);
+    if (currentShop?.companyName) {
+      displayName = `${currentShop.companyName} - ${currentShop.name}`;
+    }
   }
 
   return (
@@ -88,21 +118,34 @@ export default function ShopSwitcher({ currentShopId, currentShopName, shops, us
         onClick={() => setIsOpen(!isOpen)}
         className="w-full flex items-center justify-between font-bold text-xl tracking-tight text-crm-text hover:bg-crm-bg px-2 py-1 -ml-2 rounded-md transition-colors"
       >
-        <span className="truncate">{currentShopName}</span>
+        <span className="truncate" title={displayName}>{displayName}</span>
         <svg className={`w-5 h-5 transition-transform ${isOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
       </button>
 
       {isOpen && (
         <div className="absolute top-full left-0 right-0 mt-2 bg-crm-surface border border-crm-border rounded-md shadow-lg overflow-hidden z-50">
-          <div className="max-h-60 overflow-y-auto">
-            {shops?.map(shop => (
-              <button
-                key={shop.id}
-                onClick={() => handleSelectShop(shop.id)}
-                className={`w-full text-left px-4 py-3 text-sm hover:bg-crm-bg transition-colors ${shop.id === currentShopId ? 'bg-crm-bg font-bold text-orange-600' : 'text-crm-text'}`}
-              >
-                {shop.name}
-              </button>
+          <div className="max-h-[70vh] overflow-y-auto">
+            {Array.from(companies.entries()).map(([companyName, companyShops]) => (
+              <div key={companyName} className="mb-2">
+                <div className="px-4 py-2 bg-crm-bg/50 border-y border-crm-border">
+                  <button 
+                    onClick={() => handleSelectShop('all')}
+                    className={`font-bold text-sm text-left w-full hover:text-crm-primary transition-colors ${currentShopId === 'all' ? 'text-crm-primary' : 'text-crm-text'}`}
+                  >
+                    {companyName}
+                  </button>
+                </div>
+                {companyShops.map(shop => (
+                  <button
+                    key={shop.id}
+                    onClick={() => handleSelectShop(shop.id)}
+                    className={`w-full text-left pl-6 pr-4 py-2.5 text-sm hover:bg-crm-bg transition-colors flex items-center gap-2 ${shop.id === currentShopId ? 'bg-crm-bg font-semibold text-crm-primary' : 'text-crm-text'}`}
+                  >
+                    <span className="w-1.5 h-1.5 rounded-full bg-current opacity-40"></span>
+                    <span className="truncate">{shop.name}</span>
+                  </button>
+                ))}
+              </div>
             ))}
             
             {canCreate && (
@@ -111,7 +154,7 @@ export default function ShopSwitcher({ currentShopId, currentShopName, shops, us
                   onClick={() => { setIsOpen(false); setIsModalOpen(true); }}
                   className="w-full text-left px-4 py-3 text-sm font-bold text-crm-primary hover:bg-crm-bg transition-colors flex items-center gap-2"
                 >
-                  <span className="text-lg leading-none">+</span> Create New Location
+                  <span className="text-lg leading-none">+</span> Add Location
                 </button>
               </div>
             )}
@@ -124,7 +167,7 @@ export default function ShopSwitcher({ currentShopId, currentShopName, shops, us
         <div className="fixed inset-0 z-[200] bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
           <div className="bg-crm-surface w-full max-w-md rounded-2xl shadow-xl overflow-hidden animate-in fade-in zoom-in duration-200">
             <div className="p-6 border-b border-crm-border">
-              <h2 className="text-xl font-bold text-crm-text">Create New Location</h2>
+              <h2 className="text-xl font-bold text-crm-text">Add New Location</h2>
               <p className="text-[13px] text-crm-muted mt-1">Add a new franchise location to your account.</p>
             </div>
             

@@ -20,11 +20,14 @@ export default async function ShopLayout({
 }) {
   const { shopId } = await params;
   
-  // Need to get the shop slug for redirects
-  const basicShop = await prisma.shop.findUnique({
-      where: { id: shopId },
-      select: { name: true }
-  });
+  let basicShop = null;
+  if (shopId !== 'all') {
+    // Need to get the shop slug for redirects
+    basicShop = await prisma.shop.findUnique({
+        where: { id: shopId },
+        select: { name: true }
+    });
+  }
   
   const shopSlug = basicShop ? basicShop.name.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '') : '';
   const fallbackRedirect = shopSlug ? `/shops/${shopSlug}` : '/';

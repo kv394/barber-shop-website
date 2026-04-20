@@ -82,7 +82,7 @@ export async function POST(request: Request) {
     }
 
     const body = await request.json();
-    const { name, description, kioskEmail, adminEmail, address } = body;
+    const { name, description, kioskEmail, adminEmail, address, companyName } = body;
 
     // HARDENING: Input validation & sanitization
     if (!name || typeof name !== 'string' || name.trim() === '') {
@@ -112,6 +112,7 @@ export async function POST(request: Request) {
 
     const sanitizedDesc = description ? String(description).trim() : null;
     const sanitizedAddress = address.trim();
+    const sanitizedCompanyName = companyName && typeof companyName === 'string' && companyName.trim() !== '' ? companyName.trim() : null;
     const sanitizedKioskEmail = kioskEmail.trim().toLowerCase();
     const sanitizedAdminEmail = adminEmail ? adminEmail.trim().toLowerCase() : null;
 
@@ -123,6 +124,7 @@ export async function POST(request: Request) {
     const newShop = await prisma.shop.create({
       data: {
         name: sanitizedName,
+        companyName: sanitizedCompanyName,
         description: sanitizedDesc,
         customization: customization as any,
       },

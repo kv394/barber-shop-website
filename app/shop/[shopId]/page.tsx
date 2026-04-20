@@ -15,27 +15,30 @@ export const dynamic = 'force-dynamic';
 async function getShopData(shopId: string, userId: string) {
   const data = await getShopLayoutData(userId, shopId);
   if (!data) {
-    return { shop: null, userRole: null, canManageInventory: false, shopSlug: '', lowStockItems: [], todayStats: null };
+    return { shop: null, userRole: null, canManageInventory: false, shopSlug: '', lowStockItems: [], todayStats: null, billingAlert: null, isClockedIn: false };
   }
 
   // Today's date boundaries — use shop timezone
-  const shopTz = data.shop.timezone || 'America/New_York';
+  const shopTz = data.shop?.timezone || 'America/New_York';
   const todayStr = getTodayInShopTz(shopTz);
   const { startOfDay: today, endOfDay: tomorrow } = toShopTzDayBounds(todayStr, shopTz);
 
-  // Run both queries in parallel instead of sequentially
-  const [shopFromDb, todayAppointments, allTrackedServices, allTrackedProducts, latestReport, activeLog] = await Promise.all([
-    prisma.shop.findUnique({
+  const isAll = shopId === 'all';
+  const shopIds = isAll ? data.accessibleShops.map((s: any) => s.id) : [shopId];
+
+  // Run queries
+  const [shopFromDbArray, todayAppointments, allTrackedServices, allTrackedProducts, latestReports, activeLogs] = await Promise.all([
+    isAll ? Promise.resolve([]) : prisma.shop.findUnique({
       where: { id: shopId },
       include: {
         services: { orderBy: { type: 'asc' } },
         products: { orderBy: { name: 'asc' } },
         users: { orderBy: { role: 'asc' } },
       },
-    }),
+    }).then(res => res ? [res] : []),
     prisma.appointment.findMany({
       where: { 
-        shopId, 
+        shopId: { in: shopIds }, 
         startTime: { gte: today, lt: tomorrow },
         ...(data.userRole === 'STAFF' ? { staffId: data.user.id } : {})
       },
@@ -43,21 +46,22 @@ async function getShopData(shopId: string, userId: string) {
       orderBy: { startTime: 'asc' },
     }),
     prisma.service.findMany({
-      where: { shopId, trackInventory: true },
+      where: { shopId: { in: shopIds }, trackInventory: true },
       select: { id: true, name: true, inventoryCount: true },
     }),
     prisma.product.findMany({
-      where: { shopId, trackInventory: true },
+      where: { shopId: { in: shopIds }, trackInventory: true },
       select: { id: true, name: true, inventoryCount: true, reorderPoint: true, type: true },
     }),
-    prisma.shopUsageReport.findFirst({
-      where: { shopId },
-      orderBy: { period: 'desc' }
+    prisma.shopUsageReport.findMany({
+      where: { shopId: { in: shopIds } },
+      orderBy: { period: 'desc' },
+      distinct: ['shopId']
     }),
-    prisma.timeLog.findFirst({
+    prisma.timeLog.findMany({
       where: {
         userId: data.user.id,
-        shopId: shopId,
+        shopId: { in: shopIds },
         clockOut: null,
       },
     })
@@ -68,6 +72,8 @@ async function getShopData(shopId: string, userId: string) {
     ...allTrackedServices.filter((s: any) => (s.inventoryCount || 0) <= 5).map((s: any) => ({ ...s, isProduct: false })),
     ...allTrackedProducts.filter((p: any) => (p.inventoryCount || 0) <= (p.reorderPoint || 5)).map((p: any) => ({ ...p, isProduct: true }))
   ];
+
+  const shopFromDb = isAll ? data.shop : shopFromDbArray[0];
 
   if (!shopFromDb) {
     return { shop: null, userRole: data.userRole, canManageInventory: false, shopSlug: data.shopSlug, lowStockItems: [], todayStats: null, billingAlert: null, isClockedIn: false };
@@ -81,7 +87,8 @@ async function getShopData(shopId: string, userId: string) {
 
   // Billing Alert Logic
   let billingAlert: { message: string; type: 'warning' | 'error' } | null = null;
-  if (latestReport) {
+  const latestReport = latestReports[0]; // Simplified for 'all' mode
+  if (latestReport && !isAll) {
     const tiers = await getSaaSTiers();
     const analysis = calculateUsageCostStrategy({
       userCount: latestReport.userCount,
@@ -127,7 +134,7 @@ async function getShopData(shopId: string, userId: string) {
     shopSlug: data.shopSlug,
     lowStockItems: JSON.parse(JSON.stringify(lowStockItems)),
     billingAlert,
-    isClockedIn: !!activeLog,
+    isClockedIn: activeLogs.length > 0,
     todayStats: {
       totalBookings: todayAppointments.length,
       completedCount: completed.length,
