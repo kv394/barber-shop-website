@@ -80,7 +80,7 @@ export default async function ShopLayout({
       {!isSiteAdmin && (
         <aside className="hidden md:flex flex-col w-64 bg-crm-surface border-r border-crm-border flex-shrink-0 z-10 shadow-sm">
           <div className="h-16 flex items-center px-6 border-b border-crm-border">
-             <ShopSwitcher currentShopId={shopId} currentShopName={data.shop.name} shops={(data as any).accessibleShops} />
+             <ShopSwitcher currentShopId={shopId} currentShopName={data.shop.name} shops={(data as any).accessibleShops} userRole={data.userRole} />
           </div>
           <nav className="flex-1 overflow-y-auto py-4 px-3">
             <ShopSidebarLinks shopId={shopId} userRole={data.userRole} />
@@ -110,7 +110,7 @@ export default async function ShopLayout({
         {!isSiteAdmin && (
           <header className="md:hidden sticky top-0 z-[100] flex justify-between items-center bg-crm-surface border-b border-crm-border px-4 py-3 shadow-sm">
             <div className="flex flex-col min-w-0 pr-4 flex-1">
-               <ShopSwitcher currentShopId={shopId} currentShopName={data.shop.name} shops={(data as any).accessibleShops} />
+               <ShopSwitcher currentShopId={shopId} currentShopName={data.shop.name} shops={(data as any).accessibleShops} userRole={data.userRole} />
             </div>
             <div className="shrink-0">
                <SupabaseAuthButton redirectUrl={fallbackRedirect} />

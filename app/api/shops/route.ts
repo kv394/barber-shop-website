@@ -66,7 +66,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Too many requests' }, { status: 429 });
     }
 
-    // HARDENING: Only Site Admins can create shops. Enforce server-side authorization.
+    // HARDENING: Site Admins and Shop Admins can create shops.
     const supabase = await createClient();
   const { data: { user: authUserSession } } = await supabase.auth.getUser();
   let userId = authUserSession?.id;
@@ -76,8 +76,8 @@ export async function POST(request: Request) {
     }
     
     const requestUser = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
-    if (!requestUser || requestUser.role !== 'SITE_ADMIN') {
-        return NextResponse.json({ error: 'Forbidden. Only Site Admins can provision shops.' }, { status: 403 });
+    if (!requestUser || !['SITE_ADMIN', 'SHOP_ADMIN'].includes(requestUser.role)) {
+        return NextResponse.json({ error: 'Forbidden. Only Admins can provision shops.' }, { status: 403 });
     }
 
     const body = await request.json();
@@ -100,7 +100,6 @@ export async function POST(request: Request) {
     const sanitizedDesc = description ? String(description).trim() : null;
     const sanitizedKioskEmail = kioskEmail.trim().toLowerCase();
     const sanitizedAdminEmail = adminEmail ? adminEmail.trim().toLowerCase() : null;
-
 
     // 1. Create the shop
     const newShop = await prisma.shop.create({
@@ -131,19 +130,41 @@ export async function POST(request: Request) {
     // 3. If an admin email was provided, create or update that user as the Shop Admin
     if (sanitizedAdminEmail) {
         const adminBarcode = crypto.randomBytes(6).toString('hex').toUpperCase();
+        const existingAdmin = await prisma.user.findUnique({ where: { email: sanitizedAdminEmail } });
 
-        await prisma.user.upsert({
-            where: { email: sanitizedAdminEmail },
-            update: {
-                role: 'SHOP_ADMIN',
+        if (existingAdmin) {
+            if (existingAdmin.shopId === null || existingAdmin.role === 'CLIENT') {
+                await prisma.user.update({
+                    where: { email: sanitizedAdminEmail },
+                    data: { role: 'SHOP_ADMIN', shopId: newShop.id }
+                });
+            } else {
+                await prisma.shopAccess.upsert({
+                    where: { userId_shopId: { userId: existingAdmin.id, shopId: newShop.id } },
+                    update: { role: 'SHOP_ADMIN' },
+                    create: { userId: existingAdmin.id, shopId: newShop.id, role: 'SHOP_ADMIN' }
+                });
+            }
+        } else {
+            await prisma.user.create({
+                data: {
+                    id: `admin_init_${newShop.id}`,
+                    email: sanitizedAdminEmail,
+                    role: 'SHOP_ADMIN',
+                    shopId: newShop.id,
+                    barcode: adminBarcode
+                }
+            });
+        }
+    }
+
+    // 4. If a SHOP_ADMIN created this shop and they weren't explicitly added via adminEmail, grant them access
+    if (requestUser.role === 'SHOP_ADMIN' && requestUser.email !== sanitizedAdminEmail) {
+        await prisma.shopAccess.create({
+            data: {
+                userId: requestUser.id,
                 shopId: newShop.id,
-            },
-            create: {
-                id: `admin_init_${newShop.id}`,
-                email: sanitizedAdminEmail,
-                role: 'SHOP_ADMIN',
-                shopId: newShop.id,
-                barcode: adminBarcode
+                role: 'SHOP_ADMIN'
             }
         });
     }
