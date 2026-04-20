@@ -4,6 +4,7 @@ import { prisma } from '@/lib/prisma';
 import crypto from 'crypto';
 import { createClient } from '@/utils/supabase/server';
 import { rateLimit } from '@/lib/rate-limiter';
+import { cacheService } from '@/lib/cache';
 
 export const dynamic = 'force-dynamic';
 
@@ -97,6 +98,14 @@ export async function POST(request: Request) {
     }
 
     const sanitizedName = name.trim();
+    
+    const existingShop = await prisma.shop.findFirst({
+        where: { name: { equals: sanitizedName, mode: 'insensitive' } }
+    });
+    if (existingShop) {
+        return NextResponse.json({ error: 'A location with this name already exists' }, { status: 400 });
+    }
+
     const sanitizedDesc = description ? String(description).trim() : null;
     const sanitizedKioskEmail = kioskEmail.trim().toLowerCase();
     const sanitizedAdminEmail = adminEmail ? adminEmail.trim().toLowerCase() : null;
@@ -167,6 +176,12 @@ export async function POST(request: Request) {
                 role: 'SHOP_ADMIN'
             }
         });
+    }
+
+    // 5. Clear user's layout cache so the new shop immediately appears in their switcher
+    const cacheIdentifier = authUserEmail || userId;
+    if (cacheIdentifier) {
+        await cacheService.invalidatePattern(`shop_layout:${cacheIdentifier}:*`);
     }
 
     return NextResponse.json(newShop, { status: 201 });

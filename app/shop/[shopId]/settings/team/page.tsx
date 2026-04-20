@@ -7,6 +7,7 @@ import TeamDashboardClient from '@/components/shop-admin/TeamDashboardClient';
 import Link from 'next/link';
 import { revalidatePath } from 'next/cache';
 import crypto from 'crypto';
+import { cacheService } from '@/lib/cache';
 
 export const dynamic = 'force-dynamic';
 
@@ -138,6 +139,7 @@ async function inviteUser(formData: FormData) {
         create: { userId: existingUser.id, shopId, role }
       });
     }
+    await cacheService.invalidatePattern(`shop_layout:${existingUser.email}:*`);
   } else {
     const userBarcode = crypto.createHash('sha256').update(`${email}-${process.env.JWT_SECRET || 'secret'}`).digest('hex').substring(0, 12).toUpperCase();
     await prisma.user.create({
@@ -192,6 +194,10 @@ async function removeUser(formData: FormData) {
   await prisma.shopAccess.deleteMany({
     where: { userId: targetUserId, shopId }
   });
+
+  if (targetUser) {
+    await cacheService.invalidatePattern(`shop_layout:${targetUser.email || targetUser.id}:*`);
+  }
 
   revalidatePath(`/shop/${shopId}/settings/team`);
 }

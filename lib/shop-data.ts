@@ -52,18 +52,25 @@ export const getShopLayoutData = cache(async (userId: string, shopId: string) =>
       const shopSlug = shop.name.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '');
 
       // Combine primary shop and accessed shops
-      const accessibleShopsMap = new Map<string, { id: string, name: string }>();
-      if (allAccesses?.shop?.id) {
-        accessibleShopsMap.set(allAccesses.shop.id, { id: allAccesses.shop.id, name: allAccesses.shop.name || '' });
+      let accessibleShops: { id: string, name: string }[] = [];
+      
+      if (isSiteAdmin) {
+        const allShops = await prisma.shop.findMany({ select: { id: true, name: true }, orderBy: { name: 'asc' } });
+        accessibleShops = allShops;
+      } else {
+        const accessibleShopsMap = new Map<string, { id: string, name: string }>();
+        if (allAccesses?.shop?.id) {
+          accessibleShopsMap.set(allAccesses.shop.id, { id: allAccesses.shop.id, name: allAccesses.shop.name || '' });
+        }
+        if (Array.isArray(allAccesses?.shopAccesses)) {
+          allAccesses.shopAccesses.forEach(access => {
+            if (access?.shop?.id) {
+              accessibleShopsMap.set(access.shop.id, { id: access.shop.id, name: access.shop.name || '' });
+            }
+          });
+        }
+        accessibleShops = Array.from(accessibleShopsMap.values());
       }
-      if (Array.isArray(allAccesses?.shopAccesses)) {
-        allAccesses.shopAccesses.forEach(access => {
-          if (access?.shop?.id) {
-            accessibleShopsMap.set(access.shop.id, { id: access.shop.id, name: access.shop.name || '' });
-          }
-        });
-      }
-      const accessibleShops = Array.from(accessibleShopsMap.values());
 
       return {
         user: { ...user, role: effectiveRole },
