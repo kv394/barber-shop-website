@@ -6,6 +6,7 @@ import { createClient } from '@/utils/supabase/server';
 import { redirect } from 'next/navigation';
 import { getOrCreateFolder, downloadFileFromFolder } from '@/lib/google-drive';
 import { cacheService } from '@/lib/cache';
+import AIWidget from '@/components/booking/AIWidget';
 
 // Use this to ensure the page caches effectively unless revalidated
 export const revalidate = 60;
@@ -229,15 +230,18 @@ export default async function PublicShopPage({
 
   // Pass everything to the Client Component
   return (
-      <ClientPage 
-          shop={shop} 
-          templateType={templateType} 
-          primaryColor={primaryColor} 
-          secondaryColor={secondaryColor} 
-          sportRed={sportRed}
-          reviews={shop.reviews || []}
-          dynamicTemplateHtml={dynamicTemplateHtml}
-          dynamicTemplateCss={dynamicTemplateCss}
-      />
+      <>
+        <ClientPage 
+            shop={shop} 
+            templateType={templateType} 
+            primaryColor={primaryColor} 
+            secondaryColor={secondaryColor} 
+            sportRed={sportRed}
+            reviews={shop.reviews || []}
+            dynamicTemplateHtml={dynamicTemplateHtml}
+            dynamicTemplateCss={dynamicTemplateCss}
+        />
+        <AIWidget shopId={shop.id} />
+      </>
   );
 }
