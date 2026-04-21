@@ -8,7 +8,7 @@ export default function AIWidget({ shopId }: { shopId: string }) {
   return (
     <Script
       src="/booking-widget.js"
-      strategy="lazyOnload"
+      strategy="afterInteractive"
       data-shop-id={shopId}
       data-api-url="/api/chat/booking"
     />

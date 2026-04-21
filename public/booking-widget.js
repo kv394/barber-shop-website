@@ -1,5 +1,24 @@
 (function() {
-  const scriptTag = document.currentScript || document.querySelector('script[src*="booking-widget.js"]');
+  const containerId = 'barbersaas-booking-widget-container';
+  if (document.getElementById(containerId)) {
+    // Already initialized
+    return;
+  }
+
+  // Find the script tag that has the data-shop-id. 
+  // It might be document.currentScript, or we might need to search for it.
+  let scriptTag = document.currentScript;
+  
+  if (!scriptTag || !scriptTag.getAttribute('data-shop-id')) {
+    const scripts = document.querySelectorAll('script[src*="booking-widget.js"], script[data-shop-id]');
+    for (let i = scripts.length - 1; i >= 0; i--) {
+      if (scripts[i].getAttribute('data-shop-id')) {
+        scriptTag = scripts[i];
+        break;
+      }
+    }
+  }
+
   if (!scriptTag) {
     console.error('Booking widget script tag not found');
     return;
@@ -14,7 +33,7 @@
 
   // Create a container for the shadow DOM
   const container = document.createElement('div');
-  container.id = 'barbersaas-booking-widget-container';
+  container.id = containerId;
   document.body.appendChild(container);
 
   // Attach shadow DOM
