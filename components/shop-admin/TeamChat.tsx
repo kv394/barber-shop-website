@@ -274,7 +274,7 @@ export default function TeamChat({ shopId, currentUserId }: { shopId: string, cu
             type="text" 
             value={newMessage}
             onChange={handleInputChange}
-            placeholder='Type a message... (Type "@help" for AI assistant)'
+            placeholder='Message... (use @help for AI assistant)'
             className="flex-1 bg-crm-border/30 border border-crm-border shadow-sm rounded-full px-4 py-2.5 text-[13px] text-crm-text placeholder-gray-500 focus:outline-none focus:border-brand-gold focus:ring-1 focus:ring-crm-primary transition-shadow"
           />
           <button 
