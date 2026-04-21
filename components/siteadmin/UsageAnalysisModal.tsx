@@ -56,6 +56,7 @@ export default function UsageAnalysisModal({ shopId, shopName, onClose }: UsageA
                 { label: 'Users', val: data.metrics.userCount },
                 { label: 'Intake Forms', val: data.metrics.formSubmissionCount },
                 { label: 'Images', val: data.metrics.portfolioImageCount + data.metrics.clientHistoryImageCount },
+                { label: 'AI Tokens', val: data.metrics.aiTokenCount || 0 },
               ].map(m => (
                 <div key={m.label} className="bg-crm-surface p-3 rounded-lg border border-crm-border shadow-sm text-center">
                   <p className="font-bold text-crm-text text-[13px]">{m.val}</p>

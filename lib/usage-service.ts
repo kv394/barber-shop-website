@@ -60,7 +60,8 @@ export class UsageService {
           portfolioImageCount,
           clientHistoryImageCount,
           clientFormulaCount,
-          reviewCount
+          reviewCount,
+          aiTokenCount: shop.aiTokens || 0
         };
 
         const analysis = calculateUsageCostStrategy(metrics, tiers);
@@ -94,4 +95,5 @@ export class UsageService {
       throw error;
     }
   }
+}
 }

@@ -51,7 +51,8 @@ export async function GET(
         portfolioImageCount: latestReport.portfolioImageCount,
         clientHistoryImageCount: latestReport.clientHistoryImageCount,
         clientFormulaCount: latestReport.clientFormulaCount,
-        reviewCount: latestReport.reviewCount
+        reviewCount: latestReport.reviewCount,
+        aiTokenCount: latestReport.aiTokenCount || 0
       };
       analysis = {
         estimatedStorageMB: latestReport.estimatedStorageMB,
@@ -70,7 +71,8 @@ export async function GET(
         portfolioImageCount,
         clientHistoryImageCount,
         clientFormulaCount,
-        reviewCount
+        reviewCount,
+        shopData
       ] = await Promise.all([
         prisma.user.count({ where: { shopId } }),
         prisma.appointment.count({ where: { shopId } }),
@@ -80,7 +82,8 @@ export async function GET(
         prisma.portfolioImage.count({ where: { shopId } }),
         prisma.clientHistoryImage.count({ where: { shopId } }),
         prisma.clientFormula.count({ where: { shopId } }),
-        prisma.review.count({ where: { shopId } })
+        prisma.review.count({ where: { shopId } }),
+        prisma.shop.findUnique({ where: { id: shopId }, select: { aiTokens: true } })
       ]);
 
       metrics = {
@@ -92,7 +95,8 @@ export async function GET(
         portfolioImageCount,
         clientHistoryImageCount,
         clientFormulaCount,
-        reviewCount
+        reviewCount,
+        aiTokenCount: shopData?.aiTokens || 0
       };
 
       // 2. Use Deterministic Strategy (No Gemini API call)

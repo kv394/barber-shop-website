@@ -20,6 +20,7 @@ model Shop {
   template      String  @default("modern")
   timezone      String  @default("America/New_York")
   customization Json?
+  aiTokens      Int     @default(0)
 
   // No-show deposit settings (C5)
   depositRequired Boolean @default(false)

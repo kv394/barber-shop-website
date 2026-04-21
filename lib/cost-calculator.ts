@@ -151,9 +151,12 @@ export function calculateUsageCostStrategy(metrics: UsageMetrics, tiers: SaaSTie
     storageFee = Math.ceil((estimatedStorageMB - selectedTier.storageLimitMB) / 100) * selectedTier.overageFeePer100MB;
   }
 
-  const suggestedMonthlyFeeUSD = selectedTier.baseFeeUSD + storageFee;
+  // AI Token fee calculation ($0.01 per 1000 tokens)
+  const aiTokenFee = (metrics.aiTokenCount / 1000) * 0.01;
 
-  const strategyReasoning = `Based on a usage volume of ${metrics.appointmentCount} appointments and ${metrics.userCount} users, the '${selectedTier.name}' tier is recommended. Storage utilizes ${estimatedStorageMB} MB against a ${selectedTier.storageLimitMB} MB limit.`;
+  const suggestedMonthlyFeeUSD = selectedTier.baseFeeUSD + storageFee + aiTokenFee;
+
+  const strategyReasoning = `Based on a usage volume of ${metrics.appointmentCount} appointments and ${metrics.userCount} users, the '${selectedTier.name}' tier is recommended. Storage utilizes ${estimatedStorageMB} MB against a ${selectedTier.storageLimitMB} MB limit. AI Token Usage: ${metrics.aiTokenCount} tokens ($${aiTokenFee.toFixed(2)}).`;
 
   return {
     estimatedStorageMB,

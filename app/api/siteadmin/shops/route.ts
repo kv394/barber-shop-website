@@ -26,6 +26,7 @@ export async function GET() {
       name: true,
       template: true,
       createdAt: true,
+      aiTokens: true,
       _count: {
         select: {
           users: true,

@@ -174,6 +174,14 @@ INSTRUCTIONS:
           if (response.ok) {
             const data = await response.json();
             const answer = data.candidates?.[0]?.content?.parts?.[0]?.text || "I'm not sure how to help with that right now.";
+            const tokensUsed = data.usageMetadata?.totalTokenCount || 0;
+
+            if (tokensUsed > 0) {
+              await prisma.shop.update({
+                where: { id: shopId },
+                data: { aiTokens: { increment: tokensUsed } }
+              });
+            }
             
             const aiUser = await prisma.user.upsert({
               where: { email: 'ai-assistant@system.local' },

@@ -11,6 +11,7 @@ type ShopData = {
   name: string;
   template: string;
   createdAt: string;
+  aiTokens: number;
   users: { id: string; role: string; name: string | null; email: string }[];
   _count: { users: number; services: number; reviews: number };
 };
@@ -106,6 +107,7 @@ export default function SiteAdminShopsPage() {
                     <span>✂️ {staffCount} staff</span>
                     <span>💇 {shop._count.services} services</span>
                     <span>⭐ {shop._count.reviews} reviews</span>
+                    <span>🤖 {shop.aiTokens || 0} AI tokens</span>
                   </div>
 
                   <p className="text-crm-muted mt-2 text-[13px]">
