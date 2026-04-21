@@ -24,6 +24,7 @@ export async function GET() {
     select: {
       id: true,
       name: true,
+      companyName: true,
       template: true,
       createdAt: true,
       aiTokens: true,
