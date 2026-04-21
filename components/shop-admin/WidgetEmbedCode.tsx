@@ -49,15 +49,15 @@ export default function WidgetEmbedCode({ shopId }: { shopId: string }) {
         </div>
       </div>
 
-      <div className="relative">
-        <div className="bg-crm-surface p-4 rounded-lg border border-crm-border overflow-x-auto pr-24">
+      <div className="flex items-center gap-4 bg-crm-surface p-2 pl-4 rounded-lg border border-crm-border">
+        <div className="flex-1 overflow-x-auto pb-1 custom-scrollbar">
           <code className="text-crm-accent text-[13px] whitespace-nowrap">
             {scriptCode}
           </code>
         </div>
         <button
           onClick={copyToClipboard}
-          className="absolute right-2 top-2 bottom-2 bg-crm-accent/10 hover:bg-crm-accent/20 text-crm-accent px-4 py-1.5 rounded-md text-[13px] font-semibold transition-colors flex items-center gap-2"
+          className="shrink-0 bg-crm-accent/10 hover:bg-crm-accent/20 text-crm-accent px-4 py-2 rounded-md text-[13px] font-semibold transition-colors flex items-center justify-center min-w-[110px]"
         >
           {copied ? 'Copied!' : 'Copy Code'}
         </button>
