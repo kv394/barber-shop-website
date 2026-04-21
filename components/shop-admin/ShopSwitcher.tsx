@@ -124,13 +124,7 @@ export default function ShopSwitcher({ currentShopId, currentShopName, shops, us
   } else if (!isSiteAdmin) {
     const currentShop = shops?.find(s => s.id === currentShopId);
     if (currentShop) {
-      // Show "Company - Location" if the location name is different from the company name
-      const cName = currentShop.companyName || primaryCompanyName;
-      if (cName && cName !== currentShop.name) {
-        displayName = `${cName} - ${currentShop.name}`;
-      } else {
-        displayName = currentShop.name;
-      }
+      displayName = currentShop.name;
     }
   }
 
@@ -150,12 +144,9 @@ export default function ShopSwitcher({ currentShopId, currentShopName, shops, us
             {Array.from(companies.entries()).map(([companyName, companyShops]) => (
               <div key={companyName} className="mb-2">
                 <div className="px-4 py-2 bg-crm-bg/50 border-y border-crm-border">
-                  <button 
-                    onClick={() => handleSelectShop('all')}
-                    className={`font-bold text-sm text-left w-full hover:text-crm-primary transition-colors ${currentShopId === 'all' ? 'text-crm-primary' : 'text-crm-text'}`}
-                  >
+                  <span className="font-bold text-sm text-crm-muted uppercase tracking-wider">
                     {companyName}
-                  </button>
+                  </span>
                 </div>
                 {companyShops.map(shop => (
                   <button

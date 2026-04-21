@@ -19,12 +19,21 @@ export default async function ShopRedirectPage() {
   // Find the user in our database to get their assigned shopId.
   const dbUser = await prisma.user.findFirst({
     where: { OR: [{ id: userId }, { email: user?.email || '' }] },
-    select: { shopId: true, role: true },
+    select: { 
+      shopId: true, 
+      role: true,
+      shopAccesses: { select: { shopId: true }, take: 1 }
+    },
   });
 
   if (dbUser?.shopId) {
-    // If they belong to a shop, redirect to that shop's main dashboard.
+    // If they have a primary shop, redirect to that shop's main dashboard.
     return redirect(`/shop/${dbUser.shopId}`);
+  }
+  
+  if (dbUser?.shopAccesses && dbUser.shopAccesses.length > 0) {
+    // If they have access to a shop via the junction table, redirect to the first one.
+    return redirect(`/shop/${dbUser.shopAccesses[0].shopId}`);
   }
 
   if (dbUser?.role === 'SITE_ADMIN') {
