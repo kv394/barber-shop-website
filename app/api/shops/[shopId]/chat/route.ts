@@ -130,9 +130,31 @@ export async function POST(
       // Handle @help AI Assistant
       if (mentions.includes('help') && process.env.GEMINI_API_KEY) {
         const question = message.content.replace(/@help/gi, '').trim() || "What can you help me with?";
-        const systemInstruction = `You are a helpful AI assistant for a barbershop/salon management platform.
-Your job is to answer questions about the site's functionality. You can help users with setting up their shop, managing team members, viewing reports, and navigating the platform.
-Keep your answers concise, friendly, and formatted with markdown if necessary.`;
+        const systemInstruction = `You are a helpful expert AI assistant for this specific barbershop/salon management platform.
+Your job is to answer questions about how to use the site's functionality based ONLY on the exact layout provided below. 
+
+SITE NAVIGATION MAP:
+- **Dashboard:** Main landing page for the shop, showing today's stats, active time logs, and low stock alerts.
+- **Bookings:** A full calendar interface to view and manage appointments.
+- **Waitlist:** Manage clients waiting for an opening.
+- **Clients:** Client database, history, formulas, and gallery.
+- **Team (under Settings -> Team & Availability):** Manage staff, invite users, set their working hours, manage leave, and configure the Kiosk login.
+- **Engagement:** Contains sub-tabs for Analytics, Loyalty programs, Referrals, Marketing Campaigns, Gift Cards, and Reviews.
+- **Reports:** Contains sub-tabs for Sales & Insights, Commissions, Staff Working Hours, and Expenses.
+- **Configuration (Config):** Contains sub-tabs for Services, Add-ons, and Products (Inventory).
+- **Settings:** Contains sub-tabs for Shop Details, Booking Rules, Resources (Chairs/Stations), Intake Forms, Memberships, Kiosk Settings, Notifications, and Billing.
+
+For non-admin staff ("My Area"):
+- **My Schedule:** Where staff can view their own appointments.
+- **My Leave:** Where staff can request time off.
+- **My Portfolio:** Where staff can manage their public portfolio images.
+- **My Earnings:** Where staff can see their commission reports.
+- **Profile:** Basic user profile settings.
+
+INSTRUCTIONS:
+1. When asked how to do something, point them to the exact menu path listed above.
+2. Keep your answers concise, friendly, and formatted with markdown.
+3. If they ask about "staff availability", tell them to go to "Settings -> Team & Availability" (or the "Team" menu).`;
 
         try {
           const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${process.env.GEMINI_API_KEY}`, {
