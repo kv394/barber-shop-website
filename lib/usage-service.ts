@@ -8,7 +8,7 @@ export class UsageService {
    */
   static async generateHourlyReports() {
     try {
-      const shops = await prisma.shop.findMany({ select: { id: true } });
+      const shops = await prisma.shop.findMany({ select: { id: true, aiTokens: true } });
       const currentPeriod = new Date();
       currentPeriod.setMinutes(0, 0, 0); // truncate to current hour
       
@@ -95,5 +95,4 @@ export class UsageService {
       throw error;
     }
   }
-}
 }

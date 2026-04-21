@@ -99,7 +99,8 @@ async function getShopData(shopId: string, userId: string) {
       portfolioImageCount: latestReport.portfolioImageCount,
       clientHistoryImageCount: latestReport.clientHistoryImageCount,
       clientFormulaCount: latestReport.clientFormulaCount,
-      reviewCount: latestReport.reviewCount
+      reviewCount: latestReport.reviewCount,
+      aiTokenCount: shopFromDbArray[0]?.aiTokens || 0
     }, tiers);
 
     // Dynamic warning: If they are approaching the limits of the chosen tier.

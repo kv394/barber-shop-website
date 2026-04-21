@@ -30,7 +30,7 @@ export async function GET(
 
     const shop = await prisma.shop.findUnique({
       where: { id: shopId },
-      select: { name: true }
+      select: { name: true, aiTokens: true }
     });
 
     if (!shop) {
@@ -56,7 +56,8 @@ export async function GET(
         portfolioImageCount: latestReport.portfolioImageCount,
         clientHistoryImageCount: latestReport.clientHistoryImageCount,
         clientFormulaCount: latestReport.clientFormulaCount,
-        reviewCount: latestReport.reviewCount
+        reviewCount: latestReport.reviewCount,
+        aiTokenCount: shop.aiTokens || 0
       };
       analysis = {
         estimatedStorageMB: latestReport.estimatedStorageMB,
@@ -97,7 +98,8 @@ export async function GET(
         portfolioImageCount,
         clientHistoryImageCount,
         clientFormulaCount,
-        reviewCount
+        reviewCount,
+        aiTokenCount: shop.aiTokens || 0
       };
 
       const tiers = await getSaaSTiers();

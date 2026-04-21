@@ -38,6 +38,8 @@ export async function GET(
       orderBy: { period: 'desc' }
     });
 
+    const shopData = await prisma.shop.findUnique({ where: { id: shopId }, select: { aiTokens: true } });
+
     let metrics;
     let analysis;
 
@@ -52,7 +54,7 @@ export async function GET(
         clientHistoryImageCount: latestReport.clientHistoryImageCount,
         clientFormulaCount: latestReport.clientFormulaCount,
         reviewCount: latestReport.reviewCount,
-        aiTokenCount: latestReport.aiTokenCount || 0
+        aiTokenCount: shopData?.aiTokens || 0
       };
       analysis = {
         estimatedStorageMB: latestReport.estimatedStorageMB,
@@ -71,8 +73,7 @@ export async function GET(
         portfolioImageCount,
         clientHistoryImageCount,
         clientFormulaCount,
-        reviewCount,
-        shopData
+        reviewCount
       ] = await Promise.all([
         prisma.user.count({ where: { shopId } }),
         prisma.appointment.count({ where: { shopId } }),
@@ -82,8 +83,7 @@ export async function GET(
         prisma.portfolioImage.count({ where: { shopId } }),
         prisma.clientHistoryImage.count({ where: { shopId } }),
         prisma.clientFormula.count({ where: { shopId } }),
-        prisma.review.count({ where: { shopId } }),
-        prisma.shop.findUnique({ where: { id: shopId }, select: { aiTokens: true } })
+        prisma.review.count({ where: { shopId } })
       ]);
 
       metrics = {

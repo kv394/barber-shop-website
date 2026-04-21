@@ -10,6 +10,7 @@ export type UsageMetrics = {
   clientHistoryImageCount: number;
   clientFormulaCount: number;
   reviewCount: number;
+  aiTokenCount: number;
 };
 
 export type CostAnalysis = {

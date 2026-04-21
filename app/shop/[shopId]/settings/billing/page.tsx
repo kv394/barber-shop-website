@@ -22,10 +22,16 @@ export default async function ShopBillingPage({ params }: { params: Promise<{ sh
   }
 
   // Fetch billing data directly
-  const latestReport = await prisma.shopUsageReport.findFirst({
-    where: { shopId },
-    orderBy: { period: 'desc' }
-  });
+  const [latestReport, shop] = await Promise.all([
+    prisma.shopUsageReport.findFirst({
+      where: { shopId },
+      orderBy: { period: 'desc' }
+    }),
+    prisma.shop.findUnique({
+      where: { id: shopId },
+      select: { aiTokens: true }
+    })
+  ]);
 
   let metrics;
   let analysis;
@@ -42,7 +48,8 @@ export default async function ShopBillingPage({ params }: { params: Promise<{ sh
       portfolioImageCount: latestReport.portfolioImageCount,
       clientHistoryImageCount: latestReport.clientHistoryImageCount,
       clientFormulaCount: latestReport.clientFormulaCount,
-      reviewCount: latestReport.reviewCount
+      reviewCount: latestReport.reviewCount,
+      aiTokenCount: shop?.aiTokens || 0
     };
     analysis = calculateUsageCostStrategy(metrics, tiers);
     // Override the reasoning to include the hourly note
@@ -67,7 +74,8 @@ export default async function ShopBillingPage({ params }: { params: Promise<{ sh
     metrics = {
       userCount, appointmentCount, productCount, serviceCount,
       formSubmissionCount, portfolioImageCount, clientHistoryImageCount,
-      clientFormulaCount, reviewCount
+      clientFormulaCount, reviewCount,
+      aiTokenCount: shop?.aiTokens || 0
     };
     analysis = calculateUsageCostStrategy(metrics, tiers);
   }
