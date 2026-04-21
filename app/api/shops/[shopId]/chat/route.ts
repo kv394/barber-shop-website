@@ -154,7 +154,8 @@ For non-admin staff ("My Area"):
 INSTRUCTIONS:
 1. When asked how to do something, point them to the exact menu path listed above.
 2. Keep your answers concise, friendly, and formatted with markdown.
-3. If they ask about "staff availability", tell them to go to "Settings -> Team & Availability" (or the "Team" menu).`;
+3. If they ask about "staff availability", tell them to go to "Settings -> Team & Availability" (or the "Team" menu).
+4. If they ask about transferring or sharing staff between locations, explain that they should use the Location Dropdown at the top left to switch to the *new* location, go to "Settings -> Team & Availability", and invite the staff member using their existing email address. To completely transfer them, they can then switch to the *old* location and click "Remove from Shop" on that staff member's card.`;
 
         try {
           const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${process.env.GEMINI_API_KEY}`, {
