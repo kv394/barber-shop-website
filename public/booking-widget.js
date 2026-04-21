@@ -1,5 +1,9 @@
 (function() {
-  const scriptTag = document.currentScript;
+  const scriptTag = document.currentScript || document.querySelector('script[src*="booking-widget.js"]');
+  if (!scriptTag) {
+    console.error('Booking widget script tag not found');
+    return;
+  }
   const shopId = scriptTag.getAttribute('data-shop-id');
   const apiUrl = scriptTag.getAttribute('data-api-url') || 'https://barbersaas.com/api/chat/booking';
 
