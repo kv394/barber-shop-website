@@ -171,6 +171,7 @@ const htmlCode = `
         © 2024 {{shop.name}}. The Modern Apothecary.
     </div>
 </footer>
+<script src="/booking-widget.js" data-shop-id="{{shop.id}}" data-position="bottom-right" data-color="#c5a059"></script>
 </div>
 `;
 
