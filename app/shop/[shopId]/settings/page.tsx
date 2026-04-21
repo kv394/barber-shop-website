@@ -1,6 +1,7 @@
 import { notFound, redirect } from 'next/navigation';
 import { createClient } from '@/utils/supabase/server';
 import { getShopLayoutData } from '@/lib/shop-data';
+import WidgetEmbedCode from '@/components/shop-admin/WidgetEmbedCode';
 import { CustomizationForm } from '@/components/shop-admin/CustomizationForm';
 import { CustomPagesForm } from '@/components/shop-admin/CustomPagesForm';
 import { TemplateSelector } from '@/components/shop-admin/TemplateSelector';
@@ -100,15 +101,7 @@ export default async function ShopSettingsPage({
         customization={customization}
       />
 
-      <div className="bg-crm-bg/50 p-6 rounded-xl border border-crm-border shadow-sm mt-6 mb-6">
-        <h2 className="font-bold text-crm-text mb-2 text-xl">AI Booking Widget Embed Code</h2>
-        <p className="text-crm-muted mb-4 text-[13px]">Copy and paste this script tag into the <code>&lt;body&gt;</code> of any external website to embed your AI booking chatbot.</p>
-        <div className="bg-crm-surface p-4 rounded border border-crm-border overflow-x-auto">
-          <code className="text-crm-accent text-[13px] whitespace-nowrap">
-            {`<script src="https://barbersaas.com/booking-widget.js" data-shop-id="${shopId}"></script>`}
-          </code>
-        </div>
-      </div>
+      <WidgetEmbedCode shopId={shopId} />
 
       <div className="mt-12 pt-8 border-t border-crm-border">
         <h3 className="font-bold text-red-600 mb-2 text-lg">Danger Zone</h3>

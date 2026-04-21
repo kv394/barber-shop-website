@@ -95,7 +95,7 @@ Follow this flow:
     }
 
     // Let's reconstruct the conversation for a fresh generateContent call instead of chats.create
-    const formattedContents = messages.map((m: any) => ({
+    const formattedContents: any[] = messages.map((m: any) => ({
         role: m.role === 'assistant' ? 'model' : m.role,
         parts: [{ text: m.content }]
     }));
@@ -159,7 +159,7 @@ Follow this flow:
                     const { serviceId, staffId, date, time, clientName, clientPhone, clientEmail } = args;
                     
                     // Create dummy client user
-                    const emailToUse = clientEmail || \`guest-\${Date.now()}@example.com\`;
+                    const emailToUse = clientEmail || `guest-${Date.now()}@example.com`;
                     
                     let user = await prisma.user.findFirst({
                         where: { OR: [{ email: emailToUse }, { phone: clientPhone }] }
@@ -177,7 +177,7 @@ Follow this flow:
                         });
                     }
 
-                    const startTime = new Date(\`\${date}T\${time}:00Z\`); // Note: Timezone needs proper handling
+                    const startTime = new Date(`${date}T${time}:00Z`); // Note: Timezone needs proper handling
                     const service = await prisma.service.findUnique({ where: { id: serviceId } });
                     
                     if (service) {
