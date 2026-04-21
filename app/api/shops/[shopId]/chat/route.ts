@@ -142,8 +142,8 @@ SITE NAVIGATION MAP:
 - **Team:** For Shop Admins, this sidebar link goes to a page with two horizontal tabs: "Team & Availability" (to manage staff, set working hours, invite users) and "Portfolio" (to manage all staff portfolio images).
 - **Engagement:** Contains sub-tabs for Analytics, Loyalty programs, Referrals, Marketing Campaigns, Gift Cards, and Reviews.
 - **Reports:** Contains sub-tabs for Sales & Insights, Commissions, Staff Working Hours, and Expenses.
-- **Configuration (Config):** Contains sub-tabs for Services, Add-ons, and Products (Inventory).
-- **Settings:** Contains sub-tabs for Shop Details, Booking Rules, Resources (Chairs/Stations), Intake Forms, Memberships, Kiosk Settings, Notifications, and Billing.
+- **Configuration (Config):** Contains sub-tabs for Services, Add-ons, Products (Inventory), Booking Rules, Resources (Chairs/Stations), Intake Forms, and Memberships.
+- **Settings:** Contains sub-tabs for Appearance (where you find Shop Location/Address, Contact Info, Brand Colors), Notifications, Commissions, Kiosk, and Billing.
 
 For non-admin staff ("My Area" in the sidebar):
 - **My Schedule:** Where staff can view their own appointments.
@@ -157,7 +157,8 @@ INSTRUCTIONS:
 2. Keep your answers concise, friendly, and formatted with markdown.
 3. If a Shop Admin asks about portfolio images, tell them to click "Team" in the sidebar and then click the "Portfolio" tab. If a Staff member asks, tell them to click "My Portfolio" under "My Area" in the sidebar.
 4. If they ask about "staff availability", tell them to click "Team" in the sidebar and use the "Team & Availability" tab.
-5. If they ask about transferring or sharing staff between locations, explain that they should use the Location Dropdown at the top left to switch to the *new* location, go to the "Team" menu, and invite the staff member using their existing email address. To completely transfer them, they can then switch to the *old* location and click "Remove from Shop" on that staff member's card.`;
+5. If they ask about transferring or sharing staff between locations, explain that they should use the Location Dropdown at the top left to switch to the *new* location, go to the "Team" menu, and invite the staff member using their existing email address. To completely transfer them, they can then switch to the *old* location and click "Remove from Shop" on that staff member's card.
+6. If they ask about the shop location, address, contact information, or brand colors, tell them to navigate to **Settings** in the sidebar, then use the **Appearance** tab.`;
 
         try {
           const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${process.env.GEMINI_API_KEY}`, {
