@@ -17,11 +17,12 @@ export default async function SiteAdminDashboard() {
       _count: { id: true },
     }),
     prisma.shop.findMany({
-      take: 5,
+      take: 10,
       orderBy: { createdAt: 'desc' },
       select: {
         id: true,
         name: true,
+        companyName: true,
         createdAt: true,
         _count: { select: { users: true } },
       },
@@ -67,36 +68,42 @@ export default async function SiteAdminDashboard() {
         {/* Recent Shops */}
         <div className="bg-crm-surface rounded-xl border border-crm-border shadow-sm p-6">
           <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-4">
-            <h2 className="font-bold text-crm-text text-xl font-bold">🏪 Recent Shops</h2>
+            <h2 className="font-bold text-crm-text text-xl font-bold">🏪 Recent Shops & Locations</h2>
             <Link href="/siteadmin/shops" className="text-crm-accent text-[13px] hover:underline">
               View All →
             </Link>
           </div>
-          <div className="overflow-x-auto">
-            <table className="w-full text-[13px]">
-              <thead>
-                <tr className="text-crm-muted text-left border-b border-crm-border">
-                  <th className="pb-3 font-medium">Shop Name</th>
-                  <th className="pb-3 font-medium">Users</th>
-                  <th className="pb-3 font-medium">Created</th>
-                  <th className="pb-3 font-medium text-right">Actions</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-white/5">
-                {recentShops.map((shop: any) => (
-                  <tr key={shop.id} className="hover:bg-crm-surface transition">
-                    <td className="py-3 text-crm-text font-medium">{shop.name}</td>
-                    <td className="py-3 text-crm-muted">{shop._count.users}</td>
-                    <td className="py-3 text-crm-muted">{new Date(shop.createdAt).toLocaleDateString()}</td>
-                    <td className="py-3 text-right">
-                      <Link href={`/shop/${shop.id}/settings/team`} className="text-crm-accent hover:underline text-[11px]">
+          <div className="space-y-4">
+            {Object.entries(
+              recentShops.reduce((acc: any, shop: any) => {
+                const key = shop.companyName || shop.name;
+                if (!acc[key]) acc[key] = [];
+                acc[key].push(shop);
+                return acc;
+              }, {})
+            ).map(([companyName, shops]: [string, any]) => (
+              <div key={companyName} className="border border-crm-border rounded-lg overflow-hidden">
+                <div className="bg-crm-bg px-3 py-2 border-b border-crm-border text-sm font-bold text-crm-text">
+                  <span className="text-crm-primary mr-2">🏢</span>
+                  {companyName}
+                </div>
+                <div className="divide-y divide-white/5">
+                  {shops.map((shop: any) => (
+                    <div key={shop.id} className="p-3 hover:bg-crm-surface transition flex justify-between items-center text-[13px]">
+                      <div>
+                        <div className="text-crm-text font-medium">{shop.name}</div>
+                        <div className="text-crm-muted text-[11px] mt-0.5">
+                          {shop._count.users} users • Created {new Date(shop.createdAt).toLocaleDateString()}
+                        </div>
+                      </div>
+                      <Link href={`/shop/${shop.id}/settings/team`} className="text-crm-accent hover:underline text-[11px] whitespace-nowrap ml-4">
                         Assign Team →
                       </Link>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </div>
