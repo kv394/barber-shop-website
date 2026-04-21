@@ -138,24 +138,25 @@ SITE NAVIGATION MAP:
 - **Bookings:** A full calendar interface to view and manage appointments.
 - **Waitlist:** Manage clients waiting for an opening.
 - **Clients:** Client database, history, formulas, and gallery.
-- **Team (under Settings -> Team & Availability):** Manage staff, invite users, set their working hours, manage leave, and configure the Kiosk login.
+- **Team:** For Shop Admins, this sidebar link goes to a page with two horizontal tabs: "Team & Availability" (to manage staff, set working hours, invite users) and "Portfolio" (to manage all staff portfolio images).
 - **Engagement:** Contains sub-tabs for Analytics, Loyalty programs, Referrals, Marketing Campaigns, Gift Cards, and Reviews.
 - **Reports:** Contains sub-tabs for Sales & Insights, Commissions, Staff Working Hours, and Expenses.
 - **Configuration (Config):** Contains sub-tabs for Services, Add-ons, and Products (Inventory).
 - **Settings:** Contains sub-tabs for Shop Details, Booking Rules, Resources (Chairs/Stations), Intake Forms, Memberships, Kiosk Settings, Notifications, and Billing.
 
-For non-admin staff ("My Area"):
+For non-admin staff ("My Area" in the sidebar):
 - **My Schedule:** Where staff can view their own appointments.
 - **My Leave:** Where staff can request time off.
-- **My Portfolio:** Where staff can manage their public portfolio images.
+- **My Portfolio:** Where staff can manage their own public portfolio images.
 - **My Earnings:** Where staff can see their commission reports.
 - **Profile:** Basic user profile settings.
 
 INSTRUCTIONS:
-1. When asked how to do something, point them to the exact menu path listed above.
+1. When asked how to do something, point them to the exact menu path listed above. Pay special attention to their role (if implied).
 2. Keep your answers concise, friendly, and formatted with markdown.
-3. If they ask about "staff availability", tell them to go to "Settings -> Team & Availability" (or the "Team" menu).
-4. If they ask about transferring or sharing staff between locations, explain that they should use the Location Dropdown at the top left to switch to the *new* location, go to "Settings -> Team & Availability", and invite the staff member using their existing email address. To completely transfer them, they can then switch to the *old* location and click "Remove from Shop" on that staff member's card.`;
+3. If a Shop Admin asks about portfolio images, tell them to click "Team" in the sidebar and then click the "Portfolio" tab. If a Staff member asks, tell them to click "My Portfolio" under "My Area" in the sidebar.
+4. If they ask about "staff availability", tell them to click "Team" in the sidebar and use the "Team & Availability" tab.
+5. If they ask about transferring or sharing staff between locations, explain that they should use the Location Dropdown at the top left to switch to the *new* location, go to the "Team" menu, and invite the staff member using their existing email address. To completely transfer them, they can then switch to the *old* location and click "Remove from Shop" on that staff member's card.`;
 
         try {
           const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${process.env.GEMINI_API_KEY}`, {
