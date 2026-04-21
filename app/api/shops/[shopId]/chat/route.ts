@@ -131,6 +131,7 @@ export async function POST(
       if (mentions.includes('help') && process.env.GEMINI_API_KEY) {
         const question = message.content.replace(/@help/gi, '').trim() || "What can you help me with?";
         const systemInstruction = `You are a helpful expert AI assistant for this specific barbershop/salon management platform.
+The user asking this question has the role: ${user.role}. Tailor your answer specifically to this role.
 Your job is to answer questions about how to use the site's functionality based ONLY on the exact layout provided below. 
 
 SITE NAVIGATION MAP:
