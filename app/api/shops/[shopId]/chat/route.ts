@@ -126,6 +126,54 @@ export async function POST(
           await prisma.notification.createMany({ data: notifications });
         }
       }
+      
+      // Handle @help AI Assistant
+      if (mentions.includes('help') && process.env.GEMINI_API_KEY) {
+        const question = message.content.replace(/@help/gi, '').trim() || "What can you help me with?";
+        const systemInstruction = `You are a helpful AI assistant for a barbershop/salon management platform.
+Your job is to answer questions about the site's functionality. You can help users with setting up their shop, managing team members, viewing reports, and navigating the platform.
+Keep your answers concise, friendly, and formatted with markdown if necessary.`;
+
+        try {
+          const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${process.env.GEMINI_API_KEY}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              system_instruction: { parts: [{ text: systemInstruction }] },
+              contents: [{ parts: [{ text: question }] }],
+              generationConfig: { temperature: 0.7 }
+            })
+          });
+          
+          if (response.ok) {
+            const data = await response.json();
+            const answer = data.candidates?.[0]?.content?.parts?.[0]?.text || "I'm not sure how to help with that right now.";
+            
+            const aiUser = await prisma.user.upsert({
+              where: { email: 'ai-assistant@system.local' },
+              update: {},
+              create: {
+                id: 'system_ai_assistant',
+                email: 'ai-assistant@system.local',
+                name: 'AI Assistant',
+                role: 'SITE_ADMIN',
+              }
+            });
+
+            await prisma.message.create({
+              data: {
+                shopId,
+                senderId: aiUser.id,
+                content: answer,
+              }
+            });
+          } else {
+             logger.error("AI Assistant error response:", await response.text());
+          }
+        } catch (aiError) {
+          logger.error("Error triggering AI assistant:", aiError);
+        }
+      }
     }
 
     return NextResponse.json(message);
