@@ -194,19 +194,18 @@ export default async function SitePage({ params }: { params: Promise<{ site: str
   }
 
   return (
-      <ClientPage 
-          shop={shop} 
-          templateType={templateType} 
-          primaryColor={primaryColor} 
-          secondaryColor={secondaryColor} 
-          sportRed={sportRed}
-          reviews={shop.reviews || []}
-          dynamicTemplateHtml={dynamicTemplateHtml}
-          dynamicTemplateCss={dynamicTemplateCss}
-      />
-  );
-}
-d} />
+      <>
+        <ClientPage 
+            shop={shop} 
+            templateType={templateType} 
+            primaryColor={primaryColor} 
+            secondaryColor={secondaryColor} 
+            sportRed={sportRed}
+            reviews={shop.reviews || []}
+            dynamicTemplateHtml={dynamicTemplateHtml}
+            dynamicTemplateCss={dynamicTemplateCss}
+        />
+        <AIWidget shopId={shop.id} />
       </>
   );
 }
