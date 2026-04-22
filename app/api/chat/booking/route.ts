@@ -4,6 +4,7 @@ import { NextResponse } from 'next/server';
 import { logger } from '@/lib/logger';
 import { toShopTzDayBounds } from '@/lib/timezone';
 import { getCalendarBusySlots } from '@/lib/google-calendar';
+import { rateLimit } from '@/lib/rate-limiter';
 
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
@@ -49,21 +50,81 @@ const bookAppointmentDecl: FunctionDeclaration = {
   }
 };
 
+const corsHeaders = {
+  'Access-Control-Allow-Origin': '*', // For strict security, change to specific domains
+  'Access-Control-Allow-Methods': 'POST, OPTIONS',
+  'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+};
+
+export async function OPTIONS(req: Request) {
+  return new NextResponse(null, { headers: corsHeaders });
+}
+
 export async function POST(req: Request) {
   try {
+    // 1. Rate Limiting (Prevent abuse / DDoS)
+    const ip = req.headers.get('x-forwarded-for') || req.headers.get('x-real-ip') || 'anonymous';
+    // Limit to 10 requests per minute per IP
+    const rl = await rateLimit(`chat-booking:${ip}`, 10, 60);
+    if (!rl.success) {
+      logger.warn(`Rate limit exceeded for IP: ${ip}`);
+      return NextResponse.json({ error: 'Too many requests. Please try again later.' }, { status: 429, headers: corsHeaders });
+    }
+
+    // 2. Parse Payload
     const { shopId, messages } = await req.json();
 
-    if (!shopId || !messages || !Array.isArray(messages)) {
-      return NextResponse.json({ error: 'Invalid payload' }, { status: 400 });
+    // 3. Strict Input Validation (Prevent injection / huge payloads)
+    if (!shopId || typeof shopId !== 'string' || shopId.length > 100) {
+      return NextResponse.json({ error: 'Invalid shopId' }, { status: 400, headers: corsHeaders });
     }
+
+    if (!messages || !Array.isArray(messages) || messages.length === 0) {
+      return NextResponse.json({ error: 'Invalid messages payload' }, { status: 400, headers: corsHeaders });
+    }
+
+    // Restrict history size to the last 20 messages to prevent prompt stuffing
+    const truncatedMessages = messages.slice(-20).map((msg: any) => ({
+        role: msg.role === 'assistant' ? 'model' : (msg.role === 'user' ? 'user' : 'user'),
+        // Limit individual message length to 500 characters
+        content: String(msg.content || '').substring(0, 500)
+    }));
 
     const shop = await prisma.shop.findUnique({
       where: { id: shopId },
-      select: { name: true, timezone: true }
+      select: { name: true, timezone: true, customDomain: true, subdomain: true }
     });
 
     if (!shop) {
-      return NextResponse.json({ error: 'Shop not found' }, { status: 404 });
+      return NextResponse.json({ error: 'Shop not found' }, { status: 404, headers: corsHeaders });
+    }
+
+    // 4. Origin Validation (CORS Hardening)
+    const origin = req.headers.get('origin') || req.headers.get('referer') || '';
+    // Determine allowed origins based on shop domains
+    const allowedOrigins = [
+      `https://${shop.customDomain}`,
+      `http://${shop.customDomain}`,
+      `https://${shop.subdomain}.barbersaas.com`,
+      `http://${shop.subdomain}.barbersaas.com`,
+      `http://localhost:3000`, // Allow local testing
+      // Also allow the main saas domain if needed
+      `https://barbersaas.com`,
+    ];
+
+    let isOriginAllowed = false;
+    if (!origin) {
+       // If no origin/referer (e.g. cURL), we might block it, but for now we'll allow strictly 
+       // if we enforce it to be coming from a browser. Let's block non-browser requests to harden it.
+       isOriginAllowed = false;
+    } else {
+       isOriginAllowed = allowedOrigins.some(allowed => origin.startsWith(allowed));
+    }
+
+    // Block unauthorized embeds strictly
+    if (!isOriginAllowed) {
+       logger.warn(`Unauthorized origin attempt: ${origin} for shop: ${shopId}`);
+       return NextResponse.json({ error: 'Unauthorized origin' }, { status: 403, headers: corsHeaders });
     }
 
     const systemInstruction = `You are a helpful AI booking assistant for a barbershop named "${shop.name}". 
@@ -84,26 +145,9 @@ Follow this flow:
 4. Once they pick a time, ask for their name, phone, and optionally email.
 5. Call book_appointment to finalize.`;
 
-    const chatSession = ai.chats.create({
-      model: 'gemini-2.5-flash',
-      config: {
-        systemInstruction,
-        tools: [{ functionDeclarations: [getServicesDecl, getStaffDecl, checkAvailabilityDecl, bookAppointmentDecl] }],
-      },
-    });
-
-    // Replay history
-    for (let i = 0; i < messages.length - 1; i++) {
-        const msg = messages[i];
-        // We only append user messages to the chat session for simplicity in this stateless example.
-        // In a real robust system, we would serialize/deserialize the full history including tool calls.
-        // Since Gemini chats.create() manages state, we'll just send the entire conversation as a new message 
-        // to a fresh model instance instead of using the chat session, to avoid complex history reconstruction.
-    }
-
     // Let's reconstruct the conversation for a fresh generateContent call instead of chats.create
-    const formattedContents: any[] = messages.map((m: any) => ({
-        role: m.role === 'assistant' ? 'model' : m.role,
+    const formattedContents: any[] = truncatedMessages.map((m: any) => ({
+        role: m.role,
         parts: [{ text: m.content }]
     }));
 
@@ -253,9 +297,9 @@ Follow this flow:
         };
     }
 
-    return NextResponse.json(payload);
+    return NextResponse.json(payload, { headers: corsHeaders });
   } catch (error: any) {
     logger.error("Chat API error:", error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error: error.message }, { status: 500, headers: corsHeaders });
   }
 }
