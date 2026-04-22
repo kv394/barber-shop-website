@@ -1,8 +1,8 @@
 (function() {
   const containerId = 'barbersaas-booking-widget-container';
-  if (document.getElementById(containerId)) {
-    // Already initialized
-    return;
+  const existingContainer = document.getElementById(containerId);
+  if (existingContainer) {
+    existingContainer.remove();
   }
 
   // Find the script tag that has the data-shop-id. 
