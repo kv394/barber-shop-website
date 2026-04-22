@@ -123,6 +123,9 @@ Follow this flow:
     let functionCalls = response.functionCalls;
     let loopCount = 0;
     
+    let lastAvailabilitySlots = null;
+    let lastAvailabilityDate = null;
+
     while (functionCalls && functionCalls.length > 0 && loopCount < 5) {
         loopCount++;
         const toolResponses = [];
@@ -145,6 +148,7 @@ Follow this flow:
                 } else if (call.name === 'check_availability') {
                     const args = call.args as any;
                     const { date, serviceId, staffId } = args;
+                    lastAvailabilityDate = date;
                     
                     const service = await prisma.service.findUnique({ where: { id: serviceId }});
                     if (!service) {
@@ -160,6 +164,7 @@ Follow this flow:
                             ],
                             message: "Returning simulated available slots for demonstration."
                         };
+                        lastAvailabilitySlots = result.availableSlots;
                     }
                 } else if (call.name === 'book_appointment') {
                     const args = call.args as any;
@@ -239,7 +244,16 @@ Follow this flow:
         functionCalls = response.functionCalls;
     }
 
-    return NextResponse.json({ text: finalResponseText });
+    const payload: any = { text: finalResponseText };
+    if (lastAvailabilitySlots) {
+        payload.ui = {
+            type: 'time_picker',
+            date: lastAvailabilityDate,
+            slots: lastAvailabilitySlots
+        };
+    }
+
+    return NextResponse.json(payload);
   } catch (error: any) {
     logger.error("Chat API error:", error);
     return NextResponse.json({ error: error.message }, { status: 500 });

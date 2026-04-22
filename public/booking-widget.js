@@ -176,6 +176,7 @@
       border-top: 1px solid var(--border-color);
       display: flex;
       gap: 8px;
+      align-items: center;
     }
     
     #chat-input {
@@ -187,10 +188,29 @@
       border-radius: 20px;
       outline: none;
       font-size: 14px;
+      color-scheme: dark; /* Helps date picker match dark theme */
     }
     
     #chat-input:focus {
       border-color: var(--primary-color);
+    }
+    
+    #date-toggle-btn {
+      background: none;
+      border: none;
+      color: var(--text-color);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 4px;
+      opacity: 0.7;
+      transition: opacity 0.2s, color 0.2s;
+    }
+    
+    #date-toggle-btn:hover {
+      opacity: 1;
+      color: var(--primary-color);
     }
     
     #send-button {
@@ -239,6 +259,32 @@
       0%, 80%, 100% { transform: scale(0); }
       40% { transform: scale(1); }
     }
+    
+    .slots-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 8px;
+      margin-bottom: 12px;
+      align-self: flex-start;
+      max-width: 90%;
+    }
+    
+    .slot-btn {
+      background-color: transparent;
+      border: 1px solid var(--primary-color);
+      color: var(--primary-color);
+      padding: 6px 12px;
+      border-radius: 14px;
+      cursor: pointer;
+      font-size: 13px;
+      transition: background-color 0.2s, color 0.2s;
+    }
+    
+    .slot-btn:hover {
+      background-color: var(--primary-color);
+      color: var(--msg-user-text);
+    }
   `;
   shadow.appendChild(style);
 
@@ -261,6 +307,9 @@
       </div>
       <form id="chat-input-area">
         <input type="text" id="chat-input" placeholder="Type a message..." autocomplete="off" />
+        <button type="button" id="date-toggle-btn" title="Pick a Date">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+        </button>
         <button type="submit" id="send-button">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
         </button>
@@ -277,6 +326,7 @@
   const input = shadow.getElementById('chat-input');
   const messagesEl = shadow.getElementById('chat-messages');
   const sendBtn = shadow.getElementById('send-button');
+  const dateToggleBtn = shadow.getElementById('date-toggle-btn');
 
   let isOpen = false;
   let messages = [
@@ -295,6 +345,17 @@
 
   button.addEventListener('click', toggleChat);
   closeBtn.addEventListener('click', toggleChat);
+
+  dateToggleBtn.addEventListener('click', () => {
+    if (input.type === 'text') {
+      input.type = 'date';
+      input.focus();
+      try { input.showPicker(); } catch (e) {}
+    } else {
+      input.type = 'text';
+      input.focus();
+    }
+  });
 
   function addMessageToUI(text, isUser) {
     const el = document.createElement('div');
@@ -318,25 +379,15 @@
     if (el) el.remove();
   }
 
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const text = input.value.trim();
-    if (!text) return;
-
-    // Add user message
-    addMessageToUI(text, true);
-    messages.push({ role: 'user', content: text });
-    input.value = '';
+  async function sendChatRequest(messageText, displayUserText) {
+    addMessageToUI(displayUserText, true);
+    messages.push({ role: 'user', content: messageText });
     
-    // Disable input while waiting
     input.disabled = true;
     sendBtn.disabled = true;
     showTyping();
 
     try {
-      // Determine the API URL based on where the script is running. 
-      // If we are on the same origin (e.g. testing locally), we can use a relative path or local URL.
-      // In production, data-api-url will be used.
       const fetchUrl = (apiUrl.startsWith('http') || apiUrl.startsWith('/')) 
           ? apiUrl 
           : `/api/chat/booking`;
@@ -348,7 +399,6 @@
       });
 
       const data = await response.json();
-      
       hideTyping();
       
       if (data.error) {
@@ -356,6 +406,26 @@
       } else if (data.text) {
         addMessageToUI(data.text, false);
         messages.push({ role: 'assistant', content: data.text });
+        
+        if (data.ui && data.ui.type === 'time_picker' && data.ui.slots && data.ui.slots.length > 0) {
+          const container = document.createElement('div');
+          container.className = 'slots-container';
+          
+          data.ui.slots.forEach((slot, index) => {
+             const btn = document.createElement('button');
+             btn.className = 'slot-btn';
+             btn.textContent = slot.time;
+             btn.addEventListener('click', () => {
+                const timeText = (index + 1) + ''; 
+                container.remove();
+                sendChatRequest(timeText, slot.time);
+             });
+             container.appendChild(btn);
+          });
+          
+          messagesEl.appendChild(container);
+          messagesEl.scrollTop = messagesEl.scrollHeight;
+        }
       }
     } catch (err) {
       hideTyping();
@@ -366,5 +436,18 @@
       sendBtn.disabled = false;
       input.focus();
     }
+  }
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const text = input.value.trim();
+    if (!text) return;
+
+    if (input.type === 'date') {
+      input.type = 'text';
+    }
+
+    input.value = '';
+    sendChatRequest(text, text);
   });
 })();
