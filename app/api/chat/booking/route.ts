@@ -238,12 +238,17 @@ Follow this flow:
                     } else {
                         // Dummy logic for availability to keep it simple for AI demo
                         // In production, this would use google calendar & working hours
+                        const generatedSlots = [];
+                        for (let hour = 9; hour <= 17; hour++) {
+                            for (const min of ["00", "30"]) {
+                                if (hour === 17 && min === "30") continue;
+                                const timeStr = `${hour.toString().padStart(2, '0')}:${min}`;
+                                generatedSlots.push({ time: timeStr, staffId: staffId || "any" });
+                            }
+                        }
+
                         result = {
-                            availableSlots: [
-                                { time: "09:00", staffId: staffId || "any" },
-                                { time: "10:30", staffId: staffId || "any" },
-                                { time: "14:00", staffId: staffId || "any" },
-                            ],
+                            availableSlots: generatedSlots,
                             message: "Returning simulated available slots for demonstration."
                         };
                         lastAvailabilitySlots = result.availableSlots;

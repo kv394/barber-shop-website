@@ -94,11 +94,11 @@
     
     #chat-window {
       position: fixed;
-      bottom: 100px;
+      bottom: 140px;
       right: 24px;
       width: 360px;
       height: 500px;
-      max-height: calc(100vh - 120px);
+      max-height: calc(100vh - 160px);
       background-color: var(--bg-color);
       border: 1px solid var(--border-color);
       border-radius: 12px;
