@@ -18,6 +18,11 @@ const getStaffDecl: FunctionDeclaration = {
   description: 'Get a list of available staff members for the shop',
 };
 
+const requestDatePickerDecl: FunctionDeclaration = {
+  name: 'request_date_picker',
+  description: 'Call this function when you need to ask the user what date they want to book. It will trigger a calendar UI to be shown to the user.',
+};
+
 const checkAvailabilityDecl: FunctionDeclaration = {
   name: 'check_availability',
   description: 'Check available time slots for a specific date, service, and optionally staff member',
@@ -170,7 +175,7 @@ CRITICAL UX INSTRUCTIONS:
 Follow this flow:
 1. Ask what service they want. Call get_services to list them. Present as a numbered list.
 2. Ask if they have a preferred staff member (call get_staff). Present as a numbered list (always include an "Any staff" option).
-3. Ask for a date, then call check_availability to give them specific time slots. Present slots as a numbered list.
+3. Call request_date_picker to prompt the user for a date. Once they provide it, call check_availability to give them specific time slots. Present slots as a numbered list.
 4. Once they pick a time, ask for their name, phone, and optionally email.
 5. Call book_appointment to finalize.`;
 
@@ -185,7 +190,7 @@ Follow this flow:
         contents: formattedContents,
         config: {
             systemInstruction,
-            tools: [{ functionDeclarations: [getServicesDecl, getStaffDecl, checkAvailabilityDecl, bookAppointmentDecl] }],
+            tools: [{ functionDeclarations: [getServicesDecl, getStaffDecl, requestDatePickerDecl, checkAvailabilityDecl, bookAppointmentDecl] }],
         }
     });
 
@@ -196,6 +201,7 @@ Follow this flow:
     let functionCalls = response.functionCalls;
     let loopCount = 0;
     
+    let lastUiType: string | null = null;
     let lastAvailabilitySlots = null;
     let lastAvailabilityDate = null;
 
@@ -218,6 +224,9 @@ Follow this flow:
                         select: { id: true, name: true }
                     });
                     result = { staff };
+                } else if (call.name === 'request_date_picker') {
+                    result = { success: true, message: "Date picker UI presented to user. Wait for their date selection." };
+                    lastUiType = 'date_picker';
                 } else if (call.name === 'check_availability') {
                     const args = call.args as any;
                     const { date, serviceId, staffId } = args;
@@ -238,6 +247,7 @@ Follow this flow:
                             message: "Returning simulated available slots for demonstration."
                         };
                         lastAvailabilitySlots = result.availableSlots;
+                        lastUiType = 'time_picker';
                     }
                 } else if (call.name === 'book_appointment') {
                     const args = call.args as any;
@@ -309,7 +319,7 @@ Follow this flow:
             contents: formattedContents,
             config: {
                 systemInstruction,
-                tools: [{ functionDeclarations: [getServicesDecl, getStaffDecl, checkAvailabilityDecl, bookAppointmentDecl] }],
+                tools: [{ functionDeclarations: [getServicesDecl, getStaffDecl, requestDatePickerDecl, checkAvailabilityDecl, bookAppointmentDecl] }],
             }
         });
 
@@ -318,7 +328,11 @@ Follow this flow:
     }
 
     const payload: any = { text: finalResponseText };
-    if (lastAvailabilitySlots) {
+    if (lastUiType === 'date_picker') {
+        payload.ui = {
+            type: 'date_picker'
+        };
+    } else if (lastUiType === 'time_picker' && lastAvailabilitySlots) {
         payload.ui = {
             type: 'time_picker',
             date: lastAvailabilityDate,

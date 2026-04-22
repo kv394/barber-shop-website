@@ -407,7 +407,11 @@
         addMessageToUI(data.text, false);
         messages.push({ role: 'assistant', content: data.text });
         
-        if (data.ui && data.ui.type === 'time_picker' && data.ui.slots && data.ui.slots.length > 0) {
+        if (data.ui && data.ui.type === 'date_picker') {
+          input.type = 'date';
+          input.focus();
+          try { input.showPicker(); } catch (e) {}
+        } else if (data.ui && data.ui.type === 'time_picker' && data.ui.slots && data.ui.slots.length > 0) {
           const container = document.createElement('div');
           container.className = 'slots-container';
           
