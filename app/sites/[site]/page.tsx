@@ -6,6 +6,7 @@ import { createClient } from '@/utils/supabase/server';
 import { redirect } from 'next/navigation';
 import { getOrCreateFolder, downloadFileFromFolder } from '@/lib/google-drive';
 import { cacheService } from '@/lib/cache';
+import AIWidget from '@/components/booking/AIWidget';
 
 export const revalidate = 60;
 
@@ -203,5 +204,9 @@ export default async function SitePage({ params }: { params: Promise<{ site: str
           dynamicTemplateHtml={dynamicTemplateHtml}
           dynamicTemplateCss={dynamicTemplateCss}
       />
+  );
+}
+d} />
+      </>
   );
 }

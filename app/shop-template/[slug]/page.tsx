@@ -1,6 +1,7 @@
 import { prisma } from '@/lib/prisma';
 import { Metadata } from 'next';
 import Script from 'next/script';
+import AIWidget from '@/components/booking/AIWidget';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 60;
@@ -128,6 +129,7 @@ export default async function PublicShopPage({
           )}
           <div dangerouslySetInnerHTML={{ __html: html }} />
           <Script src="https://cdn.tailwindcss.com?plugins=forms,container-queries" strategy="afterInteractive" />
+          <AIWidget shopId={shop.id} />
         </main>
       );
     }
@@ -364,6 +366,7 @@ export default async function PublicShopPage({
             </div>
           </div>
         </footer>
+        <AIWidget shopId={shop.id} />
       </main>
     );
   }
@@ -412,6 +415,7 @@ export default async function PublicShopPage({
               Make an Appointment
             </button>
         </section>
+        <AIWidget shopId={shop.id} />
       </main>
     );
   }
@@ -461,6 +465,7 @@ export default async function PublicShopPage({
              <p className="mb-2 text-[13px]">{shop.customization?.address || 'Visit us today'}</p>
              <p className="text-[13px]">{shop.customization?.phone} | {shop.customization?.email}</p>
         </footer>
+        <AIWidget shopId={shop.id} />
       </main>
     );
   }
@@ -649,6 +654,7 @@ export default async function PublicShopPage({
           </div>
         </div>
       </footer>
+      <AIWidget shopId={shop.id} />
     </main>
   );
 }
