@@ -171,6 +171,8 @@ CRITICAL UX INSTRUCTIONS:
 - Explicitly tell the user they can simply reply with the number of their choice (e.g., "Reply with 1, 2, etc.").
 - When the user replies with a number, map it to the corresponding option from your previous message.
 - CRITICAL: When calling tools that require IDs (like check_availability and book_appointment), you MUST use the actual ID string (e.g., "cuid...") returned from the get_services or get_staff tool, NOT the number from your numbered list.
+- IMPORTANT STATELESSNESS RULE: The chat history ONLY saves text, not tool responses. You will FORGET the actual IDs (serviceId, staffId) between user messages. 
+- Therefore, BEFORE calling 'check_availability' or 'book_appointment', you MUST call 'get_services' (and 'get_staff' if needed) AGAIN in the SAME turn to retrieve the correct IDs based on the user's selection. NEVER guess IDs or pass names/numbers as IDs.
 - Keep your messages very short and easy to read on mobile. Avoid large walls of text.
 
 Follow this flow:
