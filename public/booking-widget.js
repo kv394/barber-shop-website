@@ -257,7 +257,7 @@
         <button id="close-button">&times;</button>
       </div>
       <div id="chat-messages">
-        <div class="message bot">Hi! I'm the AI assistant. How can I help you book your appointment today?</div>
+        <div class="message bot">Hi! I'm the AI assistant. What service would you like to book today?</div>
       </div>
       <form id="chat-input-area">
         <input type="text" id="chat-input" placeholder="Type a message..." autocomplete="off" />
@@ -280,7 +280,7 @@
 
   let isOpen = false;
   let messages = [
-    { role: 'assistant', content: "Hi! I'm the AI assistant. How can I help you book your appointment today?" }
+    { role: 'assistant', content: "Hi! I'm the AI assistant. What service would you like to book today?" }
   ];
 
   function toggleChat() {
