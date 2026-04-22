@@ -307,9 +307,6 @@
       </div>
       <form id="chat-input-area">
         <input type="text" id="chat-input" placeholder="Type a message..." autocomplete="off" />
-        <button type="button" id="date-toggle-btn" title="Pick a Date">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
-        </button>
         <button type="submit" id="send-button">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
         </button>
@@ -326,7 +323,6 @@
   const input = shadow.getElementById('chat-input');
   const messagesEl = shadow.getElementById('chat-messages');
   const sendBtn = shadow.getElementById('send-button');
-  const dateToggleBtn = shadow.getElementById('date-toggle-btn');
 
   let isOpen = false;
   let messages = [
@@ -345,17 +341,6 @@
 
   button.addEventListener('click', toggleChat);
   closeBtn.addEventListener('click', toggleChat);
-
-  dateToggleBtn.addEventListener('click', () => {
-    if (input.type === 'text') {
-      input.type = 'date';
-      input.focus();
-      try { input.showPicker(); } catch (e) {}
-    } else {
-      input.type = 'text';
-      input.focus();
-    }
-  });
 
   function addMessageToUI(text, isUser) {
     const el = document.createElement('div');

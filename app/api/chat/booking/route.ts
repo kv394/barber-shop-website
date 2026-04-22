@@ -170,6 +170,7 @@ CRITICAL UX INSTRUCTIONS:
 - Whenever you present multiple options to the user (like services, staff members, or time slots), ALWAYS format them as a clean, numbered list.
 - Explicitly tell the user they can simply reply with the number of their choice (e.g., "Reply with 1, 2, etc.").
 - When the user replies with a number, map it to the corresponding option from your previous message.
+- CRITICAL: When calling tools that require IDs (like check_availability and book_appointment), you MUST use the actual ID string (e.g., "cuid...") returned from the get_services or get_staff tool, NOT the number from your numbered list.
 - Keep your messages very short and easy to read on mobile. Avoid large walls of text.
 
 Follow this flow:
