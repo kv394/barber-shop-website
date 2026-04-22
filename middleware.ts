@@ -19,7 +19,8 @@ const publicRoutes = [
   '^/api/users/me$',
   '^/api/cron$',
   '^/api/apply-heritage$',
-  '^/api/debug-kiosk-login$'
+  '^/api/debug-kiosk-login$',
+  '^/api/chat/booking(?:/.*)?$'
 ];
 
 const isPublicRoute = (path: string) => {
