@@ -414,19 +414,48 @@
         } else if (data.ui && data.ui.type === 'time_picker' && data.ui.slots && data.ui.slots.length > 0) {
           const container = document.createElement('div');
           container.className = 'slots-container';
+          container.style.flexDirection = 'column';
+          container.style.alignItems = 'stretch';
+          container.style.width = '80%';
           
-          data.ui.slots.forEach((slot, index) => {
-             const btn = document.createElement('button');
-             btn.className = 'slot-btn';
-             btn.textContent = slot.time;
-             btn.addEventListener('click', () => {
-                const timeText = (index + 1) + ''; 
-                container.remove();
-                sendChatRequest(timeText, slot.time);
-             });
-             container.appendChild(btn);
+          const label = document.createElement('div');
+          label.style.fontWeight = 'bold';
+          label.style.color = 'var(--text-color)';
+          label.style.textAlign = 'center';
+          label.style.marginBottom = '8px';
+          label.style.fontSize = '18px';
+          label.textContent = data.ui.slots[0].time;
+
+          const slider = document.createElement('input');
+          slider.type = 'range';
+          slider.min = '0';
+          slider.max = (data.ui.slots.length - 1).toString();
+          slider.value = '0';
+          slider.style.width = '100%';
+          slider.style.marginBottom = '16px';
+          slider.style.accentColor = 'var(--primary-color)';
+
+          slider.addEventListener('input', (e) => {
+            const index = parseInt(e.target.value, 10);
+            label.textContent = data.ui.slots[index].time;
           });
-          
+
+          const confirmBtn = document.createElement('button');
+          confirmBtn.className = 'slot-btn';
+          confirmBtn.style.width = '100%';
+          confirmBtn.textContent = 'Confirm Time';
+          confirmBtn.addEventListener('click', () => {
+             const index = parseInt(slider.value, 10);
+             const timeText = (index + 1) + ''; 
+             const selectedTime = data.ui.slots[index].time;
+             container.remove();
+             sendChatRequest(timeText, selectedTime);
+          });
+
+          container.appendChild(label);
+          container.appendChild(slider);
+          container.appendChild(confirmBtn);
+
           messagesEl.appendChild(container);
           messagesEl.scrollTop = messagesEl.scrollHeight;
         }
