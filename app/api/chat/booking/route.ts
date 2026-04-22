@@ -92,12 +92,15 @@ export async function POST(req: Request) {
 
     const shop = await prisma.shop.findUnique({
       where: { id: shopId },
-      select: { name: true, timezone: true, customDomain: true, subdomain: true }
+      select: { name: true, timezone: true, customDomain: true, subdomain: true, customization: true }
     });
 
     if (!shop) {
       return NextResponse.json({ error: 'Shop not found' }, { status: 404, headers: corsHeaders });
     }
+
+    const c = (shop.customization as any) || {};
+    const configuredWebsite = c.contact?.website || c.website || '';
 
     // 4. Origin Validation (CORS Hardening)
     const origin = req.headers.get('origin') || req.headers.get('referer') || '';
@@ -112,13 +115,31 @@ export async function POST(req: Request) {
       `https://barbersaas.com`,
     ];
 
+    if (configuredWebsite) {
+      // Add the configured website directly
+      allowedOrigins.push(configuredWebsite);
+      // Try to parse the origin to make sure we also allow the base origin
+      try {
+        const urlObj = new URL(configuredWebsite.startsWith('http') ? configuredWebsite : `https://${configuredWebsite}`);
+        allowedOrigins.push(urlObj.origin);
+      } catch (e) {
+        // ignore invalid urls
+      }
+    }
+
+    // Always allow requests if they come from the shop's specific sub-path on the SaaS
+    // This allows previewing/testing on Vercel deployments.
+    // e.g. https://barbersaas-henna.vercel.app/shops/missouri-city
+    const isSaaSSubPath = origin && shop.subdomain && origin.includes(`/shops/${shop.subdomain}`);
+    const isSaaSIdPath = origin && origin.includes(`/shops/${shopId}`);
+
     let isOriginAllowed = false;
     if (!origin) {
        // If no origin/referer (e.g. cURL), we might block it, but for now we'll allow strictly 
        // if we enforce it to be coming from a browser. Let's block non-browser requests to harden it.
        isOriginAllowed = false;
     } else {
-       isOriginAllowed = allowedOrigins.some(allowed => origin.startsWith(allowed));
+       isOriginAllowed = isSaaSSubPath || isSaaSIdPath || allowedOrigins.some(allowed => origin.startsWith(allowed));
     }
 
     // Block unauthorized embeds strictly
