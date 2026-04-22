@@ -103,7 +103,10 @@ export async function POST(req: Request) {
     const configuredWebsite = c.contact?.website || c.website || '';
 
     // 4. Origin Validation (CORS Hardening)
-    const origin = req.headers.get('origin') || req.headers.get('referer') || '';
+    const originHeader = req.headers.get('origin') || '';
+    const refererHeader = req.headers.get('referer') || '';
+    const origin = originHeader || refererHeader;
+    
     // Determine allowed origins based on shop domains
     const allowedOrigins = [
       `https://${shop.customDomain}`,
@@ -130,8 +133,13 @@ export async function POST(req: Request) {
     // Always allow requests if they come from the shop's specific sub-path on the SaaS
     // This allows previewing/testing on Vercel deployments.
     // e.g. https://barbersaas-henna.vercel.app/shops/missouri-city
-    const isSaaSSubPath = origin && shop.subdomain && origin.includes(`/shops/${shop.subdomain}`);
-    const isSaaSIdPath = origin && origin.includes(`/shops/${shopId}`);
+    const isSaaSSubPath = refererHeader && shop.subdomain && refererHeader.includes(`/shops/${shop.subdomain}`);
+    const isSaaSIdPath = refererHeader && refererHeader.includes(`/shops/${shopId}`);
+    
+    // For Vercel preview environments, let's also allow if referer has the slug
+    // Missouri City -> missouri-city
+    const slug = shop.name.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '');
+    const isSaaSSlugPath = refererHeader && refererHeader.includes(`/shops/${slug}`);
 
     let isOriginAllowed = false;
     if (!origin) {
@@ -139,12 +147,12 @@ export async function POST(req: Request) {
        // if we enforce it to be coming from a browser. Let's block non-browser requests to harden it.
        isOriginAllowed = false;
     } else {
-       isOriginAllowed = isSaaSSubPath || isSaaSIdPath || allowedOrigins.some(allowed => origin.startsWith(allowed));
+       isOriginAllowed = isSaaSSubPath || isSaaSIdPath || isSaaSSlugPath || allowedOrigins.some(allowed => origin.startsWith(allowed));
     }
 
     // Block unauthorized embeds strictly
     if (!isOriginAllowed) {
-       logger.warn(`Unauthorized origin attempt: ${origin} for shop: ${shopId}`);
+       logger.warn(`Unauthorized origin attempt: ${origin} (referer: ${refererHeader}) for shop: ${shopId}`);
        return NextResponse.json({ error: 'Unauthorized origin' }, { status: 403, headers: corsHeaders });
     }
 
