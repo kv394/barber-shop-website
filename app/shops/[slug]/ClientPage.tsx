@@ -98,7 +98,9 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
     const pathname = usePathname() || '/';
 
     const handleBookClick = (service: any) => {
-        if (typeof window !== 'undefined' && (window as any).openBarberSaasChat) {
+        if (typeof window !== 'undefined' && (window as any).BarberBooking) {
+            (window as any).BarberBooking.open();
+        } else if (typeof window !== 'undefined' && (window as any).openBarberSaasChat) {
             (window as any).openBarberSaasChat(service?.name);
         } else {
             setSelectedService(service);
