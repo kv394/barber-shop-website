@@ -80,16 +80,25 @@
       cursor: pointer;
       box-shadow: 0 4px 12px rgba(0,0,0,0.15);
       z-index: 999999;
-      transition: transform 0.2s;
+      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
     
     #widget-button:hover {
-      transform: scale(1.05);
+      transform: scale(1.08) translateY(-2px);
+    }
+
+    #widget-button:active {
+      transform: scale(0.95);
     }
     
     #widget-button svg {
       width: 32px;
       height: 32px;
+      transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    #widget-button.open svg {
+      transform: rotate(180deg) scale(1.1);
     }
     
     #chat-window {
@@ -109,14 +118,15 @@
       overflow: hidden;
       opacity: 0;
       pointer-events: none;
-      transform: translateY(20px);
-      transition: opacity 0.3s, transform 0.3s;
+      transform: translateY(20px) scale(0.95);
+      transform-origin: bottom right;
+      transition: opacity 0.3s ease, transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1);
     }
     
     #chat-window.open {
       opacity: 1;
       pointer-events: auto;
-      transform: translateY(0);
+      transform: translateY(0) scale(1);
     }
     
     #chat-header {
@@ -155,7 +165,7 @@
       font-size: 14px;
       line-height: 1.4;
       white-space: pre-wrap;
-      animation: fadeIn 0.3s ease-out forwards;
+      animation: fadeIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1) forwards;
     }
     
     .message.user {
@@ -242,6 +252,7 @@
       border-bottom-left-radius: 4px;
       align-self: flex-start;
       margin-bottom: 12px;
+      animation: fadeIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1) forwards;
     }
     
     .typing-indicator span {
@@ -269,18 +280,18 @@
       margin-bottom: 12px;
       align-self: flex-start;
       max-width: 90%;
-      animation: slideIn 0.3s ease-out forwards;
+      animation: slideIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.1) forwards;
     }
     
 
     @keyframes slideIn {
-      from { opacity: 0; transform: translateY(12px) scale(0.98); }
-      to { opacity: 1; transform: translateY(0) scale(1); }
+      0% { opacity: 0; transform: translateY(16px) scale(0.95); }
+      100% { opacity: 1; transform: translateY(0) scale(1); }
     }
 
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(8px) scale(0.98); }
-      to { opacity: 1; transform: translateY(0) scale(1); }
+      0% { opacity: 0; transform: translateY(10px) scale(0.98); }
+      100% { opacity: 1; transform: translateY(0) scale(1); }
     }
 
     .slot-btn {
@@ -352,15 +363,16 @@
     } else {
       isOpen = !isOpen;
     }
-    
+
     if (isOpen) {
       windowEl.classList.add('open');
+      button.classList.add('open');
       input.focus();
     } else {
       windowEl.classList.remove('open');
+      button.classList.remove('open');
     }
   }
-
   button.addEventListener('click', toggleChat);
   closeBtn.addEventListener('click', toggleChat);
 
