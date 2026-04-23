@@ -98,7 +98,11 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
     const pathname = usePathname() || '/';
 
     const handleBookClick = (service: any) => {
-        setSelectedService(service);
+        if (typeof window !== 'undefined' && (window as any).openBarberSaasChat) {
+            (window as any).openBarberSaasChat(service?.name);
+        } else {
+            setSelectedService(service);
+        }
     };
 
     // Click handler for dynamically generated templates where we can't easily attach React handlers to string HTML.
@@ -112,7 +116,10 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
             // Try to find a specific service based on data attribute, fallback to the first service
             const serviceId = button.getAttribute('data-service-id');
             const service = shop.services?.find((s: any) => s.id === serviceId) || shop.services?.[0];
-            if (service) {
+            
+            if (typeof window !== 'undefined' && (window as any).openBarberSaasChat) {
+                (window as any).openBarberSaasChat(service?.name);
+            } else if (service) {
                 setSelectedService(service);
             }
         }

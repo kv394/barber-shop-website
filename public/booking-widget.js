@@ -329,8 +329,13 @@
     { role: 'assistant', content: "Hi! I'm the AI assistant. What service would you like to book today?" }
   ];
 
-  function toggleChat() {
-    isOpen = !isOpen;
+  function toggleChat(forceOpen = false) {
+    if (typeof forceOpen === 'boolean') {
+      isOpen = forceOpen;
+    } else {
+      isOpen = !isOpen;
+    }
+    
     if (isOpen) {
       windowEl.classList.add('open');
       input.focus();
@@ -341,6 +346,15 @@
 
   button.addEventListener('click', toggleChat);
   closeBtn.addEventListener('click', toggleChat);
+
+  // Expose a global function to open the chat from outside
+  window.openBarberSaasChat = function(serviceName) {
+    toggleChat(true);
+    if (serviceName) {
+      input.value = "I'd like to book " + serviceName;
+      input.focus();
+    }
+  };
 
   function addMessageToUI(text, isUser) {
     const el = document.createElement('div');
