@@ -18,8 +18,13 @@
 
   const shopId = scriptTag.getAttribute('data-shop-id');
   const scriptTagSrc = scriptTag.src || 'https://barbersaas.com/booking-modal.js';
-  const parsedUrl = new URL(scriptTagSrc);
-  const baseUrl = scriptTag.getAttribute('data-base-url') || parsedUrl.origin;
+  let baseUrl = 'https://barbersaas.com';
+  try {
+    const parsedUrl = new URL(scriptTagSrc, window.location.origin);
+    baseUrl = scriptTag.getAttribute('data-base-url') || parsedUrl.origin;
+  } catch (e) {
+    baseUrl = scriptTag.getAttribute('data-base-url') || 'https://barbersaas.com';
+  }
   
   // Create styles
   const style = document.createElement('style');

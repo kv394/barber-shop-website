@@ -243,8 +243,12 @@ export default async function PublicShopPage({
             dynamicTemplateCss={dynamicTemplateCss}
         />
         <AIWidget shopId={shop.id} />
-        {/* Inject the booking modal script for this shop */}
-        <Script src="/booking-modal.js" strategy="lazyOnload" data-shop-id={shop.id} />
+        {/* Inject the booking modal script for this shop reliably */}
+        <BookingModalScript shopId={shop.id} />
+      </>
+  );
+}
+l.js" strategy="lazyOnload" data-shop-id={shop.id} />
       </>
   );
 }
