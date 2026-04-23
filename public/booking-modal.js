@@ -1,7 +1,7 @@
 (function() {
   const scriptTag = document.currentScript;
   const shopId = scriptTag.getAttribute('data-shop-id');
-  const baseUrl = scriptTag.getAttribute('data-base-url') || 'https://barbersaas.vercel.app';
+  const baseUrl = scriptTag.getAttribute('data-base-url') || 'https://barbersaas.com';
   
   // Create styles
   const style = document.createElement('style');
