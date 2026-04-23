@@ -3,6 +3,7 @@ import { createServerClient, type CookieOptions } from '@supabase/ssr';
 
 const publicRoutes = [
   '^/$',
+  '^/embed/book(?:/.*)?$',
   '^/shops(?:/.*)?$',
   '^/sign-in(?:/.*)?$',
   '^/sign-up(?:/.*)?$',
@@ -113,8 +114,10 @@ export async function middleware(req: NextRequest) {
     response.headers.set('Content-Security-Policy', csp);
   }
   
-  // Prevent clickjacking
-  response.headers.set('X-Frame-Options', 'DENY');
+  // Prevent clickjacking for non-embed routes
+  if (!req.nextUrl.pathname.startsWith('/embed/')) {
+    response.headers.set('X-Frame-Options', 'DENY');
+  }
   // Prevent MIME type sniffing
   response.headers.set('X-Content-Type-Options', 'nosniff');
   // Strict Transport Security (HSTS)
