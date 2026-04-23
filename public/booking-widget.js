@@ -399,9 +399,52 @@
       if (data.error) {
         addMessageToUI('Sorry, I encountered an error: ' + data.error, false);
       } else if (data.text) {
-        addMessageToUI(data.text, false);
+        let displayText = data.text;
+        let options = [];
+        
+        // Parse numbered lists like "1. Option A"
+        const listRegex = /^(\d+)\.\s+(.+)$/gm;
+        let match;
+        while ((match = listRegex.exec(displayText)) !== null) {
+          options.push({ value: match[1], label: match[2].trim() });
+        }
+        
+        if (options.length > 0 && (!data.ui || data.ui.type !== 'time_picker')) {
+           // Remove the options from the text
+           displayText = displayText.replace(listRegex, '').trim();
+           // Remove any trailing sentences asking to pick a number
+           displayText = displayText.replace(/Reply with \d+.*$/gi, '').trim();
+           displayText = displayText.replace(/Please select a number.*$/gi, '').trim();
+        }
+        
+        if (displayText) {
+          addMessageToUI(displayText, false);
+        }
+        
         messages.push({ role: 'assistant', content: data.text });
         
+        if (options.length > 0 && (!data.ui || data.ui.type !== 'time_picker')) {
+          const container = document.createElement('div');
+          container.className = 'slots-container';
+          container.style.marginTop = '8px';
+          
+          options.forEach(opt => {
+            const btn = document.createElement('button');
+            btn.className = 'slot-btn';
+            btn.textContent = opt.label;
+            btn.style.textAlign = 'left';
+            btn.addEventListener('click', () => {
+              container.style.opacity = '0.5';
+              container.style.pointerEvents = 'none';
+              sendChatRequest(opt.value, opt.label);
+            });
+            container.appendChild(btn);
+          });
+          
+          messagesEl.appendChild(container);
+          messagesEl.scrollTop = messagesEl.scrollHeight;
+        }
+
         if (data.ui && data.ui.type === 'date_picker') {
           input.type = 'date';
           input.focus();

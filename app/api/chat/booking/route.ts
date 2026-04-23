@@ -82,6 +82,32 @@ const sendCalendarInviteDecl: FunctionDeclaration = {
   }
 };
 
+const cancelAppointmentDecl: FunctionDeclaration = {
+  name: 'cancel_appointment',
+  description: 'Cancel an existing appointment',
+  parameters: {
+    type: Type.OBJECT,
+    properties: {
+      appointmentId: { type: Type.STRING, description: 'The ID of the appointment to cancel' }
+    },
+    required: ['appointmentId']
+  }
+};
+
+const rescheduleAppointmentDecl: FunctionDeclaration = {
+  name: 'reschedule_appointment',
+  description: 'Reschedule an existing appointment to a new date and time',
+  parameters: {
+    type: Type.OBJECT,
+    properties: {
+      appointmentId: { type: Type.STRING, description: 'The ID of the appointment to reschedule' },
+      date: { type: Type.STRING, description: 'New date in YYYY-MM-DD format' },
+      time: { type: Type.STRING, description: 'New time in HH:MM format (24-hour)' }
+    },
+    required: ['appointmentId', 'date', 'time']
+  }
+};
+
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*', // For strict security, change to specific domains
   'Access-Control-Allow-Methods': 'POST, OPTIONS',
@@ -124,7 +150,7 @@ export async function POST(req: Request) {
 
     const shop = await prisma.shop.findUnique({
       where: { id: shopId },
-      select: { name: true, timezone: true, customDomain: true, subdomain: true, customization: true }
+      select: { name: true, timezone: true, customDomain: true, subdomain: true, customization: true, description: true }
     });
 
     if (!shop) {
@@ -189,31 +215,37 @@ export async function POST(req: Request) {
     }
 
     const systemInstruction = `You are a helpful AI booking assistant for a barbershop named "${shop.name}". 
-Your goal is to help users discover services, find availability, book appointments, and check their existing appointments.
+Your goal is to help users discover services, find availability, book appointments, check existing appointments, cancel/reschedule appointments, and answer general questions about the shop (location, hours, policies).
 Always be polite, concise, and highly intuitive. You are chatting via a lightweight website widget.
-The shop timezone is ${shop.timezone}.
+
+Shop Knowledge Base:
+- Timezone: ${shop.timezone}
+- Description: ${shop.description || 'A great barbershop.'}
+- Details & Settings (JSON): ${JSON.stringify(c)}
+Use this information to answer user questions about the shop's location, hours, or policies.
 
 CRITICAL UX INSTRUCTIONS:
-- Whenever you present multiple options to the user (like services, staff members, or time slots), ALWAYS format them as a clean, numbered list.
-- Explicitly tell the user they can simply reply with the number of their choice (e.g., "Reply with 1, 2, etc.").
-- When the user replies with a number, map it to the corresponding option from your previous message.
+- Whenever you present multiple options to the user (like services, staff members, or time slots), ALWAYS format them as a clean, numbered list starting each option on a new line with "1. ", "2. ", etc. 
+- The frontend will automatically convert these numbered lists into clickable buttons. DO NOT add extra text like "Reply with 1, 2, etc." anymore, as they will click the buttons.
+- When listing services, ALWAYS include the price and duration (e.g., "1. Haircut - $30 (45 mins)").
 - CRITICAL: When calling tools that require IDs (like check_availability and book_appointment), you MUST use the actual ID string (e.g., "cuid...") returned from the get_services or get_staff tool, NOT the number from your numbered list.
 - IMPORTANT STATELESSNESS RULE: The chat history ONLY saves text, not tool responses. You will FORGET the actual IDs (serviceId, staffId) between user messages. 
 - Therefore, BEFORE calling 'check_availability' or 'book_appointment', you MUST call 'get_services' (and 'get_staff' if needed) AGAIN in the SAME turn to retrieve the correct IDs based on the user's selection. NEVER guess IDs or pass names/numbers as IDs.
 - Keep your messages very short and easy to read on mobile. Avoid large walls of text.
 
 Follow this flow for booking:
-1. Ask what service they want. Call get_services to list them. Present as a numbered list.
+1. Ask what service they want. Call get_services to list them (with price and duration). Present as a numbered list.
 2. Ask if they have a preferred staff member (call get_staff). Present as a numbered list (always include an "Any staff" option).
 3. Call request_date_picker to prompt the user for a date. Once they provide it, call check_availability to give them specific time slots. Present slots as a numbered list.
 4. Once they pick a time, ask for their name, phone, and optionally email.
 5. Call book_appointment to finalize.
 6. After successfully booking, ask the user if they would like you to send them an email with a calendar invite. If they say yes, call send_calendar_invite.
 
-If the user wants to check their appointments:
+If the user wants to check, cancel, or reschedule their appointments:
 1. Ask for their phone number or email if not already provided.
-2. Call check_appointments to retrieve their upcoming appointments and present them clearly.
-3. Offer to send them a calendar invite via email for their upcoming appointments. If they agree, call send_calendar_invite for the respective appointment.`;
+2. Call check_appointments to retrieve their upcoming appointments and present them clearly (with their IDs so you know which one to act on).
+3. For cancellation: Call cancel_appointment with the ID.
+4. For rescheduling: Call reschedule_appointment with the ID, new date, and new time (you may need to call check_availability first to find a new slot).`;
 
     // Let's reconstruct the conversation for a fresh generateContent call instead of chats.create
     const formattedContents: any[] = truncatedMessages.map((m: any) => ({
@@ -226,7 +258,7 @@ If the user wants to check their appointments:
         contents: formattedContents,
         config: {
             systemInstruction,
-            tools: [{ functionDeclarations: [getServicesDecl, getStaffDecl, requestDatePickerDecl, checkAvailabilityDecl, bookAppointmentDecl, checkAppointmentsDecl, sendCalendarInviteDecl] }],
+            tools: [{ functionDeclarations: [getServicesDecl, getStaffDecl, requestDatePickerDecl, checkAvailabilityDecl, bookAppointmentDecl, checkAppointmentsDecl, sendCalendarInviteDecl, cancelAppointmentDecl, rescheduleAppointmentDecl] }],
         }
     });
 
@@ -446,6 +478,39 @@ If the user wants to check their appointments:
                             }
                         }
                     }
+                } else if (call.name === 'cancel_appointment') {
+                    const args = call.args as any;
+                    const { appointmentId } = args;
+                    if (!appointmentId) {
+                        result = { error: "Missing appointmentId." };
+                    } else {
+                        await prisma.appointment.update({
+                            where: { id: appointmentId },
+                            data: { status: 'CANCELLED' }
+                        });
+                        result = { success: true, message: "Appointment cancelled." };
+                    }
+                } else if (call.name === 'reschedule_appointment') {
+                    const args = call.args as any;
+                    const { appointmentId, date, time } = args;
+                    if (!appointmentId || !date || !time) {
+                        result = { error: "Missing required arguments." };
+                    } else {
+                        const apt = await prisma.appointment.findUnique({ where: { id: appointmentId }});
+                        if (!apt) {
+                            result = { error: "Appointment not found." };
+                        } else {
+                            const startTime = new Date(`${date}T${time}:00Z`); // Timezone needs proper handling
+                            const service = await prisma.service.findUnique({ where: { id: apt.serviceId || undefined } });
+                            const endTime = new Date(startTime.getTime() + (service?.duration || 30) * 60000);
+                            
+                            await prisma.appointment.update({
+                                where: { id: appointmentId },
+                                data: { startTime, endTime }
+                            });
+                            result = { success: true, message: "Appointment rescheduled." };
+                        }
+                    }
                 }
             } catch (err: any) {
                 logger.error("Tool execution error:", err);
@@ -473,7 +538,7 @@ If the user wants to check their appointments:
             contents: formattedContents,
             config: {
                 systemInstruction,
-                tools: [{ functionDeclarations: [getServicesDecl, getStaffDecl, requestDatePickerDecl, checkAvailabilityDecl, bookAppointmentDecl, checkAppointmentsDecl, sendCalendarInviteDecl] }],
+                tools: [{ functionDeclarations: [getServicesDecl, getStaffDecl, requestDatePickerDecl, checkAvailabilityDecl, bookAppointmentDecl, checkAppointmentsDecl, sendCalendarInviteDecl, cancelAppointmentDecl, rescheduleAppointmentDecl] }],
             }
         });
 
