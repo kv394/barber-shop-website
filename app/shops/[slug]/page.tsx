@@ -7,7 +7,7 @@ import { redirect } from 'next/navigation';
 import { getOrCreateFolder, downloadFileFromFolder } from '@/lib/google-drive';
 import { cacheService } from '@/lib/cache';
 import AIWidget from '@/components/booking/AIWidget';
-import Script from 'next/script';
+import BookingModalScript from '@/components/booking/BookingModalScript';
 
 // Use this to ensure the page caches effectively unless revalidated
 export const revalidate = 60;
@@ -245,10 +245,6 @@ export default async function PublicShopPage({
         <AIWidget shopId={shop.id} />
         {/* Inject the booking modal script for this shop reliably */}
         <BookingModalScript shopId={shop.id} />
-      </>
-  );
-}
-l.js" strategy="lazyOnload" data-shop-id={shop.id} />
       </>
   );
 }
