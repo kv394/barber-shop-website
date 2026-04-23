@@ -516,6 +516,32 @@
 
           messagesEl.appendChild(container);
           messagesEl.scrollTop = messagesEl.scrollHeight;
+        } else if (data.ui && data.ui.type === 'qr_code' && data.ui.qrCodeUrl) {
+          const container = document.createElement('div');
+          container.style.textAlign = 'center';
+          container.style.marginTop = '8px';
+          container.style.alignSelf = 'center';
+          
+          const img = document.createElement('img');
+          img.src = data.ui.qrCodeUrl;
+          img.style.width = '150px';
+          img.style.height = '150px';
+          img.style.borderRadius = '8px';
+          img.style.backgroundColor = 'white';
+          img.style.padding = '8px';
+          img.style.border = '1px solid var(--border-color)';
+          
+          const caption = document.createElement('div');
+          caption.textContent = 'Save this QR code for fast check-in!';
+          caption.style.fontSize = '12px';
+          caption.style.color = 'var(--text-color)';
+          caption.style.marginTop = '6px';
+          caption.style.fontWeight = 'bold';
+          
+          container.appendChild(img);
+          container.appendChild(caption);
+          messagesEl.appendChild(container);
+          messagesEl.scrollTop = messagesEl.scrollHeight;
         }
       }
     } catch (err) {

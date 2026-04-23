@@ -5,6 +5,7 @@ import { logger } from '@/lib/logger';
 import { toShopTzDayBounds } from '@/lib/timezone';
 import { getCalendarBusySlots } from '@/lib/google-calendar';
 import { rateLimit } from '@/lib/rate-limiter';
+import QRCode from 'qrcode';
 
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
@@ -207,6 +208,7 @@ Follow this flow:
     let lastUiType: string | null = null;
     let lastAvailabilitySlots = null;
     let lastAvailabilityDate = null;
+    let lastQrCodeUrl: string | null = null;
 
     while (functionCalls && functionCalls.length > 0 && loopCount < 5) {
         loopCount++;
@@ -272,7 +274,9 @@ Follow this flow:
                         where: { OR: [{ email: emailToUse }, { phone: clientPhone }] }
                     });
                     
+                    let isNewUser = false;
                     if (!user) {
+                        isNewUser = true;
                         user = await prisma.user.create({
                             data: {
                                 email: emailToUse,
@@ -300,7 +304,13 @@ Follow this flow:
                                 status: 'SCHEDULED'
                             }
                         });
-                        result = { success: true, appointmentId: apt.id };
+                        
+                        if (isNewUser) {
+                            lastQrCodeUrl = await QRCode.toDataURL(user.barcode || user.id);
+                            lastUiType = 'qr_code';
+                        }
+                        
+                        result = { success: true, appointmentId: apt.id, isNewUser };
                     } else {
                         result = { success: false, error: "Service not found" };
                     }
@@ -349,6 +359,11 @@ Follow this flow:
             type: 'time_picker',
             date: lastAvailabilityDate,
             slots: lastAvailabilitySlots
+        };
+    } else if (lastUiType === 'qr_code' && lastQrCodeUrl) {
+        payload.ui = {
+            type: 'qr_code',
+            qrCodeUrl: lastQrCodeUrl
         };
     }
 
