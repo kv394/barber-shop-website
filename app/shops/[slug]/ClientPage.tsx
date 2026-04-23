@@ -118,15 +118,16 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
             // Try to find a specific service based on data attribute, fallback to the first service
             const serviceId = button.getAttribute('data-service-id');
             const service = shop.services?.find((s: any) => s.id === serviceId) || shop.services?.[0];
-            
-            if (typeof window !== 'undefined' && (window as any).openBarberSaasChat) {
+
+            if (typeof window !== 'undefined' && (window as any).BarberBooking) {
+                (window as any).BarberBooking.open();
+            } else if (typeof window !== 'undefined' && (window as any).openBarberSaasChat) {
                 (window as any).openBarberSaasChat(service?.name);
             } else if (service) {
                 setSelectedService(service);
             }
         }
     };
-
     // ── Normalised contact helpers (supports both old flat shape and new nested shape) ──
     const c = shop.customization || {};
     const pages = c.pages || [];
