@@ -175,11 +175,9 @@ export default function ClientDetailModal({ shopId, clientId, clientName, onClos
                 </div>
               )}
             </div>
-            {client?.barcode && (
-              <div className="shrink-0 flex items-start border-l border-crm-border pl-4 ml-2">
-                <UserQRCode barcode={client.barcode} userName={client.name || clientName} showText={false} size={64} />
-              </div>
-            )}
+            <div className="shrink-0 flex items-start border-l border-crm-border pl-4 ml-2">
+                <UserQRCode barcode={client?.barcode || clientId} userName={client?.name || clientName} showText={false} size={64} />
+            </div>
           </div>
           <button onClick={handleClose} className="absolute top-6 right-6 text-crm-primary bg-white hover:bg-gray-100 shadow-sm z-10 w-7 h-7 rounded-full flex items-center justify-center transition-colors font-bold text-[13px]">✕</button>
         </div>

@@ -350,10 +350,6 @@
   // Expose a global function to open the chat from outside
   window.openBarberSaasChat = function(serviceName) {
     toggleChat(true);
-    if (serviceName) {
-      input.value = "I'd like to book " + serviceName;
-      input.focus();
-    }
   };
 
   function addMessageToUI(text, isUser) {

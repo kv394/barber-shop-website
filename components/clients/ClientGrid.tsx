@@ -48,11 +48,9 @@ export default function ClientGrid({ clients, shopId }: { clients: any[]; shopId
                   <h4 className="font-bold text-crm-accent truncate group-hover:text-crm-text transition-colors text-base font-semibold">{client.name || "Guest User"}</h4>
                   <p className="text-crm-muted truncate text-[13px]">{client.email.startsWith('walkin-') ? 'Walk-in (No Email)' : client.email}</p>
                 </div>
-                {client.barcode && (
-                  <div className="shrink-0">
-                    <UserQRCode barcode={client.barcode} userName={client.name || "Client"} showText={false} size={64} />
-                  </div>
-                )}
+                <div className="shrink-0">
+                  <UserQRCode barcode={client.barcode || client.id} userName={client.name || "Client"} showText={false} size={64} />
+                </div>
               </div>
               
               <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-end mt-auto pt-4 border-t border-crm-border">
@@ -64,11 +62,9 @@ export default function ClientGrid({ clients, shopId }: { clients: any[]; shopId
                 </div>
               </div>
               
-              {client.barcode && (
-                <div className="mt-2 text-[13px] text-crm-muted font-mono tracking-widest break-all">
-                  ID: {client.barcode}
-                </div>
-              )}
+              <div className="mt-2 text-[13px] text-crm-muted font-mono tracking-widest break-all">
+                ID: {client.barcode || client.id}
+              </div>
 
               <p className="mt-2 text-crm-muted group-hover:text-crm-accent transition-colors text-[13px]">Click to view details →</p>
             </div>

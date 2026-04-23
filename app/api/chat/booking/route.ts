@@ -283,7 +283,8 @@ Follow this flow:
                                 name: clientName,
                                 phone: clientPhone,
                                 role: 'CLIENT',
-                                shopId: shopId
+                                shopId: shopId,
+                                barcode: `C-${Date.now()}`
                             }
                         });
                     }
