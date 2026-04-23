@@ -246,15 +246,19 @@ Follow this flow:
                             for (const min of ["00", "30"]) {
                                 if (hour === 17 && min === "30") continue;
                                 const timeStr = `${hour.toString().padStart(2, '0')}:${min}`;
-                                generatedSlots.push({ time: timeStr, staffId: staffId || "any" });
+                                
+                                // Simulate some unavailable slots (e.g., 12:00, 12:30, 13:00, 13:30 are greyed out)
+                                const isAvailable = (hour !== 12 && hour !== 13);
+
+                                generatedSlots.push({ time: timeStr, staffId: staffId || "any", available: isAvailable });
                             }
                         }
 
                         result = {
-                            availableSlots: generatedSlots,
+                            availableSlots: generatedSlots.filter(s => s.available).map(s => ({ time: s.time, staffId: s.staffId })),
                             message: "Returning simulated available slots for demonstration."
                         };
-                        lastAvailabilitySlots = result.availableSlots;
+                        lastAvailabilitySlots = generatedSlots;
                         lastUiType = 'time_picker';
                     }
                 } else if (call.name === 'book_appointment') {

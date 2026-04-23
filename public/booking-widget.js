@@ -417,35 +417,94 @@
           container.style.alignItems = 'stretch';
           container.style.width = '80%';
           
+          const styleEl = document.createElement('style');
+          styleEl.textContent = `
+            .slider-with-availability {
+              -webkit-appearance: none;
+              appearance: none;
+              height: 6px;
+              border-radius: 3px;
+              outline: none;
+            }
+            .slider-with-availability::-webkit-slider-thumb {
+              -webkit-appearance: none;
+              appearance: none;
+              width: 16px;
+              height: 16px;
+              border-radius: 50%;
+              background: var(--primary-color);
+              cursor: pointer;
+            }
+          `;
+          container.appendChild(styleEl);
+          
           const label = document.createElement('div');
           label.style.fontWeight = 'bold';
           label.style.color = 'var(--text-color)';
           label.style.textAlign = 'center';
           label.style.marginBottom = '8px';
           label.style.fontSize = '18px';
-          label.textContent = data.ui.slots[0].time;
+
+          let firstAvailableIndex = 0;
+          for (let i = 0; i < data.ui.slots.length; i++) {
+             if (data.ui.slots[i].available !== false) {
+                 firstAvailableIndex = i;
+                 break;
+             }
+          }
 
           const slider = document.createElement('input');
           slider.type = 'range';
+          slider.className = 'slider-with-availability';
           slider.min = '0';
           slider.max = (data.ui.slots.length - 1).toString();
-          slider.value = '0';
+          slider.value = firstAvailableIndex.toString();
           slider.style.width = '100%';
           slider.style.marginBottom = '16px';
-          slider.style.accentColor = 'var(--primary-color)';
 
-          slider.addEventListener('input', (e) => {
-            const index = parseInt(e.target.value, 10);
-            label.textContent = data.ui.slots[index].time;
-          });
+          const numSlots = data.ui.slots.length;
+          const step = 100 / (numSlots - 1 || 1);
+          const gradientStops = [];
+          for (let i = 0; i < numSlots; i++) {
+             const isAvail = data.ui.slots[i].available !== false;
+             const color = isAvail ? 'var(--primary-color)' : '#555555';
+             const start = Math.max(0, (i - 0.5) * step);
+             const end = Math.min(100, (i + 0.5) * step);
+             gradientStops.push(`${color} ${start}%, ${color} ${end}%`);
+          }
+          slider.style.background = `linear-gradient(to right, ${gradientStops.join(', ')})`;
 
           const confirmBtn = document.createElement('button');
           confirmBtn.className = 'slot-btn';
           confirmBtn.style.width = '100%';
           confirmBtn.textContent = 'Confirm Time';
+
+          const updateUI = (index) => {
+             const slot = data.ui.slots[index];
+             const isAvail = slot.available !== false;
+             label.textContent = slot.time + (isAvail ? '' : ' (Unavailable)');
+             label.style.opacity = isAvail ? '1' : '0.5';
+             confirmBtn.disabled = !isAvail;
+             confirmBtn.style.opacity = isAvail ? '1' : '0.5';
+             confirmBtn.style.cursor = isAvail ? 'pointer' : 'not-allowed';
+          };
+          
+          updateUI(firstAvailableIndex);
+
+          slider.addEventListener('input', (e) => {
+            updateUI(parseInt(e.target.value, 10));
+          });
+
           confirmBtn.addEventListener('click', () => {
              const index = parseInt(slider.value, 10);
-             const timeText = (index + 1) + ''; 
+             if (data.ui.slots[index].available === false) return;
+             
+             let availableIndex = 0;
+             for (let i = 0; i <= index; i++) {
+                if (data.ui.slots[i].available !== false) availableIndex++;
+             }
+             const timeText = availableIndex.toString();
+             
              const selectedTime = data.ui.slots[index].time;
              container.remove();
              sendChatRequest(timeText, selectedTime);
