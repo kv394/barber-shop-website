@@ -20,11 +20,6 @@ const getStaffDecl: FunctionDeclaration = {
   description: 'Get a list of available staff members for the shop',
 };
 
-const requestDatePickerDecl: FunctionDeclaration = {
-  name: 'request_date_picker',
-  description: 'Call this function when you need to ask the user what date they want to book. It will trigger a calendar UI to be shown to the user.',
-};
-
 const checkAvailabilityDecl: FunctionDeclaration = {
   name: 'check_availability',
   description: 'Check available time slots for a specific date, service, and optionally staff member',
@@ -220,6 +215,7 @@ Always be polite, concise, and highly intuitive. You are chatting via a lightwei
 
 Shop Knowledge Base:
 - Timezone: ${shop.timezone}
+- Today's Date: ${new Date().toISOString().split('T')[0]}
 - Description: ${shop.description || 'A great barbershop.'}
 - Details & Settings (JSON): ${JSON.stringify(c)}
 Use this information to answer user questions about the shop's location, hours, or policies.
@@ -236,7 +232,7 @@ CRITICAL UX INSTRUCTIONS:
 Follow this flow for booking:
 1. Ask what service they want. Call get_services to list them (with price and duration). Present as a numbered list.
 2. Ask if they have a preferred staff member (call get_staff). Present as a numbered list (always include an "Any staff" option).
-3. Call request_date_picker to prompt the user for a date. Once they provide it, call check_availability to give them specific time slots. Present slots as a numbered list.
+3. Do NOT call request_date_picker. Instead, immediately call check_availability for today's date (or a specific date if the user provided one). This will present a combined date and time picker to the user. Present slots as a numbered list.
 4. Once they pick a time, ask for their name, phone, and optionally email.
 5. Call book_appointment to finalize.
 6. After successfully booking, ask the user if they would like you to send them an email with a calendar invite. If they say yes, call send_calendar_invite.
@@ -258,7 +254,7 @@ If the user wants to check, cancel, or reschedule their appointments:
         contents: formattedContents,
         config: {
             systemInstruction,
-            tools: [{ functionDeclarations: [getServicesDecl, getStaffDecl, requestDatePickerDecl, checkAvailabilityDecl, bookAppointmentDecl, checkAppointmentsDecl, sendCalendarInviteDecl, cancelAppointmentDecl, rescheduleAppointmentDecl] }],
+            tools: [{ functionDeclarations: [getServicesDecl, getStaffDecl, checkAvailabilityDecl, bookAppointmentDecl, checkAppointmentsDecl, sendCalendarInviteDecl, cancelAppointmentDecl, rescheduleAppointmentDecl] }],
         }
     });
 
@@ -293,9 +289,6 @@ If the user wants to check, cancel, or reschedule their appointments:
                         select: { id: true, name: true }
                     });
                     result = { staff };
-                } else if (call.name === 'request_date_picker') {
-                    result = { success: true, message: "Date picker UI presented to user. Wait for their date selection." };
-                    lastUiType = 'date_picker';
                 } else if (call.name === 'check_availability') {
                     const args = call.args as any;
                     const { date, serviceId, staffId } = args;
@@ -538,7 +531,7 @@ If the user wants to check, cancel, or reschedule their appointments:
             contents: formattedContents,
             config: {
                 systemInstruction,
-                tools: [{ functionDeclarations: [getServicesDecl, getStaffDecl, requestDatePickerDecl, checkAvailabilityDecl, bookAppointmentDecl, checkAppointmentsDecl, sendCalendarInviteDecl, cancelAppointmentDecl, rescheduleAppointmentDecl] }],
+                tools: [{ functionDeclarations: [getServicesDecl, getStaffDecl, checkAvailabilityDecl, bookAppointmentDecl, checkAppointmentsDecl, sendCalendarInviteDecl, cancelAppointmentDecl, rescheduleAppointmentDecl] }],
             }
         });
 
