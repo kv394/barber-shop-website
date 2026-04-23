@@ -4,9 +4,15 @@ import { logger } from '@/lib/logger';
 // Every email/SMS provider implements this contract.
 // Add new providers by implementing the interface and registering in the factory.
 
+export interface EmailAttachment {
+  filename: string;
+  content: string; // Base64 encoded string
+  type?: string;
+}
+
 export interface EmailProvider {
   name: string;
-  send(to: string, subject: string, body: string, html?: string): Promise<{ success: boolean; messageId?: string; error?: string }>;
+  send(to: string, subject: string, body: string, html?: string, attachments?: EmailAttachment[]): Promise<{ success: boolean; messageId?: string; error?: string }>;
 }
 
 export interface SMSProvider {
@@ -26,7 +32,7 @@ class ResendProvider implements EmailProvider {
     this.from = process.env.EMAIL_FROM || 'BarberSaaS <noreply@barbersaas.com>';
   }
 
-  async send(to: string, subject: string, body: string, html?: string) {
+  async send(to: string, subject: string, body: string, html?: string, attachments?: EmailAttachment[]) {
     try {
       const res = await fetch('https://api.resend.com/emails', {
         method: 'POST',
@@ -39,6 +45,7 @@ class ResendProvider implements EmailProvider {
           to: [to],
           subject,
           ...(html ? { html } : { text: body }),
+          ...(attachments ? { attachments: attachments.map(a => ({ filename: a.filename, content: a.content })) } : {}),
         }),
       });
       const data = await res.json();
@@ -62,7 +69,7 @@ class SendGridProvider implements EmailProvider {
     this.from = process.env.EMAIL_FROM || 'noreply@barbersaas.com';
   }
 
-  async send(to: string, subject: string, body: string, html?: string) {
+  async send(to: string, subject: string, body: string, html?: string, attachments?: EmailAttachment[]) {
     try {
       const content = html
         ? [{ type: 'text/html', value: html }]
@@ -79,6 +86,7 @@ class SendGridProvider implements EmailProvider {
           from: { email: this.from },
           subject,
           content,
+          ...(attachments ? { attachments: attachments.map(a => ({ filename: a.filename, content: a.content, type: a.type || 'application/octet-stream', disposition: 'attachment' })) } : {}),
         }),
       });
       if (!res.ok) {
@@ -132,8 +140,8 @@ class TwilioProvider implements SMSProvider {
 
 class ConsoleEmailProvider implements EmailProvider {
   name = 'console';
-  async send(to: string, subject: string, body: string) {
-    console.log(`[EMAIL:console] To: ${to} | Subject: ${subject} | Body: ${body.substring(0, 120)}...`);
+  async send(to: string, subject: string, body: string, html?: string, attachments?: EmailAttachment[]) {
+    console.log(`[EMAIL:console] To: ${to} | Subject: ${subject} | Body: ${body.substring(0, 120)}... | Attachments: ${attachments?.length || 0}`);
     return { success: true, messageId: `console_${Date.now()}` };
   }
 }

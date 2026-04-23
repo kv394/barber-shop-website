@@ -5,6 +5,7 @@ import { logger } from '@/lib/logger';
 import { toShopTzDayBounds } from '@/lib/timezone';
 import { getCalendarBusySlots } from '@/lib/google-calendar';
 import { rateLimit } from '@/lib/rate-limiter';
+import { getEmailProvider } from '@/lib/messaging-providers';
 import QRCode from 'qrcode';
 
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
@@ -65,6 +66,19 @@ const checkAppointmentsDecl: FunctionDeclaration = {
       clientPhone: { type: Type.STRING, description: 'Client phone number' },
       clientEmail: { type: Type.STRING, description: 'Client email address' }
     }
+  }
+};
+
+const sendCalendarInviteDecl: FunctionDeclaration = {
+  name: 'send_calendar_invite',
+  description: 'Send an email with a calendar invite to the user for an appointment',
+  parameters: {
+    type: Type.OBJECT,
+    properties: {
+      clientEmail: { type: Type.STRING, description: 'The email address of the client' },
+      appointmentId: { type: Type.STRING, description: 'The ID of the appointment' }
+    },
+    required: ['clientEmail', 'appointmentId']
   }
 };
 
@@ -194,10 +208,12 @@ Follow this flow for booking:
 3. Call request_date_picker to prompt the user for a date. Once they provide it, call check_availability to give them specific time slots. Present slots as a numbered list.
 4. Once they pick a time, ask for their name, phone, and optionally email.
 5. Call book_appointment to finalize.
+6. After successfully booking, ask the user if they would like you to send them an email with a calendar invite. If they say yes, call send_calendar_invite.
 
 If the user wants to check their appointments:
 1. Ask for their phone number or email if not already provided.
-2. Call check_appointments to retrieve their upcoming appointments and present them clearly.`;
+2. Call check_appointments to retrieve their upcoming appointments and present them clearly.
+3. Offer to send them a calendar invite via email for their upcoming appointments. If they agree, call send_calendar_invite for the respective appointment.`;
 
     // Let's reconstruct the conversation for a fresh generateContent call instead of chats.create
     const formattedContents: any[] = truncatedMessages.map((m: any) => ({
@@ -210,7 +226,7 @@ If the user wants to check their appointments:
         contents: formattedContents,
         config: {
             systemInstruction,
-            tools: [{ functionDeclarations: [getServicesDecl, getStaffDecl, requestDatePickerDecl, checkAvailabilityDecl, bookAppointmentDecl, checkAppointmentsDecl] }],
+            tools: [{ functionDeclarations: [getServicesDecl, getStaffDecl, requestDatePickerDecl, checkAvailabilityDecl, bookAppointmentDecl, checkAppointmentsDecl, sendCalendarInviteDecl] }],
         }
     });
 
@@ -380,6 +396,56 @@ If the user wants to check their appointments:
                             }
                         }
                     }
+                } else if (call.name === 'send_calendar_invite') {
+                    const args = call.args as any;
+                    const { appointmentId, clientEmail } = args;
+                    if (!appointmentId || !clientEmail) {
+                        result = { error: "Missing appointmentId or clientEmail." };
+                    } else {
+                        const apt = await prisma.appointment.findUnique({
+                            where: { id: appointmentId },
+                            include: { service: true, shop: true }
+                        });
+                        
+                        if (!apt) {
+                            result = { error: "Appointment not found." };
+                        } else {
+                            const startTime = apt.startTime;
+                            const endTime = apt.endTime;
+                            const startStr = startTime.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
+                            const endStr = endTime.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
+                            
+                            const icsContent = [
+                                'BEGIN:VCALENDAR',
+                                'VERSION:2.0',
+                                'PRODID:-//BarberSaaS//EN',
+                                'BEGIN:VEVENT',
+                                `UID:${apt.id}@barbersaas.com`,
+                                `DTSTAMP:${startStr}`,
+                                `DTSTART:${startStr}`,
+                                `DTEND:${endStr}`,
+                                `SUMMARY:${apt.service?.name || 'Appointment'} at ${apt.shop.name}`,
+                                `DESCRIPTION:Your appointment for ${apt.service?.name || 'Service'}`,
+                                'END:VEVENT',
+                                'END:VCALENDAR'
+                            ].join('\r\n');
+                            
+                            const emailProvider = getEmailProvider();
+                            const emailRes = await emailProvider.send(
+                                clientEmail,
+                                `Calendar Invite: ${apt.service?.name || 'Appointment'} at ${apt.shop.name}`,
+                                `Hi! Please find your calendar invite attached for your upcoming appointment.`,
+                                undefined,
+                                [{ filename: 'invite.ics', content: Buffer.from(icsContent).toString('base64'), type: 'text/calendar' }]
+                            );
+                            
+                            if (emailRes.success) {
+                                result = { message: "Calendar invite sent successfully." };
+                            } else {
+                                result = { error: "Failed to send calendar invite." };
+                            }
+                        }
+                    }
                 }
             } catch (err: any) {
                 logger.error("Tool execution error:", err);
@@ -407,7 +473,7 @@ If the user wants to check their appointments:
             contents: formattedContents,
             config: {
                 systemInstruction,
-                tools: [{ functionDeclarations: [getServicesDecl, getStaffDecl, requestDatePickerDecl, checkAvailabilityDecl, bookAppointmentDecl, checkAppointmentsDecl] }],
+                tools: [{ functionDeclarations: [getServicesDecl, getStaffDecl, requestDatePickerDecl, checkAvailabilityDecl, bookAppointmentDecl, checkAppointmentsDecl, sendCalendarInviteDecl] }],
             }
         });
 
