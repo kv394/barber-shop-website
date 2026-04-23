@@ -446,16 +446,96 @@
         }
 
         if (data.ui && data.ui.type === 'date_picker') {
-          input.type = 'date';
-          input.focus();
-          try { input.showPicker(); } catch (e) {}
+          const container = document.createElement('div');
+          container.className = 'slots-container';
+          container.style.flexDirection = 'column';
+          container.style.alignItems = 'stretch';
+          container.style.width = '90%';
+          container.style.backgroundColor = 'var(--msg-bot-bg)';
+          container.style.padding = '12px';
+          container.style.borderRadius = '12px';
+          
+          const dateLabel = document.createElement('div');
+          dateLabel.textContent = 'Select Date:';
+          dateLabel.style.fontWeight = 'bold';
+          dateLabel.style.marginBottom = '8px';
+          dateLabel.style.color = 'var(--text-color)';
+          
+          const dateInput = document.createElement('input');
+          dateInput.type = 'date';
+          dateInput.min = new Date().toISOString().split('T')[0];
+          dateInput.style.width = '100%';
+          dateInput.style.padding = '10px';
+          dateInput.style.borderRadius = '8px';
+          dateInput.style.border = '1px solid var(--primary-color)';
+          dateInput.style.backgroundColor = 'var(--bg-color)';
+          dateInput.style.color = 'var(--text-color)';
+          dateInput.style.colorScheme = 'dark';
+          dateInput.style.marginBottom = '12px';
+          dateInput.style.boxSizing = 'border-box';
+
+          const timePlaceholder = document.createElement('div');
+          timePlaceholder.textContent = 'Time slider will appear here...';
+          timePlaceholder.style.fontSize = '13px';
+          timePlaceholder.style.color = 'var(--text-color)';
+          timePlaceholder.style.opacity = '0.5';
+          timePlaceholder.style.textAlign = 'center';
+          timePlaceholder.style.padding = '10px 0';
+
+          dateInput.addEventListener('change', (e) => {
+            if (!e.target.value) return;
+            container.style.opacity = '0.5';
+            container.style.pointerEvents = 'none';
+            sendChatRequest(e.target.value, e.target.value);
+          });
+          
+          container.appendChild(dateLabel);
+          container.appendChild(dateInput);
+          container.appendChild(timePlaceholder);
+          
+          messagesEl.appendChild(container);
+          messagesEl.scrollTop = messagesEl.scrollHeight;
         } else if (data.ui && data.ui.type === 'time_picker' && data.ui.slots && data.ui.slots.length > 0) {
           const container = document.createElement('div');
           container.className = 'slots-container';
           container.style.flexDirection = 'column';
           container.style.alignItems = 'stretch';
-          container.style.width = '80%';
+          container.style.width = '90%';
+          container.style.backgroundColor = 'var(--msg-bot-bg)';
+          container.style.padding = '12px';
+          container.style.borderRadius = '12px';
+          container.style.boxSizing = 'border-box';
+
+          const dateLabel = document.createElement('div');
+          dateLabel.textContent = 'Date:';
+          dateLabel.style.fontWeight = 'bold';
+          dateLabel.style.marginBottom = '8px';
+          dateLabel.style.color = 'var(--text-color)';
           
+          const dateInput = document.createElement('input');
+          dateInput.type = 'date';
+          dateInput.min = new Date().toISOString().split('T')[0];
+          dateInput.value = data.ui.date;
+          dateInput.style.width = '100%';
+          dateInput.style.padding = '10px';
+          dateInput.style.borderRadius = '8px';
+          dateInput.style.border = '1px solid var(--primary-color)';
+          dateInput.style.backgroundColor = 'var(--bg-color)';
+          dateInput.style.color = 'var(--text-color)';
+          dateInput.style.colorScheme = 'dark';
+          dateInput.style.marginBottom = '16px';
+          dateInput.style.boxSizing = 'border-box';
+
+          dateInput.addEventListener('change', (e) => {
+            if (!e.target.value) return;
+            container.style.opacity = '0.5';
+            container.style.pointerEvents = 'none';
+            sendChatRequest(e.target.value, e.target.value);
+          });
+          
+          container.appendChild(dateLabel);
+          container.appendChild(dateInput);
+
           const styleEl = document.createElement('style');
           styleEl.textContent = `
             .slider-with-availability {
@@ -516,6 +596,8 @@
           const confirmBtn = document.createElement('button');
           confirmBtn.className = 'slot-btn';
           confirmBtn.style.width = '100%';
+          confirmBtn.style.padding = '10px';
+          confirmBtn.style.fontWeight = 'bold';
           confirmBtn.textContent = 'Confirm Time';
 
           const updateUI = (index) => {
@@ -545,8 +627,9 @@
              const timeText = availableIndex.toString();
              
              const selectedTime = data.ui.slots[index].time;
-             container.remove();
-             sendChatRequest(timeText, selectedTime);
+             container.style.opacity = '0.5';
+             container.style.pointerEvents = 'none';
+             sendChatRequest(timeText, `${data.ui.date} at ${selectedTime}`);
           });
 
           container.appendChild(label);
