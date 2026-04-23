@@ -1,5 +1,21 @@
 (function() {
-  const scriptTag = document.currentScript;
+  let scriptTag = document.currentScript;
+  
+  if (!scriptTag || !scriptTag.getAttribute('data-shop-id')) {
+    const scripts = document.querySelectorAll('script[src*="booking-modal.js"], script[data-shop-id]');
+    for (let i = scripts.length - 1; i >= 0; i--) {
+      if (scripts[i].getAttribute('data-shop-id')) {
+        scriptTag = scripts[i];
+        break;
+      }
+    }
+  }
+
+  if (!scriptTag) {
+    console.error('Booking modal script tag not found');
+    return;
+  }
+
   const shopId = scriptTag.getAttribute('data-shop-id');
   const baseUrl = scriptTag.getAttribute('data-base-url') || 'https://barbersaas.com';
   
