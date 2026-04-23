@@ -476,6 +476,93 @@
           messagesEl.scrollTop = messagesEl.scrollHeight;
         }
 
+        const createDateCarousel = (selectedDateStr, onChange) => {
+          const carousel = document.createElement('div');
+          carousel.className = 'date-carousel';
+          carousel.style.display = 'flex';
+          carousel.style.overflowX = 'auto';
+          carousel.style.gap = '8px';
+          carousel.style.paddingBottom = '12px';
+          carousel.style.marginBottom = '16px';
+          
+          const styleEl = document.createElement('style');
+          styleEl.textContent = `
+            .date-carousel::-webkit-scrollbar { display: none; }
+            .date-carousel { -ms-overflow-style: none; scrollbar-width: none; }
+          `;
+          carousel.appendChild(styleEl);
+
+          const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+          
+          const getYYYYMMDD = (d) => {
+              const year = d.getFullYear();
+              const month = String(d.getMonth() + 1).padStart(2, '0');
+              const day = String(d.getDate()).padStart(2, '0');
+              return `${year}-${month}-${day}`;
+          };
+
+          let todayStr = getYYYYMMDD(new Date());
+          let currentSelected = selectedDateStr || todayStr;
+
+          for (let i = 0; i < 14; i++) {
+              const d = new Date();
+              d.setDate(d.getDate() + i);
+              const dateStr = getYYYYMMDD(d);
+              const isSelected = dateStr === currentSelected;
+              
+              const btn = document.createElement('button');
+              btn.style.flex = '0 0 auto';
+              btn.style.display = 'flex';
+              btn.style.flexDirection = 'column';
+              btn.style.alignItems = 'center';
+              btn.style.justifyContent = 'center';
+              btn.style.padding = '8px 16px';
+              btn.style.borderRadius = '12px';
+              btn.style.border = isSelected ? '1px solid var(--primary-color)' : '1px solid var(--border-color)';
+              btn.style.backgroundColor = isSelected ? 'rgba(212, 175, 55, 0.15)' : 'transparent';
+              btn.style.color = isSelected ? 'var(--primary-color)' : 'var(--text-color)';
+              btn.style.cursor = 'pointer';
+              btn.style.transition = 'all 0.2s ease';
+              
+              const dayName = document.createElement('span');
+              dayName.textContent = daysOfWeek[d.getDay()];
+              dayName.style.fontSize = '11px';
+              dayName.style.textTransform = 'uppercase';
+              dayName.style.opacity = isSelected ? '1' : '0.6';
+              dayName.style.marginBottom = '4px';
+              
+              const dayNumber = document.createElement('span');
+              dayNumber.textContent = d.getDate().toString();
+              dayNumber.style.fontSize = '18px';
+              dayNumber.style.fontWeight = 'bold';
+
+              btn.appendChild(dayName);
+              btn.appendChild(dayNumber);
+
+              if (!isSelected) {
+                  btn.addEventListener('mouseover', () => btn.style.backgroundColor = 'rgba(255,255,255,0.05)');
+                  btn.addEventListener('mouseout', () => btn.style.backgroundColor = 'transparent');
+              }
+
+              btn.addEventListener('click', () => {
+                  if (isSelected) return;
+                  onChange(dateStr);
+              });
+              
+              carousel.appendChild(btn);
+          }
+          
+          // Scroll to selected date if it's not the first few items
+          setTimeout(() => {
+              const selectedBtn = Array.from(carousel.children).find(child => child.tagName === 'BUTTON' && child.style.backgroundColor !== 'transparent');
+              if (selectedBtn && selectedBtn.offsetLeft > carousel.clientWidth / 2) {
+                  carousel.scrollTo({ left: selectedBtn.offsetLeft - (carousel.clientWidth / 2) + (selectedBtn.clientWidth / 2), behavior: 'smooth' });
+              }
+          }, 50);
+          
+          return carousel;
+        };
+
         if (data.ui && data.ui.type === 'date_picker') {
           const container = document.createElement('div');
           container.className = 'slots-container';
@@ -500,32 +587,17 @@
           title.style.fontWeight = 'bold';
           title.style.color = 'var(--text-color)';
           title.style.fontSize = '16px';
-
-          const dateInput = document.createElement('input');
-          dateInput.type = 'date';
-          dateInput.min = new Date().toISOString().split('T')[0];
-          dateInput.style.width = '100%';
-          dateInput.style.padding = '12px 14px';
-          dateInput.style.fontSize = '16px';
-          dateInput.style.borderRadius = '10px';
-          dateInput.style.border = '1px solid var(--primary-color)';
-          dateInput.style.backgroundColor = 'rgba(212, 175, 55, 0.05)';
-          dateInput.style.color = 'var(--text-color)';
-          dateInput.style.colorScheme = 'dark';
-          dateInput.style.boxSizing = 'border-box';
-          dateInput.style.transition = 'all 0.2s ease';
-          dateInput.style.cursor = 'pointer';
-
-          dateInput.addEventListener('change', (e) => {
-            if (!e.target.value) return;
-            container.style.opacity = '0.5';
-            container.style.pointerEvents = 'none';
-            sendChatRequest(e.target.value, false);
-          });
-
+          
           header.appendChild(title);
           container.appendChild(header);
-          container.appendChild(dateInput);          
+
+          const carousel = createDateCarousel(null, (dateStr) => {
+            container.style.opacity = '0.5';
+            container.style.pointerEvents = 'none';
+            sendChatRequest(dateStr, false);
+          });
+          container.appendChild(carousel);
+          
           messagesEl.appendChild(container);
           messagesEl.scrollTop = messagesEl.scrollHeight;
         } else if (data.ui && data.ui.type === 'time_picker' && data.ui.slots && data.ui.slots.length > 0) {
@@ -551,39 +623,20 @@
           header.style.marginBottom = '20px';
 
           const title = document.createElement('div');
-          title.textContent = 'Select Time';
+          title.textContent = 'Select Date & Time';
           title.style.fontWeight = 'bold';
           title.style.color = 'var(--text-color)';
           title.style.fontSize = '16px';
 
-          const dateInput = document.createElement('input');
-          dateInput.type = 'date';
-          dateInput.min = new Date().toISOString().split('T')[0];
-          if (data.ui.date) dateInput.value = data.ui.date;
+          header.appendChild(title);
+          container.appendChild(header);
           
-          // Make date picker look like a seamless button indicator
-          dateInput.style.padding = '6px 10px';
-          dateInput.style.fontSize = '13px';
-          dateInput.style.borderRadius = '8px';
-          dateInput.style.border = '1px solid var(--primary-color)';
-          dateInput.style.backgroundColor = 'rgba(212, 175, 55, 0.1)';
-          dateInput.style.color = 'var(--primary-color)';
-          dateInput.style.colorScheme = 'dark';
-          dateInput.style.fontWeight = '600';
-          dateInput.style.cursor = 'pointer';
-          dateInput.style.outline = 'none';
-          dateInput.style.transition = 'all 0.2s ease';
-
-          dateInput.addEventListener('change', (e) => {
-            if (!e.target.value) return;
+          const carousel = createDateCarousel(data.ui.date, (dateStr) => {
             container.style.opacity = '0.5';
             container.style.pointerEvents = 'none';
-            sendChatRequest(e.target.value, false);
+            sendChatRequest(dateStr, false);
           });
-          
-          header.appendChild(title);
-          header.appendChild(dateInput);
-          container.appendChild(header);
+          container.appendChild(carousel);
 
           const styleEl = document.createElement('style');
           styleEl.textContent = `
