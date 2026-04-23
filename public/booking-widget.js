@@ -188,6 +188,8 @@
       display: flex;
       gap: 8px;
       align-items: center;
+      background-color: var(--bg-color);
+      z-index: 10;
     }
     
     #chat-input {
@@ -241,6 +243,39 @@
       opacity: 0.5;
       cursor: not-allowed;
     }
+
+    #picker-sheet {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 75%;
+      background-color: var(--bg-color);
+      border-top: 1px solid var(--border-color);
+      border-top-left-radius: 20px;
+      border-top-right-radius: 20px;
+      box-shadow: 0 -8px 24px rgba(0,0,0,0.4);
+      display: flex;
+      flex-direction: column;
+      transform: translateY(100%);
+      transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1);
+      z-index: 100;
+      box-sizing: border-box;
+      padding: 0 16px 16px 16px;
+    }
+
+    #picker-sheet.open {
+      transform: translateY(0);
+    }
+
+    .picker-sheet-handle {
+      width: 40px;
+      height: 4px;
+      background-color: var(--border-color);
+      border-radius: 2px;
+      margin: 12px auto 16px;
+      flex-shrink: 0;
+    }
     
     .typing-indicator {
       display: inline-flex;
@@ -278,8 +313,9 @@
       gap: 8px;
       margin-top: 8px;
       margin-bottom: 12px;
-      align-self: flex-start;
-      max-width: 90%;
+      align-self: center;
+      width: 100%;
+      max-width: 100%;
       animation: slideIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.1) forwards;
     }
     
@@ -339,6 +375,7 @@
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
         </button>
       </form>
+      <div id="picker-sheet"></div>
     </div>
   `;
   shadow.appendChild(wrapper);
@@ -403,7 +440,28 @@
     if (el) el.remove();
   }
 
+  function showPickerSheet(contentElement) {
+    const sheet = shadow.getElementById('picker-sheet');
+    sheet.innerHTML = '';
+    
+    const handle = document.createElement('div');
+    handle.className = 'picker-sheet-handle';
+    sheet.appendChild(handle);
+    
+    sheet.appendChild(contentElement);
+    sheet.classList.add('open');
+  }
+
+  function hidePickerSheet() {
+    const sheet = shadow.getElementById('picker-sheet');
+    if (sheet) {
+      sheet.classList.remove('open');
+      setTimeout(() => { sheet.innerHTML = ''; }, 400);
+    }
+  }
+
   async function sendChatRequest(messageText, displayUserText) {
+    hidePickerSheet();
     if (displayUserText) {
       addMessageToUI(displayUserText, true);
     }
@@ -565,31 +623,20 @@
 
         if (data.ui && data.ui.type === 'date_picker') {
           const container = document.createElement('div');
-          container.className = 'slots-container';
+          container.style.display = 'flex';
           container.style.flexDirection = 'column';
           container.style.alignItems = 'stretch';
-          container.style.width = '95%';
-          container.style.backgroundColor = 'var(--msg-bot-bg)';
-          container.style.padding = '16px';
-          container.style.borderRadius = '16px';
-          container.style.boxSizing = 'border-box';
-          container.style.border = '1px solid var(--border-color)';
-          container.style.boxShadow = '0 4px 12px rgba(0,0,0,0.1)';
-
-          const header = document.createElement('div');
-          header.style.display = 'flex';
-          header.style.justifyContent = 'space-between';
-          header.style.alignItems = 'center';
-          header.style.marginBottom = '12px';
+          container.style.width = '100%';
 
           const title = document.createElement('div');
           title.textContent = 'Select Date';
           title.style.fontWeight = 'bold';
           title.style.color = 'var(--text-color)';
-          title.style.fontSize = '16px';
+          title.style.fontSize = '18px';
+          title.style.marginBottom = '16px';
+          title.style.textAlign = 'center';
           
-          header.appendChild(title);
-          container.appendChild(header);
+          container.appendChild(title);
 
           const carousel = createDateCarousel(null, (dateStr) => {
             container.style.opacity = '0.5';
@@ -598,35 +645,30 @@
           });
           container.appendChild(carousel);
           
-          messagesEl.appendChild(container);
-          messagesEl.scrollTop = messagesEl.scrollHeight;
+          showPickerSheet(container);
         } else if (data.ui && data.ui.type === 'time_picker' && data.ui.slots && data.ui.slots.length > 0) {
           const container = document.createElement('div');
-          container.className = 'slots-container';
+          container.style.display = 'flex';
           container.style.flexDirection = 'column';
           container.style.alignItems = 'stretch';
-          container.style.width = '95%';
-          container.style.backgroundColor = 'var(--msg-bot-bg)';
-          container.style.padding = '16px';
-          container.style.borderRadius = '16px';
-          container.style.boxSizing = 'border-box';
-          container.style.border = '1px solid var(--border-color)';
-          container.style.boxShadow = '0 4px 12px rgba(0,0,0,0.1)';
+          container.style.width = '100%';
+          container.style.flex = '1';
+          container.style.overflow = 'hidden';
 
           // Cohesive Header Row
           const header = document.createElement('div');
           header.style.display = 'flex';
           header.style.justifyContent = 'space-between';
           header.style.alignItems = 'center';
-          header.style.borderBottom = '1px solid rgba(255,255,255,0.1)';
-          header.style.paddingBottom = '16px';
-          header.style.marginBottom = '20px';
+          header.style.borderBottom = '1px solid var(--border-color)';
+          header.style.paddingBottom = '12px';
+          header.style.marginBottom = '12px';
 
           const title = document.createElement('div');
           title.textContent = 'Select Date & Time';
           title.style.fontWeight = 'bold';
           title.style.color = 'var(--text-color)';
-          title.style.fontSize = '16px';
+          title.style.fontSize = '18px';
 
           header.appendChild(title);
           container.appendChild(header);
@@ -742,8 +784,7 @@
           container.appendChild(timeGrid);
           container.appendChild(confirmBtn);
 
-          messagesEl.appendChild(container);
-          messagesEl.scrollTop = messagesEl.scrollHeight;
+          showPickerSheet(container);
         } else if (data.ui && data.ui.type === 'qr_code' && data.ui.qrCodeUrl) {
           const container = document.createElement('div');
           container.style.textAlign = 'center';
