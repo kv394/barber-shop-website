@@ -56,9 +56,9 @@ export default function BookingWizard({ shopId }: { shopId: string }) {
       fetch(`/api/shops/${shopId}/services`).then(r => r.ok ? r.json() : []),
       fetch(`/api/shops/${shopId}/staff`).then(r => r.ok ? r.json() : []),
       fetch(`/api/shops/${shopId}/business-hours`).then(r => r.ok ? r.json() : {}),
-    ]).then(([svcs, stf, hours]) => {
-      setServices(svcs);
-      setStaff(stf);
+    ]).then(([svcs, stfResponse, hours]) => {
+      setServices(Array.isArray(svcs) ? svcs : []);
+      setStaff(Array.isArray(stfResponse) ? stfResponse : (stfResponse.staff || []));
       setShopHours(hours);
       setLoading(false);
     }).catch(err => {
