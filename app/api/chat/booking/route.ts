@@ -56,6 +56,18 @@ const bookAppointmentDecl: FunctionDeclaration = {
   }
 };
 
+const checkAppointmentsDecl: FunctionDeclaration = {
+  name: 'check_appointments',
+  description: 'Check existing upcoming appointments for a user',
+  parameters: {
+    type: Type.OBJECT,
+    properties: {
+      clientPhone: { type: Type.STRING, description: 'Client phone number' },
+      clientEmail: { type: Type.STRING, description: 'Client email address' }
+    }
+  }
+};
+
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*', // For strict security, change to specific domains
   'Access-Control-Allow-Methods': 'POST, OPTIONS',
@@ -163,7 +175,7 @@ export async function POST(req: Request) {
     }
 
     const systemInstruction = `You are a helpful AI booking assistant for a barbershop named "${shop.name}". 
-Your goal is to help users discover services, find availability, and book appointments.
+Your goal is to help users discover services, find availability, book appointments, and check their existing appointments.
 Always be polite, concise, and highly intuitive. You are chatting via a lightweight website widget.
 The shop timezone is ${shop.timezone}.
 
@@ -176,12 +188,16 @@ CRITICAL UX INSTRUCTIONS:
 - Therefore, BEFORE calling 'check_availability' or 'book_appointment', you MUST call 'get_services' (and 'get_staff' if needed) AGAIN in the SAME turn to retrieve the correct IDs based on the user's selection. NEVER guess IDs or pass names/numbers as IDs.
 - Keep your messages very short and easy to read on mobile. Avoid large walls of text.
 
-Follow this flow:
+Follow this flow for booking:
 1. Ask what service they want. Call get_services to list them. Present as a numbered list.
 2. Ask if they have a preferred staff member (call get_staff). Present as a numbered list (always include an "Any staff" option).
 3. Call request_date_picker to prompt the user for a date. Once they provide it, call check_availability to give them specific time slots. Present slots as a numbered list.
 4. Once they pick a time, ask for their name, phone, and optionally email.
-5. Call book_appointment to finalize.`;
+5. Call book_appointment to finalize.
+
+If the user wants to check their appointments:
+1. Ask for their phone number or email if not already provided.
+2. Call check_appointments to retrieve their upcoming appointments and present them clearly.`;
 
     // Let's reconstruct the conversation for a fresh generateContent call instead of chats.create
     const formattedContents: any[] = truncatedMessages.map((m: any) => ({
@@ -194,7 +210,7 @@ Follow this flow:
         contents: formattedContents,
         config: {
             systemInstruction,
-            tools: [{ functionDeclarations: [getServicesDecl, getStaffDecl, requestDatePickerDecl, checkAvailabilityDecl, bookAppointmentDecl] }],
+            tools: [{ functionDeclarations: [getServicesDecl, getStaffDecl, requestDatePickerDecl, checkAvailabilityDecl, bookAppointmentDecl, checkAppointmentsDecl] }],
         }
     });
 
@@ -315,6 +331,55 @@ Follow this flow:
                     } else {
                         result = { success: false, error: "Service not found" };
                     }
+                } else if (call.name === 'check_appointments') {
+                    const args = call.args as any;
+                    const { clientPhone, clientEmail } = args;
+                    
+                    if (!clientPhone && !clientEmail) {
+                        result = { error: "Please provide either a phone number or an email address." };
+                    } else {
+                        const userConditions = [];
+                        if (clientPhone) userConditions.push({ phone: clientPhone });
+                        if (clientEmail) userConditions.push({ email: clientEmail });
+                        
+                        const users = await prisma.user.findMany({
+                            where: { shopId, OR: userConditions },
+                            select: { id: true }
+                        });
+                        
+                        if (users.length === 0) {
+                            result = { message: "No user found with that contact information." };
+                        } else {
+                            const userIds = users.map(u => u.id);
+                            const appointments = await prisma.appointment.findMany({
+                                where: { 
+                                    shopId, 
+                                    userId: { in: userIds },
+                                    startTime: { gte: new Date() },
+                                    status: { notIn: ['CANCELLED', 'NO_SHOW'] }
+                                },
+                                include: {
+                                    service: { select: { name: true } },
+                                    staff: { select: { name: true } }
+                                },
+                                orderBy: { startTime: 'asc' },
+                                take: 5
+                            });
+                            
+                            if (appointments.length === 0) {
+                                result = { message: "You have no upcoming appointments." };
+                            } else {
+                                result = { 
+                                    appointments: appointments.map(apt => ({
+                                        service: apt.service?.name,
+                                        staff: apt.staff?.name,
+                                        date: apt.startTime.toISOString().split('T')[0],
+                                        time: apt.startTime.toISOString().split('T')[1].substring(0, 5)
+                                    }))
+                                };
+                            }
+                        }
+                    }
                 }
             } catch (err: any) {
                 logger.error("Tool execution error:", err);
@@ -342,7 +407,7 @@ Follow this flow:
             contents: formattedContents,
             config: {
                 systemInstruction,
-                tools: [{ functionDeclarations: [getServicesDecl, getStaffDecl, requestDatePickerDecl, checkAvailabilityDecl, bookAppointmentDecl] }],
+                tools: [{ functionDeclarations: [getServicesDecl, getStaffDecl, requestDatePickerDecl, checkAvailabilityDecl, bookAppointmentDecl, checkAppointmentsDecl] }],
             }
         });
 
