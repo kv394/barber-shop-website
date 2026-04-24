@@ -52,14 +52,27 @@ export default function BookingWizard({ shopId }: { shopId: string }) {
   }, []);
 
   useEffect(() => {
+    const searchParams = new URLSearchParams(window.location.search);
+    const initialServiceId = searchParams.get('serviceId');
+
     Promise.all([
       fetch(`/api/shops/${shopId}/services`).then(r => r.ok ? r.json() : []),
       fetch(`/api/shops/${shopId}/staff`).then(r => r.ok ? r.json() : []),
       fetch(`/api/shops/${shopId}/business-hours`).then(r => r.ok ? r.json() : {}),
     ]).then(([svcs, stfResponse, hours]) => {
-      setServices(Array.isArray(svcs) ? svcs : []);
+      const parsedServices = Array.isArray(svcs) ? svcs : [];
+      setServices(parsedServices);
       setStaff(Array.isArray(stfResponse) ? stfResponse : (stfResponse.staff || []));
       setShopHours(hours);
+
+      if (initialServiceId) {
+        const found = parsedServices.find((s: any) => s.id === initialServiceId);
+        if (found) {
+          setSelectedService(found);
+          setStep(2);
+        }
+      }
+
       setLoading(false);
     }).catch(err => {
       console.error("Error loading wizard data", err);

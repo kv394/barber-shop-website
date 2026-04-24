@@ -99,7 +99,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
 
     const handleBookClick = (service: any) => {
         if (typeof window !== 'undefined' && (window as any).BarberBooking) {
-            (window as any).BarberBooking.open();
+            (window as any).BarberBooking.open(service?.id);
         } else if (typeof window !== 'undefined' && (window as any).openBarberSaasChat) {
             (window as any).openBarberSaasChat(service?.name);
         } else {
@@ -120,7 +120,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
             const service = shop.services?.find((s: any) => s.id === serviceId) || shop.services?.[0];
 
             if (typeof window !== 'undefined' && (window as any).BarberBooking) {
-                (window as any).BarberBooking.open();
+                (window as any).BarberBooking.open(service?.id);
             } else if (typeof window !== 'undefined' && (window as any).openBarberSaasChat) {
                 (window as any).openBarberSaasChat(service?.name);
             } else if (service) {

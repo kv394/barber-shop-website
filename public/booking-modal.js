@@ -120,8 +120,12 @@
 
   // Expose a global function to open the modal
   window.BarberBooking = {
-    open: function() {
-      iframe.src = `${baseUrl}/embed/book/${shopId}`;
+    open: function(serviceId) {
+      let url = `${baseUrl}/embed/book/${shopId}`;
+      if (serviceId) {
+        url += `?serviceId=${encodeURIComponent(serviceId)}`;
+      }
+      iframe.src = url;
       modalOverlay.style.display = 'flex';
     }
   };
