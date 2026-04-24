@@ -11,6 +11,7 @@ export default function BookingWizard({ shopId }: { shopId: string }) {
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(true);
   const [services, setServices] = useState<Service[]>([]);
+  const [serviceSearchQuery, setServiceSearchQuery] = useState('');
   const [staff, setStaff] = useState<Staff[]>([]);
   const [shopHours, setShopHours] = useState<any>(null);
   
@@ -282,7 +283,16 @@ export default function BookingWizard({ shopId }: { shopId: string }) {
       <div className="flex-1 overflow-y-auto p-4 custom-scrollbar">
         {step === 1 && (
           <div className="space-y-3">
-            {services.map(s => (
+            <div className="mb-2">
+              <input
+                type="text"
+                placeholder="Search services..."
+                className="w-full border p-3 rounded-xl bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-900 border-transparent transition-all"
+                value={serviceSearchQuery}
+                onChange={(e) => setServiceSearchQuery(e.target.value)}
+              />
+            </div>
+            {services.filter(s => s.name.toLowerCase().includes(serviceSearchQuery.toLowerCase())).map(s => (
               <div 
                 key={s.id} 
                 onClick={() => { setSelectedService(s); handleNext(); }}
@@ -296,6 +306,9 @@ export default function BookingWizard({ shopId }: { shopId: string }) {
               </div>
             ))}
             {services.length === 0 && <p className="text-gray-500 text-center py-4">No services available.</p>}
+            {services.length > 0 && services.filter(s => s.name.toLowerCase().includes(serviceSearchQuery.toLowerCase())).length === 0 && (
+              <p className="text-gray-500 text-center py-4">No services match your search.</p>
+            )}
           </div>
         )}
 
