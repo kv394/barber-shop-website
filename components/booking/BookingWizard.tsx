@@ -267,7 +267,7 @@ export default function BookingWizard({ shopId }: { shopId: string }) {
   return (
     <div className="flex flex-col h-full bg-white relative font-sans w-full max-w-md mx-auto">
       {/* Header */}
-      <div className="flex items-center justify-between p-4 border-b border-gray-100 shrink-0">
+      <div className="flex items-center justify-between p-4 pr-12 border-b border-gray-100 shrink-0">
         <div className="flex items-center space-x-2">
           {step > 1 && (
             <button onClick={handleBack} className="text-gray-500 hover:text-black">
