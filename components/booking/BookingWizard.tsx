@@ -19,6 +19,7 @@ export default function BookingWizard({ shopId }: { shopId: string }) {
   const [selectedService, setSelectedService] = useState<Service | null>(null);
   const [selectedStaff, setSelectedStaff] = useState<Staff | null>(null);
   const [selectedDate, setSelectedDate] = useState<string>('');
+  const [tempDate, setTempDate] = useState<string>('');
   const [selectedTime, setSelectedTime] = useState<string>('');
   
   // Details state
@@ -337,16 +338,30 @@ export default function BookingWizard({ shopId }: { shopId: string }) {
           <div className="space-y-6">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">Select Date</label>
-              <input 
-                type="date" 
-                min={new Date().toISOString().split('T')[0]}
-                className="w-full border p-3 rounded-xl bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-900 border-transparent transition-all"
-                value={selectedDate}
-                onChange={e => { setSelectedDate(e.target.value); setSelectedTime(''); }}
-              />
-            </div>
-            {selectedDate && (
-              <div>
+              <div className="flex gap-3">
+                <input
+                  type="date"
+                  min={new Date().toISOString().split('T')[0]}
+                  className="flex-1 border p-4 text-lg rounded-xl bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-900 border-transparent transition-all cursor-pointer"
+                  value={tempDate || selectedDate}
+                  onChange={e => { 
+                    setTempDate(e.target.value); 
+                    setSelectedDate('');
+                    setSelectedTime(''); 
+                  }}
+                />
+                {tempDate && !selectedDate && (
+                  <button 
+                    onClick={() => setSelectedDate(tempDate)}
+                    className="bg-gray-900 text-white px-6 py-4 rounded-xl font-medium text-lg hover:bg-black transition-colors"
+                  >
+                    OK
+                  </button>
+                )}
+              </div>
+              </div>
+              {selectedDate && (
+              <div className="pt-2">
                 <label className="block text-sm font-medium text-gray-700 mb-2">Select Time</label>
                 {loadingSlots ? (
                     <div className="py-8 flex justify-center"><div className="animate-spin rounded-full h-6 w-6 border-b-2 border-gray-900"></div></div>
