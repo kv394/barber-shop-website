@@ -1,5 +1,8 @@
 "use client";
 import { useState, useEffect, useCallback, useMemo } from 'react';
+import { DayPicker } from 'react-day-picker';
+import 'react-day-picker/dist/style.css';
+import { format } from 'date-fns';
 
 // Steps: 1: Service, 2: Staff, 3: DateTime, 4: Details
 
@@ -20,6 +23,7 @@ export default function BookingWizard({ shopId }: { shopId: string }) {
   const [selectedStaff, setSelectedStaff] = useState<Staff | null>(null);
   const [selectedDate, setSelectedDate] = useState<string>('');
   const [tempDate, setTempDate] = useState<string>('');
+  const [tempPickerDate, setTempPickerDate] = useState<Date | undefined>(undefined);
   const [selectedTime, setSelectedTime] = useState<string>('');
   
   // Details state
@@ -338,30 +342,51 @@ export default function BookingWizard({ shopId }: { shopId: string }) {
           <div className="space-y-6">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">Select Date</label>
-              <div className="flex gap-3">
-                <input
-                  type="date"
-                  min={new Date().toISOString().split('T')[0]}
-                  className="flex-1 border p-4 text-lg rounded-xl bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-900 border-transparent transition-all cursor-pointer"
-                  value={tempDate || selectedDate}
-                  onChange={e => { 
-                    setTempDate(e.target.value); 
-                    setSelectedDate('');
-                    setSelectedTime(''); 
-                  }}
-                />
-                {tempDate && !selectedDate && (
-                  <button 
-                    onClick={() => setSelectedDate(tempDate)}
-                    className="bg-gray-900 text-white px-6 py-4 rounded-xl font-medium text-lg hover:bg-black transition-colors"
-                  >
-                    OK
-                  </button>
-                )}
-              </div>
+              {!selectedDate ? (
+                <div className="flex justify-center bg-gray-50 p-4 rounded-xl border border-gray-200">
+                  <DayPicker
+                    mode="single"
+                    selected={tempPickerDate}
+                    onSelect={(date) => {
+                      setTempPickerDate(date);
+                      if (date) {
+                        setTempDate(format(date, 'yyyy-MM-dd'));
+                        setSelectedTime('');
+                      }
+                    }}
+                    disabled={{ before: new Date(new Date().setHours(0,0,0,0)) }}
+                    footer={
+                      tempPickerDate ? (
+                        <div className="mt-4 pt-4 border-t border-gray-200">
+                          <button
+                            onClick={() => {
+                              if (tempPickerDate) {
+                                setSelectedDate(format(tempPickerDate, 'yyyy-MM-dd'));
+                              }
+                            }}
+                            className="w-full bg-gray-900 text-white px-6 py-3 rounded-xl font-medium text-lg hover:bg-black transition-colors"
+                          >
+                            OK
+                          </button>
+                        </div>
+                      ) : null
+                    }
+                  />
+                </div>
+              ) : (
+                <div 
+                  className="flex justify-between items-center p-4 border rounded-xl bg-gray-50 border-gray-200 cursor-pointer hover:border-gray-800 transition-colors"
+                  onClick={() => setSelectedDate('')}
+                >
+                  <span className="font-medium text-gray-800">
+                    {format(new Date(selectedDate + 'T00:00:00'), 'MMMM d, yyyy')}
+                  </span>
+                  <span className="text-sm text-gray-500">Change</span>
+                </div>
+              )}
               </div>
               {selectedDate && (
-              <div className="pt-2">
+              <div className="pt-4">
                 <label className="block text-sm font-medium text-gray-700 mb-2">Select Time</label>
                 {loadingSlots ? (
                     <div className="py-8 flex justify-center"><div className="animate-spin rounded-full h-6 w-6 border-b-2 border-gray-900"></div></div>
