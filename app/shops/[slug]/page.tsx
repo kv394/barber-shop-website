@@ -266,7 +266,7 @@ export default async function PublicShopPage({
         />
         <AIWidget shopId={shop.id} themeColor={primaryColor} />
         {/* Inject the booking modal script for this shop reliably */}
-        <BookingModalScript shopId={shop.id} />
+        <BookingModalScript shopId={shop.id} themeColor={primaryColor} templateType={templateType} />
       </>
   );
 }

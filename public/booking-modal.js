@@ -17,6 +17,8 @@
   }
 
   const shopId = scriptTag.getAttribute('data-shop-id');
+  const themeColor = scriptTag.getAttribute('data-theme-color') || '';
+  const templateType = scriptTag.getAttribute('data-template-type') || '';
   const scriptTagSrc = scriptTag.src || 'https://barbersaas.com/booking-modal.js';
   let baseUrl = 'https://barbersaas.com';
   try {
@@ -122,8 +124,18 @@
   window.BarberBooking = {
     open: function(serviceId) {
       let url = `${baseUrl}/embed/book/${shopId}`;
+      let params = [];
       if (serviceId) {
-        url += `?serviceId=${encodeURIComponent(serviceId)}`;
+        params.push(`serviceId=${encodeURIComponent(serviceId)}`);
+      }
+      if (themeColor) {
+        params.push(`themeColor=${encodeURIComponent(themeColor)}`);
+      }
+      if (templateType) {
+        params.push(`templateType=${encodeURIComponent(templateType)}`);
+      }
+      if (params.length > 0) {
+        url += '?' + params.join('&');
       }
       iframe.src = url;
       modalOverlay.style.display = 'flex';
