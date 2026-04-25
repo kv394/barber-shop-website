@@ -10,7 +10,7 @@ export async function POST(req: Request, { params }: { params: Promise<{ shopId:
     const authResult = await requireShopRole(shopId, ['SITE_ADMIN', 'SHOP_ADMIN', 'STAFF']);
     if (isAuthError(authResult)) return authResult;
 
-    const { name, description, sku, barcode, price, cost, taxRate, trackInventory, inventoryCount, reorderPoint, type, supplier } = await req.json();
+    const { name, description, sku, barcode, price, cost, taxRate, trackInventory, inventoryCount, reorderPoint, type, supplier, isSellable } = await req.json();
 
     if (!name || price === undefined) {
       return NextResponse.json({ error: 'Name and price are required' }, { status: 400 });
@@ -32,7 +32,7 @@ export async function POST(req: Request, { params }: { params: Promise<{ shopId:
       return NextResponse.json({ error: 'Tax rate must be between 0 and 1' }, { status: 400 });
     }
 
-    const validTypes = ['RETAIL', 'PROFESSIONAL', 'CONSUMABLE'];
+    const validTypes = ['RETAIL', 'PROFESSIONAL', 'CONSUMABLE', 'BACKBAR'];
 
     const product = await prisma.product.create({
       data: {
@@ -45,6 +45,7 @@ export async function POST(req: Request, { params }: { params: Promise<{ shopId:
         cost: parsedCost,
         taxRate: parsedTaxRate,
         trackInventory: !!trackInventory,
+        isSellable: isSellable ?? true,
         inventoryCount: Math.max(0, parsedInventory),
         reorderPoint: reorderPoint ? Math.max(0, parseInt(reorderPoint, 10) || 0) : 0,
         type: validTypes.includes(type) ? type : 'RETAIL',

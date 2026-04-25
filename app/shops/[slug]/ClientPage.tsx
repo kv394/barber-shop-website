@@ -97,6 +97,37 @@ function ReviewsSection({ reviews, variant = 'dark' }: { reviews: any[]; variant
   );
 }
 
+function CustomPageContent({ content, shop, themeColor, className }: { content: string, shop: any, themeColor?: string, className?: string }) {
+  if (!content) return null;
+  const parts = content.split('\x24{products}');
+  if (parts.length === 1) {
+    return <div className={className} dangerouslySetInnerHTML={{ __html: content }} />;
+  }
+
+  const sellableProducts = shop.products?.filter((product: any) => product.isSellable !== false) || [];
+
+  return (
+    <div className={className}>
+      {parts.map((part, index) => (
+        <div key={index}>
+          <div dangerouslySetInnerHTML={{ __html: part }} />
+          {index < parts.length - 1 && sellableProducts.length > 0 && (
+            <div className="not-prose grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 my-8 font-sans">
+              {sellableProducts.map((product: any) => (
+                <div key={product.id} className="border border-crm-border p-6 rounded-xl bg-crm-surface shadow-sm hover:shadow-md transition-shadow flex flex-col">
+                  <h3 className="font-bold text-lg mb-2" style={themeColor ? { color: themeColor } : {}}>{product.name}</h3>
+                  <p className="text-crm-muted text-[13px] mb-4 flex-grow">{product.description}</p>
+                  <div className="font-bold text-crm-text">\x24{typeof product.price === 'number' ? product.price.toFixed(2) : '0.00'}</div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      ))}
+    </div>
+  );
+}
+
 export default function ClientPage({ shop, templateType, primaryColor, secondaryColor, sportRed, reviews = [], dynamicTemplateHtml, dynamicTemplateCss }: any) {
     const [selectedService, setSelectedService] = useState<any | null>(null);
     const pathname = usePathname() || '/';
@@ -295,7 +326,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
 
                     <section key={p.id} id={p.id} className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 min-h-[60vh]">
                         <h1 className="font-black uppercase italic mb-8 text-2xl font-bold" style={{ color: sportRed }}>{p.title}</h1>
-                        <div className="prose prose-lg max-w-none text-crm-text" dangerouslySetInnerHTML={{ __html: p.content || '' }} />
+                        <CustomPageContent content={p.content || ""} shop={shop} themeColor={sportRed} className="prose prose-lg max-w-none text-crm-text" />
                     </section>
             ))}
 
@@ -402,7 +433,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
 
                 <section key={p.id} id={p.id} className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 min-h-[60vh]">
                     <h1 className="font-bold text-crm-text mb-8 text-2xl font-bold" style={{ color: primaryColor }}>{p.title}</h1>
-                    <div className="prose prose-lg max-w-none text-crm-text" dangerouslySetInnerHTML={{ __html: p.content || '' }} />
+                    <CustomPageContent content={p.content || ""} shop={shop} themeColor={primaryColor} className="prose prose-lg max-w-none text-crm-text" />
                 </section>
             ))}
 
@@ -495,7 +526,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
 
                     <section key={p.id} id={p.id} className="max-w-3xl mx-auto min-h-[60vh]">
                         <h1 className="font-black uppercase tracking-tighter mb-8 text-center text-2xl font-bold">{p.title}</h1>
-                        <div className="prose prose-invert prose-lg max-w-none text-crm-muted font-sans" dangerouslySetInnerHTML={{ __html: p.content || '' }} />
+                        <CustomPageContent content={p.content || ""} shop={shop} className="prose prose-invert prose-lg max-w-none text-crm-muted font-sans" />
                     </section>
             ))}
 
@@ -562,7 +593,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                 <section key={p.id} id={p.id} className="max-w-4xl mx-auto min-h-[60vh]">
                     <div className="bg-crm-surface backdrop-blur-sm border border-status-pending/30 rounded-lg p-8 md:p-12">
                         <h1 className="font-bold bg-clip-text text-transparent bg-gradient-to-r from-orange-400 to-purple-400 mb-8 text-2xl font-bold">{p.title}</h1>
-                        <div className="prose prose-invert prose-lg max-w-none text-purple-200/80" dangerouslySetInnerHTML={{ __html: p.content || '' }} />
+                        <CustomPageContent content={p.content || ""} shop={shop} className="prose prose-invert prose-lg max-w-none text-purple-200/80" />
                     </div>
                 </section>
             ))}
@@ -814,7 +845,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                  <section key={p.id} id={p.id} className="py-32 px-8 min-h-[70vh]">
                     <div className="max-w-4xl mx-auto">
                         <h1 className="font-headline mb-12 text-2xl font-bold" style={{ color: primaryColor }}>{p.title}</h1>
-                        <div className="prose prose-invert prose-lg max-w-none font-body text-[#d0c5af]" dangerouslySetInnerHTML={{ __html: p.content || '' }} />
+                        <CustomPageContent content={p.content || ""} shop={shop} themeColor={primaryColor} className="prose prose-invert prose-lg max-w-none font-body text-[#d0c5af]" />
                     </div>
                 </section>
             ))}
@@ -913,7 +944,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
 
                 <section key={p.id} id={p.id} className="max-w-4xl mx-auto px-6 py-32 min-h-[60vh]">
                     <h1 className="font-light tracking-tight mb-12 text-2xl font-bold" style={{ color: primaryColor }}>{p.title}</h1>
-                    <div className="prose prose-lg max-w-none text-crm-muted" dangerouslySetInnerHTML={{ __html: p.content || '' }} />
+                    <CustomPageContent content={p.content || ""} shop={shop} themeColor={primaryColor} className="prose prose-lg max-w-none text-crm-muted" />
                 </section>
             ))}
 
@@ -989,7 +1020,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
 
                 <section key={p.id} id={p.id} className="max-w-4xl mx-auto px-8 py-32 min-h-[60vh]">
                     <h1 className="font-bold uppercase tracking-widest mb-12 text-center text-2xl font-bold" style={{ color: primaryColor }}>{p.title}</h1>
-                    <div className="prose prose-lg max-w-none text-[#5a4634]" dangerouslySetInnerHTML={{ __html: p.content || '' }} />
+                    <CustomPageContent content={p.content || ""} shop={shop} themeColor={primaryColor} className="prose prose-lg max-w-none text-[#5a4634]" />
                 </section>
             ))}
 
@@ -1132,7 +1163,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
             <section key={p.id} id={p.id} className="pt-32 pb-20 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto min-h-[80vh]">
                <div className="bg-crm-surface p-8 md:p-12 rounded-2xl border border-crm-border shadow-sm shadow-xl">
                   <h1 className="font-bold mb-8 text-2xl font-bold" style={{ color: primaryColor }}>{p.title}</h1>
-                  <div className="prose prose-invert prose-lg max-w-none text-crm-muted" dangerouslySetInnerHTML={{ __html: p.content || '' }} />
+                  <CustomPageContent content={p.content || ""} shop={shop} themeColor={primaryColor} className="prose prose-invert prose-lg max-w-none text-crm-muted" />
                </div>
             </section>
             ))}

@@ -15,14 +15,14 @@ export default function ProductManager({ shopId, products }: { shopId: string, p
   const [editBarcodeValue, setEditBarcodeValue] = useState('');
   
   const resetForm = () => {
-    setFormData({ name: '', price: '', inventoryCount: '0', reorderPoint: '0', trackInventory: false, type: 'RETAIL', sku: '', barcode: '' });
+    setFormData({ name: '', price: '', inventoryCount: '0', reorderPoint: '0', trackInventory: false, type: 'RETAIL', sku: '', barcode: '', isSellable: true });
     setEditingProduct(null);
   };
 
   const [formData, setFormData] = useState({
     name: '', price: '', inventoryCount: '0', 
     reorderPoint: '0', trackInventory: false, 
-    type: 'RETAIL', sku: '', barcode: ''
+    type: 'RETAIL', sku: '', barcode: '', isSellable: true
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -68,7 +68,8 @@ export default function ProductManager({ shopId, products }: { shopId: string, p
       trackInventory: product.trackInventory,
       type: product.type,
       sku: product.sku || '',
-      barcode: product.barcode || ''
+      barcode: product.barcode || '',
+      isSellable: product.isSellable ?? true
     });
     setIsAdding(true);
     // Scroll to top where the form is
@@ -132,6 +133,11 @@ export default function ProductManager({ shopId, products }: { shopId: string, p
               <label htmlFor="trackInventory" className="font-medium text-crm-muted text-[13px]">Track Inventory</label>
             </div>
             
+            <div className="flex items-center space-x-2 mt-6">
+              <input type="checkbox" id="isSellable" checked={formData.isSellable} onChange={(e) => setFormData({ ...formData, isSellable: e.target.checked })} className="rounded border-crm-border bg-crm-bg text-crm-accent focus:ring-crm-primary" />
+              <label htmlFor="isSellable" className="font-medium text-crm-muted text-[13px]">Sellable to Customer</label>
+            </div>
+
             {formData.trackInventory && (
               <>
                 <div>
@@ -168,6 +174,7 @@ export default function ProductManager({ shopId, products }: { shopId: string, p
               <th className="px-6 py-4">Product Name</th>
               <th className="px-6 py-4">Price</th>
               <th className="px-6 py-4">Type</th>
+              <th className="px-6 py-4">Sellable</th>
               <th className="px-6 py-4">Stock</th>
               <th className="px-6 py-4 text-right">Actions</th>
             </tr>
@@ -198,6 +205,13 @@ export default function ProductManager({ shopId, products }: { shopId: string, p
                   <span className={`px-2 py-1 rounded-full text-[11px] font-medium ${product.type === 'RETAIL' ? 'bg-status-info/20 text-status-info' : 'bg-crm-accent/20 text-crm-accent'}`}>
                     {product.type}
                   </span>
+                </td>
+                <td className="px-6 py-4">
+                  {product.isSellable ? (
+                    <span className="text-status-confirmed">Yes</span>
+                  ) : (
+                    <span className="text-crm-muted">No</span>
+                  )}
                 </td>
                 <td className="px-6 py-4">
                   {product.trackInventory ? (

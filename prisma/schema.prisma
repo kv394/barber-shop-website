@@ -152,6 +152,7 @@ model Product {
   inventoryCount Int         @default(0)
   reorderPoint   Int         @default(0)
   type           ProductType @default(RETAIL) // RETAIL, BACKBAR
+  isSellable     Boolean     @default(true)
   supplier       String?
 
   shopId           String

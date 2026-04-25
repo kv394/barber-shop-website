@@ -48,6 +48,7 @@ export async function PATCH(
         price: body.price,
         type: body.type,
         trackInventory: body.trackInventory,
+        isSellable: body.isSellable,
         inventoryCount: body.inventoryCount,
         reorderPoint: body.reorderPoint,
         sku: body.sku,
