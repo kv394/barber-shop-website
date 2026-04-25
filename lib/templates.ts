@@ -1,4 +1,4 @@
-export type TemplateType = 'modern' | 'classic' | 'minimal' | 'vibrant' | 'noir' | 'sunset' | 'corporate' | 'sporty' | 'editorial' | 'social' | 'off';
+export type TemplateType = 'modern' | 'classic' | 'minimal' | 'vibrant' | 'noir' | 'sunset' | 'corporate' | 'sporty' | 'editorial';
 
 export interface Template {
   name: string;
