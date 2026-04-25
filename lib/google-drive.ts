@@ -185,7 +185,7 @@ export async function listFilesInPath(path: string): Promise<Array<{ id: string,
   return (response.data.files || []).map(f => ({
     id: f.id!,
     name: f.name || 'Unknown',
-    url: `https://drive.google.com/uc?export=view&id=${f.id}`
+    url: `https://lh3.googleusercontent.com/d/${f.id}`
   }));
 }
 export async function uploadFileToPath(path: string, fileName: string, mimeType: string, buffer: Buffer): Promise<string | null> {

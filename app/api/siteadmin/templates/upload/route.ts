@@ -105,8 +105,8 @@ export async function POST(request: NextRequest) {
     // Second pass: Replace local paths in HTML/CSS with the new Drive URLs
     for (const [fileName, fileId] of Object.entries(fileMap)) {
       if (!fileName.endsWith('.html') && !fileName.endsWith('.css')) {
-        // e.g. "screen.png" -> "https://drive.google.com/uc?export=view&id=12345"
-        const assetUrl = `https://drive.google.com/uc?export=view&id=${fileId}`;
+        // e.g. "screen.png" -> "https://lh3.googleusercontent.com/d/12345"
+        const assetUrl = `https://lh3.googleusercontent.com/d/${fileId}`;
         const regex = new RegExp(fileName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g');
         htmlCode = htmlCode.replace(regex, assetUrl);
         cssCode = cssCode.replace(regex, assetUrl);
