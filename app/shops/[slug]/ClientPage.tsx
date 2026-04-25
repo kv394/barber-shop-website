@@ -336,13 +336,15 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                     </div>
                 </section>
     
-                \n\n            {pages.filter((p: any) => p.isVisible).map((p: any) => (
+                {pages.filter((p: any) => p.isVisible).map((p: any) => (
 
                     <section key={p.id} id={p.id} className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 min-h-[60vh]">
                         <h1 className="font-black uppercase italic mb-8 text-2xl font-bold" style={{ color: sportRed }}>{p.title}</h1>
                         <CustomPageContent content={p.content || ""} shop={shop} themeColor={sportRed} className="prose prose-lg max-w-none text-crm-text"  onBookClick={handleBookClick} />
                     </section>
-            ))}\n\n              {pages.filter((p: any) => p.isVisible).map((p: any) => (
+            ))}
+
+              {pages.filter((p: any) => p.isVisible).map((p: any) => (
 
             <section key={p.id} id={p.id} className="pt-32 pb-20 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto min-h-[80vh]">
                <div className="bg-crm-surface p-8 md:p-12 rounded-2xl border border-crm-border shadow-sm shadow-xl">
@@ -350,7 +352,9 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                   <CustomPageContent content={p.content || ""} shop={shop} themeColor={primaryColor} className="prose prose-invert prose-lg max-w-none text-crm-muted"  onBookClick={handleBookClick} />
                </div>
             </section>
-            ))}\n\n          {/* Services Section */}
+            ))}
+
+          {/* Services Section */}
                 <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
                     <div className="text-center mb-16">
                         <h2 className="font-black uppercase italic mb-2 text-xl font-bold">Our Services</h2>
@@ -404,7 +408,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                             <div>
                                 <h4 className="font-bold mb-6 text-crm-muted text-base font-semibold">Quick Links</h4>
                                 <ul className="space-y-4 font-bold">
-                                    <li><a href="#" className="hover:text-status-cancelled transition-colors">Services</a></li>
+                                    
                                 </ul>
                             </div>
                             <div>
@@ -462,13 +466,15 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                 </div>
             </section>
     
-            \n\n            {pages.filter((p: any) => p.isVisible).map((p: any) => (
+            {pages.filter((p: any) => p.isVisible).map((p: any) => (
 
                 <section key={p.id} id={p.id} className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 min-h-[60vh]">
                     <h1 className="font-bold text-crm-text mb-8 text-2xl font-bold" style={{ color: primaryColor }}>{p.title}</h1>
                     <CustomPageContent content={p.content || ""} shop={shop} themeColor={primaryColor} className="prose prose-lg max-w-none text-crm-text"  onBookClick={handleBookClick} />
                 </section>
-            ))}\n\n            <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+            ))}
+
+            <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
               <h2 className="font-bold text-center text-crm-text mb-12 text-xl font-bold">Our Services</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {shop.services?.map((service: any) => (
@@ -560,35 +566,13 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                 <p className="text-crm-muted mt-2 text-[13px]">{shop.description}</p>
               </header>
     
-              \n\n            {pages.filter((p: any) => p.isVisible).map((p: any) => (
+              {pages.filter((p: any) => p.isVisible).map((p: any) => (
 
                     <section key={p.id} id={p.id} className="max-w-3xl mx-auto min-h-[60vh]">
                         <h1 className="font-black uppercase tracking-tighter mb-8 text-center text-2xl font-bold">{p.title}</h1>
                         <CustomPageContent content={p.content || ""} shop={shop} className="prose prose-invert prose-lg max-w-none text-crm-muted font-sans"  onBookClick={handleBookClick} />
                     </section>
-            ))}\n\n            <section className="max-w-3xl mx-auto">
-                <h2 className="text-center uppercase tracking-[0.3em] text-crm-muted mb-10 text-xl font-bold">Services</h2>
-                <div className="space-y-6">
-                  {shop.services?.map((service: any) => (
-                    <div key={service.id} className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center border border-gray-800 p-4 hover:bg-crm-surface transition-colors">
-                      <div>
-                        <h3 className="font-bold text-lg font-bold">{service.name}</h3>
-                        <p className="text-crm-muted text-[13px]">{service.duration} minutes</p>
-                      </div>
-                      <div className="flex items-center gap-6">
-                          <div className="text-xl font-bold">${service.price.toFixed(2)}</div>
-                          <button
-                            onClick={() => handleBookClick(service)}
-                            className="border border-white text-crm-text hover:bg-crm-surface hover:text-black px-4 py-1 uppercase text-[11px] tracking-widest transition-all duration-300 hover:scale-105 active:scale-95 shadow-[0_0_10px_rgba(255,255,255,0.1)] hover:shadow-[0_0_15px_rgba(255,255,255,0.3)]"
-                          >
-                            Book
-                          </button>                      </div>
-                    </div>
-                  ))}
-                </div>
-              </section>
-            
-
+            ))}
             </div>
 
             <ReviewsSection reviews={reviews} variant="dark" />
@@ -628,7 +612,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                 <p className="text-purple-200/70 text-[13px]">{shop.description}</p>
               </header>
     
-              \n\n            {pages.filter((p: any) => p.isVisible).map((p: any) => (
+              {pages.filter((p: any) => p.isVisible).map((p: any) => (
 
                 <section key={p.id} id={p.id} className="max-w-4xl mx-auto min-h-[60vh]">
                     <div className="bg-crm-surface backdrop-blur-sm border border-status-pending/30 rounded-lg p-8 md:p-12">
@@ -636,7 +620,9 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                         <CustomPageContent content={p.content || ""} shop={shop} className="prose prose-invert prose-lg max-w-none text-purple-200/80"  onBookClick={handleBookClick} />
                     </div>
                 </section>
-            ))}\n\n            <section className="max-w-4xl mx-auto">
+            ))}
+
+            <section className="max-w-4xl mx-auto">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {shop.services?.map((service: any) => (
                     <div key={service.id} className="bg-crm-surface backdrop-blur-sm border border-status-pending/30 rounded-lg p-6 hover:border-orange-500 transition-colors flex flex-col">
@@ -693,12 +679,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                   {shop.name}
                 </div>
                 {/* Desktop Navigation */}
-                <div className="hidden md:flex items-center gap-10">
-                  <a className="text-stone-400 hover:text-white transition-colors font-body text-[13px] tracking-wide uppercase" href="#services">Services</a>
-                  <a className="text-stone-400 hover:text-white transition-colors font-body text-[13px] tracking-wide uppercase" href="#gallery">Gallery</a>
-                  <a className="text-stone-400 hover:text-white transition-colors font-body text-[13px] tracking-wide uppercase" href="#about">About</a>
-                  <a className="text-stone-400 hover:text-white transition-colors font-body text-[13px] tracking-wide uppercase" href="#contact">Contact</a>
-                </div>
+                
                 <div className="flex items-center gap-6">
                   <button 
                     onClick={() => {
@@ -764,7 +745,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                 </div>
               </section>
     
-              \n\n            {pages.filter((p: any) => p.isVisible).map((p: any) => (
+              {pages.filter((p: any) => p.isVisible).map((p: any) => (
 
                  <section key={p.id} id={p.id} className="py-32 px-8 min-h-[70vh]">
                     <div className="max-w-4xl mx-auto">
@@ -772,7 +753,9 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                         <CustomPageContent content={p.content || ""} shop={shop} themeColor={primaryColor} className="prose prose-invert prose-lg max-w-none font-body text-[#d0c5af]"  onBookClick={handleBookClick} />
                     </div>
                 </section>
-            ))}\n\n            {/* Services Section */}
+            ))}
+
+            {/* Services Section */}
               <section id="services" className="py-32 px-8 bg-[#1a1c1a]">
                 <div className="max-w-7xl mx-auto">
                   <div className="text-center mb-20">
@@ -970,13 +953,15 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
               </div>
             </header>
     
-            \n\n            {pages.filter((p: any) => p.isVisible).map((p: any) => (
+            {pages.filter((p: any) => p.isVisible).map((p: any) => (
 
                 <section key={p.id} id={p.id} className="max-w-4xl mx-auto px-6 py-32 min-h-[60vh]">
                     <h1 className="font-light tracking-tight mb-12 text-2xl font-bold" style={{ color: primaryColor }}>{p.title}</h1>
                     <CustomPageContent content={p.content || ""} shop={shop} themeColor={primaryColor} className="prose prose-lg max-w-none text-crm-muted"  onBookClick={handleBookClick} />
                 </section>
-            ))}\n\n            <section className="max-w-4xl mx-auto px-6 py-16">
+            ))}
+
+            <section className="max-w-4xl mx-auto px-6 py-16">
               <h2 className="font-semibold tracking-widest uppercase text-crm-muted mb-10 text-xl font-bold">Service Menu</h2>
               {shop.services && shop.services.length > 0 ? (
                 <div className="space-y-8">
@@ -1052,13 +1037,15 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
             </div>
             </header>
     
-            \n\n            {pages.filter((p: any) => p.isVisible).map((p: any) => (
+            {pages.filter((p: any) => p.isVisible).map((p: any) => (
 
                 <section key={p.id} id={p.id} className="max-w-4xl mx-auto px-8 py-32 min-h-[60vh]">
                     <h1 className="font-bold uppercase tracking-widest mb-12 text-center text-2xl font-bold" style={{ color: primaryColor }}>{p.title}</h1>
                     <CustomPageContent content={p.content || ""} shop={shop} themeColor={primaryColor} className="prose prose-lg max-w-none text-[#5a4634]"  onBookClick={handleBookClick} />
                 </section>
-            ))}\n\n            <section className="max-w-5xl mx-auto px-8 py-20">
+            ))}
+
+            <section className="max-w-5xl mx-auto px-8 py-20">
               <h2 className="font-bold text-center uppercase tracking-widest mb-16 relative text-xl font-bold">
                 <span className="bg-[#fdfbf7] px-6 relative z-10">Our Services</span>
                 <div className="absolute left-0 top-1/2 w-full h-px bg-[#e6d9c6] -z-0"></div>
