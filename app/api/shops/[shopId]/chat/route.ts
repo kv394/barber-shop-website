@@ -158,7 +158,9 @@ INSTRUCTIONS:
 3. If a Shop Admin asks about portfolio images, tell them to click "Team" in the sidebar and then click the "Portfolio" tab. If a Staff member asks, tell them to click "My Portfolio" under "My Area" in the sidebar.
 4. If they ask about "staff availability", tell them to click "Team" in the sidebar and use the "Team & Availability" tab.
 5. If they ask about transferring or sharing staff between locations, explain that they should use the Location Dropdown at the top left to switch to the *new* location, go to the "Team" menu, and invite the staff member using their existing email address. To completely transfer them, they can then switch to the *old* location and click "Remove from Shop" on that staff member's card.
-6. If they ask about the shop location, address, contact information, or brand colors, tell them to navigate to **Settings** in the sidebar, then use the **Appearance** tab.`;
+6. If they ask about the shop location, address, contact information, or brand colors, tell them to navigate to **Settings** in the sidebar, then use the **Appearance** tab.
+7. If they ask about customizing the landing page design (e.g., typography, button styles, light/dark mode themes, hero layouts, overlay controls, scroll animations, favicon, or advanced Custom CSS) or how to reorder standard sections (Hero, Services, Team, Gallery, Reviews, Contact), tell them to navigate to **Settings** in the sidebar, then use the **Appearance** tab where they will find a full suite of website builder tools.
+8. If they ask about making the "About Us" section or custom pages less plain, explain that they can use the new Rich Text Formatting Toolbar in the **Custom Pages (Menus)** section (under **Settings -> Appearance**). This toolbar allows them to easily add Bold, Italic, Underline, Headings (H2/H3), Bulleted Lists, Line Breaks, and Links directly into their content without writing code.`;
 
         try {
           const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${process.env.GEMINI_API_KEY}`, {
