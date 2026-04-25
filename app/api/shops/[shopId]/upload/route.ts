@@ -60,7 +60,7 @@ export async function POST(
     const fileId = await uploadFileToPath(FOLDER_PATH, safeFileName, mimeType, buffer);
 
     if (fileId) {
-      return NextResponse.json({ url: `https://lh3.googleusercontent.com/d/${fileId}`, fileName: safeFileName });
+      return NextResponse.json({ url: `/api/assets/${fileId}`, fileName: safeFileName });
     } else {
       throw new Error("Failed to get fileId from Google Drive");
     }

@@ -75,7 +75,7 @@ export async function POST(request: NextRequest) {
              
              const fileId = await uploadFileToPath(FOLDER_PATH, entryName, mimeType, entryBuffer);
              if (fileId) {
-               uploadedAssets.push({ fileName: entryName, url: `https://lh3.googleusercontent.com/d/${fileId}` });
+               uploadedAssets.push({ fileName: entryName, url: `/api/assets/${fileId}` });
              }
           }
         }
@@ -87,7 +87,7 @@ export async function POST(request: NextRequest) {
         } else {
           const fileId = await uploadFileToPath(FOLDER_PATH, file.name, file.type, buffer);
           if (fileId) {
-            uploadedAssets.push({ fileName: file.name, url: `https://lh3.googleusercontent.com/d/${fileId}` });
+            uploadedAssets.push({ fileName: file.name, url: `/api/assets/${fileId}` });
           }
         }
       }
