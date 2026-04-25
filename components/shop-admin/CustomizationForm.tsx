@@ -98,7 +98,7 @@ export function CustomizationForm({
                 <label className="block font-medium text-crm-muted mb-2 text-[13px]">
                   Logo URL
                 </label>
-                <div className="flex gap-2">
+                <div className="flex gap-2 items-center">
                   <input
                     type="url"
                     value={formData.logoUrl || ''}
@@ -106,29 +106,7 @@ export function CustomizationForm({
                     placeholder="https://example.com/logo.png"
                     className="flex-1 w-full bg-crm-bg border border-crm-border shadow-sm rounded px-4 py-2 text-crm-text placeholder-gray-500"
                   />
-                  <input 
-                    type="file" 
-                    accept="image/*"
-                    onChange={async (e) => {
-                      const file = e.target.files?.[0];
-                      if (!file) return;
-                      setIsLoading(true);
-                      try {
-                        const fd = new FormData();
-                        fd.append('file', file);
-                        fd.append('type', 'logos');
-                        const res = await fetch(`/api/shops/${shopId}/upload`, { method: 'POST', body: fd });
-                        const data = await res.json();
-                        if (data.error) throw new Error(data.error);
-                        handleInputChange('logoUrl', data.url);
-                      } catch (err: any) {
-                        alert('Upload failed: ' + err.message);
-                      } finally {
-                        setIsLoading(false);
-                      }
-                    }} 
-                    className="flex-1 bg-crm-surface border border-crm-border shadow-sm rounded px-3 py-2 text-crm-text text-[13px] focus:outline-none focus:border-brand-gold file:mr-4 file:py-1 file:px-4 file:rounded file:border-0 file:text-[13px] file:bg-crm-primary/20 file:text-crm-primary hover:file:bg-crm-primary/30 hover:opacity-90" 
-                  />
+                  <MediaPicker shopId={shopId} currentUrl={formData.logoUrl} onSelect={(url) => handleInputChange('logoUrl', url)} label="Upload/Select Logo" />
                 </div>
               </div>
 
@@ -136,7 +114,7 @@ export function CustomizationForm({
                 <label className="block font-medium text-crm-muted mb-2 text-[13px]">
                   Hero / Banner Image URL
                 </label>
-                <div className="flex gap-2">
+                <div className="flex gap-2 items-center">
                   <input
                     type="url"
                     value={formData.heroImageUrl || ''}
@@ -144,29 +122,7 @@ export function CustomizationForm({
                     placeholder="https://example.com/banner.jpg"
                     className="flex-1 w-full bg-crm-bg border border-crm-border shadow-sm rounded px-4 py-2 text-crm-text placeholder-gray-500"
                   />
-                  <input 
-                    type="file" 
-                    accept="image/*"
-                    onChange={async (e) => {
-                      const file = e.target.files?.[0];
-                      if (!file) return;
-                      setIsLoading(true);
-                      try {
-                        const fd = new FormData();
-                        fd.append('file', file);
-                        fd.append('type', 'banners');
-                        const res = await fetch(`/api/shops/${shopId}/upload`, { method: 'POST', body: fd });
-                        const data = await res.json();
-                        if (data.error) throw new Error(data.error);
-                        handleInputChange('heroImageUrl', data.url);
-                      } catch (err: any) {
-                        alert('Upload failed: ' + err.message);
-                      } finally {
-                        setIsLoading(false);
-                      }
-                    }} 
-                    className="flex-1 bg-crm-surface border border-crm-border shadow-sm rounded px-3 py-2 text-crm-text text-[13px] focus:outline-none focus:border-brand-gold file:mr-4 file:py-1 file:px-4 file:rounded file:border-0 file:text-[13px] file:bg-crm-primary/20 file:text-crm-primary hover:file:bg-crm-primary/30 hover:opacity-90" 
-                  />
+                  <MediaPicker shopId={shopId} currentUrl={formData.heroImageUrl} onSelect={(url) => handleInputChange('heroImageUrl', url)} label="Upload/Select Hero Image" />
                 </div>
               </div>
             </div>
