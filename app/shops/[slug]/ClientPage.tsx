@@ -503,8 +503,20 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
     const shopFB      = c.contact?.facebook  || c.social?.facebook  || '';
     const shopIG      = c.contact?.instagram || c.social?.instagram || '';
     const shopTW      = c.contact?.twitter   || c.social?.twitter   || '';
-    const logoUrl     = c.logoUrl || null;
-    const heroImageUrl = c.heroImageUrl || c.bannerUrl || null;
+
+    const normalizeImageUrl = (url: string | null): string | null => {
+        if (!url) return null;
+        const fileMatch = url.match(/drive\.google\.com\/file\/d\/([^\/]+)/);
+        if (fileMatch) return `https://lh3.googleusercontent.com/d/${fileMatch[1]}`;
+        const openMatch = url.match(/drive\.google\.com\/open\?id=([^&]+)/);
+        if (openMatch) return `https://lh3.googleusercontent.com/d/${openMatch[1]}`;
+        const ucMatch = url.match(/drive\.google\.com\/uc\?.*id=([^&]+)/);
+        if (ucMatch) return `https://lh3.googleusercontent.com/d/${ucMatch[1]}`;
+        return url;
+    };
+
+    const logoUrl     = normalizeImageUrl(c.logoUrl) || null;
+    const heroImageUrl = normalizeImageUrl(c.heroImageUrl || c.bannerUrl) || null;
 
     // Auth button for client sign-in/out
     const authButton = (
