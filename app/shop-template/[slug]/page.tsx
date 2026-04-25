@@ -425,11 +425,6 @@ export default async function PublicShopPage({
       <main className="h-[100dvh] overflow-y-auto overflow-x-hidden">
         <header className="border-b-4 border-[#2c1e16] py-16 text-center bg-[url('https://www.transparenttextures.com/patterns/aged-paper.png')]">
           <h1 className="font-bold uppercase tracking-widest mb-4 text-2xl font-bold" style={{ color: primaryColor }}>{shop.name}</h1>
-          <div className="flex items-center justify-center space-x-4 mb-4">
-            <div className="h-px w-16 bg-[#2c1e16]"></div>
-            <span className="italic text-lg">Est. {new Date(shop.createdAt).getFullYear()}</span>
-            <div className="h-px w-16 bg-[#2c1e16]"></div>
-          </div>
           {shop.description && <p className="max-w-xl mx-auto text-[#5a4634] text-[13px]">{shop.description}</p>}
         </header>
 

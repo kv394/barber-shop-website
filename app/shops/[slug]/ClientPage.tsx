@@ -1186,11 +1186,6 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
     <div className={heroImageUrl ? "absolute inset-0 bg-[#fdfbf7]/80" : ""} />
     <div className="relative z-10">
               {logoUrl ? <img src={logoUrl} alt={shop.name} className="h-24 mx-auto object-contain mb-4" onError={(e) => { e.currentTarget.style.display = 'none'; }} /> : <h1 className="font-bold uppercase tracking-widest mb-4 text-2xl font-bold" style={{ color: primaryColor }}>{shop.name}</h1>}
-              <div className="flex items-center justify-center space-x-4 mb-4">
-                <div className="h-px w-16 bg-[#2c1e16]"></div>
-                <span className="italic text-lg">Est. {new Date(shop.createdAt).getFullYear()}</span>
-                <div className="h-px w-16 bg-[#2c1e16]"></div>
-              </div>
               {shop.slogan && <h2 className="text-[#8b7355] font-serif text-xl italic mb-6">{shop.slogan}</h2>}
               {shop.description && <p className="max-w-xl mx-auto text-[#5a4634] text-[13px]">{shop.description}</p>}
             </div>
