@@ -49,12 +49,12 @@ export async function PATCH(
         type: body.type,
         trackInventory: body.trackInventory,
         isSellable: body.isSellable,
-        imageUrl: body.imageUrl,
-        description: body.description,
+        imageUrl: (body.imageUrl && typeof body.imageUrl === 'string' && body.imageUrl.trim() !== '') ? body.imageUrl.trim() : null,
+        description: (body.description && typeof body.description === 'string' && body.description.trim() !== '') ? body.description.trim() : null,
         inventoryCount: body.inventoryCount,
         reorderPoint: body.reorderPoint,
-        sku: body.sku,
-        barcode: body.barcode,
+        sku: (body.sku && typeof body.sku === 'string' && body.sku.trim() !== '') ? body.sku.trim() : null,
+        barcode: (body.barcode && typeof body.barcode === 'string' && body.barcode.trim() !== '') ? body.barcode.trim() : null,
       },
     });
 
