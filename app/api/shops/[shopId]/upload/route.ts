@@ -53,7 +53,7 @@ export async function POST(
     }
 
     // Path structure: /barbersaas/<shopId>/uploads/<type>
-    const FOLDER_PATH = `/barbersaas/${shopId}/uploads/${type}`;
+    const FOLDER_PATH = type === 'products' ? `/barbersaas/${shopId}/products` : `/barbersaas/${shopId}/uploads/${type}`;
     const timestamp = Date.now();
     const safeFileName = `${timestamp}-${file.name.replace(/[^a-zA-Z0-9.-]/g, '_')}`;
 

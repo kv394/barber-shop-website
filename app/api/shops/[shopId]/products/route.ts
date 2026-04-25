@@ -10,7 +10,7 @@ export async function POST(req: Request, { params }: { params: Promise<{ shopId:
     const authResult = await requireShopRole(shopId, ['SITE_ADMIN', 'SHOP_ADMIN', 'STAFF']);
     if (isAuthError(authResult)) return authResult;
 
-    const { name, description, sku, barcode, price, cost, taxRate, trackInventory, inventoryCount, reorderPoint, type, supplier, isSellable } = await req.json();
+    const { name, description, sku, barcode, price, cost, taxRate, trackInventory, inventoryCount, reorderPoint, type, supplier, isSellable, imageUrl } = await req.json();
 
     if (!name || price === undefined) {
       return NextResponse.json({ error: 'Name and price are required' }, { status: 400 });
@@ -46,6 +46,7 @@ export async function POST(req: Request, { params }: { params: Promise<{ shopId:
         taxRate: parsedTaxRate,
         trackInventory: !!trackInventory,
         isSellable: isSellable ?? true,
+        imageUrl: imageUrl ? String(imageUrl).slice(0, 500) : null,
         inventoryCount: Math.max(0, parsedInventory),
         reorderPoint: reorderPoint ? Math.max(0, parseInt(reorderPoint, 10) || 0) : 0,
         type: validTypes.includes(type) ? type : 'RETAIL',

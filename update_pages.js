@@ -19,7 +19,10 @@ const customComponent = `function CustomPageContent({ content, shop, themeColor,
           {index < parts.length - 1 && sellableProducts.length > 0 && (
             <div className="not-prose grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 my-8 font-sans">
               {sellableProducts.map((product: any) => (
-                <div key={product.id} className="border border-crm-border p-6 rounded-xl bg-crm-surface shadow-sm hover:shadow-md transition-shadow flex flex-col">
+                <div key={product.id} className="border border-crm-border p-6 rounded-xl bg-crm-surface shadow-sm hover:shadow-md transition-shadow flex flex-col items-center text-center">
+                  {product.imageUrl && (
+                    <img src={product.imageUrl} alt={product.name} className="w-full h-48 object-cover rounded-lg mb-4" />
+                  )}
                   <h3 className="font-bold text-lg mb-2" style={themeColor ? { color: themeColor } : {}}>{product.name}</h3>
                   <p className="text-crm-muted text-[13px] mb-4 flex-grow">{product.description}</p>
                   <div className="font-bold text-crm-text">\\x24{typeof product.price === 'number' ? product.price.toFixed(2) : '0.00'}</div>

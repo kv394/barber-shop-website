@@ -15,16 +15,37 @@ export default function ProductManager({ shopId, products }: { shopId: string, p
   const [editBarcodeValue, setEditBarcodeValue] = useState('');
   
   const resetForm = () => {
-    setFormData({ name: '', price: '', inventoryCount: '0', reorderPoint: '0', trackInventory: false, type: 'RETAIL', sku: '', barcode: '', isSellable: true });
+    setFormData({ name: '', description: '', price: '', inventoryCount: '0', reorderPoint: '0', trackInventory: false, type: 'RETAIL', sku: '', barcode: '', isSellable: true, imageUrl: '' });
     setEditingProduct(null);
   };
 
   const [formData, setFormData] = useState({
-    name: '', price: '', inventoryCount: '0', 
+    name: '', description: '', price: '', inventoryCount: '0', 
     reorderPoint: '0', trackInventory: false, 
-    type: 'RETAIL', sku: '', barcode: '', isSellable: true
+    type: 'RETAIL', sku: '', barcode: '', isSellable: true, imageUrl: ''
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
+
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setIsUploading(true);
+    try {
+      const fd = new FormData();
+      fd.append('file', file);
+      fd.append('type', 'products');
+      const res = await fetch(`/api/shops/${shopId}/upload`, { method: 'POST', body: fd });
+      const data = await res.json();
+      if (data.error) throw new Error(data.error);
+      setFormData(prev => ({ ...prev, imageUrl: data.url }));
+    } catch (err: any) {
+      alert('Upload failed: ' + err.message);
+    } finally {
+      setIsUploading(false);
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -62,6 +83,7 @@ export default function ProductManager({ shopId, products }: { shopId: string, p
     setEditingProduct(product);
     setFormData({
       name: product.name,
+      description: product.description || '',
       price: product.price.toString(),
       inventoryCount: product.inventoryCount.toString(),
       reorderPoint: product.reorderPoint.toString(),
@@ -69,7 +91,8 @@ export default function ProductManager({ shopId, products }: { shopId: string, p
       type: product.type,
       sku: product.sku || '',
       barcode: product.barcode || '',
-      isSellable: product.isSellable ?? true
+      isSellable: product.isSellable ?? true,
+      imageUrl: product.imageUrl || ''
     });
     setIsAdding(true);
     // Scroll to top where the form is
@@ -137,6 +160,29 @@ export default function ProductManager({ shopId, products }: { shopId: string, p
               <input type="checkbox" id="isSellable" checked={formData.isSellable} onChange={(e) => setFormData({ ...formData, isSellable: e.target.checked })} className="rounded border-crm-border bg-crm-bg text-crm-accent focus:ring-crm-primary" />
               <label htmlFor="isSellable" className="font-medium text-crm-muted text-[13px]">Sellable to Customer</label>
             </div>
+
+            <div className="col-span-1 md:col-span-2 mt-2">
+              <label className="block font-medium text-crm-muted mb-1 text-[13px]">Description (Optional)</label>
+              <textarea rows={3} value={formData.description} onChange={(e) => setFormData({ ...formData, description: e.target.value })} className="w-full bg-crm-bg border border-crm-border shadow-sm rounded-lg px-4 py-2 text-crm-text" placeholder="Product details..."></textarea>
+            </div>
+
+            {formData.isSellable && (
+              <div className="col-span-1 md:col-span-2 mt-2">
+                <label className="block font-medium text-crm-muted mb-1 text-[13px]">Product Image</label>
+                <div className="flex items-center gap-4">
+                  {formData.imageUrl && (
+                    <img src={formData.imageUrl} alt="Product preview" className="w-16 h-16 object-cover rounded-lg border border-crm-border" />
+                  )}
+                  <label className="cursor-pointer bg-crm-surface border border-crm-border hover:border-crm-primary transition-colors px-4 py-2 rounded-lg text-[13px] font-medium text-crm-text">
+                    {isUploading ? 'Uploading...' : 'Upload Image'}
+                    <input type="file" accept="image/*" onChange={handleImageUpload} disabled={isUploading} className="hidden" />
+                  </label>
+                  {formData.imageUrl && (
+                     <button type="button" onClick={() => setFormData({ ...formData, imageUrl: '' })} className="text-status-cancelled text-[13px] hover:underline">Remove</button>
+                  )}
+                </div>
+              </div>
+            )}
 
             {formData.trackInventory && (
               <>

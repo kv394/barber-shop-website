@@ -20,7 +20,7 @@ const serviceInclude = {
   },
   products: {
     where: { type: 'RETAIL' as const, isSellable: true },
-    select: { id: true, name: true, description: true, price: true },
+    select: { id: true, name: true, description: true, price: true, imageUrl: true },
   },
   portfolioImages: {
     select: { id: true, imageUrl: true, caption: true },

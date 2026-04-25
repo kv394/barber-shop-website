@@ -153,6 +153,7 @@ model Product {
   reorderPoint   Int         @default(0)
   type           ProductType @default(RETAIL) // RETAIL, BACKBAR
   isSellable     Boolean     @default(true)
+  imageUrl       String?
   supplier       String?
 
   shopId           String
