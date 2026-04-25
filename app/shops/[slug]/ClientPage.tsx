@@ -209,6 +209,15 @@ function CustomPageContent({ content, shop, themeColor, className, onBookClick, 
                   <div className={styles.price} style={templateType === 'corporate' || templateType === 'modern' ? { color: themeColor } : {}}>
                     ${typeof product.price === 'number' ? product.price.toFixed(2) : '0.00'}
                   </div>
+                  <div className="mt-auto w-full pt-4">
+                    <button
+                      onClick={() => alert('Online product purchasing coming soon! Please pick this up in-store during your next visit.')}
+                      className={styles.btn}
+                      style={templateType === 'modern' ? { backgroundColor: themeColor || 'white', color: 'black' } : styles.btnStyle}
+                    >
+                      {templateType === 'sporty' || templateType === 'editorial' ? 'Buy Product' : 'Buy'}
+                    </button>
+                  </div>
                 </div>
               ))}
             </div>
