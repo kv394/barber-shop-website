@@ -4,6 +4,8 @@ import { useState, useEffect } from 'react';
 import dynamic from 'next/dynamic';
 import SupabaseAuthButton from '@/components/auth/SupabaseAuthButton';
 import { usePathname } from 'next/navigation';
+import InteractiveReviewsSection from '@/components/reviews/InteractiveReviewsSection';
+
 
 // Lazy-load the BookingModal component
 const BookingModal = dynamic(() => import('@/components/appointments/BookingModal'), {
@@ -97,9 +99,9 @@ function ReviewsSection({ reviews, variant = 'dark' }: { reviews: any[]; variant
   );
 }
 
-function CustomPageContent({ content, shop, themeColor, className, onBookClick }: { content: string, shop: any, themeColor?: string, className?: string, onBookClick?: (service: any) => void }) {
+function CustomPageContent({ content, shop, themeColor, className, onBookClick, reviews = [] }: { content: string, shop: any, themeColor?: string, className?: string, onBookClick?: (service: any) => void, reviews?: any[] }) {
   if (!content) return null;
-  const parts = content.split(/(\$\{products\}|\$\{services\})/gi);
+  const parts = content.split(/(\$\{products\}|\$\{services\}|\$\{reviews\})/gi);
   if (parts.length === 1) {
     return <div className={className} dangerouslySetInnerHTML={{ __html: content }} />;
   }
@@ -110,7 +112,7 @@ function CustomPageContent({ content, shop, themeColor, className, onBookClick }
   return (
     <div className={className}>
       {parts.map((part, index) => {
-        if (part.toLowerCase() === '${products}') {
+        if (part.toLowerCase() === '\$\{products\}') {
           if (sellableProducts.length === 0) return null;
           return (
             <div key={index} className="not-prose grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 my-8 font-sans">
@@ -121,12 +123,12 @@ function CustomPageContent({ content, shop, themeColor, className, onBookClick }
                   )}
                   <h3 className="font-bold text-lg mb-2" style={themeColor ? { color: themeColor } : {}}>{product.name}</h3>
                   <p className="text-crm-muted text-[13px] mb-4 flex-grow">{product.description}</p>
-                  <div className="font-bold text-crm-text">${typeof product.price === 'number' ? product.price.toFixed(2) : '0.00'}</div>
+                  <div className="font-bold text-crm-text">\$\{typeof product.price === 'number' ? product.price.toFixed(2) : '0.00'}</div>
                 </div>
               ))}
             </div>
           );
-        } else if (part.toLowerCase() === '${services}') {
+        } else if (part.toLowerCase() === '\$\{services\}') {
           if (services.length === 0) return null;
           return (
             <div key={index} className="not-prose grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 my-8 font-sans">
@@ -144,9 +146,9 @@ function CustomPageContent({ content, shop, themeColor, className, onBookClick }
                       </h3>
                       <div 
                         className="px-3 py-1 rounded-full text-[13px] font-semibold"
-                        style={{ backgroundColor: `${themeColor || '#1f2937'}20`, color: themeColor || '#1f2937' }}
+                        style={{ backgroundColor: `\$\{themeColor || '#1f2937'}20`, color: themeColor || '#1f2937' }}
                       >
-                        ${service.price.toFixed(2)}
+                        \$\{service.price.toFixed(2)}
                       </div>
                     </div>
     
@@ -169,6 +171,12 @@ function CustomPageContent({ content, shop, themeColor, className, onBookClick }
                       </button>                    </div>
                   </div>
                 ))}
+            </div>
+          );
+        } else if (part.toLowerCase() === '\$\{reviews\}') {
+          return (
+            <div key={index} className="not-prose w-full">
+               <InteractiveReviewsSection shopId={shop.id} initialReviews={reviews} themeColor={themeColor} />
             </div>
           );
         } else {
@@ -340,7 +348,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
 
                     <section key={p.id} id={p.id} className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 min-h-[60vh]">
                         <h1 className="font-black uppercase italic mb-8 text-2xl font-bold" style={{ color: sportRed }}>{p.title}</h1>
-                        <CustomPageContent content={p.content || ""} shop={shop} themeColor={sportRed} className="prose prose-lg max-w-none text-crm-text"  onBookClick={handleBookClick} />
+                        <CustomPageContent content={p.content || ""} shop={shop} themeColor={sportRed} className="prose prose-lg max-w-none text-crm-text"  onBookClick={handleBookClick}  reviews={reviews} />
                     </section>
             ))}
 
@@ -349,7 +357,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
             <section key={p.id} id={p.id} className="pt-32 pb-20 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto min-h-[80vh]">
                <div className="bg-crm-surface p-8 md:p-12 rounded-2xl border border-crm-border shadow-sm shadow-xl">
                   <h1 className="font-bold mb-8 text-2xl font-bold" style={{ color: primaryColor }}>{p.title}</h1>
-                  <CustomPageContent content={p.content || ""} shop={shop} themeColor={primaryColor} className="prose prose-invert prose-lg max-w-none text-crm-muted"  onBookClick={handleBookClick} />
+                  <CustomPageContent content={p.content || ""} shop={shop} themeColor={primaryColor} className="prose prose-invert prose-lg max-w-none text-crm-muted"  onBookClick={handleBookClick}  reviews={reviews} />
                </div>
             </section>
             ))}
@@ -393,7 +401,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
 
             
 
-                <ReviewsSection reviews={reviews} variant="light" />
+                
 
                 {/* Footer */}
                 <footer className="bg-crm-surface text-crm-text py-16 uppercase text-[13px] tracking-widest">
@@ -470,7 +478,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
 
                 <section key={p.id} id={p.id} className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 min-h-[60vh]">
                     <h1 className="font-bold text-crm-text mb-8 text-2xl font-bold" style={{ color: primaryColor }}>{p.title}</h1>
-                    <CustomPageContent content={p.content || ""} shop={shop} themeColor={primaryColor} className="prose prose-lg max-w-none text-crm-text"  onBookClick={handleBookClick} />
+                    <CustomPageContent content={p.content || ""} shop={shop} themeColor={primaryColor} className="prose prose-lg max-w-none text-crm-text"  onBookClick={handleBookClick}  reviews={reviews} />
                 </section>
             ))}
 
@@ -502,7 +510,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
 
             
 
-            <ReviewsSection reviews={reviews} variant="light" />
+            
 
             <footer className="bg-crm-surface text-crm-text">
               <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -570,12 +578,12 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
 
                     <section key={p.id} id={p.id} className="max-w-3xl mx-auto min-h-[60vh]">
                         <h1 className="font-black uppercase tracking-tighter mb-8 text-center text-2xl font-bold">{p.title}</h1>
-                        <CustomPageContent content={p.content || ""} shop={shop} className="prose prose-invert prose-lg max-w-none text-crm-muted font-sans"  onBookClick={handleBookClick} />
+                        <CustomPageContent content={p.content || ""} shop={shop} className="prose prose-invert prose-lg max-w-none text-crm-muted font-sans"  onBookClick={handleBookClick}  reviews={reviews} />
                     </section>
             ))}
             </div>
 
-            <ReviewsSection reviews={reviews} variant="dark" />
+            
 
             {selectedService && (
                 <BookingModal 
@@ -617,7 +625,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                 <section key={p.id} id={p.id} className="max-w-4xl mx-auto min-h-[60vh]">
                     <div className="bg-crm-surface backdrop-blur-sm border border-status-pending/30 rounded-lg p-8 md:p-12">
                         <h1 className="font-bold bg-clip-text text-transparent bg-gradient-to-r from-orange-400 to-purple-400 mb-8 text-2xl font-bold">{p.title}</h1>
-                        <CustomPageContent content={p.content || ""} shop={shop} className="prose prose-invert prose-lg max-w-none text-purple-200/80"  onBookClick={handleBookClick} />
+                        <CustomPageContent content={p.content || ""} shop={shop} className="prose prose-invert prose-lg max-w-none text-purple-200/80"  onBookClick={handleBookClick}  reviews={reviews} />
                     </div>
                 </section>
             ))}
@@ -645,7 +653,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
 
             </div>
 
-            <ReviewsSection reviews={reviews} variant="dark" />
+            
 
             {selectedService && (
                 <BookingModal 
@@ -750,7 +758,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                  <section key={p.id} id={p.id} className="py-32 px-8 min-h-[70vh]">
                     <div className="max-w-4xl mx-auto">
                         <h1 className="font-headline mb-12 text-2xl font-bold" style={{ color: primaryColor }}>{p.title}</h1>
-                        <CustomPageContent content={p.content || ""} shop={shop} themeColor={primaryColor} className="prose prose-invert prose-lg max-w-none font-body text-[#d0c5af]"  onBookClick={handleBookClick} />
+                        <CustomPageContent content={p.content || ""} shop={shop} themeColor={primaryColor} className="prose prose-invert prose-lg max-w-none font-body text-[#d0c5af]"  onBookClick={handleBookClick}  reviews={reviews} />
                     </div>
                 </section>
             ))}
@@ -957,7 +965,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
 
                 <section key={p.id} id={p.id} className="max-w-4xl mx-auto px-6 py-32 min-h-[60vh]">
                     <h1 className="font-light tracking-tight mb-12 text-2xl font-bold" style={{ color: primaryColor }}>{p.title}</h1>
-                    <CustomPageContent content={p.content || ""} shop={shop} themeColor={primaryColor} className="prose prose-lg max-w-none text-crm-muted"  onBookClick={handleBookClick} />
+                    <CustomPageContent content={p.content || ""} shop={shop} themeColor={primaryColor} className="prose prose-lg max-w-none text-crm-muted"  onBookClick={handleBookClick}  reviews={reviews} />
                 </section>
             ))}
 
@@ -993,7 +1001,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
             
 
 
-            <ReviewsSection reviews={reviews} variant="light" />
+            
 
             {selectedService && (
                 <BookingModal 
@@ -1041,7 +1049,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
 
                 <section key={p.id} id={p.id} className="max-w-4xl mx-auto px-8 py-32 min-h-[60vh]">
                     <h1 className="font-bold uppercase tracking-widest mb-12 text-center text-2xl font-bold" style={{ color: primaryColor }}>{p.title}</h1>
-                    <CustomPageContent content={p.content || ""} shop={shop} themeColor={primaryColor} className="prose prose-lg max-w-none text-[#5a4634]"  onBookClick={handleBookClick} />
+                    <CustomPageContent content={p.content || ""} shop={shop} themeColor={primaryColor} className="prose prose-lg max-w-none text-[#5a4634]"  onBookClick={handleBookClick}  reviews={reviews} />
                 </section>
             ))}
 
@@ -1071,7 +1079,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
             
 
 
-            <ReviewsSection reviews={reviews} variant="warm" />
+            
 
             <footer className="bg-[#2c1e16] text-[#e6d9c6] py-12 text-center text-[13px] font-sans tracking-widest uppercase">
                  {shopAddress && <p className="mb-2 text-[13px]">{shopAddress}</p>}
@@ -1206,7 +1214,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
 
 
 
-          <ReviewsSection reviews={reviews} variant="dark" />
+          
 
           {/* Footer */}
           <footer className="bg-crm-surface border-t border-crm-border py-12">

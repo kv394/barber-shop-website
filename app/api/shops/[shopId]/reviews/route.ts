@@ -42,27 +42,29 @@ export async function POST(
     const body = await request.json();
     const { appointmentId, rating, comment } = body;
 
-    if (!appointmentId || !rating || rating < 1 || rating > 5) {
-      return NextResponse.json({ error: 'Valid appointmentId and rating (1-5) required' }, { status: 400 });
+    if (!rating || rating < 1 || rating > 5) {
+      return NextResponse.json({ error: 'Valid rating (1-5) required' }, { status: 400 });
     }
 
-    // Verify the appointment belongs to this user and shop
-    const appointment = await prisma.appointment.findUnique({
-      where: { id: appointmentId },
-    });
+    if (appointmentId) {
+      // Verify the appointment belongs to this user and shop
+      const appointment = await prisma.appointment.findUnique({
+        where: { id: appointmentId },
+      });
 
-    if (!appointment || (appointment.shopId !== shopId && !(await prisma.shopAccess.findFirst({ where: { userId: appointment.id, shopId } }))) || appointment.userId !== userId) {
-      return NextResponse.json({ error: 'Appointment not found or not yours' }, { status: 404 });
-    }
+      if (!appointment || (appointment.shopId !== shopId && !(await prisma.shopAccess.findFirst({ where: { userId: appointment.id, shopId } }))) || appointment.userId !== userId) {
+        return NextResponse.json({ error: 'Appointment not found or not yours' }, { status: 404 });
+      }
 
-    if (appointment.status !== 'COMPLETED') {
-      return NextResponse.json({ error: 'Can only review completed appointments' }, { status: 400 });
-    }
+      if (appointment.status !== 'COMPLETED') {
+        return NextResponse.json({ error: 'Can only review completed appointments' }, { status: 400 });
+      }
 
-    // Check for existing review
-    const existing = await prisma.review.findUnique({ where: { appointmentId } });
-    if (existing) {
-      return NextResponse.json({ error: 'Already reviewed' }, { status: 400 });
+      // Check for existing review
+      const existing = await prisma.review.findUnique({ where: { appointmentId } });
+      if (existing) {
+        return NextResponse.json({ error: 'Already reviewed this appointment' }, { status: 400 });
+      }
     }
 
     const review = await prisma.review.create({
@@ -70,7 +72,7 @@ export async function POST(
         rating: Math.min(5, Math.max(1, Math.floor(parseInt(rating)))),
         // SECURITY: Strip HTML tags and limit length to prevent stored XSS
         comment: comment ? String(comment).replace(/<[^>]*>/g, '').slice(0, 2000) : null,
-        appointmentId,
+        appointmentId: appointmentId || null,
         userId,
         shopId: shopId,
       },
