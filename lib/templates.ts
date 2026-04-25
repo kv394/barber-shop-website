@@ -1,4 +1,4 @@
-export type TemplateType = 'modern' | 'classic' | 'minimal' | 'vibrant' | 'noir' | 'sunset' | 'corporate' | 'sporty' | 'editorial';
+export type TemplateType = 'modern' | 'classic' | 'minimal' | 'vibrant' | 'noir' | 'sunset' | 'corporate' | 'sporty' | 'editorial' | 'off';
 
 export interface Template {
   name: string;
@@ -51,6 +51,11 @@ export const AVAILABLE_TEMPLATES: Record<TemplateType, Template> = {
     name: 'Editorial',
     description: 'High-end, elegant editorial style for salons and spas',
     id: 'editorial',
+  },
+  off: {
+    name: 'External Widget Only (Off)',
+    description: 'Disable the public landing page. Use this if you only embed the booking widget on your own website.',
+    id: 'off',
   },
 };
 

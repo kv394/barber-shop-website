@@ -11,6 +11,11 @@ const BookingModal = dynamic(() => import('@/components/appointments/BookingModa
     loading: () => <div className="fixed inset-0 bg-crm-surface z-[100] flex items-center justify-center"><p className="text-crm-text text-[13px]">Loading...</p></div>
 });
 
+const BookingWizard = dynamic(() => import('@/components/booking/BookingWizard'), {
+    ssr: false,
+    loading: () => <div className="h-full w-full flex flex-col items-center justify-center bg-gray-50"><p className="text-gray-500">Loading booking portal...</p></div>
+});
+
 /** Format the address object (or legacy string) into a single readable line */
 function formatAddress(addr: any): string {
   if (!addr) return '';
@@ -164,6 +169,35 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                         shopHours={c.businessHours || {}}
                     />
                 )}
+            </main>
+        );
+    }
+
+    if (templateType === 'off') {
+        return (
+            <main className="h-[100dvh] flex flex-col bg-gray-50 overflow-y-auto">
+                <div className="flex-none p-4 flex justify-end">
+                    <SupabaseAuthButton redirectUrl={pathname} />
+                </div>
+                <div className="flex-1 flex flex-col items-center justify-center p-4">
+                    <div className="bg-white rounded-2xl shadow-xl border border-gray-100 w-full max-w-md overflow-hidden flex flex-col" style={{ height: '700px', maxHeight: '90vh' }}>
+                        {logoUrl ? (
+                            <div className="p-6 pb-0 text-center shrink-0">
+                                <img src={logoUrl} alt={shop.name} className="h-16 mx-auto object-contain" />
+                            </div>
+                        ) : (
+                            <div className="p-6 pb-0 text-center shrink-0">
+                                <h1 className="text-2xl font-bold text-gray-900">{shop.name}</h1>
+                            </div>
+                        )}
+                        <div className="flex-1 overflow-hidden relative">
+                            <BookingWizard shopId={shop.id} />
+                        </div>
+                    </div>
+                    <p className="mt-8 text-gray-400 text-sm text-center">
+                        This shop does not have a public storefront.<br />Use this widget to book your appointment.
+                    </p>
+                </div>
             </main>
         );
     }

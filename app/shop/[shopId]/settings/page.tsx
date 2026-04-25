@@ -76,17 +76,15 @@ export default async function ShopSettingsPage({
         initialAmount={shopDetails?.depositAmount || 0}
       />
 
-      {data.isSiteAdmin && (
-        <div className="bg-crm-bg/50 p-6 rounded-xl border border-crm-border shadow-sm mb-6">
-          <h2 className="font-bold text-crm-text mb-2 text-xl font-bold">Booking Portal Template</h2>
-          <p className="text-crm-muted mb-6 text-[13px]">Choose the layout and style for your public booking portal.</p>
-          <TemplateSelector
-            currentTemplate={data.shop.template || 'modern'}
-            shopId={shopId}
-            dynamicTemplates={dynamicTemplates as any}
-          />
-        </div>
-      )}
+      <div className="bg-crm-bg/50 p-6 rounded-xl border border-crm-border shadow-sm mb-6">
+        <h2 className="font-bold text-crm-text mb-2 text-xl font-bold">Booking Portal Template</h2>
+        <p className="text-crm-muted mb-6 text-[13px]">Choose the layout and style for your public booking portal.</p>
+        <TemplateSelector
+          currentTemplate={data.shop.template || 'modern'}
+          shopId={shopId}
+          dynamicTemplates={dynamicTemplates as any}
+        />
+      </div>
 
       <CustomizationForm
         shopId={shopId}
