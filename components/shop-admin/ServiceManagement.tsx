@@ -174,6 +174,22 @@ export function ServiceManagement({ shopId }: ServiceManagementProps) {
     }
   };
 
+  
+  const handleToggleBookable = async (service: any) => {
+    try {
+      const res = await fetch(`/api/shops/${shopId}/services/${service.id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...service, addonIds: service.addons?.map((a: any) => a.id) || [], isBookable: !service.isBookable }),
+      });
+      if (!res.ok) throw new Error('Failed to toggle bookable status');
+      
+      setServices(services.map(s => s.id === service.id ? { ...s, isBookable: !s.isBookable } : s));
+    } catch (err: any) {
+      alert(err.message);
+    }
+  };
+
   const handleToggleAddon = async (serviceId: string, addonId: string, currentAddonIds: string[]) => {
     try {
       const newAddonIds = currentAddonIds.includes(addonId)
@@ -419,6 +435,12 @@ export function ServiceManagement({ shopId }: ServiceManagementProps) {
                           <div className={`text-[13px] sm:text-[11px] font-semibold px-2 py-0.5 sm:py-1 rounded border ${service.trackInventory ? 'bg-status-info/20 text-status-info border-status-info/30' : 'bg-crm-surface text-crm-muted border-crm-border'}`}>
                               Inventory: {service.trackInventory ? 'ON' : 'OFF'}
                           </div>
+                          <button
+                            onClick={() => handleToggleBookable(service)}
+                            className={`text-[13px] sm:text-[11px] font-semibold px-2 py-0.5 sm:py-1 rounded border transition-colors ${service.isBookable ? 'bg-status-confirmed/20 text-status-confirmed border-status-confirmed/30 hover:opacity-80' : 'bg-status-cancelled/20 text-status-cancelled border-status-cancelled/30 hover:opacity-80'}`}
+                          >
+                            Consumer: {service.isBookable ? 'ON' : 'OFF'}
+                          </button>
                       </div>
                       {service.description && (
                         <p className="text-crm-muted mt-1 text-[13px]">{service.description}</p>

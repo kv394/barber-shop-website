@@ -80,6 +80,21 @@ export default function ProductManager({ shopId, products }: { shopId: string, p
     }
   };
 
+  
+  const handleToggleSellable = async (product: any) => {
+    try {
+      const res = await fetch(`/api/shops/${shopId}/products/${product.id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...product, isSellable: !product.isSellable }),
+      });
+      if (!res.ok) throw new Error('Failed to toggle sellable status');
+      router.refresh();
+    } catch (err: any) {
+      alert(err.message);
+    }
+  };
+
   const handleEditClick = (product: any) => {
     setEditingProduct(product);
     setFormData({
@@ -243,11 +258,12 @@ export default function ProductManager({ shopId, products }: { shopId: string, p
                   </span>
                 </td>
                 <td className="px-6 py-4">
-                  {product.isSellable ? (
-                    <span className="text-status-confirmed">Yes</span>
-                  ) : (
-                    <span className="text-crm-muted">No</span>
-                  )}
+                  <button
+                    onClick={() => handleToggleSellable(product)}
+                    className={`px-3 py-1 rounded-full text-[11px] font-medium transition-colors ${product.isSellable ? 'bg-status-confirmed/20 text-status-confirmed border border-status-confirmed/30' : 'bg-crm-surface text-crm-muted border border-crm-border hover:bg-crm-border'}`}
+                  >
+                    {product.isSellable ? 'Yes' : 'No'}
+                  </button>
                 </td>
                 <td className="px-6 py-4">
                   {product.trackInventory ? (

@@ -43,6 +43,8 @@ interface BookingModalProps {
   service: Service;
   onClose: () => void;
   shopHours: Record<string, { open: string; close: string } | null>;
+  themeColor?: string;
+  templateType?: string;
 }
 
 const ANY_STAFF_VALUE = '__any__';
@@ -68,10 +70,87 @@ function generateICSContent(serviceName: string, startTime: Date, durationMins: 
   ].join('\r\n');
 }
 
-export default function BookingModal({ shopId, service, onClose, shopHours }: BookingModalProps) {
+export default function BookingModal({ shopId, service, onClose, shopHours, themeColor, templateType }: BookingModalProps) {
   const router = useRouter();
   const [authUser, setAuthUser] = useState<any>(null);
   const [isLoaded, setIsLoaded] = useState(false);
+
+  const getThemeStyles = () => {
+    switch (templateType) {
+      case 'sporty':
+        return {
+          cardActive: 'border-2 border-black shadow-sm rounded-none',
+          cardInactive: 'border-2 border-gray-200 hover:border-black rounded-none',
+          btnPrimary: 'w-full bg-black text-white font-black py-4 uppercase tracking-widest rounded-none hover:opacity-90',
+          input: 'w-full border-2 border-gray-200 p-4 rounded-none focus:outline-none focus:border-black font-bold'
+        };
+      case 'corporate':
+        return {
+          cardActive: 'border border-blue-600 shadow-md rounded-lg',
+          cardInactive: 'border border-gray-200 hover:border-blue-600 rounded-lg',
+          btnPrimary: 'w-full bg-blue-600 text-white font-medium py-3 rounded-lg hover:bg-blue-700 shadow-sm',
+          input: 'w-full border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent'
+        };
+      case 'noir':
+        return {
+          cardActive: 'border border-black bg-black text-white rounded-none',
+          cardInactive: 'border border-gray-300 hover:border-black rounded-none',
+          btnPrimary: 'w-full bg-black text-white font-bold uppercase tracking-[0.2em] py-4 rounded-none hover:bg-gray-900',
+          input: 'w-full border-b-2 border-gray-300 p-3 rounded-none focus:outline-none focus:border-black bg-transparent'
+        };
+      case 'sunset':
+        return {
+          cardActive: 'border-2 border-orange-500 shadow-lg rounded-2xl',
+          cardInactive: 'border-2 border-transparent bg-gray-50 hover:bg-gray-100 rounded-2xl',
+          btnPrimary: 'w-full bg-gradient-to-r from-orange-500 to-pink-500 text-white font-bold py-4 rounded-full shadow-lg hover:shadow-orange-500/30 hover:opacity-90',
+          input: 'w-full bg-gray-50 border-2 border-transparent p-4 rounded-2xl focus:outline-none focus:border-orange-500'
+        };
+      case 'editorial':
+        return {
+          cardActive: 'border border-[#d4af37] bg-[#fdfbf7] rounded-none',
+          cardInactive: 'border border-gray-200 hover:border-[#d4af37] rounded-none',
+          btnPrimary: 'w-full bg-[#d4af37] text-[#121412] font-semibold uppercase tracking-widest py-4 rounded-none hover:opacity-90',
+          input: 'w-full border-b border-gray-300 p-3 rounded-none focus:outline-none focus:border-[#d4af37] bg-transparent font-serif'
+        };
+      case 'classic':
+        return {
+          cardActive: 'border border-[#2c1e16] bg-[#fdfbf7] rounded-sm',
+          cardInactive: 'border border-[#e6d9c6] hover:border-[#2c1e16] bg-white rounded-sm',
+          btnPrimary: 'w-full bg-[#2c1e16] text-[#fdfbf7] font-medium uppercase tracking-wider py-3 rounded-sm hover:bg-[#1a120d]',
+          input: 'w-full border border-[#e6d9c6] p-3 rounded-sm focus:outline-none focus:border-[#2c1e16] bg-white'
+        };
+      case 'minimal':
+        return {
+          cardActive: 'border-b-2 border-black rounded-none pb-4',
+          cardInactive: 'border-b border-gray-200 hover:border-black rounded-none pb-4',
+          btnPrimary: 'w-full bg-black text-white font-medium py-3 rounded-none hover:bg-gray-800',
+          input: 'w-full border-b border-gray-200 p-3 rounded-none focus:outline-none focus:border-black bg-transparent'
+        };
+      case 'modern':
+      default:
+        return {
+          cardActive: 'border-2 border-gray-800 shadow-sm rounded-xl',
+          cardInactive: 'border-2 border-transparent bg-gray-50 hover:border-gray-200 rounded-xl',
+          btnPrimary: 'w-full bg-gray-900 text-white font-bold py-4 rounded-xl shadow-md hover:bg-black',
+          input: 'w-full border border-gray-200 p-4 rounded-xl focus:outline-none focus:ring-2 focus:ring-gray-900 bg-gray-50'
+        };
+    }
+  };
+
+  const tStyles = getThemeStyles();
+  const hexToRgba = (hex: string) => {
+    const cleanHex = hex.replace('#', '');
+    if (cleanHex.length === 3 || cleanHex.length === 6) {
+      const isShort = cleanHex.length === 3;
+      const r = parseInt(isShort ? cleanHex[0] + cleanHex[0] : cleanHex.substring(0, 2), 16);
+      const g = parseInt(isShort ? cleanHex[1] + cleanHex[1] : cleanHex.substring(2, 4), 16);
+      const b = parseInt(isShort ? cleanHex[2] + cleanHex[2] : cleanHex.substring(4, 6), 16);
+      return `rgba(${r}, ${g}, ${b}, 0.1)`;
+    }
+    return '';
+  }
+  const activeBg = themeColor ? hexToRgba(themeColor) : '#f9fafb';
+
   const isSignedIn = !!authUser;
 
   useEffect(() => {
@@ -397,7 +476,7 @@ export default function BookingModal({ shopId, service, onClose, shopHours }: Bo
       return (
         <div className="fixed inset-0 bg-black/60 z-[100] flex items-center justify-center p-4 backdrop-blur-sm">
             <div className="bg-crm-surface rounded-xl p-8 max-w-md w-full border border-status-confirmed shadow-2xl text-center relative">
-                <button onClick={onClose} className="absolute top-3 right-4 text-crm-primary bg-white hover:bg-gray-100 shadow-sm z-10 w-7 h-7 rounded-full flex items-center justify-center transition-colors font-bold text-[13px]">✕</button>
+                <button onClick={onClose} className="absolute top-3 right-4 bg-white hover:bg-gray-100 shadow-sm z-10 w-7 h-7 rounded-full flex items-center justify-center transition-colors font-bold text-[13px]" style={{ color: themeColor || "#111827" }}>✕</button>
                 <div className="text-6xl mb-4">🎉</div>
                 <h3 className="font-bold text-crm-primary mb-2 text-lg">Booking Confirmed!</h3>
                 <p className="text-crm-muted mb-2 text-[13px]">The appointment for <span className="text-crm-accent font-semibold">{service.name}</span> has been scheduled.</p>
@@ -434,7 +513,7 @@ export default function BookingModal({ shopId, service, onClose, shopHours }: Bo
       <div className="fixed inset-0 bg-black/60 z-[100] flex items-center justify-center p-4 backdrop-blur-sm">
         <div className="bg-crm-surface rounded-xl p-6 w-full max-w-md border border-crm-border shadow-sm shadow-2xl relative text-left">
           <button onClick={() => setShowSummary(false)} className="absolute top-4 left-4 text-crm-muted hover:text-crm-text bg-crm-surface rounded-full w-8 h-8 flex items-center justify-center z-10">←</button>
-          <button onClick={onClose} className="absolute top-3 right-4 text-crm-primary bg-white hover:bg-gray-100 shadow-sm z-10 w-7 h-7 rounded-full flex items-center justify-center transition-colors font-bold text-[13px]">✕</button>
+          <button onClick={onClose} className="absolute top-3 right-4 bg-white hover:bg-gray-100 shadow-sm z-10 w-7 h-7 rounded-full flex items-center justify-center transition-colors font-bold text-[13px]" style={{ color: themeColor || "#111827" }}>✕</button>
           <h3 className="font-bold text-crm-primary mb-1 text-lg text-center mt-2">Review Your Booking</h3>
           <p className="text-crm-muted mb-5 text-[13px] text-center">Please confirm the details below.</p>
 
@@ -514,7 +593,7 @@ export default function BookingModal({ shopId, service, onClose, shopHours }: Bo
   return (
     <div className="fixed inset-0 bg-black/60 z-[100] flex items-center justify-center p-4 backdrop-blur-sm">
       <div className="bg-crm-surface rounded-xl p-6 w-full max-w-md border border-crm-border shadow-sm shadow-2xl relative text-left max-h-[90vh] overflow-y-auto scrollbar-hide">
-        <button onClick={onClose} className="absolute top-3 right-4 text-crm-primary bg-white hover:bg-gray-100 shadow-sm z-10 w-7 h-7 rounded-full flex items-center justify-center transition-colors font-bold text-[13px]">✕</button>
+        <button onClick={onClose} className="absolute top-3 right-4 bg-white hover:bg-gray-100 shadow-sm z-10 w-7 h-7 rounded-full flex items-center justify-center transition-colors font-bold text-[13px]" style={{ color: themeColor || "#111827" }}>✕</button>
         <h3 className="font-bold text-crm-primary mb-1 text-lg">Book Appointment</h3>
         <p className="text-crm-accent font-semibold mb-2 text-[13px]">{service.name} <span className="text-crm-muted font-normal ml-2">({totalDuration} mins • ${totalPrice.toFixed(2)})</span></p>
 

@@ -466,12 +466,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                 <div dangerouslySetInnerHTML={{ __html: dynamicTemplateHtml }} />
                 
                 {selectedService && (
-                    <BookingModal
-                        shopId={shop.id}
-                        service={selectedService}
-                        onClose={() => setSelectedService(null)}
-                        shopHours={c.businessHours || {}}
-                    />
+                    <BookingModal shopId={shop.id} service={selectedService} onClose={() => setSelectedService(null)} shopHours={c.businessHours || {}} themeColor={primaryColor} templateType={templateType} />
                 )}
             </main>
         );
@@ -526,12 +521,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                 </div>
 
                 {selectedService && (
-                    <BookingModal
-                        shopId={shop.id}
-                        service={selectedService}
-                        onClose={() => setSelectedService(null)}
-                        shopHours={c.businessHours || {}}
-                    />
+                    <BookingModal shopId={shop.id} service={selectedService} onClose={() => setSelectedService(null)} shopHours={c.businessHours || {}} themeColor={primaryColor} templateType={templateType} />
                 )}
             </main>
         );
@@ -664,12 +654,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                 </footer>
 
                 {selectedService && (
-                    <BookingModal 
-                        shopId={shop.id} 
-                        service={selectedService} 
-                        onClose={() => setSelectedService(null)} 
-                        shopHours={c.businessHours || {}}
-                    />
+                    <BookingModal shopId={shop.id} service={selectedService} onClose={() => setSelectedService(null)} shopHours={c.businessHours || {}} themeColor={primaryColor} templateType={templateType} />
                 )}
             </main>
         );
@@ -744,12 +729,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
             </footer>
 
             {selectedService && (
-                <BookingModal 
-                    shopId={shop.id} 
-                    service={selectedService} 
-                    onClose={() => setSelectedService(null)} 
-                    shopHours={c.businessHours || {}}
-                />
+                <BookingModal shopId={shop.id} service={selectedService} onClose={() => setSelectedService(null)} shopHours={c.businessHours || {}} themeColor={primaryColor} templateType={templateType} />
             )}
           </main>
         );
@@ -791,12 +771,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
             
 
             {selectedService && (
-                <BookingModal 
-                    shopId={shop.id} 
-                    service={selectedService} 
-                    onClose={() => setSelectedService(null)} 
-                    shopHours={c.businessHours || {}}
-                />
+                <BookingModal shopId={shop.id} service={selectedService} onClose={() => setSelectedService(null)} shopHours={c.businessHours || {}} themeColor={primaryColor} templateType={templateType} />
             )}
           </main>
         );
@@ -838,12 +813,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
             </div>
 
             {selectedService && (
-                <BookingModal 
-                    shopId={shop.id} 
-                    service={selectedService} 
-                    onClose={() => setSelectedService(null)} 
-                    shopHours={c.businessHours || {}}
-                />
+                <BookingModal shopId={shop.id} service={selectedService} onClose={() => setSelectedService(null)} shopHours={c.businessHours || {}} themeColor={primaryColor} templateType={templateType} />
             )}
           </main>
         );
@@ -1075,12 +1045,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
             </footer>
 
             {selectedService && (
-                <BookingModal 
-                    shopId={shop.id} 
-                    service={selectedService} 
-                    onClose={() => setSelectedService(null)} 
-                    shopHours={c.businessHours || {}}
-                />
+                <BookingModal shopId={shop.id} service={selectedService} onClose={() => setSelectedService(null)} shopHours={c.businessHours || {}} themeColor={primaryColor} templateType={templateType} />
             )}
           </main>
         );
@@ -1123,47 +1088,14 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                 </section>
             ))}
 
-            <section className="max-w-4xl mx-auto px-6 py-16">
-              <h2 className="font-semibold tracking-widest uppercase text-crm-muted mb-10 text-xl font-bold">Service Menu</h2>
-              {shop.services && shop.services.length > 0 ? (
-                <div className="space-y-8">
-                  {shop.services.map((service: any) => (
-                    <div key={service.id} className="flex flex-col md:flex-row justify-between md:items-baseline group border-b border-crm-border pb-4">
-                      <div className="flex-1 mr-4 mb-4 md:mb-0">
-                        <h3 className="font-medium transition-colors text-lg font-bold" style={{ color: primaryColor }}>{service.name}</h3>
-                        {service.description && <p className="text-crm-muted mt-1 text-[13px]">{service.description}</p>}
-                      </div>
-                      <div className="flex items-center gap-4">
-                        <div className="text-right mr-4 border-r border-crm-border pr-4">
-                            <span className="font-medium block">${service.price.toFixed(2)}</span>
-                            <span className="text-crm-muted text-[11px]">{service.duration}m</span>
-                        </div>
-                        <button
-                            onClick={() => handleBookClick(service)}
-                            className="text-[13px] font-semibold hover:underline transition-all duration-300 hover:scale-110 active:scale-95 origin-right"
-                            style={{ color: primaryColor }}
-                        >
-                            Book
-                        </button>                      </div>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <p className="text-crm-muted italic text-[13px]">No services listed.</p>
-              )}
-            </section>
+            
             
 
 
             
 
             {selectedService && (
-                <BookingModal 
-                    shopId={shop.id} 
-                    service={selectedService} 
-                    onClose={() => setSelectedService(null)} 
-                    shopHours={c.businessHours || {}}
-                />
+                <BookingModal shopId={shop.id} service={selectedService} onClose={() => setSelectedService(null)} shopHours={c.businessHours || {}} themeColor={primaryColor} templateType={templateType} />
             )}
           </main>
         );
@@ -1215,12 +1147,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
             </footer>
 
             {selectedService && (
-                <BookingModal 
-                    shopId={shop.id} 
-                    service={selectedService} 
-                    onClose={() => setSelectedService(null)} 
-                    shopHours={c.businessHours || {}}
-                />
+                <BookingModal shopId={shop.id} service={selectedService} onClose={() => setSelectedService(null)} shopHours={c.businessHours || {}} themeColor={primaryColor} templateType={templateType} />
             )}
           </main>
         );
@@ -1383,12 +1310,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
           </footer>
 
           {selectedService && (
-            <BookingModal 
-                shopId={shop.id} 
-                service={selectedService} 
-                onClose={() => setSelectedService(null)} 
-                shopHours={c.businessHours || {}}
-            />
+            <BookingModal shopId={shop.id} service={selectedService} onClose={() => setSelectedService(null)} shopHours={c.businessHours || {}} themeColor={primaryColor} templateType={templateType} />
           )}
         </main>
       );
