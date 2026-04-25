@@ -64,6 +64,19 @@ export interface Customization {
   heroImageUrl: string | null;
   heroVideoUrl?: string | null;
   fontFamily?: string;
+  headingFont?: string;
+  bodyFont?: string;
+  buttonShape?: string;
+  buttonVariant?: string;
+  colorTheme?: string;
+  headerStyle?: string;
+  heroLayout?: string;
+  heroOverlayOpacity?: number;
+  heroOverlayColor?: string;
+  enableScrollAnimations?: boolean;
+  faviconUrl?: string | null;
+  customCss?: string;
+  sectionOrder?: string[];
   ctaText?: string;
   announcement?: {
     text: string;
@@ -117,6 +130,19 @@ export const DEFAULT_CUSTOMIZATION: Customization = {
   heroImageUrl: null,
   heroVideoUrl: null,
   fontFamily: 'Inter',
+  headingFont: 'Inter',
+  bodyFont: 'Inter',
+  buttonShape: 'rounded',
+  buttonVariant: 'solid',
+  colorTheme: 'light',
+  headerStyle: 'classic',
+  heroLayout: 'full',
+  heroOverlayOpacity: 0,
+  heroOverlayColor: '#000000',
+  enableScrollAnimations: false,
+  faviconUrl: null,
+  customCss: '',
+  sectionOrder: ['hero', 'services', 'team', 'gallery', 'reviews', 'contact'],
   ctaText: 'Book Appointment',
   announcement: {
     text: 'Welcome to our new booking portal!',

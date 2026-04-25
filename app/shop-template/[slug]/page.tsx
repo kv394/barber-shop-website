@@ -91,9 +91,9 @@ export default async function PublicShopPage({
   if (!shop) {
     return (
       <div className="h-[100dvh] overflow-y-auto overflow-x-hidden">
-        <div className="text-center">
-          <h1 className="font-bold text-crm-text mb-4 text-2xl font-bold">Shop Not Found</h1>
-          <p className="text-crm-muted text-[13px]">We couldn't find the shop you're looking for.</p>
+        <div className="text-crm-mutedrm-textenter">
+          <h1 className="font-bold text-crm-mutedrm-textrm-text mb-4 text-crm-mutedrm-textxl font-bold">Shop Not Found</h1>
+          <p className="text-crm-mutedrm-textrm-muted text-[13px]">We couldn't find the shop you're looking for.</p>
         </div>
       </div>
     );
@@ -103,6 +103,28 @@ export default async function PublicShopPage({
   const primaryColor = shop.customization?.primaryColor || '#3b82f6'; // Default blue-500
   const secondaryColor = shop.customization?.secondaryColor || '#06b6d4'; // Default cyan-500
   const templateType = shop.template || 'modern';
+
+    const c = shop.customization || {};
+    const headingFont = c.headingFont || c.fontFamily || 'Inter';
+    const bodyFont = c.bodyFont || c.fontFamily || 'Inter';
+    const buttonShape = c.buttonShape || 'rounded';
+    const buttonVariant = c.buttonVariant || 'solid';
+    const colorTheme = c.colorTheme || 'light';
+    const headerStyle = c.headerStyle || 'classic';
+    const heroLayout = c.heroLayout || 'full';
+    const heroOverlayOpacity = c.heroOverlayOpacity !== undefined ? c.heroOverlayOpacity : 0;
+    const heroOverlayColor = c.heroOverlayColor || '#000000';
+    const enableScrollAnimations = c.enableScrollAnimations || false;
+    const faviconUrl = c.faviconUrl || null;
+    const customCss = c.customCss || '';
+    const sectionOrder = c.sectionOrder || ['hero', 'services', 'team', 'gallery', 'reviews', 'contact'];
+
+    const isDark = colorTheme === 'dark';
+    const themeBg = isDark ? '#121212' : '#ffffff';
+    const themeText = isDark ? '#ffffff' : '#111827';
+    const themeMuted = isDark ? '#a1a1aa' : '#6b7280';
+    const themeBorder = isDark ? '#27272a' : '#e5e7eb';
+
 
   // Define different layouts based on the selected template
   
@@ -140,6 +162,54 @@ export default async function PublicShopPage({
     
     return (
       <main className="h-[100dvh] overflow-y-auto overflow-x-hidden bg-[#121412] text-[#e3e2e0] selection:bg-[#d4af37] selection:text-[#554300] font-sans">
+
+      {faviconUrl && (
+        <link rel="icon" href={faviconUrl} />
+      )}
+      <style dangerouslySetInnerHTML={{__html: `
+        @import url('https://fonts.googleapis.com/css2?family=${headingFont.replace(/ /g, '+')}:wght@400;600;700;900&family=${bodyFont.replace(/ /g, '+')}:wght@400;500;600&display=swap');
+        
+        h1, h2, h3, h4, h5, h6, .font-heading { font-family: '${headingFont}', sans-serif !important; }
+        body, p, span, a, div, .font-body { font-family: '${bodyFont}', sans-serif; }
+        
+        ${isDark ? `
+          .bg-crm-bg, .bg-white, .bg-crm-surface { background-color: ${themeBg} !important; border-color: ${themeBorder} !important; }
+          .text-crm-mutedrm-textrm-text, .text-gray-900, .text-crm-mutedlack { color: ${themeText} !important; }
+          .text-crm-mutedrm-textrm-muted, .text-gray-500, .text-gray-600 { color: ${themeMuted} !important; }
+          .border-gray-100, .border-gray-200, .border-crm-border { border-color: ${themeBorder} !important; }
+        ` : ''}
+
+        ${buttonShape === 'sharp' ? '.btn, button { border-radius: 0 !important; }' : ''}
+        ${buttonShape === 'pill' ? '.btn, button { border-radius: 9999px !important; }' : ''}
+        
+        ${buttonVariant === 'outline' ? `
+          .btn, button.bg-crm-primary { background-color: transparent !important; border: 2px solid ${primaryColor} !important; color: ${primaryColor} !important; }
+          .btn:hover, button.bg-crm-primary:hover { background-color: ${primaryColor}20 !important; }
+        ` : ''}
+        
+        ${buttonVariant === 'ghost' ? `
+          .btn, button.bg-crm-primary { background-color: transparent !important; border: none !important; color: ${primaryColor} !important; }
+          .btn:hover, button.bg-crm-primary:hover { background-color: ${primaryColor}20 !important; }
+        ` : ''}
+
+        ${enableScrollAnimations ? `
+          .animate-on-scroll {
+            animation: fadeInUp 0.8s ease forwards;
+          }
+          @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+          }
+        ` : ''}
+
+        .hero-overlay {
+          background-color: ${heroOverlayColor};
+          opacity: ${heroOverlayOpacity / 100};
+        }
+
+        ${customCss}
+      `}} />
+  
         <style dangerouslySetInnerHTML={{__html: `
           @import url('https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,700;1,400&family=Manrope:wght@300;400;500;600;700&display=swap');
           @import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap');
@@ -151,7 +221,7 @@ export default async function PublicShopPage({
         {/* TopNavBar */}
         <nav className="fixed top-0 w-full z-50 bg-[#121412]/80 backdrop-blur-xl shadow-none no-border">
           <div className="flex justify-between items-center px-8 py-6 max-w-screen-2xl mx-auto">
-            <div className="text-2xl font-bold font-headline tracking-tighter" style={{ color: primaryColor }}>
+            <div className="text-crm-mutedrm-textxl font-bold font-headline tracking-tighter" style={{ color: primaryColor }}>
               {shop.name}
             </div>
             {/* Desktop Navigation */}
@@ -181,7 +251,7 @@ export default async function PublicShopPage({
                   {editorial.heroTagline || 'Editorial Excellence'}
                 </span>
                 <h1 
-                  className="font-headline leading-[1.1] mb-8 tracking-tight text-2xl font-bold"
+                  className="font-headline leading-[1.1] mb-8 tracking-tight text-crm-mutedrm-textxl font-bold"
                   dangerouslySetInnerHTML={{ __html: editorial.heroTitle || `Your Sanctuary of <br/> <span class="italic" style="color: ${primaryColor}">Sophisticated Care</span>` }}
                 />
                 <p className="text-[#d0c5af] font-body max-w-md mb-10 leading-relaxed text-[13px]">
@@ -217,7 +287,7 @@ export default async function PublicShopPage({
           {/* Services Section */}
           <section id="services" className="py-32 px-8 bg-[#1a1c1a]">
             <div className="max-w-7xl mx-auto">
-              <div className="text-center mb-20">
+              <div className="text-crm-mutedrm-textenter mb-20">
                 <h2 className="font-headline mb-4 text-xl font-bold">{editorial.servicesTitle || 'Our Services'}</h2>
                 <div className="w-24 h-px mx-auto mb-6" style={{ backgroundColor: primaryColor }}></div>
                 <p className="font-body text-[#d0c5af] max-w-xl mx-auto text-[13px]">{editorial.servicesSubtitle || "A curated selection of rituals designed to restore your glow and refine your natural elegance."}</p>
@@ -226,7 +296,7 @@ export default async function PublicShopPage({
                 {shop.services?.map((service: any, index: number) => (
                   <div key={service.id} className="group bg-[#0d0f0d] p-10 rounded-2xl transition-all hover:translate-y-[-8px]">
                     <div className="w-16 h-16 bg-[#292a29] rounded-full flex items-center justify-center mb-8 text-[#d0c5af]">
-                      <span className="material-symbols-outlined text-3xl">{['spa', 'face', 'fluid_med'][index % 3] || 'spa'}</span>
+                      <span className="material-symbols-outlined text-crm-mutedrm-textxl">{['spa', 'face', 'fluid_med'][index % 3] || 'spa'}</span>
                     </div>
                     <h3 className="font-headline mb-4 text-lg font-bold">{service.name}</h3>
                     <p className="text-[#d0c5af] mb-8 leading-relaxed text-[13px]">{service.description}</p>
@@ -290,7 +360,7 @@ export default async function PublicShopPage({
                   <div className="md:col-span-8 flex gap-8">
                     {editorial.testimonials.slice(0,2).map((t: any, i: number) => (
                       <div key={i} className={`bg-[#0d0f0d] p-10 rounded-3xl shadow-sm max-w-sm ${i === 1 ? 'hidden md:block opacity-60' : ''}`}>
-                        <span className="material-symbols-outlined text-5xl mb-6" style={{ color: secondaryColor }}>format_quote</span>
+                        <span className="material-symbols-outlined text-crm-mutedxl mb-6" style={{ color: secondaryColor }}>format_quote</span>
                         <p className="font-body italic text-[#e3e2e0] mb-8 leading-relaxed text-[13px]">"{t.quote}"</p>
                         <div className="flex items-center gap-4">
                           <div className="w-12 h-12 rounded-full bg-[#292a29]"></div>
@@ -317,14 +387,14 @@ export default async function PublicShopPage({
                     <div className="flex gap-6">
                       <span className="material-symbols-outlined" style={{ color: primaryColor }}>location_on</span>
                       <div>
-                        <h4 className="font-bold mb-2 text-base font-semibold">Our Location</h4>
+                        <h4 className="font-bold mb-2 text-crm-mutedase font-semibold">Our Location</h4>
                         <p className="text-[#d0c5af] text-[13px]">{shop.customization?.address || 'Address not provided'}</p>
                       </div>
                     </div>
                     <div className="flex gap-6">
                       <span className="material-symbols-outlined" style={{ color: primaryColor }}>call</span>
                       <div>
-                        <h4 className="font-bold mb-2 text-base font-semibold">Contact Details</h4>
+                        <h4 className="font-bold mb-2 text-crm-mutedase font-semibold">Contact Details</h4>
                         <p className="text-[#d0c5af] text-[13px]">{shop.customization?.phone || 'Phone not provided'}<br/>{shop.customization?.email || 'Email not provided'}</p>
                       </div>
                     </div>
@@ -335,7 +405,7 @@ export default async function PublicShopPage({
                     <img alt="Map View" className="w-full h-full object-cover" src={editorial.mapImageUrl || "https://lh3.googleusercontent.com/aida-public/AB6AXuBPBUELt3H48sCkgUERZL-bYjLp_g4nyaMrAaWgWqv1QMVuCaaZub4OKguOms2xp_UClFnqWJd5F1jE8c8_9V8GbtLNhZwardBznAcbPP6O5ofImMcqWosMtI8MOhCDK6ERy1aepwuU8Jjoomg4v3oHOH1T-k1vmTJMASUVHIRN_wlzdQm3IGpjqWBgBHRYOEeLiJKp7GgD_lnnDst0M8NdV_0egB1TFqQmXLS5pgBlZELH0ExIL_x5_OEryY1I7lK2NPfP3cKIUjs"} />
                   </div>
                   <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="bg-[#121412] p-8 rounded-2xl shadow-xl border text-center max-w-xs" style={{ borderColor: `${primaryColor}20` }}>
+                    <div className="bg-[#121412] p-8 rounded-2xl shadow-xl border text-crm-mutedrm-textenter max-w-xs" style={{ borderColor: `${primaryColor}20` }}>
                       <div className="w-12 h-12 rounded-full mx-auto mb-4 flex items-center justify-center" style={{ backgroundColor: primaryColor }}>
                         <span className="material-symbols-outlined text-[#121412]">pin_drop</span>
                       </div>
@@ -374,42 +444,90 @@ export default async function PublicShopPage({
   if (templateType === 'minimal') {
     return (
       <main className="h-[100dvh] overflow-y-auto overflow-x-hidden">
+
+      {faviconUrl && (
+        <link rel="icon" href={faviconUrl} />
+      )}
+      <style dangerouslySetInnerHTML={{__html: `
+        @import url('https://fonts.googleapis.com/css2?family=${headingFont.replace(/ /g, '+')}:wght@400;600;700;900&family=${bodyFont.replace(/ /g, '+')}:wght@400;500;600&display=swap');
+        
+        h1, h2, h3, h4, h5, h6, .font-heading { font-family: '${headingFont}', sans-serif !important; }
+        body, p, span, a, div, .font-body { font-family: '${bodyFont}', sans-serif; }
+        
+        ${isDark ? `
+          .bg-crm-bg, .bg-white, .bg-crm-surface { background-color: ${themeBg} !important; border-color: ${themeBorder} !important; }
+          .text-crm-mutedrm-textrm-text, .text-gray-900, .text-crm-mutedlack { color: ${themeText} !important; }
+          .text-crm-mutedrm-textrm-muted, .text-gray-500, .text-gray-600 { color: ${themeMuted} !important; }
+          .border-gray-100, .border-gray-200, .border-crm-border { border-color: ${themeBorder} !important; }
+        ` : ''}
+
+        ${buttonShape === 'sharp' ? '.btn, button { border-radius: 0 !important; }' : ''}
+        ${buttonShape === 'pill' ? '.btn, button { border-radius: 9999px !important; }' : ''}
+        
+        ${buttonVariant === 'outline' ? `
+          .btn, button.bg-crm-primary { background-color: transparent !important; border: 2px solid ${primaryColor} !important; color: ${primaryColor} !important; }
+          .btn:hover, button.bg-crm-primary:hover { background-color: ${primaryColor}20 !important; }
+        ` : ''}
+        
+        ${buttonVariant === 'ghost' ? `
+          .btn, button.bg-crm-primary { background-color: transparent !important; border: none !important; color: ${primaryColor} !important; }
+          .btn:hover, button.bg-crm-primary:hover { background-color: ${primaryColor}20 !important; }
+        ` : ''}
+
+        ${enableScrollAnimations ? `
+          .animate-on-scroll {
+            animation: fadeInUp 0.8s ease forwards;
+          }
+          @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+          }
+        ` : ''}
+
+        .hero-overlay {
+          background-color: ${heroOverlayColor};
+          opacity: ${heroOverlayOpacity / 100};
+        }
+
+        ${customCss}
+      `}} />
+  
         <header className="max-w-4xl mx-auto px-6 py-12 border-b border-crm-border flex flex-col md:flex-row justify-between items-end md:items-center">
           <div>
-            <h1 className="font-light tracking-tight text-2xl font-bold" style={{ color: primaryColor }}>{shop.name}</h1>
-            {shop.description && <p className="text-crm-muted mt-2 text-[13px]">{shop.description}</p>}
+            <h1 className="font-light tracking-tight text-crm-mutedrm-textxl font-bold" style={{ color: primaryColor }}>{shop.name}</h1>
+            {shop.description && <p className="text-crm-mutedrm-textrm-muted mt-2 text-[13px]">{shop.description}</p>}
           </div>
-          <div className="text-right mt-6 md:mt-0 text-[13px] text-crm-muted">
+          <div className="text-right mt-6 md:mt-0 text-[13px] text-crm-mutedrm-textrm-muted">
              {shop.customization?.phone && <p className="text-[13px]">{shop.customization.phone}</p>}
              {shop.customization?.address && <p className="text-[13px]">{shop.customization.address}</p>}
           </div>
         </header>
 
         <section className="max-w-4xl mx-auto px-6 py-16">
-          <h2 className="font-semibold tracking-widest uppercase text-crm-muted mb-10 text-xl font-bold">Service Menu</h2>
+          <h2 className="font-semibold tracking-widest uppercase text-crm-mutedrm-textrm-muted mb-10 text-xl font-bold">Service Menu</h2>
           {shop.services && shop.services.length > 0 ? (
             <div className="space-y-8">
               {shop.services.map((service: any) => (
                 <div key={service.id} className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-baseline group cursor-pointer">
                   <div className="flex-1 border-b border-dotted border-crm-border pb-1 mr-4">
                     <h3 className="font-medium transition-colors text-lg font-bold" style={{ color: primaryColor }}>{service.name}</h3>
-                    {service.description && <p className="text-crm-muted mt-1 text-[13px]">{service.description}</p>}
+                    {service.description && <p className="text-crm-mutedrm-textrm-muted mt-1 text-[13px]">{service.description}</p>}
                   </div>
                   <div className="text-right">
                     <span className="font-medium">${service.price.toFixed(2)}</span>
-                    <span className="text-crm-muted text-[11px] ml-2">{service.duration}m</span>
+                    <span className="text-crm-mutedrm-textrm-muted text-[11px] ml-2">{service.duration}m</span>
                   </div>
                 </div>
               ))}
             </div>
           ) : (
-            <p className="text-crm-muted italic text-[13px]">No services listed.</p>
+            <p className="text-crm-mutedrm-textrm-muted italic text-[13px]">No services listed.</p>
           )}
         </section>
 
-        <section className="max-w-4xl mx-auto px-6 pb-20 text-center">
+        <section className="max-w-4xl mx-auto px-6 pb-20 text-crm-mutedrm-textenter">
             <button 
-              className="px-8 py-3 text-crm-text transition-colors text-[13px] font-medium tracking-wide uppercase rounded-md"
+              className="px-8 py-3 text-crm-mutedrm-textrm-text transition-colors text-[13px] font-medium tracking-wide uppercase rounded-md"
               style={{ backgroundColor: primaryColor }}
             >
               Make an Appointment
@@ -423,20 +541,68 @@ export default async function PublicShopPage({
   if (templateType === 'classic') {
     return (
       <main className="h-[100dvh] overflow-y-auto overflow-x-hidden">
-        <header className="border-b-4 border-[#2c1e16] py-16 text-center bg-[url('https://www.transparenttextures.com/patterns/aged-paper.png')]">
-          <h1 className="font-bold uppercase tracking-widest mb-4 text-2xl font-bold" style={{ color: primaryColor }}>{shop.name}</h1>
+
+      {faviconUrl && (
+        <link rel="icon" href={faviconUrl} />
+      )}
+      <style dangerouslySetInnerHTML={{__html: `
+        @import url('https://fonts.googleapis.com/css2?family=${headingFont.replace(/ /g, '+')}:wght@400;600;700;900&family=${bodyFont.replace(/ /g, '+')}:wght@400;500;600&display=swap');
+        
+        h1, h2, h3, h4, h5, h6, .font-heading { font-family: '${headingFont}', sans-serif !important; }
+        body, p, span, a, div, .font-body { font-family: '${bodyFont}', sans-serif; }
+        
+        ${isDark ? `
+          .bg-crm-bg, .bg-white, .bg-crm-surface { background-color: ${themeBg} !important; border-color: ${themeBorder} !important; }
+          .text-crm-mutedrm-textrm-text, .text-gray-900, .text-crm-mutedlack { color: ${themeText} !important; }
+          .text-crm-mutedrm-textrm-muted, .text-gray-500, .text-gray-600 { color: ${themeMuted} !important; }
+          .border-gray-100, .border-gray-200, .border-crm-border { border-color: ${themeBorder} !important; }
+        ` : ''}
+
+        ${buttonShape === 'sharp' ? '.btn, button { border-radius: 0 !important; }' : ''}
+        ${buttonShape === 'pill' ? '.btn, button { border-radius: 9999px !important; }' : ''}
+        
+        ${buttonVariant === 'outline' ? `
+          .btn, button.bg-crm-primary { background-color: transparent !important; border: 2px solid ${primaryColor} !important; color: ${primaryColor} !important; }
+          .btn:hover, button.bg-crm-primary:hover { background-color: ${primaryColor}20 !important; }
+        ` : ''}
+        
+        ${buttonVariant === 'ghost' ? `
+          .btn, button.bg-crm-primary { background-color: transparent !important; border: none !important; color: ${primaryColor} !important; }
+          .btn:hover, button.bg-crm-primary:hover { background-color: ${primaryColor}20 !important; }
+        ` : ''}
+
+        ${enableScrollAnimations ? `
+          .animate-on-scroll {
+            animation: fadeInUp 0.8s ease forwards;
+          }
+          @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+          }
+        ` : ''}
+
+        .hero-overlay {
+          background-color: ${heroOverlayColor};
+          opacity: ${heroOverlayOpacity / 100};
+        }
+
+        ${customCss}
+      `}} />
+  
+        <header className="border-b-4 border-[#2c1e16] py-16 text-crm-mutedrm-textenter bg-[url('https://www.transparenttextures.com/patterns/aged-paper.png')]">
+          <h1 className="font-bold uppercase tracking-widest mb-4 text-crm-mutedrm-textxl font-bold" style={{ color: primaryColor }}>{shop.name}</h1>
           {shop.description && <p className="max-w-xl mx-auto text-[#5a4634] text-[13px]">{shop.description}</p>}
         </header>
 
         <section className="max-w-5xl mx-auto px-8 py-20">
-          <h2 className="font-bold text-center uppercase tracking-widest mb-16 relative text-xl font-bold">
+          <h2 className="font-bold text-crm-mutedrm-textenter uppercase tracking-widest mb-16 relative text-xl font-bold">
             <span className="bg-[#fdfbf7] px-6 relative z-10">Our Services</span>
             <div className="absolute left-0 top-1/2 w-full h-px bg-[#e6d9c6] -z-0"></div>
           </h2>
 
           <div className="grid md:grid-cols-2 gap-x-16 gap-y-12">
             {shop.services?.map((service: any) => (
-              <div key={service.id} className="text-center">
+              <div key={service.id} className="text-crm-mutedrm-textenter">
                 <h3 className="font-bold mb-2 text-lg font-bold" style={{ color: primaryColor }}>{service.name}</h3>
                 <div className="font-sans text-[#8b7355] text-[13px] tracking-widest uppercase mb-3">
                   ${service.price.toFixed(2)} &bull; {service.duration} MINS
@@ -446,7 +612,7 @@ export default async function PublicShopPage({
             ))}
           </div>
 
-          <div className="text-center mt-20">
+          <div className="text-crm-mutedrm-textenter mt-20">
             <button 
               className="border-2 px-12 py-4 uppercase tracking-widest font-bold transition-colors"
               style={{ borderColor: primaryColor, color: primaryColor }}
@@ -456,7 +622,7 @@ export default async function PublicShopPage({
           </div>
         </section>
         
-        <footer className="bg-[#2c1e16] text-[#e6d9c6] py-12 text-center text-[13px] font-sans tracking-widest uppercase">
+        <footer className="bg-[#2c1e16] text-[#e6d9c6] py-12 text-crm-mutedrm-textenter text-[13px] font-sans tracking-widest uppercase">
              <p className="mb-2 text-[13px]">{shop.customization?.address || 'Visit us today'}</p>
              <p className="text-[13px]">{shop.customization?.phone} | {shop.customization?.email}</p>
         </footer>
@@ -468,21 +634,69 @@ export default async function PublicShopPage({
   // Default 'modern' template (the one that was originally there)
   return (
     <main className="h-[100dvh] overflow-y-auto overflow-x-hidden">
+
+      {faviconUrl && (
+        <link rel="icon" href={faviconUrl} />
+      )}
+      <style dangerouslySetInnerHTML={{__html: `
+        @import url('https://fonts.googleapis.com/css2?family=${headingFont.replace(/ /g, '+')}:wght@400;600;700;900&family=${bodyFont.replace(/ /g, '+')}:wght@400;500;600&display=swap');
+        
+        h1, h2, h3, h4, h5, h6, .font-heading { font-family: '${headingFont}', sans-serif !important; }
+        body, p, span, a, div, .font-body { font-family: '${bodyFont}', sans-serif; }
+        
+        ${isDark ? `
+          .bg-crm-bg, .bg-white, .bg-crm-surface { background-color: ${themeBg} !important; border-color: ${themeBorder} !important; }
+          .text-crm-mutedrm-textrm-text, .text-gray-900, .text-crm-mutedlack { color: ${themeText} !important; }
+          .text-crm-mutedrm-textrm-muted, .text-gray-500, .text-gray-600 { color: ${themeMuted} !important; }
+          .border-gray-100, .border-gray-200, .border-crm-border { border-color: ${themeBorder} !important; }
+        ` : ''}
+
+        ${buttonShape === 'sharp' ? '.btn, button { border-radius: 0 !important; }' : ''}
+        ${buttonShape === 'pill' ? '.btn, button { border-radius: 9999px !important; }' : ''}
+        
+        ${buttonVariant === 'outline' ? `
+          .btn, button.bg-crm-primary { background-color: transparent !important; border: 2px solid ${primaryColor} !important; color: ${primaryColor} !important; }
+          .btn:hover, button.bg-crm-primary:hover { background-color: ${primaryColor}20 !important; }
+        ` : ''}
+        
+        ${buttonVariant === 'ghost' ? `
+          .btn, button.bg-crm-primary { background-color: transparent !important; border: none !important; color: ${primaryColor} !important; }
+          .btn:hover, button.bg-crm-primary:hover { background-color: ${primaryColor}20 !important; }
+        ` : ''}
+
+        ${enableScrollAnimations ? `
+          .animate-on-scroll {
+            animation: fadeInUp 0.8s ease forwards;
+          }
+          @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+          }
+        ` : ''}
+
+        .hero-overlay {
+          background-color: ${heroOverlayColor};
+          opacity: ${heroOverlayOpacity / 100};
+        }
+
+        ${customCss}
+      `}} />
+  
       {/* Hero Section */}
       <section 
         className="bg-crm-surface backdrop-blur-md border-b border-crm-border"
         style={{ borderBottomColor: primaryColor }}
       >
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
-          <div className="text-center">
+          <div className="text-crm-mutedrm-textenter">
             <h1 
-              className="font-bold mb-6 text-2xl font-bold"
+              className="font-bold mb-6 text-crm-mutedrm-textxl font-bold"
               style={{ color: primaryColor }}
             >
               {shop.name}
             </h1>
             {shop.description && (
-              <p className="text-crm-muted max-w-2xl mx-auto text-[13px]">
+              <p className="text-crm-mutedrm-textrm-muted max-w-2xl mx-auto text-[13px]">
                 {shop.description}
               </p>
             )}
@@ -493,7 +707,7 @@ export default async function PublicShopPage({
       {/* Services Section */}
       <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
         <div className="mb-16">
-          <h2 className="font-bold text-crm-text mb-4 text-xl font-bold">Our Services</h2>
+          <h2 className="font-bold text-crm-mutedrm-textrm-text mb-4 text-xl font-bold">Our Services</h2>
           <div 
             className="w-20 h-1 rounded-full"
             style={{ background: `linear-gradient(to right, ${primaryColor}, ${secondaryColor})` }}
@@ -508,7 +722,7 @@ export default async function PublicShopPage({
                 className="group bg-gradient-to-br from-slate-800 to-slate-900 rounded-xl p-8 border border-crm-border shadow-sm transition-all duration-300 hover:shadow-lg"
               >
                 <div className="flex items-start justify-between mb-4">
-                  <h3 className="font-bold text-crm-text transition-colors text-lg font-bold">
+                  <h3 className="font-bold text-crm-mutedrm-textrm-text transition-colors text-lg font-bold">
                     {service.name}
                   </h3>
                   <div 
@@ -520,17 +734,17 @@ export default async function PublicShopPage({
                 </div>
 
                 {service.description && (
-                  <p className="text-crm-muted mb-4 leading-relaxed text-[13px]">
+                  <p className="text-crm-mutedrm-textrm-muted mb-4 leading-relaxed text-[13px]">
                     {service.description}
                   </p>
                 )}
 
                 <div className="flex items-center justify-between pt-4 border-t border-crm-border">
-                  <div className="text-crm-muted text-[13px]">
+                  <div className="text-crm-mutedrm-textrm-muted text-[13px]">
                     ⏱️ {service.duration} minutes
                   </div>
                   <button 
-                    className="text-crm-text px-4 py-2 rounded-lg font-semibold transition-opacity hover:opacity-90 text-[13px]"
+                    className="text-crm-mutedrm-textrm-text px-4 py-2 rounded-lg font-semibold transition-opacity hover:opacity-90 text-[13px]"
                     style={{ backgroundColor: primaryColor }}
                   >
                     Book Now
@@ -540,8 +754,8 @@ export default async function PublicShopPage({
             ))}
           </div>
         ) : (
-          <div className="text-center py-16">
-            <p className="text-crm-muted text-[13px]">
+          <div className="text-crm-mutedrm-textenter py-16">
+            <p className="text-crm-mutedrm-textrm-muted text-[13px]">
               No services available at the moment. Please check back later.
             </p>
           </div>
@@ -553,11 +767,11 @@ export default async function PublicShopPage({
         className="py-16"
         style={{ background: `linear-gradient(to right, ${primaryColor}, ${secondaryColor})` }}
       >
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="font-bold text-crm-text mb-6 text-xl font-bold">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-crm-mutedrm-textenter">
+          <h2 className="font-bold text-crm-mutedrm-textrm-text mb-6 text-xl font-bold">
             Ready to Book?
           </h2>
-          <p className="text-crm-text mb-8 text-[13px]">
+          <p className="text-crm-mutedrm-textrm-text mb-8 text-[13px]">
             Schedule your appointment today and get the best service in town.
           </p>
           <button 
@@ -574,47 +788,47 @@ export default async function PublicShopPage({
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
             <div>
-              <h3 className="text-crm-text font-bold mb-4 text-lg font-bold">{shop.name}</h3>
-              <p className="text-crm-muted mb-4 text-[13px]">
+              <h3 className="text-crm-mutedrm-textrm-text font-bold mb-4 text-lg font-bold">{shop.name}</h3>
+              <p className="text-crm-mutedrm-textrm-muted mb-4 text-[13px]">
                 {shop.description || 'Your trusted service provider'}
               </p>
               {shop.customization?.address && (
-                <p className="text-crm-muted text-[13px]">{shop.customization.address}</p>
+                <p className="text-crm-mutedrm-textrm-muted text-[13px]">{shop.customization.address}</p>
               )}
             </div>
             <div>
-              <h4 className="text-crm-text font-bold mb-4 text-base font-semibold">Contact</h4>
-              <ul className="space-y-2 text-crm-muted text-[13px]">
+              <h4 className="text-crm-mutedrm-textrm-text font-bold mb-4 text-crm-mutedase font-semibold">Contact</h4>
+              <ul className="space-y-2 text-crm-mutedrm-textrm-muted text-[13px]">
                 {shop.customization?.phone && (
                   <li>
-                    <a href={`tel:${shop.customization.phone}`} className="hover:text-crm-text transition">
+                    <a href={`tel:${shop.customization.phone}`} className="hover:text-crm-mutedrm-textrm-text transition">
                       📞 {shop.customization.phone}
                     </a>
                   </li>
                 )}
                 {shop.customization?.email && (
                   <li>
-                    <a href={`mailto:${shop.customization.email}`} className="hover:text-crm-text transition">
+                    <a href={`mailto:${shop.customization.email}`} className="hover:text-crm-mutedrm-textrm-text transition">
                       ✉️ {shop.customization.email}
                     </a>
                   </li>
                 )}
                 <li>
-                  <a href="#services" className="hover:text-crm-text transition">
+                  <a href="#services" className="hover:text-crm-mutedrm-textrm-text transition">
                     Services
                   </a>
                 </li>
               </ul>
             </div>
             <div>
-              <h4 className="text-crm-text font-bold mb-4 text-base font-semibold">Follow Us</h4>
+              <h4 className="text-crm-mutedrm-textrm-text font-bold mb-4 text-crm-mutedase font-semibold">Follow Us</h4>
               <div className="flex gap-4">
                 {shop.customization?.social?.facebook && (
                   <a
                     href={shop.customization.social.facebook}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-crm-muted hover:text-crm-text transition"
+                    className="text-crm-mutedrm-textrm-muted hover:text-crm-mutedrm-textrm-text transition"
                   >
                     Facebook
                   </a>
@@ -624,7 +838,7 @@ export default async function PublicShopPage({
                     href={shop.customization.social.instagram}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-crm-muted hover:text-crm-text transition"
+                    className="text-crm-mutedrm-textrm-muted hover:text-crm-mutedrm-textrm-text transition"
                   >
                     Instagram
                   </a>
@@ -634,7 +848,7 @@ export default async function PublicShopPage({
                     href={shop.customization.social.twitter}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-crm-muted hover:text-crm-text transition"
+                    className="text-crm-mutedrm-textrm-muted hover:text-crm-mutedrm-textrm-text transition"
                   >
                     Twitter
                   </a>
@@ -642,7 +856,7 @@ export default async function PublicShopPage({
               </div>
             </div>
           </div>
-          <div className="border-t border-crm-border pt-8 text-center text-crm-muted text-[13px]">
+          <div className="border-t border-crm-border pt-8 text-crm-mutedrm-textenter text-crm-mutedrm-textrm-muted text-[13px]">
             <p className="text-[13px]">
               &copy; {new Date().getFullYear()} {shop.name}. All rights reserved.
             </p>

@@ -10,7 +10,7 @@ import InteractiveReviewsSection from '@/components/reviews/InteractiveReviewsSe
 // Lazy-load the BookingModal component
 const BookingModal = dynamic(() => import('@/components/appointments/BookingModal'), {
     ssr: false, // This component will only be rendered on the client side
-    loading: () => <div className="fixed inset-0 bg-crm-surface z-[100] flex items-center justify-center"><p className="text-crm-text text-[13px]">Loading...</p></div>
+    loading: () => <div className="fixed inset-0 bg-crm-surface z-[100] flex items-center justify-center"><p className="text-crm-mutedrm-textrm-text text-[13px]">Loading...</p></div>
 });
 
 const BookingWizard = dynamic(() => import('@/components/booking/BookingWizard'), {
@@ -51,8 +51,8 @@ function ReviewsSection({ reviews, variant = 'dark' }: { reviews: any[]; variant
     : variant === 'warm'
       ? 'bg-[#f5efe6]'
       : 'bg-crm-surface';
-  const textClass = variant === 'light' ? 'text-crm-text' : variant === 'warm' ? 'text-[#2c1e16]' : 'text-crm-text';
-  const subTextClass = variant === 'light' ? 'text-crm-muted' : variant === 'warm' ? 'text-[#5a4634]' : 'text-crm-muted';
+  const textClass = variant === 'light' ? 'text-crm-mutedrm-textrm-text' : variant === 'warm' ? 'text-[#2c1e16]' : 'text-crm-mutedrm-textrm-text';
+  const subTextClass = variant === 'light' ? 'text-crm-mutedrm-textrm-muted' : variant === 'warm' ? 'text-[#5a4634]' : 'text-crm-mutedrm-textrm-muted';
   const cardClass = variant === 'light'
     ? 'bg-crm-surface border border-crm-border shadow-sm shadow-sm'
     : variant === 'warm'
@@ -62,7 +62,7 @@ function ReviewsSection({ reviews, variant = 'dark' }: { reviews: any[]; variant
   return (
     <section className={`${bgClass} py-16`}>
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
+        <div className="text-crm-mutedrm-textenter mb-12">
           <h2 className={`${` font-bold ${textClass} text-xl font-bold`} mb-2`}>What Our Clients Say</h2>
           <div className="flex items-center justify-center gap-2 mt-3">
             <StarRating rating={Math.round(avgRating)} />
@@ -117,37 +117,37 @@ function CustomPageContent({ content, shop, themeColor, className, onBookClick, 
     switch (templateType) {
       case 'sporty':
         return {
-          card: 'bg-crm-surface border-2 border-crm-border p-6 text-center shadow-sm flex flex-col items-center',
-          serviceCard: 'bg-crm-surface border-2 border-crm-border p-6 text-center shadow-sm flex flex-col',
+          card: 'bg-crm-surface border-2 border-crm-border p-6 text-crm-mutedrm-textenter shadow-sm flex flex-col items-center',
+          serviceCard: 'bg-crm-surface border-2 border-crm-border p-6 text-crm-mutedrm-textenter shadow-sm flex flex-col',
           title: 'font-black uppercase italic text-lg',
-          price: 'text-2xl font-bold mb-4',
-          desc: 'text-crm-muted mb-6 min-h-[3rem] text-[13px]',
+          price: 'text-crm-mutedrm-textxl font-bold mb-4',
+          desc: 'text-crm-mutedrm-textrm-muted mb-6 min-h-[3rem] text-[13px]',
           btn: 'w-full text-white font-bold py-3 uppercase tracking-wider transition-all hover:scale-[1.02] shadow-md',
           btnStyle: { backgroundColor: themeColor || '#ef4444' }
         };
       case 'corporate':
         return {
-          card: 'bg-white rounded-lg shadow-lg border border-gray-100 p-6 flex flex-col items-center text-center',
+          card: 'bg-white rounded-lg shadow-lg border border-gray-100 p-6 flex flex-col items-center text-crm-mutedrm-textenter',
           serviceCard: 'bg-white rounded-lg shadow-lg border border-gray-100 p-6 flex flex-col',
           title: 'font-bold text-gray-900 mb-2 text-lg',
-          price: 'text-lg font-bold text-blue-600',
+          price: 'text-lg font-bold text-crm-mutedlue-600',
           desc: 'text-gray-500 mb-4 text-[13px] flex-grow',
           btn: 'w-full text-white font-bold py-2 rounded transition-all hover:opacity-90 shadow-sm mt-4',
           btnStyle: { backgroundColor: themeColor || '#2563eb' }
         };
       case 'noir':
         return {
-          card: 'bg-transparent border border-gray-800 p-6 hover:bg-gray-900/50 transition-colors flex flex-col items-center text-center',
-          serviceCard: 'bg-transparent border border-gray-800 p-6 hover:bg-gray-900/50 transition-colors flex flex-col text-center',
+          card: 'bg-transparent border border-gray-800 p-6 hover:bg-gray-900/50 transition-colors flex flex-col items-center text-crm-mutedrm-textenter',
+          serviceCard: 'bg-transparent border border-gray-800 p-6 hover:bg-gray-900/50 transition-colors flex flex-col text-crm-mutedrm-textenter',
           title: 'font-bold uppercase tracking-widest text-lg mb-2',
           price: 'text-lg font-bold mb-4',
           desc: 'text-gray-400 mb-6 text-[13px] flex-grow',
-          btn: 'w-full bg-white text-black font-bold uppercase py-3 tracking-[0.2em] hover:bg-gray-200 transition-colors',
+          btn: 'w-full bg-white text-crm-mutedlack font-bold uppercase py-3 tracking-[0.2em] hover:bg-gray-200 transition-colors',
           btnStyle: { color: 'black' }
         };
       case 'sunset':
         return {
-          card: 'bg-black/20 backdrop-blur-md border border-white/10 rounded-xl p-6 text-white shadow-xl flex flex-col items-center text-center hover:border-orange-500/50 transition-colors',
+          card: 'bg-black/20 backdrop-blur-md border border-white/10 rounded-xl p-6 text-white shadow-xl flex flex-col items-center text-crm-mutedrm-textenter hover:border-orange-500/50 transition-colors',
           serviceCard: 'bg-black/20 backdrop-blur-md border border-white/10 rounded-xl p-6 text-white shadow-xl flex flex-col hover:border-orange-500/50 transition-colors',
           title: 'font-bold text-lg text-orange-400 mb-2',
           price: 'text-xl font-bold text-orange-400',
@@ -157,17 +157,17 @@ function CustomPageContent({ content, shop, themeColor, className, onBookClick, 
         };
       case 'editorial':
         return {
-          card: 'bg-[#0d0f0d] p-8 rounded-2xl flex flex-col items-center text-center border border-[#292a29]',
+          card: 'bg-[#0d0f0d] p-8 rounded-2xl flex flex-col items-center text-crm-mutedrm-textenter border border-[#292a29]',
           serviceCard: 'bg-[#0d0f0d] p-8 rounded-2xl flex flex-col border border-[#292a29]',
           title: 'font-serif text-[#e3e2e0] text-xl mb-4',
           price: 'text-[13px] font-bold text-white mb-4',
           desc: 'text-[#d0c5af] leading-relaxed text-[13px] mb-6 flex-grow',
-          btn: 'font-semibold flex items-center justify-center gap-2 uppercase tracking-widest py-3 border border-[#d4af37] text-[#d4af37] hover:bg-[#d4af37] hover:text-black transition-colors',
+          btn: 'font-semibold flex items-center justify-center gap-2 uppercase tracking-widest py-3 border border-[#d4af37] text-[#d4af37] hover:bg-[#d4af37] hover:text-crm-mutedlack transition-colors',
           btnStyle: themeColor ? { borderColor: themeColor, color: themeColor } : {}
         };
       case 'minimal':
         return {
-          card: 'bg-transparent border border-gray-200 p-6 flex flex-col items-center text-center',
+          card: 'bg-transparent border border-gray-200 p-6 flex flex-col items-center text-crm-mutedrm-textenter',
           serviceCard: 'bg-transparent border-b border-gray-200 pb-6 flex flex-col md:flex-row justify-between md:items-center',
           title: 'font-medium text-lg text-gray-900',
           price: 'font-medium text-gray-900',
@@ -177,8 +177,8 @@ function CustomPageContent({ content, shop, themeColor, className, onBookClick, 
         };
       case 'classic':
         return {
-          card: 'bg-[#fdfbf7] border border-[#e6d9c6] p-8 text-center flex flex-col items-center shadow-sm',
-          serviceCard: 'bg-[#fdfbf7] border border-[#e6d9c6] p-8 text-center flex flex-col items-center shadow-sm',
+          card: 'bg-[#fdfbf7] border border-[#e6d9c6] p-8 text-crm-mutedrm-textenter flex flex-col items-center shadow-sm',
+          serviceCard: 'bg-[#fdfbf7] border border-[#e6d9c6] p-8 text-crm-mutedrm-textenter flex flex-col items-center shadow-sm',
           title: 'font-bold mb-2 text-lg text-[#2c1e16]',
           price: 'text-[#8b7355] text-[13px] tracking-widest uppercase mb-3 font-semibold',
           desc: 'text-[#5a4634] italic mb-6 text-[13px] flex-grow',
@@ -188,7 +188,7 @@ function CustomPageContent({ content, shop, themeColor, className, onBookClick, 
       case 'modern':
       default:
         return {
-          card: 'bg-white rounded-2xl p-6 shadow-sm border border-gray-100 flex flex-col items-center text-center',
+          card: 'bg-white rounded-2xl p-6 shadow-sm border border-gray-100 flex flex-col items-center text-crm-mutedrm-textenter',
           serviceCard: 'bg-white rounded-2xl p-6 shadow-sm border border-gray-100 flex flex-col',
           title: 'font-bold text-gray-900 text-lg mb-2',
           price: 'px-3 py-1 rounded-full text-[13px] font-bold inline-block mb-4',
@@ -248,7 +248,7 @@ function CustomPageContent({ content, shop, themeColor, className, onBookClick, 
                     </div>
                   )}
                   <div className="p-8 overflow-y-auto">
-                    <h3 className="font-extrabold text-2xl mb-2 text-gray-900">{selectedProduct.name}</h3>
+                    <h3 className="font-extrabold text-crm-mutedrm-textxl mb-2 text-gray-900">{selectedProduct.name}</h3>
                     <div className="font-bold text-xl mb-6" style={{ color: themeColor || '#111827' }}>
                       \$\{typeof selectedProduct.price === 'number' ? selectedProduct.price.toFixed(2) : '0.00'}
                     </div>
@@ -311,7 +311,7 @@ function CustomPageContent({ content, shop, themeColor, className, onBookClick, 
         
                         <div className="mt-auto pt-6 border-t border-gray-100 flex items-center justify-between">
                           {templateType !== 'classic' && (
-                            <div className={`text-[12px] opacity-70 font-semibold uppercase tracking-widest ${templateType === 'sporty' ? 'text-crm-muted' : 'text-gray-500'}`}>
+                            <div className={`text-[12px] opacity-70 font-semibold uppercase tracking-widest ${templateType === 'sporty' ? 'text-crm-mutedrm-textrm-muted' : 'text-gray-500'}`}>
                               ⏱️ {service.duration} MIN
                             </div>
                           )}
@@ -344,7 +344,7 @@ function CustomPageContent({ content, shop, themeColor, className, onBookClick, 
                    {member.imageUrl ? (
                      <img src={member.imageUrl} alt={member.name} className="w-28 h-28 rounded-full mx-auto object-cover border-4 mb-6 shadow-sm" style={{ borderColor: themeColor || '#e5e7eb' }} />
                    ) : (
-                     <div className="w-28 h-28 rounded-full mx-auto bg-gray-100 flex items-center justify-center text-gray-400 text-4xl mb-6 border-4 shadow-sm" style={{ borderColor: themeColor || '#e5e7eb' }}>
+                     <div className="w-28 h-28 rounded-full mx-auto bg-gray-100 flex items-center justify-center text-gray-400 text-crm-mutedrm-textxl mb-6 border-4 shadow-sm" style={{ borderColor: themeColor || '#e5e7eb' }}>
                        {member.name ? member.name.charAt(0).toUpperCase() : 'S'}
                      </div>
                    )}
@@ -389,19 +389,19 @@ function CustomPageContent({ content, shop, themeColor, className, onBookClick, 
                   <div className="space-y-6 mt-8">
                     {address && (
                       <div className="flex items-start gap-4 group">
-                        <span className="text-2xl mt-1" style={{ color: themeColor || 'inherit' }}>📍</span>
+                        <span className="text-crm-mutedrm-textxl mt-1" style={{ color: themeColor || 'inherit' }}>📍</span>
                         <p className={styles.desc + " !mb-0 group-hover:text-gray-900 transition-colors"}>{address}</p>
                       </div>
                     )}
                     {phone && (
                       <div className="flex items-center gap-4 group">
-                        <span className="text-2xl" style={{ color: themeColor || 'inherit' }}>📞</span>
+                        <span className="text-crm-mutedrm-textxl" style={{ color: themeColor || 'inherit' }}>📞</span>
                         <a href={`tel:${phone}`} className={styles.desc + " !mb-0 group-hover:text-gray-900 transition-colors"}>{phone}</a>
                       </div>
                     )}
                     {email && (
                       <div className="flex items-center gap-4 group">
-                        <span className="text-2xl" style={{ color: themeColor || 'inherit' }}>✉️</span>
+                        <span className="text-crm-mutedrm-textxl" style={{ color: themeColor || 'inherit' }}>✉️</span>
                         <a href={`mailto:${email}`} className={styles.desc + " !mb-0 group-hover:text-gray-900 transition-colors"}>{email}</a>
                       </div>
                     )}
@@ -490,7 +490,28 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
         }
     };
     // ── Normalised contact helpers (supports both old flat shape and new nested shape) ──
+    
     const c = shop.customization || {};
+    const headingFont = c.headingFont || c.fontFamily || 'Inter';
+    const bodyFont = c.bodyFont || c.fontFamily || 'Inter';
+    const buttonShape = c.buttonShape || 'rounded';
+    const buttonVariant = c.buttonVariant || 'solid';
+    const colorTheme = c.colorTheme || 'light';
+    const headerStyle = c.headerStyle || 'classic';
+    const heroLayout = c.heroLayout || 'full';
+    const heroOverlayOpacity = c.heroOverlayOpacity !== undefined ? c.heroOverlayOpacity : 0;
+    const heroOverlayColor = c.heroOverlayColor || '#000000';
+    const enableScrollAnimations = c.enableScrollAnimations || false;
+    const faviconUrl = c.faviconUrl || null;
+    const customCss = c.customCss || '';
+    const sectionOrder = c.sectionOrder || ['hero', 'services', 'team', 'gallery', 'reviews', 'contact'];
+
+    const isDark = colorTheme === 'dark';
+    const themeBg = isDark ? '#121212' : '#ffffff';
+    const themeText = isDark ? '#ffffff' : '#111827';
+    const themeMuted = isDark ? '#a1a1aa' : '#6b7280';
+    const themeBorder = isDark ? '#27272a' : '#e5e7eb';
+  
     const pages = c.pages || [];
     const fontFamily = c.fontFamily || 'Inter';
     const ctaText = c.ctaText || 'Book';
@@ -527,7 +548,55 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
 
     if (dynamicTemplateHtml) {
         return (
-            <main className="h-[100dvh] overflow-y-auto overflow-x-hidden bg-crm-surface text-crm-text font-sans relative" onClick={handleDynamicTemplateClick}>
+            <main className="h-[100dvh] overflow-y-auto overflow-x-hidden bg-crm-surface text-crm-mutedrm-textrm-text font-sans relative" onClick={handleDynamicTemplateClick}>
+
+      {faviconUrl && (
+        <link rel="icon" href={faviconUrl} />
+      )}
+      <style dangerouslySetInnerHTML={{__html: `
+        @import url('https://fonts.googleapis.com/css2?family=${headingFont.replace(/ /g, '+')}:wght@400;600;700;900&family=${bodyFont.replace(/ /g, '+')}:wght@400;500;600&display=swap');
+        
+        h1, h2, h3, h4, h5, h6, .font-heading { font-family: '${headingFont}', sans-serif !important; }
+        body, p, span, a, div, .font-body { font-family: '${bodyFont}', sans-serif; }
+        
+        ${isDark ? `
+          .bg-crm-bg, .bg-white, .bg-crm-surface { background-color: ${themeBg} !important; border-color: ${themeBorder} !important; }
+          .text-crm-mutedrm-textrm-text, .text-gray-900, .text-crm-mutedlack { color: ${themeText} !important; }
+          .text-crm-mutedrm-textrm-muted, .text-gray-500, .text-gray-600 { color: ${themeMuted} !important; }
+          .border-gray-100, .border-gray-200, .border-crm-border { border-color: ${themeBorder} !important; }
+        ` : ''}
+
+        ${buttonShape === 'sharp' ? '.btn, button { border-radius: 0 !important; }' : ''}
+        ${buttonShape === 'pill' ? '.btn, button { border-radius: 9999px !important; }' : ''}
+        
+        ${buttonVariant === 'outline' ? `
+          .btn, button.bg-crm-primary { background-color: transparent !important; border: 2px solid ${primaryColor} !important; color: ${primaryColor} !important; }
+          .btn:hover, button.bg-crm-primary:hover { background-color: ${primaryColor}20 !important; }
+        ` : ''}
+        
+        ${buttonVariant === 'ghost' ? `
+          .btn, button.bg-crm-primary { background-color: transparent !important; border: none !important; color: ${primaryColor} !important; }
+          .btn:hover, button.bg-crm-primary:hover { background-color: ${primaryColor}20 !important; }
+        ` : ''}
+
+        ${enableScrollAnimations ? `
+          .animate-on-scroll {
+            animation: fadeInUp 0.8s ease forwards;
+          }
+          @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+          }
+        ` : ''}
+
+        .hero-overlay {
+          background-color: ${heroOverlayColor};
+          opacity: ${heroOverlayOpacity / 100};
+        }
+
+        ${customCss}
+      `}} />
+  
                 {authButton}
                 {dynamicTemplateCss && <style dangerouslySetInnerHTML={{ __html: dynamicTemplateCss }} />}
                 <div dangerouslySetInnerHTML={{ __html: dynamicTemplateHtml }} />
@@ -545,9 +614,57 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
 
     if (templateType === 'sporty') {
         return (
-            <main className="h-[100dvh] overflow-y-auto overflow-x-hidden bg-crm-surface text-crm-text font-sans relative">
+            <main className="h-[100dvh] overflow-y-auto overflow-x-hidden bg-crm-surface text-crm-mutedrm-textrm-text font-sans relative">
+
+      {faviconUrl && (
+        <link rel="icon" href={faviconUrl} />
+      )}
+      <style dangerouslySetInnerHTML={{__html: `
+        @import url('https://fonts.googleapis.com/css2?family=${headingFont.replace(/ /g, '+')}:wght@400;600;700;900&family=${bodyFont.replace(/ /g, '+')}:wght@400;500;600&display=swap');
+        
+        h1, h2, h3, h4, h5, h6, .font-heading { font-family: '${headingFont}', sans-serif !important; }
+        body, p, span, a, div, .font-body { font-family: '${bodyFont}', sans-serif; }
+        
+        ${isDark ? `
+          .bg-crm-bg, .bg-white, .bg-crm-surface { background-color: ${themeBg} !important; border-color: ${themeBorder} !important; }
+          .text-crm-mutedrm-textrm-text, .text-gray-900, .text-crm-mutedlack { color: ${themeText} !important; }
+          .text-crm-mutedrm-textrm-muted, .text-gray-500, .text-gray-600 { color: ${themeMuted} !important; }
+          .border-gray-100, .border-gray-200, .border-crm-border { border-color: ${themeBorder} !important; }
+        ` : ''}
+
+        ${buttonShape === 'sharp' ? '.btn, button { border-radius: 0 !important; }' : ''}
+        ${buttonShape === 'pill' ? '.btn, button { border-radius: 9999px !important; }' : ''}
+        
+        ${buttonVariant === 'outline' ? `
+          .btn, button.bg-crm-primary { background-color: transparent !important; border: 2px solid ${primaryColor} !important; color: ${primaryColor} !important; }
+          .btn:hover, button.bg-crm-primary:hover { background-color: ${primaryColor}20 !important; }
+        ` : ''}
+        
+        ${buttonVariant === 'ghost' ? `
+          .btn, button.bg-crm-primary { background-color: transparent !important; border: none !important; color: ${primaryColor} !important; }
+          .btn:hover, button.bg-crm-primary:hover { background-color: ${primaryColor}20 !important; }
+        ` : ''}
+
+        ${enableScrollAnimations ? `
+          .animate-on-scroll {
+            animation: fadeInUp 0.8s ease forwards;
+          }
+          @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+          }
+        ` : ''}
+
+        .hero-overlay {
+          background-color: ${heroOverlayColor};
+          opacity: ${heroOverlayOpacity / 100};
+        }
+
+        ${customCss}
+      `}} />
+  
                 {/* Top Bar - Contact Info & Auth */}
-                <div className="bg-crm-surface text-crm-text text-[11px] py-2 px-4 flex justify-end items-center space-x-4">
+                <div className="bg-crm-surface text-crm-mutedrm-textrm-text text-[11px] py-2 px-4 flex justify-end items-center space-x-4">
                     {shopPhone && <span>{shopPhone}</span>}
                     {shopEmail && <span>{shopEmail}</span>}
                     <div className="relative">
@@ -561,15 +678,15 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                         {logoUrl ? (
                             <img src={logoUrl} alt={shop.name} className="h-10 shrink-0 mr-6 object-contain" onError={(e) => { e.currentTarget.style.display = 'none'; }} />
                         ) : (
-                            <h1 className="font-black italic uppercase tracking-tighter shrink-0 mr-6 text-2xl font-bold" style={{ color: sportRed }}>
+                            <h1 className="font-black italic uppercase tracking-tighter shrink-0 mr-6 text-crm-mutedrm-textxl font-bold" style={{ color: sportRed }}>
                                 {shop.name}
                             </h1>
                         )}
                         {pages.filter((p: any) => p.isVisible).length > 0 && (
                             <nav className="flex gap-4 sm:gap-6 shrink-0">
-                                <a href="#" className="text-[13px] font-bold uppercase transition-colors text-crm-muted hover:text-black">Home</a>
+                                <a href="#" className="text-[13px] font-bold uppercase transition-colors text-crm-mutedrm-textrm-muted hover:text-crm-mutedlack">Home</a>
                                 {pages.filter((p: any) => p.isVisible).map((p: any) => (
-                                    <a key={p.id} href={`#${p.id}`} className="text-[13px] font-bold uppercase transition-colors text-crm-muted hover:text-black">{p.title}</a>
+                                    <a key={p.id} href={`#${p.id}`} className="text-[13px] font-bold uppercase transition-colors text-crm-mutedrm-textrm-muted hover:text-crm-mutedlack">{p.title}</a>
                                 ))}
                             </nav>
                         )}
@@ -578,15 +695,15 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
     
                                         {/* Hero Section */}
                 <section className="bg-crm-bg border-b border-crm-border relative bg-cover bg-center" style={{ backgroundImage: heroImageUrl ? `url(${heroImageUrl})` : undefined }}><div className={heroImageUrl ? "absolute inset-0 bg-crm-surface/80" : ""} />
-                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24 text-center md:text-left flex flex-col md:flex-row items-center relative z-10">
+                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24 text-crm-mutedrm-textenter md:text-left flex flex-col md:flex-row items-center relative z-10">
                         <div className="md:w-1/2 mb-8 md:mb-0">
                             {shop.slogan && <h2 className="font-black uppercase italic leading-none mb-6 text-xl font-bold">{shop.slogan}</h2>}
-                            {shop.description && <p className="text-crm-text font-semibold mb-8 max-w-lg text-[13px]">{shop.description}</p>}
+                            {shop.description && <p className="text-crm-mutedrm-textrm-text font-semibold mb-8 max-w-lg text-[13px]">{shop.description}</p>}
                         </div>
                         <div className="md:w-1/2 flex justify-center">
                             <div className="w-full max-w-md aspect-square bg-gray-300 transform -rotate-3 overflow-hidden shadow-2xl border-8 border-white">
                                  <div className="w-full h-full bg-crm-surface flex items-center justify-center">
-                                     <span className="text-6xl" style={{ color: sportRed }}>💈</span>
+                                     <span className="text-crm-mutedrm-textxl" style={{ color: sportRed }}>💈</span>
                                  </div>
                             </div>
                         </div>
@@ -596,32 +713,32 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                 {pages.filter((p: any) => p.isVisible).map((p: any) => (
 
                     <section key={p.id} id={p.id} className="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 min-h-[60vh]">
-                        <h1 className="font-black uppercase italic mb-8 text-2xl font-bold" style={{ color: sportRed }}>{p.title}</h1>
-                        <CustomPageContent content={p.content || ""} shop={shop} themeColor={sportRed} className="prose prose-lg max-w-none text-crm-text"  onBookClick={handleBookClick}  reviews={reviews}  templateType={templateType} />
+                        <h1 className="font-black uppercase italic mb-8 text-crm-mutedrm-textxl font-bold" style={{ color: sportRed }}>{p.title}</h1>
+                        <CustomPageContent content={p.content || ""} shop={shop} themeColor={sportRed} className="prose prose-lg max-w-none text-crm-mutedrm-textrm-text"  onBookClick={handleBookClick}  reviews={reviews}  templateType={templateType} />
                     </section>
             ))}
 
 
 
           {/* Footer */}
-                <footer className="bg-crm-surface text-crm-text py-16 uppercase text-[13px] tracking-widest">
+                <footer className="bg-crm-surface text-crm-mutedrm-textrm-text py-16 uppercase text-[13px] tracking-widest">
                     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
                             <div className="md:col-span-2">
                                 <h3 className="font-black italic mb-2 text-lg font-bold" style={{ color: sportRed }}>{shop.name}</h3>
-                                {shop.slogan && <div className="text-crm-text font-black italic mb-4 uppercase tracking-widest">{shop.slogan}</div>}
-                                <p className="text-crm-muted normal-case tracking-normal mb-6 max-w-sm text-[13px]">
+                                {shop.slogan && <div className="text-crm-mutedrm-textrm-text font-black italic mb-4 uppercase tracking-widest">{shop.slogan}</div>}
+                                <p className="text-crm-mutedrm-textrm-muted normal-case tracking-normal mb-6 max-w-sm text-[13px]">
                                     {shop.description}
                                 </p>
                             </div>
                             <div>
-                                <h4 className="font-bold mb-6 text-crm-muted text-base font-semibold">Quick Links</h4>
+                                <h4 className="font-bold mb-6 text-crm-mutedrm-textrm-muted text-crm-mutedase font-semibold">Quick Links</h4>
                                 <ul className="space-y-4 font-bold">
                                     
                                 </ul>
                             </div>
                             <div>
-                                <h4 className="font-bold mb-6 text-crm-muted text-base font-semibold">Connect</h4>
+                                <h4 className="font-bold mb-6 text-crm-mutedrm-textrm-muted text-crm-mutedase font-semibold">Connect</h4>
                                 <div className="flex flex-col space-y-4 font-bold">
                                     {shopFB && <a href={shopFB} className="hover:text-status-cancelled transition-colors">Facebook</a>}
                                     {shopIG && <a href={shopIG.startsWith('http') ? shopIG : `https://instagram.com/${shopIG.replace('@','')}`} className="hover:text-status-cancelled transition-colors">Instagram</a>}
@@ -629,7 +746,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                                 </div>
                             </div>
                         </div>
-                        <div className="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center text-crm-muted font-bold text-[11px]">
+                        <div className="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center text-crm-mutedrm-textrm-muted font-bold text-[11px]">
                             <p className="text-[13px]">&copy; {new Date().getFullYear()} {shop.name}. All rights reserved.</p>
                             {shopAddress && <p className="mt-4 md:mt-0 text-[13px]">{shopAddress}</p>}
                         </div>
@@ -645,15 +762,63 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
       
       if (templateType === 'corporate') {
         return (
-          <main className="h-[100dvh] overflow-y-auto overflow-x-hidden bg-crm-bg text-crm-text font-sans relative">
+          <main className="h-[100dvh] overflow-y-auto overflow-x-hidden bg-crm-bg text-crm-mutedrm-textrm-text font-sans relative">
+
+      {faviconUrl && (
+        <link rel="icon" href={faviconUrl} />
+      )}
+      <style dangerouslySetInnerHTML={{__html: `
+        @import url('https://fonts.googleapis.com/css2?family=${headingFont.replace(/ /g, '+')}:wght@400;600;700;900&family=${bodyFont.replace(/ /g, '+')}:wght@400;500;600&display=swap');
+        
+        h1, h2, h3, h4, h5, h6, .font-heading { font-family: '${headingFont}', sans-serif !important; }
+        body, p, span, a, div, .font-body { font-family: '${bodyFont}', sans-serif; }
+        
+        ${isDark ? `
+          .bg-crm-bg, .bg-white, .bg-crm-surface { background-color: ${themeBg} !important; border-color: ${themeBorder} !important; }
+          .text-crm-mutedrm-textrm-text, .text-gray-900, .text-crm-mutedlack { color: ${themeText} !important; }
+          .text-crm-mutedrm-textrm-muted, .text-gray-500, .text-gray-600 { color: ${themeMuted} !important; }
+          .border-gray-100, .border-gray-200, .border-crm-border { border-color: ${themeBorder} !important; }
+        ` : ''}
+
+        ${buttonShape === 'sharp' ? '.btn, button { border-radius: 0 !important; }' : ''}
+        ${buttonShape === 'pill' ? '.btn, button { border-radius: 9999px !important; }' : ''}
+        
+        ${buttonVariant === 'outline' ? `
+          .btn, button.bg-crm-primary { background-color: transparent !important; border: 2px solid ${primaryColor} !important; color: ${primaryColor} !important; }
+          .btn:hover, button.bg-crm-primary:hover { background-color: ${primaryColor}20 !important; }
+        ` : ''}
+        
+        ${buttonVariant === 'ghost' ? `
+          .btn, button.bg-crm-primary { background-color: transparent !important; border: none !important; color: ${primaryColor} !important; }
+          .btn:hover, button.bg-crm-primary:hover { background-color: ${primaryColor}20 !important; }
+        ` : ''}
+
+        ${enableScrollAnimations ? `
+          .animate-on-scroll {
+            animation: fadeInUp 0.8s ease forwards;
+          }
+          @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+          }
+        ` : ''}
+
+        .hero-overlay {
+          background-color: ${heroOverlayColor};
+          opacity: ${heroOverlayOpacity / 100};
+        }
+
+        ${customCss}
+      `}} />
+  
             <header className="bg-crm-surface shadow-md relative z-40">
               <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center py-4 overflow-x-auto hide-scrollbar">
-                {logoUrl ? <img src={logoUrl} alt={shop.name} className="h-10 shrink-0 mr-6 object-contain" onError={(e) => { e.currentTarget.style.display = 'none'; }} /> : <h1 className="font-bold shrink-0 mr-6 text-2xl font-bold" style={{ color: primaryColor }}>{shop.name}</h1>}
+                {logoUrl ? <img src={logoUrl} alt={shop.name} className="h-10 shrink-0 mr-6 object-contain" onError={(e) => { e.currentTarget.style.display = 'none'; }} /> : <h1 className="font-bold shrink-0 mr-6 text-crm-mutedrm-textxl font-bold" style={{ color: primaryColor }}>{shop.name}</h1>}
                 {pages.filter((p: any) => p.isVisible).length > 0 && (
                     <nav className="flex gap-4 sm:gap-6 shrink-0 mr-6">
-                        <a href="#" className="text-[13px] font-bold transition-colors text-crm-muted hover:text-crm-text">Home</a>
+                        <a href="#" className="text-[13px] font-bold transition-colors text-crm-mutedrm-textrm-muted hover:text-crm-mutedrm-textrm-text">Home</a>
                         {pages.filter((p: any) => p.isVisible).map((p: any) => (
-                            <a key={p.id} href={`#${p.id}`} className="text-[13px] font-bold transition-colors text-crm-muted hover:text-crm-text">{p.title}</a>
+                            <a key={p.id} href={`#${p.id}`} className="text-[13px] font-bold transition-colors text-crm-mutedrm-textrm-muted hover:text-crm-mutedrm-textrm-text">{p.title}</a>
                         ))}
                     </nav>
                 )}
@@ -669,9 +834,9 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
             <source src={heroVideoUrl} type="video/mp4" />
           </video>
         )}
-        <div className={(heroImageUrl || heroVideoUrl) ? "absolute inset-0 bg-crm-surface/70 z-0" : "z-0"} />
-                <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center relative z-10">
-                    <h2 className="font-extrabold text-crm-text mb-4 text-xl font-bold">{shop.slogan || shop.description}</h2>
+        <div className={(heroImageUrl || heroVideoUrl) ? "absolute inset-0 z-0 hero-overlay" : "z-0"} />
+                <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-crm-mutedrm-textenter relative z-10">
+                    <h2 className="font-extrabold text-crm-mutedrm-textrm-text mb-4 text-xl font-bold">{shop.slogan || shop.description}</h2>
                     
                 </div>
             </section>
@@ -679,33 +844,33 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
             {pages.filter((p: any) => p.isVisible).map((p: any) => (
 
                 <section key={p.id} id={p.id} className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 min-h-[60vh]">
-                    <h1 className="font-bold text-crm-text mb-8 text-2xl font-bold" style={{ color: primaryColor }}>{p.title}</h1>
-                    <CustomPageContent content={p.content || ""} shop={shop} themeColor={primaryColor} className="prose prose-lg max-w-none text-crm-text"  onBookClick={handleBookClick}  reviews={reviews}  templateType={templateType} />
+                    <h1 className="font-bold text-crm-mutedrm-textrm-text mb-8 text-crm-mutedrm-textxl font-bold" style={{ color: primaryColor }}>{p.title}</h1>
+                    <CustomPageContent content={p.content || ""} shop={shop} themeColor={primaryColor} className="prose prose-lg max-w-none text-crm-mutedrm-textrm-text"  onBookClick={handleBookClick}  reviews={reviews}  templateType={templateType} />
                 </section>
             ))}
 
-            <footer className="bg-crm-surface text-crm-text">
+            <footer className="bg-crm-surface text-crm-mutedrm-textrm-text">
               <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
                   <div>
                     <h3 className="font-bold mb-4 text-lg font-bold">{shop.name}</h3>
-                    {shopAddress && <p className="text-crm-muted text-[13px]">{shopAddress}</p>}
+                    {shopAddress && <p className="text-crm-mutedrm-textrm-muted text-[13px]">{shopAddress}</p>}
                   </div>
                   <div>
-                    <h4 className="font-bold mb-4 text-base font-semibold">Contact</h4>
-                    {shopPhone && <p className="text-crm-muted text-[13px]">{shopPhone}</p>}
-                    {shopEmail && <p className="text-crm-muted text-[13px]">{shopEmail}</p>}
+                    <h4 className="font-bold mb-4 text-crm-mutedase font-semibold">Contact</h4>
+                    {shopPhone && <p className="text-crm-mutedrm-textrm-muted text-[13px]">{shopPhone}</p>}
+                    {shopEmail && <p className="text-crm-mutedrm-textrm-muted text-[13px]">{shopEmail}</p>}
                   </div>
                   <div>
-                    <h4 className="font-bold mb-4 text-base font-semibold">Follow Us</h4>
+                    <h4 className="font-bold mb-4 text-crm-mutedase font-semibold">Follow Us</h4>
                     <div className="flex gap-4">
-                      {shopFB && <a href={shopFB} className="text-crm-muted hover:text-crm-text">Facebook</a>}
-                      {shopIG && <a href={shopIG.startsWith('http') ? shopIG : `https://instagram.com/${shopIG.replace('@','')}`} className="text-crm-muted hover:text-crm-text">Instagram</a>}
-                      {shopTW && <a href={shopTW} className="text-crm-muted hover:text-crm-text">Twitter</a>}
+                      {shopFB && <a href={shopFB} className="text-crm-mutedrm-textrm-muted hover:text-crm-mutedrm-textrm-text">Facebook</a>}
+                      {shopIG && <a href={shopIG.startsWith('http') ? shopIG : `https://instagram.com/${shopIG.replace('@','')}`} className="text-crm-mutedrm-textrm-muted hover:text-crm-mutedrm-textrm-text">Instagram</a>}
+                      {shopTW && <a href={shopTW} className="text-crm-mutedrm-textrm-muted hover:text-crm-mutedrm-textrm-text">Twitter</a>}
                     </div>
                   </div>
                 </div>
-                <div className="border-t border-gray-700 mt-8 pt-8 text-center text-crm-muted text-[13px]">
+                <div className="border-t border-gray-700 mt-8 pt-8 text-crm-mutedrm-textenter text-crm-mutedrm-textrm-muted text-[13px]">
                   <p className="text-[13px]">&copy; {new Date().getFullYear()} {shop.name}. All rights reserved.</p>
                 </div>
               </div>
@@ -720,13 +885,61 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
     
       if (templateType === 'noir') {
         return (
-          <main className="h-[100dvh] overflow-y-auto overflow-x-hidden bg-crm-surface text-crm-text font-serif relative">
+          <main className="h-[100dvh] overflow-y-auto overflow-x-hidden bg-crm-surface text-crm-mutedrm-textrm-text font-serif relative">
+
+      {faviconUrl && (
+        <link rel="icon" href={faviconUrl} />
+      )}
+      <style dangerouslySetInnerHTML={{__html: `
+        @import url('https://fonts.googleapis.com/css2?family=${headingFont.replace(/ /g, '+')}:wght@400;600;700;900&family=${bodyFont.replace(/ /g, '+')}:wght@400;500;600&display=swap');
+        
+        h1, h2, h3, h4, h5, h6, .font-heading { font-family: '${headingFont}', sans-serif !important; }
+        body, p, span, a, div, .font-body { font-family: '${bodyFont}', sans-serif; }
+        
+        ${isDark ? `
+          .bg-crm-bg, .bg-white, .bg-crm-surface { background-color: ${themeBg} !important; border-color: ${themeBorder} !important; }
+          .text-crm-mutedrm-textrm-text, .text-gray-900, .text-crm-mutedlack { color: ${themeText} !important; }
+          .text-crm-mutedrm-textrm-muted, .text-gray-500, .text-gray-600 { color: ${themeMuted} !important; }
+          .border-gray-100, .border-gray-200, .border-crm-border { border-color: ${themeBorder} !important; }
+        ` : ''}
+
+        ${buttonShape === 'sharp' ? '.btn, button { border-radius: 0 !important; }' : ''}
+        ${buttonShape === 'pill' ? '.btn, button { border-radius: 9999px !important; }' : ''}
+        
+        ${buttonVariant === 'outline' ? `
+          .btn, button.bg-crm-primary { background-color: transparent !important; border: 2px solid ${primaryColor} !important; color: ${primaryColor} !important; }
+          .btn:hover, button.bg-crm-primary:hover { background-color: ${primaryColor}20 !important; }
+        ` : ''}
+        
+        ${buttonVariant === 'ghost' ? `
+          .btn, button.bg-crm-primary { background-color: transparent !important; border: none !important; color: ${primaryColor} !important; }
+          .btn:hover, button.bg-crm-primary:hover { background-color: ${primaryColor}20 !important; }
+        ` : ''}
+
+        ${enableScrollAnimations ? `
+          .animate-on-scroll {
+            animation: fadeInUp 0.8s ease forwards;
+          }
+          @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+          }
+        ` : ''}
+
+        .hero-overlay {
+          background-color: ${heroOverlayColor};
+          opacity: ${heroOverlayOpacity / 100};
+        }
+
+        ${customCss}
+      `}} />
+  
             <div className="absolute top-6 left-8 z-50">
                 {pages.filter((p: any) => p.isVisible).length > 0 && (
                     <nav className="flex gap-6 font-sans text-[11px] uppercase tracking-[0.2em]">
-                        <a href="#" className="transition-colors text-crm-muted hover:text-crm-text">Home</a>
+                        <a href="#" className="transition-colors text-crm-mutedrm-textrm-muted hover:text-crm-mutedrm-textrm-text">Home</a>
                         {pages.filter((p: any) => p.isVisible).map((p: any) => (
-                            <a key={p.id} href={`#${p.id}`} className="transition-colors text-crm-muted hover:text-crm-text">{p.title}</a>
+                            <a key={p.id} href={`#${p.id}`} className="transition-colors text-crm-mutedrm-textrm-muted hover:text-crm-mutedrm-textrm-text">{p.title}</a>
                         ))}
                     </nav>
                 )}
@@ -736,17 +949,17 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
             </div>
             
             <div className="p-8 md:p-16 pt-24 md:pt-32">
-                              <header className="text-center mb-16">
-                {logoUrl ? <img src={logoUrl} alt={shop.name} className="h-24 md:h-32 mx-auto object-contain mb-4" onError={(e) => { e.currentTarget.style.display = 'none'; }} /> : <h1 className="font-black uppercase tracking-tighter text-2xl font-bold">{shop.name}</h1>}
+                              <header className="text-crm-mutedrm-textenter mb-16">
+                {logoUrl ? <img src={logoUrl} alt={shop.name} className="h-24 md:h-32 mx-auto object-contain mb-4" onError={(e) => { e.currentTarget.style.display = 'none'; }} /> : <h1 className="font-black uppercase tracking-tighter text-crm-mutedrm-textxl font-bold">{shop.name}</h1>}
                 {shop.slogan && <p className="text-white font-bold uppercase tracking-[0.2em] mt-4 mb-2 text-sm">{shop.slogan}</p>}
-                <p className="text-crm-muted mt-2 text-[13px]">{shop.description}</p>
+                <p className="text-crm-mutedrm-textrm-muted mt-2 text-[13px]">{shop.description}</p>
               </header>
     
               {pages.filter((p: any) => p.isVisible).map((p: any) => (
 
                     <section key={p.id} id={p.id} className="w-full max-w-5xl mx-auto px-6 min-h-[60vh]">
-                        <h1 className="font-black uppercase tracking-tighter mb-8 text-center text-2xl font-bold">{p.title}</h1>
-                        <CustomPageContent content={p.content || ""} shop={shop} className="prose prose-invert prose-lg max-w-none text-crm-muted font-sans"  onBookClick={handleBookClick}  reviews={reviews}  templateType={templateType} />
+                        <h1 className="font-black uppercase tracking-tighter mb-8 text-crm-mutedrm-textenter text-crm-mutedrm-textxl font-bold">{p.title}</h1>
+                        <CustomPageContent content={p.content || ""} shop={shop} className="prose prose-invert prose-lg max-w-none text-crm-mutedrm-textrm-muted font-sans"  onBookClick={handleBookClick}  reviews={reviews}  templateType={templateType} />
                     </section>
             ))}
             </div>
@@ -762,13 +975,61 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
     
       if (templateType === 'sunset') {
         return (
-          <main className="h-[100dvh] overflow-y-auto overflow-x-hidden bg-gradient-to-br from-purple-900 via-black to-orange-900 text-crm-text font-sans relative">
+          <main className="h-[100dvh] overflow-y-auto overflow-x-hidden bg-gradient-to-br from-purple-900 via-black to-orange-900 text-crm-mutedrm-textrm-text font-sans relative">
+
+      {faviconUrl && (
+        <link rel="icon" href={faviconUrl} />
+      )}
+      <style dangerouslySetInnerHTML={{__html: `
+        @import url('https://fonts.googleapis.com/css2?family=${headingFont.replace(/ /g, '+')}:wght@400;600;700;900&family=${bodyFont.replace(/ /g, '+')}:wght@400;500;600&display=swap');
+        
+        h1, h2, h3, h4, h5, h6, .font-heading { font-family: '${headingFont}', sans-serif !important; }
+        body, p, span, a, div, .font-body { font-family: '${bodyFont}', sans-serif; }
+        
+        ${isDark ? `
+          .bg-crm-bg, .bg-white, .bg-crm-surface { background-color: ${themeBg} !important; border-color: ${themeBorder} !important; }
+          .text-crm-mutedrm-textrm-text, .text-gray-900, .text-crm-mutedlack { color: ${themeText} !important; }
+          .text-crm-mutedrm-textrm-muted, .text-gray-500, .text-gray-600 { color: ${themeMuted} !important; }
+          .border-gray-100, .border-gray-200, .border-crm-border { border-color: ${themeBorder} !important; }
+        ` : ''}
+
+        ${buttonShape === 'sharp' ? '.btn, button { border-radius: 0 !important; }' : ''}
+        ${buttonShape === 'pill' ? '.btn, button { border-radius: 9999px !important; }' : ''}
+        
+        ${buttonVariant === 'outline' ? `
+          .btn, button.bg-crm-primary { background-color: transparent !important; border: 2px solid ${primaryColor} !important; color: ${primaryColor} !important; }
+          .btn:hover, button.bg-crm-primary:hover { background-color: ${primaryColor}20 !important; }
+        ` : ''}
+        
+        ${buttonVariant === 'ghost' ? `
+          .btn, button.bg-crm-primary { background-color: transparent !important; border: none !important; color: ${primaryColor} !important; }
+          .btn:hover, button.bg-crm-primary:hover { background-color: ${primaryColor}20 !important; }
+        ` : ''}
+
+        ${enableScrollAnimations ? `
+          .animate-on-scroll {
+            animation: fadeInUp 0.8s ease forwards;
+          }
+          @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+          }
+        ` : ''}
+
+        .hero-overlay {
+          background-color: ${heroOverlayColor};
+          opacity: ${heroOverlayOpacity / 100};
+        }
+
+        ${customCss}
+      `}} />
+  
             <div className="absolute w-full top-0 left-0 p-4 sm:p-6 flex flex-wrap justify-between gap-x-2 gap-y-2 items-center z-50">
              {pages.filter((p: any) => p.isVisible).length > 0 ? (
                  <nav className="flex gap-4 sm:gap-6 bg-crm-surface px-4 sm:px-6 py-2 rounded-full backdrop-blur-md border border-status-pending/30 overflow-x-auto max-w-[calc(100vw-100px)] hide-scrollbar">
-                    <a href="#" className="text-[13px] font-medium transition-colors whitespace-nowrap text-crm-muted hover:text-status-pending">Home</a>
+                    <a href="#" className="text-[13px] font-medium transition-colors whitespace-nowrap text-crm-mutedrm-textrm-muted hover:text-status-pending">Home</a>
                     {pages.filter((p: any) => p.isVisible).map((p: any) => (
-                        <a key={p.id} href={`#${p.id}`} className="text-[13px] font-medium transition-colors whitespace-nowrap text-crm-muted hover:text-status-pending">{p.title}</a>
+                        <a key={p.id} href={`#${p.id}`} className="text-[13px] font-medium transition-colors whitespace-nowrap text-crm-mutedrm-textrm-muted hover:text-status-pending">{p.title}</a>
                     ))}
                  </nav>
              ) : (
@@ -778,8 +1039,8 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
             </div>
 
             <div className="p-8 md:p-12 pt-24 md:pt-32">
-                            <header className="text-center mb-16">
-                {logoUrl ? <img src={logoUrl} alt={shop.name} className="h-24 md:h-32 mx-auto object-contain mb-4" onError={(e) => { e.currentTarget.style.display = 'none'; }} /> : <h1 className="font-bold bg-clip-text text-transparent bg-gradient-to-r from-orange-400 to-purple-400 mb-4 text-2xl font-bold">{shop.name}</h1>}
+                            <header className="text-crm-mutedrm-textenter mb-16">
+                {logoUrl ? <img src={logoUrl} alt={shop.name} className="h-24 md:h-32 mx-auto object-contain mb-4" onError={(e) => { e.currentTarget.style.display = 'none'; }} /> : <h1 className="font-bold bg-clip-text text-transparent bg-gradient-to-r from-orange-400 to-purple-400 mb-4 text-crm-mutedrm-textxl font-bold">{shop.name}</h1>}
                 {shop.slogan && <p className="text-orange-300 font-medium tracking-wide mt-2 mb-4 text-sm">{shop.slogan}</p>}
                 <p className="text-purple-200/70 text-[13px]">{shop.description}</p>
               </header>
@@ -788,7 +1049,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
 
                 <section key={p.id} id={p.id} className="w-full max-w-5xl mx-auto px-6 min-h-[60vh]">
                     <div className="bg-crm-surface backdrop-blur-sm border border-status-pending/30 rounded-lg p-8 md:p-12">
-                        <h1 className="font-bold bg-clip-text text-transparent bg-gradient-to-r from-orange-400 to-purple-400 mb-8 text-2xl font-bold">{p.title}</h1>
+                        <h1 className="font-bold bg-clip-text text-transparent bg-gradient-to-r from-orange-400 to-purple-400 mb-8 text-crm-mutedrm-textxl font-bold">{p.title}</h1>
                         <CustomPageContent content={p.content || ""} shop={shop} className="prose prose-invert prose-lg max-w-none text-purple-200/80"  onBookClick={handleBookClick}  reviews={reviews}  templateType={templateType} />
                     </div>
                 </section>
@@ -807,6 +1068,54 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
         
         return (
           <main className="h-[100dvh] overflow-y-auto overflow-x-hidden bg-[#121412] text-[#e3e2e0] selection:bg-[#d4af37] selection:text-[#554300] font-sans">
+
+      {faviconUrl && (
+        <link rel="icon" href={faviconUrl} />
+      )}
+      <style dangerouslySetInnerHTML={{__html: `
+        @import url('https://fonts.googleapis.com/css2?family=${headingFont.replace(/ /g, '+')}:wght@400;600;700;900&family=${bodyFont.replace(/ /g, '+')}:wght@400;500;600&display=swap');
+        
+        h1, h2, h3, h4, h5, h6, .font-heading { font-family: '${headingFont}', sans-serif !important; }
+        body, p, span, a, div, .font-body { font-family: '${bodyFont}', sans-serif; }
+        
+        ${isDark ? `
+          .bg-crm-bg, .bg-white, .bg-crm-surface { background-color: ${themeBg} !important; border-color: ${themeBorder} !important; }
+          .text-crm-mutedrm-textrm-text, .text-gray-900, .text-crm-mutedlack { color: ${themeText} !important; }
+          .text-crm-mutedrm-textrm-muted, .text-gray-500, .text-gray-600 { color: ${themeMuted} !important; }
+          .border-gray-100, .border-gray-200, .border-crm-border { border-color: ${themeBorder} !important; }
+        ` : ''}
+
+        ${buttonShape === 'sharp' ? '.btn, button { border-radius: 0 !important; }' : ''}
+        ${buttonShape === 'pill' ? '.btn, button { border-radius: 9999px !important; }' : ''}
+        
+        ${buttonVariant === 'outline' ? `
+          .btn, button.bg-crm-primary { background-color: transparent !important; border: 2px solid ${primaryColor} !important; color: ${primaryColor} !important; }
+          .btn:hover, button.bg-crm-primary:hover { background-color: ${primaryColor}20 !important; }
+        ` : ''}
+        
+        ${buttonVariant === 'ghost' ? `
+          .btn, button.bg-crm-primary { background-color: transparent !important; border: none !important; color: ${primaryColor} !important; }
+          .btn:hover, button.bg-crm-primary:hover { background-color: ${primaryColor}20 !important; }
+        ` : ''}
+
+        ${enableScrollAnimations ? `
+          .animate-on-scroll {
+            animation: fadeInUp 0.8s ease forwards;
+          }
+          @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+          }
+        ` : ''}
+
+        .hero-overlay {
+          background-color: ${heroOverlayColor};
+          opacity: ${heroOverlayOpacity / 100};
+        }
+
+        ${customCss}
+      `}} />
+  
             <style dangerouslySetInnerHTML={{__html: `
               @import url('https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,700;1,400&family=Manrope:wght@300;400;500;600;700&display=swap');
               @import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap');
@@ -818,7 +1127,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
             {/* TopNavBar */}
             <nav className="fixed top-0 w-full z-50 bg-[#121412]/80 backdrop-blur-xl shadow-none no-border">
               <div className="flex justify-between items-center px-8 py-6 max-w-screen-2xl mx-auto">
-                <div className="text-2xl font-bold font-headline tracking-tighter" style={{ color: primaryColor }}>
+                <div className="text-crm-mutedrm-textxl font-bold font-headline tracking-tighter" style={{ color: primaryColor }}>
                   {shop.name}
                 </div>
                 {/* Desktop Navigation */}
@@ -849,7 +1158,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                       {editorial.heroTagline || 'Editorial Excellence'}
                     </span>
                     <h1 
-                      className="font-headline leading-[1.1] mb-8 tracking-tight text-2xl font-bold"
+                      className="font-headline leading-[1.1] mb-8 tracking-tight text-crm-mutedrm-textxl font-bold"
                       dangerouslySetInnerHTML={{ __html: editorial.heroTitle || `Your Sanctuary of <br/> <span class="italic" style="color: ${primaryColor}">Sophisticated Care</span>` }}
                     />
                     <p className="text-[#d0c5af] font-body max-w-md mb-10 leading-relaxed text-[13px]">
@@ -892,7 +1201,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
 
                  <section key={p.id} id={p.id} className="py-32 px-8 min-h-[70vh] w-full max-w-5xl mx-auto">
                     <div className="w-full">
-                        <h1 className="font-headline mb-12 text-2xl font-bold" style={{ color: primaryColor }}>{p.title}</h1>
+                        <h1 className="font-headline mb-12 text-crm-mutedrm-textxl font-bold" style={{ color: primaryColor }}>{p.title}</h1>
                         <CustomPageContent content={p.content || ""} shop={shop} themeColor={primaryColor} className="prose prose-invert prose-lg max-w-none font-body text-[#d0c5af]"  onBookClick={handleBookClick}  reviews={reviews}  templateType={templateType} />
                     </div>
                 </section>
@@ -947,7 +1256,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                       <div className="md:col-span-8 flex gap-8">
                         {editorial.testimonials.slice(0,2).map((t: any, i: number) => (
                           <div key={i} className={`bg-[#0d0f0d] p-10 rounded-3xl shadow-sm max-w-sm ${i === 1 ? 'hidden md:block opacity-60' : ''}`}>
-                            <span className="material-symbols-outlined text-5xl mb-6" style={{ color: secondaryColor }}>format_quote</span>
+                            <span className="material-symbols-outlined text-crm-mutedxl mb-6" style={{ color: secondaryColor }}>format_quote</span>
                             <p className="font-body italic text-[#e3e2e0] mb-8 leading-relaxed text-[13px]">"{t.quote}"</p>
                             <div className="flex items-center gap-4">
                               <div className="w-12 h-12 rounded-full bg-[#292a29]"></div>
@@ -974,14 +1283,14 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                         <div className="flex gap-6">
                           <span className="material-symbols-outlined" style={{ color: primaryColor }}>location_on</span>
                           <div>
-                            <h4 className="font-bold mb-2 text-base font-semibold">Our Location</h4>
+                            <h4 className="font-bold mb-2 text-crm-mutedase font-semibold">Our Location</h4>
                             <p className="text-[#d0c5af] text-[13px]">{shopAddress || 'Address not provided'}</p>
                           </div>
                         </div>
                         <div className="flex gap-6">
                           <span className="material-symbols-outlined" style={{ color: primaryColor }}>call</span>
                           <div>
-                            <h4 className="font-bold mb-2 text-base font-semibold">Contact Details</h4>
+                            <h4 className="font-bold mb-2 text-crm-mutedase font-semibold">Contact Details</h4>
                             <p className="text-[#d0c5af] text-[13px]">{shop.customization?.phone || 'Phone not provided'}<br/>{shop.customization?.email || 'Email not provided'}</p>
                           </div>
                         </div>
@@ -992,7 +1301,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                         <img alt="Map View" className="w-full h-full object-cover" src={editorial.mapImageUrl || "https://lh3.googleusercontent.com/aida-public/AB6AXuBPBUELt3H48sCkgUERZL-bYjLp_g4nyaMrAaWgWqv1QMVuCaaZub4OKguOms2xp_UClFnqWJd5F1jE8c8_9V8GbtLNhZwardBznAcbPP6O5ofImMcqWosMtI8MOhCDK6ERy1aepwuU8Jjoomg4v3oHOH1T-k1vmTJMASUVHIRN_wlzdQm3IGpjqWBgBHRYOEeLiJKp7GgD_lnnDst0M8NdV_0egB1TFqQmXLS5pgBlZELH0ExIL_x5_OEryY1I7lK2NPfP3cKIUjs"} />
                       </div>
                       <div className="absolute inset-0 flex items-center justify-center">
-                        <div className="bg-[#121412] p-8 rounded-2xl shadow-xl border text-center max-w-xs" style={{ borderColor: `${primaryColor}20` }}>
+                        <div className="bg-[#121412] p-8 rounded-2xl shadow-xl border text-crm-mutedrm-textenter max-w-xs" style={{ borderColor: `${primaryColor}20` }}>
                           <div className="w-12 h-12 rounded-full mx-auto mb-4 flex items-center justify-center" style={{ backgroundColor: primaryColor }}>
                             <span className="material-symbols-outlined text-[#121412]">pin_drop</span>
                           </div>
@@ -1037,6 +1346,54 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
       if (templateType === 'minimal') {
         return (
           <main className="h-[100dvh] overflow-y-auto overflow-x-hidden bg-[#fafafa] text-[#333333] font-sans relative">
+
+      {faviconUrl && (
+        <link rel="icon" href={faviconUrl} />
+      )}
+      <style dangerouslySetInnerHTML={{__html: `
+        @import url('https://fonts.googleapis.com/css2?family=${headingFont.replace(/ /g, '+')}:wght@400;600;700;900&family=${bodyFont.replace(/ /g, '+')}:wght@400;500;600&display=swap');
+        
+        h1, h2, h3, h4, h5, h6, .font-heading { font-family: '${headingFont}', sans-serif !important; }
+        body, p, span, a, div, .font-body { font-family: '${bodyFont}', sans-serif; }
+        
+        ${isDark ? `
+          .bg-crm-bg, .bg-white, .bg-crm-surface { background-color: ${themeBg} !important; border-color: ${themeBorder} !important; }
+          .text-crm-mutedrm-textrm-text, .text-gray-900, .text-crm-mutedlack { color: ${themeText} !important; }
+          .text-crm-mutedrm-textrm-muted, .text-gray-500, .text-gray-600 { color: ${themeMuted} !important; }
+          .border-gray-100, .border-gray-200, .border-crm-border { border-color: ${themeBorder} !important; }
+        ` : ''}
+
+        ${buttonShape === 'sharp' ? '.btn, button { border-radius: 0 !important; }' : ''}
+        ${buttonShape === 'pill' ? '.btn, button { border-radius: 9999px !important; }' : ''}
+        
+        ${buttonVariant === 'outline' ? `
+          .btn, button.bg-crm-primary { background-color: transparent !important; border: 2px solid ${primaryColor} !important; color: ${primaryColor} !important; }
+          .btn:hover, button.bg-crm-primary:hover { background-color: ${primaryColor}20 !important; }
+        ` : ''}
+        
+        ${buttonVariant === 'ghost' ? `
+          .btn, button.bg-crm-primary { background-color: transparent !important; border: none !important; color: ${primaryColor} !important; }
+          .btn:hover, button.bg-crm-primary:hover { background-color: ${primaryColor}20 !important; }
+        ` : ''}
+
+        ${enableScrollAnimations ? `
+          .animate-on-scroll {
+            animation: fadeInUp 0.8s ease forwards;
+          }
+          @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+          }
+        ` : ''}
+
+        .hero-overlay {
+          background-color: ${heroOverlayColor};
+          opacity: ${heroOverlayOpacity / 100};
+        }
+
+        ${customCss}
+      `}} />
+  
             {/* Header / Nav */}
             <header className="absolute w-full top-0 left-0 px-8 py-6 flex flex-wrap justify-between items-center z-50">
                 {pages.filter((p: any) => p.isVisible).length > 0 && (
@@ -1053,11 +1410,11 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
             </header>
 
             {/* Hero / Shop Info */}
-            <section className="max-w-4xl mx-auto px-6 pt-40 pb-20 flex flex-col items-center text-center border-b border-gray-200">
+            <section className="max-w-4xl mx-auto px-6 pt-40 pb-20 flex flex-col items-center text-crm-mutedrm-textenter border-b border-gray-200">
                 {logoUrl ? (
                     <img src={logoUrl} alt={shop.name} className="h-28 object-contain mb-8" onError={(e) => { e.currentTarget.style.display = 'none'; }} />
                 ) : (
-                    <h1 className="font-light tracking-tight text-5xl mb-8" style={{ color: primaryColor }}>{shop.name}</h1>
+                    <h1 className="font-light tracking-tight text-crm-mutedxl mb-8" style={{ color: primaryColor }}>{shop.name}</h1>
                 )}
                 {shop.slogan && <p className="text-gray-900 font-medium text-lg tracking-wide mb-6">{shop.slogan}</p>}
                 {shop.description && <p className="text-gray-500 text-[15px] max-w-2xl leading-relaxed">{shop.description}</p>}
@@ -1071,13 +1428,13 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
             {/* Custom Pages */}
             {pages.filter((p: any) => p.isVisible).map((p: any) => (
                 <section key={p.id} id={p.id} className="w-full max-w-5xl mx-auto px-6 py-24 min-h-[50vh]">
-                    <h2 className="font-light tracking-wide mb-16 text-center text-3xl text-gray-900" style={{ color: primaryColor }}>{p.title}</h2>
+                    <h2 className="font-light tracking-wide mb-16 text-crm-mutedrm-textenter text-crm-mutedrm-textxl text-gray-900" style={{ color: primaryColor }}>{p.title}</h2>
                     <CustomPageContent content={p.content || ""} shop={shop} themeColor={primaryColor} className="prose prose-lg max-w-4xl mx-auto text-gray-600 font-light leading-relaxed w-full" onBookClick={handleBookClick} reviews={reviews} templateType={templateType} />
                 </section>
             ))}
 
             {/* Footer */}
-            <footer className="bg-white border-t border-gray-200 py-16 text-center text-[12px] font-medium tracking-widest uppercase text-gray-400">
+            <footer className="bg-white border-t border-gray-200 py-16 text-crm-mutedrm-textenter text-[12px] font-medium tracking-widest uppercase text-gray-400">
                  <p className="mb-4">&copy; {new Date().getFullYear()} {shop.name}. All rights reserved.</p>
                  <div className="flex justify-center gap-6 text-lg">
                     {shopFB && <a href={shopFB} target="_blank" rel="noopener noreferrer" className="hover:text-gray-900 transition-colors">📘</a>}
@@ -1096,6 +1453,54 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
       if (templateType === 'classic') {
         return (
           <main className="h-[100dvh] overflow-y-auto overflow-x-hidden bg-[#fdfbf7] text-[#2c1e16] font-serif relative">
+
+      {faviconUrl && (
+        <link rel="icon" href={faviconUrl} />
+      )}
+      <style dangerouslySetInnerHTML={{__html: `
+        @import url('https://fonts.googleapis.com/css2?family=${headingFont.replace(/ /g, '+')}:wght@400;600;700;900&family=${bodyFont.replace(/ /g, '+')}:wght@400;500;600&display=swap');
+        
+        h1, h2, h3, h4, h5, h6, .font-heading { font-family: '${headingFont}', sans-serif !important; }
+        body, p, span, a, div, .font-body { font-family: '${bodyFont}', sans-serif; }
+        
+        ${isDark ? `
+          .bg-crm-bg, .bg-white, .bg-crm-surface { background-color: ${themeBg} !important; border-color: ${themeBorder} !important; }
+          .text-crm-mutedrm-textrm-text, .text-gray-900, .text-crm-mutedlack { color: ${themeText} !important; }
+          .text-crm-mutedrm-textrm-muted, .text-gray-500, .text-gray-600 { color: ${themeMuted} !important; }
+          .border-gray-100, .border-gray-200, .border-crm-border { border-color: ${themeBorder} !important; }
+        ` : ''}
+
+        ${buttonShape === 'sharp' ? '.btn, button { border-radius: 0 !important; }' : ''}
+        ${buttonShape === 'pill' ? '.btn, button { border-radius: 9999px !important; }' : ''}
+        
+        ${buttonVariant === 'outline' ? `
+          .btn, button.bg-crm-primary { background-color: transparent !important; border: 2px solid ${primaryColor} !important; color: ${primaryColor} !important; }
+          .btn:hover, button.bg-crm-primary:hover { background-color: ${primaryColor}20 !important; }
+        ` : ''}
+        
+        ${buttonVariant === 'ghost' ? `
+          .btn, button.bg-crm-primary { background-color: transparent !important; border: none !important; color: ${primaryColor} !important; }
+          .btn:hover, button.bg-crm-primary:hover { background-color: ${primaryColor}20 !important; }
+        ` : ''}
+
+        ${enableScrollAnimations ? `
+          .animate-on-scroll {
+            animation: fadeInUp 0.8s ease forwards;
+          }
+          @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+          }
+        ` : ''}
+
+        .hero-overlay {
+          background-color: ${heroOverlayColor};
+          opacity: ${heroOverlayOpacity / 100};
+        }
+
+        ${customCss}
+      `}} />
+  
             <div className="absolute top-6 left-8 z-50">
                 {pages.filter((p: any) => p.isVisible).length > 0 && (
                     <nav className="flex gap-6 font-sans text-[11px] font-bold uppercase tracking-widest">
@@ -1110,10 +1515,10 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                 <SupabaseAuthButton redirectUrl={pathname} />
             </div>
 
-                        <header className="border-b-4 border-[#2c1e16] pt-32 pb-16 text-center relative bg-cover bg-center" style={{ backgroundImage: heroImageUrl ? `url(${heroImageUrl})` : "url('https://www.transparenttextures.com/patterns/aged-paper.png')" }}>
+                        <header className="border-b-4 border-[#2c1e16] pt-32 pb-16 text-crm-mutedrm-textenter relative bg-cover bg-center" style={{ backgroundImage: heroImageUrl ? `url(${heroImageUrl})` : "url('https://www.transparenttextures.com/patterns/aged-paper.png')" }}>
     <div className={heroImageUrl ? "absolute inset-0 bg-[#fdfbf7]/80" : ""} />
     <div className="relative z-10">
-              {logoUrl ? <img src={logoUrl} alt={shop.name} className="h-24 mx-auto object-contain mb-4" onError={(e) => { e.currentTarget.style.display = 'none'; }} /> : <h1 className="font-bold uppercase tracking-widest mb-4 text-2xl font-bold" style={{ color: primaryColor }}>{shop.name}</h1>}
+              {logoUrl ? <img src={logoUrl} alt={shop.name} className="h-24 mx-auto object-contain mb-4" onError={(e) => { e.currentTarget.style.display = 'none'; }} /> : <h1 className="font-bold uppercase tracking-widest mb-4 text-crm-mutedrm-textxl font-bold" style={{ color: primaryColor }}>{shop.name}</h1>}
               {shop.slogan && <h2 className="text-[#8b7355] font-serif text-xl italic mb-6">{shop.slogan}</h2>}
               {shop.description && <p className="max-w-xl mx-auto text-[#5a4634] text-[13px]">{shop.description}</p>}
             </div>
@@ -1122,12 +1527,12 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
             {pages.filter((p: any) => p.isVisible).map((p: any) => (
 
                 <section key={p.id} id={p.id} className="w-full max-w-6xl mx-auto px-8 py-32 min-h-[60vh]">
-                    <h1 className="font-bold uppercase tracking-widest mb-12 text-center text-2xl font-bold" style={{ color: primaryColor }}>{p.title}</h1>
+                    <h1 className="font-bold uppercase tracking-widest mb-12 text-crm-mutedrm-textenter text-crm-mutedrm-textxl font-bold" style={{ color: primaryColor }}>{p.title}</h1>
                     <CustomPageContent content={p.content || ""} shop={shop} themeColor={primaryColor} className="prose prose-lg max-w-none text-[#5a4634]"  onBookClick={handleBookClick}  reviews={reviews}  templateType={templateType} />
                 </section>
             ))}
 
-            <footer className="bg-[#2c1e16] text-[#e6d9c6] py-12 text-center text-[13px] font-sans tracking-widest uppercase">
+            <footer className="bg-[#2c1e16] text-[#e6d9c6] py-12 text-crm-mutedrm-textenter text-[13px] font-sans tracking-widest uppercase">
                  {shopAddress && <p className="mb-2 text-[13px]">{shopAddress}</p>}
                  {!shopAddress && <p className="mb-2 text-[13px]">Visit us today</p>}
                  <p className="text-[13px]">{shopPhone}{shopPhone && shopEmail ? ' | ' : ''}{shopEmail}</p>
@@ -1143,6 +1548,54 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
       // Default 'modern' template (Redesigned)
     return (
       <main className="h-[100dvh] overflow-y-auto overflow-x-hidden bg-gray-50 text-gray-800 font-sans relative">
+
+      {faviconUrl && (
+        <link rel="icon" href={faviconUrl} />
+      )}
+      <style dangerouslySetInnerHTML={{__html: `
+        @import url('https://fonts.googleapis.com/css2?family=${headingFont.replace(/ /g, '+')}:wght@400;600;700;900&family=${bodyFont.replace(/ /g, '+')}:wght@400;500;600&display=swap');
+        
+        h1, h2, h3, h4, h5, h6, .font-heading { font-family: '${headingFont}', sans-serif !important; }
+        body, p, span, a, div, .font-body { font-family: '${bodyFont}', sans-serif; }
+        
+        ${isDark ? `
+          .bg-crm-bg, .bg-white, .bg-crm-surface { background-color: ${themeBg} !important; border-color: ${themeBorder} !important; }
+          .text-crm-mutedrm-textrm-text, .text-gray-900, .text-crm-mutedlack { color: ${themeText} !important; }
+          .text-crm-mutedrm-textrm-muted, .text-gray-500, .text-gray-600 { color: ${themeMuted} !important; }
+          .border-gray-100, .border-gray-200, .border-crm-border { border-color: ${themeBorder} !important; }
+        ` : ''}
+
+        ${buttonShape === 'sharp' ? '.btn, button { border-radius: 0 !important; }' : ''}
+        ${buttonShape === 'pill' ? '.btn, button { border-radius: 9999px !important; }' : ''}
+        
+        ${buttonVariant === 'outline' ? `
+          .btn, button.bg-crm-primary { background-color: transparent !important; border: 2px solid ${primaryColor} !important; color: ${primaryColor} !important; }
+          .btn:hover, button.bg-crm-primary:hover { background-color: ${primaryColor}20 !important; }
+        ` : ''}
+        
+        ${buttonVariant === 'ghost' ? `
+          .btn, button.bg-crm-primary { background-color: transparent !important; border: none !important; color: ${primaryColor} !important; }
+          .btn:hover, button.bg-crm-primary:hover { background-color: ${primaryColor}20 !important; }
+        ` : ''}
+
+        ${enableScrollAnimations ? `
+          .animate-on-scroll {
+            animation: fadeInUp 0.8s ease forwards;
+          }
+          @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+          }
+        ` : ''}
+
+        .hero-overlay {
+          background-color: ${heroOverlayColor};
+          opacity: ${heroOverlayOpacity / 100};
+        }
+
+        ${customCss}
+      `}} />
+  
         {/* Header / Nav */}
         <header className="absolute w-full top-0 left-0 p-6 flex flex-wrap justify-between items-center z-50">
             {pages.filter((p: any) => p.isVisible).length > 0 && (
@@ -1170,19 +1623,19 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
           )}
           <div className="absolute inset-0 bg-black/60 z-0" />
           
-          <div className="relative z-10 w-full max-w-4xl mx-auto text-center flex flex-col items-center">
+          <div className="relative z-10 w-full max-w-4xl mx-auto text-crm-mutedrm-textenter flex flex-col items-center">
             {logoUrl ? (
               <div className="w-28 h-28 md:w-36 md:h-36 mb-8 rounded-full overflow-hidden border-4 shadow-2xl bg-white flex items-center justify-center p-2" style={{ borderColor: primaryColor || '#ffffff' }}>
                 <img src={logoUrl} alt={shop.name} className="max-w-full max-h-full object-contain" onError={(e) => { e.currentTarget.style.display = 'none'; }} />
               </div>
             ) : (
-              <h1 className="font-extrabold tracking-tight text-4xl md:text-6xl mb-6 text-white drop-shadow-md">
+              <h1 className="font-extrabold tracking-tight text-crm-mutedrm-textxl md:text-crm-mutedrm-textxl mb-6 text-white drop-shadow-md">
                 {shop.name}
               </h1>
             )}
             
             {shop.slogan && (
-              <p className="text-white/90 font-medium text-xl md:text-2xl tracking-wide mb-6 max-w-2xl drop-shadow-sm">
+              <p className="text-white/90 font-medium text-xl md:text-crm-mutedrm-textxl tracking-wide mb-6 max-w-2xl drop-shadow-sm">
                 {shop.slogan}
               </p>
             )}
@@ -1207,7 +1660,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
         <div className="relative z-20 -mt-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12 pb-24">
           {pages.filter((p: any) => p.isVisible).map((p: any) => (
             <section key={p.id} id={p.id} className="bg-white p-8 md:p-12 rounded-3xl shadow-lg border border-gray-100 overflow-hidden w-full max-w-6xl mx-auto">
-               <h2 className="font-extrabold mb-10 text-3xl md:text-4xl text-gray-900 text-center tracking-tight" style={{ color: primaryColor }}>{p.title}</h2>
+               <h2 className="font-extrabold mb-10 text-crm-mutedrm-textxl md:text-crm-mutedrm-textxl text-gray-900 text-crm-mutedrm-textenter tracking-tight" style={{ color: primaryColor }}>{p.title}</h2>
                <CustomPageContent content={p.content || ""} shop={shop} themeColor={primaryColor} className="prose prose-lg max-w-none text-gray-600 mx-auto" onBookClick={handleBookClick} reviews={reviews} templateType={templateType} />
             </section>
           ))}
@@ -1216,7 +1669,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
         {/* Footer */}
         <footer className="bg-white border-t border-gray-200 pt-16 pb-8">
           <div className="max-w-6xl mx-auto px-6 lg:px-8">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12 text-center md:text-left">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12 text-crm-mutedrm-textenter md:text-left">
               <div>
                 <h3 className="font-bold text-gray-900 mb-6 text-xl">{shop.name}</h3>
                 <p className="text-gray-500 mb-6 text-[14px] leading-relaxed max-w-xs mx-auto md:mx-0">
@@ -1250,7 +1703,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
 
               <div>
                 <h4 className="font-bold text-gray-900 mb-6 text-sm uppercase tracking-widest">Follow Us</h4>
-                <div className="flex justify-center md:justify-start gap-6 text-2xl">
+                <div className="flex justify-center md:justify-start gap-6 text-crm-mutedrm-textxl">
                   {shopFB && <a href={shopFB} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-[#1877F2] transition-transform hover:scale-110">📘</a>}
                   {shopIG && <a href={shopIG.startsWith('http') ? shopIG : `https://instagram.com/${shopIG.replace('@','')}`} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-[#E4405F] transition-transform hover:scale-110">📸</a>}
                   {shopTW && <a href={shopTW} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-[#1DA1F2] transition-transform hover:scale-110">🐦</a>}
@@ -1258,7 +1711,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
               </div>
             </div>
             
-            <div className="border-t border-gray-100 pt-8 text-center text-gray-400 text-[13px] font-medium tracking-wide">
+            <div className="border-t border-gray-100 pt-8 text-crm-mutedrm-textenter text-gray-400 text-[13px] font-medium tracking-wide">
               &copy; {new Date().getFullYear()} {shop.name}. All rights reserved.
             </div>
           </div>

@@ -93,212 +93,37 @@ export function CustomizationForm({
         
         <div>
             <h3 className="font-bold text-crm-text mb-4 text-lg font-bold">Brand Look & Feel</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-              <div>
-                <label className="block font-medium text-crm-muted mb-2 text-[13px]">
-                  Logo URL
-                </label>
-                <div className="flex gap-2 items-center">
-                  <input
-                    type="url"
-                    value={formData.logoUrl || ''}
-                    onChange={(e) => handleInputChange('logoUrl', e.target.value)}
-                    placeholder="https://example.com/logo.png"
-                    className="flex-1 w-full bg-crm-bg border border-crm-border shadow-sm rounded px-4 py-2 text-crm-text placeholder-gray-500"
-                  />
-                  <MediaPicker shopId={shopId} currentUrl={formData.logoUrl} onSelect={(url) => handleInputChange('logoUrl', url)} label="Upload/Select Logo" />
-                </div>
-              </div>
-
-              <div>
-                <label className="block font-medium text-crm-muted mb-2 text-[13px]">
-                  Hero / Banner Image URL
-                </label>
-                <div className="flex gap-2 items-center">
-                  <input
-                    type="url"
-                    value={formData.heroImageUrl || ''}
-                    onChange={(e) => handleInputChange('heroImageUrl', e.target.value)}
-                    placeholder="https://example.com/banner.jpg"
-                    className="flex-1 w-full bg-crm-bg border border-crm-border shadow-sm rounded px-4 py-2 text-crm-text placeholder-gray-500"
-                  />
-                  <MediaPicker shopId={shopId} currentUrl={formData.heroImageUrl} onSelect={(url) => handleInputChange('heroImageUrl', url)} label="Upload/Select Hero Image" />
-                </div>
-              </div>
-            </div>
-            <h3 className="font-bold text-crm-text mb-4 text-lg font-bold">Brand Colors</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <label className="block font-medium text-crm-muted mb-2 text-[13px]">
-                  Primary Color
-                </label>
-                <div className="flex gap-2">
-                  <input
-                    type="color"
-                    value={formData.primaryColor || '#000000'}
-                    onChange={(e) =>
-                      handleInputChange('primaryColor', e.target.value)
-                    }
-                    className="h-12 w-20 rounded cursor-pointer"
-                  />
-                  <input
-                    type="text"
-                    value={formData.primaryColor || ''}
-                    onChange={(e) =>
-                      handleInputChange('primaryColor', e.target.value)
-                    }
-                    className="flex-1 bg-crm-bg border border-crm-border shadow-sm rounded px-3 py-2 text-crm-text"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label className="block font-medium text-crm-muted mb-2 text-[13px]">
-                  Secondary Color
-                </label>
-                <div className="flex gap-2">
-                  <input
-                    type="color"
-                    value={formData.secondaryColor || '#000000'}
-                    onChange={(e) =>
-                      handleInputChange('secondaryColor', e.target.value)
-                    }
-                    className="h-12 w-20 rounded cursor-pointer"
-                  />
-                  <input
-                    type="text"
-                    value={formData.secondaryColor || ''}
-                    onChange={(e) =>
-                      handleInputChange('secondaryColor', e.target.value)
-                    }
-                    className="flex-1 bg-crm-bg border border-crm-border shadow-sm rounded px-3 py-2 text-crm-text"
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-
-        <div>
-          <h3 className="font-bold text-crm-text mb-4 text-lg font-bold">Contact Information</h3>
-          <div className="space-y-4">
-            <div>
-              <label className="block font-medium text-crm-muted mb-2 text-[13px]">
-                Phone Number
-              </label>
-              <input
-                type="tel"
-                value={formData.phone || ''}
-                onChange={(e) => handleInputChange('phone', e.target.value)}
-                placeholder="+1 (555) 000-0000"
-                className="w-full bg-crm-bg border border-crm-border shadow-sm rounded px-4 py-2 text-crm-text placeholder-gray-500"
-              />
-            </div>
-
-            <div>
-              <label className="block font-medium text-crm-muted mb-2 text-[13px]">
-                Email Address
-              </label>
-              <input
-                type="email"
-                value={formData.email || ''}
-                onChange={(e) => handleInputChange('email', e.target.value)}
-                placeholder="contact@shop.com"
-                className="w-full bg-crm-bg border border-crm-border shadow-sm rounded px-4 py-2 text-crm-text placeholder-gray-500"
-              />
-            </div>
-
-            <div>
-              <label className="block font-medium text-crm-muted mb-2 text-[13px]">
-                Business Address
-              </label>
-              <input
-                type="text"
-                value={formData.address || ''}
-                onChange={(e) => handleInputChange('address', e.target.value)}
-                placeholder="123 Main St, City, State"
-                className="w-full bg-crm-bg border border-crm-border shadow-sm rounded px-4 py-2 text-crm-text placeholder-gray-500"
-              />
-            </div>
-          </div>
-        </div>
-
-        <div>
-          <h3 className="font-bold text-crm-text mb-4 text-lg font-bold">Social Media Links</h3>
-          <div className="space-y-4">
-            <div>
-              <label className="block font-medium text-crm-muted mb-2 text-[13px]">
-                Facebook URL
-              </label>
-              <input
-                type="url"
-                value={formData.social?.facebook || ''}
-                onChange={(e) =>
-                  handleInputChange('social', {
-                    ...formData.social,
-                    facebook: e.target.value,
-                  })
-                }
-                placeholder="https://facebook.com/yourpage"
-                className="w-full bg-crm-bg border border-crm-border shadow-sm rounded px-4 py-2 text-crm-text placeholder-gray-500"
-              />
-            </div>
-
-            <div>
-              <label className="block font-medium text-crm-muted mb-2 text-[13px]">
-                Instagram URL
-              </label>
-              <input
-                type="url"
-                value={formData.social?.instagram || ''}
-                onChange={(e) =>
-                  handleInputChange('social', {
-                    ...formData.social,
-                    instagram: e.target.value,
-                  })
-                }
-                placeholder="https://instagram.com/yourpage"
-                className="w-full bg-crm-bg border border-crm-border shadow-sm rounded px-4 py-2 text-crm-text placeholder-gray-500"
-              />
-            </div>
-
-            <div>
-              <label className="block font-medium text-crm-muted mb-2 text-[13px]">
-                Twitter URL
-              </label>
-              <input
-                type="url"
-                value={formData.social?.twitter || ''}
-                onChange={(e) =>
-                  handleInputChange('social', {
-                    ...formData.social,
-                    twitter: e.target.value,
-                  })
-                }
-                placeholder="https://twitter.com/yourpage"
-                className="w-full bg-crm-bg border border-crm-border shadow-sm rounded px-4 py-2 text-crm-text placeholder-gray-500"
-              />
-            </div>
-          </div>
-        </div>
-
-        
-        <div>
-          <h3 className="font-bold text-crm-text mb-4 text-lg font-bold">Advanced Customization</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-            <div>
-              <label className="block font-medium text-crm-muted mb-2 text-[13px]">Primary Font</label>
-              <select
-                value={formData.fontFamily || 'Inter'}
-                onChange={(e) => handleInputChange('fontFamily', e.target.value)}
-                className="w-full bg-crm-bg border border-crm-border shadow-sm rounded px-4 py-2 text-crm-text"
-              >
-                <option value="Inter">Inter (Modern)</option>
-                <option value="Playfair Display">Playfair Display (Elegant)</option>
-                <option value="Roboto">Roboto (Clean)</option>
-                <option value="Oswald">Oswald (Classic)</option>
-                <option value="Montserrat">Montserrat (Bold)</option>
-              </select>
-            </div>
+            
+<div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+  <div>
+    <label className="block font-medium text-crm-muted mb-2 text-[13px]">Heading Font</label>
+    <select
+      value={formData.headingFont || formData.fontFamily || 'Inter'}
+      onChange={(e) => handleInputChange('headingFont', e.target.value)}
+      className="w-full bg-crm-bg border border-crm-border shadow-sm rounded px-4 py-2 text-crm-text"
+    >
+      <option value="Inter">Inter (Modern)</option>
+      <option value="Playfair Display">Playfair Display (Elegant)</option>
+      <option value="Roboto">Roboto (Clean)</option>
+      <option value="Oswald">Oswald (Classic)</option>
+      <option value="Montserrat">Montserrat (Bold)</option>
+    </select>
+  </div>
+  <div>
+    <label className="block font-medium text-crm-muted mb-2 text-[13px]">Body Font</label>
+    <select
+      value={formData.bodyFont || formData.fontFamily || 'Inter'}
+      onChange={(e) => handleInputChange('bodyFont', e.target.value)}
+      className="w-full bg-crm-bg border border-crm-border shadow-sm rounded px-4 py-2 text-crm-text"
+    >
+      <option value="Inter">Inter (Modern)</option>
+      <option value="Playfair Display">Playfair Display (Elegant)</option>
+      <option value="Roboto">Roboto (Clean)</option>
+      <option value="Oswald">Oswald (Classic)</option>
+      <option value="Montserrat">Montserrat (Bold)</option>
+    </select>
+  </div>
+  
             <div>
               <label className="block font-medium text-crm-muted mb-2 text-[13px]">Call to Action Text</label>
               <input
