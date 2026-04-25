@@ -131,6 +131,25 @@ export default async function PublicShopPage({
 
   // Define different layouts based on the selected template
   
+  
+  if (c.customHtml) {
+      return (
+          <main className="h-[100dvh] overflow-y-auto overflow-x-hidden bg-crm-bg text-crm-text font-body relative">
+              {faviconUrl && (
+                  <link rel="icon" href={faviconUrl} />
+              )}
+              <style dangerouslySetInnerHTML={{__html: `
+                  @import url('https://fonts.googleapis.com/css2?family=${headingFont.replace(/ /g, '+')}:wght@400;600;700;900&family=${bodyFont.replace(/ /g, '+')}:wght@400;500;600&display=swap');
+                  
+                  h1, h2, h3, h4, h5, h6, .font-heading { font-family: '${headingFont}', sans-serif !important; }
+                  body, p, span, a, div, .font-body { font-family: '${bodyFont}', sans-serif; }
+                  ${customCss}
+              `}} />
+              <div dangerouslySetInnerHTML={{ __html: c.customHtml.replace(/\$\{[a-z]+\}/gi, '') }} />
+          </main>
+      );
+  }
+
   if (!['minimal', 'classic', 'modern', 'editorial'].includes(templateType)) {
     const dynamicTemplate = await prisma.dynamicTemplate.findUnique({
       where: { name: templateType }
@@ -591,7 +610,7 @@ export default async function PublicShopPage({
         ${customCss}
       `}} />
   
-        <header className="max-w-4xl mx-auto px-6 py-12 border-b border-crm-border flex flex-col md:flex-row justify-between items-end md:items-center">
+        <header className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 border-b border-crm-border flex flex-col md:flex-row justify-between items-end md:items-center">
           <div>
             <h1 className="font-light tracking-tight text-crm-mutedrm-textxl font-bold" style={{ color: primaryColor }}>{shop.name}</h1>
             {shop.description && <p className="text-crm-mutedrm-textrm-muted mt-2 text-[13px]">{shop.description}</p>}
@@ -602,7 +621,7 @@ export default async function PublicShopPage({
           </div>
         </header>
 
-        <section className="max-w-4xl mx-auto px-6 py-16">
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
           <h2 className="font-semibold tracking-widest uppercase text-crm-mutedrm-textrm-muted mb-10 text-xl font-bold">Service Menu</h2>
           {shop.services && shop.services.length > 0 ? (
             <div className="space-y-8">
@@ -624,7 +643,7 @@ export default async function PublicShopPage({
           )}
         </section>
 
-        <section className="max-w-4xl mx-auto px-6 pb-20 text-crm-mutedrm-textenter">
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20 text-crm-mutedrm-textenter">
             <button 
               className="px-8 py-3 text-crm-mutedrm-textrm-text transition-colors text-[13px] font-medium tracking-wide uppercase rounded-md"
               style={{ backgroundColor: primaryColor }}
@@ -741,7 +760,7 @@ export default async function PublicShopPage({
           {shop.description && <p className="max-w-xl mx-auto text-crm-muted text-[13px]">{shop.description}</p>}
         </header>
 
-        <section className="max-w-5xl mx-auto px-8 py-20">
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
           <h2 className="font-bold text-crm-mutedrm-textenter uppercase tracking-widest mb-16 relative text-xl font-bold">
             <span className="bg-[#fdfbf7] px-6 relative z-10">Our Services</span>
             <div className="absolute left-0 top-1/2 w-full h-px bg-[#e6d9c6] -z-0"></div>
@@ -882,7 +901,7 @@ export default async function PublicShopPage({
         className="bg-crm-surface backdrop-blur-md border-b border-crm-border"
         style={{ borderBottomColor: primaryColor }}
       >
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
           <div className="text-crm-mutedrm-textenter">
             <h1 
               className="font-bold mb-6 text-crm-mutedrm-textxl font-bold"
@@ -900,7 +919,7 @@ export default async function PublicShopPage({
       </section>
 
       {/* Services Section */}
-      <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
         <div className="mb-16">
           <h2 className="font-bold text-crm-mutedrm-textrm-text mb-4 text-xl font-bold">Our Services</h2>
           <div 
@@ -962,7 +981,7 @@ export default async function PublicShopPage({
         className="py-16"
         style={{ background: `linear-gradient(to right, ${primaryColor}, ${secondaryColor})` }}
       >
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-crm-mutedrm-textenter">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-crm-mutedrm-textenter">
           <h2 className="font-bold text-crm-mutedrm-textrm-text mb-6 text-xl font-bold">
             Ready to Book?
           </h2>
@@ -980,7 +999,7 @@ export default async function PublicShopPage({
 
       {/* Footer */}
       <footer className="bg-crm-surface border-t border-crm-border py-12">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
             <div>
               <h3 className="text-crm-mutedrm-textrm-text font-bold mb-4 text-lg font-bold">{shop.name}</h3>

@@ -76,6 +76,7 @@ export interface Customization {
   enableScrollAnimations?: boolean;
   faviconUrl?: string | null;
   customCss?: string;
+  customHtml?: string;
   sectionOrder?: string[];
   ctaText?: string;
   announcement?: {
@@ -142,6 +143,7 @@ export const DEFAULT_CUSTOMIZATION: Customization = {
   enableScrollAnimations: false,
   faviconUrl: null,
   customCss: '',
+  customHtml: '',
   sectionOrder: ['hero', 'services', 'team', 'gallery', 'reviews', 'contact'],
   ctaText: 'Book Appointment',
   announcement: {

@@ -61,7 +61,7 @@ function ReviewsSection({ reviews, variant = 'dark' }: { reviews: any[]; variant
 
   return (
     <section className={`${bgClass} py-16`}>
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-crm-mutedrm-textenter mb-12">
           <h2 className={`${` font-bold ${textClass} text-xl font-bold`} mb-2`}>What Our Clients Say</h2>
           <div className="flex items-center justify-center gap-2 mt-3">
@@ -547,6 +547,34 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
         </div>
     );
 
+    
+    if (c.customHtml) {
+        return (
+            <main className="h-[100dvh] overflow-y-auto overflow-x-hidden bg-crm-bg text-crm-text font-body relative" onClick={handleDynamicTemplateClick}>
+                {faviconUrl && (
+                    <link rel="icon" href={faviconUrl} />
+                )}
+                <style dangerouslySetInnerHTML={{__html: `
+                    @import url('https://fonts.googleapis.com/css2?family=${headingFont.replace(/ /g, '+')}:wght@400;600;700;900&family=${bodyFont.replace(/ /g, '+')}:wght@400;500;600&display=swap');
+                    
+                    h1, h2, h3, h4, h5, h6, .font-heading { font-family: '${headingFont}', sans-serif !important; }
+                    body, p, span, a, div, .font-body { font-family: '${bodyFont}', sans-serif; }
+                    ${customCss}
+                `}} />
+                {authButton}
+                <CustomPageContent content={c.customHtml} shop={shop} themeColor={primaryColor} className="w-full" onBookClick={handleBookClick} reviews={reviews} templateType={templateType} />
+                {selectedService && (
+                    <div className="fixed inset-0 z-[100] bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
+                        <div className="bg-white w-full max-w-4xl h-[90vh] rounded-3xl overflow-hidden shadow-2xl relative">
+                            <button onClick={() => setSelectedService(null)} className="absolute top-4 right-4 z-[110] bg-white text-black p-2 rounded-full hover:bg-gray-200 transition-colors shadow-md border border-gray-100 flex items-center justify-center w-10 h-10 font-bold">X</button>
+                            <iframe src={`/embed/book/${shop.id}?serviceId=${selectedService.id}&themeColor=${encodeURIComponent(primaryColor)}&templateType=${templateType}`} className="w-full h-full border-0" />
+                        </div>
+                    </div>
+                )}
+            </main>
+        );
+    }
+
     if (dynamicTemplateHtml) {
         return (
             <main className="h-[100dvh] overflow-y-auto overflow-x-hidden bg-crm-surface text-crm-mutedrm-textrm-text font-sans relative" onClick={handleDynamicTemplateClick}>
@@ -809,7 +837,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
     
                 {pages.filter((p: any) => p.isVisible).map((p: any) => (
 
-                    <section key={p.id} id={p.id} className="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 min-h-[60vh]">
+                    <section key={p.id} id={p.id} className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 min-h-[60vh]">
                         <h1 className="font-black uppercase italic mb-8 text-crm-mutedrm-textxl font-bold" style={{ color: sportRed }}>{p.title}</h1>
                         <CustomPageContent content={p.content || ""} shop={shop} themeColor={sportRed} className="prose prose-lg max-w-none text-crm-mutedrm-textrm-text"  onBookClick={handleBookClick}  reviews={reviews}  templateType={templateType} />
                     </section>
@@ -957,7 +985,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
       `}} />
   
             <header className="bg-crm-surface shadow-md relative z-40">
-              <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center py-4 overflow-x-auto hide-scrollbar">
+              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center py-4 overflow-x-auto hide-scrollbar">
                 {logoUrl ? <img src={logoUrl} alt={shop.name} className="h-10 shrink-0 mr-6 object-contain" onError={(e) => { e.currentTarget.style.display = 'none'; }} /> : <h1 className="font-bold shrink-0 mr-6 text-crm-mutedrm-textxl font-bold" style={{ color: primaryColor }}>{shop.name}</h1>}
                 {pages.filter((p: any) => p.isVisible).length > 0 && (
                     <nav className="flex gap-4 sm:gap-6 shrink-0 mr-6">
@@ -980,7 +1008,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
           </video>
         )}
         <div className={(heroImageUrl || heroVideoUrl) ? "absolute inset-0 z-0 hero-overlay" : "z-0"} />
-                <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-crm-mutedrm-textenter relative z-10">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-crm-mutedrm-textenter relative z-10">
                     <h2 className="font-extrabold text-crm-mutedrm-textrm-text mb-4 text-xl font-bold">{shop.slogan || shop.description}</h2>
                     
                 </div>
@@ -988,14 +1016,14 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
     
             {pages.filter((p: any) => p.isVisible).map((p: any) => (
 
-                <section key={p.id} id={p.id} className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 min-h-[60vh]">
+                <section key={p.id} id={p.id} className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 min-h-[60vh]">
                     <h1 className="font-bold text-crm-mutedrm-textrm-text mb-8 text-crm-mutedrm-textxl font-bold" style={{ color: primaryColor }}>{p.title}</h1>
                     <CustomPageContent content={p.content || ""} shop={shop} themeColor={primaryColor} className="prose prose-lg max-w-none text-crm-mutedrm-textrm-text"  onBookClick={handleBookClick}  reviews={reviews}  templateType={templateType} />
                 </section>
             ))}
 
             <footer className="bg-crm-surface text-crm-mutedrm-textrm-text">
-              <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
                   <div>
                     <h3 className="font-bold mb-4 text-lg font-bold">{shop.name}</h3>
@@ -1150,7 +1178,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
     
               {pages.filter((p: any) => p.isVisible).map((p: any) => (
 
-                    <section key={p.id} id={p.id} className="w-full max-w-5xl mx-auto px-6 min-h-[60vh]">
+                    <section key={p.id} id={p.id} className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 min-h-[60vh]">
                         <h1 className="font-black uppercase tracking-tighter mb-8 text-crm-mutedrm-textenter text-crm-mutedrm-textxl font-bold">{p.title}</h1>
                         <CustomPageContent content={p.content || ""} shop={shop} className="prose prose-invert prose-lg max-w-none text-crm-mutedrm-textrm-muted font-sans"  onBookClick={handleBookClick}  reviews={reviews}  templateType={templateType} />
                     </section>
@@ -1288,7 +1316,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
     
               {pages.filter((p: any) => p.isVisible).map((p: any) => (
 
-                <section key={p.id} id={p.id} className="w-full max-w-5xl mx-auto px-6 min-h-[60vh]">
+                <section key={p.id} id={p.id} className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 min-h-[60vh]">
                     <div className="bg-crm-surface backdrop-blur-sm border border-status-pending/30 rounded-lg p-8 md:p-12">
                         <h1 className="font-bold bg-clip-text text-transparent bg-gradient-to-r from-orange-400 to-purple-400 mb-8 text-crm-mutedrm-textxl font-bold">{p.title}</h1>
                         <CustomPageContent content={p.content || ""} shop={shop} className="prose prose-invert prose-lg max-w-none text-purple-200/80"  onBookClick={handleBookClick}  reviews={reviews}  templateType={templateType} />
@@ -1488,7 +1516,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
     
               {pages.filter((p: any) => p.isVisible).map((p: any) => (
 
-                 <section key={p.id} id={p.id} className="py-32 px-8 min-h-[70vh] w-full max-w-5xl mx-auto">
+                 <section key={p.id} id={p.id} className="py-32 px-8 min-h-[60vh] w-full max-w-7xl mx-auto">
                     <div className="w-full">
                         <h1 className="font-headline mb-12 text-crm-mutedrm-textxl font-bold" style={{ color: primaryColor }}>{p.title}</h1>
                         <CustomPageContent content={p.content || ""} shop={shop} themeColor={primaryColor} className="prose prose-invert prose-lg max-w-none font-body text-crm-muted"  onBookClick={handleBookClick}  reviews={reviews}  templateType={templateType} />
@@ -1747,7 +1775,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
             </header>
 
             {/* Hero / Shop Info */}
-            <section className="max-w-4xl mx-auto px-6 pt-40 pb-20 flex flex-col items-center text-crm-mutedrm-textenter border-b border-gray-200">
+            <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-40 pb-20 flex flex-col items-center text-crm-mutedrm-textenter border-b border-gray-200">
                 {logoUrl ? (
                     <img src={logoUrl} alt={shop.name} className="h-28 object-contain mb-8" onError={(e) => { e.currentTarget.style.display = 'none'; }} />
                 ) : (
@@ -1764,9 +1792,9 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
     
             {/* Custom Pages */}
             {pages.filter((p: any) => p.isVisible).map((p: any) => (
-                <section key={p.id} id={p.id} className="w-full max-w-5xl mx-auto px-6 py-24 min-h-[50vh]">
+                <section key={p.id} id={p.id} className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 min-h-[60vh]">
                     <h2 className="font-light tracking-wide mb-16 text-crm-mutedrm-textenter text-crm-mutedrm-textxl text-gray-900" style={{ color: primaryColor }}>{p.title}</h2>
-                    <CustomPageContent content={p.content || ""} shop={shop} themeColor={primaryColor} className="prose prose-lg max-w-4xl mx-auto text-gray-600 font-light leading-relaxed w-full" onBookClick={handleBookClick} reviews={reviews} templateType={templateType} />
+                    <CustomPageContent content={p.content || ""} shop={shop} themeColor={primaryColor} className="prose prose-lg max-w-7xl mx-auto text-gray-600 font-light leading-relaxed w-full" onBookClick={handleBookClick} reviews={reviews} templateType={templateType} />
                 </section>
             ))}
 
@@ -1911,7 +1939,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
     
             {pages.filter((p: any) => p.isVisible).map((p: any) => (
 
-                <section key={p.id} id={p.id} className="w-full max-w-6xl mx-auto px-8 py-32 min-h-[60vh]">
+                <section key={p.id} id={p.id} className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-32 min-h-[60vh]">
                     <h1 className="font-bold uppercase tracking-widest mb-12 text-crm-mutedrm-textenter text-crm-mutedrm-textxl font-bold" style={{ color: primaryColor }}>{p.title}</h1>
                     <CustomPageContent content={p.content || ""} shop={shop} themeColor={primaryColor} className="prose prose-lg max-w-none text-crm-muted"  onBookClick={handleBookClick}  reviews={reviews}  templateType={templateType} />
                 </section>
@@ -2046,7 +2074,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
 
         {/* Hero Section */}
         <section 
-          className="relative flex flex-col justify-center items-center min-h-[60vh] md:min-h-[70vh] pt-24 pb-16 px-6 overflow-hidden bg-slate-900"
+          className="relative flex flex-col justify-center items-center min-h-[60vh] md:min-h-[60vh] pt-24 pb-16 px-6 overflow-hidden bg-slate-900"
           style={heroImageUrl && !heroVideoUrl ? { backgroundImage: `url(${heroImageUrl})`, backgroundSize: 'cover', backgroundPosition: 'center' } : {}}
         >
           {heroVideoUrl && (
@@ -2056,7 +2084,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
           )}
           <div className="absolute inset-0 bg-black/60 z-0" />
           
-          <div className="relative z-10 w-full max-w-4xl mx-auto text-crm-mutedrm-textenter flex flex-col items-center">
+          <div className="relative z-10 w-full max-w-7xl mx-auto text-crm-mutedrm-textenter flex flex-col items-center">
             {logoUrl ? (
               <div className="w-28 h-28 md:w-36 md:h-36 mb-8 rounded-full overflow-hidden border-4 shadow-2xl bg-white flex items-center justify-center p-2" style={{ borderColor: primaryColor || '#ffffff' }}>
                 <img src={logoUrl} alt={shop.name} className="max-w-full max-h-full object-contain" onError={(e) => { e.currentTarget.style.display = 'none'; }} />
@@ -2090,9 +2118,9 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
         </section>
 
         {/* Custom Pages */}
-        <div className="relative z-20 -mt-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12 pb-24">
+        <div className="relative z-20 -mt-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12 pb-24">
           {pages.filter((p: any) => p.isVisible).map((p: any) => (
-            <section key={p.id} id={p.id} className="bg-white p-8 md:p-12 rounded-3xl shadow-lg border border-gray-100 overflow-hidden w-full max-w-6xl mx-auto">
+            <section key={p.id} id={p.id} className="bg-white p-8 md:p-12 rounded-3xl shadow-lg border border-gray-100 overflow-hidden w-full max-w-7xl mx-auto">
                <h2 className="font-extrabold mb-10 text-crm-mutedrm-textxl md:text-crm-mutedrm-textxl text-gray-900 text-crm-mutedrm-textenter tracking-tight" style={{ color: primaryColor }}>{p.title}</h2>
                <CustomPageContent content={p.content || ""} shop={shop} themeColor={primaryColor} className="prose prose-lg max-w-none text-gray-600 mx-auto" onBookClick={handleBookClick} reviews={reviews} templateType={templateType} />
             </section>
@@ -2101,7 +2129,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
 
         {/* Footer */}
         <footer className="bg-white border-t border-gray-200 pt-16 pb-8">
-          <div className="max-w-6xl mx-auto px-6 lg:px-8">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 lg:px-8">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12 text-crm-mutedrm-textenter md:text-left">
               <div>
                 <h3 className="font-bold text-gray-900 mb-6 text-xl">{shop.name}</h3>
