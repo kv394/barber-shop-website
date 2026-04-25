@@ -120,7 +120,7 @@ function CustomPageContent({ content, shop, themeColor, className }: { content: 
                   )}
                   <h3 className="font-bold text-lg mb-2" style={themeColor ? { color: themeColor } : {}}>{product.name}</h3>
                   <p className="text-crm-muted text-[13px] mb-4 flex-grow">{product.description}</p>
-                  <div className="font-bold text-crm-text">\x24{typeof product.price === 'number' ? product.price.toFixed(2) : '0.00'}</div>
+                  <div className="font-bold text-crm-text">${typeof product.price === 'number' ? product.price.toFixed(2) : '0.00'}</div>
                 </div>
               ))}
             </div>
