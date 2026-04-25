@@ -1,4 +1,4 @@
-export type TemplateType = 'modern' | 'classic' | 'minimal' | 'vibrant' | 'noir' | 'sunset' | 'corporate' | 'sporty' | 'editorial' | 'off';
+export type TemplateType = 'modern' | 'classic' | 'minimal' | 'vibrant' | 'noir' | 'sunset' | 'corporate' | 'sporty' | 'editorial' | 'social' | 'off';
 
 export interface Template {
   name: string;
@@ -51,6 +51,11 @@ export const AVAILABLE_TEMPLATES: Record<TemplateType, Template> = {
     name: 'Editorial',
     description: 'High-end, elegant editorial style for salons and spas',
     id: 'editorial',
+  },
+  social: {
+    name: 'Social Link (Link in Bio)',
+    description: 'A mobile-first, ultra-fast layout optimized for Instagram and TikTok bios.',
+    id: 'social',
   },
   off: {
     name: 'External Widget Only (Off)',

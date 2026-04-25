@@ -468,6 +468,66 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
         );
     }
 
+    if (templateType === 'social') {
+        return (
+            <main className="h-[100dvh] overflow-y-auto overflow-x-hidden bg-crm-surface text-crm-text font-sans relative flex flex-col items-center py-12 px-4">
+                <div className="absolute top-4 right-4 z-50">
+                    <SupabaseAuthButton redirectUrl={pathname} />
+                </div>
+                
+                {logoUrl ? (
+                    <img src={logoUrl} alt={shop.name} className="w-24 h-24 rounded-full object-cover mb-4 shadow-md border-2" style={{ borderColor: primaryColor }} />
+                ) : (
+                    <div className="w-24 h-24 rounded-full bg-crm-bg flex items-center justify-center text-crm-muted text-4xl mb-4 font-bold shadow-inner border-2" style={{ borderColor: primaryColor }}>
+                        {shop.name.charAt(0)}
+                    </div>
+                )}
+                <h1 className="font-bold text-2xl mb-2 text-center" style={{ color: primaryColor }}>{shop.name}</h1>
+                {shop.slogan && <p className="text-crm-text font-medium text-[15px] mb-2 text-center">{shop.slogan}</p>}
+                {shop.description && <p className="text-crm-muted text-[13px] mb-8 text-center max-w-sm">{shop.description}</p>}
+                
+                <div className="w-full max-w-md flex flex-col gap-4 mb-12">
+                    <button
+                        onClick={() => handleBookClick(shop.services?.[0])}
+                        className="w-full py-4 rounded-xl font-bold text-white shadow-lg transition-transform hover:scale-[1.02]"
+                        style={{ background: `linear-gradient(to right, ${primaryColor}, ${secondaryColor})` }}
+                    >
+                        {ctaText}
+                    </button>
+                    {shopWebsite && (
+                        <a href={shopWebsite} target="_blank" rel="noopener noreferrer" className="w-full py-4 rounded-xl font-bold text-crm-text bg-crm-bg border border-crm-border text-center shadow-sm transition-transform hover:scale-[1.02]">
+                            Visit Website
+                        </a>
+                    )}
+                </div>
+
+                <div className="w-full max-w-md">
+                    {pages.filter((p: any) => p.isVisible).map((p: any) => (
+                        <div key={p.id} className="mb-12">
+                            {p.title !== 'Home' && <h2 className="font-bold text-xl mb-4 text-center" style={{ color: primaryColor }}>{p.title}</h2>}
+                            <CustomPageContent content={p.content || ""} shop={shop} themeColor={primaryColor} className="w-full" onBookClick={handleBookClick} reviews={reviews} templateType={templateType} />
+                        </div>
+                    ))}
+                </div>
+
+                <div className="mt-auto pt-12 pb-4 flex gap-8 text-2xl">
+                    {shopFB && <a href={shopFB} target="_blank" rel="noopener noreferrer" className="text-crm-muted hover:text-crm-text transition-transform hover:scale-110">📘</a>}
+                    {shopIG && <a href={shopIG.startsWith('http') ? shopIG : `https://instagram.com/${shopIG.replace('@','')}`} target="_blank" rel="noopener noreferrer" className="text-crm-muted hover:text-crm-text transition-transform hover:scale-110">📸</a>}
+                    {shopTW && <a href={shopTW} target="_blank" rel="noopener noreferrer" className="text-crm-muted hover:text-crm-text transition-transform hover:scale-110">🐦</a>}
+                </div>
+
+                {selectedService && (
+                    <BookingModal
+                        shopId={shop.id}
+                        service={selectedService}
+                        onClose={() => setSelectedService(null)}
+                        shopHours={c.businessHours || {}}
+                    />
+                )}
+            </main>
+        );
+    }
+
     if (templateType === 'off') {
         return (
             <main className="h-[100dvh] flex flex-col bg-gray-50 overflow-y-auto">

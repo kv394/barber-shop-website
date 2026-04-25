@@ -12,13 +12,15 @@ export default stripe;
 export async function createDepositPaymentIntent(
   amount: number,
   metadata: Record<string, string>,
+  stripeAccountId?: string | null,
 ) {
+  const options = stripeAccountId ? { stripeAccount: stripeAccountId } : undefined;
   const paymentIntent = await stripe.paymentIntents.create({
     amount: Math.round(amount * 100), // cents
     currency: 'usd',
     capture_method: 'manual', // authorize only, capture on no-show
     metadata,
-  });
+  }, options);
   return {
     clientSecret: paymentIntent.client_secret,
     paymentIntentId: paymentIntent.id,
@@ -28,15 +30,17 @@ export async function createDepositPaymentIntent(
 /**
  * Capture a previously authorized deposit (no-show) (C5)
  */
-export async function captureDeposit(paymentIntentId: string) {
-  return stripe.paymentIntents.capture(paymentIntentId);
+export async function captureDeposit(paymentIntentId: string, stripeAccountId?: string | null) {
+  const options = stripeAccountId ? { stripeAccount: stripeAccountId } : undefined;
+  return stripe.paymentIntents.capture(paymentIntentId, options);
 }
 
 /**
  * Release/cancel a previously authorized deposit (C5)
  */
-export async function releaseDeposit(paymentIntentId: string) {
-  return stripe.paymentIntents.cancel(paymentIntentId);
+export async function releaseDeposit(paymentIntentId: string, stripeAccountId?: string | null) {
+  const options = stripeAccountId ? { stripeAccount: stripeAccountId } : undefined;
+  return stripe.paymentIntents.cancel(paymentIntentId, options);
 }
 
 /**
@@ -45,14 +49,16 @@ export async function releaseDeposit(paymentIntentId: string) {
 export async function refundStripePayment(
   paymentIntentId: string,
   amount?: number,
+  stripeAccountId?: string | null,
 ) {
+  const options = stripeAccountId ? { stripeAccount: stripeAccountId } : undefined;
   const params: Stripe.RefundCreateParams = {
     payment_intent: paymentIntentId,
   };
   if (amount) {
     params.amount = Math.round(amount * 100);
   }
-  return stripe.refunds.create(params);
+  return stripe.refunds.create(params, options);
 }
 
 /**
@@ -61,13 +67,15 @@ export async function refundStripePayment(
 export async function createGiftCardPaymentIntent(
   amount: number,
   metadata: Record<string, string>,
+  stripeAccountId?: string | null,
 ) {
+  const options = stripeAccountId ? { stripeAccount: stripeAccountId } : undefined;
   const paymentIntent = await stripe.paymentIntents.create({
     amount: Math.round(amount * 100),
     currency: 'usd',
     metadata,
     automatic_payment_methods: { enabled: true },
-  });
+  }, options);
   return {
     clientSecret: paymentIntent.client_secret,
     paymentIntentId: paymentIntent.id,
@@ -77,12 +85,13 @@ export async function createGiftCardPaymentIntent(
 /**
  * Create a Stripe SetupIntent to save a card on file for No-Show protection.
  */
-export async function createSetupIntent(customerId: string, metadata: Record<string, string>) {
+export async function createSetupIntent(customerId: string, metadata: Record<string, string>, stripeAccountId?: string | null) {
+  const options = stripeAccountId ? { stripeAccount: stripeAccountId } : undefined;
   const setupIntent = await stripe.setupIntents.create({
     customer: customerId,
     payment_method_types: ['card'],
     metadata,
-  });
+  }, options);
   return {
     clientSecret: setupIntent.client_secret,
     setupIntentId: setupIntent.id,
@@ -92,7 +101,8 @@ export async function createSetupIntent(customerId: string, metadata: Record<str
 /**
  * Charge a saved card on file for a No-Show fee.
  */
-export async function chargeNoShowFee(customerId: string, paymentMethodId: string, amount: number, metadata: Record<string, string>) {
+export async function chargeNoShowFee(customerId: string, paymentMethodId: string, amount: number, metadata: Record<string, string>, stripeAccountId?: string | null) {
+  const options = stripeAccountId ? { stripeAccount: stripeAccountId } : undefined;
   const paymentIntent = await stripe.paymentIntents.create({
     amount: Math.round(amount * 100),
     currency: 'usd',
@@ -101,15 +111,16 @@ export async function chargeNoShowFee(customerId: string, paymentMethodId: strin
     off_session: true,
     confirm: true,
     metadata,
-  });
+  }, options);
   return paymentIntent;
 }
 
 /**
  * Create a Stripe Terminal ConnectionToken for BBPOS / Tap to Pay.
  */
-export async function createTerminalConnectionToken() {
-  const connectionToken = await stripe.terminal.connectionTokens.create();
+export async function createTerminalConnectionToken(stripeAccountId?: string | null) {
+  const options = stripeAccountId ? { stripeAccount: stripeAccountId } : undefined;
+  const connectionToken = await stripe.terminal.connectionTokens.create({}, options);
   return connectionToken.secret;
 }
 

@@ -22,7 +22,7 @@ export async function POST(
     const { shopId } = await params;
     const shop = await prisma.shop.findUnique({
       where: { id: shopId },
-      select: { depositRequired: true, depositAmount: true, name: true },
+      select: { depositRequired: true, depositAmount: true, name: true, stripeAccountId: true },
     });
 
     if (!shop || !shop.depositRequired || shop.depositAmount <= 0) {
@@ -32,6 +32,7 @@ export async function POST(
     const { clientSecret, paymentIntentId } = await createDepositPaymentIntent(
       shop.depositAmount,
       { shopId, userId, shopName: shop.name, type: 'no_show_deposit' },
+      shop.stripeAccountId
     );
 
     return NextResponse.json({ clientSecret, paymentIntentId, amount: shop.depositAmount });
