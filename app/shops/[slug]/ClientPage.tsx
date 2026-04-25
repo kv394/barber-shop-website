@@ -520,7 +520,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                 </div>
                 
                 {logoUrl ? (
-                    <img src={logoUrl} alt={shop.name} className="w-24 h-24 rounded-full object-cover mb-4 shadow-md border-2" style={{ borderColor: primaryColor }} />
+                    <img src={logoUrl} alt={shop.name} className="w-24 h-24 rounded-full object-cover mb-4 shadow-md border-2" style={{ borderColor: primaryColor }} onError={(e) => { e.currentTarget.style.display = 'none'; }} />
                 ) : (
                     <div className="w-24 h-24 rounded-full bg-crm-bg flex items-center justify-center text-crm-muted text-4xl mb-4 font-bold shadow-inner border-2" style={{ borderColor: primaryColor }}>
                         {shop.name.charAt(0)}
@@ -577,7 +577,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                     <div className="bg-white rounded-2xl shadow-xl border border-gray-100 w-full max-w-md overflow-hidden flex flex-col" style={{ height: '700px', maxHeight: '90vh' }}>
                         {logoUrl ? (
                             <div className="p-6 pb-0 text-center shrink-0">
-                                <img src={logoUrl} alt={shop.name} className="h-16 mx-auto object-contain" />
+                                <img src={logoUrl} alt={shop.name} className="h-16 mx-auto object-contain" onError={(e) => { e.currentTarget.style.display = 'none'; }} />
                             </div>
                         ) : (
                             <div className="p-6 pb-0 text-center shrink-0">
@@ -612,7 +612,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                 <header className="border-b-4 border-crm-border sticky top-0 bg-crm-surface z-40 shadow-sm">
                     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center overflow-x-auto hide-scrollbar">
                         {logoUrl ? (
-                            <img src={logoUrl} alt={shop.name} className="h-10 shrink-0 mr-6 object-contain" />
+                            <img src={logoUrl} alt={shop.name} className="h-10 shrink-0 mr-6 object-contain" onError={(e) => { e.currentTarget.style.display = 'none'; }} />
                         ) : (
                             <h1 className="font-black italic uppercase tracking-tighter shrink-0 mr-6 text-2xl font-bold" style={{ color: sportRed }}>
                                 {shop.name}
@@ -705,7 +705,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
           <main className="h-[100dvh] overflow-y-auto overflow-x-hidden bg-crm-bg text-crm-text font-sans relative">
             <header className="bg-crm-surface shadow-md relative z-40">
               <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center py-4 overflow-x-auto hide-scrollbar">
-                {logoUrl ? <img src={logoUrl} alt={shop.name} className="h-10 shrink-0 mr-6 object-contain" /> : <h1 className="font-bold shrink-0 mr-6 text-2xl font-bold" style={{ color: primaryColor }}>{shop.name}</h1>}
+                {logoUrl ? <img src={logoUrl} alt={shop.name} className="h-10 shrink-0 mr-6 object-contain" onError={(e) => { e.currentTarget.style.display = 'none'; }} /> : <h1 className="font-bold shrink-0 mr-6 text-2xl font-bold" style={{ color: primaryColor }}>{shop.name}</h1>}
                 {pages.filter((p: any) => p.isVisible).length > 0 && (
                     <nav className="flex gap-4 sm:gap-6 shrink-0 mr-6">
                         <a href="#" className="text-[13px] font-bold transition-colors text-crm-muted hover:text-crm-text">Home</a>
@@ -794,7 +794,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
             
             <div className="p-8 md:p-16 pt-24 md:pt-32">
                               <header className="text-center mb-16">
-                {logoUrl ? <img src={logoUrl} alt={shop.name} className="h-24 md:h-32 mx-auto object-contain mb-4" /> : <h1 className="font-black uppercase tracking-tighter text-2xl font-bold">{shop.name}</h1>}
+                {logoUrl ? <img src={logoUrl} alt={shop.name} className="h-24 md:h-32 mx-auto object-contain mb-4" onError={(e) => { e.currentTarget.style.display = 'none'; }} /> : <h1 className="font-black uppercase tracking-tighter text-2xl font-bold">{shop.name}</h1>}
                 {shop.slogan && <p className="text-white font-bold uppercase tracking-[0.2em] mt-4 mb-2 text-sm">{shop.slogan}</p>}
                 <p className="text-crm-muted mt-2 text-[13px]">{shop.description}</p>
               </header>
@@ -836,7 +836,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
 
             <div className="p-8 md:p-12 pt-24 md:pt-32">
                             <header className="text-center mb-16">
-                {logoUrl ? <img src={logoUrl} alt={shop.name} className="h-24 md:h-32 mx-auto object-contain mb-4" /> : <h1 className="font-bold bg-clip-text text-transparent bg-gradient-to-r from-orange-400 to-purple-400 mb-4 text-2xl font-bold">{shop.name}</h1>}
+                {logoUrl ? <img src={logoUrl} alt={shop.name} className="h-24 md:h-32 mx-auto object-contain mb-4" onError={(e) => { e.currentTarget.style.display = 'none'; }} /> : <h1 className="font-bold bg-clip-text text-transparent bg-gradient-to-r from-orange-400 to-purple-400 mb-4 text-2xl font-bold">{shop.name}</h1>}
                 {shop.slogan && <p className="text-orange-300 font-medium tracking-wide mt-2 mb-4 text-sm">{shop.slogan}</p>}
                 <p className="text-purple-200/70 text-[13px]">{shop.description}</p>
               </header>
@@ -1093,46 +1093,55 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
     
       if (templateType === 'minimal') {
         return (
-          <main className="h-[100dvh] overflow-y-auto overflow-x-hidden bg-crm-surface text-crm-text font-sans relative">
-            <div className="absolute top-6 left-6 z-50">
+          <main className="h-[100dvh] overflow-y-auto overflow-x-hidden bg-[#fafafa] text-[#333333] font-sans relative">
+            {/* Header / Nav */}
+            <header className="absolute w-full top-0 left-0 px-8 py-6 flex flex-wrap justify-between items-center z-50">
                 {pages.filter((p: any) => p.isVisible).length > 0 && (
-                    <nav className="flex gap-4 sm:gap-6 font-semibold text-[13px]">
-                        <a href="#" className="transition-colors text-crm-muted hover:text-crm-text">Home</a>
+                    <nav className="flex gap-8 font-medium text-[13px] tracking-widest uppercase">
+                        <a href="#" className="transition-opacity hover:opacity-60 text-gray-500">Home</a>
                         {pages.filter((p: any) => p.isVisible).map((p: any) => (
-                            <a key={p.id} href={`#${p.id}`} className="transition-colors text-crm-muted hover:text-crm-text">{p.title}</a>
+                            <a key={p.id} href={`#${p.id}`} className="transition-opacity hover:opacity-60 text-gray-500">{p.title}</a>
                         ))}
                     </nav>
                 )}
-            </div>
-            <div className="absolute top-6 right-6 z-50">
-                <SupabaseAuthButton redirectUrl={pathname} />
-            </div>
-
-                        <header className="max-w-4xl mx-auto px-6 pt-24 pb-12 border-b border-crm-border flex flex-col md:flex-row justify-between items-end md:items-center">
-              <div>
-                {logoUrl ? <img src={logoUrl} alt={shop.name} className="h-12 object-contain" /> : <h1 className="font-light tracking-tight text-2xl font-bold" style={{ color: primaryColor }}>{shop.name}</h1>}
-                {shop.slogan && <p className="text-gray-900 font-medium mt-2 text-[14px] tracking-wide">{shop.slogan}</p>}
-                {shop.description && <p className="text-crm-muted mt-2 text-[13px]">{shop.description}</p>}
-              </div>
-              <div className="text-right mt-6 md:mt-0 text-[13px] text-crm-muted">
-                 {shopPhone && <p className="text-[13px]">{shopPhone}</p>}
-                 {shopAddress && <p className="text-[13px]">{shopAddress}</p>}
-              </div>
+                <div className="ml-auto">
+                    <SupabaseAuthButton redirectUrl={pathname} />
+                </div>
             </header>
-    
-            {pages.filter((p: any) => p.isVisible).map((p: any) => (
 
-                <section key={p.id} id={p.id} className="max-w-4xl mx-auto px-6 py-32 min-h-[60vh]">
-                    <h1 className="font-light tracking-tight mb-12 text-2xl font-bold" style={{ color: primaryColor }}>{p.title}</h1>
-                    <CustomPageContent content={p.content || ""} shop={shop} themeColor={primaryColor} className="prose prose-lg max-w-none text-crm-muted"  onBookClick={handleBookClick}  reviews={reviews}  templateType={templateType} />
+            {/* Hero / Shop Info */}
+            <section className="max-w-4xl mx-auto px-6 pt-40 pb-20 flex flex-col items-center text-center border-b border-gray-200">
+                {logoUrl ? (
+                    <img src={logoUrl} alt={shop.name} className="h-28 object-contain mb-8" onError={(e) => { e.currentTarget.style.display = 'none'; }} />
+                ) : (
+                    <h1 className="font-light tracking-tight text-5xl mb-8" style={{ color: primaryColor }}>{shop.name}</h1>
+                )}
+                {shop.slogan && <p className="text-gray-900 font-medium text-lg tracking-wide mb-6">{shop.slogan}</p>}
+                {shop.description && <p className="text-gray-500 text-[15px] max-w-2xl leading-relaxed">{shop.description}</p>}
+                
+                <div className="flex flex-wrap justify-center gap-8 mt-10 text-[13px] text-gray-400 font-medium uppercase tracking-widest">
+                    {shopPhone && <a href={`tel:${shopPhone}`} className="hover:text-gray-800 transition-colors">📞 {shopPhone}</a>}
+                    {shopAddress && <span>📍 {shopAddress}</span>}
+                </div>
+            </section>
+    
+            {/* Custom Pages */}
+            {pages.filter((p: any) => p.isVisible).map((p: any) => (
+                <section key={p.id} id={p.id} className="max-w-4xl mx-auto px-6 py-24 min-h-[50vh]">
+                    <h2 className="font-light tracking-wide mb-16 text-center text-3xl text-gray-900" style={{ color: primaryColor }}>{p.title}</h2>
+                    <CustomPageContent content={p.content || ""} shop={shop} themeColor={primaryColor} className="prose prose-lg max-w-none text-gray-600 font-light leading-relaxed mx-auto" onBookClick={handleBookClick} reviews={reviews} templateType={templateType} />
                 </section>
             ))}
 
-            
-            
-
-
-            
+            {/* Footer */}
+            <footer className="bg-white border-t border-gray-200 py-16 text-center text-[12px] font-medium tracking-widest uppercase text-gray-400">
+                 <p className="mb-4">&copy; {new Date().getFullYear()} {shop.name}. All rights reserved.</p>
+                 <div className="flex justify-center gap-6 text-lg">
+                    {shopFB && <a href={shopFB} target="_blank" rel="noopener noreferrer" className="hover:text-gray-900 transition-colors">📘</a>}
+                    {shopIG && <a href={shopIG.startsWith('http') ? shopIG : `https://instagram.com/${shopIG.replace('@','')}`} target="_blank" rel="noopener noreferrer" className="hover:text-gray-900 transition-colors">📸</a>}
+                    {shopTW && <a href={shopTW} target="_blank" rel="noopener noreferrer" className="hover:text-gray-900 transition-colors">🐦</a>}
+                 </div>
+            </footer>
 
             {selectedService && (
                 <BookingModal shopId={shop.id} service={selectedService} onClose={() => setSelectedService(null)} shopHours={c.businessHours || {}} themeColor={primaryColor} templateType={templateType} />
@@ -1161,7 +1170,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                         <header className="border-b-4 border-[#2c1e16] pt-32 pb-16 text-center relative bg-cover bg-center" style={{ backgroundImage: heroImageUrl ? `url(${heroImageUrl})` : "url('https://www.transparenttextures.com/patterns/aged-paper.png')" }}>
     <div className={heroImageUrl ? "absolute inset-0 bg-[#fdfbf7]/80" : ""} />
     <div className="relative z-10">
-              {logoUrl ? <img src={logoUrl} alt={shop.name} className="h-24 mx-auto object-contain mb-4" /> : <h1 className="font-bold uppercase tracking-widest mb-4 text-2xl font-bold" style={{ color: primaryColor }}>{shop.name}</h1>}
+              {logoUrl ? <img src={logoUrl} alt={shop.name} className="h-24 mx-auto object-contain mb-4" onError={(e) => { e.currentTarget.style.display = 'none'; }} /> : <h1 className="font-bold uppercase tracking-widest mb-4 text-2xl font-bold" style={{ color: primaryColor }}>{shop.name}</h1>}
               <div className="flex items-center justify-center space-x-4 mb-4">
                 <div className="h-px w-16 bg-[#2c1e16]"></div>
                 <span className="italic text-lg">Est. {new Date(shop.createdAt).getFullYear()}</span>
@@ -1220,7 +1229,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
             <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
               <div className="text-center">
                 {logoUrl ? (
-                  <img src={logoUrl} alt={shop.name} className="h-24 md:h-32 mx-auto object-contain mb-6" />
+                  <img src={logoUrl} alt={shop.name} className="h-24 md:h-32 mx-auto object-contain mb-6" onError={(e) => { e.currentTarget.style.display = 'none'; }} />
                 ) : (
                   <h1 
                     className="font-bold mb-6 text-2xl font-bold"
