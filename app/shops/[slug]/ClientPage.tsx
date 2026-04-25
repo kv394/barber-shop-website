@@ -99,7 +99,6 @@ function ReviewsSection({ reviews, variant = 'dark' }: { reviews: any[]; variant
 
 export default function ClientPage({ shop, templateType, primaryColor, secondaryColor, sportRed, reviews = [], dynamicTemplateHtml, dynamicTemplateCss }: any) {
     const [selectedService, setSelectedService] = useState<any | null>(null);
-    const [activePageId, setActivePageId] = useState<string | null>(null);
     const pathname = usePathname() || '/';
 
     const handleBookClick = (service: any) => {
@@ -136,7 +135,6 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
     // ── Normalised contact helpers (supports both old flat shape and new nested shape) ──
     const c = shop.customization || {};
     const pages = c.pages || [];
-    const activePage = pages.find((p: any) => p.id === activePageId);
     const shopPhone   = c.contact?.phone   || c.phone   || '';
     const shopEmail   = c.contact?.email   || c.email   || '';
     const shopWebsite = c.contact?.website || c.website || '';
@@ -226,23 +224,16 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                         )}
                         {pages.filter((p: any) => p.isVisible).length > 0 && (
                             <nav className="flex gap-4 sm:gap-6 shrink-0">
-                                <button onClick={() => setActivePageId(null)} className={`text-[13px] font-bold uppercase transition-colors ${!activePageId ? 'text-crm-text' : 'text-crm-muted hover:text-black'}`}>Home</button>
+                                <a href="#" className="text-[13px] font-bold uppercase transition-colors text-crm-muted hover:text-black">Home</a>
                                 {pages.filter((p: any) => p.isVisible).map((p: any) => (
-                                    <button key={p.id} onClick={() => setActivePageId(p.id)} className={`text-[13px] font-bold uppercase transition-colors ${activePageId === p.id ? 'text-crm-text' : 'text-crm-muted hover:text-black'}`}>{p.title}</button>
+                                    <a key={p.id} href={`#${p.id}`} className="text-[13px] font-bold uppercase transition-colors text-crm-muted hover:text-black">{p.title}</a>
                                 ))}
                             </nav>
                         )}
                     </div>
                 </header>
     
-                {activePage ? (
-                    <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 min-h-[60vh]">
-                        <h1 className="font-black uppercase italic mb-8 text-2xl font-bold" style={{ color: sportRed }}>{activePage.title}</h1>
-                        <div className="prose prose-lg max-w-none text-crm-text" dangerouslySetInnerHTML={{ __html: activePage.content || '' }} />
-                    </section>
-                ) : (
-                    <>
-                        {/* Hero Section */}
+                                        {/* Hero Section */}
                 <section className="bg-crm-bg border-b border-crm-border relative bg-cover bg-center" style={{ backgroundImage: heroImageUrl ? `url(${heroImageUrl})` : undefined }}><div className={heroImageUrl ? "absolute inset-0 bg-crm-surface/80" : ""} />
                     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24 text-center md:text-left flex flex-col md:flex-row items-center relative z-10">
                         <div className="md:w-1/2 mb-8 md:mb-0">
@@ -300,9 +291,15 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                     </div>
                 </section>
 
+            {pages.filter((p: any) => p.isVisible).map((p: any) => (
+
+                    <section key={p.id} id={p.id} className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 min-h-[60vh]">
+                        <h1 className="font-black uppercase italic mb-8 text-2xl font-bold" style={{ color: sportRed }}>{p.title}</h1>
+                        <div className="prose prose-lg max-w-none text-crm-text" dangerouslySetInnerHTML={{ __html: p.content || '' }} />
+                    </section>
+            ))}
+
                 <ReviewsSection reviews={reviews} variant="light" />
-                </>
-                )}
 
                 {/* Footer */}
                 <footer className="bg-crm-surface text-crm-text py-16 uppercase text-[13px] tracking-widest">
@@ -356,9 +353,9 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                 {logoUrl ? <img src={logoUrl} alt={shop.name} className="h-10 shrink-0 mr-6 object-contain" /> : <h1 className="font-bold shrink-0 mr-6 text-2xl font-bold" style={{ color: primaryColor }}>{shop.name}</h1>}
                 {pages.filter((p: any) => p.isVisible).length > 0 && (
                     <nav className="flex gap-4 sm:gap-6 shrink-0 mr-6">
-                        <button onClick={() => setActivePageId(null)} className={`text-[13px] font-bold transition-colors ${!activePageId ? 'text-crm-text' : 'text-crm-muted hover:text-crm-text'}`}>Home</button>
+                        <a href="#" className="text-[13px] font-bold transition-colors text-crm-muted hover:text-crm-text">Home</a>
                         {pages.filter((p: any) => p.isVisible).map((p: any) => (
-                            <button key={p.id} onClick={() => setActivePageId(p.id)} className={`text-[13px] font-bold transition-colors ${activePageId === p.id ? 'text-crm-text' : 'text-crm-muted hover:text-crm-text'}`}>{p.title}</button>
+                            <a key={p.id} href={`#${p.id}`} className="text-[13px] font-bold transition-colors text-crm-muted hover:text-crm-text">{p.title}</a>
                         ))}
                     </nav>
                 )}
@@ -368,14 +365,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
               </div>
             </header>
 
-            {activePage ? (
-                <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 min-h-[60vh]">
-                    <h1 className="font-bold text-crm-text mb-8 text-2xl font-bold" style={{ color: primaryColor }}>{activePage.title}</h1>
-                    <div className="prose prose-lg max-w-none text-crm-text" dangerouslySetInnerHTML={{ __html: activePage.content || '' }} />
-                </section>
-            ) : (
-                <>
-            <section className="bg-crm-surface relative bg-cover bg-center" style={{ backgroundImage: heroImageUrl ? `url(${heroImageUrl})` : undefined }}><div className={heroImageUrl ? "absolute inset-0 bg-crm-surface/70" : ""} />
+                        <section className="bg-crm-surface relative bg-cover bg-center" style={{ backgroundImage: heroImageUrl ? `url(${heroImageUrl})` : undefined }}><div className={heroImageUrl ? "absolute inset-0 bg-crm-surface/70" : ""} />
                 <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center relative z-10">
                     <h2 className="font-extrabold text-crm-text mb-4 text-xl font-bold">{shop.description || "Quality Service, Every Time."}</h2>
                     <p className="text-crm-muted text-[13px]">Find your perfect look with our expert stylists.</p>
@@ -408,9 +398,15 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
               </div>
             </section>
 
+            {pages.filter((p: any) => p.isVisible).map((p: any) => (
+
+                <section key={p.id} id={p.id} className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 min-h-[60vh]">
+                    <h1 className="font-bold text-crm-text mb-8 text-2xl font-bold" style={{ color: primaryColor }}>{p.title}</h1>
+                    <div className="prose prose-lg max-w-none text-crm-text" dangerouslySetInnerHTML={{ __html: p.content || '' }} />
+                </section>
+            ))}
+
             <ReviewsSection reviews={reviews} variant="light" />
-            </>
-            )}
 
             <footer className="bg-crm-surface text-crm-text">
               <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -457,9 +453,9 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
             <div className="absolute top-6 left-8 z-50">
                 {pages.filter((p: any) => p.isVisible).length > 0 && (
                     <nav className="flex gap-6 font-sans text-[11px] uppercase tracking-[0.2em]">
-                        <button onClick={() => setActivePageId(null)} className={`transition-colors ${!activePageId ? 'text-crm-text' : 'text-crm-muted hover:text-crm-text'}`}>Home</button>
+                        <a href="#" className="transition-colors text-crm-muted hover:text-crm-text">Home</a>
                         {pages.filter((p: any) => p.isVisible).map((p: any) => (
-                            <button key={p.id} onClick={() => setActivePageId(p.id)} className={`transition-colors ${activePageId === p.id ? 'text-crm-text' : 'text-crm-muted hover:text-crm-text'}`}>{p.title}</button>
+                            <a key={p.id} href={`#${p.id}`} className="transition-colors text-crm-muted hover:text-crm-text">{p.title}</a>
                         ))}
                     </nav>
                 )}
@@ -469,14 +465,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
             </div>
             
             <div className="p-8 md:p-16 pt-24 md:pt-32">
-                {activePage ? (
-                    <section className="max-w-3xl mx-auto min-h-[60vh]">
-                        <h1 className="font-black uppercase tracking-tighter mb-8 text-center text-2xl font-bold">{activePage.title}</h1>
-                        <div className="prose prose-invert prose-lg max-w-none text-crm-muted font-sans" dangerouslySetInnerHTML={{ __html: activePage.content || '' }} />
-                    </section>
-                ) : (
-                    <>
-              <header className="text-center mb-16">
+                              <header className="text-center mb-16">
                 {logoUrl ? <img src={logoUrl} alt={shop.name} className="h-24 md:h-32 mx-auto object-contain mb-4" /> : <h1 className="font-black uppercase tracking-tighter text-2xl font-bold">{shop.name}</h1>}
                 <p className="text-crm-muted mt-2 text-[13px]">{shop.description}</p>
               </header>
@@ -502,8 +491,14 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                   ))}
                 </div>
               </section>
-              </>
-              )}
+            {pages.filter((p: any) => p.isVisible).map((p: any) => (
+
+                    <section key={p.id} id={p.id} className="max-w-3xl mx-auto min-h-[60vh]">
+                        <h1 className="font-black uppercase tracking-tighter mb-8 text-center text-2xl font-bold">{p.title}</h1>
+                        <div className="prose prose-invert prose-lg max-w-none text-crm-muted font-sans" dangerouslySetInnerHTML={{ __html: p.content || '' }} />
+                    </section>
+            ))}
+
             </div>
 
             <ReviewsSection reviews={reviews} variant="dark" />
@@ -526,9 +521,9 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
             <div className="absolute w-full top-0 left-0 p-4 sm:p-6 flex flex-wrap justify-between gap-x-2 gap-y-2 items-center z-50">
              {pages.filter((p: any) => p.isVisible).length > 0 ? (
                  <nav className="flex gap-4 sm:gap-6 bg-crm-surface px-4 sm:px-6 py-2 rounded-full backdrop-blur-md border border-status-pending/30 overflow-x-auto max-w-[calc(100vw-100px)] hide-scrollbar">
-                    <button onClick={() => setActivePageId(null)} className={`text-[13px] font-medium transition-colors whitespace-nowrap ${!activePageId ? 'text-status-pending' : 'text-crm-muted hover:text-status-pending'}`}>Home</button>
+                    <a href="#" className="text-[13px] font-medium transition-colors whitespace-nowrap text-crm-muted hover:text-status-pending">Home</a>
                     {pages.filter((p: any) => p.isVisible).map((p: any) => (
-                        <button key={p.id} onClick={() => setActivePageId(p.id)} className={`text-[13px] font-medium transition-colors whitespace-nowrap ${activePageId === p.id ? 'text-status-pending' : 'text-crm-muted hover:text-status-pending'}`}>{p.title}</button>
+                        <a key={p.id} href={`#${p.id}`} className="text-[13px] font-medium transition-colors whitespace-nowrap text-crm-muted hover:text-status-pending">{p.title}</a>
                     ))}
                  </nav>
              ) : (
@@ -538,16 +533,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
             </div>
 
             <div className="p-8 md:p-12 pt-24 md:pt-32">
-              {activePage ? (
-                <section className="max-w-4xl mx-auto min-h-[60vh]">
-                    <div className="bg-crm-surface backdrop-blur-sm border border-status-pending/30 rounded-lg p-8 md:p-12">
-                        <h1 className="font-bold bg-clip-text text-transparent bg-gradient-to-r from-orange-400 to-purple-400 mb-8 text-2xl font-bold">{activePage.title}</h1>
-                        <div className="prose prose-invert prose-lg max-w-none text-purple-200/80" dangerouslySetInnerHTML={{ __html: activePage.content || '' }} />
-                    </div>
-                </section>
-              ) : (
-                <>
-              <header className="text-center mb-16">
+                            <header className="text-center mb-16">
                 {logoUrl ? <img src={logoUrl} alt={shop.name} className="h-24 md:h-32 mx-auto object-contain mb-4" /> : <h1 className="font-bold bg-clip-text text-transparent bg-gradient-to-r from-orange-400 to-purple-400 mb-4 text-2xl font-bold">{shop.name}</h1>}
                 <p className="text-purple-200/70 text-[13px]">{shop.description}</p>
               </header>
@@ -571,8 +557,16 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                   ))}
                 </div>
               </section>
-              </>
-              )}
+            {pages.filter((p: any) => p.isVisible).map((p: any) => (
+
+                <section key={p.id} id={p.id} className="max-w-4xl mx-auto min-h-[60vh]">
+                    <div className="bg-crm-surface backdrop-blur-sm border border-status-pending/30 rounded-lg p-8 md:p-12">
+                        <h1 className="font-bold bg-clip-text text-transparent bg-gradient-to-r from-orange-400 to-purple-400 mb-8 text-2xl font-bold">{p.title}</h1>
+                        <div className="prose prose-invert prose-lg max-w-none text-purple-200/80" dangerouslySetInnerHTML={{ __html: p.content || '' }} />
+                    </div>
+                </section>
+            ))}
+
             </div>
 
             <ReviewsSection reviews={reviews} variant="dark" />
@@ -633,16 +627,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
             </nav>
     
             <div className="pt-24">
-              {activePage ? (
-                 <section className="py-32 px-8 min-h-[70vh]">
-                    <div className="max-w-4xl mx-auto">
-                        <h1 className="font-headline mb-12 text-2xl font-bold" style={{ color: primaryColor }}>{activePage.title}</h1>
-                        <div className="prose prose-invert prose-lg max-w-none font-body text-[#d0c5af]" dangerouslySetInnerHTML={{ __html: activePage.content || '' }} />
-                    </div>
-                </section>
-              ) : (
-                  <>
-              {/* Hero Section */}
+                            {/* Hero Section */}
               <section className="relative min-h-[921px] flex items-center px-8 md:px-16 overflow-hidden">
                 <div className="max-w-7xl mx-auto w-full grid grid-cols-1 md:grid-cols-12 gap-12 items-center">
                   <div className="md:col-span-6 z-10">
@@ -824,8 +809,16 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                   </div>
                 </div>
               </section>
-              </>
-              )}
+            {pages.filter((p: any) => p.isVisible).map((p: any) => (
+
+                 <section key={p.id} id={p.id} className="py-32 px-8 min-h-[70vh]">
+                    <div className="max-w-4xl mx-auto">
+                        <h1 className="font-headline mb-12 text-2xl font-bold" style={{ color: primaryColor }}>{p.title}</h1>
+                        <div className="prose prose-invert prose-lg max-w-none font-body text-[#d0c5af]" dangerouslySetInnerHTML={{ __html: p.content || '' }} />
+                    </div>
+                </section>
+            ))}
+
             </div>
     
             {/* Footer */}
@@ -865,9 +858,9 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
             <div className="absolute top-6 left-6 z-50">
                 {pages.filter((p: any) => p.isVisible).length > 0 && (
                     <nav className="flex gap-4 sm:gap-6 font-semibold text-[13px]">
-                        <button onClick={() => setActivePageId(null)} className={`transition-colors ${!activePageId ? 'text-crm-text' : 'text-crm-muted hover:text-crm-text'}`}>Home</button>
+                        <a href="#" className="transition-colors text-crm-muted hover:text-crm-text">Home</a>
                         {pages.filter((p: any) => p.isVisible).map((p: any) => (
-                            <button key={p.id} onClick={() => setActivePageId(p.id)} className={`transition-colors ${activePageId === p.id ? 'text-crm-text' : 'text-crm-muted hover:text-crm-text'}`}>{p.title}</button>
+                            <a key={p.id} href={`#${p.id}`} className="transition-colors text-crm-muted hover:text-crm-text">{p.title}</a>
                         ))}
                     </nav>
                 )}
@@ -876,14 +869,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                 <SupabaseAuthButton redirectUrl={pathname} />
             </div>
 
-            {activePage ? (
-                <section className="max-w-4xl mx-auto px-6 py-32 min-h-[60vh]">
-                    <h1 className="font-light tracking-tight mb-12 text-2xl font-bold" style={{ color: primaryColor }}>{activePage.title}</h1>
-                    <div className="prose prose-lg max-w-none text-crm-muted" dangerouslySetInnerHTML={{ __html: activePage.content || '' }} />
-                </section>
-            ) : (
-                <>
-            <header className="max-w-4xl mx-auto px-6 pt-24 pb-12 border-b border-crm-border flex flex-col md:flex-row justify-between items-end md:items-center">
+                        <header className="max-w-4xl mx-auto px-6 pt-24 pb-12 border-b border-crm-border flex flex-col md:flex-row justify-between items-end md:items-center">
               <div>
                 {logoUrl ? <img src={logoUrl} alt={shop.name} className="h-12 object-contain" /> : <h1 className="font-light tracking-tight text-2xl font-bold" style={{ color: primaryColor }}>{shop.name}</h1>}
                 {shop.description && <p className="text-crm-muted mt-2 text-[13px]">{shop.description}</p>}
@@ -923,8 +909,14 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                 <p className="text-crm-muted italic text-[13px]">No services listed.</p>
               )}
             </section>
-            </>
-            )}
+            {pages.filter((p: any) => p.isVisible).map((p: any) => (
+
+                <section key={p.id} id={p.id} className="max-w-4xl mx-auto px-6 py-32 min-h-[60vh]">
+                    <h1 className="font-light tracking-tight mb-12 text-2xl font-bold" style={{ color: primaryColor }}>{p.title}</h1>
+                    <div className="prose prose-lg max-w-none text-crm-muted" dangerouslySetInnerHTML={{ __html: p.content || '' }} />
+                </section>
+            ))}
+
 
             <ReviewsSection reviews={reviews} variant="light" />
 
@@ -946,9 +938,9 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
             <div className="absolute top-6 left-8 z-50">
                 {pages.filter((p: any) => p.isVisible).length > 0 && (
                     <nav className="flex gap-6 font-sans text-[11px] font-bold uppercase tracking-widest">
-                        <button onClick={() => setActivePageId(null)} className={`transition-colors ${!activePageId ? 'text-[#2c1e16]' : 'text-[#8b7355] hover:text-[#2c1e16]'}`}>Home</button>
+                        <a href="#" className="transition-colors text-[#8b7355] hover:text-[#2c1e16]">Home</a>
                         {pages.filter((p: any) => p.isVisible).map((p: any) => (
-                            <button key={p.id} onClick={() => setActivePageId(p.id)} className={`transition-colors ${activePageId === p.id ? 'text-[#2c1e16]' : 'text-[#8b7355] hover:text-[#2c1e16]'}`}>{p.title}</button>
+                            <a key={p.id} href={`#${p.id}`} className="transition-colors text-[#8b7355] hover:text-[#2c1e16]">{p.title}</a>
                         ))}
                     </nav>
                 )}
@@ -957,14 +949,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                 <SupabaseAuthButton redirectUrl={pathname} />
             </div>
 
-            {activePage ? (
-                <section className="max-w-4xl mx-auto px-8 py-32 min-h-[60vh]">
-                    <h1 className="font-bold uppercase tracking-widest mb-12 text-center text-2xl font-bold" style={{ color: primaryColor }}>{activePage.title}</h1>
-                    <div className="prose prose-lg max-w-none text-[#5a4634]" dangerouslySetInnerHTML={{ __html: activePage.content || '' }} />
-                </section>
-            ) : (
-                <>
-            <header className="border-b-4 border-[#2c1e16] pt-32 pb-16 text-center relative bg-cover bg-center" style={{ backgroundImage: heroImageUrl ? `url(${heroImageUrl})` : "url('https://www.transparenttextures.com/patterns/aged-paper.png')" }}>
+                        <header className="border-b-4 border-[#2c1e16] pt-32 pb-16 text-center relative bg-cover bg-center" style={{ backgroundImage: heroImageUrl ? `url(${heroImageUrl})` : "url('https://www.transparenttextures.com/patterns/aged-paper.png')" }}>
     <div className={heroImageUrl ? "absolute inset-0 bg-[#fdfbf7]/80" : ""} />
     <div className="relative z-10">
               {logoUrl ? <img src={logoUrl} alt={shop.name} className="h-24 mx-auto object-contain mb-4" /> : <h1 className="font-bold uppercase tracking-widest mb-4 text-2xl font-bold" style={{ color: primaryColor }}>{shop.name}</h1>}
@@ -1000,8 +985,14 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                 ))}
               </div>
             </section>
-            </>
-            )}
+            {pages.filter((p: any) => p.isVisible).map((p: any) => (
+
+                <section key={p.id} id={p.id} className="max-w-4xl mx-auto px-8 py-32 min-h-[60vh]">
+                    <h1 className="font-bold uppercase tracking-widest mb-12 text-center text-2xl font-bold" style={{ color: primaryColor }}>{p.title}</h1>
+                    <div className="prose prose-lg max-w-none text-[#5a4634]" dangerouslySetInnerHTML={{ __html: p.content || '' }} />
+                </section>
+            ))}
+
 
             <ReviewsSection reviews={reviews} variant="warm" />
 
@@ -1029,9 +1020,9 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
           <header className="absolute w-full top-0 left-0 p-4 sm:p-6 flex flex-wrap justify-between gap-x-2 gap-y-2 items-center z-50">
              {pages.filter((p: any) => p.isVisible).length > 0 ? (
                  <nav className="flex gap-4 sm:gap-6 bg-crm-surface px-4 sm:px-6 py-2 rounded-full backdrop-blur-md border border-crm-border shadow-sm overflow-x-auto max-w-[calc(100vw-100px)] hide-scrollbar">
-                    <button onClick={() => setActivePageId(null)} className={`text-[13px] font-medium transition-colors whitespace-nowrap ${!activePageId ? 'text-crm-text' : 'text-crm-muted hover:text-crm-text'}`}>Home</button>
+                    <a href="#" className="text-[13px] font-medium transition-colors whitespace-nowrap text-crm-muted hover:text-crm-text">Home</a>
                     {pages.filter((p: any) => p.isVisible).map((p: any) => (
-                        <button key={p.id} onClick={() => setActivePageId(p.id)} className={`text-[13px] font-medium transition-colors whitespace-nowrap ${activePageId === p.id ? 'text-crm-text' : 'text-crm-muted hover:text-crm-text'}`}>{p.title}</button>
+                        <a key={p.id} href={`#${p.id}`} className="text-[13px] font-medium transition-colors whitespace-nowrap text-crm-muted hover:text-crm-text">{p.title}</a>
                     ))}
                  </nav>
              ) : (
@@ -1040,16 +1031,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
              <SupabaseAuthButton redirectUrl={pathname} />
           </header>
 
-          {activePage ? (
-            <section className="pt-32 pb-20 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto min-h-[80vh]">
-               <div className="bg-crm-surface p-8 md:p-12 rounded-2xl border border-crm-border shadow-sm shadow-xl">
-                  <h1 className="font-bold mb-8 text-2xl font-bold" style={{ color: primaryColor }}>{activePage.title}</h1>
-                  <div className="prose prose-invert prose-lg max-w-none text-crm-muted" dangerouslySetInnerHTML={{ __html: activePage.content || '' }} />
-               </div>
-            </section>
-          ) : (
-            <>
-              {/* Hero Section */}
+                        {/* Hero Section */}
               <section 
                 className="relative bg-cover bg-center border-b border-crm-border pt-16 md:pt-8"
                 style={{ borderBottomColor: primaryColor, backgroundImage: heroImageUrl ? `url(${heroImageUrl})` : undefined }}
@@ -1145,9 +1127,17 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
             )}
           </section>
 
+            {pages.filter((p: any) => p.isVisible).map((p: any) => (
+
+            <section key={p.id} id={p.id} className="pt-32 pb-20 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto min-h-[80vh]">
+               <div className="bg-crm-surface p-8 md:p-12 rounded-2xl border border-crm-border shadow-sm shadow-xl">
+                  <h1 className="font-bold mb-8 text-2xl font-bold" style={{ color: primaryColor }}>{p.title}</h1>
+                  <div className="prose prose-invert prose-lg max-w-none text-crm-muted" dangerouslySetInnerHTML={{ __html: p.content || '' }} />
+               </div>
+            </section>
+            ))}
+
           <ReviewsSection reviews={reviews} variant="dark" />
-            </>
-          )}
 
           {/* Footer */}
           <footer className="bg-crm-surface border-t border-crm-border py-12">
