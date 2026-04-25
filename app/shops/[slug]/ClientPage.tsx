@@ -135,6 +135,9 @@ function CustomPageContent({ content, shop, themeColor, className, onBookClick }
                     key={service.id}
                     className="group bg-gradient-to-br from-slate-800 to-slate-900 rounded-xl p-8 border border-crm-border shadow-sm transition-all duration-300 hover:shadow-lg flex flex-col"
                   >
+                    {service.imageUrl && (
+                      <img src={service.imageUrl} alt={service.name} className="w-full h-48 object-cover rounded-lg mb-6 shadow-md" />
+                    )}
                     <div className="flex items-start justify-between mb-4">
                       <h3 className="font-bold text-crm-text transition-colors text-lg font-bold">
                         {service.name}

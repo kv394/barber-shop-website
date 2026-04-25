@@ -17,6 +17,8 @@ interface Service {
   duration: number;
   trackInventory: boolean;
   type: 'CUSTOMER' | 'INTERNAL';
+  isBookable: boolean;
+  imageUrl: string | null;
   addons?: ServiceAddon[];
 }
 
@@ -39,9 +41,33 @@ export function ServiceManagement({ shopId }: ServiceManagementProps) {
     trackInventory: false,
     type: 'CUSTOMER' as 'CUSTOMER' | 'INTERNAL',
     addonIds: [] as string[],
+    isBookable: true,
+    imageUrl: '',
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
   const [editingServiceId, setEditingServiceId] = useState<string | null>(null);
+
+  
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setIsUploading(true);
+    try {
+      const fd = new FormData();
+      fd.append('file', file);
+      fd.append('type', 'services');
+      const res = await fetch(`/api/shops/${shopId}/upload`, { method: 'POST', body: fd });
+      const data = await res.json();
+      if (data.error) throw new Error(data.error);
+      setNewService(prev => ({ ...prev, imageUrl: data.url }));
+    } catch (err: any) {
+      alert('Upload failed: ' + err.message);
+    } finally {
+      setIsUploading(false);
+    }
+  };
 
   // Fetch services and addons
   useEffect(() => {
@@ -98,6 +124,8 @@ export function ServiceManagement({ shopId }: ServiceManagementProps) {
           duration: parseInt(newService.duration),
           trackInventory: newService.trackInventory,
           type: newService.type,
+          isBookable: newService.isBookable,
+          imageUrl: newService.imageUrl,
           addonIds: newService.addonIds,
         }),
       });
@@ -109,7 +137,7 @@ export function ServiceManagement({ shopId }: ServiceManagementProps) {
 
       const addedService = await response.json();
       setServices([...services, addedService]);
-      setNewService({ name: '', description: '', price: '', duration: '', trackInventory: false, type: 'CUSTOMER', addonIds: [] });
+      setNewService({ name: '', description: '', price: '', duration: '', trackInventory: false, type: 'CUSTOMER', addonIds: [], isBookable: true, imageUrl: '' });
       setSuccess(`Service "${newService.name}" added successfully!`);
       setTimeout(() => setSuccess(null), 3000);
     } catch (err) {
@@ -281,6 +309,40 @@ export function ServiceManagement({ shopId }: ServiceManagementProps) {
               </div>
             </div>
 
+            
+            <div className="flex items-center space-x-3 py-2">
+              <input 
+                type="checkbox" 
+                id="isBookable" 
+                checked={newService.isBookable} 
+                onChange={(e) => setNewService({ ...newService, isBookable: e.target.checked })}
+                className="w-4 h-4 accent-blue-600 bg-crm-bg border-crm-border rounded"
+              />
+              <label htmlFor="isBookable" className="text-crm-muted cursor-pointer select-none text-[13px]">
+                Available to Customer (Sellable/Bookable)
+              </label>
+            </div>
+
+            {newService.isBookable && (
+              <div className="md:col-span-2">
+                <label className="block font-medium text-crm-muted mb-2 text-[13px]">
+                  Service Image (optional)
+                </label>
+                <div className="flex items-center gap-4">
+                  {newService.imageUrl && (
+                    <img src={newService.imageUrl} alt="Preview" className="w-16 h-16 object-cover rounded-lg border border-crm-border" />
+                  )}
+                  <label className="cursor-pointer bg-crm-surface border border-crm-border hover:border-crm-primary transition-colors px-4 py-2 rounded-lg text-[13px] font-medium text-crm-text">
+                    {isUploading ? 'Uploading...' : 'Upload Image'}
+                    <input type="file" accept="image/*" onChange={handleImageUpload} disabled={isUploading} className="hidden" />
+                  </label>
+                  {newService.imageUrl && (
+                     <button type="button" onClick={() => setNewService({ ...newService, imageUrl: '' })} className="text-status-cancelled text-[13px] hover:underline">Remove</button>
+                  )}
+                </div>
+              </div>
+            )}
+
             <div className="flex items-center space-x-3 py-2">
               <input 
                 type="checkbox" 
@@ -354,7 +416,11 @@ export function ServiceManagement({ shopId }: ServiceManagementProps) {
                   className="bg-crm-surface p-3 sm:p-4 rounded-lg border border-crm-border shadow-sm"
                 >
                   <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
-                    <div className="flex-1 min-w-0">
+                    <div className="flex-1 min-w-0 flex gap-4">
+                      {service.imageUrl && (
+                        <img src={service.imageUrl} alt={service.name} className="w-16 h-16 object-cover rounded-lg border border-crm-border hidden sm:block" />
+                      )}
+                      <div className="flex-1">
                       <div className="flex items-center flex-wrap gap-2 mb-1">
                           <h4 className="font-semibold text-crm-text text-base font-semibold">{service.name}</h4>
                           <div className={`text-[13px] sm:text-[11px] font-semibold px-2 py-0.5 sm:py-1 rounded border ${service.type === 'INTERNAL' ? 'bg-crm-accent/20 text-crm-accent border-crm-accent/30' : 'bg-status-confirmed/20 text-status-confirmed border-status-confirmed/30'}`}>
@@ -399,6 +465,7 @@ export function ServiceManagement({ shopId }: ServiceManagementProps) {
                           </div>
                         </div>
                       )}
+                    </div>
                     </div>
 
                     <button

@@ -186,6 +186,7 @@ model Service {
   trackInventory Boolean     @default(false)
   inventoryCount Int         @default(0)
   type           ServiceType @default(CUSTOMER)
+  isBookable     Boolean     @default(true)
   itemType       String?
   brand          String?
   barcode        String?     @unique

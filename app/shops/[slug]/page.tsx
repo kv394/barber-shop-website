@@ -14,9 +14,9 @@ export const revalidate = 60;
 
 const serviceInclude = {
   services: {
-    where: { type: 'CUSTOMER' as const },
+    where: { type: 'CUSTOMER' as const, isBookable: true },
     orderBy: { createdAt: 'desc' as const },
-    select: { id: true, name: true, description: true, price: true, duration: true },
+    select: { id: true, name: true, description: true, price: true, duration: true, imageUrl: true },
   },
   products: {
     where: { type: 'RETAIL' as const, isSellable: true },
