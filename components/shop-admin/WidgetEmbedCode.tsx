@@ -138,6 +138,13 @@ export default function WidgetEmbedCode({ shopId }: { shopId: string }) {
           Build entirely custom front-ends using our lightweight JavaScript SDK. This gives you programmatic access to your public products, services, staff, and reviews, along with methods to book appointments or submit reviews from your own custom UI.
         </p>
 
+        <div className="mb-6 bg-status-info/10 border border-status-info/30 rounded-lg p-4">
+          <h3 className="font-bold text-status-info mb-1 text-[14px]">🔒 Security Note: Domain Validation</h3>
+          <p className="text-crm-muted text-[13px]">
+            To keep your shop data safe from unauthorized access or scraping, the SDK will <strong>only work</strong> on domains authorized by your shop. Your BarberSaaS subdomains and custom domains are automatically approved. If you are embedding this SDK on an external website (like WordPress or Webflow), please ensure your domain is configured correctly in your shop settings to prevent CORS and unauthorized access errors.
+          </p>
+        </div>
+
         <div className="mb-6">
           <h3 className="font-semibold text-crm-text mb-2 text-[14px]">Step 1: Initialize the SDK</h3>
           <p className="text-crm-muted mb-3 text-[13px]">Add this script tag and initialization code. You can then call methods like <code>BarberSaaS.getPublicData()</code> or <code>BarberSaaS.bookService()</code>.</p>

@@ -8,21 +8,65 @@ export async function GET(request: Request, { params }: { params: Promise<{ shop
   try {
     const { shopId } = await params;
 
-    // Run all public data queries in parallel
-    const [shop, products, services, staff, reviews] = await Promise.all([
-      // 0. Shop Details
-      prisma.shop.findUnique({
-        where: { id: shopId },
-        select: {
-          id: true,
-          name: true,
-          companyName: true,
-          description: true,
-          slogan: true,
-          timezone: true,
-          customization: true
-        }
-      }),
+    // 0. Fetch Shop Details First for Security Validation
+    const shop = await prisma.shop.findUnique({
+      where: { id: shopId },
+      select: {
+        id: true,
+        name: true,
+        companyName: true,
+        description: true,
+        slogan: true,
+        timezone: true,
+        customDomain: true,
+        subdomain: true,
+        customization: true
+      }
+    });
+
+    if (!shop) {
+      return NextResponse.json({ error: 'Shop not found' }, { status: 404 });
+    }
+
+    // --- SECURITY: Domain Validation (Anti-Scraping / Hacker Safe) ---
+    const origin = request.headers.get('origin');
+    const referer = request.headers.get('referer');
+    const requestDomain = origin ? new URL(origin).hostname : (referer ? new URL(referer).hostname : null);
+
+    const customization = (shop.customization as any) || {};
+    const allowedDomains: string[] = customization.allowedDomains || [];
+    
+    // Add default allowed domains
+    if (shop.customDomain) allowedDomains.push(shop.customDomain);
+    if (shop.subdomain) allowedDomains.push(`${shop.subdomain}.barbersaas.com`);
+    allowedDomains.push('barbersaas.com'); // Allow main app domain
+    allowedDomains.push('localhost'); // Allow local development
+
+    // If the request comes from a browser (has origin/referer), validate it
+    // We strictly block requests from unknown origins to prevent data theft and unauthorized widget embedding
+    if (requestDomain) {
+      const isAllowed = allowedDomains.some(domain => 
+        requestDomain === domain || requestDomain.endsWith(`.${domain}`)
+      );
+
+      if (!isAllowed) {
+        logger.warn(`Blocked unauthorized access to shop data from domain: ${requestDomain}`);
+        return NextResponse.json(
+          { error: 'Unauthorized Domain. Please add this domain to your Shop Settings -> Widget Embed Code -> Allowed Domains.' }, 
+          { status: 403 }
+        );
+      }
+    }
+
+    // CORS Headers for allowed requests
+    const corsHeaders = {
+      'Access-Control-Allow-Origin': origin || '*',
+      'Access-Control-Allow-Methods': 'GET, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+    };
+
+    // Run remaining public data queries in parallel
+    const [products, services, staff, reviews] = await Promise.all([
       // 1. Sellable Products
       prisma.product.findMany({
         where: { shopId, isSellable: true },
@@ -53,7 +97,6 @@ export async function GET(request: Request, { params }: { params: Promise<{ shop
         orderBy: { name: 'asc' }
       }),
       // 3. Public Staff 
-      // Assuming all STAFF are public, or we can filter by their role
       prisma.user.findMany({
         where: {
           OR: [
@@ -79,36 +122,33 @@ export async function GET(request: Request, { params }: { params: Promise<{ shop
           user: { select: { name: true } }
         },
         orderBy: { createdAt: 'desc' },
-        take: 50 // Limit to latest 50 reviews for performance
+        take: 50
       })
     ]);
 
-    if (!shop) {
-      return NextResponse.json({ error: 'Shop not found' }, { status: 404 });
-    }
-
     // Clean up customization to only include public-safe fields (branding, contact, hours)
-    let publicCustomization: any = {};
-    if (shop.customization && typeof shop.customization === 'object') {
-        const c = shop.customization as any;
-        publicCustomization = {
-            address: c.address,
-            contact: c.contact,
-            branding: c.branding,
-            logoUrl: c.logoUrl,
-            heroImageUrl: c.heroImageUrl,
-            businessHours: c.businessHours,
-            primaryColor: c.primaryColor,
-            secondaryColor: c.secondaryColor,
-            fontFamily: c.fontFamily,
-            buttonShape: c.buttonShape,
-            buttonVariant: c.buttonVariant,
-            colorTheme: c.colorTheme,
-        };
-    }
+    const publicCustomization = {
+        address: customization.address,
+        contact: customization.contact,
+        branding: customization.branding,
+        logoUrl: customization.logoUrl,
+        heroImageUrl: customization.heroImageUrl,
+        businessHours: customization.businessHours,
+        primaryColor: customization.primaryColor,
+        secondaryColor: customization.secondaryColor,
+        fontFamily: customization.fontFamily,
+        buttonShape: customization.buttonShape,
+        buttonVariant: customization.buttonVariant,
+        colorTheme: customization.colorTheme,
+    };
 
     const cleanShop = {
-        ...shop,
+        id: shop.id,
+        name: shop.name,
+        companyName: shop.companyName,
+        description: shop.description,
+        slogan: shop.slogan,
+        timezone: shop.timezone,
         customization: publicCustomization
     };
 
@@ -118,10 +158,22 @@ export async function GET(request: Request, { params }: { params: Promise<{ shop
       services,
       staff,
       reviews
-    });
+    }, { headers: corsHeaders });
 
   } catch (error) {
     logger.error('Error fetching public shop data:', error);
     return NextResponse.json({ error: 'Failed to fetch public data' }, { status: 500 });
   }
+}
+
+export async function OPTIONS(request: Request) {
+  const origin = request.headers.get('origin');
+  return new NextResponse(null, {
+    status: 204,
+    headers: {
+      'Access-Control-Allow-Origin': origin || '*',
+      'Access-Control-Allow-Methods': 'GET, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+    },
+  });
 }
