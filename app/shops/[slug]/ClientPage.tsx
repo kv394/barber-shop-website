@@ -539,89 +539,9 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
         );
     }
 
-    if (templateType === 'social') {
-        return (
-            <main className="h-[100dvh] overflow-y-auto overflow-x-hidden bg-crm-surface text-crm-text font-sans relative flex flex-col items-center py-12 px-4">
-                <div className="absolute top-4 right-4 z-50">
-                    <SupabaseAuthButton redirectUrl={pathname} />
-                </div>
-                
-                {logoUrl ? (
-                    <img src={logoUrl} alt={shop.name} className="w-24 h-24 rounded-full object-cover mb-4 shadow-md border-2" style={{ borderColor: primaryColor }} onError={(e) => { e.currentTarget.style.display = 'none'; }} />
-                ) : (
-                    <div className="w-24 h-24 rounded-full bg-crm-bg flex items-center justify-center text-crm-muted text-4xl mb-4 font-bold shadow-inner border-2" style={{ borderColor: primaryColor }}>
-                        {shop.name.charAt(0)}
-                    </div>
-                )}
-                <h1 className="font-bold text-2xl mb-2 text-center" style={{ color: primaryColor }}>{shop.name}</h1>
-                {shop.slogan && <p className="text-crm-text font-medium text-[15px] mb-2 text-center">{shop.slogan}</p>}
-                {shop.description && <p className="text-crm-muted text-[13px] mb-8 text-center max-w-sm">{shop.description}</p>}
-                
-                <div className="w-full max-w-md flex flex-col gap-4 mb-12">
-                    <button
-                        onClick={() => handleBookClick(null)}
-                        className="w-full py-4 rounded-xl font-bold text-white shadow-lg transition-transform hover:scale-[1.02]"
-                        style={{ background: `linear-gradient(to right, ${primaryColor}, ${secondaryColor})` }}
-                    >
-                        {ctaText}
-                    </button>
-                    {shopWebsite && (
-                        <a href={shopWebsite} target="_blank" rel="noopener noreferrer" className="w-full py-4 rounded-xl font-bold text-crm-text bg-crm-bg border border-crm-border text-center shadow-sm transition-transform hover:scale-[1.02]">
-                            Visit Website
-                        </a>
-                    )}
-                </div>
+    
 
-                <div className="w-full max-w-md">
-                    {pages.filter((p: any) => p.isVisible).map((p: any) => (
-                        <div key={p.id} className="mb-12">
-                            {p.title !== 'Home' && <h2 className="font-bold text-xl mb-4 text-center" style={{ color: primaryColor }}>{p.title}</h2>}
-                            <CustomPageContent content={p.content || ""} shop={shop} themeColor={primaryColor} className="w-full" onBookClick={handleBookClick} reviews={reviews} templateType={templateType} />
-                        </div>
-                    ))}
-                </div>
-
-                <div className="mt-auto pt-12 pb-4 flex gap-8 text-2xl">
-                    {shopFB && <a href={shopFB} target="_blank" rel="noopener noreferrer" className="text-crm-muted hover:text-crm-text transition-transform hover:scale-110">📘</a>}
-                    {shopIG && <a href={shopIG.startsWith('http') ? shopIG : `https://instagram.com/${shopIG.replace('@','')}`} target="_blank" rel="noopener noreferrer" className="text-crm-muted hover:text-crm-text transition-transform hover:scale-110">📸</a>}
-                    {shopTW && <a href={shopTW} target="_blank" rel="noopener noreferrer" className="text-crm-muted hover:text-crm-text transition-transform hover:scale-110">🐦</a>}
-                </div>
-
-                {selectedService && (
-                    <BookingModal shopId={shop.id} service={selectedService} onClose={() => setSelectedService(null)} shopHours={c.businessHours || {}} themeColor={primaryColor} templateType={templateType} />
-                )}
-            </main>
-        );
-    }
-
-    if (templateType === 'off') {
-        return (
-            <main className="h-[100dvh] flex flex-col bg-gray-50 overflow-y-auto">
-                <div className="flex-none p-4 flex justify-end">
-                    <SupabaseAuthButton redirectUrl={pathname} />
-                </div>
-                <div className="flex-1 flex flex-col items-center justify-center p-4">
-                    <div className="bg-white rounded-2xl shadow-xl border border-gray-100 w-full max-w-md overflow-hidden flex flex-col" style={{ height: '700px', maxHeight: '90vh' }}>
-                        {logoUrl ? (
-                            <div className="p-6 pb-0 text-center shrink-0">
-                                <img src={logoUrl} alt={shop.name} className="h-16 mx-auto object-contain" onError={(e) => { e.currentTarget.style.display = 'none'; }} />
-                            </div>
-                        ) : (
-                            <div className="p-6 pb-0 text-center shrink-0">
-                                <h1 className="text-2xl font-bold text-gray-900">{shop.name}</h1>
-                            </div>
-                        )}
-                        <div className="flex-1 overflow-hidden relative">
-                            <BookingWizard shopId={shop.id} />
-                        </div>
-                    </div>
-                    <p className="mt-8 text-gray-400 text-sm text-center">
-                        This shop does not have a public storefront.<br />Use this widget to book your appointment.
-                    </p>
-                </div>
-            </main>
-        );
-    }
+    
 
     if (templateType === 'sporty') {
         return (
@@ -660,12 +580,8 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                 <section className="bg-crm-bg border-b border-crm-border relative bg-cover bg-center" style={{ backgroundImage: heroImageUrl ? `url(${heroImageUrl})` : undefined }}><div className={heroImageUrl ? "absolute inset-0 bg-crm-surface/80" : ""} />
                     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24 text-center md:text-left flex flex-col md:flex-row items-center relative z-10">
                         <div className="md:w-1/2 mb-8 md:mb-0">
-                            <h2 className="font-black uppercase italic leading-none mb-6 text-xl font-bold">
-                                The MVP <br/> Haircut <br/> Experience.
-                            </h2>
-                            <p className="text-crm-text font-semibold mb-8 max-w-lg text-[13px]">
-                                {shop.description || "Precision cuts, legendary service, and the ultimate environment."}
-                            </p>
+                            {shop.slogan && <h2 className="font-black uppercase italic leading-none mb-6 text-xl font-bold">{shop.slogan}</h2>}
+                            {shop.description && <p className="text-crm-text font-semibold mb-8 max-w-lg text-[13px]">{shop.description}</p>}
                         </div>
                         <div className="md:w-1/2 flex justify-center">
                             <div className="w-full max-w-md aspect-square bg-gray-300 transform -rotate-3 overflow-hidden shadow-2xl border-8 border-white">
@@ -755,8 +671,8 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
         )}
         <div className={(heroImageUrl || heroVideoUrl) ? "absolute inset-0 bg-crm-surface/70 z-0" : "z-0"} />
                 <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center relative z-10">
-                    <h2 className="font-extrabold text-crm-text mb-4 text-xl font-bold">{shop.slogan || shop.description || "Quality Service, Every Time."}</h2>
-                    <p className="text-crm-muted text-[13px]">Find your perfect look with our expert stylists.</p>
+                    <h2 className="font-extrabold text-crm-text mb-4 text-xl font-bold">{shop.slogan || shop.description}</h2>
+                    
                 </div>
             </section>
     
@@ -966,7 +882,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                       src={editorial.heroImage || "https://lh3.googleusercontent.com/aida-public/AB6AXuAPRu8QRu8seSz1ZA0n6LiPGRgqS7aZEcjxutc8fOcO1ZIkoJH2Umtws1TFTbdJwWCpmXEE_T0bVF00Q1EwlHR5KpYdbkMHCu2nUg2NAe5C2pfVotvKBcYkKM63pa2s4XXMCSh4EVxf389QPikRuNYPp_EHSwR5QQSbPcaysTObNr3wOBttSWwh41x9HEbYtenN4fQFtQfUC-criMC9c8Li4jj4D1-zB8_8LZYeg0ReRDBSudtfcTLc4qJDHasnl5yxlX6EAv0YYbw"}
                     />
                     <div className="absolute bottom-12 -left-12 bg-[#0d0f0d] p-6 rounded-2xl shadow-lg hidden lg:block">
-                      <p className="font-headline italic text-[13px]" style={{ color: primaryColor }}>"The standard of beauty refined."</p>
+                      {shop.slogan && <p className="font-headline italic text-[13px]" style={{ color: primaryColor }}>{shop.slogan}</p>}
                     </div>
                   </div>
                 </div>
@@ -1097,7 +1013,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                 <div className="space-y-6">
                   <div className="text-xl font-headline text-stone-200 mb-2">{shop.name}</div>
                   {shop.slogan && <div className="text-[#d4af37] font-serif italic mb-4">{shop.slogan}</div>}
-                  <p className="text-stone-400 font-body leading-relaxed text-[13px]">{shop.description || "A destination for curated beauty and refined wellness."}</p>
+                  <p className="text-stone-400 font-body leading-relaxed text-[13px]">{shop.description}</p>
                 </div>
                 <div className="flex flex-col items-start md:items-end space-y-6 md:col-start-3">
                   <div className="flex gap-6">

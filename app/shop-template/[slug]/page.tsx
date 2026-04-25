@@ -208,7 +208,7 @@ export default async function PublicShopPage({
                   src={editorial.heroImage || "https://lh3.googleusercontent.com/aida-public/AB6AXuAPRu8QRu8seSz1ZA0n6LiPGRgqS7aZEcjxutc8fOcO1ZIkoJH2Umtws1TFTbdJwWCpmXEE_T0bVF00Q1EwlHR5KpYdbkMHCu2nUg2NAe5C2pfVotvKBcYkKM63pa2s4XXMCSh4EVxf389QPikRuNYPp_EHSwR5QQSbPcaysTObNr3wOBttSWwh41x9HEbYtenN4fQFtQfUC-criMC9c8Li4jj4D1-zB8_8LZYeg0ReRDBSudtfcTLc4qJDHasnl5yxlX6EAv0YYbw"}
                 />
                 <div className="absolute bottom-12 -left-12 bg-[#0d0f0d] p-6 rounded-2xl shadow-lg hidden lg:block">
-                  <p className="font-headline italic text-[13px]" style={{ color: primaryColor }}>"The standard of beauty refined."</p>
+                  {shop.slogan && <p className="font-headline italic text-[13px]" style={{ color: primaryColor }}>{shop.slogan}</p>}
                 </div>
               </div>
             </div>
@@ -353,7 +353,7 @@ export default async function PublicShopPage({
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12 px-12 py-16 max-w-7xl mx-auto">
             <div className="space-y-6">
               <div className="text-xl font-headline text-stone-200">{shop.name}</div>
-              <p className="text-stone-400 font-body leading-relaxed text-[13px]">{shop.description || "A destination for curated beauty and refined wellness."}</p>
+              <p className="text-stone-400 font-body leading-relaxed text-[13px]">{shop.description}</p>
             </div>
             <div className="flex flex-col items-start md:items-end space-y-6 md:col-start-3">
               <div className="flex gap-6">

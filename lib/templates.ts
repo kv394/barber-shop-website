@@ -52,16 +52,6 @@ export const AVAILABLE_TEMPLATES: Record<TemplateType, Template> = {
     description: 'High-end, elegant editorial style for salons and spas',
     id: 'editorial',
   },
-  social: {
-    name: 'Social Link (Link in Bio)',
-    description: 'A mobile-first, ultra-fast layout optimized for Instagram and TikTok bios.',
-    id: 'social',
-  },
-  off: {
-    name: 'External Widget Only (Off)',
-    description: 'Disable the public landing page. Use this if you only embed the booking widget on your own website.',
-    id: 'off',
-  },
 };
 
 export interface Customization {
