@@ -93,12 +93,12 @@ export function CustomPagesForm({ shopId, customization }: { shopId: string; cus
          <h4 className="font-bold text-crm-text mb-2">💡 Dynamic Smart Tags</h4>
          <p className="mb-2">Type these tags exactly as shown anywhere in your page content to automatically generate stunning, theme-aware widgets:</p>
          <ul className="list-disc pl-5 space-y-1">
-           <li><code className="text-crm-primary font-bold">${services}</code> - Renders your service menu and "Book" buttons.</li>
-           <li><code className="text-crm-primary font-bold">${products}</code> - Renders your sellable retail products.</li>
-           <li><code className="text-crm-primary font-bold">${team}</code> - Renders a grid of your staff members with their bios.</li>
-           <li><code className="text-crm-primary font-bold">${gallery}</code> - Displays a masonry gallery of your portfolio images.</li>
-           <li><code className="text-crm-primary font-bold">${reviews}</code> - Shows all shop reviews and an interactive "Leave a Review" form.</li>
-           <li><code className="text-crm-primary font-bold">${contact}</code> - Displays a beautiful map, hours, and contact details.</li>
+           <li><code className="text-crm-primary font-bold">{"${services}"}</code> - Renders your service menu and "Book" buttons.</li>
+           <li><code className="text-crm-primary font-bold">{"${products}"}</code> - Renders your sellable retail products.</li>
+           <li><code className="text-crm-primary font-bold">{"${team}"}</code> - Renders a grid of your staff members with their bios.</li>
+           <li><code className="text-crm-primary font-bold">{"${gallery}"}</code> - Displays a masonry gallery of your portfolio images.</li>
+           <li><code className="text-crm-primary font-bold">{"${reviews}"}</code> - Shows all shop reviews and an interactive "Leave a Review" form.</li>
+           <li><code className="text-crm-primary font-bold">{"${contact}"}</code> - Displays a beautiful map, hours, and contact details.</li>
          </ul>
       </div>
 

@@ -1,5 +1,6 @@
 import { cache } from 'react';
 import { prisma } from '@/lib/prisma';
+import { UserRole } from '@prisma/client';
 import { Metadata } from 'next';
 import ClientPage from './ClientPage';
 import { createClient } from '@/utils/supabase/server';
@@ -26,7 +27,7 @@ const serviceInclude = {
     select: { id: true, imageUrl: true, caption: true },
   },
   users: {
-    where: { role: { in: ['STAFF', 'SHOP_ADMIN'] } },
+    where: { role: { in: ['STAFF', 'SHOP_ADMIN'] as UserRole[] } },
     select: { id: true, name: true, imageUrl: true, role: true, clientNotes: true }, // using clientNotes temporarily for bio if any, or just name/role
   },
 };
