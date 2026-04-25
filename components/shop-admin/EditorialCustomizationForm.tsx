@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Customization } from '@/lib/templates';
+import MediaPicker from './MediaPicker';
 
 interface EditorialCustomizationFormProps {
   shopId: string;

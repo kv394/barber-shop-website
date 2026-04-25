@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { DEFAULT_CUSTOMIZATION, Customization } from '@/lib/templates';
 import { useRouter } from 'next/navigation';
 import { EditorialCustomizationForm } from './EditorialCustomizationForm';
+import MediaPicker from './MediaPicker';
 
 interface CustomizationFormProps {
   shopId: string;

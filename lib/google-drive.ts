@@ -146,16 +146,48 @@ export async function uploadFileToDrive(tenantId: string, fileName: string, mime
 export async function getOrCreatePath(path: string): Promise<string | null> {
   const parts = path.split('/').filter(p => p.trim() !== '');
   let currentParentId: string | undefined = undefined;
-  
+
   for (const part of parts) {
     const folderId = await getOrCreateFolder(part, currentParentId);
     if (!folderId) return null;
     currentParentId = folderId;
   }
-  
+
   return currentParentId || null;
 }
 
+export async function listFilesInPath(path: string): Promise<Array<{ id: string, name: string, url: string }>> {
+  const drive = getDriveService();
+  if (!drive) return [];
+
+  const parts = path.split('/').filter(p => p.trim() !== '');
+  let currentParentId: string | undefined = undefined;
+
+  for (let i = 0; i < parts.length; i++) {
+    const part = parts[i];
+    let query = `mimeType='application/vnd.google-apps.folder' and name='${part}' and trashed=false`;
+    if (currentParentId) {
+      query += ` and '${currentParentId}' in parents`;
+    }
+    const response = await drive.files.list({ q: query, fields: 'files(id)' });
+    if (!response.data.files || response.data.files.length === 0) return [];
+    currentParentId = response.data.files[0].id!;
+  }
+
+  if (!currentParentId) return [];
+
+  const response = await drive.files.list({
+    q: `'${currentParentId}' in parents and mimeType != 'application/vnd.google-apps.folder' and trashed=false`,
+    fields: 'files(id, name)',
+    spaces: 'drive',
+  });
+
+  return (response.data.files || []).map(f => ({
+    id: f.id!,
+    name: f.name || 'Unknown',
+    url: `https://drive.google.com/uc?export=view&id=${f.id}`
+  }));
+}
 export async function uploadFileToPath(path: string, fileName: string, mimeType: string, buffer: Buffer): Promise<string | null> {
   const folderId = await getOrCreatePath(path);
   if (!folderId) throw new Error('Could not create or find path');

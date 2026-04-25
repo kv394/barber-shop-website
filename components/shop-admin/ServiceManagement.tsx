@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import MediaPicker from './MediaPicker';
 
 interface ServiceAddon {
   id: string;
@@ -328,18 +329,7 @@ export function ServiceManagement({ shopId }: ServiceManagementProps) {
                 <label className="block font-medium text-crm-muted mb-2 text-[13px]">
                   Service Image (optional)
                 </label>
-                <div className="flex items-center gap-4">
-                  {newService.imageUrl && (
-                    <img src={newService.imageUrl} alt="Preview" className="w-16 h-16 object-cover rounded-lg border border-crm-border" />
-                  )}
-                  <label className="cursor-pointer bg-crm-surface border border-crm-border hover:border-crm-primary transition-colors px-4 py-2 rounded-lg text-[13px] font-medium text-crm-text">
-                    {isUploading ? 'Uploading...' : 'Upload Image'}
-                    <input type="file" accept="image/*" onChange={handleImageUpload} disabled={isUploading} className="hidden" />
-                  </label>
-                  {newService.imageUrl && (
-                     <button type="button" onClick={() => setNewService({ ...newService, imageUrl: '' })} className="text-status-cancelled text-[13px] hover:underline">Remove</button>
-                  )}
-                </div>
+                <MediaPicker shopId={shopId} currentUrl={newService.imageUrl} onSelect={(url) => setNewService({ ...newService, imageUrl: url })} label="Upload/Select Service Image" />
               </div>
             )}
 

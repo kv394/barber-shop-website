@@ -6,6 +6,7 @@ import ProductInventoryManager from './ProductInventoryManager';
 import ProductBarcodeScannerWrapper from '@/components/checkout/ProductBarcodeScannerWrapper';
 import { QRCodeSVG } from 'qrcode.react';
 import Barcode from 'react-barcode';
+import MediaPicker from './MediaPicker';
 
 export default function ProductManager({ shopId, products }: { shopId: string, products: any[] }) {
   const router = useRouter();
@@ -169,18 +170,7 @@ export default function ProductManager({ shopId, products }: { shopId: string, p
             {formData.isSellable && (
               <div className="col-span-1 md:col-span-2 mt-2">
                 <label className="block font-medium text-crm-muted mb-1 text-[13px]">Product Image</label>
-                <div className="flex items-center gap-4">
-                  {formData.imageUrl && (
-                    <img src={formData.imageUrl} alt="Product preview" className="w-16 h-16 object-cover rounded-lg border border-crm-border" />
-                  )}
-                  <label className="cursor-pointer bg-crm-surface border border-crm-border hover:border-crm-primary transition-colors px-4 py-2 rounded-lg text-[13px] font-medium text-crm-text">
-                    {isUploading ? 'Uploading...' : 'Upload Image'}
-                    <input type="file" accept="image/*" onChange={handleImageUpload} disabled={isUploading} className="hidden" />
-                  </label>
-                  {formData.imageUrl && (
-                     <button type="button" onClick={() => setFormData({ ...formData, imageUrl: '' })} className="text-status-cancelled text-[13px] hover:underline">Remove</button>
-                  )}
-                </div>
+                <MediaPicker shopId={shopId} currentUrl={formData.imageUrl} onSelect={(url) => setFormData({ ...formData, imageUrl: url })} label="Upload/Select Product Image" />
               </div>
             )}
 
