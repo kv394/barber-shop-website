@@ -99,7 +99,7 @@ function ReviewsSection({ reviews, variant = 'dark' }: { reviews: any[]; variant
   );
 }
 
-function CustomPageContent({ content, shop, themeColor, className, onBookClick, reviews = [] }: { content: string, shop: any, themeColor?: string, className?: string, onBookClick?: (service: any) => void, reviews?: any[] }) {
+function CustomPageContent({ content, shop, themeColor, className, onBookClick, reviews = [], templateType = 'modern' }: { content: string, shop: any, themeColor?: string, className?: string, onBookClick?: (service: any) => void, reviews?: any[], templateType?: string }) {
   if (!content) return null;
   const parts = content.split(/(\$\{products\}|\$\{services\}|\$\{reviews\})/gi);
   if (parts.length === 1) {
@@ -109,6 +109,86 @@ function CustomPageContent({ content, shop, themeColor, className, onBookClick, 
   const sellableProducts = shop.products?.filter((product: any) => product.isSellable !== false) || [];
   const services = shop.services || [];
 
+  const getThemeStyles = () => {
+    switch (templateType) {
+      case 'sporty':
+        return {
+          card: 'bg-crm-surface border-2 border-crm-border p-6 text-center shadow-sm',
+          title: 'font-black uppercase italic text-lg',
+          price: 'text-2xl font-bold mb-4',
+          desc: 'text-crm-muted mb-6 min-h-[3rem] text-[13px]',
+          btn: 'w-full text-white font-bold py-3 uppercase tracking-wider transition-all hover:scale-[1.02] shadow-md',
+          btnStyle: { backgroundColor: themeColor || '#ef4444' }
+        };
+      case 'corporate':
+        return {
+          card: 'bg-white rounded-lg shadow-lg border border-gray-100 p-6 flex flex-col',
+          title: 'font-bold text-gray-900 mb-2 text-lg',
+          price: 'text-lg font-bold text-blue-600',
+          desc: 'text-gray-500 mb-4 text-[13px] flex-grow',
+          btn: 'w-full text-white font-bold py-2 rounded transition-all hover:opacity-90 shadow-sm mt-4',
+          btnStyle: { backgroundColor: themeColor || '#2563eb' }
+        };
+      case 'noir':
+        return {
+          card: 'bg-transparent border border-gray-800 p-6 hover:bg-gray-900/50 transition-colors flex flex-col text-center',
+          title: 'font-bold uppercase tracking-widest text-lg mb-2',
+          price: 'text-lg font-bold mb-4',
+          desc: 'text-gray-400 mb-6 text-[13px] flex-grow',
+          btn: 'w-full bg-white text-black font-bold uppercase py-3 tracking-[0.2em] hover:bg-gray-200 transition-colors',
+          btnStyle: { color: 'black' }
+        };
+      case 'sunset':
+        return {
+          card: 'bg-black/20 backdrop-blur-md border border-white/10 rounded-xl p-6 text-white shadow-xl flex flex-col hover:border-orange-500/50 transition-colors',
+          title: 'font-bold text-lg text-orange-400 mb-2',
+          price: 'text-xl font-bold text-orange-400',
+          desc: 'text-white/60 mb-4 text-[13px] flex-grow',
+          btn: 'w-full bg-gradient-to-r from-orange-500 to-purple-500 text-white font-semibold py-2 rounded transition-all hover:opacity-90 mt-4',
+          btnStyle: {}
+        };
+      case 'editorial':
+        return {
+          card: 'bg-[#0d0f0d] p-8 rounded-2xl flex flex-col border border-[#292a29]',
+          title: 'font-serif text-[#e3e2e0] text-xl mb-4',
+          price: 'text-[13px] font-bold text-white mb-4',
+          desc: 'text-[#d0c5af] leading-relaxed text-[13px] mb-6 flex-grow',
+          btn: 'font-semibold flex items-center justify-center gap-2 uppercase tracking-widest py-3 border border-[#d4af37] text-[#d4af37] hover:bg-[#d4af37] hover:text-black transition-colors',
+          btnStyle: themeColor ? { borderColor: themeColor, color: themeColor } : {}
+        };
+      case 'minimal':
+        return {
+          card: 'bg-transparent border-b border-gray-200 pb-6 flex flex-col md:flex-row justify-between md:items-center',
+          title: 'font-medium text-lg text-gray-900',
+          price: 'font-medium text-gray-900',
+          desc: 'text-gray-500 mt-1 text-[13px]',
+          btn: 'text-[13px] font-semibold hover:underline mt-4 md:mt-0',
+          btnStyle: { color: themeColor || '#000' }
+        };
+      case 'classic':
+        return {
+          card: 'bg-[#fdfbf7] border border-[#e6d9c6] p-8 text-center flex flex-col items-center shadow-sm',
+          title: 'font-bold mb-2 text-lg text-[#2c1e16]',
+          price: 'text-[#8b7355] text-[13px] tracking-widest uppercase mb-3 font-semibold',
+          desc: 'text-[#5a4634] italic mb-6 text-[13px] flex-grow',
+          btn: 'mt-auto border border-[#2c1e16] px-6 py-2 text-[11px] uppercase tracking-widest text-[#2c1e16] hover:bg-[#2c1e16] hover:text-[#fdfbf7] transition-all',
+          btnStyle: {}
+        };
+      case 'modern':
+      default:
+        return {
+          card: 'bg-gradient-to-br from-slate-800 to-slate-900 rounded-xl p-8 border border-gray-700 shadow-lg flex flex-col text-white',
+          title: 'font-bold text-lg mb-2',
+          price: 'px-3 py-1 rounded-full text-[13px] font-semibold inline-block mb-4',
+          desc: 'text-gray-300 mb-6 text-[13px] flex-grow',
+          btn: 'w-full bg-white text-gray-900 px-4 py-3 rounded-lg font-bold transition-all hover:scale-[1.02] shadow-md',
+          btnStyle: { backgroundColor: themeColor || 'white', color: 'black' }
+        };
+    }
+  };
+
+  const styles = getThemeStyles();
+
   return (
     <div className={className}>
       {parts.map((part, index) => {
@@ -117,13 +197,15 @@ function CustomPageContent({ content, shop, themeColor, className, onBookClick, 
           return (
             <div key={index} className="not-prose grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 my-8 font-sans">
               {sellableProducts.map((product: any) => (
-                <div key={product.id} className="border border-crm-border p-6 rounded-xl bg-crm-surface shadow-sm hover:shadow-md transition-shadow flex flex-col items-center text-center">
+                <div key={product.id} className={styles.card}>
                   {product.imageUrl && (
-                    <img src={product.imageUrl} alt={product.name} className="w-full h-48 object-cover rounded-lg mb-4" />
+                    <img src={product.imageUrl} alt={product.name} className="w-full h-48 object-cover rounded-lg mb-4 shadow-sm" />
                   )}
-                  <h3 className="font-bold text-lg mb-2" style={themeColor ? { color: themeColor } : {}}>{product.name}</h3>
-                  <p className="text-crm-muted text-[13px] mb-4 flex-grow">{product.description}</p>
-                  <div className="font-bold text-crm-text">\$\{typeof product.price === 'number' ? product.price.toFixed(2) : '0.00'}</div>
+                  <h3 className={styles.title} style={templateType === 'corporate' || templateType === 'sporty' || templateType === 'classic' ? { color: themeColor } : {}}>{product.name}</h3>
+                  <p className={styles.desc}>{product.description}</p>
+                  <div className={styles.price} style={templateType === 'corporate' || templateType === 'modern' ? { color: themeColor } : {}}>
+                    \$\{typeof product.price === 'number' ? product.price.toFixed(2) : '0.00'}
+                  </div>
                 </div>
               ))}
             </div>
@@ -131,44 +213,58 @@ function CustomPageContent({ content, shop, themeColor, className, onBookClick, 
         } else if (part.toLowerCase() === '\$\{services\}') {
           if (services.length === 0) return null;
           return (
-            <div key={index} className="not-prose grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 my-8 font-sans">
+            <div key={index} className={`not-prose grid gap-6 my-8 font-sans ${templateType === 'minimal' ? 'grid-cols-1' : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3'}`}>
                 {services.map((service: any) => (
-                  <div
-                    key={service.id}
-                    className="group bg-gradient-to-br from-slate-800 to-slate-900 rounded-xl p-8 border border-crm-border shadow-sm transition-all duration-300 hover:shadow-lg flex flex-col"
-                  >
-                    {service.imageUrl && (
+                  <div key={service.id} className={styles.card}>
+                    {service.imageUrl && templateType !== 'minimal' && (
                       <img src={service.imageUrl} alt={service.name} className="w-full h-48 object-cover rounded-lg mb-6 shadow-md" />
                     )}
-                    <div className="flex items-start justify-between mb-4">
-                      <h3 className="font-bold text-crm-text transition-colors text-lg font-bold">
-                        {service.name}
-                      </h3>
-                      <div 
-                        className="px-3 py-1 rounded-full text-[13px] font-semibold"
-                        style={{ backgroundColor: `\$\{themeColor || '#1f2937'}20`, color: themeColor || '#1f2937' }}
-                      >
-                        \$\{service.price.toFixed(2)}
+                    
+                    {templateType === 'minimal' ? (
+                      <div className="w-full flex flex-col md:flex-row md:items-center md:justify-between">
+                        <div className="flex-1 mr-4">
+                          <h3 className={styles.title}>{service.name}</h3>
+                          <p className={styles.desc}>{service.description}</p>
+                        </div>
+                        <div className="flex items-center gap-4 mt-4 md:mt-0">
+                          <div className="text-right mr-4 border-r border-gray-200 pr-4">
+                              <span className={styles.price}>\$\{service.price.toFixed(2)}</span>
+                              <span className="block text-gray-400 text-[11px]">{service.duration}m</span>
+                          </div>
+                          <button onClick={() => onBookClick && onBookClick(service)} className={styles.btn} style={styles.btnStyle}>Book</button>
+                        </div>
                       </div>
-                    </div>
-    
-                    {service.description && (
-                      <p className="text-crm-muted mb-4 leading-relaxed flex-grow text-[13px]">
-                        {service.description}
-                      </p>
+                    ) : (
+                      <div className="flex flex-col h-full">
+                        <div className="flex flex-col mb-4">
+                          <h3 className={styles.title} style={templateType === 'sporty' || templateType === 'editorial' ? {} : { color: templateType === 'classic' || templateType === 'corporate' ? themeColor : undefined }}>
+                            {service.name}
+                          </h3>
+                          <div className={styles.price} style={templateType === 'modern' ? { backgroundColor: `${themeColor || '#ffffff'}20`, color: themeColor || '#ffffff' } : (templateType === 'corporate' ? { color: themeColor } : {})}>
+                            \$\{service.price.toFixed(2)} {templateType === 'classic' && ` • ${service.duration} MINS`}
+                          </div>
+                        </div>
+        
+                        {service.description && (
+                          <p className={styles.desc}>{service.description}</p>
+                        )}
+        
+                        <div className="mt-auto">
+                          {templateType !== 'classic' && (
+                            <div className={`text-[12px] opacity-70 mb-4 ${templateType === 'sporty' ? 'border-t border-current/10 pt-4 uppercase tracking-widest font-bold' : ''}`}>
+                              ⏱️ {service.duration} minutes
+                            </div>
+                          )}
+                          <button
+                            onClick={() => onBookClick && onBookClick(service)}
+                            className={styles.btn}
+                            style={styles.btnStyle}
+                          >
+                            {templateType === 'sporty' || templateType === 'editorial' ? 'Book This' : 'Book'}
+                          </button>
+                        </div>
+                      </div>
                     )}
-    
-                    <div className="flex items-center justify-between pt-4 border-t border-crm-border mt-auto">
-                      <div className="text-crm-muted text-[13px]">
-                        ⏱️ {service.duration} minutes
-                      </div>
-                      <button
-                        onClick={() => onBookClick && onBookClick(service)}
-                        className="text-white px-4 py-2 rounded-lg font-semibold transition-all duration-300 hover:scale-105 active:scale-95 shadow-md hover:shadow-lg text-[13px]"
-                        style={{ backgroundColor: themeColor || '#1f2937' }}
-                      >
-                        Book
-                      </button>                    </div>
                   </div>
                 ))}
             </div>
@@ -348,62 +444,13 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
 
                     <section key={p.id} id={p.id} className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 min-h-[60vh]">
                         <h1 className="font-black uppercase italic mb-8 text-2xl font-bold" style={{ color: sportRed }}>{p.title}</h1>
-                        <CustomPageContent content={p.content || ""} shop={shop} themeColor={sportRed} className="prose prose-lg max-w-none text-crm-text"  onBookClick={handleBookClick}  reviews={reviews} />
+                        <CustomPageContent content={p.content || ""} shop={shop} themeColor={sportRed} className="prose prose-lg max-w-none text-crm-text"  onBookClick={handleBookClick}  reviews={reviews}  templateType={templateType} />
                     </section>
             ))}
 
-              {pages.filter((p: any) => p.isVisible).map((p: any) => (
 
-            <section key={p.id} id={p.id} className="pt-32 pb-20 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto min-h-[80vh]">
-               <div className="bg-crm-surface p-8 md:p-12 rounded-2xl border border-crm-border shadow-sm shadow-xl">
-                  <h1 className="font-bold mb-8 text-2xl font-bold" style={{ color: primaryColor }}>{p.title}</h1>
-                  <CustomPageContent content={p.content || ""} shop={shop} themeColor={primaryColor} className="prose prose-invert prose-lg max-w-none text-crm-muted"  onBookClick={handleBookClick}  reviews={reviews} />
-               </div>
-            </section>
-            ))}
 
-          {/* Services Section */}
-                <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-                    <div className="text-center mb-16">
-                        <h2 className="font-black uppercase italic mb-2 text-xl font-bold">Our Services</h2>
-                        <div className="w-24 h-2 mx-auto" style={{ backgroundColor: sportRed }}></div>
-                    </div>
-    
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                        {shop.services?.map((service: any) => (
-                            <div key={service.id} className="bg-crm-surface border-2 border-crm-border p-8 text-center hover:border-crm-border transition-colors shadow-sm hover:shadow-lg group flex flex-col justify-between">
-                                <div>
-                                    <h3 className="font-black uppercase italic mb-4 group-hover:text-status-cancelled transition-colors text-lg font-bold" style={{ color: 'black' }}>
-                                        {service.name}
-                                    </h3>
-                                    <div className="text-3xl font-bold mb-4" style={{ color: sportRed }}>
-                                        ${service.price.toFixed(2)}
-                                    </div>
-                                    <p className="text-crm-muted mb-6 min-h-[3rem] text-[13px]">
-                                        {service.description}
-                                    </p>
-                                </div>
-                                <div>
-                                    <div className="text-[13px] font-bold text-crm-muted uppercase tracking-widest border-t border-crm-border pt-4 mb-4">
-                                        Est. Time: {service.duration} mins
-                                    </div>
-                                    <button
-                                        onClick={() => handleBookClick(service)}
-                                        className="w-full text-crm-text font-bold py-3 uppercase tracking-wider transition-all duration-300 hover:scale-[1.02] active:scale-95 shadow-md hover:shadow-lg"
-                                        style={{ backgroundColor: sportRed }}
-                                    >
-                                        Book This
-                                    </button>                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </section>
-
-            
-
-                
-
-                {/* Footer */}
+          {/* Footer */}
                 <footer className="bg-crm-surface text-crm-text py-16 uppercase text-[13px] tracking-widest">
                     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
@@ -478,39 +525,9 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
 
                 <section key={p.id} id={p.id} className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 min-h-[60vh]">
                     <h1 className="font-bold text-crm-text mb-8 text-2xl font-bold" style={{ color: primaryColor }}>{p.title}</h1>
-                    <CustomPageContent content={p.content || ""} shop={shop} themeColor={primaryColor} className="prose prose-lg max-w-none text-crm-text"  onBookClick={handleBookClick}  reviews={reviews} />
+                    <CustomPageContent content={p.content || ""} shop={shop} themeColor={primaryColor} className="prose prose-lg max-w-none text-crm-text"  onBookClick={handleBookClick}  reviews={reviews}  templateType={templateType} />
                 </section>
             ))}
-
-            <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-              <h2 className="font-bold text-center text-crm-text mb-12 text-xl font-bold">Our Services</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {shop.services?.map((service: any) => (
-                  <div key={service.id} className="bg-crm-surface rounded-lg shadow-lg overflow-hidden border border-crm-border shadow-sm hover:shadow-xl transition-shadow flex flex-col">
-                    <div className="p-6 flex-grow">
-                      <h3 className="font-bold text-crm-text mb-2 text-lg font-bold">{service.name}</h3>
-                      <p className="text-crm-muted mb-4 text-[13px]">{service.description}</p>
-                      <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-4">
-                        <span className="text-lg font-bold" style={{ color: primaryColor }}>${service.price.toFixed(2)}</span>
-                        <span className="text-[13px] text-crm-muted">{service.duration} min</span>
-                      </div>
-                    </div>
-                    <div className="px-6 pb-6 mt-auto">
-                         <button
-                            onClick={() => handleBookClick(service)}
-                            className="w-full text-crm-text font-bold py-2 rounded transition-all duration-300 hover:opacity-90 hover:scale-[1.02] active:scale-95 shadow-sm hover:shadow-md"
-                            style={{ backgroundColor: primaryColor }}
-                         >
-                            Book Service
-                         </button>                    </div>
-                  </div>
-                ))}
-              </div>
-            </section>
-
-            
-
-            
 
             <footer className="bg-crm-surface text-crm-text">
               <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -578,7 +595,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
 
                     <section key={p.id} id={p.id} className="max-w-3xl mx-auto min-h-[60vh]">
                         <h1 className="font-black uppercase tracking-tighter mb-8 text-center text-2xl font-bold">{p.title}</h1>
-                        <CustomPageContent content={p.content || ""} shop={shop} className="prose prose-invert prose-lg max-w-none text-crm-muted font-sans"  onBookClick={handleBookClick}  reviews={reviews} />
+                        <CustomPageContent content={p.content || ""} shop={shop} className="prose prose-invert prose-lg max-w-none text-crm-muted font-sans"  onBookClick={handleBookClick}  reviews={reviews}  templateType={templateType} />
                     </section>
             ))}
             </div>
@@ -625,35 +642,11 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                 <section key={p.id} id={p.id} className="max-w-4xl mx-auto min-h-[60vh]">
                     <div className="bg-crm-surface backdrop-blur-sm border border-status-pending/30 rounded-lg p-8 md:p-12">
                         <h1 className="font-bold bg-clip-text text-transparent bg-gradient-to-r from-orange-400 to-purple-400 mb-8 text-2xl font-bold">{p.title}</h1>
-                        <CustomPageContent content={p.content || ""} shop={shop} className="prose prose-invert prose-lg max-w-none text-purple-200/80"  onBookClick={handleBookClick}  reviews={reviews} />
+                        <CustomPageContent content={p.content || ""} shop={shop} className="prose prose-invert prose-lg max-w-none text-purple-200/80"  onBookClick={handleBookClick}  reviews={reviews}  templateType={templateType} />
                     </div>
                 </section>
             ))}
-
-            <section className="max-w-4xl mx-auto">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {shop.services?.map((service: any) => (
-                    <div key={service.id} className="bg-crm-surface backdrop-blur-sm border border-status-pending/30 rounded-lg p-6 hover:border-orange-500 transition-colors flex flex-col">
-                      <h3 className="font-bold text-status-pending text-lg font-bold">{service.name}</h3>
-                      <p className="text-purple-200/60 mt-1 mb-4 flex-grow text-[13px]">{service.description}</p>
-                      <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center border-t border-status-pending/30 pt-4 mb-4">
-                        <span className="text-[13px] text-crm-muted">{service.duration} mins</span>
-                        <span className="text-xl font-bold text-status-pending">${service.price.toFixed(2)}</span>
-                      </div>
-                      <button
-                        onClick={() => handleBookClick(service)}
-                        className="w-full bg-gradient-to-r from-orange-500/20 to-purple-500/20 hover:from-orange-500 hover:to-purple-600 border border-status-pending/30 text-crm-text font-semibold py-2 rounded transition-all duration-300 hover:scale-[1.02] active:scale-95 hover:shadow-[0_0_20px_rgba(249,115,22,0.4)]"
-                      >
-                        Book
-                      </button>                    </div>
-                  ))}
-                </div>
-              </section>
-            
-
             </div>
-
-            
 
             {selectedService && (
                 <BookingModal 
@@ -758,42 +751,12 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                  <section key={p.id} id={p.id} className="py-32 px-8 min-h-[70vh]">
                     <div className="max-w-4xl mx-auto">
                         <h1 className="font-headline mb-12 text-2xl font-bold" style={{ color: primaryColor }}>{p.title}</h1>
-                        <CustomPageContent content={p.content || ""} shop={shop} themeColor={primaryColor} className="prose prose-invert prose-lg max-w-none font-body text-[#d0c5af]"  onBookClick={handleBookClick}  reviews={reviews} />
+                        <CustomPageContent content={p.content || ""} shop={shop} themeColor={primaryColor} className="prose prose-invert prose-lg max-w-none font-body text-[#d0c5af]"  onBookClick={handleBookClick}  reviews={reviews}  templateType={templateType} />
                     </div>
                 </section>
             ))}
 
-            {/* Services Section */}
-              <section id="services" className="py-32 px-8 bg-[#1a1c1a]">
-                <div className="max-w-7xl mx-auto">
-                  <div className="text-center mb-20">
-                    <h2 className="font-headline mb-4 text-xl font-bold">{editorial.servicesTitle || 'Our Services'}</h2>
-                    <div className="w-24 h-px mx-auto mb-6" style={{ backgroundColor: primaryColor }}></div>
-                    <p className="font-body text-[#d0c5af] max-w-xl mx-auto text-[13px]">{editorial.servicesSubtitle || "A curated selection of rituals designed to restore your glow and refine your natural elegance."}</p>
-                  </div>
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    {shop.services?.map((service: any, index: number) => (
-                      <div key={service.id} className="group bg-[#0d0f0d] p-10 rounded-2xl transition-all hover:translate-y-[-8px]">
-                        <div className="w-16 h-16 bg-[#292a29] rounded-full flex items-center justify-center mb-8 text-[#d0c5af]">
-                          <span className="material-symbols-outlined text-3xl">{['spa', 'face', 'fluid_med'][index % 3] || 'spa'}</span>
-                        </div>
-                        <h3 className="font-headline mb-4 text-lg font-bold">{service.name}</h3>
-                        <p className="text-[#d0c5af] mb-8 leading-relaxed text-[13px]">{service.description}</p>
-                        <div className="text-[13px] font-bold text-white mb-4">${service.price.toFixed(2)} &bull; {service.duration}m</div>
-                        <button 
-                            onClick={() => handleBookClick(service)}
-                            className="font-semibold flex items-center gap-2 group/link" style={{ color: primaryColor }}
-                        >
-                          Book This
-                          <span className="material-symbols-outlined text-[13px] group-hover/link:translate-x-1 transition-transform">east</span>
-                        </button>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </section>
-    
-              {/* Gallery Section */}
+            {/* Gallery Section */}
               <section id="gallery" className="py-32 px-8 bg-[#121412]">
                 <div className="max-w-7xl mx-auto">
                   <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
@@ -965,7 +928,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
 
                 <section key={p.id} id={p.id} className="max-w-4xl mx-auto px-6 py-32 min-h-[60vh]">
                     <h1 className="font-light tracking-tight mb-12 text-2xl font-bold" style={{ color: primaryColor }}>{p.title}</h1>
-                    <CustomPageContent content={p.content || ""} shop={shop} themeColor={primaryColor} className="prose prose-lg max-w-none text-crm-muted"  onBookClick={handleBookClick}  reviews={reviews} />
+                    <CustomPageContent content={p.content || ""} shop={shop} themeColor={primaryColor} className="prose prose-lg max-w-none text-crm-muted"  onBookClick={handleBookClick}  reviews={reviews}  templateType={templateType} />
                 </section>
             ))}
 
@@ -1049,37 +1012,9 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
 
                 <section key={p.id} id={p.id} className="max-w-4xl mx-auto px-8 py-32 min-h-[60vh]">
                     <h1 className="font-bold uppercase tracking-widest mb-12 text-center text-2xl font-bold" style={{ color: primaryColor }}>{p.title}</h1>
-                    <CustomPageContent content={p.content || ""} shop={shop} themeColor={primaryColor} className="prose prose-lg max-w-none text-[#5a4634]"  onBookClick={handleBookClick}  reviews={reviews} />
+                    <CustomPageContent content={p.content || ""} shop={shop} themeColor={primaryColor} className="prose prose-lg max-w-none text-[#5a4634]"  onBookClick={handleBookClick}  reviews={reviews}  templateType={templateType} />
                 </section>
             ))}
-
-            <section className="max-w-5xl mx-auto px-8 py-20">
-              <h2 className="font-bold text-center uppercase tracking-widest mb-16 relative text-xl font-bold">
-                <span className="bg-[#fdfbf7] px-6 relative z-10">Our Services</span>
-                <div className="absolute left-0 top-1/2 w-full h-px bg-[#e6d9c6] -z-0"></div>
-              </h2>
-    
-              <div className="grid md:grid-cols-2 gap-x-16 gap-y-12">
-                {shop.services?.map((service: any) => (
-                  <div key={service.id} className="text-center flex flex-col items-center">
-                    <h3 className="font-bold mb-2 text-lg font-bold" style={{ color: primaryColor }}>{service.name}</h3>
-                    <div className="font-sans text-[#8b7355] text-[13px] tracking-widest uppercase mb-3">
-                      ${service.price.toFixed(2)} &bull; {service.duration} MINS
-                    </div>
-                    {service.description && <p className="text-[#5a4634] italic mb-4 text-[13px]">{service.description}</p>}
-                    <button
-                        onClick={() => handleBookClick(service)}
-                        className="mt-auto border border-[#2c1e16] px-6 py-2 text-[11px] uppercase tracking-widest hover:bg-[#2c1e16] hover:text-[#fdfbf7] transition-all duration-300 hover:scale-105 active:scale-95 hover:shadow-md"
-                    >
-                        Select
-                    </button>                  </div>
-                ))}
-              </div>
-            </section>
-            
-
-
-            
 
             <footer className="bg-[#2c1e16] text-[#e6d9c6] py-12 text-center text-[13px] font-sans tracking-widest uppercase">
                  {shopAddress && <p className="mb-2 text-[13px]">{shopAddress}</p>}
@@ -1154,67 +1089,15 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                 </div>
           </section>
     
-          {/* Services Section */}
-          <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-            <div className="mb-16">
-              <h2 className="font-bold text-crm-text mb-4 text-xl font-bold">Our Services</h2>
-              <div 
-                className="w-20 h-1 rounded-full"
-                style={{ background: `linear-gradient(to right, ${primaryColor}, ${secondaryColor})` }}
-              ></div>
-            </div>
-    
-            {shop.services && shop.services.length > 0 ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {shop.services.map((service: any) => (
-                  <div
-                    key={service.id}
-                    className="group bg-gradient-to-br from-slate-800 to-slate-900 rounded-xl p-8 border border-crm-border shadow-sm transition-all duration-300 hover:shadow-lg flex flex-col"
-                  >
-                    <div className="flex items-start justify-between mb-4">
-                      <h3 className="font-bold text-crm-text transition-colors text-lg font-bold">
-                        {service.name}
-                      </h3>
-                      <div 
-                        className="px-3 py-1 rounded-full text-[13px] font-semibold"
-                        style={{ backgroundColor: `${primaryColor}20`, color: primaryColor }}
-                      >
-                        ${service.price.toFixed(2)}
-                      </div>
-                    </div>
-    
-                    {service.description && (
-                      <p className="text-crm-muted mb-4 leading-relaxed flex-grow text-[13px]">
-                        {service.description}
-                      </p>
-                    )}
-    
-                    <div className="flex items-center justify-between pt-4 border-t border-crm-border mt-auto">
-                      <div className="text-crm-muted text-[13px]">
-                        ⏱️ {service.duration} minutes
-                      </div>
-                      <button
-                        onClick={() => handleBookClick(service)}
-                        className="text-crm-text px-4 py-2 rounded-lg font-semibold transition-all duration-300 hover:scale-105 active:scale-95 shadow-md hover:shadow-lg text-[13px]"
-                        style={{ backgroundColor: primaryColor }}
-                      >
-                        Book
-                      </button>                    </div>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <div className="text-center py-16">
-                <p className="text-crm-muted text-[13px]">
-                  No services available at the moment. Please check back later.
-                </p>
-              </div>
-            )}
-          </section>
+              {pages.filter((p: any) => p.isVisible).map((p: any) => (
 
-
-
-          
+            <section key={p.id} id={p.id} className="pt-32 pb-20 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto min-h-[80vh]">
+               <div className="bg-crm-surface p-8 md:p-12 rounded-2xl border border-crm-border shadow-sm shadow-xl">
+                  <h1 className="font-bold mb-8 text-2xl font-bold" style={{ color: primaryColor }}>{p.title}</h1>
+                  <CustomPageContent content={p.content || ""} shop={shop} themeColor={primaryColor} className="prose prose-invert prose-lg max-w-none text-crm-muted"  onBookClick={handleBookClick}  reviews={reviews}  templateType={templateType} />
+               </div>
+            </section>
+            ))}
 
           {/* Footer */}
           <footer className="bg-crm-surface border-t border-crm-border py-12">
