@@ -41,6 +41,22 @@ export function CustomPagesForm({ shopId, customization }: { shopId: string; cus
     setPages([...pages, { id: newId, title: 'New Page', content: '', isVisible: true }]);
   };
 
+  
+  const applyFormat = (index: number, pageId: string, openTag: string, closeTag: string) => {
+    const textarea = document.getElementById(`textarea-${pageId}`) as HTMLTextAreaElement;
+    if (!textarea) return;
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const currentContent = pages[index].content || '';
+    const selectedText = currentContent.substring(start, end);
+    const newContent = currentContent.substring(0, start) + openTag + selectedText + closeTag + currentContent.substring(end);
+    updatePage(index, 'content', newContent);
+    setTimeout(() => {
+      textarea.focus();
+      textarea.setSelectionRange(start + openTag.length, start + openTag.length + selectedText.length);
+    }, 0);
+  };
+
   const updatePage = (index: number, field: string, value: any) => {
     const updated = [...pages];
     updated[index][field] = value;
@@ -172,16 +188,35 @@ export function CustomPagesForm({ shopId, customization }: { shopId: string; cus
                   />
                 </div>
               </div>
+              
               <div className="mb-4">
                 <label className="block font-medium text-crm-muted mb-1 text-[13px]">Content</label>
+                <div className="border border-crm-border rounded-t-lg bg-crm-surface px-3 py-2 flex flex-wrap gap-2 items-center">
+                  <button type="button" onClick={() => applyFormat(index, page.id, '<strong>', '</strong>')} className="px-2 py-1 bg-crm-bg border border-crm-border rounded hover:bg-crm-border text-[12px] font-bold" title="Bold">B</button>
+                  <button type="button" onClick={() => applyFormat(index, page.id, '<em>', '</em>')} className="px-2 py-1 bg-crm-bg border border-crm-border rounded hover:bg-crm-border text-[12px] italic" title="Italic">I</button>
+                  <button type="button" onClick={() => applyFormat(index, page.id, '<u>', '</u>')} className="px-2 py-1 bg-crm-bg border border-crm-border rounded hover:bg-crm-border text-[12px] underline" title="Underline">U</button>
+                  <span className="w-px h-4 bg-crm-border mx-1"></span>
+                  <button type="button" onClick={() => applyFormat(index, page.id, '<h2>', '</h2>')} className="px-2 py-1 bg-crm-bg border border-crm-border rounded hover:bg-crm-border text-[12px] font-bold" title="Heading 2">H2</button>
+                  <button type="button" onClick={() => applyFormat(index, page.id, '<h3>', '</h3>')} className="px-2 py-1 bg-crm-bg border border-crm-border rounded hover:bg-crm-border text-[12px] font-bold" title="Heading 3">H3</button>
+                  <button type="button" onClick={() => applyFormat(index, page.id, '<p>', '</p>')} className="px-2 py-1 bg-crm-bg border border-crm-border rounded hover:bg-crm-border text-[12px]" title="Paragraph">P</button>
+                  <span className="w-px h-4 bg-crm-border mx-1"></span>
+                  <button type="button" onClick={() => applyFormat(index, page.id, '<ul>\n  <li>', '</li>\n</ul>')} className="px-2 py-1 bg-crm-bg border border-crm-border rounded hover:bg-crm-border text-[12px]" title="Bulleted List">• List</button>
+                  <button type="button" onClick={() => applyFormat(index, page.id, '<br />', '')} className="px-2 py-1 bg-crm-bg border border-crm-border rounded hover:bg-crm-border text-[12px]" title="Line Break">↵ Br</button>
+                  <button type="button" onClick={() => {
+                    const url = prompt('Enter link URL:', 'https://');
+                    if (url) applyFormat(index, page.id, `<a href="${url}" target="_blank" className="text-crm-primary underline">`, '</a>');
+                  }} className="px-2 py-1 bg-crm-bg border border-crm-border rounded hover:bg-crm-border text-[12px]" title="Link">🔗 Link</button>
+                </div>
                 <textarea
+                  id={`textarea-${page.id}`}
                   value={page.content}
                   onChange={(e) => updatePage(index, 'content', e.target.value)}
-                  rows={6}
-                  className="w-full bg-crm-bg border border-crm-border shadow-sm rounded px-3 py-2 text-crm-text"
-                  placeholder="Enter HTML or plain text here..."
+                  rows={8}
+                  className="w-full bg-crm-bg border-x border-b border-t-0 border-crm-border shadow-sm rounded-b-lg px-4 py-3 text-crm-text text-[13px] leading-relaxed font-mono"
+                  placeholder="Enter HTML or plain text here. Use the buttons above to format..."
                 />
               </div>
+
               <div className="flex items-center gap-2">
                 <input
                   type="checkbox"
