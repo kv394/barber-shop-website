@@ -48,6 +48,27 @@ export function CustomPagesForm({ shopId, customization }: { shopId: string; cus
     setSuccess(false);
   };
 
+
+  const moveUp = (index: number) => {
+    if (index === 0) return;
+    const updated = [...pages];
+    const temp = updated[index - 1];
+    updated[index - 1] = updated[index];
+    updated[index] = temp;
+    setPages(updated);
+    setSuccess(false);
+  };
+
+  const moveDown = (index: number) => {
+    if (index === pages.length - 1) return;
+    const updated = [...pages];
+    const temp = updated[index + 1];
+    updated[index + 1] = updated[index];
+    updated[index] = temp;
+    setPages(updated);
+    setSuccess(false);
+  };
+
   const removePage = (index: number) => {
     const updated = [...pages];
     updated.splice(index, 1);
@@ -66,6 +87,21 @@ export function CustomPagesForm({ shopId, customization }: { shopId: string; cus
           + Add Page
         </button>
       </div>
+
+      
+      <div className="bg-crm-surface border border-crm-border p-4 rounded-xl shadow-sm mb-6 text-[13px] text-crm-muted">
+         <h4 className="font-bold text-crm-text mb-2">💡 Dynamic Smart Tags</h4>
+         <p className="mb-2">Type these tags exactly as shown anywhere in your page content to automatically generate stunning, theme-aware widgets:</p>
+         <ul className="list-disc pl-5 space-y-1">
+           <li><code className="text-crm-primary font-bold">${services}</code> - Renders your service menu and "Book" buttons.</li>
+           <li><code className="text-crm-primary font-bold">${products}</code> - Renders your sellable retail products.</li>
+           <li><code className="text-crm-primary font-bold">${team}</code> - Renders a grid of your staff members with their bios.</li>
+           <li><code className="text-crm-primary font-bold">${gallery}</code> - Displays a masonry gallery of your portfolio images.</li>
+           <li><code className="text-crm-primary font-bold">${reviews}</code> - Shows all shop reviews and an interactive "Leave a Review" form.</li>
+           <li><code className="text-crm-primary font-bold">${contact}</code> - Displays a beautiful map, hours, and contact details.</li>
+         </ul>
+      </div>
+
 
       {error && (
         <div className="bg-status-cancelled/10 border border-status-cancelled text-status-cancelled p-4 rounded-lg mb-6 text-[13px]">
@@ -89,12 +125,32 @@ export function CustomPagesForm({ shopId, customization }: { shopId: string; cus
             <div key={page.id} className="bg-crm-surface p-6 rounded-lg border border-crm-border shadow-sm">
               <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-start mb-4">
                 <h3 className="font-bold text-crm-text text-lg font-bold">Page {index + 1}</h3>
-                <button
-                  onClick={() => removePage(index)}
-                  className="text-status-cancelled hover:text-status-cancelled text-[13px]"
-                >
-                  Remove
-                </button>
+                
+                <div className="flex gap-4">
+                  <button
+                    onClick={() => moveUp(index)}
+                    disabled={index === 0}
+                    className="text-crm-muted hover:text-crm-text disabled:opacity-30 transition-colors text-[13px]"
+                    title="Move Up"
+                  >
+                    ⬆️ Move Up
+                  </button>
+                  <button
+                    onClick={() => moveDown(index)}
+                    disabled={index === pages.length - 1}
+                    className="text-crm-muted hover:text-crm-text disabled:opacity-30 transition-colors text-[13px]"
+                    title="Move Down"
+                  >
+                    ⬇️ Move Down
+                  </button>
+                  <button
+                    onClick={() => removePage(index)}
+                    className="text-status-cancelled hover:opacity-80 text-[13px] font-bold"
+                  >
+                    🗑️ Remove
+                  </button>
+                </div>
+
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                 <div>

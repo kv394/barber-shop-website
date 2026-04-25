@@ -101,13 +101,16 @@ function ReviewsSection({ reviews, variant = 'dark' }: { reviews: any[]; variant
 
 function CustomPageContent({ content, shop, themeColor, className, onBookClick, reviews = [], templateType = 'modern' }: { content: string, shop: any, themeColor?: string, className?: string, onBookClick?: (service: any) => void, reviews?: any[], templateType?: string }) {
   if (!content) return null;
-  const parts = content.split(/(\$\{products\}|\$\{services\}|\$\{reviews\})/gi);
+  const parts = content.split(/(\$\{products\}|\$\{services\}|\$\{reviews\}|\$\{team\}|\$\{gallery\}|\$\{contact\})/gi);
   if (parts.length === 1) {
     return <div className={className} dangerouslySetInnerHTML={{ __html: content }} />;
   }
 
   const sellableProducts = shop.products?.filter((product: any) => product.isSellable !== false) || [];
   const services = shop.services || [];
+  const staffMembers = shop.users || [];
+  const galleryImages = shop.portfolioImages || [];
+  const ctaText = shop.customization?.ctaText || 'Book';
 
   const getThemeStyles = () => {
     switch (templateType) {
@@ -231,7 +234,7 @@ function CustomPageContent({ content, shop, themeColor, className, onBookClick, 
                               <span className={styles.price}>\$\{service.price.toFixed(2)}</span>
                               <span className="block text-gray-400 text-[11px]">{service.duration}m</span>
                           </div>
-                          <button onClick={() => onBookClick && onBookClick(service)} className={styles.btn} style={styles.btnStyle}>Book</button>
+                          <button onClick={() => onBookClick && onBookClick(service)} className={styles.btn} style={styles.btnStyle}>{ctaText}</button>
                         </div>
                       </div>
                     ) : (
@@ -260,7 +263,7 @@ function CustomPageContent({ content, shop, themeColor, className, onBookClick, 
                             className={styles.btn}
                             style={styles.btnStyle}
                           >
-                            {templateType === 'sporty' || templateType === 'editorial' ? 'Book This' : 'Book'}
+                            {templateType === 'sporty' || templateType === 'editorial' ? ctaText : ctaText}
                           </button>
                         </div>
                       </div>
@@ -275,6 +278,109 @@ function CustomPageContent({ content, shop, themeColor, className, onBookClick, 
                <InteractiveReviewsSection shopId={shop.id} initialReviews={reviews} themeColor={themeColor} />
             </div>
           );
+        } else if (part.toLowerCase() === '\$\{team\}') {
+          if (staffMembers.length === 0) return null;
+          return (
+            <div key={index} className="not-prose grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 my-8 font-sans">
+              {staffMembers.map((member: any) => (
+                <div key={member.id} className={styles.card}>
+                   {member.imageUrl ? (
+                     <img src={member.imageUrl} alt={member.name} className="w-24 h-24 rounded-full mx-auto object-cover border-4 mb-4" style={{ borderColor: themeColor || '#ccc' }} />
+                   ) : (
+                     <div className="w-24 h-24 rounded-full mx-auto bg-gray-200 flex items-center justify-center text-gray-500 text-3xl mb-4 border-4" style={{ borderColor: themeColor || '#ccc' }}>
+                       {member.name ? member.name.charAt(0).toUpperCase() : 'S'}
+                     </div>
+                   )}
+                   <h3 className={styles.title} style={templateType === 'corporate' || templateType === 'sporty' || templateType === 'classic' ? { color: themeColor } : {}}>{member.name}</h3>
+                   <p className="text-crm-muted text-[13px] uppercase tracking-wider mb-2">{member.role === 'SHOP_ADMIN' ? 'Owner / Master Barber' : 'Barber'}</p>
+                   {member.clientNotes && <p className={styles.desc}>{member.clientNotes}</p>}
+                   <div className="mt-auto pt-4">
+                     <button onClick={() => onBookClick && onBookClick(null)} className={styles.btn} style={styles.btnStyle}>{ctaText}</button>
+                   </div>
+                </div>
+              ))}
+            </div>
+          );
+        } else if (part.toLowerCase() === '\$\{gallery\}') {
+          if (galleryImages.length === 0) return null;
+          return (
+            <div key={index} className="not-prose columns-1 sm:columns-2 lg:columns-3 gap-4 space-y-4 my-8">
+              {galleryImages.map((img: any) => (
+                <div key={img.id} className="relative group overflow-hidden rounded-xl break-inside-avoid">
+                  <img src={img.imageUrl} alt={img.caption || 'Gallery Image'} className="w-full h-auto object-cover transition-transform duration-500 group-hover:scale-110" />
+                  {img.caption && (
+                    <div className="absolute bottom-0 left-0 w-full bg-black/60 backdrop-blur p-4 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+                      <p className="text-white text-[13px]">{img.caption}</p>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          );
+        } else if (part.toLowerCase() === '\$\{contact\}') {
+          const address = shop.customization?.address;
+          const phone = shop.customization?.phone;
+          const email = shop.customization?.email;
+          const hours = shop.customization?.businessHours;
+          const days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
+
+          return (
+            <div key={index} className={`not-prose my-8 p-8 md:p-12 ${styles.card}`}>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+                <div>
+                  <h3 className={styles.title} style={templateType === 'corporate' || templateType === 'classic' ? { color: themeColor } : {}}>Contact Us</h3>
+                  <div className="space-y-6 mt-6">
+                    {address && (
+                      <div className="flex items-start gap-4">
+                        <span className="text-xl" style={{ color: themeColor || 'inherit' }}>📍</span>
+                        <p className={styles.desc}>{address}</p>
+                      </div>
+                    )}
+                    {phone && (
+                      <div className="flex items-center gap-4">
+                        <span className="text-xl" style={{ color: themeColor || 'inherit' }}>📞</span>
+                        <a href={`tel:${phone}`} className={styles.desc}>{phone}</a>
+                      </div>
+                    )}
+                    {email && (
+                      <div className="flex items-center gap-4">
+                        <span className="text-xl" style={{ color: themeColor || 'inherit' }}>✉️</span>
+                        <a href={`mailto:${email}`} className={styles.desc}>{email}</a>
+                      </div>
+                    )}
+                  </div>
+                  
+                  <div className="mt-8 pt-8 border-t border-current/10">
+                    <h4 className="font-bold mb-4 uppercase tracking-widest text-[13px] opacity-70">Business Hours</h4>
+                    <div className="space-y-2">
+                      {hours && days.map(day => {
+                        const h = hours[day];
+                        return (
+                          <div key={day} className="flex justify-between text-[13px]">
+                            <span className="capitalize opacity-80">{day}</span>
+                            <span className="font-medium">{h ? `${h.open} - ${h.close}` : 'Closed'}</span>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </div>
+                
+                {address && (
+                  <div className="rounded-xl overflow-hidden shadow-inner h-64 md:h-full min-h-[300px] border border-current/10">
+                    <iframe
+                      width="100%"
+                      height="100%"
+                      frameBorder="0"
+                      style={{ border: 0 }}
+                      src={`https://www.google.com/maps?q=${encodeURIComponent(address)}&output=embed`}
+                      allowFullScreen
+                    ></iframe>
+                  </div>
+                )}
+              </div>
+            </div>
+          );
         } else {
           return <div key={index} dangerouslySetInnerHTML={{ __html: part }} />;
         }
@@ -282,6 +388,7 @@ function CustomPageContent({ content, shop, themeColor, className, onBookClick, 
     </div>
   );
 }
+
 
 export default function ClientPage({ shop, templateType, primaryColor, secondaryColor, sportRed, reviews = [], dynamicTemplateHtml, dynamicTemplateCss }: any) {
     const [selectedService, setSelectedService] = useState<any | null>(null);
@@ -321,6 +428,10 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
     // ── Normalised contact helpers (supports both old flat shape and new nested shape) ──
     const c = shop.customization || {};
     const pages = c.pages || [];
+    const fontFamily = c.fontFamily || 'Inter';
+    const ctaText = c.ctaText || 'Book';
+    const announcement = c.announcement;
+    const heroVideoUrl = c.heroVideoUrl;
     const shopPhone   = c.contact?.phone   || c.phone   || '';
     const shopEmail   = c.contact?.email   || c.email   || '';
     const shopWebsite = c.contact?.website || c.website || '';
@@ -515,7 +626,13 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
               </div>
             </header>
 
-                        <section className="bg-crm-surface relative bg-cover bg-center" style={{ backgroundImage: heroImageUrl ? `url(${heroImageUrl})` : undefined }}><div className={heroImageUrl ? "absolute inset-0 bg-crm-surface/70" : ""} />
+                        <section className="bg-crm-surface relative bg-cover bg-center overflow-hidden" style={{ backgroundImage: heroImageUrl && !heroVideoUrl ? `url(${heroImageUrl})` : undefined }}>
+        {heroVideoUrl && (
+          <video autoPlay loop muted playsInline className="absolute inset-0 w-full h-full object-cover z-0">
+            <source src={heroVideoUrl} type="video/mp4" />
+          </video>
+        )}
+        <div className={(heroImageUrl || heroVideoUrl) ? "absolute inset-0 bg-crm-surface/70 z-0" : "z-0"} />
                 <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center relative z-10">
                     <h2 className="font-extrabold text-crm-text mb-4 text-xl font-bold">{shop.slogan || shop.description || "Quality Service, Every Time."}</h2>
                     <p className="text-crm-muted text-[13px]">Find your perfect look with our expert stylists.</p>

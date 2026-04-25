@@ -67,6 +67,19 @@ export interface Customization {
   backgroundLight: string;
   logoUrl: string | null;
   heroImageUrl: string | null;
+  heroVideoUrl?: string | null;
+  fontFamily?: string;
+  ctaText?: string;
+  announcement?: {
+    text: string;
+    url?: string;
+    isActive: boolean;
+  };
+  seo?: {
+    title: string;
+    description: string;
+    ogImageUrl: string | null;
+  };
   editorialCustomization?: {
     heroTitle: string;
     heroSubtitle: string;
@@ -107,6 +120,18 @@ export const DEFAULT_CUSTOMIZATION: Customization = {
   backgroundLight: '#1e293b', // slate-800
   logoUrl: null,
   heroImageUrl: null,
+  heroVideoUrl: null,
+  fontFamily: 'Inter',
+  ctaText: 'Book Appointment',
+  announcement: {
+    text: 'Welcome to our new booking portal!',
+    isActive: false,
+  },
+  seo: {
+    title: '',
+    description: '',
+    ogImageUrl: null,
+  },
   editorialCustomization: {
     heroTitle: 'Your Sanctuary of Sophisticated Care',
     heroSubtitle: 'Experience beauty as an art form. Our atelier provides a curated space for those who appreciate the finer details of self-ceremony.',

@@ -25,6 +25,10 @@ const serviceInclude = {
   portfolioImages: {
     select: { id: true, imageUrl: true, caption: true },
   },
+  users: {
+    where: { role: { in: ['STAFF', 'SHOP_ADMIN'] } },
+    select: { id: true, name: true, imageUrl: true, role: true, clientNotes: true }, // using clientNotes temporarily for bio if any, or just name/role
+  },
 };
 
 const getShopBySlug = cache(async (slug: string) => {
@@ -93,6 +97,11 @@ const getShopBySlug = cache(async (slug: string) => {
     businessHours: rawCustom.businessHours,
     pages: rawCustom.pages,
     editorialCustomization: rawCustom.editorialCustomization,
+    fontFamily: rawCustom.fontFamily,
+    ctaText: rawCustom.ctaText,
+    heroVideoUrl: rawCustom.heroVideoUrl,
+    announcement: rawCustom.announcement,
+    seo: rawCustom.seo,
   };
   return {
     ...serialized,
@@ -117,12 +126,24 @@ export async function generateMetadata({
     };
   }
 
+  const seo = shop.customization?.seo || {};
+  const title = seo.title || `${shop.name} - Services & Booking`;
+  const description = seo.description || shop.description || `Book services at ${shop.name}`;
+  const ogImageUrl = seo.ogImageUrl || shop.customization?.heroImageUrl || shop.customization?.logoUrl;
+
   return {
-    title: `${shop.name} - Services & Booking`,
-    description: shop.description || `Book services at ${shop.name}`,
+    title,
+    description,
     openGraph: {
-      title: `${shop.name} - Services & Booking`,
-      description: shop.description || `Book services at ${shop.name}`,
+      title,
+      description,
+      images: ogImageUrl ? [{ url: ogImageUrl }] : undefined,
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      images: ogImageUrl ? [ogImageUrl] : undefined,
     },
   };
 }
