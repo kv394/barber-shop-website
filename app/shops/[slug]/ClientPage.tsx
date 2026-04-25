@@ -1035,10 +1035,19 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                   </h1>
                 )}
                 {shop.description && (
-                  <p className="text-crm-muted max-w-2xl mx-auto text-[13px]">
+                  <p className="text-crm-muted max-w-2xl mx-auto text-[13px] mb-8">
                     {shop.description}
                   </p>
                 )}
+                <div className="flex justify-center">
+                  <button
+                    onClick={() => handleBookClick(shop.services?.[0])}
+                    className="font-bold text-white px-8 py-4 rounded-xl transition-all duration-300 hover:scale-105 active:scale-95 shadow-[0_0_20px_rgba(0,0,0,0.3)] hover:shadow-[0_0_30px_rgba(0,0,0,0.5)] text-[14px] uppercase tracking-widest"
+                    style={{ background: `linear-gradient(to right, ${primaryColor}, ${secondaryColor})` }}
+                  >
+                    Book Appointment
+                  </button>
+                </div>
               </div>
             </div>
                 </div>
