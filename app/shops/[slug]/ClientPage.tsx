@@ -51,8 +51,8 @@ function ReviewsSection({ reviews, variant = 'dark' }: { reviews: any[]; variant
     : variant === 'warm'
       ? 'bg-[#f5efe6]'
       : 'bg-crm-surface';
-  const textClass = variant === 'light' ? 'text-crm-mutedrm-textrm-text' : variant === 'warm' ? 'text-[#2c1e16]' : 'text-crm-mutedrm-textrm-text';
-  const subTextClass = variant === 'light' ? 'text-crm-mutedrm-textrm-muted' : variant === 'warm' ? 'text-[#5a4634]' : 'text-crm-mutedrm-textrm-muted';
+  const textClass = variant === 'light' ? 'text-crm-mutedrm-textrm-text' : variant === 'warm' ? 'text-crm-text' : 'text-crm-mutedrm-textrm-text';
+  const subTextClass = variant === 'light' ? 'text-crm-mutedrm-textrm-muted' : variant === 'warm' ? 'text-crm-muted' : 'text-crm-mutedrm-textrm-muted';
   const cardClass = variant === 'light'
     ? 'bg-crm-surface border border-crm-border shadow-sm shadow-sm'
     : variant === 'warm'
@@ -159,9 +159,9 @@ function CustomPageContent({ content, shop, themeColor, className, onBookClick, 
         return {
           card: 'bg-[#0d0f0d] p-8 rounded-2xl flex flex-col items-center text-crm-mutedrm-textenter border border-[#292a29]',
           serviceCard: 'bg-[#0d0f0d] p-8 rounded-2xl flex flex-col border border-[#292a29]',
-          title: 'font-serif text-[#e3e2e0] text-xl mb-4',
+          title: 'font-serif text-crm-text text-xl mb-4',
           price: 'text-[13px] font-bold text-white mb-4',
-          desc: 'text-[#d0c5af] leading-relaxed text-[13px] mb-6 flex-grow',
+          desc: 'text-crm-muted leading-relaxed text-[13px] mb-6 flex-grow',
           btn: 'font-semibold flex items-center justify-center gap-2 uppercase tracking-widest py-3 border border-[#d4af37] text-[#d4af37] hover:bg-[#d4af37] hover:text-crm-mutedlack transition-colors',
           btnStyle: themeColor ? { borderColor: themeColor, color: themeColor } : {}
         };
@@ -179,10 +179,10 @@ function CustomPageContent({ content, shop, themeColor, className, onBookClick, 
         return {
           card: 'bg-[#fdfbf7] border border-[#e6d9c6] p-8 text-crm-mutedrm-textenter flex flex-col items-center shadow-sm',
           serviceCard: 'bg-[#fdfbf7] border border-[#e6d9c6] p-8 text-crm-mutedrm-textenter flex flex-col items-center shadow-sm',
-          title: 'font-bold mb-2 text-lg text-[#2c1e16]',
+          title: 'font-bold mb-2 text-lg text-crm-text',
           price: 'text-[#8b7355] text-[13px] tracking-widest uppercase mb-3 font-semibold',
-          desc: 'text-[#5a4634] italic mb-6 text-[13px] flex-grow',
-          btn: 'mt-auto border border-[#2c1e16] px-6 py-2 text-[11px] uppercase tracking-widest text-[#2c1e16] hover:bg-[#2c1e16] hover:text-[#fdfbf7] transition-all',
+          desc: 'text-crm-muted italic mb-6 text-[13px] flex-grow',
+          btn: 'mt-auto border border-[#2c1e16] px-6 py-2 text-[11px] uppercase tracking-widest text-crm-text hover:bg-[#2c1e16] hover:text-[#fdfbf7] transition-all',
           btnStyle: {}
         };
       case 'modern':
@@ -491,6 +491,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
     };
     // ── Normalised contact helpers (supports both old flat shape and new nested shape) ──
     
+    
     const c = shop.customization || {};
     const headingFont = c.headingFont || c.fontFamily || 'Inter';
     const bodyFont = c.bodyFont || c.fontFamily || 'Inter';
@@ -561,6 +562,54 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
         
         ${isDark ? `
           .bg-crm-bg, .bg-white, .bg-crm-surface { background-color: ${themeBg} !important; border-color: ${themeBorder} !important; }
+          .text-crm-text, .text-gray-900, .text-black, .text-crm-text, .text-crm-text, .text-crm-text, .text-crm-text { color: ${themeText} !important; }
+          .text-crm-muted, .text-gray-500, .text-gray-600, .text-crm-muted, .text-crm-muted, .text-crm-muted, .text-crm-muted { color: ${themeMuted} !important; }
+          .border-gray-100, .border-gray-200, .border-crm-border { border-color: ${themeBorder} !important; }
+        ` : ''}
+
+        ${buttonShape === 'sharp' ? '.btn, button { border-radius: 0 !important; }' : ''}
+        ${buttonShape === 'pill' ? '.btn, button { border-radius: 9999px !important; }' : ''}
+        
+        ${buttonVariant === 'outline' ? `
+          .btn, button.bg-crm-primary { background-color: transparent !important; border: 2px solid ${primaryColor} !important; color: ${primaryColor} !important; }
+          .btn:hover, button.bg-crm-primary:hover { background-color: ${primaryColor}20 !important; }
+        ` : ''}
+        
+        ${buttonVariant === 'ghost' ? `
+          .btn, button.bg-crm-primary { background-color: transparent !important; border: none !important; color: ${primaryColor} !important; }
+          .btn:hover, button.bg-crm-primary:hover { background-color: ${primaryColor}20 !important; }
+        ` : ''}
+
+        ${enableScrollAnimations ? `
+          .animate-on-scroll {
+            animation: fadeInUp 0.8s ease forwards;
+          }
+          @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+          }
+        ` : ''}
+
+        .hero-overlay {
+          background-color: ${heroOverlayColor};
+          opacity: ${heroOverlayOpacity / 100};
+        }
+
+        ${customCss}
+      `}} />
+  
+
+      {faviconUrl && (
+        <link rel="icon" href={faviconUrl} />
+      )}
+      <style dangerouslySetInnerHTML={{__html: `
+        @import url('https://fonts.googleapis.com/css2?family=${headingFont.replace(/ /g, '+')}:wght@400;600;700;900&family=${bodyFont.replace(/ /g, '+')}:wght@400;500;600&display=swap');
+        
+        h1, h2, h3, h4, h5, h6, .font-heading { font-family: '${headingFont}', sans-serif !important; }
+        body, p, span, a, div, .font-body { font-family: '${bodyFont}', sans-serif; }
+        
+        ${isDark ? `
+          .bg-crm-bg, .bg-white, .bg-crm-surface { background-color: ${themeBg} !important; border-color: ${themeBorder} !important; }
           .text-crm-mutedrm-textrm-text, .text-gray-900, .text-crm-mutedlack { color: ${themeText} !important; }
           .text-crm-mutedrm-textrm-muted, .text-gray-500, .text-gray-600 { color: ${themeMuted} !important; }
           .border-gray-100, .border-gray-200, .border-crm-border { border-color: ${themeBorder} !important; }
@@ -615,6 +664,54 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
     if (templateType === 'sporty') {
         return (
             <main className="h-[100dvh] overflow-y-auto overflow-x-hidden bg-crm-surface text-crm-mutedrm-textrm-text font-sans relative">
+
+      {faviconUrl && (
+        <link rel="icon" href={faviconUrl} />
+      )}
+      <style dangerouslySetInnerHTML={{__html: `
+        @import url('https://fonts.googleapis.com/css2?family=${headingFont.replace(/ /g, '+')}:wght@400;600;700;900&family=${bodyFont.replace(/ /g, '+')}:wght@400;500;600&display=swap');
+        
+        h1, h2, h3, h4, h5, h6, .font-heading { font-family: '${headingFont}', sans-serif !important; }
+        body, p, span, a, div, .font-body { font-family: '${bodyFont}', sans-serif; }
+        
+        ${isDark ? `
+          .bg-crm-bg, .bg-white, .bg-crm-surface { background-color: ${themeBg} !important; border-color: ${themeBorder} !important; }
+          .text-crm-text, .text-gray-900, .text-black, .text-crm-text, .text-crm-text, .text-crm-text, .text-crm-text { color: ${themeText} !important; }
+          .text-crm-muted, .text-gray-500, .text-gray-600, .text-crm-muted, .text-crm-muted, .text-crm-muted, .text-crm-muted { color: ${themeMuted} !important; }
+          .border-gray-100, .border-gray-200, .border-crm-border { border-color: ${themeBorder} !important; }
+        ` : ''}
+
+        ${buttonShape === 'sharp' ? '.btn, button { border-radius: 0 !important; }' : ''}
+        ${buttonShape === 'pill' ? '.btn, button { border-radius: 9999px !important; }' : ''}
+        
+        ${buttonVariant === 'outline' ? `
+          .btn, button.bg-crm-primary { background-color: transparent !important; border: 2px solid ${primaryColor} !important; color: ${primaryColor} !important; }
+          .btn:hover, button.bg-crm-primary:hover { background-color: ${primaryColor}20 !important; }
+        ` : ''}
+        
+        ${buttonVariant === 'ghost' ? `
+          .btn, button.bg-crm-primary { background-color: transparent !important; border: none !important; color: ${primaryColor} !important; }
+          .btn:hover, button.bg-crm-primary:hover { background-color: ${primaryColor}20 !important; }
+        ` : ''}
+
+        ${enableScrollAnimations ? `
+          .animate-on-scroll {
+            animation: fadeInUp 0.8s ease forwards;
+          }
+          @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+          }
+        ` : ''}
+
+        .hero-overlay {
+          background-color: ${heroOverlayColor};
+          opacity: ${heroOverlayOpacity / 100};
+        }
+
+        ${customCss}
+      `}} />
+  
 
       {faviconUrl && (
         <link rel="icon" href={faviconUrl} />
@@ -775,6 +872,54 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
         
         ${isDark ? `
           .bg-crm-bg, .bg-white, .bg-crm-surface { background-color: ${themeBg} !important; border-color: ${themeBorder} !important; }
+          .text-crm-text, .text-gray-900, .text-black, .text-crm-text, .text-crm-text, .text-crm-text, .text-crm-text { color: ${themeText} !important; }
+          .text-crm-muted, .text-gray-500, .text-gray-600, .text-crm-muted, .text-crm-muted, .text-crm-muted, .text-crm-muted { color: ${themeMuted} !important; }
+          .border-gray-100, .border-gray-200, .border-crm-border { border-color: ${themeBorder} !important; }
+        ` : ''}
+
+        ${buttonShape === 'sharp' ? '.btn, button { border-radius: 0 !important; }' : ''}
+        ${buttonShape === 'pill' ? '.btn, button { border-radius: 9999px !important; }' : ''}
+        
+        ${buttonVariant === 'outline' ? `
+          .btn, button.bg-crm-primary { background-color: transparent !important; border: 2px solid ${primaryColor} !important; color: ${primaryColor} !important; }
+          .btn:hover, button.bg-crm-primary:hover { background-color: ${primaryColor}20 !important; }
+        ` : ''}
+        
+        ${buttonVariant === 'ghost' ? `
+          .btn, button.bg-crm-primary { background-color: transparent !important; border: none !important; color: ${primaryColor} !important; }
+          .btn:hover, button.bg-crm-primary:hover { background-color: ${primaryColor}20 !important; }
+        ` : ''}
+
+        ${enableScrollAnimations ? `
+          .animate-on-scroll {
+            animation: fadeInUp 0.8s ease forwards;
+          }
+          @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+          }
+        ` : ''}
+
+        .hero-overlay {
+          background-color: ${heroOverlayColor};
+          opacity: ${heroOverlayOpacity / 100};
+        }
+
+        ${customCss}
+      `}} />
+  
+
+      {faviconUrl && (
+        <link rel="icon" href={faviconUrl} />
+      )}
+      <style dangerouslySetInnerHTML={{__html: `
+        @import url('https://fonts.googleapis.com/css2?family=${headingFont.replace(/ /g, '+')}:wght@400;600;700;900&family=${bodyFont.replace(/ /g, '+')}:wght@400;500;600&display=swap');
+        
+        h1, h2, h3, h4, h5, h6, .font-heading { font-family: '${headingFont}', sans-serif !important; }
+        body, p, span, a, div, .font-body { font-family: '${bodyFont}', sans-serif; }
+        
+        ${isDark ? `
+          .bg-crm-bg, .bg-white, .bg-crm-surface { background-color: ${themeBg} !important; border-color: ${themeBorder} !important; }
           .text-crm-mutedrm-textrm-text, .text-gray-900, .text-crm-mutedlack { color: ${themeText} !important; }
           .text-crm-mutedrm-textrm-muted, .text-gray-500, .text-gray-600 { color: ${themeMuted} !important; }
           .border-gray-100, .border-gray-200, .border-crm-border { border-color: ${themeBorder} !important; }
@@ -898,6 +1043,54 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
         
         ${isDark ? `
           .bg-crm-bg, .bg-white, .bg-crm-surface { background-color: ${themeBg} !important; border-color: ${themeBorder} !important; }
+          .text-crm-text, .text-gray-900, .text-black, .text-crm-text, .text-crm-text, .text-crm-text, .text-crm-text { color: ${themeText} !important; }
+          .text-crm-muted, .text-gray-500, .text-gray-600, .text-crm-muted, .text-crm-muted, .text-crm-muted, .text-crm-muted { color: ${themeMuted} !important; }
+          .border-gray-100, .border-gray-200, .border-crm-border { border-color: ${themeBorder} !important; }
+        ` : ''}
+
+        ${buttonShape === 'sharp' ? '.btn, button { border-radius: 0 !important; }' : ''}
+        ${buttonShape === 'pill' ? '.btn, button { border-radius: 9999px !important; }' : ''}
+        
+        ${buttonVariant === 'outline' ? `
+          .btn, button.bg-crm-primary { background-color: transparent !important; border: 2px solid ${primaryColor} !important; color: ${primaryColor} !important; }
+          .btn:hover, button.bg-crm-primary:hover { background-color: ${primaryColor}20 !important; }
+        ` : ''}
+        
+        ${buttonVariant === 'ghost' ? `
+          .btn, button.bg-crm-primary { background-color: transparent !important; border: none !important; color: ${primaryColor} !important; }
+          .btn:hover, button.bg-crm-primary:hover { background-color: ${primaryColor}20 !important; }
+        ` : ''}
+
+        ${enableScrollAnimations ? `
+          .animate-on-scroll {
+            animation: fadeInUp 0.8s ease forwards;
+          }
+          @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+          }
+        ` : ''}
+
+        .hero-overlay {
+          background-color: ${heroOverlayColor};
+          opacity: ${heroOverlayOpacity / 100};
+        }
+
+        ${customCss}
+      `}} />
+  
+
+      {faviconUrl && (
+        <link rel="icon" href={faviconUrl} />
+      )}
+      <style dangerouslySetInnerHTML={{__html: `
+        @import url('https://fonts.googleapis.com/css2?family=${headingFont.replace(/ /g, '+')}:wght@400;600;700;900&family=${bodyFont.replace(/ /g, '+')}:wght@400;500;600&display=swap');
+        
+        h1, h2, h3, h4, h5, h6, .font-heading { font-family: '${headingFont}', sans-serif !important; }
+        body, p, span, a, div, .font-body { font-family: '${bodyFont}', sans-serif; }
+        
+        ${isDark ? `
+          .bg-crm-bg, .bg-white, .bg-crm-surface { background-color: ${themeBg} !important; border-color: ${themeBorder} !important; }
           .text-crm-mutedrm-textrm-text, .text-gray-900, .text-crm-mutedlack { color: ${themeText} !important; }
           .text-crm-mutedrm-textrm-muted, .text-gray-500, .text-gray-600 { color: ${themeMuted} !important; }
           .border-gray-100, .border-gray-200, .border-crm-border { border-color: ${themeBorder} !important; }
@@ -976,6 +1169,54 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
       if (templateType === 'sunset') {
         return (
           <main className="h-[100dvh] overflow-y-auto overflow-x-hidden bg-gradient-to-br from-purple-900 via-black to-orange-900 text-crm-mutedrm-textrm-text font-sans relative">
+
+      {faviconUrl && (
+        <link rel="icon" href={faviconUrl} />
+      )}
+      <style dangerouslySetInnerHTML={{__html: `
+        @import url('https://fonts.googleapis.com/css2?family=${headingFont.replace(/ /g, '+')}:wght@400;600;700;900&family=${bodyFont.replace(/ /g, '+')}:wght@400;500;600&display=swap');
+        
+        h1, h2, h3, h4, h5, h6, .font-heading { font-family: '${headingFont}', sans-serif !important; }
+        body, p, span, a, div, .font-body { font-family: '${bodyFont}', sans-serif; }
+        
+        ${isDark ? `
+          .bg-crm-bg, .bg-white, .bg-crm-surface { background-color: ${themeBg} !important; border-color: ${themeBorder} !important; }
+          .text-crm-text, .text-gray-900, .text-black, .text-crm-text, .text-crm-text, .text-crm-text, .text-crm-text { color: ${themeText} !important; }
+          .text-crm-muted, .text-gray-500, .text-gray-600, .text-crm-muted, .text-crm-muted, .text-crm-muted, .text-crm-muted { color: ${themeMuted} !important; }
+          .border-gray-100, .border-gray-200, .border-crm-border { border-color: ${themeBorder} !important; }
+        ` : ''}
+
+        ${buttonShape === 'sharp' ? '.btn, button { border-radius: 0 !important; }' : ''}
+        ${buttonShape === 'pill' ? '.btn, button { border-radius: 9999px !important; }' : ''}
+        
+        ${buttonVariant === 'outline' ? `
+          .btn, button.bg-crm-primary { background-color: transparent !important; border: 2px solid ${primaryColor} !important; color: ${primaryColor} !important; }
+          .btn:hover, button.bg-crm-primary:hover { background-color: ${primaryColor}20 !important; }
+        ` : ''}
+        
+        ${buttonVariant === 'ghost' ? `
+          .btn, button.bg-crm-primary { background-color: transparent !important; border: none !important; color: ${primaryColor} !important; }
+          .btn:hover, button.bg-crm-primary:hover { background-color: ${primaryColor}20 !important; }
+        ` : ''}
+
+        ${enableScrollAnimations ? `
+          .animate-on-scroll {
+            animation: fadeInUp 0.8s ease forwards;
+          }
+          @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+          }
+        ` : ''}
+
+        .hero-overlay {
+          background-color: ${heroOverlayColor};
+          opacity: ${heroOverlayOpacity / 100};
+        }
+
+        ${customCss}
+      `}} />
+  
 
       {faviconUrl && (
         <link rel="icon" href={faviconUrl} />
@@ -1067,7 +1308,55 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
         const editorial = shop.customization?.editorialCustomization || {};
         
         return (
-          <main className="h-[100dvh] overflow-y-auto overflow-x-hidden bg-[#121412] text-[#e3e2e0] selection:bg-[#d4af37] selection:text-[#554300] font-sans">
+          <main className="h-[100dvh] overflow-y-auto overflow-x-hidden bg-[#121412] text-crm-text selection:bg-[#d4af37] selection:text-[#554300] font-sans">
+
+      {faviconUrl && (
+        <link rel="icon" href={faviconUrl} />
+      )}
+      <style dangerouslySetInnerHTML={{__html: `
+        @import url('https://fonts.googleapis.com/css2?family=${headingFont.replace(/ /g, '+')}:wght@400;600;700;900&family=${bodyFont.replace(/ /g, '+')}:wght@400;500;600&display=swap');
+        
+        h1, h2, h3, h4, h5, h6, .font-heading { font-family: '${headingFont}', sans-serif !important; }
+        body, p, span, a, div, .font-body { font-family: '${bodyFont}', sans-serif; }
+        
+        ${isDark ? `
+          .bg-crm-bg, .bg-white, .bg-crm-surface { background-color: ${themeBg} !important; border-color: ${themeBorder} !important; }
+          .text-crm-text, .text-gray-900, .text-black, .text-crm-text, .text-crm-text, .text-crm-text, .text-crm-text { color: ${themeText} !important; }
+          .text-crm-muted, .text-gray-500, .text-gray-600, .text-crm-muted, .text-crm-muted, .text-crm-muted, .text-crm-muted { color: ${themeMuted} !important; }
+          .border-gray-100, .border-gray-200, .border-crm-border { border-color: ${themeBorder} !important; }
+        ` : ''}
+
+        ${buttonShape === 'sharp' ? '.btn, button { border-radius: 0 !important; }' : ''}
+        ${buttonShape === 'pill' ? '.btn, button { border-radius: 9999px !important; }' : ''}
+        
+        ${buttonVariant === 'outline' ? `
+          .btn, button.bg-crm-primary { background-color: transparent !important; border: 2px solid ${primaryColor} !important; color: ${primaryColor} !important; }
+          .btn:hover, button.bg-crm-primary:hover { background-color: ${primaryColor}20 !important; }
+        ` : ''}
+        
+        ${buttonVariant === 'ghost' ? `
+          .btn, button.bg-crm-primary { background-color: transparent !important; border: none !important; color: ${primaryColor} !important; }
+          .btn:hover, button.bg-crm-primary:hover { background-color: ${primaryColor}20 !important; }
+        ` : ''}
+
+        ${enableScrollAnimations ? `
+          .animate-on-scroll {
+            animation: fadeInUp 0.8s ease forwards;
+          }
+          @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+          }
+        ` : ''}
+
+        .hero-overlay {
+          background-color: ${heroOverlayColor};
+          opacity: ${heroOverlayOpacity / 100};
+        }
+
+        ${customCss}
+      `}} />
+  
 
       {faviconUrl && (
         <link rel="icon" href={faviconUrl} />
@@ -1140,7 +1429,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                             servicesSection.scrollIntoView({ behavior: 'smooth' });
                         }
                     }}
-                    className="px-6 py-3 rounded-xl font-medium hover:opacity-80 transition-all duration-300 text-[#121412]"
+                    className="px-6 py-3 rounded-xl font-medium hover:opacity-80 transition-all duration-300 text-crm-text"
                     style={{ backgroundColor: primaryColor }}
                   >
                     Book Appointment
@@ -1161,7 +1450,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                       className="font-headline leading-[1.1] mb-8 tracking-tight text-crm-mutedrm-textxl font-bold"
                       dangerouslySetInnerHTML={{ __html: editorial.heroTitle || `Your Sanctuary of <br/> <span class="italic" style="color: ${primaryColor}">Sophisticated Care</span>` }}
                     />
-                    <p className="text-[#d0c5af] font-body max-w-md mb-10 leading-relaxed text-[13px]">
+                    <p className="text-crm-muted font-body max-w-md mb-10 leading-relaxed text-[13px]">
                       {editorial.heroSubtitle || 'Experience beauty as an art form. Our atelier provides a curated space for those who appreciate the finer details of self-ceremony.'}
                     </p>
                     <div className="flex items-center gap-4">
@@ -1172,7 +1461,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                                 servicesSection.scrollIntoView({ behavior: 'smooth' });
                             }
                         }}
-                        className="px-8 py-4 rounded-lg hover:shadow-lg transition-all font-semibold text-[#121412]"
+                        className="px-8 py-4 rounded-lg hover:shadow-lg transition-all font-semibold text-crm-text"
                         style={{ background: `linear-gradient(to bottom right, ${primaryColor}, ${secondaryColor})` }}
                       >
                         Book Now
@@ -1202,7 +1491,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                  <section key={p.id} id={p.id} className="py-32 px-8 min-h-[70vh] w-full max-w-5xl mx-auto">
                     <div className="w-full">
                         <h1 className="font-headline mb-12 text-crm-mutedrm-textxl font-bold" style={{ color: primaryColor }}>{p.title}</h1>
-                        <CustomPageContent content={p.content || ""} shop={shop} themeColor={primaryColor} className="prose prose-invert prose-lg max-w-none font-body text-[#d0c5af]"  onBookClick={handleBookClick}  reviews={reviews}  templateType={templateType} />
+                        <CustomPageContent content={p.content || ""} shop={shop} themeColor={primaryColor} className="prose prose-invert prose-lg max-w-none font-body text-crm-muted"  onBookClick={handleBookClick}  reviews={reviews}  templateType={templateType} />
                     </div>
                 </section>
             ))}
@@ -1257,12 +1546,12 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                         {editorial.testimonials.slice(0,2).map((t: any, i: number) => (
                           <div key={i} className={`bg-[#0d0f0d] p-10 rounded-3xl shadow-sm max-w-sm ${i === 1 ? 'hidden md:block opacity-60' : ''}`}>
                             <span className="material-symbols-outlined text-crm-mutedxl mb-6" style={{ color: secondaryColor }}>format_quote</span>
-                            <p className="font-body italic text-[#e3e2e0] mb-8 leading-relaxed text-[13px]">"{t.quote}"</p>
+                            <p className="font-body italic text-crm-text mb-8 leading-relaxed text-[13px]">"{t.quote}"</p>
                             <div className="flex items-center gap-4">
                               <div className="w-12 h-12 rounded-full bg-[#292a29]"></div>
                               <div>
-                                <p className="font-bold text-[#e3e2e0] text-[13px]">{t.author}</p>
-                                <p className="text-[#d0c5af] uppercase tracking-widest text-[13px]">{t.role}</p>
+                                <p className="font-bold text-crm-text text-[13px]">{t.author}</p>
+                                <p className="text-crm-muted uppercase tracking-widest text-[13px]">{t.role}</p>
                               </div>
                             </div>
                           </div>
@@ -1284,14 +1573,14 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                           <span className="material-symbols-outlined" style={{ color: primaryColor }}>location_on</span>
                           <div>
                             <h4 className="font-bold mb-2 text-crm-mutedase font-semibold">Our Location</h4>
-                            <p className="text-[#d0c5af] text-[13px]">{shopAddress || 'Address not provided'}</p>
+                            <p className="text-crm-muted text-[13px]">{shopAddress || 'Address not provided'}</p>
                           </div>
                         </div>
                         <div className="flex gap-6">
                           <span className="material-symbols-outlined" style={{ color: primaryColor }}>call</span>
                           <div>
                             <h4 className="font-bold mb-2 text-crm-mutedase font-semibold">Contact Details</h4>
-                            <p className="text-[#d0c5af] text-[13px]">{shop.customization?.phone || 'Phone not provided'}<br/>{shop.customization?.email || 'Email not provided'}</p>
+                            <p className="text-crm-muted text-[13px]">{shop.customization?.phone || 'Phone not provided'}<br/>{shop.customization?.email || 'Email not provided'}</p>
                           </div>
                         </div>
                       </div>
@@ -1303,7 +1592,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                       <div className="absolute inset-0 flex items-center justify-center">
                         <div className="bg-[#121412] p-8 rounded-2xl shadow-xl border text-crm-mutedrm-textenter max-w-xs" style={{ borderColor: `${primaryColor}20` }}>
                           <div className="w-12 h-12 rounded-full mx-auto mb-4 flex items-center justify-center" style={{ backgroundColor: primaryColor }}>
-                            <span className="material-symbols-outlined text-[#121412]">pin_drop</span>
+                            <span className="material-symbols-outlined text-crm-text">pin_drop</span>
                           </div>
                           <p className="font-headline text-[13px]">{shop.name}</p>
                         </div>
@@ -1346,6 +1635,54 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
       if (templateType === 'minimal') {
         return (
           <main className="h-[100dvh] overflow-y-auto overflow-x-hidden bg-[#fafafa] text-[#333333] font-sans relative">
+
+      {faviconUrl && (
+        <link rel="icon" href={faviconUrl} />
+      )}
+      <style dangerouslySetInnerHTML={{__html: `
+        @import url('https://fonts.googleapis.com/css2?family=${headingFont.replace(/ /g, '+')}:wght@400;600;700;900&family=${bodyFont.replace(/ /g, '+')}:wght@400;500;600&display=swap');
+        
+        h1, h2, h3, h4, h5, h6, .font-heading { font-family: '${headingFont}', sans-serif !important; }
+        body, p, span, a, div, .font-body { font-family: '${bodyFont}', sans-serif; }
+        
+        ${isDark ? `
+          .bg-crm-bg, .bg-white, .bg-crm-surface { background-color: ${themeBg} !important; border-color: ${themeBorder} !important; }
+          .text-crm-text, .text-gray-900, .text-black, .text-crm-text, .text-crm-text, .text-crm-text, .text-crm-text { color: ${themeText} !important; }
+          .text-crm-muted, .text-gray-500, .text-gray-600, .text-crm-muted, .text-crm-muted, .text-crm-muted, .text-crm-muted { color: ${themeMuted} !important; }
+          .border-gray-100, .border-gray-200, .border-crm-border { border-color: ${themeBorder} !important; }
+        ` : ''}
+
+        ${buttonShape === 'sharp' ? '.btn, button { border-radius: 0 !important; }' : ''}
+        ${buttonShape === 'pill' ? '.btn, button { border-radius: 9999px !important; }' : ''}
+        
+        ${buttonVariant === 'outline' ? `
+          .btn, button.bg-crm-primary { background-color: transparent !important; border: 2px solid ${primaryColor} !important; color: ${primaryColor} !important; }
+          .btn:hover, button.bg-crm-primary:hover { background-color: ${primaryColor}20 !important; }
+        ` : ''}
+        
+        ${buttonVariant === 'ghost' ? `
+          .btn, button.bg-crm-primary { background-color: transparent !important; border: none !important; color: ${primaryColor} !important; }
+          .btn:hover, button.bg-crm-primary:hover { background-color: ${primaryColor}20 !important; }
+        ` : ''}
+
+        ${enableScrollAnimations ? `
+          .animate-on-scroll {
+            animation: fadeInUp 0.8s ease forwards;
+          }
+          @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+          }
+        ` : ''}
+
+        .hero-overlay {
+          background-color: ${heroOverlayColor};
+          opacity: ${heroOverlayOpacity / 100};
+        }
+
+        ${customCss}
+      `}} />
+  
 
       {faviconUrl && (
         <link rel="icon" href={faviconUrl} />
@@ -1452,7 +1789,55 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
     
       if (templateType === 'classic') {
         return (
-          <main className="h-[100dvh] overflow-y-auto overflow-x-hidden bg-[#fdfbf7] text-[#2c1e16] font-serif relative">
+          <main className="h-[100dvh] overflow-y-auto overflow-x-hidden bg-[#fdfbf7] text-crm-text font-serif relative">
+
+      {faviconUrl && (
+        <link rel="icon" href={faviconUrl} />
+      )}
+      <style dangerouslySetInnerHTML={{__html: `
+        @import url('https://fonts.googleapis.com/css2?family=${headingFont.replace(/ /g, '+')}:wght@400;600;700;900&family=${bodyFont.replace(/ /g, '+')}:wght@400;500;600&display=swap');
+        
+        h1, h2, h3, h4, h5, h6, .font-heading { font-family: '${headingFont}', sans-serif !important; }
+        body, p, span, a, div, .font-body { font-family: '${bodyFont}', sans-serif; }
+        
+        ${isDark ? `
+          .bg-crm-bg, .bg-white, .bg-crm-surface { background-color: ${themeBg} !important; border-color: ${themeBorder} !important; }
+          .text-crm-text, .text-gray-900, .text-black, .text-crm-text, .text-crm-text, .text-crm-text, .text-crm-text { color: ${themeText} !important; }
+          .text-crm-muted, .text-gray-500, .text-gray-600, .text-crm-muted, .text-crm-muted, .text-crm-muted, .text-crm-muted { color: ${themeMuted} !important; }
+          .border-gray-100, .border-gray-200, .border-crm-border { border-color: ${themeBorder} !important; }
+        ` : ''}
+
+        ${buttonShape === 'sharp' ? '.btn, button { border-radius: 0 !important; }' : ''}
+        ${buttonShape === 'pill' ? '.btn, button { border-radius: 9999px !important; }' : ''}
+        
+        ${buttonVariant === 'outline' ? `
+          .btn, button.bg-crm-primary { background-color: transparent !important; border: 2px solid ${primaryColor} !important; color: ${primaryColor} !important; }
+          .btn:hover, button.bg-crm-primary:hover { background-color: ${primaryColor}20 !important; }
+        ` : ''}
+        
+        ${buttonVariant === 'ghost' ? `
+          .btn, button.bg-crm-primary { background-color: transparent !important; border: none !important; color: ${primaryColor} !important; }
+          .btn:hover, button.bg-crm-primary:hover { background-color: ${primaryColor}20 !important; }
+        ` : ''}
+
+        ${enableScrollAnimations ? `
+          .animate-on-scroll {
+            animation: fadeInUp 0.8s ease forwards;
+          }
+          @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+          }
+        ` : ''}
+
+        .hero-overlay {
+          background-color: ${heroOverlayColor};
+          opacity: ${heroOverlayOpacity / 100};
+        }
+
+        ${customCss}
+      `}} />
+  
 
       {faviconUrl && (
         <link rel="icon" href={faviconUrl} />
@@ -1504,9 +1889,9 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
             <div className="absolute top-6 left-8 z-50">
                 {pages.filter((p: any) => p.isVisible).length > 0 && (
                     <nav className="flex gap-6 font-sans text-[11px] font-bold uppercase tracking-widest">
-                        <a href="#" className="transition-colors text-[#8b7355] hover:text-[#2c1e16]">Home</a>
+                        <a href="#" className="transition-colors text-[#8b7355] hover:text-crm-text">Home</a>
                         {pages.filter((p: any) => p.isVisible).map((p: any) => (
-                            <a key={p.id} href={`#${p.id}`} className="transition-colors text-[#8b7355] hover:text-[#2c1e16]">{p.title}</a>
+                            <a key={p.id} href={`#${p.id}`} className="transition-colors text-[#8b7355] hover:text-crm-text">{p.title}</a>
                         ))}
                     </nav>
                 )}
@@ -1520,7 +1905,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
     <div className="relative z-10">
               {logoUrl ? <img src={logoUrl} alt={shop.name} className="h-24 mx-auto object-contain mb-4" onError={(e) => { e.currentTarget.style.display = 'none'; }} /> : <h1 className="font-bold uppercase tracking-widest mb-4 text-crm-mutedrm-textxl font-bold" style={{ color: primaryColor }}>{shop.name}</h1>}
               {shop.slogan && <h2 className="text-[#8b7355] font-serif text-xl italic mb-6">{shop.slogan}</h2>}
-              {shop.description && <p className="max-w-xl mx-auto text-[#5a4634] text-[13px]">{shop.description}</p>}
+              {shop.description && <p className="max-w-xl mx-auto text-crm-muted text-[13px]">{shop.description}</p>}
             </div>
             </header>
     
@@ -1528,7 +1913,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
 
                 <section key={p.id} id={p.id} className="w-full max-w-6xl mx-auto px-8 py-32 min-h-[60vh]">
                     <h1 className="font-bold uppercase tracking-widest mb-12 text-crm-mutedrm-textenter text-crm-mutedrm-textxl font-bold" style={{ color: primaryColor }}>{p.title}</h1>
-                    <CustomPageContent content={p.content || ""} shop={shop} themeColor={primaryColor} className="prose prose-lg max-w-none text-[#5a4634]"  onBookClick={handleBookClick}  reviews={reviews}  templateType={templateType} />
+                    <CustomPageContent content={p.content || ""} shop={shop} themeColor={primaryColor} className="prose prose-lg max-w-none text-crm-muted"  onBookClick={handleBookClick}  reviews={reviews}  templateType={templateType} />
                 </section>
             ))}
 
@@ -1548,6 +1933,54 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
       // Default 'modern' template (Redesigned)
     return (
       <main className="h-[100dvh] overflow-y-auto overflow-x-hidden bg-gray-50 text-gray-800 font-sans relative">
+
+      {faviconUrl && (
+        <link rel="icon" href={faviconUrl} />
+      )}
+      <style dangerouslySetInnerHTML={{__html: `
+        @import url('https://fonts.googleapis.com/css2?family=${headingFont.replace(/ /g, '+')}:wght@400;600;700;900&family=${bodyFont.replace(/ /g, '+')}:wght@400;500;600&display=swap');
+        
+        h1, h2, h3, h4, h5, h6, .font-heading { font-family: '${headingFont}', sans-serif !important; }
+        body, p, span, a, div, .font-body { font-family: '${bodyFont}', sans-serif; }
+        
+        ${isDark ? `
+          .bg-crm-bg, .bg-white, .bg-crm-surface { background-color: ${themeBg} !important; border-color: ${themeBorder} !important; }
+          .text-crm-text, .text-gray-900, .text-black, .text-crm-text, .text-crm-text, .text-crm-text, .text-crm-text { color: ${themeText} !important; }
+          .text-crm-muted, .text-gray-500, .text-gray-600, .text-crm-muted, .text-crm-muted, .text-crm-muted, .text-crm-muted { color: ${themeMuted} !important; }
+          .border-gray-100, .border-gray-200, .border-crm-border { border-color: ${themeBorder} !important; }
+        ` : ''}
+
+        ${buttonShape === 'sharp' ? '.btn, button { border-radius: 0 !important; }' : ''}
+        ${buttonShape === 'pill' ? '.btn, button { border-radius: 9999px !important; }' : ''}
+        
+        ${buttonVariant === 'outline' ? `
+          .btn, button.bg-crm-primary { background-color: transparent !important; border: 2px solid ${primaryColor} !important; color: ${primaryColor} !important; }
+          .btn:hover, button.bg-crm-primary:hover { background-color: ${primaryColor}20 !important; }
+        ` : ''}
+        
+        ${buttonVariant === 'ghost' ? `
+          .btn, button.bg-crm-primary { background-color: transparent !important; border: none !important; color: ${primaryColor} !important; }
+          .btn:hover, button.bg-crm-primary:hover { background-color: ${primaryColor}20 !important; }
+        ` : ''}
+
+        ${enableScrollAnimations ? `
+          .animate-on-scroll {
+            animation: fadeInUp 0.8s ease forwards;
+          }
+          @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+          }
+        ` : ''}
+
+        .hero-overlay {
+          background-color: ${heroOverlayColor};
+          opacity: ${heroOverlayOpacity / 100};
+        }
+
+        ${customCss}
+      `}} />
+  
 
       {faviconUrl && (
         <link rel="icon" href={faviconUrl} />

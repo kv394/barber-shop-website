@@ -104,6 +104,7 @@ export default async function PublicShopPage({
   const secondaryColor = shop.customization?.secondaryColor || '#06b6d4'; // Default cyan-500
   const templateType = shop.template || 'modern';
 
+    
     const c = shop.customization || {};
     const headingFont = c.headingFont || c.fontFamily || 'Inter';
     const bodyFont = c.bodyFont || c.fontFamily || 'Inter';
@@ -124,6 +125,8 @@ export default async function PublicShopPage({
     const themeText = isDark ? '#ffffff' : '#111827';
     const themeMuted = isDark ? '#a1a1aa' : '#6b7280';
     const themeBorder = isDark ? '#27272a' : '#e5e7eb';
+  
+    
 
 
   // Define different layouts based on the selected template
@@ -161,7 +164,55 @@ export default async function PublicShopPage({
     const editorial = shop.customization?.editorialCustomization || {};
     
     return (
-      <main className="h-[100dvh] overflow-y-auto overflow-x-hidden bg-[#121412] text-[#e3e2e0] selection:bg-[#d4af37] selection:text-[#554300] font-sans">
+      <main className="h-[100dvh] overflow-y-auto overflow-x-hidden bg-[#121412] text-crm-text selection:bg-[#d4af37] selection:text-[#554300] font-sans">
+
+      {faviconUrl && (
+        <link rel="icon" href={faviconUrl} />
+      )}
+      <style dangerouslySetInnerHTML={{__html: `
+        @import url('https://fonts.googleapis.com/css2?family=${headingFont.replace(/ /g, '+')}:wght@400;600;700;900&family=${bodyFont.replace(/ /g, '+')}:wght@400;500;600&display=swap');
+        
+        h1, h2, h3, h4, h5, h6, .font-heading { font-family: '${headingFont}', sans-serif !important; }
+        body, p, span, a, div, .font-body { font-family: '${bodyFont}', sans-serif; }
+        
+        ${isDark ? `
+          .bg-crm-bg, .bg-white, .bg-crm-surface { background-color: ${themeBg} !important; border-color: ${themeBorder} !important; }
+          .text-crm-text, .text-gray-900, .text-black, .text-crm-text, .text-crm-text, .text-crm-text, .text-crm-text { color: ${themeText} !important; }
+          .text-crm-muted, .text-gray-500, .text-gray-600, .text-crm-muted, .text-crm-muted, .text-crm-muted, .text-crm-muted { color: ${themeMuted} !important; }
+          .border-gray-100, .border-gray-200, .border-crm-border { border-color: ${themeBorder} !important; }
+        ` : ''}
+
+        ${buttonShape === 'sharp' ? '.btn, button { border-radius: 0 !important; }' : ''}
+        ${buttonShape === 'pill' ? '.btn, button { border-radius: 9999px !important; }' : ''}
+        
+        ${buttonVariant === 'outline' ? `
+          .btn, button.bg-crm-primary { background-color: transparent !important; border: 2px solid ${primaryColor} !important; color: ${primaryColor} !important; }
+          .btn:hover, button.bg-crm-primary:hover { background-color: ${primaryColor}20 !important; }
+        ` : ''}
+        
+        ${buttonVariant === 'ghost' ? `
+          .btn, button.bg-crm-primary { background-color: transparent !important; border: none !important; color: ${primaryColor} !important; }
+          .btn:hover, button.bg-crm-primary:hover { background-color: ${primaryColor}20 !important; }
+        ` : ''}
+
+        ${enableScrollAnimations ? `
+          .animate-on-scroll {
+            animation: fadeInUp 0.8s ease forwards;
+          }
+          @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+          }
+        ` : ''}
+
+        .hero-overlay {
+          background-color: ${heroOverlayColor};
+          opacity: ${heroOverlayOpacity / 100};
+        }
+
+        ${customCss}
+      `}} />
+  
 
       {faviconUrl && (
         <link rel="icon" href={faviconUrl} />
@@ -233,7 +284,7 @@ export default async function PublicShopPage({
             </div>
             <div className="flex items-center gap-6">
               <button 
-                className="px-6 py-3 rounded-xl font-medium hover:opacity-80 transition-all duration-300 text-[#121412]"
+                className="px-6 py-3 rounded-xl font-medium hover:opacity-80 transition-all duration-300 text-crm-text"
                 style={{ backgroundColor: primaryColor }}
               >
                 Book Appointment
@@ -254,12 +305,12 @@ export default async function PublicShopPage({
                   className="font-headline leading-[1.1] mb-8 tracking-tight text-crm-mutedrm-textxl font-bold"
                   dangerouslySetInnerHTML={{ __html: editorial.heroTitle || `Your Sanctuary of <br/> <span class="italic" style="color: ${primaryColor}">Sophisticated Care</span>` }}
                 />
-                <p className="text-[#d0c5af] font-body max-w-md mb-10 leading-relaxed text-[13px]">
+                <p className="text-crm-muted font-body max-w-md mb-10 leading-relaxed text-[13px]">
                   {editorial.heroSubtitle || 'Experience beauty as an art form. Our atelier provides a curated space for those who appreciate the finer details of self-ceremony.'}
                 </p>
                 <div className="flex items-center gap-4">
                   <button 
-                    className="px-8 py-4 rounded-lg hover:shadow-lg transition-all font-semibold text-[#121412]"
+                    className="px-8 py-4 rounded-lg hover:shadow-lg transition-all font-semibold text-crm-text"
                     style={{ background: `linear-gradient(to bottom right, ${primaryColor}, ${secondaryColor})` }}
                   >
                     Book Now
@@ -290,16 +341,16 @@ export default async function PublicShopPage({
               <div className="text-crm-mutedrm-textenter mb-20">
                 <h2 className="font-headline mb-4 text-xl font-bold">{editorial.servicesTitle || 'Our Services'}</h2>
                 <div className="w-24 h-px mx-auto mb-6" style={{ backgroundColor: primaryColor }}></div>
-                <p className="font-body text-[#d0c5af] max-w-xl mx-auto text-[13px]">{editorial.servicesSubtitle || "A curated selection of rituals designed to restore your glow and refine your natural elegance."}</p>
+                <p className="font-body text-crm-muted max-w-xl mx-auto text-[13px]">{editorial.servicesSubtitle || "A curated selection of rituals designed to restore your glow and refine your natural elegance."}</p>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                 {shop.services?.map((service: any, index: number) => (
                   <div key={service.id} className="group bg-[#0d0f0d] p-10 rounded-2xl transition-all hover:translate-y-[-8px]">
-                    <div className="w-16 h-16 bg-[#292a29] rounded-full flex items-center justify-center mb-8 text-[#d0c5af]">
+                    <div className="w-16 h-16 bg-[#292a29] rounded-full flex items-center justify-center mb-8 text-crm-muted">
                       <span className="material-symbols-outlined text-crm-mutedrm-textxl">{['spa', 'face', 'fluid_med'][index % 3] || 'spa'}</span>
                     </div>
                     <h3 className="font-headline mb-4 text-lg font-bold">{service.name}</h3>
-                    <p className="text-[#d0c5af] mb-8 leading-relaxed text-[13px]">{service.description}</p>
+                    <p className="text-crm-muted mb-8 leading-relaxed text-[13px]">{service.description}</p>
                     <div className="text-[13px] font-bold text-white mb-4">${service.price.toFixed(2)} &bull; {service.duration}m</div>
                     <button className="font-semibold flex items-center gap-2 group/link" style={{ color: primaryColor }}>
                       Book This
@@ -361,12 +412,12 @@ export default async function PublicShopPage({
                     {editorial.testimonials.slice(0,2).map((t: any, i: number) => (
                       <div key={i} className={`bg-[#0d0f0d] p-10 rounded-3xl shadow-sm max-w-sm ${i === 1 ? 'hidden md:block opacity-60' : ''}`}>
                         <span className="material-symbols-outlined text-crm-mutedxl mb-6" style={{ color: secondaryColor }}>format_quote</span>
-                        <p className="font-body italic text-[#e3e2e0] mb-8 leading-relaxed text-[13px]">"{t.quote}"</p>
+                        <p className="font-body italic text-crm-text mb-8 leading-relaxed text-[13px]">"{t.quote}"</p>
                         <div className="flex items-center gap-4">
                           <div className="w-12 h-12 rounded-full bg-[#292a29]"></div>
                           <div>
-                            <p className="font-bold text-[#e3e2e0] text-[13px]">{t.author}</p>
-                            <p className="text-[#d0c5af] uppercase tracking-widest text-[13px]">{t.role}</p>
+                            <p className="font-bold text-crm-text text-[13px]">{t.author}</p>
+                            <p className="text-crm-muted uppercase tracking-widest text-[13px]">{t.role}</p>
                           </div>
                         </div>
                       </div>
@@ -388,14 +439,14 @@ export default async function PublicShopPage({
                       <span className="material-symbols-outlined" style={{ color: primaryColor }}>location_on</span>
                       <div>
                         <h4 className="font-bold mb-2 text-crm-mutedase font-semibold">Our Location</h4>
-                        <p className="text-[#d0c5af] text-[13px]">{shop.customization?.address || 'Address not provided'}</p>
+                        <p className="text-crm-muted text-[13px]">{shop.customization?.address || 'Address not provided'}</p>
                       </div>
                     </div>
                     <div className="flex gap-6">
                       <span className="material-symbols-outlined" style={{ color: primaryColor }}>call</span>
                       <div>
                         <h4 className="font-bold mb-2 text-crm-mutedase font-semibold">Contact Details</h4>
-                        <p className="text-[#d0c5af] text-[13px]">{shop.customization?.phone || 'Phone not provided'}<br/>{shop.customization?.email || 'Email not provided'}</p>
+                        <p className="text-crm-muted text-[13px]">{shop.customization?.phone || 'Phone not provided'}<br/>{shop.customization?.email || 'Email not provided'}</p>
                       </div>
                     </div>
                   </div>
@@ -407,7 +458,7 @@ export default async function PublicShopPage({
                   <div className="absolute inset-0 flex items-center justify-center">
                     <div className="bg-[#121412] p-8 rounded-2xl shadow-xl border text-crm-mutedrm-textenter max-w-xs" style={{ borderColor: `${primaryColor}20` }}>
                       <div className="w-12 h-12 rounded-full mx-auto mb-4 flex items-center justify-center" style={{ backgroundColor: primaryColor }}>
-                        <span className="material-symbols-outlined text-[#121412]">pin_drop</span>
+                        <span className="material-symbols-outlined text-crm-text">pin_drop</span>
                       </div>
                       <p className="font-headline text-[13px]">{shop.name}</p>
                     </div>
@@ -444,6 +495,54 @@ export default async function PublicShopPage({
   if (templateType === 'minimal') {
     return (
       <main className="h-[100dvh] overflow-y-auto overflow-x-hidden">
+
+      {faviconUrl && (
+        <link rel="icon" href={faviconUrl} />
+      )}
+      <style dangerouslySetInnerHTML={{__html: `
+        @import url('https://fonts.googleapis.com/css2?family=${headingFont.replace(/ /g, '+')}:wght@400;600;700;900&family=${bodyFont.replace(/ /g, '+')}:wght@400;500;600&display=swap');
+        
+        h1, h2, h3, h4, h5, h6, .font-heading { font-family: '${headingFont}', sans-serif !important; }
+        body, p, span, a, div, .font-body { font-family: '${bodyFont}', sans-serif; }
+        
+        ${isDark ? `
+          .bg-crm-bg, .bg-white, .bg-crm-surface { background-color: ${themeBg} !important; border-color: ${themeBorder} !important; }
+          .text-crm-text, .text-gray-900, .text-black, .text-crm-text, .text-crm-text, .text-crm-text, .text-crm-text { color: ${themeText} !important; }
+          .text-crm-muted, .text-gray-500, .text-gray-600, .text-crm-muted, .text-crm-muted, .text-crm-muted, .text-crm-muted { color: ${themeMuted} !important; }
+          .border-gray-100, .border-gray-200, .border-crm-border { border-color: ${themeBorder} !important; }
+        ` : ''}
+
+        ${buttonShape === 'sharp' ? '.btn, button { border-radius: 0 !important; }' : ''}
+        ${buttonShape === 'pill' ? '.btn, button { border-radius: 9999px !important; }' : ''}
+        
+        ${buttonVariant === 'outline' ? `
+          .btn, button.bg-crm-primary { background-color: transparent !important; border: 2px solid ${primaryColor} !important; color: ${primaryColor} !important; }
+          .btn:hover, button.bg-crm-primary:hover { background-color: ${primaryColor}20 !important; }
+        ` : ''}
+        
+        ${buttonVariant === 'ghost' ? `
+          .btn, button.bg-crm-primary { background-color: transparent !important; border: none !important; color: ${primaryColor} !important; }
+          .btn:hover, button.bg-crm-primary:hover { background-color: ${primaryColor}20 !important; }
+        ` : ''}
+
+        ${enableScrollAnimations ? `
+          .animate-on-scroll {
+            animation: fadeInUp 0.8s ease forwards;
+          }
+          @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+          }
+        ` : ''}
+
+        .hero-overlay {
+          background-color: ${heroOverlayColor};
+          opacity: ${heroOverlayOpacity / 100};
+        }
+
+        ${customCss}
+      `}} />
+  
 
       {faviconUrl && (
         <link rel="icon" href={faviconUrl} />
@@ -553,6 +652,54 @@ export default async function PublicShopPage({
         
         ${isDark ? `
           .bg-crm-bg, .bg-white, .bg-crm-surface { background-color: ${themeBg} !important; border-color: ${themeBorder} !important; }
+          .text-crm-text, .text-gray-900, .text-black, .text-crm-text, .text-crm-text, .text-crm-text, .text-crm-text { color: ${themeText} !important; }
+          .text-crm-muted, .text-gray-500, .text-gray-600, .text-crm-muted, .text-crm-muted, .text-crm-muted, .text-crm-muted { color: ${themeMuted} !important; }
+          .border-gray-100, .border-gray-200, .border-crm-border { border-color: ${themeBorder} !important; }
+        ` : ''}
+
+        ${buttonShape === 'sharp' ? '.btn, button { border-radius: 0 !important; }' : ''}
+        ${buttonShape === 'pill' ? '.btn, button { border-radius: 9999px !important; }' : ''}
+        
+        ${buttonVariant === 'outline' ? `
+          .btn, button.bg-crm-primary { background-color: transparent !important; border: 2px solid ${primaryColor} !important; color: ${primaryColor} !important; }
+          .btn:hover, button.bg-crm-primary:hover { background-color: ${primaryColor}20 !important; }
+        ` : ''}
+        
+        ${buttonVariant === 'ghost' ? `
+          .btn, button.bg-crm-primary { background-color: transparent !important; border: none !important; color: ${primaryColor} !important; }
+          .btn:hover, button.bg-crm-primary:hover { background-color: ${primaryColor}20 !important; }
+        ` : ''}
+
+        ${enableScrollAnimations ? `
+          .animate-on-scroll {
+            animation: fadeInUp 0.8s ease forwards;
+          }
+          @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+          }
+        ` : ''}
+
+        .hero-overlay {
+          background-color: ${heroOverlayColor};
+          opacity: ${heroOverlayOpacity / 100};
+        }
+
+        ${customCss}
+      `}} />
+  
+
+      {faviconUrl && (
+        <link rel="icon" href={faviconUrl} />
+      )}
+      <style dangerouslySetInnerHTML={{__html: `
+        @import url('https://fonts.googleapis.com/css2?family=${headingFont.replace(/ /g, '+')}:wght@400;600;700;900&family=${bodyFont.replace(/ /g, '+')}:wght@400;500;600&display=swap');
+        
+        h1, h2, h3, h4, h5, h6, .font-heading { font-family: '${headingFont}', sans-serif !important; }
+        body, p, span, a, div, .font-body { font-family: '${bodyFont}', sans-serif; }
+        
+        ${isDark ? `
+          .bg-crm-bg, .bg-white, .bg-crm-surface { background-color: ${themeBg} !important; border-color: ${themeBorder} !important; }
           .text-crm-mutedrm-textrm-text, .text-gray-900, .text-crm-mutedlack { color: ${themeText} !important; }
           .text-crm-mutedrm-textrm-muted, .text-gray-500, .text-gray-600 { color: ${themeMuted} !important; }
           .border-gray-100, .border-gray-200, .border-crm-border { border-color: ${themeBorder} !important; }
@@ -591,7 +738,7 @@ export default async function PublicShopPage({
   
         <header className="border-b-4 border-[#2c1e16] py-16 text-crm-mutedrm-textenter bg-[url('https://www.transparenttextures.com/patterns/aged-paper.png')]">
           <h1 className="font-bold uppercase tracking-widest mb-4 text-crm-mutedrm-textxl font-bold" style={{ color: primaryColor }}>{shop.name}</h1>
-          {shop.description && <p className="max-w-xl mx-auto text-[#5a4634] text-[13px]">{shop.description}</p>}
+          {shop.description && <p className="max-w-xl mx-auto text-crm-muted text-[13px]">{shop.description}</p>}
         </header>
 
         <section className="max-w-5xl mx-auto px-8 py-20">
@@ -607,7 +754,7 @@ export default async function PublicShopPage({
                 <div className="font-sans text-[#8b7355] text-[13px] tracking-widest uppercase mb-3">
                   ${service.price.toFixed(2)} &bull; {service.duration} MINS
                 </div>
-                {service.description && <p className="text-[#5a4634] italic text-[13px]">{service.description}</p>}
+                {service.description && <p className="text-crm-muted italic text-[13px]">{service.description}</p>}
               </div>
             ))}
           </div>
@@ -634,6 +781,54 @@ export default async function PublicShopPage({
   // Default 'modern' template (the one that was originally there)
   return (
     <main className="h-[100dvh] overflow-y-auto overflow-x-hidden">
+
+      {faviconUrl && (
+        <link rel="icon" href={faviconUrl} />
+      )}
+      <style dangerouslySetInnerHTML={{__html: `
+        @import url('https://fonts.googleapis.com/css2?family=${headingFont.replace(/ /g, '+')}:wght@400;600;700;900&family=${bodyFont.replace(/ /g, '+')}:wght@400;500;600&display=swap');
+        
+        h1, h2, h3, h4, h5, h6, .font-heading { font-family: '${headingFont}', sans-serif !important; }
+        body, p, span, a, div, .font-body { font-family: '${bodyFont}', sans-serif; }
+        
+        ${isDark ? `
+          .bg-crm-bg, .bg-white, .bg-crm-surface { background-color: ${themeBg} !important; border-color: ${themeBorder} !important; }
+          .text-crm-text, .text-gray-900, .text-black, .text-crm-text, .text-crm-text, .text-crm-text, .text-crm-text { color: ${themeText} !important; }
+          .text-crm-muted, .text-gray-500, .text-gray-600, .text-crm-muted, .text-crm-muted, .text-crm-muted, .text-crm-muted { color: ${themeMuted} !important; }
+          .border-gray-100, .border-gray-200, .border-crm-border { border-color: ${themeBorder} !important; }
+        ` : ''}
+
+        ${buttonShape === 'sharp' ? '.btn, button { border-radius: 0 !important; }' : ''}
+        ${buttonShape === 'pill' ? '.btn, button { border-radius: 9999px !important; }' : ''}
+        
+        ${buttonVariant === 'outline' ? `
+          .btn, button.bg-crm-primary { background-color: transparent !important; border: 2px solid ${primaryColor} !important; color: ${primaryColor} !important; }
+          .btn:hover, button.bg-crm-primary:hover { background-color: ${primaryColor}20 !important; }
+        ` : ''}
+        
+        ${buttonVariant === 'ghost' ? `
+          .btn, button.bg-crm-primary { background-color: transparent !important; border: none !important; color: ${primaryColor} !important; }
+          .btn:hover, button.bg-crm-primary:hover { background-color: ${primaryColor}20 !important; }
+        ` : ''}
+
+        ${enableScrollAnimations ? `
+          .animate-on-scroll {
+            animation: fadeInUp 0.8s ease forwards;
+          }
+          @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+          }
+        ` : ''}
+
+        .hero-overlay {
+          background-color: ${heroOverlayColor};
+          opacity: ${heroOverlayOpacity / 100};
+        }
+
+        ${customCss}
+      `}} />
+  
 
       {faviconUrl && (
         <link rel="icon" href={faviconUrl} />
