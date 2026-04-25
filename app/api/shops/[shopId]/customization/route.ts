@@ -47,7 +47,7 @@ export async function POST(
 
     // SECURITY: Limit JSON payload size to prevent DoS via oversized customization blobs
     const customizationStr = JSON.stringify(customization);
-    if (customizationStr.length > 50000) {
+    if (customizationStr.length > 2000000) {
       return NextResponse.json(
         { error: 'Customization data is too large' },
         { status: 400 }
