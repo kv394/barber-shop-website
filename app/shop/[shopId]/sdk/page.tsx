@@ -1,0 +1,110 @@
+import { prisma } from '@/lib/prisma';
+import { notFound } from 'next/navigation';
+
+export default async function SDKDocsPage({ params }: { params: Promise<{ shopId: string }> }) {
+  const { shopId } = await params;
+  
+  const shop = await prisma.shop.findUnique({
+    where: { id: shopId },
+    select: { name: true, subdomain: true, customDomain: true, customization: true }
+  });
+
+  if (!shop) return notFound();
+
+  return (
+    <div className="w-full max-w-4xl space-y-8">
+      <div className="mb-6">
+        <h1 className="text-2xl font-bold text-gray-900 mb-2">Developer SDK & Headless Integration</h1>
+        <p className="text-gray-600 text-[14px]">
+          Use the BarberSaaS Client SDK to build completely custom headless front-ends or embed functionality into your existing website. The SDK is hardened to only expose public-facing customer functionality (Products, Services, Staff, Reviews, Booking, and Purchasing).
+        </p>
+      </div>
+
+      <div className="bg-blue-50 border border-blue-200 text-blue-800 p-4 rounded-xl text-[13px]">
+        <strong>Security Notice:</strong> The SDK automatically validates the origin of incoming requests. To use the SDK on your custom landing page, ensure your domain is added to your <strong>Allowed Domains</strong> list in Settings.
+      </div>
+
+      <div className="bg-white p-8 rounded-xl shadow-sm border border-gray-200">
+        <h2 className="font-bold text-lg mb-4">1. Include the SDK</h2>
+        <p className="text-gray-600 text-[13px] mb-4">Add the following script tag to the <code>&lt;head&gt;</code> of your HTML file:</p>
+        <pre className="bg-gray-900 text-gray-100 p-4 rounded-lg text-[13px] overflow-x-auto mb-6">
+          <code>{`<script src="https://barbersaas.com/barbersaas-sdk.js"></script>`}</code>
+        </pre>
+
+        <h2 className="font-bold text-lg mb-4">2. Initialize the SDK</h2>
+        <p className="text-gray-600 text-[13px] mb-4">Initialize the SDK using your unique Shop ID before calling any functions:</p>
+        <pre className="bg-gray-900 text-gray-100 p-4 rounded-lg text-[13px] overflow-x-auto mb-6">
+          <code>{`// Initialize with your Shop ID
+BarberSaaS.init('${shopId}');`}</code>
+        </pre>
+
+        <h2 className="font-bold text-lg mb-4">3. Available Functions</h2>
+        <p className="text-gray-600 text-[13px] mb-4">The SDK provides Promise-based functions to fetch your shop's data and perform actions. Note: All data retrieval functions automatically filter out private data (e.g. products marked as not sellable, services marked as not bookable).</p>
+        
+        <div className="space-y-6">
+          <div className="border border-gray-100 p-5 rounded-xl bg-gray-50">
+            <h3 className="font-bold text-gray-900 mb-2">Fetch Public Data</h3>
+            <p className="text-gray-600 text-[13px] mb-3">Retrieve your shop's sellable products, bookable services, public staff, and approved reviews.</p>
+            <pre className="bg-gray-900 text-gray-100 p-3 rounded-lg text-[12px] overflow-x-auto">
+              <code>{`// Fetch all data at once (optimized, heavily cached)
+const data = await BarberSaaS.getPublicData();
+console.log(data.shop, data.products, data.services, data.staff, data.reviews);
+
+// Or fetch individual collections
+const products = await BarberSaaS.getSellableProducts();
+const services = await BarberSaaS.getBookableServices();
+const staff = await BarberSaaS.getPublicStaff();
+const reviews = await BarberSaaS.getReviews();
+
+// Get specific details
+const product = await BarberSaaS.getProductDetails('product_123');
+const service = await BarberSaaS.getServiceDetails('service_456');`}</code>
+            </pre>
+          </div>
+
+          <div className="border border-gray-100 p-5 rounded-xl bg-gray-50">
+            <h3 className="font-bold text-gray-900 mb-2">Book an Appointment</h3>
+            <p className="text-gray-600 text-[13px] mb-3">Submit a new booking. The SDK will automatically create a guest profile if the client is not signed in.</p>
+            <pre className="bg-gray-900 text-gray-100 p-3 rounded-lg text-[12px] overflow-x-auto">
+              <code>{`const booking = await BarberSaaS.bookService({
+  serviceId: 'service_123',
+  staffId: 'staff_456',
+  startTime: '2023-12-25T14:30:00.000Z', // ISO-8601 UTC
+  clientName: 'John Doe',
+  clientEmail: 'john@example.com', // Optional
+  clientPhone: '555-123-4567', // Optional
+  notes: 'First time visitor', // Optional
+  addonIds: ['addon_789'] // Optional array of Add-on IDs
+});
+
+console.log('Booking successful:', booking);`}</code>
+            </pre>
+          </div>
+
+          <div className="border border-gray-100 p-5 rounded-xl bg-gray-50">
+            <h3 className="font-bold text-gray-900 mb-2">Buy a Product</h3>
+            <p className="text-gray-600 text-[13px] mb-3">Initiate a secure checkout session for a specific product.</p>
+            <pre className="bg-gray-900 text-gray-100 p-3 rounded-lg text-[12px] overflow-x-auto">
+              <code>{`// Initiates the checkout flow (redirects to Stripe)
+const checkout = await BarberSaaS.buyProduct('product_123', 2); // Quantity: 2`}</code>
+            </pre>
+          </div>
+
+          <div className="border border-gray-100 p-5 rounded-xl bg-gray-50">
+            <h3 className="font-bold text-gray-900 mb-2">Submit a Review</h3>
+            <p className="text-gray-600 text-[13px] mb-3">Submit a new review linked to a specific appointment ID.</p>
+            <pre className="bg-gray-900 text-gray-100 p-3 rounded-lg text-[12px] overflow-x-auto">
+              <code>{`const review = await BarberSaaS.submitReview({
+  appointmentId: 'appt_123', // The confirmed Appointment ID
+  rating: 5, // 1 to 5
+  comment: 'Great haircut!' // Optional
+});
+
+console.log('Review submitted:', review);`}</code>
+            </pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}

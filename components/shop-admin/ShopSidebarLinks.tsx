@@ -82,6 +82,7 @@ export default function ShopSidebarLinks({ shopId, userRole }: { shopId: string,
             {navLink(`/shop/${shopId}/reports`, 'Reports')}
             {navLink(`/shop/${shopId}/config/services`, 'Configuration')}
             {navLink(`/shop/${shopId}/settings`, 'Settings')}
+            {navLink(`/shop/${shopId}/sdk`, 'SDK Docs')}
           </>
         )}
       </div>

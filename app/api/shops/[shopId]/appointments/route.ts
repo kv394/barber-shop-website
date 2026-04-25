@@ -94,19 +94,6 @@ export async function POST(
   let userId = authUserSession?.id;
   const authUserEmail = authUserSession?.email;
     
-    // SECURITY: Ensure user is authenticated
-    if (!userId) {
-      return new Response('Unauthorized - Please sign in to book.', { status: 401 });
-    }
-
-    // SECURITY: Rate Limiting
-    // Limit to 5 booking attempts per user per minute to prevent bot spam
-    const rateLimitResult = await rateLimit(`booking:${userId}`, 5, 60);
-    if (!rateLimitResult.success) {
-      logger.warn(`Rate limit exceeded for user ${userId} booking in shop ${shopId}`);
-      return NextResponse.json({ error: 'Too many booking attempts. Please try again later.' }, { status: 429 });
-    }
-
     const body = await request.json();
     
     // SECURITY: Strict Input Validation via Zod
@@ -118,13 +105,28 @@ export async function POST(
 
     const { serviceId, startTime, staffId, clientName, clientEmail, clientPhone, isWalkIn, notes, existingClientId, addonIds } = validationResult.data;
 
+    // SECURITY: Ensure user is authenticated OR it is a public walk-in booking
+    if (!userId && !isWalkIn) {
+      return new Response('Unauthorized - Please sign in to book.', { status: 401 });
+    }
+
+    // SECURITY: Rate Limiting
+    // Limit to 5 booking attempts per user/IP per minute to prevent bot spam
+    const ip = request.headers.get('x-forwarded-for') || 'unknown';
+    const rateLimitKey = userId ? \`booking:\${userId}\` : \`booking-ip:\${ip}\`;
+    const rateLimitResult = await rateLimit(rateLimitKey, 5, 60);
+    if (!rateLimitResult.success) {
+      logger.warn(\`Rate limit exceeded for \${rateLimitKey} booking in shop \${shopId}\`);
+      return NextResponse.json({ error: 'Too many booking attempts. Please try again later.' }, { status: 429 });
+    }
+
     // Run user + service lookups in parallel
     const [bookingUser, service] = await Promise.all([
-      prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } }),
+      userId ? prisma.user.findFirst({ where: { OR: [{ id: userId }, { email: authUserEmail || '' }] } }) : null,
       prisma.service.findUnique({ where: { id: serviceId } }),
     ]);
 
-    if (!bookingUser) {
+    if (userId && !bookingUser) {
         return NextResponse.json(
             { error: 'User profile is not yet initialized. Please try again in a moment.' },
             { status: 409 }
@@ -163,11 +165,10 @@ export async function POST(
     const blockEnd = new Date(end.getTime() + (service.bufferMinutes || 0) * 60000);
 
     // Resolve the target user BEFORE the atomic transaction
-    // Use the actual database ID, not necessarily the Supabase auth ID (which might differ if matched by email)
-    let targetUserId = bookingUser.id;
+    let targetUserId = bookingUser?.id || '';
 
-    // Handle walk-in bookings made by an admin or staff member.
-    if (isWalkIn && (bookingUser.role === 'SHOP_ADMIN' || bookingUser.role === 'STAFF' || bookingUser.role === 'SITE_ADMIN')) {
+    // Handle walk-in bookings made by an admin/staff, OR by unauthenticated users from the widget/SDK
+    if (isWalkIn && (!bookingUser || bookingUser.role === 'SHOP_ADMIN' || bookingUser.role === 'STAFF' || bookingUser.role === 'SITE_ADMIN')) {
       // If an existing client was selected, use them directly
       if (existingClientId) {
         // SECURITY: Verify client belongs to this shop or has appointments here
