@@ -488,7 +488,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                 
                 <div className="w-full max-w-md flex flex-col gap-4 mb-12">
                     <button
-                        onClick={() => handleBookClick(shop.services?.[0])}
+                        onClick={() => handleBookClick(null)}
                         className="w-full py-4 rounded-xl font-bold text-white shadow-lg transition-transform hover:scale-[1.02]"
                         style={{ background: `linear-gradient(to right, ${primaryColor}, ${secondaryColor})` }}
                     >
@@ -1263,7 +1263,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                 )}
                 <div className="flex justify-center">
                   <button
-                    onClick={() => handleBookClick(shop.services?.[0])}
+                    onClick={() => handleBookClick(null)}
                     className="font-bold text-white px-8 py-4 rounded-xl transition-all duration-300 hover:scale-105 active:scale-95 shadow-[0_0_20px_rgba(0,0,0,0.3)] hover:shadow-[0_0_30px_rgba(0,0,0,0.5)] text-[14px] uppercase tracking-widest"
                     style={{ background: `linear-gradient(to right, ${primaryColor}, ${secondaryColor})` }}
                   >
