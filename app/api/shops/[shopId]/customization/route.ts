@@ -75,6 +75,7 @@ export async function POST(
     // Clear the Next.js router cache so the new customization is applied everywhere
     revalidatePath(`/shop/${shopId}`);
     revalidatePath(`/shop/${shopId}/config`);
+    revalidatePath('/shops/[slug]', 'page');
 
     return NextResponse.json(updatedShop, { status: 200 });
   } catch (error: any) {
