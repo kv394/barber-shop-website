@@ -288,7 +288,21 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                     </div>
                 </section>
     
-                {/* Services Section */}
+                \n\n            {pages.filter((p: any) => p.isVisible).map((p: any) => (
+
+                    <section key={p.id} id={p.id} className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 min-h-[60vh]">
+                        <h1 className="font-black uppercase italic mb-8 text-2xl font-bold" style={{ color: sportRed }}>{p.title}</h1>
+                        <CustomPageContent content={p.content || ""} shop={shop} themeColor={sportRed} className="prose prose-lg max-w-none text-crm-text" />
+                    </section>
+            ))}\n\n              {pages.filter((p: any) => p.isVisible).map((p: any) => (
+
+            <section key={p.id} id={p.id} className="pt-32 pb-20 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto min-h-[80vh]">
+               <div className="bg-crm-surface p-8 md:p-12 rounded-2xl border border-crm-border shadow-sm shadow-xl">
+                  <h1 className="font-bold mb-8 text-2xl font-bold" style={{ color: primaryColor }}>{p.title}</h1>
+                  <CustomPageContent content={p.content || ""} shop={shop} themeColor={primaryColor} className="prose prose-invert prose-lg max-w-none text-crm-muted" />
+               </div>
+            </section>
+            ))}\n\n          {/* Services Section */}
                 <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
                     <div className="text-center mb-16">
                         <h2 className="font-black uppercase italic mb-2 text-xl font-bold">Our Services</h2>
@@ -325,13 +339,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                     </div>
                 </section>
 
-            {pages.filter((p: any) => p.isVisible).map((p: any) => (
-
-                    <section key={p.id} id={p.id} className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 min-h-[60vh]">
-                        <h1 className="font-black uppercase italic mb-8 text-2xl font-bold" style={{ color: sportRed }}>{p.title}</h1>
-                        <CustomPageContent content={p.content || ""} shop={shop} themeColor={sportRed} className="prose prose-lg max-w-none text-crm-text" />
-                    </section>
-            ))}
+            
 
                 <ReviewsSection reviews={reviews} variant="light" />
 
@@ -406,7 +414,13 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                 </div>
             </section>
     
-            <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+            \n\n            {pages.filter((p: any) => p.isVisible).map((p: any) => (
+
+                <section key={p.id} id={p.id} className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 min-h-[60vh]">
+                    <h1 className="font-bold text-crm-text mb-8 text-2xl font-bold" style={{ color: primaryColor }}>{p.title}</h1>
+                    <CustomPageContent content={p.content || ""} shop={shop} themeColor={primaryColor} className="prose prose-lg max-w-none text-crm-text" />
+                </section>
+            ))}\n\n            <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
               <h2 className="font-bold text-center text-crm-text mb-12 text-xl font-bold">Our Services</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {shop.services?.map((service: any) => (
@@ -432,13 +446,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
               </div>
             </section>
 
-            {pages.filter((p: any) => p.isVisible).map((p: any) => (
-
-                <section key={p.id} id={p.id} className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 min-h-[60vh]">
-                    <h1 className="font-bold text-crm-text mb-8 text-2xl font-bold" style={{ color: primaryColor }}>{p.title}</h1>
-                    <CustomPageContent content={p.content || ""} shop={shop} themeColor={primaryColor} className="prose prose-lg max-w-none text-crm-text" />
-                </section>
-            ))}
+            
 
             <ReviewsSection reviews={reviews} variant="light" />
 
@@ -504,7 +512,13 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                 <p className="text-crm-muted mt-2 text-[13px]">{shop.description}</p>
               </header>
     
-              <section className="max-w-3xl mx-auto">
+              \n\n            {pages.filter((p: any) => p.isVisible).map((p: any) => (
+
+                    <section key={p.id} id={p.id} className="max-w-3xl mx-auto min-h-[60vh]">
+                        <h1 className="font-black uppercase tracking-tighter mb-8 text-center text-2xl font-bold">{p.title}</h1>
+                        <CustomPageContent content={p.content || ""} shop={shop} className="prose prose-invert prose-lg max-w-none text-crm-muted font-sans" />
+                    </section>
+            ))}\n\n            <section className="max-w-3xl mx-auto">
                 <h2 className="text-center uppercase tracking-[0.3em] text-crm-muted mb-10 text-xl font-bold">Services</h2>
                 <div className="space-y-6">
                   {shop.services?.map((service: any) => (
@@ -525,13 +539,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                   ))}
                 </div>
               </section>
-            {pages.filter((p: any) => p.isVisible).map((p: any) => (
-
-                    <section key={p.id} id={p.id} className="max-w-3xl mx-auto min-h-[60vh]">
-                        <h1 className="font-black uppercase tracking-tighter mb-8 text-center text-2xl font-bold">{p.title}</h1>
-                        <CustomPageContent content={p.content || ""} shop={shop} className="prose prose-invert prose-lg max-w-none text-crm-muted font-sans" />
-                    </section>
-            ))}
+            
 
             </div>
 
@@ -572,7 +580,15 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                 <p className="text-purple-200/70 text-[13px]">{shop.description}</p>
               </header>
     
-              <section className="max-w-4xl mx-auto">
+              \n\n            {pages.filter((p: any) => p.isVisible).map((p: any) => (
+
+                <section key={p.id} id={p.id} className="max-w-4xl mx-auto min-h-[60vh]">
+                    <div className="bg-crm-surface backdrop-blur-sm border border-status-pending/30 rounded-lg p-8 md:p-12">
+                        <h1 className="font-bold bg-clip-text text-transparent bg-gradient-to-r from-orange-400 to-purple-400 mb-8 text-2xl font-bold">{p.title}</h1>
+                        <CustomPageContent content={p.content || ""} shop={shop} className="prose prose-invert prose-lg max-w-none text-purple-200/80" />
+                    </div>
+                </section>
+            ))}\n\n            <section className="max-w-4xl mx-auto">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {shop.services?.map((service: any) => (
                     <div key={service.id} className="bg-crm-surface backdrop-blur-sm border border-status-pending/30 rounded-lg p-6 hover:border-orange-500 transition-colors flex flex-col">
@@ -591,15 +607,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                   ))}
                 </div>
               </section>
-            {pages.filter((p: any) => p.isVisible).map((p: any) => (
-
-                <section key={p.id} id={p.id} className="max-w-4xl mx-auto min-h-[60vh]">
-                    <div className="bg-crm-surface backdrop-blur-sm border border-status-pending/30 rounded-lg p-8 md:p-12">
-                        <h1 className="font-bold bg-clip-text text-transparent bg-gradient-to-r from-orange-400 to-purple-400 mb-8 text-2xl font-bold">{p.title}</h1>
-                        <CustomPageContent content={p.content || ""} shop={shop} className="prose prose-invert prose-lg max-w-none text-purple-200/80" />
-                    </div>
-                </section>
-            ))}
+            
 
             </div>
 
@@ -708,7 +716,15 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                 </div>
               </section>
     
-              {/* Services Section */}
+              \n\n            {pages.filter((p: any) => p.isVisible).map((p: any) => (
+
+                 <section key={p.id} id={p.id} className="py-32 px-8 min-h-[70vh]">
+                    <div className="max-w-4xl mx-auto">
+                        <h1 className="font-headline mb-12 text-2xl font-bold" style={{ color: primaryColor }}>{p.title}</h1>
+                        <CustomPageContent content={p.content || ""} shop={shop} themeColor={primaryColor} className="prose prose-invert prose-lg max-w-none font-body text-[#d0c5af]" />
+                    </div>
+                </section>
+            ))}\n\n            {/* Services Section */}
               <section id="services" className="py-32 px-8 bg-[#1a1c1a]">
                 <div className="max-w-7xl mx-auto">
                   <div className="text-center mb-20">
@@ -843,15 +859,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                   </div>
                 </div>
               </section>
-            {pages.filter((p: any) => p.isVisible).map((p: any) => (
-
-                 <section key={p.id} id={p.id} className="py-32 px-8 min-h-[70vh]">
-                    <div className="max-w-4xl mx-auto">
-                        <h1 className="font-headline mb-12 text-2xl font-bold" style={{ color: primaryColor }}>{p.title}</h1>
-                        <CustomPageContent content={p.content || ""} shop={shop} themeColor={primaryColor} className="prose prose-invert prose-lg max-w-none font-body text-[#d0c5af]" />
-                    </div>
-                </section>
-            ))}
+            
 
             </div>
     
@@ -914,7 +922,13 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
               </div>
             </header>
     
-            <section className="max-w-4xl mx-auto px-6 py-16">
+            \n\n            {pages.filter((p: any) => p.isVisible).map((p: any) => (
+
+                <section key={p.id} id={p.id} className="max-w-4xl mx-auto px-6 py-32 min-h-[60vh]">
+                    <h1 className="font-light tracking-tight mb-12 text-2xl font-bold" style={{ color: primaryColor }}>{p.title}</h1>
+                    <CustomPageContent content={p.content || ""} shop={shop} themeColor={primaryColor} className="prose prose-lg max-w-none text-crm-muted" />
+                </section>
+            ))}\n\n            <section className="max-w-4xl mx-auto px-6 py-16">
               <h2 className="font-semibold tracking-widest uppercase text-crm-muted mb-10 text-xl font-bold">Service Menu</h2>
               {shop.services && shop.services.length > 0 ? (
                 <div className="space-y-8">
@@ -943,13 +957,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                 <p className="text-crm-muted italic text-[13px]">No services listed.</p>
               )}
             </section>
-            {pages.filter((p: any) => p.isVisible).map((p: any) => (
-
-                <section key={p.id} id={p.id} className="max-w-4xl mx-auto px-6 py-32 min-h-[60vh]">
-                    <h1 className="font-light tracking-tight mb-12 text-2xl font-bold" style={{ color: primaryColor }}>{p.title}</h1>
-                    <CustomPageContent content={p.content || ""} shop={shop} themeColor={primaryColor} className="prose prose-lg max-w-none text-crm-muted" />
-                </section>
-            ))}
+            
 
 
             <ReviewsSection reviews={reviews} variant="light" />
@@ -996,7 +1004,13 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
             </div>
             </header>
     
-            <section className="max-w-5xl mx-auto px-8 py-20">
+            \n\n            {pages.filter((p: any) => p.isVisible).map((p: any) => (
+
+                <section key={p.id} id={p.id} className="max-w-4xl mx-auto px-8 py-32 min-h-[60vh]">
+                    <h1 className="font-bold uppercase tracking-widest mb-12 text-center text-2xl font-bold" style={{ color: primaryColor }}>{p.title}</h1>
+                    <CustomPageContent content={p.content || ""} shop={shop} themeColor={primaryColor} className="prose prose-lg max-w-none text-[#5a4634]" />
+                </section>
+            ))}\n\n            <section className="max-w-5xl mx-auto px-8 py-20">
               <h2 className="font-bold text-center uppercase tracking-widest mb-16 relative text-xl font-bold">
                 <span className="bg-[#fdfbf7] px-6 relative z-10">Our Services</span>
                 <div className="absolute left-0 top-1/2 w-full h-px bg-[#e6d9c6] -z-0"></div>
@@ -1019,13 +1033,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                 ))}
               </div>
             </section>
-            {pages.filter((p: any) => p.isVisible).map((p: any) => (
-
-                <section key={p.id} id={p.id} className="max-w-4xl mx-auto px-8 py-32 min-h-[60vh]">
-                    <h1 className="font-bold uppercase tracking-widest mb-12 text-center text-2xl font-bold" style={{ color: primaryColor }}>{p.title}</h1>
-                    <CustomPageContent content={p.content || ""} shop={shop} themeColor={primaryColor} className="prose prose-lg max-w-none text-[#5a4634]" />
-                </section>
-            ))}
+            
 
 
             <ReviewsSection reviews={reviews} variant="warm" />
@@ -1161,15 +1169,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
             )}
           </section>
 
-            {pages.filter((p: any) => p.isVisible).map((p: any) => (
 
-            <section key={p.id} id={p.id} className="pt-32 pb-20 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto min-h-[80vh]">
-               <div className="bg-crm-surface p-8 md:p-12 rounded-2xl border border-crm-border shadow-sm shadow-xl">
-                  <h1 className="font-bold mb-8 text-2xl font-bold" style={{ color: primaryColor }}>{p.title}</h1>
-                  <CustomPageContent content={p.content || ""} shop={shop} themeColor={primaryColor} className="prose prose-invert prose-lg max-w-none text-crm-muted" />
-               </div>
-            </section>
-            ))}
 
           <ReviewsSection reviews={reviews} variant="dark" />
 
