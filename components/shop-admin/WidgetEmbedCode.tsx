@@ -138,7 +138,7 @@ export default function WidgetEmbedCode({ shopId }: { shopId: string }) {
           Build entirely custom front-ends using our lightweight JavaScript SDK. This gives you programmatic access to your public products, services, staff, and reviews, along with methods to book appointments or submit reviews from your own custom UI.
         </p>
 
-        <div>
+        <div className="mb-6">
           <h3 className="font-semibold text-crm-text mb-2 text-[14px]">Step 1: Initialize the SDK</h3>
           <p className="text-crm-muted mb-3 text-[13px]">Add this script tag and initialization code. You can then call methods like <code>BarberSaaS.getPublicData()</code> or <code>BarberSaaS.bookService()</code>.</p>
           <div className="flex items-start gap-4 bg-crm-surface p-4 rounded-lg border border-crm-border relative">
@@ -153,6 +153,69 @@ export default function WidgetEmbedCode({ shopId }: { shopId: string }) {
             >
               {copiedSdkScript ? 'Copied!' : 'Copy Code'}
             </button>
+          </div>
+        </div>
+
+        <div>
+          <h3 className="font-semibold text-crm-text mb-4 text-[14px]">SDK Method Reference</h3>
+          <div className="space-y-4">
+            
+            <div className="bg-crm-surface p-4 rounded-lg border border-crm-border">
+              <code className="text-status-info font-bold text-[13px] block mb-1">async BarberSaaS.getShopDetails()</code>
+              <p className="text-crm-muted text-[13px]">Returns general shop details including name, description, address, contact info, business hours, and branding colors/logos.</p>
+            </div>
+
+            <div className="bg-crm-surface p-4 rounded-lg border border-crm-border">
+              <code className="text-status-info font-bold text-[13px] block mb-1">async BarberSaaS.getSellableProducts()</code>
+              <p className="text-crm-muted text-[13px]">Returns a list of all products marked as sellable by the shop admin.</p>
+            </div>
+
+            <div className="bg-crm-surface p-4 rounded-lg border border-crm-border">
+              <code className="text-status-info font-bold text-[13px] block mb-1">async BarberSaaS.getBookableServices()</code>
+              <p className="text-crm-muted text-[13px]">Returns a list of all services available for public booking, including prices and durations.</p>
+            </div>
+
+            <div className="bg-crm-surface p-4 rounded-lg border border-crm-border">
+              <code className="text-status-info font-bold text-[13px] block mb-1">async BarberSaaS.getPublicStaff()</code>
+              <p className="text-crm-muted text-[13px]">Returns public details of staff members (names, photos, working hours) available for booking.</p>
+            </div>
+
+            <div className="bg-crm-surface p-4 rounded-lg border border-crm-border">
+              <code className="text-status-info font-bold text-[13px] block mb-1">async BarberSaaS.getReviews()</code>
+              <p className="text-crm-muted text-[13px]">Returns the latest verified customer reviews and ratings for the shop.</p>
+            </div>
+
+            <div className="bg-crm-surface p-4 rounded-lg border border-crm-border">
+              <code className="text-status-info font-bold text-[13px] block mb-1">async BarberSaaS.bookService(bookingDetails)</code>
+              <p className="text-crm-muted text-[13px] mb-2">Creates a new appointment. Automatically provisions a guest client profile.</p>
+              <pre className="text-crm-accent text-[12px] whitespace-pre-wrap font-mono bg-crm-bg p-2 rounded">
+{`await BarberSaaS.bookService({
+  serviceId: "srv_123",
+  staffId: "usr_123",
+  startTime: "2026-04-30T12:30:00Z",
+  clientName: "John Doe",
+  clientEmail: "john@example.com"
+});`}
+              </pre>
+            </div>
+
+            <div className="bg-crm-surface p-4 rounded-lg border border-crm-border">
+              <code className="text-status-info font-bold text-[13px] block mb-1">async BarberSaaS.submitReview(reviewDetails)</code>
+              <p className="text-crm-muted text-[13px] mb-2">Submits a verified review linked to an existing appointment.</p>
+              <pre className="text-crm-accent text-[12px] whitespace-pre-wrap font-mono bg-crm-bg p-2 rounded">
+{`await BarberSaaS.submitReview({
+  appointmentId: "apt_123",
+  rating: 5,
+  comment: "Great experience!"
+});`}
+              </pre>
+            </div>
+
+            <div className="bg-crm-surface p-4 rounded-lg border border-crm-border">
+              <code className="text-status-info font-bold text-[13px] block mb-1">async BarberSaaS.buyProduct(productId, quantity)</code>
+              <p className="text-crm-muted text-[13px]">Initiates a checkout flow for a specific product. (Currently triggers a checkout alert event pending Stripe integration).</p>
+            </div>
+
           </div>
         </div>
       </div>

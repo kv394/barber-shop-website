@@ -9,7 +9,20 @@ export async function GET(request: Request, { params }: { params: Promise<{ shop
     const { shopId } = await params;
 
     // Run all public data queries in parallel
-    const [products, services, staff, reviews] = await Promise.all([
+    const [shop, products, services, staff, reviews] = await Promise.all([
+      // 0. Shop Details
+      prisma.shop.findUnique({
+        where: { id: shopId },
+        select: {
+          id: true,
+          name: true,
+          companyName: true,
+          description: true,
+          slogan: true,
+          timezone: true,
+          customization: true
+        }
+      }),
       // 1. Sellable Products
       prisma.product.findMany({
         where: { shopId, isSellable: true },
@@ -70,7 +83,37 @@ export async function GET(request: Request, { params }: { params: Promise<{ shop
       })
     ]);
 
+    if (!shop) {
+      return NextResponse.json({ error: 'Shop not found' }, { status: 404 });
+    }
+
+    // Clean up customization to only include public-safe fields (branding, contact, hours)
+    let publicCustomization: any = {};
+    if (shop.customization && typeof shop.customization === 'object') {
+        const c = shop.customization as any;
+        publicCustomization = {
+            address: c.address,
+            contact: c.contact,
+            branding: c.branding,
+            logoUrl: c.logoUrl,
+            heroImageUrl: c.heroImageUrl,
+            businessHours: c.businessHours,
+            primaryColor: c.primaryColor,
+            secondaryColor: c.secondaryColor,
+            fontFamily: c.fontFamily,
+            buttonShape: c.buttonShape,
+            buttonVariant: c.buttonVariant,
+            colorTheme: c.colorTheme,
+        };
+    }
+
+    const cleanShop = {
+        ...shop,
+        customization: publicCustomization
+    };
+
     return NextResponse.json({
+      shop: cleanShop,
       products,
       services,
       staff,

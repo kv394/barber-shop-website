@@ -38,9 +38,9 @@
 
     /**
      * Fetches all public data required for a custom landing page.
-     * Includes sellable products, bookable services, public staff, and reviews.
+     * Includes shop details, sellable products, bookable services, public staff, and reviews.
      * @param {boolean} forceRefresh - If true, bypasses the local cache.
-     * @returns {Promise<Object>} An object containing { products, services, staff, reviews }
+     * @returns {Promise<Object>} An object containing { shop, products, services, staff, reviews }
      */
     async getPublicData(forceRefresh = false) {
       this._checkInit();
@@ -58,6 +58,14 @@
       const data = await res.json();
       this._publicDataCache = data;
       return data;
+    }
+
+    /**
+     * Retrieves general shop details (name, description, branding, business hours).
+     */
+    async getShopDetails() {
+      const data = await this.getPublicData();
+      return data.shop;
     }
 
     /**
