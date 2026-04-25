@@ -302,7 +302,7 @@ export default function BookingWizard({ shopId, themeColor, templateType }: { sh
           startTime: startDateTime.toISOString(),
           staffId: resolvedStaffId,
           notes: notes.trim() || undefined,
-          isWalkIn: false,
+          isWalkIn: true,
           clientName: name,
           clientEmail: email,
           clientPhone: phone,
