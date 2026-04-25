@@ -75,7 +75,7 @@ export default async function BookingsPage({ params }: { params: Promise<{ shopI
     }
 
     const groupedAppointments = appointments.reduce((acc: any, curr: any) => {
-        const dateKey = new Date(curr.startTime).toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+        const dateKey = formatDateInShopTz(curr.startTime, shop.timezone || 'America/New_York');
         if (!acc[dateKey]) acc[dateKey] = [];
         acc[dateKey].push(curr);
         return acc;
@@ -148,7 +148,7 @@ export default async function BookingsPage({ params }: { params: Promise<{ shopI
                                                    <p className="text-crm-muted text-[13px]">{apt.user?.email || "No email"}</p>
                                                </div>
                                                <div className="text-right">
-                                                   <p className="font-mono text-crm-accent text-[13px]">{start.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
+                                                   <p className="font-mono text-crm-accent text-[13px]">{formatInShopTz(apt.startTime, shop.timezone || 'America/New_York')}</p>
                                                    <p className="text-crm-muted text-[13px]">{apt.service.duration} mins</p>
                                                </div>
                                            </div>

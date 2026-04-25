@@ -1,8 +1,10 @@
 import { prisma } from './lib/prisma';
 async function main() {
   const apps = await prisma.appointment.findMany({
-    where: { shopId: 'cmn9kj24n0000lqzc7kcsmpst' }
+    orderBy: { createdAt: 'desc' },
+    take: 10,
+    include: { user: true, shop: true }
   });
-  console.log(apps);
+  console.log(JSON.stringify(apps, null, 2));
 }
 main().catch(console.error).finally(() => prisma.$disconnect());

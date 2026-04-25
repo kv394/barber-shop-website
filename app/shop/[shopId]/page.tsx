@@ -2,7 +2,7 @@ import { redirect } from 'next/navigation';
 import { createClient } from '@/utils/supabase/server';
 import { prisma } from '@/lib/prisma';
 import { getShopLayoutData } from '@/lib/shop-data';
-import { getTodayInShopTz, toShopTzDayBounds } from '@/lib/timezone';
+import { getTodayInShopTz, toShopTzDayBounds, formatInShopTz } from '@/lib/timezone';
 import Link from 'next/link';
 import ShopAdminLayout from '@/components/shop-admin/ShopAdminLayout';
 import StaffInbox from '@/components/shop-admin/StaffInbox';
@@ -271,10 +271,9 @@ export default async function ShopDashboardPage({ params }: { params: Promise<{ 
             </h2>
             <div className="flex flex-wrap items-center gap-3 sm:gap-6 text-[13px] sm:text-base font-semibold opacity-90 mb-6">
               <span className="flex items-center gap-1.5">
-                <span className="text-[13px]">⏰</span> 
-                {new Date(todayStats.nextAppointment.startTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-              </span>
-              <span className="flex items-center gap-1.5">
+                <span className="text-[13px]">⏰</span>
+                {formatInShopTz(todayStats.nextAppointment.startTime, shop.timezone || 'America/New_York')}
+              </span>              <span className="flex items-center gap-1.5">
                 <span className="text-[13px]">✨</span> 
                 {todayStats.nextAppointment.service?.name}
               </span>
