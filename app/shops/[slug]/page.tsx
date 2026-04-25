@@ -264,7 +264,7 @@ export default async function PublicShopPage({
             dynamicTemplateHtml={dynamicTemplateHtml}
             dynamicTemplateCss={dynamicTemplateCss}
         />
-        <AIWidget shopId={shop.id} />
+        <AIWidget shopId={shop.id} themeColor={primaryColor} />
         {/* Inject the booking modal script for this shop reliably */}
         <BookingModalScript shopId={shop.id} />
       </>

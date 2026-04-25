@@ -25,6 +25,7 @@
   }
   const shopId = scriptTag.getAttribute('data-shop-id');
   const apiUrl = scriptTag.getAttribute('data-api-url') || 'https://barbersaas.com/api/chat/booking';
+  const themeColor = scriptTag.getAttribute('data-theme-color') || '#d4af37';
 
   if (!shopId) {
     console.error('Booking widget requires data-shop-id attribute');
@@ -54,12 +55,12 @@
   const style = document.createElement('style');
   style.textContent = `
     :host {
-      --primary-color: #d4af37;
+      --primary-color: ${themeColor};
       --bg-color: #121412;
       --text-color: #e3e2e0;
       --border-color: #333;
-      --msg-user-bg: #d4af37;
-      --msg-user-text: #121412;
+      --msg-user-bg: ${themeColor};
+      --msg-user-text: #ffffff;
       --msg-bot-bg: #2a2a2a;
       --msg-bot-text: #e3e2e0;
       font-family: system-ui, -apple-system, sans-serif;

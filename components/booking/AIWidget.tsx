@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react';
 
-export default function AIWidget({ shopId }: { shopId: string }) {
+export default function AIWidget({ shopId, themeColor }: { shopId: string, themeColor?: string }) {
   // This component simply injects the lightweight vanilla JS widget onto the page.
   // The widget is completely self-contained in public/booking-widget.js
   
@@ -17,6 +17,9 @@ export default function AIWidget({ shopId }: { shopId: string }) {
     script.src = `/booking-widget.js?v=${Date.now()}`;
     script.setAttribute('data-shop-id', shopId);
     script.setAttribute('data-api-url', '/api/chat/booking');
+    if (themeColor) {
+      script.setAttribute('data-theme-color', themeColor);
+    }
     script.async = true;
     
     document.body.appendChild(script);
