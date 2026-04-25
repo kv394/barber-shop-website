@@ -33,6 +33,9 @@ export async function PATCH(
     if (body.description !== undefined) {
       updateData.description = body.description ? String(body.description).trim() : null;
     }
+    if (body.slogan !== undefined) {
+      updateData.slogan = body.slogan ? String(body.slogan).trim() : null;
+    }
     // No-show deposit settings (C5)
     if (body.depositRequired !== undefined) {
       updateData.depositRequired = Boolean(body.depositRequired);

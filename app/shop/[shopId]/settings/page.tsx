@@ -5,6 +5,7 @@ import WidgetEmbedCode from '@/components/shop-admin/WidgetEmbedCode';
 import { CustomizationForm } from '@/components/shop-admin/CustomizationForm';
 import { CustomPagesForm } from '@/components/shop-admin/CustomPagesForm';
 import { TemplateSelector } from '@/components/shop-admin/TemplateSelector';
+import { ShopProfileForm } from '@/components/shop-admin/ShopProfileForm';
 import { DEFAULT_CUSTOMIZATION } from '@/lib/templates';
 import ShopAdminLayout from '@/components/shop-admin/ShopAdminLayout';
 import TimezoneSelector from '@/components/shop-admin/TimezoneSelector';
@@ -74,6 +75,13 @@ export default async function ShopSettingsPage({
         shopId={shopId}
         initialRequired={shopDetails?.depositRequired || false}
         initialAmount={shopDetails?.depositAmount || 0}
+      />
+
+      <ShopProfileForm
+        shopId={shopId}
+        initialName={data.shop.name}
+        initialDescription={data.shop.description}
+        initialSlogan={data.shop.slogan}
       />
 
       <div className="bg-crm-bg/50 p-6 rounded-xl border border-crm-border shadow-sm mb-6">

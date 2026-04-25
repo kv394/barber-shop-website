@@ -17,6 +17,7 @@ model Shop {
   subdomain     String? @unique
   customDomain  String? @unique
   description   String?
+  slogan        String?
   template      String  @default("modern")
   timezone      String  @default("America/New_York")
   customization Json?
