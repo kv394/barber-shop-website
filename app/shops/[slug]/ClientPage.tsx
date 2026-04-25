@@ -207,7 +207,7 @@ function CustomPageContent({ content, shop, themeColor, className, onBookClick, 
                   <h3 className={styles.title} style={templateType === 'corporate' || templateType === 'sporty' || templateType === 'classic' ? { color: themeColor } : {}}>{product.name}</h3>
                   <p className={styles.desc}>{product.description}</p>
                   <div className={styles.price} style={templateType === 'corporate' || templateType === 'modern' ? { color: themeColor } : {}}>
-                    \$\{typeof product.price === 'number' ? product.price.toFixed(2) : '0.00'}
+                    ${typeof product.price === 'number' ? product.price.toFixed(2) : '0.00'}
                   </div>
                 </div>
               ))}
@@ -231,7 +231,7 @@ function CustomPageContent({ content, shop, themeColor, className, onBookClick, 
                         </div>
                         <div className="flex items-center gap-4 mt-4 md:mt-0">
                           <div className="text-right mr-4 border-r border-gray-200 pr-4">
-                              <span className={styles.price}>\$\{service.price.toFixed(2)}</span>
+                              <span className={styles.price}>${service.price.toFixed(2)}</span>
                               <span className="block text-gray-400 text-[11px]">{service.duration}m</span>
                           </div>
                           <button onClick={() => onBookClick && onBookClick(service)} className={styles.btn} style={styles.btnStyle}>{ctaText}</button>
@@ -244,7 +244,7 @@ function CustomPageContent({ content, shop, themeColor, className, onBookClick, 
                             {service.name}
                           </h3>
                           <div className={styles.price} style={templateType === 'modern' ? { backgroundColor: `${themeColor || '#ffffff'}20`, color: themeColor || '#ffffff' } : (templateType === 'corporate' ? { color: themeColor } : {})}>
-                            \$\{service.price.toFixed(2)} {templateType === 'classic' && ` • ${service.duration} MINS`}
+                            ${service.price.toFixed(2)} {templateType === 'classic' && ` • ${service.duration} MINS`}
                           </div>
                         </div>
         
