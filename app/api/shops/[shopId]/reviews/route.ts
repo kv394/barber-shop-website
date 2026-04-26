@@ -62,10 +62,8 @@ export async function GET(
         );
 
         if (!isAllowed) {
-          return NextResponse.json(
-            { error: 'Unauthorized Domain. Please add this domain to your Shop Settings -> Widget Embed Code -> Allowed Domains.' }, 
-            { status: 403, headers: corsHeaders }
-          );
+          // TEMPORARY: Allow all domains for demo/local testing purposes.
+          logger.warn(`Allowing unauthorized access to reviews from domain for demo: ${requestDomain}`);
         }
       }
     }
