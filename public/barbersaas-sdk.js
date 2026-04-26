@@ -14,8 +14,8 @@
     }
 
     /**
-     * Initialize the SDK with your Shop ID.
-     * @param {string} shopId - Your unique shop ID
+     * Initialize the SDK.
+     * @param {string} [shopId] - Your unique shop ID (auto-detected if data-shop-id is set on script tag)
      * @param {Object|string} [options] - Configuration options or custom API base URL
      * @param {string} [options.apiUrl] - Custom API base URL
      * @param {string} [options.primaryColor] - Primary theme color
@@ -23,7 +23,14 @@
      */
     init(shopId, options = {}) {
       if (!shopId) {
-        console.error('BarberSaaS SDK: init() requires a valid shopId.');
+        const scriptEl = document.querySelector('script[data-shop-id]');
+        if (scriptEl) {
+          shopId = scriptEl.getAttribute('data-shop-id');
+        }
+      }
+
+      if (!shopId) {
+        console.error('BarberSaaS SDK: init() requires a valid shopId or a data-shop-id attribute on the script tag.');
         return;
       }
       this.shopId = shopId;
