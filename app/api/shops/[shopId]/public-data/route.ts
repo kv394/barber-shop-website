@@ -69,7 +69,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ shop
     }
     // CORS Headers for allowed requests
     const corsHeaders = {
-      'Access-Control-Allow-Origin': origin || '*',
+      'Access-Control-Allow-Origin': (!origin || origin === 'null') ? '*' : origin,
       'Access-Control-Allow-Methods': 'GET, OPTIONS',
       'Access-Control-Allow-Headers': 'Content-Type, Authorization',
     };
@@ -180,7 +180,7 @@ export async function OPTIONS(request: Request) {
   return new NextResponse(null, {
     status: 204,
     headers: {
-      'Access-Control-Allow-Origin': origin || '*',
+      'Access-Control-Allow-Origin': (!origin || origin === 'null') ? '*' : origin,
       'Access-Control-Allow-Methods': 'GET, OPTIONS',
       'Access-Control-Allow-Headers': 'Content-Type, Authorization',
     },

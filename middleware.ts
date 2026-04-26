@@ -15,6 +15,7 @@ const publicRoutes = [
   '^/api/shops/[^/]+/appointments$',
   '^/api/shops/[^/]+/staff$',
   '^/api/shops/[^/]+/reviews$',
+  '^/api/shops/[^/]+/public-data$',
   '^/sites/[^/]+(?:/.*)?$',
   '^/api/users/init$',
   '^/api/users/me$',
@@ -45,6 +46,11 @@ const generateCsp = () => {
 };
 
 export async function middleware(req: NextRequest) {
+  // Allow OPTIONS requests to pass through for CORS preflight
+  if (req.method === 'OPTIONS') {
+    return NextResponse.next();
+  }
+
   const url = req.nextUrl;
   const hostname = req.headers.get('host') || '';
   

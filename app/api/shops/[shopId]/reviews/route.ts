@@ -10,7 +10,7 @@ export async function OPTIONS(request: Request) {
   return new NextResponse(null, {
     status: 200,
     headers: {
-      'Access-Control-Allow-Origin': origin || '*',
+      'Access-Control-Allow-Origin': (!origin || origin === 'null') ? '*' : origin,
       'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
       'Access-Control-Allow-Headers': 'Content-Type, Authorization',
     },
@@ -23,7 +23,7 @@ export async function GET(
 ) {
   const origin = request.headers.get('origin');
   const corsHeaders = {
-    'Access-Control-Allow-Origin': origin || '*',
+    'Access-Control-Allow-Origin': (!origin || origin === 'null') ? '*' : origin,
     'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
     'Access-Control-Allow-Headers': 'Content-Type, Authorization',
   };
@@ -90,7 +90,7 @@ export async function POST(
 ) {
   const origin = request.headers.get('origin');
   const corsHeaders = {
-    'Access-Control-Allow-Origin': origin || '*',
+    'Access-Control-Allow-Origin': (!origin || origin === 'null') ? '*' : origin,
     'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
     'Access-Control-Allow-Headers': 'Content-Type, Authorization',
   };
