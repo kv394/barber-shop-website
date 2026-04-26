@@ -383,8 +383,8 @@
             const shop = data.shop || {};
             
             // 1. Extract dynamic theme colors set by THIS specific shop's admin
-            const primaryColor = shop.customization?.primaryColor || "#E31837";
-            const secondaryColor = shop.customization?.secondaryColor || "#000000";
+            const primaryColor = shop.primaryColor || "#E31837";
+            const secondaryColor = shop.secondaryColor || "#000000";
             
             // 2. Set them on the SDK so widgets can read them
             window.BarberSaaS.primaryColor = primaryColor;

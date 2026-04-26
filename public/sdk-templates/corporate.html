@@ -121,7 +121,7 @@
         const products = data.products || [];
         const reviews = data.reviews || [];
 
-        const themeColor = shop.customization?.primaryColor || "#c0a05b";
+        const themeColor = shop.primaryColor || "#c0a05b";
         document.documentElement.style.setProperty("--theme-color", themeColor);
 
         const nameEl = document.getElementById("shop-name");
