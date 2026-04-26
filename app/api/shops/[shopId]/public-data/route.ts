@@ -20,7 +20,9 @@ export async function GET(request: Request, { params }: { params: Promise<{ shop
         timezone: true,
         customDomain: true,
         subdomain: true,
-        customization: true
+        customization: true,
+        template: true,
+        dynamicTemplates: true
       }
     });
 
@@ -158,6 +160,8 @@ export async function GET(request: Request, { params }: { params: Promise<{ shop
         description: shop.description,
         slogan: shop.slogan,
         timezone: shop.timezone,
+        template: shop.template,
+        dynamicTemplates: shop.dynamicTemplates,
         customization: publicCustomization
     };
 
