@@ -349,9 +349,26 @@
   </article>
 
   <script src="https://barbersaas-henna.vercel.app/barbersaas-sdk.js"></script>
+  <script>
+    // Initialize the SDK immediately so downstream widgets read the correct configuration
+    (function() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const shopId = urlParams.get("shopId") || "cmn9kj24n0000lqzc7kcsmpst";
+
+      if (window.BarberSaaS) {
+        BarberSaaS.init(shopId, {
+          primaryColor: "#E31837",    /* Sport Clips Red */
+          secondaryColor: "#000000",  /* Black */
+          position: "bottom-right"    /* Widget position */
+        });
+      }
+    })();
+  </script>
   <!-- Optional: If you want to force a specific shop ID, keep data-shop-id here. 
        Otherwise, the SDK will pick it up or it can be passed via BarberSaaS.init(). -->
   <script src="https://barbersaas-henna.vercel.app/booking-modal.js"></script>
+  <!-- Chatbot Widget -->
+  <script src="https://barbersaas-henna.vercel.app/booking-widget.js"></script>
 
   <script>
     // Smooth scrolling nav
@@ -372,22 +389,14 @@
     });
 
     window.addEventListener("load", function () {
-      function init() {
-        if (typeof BarberSaaS === "undefined") return;
-        
-        // Pass the theme colors to the SDK so widgets (like User Profile/Chatbots) inherit them
-        // Using init() without an ID string allows the SDK to automatically 
-        // inject the correct ID associated with the current shop's domain/route!
-        BarberSaaS.init(null, {
-          primaryColor: "#E31837",    /* Sport Clips Red */
-          secondaryColor: "#000000"   /* Black */
-        });
+      if (typeof BarberSaaS === "undefined") return;
 
-        BarberSaaS.getPublicData().then((data) => {
+      BarberSaaS.getPublicData().then((data) => {
           // About
           try {
             // Explicitly set the name and description regardless of API response
             const shop = data.shop || {};
+            document.title = shop.name ? `${shop.name} - Booking` : "HERITAGE HAIRCUTS";
             document.getElementById('dyn-shop-name').textContent = shop.name || "HERITAGE HAIRCUTS";
             document.getElementById('dyn-shop-desc').textContent = shop.description || "The ultimate haircut experience.";
             document.getElementById("about-loading").style.display = "none";
@@ -469,16 +478,6 @@
             document.getElementById("reviews-content").style.display = "block";
           } catch(e) {}
         });
-      }
-
-      if (typeof BarberSaaS !== "undefined") init();
-      else {
-        let attempts = 0;
-        let intv = setInterval(() => {
-          attempts++;
-          if(typeof BarberSaaS !== "undefined" || attempts >= 50) { clearInterval(intv); init(); }
-        }, 100);
-      }
     });
   </script>
 </body>

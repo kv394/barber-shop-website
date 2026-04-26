@@ -40,6 +40,17 @@
         if (options.apiUrl) this.apiUrl = options.apiUrl;
         this.primaryColor = options.primaryColor || null;
         this.secondaryColor = options.secondaryColor || null;
+        this.chatbotPosition = options.position || null;
+
+        // Apply colors to root for external widgets (User Profile, etc.)
+        if (this.primaryColor) {
+          document.documentElement.style.setProperty('--primary', this.primaryColor);
+          document.documentElement.style.setProperty('--theme-color', this.primaryColor);
+          document.documentElement.style.setProperty('--brand-color', this.primaryColor);
+        }
+        if (this.secondaryColor) {
+          document.documentElement.style.setProperty('--secondary', this.secondaryColor);
+        }
       }
       console.log('BarberSaaS SDK initialized for shop:', shopId);
     }
