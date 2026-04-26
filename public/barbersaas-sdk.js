@@ -213,6 +213,7 @@
   }
 
   // Expose to global scope
-  global.BarberSaaS = new BarberSaaSClient();
+  const root = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : global;
+  root.BarberSaaS = new BarberSaaSClient();
 
 })(typeof window !== 'undefined' ? window : this);
