@@ -1,6 +1,6 @@
 import { prisma } from './lib/prisma';
 async function run() {
-  const shop = await prisma.shop.findFirst({ where: { slug: 'missouri-city' } });
+  const shop = await prisma.shop.findFirst({ where: { name: { contains: 'missouri', mode: 'insensitive' } } });
   if (!shop) { console.log('Shop not found'); return; }
   console.log('Shop ID:', shop.id);
   const custStr = JSON.stringify(shop.customization || {});

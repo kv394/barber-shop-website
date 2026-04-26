@@ -13,7 +13,7 @@ async function run() {
   }
 
   console.log("Shop name:", shop.name);
-  const cust = shop.customization || {};
+  const cust: any = shop.customization || {};
   console.log("Total customization size:", JSON.stringify(cust).length);
   
   for (const key in cust) {

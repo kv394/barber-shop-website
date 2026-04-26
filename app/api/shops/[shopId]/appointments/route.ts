@@ -113,10 +113,10 @@ export async function POST(
     // SECURITY: Rate Limiting
     // Limit to 5 booking attempts per user/IP per minute to prevent bot spam
     const ip = request.headers.get('x-forwarded-for') || 'unknown';
-    const rateLimitKey = userId ? \`booking:\${userId}\` : \`booking-ip:\${ip}\`;
+    const rateLimitKey = userId ? `booking:${userId}` : `booking-ip:${ip}`;
     const rateLimitResult = await rateLimit(rateLimitKey, 5, 60);
     if (!rateLimitResult.success) {
-      logger.warn(\`Rate limit exceeded for \${rateLimitKey} booking in shop \${shopId}\`);
+      logger.warn(`Rate limit exceeded for ${rateLimitKey} booking in shop ${shopId}`);
       return NextResponse.json({ error: 'Too many booking attempts. Please try again later.' }, { status: 429 });
     }
 
