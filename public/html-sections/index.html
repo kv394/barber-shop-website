@@ -247,6 +247,7 @@
       /* Try to hook into common CSS variables used by external widgets */
       --brand-color: var(--primary);
       --theme-color: var(--primary); 
+      --widget-border: var(--secondary);
     }
     
     /* Force common avatar/profile elements to use theme color */
@@ -258,9 +259,10 @@
     [id*="avatar"],
     [class*="user-profile"],
     [class*="profile-badge"] {
-       /* Give avatars a border matching the theme */
-       border-color: var(--primary) !important;
-       outline-color: var(--primary) !important;
+       background-color: var(--white) !important;
+       color: var(--black) !important;
+       border: 2px solid var(--secondary) !important;
+       outline-color: var(--secondary) !important;
     }
     
     /* Force common chat widgets (like Intercom, Crisp, Drift, etc) to use theme color */
@@ -269,15 +271,15 @@
     [id*="intercom-"],
     [class*="crisp-client"],
     #drift-widget {
-       filter: hue-rotate(0deg) saturate(100%) !important; /* Note: To perfectly match #E31837 via CSS filter is complex, but we can set backgrounds directly if the widget allows it */
+       filter: none !important;
     }
     
     /* Target internal SVG fills and backgrounds of common widgets */
     [class*="avatar"] svg,
     [class*="user-profile"] svg,
     [class*="chat-button"] {
-       fill: var(--primary) !important;
-       background-color: var(--primary) !important;
+       fill: var(--black) !important;
+       background-color: transparent !important;
     }
   </style>
 </head>

@@ -61,13 +61,14 @@
   style.textContent = `
     :host {
       --primary-color: ${themeColor};
-      --bg-color: #121412;
-      --text-color: #e3e2e0;
-      --border-color: #333;
+      --secondary-color: ${secondaryColor};
+      --bg-color: #ffffff;
+      --text-color: #000000;
+      --border-color: ${secondaryColor};
       --msg-user-bg: ${themeColor};
       --msg-user-text: #ffffff;
-      --msg-bot-bg: #2a2a2a;
-      --msg-bot-text: #e3e2e0;
+      --msg-bot-bg: #f4f4f4;
+      --msg-bot-text: #000000;
       font-family: system-ui, -apple-system, sans-serif;
     }
     
@@ -78,8 +79,9 @@
       width: 60px;
       height: 60px;
       border-radius: 30px;
-      background-color: var(--primary-color);
-      color: var(--msg-user-text);
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      border: 2px solid var(--border-color);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -115,7 +117,7 @@
       height: 500px;
       max-height: calc(100vh - 160px);
       background-color: var(--bg-color);
-      border: 1px solid var(--border-color);
+      border: 2px solid var(--border-color);
       border-radius: 12px;
       box-shadow: 0 8px 24px rgba(0,0,0,0.2);
       display: flex;
@@ -190,7 +192,7 @@
     
     #chat-input-area {
       padding: 12px;
-      border-top: 1px solid var(--border-color);
+      border-top: 2px solid var(--border-color);
       display: flex;
       gap: 8px;
       align-items: center;
@@ -201,13 +203,13 @@
     #chat-input {
       flex: 1;
       background-color: transparent;
-      border: 1px solid var(--border-color);
+      border: 2px solid var(--border-color);
       color: var(--text-color);
       padding: 10px 14px;
       border-radius: 20px;
       outline: none;
       font-size: 14px;
-      color-scheme: dark; /* Helps date picker match dark theme */
+      color-scheme: light; /* Helps date picker match light theme */
     }
     
     #chat-input:focus {
@@ -257,7 +259,7 @@
       width: 100%;
       height: 75%;
       background-color: var(--bg-color);
-      border-top: 1px solid var(--border-color);
+      border-top: 2px solid var(--border-color);
       border-top-left-radius: 20px;
       border-top-right-radius: 20px;
       box-shadow: 0 -8px 24px rgba(0,0,0,0.4);
@@ -338,7 +340,7 @@
 
     .slot-btn {
       background-color: transparent;
-      border: 1px solid var(--primary-color);
+      border: 2px solid var(--primary-color);
       color: var(--primary-color);
       padding: 6px 12px;
       border-radius: 14px;
@@ -582,7 +584,7 @@
               btn.style.justifyContent = 'center';
               btn.style.padding = '8px 16px';
               btn.style.borderRadius = '12px';
-              btn.style.border = isSelected ? '1px solid var(--primary-color)' : '1px solid var(--border-color)';
+              btn.style.border = isSelected ? '2px solid var(--primary-color)' : '2px solid var(--border-color)';
               btn.style.backgroundColor = isSelected ? 'rgba(212, 175, 55, 0.15)' : 'transparent';
               btn.style.color = isSelected ? 'var(--primary-color)' : 'var(--text-color)';
               btn.style.cursor = 'pointer';
@@ -666,7 +668,7 @@
           header.style.display = 'flex';
           header.style.justifyContent = 'space-between';
           header.style.alignItems = 'center';
-          header.style.borderBottom = '1px solid var(--border-color)';
+          header.style.borderBottom = '2px solid var(--border-color)';
           header.style.paddingBottom = '12px';
           header.style.marginBottom = '12px';
 
@@ -804,7 +806,7 @@
           img.style.borderRadius = '8px';
           img.style.backgroundColor = 'white';
           img.style.padding = '8px';
-          img.style.border = '1px solid var(--border-color)';
+          img.style.border = '2px solid var(--border-color)';
           
           const caption = document.createElement('div');
           caption.textContent = 'Save this QR code for fast check-in!';
