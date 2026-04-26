@@ -47,6 +47,11 @@
           document.documentElement.style.setProperty('--primary', this.primaryColor);
           document.documentElement.style.setProperty('--theme-color', this.primaryColor);
           document.documentElement.style.setProperty('--brand-color', this.primaryColor);
+          if (document.body) {
+             document.body.style.setProperty('--primary', this.primaryColor);
+             document.body.style.setProperty('--theme-color', this.primaryColor);
+             document.body.style.setProperty('--brand-color', this.primaryColor);
+          }
         }
         if (this.secondaryColor) {
           document.documentElement.style.setProperty('--secondary', this.secondaryColor);

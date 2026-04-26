@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Heritage Haircuts - Sports Edition</title>
+  <title>Booking</title>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,700;0,900;1,400&display=swap" rel="stylesheet">
   <style>
     :root {
@@ -286,7 +286,7 @@
   <nav class="navbar" id="main-nav">
     <a href="#" class="nav-brand">
       <object data="logo.svg" type="image/svg+xml" class="nav-logo" style="pointer-events: none;"></object>
-      <span>HERITAGE</span>
+      <span id="dyn-shop-brand"></span>
     </a>
     <div class="nav-links">
       <a href="#about" class="nav-link active">About</a>
@@ -301,7 +301,7 @@
     <div id="about-loading" class="loading">Loading Playbook...</div>
     <div id="about-content" style="display: none;">
       <section class="hero">
-        <h1 id="dyn-shop-name">HERITAGE HAIRCUTS</h1>
+        <h1 id="dyn-shop-name"></h1>
         <p id="dyn-shop-desc">The ultimate haircut experience in Missouri City.</p>
         <div class="hero-btn-group">
           <button class="btn btn-primary" onclick="document.querySelector('#services').scrollIntoView({behavior: 'smooth'})">CHECK IN NOW</button>
@@ -325,10 +325,10 @@
   <article id="shop" class="section">
     <div class="container">
       <div class="section-header">
-        <h2>THE GEAR</h2>
+        <h2>PRODUCTS</h2>
         <p>Professional products to keep you looking sharp.</p>
       </div>
-      <div id="products-loading" class="loading">Loading Gear...</div>
+      <div id="products-loading" class="loading">Loading Products...</div>
       <div class="grid" id="products-grid" style="display: none;"></div>
     </div>
   </article>
@@ -336,7 +336,7 @@
   <article id="reviews" class="section section-alt">
     <div class="container">
       <div class="section-header">
-        <h2>WHAT THE FANS SAY</h2>
+        <h2>REVIEWS</h2>
       </div>
       <div id="reviews-loading" class="loading">Loading Reviews...</div>
       <div id="reviews-content" style="display: none;">
@@ -348,27 +348,8 @@
     </div>
   </article>
 
-  <script src="https://barbersaas-henna.vercel.app/barbersaas-sdk.js"></script>
-  <script>
-    // Initialize the SDK immediately so downstream widgets read the correct configuration
-    (function() {
-      const urlParams = new URLSearchParams(window.location.search);
-      const shopId = urlParams.get("shopId") || "cmn9kj24n0000lqzc7kcsmpst";
-
-      if (window.BarberSaaS) {
-        BarberSaaS.init(shopId, {
-          primaryColor: "#E31837",    /* Sport Clips Red */
-          secondaryColor: "#000000",  /* Black */
-          position: "bottom-right"    /* Widget position */
-        });
-      }
-    })();
-  </script>
-  <!-- Optional: If you want to force a specific shop ID, keep data-shop-id here. 
-       Otherwise, the SDK will pick it up or it can be passed via BarberSaaS.init(). -->
-  <script src="https://barbersaas-henna.vercel.app/booking-modal.js"></script>
-  <!-- Chatbot Widget -->
-  <script src="https://barbersaas-henna.vercel.app/booking-widget.js"></script>
+  <!-- Core SDK -->
+  <script src="/barbersaas-sdk.js"></script>
 
   <script>
     // Smooth scrolling nav
@@ -391,14 +372,53 @@
     window.addEventListener("load", function () {
       if (typeof BarberSaaS === "undefined") return;
 
+      const urlParams = new URLSearchParams(window.location.search);
+      const shopId = urlParams.get("shopId") || "cmn9kj24n0000lqzc7kcsmpst";
+      
+      // Initialize SDK without hardcoded colors so it can fetch the shop data
+      BarberSaaS.init(shopId, { position: "bottom-right" });
+
       BarberSaaS.getPublicData().then((data) => {
-          // About
           try {
-            // Explicitly set the name and description regardless of API response
             const shop = data.shop || {};
-            document.title = shop.name ? `${shop.name} - Booking` : "HERITAGE HAIRCUTS";
-            document.getElementById('dyn-shop-name').textContent = shop.name || "HERITAGE HAIRCUTS";
-            document.getElementById('dyn-shop-desc').textContent = shop.description || "The ultimate haircut experience.";
+            
+            // 1. Extract dynamic theme colors set by THIS specific shop's admin
+            const primaryColor = shop.customization?.primaryColor || "#E31837";
+            const secondaryColor = shop.customization?.secondaryColor || "#000000";
+            
+            // 2. Set them on the SDK so widgets can read them
+            window.BarberSaaS.primaryColor = primaryColor;
+            window.BarberSaaS.secondaryColor = secondaryColor;
+            
+            // 3. Inject CSS Variables onto the page so user profile avatars inherit them
+            document.documentElement.style.setProperty('--primary', primaryColor);
+            document.documentElement.style.setProperty('--theme-color', primaryColor);
+            document.documentElement.style.setProperty('--brand-color', primaryColor);
+            if (document.body) {
+               document.body.style.setProperty('--primary', primaryColor);
+               document.body.style.setProperty('--theme-color', primaryColor);
+               document.body.style.setProperty('--brand-color', primaryColor);
+            }
+            
+            // 4. Inject the Chatbot and Booking widgets dynamically NOW that colors are set
+            const modalScript = document.createElement("script");
+            modalScript.src = "/booking-modal.js";
+            document.body.appendChild(modalScript);
+            
+            const widgetScript = document.createElement("script");
+            widgetScript.src = "/booking-widget.js";
+            document.body.appendChild(widgetScript);
+
+            // Explicitly set the name and description regardless of API response
+            const shopName = shop.name || "Barber Shop";
+            document.title = shop.name ? `${shop.name} - Booking` : "Booking";
+            document.getElementById('dyn-shop-name').textContent = shopName;
+            
+            // Set the nav brand text (typically the first word of the shop name)
+            const brandText = shopName.split(' ')[0] || shopName;
+            document.getElementById('dyn-shop-brand').textContent = brandText.toUpperCase();
+            
+            document.getElementById('dyn-shop-desc').textContent = shop.description || "";
             document.getElementById("about-loading").style.display = "none";
             document.getElementById("about-content").style.display = "block";
           } catch(e) {}
@@ -412,7 +432,7 @@
                   <h3 class="card-title">${s.name}</h3>
                   <div class="card-price">$${Number(s.price).toFixed(2)}</div>
                   <p class="card-desc" style="font-weight: 700; margin-bottom: 5px;">${s.duration} MIN</p>
-                  <p class="card-desc">${s.description || "Get in the game."}</p>
+                  <p class="card-desc">${s.description || ""}</p>
                   <button class="btn btn-primary card-btn b-book" data-id="${s.id}">CHECK IN</button>
                 </div>
               `).join('');
@@ -432,7 +452,7 @@
                 <div class="card">
                   <h3 class="card-title">${p.name}</h3>
                   <div class="card-price">$${Number(p.price).toFixed(2)}</div>
-                  <p class="card-desc" style="max-height: 80px; overflow-y: auto;">${p.description || "Top tier gear."}</p>
+                  <p class="card-desc" style="max-height: 80px; overflow-y: auto;">${p.description || ""}</p>
                   <div style="display: flex; gap: 10px;">
                     <button class="btn btn-secondary card-btn b-view" data-id="${p.id}" style="flex: 1; padding: 10px;">VIEW</button>
                     <button class="btn btn-primary card-btn b-buy" data-id="${p.id}" style="flex: 1; padding: 10px;">BUY</button>
@@ -462,7 +482,7 @@
               document.getElementById("reviews-grid").innerHTML = reviews.map(r => `
                 <div class="card review-card">
                   <div class="stars">${"★".repeat(r.rating || 5)}</div>
-                  <p class="review-text">"${r.comment || "Great cut, great atmosphere."}"</p>
+                  <p class="review-text">"${r.comment || ""}"</p>
                 </div>
               `).join('');
             }
