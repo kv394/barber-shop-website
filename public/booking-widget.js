@@ -65,9 +65,9 @@
       --bg-color: #ffffff;
       --text-color: #000000;
       --border-color: ${secondaryColor};
-      --msg-user-bg: ${themeColor};
+      --msg-user-bg: var(--secondary-color);
       --msg-user-text: #ffffff;
-      --msg-bot-bg: #f4f4f4;
+      --msg-bot-bg: #ffffff;
       --msg-bot-text: #000000;
       font-family: system-ui, -apple-system, sans-serif;
     }
@@ -138,8 +138,9 @@
     }
     
     #chat-header {
-      background-color: var(--primary-color);
-      color: var(--msg-user-text);
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      border-bottom: 2px solid var(--border-color);
       padding: 16px;
       font-weight: bold;
       font-size: 16px;
@@ -180,6 +181,7 @@
       align-self: flex-end;
       background-color: var(--msg-user-bg);
       color: var(--msg-user-text);
+      border: 1px solid var(--border-color);
       border-bottom-right-radius: 4px;
     }
     
@@ -213,7 +215,7 @@
     }
     
     #chat-input:focus {
-      border-color: var(--primary-color);
+      border-color: var(--text-color);
     }
     
     #date-toggle-btn {
@@ -231,13 +233,13 @@
     
     #date-toggle-btn:hover {
       opacity: 1;
-      color: var(--primary-color);
+      color: var(--text-color);
     }
-    
+
     #send-button {
-      background-color: var(--primary-color);
-      color: var(--msg-user-text);
-      border: none;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      border: 2px solid var(--border-color);
       width: 40px;
       height: 40px;
       border-radius: 20px;
@@ -245,8 +247,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-    }
-    
+    }    
     #send-button:disabled {
       opacity: 0.5;
       cursor: not-allowed;
@@ -340,8 +341,8 @@
 
     .slot-btn {
       background-color: transparent;
-      border: 2px solid var(--primary-color);
-      color: var(--primary-color);
+      border: 2px solid var(--border-color);
+      color: var(--text-color);
       padding: 6px 12px;
       border-radius: 14px;
       cursor: pointer;
@@ -350,8 +351,8 @@
     }
 
     .slot-btn:hover {
-      background-color: var(--primary-color);
-      color: var(--msg-user-text);
+      background-color: var(--text-color);
+      color: var(--bg-color);
       transform: translateY(-1px);
     }
 
@@ -584,9 +585,9 @@
               btn.style.justifyContent = 'center';
               btn.style.padding = '8px 16px';
               btn.style.borderRadius = '12px';
-              btn.style.border = isSelected ? '2px solid var(--primary-color)' : '2px solid var(--border-color)';
-              btn.style.backgroundColor = isSelected ? 'rgba(212, 175, 55, 0.15)' : 'transparent';
-              btn.style.color = isSelected ? 'var(--primary-color)' : 'var(--text-color)';
+              btn.style.border = isSelected ? '2px solid var(--text-color)' : '2px solid var(--border-color)';
+              btn.style.backgroundColor = isSelected ? 'rgba(0, 0, 0, 0.05)' : 'transparent';
+              btn.style.color = isSelected ? 'var(--text-color)' : 'var(--text-color)';
               btn.style.cursor = 'pointer';
               btn.style.transition = 'all 0.2s ease';
               
@@ -698,7 +699,7 @@
               border-radius: 3px;
             }
             .time-grid-container::-webkit-scrollbar-thumb {
-              background: var(--primary-color);
+              background: var(--text-color);
               border-radius: 3px;
             }
           `;
@@ -738,11 +739,11 @@
                  btn.addEventListener('click', () => {
                      if (selectedIndex !== null && timeButtons[selectedIndex]) {
                          timeButtons[selectedIndex].style.backgroundColor = 'transparent';
-                         timeButtons[selectedIndex].style.color = 'var(--primary-color)';
+                         timeButtons[selectedIndex].style.color = 'var(--text-color)';
                      }
                      selectedIndex = i;
-                     btn.style.backgroundColor = 'var(--primary-color)';
-                     btn.style.color = 'var(--msg-user-text)';
+                     btn.style.backgroundColor = 'var(--text-color)';
+                     btn.style.color = 'var(--bg-color)';
                      
                      confirmBtn.disabled = false;
                      confirmBtn.style.opacity = '1';
@@ -751,8 +752,8 @@
                  
                  if (selectedIndex === null) {
                      selectedIndex = i;
-                     btn.style.backgroundColor = 'var(--primary-color)';
-                     btn.style.color = 'var(--msg-user-text)';
+                     btn.style.backgroundColor = 'var(--text-color)';
+                     btn.style.color = 'var(--bg-color)';
                  }
              }
              timeButtons.push(btn);
@@ -844,4 +845,9 @@
     input.value = '';
     sendChatRequest(text, text);
   });
-})();
+})();ChatRequest(text, text);
+  });
+})();  });
+})();ChatRequest(text, text);
+  });
+})();)();();)();;

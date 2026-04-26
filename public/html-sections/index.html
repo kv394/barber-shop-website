@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Booking</title>
+  <title>Sport Clips - Haircuts for Men</title>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,700;0,900;1,400&display=swap" rel="stylesheet">
   <style>
     :root {
@@ -12,7 +12,7 @@
       --dark-gray: #222222;
       --light-gray: #F4F4F4;
       --white: #FFFFFF;
-      --text: #333333;
+      --text-main: #333333;
     }
     
     html { scroll-behavior: smooth; }
@@ -20,32 +20,39 @@
     body {
       font-family: 'Roboto', sans-serif;
       background-color: var(--white);
-      color: var(--text);
+      color: var(--text-main);
       margin: 0;
       padding: 0;
       line-height: 1.6;
     }
 
-    h1, h2, h3, h4 {
+    h1, h2, h3, .sport-title {
+      font-family: 'Roboto', sans-serif;
       font-weight: 900;
       text-transform: uppercase;
-      color: var(--black);
-      margin-top: 0;
+      text-align: center;
+      letter-spacing: 1px;
     }
 
     /* Navbar */
     .navbar {
-      background-color: var(--white);
-      border-bottom: 4px solid var(--primary);
-      padding: 15px 20px;
-      padding-right: 80px; /* Added to prevent external user profile from overlapping */
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+      background: var(--white);
+      color: var(--black);
+      padding: 15px 0;
       position: sticky;
       top: 0;
       z-index: 1000;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      border-bottom: 2px solid var(--primary);
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+    .nav-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 20px;
+      flex-wrap: wrap;
     }
     .nav-brand {
       display: flex;
@@ -56,119 +63,91 @@
     .nav-logo {
       width: 40px;
       height: 40px;
-      color: var(--primary);
-    }
-    .nav-brand span {
-      font-weight: 900;
-      font-size: 1.5rem;
-      color: var(--black);
-      letter-spacing: 1px;
     }
     .nav-links {
       display: flex;
       gap: 20px;
       align-items: center;
+      flex-wrap: wrap;
+      justify-content: center;
+      padding-right: 80px;
     }
-    .nav-links a {
+    .navbar a {
       color: var(--black);
       text-decoration: none;
-      font-weight: 700;
       font-size: 1rem;
+      font-weight: 700;
       text-transform: uppercase;
-      transition: color 0.2s;
+      transition: color 0.3s;
+      padding: 5px 10px;
     }
-    .nav-links a:hover, .nav-links a.active {
+    .navbar a:hover, .navbar a.active {
       color: var(--primary);
     }
     .nav-cta {
-      background-color: var(--primary);
+      background: var(--primary);
       color: var(--white) !important;
-      padding: 10px 20px;
+      padding: 10px 20px !important;
       border-radius: 4px;
+      border: 2px solid var(--primary);
     }
     .nav-cta:hover {
-      background-color: #C0142D;
+      background: var(--white);
+      color: var(--primary) !important;
     }
 
-    /* Hero Section */
-    .hero {
-      background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1593081891731-fda0877988da?auto=format&fit=crop&w=2000&q=80') center/cover;
-      color: var(--white);
+    /* Hero / About */
+    .hero-section {
       text-align: center;
       padding: 100px 20px;
-    }
-    .hero h1 {
+      background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://images.unsplash.com/photo-1599351431202-1e0f0137899a?auto=format&fit=crop&w=2000&q=80') center/cover;
       color: var(--white);
-      font-size: clamp(2.5rem, 6vw, 4.5rem);
-      margin-bottom: 10px;
-      letter-spacing: 2px;
     }
-    .hero p {
-      font-size: 1.2rem;
-      font-weight: 400;
+    .hero-section h1 {
+      font-size: clamp(3rem, 8vw, 5rem);
+      margin: 0 0 10px 0;
+      color: var(--white);
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    }
+    .hero-section p {
+      font-size: 1.5rem;
       max-width: 800px;
-      margin: 0 auto 30px auto;
-    }
-    .hero-btn-group {
-      display: flex;
-      gap: 15px;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
-    .btn {
-      display: inline-block;
-      padding: 15px 30px;
-      font-weight: 900;
-      font-size: 1.1rem;
+      margin: 0 auto 30px;
+      font-weight: 700;
       text-transform: uppercase;
-      text-decoration: none;
-      border-radius: 4px;
-      cursor: pointer;
-      transition: all 0.2s;
-      border: none;
     }
-    .btn-primary {
-      background-color: var(--primary);
-      color: var(--white);
-    }
-    .btn-primary:hover {
-      background-color: #C0142D;
-      transform: translateY(-2px);
-    }
-    .btn-secondary {
-      background-color: var(--white);
-      color: var(--black);
-    }
-    .btn-secondary:hover {
-      background-color: var(--light-gray);
-      transform: translateY(-2px);
-    }
-
-    /* Sections */
-    .section {
-      padding: 80px 20px;
-    }
-    .section-alt {
-      background-color: var(--light-gray);
-    }
+    
+    /* Containers */
     .container {
       max-width: 1200px;
-      margin: 0 auto;
+      margin: 60px auto;
+      padding: 0 20px;
     }
     .section-header {
+      font-size: 3rem;
+      color: var(--black);
+      margin-bottom: 20px;
+      position: relative;
+      display: inline-block;
+      text-transform: uppercase;
+      font-weight: 900;
+    }
+    .section-header::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60px;
+      height: 4px;
+      background: var(--primary);
+    }
+    .section-header-wrap {
       text-align: center;
       margin-bottom: 50px;
     }
-    .section-header h2 {
-      font-size: 2.5rem;
-      margin-bottom: 10px;
-    }
-    .section-header p {
-      color: var(--text);
-      font-size: 1.1rem;
-    }
 
-    /* Grid layout */
+    /* Grid Layout */
     .grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -177,182 +156,180 @@
 
     /* Cards */
     .card {
-      background-color: var(--white);
-      border: 1px solid #ddd;
-      border-radius: 6px;
+      background: var(--light-gray);
+      border-top: 4px solid var(--primary);
       padding: 30px;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-      transition: transform 0.2s, box-shadow 0.2s;
-      display: flex;
-      flex-direction: column;
+      text-align: center;
+      transition: transform 0.3s, box-shadow 0.3s;
     }
     .card:hover {
       transform: translateY(-5px);
-      box-shadow: 0 8px 15px rgba(0,0,0,0.1);
-      border-color: var(--primary);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
     }
     .card-title {
-      font-size: 1.5rem;
+      font-size: 1.8rem;
       color: var(--black);
-      margin-bottom: 5px;
+      margin: 0 0 15px 0;
+      text-transform: uppercase;
+      font-weight: 900;
     }
     .card-price {
-      font-size: 1.8rem;
+      font-size: 2rem;
       font-weight: 900;
       color: var(--primary);
       margin-bottom: 15px;
     }
     .card-desc {
-      flex-grow: 1;
+      font-size: 1rem;
       margin-bottom: 25px;
-      color: var(--text);
+      color: var(--text-main);
     }
-    .card-btn {
+    
+    /* Buttons */
+    .btn {
+      display: inline-block;
+      background: var(--primary);
+      color: var(--white);
+      border: 2px solid var(--primary);
+      padding: 12px 30px;
+      font-family: 'Roboto', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.3s;
+      border-radius: 4px;
       width: 100%;
-      text-align: center;
+      box-sizing: border-box;
+    }
+    .btn:hover {
+      background: var(--black);
+      border-color: var(--black);
+      color: var(--white);
+    }
+    .btn-outline {
+      background: transparent;
+      color: var(--black);
+      border-color: var(--black);
+    }
+    .btn-outline:hover {
+      background: var(--black);
+      color: var(--white);
     }
 
-    /* Review specifically */
-    .review-card {
-      text-align: center;
-      border-top: 4px solid var(--primary);
+    /* Testimonials */
+    .testimonial {
+      background: var(--white);
+      border: 1px solid #ddd;
+      padding: 30px;
+      position: relative;
     }
-    .stars {
+    .testimonial::before {
+      content: '"';
+      position: absolute;
+      top: 10px;
+      left: 20px;
+      font-size: 4rem;
+      color: var(--light-gray);
+      font-family: Georgia, serif;
+      line-height: 1;
+    }
+    .testimonial-stars {
       color: var(--primary);
       font-size: 1.5rem;
       margin-bottom: 15px;
-      letter-spacing: 2px;
     }
-    .review-text {
-      font-style: italic;
+    .testimonial-quote {
       font-size: 1.1rem;
-      color: var(--dark-gray);
+      font-style: italic;
+      position: relative;
+      z-index: 1;
     }
 
     .loading {
       text-align: center;
       font-size: 1.5rem;
-      font-weight: 700;
-      color: var(--primary);
       padding: 50px 0;
+      font-weight: 900;
       text-transform: uppercase;
+      color: var(--primary);
+      animation: pulse 1s infinite alternate;
     }
+    @keyframes pulse { 0% { opacity: 0.5; } 100% { opacity: 1; } }
 
     @media (max-width: 768px) {
-      .nav-links { display: none; }
-      /* Mobile menu toggle would go here */
-    }
-    /* External Widget Styling Overrides (Supabase Profile, Chatbots, etc.) */
-    :root {
-      /* Try to hook into common CSS variables used by external widgets */
-      --brand-color: var(--primary);
-      --theme-color: var(--primary); 
-      --widget-border: var(--secondary);
-    }
-    
-    /* Force common avatar/profile elements to use theme color */
-    .supabase-auth-ui_ui-button,
-    .supabase-account-avatar,
-    [id*="supabase-"],
-    [class*="supabase-"],
-    [class*="avatar"],
-    [id*="avatar"],
-    [class*="user-profile"],
-    [class*="profile-badge"] {
-       background-color: var(--white) !important;
-       color: var(--black) !important;
-       border: 2px solid var(--secondary) !important;
-       outline-color: var(--secondary) !important;
-    }
-    
-    /* Force common chat widgets (like Intercom, Crisp, Drift, etc) to use theme color */
-    [id*="chat-widget"],
-    [class*="chat-widget"],
-    [id*="intercom-"],
-    [class*="crisp-client"],
-    #drift-widget {
-       filter: none !important;
-    }
-    
-    /* Target internal SVG fills and backgrounds of common widgets */
-    [class*="avatar"] svg,
-    [class*="user-profile"] svg,
-    [class*="chat-button"] {
-       fill: var(--black) !important;
-       background-color: transparent !important;
+      .nav-container { flex-direction: column; gap: 15px; }
+      .hero-section { padding: 60px 20px; }
+      .section-header { font-size: 2.2rem; }
     }
   </style>
 </head>
 <body>
 
-  <nav class="navbar" id="main-nav">
-    <a href="#" class="nav-brand">
-      <object data="logo.svg" type="image/svg+xml" class="nav-logo" style="pointer-events: none;"></object>
-      <span id="dyn-shop-brand"></span>
-    </a>
-    <div class="nav-links">
-      <a href="#about" class="nav-link active">About</a>
-      <a href="#services" class="nav-link">Services</a>
-      <a href="#shop" class="nav-link">Shop</a>
-      <a href="#reviews" class="nav-link">Reviews</a>
-      <a href="#services" class="nav-link nav-cta">CHECK IN ONLINE</a>
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="#" class="nav-brand">
+        <object data="logo.svg" type="image/svg+xml" class="nav-logo" style="pointer-events: none;"></object>
+        <span id="dyn-shop-name-nav" style="font-family: 'Roboto', sans-serif; font-weight: 900; font-size: 1.5rem; text-transform: uppercase; letter-spacing: -1px; color: var(--primary);">SPORT CLIPS</span>
+      </a>
+      <div class="nav-links">
+        <a href="#about" class="nav-link active">The MVP</a>
+        <a href="#services" class="nav-link">Haircuts</a>
+        <a href="#shop" class="nav-link">Products</a>
+        <a href="#reviews" class="nav-link">Reviews</a>
+        <a href="#services" class="nav-link nav-cta">Check In Now</a>
+      </div>
     </div>
   </nav>
 
   <article id="about">
-    <div id="about-loading" class="loading">Loading Playbook...</div>
+    <div id="about-loading" class="loading">Loading Stats...</div>
     <div id="about-content" style="display: none;">
-      <section class="hero">
-        <h1 id="dyn-shop-name"></h1>
-        <p id="dyn-shop-desc">The ultimate haircut experience in Missouri City.</p>
-        <div class="hero-btn-group">
-          <button class="btn btn-primary" onclick="document.querySelector('#services').scrollIntoView({behavior: 'smooth'})">CHECK IN NOW</button>
-          <button class="btn-secondary" onclick="document.querySelector('#shop').scrollIntoView({behavior: 'smooth'})">VIEW PRODUCTS</button>
-        </div>
+      <section class="hero-section">
+        <h1 id="dyn-shop-name">Sport Clips Haircuts</h1>
+        <p id="dyn-shop-desc">It's good to be a guy.</p>
+        <button class="btn" style="max-width: 300px; margin: 0 auto; display: block;" onclick="document.querySelector('#services').scrollIntoView({behavior: 'smooth'})">Find a Service</button>
       </section>
     </div>
   </article>
 
-  <article id="services" class="section section-alt">
-    <div class="container">
-      <div class="section-header">
-        <h2>OUR SERVICES</h2>
-        <p>Step up your game with our signature MVP Experience.</p>
+  <article id="services" class="container">
+    <div id="services-loading" class="loading">Loading Playbook...</div>
+    <div id="services-content" style="display: none;">
+      <div class="section-header-wrap">
+        <h2 class="section-header">Haircuts & Services</h2>
       </div>
-      <div id="services-loading" class="loading">Loading Services...</div>
-      <div class="grid" id="services-grid" style="display: none;"></div>
+      <div class="grid" id="services-list"></div>
     </div>
   </article>
 
-  <article id="shop" class="section">
-    <div class="container">
-      <div class="section-header">
-        <h2>PRODUCTS</h2>
-        <p>Professional products to keep you looking sharp.</p>
-      </div>
-      <div id="products-loading" class="loading">Loading Products...</div>
-      <div class="grid" id="products-grid" style="display: none;"></div>
-    </div>
-  </article>
-
-  <article id="reviews" class="section section-alt">
-    <div class="container">
-      <div class="section-header">
-        <h2>REVIEWS</h2>
-      </div>
-      <div id="reviews-loading" class="loading">Loading Reviews...</div>
-      <div id="reviews-content" style="display: none;">
-        <div class="grid" id="reviews-grid"></div>
-        <div style="text-align: center; margin-top: 40px;">
-          <button class="btn btn-primary" id="add-review-btn">LEAVE A REVIEW</button>
+  <article id="shop" class="container" style="background-color: var(--light-gray); padding-top: 60px; padding-bottom: 60px; max-width: 100%;">
+    <div style="max-width: 1200px; margin: 0 auto;">
+      <div id="products-loading" class="loading">Loading Gear...</div>
+      <div id="products-content" style="display: none;">
+        <div class="section-header-wrap">
+          <h2 class="section-header">Pro Gear</h2>
         </div>
+        <div class="grid" id="products-list"></div>
+      </div>
+    </div>
+  </article>
+
+  <article id="reviews" class="container" style="margin-bottom: 100px;">
+    <div id="reviews-loading" class="loading">Loading Highlights...</div>
+    <div id="reviews-content" style="display: none;">
+      <div class="section-header-wrap">
+        <h2 class="section-header">Fan Highlights</h2>
+      </div>
+      <div class="grid" id="reviews-list"></div>
+      <div style="text-align: center; margin-top: 50px;">
+        <button class="btn btn-outline" id="add-review-btn" style="max-width: 300px;">Submit Highlight</button>
       </div>
     </div>
   </article>
 
   <!-- Core SDK -->
   <script src="/barbersaas-sdk.js"></script>
-
   <script>
     // Smooth scrolling nav
     document.querySelectorAll('.nav-link:not(.nav-cta)').forEach(link => {
@@ -372,25 +349,27 @@
     });
 
     window.addEventListener("load", function () {
-      if (typeof BarberSaaS === "undefined") return;
+      function initializeShop() {
+        if (typeof BarberSaaS === "undefined") return;
+        
+        const urlParams = new URLSearchParams(window.location.search);
+        const shopId = urlParams.get("shopId") || "cmn9kj24n0000lqzc7kcsmpst";
+        
+        // Initialize SDK without hardcoded colors so it can fetch the shop data
+        BarberSaaS.init(shopId, { position: "bottom-right" });
 
-      const urlParams = new URLSearchParams(window.location.search);
-      const shopId = urlParams.get("shopId") || "cmn9kj24n0000lqzc7kcsmpst";
-      
-      // Initialize SDK without hardcoded colors so it can fetch the shop data
-      BarberSaaS.init(shopId, { position: "bottom-right" });
-
-      BarberSaaS.getPublicData().then((data) => {
+        BarberSaaS.getPublicData().then((data) => {
           try {
             const shop = data.shop || {};
             
             // 1. Extract dynamic theme colors set by THIS specific shop's admin
-            const primaryColor = shop.primaryColor || "#E31837";
-            const secondaryColor = shop.secondaryColor || "#000000";
+            const primaryColor = shop.primaryColor || "#E31837"; // fallback to Sport Clips Red (primary/accent for widgets)
+            const secondaryColor = shop.secondaryColor || "#000000"; // fallback to black
             
             // 2. Set them on the SDK so widgets can read them
             window.BarberSaaS.primaryColor = primaryColor;
-            window.BarberSaaS.secondaryColor = secondaryColor;
+            window.BarberSaaS.secondaryColor = primaryColor; // Force chat and external widgets to use the theme color
+
             
             // 3. Inject CSS Variables onto the page so user profile avatars inherit them
             document.documentElement.style.setProperty('--primary', primaryColor);
@@ -410,32 +389,27 @@
             const widgetScript = document.createElement("script");
             widgetScript.src = "/booking-widget.js";
             document.body.appendChild(widgetScript);
+          } catch(e) { console.error(e); }
 
-            // Explicitly set the name and description regardless of API response
-            const shopName = shop.name || "Barber Shop";
-            document.title = shop.name ? `${shop.name} - Booking` : "Booking";
-            document.getElementById('dyn-shop-name').textContent = shopName;
-            
-            // Set the nav brand text (typically the first word of the shop name)
-            const brandText = shopName.split(' ')[0] || shopName;
-            document.getElementById('dyn-shop-brand').textContent = brandText.toUpperCase();
-            
-            document.getElementById('dyn-shop-desc').textContent = shop.description || "";
+          // About
+          try {
+            document.getElementById('dyn-shop-name').textContent = data.shop.name || "Sport Clips Haircuts";
+            document.getElementById('dyn-shop-name-nav').textContent = data.shop.name || "SPORT CLIPS";
+            document.getElementById('dyn-shop-desc').textContent = data.shop.description || "It's good to be a guy.";
             document.getElementById("about-loading").style.display = "none";
             document.getElementById("about-content").style.display = "block";
           } catch(e) {}
 
           // Services
           try {
-            const services = (data.services || []).filter(s => s.duration && s.duration > 0);
+            const services = (data.services || []).filter(s => s.duration > 0);
             if (services.length > 0) {
-              document.getElementById("services-grid").innerHTML = services.map(s => `
+              document.getElementById("services-list").innerHTML = services.map(s => `
                 <div class="card">
                   <h3 class="card-title">${s.name}</h3>
-                  <div class="card-price">$${Number(s.price).toFixed(2)}</div>
-                  <p class="card-desc" style="font-weight: 700; margin-bottom: 5px;">${s.duration} MIN</p>
-                  <p class="card-desc">${s.description || ""}</p>
-                  <button class="btn btn-primary card-btn b-book" data-id="${s.id}">CHECK IN</button>
+                  <div class="card-price">$${Number(s.price).toFixed(2)} <span style="font-size: 1rem; color: var(--text-main);">/ ${s.duration} MIN</span></div>
+                  <p class="card-desc">${s.description || "The MVP Experience."}</p>
+                  <button class="btn b-book" data-id="${s.id}">Check In</button>
                 </div>
               `).join('');
               document.querySelectorAll(".b-book").forEach(b => b.addEventListener('click', e => {
@@ -443,63 +417,68 @@
               }));
             }
             document.getElementById("services-loading").style.display = "none";
-            document.getElementById("services-grid").style.display = "grid";
+            document.getElementById("services-content").style.display = "block";
           } catch(e) {}
 
           // Products
           try {
             const products = data.products || [];
             if (products.length > 0) {
-              document.getElementById("products-grid").innerHTML = products.map(p => `
-                <div class="card">
+              document.getElementById("products-list").innerHTML = products.map(p => `
+                <div class="card" style="background: var(--white);">
                   <h3 class="card-title">${p.name}</h3>
                   <div class="card-price">$${Number(p.price).toFixed(2)}</div>
-                  <p class="card-desc" style="max-height: 80px; overflow-y: auto;">${p.description || ""}</p>
+                  <p class="card-desc">${p.description || "Top-tier grooming gear."}</p>
                   <div style="display: flex; gap: 10px;">
-                    <button class="btn btn-secondary card-btn b-view" data-id="${p.id}" style="flex: 1; padding: 10px;">VIEW</button>
-                    <button class="btn btn-primary card-btn b-buy" data-id="${p.id}" style="flex: 1; padding: 10px;">BUY</button>
+                    <button class="btn btn-outline b-view" data-id="${p.id}" style="padding: 12px 15px;">Details</button>
+                    <button class="btn b-buy" data-id="${p.id}">Buy Now</button>
                   </div>
                 </div>
               `).join('');
               document.querySelectorAll(".b-buy").forEach(btn => btn.addEventListener("click", e => {
-                BarberSaaS.getProductDetails(e.target.dataset.id).then(p => {
-                    // Quick mock checkout or use the SDK's embedded checkout hook if built
-                    alert("Checkout for 1x " + p.name);
-                });
+                BarberSaaS.getProductDetails(e.target.dataset.id).then(p => alert("Added to cart: 1x " + p.name));
               }));
               document.querySelectorAll(".b-view").forEach(btn => btn.addEventListener("click", e => {
-                BarberSaaS.getProductDetails(e.target.dataset.id).then(p => {
-                     alert(p.name + "\n$" + p.price + "\n" + p.description);
-                });
+                BarberSaaS.getProductDetails(e.target.dataset.id).then(p => alert(p.name + "\\n$" + p.price + "\\n" + p.description));
               }));
             }
             document.getElementById("products-loading").style.display = "none";
-            document.getElementById("products-grid").style.display = "grid";
+            document.getElementById("products-content").style.display = "block";
           } catch(e) {}
 
           // Reviews
           try {
             const reviews = data.reviews || [];
             if (reviews.length > 0) {
-              document.getElementById("reviews-grid").innerHTML = reviews.map(r => `
-                <div class="card review-card">
-                  <div class="stars">${"★".repeat(r.rating || 5)}</div>
-                  <p class="review-text">"${r.comment || ""}"</p>
+              document.getElementById("reviews-list").innerHTML = reviews.slice(0, 3).map(r => `
+                <div class="testimonial">
+                  <div class="testimonial-stars">${"★".repeat(r.rating || 5)}</div>
+                  <p class="testimonial-quote">${r.comment || "Great experience, highly recommend!"}</p>
                 </div>
               `).join('');
             }
             document.getElementById("add-review-btn").addEventListener("click", () => {
-              const aptId = prompt("Appointment ID:");
+              const aptId = prompt("Enter Check-In ID:");
               const rating = prompt("Rating (1-5):", "5");
               const comment = prompt("Comments:");
               if(aptId && rating && comment) {
-                BarberSaaS.submitReview({appointmentId: aptId, rating: parseInt(rating), comment}).then(() => alert("Thanks for the review!")).catch(e => alert("Error: " + e.message));
+                BarberSaaS.submitReview({appointmentId: aptId, rating: parseInt(rating), comment}).then(() => alert("Highlight submitted!")).catch(e => alert("Error: " + e.message));
               }
             });
             document.getElementById("reviews-loading").style.display = "none";
             document.getElementById("reviews-content").style.display = "block";
           } catch(e) {}
         });
+      }
+
+      if (typeof BarberSaaS !== "undefined") initializeShop();
+      else {
+        let attempts = 0;
+        let intv = setInterval(() => {
+          attempts++;
+          if(typeof BarberSaaS !== "undefined" || attempts >= 50) { clearInterval(intv); initializeShop(); }
+        }, 100);
+      }
     });
   </script>
 </body>

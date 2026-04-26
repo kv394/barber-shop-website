@@ -45,16 +45,19 @@
         // Apply colors to root for external widgets (User Profile, etc.)
         if (this.primaryColor) {
           document.documentElement.style.setProperty('--primary', this.primaryColor);
-          document.documentElement.style.setProperty('--theme-color', this.primaryColor);
-          document.documentElement.style.setProperty('--brand-color', this.primaryColor);
           if (document.body) {
              document.body.style.setProperty('--primary', this.primaryColor);
-             document.body.style.setProperty('--theme-color', this.primaryColor);
-             document.body.style.setProperty('--brand-color', this.primaryColor);
           }
         }
         if (this.secondaryColor) {
           document.documentElement.style.setProperty('--secondary', this.secondaryColor);
+          document.documentElement.style.setProperty('--theme-color', this.secondaryColor);
+          document.documentElement.style.setProperty('--brand-color', this.secondaryColor);
+          if (document.body) {
+             document.body.style.setProperty('--secondary', this.secondaryColor);
+             document.body.style.setProperty('--theme-color', this.secondaryColor);
+             document.body.style.setProperty('--brand-color', this.secondaryColor);
+          }
         }
       }
       console.log('BarberSaaS SDK initialized for shop:', shopId);
