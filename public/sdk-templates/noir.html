@@ -1,217 +1,206 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Noir Barber Shop</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            primary: 'var(--theme-color)',
-            secondary: '#1a1a1a',
-          }
-        }
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Noir Barber Shop</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: "var(--theme-color)",
+              secondary: "#1a1a1a",
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
       }
-    }
-  </script>
-  <style>
-    body { font-family: 'Inter', sans-serif; }
-    /* Dynamic theme variables */
-    :root {
-      --theme-color: #c0a05b;
-    }
-  </style>
-</head>
-<body class="bg-gray-50 text-gray-900 transition-colors duration-300">
-
-  <div id="app-container" class="min-h-screen flex flex-col">
-    <!-- Loading State -->
-    <div id="loading" class="flex-1 flex items-center justify-center">
-      <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-black"></div>
-    </div>
-  </div>
-
-  <script src="../../barbersaas-sdk.js"></script>
-
-  <script>
-    const templateType = 'noir';
-    
-    window.addEventListener('load', async () => {
-      const urlParams = new URLSearchParams(window.location.search);
-      const shopId = urlParams.get('shopId') || 'cmn9kj24n0000lqzc7kcsmpst'; // Fallback for easy testing
-
-      // Dynamically load booking-modal.js with correct shopId
-      const modalScript = document.createElement('script');
-      modalScript.src = '../../booking-modal.js';
-      modalScript.setAttribute('data-shop-id', shopId);
-      document.head.appendChild(modalScript);
-
-      try {
-        if (typeof BarberSaaS === 'undefined') throw new Error("SDK failed to load");
-        
-        BarberSaaS.init(shopId);
-        const data = await BarberSaaS.getPublicData();
-        renderApp(data);
-      } catch (err) {
-        document.getElementById('app-container').innerHTML = 
-          '<div class="p-8 text-center text-red-500">Error loading SDK: ' + err.message + '</div>';
+      /* Dynamic theme variables */
+      :root {
+        --theme-color: #c0a05b;
       }
-    });
-
-    function renderApp(data) {
-      const shop = data.shop || {};
-      const services = (data.services || []).filter(s => s.duration > 0);
-      const products = data.products || [];
-      const reviews = data.reviews || [];
-      
-      const themeColor = shop.customization?.primaryColor || '#c0a05b';
-      document.documentElement.style.setProperty('--theme-color', themeColor);
-
-      const container = document.getElementById('app-container');
-      container.innerHTML = getTemplateHTML(templateType, shop, services, products, reviews, themeColor);
-      
-      // Wire up buttons
-      document.querySelectorAll('.book-btn').forEach(btn => {
-        btn.onclick = (e) => {
-          e.preventDefault();
-          if (window.BarberBooking) {
-            window.BarberBooking.open(btn.dataset.id);
-          }
-        };
-      });
-
-      document.querySelectorAll('.buy-btn').forEach(btn => {
-        btn.onclick = (e) => {
-          e.preventDefault();
-          const originalAlert = window.alert;
-          window.alert = () => {};
-          BarberSaaS.buyProduct(btn.dataset.id, 1).then(res => {
-            window.alert = originalAlert;
-            alert('Added ' + res.quantity + 'x ' + res.product.name + ' to cart!');
-          }).catch(err => {
-            window.alert = originalAlert;
-            alert('Error: ' + err.message);
-          });
-        };
-      });
-    }
-
-    function getTemplateHTML(type, shop, services, products, reviews, themeColor) {
-      // Basic tailwind representation for different themes
-      let html = '';
-      
-      const headerClasses = {
-        modern: 'bg-white shadow-sm py-6 border-b border-gray-100 text-center',
-        classic: 'bg-[#2c1e16] text-[#e6d9c6] py-16 text-center border-b-4 border-[var(--theme-color)]',
-        minimal: 'bg-transparent py-12 text-center',
-        vibrant: 'bg-gradient-to-r from-purple-600 to-pink-500 text-white py-16 text-center shadow-lg',
-        noir: 'bg-black text-white py-20 text-center',
-        sunset: 'bg-gradient-to-br from-orange-500 to-red-600 text-white py-20 text-center',
-        corporate: 'bg-slate-900 text-white py-12 border-b-4 border-blue-500',
-        sporty: 'bg-red-600 text-white py-12 uppercase italic font-black text-center transform -skew-y-2 mb-12',
-        editorial: 'bg-[#f4f4f0] text-black py-20 border-b-2 border-black text-center'
-      };
-
-      const cardClasses = {
-        modern: 'bg-white rounded-2xl shadow-sm border border-gray-100 p-6 hover:shadow-md transition-all',
-        classic: 'bg-[#fdfbf7] border border-[#2c1e16] p-8 text-center',
-        minimal: 'py-6 border-b border-gray-200 flex flex-col md:flex-row justify-between items-center gap-4',
-        vibrant: 'bg-white rounded-3xl shadow-xl p-8 transform hover:scale-105 transition-transform text-center',
-        noir: 'bg-zinc-900 border border-zinc-800 text-white p-8 hover:bg-zinc-800 transition-colors',
-        sunset: 'bg-white/90 backdrop-blur-md rounded-xl p-8 border border-white/20 shadow-xl',
-        corporate: 'bg-white border border-slate-200 rounded-lg p-8 shadow-sm',
-        sporty: 'bg-white border-4 border-black p-6 uppercase font-bold text-center',
-        editorial: 'border-t-2 border-black py-8 flex flex-col items-start'
-      };
-
-      const btnClasses = {
-        modern: 'w-full bg-[var(--theme-color)] text-white px-6 py-3 rounded-full font-semibold hover:opacity-90 transition-opacity',
-        classic: 'w-full border-2 border-[var(--theme-color)] text-[var(--theme-color)] px-8 py-3 uppercase tracking-widest hover:bg-[var(--theme-color)] hover:text-white transition-colors',
-        minimal: 'text-[var(--theme-color)] font-medium hover:underline px-6 py-2 border border-gray-200 rounded hover:bg-gray-50 transition-colors',
-        vibrant: 'w-full bg-black text-white px-8 py-4 rounded-2xl font-bold hover:shadow-lg hover:-translate-y-1 transition-all',
-        noir: 'w-full bg-white text-black px-8 py-3 uppercase tracking-widest hover:bg-gray-200 transition-colors',
-        sunset: 'w-full bg-white text-red-600 px-8 py-3 rounded-full font-bold hover:shadow-md transition-shadow',
-        corporate: 'w-full bg-blue-600 text-white px-6 py-3 rounded hover:bg-blue-700 transition-colors',
-        sporty: 'w-full bg-red-600 text-white px-8 py-4 font-black italic uppercase text-xl hover:bg-black transition-colors',
-        editorial: 'w-full bg-black text-white px-8 py-4 uppercase tracking-widest text-sm hover:bg-gray-800 transition-colors'
-      };
-
-      const h = headerClasses[type] || headerClasses.modern;
-      const c = cardClasses[type] || cardClasses.modern;
-      const b = btnClasses[type] || btnClasses.modern;
-
-      // Ensure minimal and editorial handle grid layouts differently
-      const gridLayout = (type === 'minimal' || type === 'editorial') 
-        ? 'max-w-4xl mx-auto space-y-4' 
-        : 'max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8';
-
-      // Main Wrapper Styling based on template
-      let mainBg = '';
-      if(type === 'noir') mainBg = 'bg-black text-white min-h-screen';
-      if(type === 'sunset') mainBg = 'bg-gradient-to-br from-purple-900 via-black to-orange-900 text-white min-h-screen';
-      if(type === 'classic') mainBg = 'bg-[#fdfbf7] text-[#2c1e16] min-h-screen font-serif';
-      if(type === 'editorial') mainBg = 'bg-[#f4f4f0] text-black min-h-screen';
-
-      html += `<div class="${mainBg}">`;
-
-      // Header
-      html += `<header class="${h}">
-        <div class="max-w-6xl mx-auto px-4">
-          <h1 class="text-4xl md:text-6xl font-bold mb-4 tracking-tight" style="${type === 'modern' ? 'color: var(--theme-color)' : ''}">${shop.name}</h1>
-          <p class="text-lg opacity-80 max-w-2xl mx-auto">${shop.description || 'Welcome to our shop'}</p>
+    </style>
+  </head>
+  <body class="bg-gray-50 text-gray-900 transition-colors duration-300">
+    <div id="app-container" class="min-h-screen flex flex-col">
+      <div
+        id="app-content"
+        class="hidden bg-black text-white font-sans min-h-screen"
+      >
+        <header
+          class="py-32 px-8 text-center border-b border-zinc-900 bg-zinc-950"
+        >
+          <h1
+            id="shop-name"
+            class="text-6xl tracking-[0.2em] font-light uppercase mb-8"
+            style="color: var(--theme-color)"
+          ></h1>
+          <p
+            id="shop-desc"
+            class="text-xl text-zinc-400 tracking-widest max-w-3xl mx-auto uppercase leading-loose"
+          ></p>
+        </header>
+        <main class="max-w-5xl mx-auto px-6 py-24 space-y-32">
+          <section>
+            <h2
+              class="text-center text-sm tracking-[0.4em] uppercase text-zinc-600 mb-20 font-bold"
+            >
+              Services
+            </h2>
+            <div
+              id="services-container"
+              class="grid grid-cols-1 md:grid-cols-2 gap-12"
+            ></div>
+          </section>
+          <section>
+            <h2
+              class="text-center text-sm tracking-[0.4em] uppercase text-zinc-600 mb-20 font-bold"
+            >
+              Products
+            </h2>
+            <div
+              id="products-container"
+              class="grid grid-cols-1 md:grid-cols-3 gap-8"
+            ></div>
+          </section>
+        </main>
+      </div>
+      <script>
+        window.renderServices = (services) =>
+          services
+            .map(
+              (s) => `
+        <div class="bg-black border border-zinc-800 p-12 flex flex-col items-center text-center hover:border-zinc-600 transition-colors shadow-2xl">
+          <h3 class="text-2xl font-medium tracking-widest uppercase mb-6">${s.name}</h3>
+          <div class="text-3xl font-light mb-8 tracking-wider" style="color: var(--theme-color)">${s.price.toFixed(2)}</div>
+          <p class="text-zinc-500 mb-12 flex-1 leading-loose tracking-wide text-sm">${s.description || ""}</p>
+          <button class="book-btn w-full bg-white text-black font-bold uppercase tracking-[0.2em] py-5 text-sm hover:bg-gray-300 transition-colors" data-id="${s.id}">Reserve</button>
         </div>
-      </header>`;
+      `,
+            )
+            .join("");
 
-      // Main Content
-      html += `<main class="px-6 py-16 space-y-24">
-        
-        <!-- Services -->
-        <section>
-          <h2 class="text-3xl font-bold mb-12 text-center" style="${type==='classic' || type==='modern' ? 'color: var(--theme-color)' : ''}">Our Services</h2>
-          <div class="${gridLayout}">
-            ${services.map(s => `
-              <div class="${c}">
-                <div class="${type === 'minimal' ? 'flex-1 pr-6' : 'mb-6 flex-1'}">
-                  <h3 class="text-2xl font-bold mb-2" style="${type==='corporate' || type==='classic' ? 'color: var(--theme-color)' : ''}">${s.name}</h3>
-                  <p class="opacity-70 mb-4 line-clamp-2">${s.description || ''}</p>
-                  <div class="font-bold text-xl mb-2" style="${type==='modern' ? 'color: var(--theme-color)' : ''}">
-                    $${s.price.toFixed(2)} ${s.duration ? '<span class="text-sm opacity-50 font-normal ml-2">⏱️ ' + s.duration + ' MIN</span>' : ''}
-                  </div>
-                </div>
-                <div class="${type === 'minimal' ? '' : 'mt-auto'}">
-                  <button class="book-btn ${b}" data-id="${s.id}">${type==='sporty'||type==='editorial' ? 'Book' : 'Book Now'}</button>
-                </div>
-              </div>
-            `).join('')}
-          </div>
-        </section>
+        window.renderProducts = (products) =>
+          products
+            .map(
+              (p) => `
+        <div class="border border-zinc-800 p-8 flex flex-col items-center text-center">
+          <h3 class="text-lg tracking-widest uppercase mb-4 text-zinc-300">${p.name}</h3>
+          <div class="text-xl font-light mb-8 text-white">${p.price.toFixed(2)}</div>
+          <button class="buy-btn w-full border border-zinc-600 text-zinc-400 font-bold uppercase tracking-[0.2em] py-3 text-xs hover:bg-zinc-800 hover:text-white transition-colors mt-auto" data-id="${p.id}">Purchase</button>
+        </div>
+      `,
+            )
+            .join("");
+      </script>
 
-        <!-- Products -->
-        <section>
-          <h2 class="text-3xl font-bold mb-12 text-center" style="${type==='classic' || type==='modern' ? 'color: var(--theme-color)' : ''}">Grooming Products</h2>
-          <div class="${gridLayout}">
-            ${products.map(p => `
-              <div class="${c}">
-                <div class="${type === 'minimal' ? 'flex-1 pr-6' : 'mb-6 flex-1'}">
-                  <h3 class="text-xl font-bold mb-2">${p.name}</h3>
-                  <div class="font-bold text-xl mb-4">$${p.price.toFixed(2)}</div>
-                </div>
-                <div class="${type === 'minimal' ? '' : 'mt-auto'}">
-                  <button class="buy-btn ${b}" data-id="${p.id}">Buy Now</button>
-                </div>
-              </div>
-            `).join('')}
-          </div>
-        </section>
+      <!-- Loading State -->
+      <div id="loading" class="flex-1 flex items-center justify-center">
+        <div
+          class="animate-spin rounded-full h-12 w-12 border-b-2 border-black"
+        ></div>
+      </div>
+    </div>
 
-      </main>
-      </div>`;
+    <script src="../../barbersaas-sdk.js"></script>
 
-      return html;
-    }
-  </script>
-</body>
+    <script>
+      const templateType = "noir";
+
+      window.addEventListener("load", async () => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const shopId = urlParams.get("shopId") || "cmn9kj24n0000lqzc7kcsmpst";
+
+        const modalScript = document.createElement("script");
+        modalScript.src = "../../booking-modal.js";
+        modalScript.setAttribute("data-shop-id", shopId);
+        document.head.appendChild(modalScript);
+
+        try {
+          if (typeof BarberSaaS === "undefined")
+            throw new Error("SDK failed to load");
+
+          BarberSaaS.init(shopId);
+          const data = await BarberSaaS.getPublicData();
+          renderApp(data);
+        } catch (err) {
+          document.getElementById("app-container").innerHTML =
+            '<div class="p-8 text-center text-red-500">Error loading SDK: ' +
+            err.message +
+            "</div>";
+        }
+      });
+
+      function renderApp(data) {
+        const shop = data.shop || {};
+        const services = (data.services || []).filter((s) => s.duration > 0);
+        const products = data.products || [];
+        const reviews = data.reviews || [];
+
+        const themeColor = shop.customization?.primaryColor || "#c0a05b";
+        document.documentElement.style.setProperty("--theme-color", themeColor);
+
+        const nameEl = document.getElementById("shop-name");
+        if (nameEl) nameEl.textContent = shop.name;
+
+        const descEl = document.getElementById("shop-desc");
+        if (descEl) descEl.textContent = shop.description || "Welcome";
+
+        const servicesContainer = document.getElementById("services-container");
+        if (servicesContainer && window.renderServices) {
+          servicesContainer.innerHTML = window.renderServices(services);
+        }
+
+        const productsContainer = document.getElementById("products-container");
+        if (productsContainer && window.renderProducts) {
+          productsContainer.innerHTML = window.renderProducts(products);
+        }
+
+        const loadingEl = document.getElementById("loading");
+        if (loadingEl) loadingEl.remove();
+
+        const appContent = document.getElementById("app-content");
+        if (appContent) appContent.classList.remove("hidden");
+
+        // Wire up buttons
+        document.querySelectorAll(".book-btn").forEach((btn) => {
+          btn.onclick = (e) => {
+            e.preventDefault();
+            if (window.BarberBooking) {
+              window.BarberBooking.open(btn.dataset.id);
+            }
+          };
+        });
+
+        document.querySelectorAll(".buy-btn").forEach((btn) => {
+          btn.onclick = (e) => {
+            e.preventDefault();
+            const originalAlert = window.alert;
+            window.alert = () => {};
+            BarberSaaS.buyProduct(btn.dataset.id, 1)
+              .then((res) => {
+                window.alert = originalAlert;
+                alert(
+                  "Added " +
+                    res.quantity +
+                    "x " +
+                    res.product.name +
+                    " to cart!",
+                );
+              })
+              .catch((err) => {
+                window.alert = originalAlert;
+                alert("Error: " + err.message);
+              });
+          };
+        });
+      }
+    </script>
+  </body>
 </html>
