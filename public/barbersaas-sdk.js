@@ -49,7 +49,7 @@
         return this._publicDataCache;
       }
 
-      const res = await fetch(`${this.apiUrl}/api/shops/${this.shopId}/public-data`);
+      const res = await fetch(`${this.apiUrl}/api/shops/${this.shopId}/public-data?_t=${Date.now()}`);
       if (!res.ok) {
         const errorData = await res.json().catch(() => ({}));
         throw new Error(errorData.error || 'Failed to fetch public data.');
