@@ -548,14 +548,15 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
     );
 
     
-    if (templateType === 'custom' && c.customHtml) {
+    if (templateType === 'custom') {
+        const htmlToRender = c.customHtml || '<div style="padding: 100px; text-align: center;">No custom HTML provided yet.</div>';
         return (
             <div style={{ width: '100vw', height: '100dvh', position: 'relative' }}>
                 <div className="absolute top-6 right-6 z-50">
                     <SupabaseAuthButton redirectUrl={pathname} />
                 </div>
                 <iframe 
-                    srcDoc={c.customHtml} 
+                    srcDoc={htmlToRender} 
                     style={{ width: '100%', height: '100%', border: 'none', display: 'block' }} 
                     title={`${shop.name} Custom Landing Page`}
                 />

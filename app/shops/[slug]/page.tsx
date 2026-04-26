@@ -103,6 +103,7 @@ const getShopBySlug = cache(async (slug: string) => {
     heroVideoUrl: rawCustom.heroVideoUrl,
     announcement: rawCustom.announcement,
     seo: rawCustom.seo,
+    customHtml: rawCustom.customHtml,
   };
   return {
     ...serialized,

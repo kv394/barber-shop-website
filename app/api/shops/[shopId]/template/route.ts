@@ -83,6 +83,7 @@ export async function POST(
     // Clear the cache so the new template is applied everywhere
     revalidatePath(`/shop/${shopId}`);
     revalidatePath(`/shop/${shopId}/config`);
+    revalidatePath(`/shops/${shopId}`);
     revalidatePath('/shops/[slug]', 'page'); // Bust public shop page cache
 
     return NextResponse.json(updatedShop, { status: 200 });
