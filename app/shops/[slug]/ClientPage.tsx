@@ -548,30 +548,18 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
     );
 
     
-    if (c.customHtml) {
+    if (templateType === 'custom' && c.customHtml) {
         return (
-            <main className="h-[100dvh] overflow-y-auto overflow-x-hidden bg-crm-bg text-crm-text font-body relative" onClick={handleDynamicTemplateClick}>
-                {faviconUrl && (
-                    <link rel="icon" href={faviconUrl} />
-                )}
-                <style dangerouslySetInnerHTML={{__html: `
-                    @import url('https://fonts.googleapis.com/css2?family=${headingFont.replace(/ /g, '+')}:wght@400;600;700;900&family=${bodyFont.replace(/ /g, '+')}:wght@400;500;600&display=swap');
-                    
-                    h1, h2, h3, h4, h5, h6, .font-heading { font-family: '${headingFont}', sans-serif !important; }
-                    body, p, span, a, div, .font-body { font-family: '${bodyFont}', sans-serif; }
-                    ${customCss}
-                `}} />
-                {authButton}
-                <CustomPageContent content={c.customHtml} shop={shop} themeColor={primaryColor} className="w-full" onBookClick={handleBookClick} reviews={reviews} templateType={templateType} />
-                {selectedService && (
-                    <div className="fixed inset-0 z-[100] bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
-                        <div className="bg-white w-full max-w-4xl h-[90vh] rounded-3xl overflow-hidden shadow-2xl relative">
-                            <button onClick={() => setSelectedService(null)} className="absolute top-4 right-4 z-[110] bg-white text-black p-2 rounded-full hover:bg-gray-200 transition-colors shadow-md border border-gray-100 flex items-center justify-center w-10 h-10 font-bold">X</button>
-                            <iframe src={`/embed/book/${shop.id}?serviceId=${selectedService.id}&themeColor=${encodeURIComponent(primaryColor)}&templateType=${templateType}`} className="w-full h-full border-0" />
-                        </div>
-                    </div>
-                )}
-            </main>
+            <div style={{ width: '100vw', height: '100dvh', position: 'relative' }}>
+                <div className="absolute top-6 right-6 z-50">
+                    <SupabaseAuthButton redirectUrl={pathname} />
+                </div>
+                <iframe 
+                    srcDoc={c.customHtml} 
+                    style={{ width: '100%', height: '100%', border: 'none', display: 'block' }} 
+                    title={`${shop.name} Custom Landing Page`}
+                />
+            </div>
         );
     }
 

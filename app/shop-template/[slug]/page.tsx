@@ -132,21 +132,15 @@ export default async function PublicShopPage({
   // Define different layouts based on the selected template
   
   
-  if (c.customHtml) {
+  if (templateType === 'custom' && c.customHtml) {
       return (
-          <main className="h-[100dvh] overflow-y-auto overflow-x-hidden bg-crm-bg text-crm-text font-body relative">
-              {faviconUrl && (
-                  <link rel="icon" href={faviconUrl} />
-              )}
-              <style dangerouslySetInnerHTML={{__html: `
-                  @import url('https://fonts.googleapis.com/css2?family=${headingFont.replace(/ /g, '+')}:wght@400;600;700;900&family=${bodyFont.replace(/ /g, '+')}:wght@400;500;600&display=swap');
-                  
-                  h1, h2, h3, h4, h5, h6, .font-heading { font-family: '${headingFont}', sans-serif !important; }
-                  body, p, span, a, div, .font-body { font-family: '${bodyFont}', sans-serif; }
-                  ${customCss}
-              `}} />
-              <div dangerouslySetInnerHTML={{ __html: c.customHtml.replace(/\$\{[a-z]+\}/gi, '') }} />
-          </main>
+          <div style={{ width: '100vw', height: '100dvh' }}>
+              <iframe 
+                  srcDoc={c.customHtml} 
+                  style={{ width: '100%', height: '100%', border: 'none', display: 'block' }} 
+                  title={`${shop.name} Custom Landing Page`}
+              />
+          </div>
       );
   }
 

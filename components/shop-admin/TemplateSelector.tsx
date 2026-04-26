@@ -7,10 +7,12 @@ interface TemplateSelectorProps {
   currentTemplate: string;
   shopId: string;
   dynamicTemplates?: { name: string; description: string | null }[];
+  initialCustomHtml?: string;
 }
 
-export function TemplateSelector({ currentTemplate, shopId, dynamicTemplates = [] }: TemplateSelectorProps) {
+export function TemplateSelector({ currentTemplate, shopId, dynamicTemplates = [], initialCustomHtml = '' }: TemplateSelectorProps) {
   const [selectedTemplate, setSelectedTemplate] = useState<string>(currentTemplate);
+  const [customHtml, setCustomHtml] = useState<string>(initialCustomHtml);
   const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -24,7 +26,10 @@ export function TemplateSelector({ currentTemplate, shopId, dynamicTemplates = [
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ template: selectedTemplate }),
+        body: JSON.stringify({ 
+          template: selectedTemplate,
+          customHtml: selectedTemplate === 'custom' ? customHtml : undefined
+        }),
       });
 
       if (!response.ok) {
@@ -48,8 +53,15 @@ export function TemplateSelector({ currentTemplate, shopId, dynamicTemplates = [
       id: dt.name,
       name: `✨ ${dt.name}`,
       description: dt.description || 'Custom AI Generated Template',
-    }))
+    })),
+    {
+      id: 'custom',
+      name: 'Custom HTML',
+      description: 'Provide your own completely custom headless landing page.'
+    }
   ];
+
+  const hasChanges = selectedTemplate !== currentTemplate || (selectedTemplate === 'custom' && customHtml !== initialCustomHtml);
 
   return (
     <div className="space-y-6">
@@ -72,7 +84,7 @@ export function TemplateSelector({ currentTemplate, shopId, dynamicTemplates = [
             onClick={() => setSelectedTemplate(template.id)}
           >
             <div className="flex items-center justify-between mb-2">
-              <h3 className="font-bold text-crm-text text-lg font-bold">{template.name}</h3>
+              <h3 className="font-bold text-crm-text text-lg">{template.name}</h3>
               {selectedTemplate === template.id && (
                 <div className="w-4 h-4 rounded-full bg-status-info flex items-center justify-center">
                   <div className="w-2 h-2 rounded-full bg-crm-surface"></div>
@@ -84,12 +96,26 @@ export function TemplateSelector({ currentTemplate, shopId, dynamicTemplates = [
         ))}
       </div>
 
+      {selectedTemplate === 'custom' && (
+        <div className="mt-4 p-4 border border-crm-border rounded-lg bg-crm-surface">
+          <label className="block font-bold text-crm-text mb-2 text-sm">Custom HTML Code</label>
+          <p className="text-crm-muted text-xs mb-4">Paste your complete single-page HTML here. This will be served exactly as provided.</p>
+          <textarea
+            value={customHtml}
+            onChange={(e) => setCustomHtml(e.target.value)}
+            rows={15}
+            className="w-full bg-crm-bg border border-crm-border rounded-lg p-4 font-mono text-[13px] text-crm-text focus:outline-none focus:border-crm-primary"
+            placeholder="<!DOCTYPE html>\n<html>\n<head>...</head>\n<body>...</body>\n</html>"
+          />
+        </div>
+      )}
+
       <button
         onClick={handleSave}
-        disabled={isSaving || selectedTemplate === currentTemplate}
+        disabled={isSaving || !hasChanges}
         className={`
           w-full py-3 rounded-lg font-bold transition-colors
-          ${selectedTemplate !== currentTemplate 
+          ${hasChanges 
             ? 'bg-crm-primary text-white hover:bg-crm-surface hover:text-crm-primary border border-transparent hover:border-crm-primary/30' 
             : 'bg-crm-surface text-crm-muted cursor-not-allowed'}
         `}

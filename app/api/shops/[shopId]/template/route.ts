@@ -36,7 +36,7 @@ export async function POST(
     }
 
     const body = await request.json();
-    const { template } = body;
+    const { template, customHtml } = body;
 
     if (!template || typeof template !== 'string') {
       return NextResponse.json(
@@ -47,7 +47,7 @@ export async function POST(
 
     // SECURITY: Only allow known template values
     const allowedTemplates = Object.keys(AVAILABLE_TEMPLATES);
-    let isValid = allowedTemplates.includes(template);
+    let isValid = allowedTemplates.includes(template) || template === 'custom';
 
     if (!isValid) {
       console.log('Searching for dynamic template:', template);
@@ -67,11 +67,17 @@ export async function POST(
       );
     }
 
+    let updateData: any = { template };
+    
+    if (template === 'custom') {
+      const shop = await prisma.shop.findUnique({ where: { id: shopId } });
+      const currentCustomization = (shop?.customization as any) || {};
+      updateData.customization = { ...currentCustomization, customHtml: customHtml || '' };
+    }
+
     const updatedShop = await prisma.shop.update({
       where: { id: shopId },
-      data: {
-        template,
-      },
+      data: updateData,
     });
     
     // Clear the cache so the new template is applied everywhere

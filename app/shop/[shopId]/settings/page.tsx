@@ -91,6 +91,7 @@ export default async function ShopSettingsPage({
           currentTemplate={data.shop.template || 'modern'}
           shopId={shopId}
           dynamicTemplates={dynamicTemplates as any}
+          initialCustomHtml={(customization as any)?.customHtml || ''}
         />
       </div>
 
