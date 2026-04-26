@@ -1,0 +1,268 @@
+const fs = require('fs');
+
+const reviewsContent = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reviews - Heritage Haircuts</title>
+  <style>
+    
+    :root {
+      --primary-color: #1a1a1a;
+      --secondary-color: #f5f5f5;
+      --accent-gold: #c0a05b;
+      --accent-red: #cc0000;
+      --text-color: #333333;
+      --button-bg: #000;
+      --button-text: #fff;
+    }
+    body {
+      font-family: "Times New Roman", Times, serif;
+      background-color: var(--secondary-color);
+      color: var(--text-color);
+      line-height: 1.8;
+      margin: 0;
+      padding: 0;
+    }
+    .navbar {
+      background-color: var(--primary-color);
+      padding: 20px 0;
+      text-align: center;
+    }
+    .navbar a {
+      color: var(--button-text);
+      text-decoration: none;
+      margin: 0 20px;
+      font-family: Arial, sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      font-weight: bold;
+      transition: color 0.2s;
+    }
+    .navbar a:hover {
+      color: var(--accent-gold);
+    }
+    #reviews-heritage-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      box-sizing: border-box;
+    }
+    .content-section {
+      background-color: #ffffff;
+      border: 1px solid #e0e0e0;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+      border-top: 10px solid var(--primary-color);
+      border-radius: 8px;
+      padding: 40px;
+      margin-bottom: 60px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    .text-content-wrapper { max-width: 900px; margin: 0 auto; }
+    header.shop-welcome { text-align: center; margin-top: 20px; margin-bottom: 50px; border-bottom: 2px dashed #cccccc; padding-bottom: 20px; }
+    h1.main-title { font-family: Arial, sans-serif; color: var(--primary-color); font-size: 3.2em; margin: 0 0 10px 0; text-transform: uppercase; letter-spacing: 2.5px; }
+    h1.main-title .brand-accent { color: var(--accent-gold); font-style: italic; }
+    .intro-paragraph { font-size: 1.15em; color: #555; }
+    h2.section-header { font-family: Arial, sans-serif; color: #ffffff; background-color: var(--primary-color); padding: 12px 24px; display: inline-block; font-weight: bold; text-transform: uppercase; letter-spacing: 1.5px; margin-top: 40px; margin-bottom: 20px; border-radius: 4px; }
+    .brand-inline { color: var(--primary-color); font-weight: bold; }
+    mark.vibrant-keyword { background-color: rgba(192, 160, 91, 0.2); color: var(--primary-color); padding: 0 4px; font-style: normal; font-weight: bold; }
+    .services-container ul.services-list { list-style: none; padding: 0; border-left: 4px solid var(--accent-gold); padding-left: 30px; margin-top: 25px; margin-bottom: 30px; }
+    li.service-item { margin-bottom: 12px; font-size: 1.15em; position: relative; }
+    li.service-item::before { content: "✂"; color: var(--accent-red); margin-right: 12px; font-size: 0.95em; }
+    section.philosophy-container { margin-bottom: 40px; }
+    .services-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 30px; padding-top: 20px; }
+    .service-card { background-color: #fcfcfc; border: 1px solid #e0e0e0; padding: 30px; border-radius: 8px; display: flex; flex-direction: column; transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease; position: relative; }
+    .service-card:hover { transform: translateY(-5px); box-shadow: 0 5px 20px rgba(192, 160, 91, 0.15); border-color: var(--accent-gold); }
+    .service-card::before { content: ""; position: absolute; top: 0; left: 0; bottom: 0; width: 5px; background-color: var(--accent-gold); border-top-left-radius: 8px; border-bottom-left-radius: 8px; }
+    .service-name { font-family: Arial, sans-serif; color: var(--primary-color); font-size: 1.7em; margin: 0 0 10px 0; text-transform: uppercase; letter-spacing: 1px; }
+    .service-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 2px dashed #eeeeee; }
+    .service-price { color: var(--accent-gold); font-weight: bold; font-size: 1.5em; font-family: Arial, sans-serif; }
+    .service-duration { color: #777; font-size: 0.95em; text-transform: uppercase; display: flex; align-items: center; gap: 5px; font-style: italic; }
+    .service-description { margin: 0 0 25px 0; color: #555; font-size: 1.05em; flex-grow: 1; }
+    .scrollable-desc { max-height: 180px; overflow-y: auto; padding-right: 10px; margin-bottom: 25px; flex-grow: 1; scrollbar-width: thin; scrollbar-color: var(--accent-gold) #f0f0f0; }
+    .scrollable-desc::-webkit-scrollbar { width: 6px; }
+    .scrollable-desc::-webkit-scrollbar-track { background: #f0f0f0; border-radius: 4px; }
+    .scrollable-desc::-webkit-scrollbar-thumb { background-color: var(--accent-gold); border-radius: 4px; }
+    .barber-booking-trigger, .barber-reviews-trigger { display: block; width: 100%; text-align: center; padding: 14px 24px; background: var(--button-bg); color: var(--button-text); border: none; border-radius: 5px; cursor: pointer; font-weight: bold; font-size: 1.05em; text-transform: uppercase; letter-spacing: 1.5px; transition: background 0.3s ease, transform 0.1s ease; text-decoration: none; font-family: Arial, sans-serif; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); }
+    .barber-booking-trigger:hover, .barber-reviews-trigger:hover { background: var(--accent-gold); color: var(--primary-color); box-shadow: 0 4px 10px rgba(192, 160, 91, 0.4); }
+    .barber-booking-trigger:active, .barber-reviews-trigger:active { transform: translateY(1px); box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2); }
+    .action-buttons { display: flex; gap: 15px; width: 100%; margin-top: auto; }
+    .btn { flex: 1; text-align: center; padding: 12px 0; border-radius: 5px; cursor: pointer; font-weight: bold; font-size: 1em; text-transform: uppercase; letter-spacing: 1.5px; transition: all 0.3s ease; font-family: Arial, sans-serif; }
+    .btn-buy { background: var(--button-bg); color: var(--button-text); border: 2px solid var(--button-bg); box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); }
+    .btn-buy:hover { background: var(--accent-gold); border-color: var(--accent-gold); color: var(--primary-color); box-shadow: 0 4px 10px rgba(192, 160, 91, 0.4); }
+    .btn-details { background: transparent; color: var(--primary-color); border: 2px solid var(--primary-color); }
+    .btn-details:hover { background: var(--secondary-color); color: var(--accent-gold); border-color: var(--accent-gold); }
+    .review-btn-container { text-align: center; margin-top: 30px; }
+    .barber-reviews-trigger { display: inline-block; padding: 12px 30px; background: transparent; color: var(--primary-color); border: 2px solid var(--primary-color); width: auto; }
+
+    .navbar a.active { color: var(--accent-gold); border-bottom: 2px solid var(--accent-gold); padding-bottom: 5px; }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <a href="about.html" class="">About Us</a>
+    <a href="services.html" class="">Services</a>
+    <a href="products.html" class="">Products</a>
+    <a href="reviews.html" class="active">Reviews</a>
+  </nav>
+
+  <article id="reviews-heritage-container">
+    <div id="reviews-loading-spinner" style="text-align: center; padding: 100px 20px; font-size: 1.5em; color: var(--primary-color); font-family: Arial, sans-serif;">
+      Loading Reviews...
+    </div>
+    <div id="reviews-page-content" style="display: none;">
+      
+<section class="content-section" id="reviews">
+    <header class="shop-welcome text-content-wrapper">
+        <h1 class="main-title">Customer <span class="brand-accent">Reviews</span></h1>
+    </header>
+    <div class="services-grid" id="reviews-grid-container">
+        <!-- Rendered by JS -->
+    </div>
+    <div class="review-btn-container" style="margin-top: 40px;">
+        <button class="barber-reviews-trigger" id="add-review-btn">Leave a Review</button>
+    </div>
+</section>
+
+    </div>
+  </article>
+
+  <!-- BarberSaaS SDK -->
+  <script src="https://barbersaas-henna.vercel.app/barbersaas-sdk.js"></script>
+  <!-- Booking Modal logic -->
+  <script src="https://barbersaas-henna.vercel.app/booking-modal.js" data-shop-id="cmn9kj24n0000lqzc7kcsmpst"></script>
+
+  <script>
+    window.addEventListener("load", function () {
+      function initializeShop() {
+        if (typeof BarberSaaS === "undefined") {
+          console.error("BarberSaaS SDK script failed to load or initialize.");
+          document.getElementById("reviews-heritage-container").innerHTML =
+            '<div style="text-align: center; padding: 100px;"><h2>Failed to load BarberSaaS SDK.</h2><p>Please check your network connection and ad-blockers.</p></div>';
+          return;
+        }
+
+        // Initialize the SDK with the Shop ID
+        BarberSaaS.init("cmn9kj24n0000lqzc7kcsmpst");
+
+        // Fetch all data and render
+        BarberSaaS.getPublicData()
+          .then((data) => {
+            // Execute page-specific rendering logic
+            try {
+              
+  const reviews = data.reviews || [];
+  const container = document.getElementById("reviews-grid-container");
+  
+  if (reviews.length > 0) {
+    let html = "";
+    reviews.forEach((review) => {
+      const stars = "⭐".repeat(review.rating || 5);
+      html += \`
+        <div class="service-card">
+            <h2 class="service-name" style="color: var(--accent-gold); font-size: 1.5em;">\${stars}</h2>
+            <p class="service-description" style="font-style: italic;">"\${review.comment || "Great service!"}"</p>
+        </div>
+      \`;
+    });
+    container.innerHTML = html;
+  } else {
+    container.innerHTML = "<p>No reviews yet. Be the first to leave one!</p>";
+  }
+  
+  var addReviewBtn = document.getElementById("add-review-btn");
+  if (addReviewBtn) {
+    addReviewBtn.addEventListener("click", function (e) {
+      e.preventDefault();
+      showAddReviewModal();
+    });
+  }
+  
+  function showAddReviewModal() {
+      const existingModal = document.getElementById("add-review-modal");
+      if (existingModal) existingModal.remove();
+
+      const overlay = document.createElement("div");
+      overlay.id = "add-review-modal";
+      Object.assign(overlay.style, { position: "fixed", top: "0", left: "0", width: "100%", height: "100%", backgroundColor: "rgba(0, 0, 0, 0.6)", zIndex: "999999", display: "flex", alignItems: "center", justifyContent: "center", opacity: "0", transition: "opacity 0.3s ease" });
+
+      const modalContent = document.createElement("div");
+      Object.assign(modalContent.style, { backgroundColor: "#fff", borderRadius: "12px", padding: "40px", maxWidth: "500px", width: "90%", position: "relative", boxShadow: "0 10px 30px rgba(0,0,0,0.2)", transform: "translateY(20px)", transition: "transform 0.3s ease", boxSizing: "border-box", fontFamily: "Arial, sans-serif" });
+
+      const closeBtn = document.createElement("button");
+      closeBtn.innerHTML = "&times;";
+      Object.assign(closeBtn.style, { position: "absolute", top: "15px", right: "20px", background: "none", border: "none", fontSize: "28px", cursor: "pointer", color: "#666", lineHeight: "1" });
+      closeBtn.onclick = () => { overlay.style.opacity = "0"; modalContent.style.transform = "translateY(20px)"; setTimeout(() => overlay.remove(), 300); };
+
+      const title = document.createElement("h2");
+      title.textContent = "Leave a Review";
+      Object.assign(title.style, { marginTop: "0", color: "var(--primary-color)", fontSize: "1.8em", borderBottom: "2px solid var(--accent-gold)", paddingBottom: "10px", marginBottom: "20px", textTransform: "uppercase", letterSpacing: "1px" });
+
+      const form = document.createElement("form");
+      const aptLabel = document.createElement("label"); aptLabel.textContent = "Appointment ID:"; Object.assign(aptLabel.style, { display: "block", marginBottom: "5px", fontWeight: "bold" });
+      const aptInput = document.createElement("input"); aptInput.type = "text"; aptInput.required = true; aptInput.placeholder = "e.g. appt_123xyz"; Object.assign(aptInput.style, { width: "100%", padding: "10px", marginBottom: "20px", borderRadius: "5px", border: "1px solid #ccc", boxSizing: "border-box" });
+      const ratingLabel = document.createElement("label"); ratingLabel.textContent = "Rating (1-5):"; Object.assign(ratingLabel.style, { display: "block", marginBottom: "5px", fontWeight: "bold" });
+      const ratingInput = document.createElement("input"); ratingInput.type = "number"; ratingInput.min = "1"; ratingInput.max = "5"; ratingInput.value = "5"; ratingInput.required = true; Object.assign(ratingInput.style, { width: "100%", padding: "10px", marginBottom: "20px", borderRadius: "5px", border: "1px solid #ccc", boxSizing: "border-box" });
+      const commentLabel = document.createElement("label"); commentLabel.textContent = "Comments:"; Object.assign(commentLabel.style, { display: "block", marginBottom: "5px", fontWeight: "bold" });
+      const commentInput = document.createElement("textarea"); commentInput.rows = 4; commentInput.placeholder = "Tell us about your experience..."; Object.assign(commentInput.style, { width: "100%", padding: "10px", marginBottom: "20px", borderRadius: "5px", border: "1px solid #ccc", boxSizing: "border-box", fontFamily: "inherit" });
+      
+      const submitBtn = document.createElement("button"); submitBtn.textContent = "SUBMIT REVIEW"; submitBtn.type = "submit"; submitBtn.className = "btn btn-buy";
+      Object.assign(submitBtn.style, { width: "100%", padding: "15px", fontSize: "1.1em", backgroundColor: "var(--button-bg)", color: "var(--button-text)", border: "none", borderRadius: "5px", cursor: "pointer", fontWeight: "bold", textTransform: "uppercase" });
+
+      form.onsubmit = (e) => {
+        e.preventDefault();
+        if (typeof BarberSaaS !== "undefined") {
+          submitBtn.textContent = "Submitting..."; submitBtn.disabled = true;
+          BarberSaaS.submitReview({ appointmentId: aptInput.value.trim(), rating: parseInt(ratingInput.value, 10), comment: commentInput.value.trim() })
+            .then((res) => { alert("Review submitted successfully!"); closeBtn.onclick(); window.location.reload(); })
+            .catch((err) => { alert("Failed to submit review: " + err.message); submitBtn.textContent = "SUBMIT REVIEW"; submitBtn.disabled = false; });
+        }
+      };
+
+      form.appendChild(aptLabel); form.appendChild(aptInput); form.appendChild(ratingLabel); form.appendChild(ratingInput); form.appendChild(commentLabel); form.appendChild(commentInput); form.appendChild(submitBtn);
+      modalContent.appendChild(closeBtn); modalContent.appendChild(title); modalContent.appendChild(form); overlay.appendChild(modalContent); document.body.appendChild(overlay);
+
+      requestAnimationFrame(() => { overlay.style.opacity = "1"; modalContent.style.transform = "translateY(0)"; });
+      overlay.addEventListener("click", (e) => { if (e.target === overlay) closeBtn.onclick(); });
+  }
+
+              document.getElementById("reviews-loading-spinner").style.display = "none";
+              document.getElementById("reviews-page-content").style.display = "block";
+            } catch (renderError) {
+              console.error("Rendering error:", renderError);
+              document.getElementById("reviews-loading-spinner").innerHTML = "Error rendering content.";
+            }
+          })
+          .catch((err) => {
+            console.error("❌ BarberSaaS SDK initialization failed:", err);
+            document.getElementById("reviews-heritage-container").innerHTML =
+              '<div style="text-align: center; padding: 100px;"><h2>Failed to load shop data.</h2><p>' + err.message + "</p></div>";
+          });
+      }
+
+      // Safe script loading check
+      if (typeof BarberSaaS !== "undefined") {
+        initializeShop();
+      } else {
+        let attempts = 0;
+        let checkInterval = setInterval(function () {
+          attempts++;
+          if (typeof BarberSaaS !== "undefined") {
+            clearInterval(checkInterval);
+            initializeShop();
+          } else if (attempts >= 150) {
+            clearInterval(checkInterval);
+            initializeShop();
+          }
+        }, 100);
+      }
+      
+    });
+  </script>
+</body>
+</html>
+`;
+
+fs.writeFileSync('public/html-sections/reviews.html', reviewsContent);
