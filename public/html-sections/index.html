@@ -103,15 +103,25 @@
     /* Padding for fixed nav */
     body { padding-top: 60px; }
     .navbar { position: fixed; top: 0; width: 100%; z-index: 100; }
+    article { scroll-margin-top: 80px; }
   </style>
 </head>
 <body>
-  <nav class="navbar">
-    <a href="#about-heritage-container" class="">About Us</a>
+  <nav class="navbar" id="main-nav">
+    <a href="#about-heritage-container" class="active">About Us</a>
     <a href="#services-heritage-container" class="">Services</a>
     <a href="#products-heritage-container" class="">Products</a>
     <a href="#reviews-heritage-container" class="">Reviews</a>
   </nav>
+
+  <script>
+    document.querySelectorAll('#main-nav a').forEach(link => {
+      link.addEventListener('click', function() {
+        document.querySelectorAll('#main-nav a').forEach(a => a.classList.remove('active'));
+        this.classList.add('active');
+      });
+    });
+  </script>
 
   <article id="about-heritage-container">
     <div id="about-loading-spinner" style="text-align: center; padding: 100px 20px; font-size: 1.5em; color: var(--primary-color); font-family: Arial, sans-serif;">
@@ -144,8 +154,8 @@
         <section class="services-container">
             <h2 class="section-header">What We Offer</h2>
             <p>
-                Explore our <mark class="vibrant-keyword">Service Menu</mark> below,
-                or visit our <mark class="vibrant-keyword">Booking Portal</mark>
+                Explore our <a href="#services-heritage-container" style="text-decoration: none;"><mark class="vibrant-keyword" style="cursor: pointer;">Service Menu</mark></a> below,
+                or visit our <mark class="vibrant-keyword" style="cursor: pointer;" onclick="document.querySelector('.barber-booking-trigger')?.click()">Booking Portal</mark>
                 to view availability.
             </p>
             <ul class="services-list">
