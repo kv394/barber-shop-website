@@ -5,12 +5,71 @@ import { createClient } from '@/utils/supabase/server';
 
 export const dynamic = 'force-dynamic';
 
+export async function OPTIONS(request: Request) {
+  const origin = request.headers.get('origin');
+  return new NextResponse(null, {
+    status: 200,
+    headers: {
+      'Access-Control-Allow-Origin': origin || '*',
+      'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+    },
+  });
+}
+
 export async function GET(
   request: Request,
   { params }: { params: Promise<{ shopId: string }> }
 ) {
+  const origin = request.headers.get('origin');
+  const corsHeaders = {
+    'Access-Control-Allow-Origin': origin || '*',
+    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+  };
+
   try {
     const { shopId } = await params;
+    
+    // Domain Validation
+    const referer = request.headers.get('referer');
+    let requestDomain = null;
+    try {
+      if (origin && origin !== 'null') {
+        requestDomain = new URL(origin).hostname;
+      } else if (referer && referer !== 'null') {
+        requestDomain = new URL(referer).hostname;
+      }
+    } catch (e) {
+      requestDomain = null;
+    }
+
+    if (requestDomain) {
+      const shop = await prisma.shop.findUnique({
+        where: { id: shopId },
+        select: { customDomain: true, subdomain: true, customization: true }
+      });
+      
+      if (shop) {
+        const customization = (shop.customization as any) || {};
+        const allowedDomains: string[] = customization.allowedDomains || [];
+        if (shop.customDomain) allowedDomains.push(shop.customDomain);
+        if (shop.subdomain) allowedDomains.push(`${shop.subdomain}.barbersaas.com`);
+        allowedDomains.push('barbersaas.com', 'localhost', '127.0.0.1', 'barbersaas-henna.vercel.app');
+        
+        const isAllowed = allowedDomains.some(domain => 
+          requestDomain === domain || requestDomain?.endsWith(`.${domain}`)
+        );
+
+        if (!isAllowed) {
+          return NextResponse.json(
+            { error: 'Unauthorized Domain. Please add this domain to your Shop Settings -> Widget Embed Code -> Allowed Domains.' }, 
+            { status: 403, headers: corsHeaders }
+          );
+        }
+      }
+    }
+
     const reviews = await prisma.review.findMany({
       where: { shopId: shopId },
       include: {
@@ -20,10 +79,10 @@ export async function GET(
       orderBy: { createdAt: 'desc' },
       take: 100,
     });
-    return NextResponse.json({ reviews, total: reviews.length });
+    return NextResponse.json({ reviews, total: reviews.length }, { headers: corsHeaders });
   } catch (error) {
     logger.error('Error fetching reviews:', error);
-    return NextResponse.json({ error: 'Failed to fetch reviews' }, { status: 500 });
+    return NextResponse.json({ error: 'Failed to fetch reviews' }, { status: 500, headers: corsHeaders });
   }
 }
 
@@ -31,19 +90,26 @@ export async function POST(
   request: Request,
   { params }: { params: Promise<{ shopId: string }> }
 ) {
+  const origin = request.headers.get('origin');
+  const corsHeaders = {
+    'Access-Control-Allow-Origin': origin || '*',
+    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+  };
+
   try {
     const { shopId } = await params;
     const supabase = await createClient();
   const { data: { user: authUserSession } } = await supabase.auth.getUser();
   let userId = authUserSession?.id;
   const authUserEmail = authUserSession?.email;
-    if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401, headers: corsHeaders });
 
     const body = await request.json();
     const { appointmentId, rating, comment } = body;
 
     if (!rating || rating < 1 || rating > 5) {
-      return NextResponse.json({ error: 'Valid rating (1-5) required' }, { status: 400 });
+      return NextResponse.json({ error: 'Valid rating (1-5) required' }, { status: 400, headers: corsHeaders });
     }
 
     if (appointmentId) {
@@ -53,17 +119,17 @@ export async function POST(
       });
 
       if (!appointment || (appointment.shopId !== shopId && !(await prisma.shopAccess.findFirst({ where: { userId: appointment.id, shopId } }))) || appointment.userId !== userId) {
-        return NextResponse.json({ error: 'Appointment not found or not yours' }, { status: 404 });
+        return NextResponse.json({ error: 'Appointment not found or not yours' }, { status: 404, headers: corsHeaders });
       }
 
       if (appointment.status !== 'COMPLETED') {
-        return NextResponse.json({ error: 'Can only review completed appointments' }, { status: 400 });
+        return NextResponse.json({ error: 'Can only review completed appointments' }, { status: 400, headers: corsHeaders });
       }
 
       // Check for existing review
       const existing = await prisma.review.findUnique({ where: { appointmentId } });
       if (existing) {
-        return NextResponse.json({ error: 'Already reviewed this appointment' }, { status: 400 });
+        return NextResponse.json({ error: 'Already reviewed this appointment' }, { status: 400, headers: corsHeaders });
       }
     }
 
@@ -78,10 +144,10 @@ export async function POST(
       },
     });
 
-    return NextResponse.json(review, { status: 201 });
+    return NextResponse.json(review, { status: 201, headers: corsHeaders });
   } catch (error) {
     logger.error('Error creating review:', error);
-    return NextResponse.json({ error: 'Failed to create review' }, { status: 500 });
+    return NextResponse.json({ error: 'Failed to create review' }, { status: 500, headers: corsHeaders });
   }
 }
 

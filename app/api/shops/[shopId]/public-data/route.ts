@@ -31,7 +31,18 @@ export async function GET(request: Request, { params }: { params: Promise<{ shop
     // --- SECURITY: Domain Validation (Anti-Scraping / Hacker Safe) ---
     const origin = request.headers.get('origin');
     const referer = request.headers.get('referer');
-    const requestDomain = origin ? new URL(origin).hostname : (referer ? new URL(referer).hostname : null);
+    
+    let requestDomain = null;
+    try {
+      if (origin && origin !== 'null') {
+        requestDomain = new URL(origin).hostname;
+      } else if (referer && referer !== 'null') {
+        requestDomain = new URL(referer).hostname;
+      }
+    } catch (e) {
+      // Ignore URL parsing errors
+      requestDomain = null;
+    }
 
     const customization = (shop.customization as any) || {};
     const allowedDomains: string[] = customization.allowedDomains || [];
@@ -41,6 +52,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ shop
     if (shop.subdomain) allowedDomains.push(`${shop.subdomain}.barbersaas.com`);
     allowedDomains.push('barbersaas.com'); // Allow main app domain
     allowedDomains.push('localhost'); // Allow local development
+    allowedDomains.push('127.0.0.1'); // Allow local IP development
 
     // If the request comes from a browser (has origin/referer), validate it
     // We strictly block requests from unknown origins to prevent data theft and unauthorized widget embedding
