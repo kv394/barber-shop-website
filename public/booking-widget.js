@@ -24,7 +24,7 @@
     return;
   }
   const shopId = scriptTag.getAttribute('data-shop-id');
-  const apiUrl = scriptTag.getAttribute('data-api-url') || 'https://barbersaas.com/api/chat/booking';
+  const apiUrl = scriptTag.getAttribute('data-api-url') || 'https://barbersaas-henna.vercel.app/api/chat/booking';
   const themeColor = scriptTag.getAttribute('data-theme-color') || '#d4af37';
 
   if (!shopId) {

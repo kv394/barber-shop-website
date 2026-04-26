@@ -9,15 +9,15 @@ export default function WidgetEmbedCode({ shopId }: { shopId: string }) {
   const [copiedReviewScript, setCopiedReviewScript] = useState(false);
   const [copiedSdkScript, setCopiedSdkScript] = useState(false);
 
-  const scriptCode = `<script src="https://barbersaas.com/booking-modal.js" data-shop-id="${shopId}"></script>`;
+  const scriptCode = `<script src="https://barbersaas-henna.vercel.app/booking-modal.js" data-shop-id="${shopId}"></script>`;
   const buttonCode = `<button id="barber-booking-btn" style="padding: 10px 20px; background: #000; color: #fff; border: none; border-radius: 5px; cursor: pointer;">
   Book Appointment
 </button>`;
 
-  const productScriptCode = `<script src="https://barbersaas.com/product-widget.js" data-shop-id="${shopId}"></script>`;
-  const reviewScriptCode = `<script src="https://barbersaas.com/review-widget.js" data-shop-id="${shopId}"></script>`;
+  const productScriptCode = `<script src="https://barbersaas-henna.vercel.app/product-widget.js" data-shop-id="${shopId}"></script>`;
+  const reviewScriptCode = `<script src="https://barbersaas-henna.vercel.app/review-widget.js" data-shop-id="${shopId}"></script>`;
   
-  const sdkScriptCode = `<script src="https://barbersaas.com/barbersaas-sdk.js"></script>
+  const sdkScriptCode = `<script src="https://barbersaas-henna.vercel.app/barbersaas-sdk.js"></script>
 <script>
   window.addEventListener('load', function() {
     BarberSaaS.init("${shopId}");

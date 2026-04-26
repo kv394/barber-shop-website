@@ -9,7 +9,7 @@
   class BarberSaaSClient {
     constructor() {
       this.shopId = null;
-      this.apiUrl = 'https://barbersaas.com'; // Default production URL
+      this.apiUrl = 'https://barbersaas-henna.vercel.app'; // Default production URL
       this._publicDataCache = null;
     }
 

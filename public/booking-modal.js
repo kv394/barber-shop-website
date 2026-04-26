@@ -19,13 +19,13 @@
   const shopId = scriptTag.getAttribute('data-shop-id');
   const themeColor = scriptTag.getAttribute('data-theme-color') || '';
   const templateType = scriptTag.getAttribute('data-template-type') || '';
-  const scriptTagSrc = scriptTag.src || 'https://barbersaas.com/booking-modal.js';
-  let baseUrl = 'https://barbersaas.com';
+  const scriptTagSrc = scriptTag.src || 'https://barbersaas-henna.vercel.app/booking-modal.js';
+  let baseUrl = 'https://barbersaas-henna.vercel.app';
   try {
     const parsedUrl = new URL(scriptTagSrc, window.location.origin);
     baseUrl = scriptTag.getAttribute('data-base-url') || parsedUrl.origin;
   } catch (e) {
-    baseUrl = scriptTag.getAttribute('data-base-url') || 'https://barbersaas.com';
+    baseUrl = scriptTag.getAttribute('data-base-url') || 'https://barbersaas-henna.vercel.app';
   }
   
   // Create styles

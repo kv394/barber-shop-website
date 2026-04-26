@@ -168,7 +168,7 @@ export async function POST(req: Request) {
       `http://${shop.subdomain}.barbersaas.com`,
       `http://localhost:3000`, // Allow local testing
       // Also allow the main saas domain if needed
-      `https://barbersaas.com`,
+      `https://barbersaas-henna.vercel.app`,
     ];
 
     if (configuredWebsite) {
