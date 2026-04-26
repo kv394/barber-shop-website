@@ -1,18 +1,14 @@
 import { notFound, redirect } from 'next/navigation';
 import { createClient } from '@/utils/supabase/server';
 import { getShopLayoutData } from '@/lib/shop-data';
-import WidgetEmbedCode from '@/components/shop-admin/WidgetEmbedCode';
-import { CustomizationForm } from '@/components/shop-admin/CustomizationForm';
-import { CustomPagesForm } from '@/components/shop-admin/CustomPagesForm';
-import { TemplateSelector } from '@/components/shop-admin/TemplateSelector';
-import { ShopProfileForm } from '@/components/shop-admin/ShopProfileForm';
 import { DEFAULT_CUSTOMIZATION } from '@/lib/templates';
 import ShopAdminLayout from '@/components/shop-admin/ShopAdminLayout';
 import TimezoneSelector from '@/components/shop-admin/TimezoneSelector';
 import DepositSettings from '@/components/checkout/DepositSettings';
-import Link from 'next/link';
 import { prisma } from '@/lib/prisma';
 import DeleteLocationButton from '@/components/shop-admin/DeleteLocationButton';
+import { ShopProfileForm } from '@/components/shop-admin/ShopProfileForm';
+import { SettingsFormManager } from '@/components/shop-admin/SettingsFormManager';
 
 export const dynamic = "force-dynamic";
 
@@ -84,31 +80,13 @@ export default async function ShopSettingsPage({
         initialSlogan={data.shop.slogan}
       />
 
-      <div className="bg-crm-bg/50 p-6 rounded-xl border border-crm-border shadow-sm mb-6">
-        <h2 className="font-bold text-crm-text mb-2 text-xl font-bold">Booking Portal Template</h2>
-        <p className="text-crm-muted mb-6 text-[13px]">Choose the layout and style for your public booking portal.</p>
-        <TemplateSelector
-          currentTemplate={data.shop.template || 'modern'}
-          shopId={shopId}
-          dynamicTemplates={dynamicTemplates as any}
-          initialCustomHtml={(customization as any)?.customHtml || ''}
-        />
-      </div>
-
-      <CustomizationForm
+      <SettingsFormManager
         shopId={shopId}
         customization={customization}
         isSiteAdmin={data.isSiteAdmin}
         currentTemplate={data.shop.template || 'modern'}
         dynamicTemplates={dynamicTemplates as any}
       />
-
-      <CustomPagesForm
-        shopId={shopId}
-        customization={customization}
-      />
-
-      <WidgetEmbedCode shopId={shopId} />
 
       <div className="mt-12 pt-8 border-t border-crm-border">
         <h3 className="font-bold text-red-600 mb-2 text-lg">Danger Zone</h3>

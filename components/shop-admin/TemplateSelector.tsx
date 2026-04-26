@@ -8,13 +8,27 @@ interface TemplateSelectorProps {
   shopId: string;
   dynamicTemplates?: { name: string; description: string | null }[];
   initialCustomHtml?: string;
+  onTemplateSelect?: (template: string) => void;
 }
 
-export function TemplateSelector({ currentTemplate, shopId, dynamicTemplates = [], initialCustomHtml = '' }: TemplateSelectorProps) {
+export function TemplateSelector({ 
+  currentTemplate, 
+  shopId, 
+  dynamicTemplates = [], 
+  initialCustomHtml = '',
+  onTemplateSelect
+}: TemplateSelectorProps) {
   const [selectedTemplate, setSelectedTemplate] = useState<string>(currentTemplate);
   const [customHtml, setCustomHtml] = useState<string>(initialCustomHtml);
   const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  const handleTemplateClick = (id: string) => {
+    setSelectedTemplate(id);
+    if (onTemplateSelect) {
+      onTemplateSelect(id);
+    }
+  };
 
   const handleSave = async () => {
     setIsSaving(true);
@@ -81,7 +95,7 @@ export function TemplateSelector({ currentTemplate, shopId, dynamicTemplates = [
                 ? 'border-status-info bg-status-info/10' 
                 : 'border-crm-border bg-crm-surface hover:border-slate-500'}
             `}
-            onClick={() => setSelectedTemplate(template.id)}
+            onClick={() => handleTemplateClick(template.id)}
           >
             <div className="flex items-center justify-between mb-2">
               <h3 className="font-bold text-crm-text text-lg">{template.name}</h3>
@@ -97,14 +111,17 @@ export function TemplateSelector({ currentTemplate, shopId, dynamicTemplates = [
       </div>
 
       {selectedTemplate === 'custom' && (
-        <div className="mt-4 p-4 border border-crm-border rounded-lg bg-crm-surface">
-          <label className="block font-bold text-crm-text mb-2 text-sm">Custom HTML Code</label>
-          <p className="text-crm-muted text-xs mb-4">Paste your complete single-page HTML here. This will be served exactly as provided.</p>
+        <div className="mt-6 p-6 border-2 border-crm-border rounded-xl bg-crm-surface shadow-sm">
+          <label className="block font-bold text-crm-text mb-2 text-lg">Custom HTML Code</label>
+          <p className="text-crm-muted text-sm mb-4">
+            Paste your complete single-page HTML here. This will be served exactly as provided. 
+            Because you are using a custom template, standard customization forms and custom pages have been disabled below.
+          </p>
           <textarea
             value={customHtml}
             onChange={(e) => setCustomHtml(e.target.value)}
-            rows={15}
-            className="w-full bg-crm-bg border border-crm-border rounded-lg p-4 font-mono text-[13px] text-crm-text focus:outline-none focus:border-crm-primary"
+            rows={20}
+            className="w-full bg-crm-bg border border-crm-border rounded-lg p-4 font-mono text-[13px] text-crm-text focus:outline-none focus:border-crm-primary shadow-inner"
             placeholder="<!DOCTYPE html>\n<html>\n<head>...</head>\n<body>...</body>\n</html>"
           />
         </div>
