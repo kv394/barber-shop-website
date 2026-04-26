@@ -5,6 +5,7 @@ export default async function EmbedBookPage({ params, searchParams }: { params: 
   const { shopId } = await params;
   const sp = searchParams ? await searchParams : {};
   const themeColor = typeof sp.themeColor === 'string' ? sp.themeColor : undefined;
+  const secondaryColor = typeof sp.secondaryColor === 'string' ? sp.secondaryColor : undefined;
   const templateType = typeof sp.templateType === 'string' ? sp.templateType : undefined;
 
   const shop = await prisma.shop.findUnique({
@@ -24,6 +25,7 @@ export default async function EmbedBookPage({ params, searchParams }: { params: 
   const themeMuted = isDark ? '#a1a1aa' : '#6b7280';
   const themeBorder = isDark ? '#27272a' : '#e5e7eb';
   const primaryColor = themeColor || c.primaryColor || '#000000';
+  const actualSecondaryColor = secondaryColor || c.secondaryColor || '#6b7280';
 
   return (
     <div className="h-full w-full bg-crm-bg flex flex-col relative overflow-y-auto font-body">
@@ -53,7 +55,7 @@ export default async function EmbedBookPage({ params, searchParams }: { params: 
           .btn:hover, button.bg-crm-primary:hover, button[style*="background-color: ${primaryColor}"]:hover { background-color: ${primaryColor}20 !important; }
         ` : ''}
       `}} />
-      <BookingWizard shopId={shopId} themeColor={themeColor} templateType={templateType} />
-    </div>
-  );
+      <BookingWizard shopId={shopId} themeColor={primaryColor} secondaryColor={actualSecondaryColor} templateType={templateType} />
+      </div>
+      );
 }

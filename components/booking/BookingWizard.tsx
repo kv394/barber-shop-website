@@ -10,7 +10,7 @@ interface Service { id: string; name: string; price: number; duration: number; }
 interface Staff { id: string; name: string; workingHours: any; }
 interface BookedSlot { startTime: string; endTime: string; staffId: string; }
 
-export default function BookingWizard({ shopId, themeColor, templateType }: { shopId: string, themeColor?: string, templateType?: string }) {
+export default function BookingWizard({ shopId, themeColor, secondaryColor, templateType }: { shopId: string, themeColor?: string, secondaryColor?: string, templateType?: string }) {
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(true);
   const [services, setServices] = useState<Service[]>([]);
@@ -458,7 +458,7 @@ export default function BookingWizard({ shopId, themeColor, templateType }: { sh
                                 setSelectedDate(format(tempPickerDate, 'yyyy-MM-dd'));
                               }
                             }}
-                            className={tStyles.btnPrimary} style={{ backgroundColor: themeColor || '#111827' }}
+                            className={tStyles.btnPrimary} style={{ backgroundColor: themeColor || '#111827', color: secondaryColor || undefined }}
                           >
                             OK
                           </button>
@@ -578,18 +578,17 @@ export default function BookingWizard({ shopId, themeColor, templateType }: { sh
               <button 
                 disabled={!selectedDate || !selectedTime}
                 onClick={handleNext}
-                className={tStyles.btnPrimary} style={{ backgroundColor: themeColor || '#111827' }}
+                className={tStyles.btnPrimary} style={{ backgroundColor: themeColor || '#111827', color: secondaryColor || undefined }}
               >
                 Continue to Details
               </button>
           ) : (
-              <button 
+              <button
                 disabled={!name || !email || isBooking}
                 onClick={handleBook}
-                className="w-full bg-gray-900 text-white p-4 rounded-xl font-medium disabled:opacity-50 disabled:cursor-not-allowed hover:bg-black transition-colors flex items-center justify-center gap-2"
+                className={`${tStyles.btnPrimary} flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed`} style={{ backgroundColor: themeColor || '#111827', color: secondaryColor || undefined }}
               >
-                {isBooking ? (
-                    <>
+                {isBooking ? (                    <>
                     <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
                     Confirming...
                     </>

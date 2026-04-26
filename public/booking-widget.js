@@ -23,9 +23,10 @@
     console.error('Booking widget script tag not found');
     return;
   }
-  const shopId = scriptTag.getAttribute('data-shop-id');
-  const apiUrl = scriptTag.getAttribute('data-api-url') || 'https://barbersaas-henna.vercel.app/api/chat/booking';
-  const themeColor = scriptTag.getAttribute('data-theme-color') || '#d4af37';
+  const shopId = scriptTag.getAttribute('data-shop-id') || (window.BarberSaaS && window.BarberSaaS.shopId);
+  const apiUrl = scriptTag.getAttribute('data-api-url') || (window.BarberSaaS && window.BarberSaaS.apiUrl) + '/api/chat/booking' || 'https://barbersaas-henna.vercel.app/api/chat/booking';
+  const themeColor = (window.BarberSaaS && window.BarberSaaS.primaryColor) || scriptTag.getAttribute('data-theme-color') || '#d4af37';
+  const secondaryColor = (window.BarberSaaS && window.BarberSaaS.secondaryColor) || scriptTag.getAttribute('data-secondary-color') || themeColor;
 
   if (!shopId) {
     console.error('Booking widget requires data-shop-id attribute');

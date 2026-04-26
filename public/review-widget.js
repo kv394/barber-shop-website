@@ -22,7 +22,9 @@
     return;
   }
   
-  const shopId = scriptTag.getAttribute('data-shop-id');
+  const shopId = scriptTag.getAttribute('data-shop-id') || (window.BarberSaaS && window.BarberSaaS.shopId);
+  const primaryColor = (window.BarberSaaS && window.BarberSaaS.primaryColor) || scriptTag.getAttribute('data-theme-color') || '#1a1a1a';
+  const secondaryColor = (window.BarberSaaS && window.BarberSaaS.secondaryColor) || scriptTag.getAttribute('data-secondary-color') || '#c0a05b';
 
   if (!shopId) {
     console.error('Review widget requires data-shop-id attribute');
@@ -84,7 +86,7 @@
       font-weight: bold;
       margin-top: 10px;
       margin-bottom: 20px;
-      color: #1a1a1a;
+      color: ${primaryColor};
       line-height: 1.2;
     }
     
@@ -104,7 +106,7 @@
       border-radius: 4px;
     }
     .barber-review-list-container::-webkit-scrollbar-thumb {
-      background-color: #c0a05b; 
+      background-color: ${secondaryColor}; 
       border-radius: 4px;
     }
     
@@ -113,7 +115,7 @@
       border-radius: 8px;
       padding: 15px;
       margin-bottom: 15px;
-      border-left: 4px solid #c0a05b;
+      border-left: 4px solid ${secondaryColor};
     }
     .barber-review-header {
       display: flex;
@@ -179,7 +181,7 @@
       display: inline-block;
       width: 100%;
       padding: 12px;
-      background: #1a1a1a;
+      background: ${primaryColor};
       color: #fff;
       border: none;
       border-radius: 6px;
@@ -191,8 +193,8 @@
       transition: all 0.3s ease;
     }
     .barber-review-btn-primary:hover {
-      background: #c0a05b;
-      color: #1a1a1a;
+      background: ${secondaryColor};
+      color: ${primaryColor};
     }
     .barber-review-btn-primary:disabled {
       background: #ccc;
@@ -210,7 +212,7 @@
       margin-top: 10px;
     }
     .barber-review-btn-secondary:hover {
-      color: #1a1a1a;
+      color: ${primaryColor};
     }
   `;
   document.head.appendChild(style);

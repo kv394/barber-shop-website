@@ -543,7 +543,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
     // Auth button for client sign-in/out
     const authButton = (
         <div className="absolute top-6 right-6 z-50">
-            <SupabaseAuthButton redirectUrl={pathname} />
+            <SupabaseAuthButton redirectUrl={pathname} primaryColor={primaryColor} secondaryColor={secondaryColor} />
         </div>
     );
 
@@ -553,7 +553,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
         return (
             <div style={{ width: '100vw', height: '100dvh', position: 'relative' }}>
                 <div className="absolute top-6 right-6 z-50">
-                    <SupabaseAuthButton redirectUrl={pathname} />
+                    <SupabaseAuthButton redirectUrl={pathname} primaryColor={primaryColor} secondaryColor={secondaryColor} />
                 </div>
                 <iframe 
                     srcDoc={htmlToRender} 
@@ -782,7 +782,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                     {shopPhone && <span>{shopPhone}</span>}
                     {shopEmail && <span>{shopEmail}</span>}
                     <div className="relative">
-                        <SupabaseAuthButton redirectUrl={pathname} />
+                        <SupabaseAuthButton redirectUrl={pathname} primaryColor={primaryColor} secondaryColor={secondaryColor} />
                     </div>
                 </div>
     
@@ -985,7 +985,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                     </nav>
                 )}
                 <div className="relative shrink-0">
-                    <SupabaseAuthButton redirectUrl={pathname} />
+                    <SupabaseAuthButton redirectUrl={pathname} primaryColor={primaryColor} secondaryColor={secondaryColor} />
                 </div>
               </div>
             </header>
@@ -1155,7 +1155,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                 )}
             </div>
             <div className="absolute top-6 right-8 z-50">
-                <SupabaseAuthButton redirectUrl={pathname} />
+                <SupabaseAuthButton redirectUrl={pathname} primaryColor={primaryColor} secondaryColor={secondaryColor} />
             </div>
             
             <div className="p-8 md:p-16 pt-24 md:pt-32">
@@ -1293,7 +1293,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
              ) : (
                  <div />
              )}
-             <SupabaseAuthButton redirectUrl={pathname} />
+             <SupabaseAuthButton redirectUrl={pathname} primaryColor={primaryColor} secondaryColor={secondaryColor} />
             </div>
 
             <div className="p-8 md:p-12 pt-24 md:pt-32">
@@ -1759,7 +1759,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                     </nav>
                 )}
                 <div className="ml-auto">
-                    <SupabaseAuthButton redirectUrl={pathname} />
+                    <SupabaseAuthButton redirectUrl={pathname} primaryColor={primaryColor} secondaryColor={secondaryColor} />
                 </div>
             </header>
 
@@ -1914,7 +1914,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                 )}
             </div>
             <div className="absolute top-6 right-8 z-50">
-                <SupabaseAuthButton redirectUrl={pathname} />
+                <SupabaseAuthButton redirectUrl={pathname} primaryColor={primaryColor} secondaryColor={secondaryColor} />
             </div>
 
                         <header className="border-b-4 border-[#2c1e16] pt-32 pb-16 text-crm-mutedrm-textenter relative bg-cover bg-center" style={{ backgroundImage: heroImageUrl ? `url(${heroImageUrl})` : "url('https://www.transparenttextures.com/patterns/aged-paper.png')" }}>
@@ -2057,7 +2057,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
                 </nav>
             )}
             <div className="ml-auto">
-                <SupabaseAuthButton redirectUrl={pathname} />
+                <SupabaseAuthButton redirectUrl={pathname} primaryColor={primaryColor} secondaryColor={secondaryColor} />
             </div>
         </header>
 

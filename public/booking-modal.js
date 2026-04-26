@@ -16,8 +16,9 @@
     return;
   }
 
-  const shopId = scriptTag.getAttribute('data-shop-id');
-  const themeColor = scriptTag.getAttribute('data-theme-color') || '';
+  const shopId = scriptTag.getAttribute('data-shop-id') || (window.BarberSaaS && window.BarberSaaS.shopId);
+  const themeColor = (window.BarberSaaS && window.BarberSaaS.primaryColor) || scriptTag.getAttribute('data-theme-color') || '';
+  const secondaryColor = (window.BarberSaaS && window.BarberSaaS.secondaryColor) || scriptTag.getAttribute('data-secondary-color') || '';
   const templateType = scriptTag.getAttribute('data-template-type') || '';
   const scriptTagSrc = scriptTag.src || 'https://barbersaas-henna.vercel.app/booking-modal.js';
   let baseUrl = 'https://barbersaas-henna.vercel.app';
@@ -130,6 +131,9 @@
       }
       if (themeColor) {
         params.push(`themeColor=${encodeURIComponent(themeColor)}`);
+      }
+      if (secondaryColor) {
+        params.push(`secondaryColor=${encodeURIComponent(secondaryColor)}`);
       }
       if (templateType) {
         params.push(`templateType=${encodeURIComponent(templateType)}`);

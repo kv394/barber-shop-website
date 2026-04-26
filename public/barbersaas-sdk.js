@@ -16,16 +16,23 @@
     /**
      * Initialize the SDK with your Shop ID.
      * @param {string} shopId - Your unique shop ID
-     * @param {string} [apiUrl] - Optional custom API base URL
+     * @param {Object|string} [options] - Configuration options or custom API base URL
+     * @param {string} [options.apiUrl] - Custom API base URL
+     * @param {string} [options.primaryColor] - Primary theme color
+     * @param {string} [options.secondaryColor] - Secondary theme color
      */
-    init(shopId, apiUrl) {
+    init(shopId, options = {}) {
       if (!shopId) {
         console.error('BarberSaaS SDK: init() requires a valid shopId.');
         return;
       }
       this.shopId = shopId;
-      if (apiUrl) {
-        this.apiUrl = apiUrl;
+      if (typeof options === 'string') {
+        this.apiUrl = options;
+      } else {
+        if (options.apiUrl) this.apiUrl = options.apiUrl;
+        this.primaryColor = options.primaryColor || null;
+        this.secondaryColor = options.secondaryColor || null;
       }
       console.log('BarberSaaS SDK initialized for shop:', shopId);
     }

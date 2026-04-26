@@ -22,7 +22,9 @@
     return;
   }
   
-  const shopId = scriptTag.getAttribute('data-shop-id');
+  const shopId = scriptTag.getAttribute('data-shop-id') || (window.BarberSaaS && window.BarberSaaS.shopId);
+  const primaryColor = (window.BarberSaaS && window.BarberSaaS.primaryColor) || scriptTag.getAttribute('data-theme-color') || '#1a1a1a';
+  const secondaryColor = (window.BarberSaaS && window.BarberSaaS.secondaryColor) || scriptTag.getAttribute('data-secondary-color') || '#c0a05b';
   
   if (!shopId) {
     console.error('Product widget requires data-shop-id attribute');
@@ -81,7 +83,7 @@
       font-weight: bold;
       margin-top: 10px;
       margin-bottom: 10px;
-      color: #1a1a1a;
+      color: ${primaryColor};
       line-height: 1.2;
     }
     .barber-product-desc {
@@ -99,14 +101,14 @@
     .barber-product-price {
       font-size: 22px;
       font-weight: bold;
-      color: #c0a05b;
+      color: ${secondaryColor};
       margin-bottom: 20px;
     }
     .barber-product-buy-btn {
       display: inline-block;
       width: 100%;
       padding: 14px;
-      background: #1a1a1a;
+      background: ${primaryColor};
       color: #fff;
       border: none;
       border-radius: 6px;
@@ -118,8 +120,8 @@
       transition: all 0.3s ease;
     }
     .barber-product-buy-btn:hover {
-      background: #c0a05b;
-      color: #1a1a1a;
+      background: ${secondaryColor};
+      color: ${primaryColor};
       box-shadow: 0 4px 12px rgba(192, 160, 91, 0.3);
     }
   `;

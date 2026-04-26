@@ -8,9 +8,13 @@ import { QRCodeSVG } from 'qrcode.react';
 import { createPortal } from 'react-dom';
 
 export default function SupabaseAuthButton({ 
-  redirectUrl 
+  redirectUrl,
+  primaryColor,
+  secondaryColor 
 }: { 
-  redirectUrl?: string 
+  redirectUrl?: string;
+  primaryColor?: string;
+  secondaryColor?: string;
 }) {
   const [user, setUser] = useState<any>(null);
   const [profile, setProfile] = useState<any>(null);
@@ -178,16 +182,18 @@ export default function SupabaseAuthButton({
 
     return (
       <div className="relative inline-block z-50">
-        <button 
+        <button
           ref={buttonRef}
           onClick={() => setIsOpen(!isOpen)}
           className="flex items-center gap-2 bg-crm-surface hover:bg-crm-bg border border-crm-border shadow-sm px-3 py-1.5 rounded-full transition-colors"
         >
-          <div className="w-6 h-6 rounded-full bg-crm-primary flex items-center justify-center text-white font-bold text-[11px] shadow-inner hover:opacity-90">
+          <div 
+            className="w-6 h-6 rounded-full bg-crm-primary flex items-center justify-center text-white font-bold text-[11px] shadow-inner hover:opacity-90"
+            style={{ backgroundColor: primaryColor || undefined }}
+          >
             {user.email?.charAt(0).toUpperCase() || 'U'}
           </div>
         </button>
-
         {isRendered && mounted && createPortal(menuContent, document.body)}
       </div>
     );
