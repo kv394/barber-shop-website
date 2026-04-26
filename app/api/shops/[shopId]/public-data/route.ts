@@ -156,7 +156,8 @@ export async function GET(request: Request, { params }: { params: Promise<{ shop
 
     const cleanShop = {
         id: shop.id,
-        name: shop.name,
+        name: shop.companyName || shop.name,
+        locationName: shop.name,
         companyName: shop.companyName,
         description: shop.description,
         slogan: shop.slogan,
