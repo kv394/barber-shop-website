@@ -73,7 +73,7 @@
      */
     async getSellableProducts() {
       const data = await this.getPublicData();
-      return data.products;
+      return data.products || [];
     }
 
     /**
@@ -105,8 +105,8 @@
      * @param {string} productId 
      */
     async getProductDetails(productId) {
-      const products = await this.getSellableProducts();
-      const product = products.find(p => p.id === productId);
+      const data = await this.getPublicData();
+      const product = (data.products || []).find(p => p.id === productId);
       if (!product) {
         throw new Error(`Product with ID ${productId} not found or is not sellable.`);
       }
@@ -118,8 +118,8 @@
      * @param {string} serviceId 
      */
     async getServiceDetails(serviceId) {
-      const services = await this.getBookableServices();
-      const service = services.find(s => s.id === serviceId);
+      const data = await this.getPublicData();
+      const service = (data.services || []).find(s => s.id === serviceId);
       if (!service) {
         throw new Error(`Service with ID ${serviceId} not found or is not bookable.`);
       }
