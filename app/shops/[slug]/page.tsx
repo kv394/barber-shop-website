@@ -104,6 +104,8 @@ const getShopBySlug = cache(async (slug: string) => {
     announcement: rawCustom.announcement,
     seo: rawCustom.seo,
     customHtml: rawCustom.customHtml,
+    authPosition: rawCustom.authPosition,
+    chatbotPosition: rawCustom.chatbotPosition,
   };
   return {
     ...serialized,
@@ -265,7 +267,7 @@ export default async function PublicShopPage({
             dynamicTemplateHtml={dynamicTemplateHtml}
             dynamicTemplateCss={dynamicTemplateCss}
         />
-        <AIWidget shopId={shop.id} themeColor={primaryColor} />
+        <AIWidget shopId={shop.id} themeColor={primaryColor} secondaryColor={secondaryColor} chatbotPosition={shop.customization?.chatbotPosition} />
         {/* Inject the booking modal script for this shop reliably */}
         <BookingModalScript shopId={shop.id} themeColor={primaryColor} templateType={templateType} />
       </>

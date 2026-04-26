@@ -27,6 +27,10 @@
   const apiUrl = scriptTag.getAttribute('data-api-url') || (window.BarberSaaS && window.BarberSaaS.apiUrl) + '/api/chat/booking' || 'https://barbersaas-henna.vercel.app/api/chat/booking';
   const themeColor = (window.BarberSaaS && window.BarberSaaS.primaryColor) || scriptTag.getAttribute('data-theme-color') || '#d4af37';
   const secondaryColor = (window.BarberSaaS && window.BarberSaaS.secondaryColor) || scriptTag.getAttribute('data-secondary-color') || themeColor;
+  const position = (window.BarberSaaS && window.BarberSaaS.chatbotPosition) || scriptTag.getAttribute('data-position') || 'bottom-right';
+  const isLeft = position === 'bottom-left';
+  const sideCSS = isLeft ? 'left: 24px;' : 'right: 24px;';
+  const transformOrigin = isLeft ? 'bottom left' : 'bottom right';
 
   if (!shopId) {
     console.error('Booking widget requires data-shop-id attribute');
@@ -70,7 +74,7 @@
     #widget-button {
       position: fixed;
       bottom: 24px;
-      right: 24px;
+      ${sideCSS}
       width: 60px;
       height: 60px;
       border-radius: 30px;
@@ -106,7 +110,7 @@
     #chat-window {
       position: fixed;
       bottom: 140px;
-      right: 24px;
+      ${sideCSS}
       width: 360px;
       height: 500px;
       max-height: calc(100vh - 160px);
@@ -121,7 +125,7 @@
       opacity: 0;
       pointer-events: none;
       transform: translateY(20px) scale(0.95);
-      transform-origin: bottom right;
+      transform-origin: ${transformOrigin};
       transition: opacity 0.3s ease, transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1);
     }
     

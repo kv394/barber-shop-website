@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react';
 
-export default function AIWidget({ shopId, themeColor, secondaryColor }: { shopId: string, themeColor?: string, secondaryColor?: string }) {
+export default function AIWidget({ shopId, themeColor, secondaryColor, chatbotPosition }: { shopId: string, themeColor?: string, secondaryColor?: string, chatbotPosition?: string }) {
   // This component simply injects the lightweight vanilla JS widget onto the page.
   // The widget is completely self-contained in public/booking-widget.js
   
@@ -23,6 +23,9 @@ export default function AIWidget({ shopId, themeColor, secondaryColor }: { shopI
     if (secondaryColor) {
       script.setAttribute('data-secondary-color', secondaryColor);
     }
+    if (chatbotPosition) {
+      script.setAttribute('data-position', chatbotPosition);
+    }
     script.async = true;
     
     document.body.appendChild(script);
@@ -31,7 +34,7 @@ export default function AIWidget({ shopId, themeColor, secondaryColor }: { shopI
       // Optional: Remove script on unmount if needed, 
       // but usually we want the widget to persist across the shop page.
     };
-  }, [shopId, themeColor, secondaryColor]);
+  }, [shopId, themeColor, secondaryColor, chatbotPosition]);
 
   return null;
 }

@@ -152,6 +152,8 @@ export async function GET(request: Request, { params }: { params: Promise<{ shop
         buttonVariant: customization.buttonVariant,
         colorTheme: customization.colorTheme,
         customHtml: customization.customHtml,
+        authPosition: customization.authPosition,
+        chatbotPosition: customization.chatbotPosition,
     };
 
     const cleanShop = {

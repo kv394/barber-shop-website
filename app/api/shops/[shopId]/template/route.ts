@@ -36,7 +36,7 @@ export async function POST(
     }
 
     const body = await request.json();
-    const { template, customHtml } = body;
+    const { template, customHtml, authPosition, chatbotPosition } = body;
 
     if (!template || typeof template !== 'string') {
       return NextResponse.json(
@@ -72,7 +72,12 @@ export async function POST(
     if (template === 'custom') {
       const shop = await prisma.shop.findUnique({ where: { id: shopId } });
       const currentCustomization = (shop?.customization as any) || {};
-      updateData.customization = { ...currentCustomization, customHtml: customHtml || '' };
+      updateData.customization = { 
+        ...currentCustomization, 
+        customHtml: customHtml || '',
+        authPosition: authPosition || 'top-right',
+        chatbotPosition: chatbotPosition || 'bottom-right'
+      };
     }
 
     const updatedShop = await prisma.shop.update({
