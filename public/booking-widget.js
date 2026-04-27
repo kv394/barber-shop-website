@@ -845,9 +845,4 @@
     input.value = '';
     sendChatRequest(text, text);
   });
-})();ChatRequest(text, text);
-  });
-})();  });
-})();ChatRequest(text, text);
-  });
-})();)();();)();;
+})();
