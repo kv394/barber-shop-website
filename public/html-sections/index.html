@@ -329,7 +329,22 @@
   </article>
 
   <!-- Core SDK -->
-  <script src="/barbersaas-sdk.js"></script>
+  <script>
+    (function() {
+      let domain = window.location.origin;
+      let isFileProtocol = window.location.protocol === "file:";
+      if (domain === "null" || domain === "about://" || window.location.protocol === "about:" || isFileProtocol) {
+        try { domain = window.parent.location.origin; } catch(e) {}
+      }
+      if (domain === "null" || domain === "about://" || !domain) {
+        domain = "https://barbersaas-henna.vercel.app";
+      }
+      
+      const sdkScript = document.createElement("script");
+      sdkScript.src = isFileProtocol && domain === "file://" ? "../barbersaas-sdk.js?v=3" : domain + "/barbersaas-sdk.js?v=3";
+      document.head.appendChild(sdkScript);
+    })();
+  </script>
   <script>
     // Smooth scrolling nav
     document.querySelectorAll('.nav-link:not(.nav-cta)').forEach(link => {
@@ -353,10 +368,42 @@
         if (typeof BarberSaaS === "undefined") return;
         
         const urlParams = new URLSearchParams(window.location.search);
-        const shopId = urlParams.get("shopId") || "cmn9kj24n0000lqzc7kcsmpst";
+        // Fallback to window.parent if in iframe to get shopId from outer URL
+        let shopId = urlParams.get("shopId");
+        if (!shopId) {
+            try {
+                const parentParams = new URLSearchParams(window.parent.location.search);
+                shopId = parentParams.get("shopId");
+            } catch(e) {}
+        }
+        // Final fallback
+        if (!shopId) {
+            try {
+                const paths = window.parent.location.pathname.split('/');
+                shopId = paths[paths.length - 1];
+            } catch(e) {}
+        }
+        shopId = shopId || "cmn9kj24n0000lqzc7kcsmpst";
+        
+        let domain = window.location.origin;
+        let isFileProtocol = window.location.protocol === "file:";
+        
+        if (domain === "null" || domain === "about://" || window.location.protocol === "about:" || isFileProtocol) {
+          try { domain = window.parent.location.origin; } catch(e) {}
+        }
+        if (domain === "null" || domain === "about://" || domain === "file://" || !domain) {
+          domain = "https://barbersaas-henna.vercel.app";
+        }
+        
+        // When developing locally on localhost, use localhost domain, otherwise fallback to production data
+        // If opened as file://, use production data because there is no backend server running on file://.
+        const apiUrlToUse = (domain.includes("localhost") || domain.includes("127.0.0.1")) && !isFileProtocol ? domain : "https://barbersaas-henna.vercel.app";
         
         // Initialize SDK without hardcoded colors so it can fetch the shop data
-        BarberSaaS.init(shopId, { position: "bottom-right" });
+        BarberSaaS.init(shopId, { 
+            position: "bottom-right",
+            apiUrl: apiUrlToUse
+        });
 
         BarberSaaS.getPublicData().then((data) => {
           try {
@@ -381,21 +428,53 @@
                document.body.style.setProperty('--brand-color', primaryColor);
             }
             
+            const styleEl = document.createElement('style');
+            styleEl.innerHTML = `
+              :root {
+                --brand-color: ${primaryColor} !important;
+                --theme-color: ${primaryColor} !important;
+                --widget-border: ${primaryColor} !important;
+              }
+              .supabase-auth-ui_ui-button, .supabase-account-avatar, [id*="supabase-"], [class*="supabase-"], [class*="avatar"], [id*="avatar"], [class*="user-profile"], [class*="profile-badge"] {
+                 color: ${primaryColor} !important;
+                 border-color: ${primaryColor} !important;
+                 outline-color: ${primaryColor} !important;
+              }
+              [class*="avatar"] svg, [class*="user-profile"] svg, [class*="chat-button"] {
+                 fill: ${primaryColor} !important;
+              }
+            `;
+            document.head.appendChild(styleEl);
+            
             // 4. Inject the Chatbot and Booking widgets dynamically NOW that colors are set
             // The widget script might specifically look for a DOM script with this src.
-            const modalScript = document.createElement("script");
-            modalScript.src = "/booking-modal.js";
-            modalScript.setAttribute("data-shop-id", shopId);
-            modalScript.setAttribute("data-theme-color", primaryColor);
-            modalScript.setAttribute("data-secondary-color", primaryColor);
-            document.body.appendChild(modalScript);
-            
-            const widgetScript = document.createElement("script");
-            widgetScript.src = "/booking-widget.js";
-            widgetScript.setAttribute("data-shop-id", shopId);
-            widgetScript.setAttribute("data-theme-color", primaryColor);
-            widgetScript.setAttribute("data-secondary-color", primaryColor);
-            document.body.appendChild(widgetScript);
+            setTimeout(() => {
+                let domain = window.location.origin;
+                let isFileProtocol = window.location.protocol === "file:";
+                if (domain === "null" || domain === "about://" || window.location.protocol === "about:" || isFileProtocol) {
+                  try { domain = window.parent.location.origin; } catch(e) {}
+                }
+                if (domain === "null" || domain === "about://" || !domain) {
+                  domain = "https://barbersaas-henna.vercel.app";
+                }
+                
+                const cacheBuster = "?v=" + new Date().getTime();
+                const widgetUrlPrefix = (isFileProtocol && domain === "file://") ? ".." : domain;
+                
+                const modalScript = document.createElement("script");
+                modalScript.src = widgetUrlPrefix + "/booking-modal.js" + cacheBuster;
+                modalScript.setAttribute("data-shop-id", shopId);
+                modalScript.setAttribute("data-theme-color", primaryColor);
+                modalScript.setAttribute("data-secondary-color", primaryColor);
+                document.body.appendChild(modalScript);
+                
+                const widgetScript = document.createElement("script");
+                widgetScript.src = widgetUrlPrefix + "/booking-widget.js" + cacheBuster;
+                widgetScript.setAttribute("data-shop-id", shopId);
+                widgetScript.setAttribute("data-theme-color", primaryColor);
+                widgetScript.setAttribute("data-secondary-color", primaryColor);
+                document.body.appendChild(widgetScript);
+            }, 50);
           } catch(e) { console.error(e); }
 
           // About

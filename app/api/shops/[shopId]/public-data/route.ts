@@ -9,14 +9,19 @@ export async function GET(request: Request, { params }: { params: Promise<{ shop
     const { shopId } = await params;
 
     // 0. Fetch Shop Details First for Security Validation
-    const shop = await prisma.shop.findUnique({
-      where: { id: shopId },
+    const shop = await prisma.shop.findFirst({
+      where: {
+        OR: [
+          { id: shopId },
+          { subdomain: shopId },
+          { companyName: shopId }
+        ]
+      },
       select: {
         id: true,
         name: true,
         companyName: true,
         description: true,
-        slogan: true,
         timezone: true,
         customDomain: true,
         subdomain: true,
@@ -76,17 +81,16 @@ export async function GET(request: Request, { params }: { params: Promise<{ shop
       'Access-Control-Allow-Headers': 'Content-Type, Authorization',
     };
 
-    // Run remaining public data queries in parallel
+    // Run remaining public data queries in parallel using the actual resolved shop.id
     const [products, services, staff, reviews] = await Promise.all([
       // 1. Sellable Products
       prisma.product.findMany({
-        where: { shopId, isSellable: true },
+        where: { shopId: shop.id },
         select: {
           id: true,
           name: true,
           description: true,
           price: true,
-          imageUrl: true,
           type: true,
           trackInventory: true,
           inventoryCount: true
@@ -95,15 +99,13 @@ export async function GET(request: Request, { params }: { params: Promise<{ shop
       }),
       // 2. Bookable Services
       prisma.service.findMany({
-        where: { shopId, isBookable: true },
+        where: { shopId: shop.id },
         select: {
           id: true,
           name: true,
           description: true,
           price: true,
-          duration: true,
-          imageUrl: true,
-          addons: { select: { id: true, name: true, price: true, durationMin: true } }
+          duration: true
         },
         orderBy: { name: 'asc' }
       }),
@@ -111,8 +113,8 @@ export async function GET(request: Request, { params }: { params: Promise<{ shop
       prisma.user.findMany({
         where: {
           OR: [
-            { shopId: shopId, role: 'STAFF' },
-            { shopAccesses: { some: { shopId: shopId, role: 'STAFF' } } }
+            { shopId: shop.id, role: 'STAFF' },
+            { shopAccesses: { some: { shopId: shop.id, role: 'STAFF' } } }
           ]
         },
         select: {
@@ -124,7 +126,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ shop
       }),
       // 4. Reviews
       prisma.review.findMany({
-        where: { shopId },
+        where: { shopId: shop.id },
         select: {
           id: true,
           rating: true,
@@ -162,7 +164,6 @@ export async function GET(request: Request, { params }: { params: Promise<{ shop
         locationName: shop.name,
         companyName: shop.companyName,
         description: shop.description,
-        slogan: shop.slogan,
         timezone: shop.timezone,
         template: shop.template,
         dynamicTemplates: shop.dynamicTemplates,
@@ -177,9 +178,11 @@ export async function GET(request: Request, { params }: { params: Promise<{ shop
       reviews
     }, { headers: corsHeaders });
 
-  } catch (error) {
+  } catch (error: any) {
     logger.error('Error fetching public shop data:', error);
-    return NextResponse.json({ error: 'Failed to fetch public data' }, { status: 500 });
+    return NextResponse.json({ error: 'Failed to fetch public data', details: error?.message || String(error) }, { status: 500, headers: {
+      'Access-Control-Allow-Origin': '*',
+    } });
   }
 }
 
