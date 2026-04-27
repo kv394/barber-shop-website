@@ -21,13 +21,14 @@
       color: var(--text-dark);
       margin: 0;
       padding: 0;
-      line-height: 1.8;
+      line-height: 1.6;
       overflow-x: hidden;
+      font-size: 14px;
     }
 
     h1, h2, h3, .serif {
       font-family: 'Cormorant Garamond', serif;
-      font-weight: 300;
+      font-weight: 400;
     }
 
     /* Minimal Navbar */
@@ -38,7 +39,7 @@
       background: rgba(250, 250, 250, 0.95);
       backdrop-filter: blur(10px);
       z-index: 1000;
-      padding: 20px 40px;
+      padding: 15px 30px;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -47,30 +48,30 @@
     .nav-brand {
       display: flex;
       align-items: center;
-      gap: 15px;
+      gap: 10px;
       text-decoration: none;
       color: var(--text-dark);
     }
     .nav-logo {
-      width: 40px;
-      height: 40px;
+      width: 32px;
+      height: 32px;
     }
     .nav-brand span {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 1.5rem;
-      letter-spacing: 4px;
+      font-size: 1.25rem;
+      letter-spacing: 3px;
       text-transform: uppercase;
     }
     .nav-links {
       display: flex;
-      gap: 40px;
-      padding-right: 80px; /* Prevent overlap with user profile widget */
+      gap: 30px;
+      padding-right: 60px; /* Prevent overlap with user profile widget */
     }
     .nav-links a {
       color: var(--text-dark);
       text-decoration: none;
-      font-size: 0.85rem;
-      letter-spacing: 2px;
+      font-size: 0.75rem;
+      letter-spacing: 1px;
       text-transform: uppercase;
       position: relative;
     }
@@ -90,7 +91,7 @@
 
     /* Hero / Cover */
     .hero {
-      height: 100vh;
+      height: 80vh;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -102,25 +103,25 @@
       content: '';
       position: absolute;
       inset: 0;
-      background: rgba(0, 0, 0, 0.3); /* Dark overlay to make text pop */
+      background: rgba(0, 0, 0, 0.4); /* Dark overlay to make text pop */
     }
     .hero-content {
       position: relative;
       z-index: 1;
       color: white;
-      max-width: 800px;
+      max-width: 600px;
       padding: 0 20px;
     }
     .hero h1 {
-      font-size: clamp(3rem, 8vw, 6rem);
+      font-size: clamp(2rem, 5vw, 3.5rem);
       margin: 0;
-      letter-spacing: 8px;
+      letter-spacing: 4px;
       text-transform: uppercase;
     }
     .hero p {
-      font-size: 1.2rem;
-      letter-spacing: 2px;
-      margin-top: 20px;
+      font-size: 1rem;
+      letter-spacing: 1px;
+      margin-top: 15px;
       font-weight: 300;
     }
 
@@ -128,14 +129,14 @@
     .split-section {
       display: flex;
       flex-wrap: wrap;
-      min-height: 80vh;
+      min-height: 60vh;
     }
     .split-section.reverse {
       flex-direction: row-reverse;
     }
     .split-image {
       flex: 1 1 50%;
-      min-height: 500px;
+      min-height: 400px;
       background-size: cover;
       background-position: center;
     }
@@ -144,22 +145,22 @@
       display: flex;
       flex-direction: column;
       justify-content: center;
-      padding: 8% 8%;
+      padding: 6% 6%;
       box-sizing: border-box;
       background: var(--bg);
     }
     
     .section-tag {
-      font-size: 0.8rem;
-      letter-spacing: 4px;
+      font-size: 0.7rem;
+      letter-spacing: 3px;
       text-transform: uppercase;
       color: var(--text-light);
-      margin-bottom: 20px;
+      margin-bottom: 15px;
     }
     .section-heading {
-      font-size: clamp(2.5rem, 4vw, 4rem);
-      margin: 0 0 30px 0;
-      line-height: 1.1;
+      font-size: clamp(2rem, 3vw, 2.5rem);
+      margin: 0 0 25px 0;
+      line-height: 1.2;
       color: var(--text-dark);
     }
 
@@ -173,8 +174,8 @@
     .item-row {
       display: flex;
       flex-direction: column;
-      padding: 30px 0;
-      border-bottom: 1px solid rgba(0,0,0,0.1);
+      padding: 20px 0;
+      border-bottom: 1px solid rgba(0,0,0,0.05);
     }
     .item-row:last-child {
       border-bottom: none;
@@ -183,23 +184,23 @@
       display: flex;
       justify-content: space-between;
       align-items: baseline;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
     }
     .item-title {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 1.8rem;
+      font-size: 1.4rem;
       margin: 0;
       color: var(--text-dark);
     }
     .item-price {
-      font-size: 1.1rem;
+      font-size: 1rem;
       color: var(--text-dark);
     }
     .item-desc {
       color: var(--text-light);
-      font-size: 0.95rem;
-      margin: 0 0 20px 0;
-      max-width: 90%;
+      font-size: 0.85rem;
+      margin: 0 0 15px 0;
+      max-width: 95%;
     }
     
     /* Buttons */
@@ -207,10 +208,10 @@
       background: var(--text-dark);
       color: white;
       border: none;
-      padding: 15px 30px;
+      padding: 12px 25px;
       font-family: 'Montserrat', sans-serif;
-      font-size: 0.8rem;
-      letter-spacing: 2px;
+      font-size: 0.7rem;
+      letter-spacing: 1px;
       text-transform: uppercase;
       cursor: pointer;
       transition: background 0.3s;
@@ -224,14 +225,14 @@
       border: none;
       padding: 0;
       font-family: 'Montserrat', sans-serif;
-      font-size: 0.8rem;
-      letter-spacing: 2px;
+      font-size: 0.7rem;
+      letter-spacing: 1px;
       text-transform: uppercase;
       cursor: pointer;
       color: var(--text-dark);
       border-bottom: 1px solid var(--text-dark);
       padding-bottom: 3px;
-      margin-right: 20px;
+      margin-right: 15px;
       transition: opacity 0.3s;
     }
     .btn-text:hover {
@@ -240,39 +241,39 @@
 
     /* Testimonials Carousel feel */
     .testimonial-wrap {
-      padding: 100px 20px;
+      padding: 80px 20px;
       text-align: center;
       background: #F0F0F0;
     }
     .testimonial {
-      max-width: 800px;
-      margin: 0 auto 60px auto;
+      max-width: 600px;
+      margin: 0 auto 40px auto;
     }
     .quote {
       font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(1.5rem, 3vw, 2.5rem);
+      font-size: clamp(1.2rem, 2vw, 1.8rem);
       font-style: italic;
       color: var(--text-dark);
-      margin-bottom: 20px;
+      margin-bottom: 15px;
     }
     .stars {
       color: var(--text-dark);
-      letter-spacing: 5px;
+      letter-spacing: 3px;
     }
 
     .loading {
       text-align: center;
-      padding: 100px;
+      padding: 60px;
       font-family: 'Cormorant Garamond', serif;
-      font-size: 1.5rem;
+      font-size: 1.2rem;
       font-style: italic;
     }
 
     @media (max-width: 900px) {
-      .split-image { min-height: 300px; }
-      .navbar { padding: 15px 20px; }
-      .nav-links { display: none; /* In a real app, add a hamburger menu here */ }
-      .split-content { padding: 40px 20px; }
+      .split-image { min-height: 250px; }
+      .navbar { padding: 12px 20px; }
+      .nav-links { display: none; }
+      .split-content { padding: 30px 20px; }
     }
   </style>
 </head>
