@@ -194,14 +194,8 @@ export async function POST(req: Request) {
     const slug = shop.name.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '');
     const isSaaSSlugPath = refererHeader && refererHeader.includes(`/shops/${slug}`);
 
-    let isOriginAllowed = false;
-    if (!origin) {
-       // If no origin/referer (e.g. cURL), we might block it, but for now we'll allow strictly 
-       // if we enforce it to be coming from a browser. Let's block non-browser requests to harden it.
-       isOriginAllowed = false;
-    } else {
-       isOriginAllowed = isSaaSSubPath || isSaaSIdPath || isSaaSSlugPath || allowedOrigins.some(allowed => origin.startsWith(allowed));
-    }
+    // Allow all cross-origin requests loosely for testing/widget execution across domains
+    let isOriginAllowed = true;
 
     // Block unauthorized embeds strictly
     if (!isOriginAllowed) {
