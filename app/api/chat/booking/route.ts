@@ -143,14 +143,35 @@ export async function POST(req: Request) {
         content: String(msg.content || '').substring(0, 500)
     }));
 
-    const shop = await prisma.shop.findUnique({
-      where: { id: shopId },
-      select: { name: true, timezone: true, customDomain: true, subdomain: true, customization: true, description: true }
+    let shop = await prisma.shop.findFirst({
+      where: {
+        OR: [
+          { id: shopId },
+          { subdomain: shopId },
+          { companyName: shopId }
+        ]
+      },
+      select: { id: true, name: true, timezone: true, customDomain: true, subdomain: true, customization: true, description: true }
     });
+
+    if (!shop) {
+      const namePattern = shopId.replace(/-/g, '%');
+      const candidates = await prisma.shop.findMany({
+        where: { name: { contains: namePattern.replace(/%/g, ' '), mode: 'insensitive' } },
+        take: 10,
+        select: { id: true, name: true, timezone: true, customDomain: true, subdomain: true, customization: true, description: true }
+      });
+      shop = candidates.find(
+        (s: any) => s.name.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '') === shopId.toLowerCase()
+      ) || null;
+    }
 
     if (!shop) {
       return NextResponse.json({ error: 'Shop not found' }, { status: 404, headers: corsHeaders });
     }
+    
+    // IMPORTANT: Update shopId context variable so the API routes use the actual database ID going forward
+    const realShopId = shop.id;
 
     const c = (shop.customization as any) || {};
     const configuredWebsite = c.contact?.website || c.website || '';
@@ -273,13 +294,13 @@ If the user wants to check, cancel, or reschedule their appointments:
             try {
                 if (call.name === 'get_services') {
                     const services = await prisma.service.findMany({
-                        where: { shopId, type: 'CUSTOMER' },
+                        where: { shopId: realShopId, type: 'CUSTOMER' },
                         select: { id: true, name: true, price: true, duration: true }
                     });
                     result = { services };
                 } else if (call.name === 'get_staff') {
                     const staff = await prisma.user.findMany({
-                        where: { shopId, role: 'STAFF' },
+                        where: { shopId: realShopId, role: 'STAFF' },
                         select: { id: true, name: true }
                     });
                     result = { staff };
@@ -317,14 +338,14 @@ If the user wants to check, cancel, or reschedule their appointments:
                 } else if (call.name === 'book_appointment') {
                     const args = call.args as any;
                     const { serviceId, staffId, date, time, clientName, clientPhone, clientEmail } = args;
-                    
+
                     // Create dummy client user
                     const emailToUse = clientEmail || `guest-${Date.now()}@example.com`;
-                    
+
                     let user = await prisma.user.findFirst({
                         where: { OR: [{ email: emailToUse }, { phone: clientPhone }] }
                     });
-                    
+
                     let isNewUser = false;
                     if (!user) {
                         isNewUser = true;
@@ -334,7 +355,7 @@ If the user wants to check, cancel, or reschedule their appointments:
                                 name: clientName,
                                 phone: clientPhone,
                                 role: 'CLIENT',
-                                shopId: shopId,
+                                shopId: realShopId,
                                 barcode: `C-${Date.now()}`
                             }
                         });
@@ -342,12 +363,12 @@ If the user wants to check, cancel, or reschedule their appointments:
 
                     const startTime = new Date(`${date}T${time}:00Z`); // Note: Timezone needs proper handling
                     const service = await prisma.service.findUnique({ where: { id: serviceId } });
-                    
+
                     if (service) {
                         const endTime = new Date(startTime.getTime() + service.duration * 60000);
                         const apt = await prisma.appointment.create({
                             data: {
-                                shopId,
+                                shopId: realShopId,
                                 serviceId,
                                 staffId,
                                 userId: user.id,
@@ -355,8 +376,7 @@ If the user wants to check, cancel, or reschedule their appointments:
                                 endTime,
                                 status: 'SCHEDULED'
                             }
-                        });
-                        
+                        });                        
                         if (isNewUser) {
                             lastQrCodeUrl = await QRCode.toDataURL(user.barcode || user.id);
                             lastUiType = 'qr_code';
