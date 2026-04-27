@@ -11,16 +11,17 @@
     }
   }
 
-  if (!scriptTag) {
-    console.error('Booking modal script tag not found');
+  const shopId = (scriptTag && scriptTag.getAttribute('data-shop-id')) || (window.BarberSaaS && window.BarberSaaS.shopId);
+  
+  if (!shopId) {
+    console.error('Booking modal script tag or window.BarberSaaS.shopId not found');
     return;
   }
 
-  const shopId = scriptTag.getAttribute('data-shop-id') || (window.BarberSaaS && window.BarberSaaS.shopId);
-  const themeColor = (window.BarberSaaS && window.BarberSaaS.primaryColor) || scriptTag.getAttribute('data-theme-color') || '';
-  const secondaryColor = (window.BarberSaaS && window.BarberSaaS.secondaryColor) || scriptTag.getAttribute('data-secondary-color') || '';
-  const templateType = scriptTag.getAttribute('data-template-type') || '';
-  const scriptTagSrc = scriptTag.src || 'https://barbersaas-henna.vercel.app/booking-modal.js';
+  const themeColor = (window.BarberSaaS && window.BarberSaaS.primaryColor) || (scriptTag && scriptTag.getAttribute('data-theme-color')) || '';
+  const secondaryColor = (window.BarberSaaS && window.BarberSaaS.secondaryColor) || (scriptTag && scriptTag.getAttribute('data-secondary-color')) || '';
+  const templateType = (scriptTag && scriptTag.getAttribute('data-template-type')) || '';
+  const scriptTagSrc = (scriptTag && scriptTag.src) || 'https://barbersaas-henna.vercel.app/booking-modal.js';
   let baseUrl = 'https://barbersaas-henna.vercel.app';
   try {
     const parsedUrl = new URL(scriptTagSrc, window.location.origin);

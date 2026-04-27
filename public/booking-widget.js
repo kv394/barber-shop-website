@@ -5,10 +5,10 @@
     existingContainer.remove();
   }
 
-  // Find the script tag that has the data-shop-id. 
+  // Find the script tag that has the data-shop-id.
   // It might be document.currentScript, or we might need to search for it.
   let scriptTag = document.currentScript;
-  
+
   if (!scriptTag || !scriptTag.getAttribute('data-shop-id')) {
     const scripts = document.querySelectorAll('script[src*="booking-widget.js"], script[data-shop-id]');
     for (let i = scripts.length - 1; i >= 0; i--) {
@@ -19,23 +19,19 @@
     }
   }
 
-  if (!scriptTag) {
-    console.error('Booking widget script tag not found');
-    return;
-  }
-  const shopId = scriptTag.getAttribute('data-shop-id') || (window.BarberSaaS && window.BarberSaaS.shopId);
-  const apiUrl = scriptTag.getAttribute('data-api-url') || (window.BarberSaaS && window.BarberSaaS.apiUrl) + '/api/chat/booking' || 'https://barbersaas-henna.vercel.app/api/chat/booking';
-  const themeColor = (window.BarberSaaS && window.BarberSaaS.primaryColor) || scriptTag.getAttribute('data-theme-color') || '#d4af37';
-  const secondaryColor = (window.BarberSaaS && window.BarberSaaS.secondaryColor) || scriptTag.getAttribute('data-secondary-color') || themeColor;
-  const position = (window.BarberSaaS && window.BarberSaaS.chatbotPosition) || scriptTag.getAttribute('data-position') || 'bottom-right';
-  const isLeft = position === 'bottom-left';
-  const sideCSS = isLeft ? 'left: 24px;' : 'right: 24px;';
-  const transformOrigin = isLeft ? 'bottom left' : 'bottom right';
+  const shopId = (scriptTag && scriptTag.getAttribute('data-shop-id')) || (window.BarberSaaS && window.BarberSaaS.shopId);
 
   if (!shopId) {
-    console.error('Booking widget requires data-shop-id attribute');
+    console.error('Booking widget requires data-shop-id attribute or window.BarberSaaS.shopId');
     return;
   }
+
+  const apiUrl = (scriptTag && scriptTag.getAttribute('data-api-url')) || (window.BarberSaaS && window.BarberSaaS.apiUrl) + '/api/chat/booking' || 'https://barbersaas-henna.vercel.app/api/chat/booking';
+  const themeColor = (window.BarberSaaS && window.BarberSaaS.primaryColor) || (scriptTag && scriptTag.getAttribute('data-theme-color')) || '#d4af37';
+  const secondaryColor = (window.BarberSaaS && window.BarberSaaS.secondaryColor) || (scriptTag && scriptTag.getAttribute('data-secondary-color')) || themeColor;
+  const position = (window.BarberSaaS && window.BarberSaaS.chatbotPosition) || (scriptTag && scriptTag.getAttribute('data-position')) || 'bottom-right';  const isLeft = position === 'bottom-left';
+  const sideCSS = isLeft ? 'left: 24px;' : 'right: 24px;';
+  const transformOrigin = isLeft ? 'bottom left' : 'bottom right';
 
   // Create a container for the shadow DOM
   const container = document.createElement('div');

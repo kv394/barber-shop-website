@@ -382,12 +382,19 @@
             }
             
             // 4. Inject the Chatbot and Booking widgets dynamically NOW that colors are set
+            // The widget script might specifically look for a DOM script with this src.
             const modalScript = document.createElement("script");
             modalScript.src = "/booking-modal.js";
+            modalScript.setAttribute("data-shop-id", shopId);
+            modalScript.setAttribute("data-theme-color", primaryColor);
+            modalScript.setAttribute("data-secondary-color", primaryColor);
             document.body.appendChild(modalScript);
             
             const widgetScript = document.createElement("script");
             widgetScript.src = "/booking-widget.js";
+            widgetScript.setAttribute("data-shop-id", shopId);
+            widgetScript.setAttribute("data-theme-color", primaryColor);
+            widgetScript.setAttribute("data-secondary-color", primaryColor);
             document.body.appendChild(widgetScript);
           } catch(e) { console.error(e); }
 

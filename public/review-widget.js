@@ -17,17 +17,12 @@
     }
   }
 
-  if (!scriptTag) {
-    console.error('Review widget script tag not found');
-    return;
-  }
-  
-  const shopId = scriptTag.getAttribute('data-shop-id') || (window.BarberSaaS && window.BarberSaaS.shopId);
-  const primaryColor = (window.BarberSaaS && window.BarberSaaS.primaryColor) || scriptTag.getAttribute('data-theme-color') || '#1a1a1a';
-  const secondaryColor = (window.BarberSaaS && window.BarberSaaS.secondaryColor) || scriptTag.getAttribute('data-secondary-color') || '#c0a05b';
+  const shopId = (scriptTag && scriptTag.getAttribute('data-shop-id')) || (window.BarberSaaS && window.BarberSaaS.shopId);
+  const primaryColor = (window.BarberSaaS && window.BarberSaaS.primaryColor) || (scriptTag && scriptTag.getAttribute('data-theme-color')) || '#1a1a1a';
+  const secondaryColor = (window.BarberSaaS && window.BarberSaaS.secondaryColor) || (scriptTag && scriptTag.getAttribute('data-secondary-color')) || '#c0a05b';
 
   if (!shopId) {
-    console.error('Review widget requires data-shop-id attribute');
+    console.error('Review widget requires data-shop-id attribute or window.BarberSaaS.shopId');
     return;
   }
 

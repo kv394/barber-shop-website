@@ -17,20 +17,14 @@
     }
   }
 
-  if (!scriptTag) {
-    console.error('Product widget script tag not found');
-    return;
-  }
-  
-  const shopId = scriptTag.getAttribute('data-shop-id') || (window.BarberSaaS && window.BarberSaaS.shopId);
-  const primaryColor = (window.BarberSaaS && window.BarberSaaS.primaryColor) || scriptTag.getAttribute('data-theme-color') || '#1a1a1a';
-  const secondaryColor = (window.BarberSaaS && window.BarberSaaS.secondaryColor) || scriptTag.getAttribute('data-secondary-color') || '#c0a05b';
-  
-  if (!shopId) {
-    console.error('Product widget requires data-shop-id attribute');
-    return;
-  }
+  const shopId = (scriptTag && scriptTag.getAttribute('data-shop-id')) || (window.BarberSaaS && window.BarberSaaS.shopId);
+  const primaryColor = (window.BarberSaaS && window.BarberSaaS.primaryColor) || (scriptTag && scriptTag.getAttribute('data-theme-color')) || '#1a1a1a';
+  const secondaryColor = (window.BarberSaaS && window.BarberSaaS.secondaryColor) || (scriptTag && scriptTag.getAttribute('data-secondary-color')) || '#c0a05b';
 
+  if (!shopId) {
+    console.error('Product widget requires data-shop-id attribute or window.BarberSaaS.shopId');
+    return;
+  }
   const style = document.createElement('style');
   style.textContent = `
     .barber-product-modal-overlay {
