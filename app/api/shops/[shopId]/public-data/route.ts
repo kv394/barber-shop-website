@@ -9,7 +9,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ shop
     const { shopId } = await params;
 
     // 0. Fetch Shop Details First for Security Validation
-    const shop = await prisma.shop.findFirst({
+    let shop = await prisma.shop.findFirst({
       where: {
         OR: [
           { id: shopId },
@@ -30,6 +30,30 @@ export async function GET(request: Request, { params }: { params: Promise<{ shop
         dynamicTemplates: true
       }
     });
+
+    if (!shop) {
+      const namePattern = shopId.replace(/-/g, '%');
+      const candidates = await prisma.shop.findMany({
+        where: { name: { contains: namePattern.replace(/%/g, ' '), mode: 'insensitive' } },
+        take: 10,
+        select: {
+          id: true,
+          name: true,
+          companyName: true,
+          description: true,
+          timezone: true,
+          customDomain: true,
+          subdomain: true,
+          customization: true,
+          template: true,
+          dynamicTemplates: true
+        }
+      });
+
+      shop = candidates.find(
+        (s: any) => s.name.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '') === shopId.toLowerCase()
+      ) || null;
+    }
 
     if (!shop) {
       return NextResponse.json({ error: 'Shop not found' }, { status: 404 });
