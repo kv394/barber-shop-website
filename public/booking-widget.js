@@ -26,7 +26,11 @@
     return;
   }
 
-  const apiUrl = (scriptTag && scriptTag.getAttribute('data-api-url')) || (window.BarberSaaS && window.BarberSaaS.apiUrl) + '/api/chat/booking' || 'https://barbersaas-henna.vercel.app/api/chat/booking';
+  const scriptApiUrl = scriptTag ? scriptTag.getAttribute('data-api-url') : null;
+  const sdkApiUrl = (window.BarberSaaS && window.BarberSaaS.apiUrl) ? window.BarberSaaS.apiUrl + '/api/chat/booking' : null;
+  const defaultApiUrl = 'https://barbersaas-henna.vercel.app/api/chat/booking';
+  const apiUrl = scriptApiUrl || sdkApiUrl || defaultApiUrl;
+  
   const themeColor = (window.BarberSaaS && window.BarberSaaS.primaryColor) || (scriptTag && scriptTag.getAttribute('data-theme-color')) || '#d4af37';
   const secondaryColor = (window.BarberSaaS && window.BarberSaaS.secondaryColor) || (scriptTag && scriptTag.getAttribute('data-secondary-color')) || themeColor;
   const position = (window.BarberSaaS && window.BarberSaaS.chatbotPosition) || (scriptTag && scriptTag.getAttribute('data-position')) || 'bottom-right';  const isLeft = position === 'bottom-left';
