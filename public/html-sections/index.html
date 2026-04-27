@@ -492,18 +492,21 @@
           try {
             const services = (data.services || []).filter(s => s.duration > 0);
             if (services.length > 0) {
-              document.getElementById("services-list").innerHTML = services.map(s => `
+              document.getElementById("services-list").innerHTML = services.map(s => {
+                const desc = s.description || "A tailored experience.";
+                const truncatedDesc = desc.length > 80 ? desc.substring(0, 80) + "..." : desc;
+                return `
                 <li class="item-row">
                   <div class="item-header">
                     <h3 class="item-title">${s.name}</h3>
                     <span class="item-price">$${Number(s.price).toFixed(2)}</span>
                   </div>
-                  <p class="item-desc">${s.description || "A tailored experience."} &mdash; ${s.duration} Min</p>
+                  <p class="item-desc">${truncatedDesc} &mdash; ${s.duration} Min</p>
                   <div>
                     <button class="btn-text b-book" data-id="${s.id}">Book Appointment</button>
                   </div>
                 </li>
-              `).join('');
+              `}).join('');
               document.querySelectorAll(".b-book").forEach(b => b.addEventListener('click', e => {
                 if (window.BarberBooking) window.BarberBooking.open(e.target.dataset.id);
               }));
@@ -516,19 +519,22 @@
           try {
             const products = data.products || [];
             if (products.length > 0) {
-              document.getElementById("products-list").innerHTML = products.map(p => `
+              document.getElementById("products-list").innerHTML = products.map(p => {
+                const desc = p.description || "Premium grooming essential.";
+                const truncatedDesc = desc.length > 80 ? desc.substring(0, 80) + "..." : desc;
+                return `
                 <li class="item-row">
                   <div class="item-header">
                     <h3 class="item-title">${p.name}</h3>
                     <span class="item-price">$${Number(p.price).toFixed(2)}</span>
                   </div>
-                  <p class="item-desc">${p.description || "Premium grooming essential."}</p>
+                  <p class="item-desc">${truncatedDesc}</p>
                   <div>
                     <button class="btn-text b-view" data-id="${p.id}">Details</button>
                     <button class="btn-text b-buy" data-id="${p.id}">Purchase</button>
                   </div>
                 </li>
-              `).join('');
+              `}).join('');
               document.querySelectorAll(".b-buy").forEach(btn => btn.addEventListener("click", e => {
                 BarberSaaS.getProductDetails(e.target.dataset.id).then(p => alert("Checkout for 1x " + p.name));
               }));
