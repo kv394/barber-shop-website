@@ -495,34 +495,39 @@
             window.BarberSaaS.secondaryColor = secondaryColor;
             
             // 3. Inject CSS Variables onto the page so user profile avatars inherit them
-            document.documentElement.style.setProperty('--primary', primaryColor);
-            document.documentElement.style.setProperty('--primary-color', primaryColor);
-            document.documentElement.style.setProperty('--theme-color', primaryColor);
-            document.documentElement.style.setProperty('--brand-color', primaryColor);
+            document.documentElement.style.setProperty('--primary', primaryColor, 'important');
+            document.documentElement.style.setProperty('--primary-color', primaryColor, 'important');
+            document.documentElement.style.setProperty('--theme-color', primaryColor, 'important');
+            document.documentElement.style.setProperty('--brand-color', primaryColor, 'important');
             if (document.body) {
-               document.body.style.setProperty('--primary', primaryColor);
-               document.body.style.setProperty('--primary-color', primaryColor);
-               document.body.style.setProperty('--theme-color', primaryColor);
-               document.body.style.setProperty('--brand-color', primaryColor);
+               document.body.style.setProperty('--primary', primaryColor, 'important');
+               document.body.style.setProperty('--primary-color', primaryColor, 'important');
+               document.body.style.setProperty('--theme-color', primaryColor, 'important');
+               document.body.style.setProperty('--brand-color', primaryColor, 'important');
             }
             
             const styleEl = document.createElement('style');
             styleEl.innerHTML = `
               :root {
+                --primary: ${primaryColor} !important;
                 --brand-color: ${primaryColor} !important;
                 --theme-color: ${primaryColor} !important;
                 --widget-border: ${primaryColor} !important;
               }
-              .supabase-auth-ui_ui-button, .supabase-account-avatar, [id*="supabase-"], [class*="supabase-"], [class*="avatar"], [id*="avatar"], [class*="user-profile"], [class*="profile-badge"] {
+              .supabase-auth-ui_ui-button, .supabase-account-avatar, [id*="supabase-"], [class*="supabase-"], [class*="avatar"], [id*="avatar"], [class*="user-profile"], [class*="profile-badge"], a[href*="/sign-in"] {
                  color: ${primaryColor} !important;
                  border-color: ${primaryColor} !important;
                  outline-color: ${primaryColor} !important;
               }
-              [class*="avatar"] svg, [class*="user-profile"] svg, [class*="chat-button"] {
+              [class*="avatar"] svg, [class*="user-profile"] svg, [class*="chat-button"], #widget-button {
                  fill: ${primaryColor} !important;
+                 background-color: ${primaryColor} !important;
+              }
+              #widget-button svg {
+                 fill: #ffffff !important;
               }
             `;
-            document.head.appendChild(styleEl);
+            document.body.appendChild(styleEl);
 
             // 4. Inject the Chatbot and Booking widgets dynamically NOW that colors are set
             setTimeout(() => {
