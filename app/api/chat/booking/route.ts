@@ -343,7 +343,7 @@ If the user wants to check, cancel, or reschedule their appointments:
                     const emailToUse = clientEmail || `guest-${Date.now()}@example.com`;
 
                     let user = await prisma.user.findFirst({
-                        where: { OR: [{ email: emailToUse }, { phone: clientPhone }] }
+                        where: { shopId: realShopId, OR: [{ email: emailToUse }, { phone: clientPhone }] }
                     });
 
                     let isNewUser = false;
@@ -398,7 +398,7 @@ If the user wants to check, cancel, or reschedule their appointments:
                         if (clientEmail) userConditions.push({ email: clientEmail });
                         
                         const users = await prisma.user.findMany({
-                            where: { shopId, OR: userConditions },
+                            where: { shopId: realShopId, OR: userConditions },
                             select: { id: true }
                         });
                         
@@ -408,7 +408,7 @@ If the user wants to check, cancel, or reschedule their appointments:
                             const userIds = users.map(u => u.id);
                             const appointments = await prisma.appointment.findMany({
                                 where: { 
-                                    shopId, 
+                                    shopId: realShopId, 
                                     userId: { in: userIds },
                                     startTime: { gte: new Date() },
                                     status: { notIn: ['CANCELLED', 'NO_SHOW'] }
@@ -426,6 +426,7 @@ If the user wants to check, cancel, or reschedule their appointments:
                             } else {
                                 result = { 
                                     appointments: appointments.map(apt => ({
+                                        id: apt.id,
                                         service: apt.service?.name,
                                         staff: apt.staff?.name,
                                         date: apt.startTime.toISOString().split('T')[0],
