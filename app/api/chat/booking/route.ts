@@ -275,9 +275,12 @@ If the user wants to check, cancel, or reschedule their appointments:
 
     // Handle tool calls
     let finalResponseText = "";
-    const hasTextPart = response.candidates?.[0]?.content?.parts?.some((p: any) => p.text);
-    if (hasTextPart) {
-        finalResponseText = response.text || "";
+    if (response.candidates?.[0]?.content?.parts) {
+        for (const part of response.candidates[0].content.parts) {
+            if (typeof part.text === 'string' && !part.thought) {
+                finalResponseText += part.text;
+            }
+        }
     }
     
     // We need to iterate if there are function calls
@@ -554,11 +557,13 @@ If the user wants to check, cancel, or reschedule their appointments:
             }
         });
 
-        const loopHasTextPart = response.candidates?.[0]?.content?.parts?.some((p: any) => p.text);
-        if (loopHasTextPart) {
-            finalResponseText = response.text || "";
-        } else {
-            finalResponseText = "";
+        finalResponseText = "";
+        if (response.candidates?.[0]?.content?.parts) {
+            for (const part of response.candidates[0].content.parts) {
+                if (typeof part.text === 'string' && !part.thought) {
+                    finalResponseText += part.text;
+                }
+            }
         }
         
         functionCalls = response.functionCalls;
