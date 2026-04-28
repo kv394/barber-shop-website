@@ -3,340 +3,411 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Heritage Haircuts - Carte Blanche Style</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+  <title>Sport Clips - Haircuts for Men</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,700;0,900;1,400&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #FAFAFA;
-      --text-dark: #1A1A1A;
-      --text-light: #666666;
-      --accent: #D4AF37; /* Soft gold */
+      --primary: #E31837; /* Sport Clips Red */
+      --black: #000000;
+      --dark-gray: #222222;
+      --light-gray: #F4F4F4;
+      --white: #FFFFFF;
+      --text-main: #333333;
     }
     
     html { scroll-behavior: smooth; }
     
     body {
-      font-family: 'Montserrat', sans-serif;
-      background-color: var(--bg);
-      color: var(--text-dark);
+      font-family: 'Roboto', sans-serif;
+      background-color: var(--white);
+      color: var(--text-main);
       margin: 0;
       padding: 0;
       line-height: 1.6;
-      overflow-x: hidden;
-      font-size: 14px;
     }
 
-    h1, h2, h3, .serif {
-      font-family: 'Cormorant Garamond', serif;
-      font-weight: 400;
+    h1, h2, h3, .sport-title {
+      font-family: 'Roboto', sans-serif;
+      font-weight: 900;
+      text-transform: uppercase;
+      text-align: center;
+      letter-spacing: 1px;
     }
 
-    /* Minimal Navbar */
+    /* Navbar */
     .navbar {
-      position: fixed;
+      background: var(--white);
+      color: var(--black);
+      padding: 15px 0;
+      position: sticky;
       top: 0;
-      width: 100%;
-      background: rgba(250, 250, 250, 0.95);
-      backdrop-filter: blur(10px);
       z-index: 1000;
-      padding: 24px 32px; /* Aligns exactly with the absolute top-6 right-8 auth button */
+      border-bottom: 2px solid var(--primary);
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+    .nav-container {
+      max-width: 1200px;
+      margin: 0 auto;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      box-sizing: border-box;
+      padding: 0 20px;
+      flex-wrap: wrap;
     }
     .nav-brand {
       display: flex;
       align-items: center;
       gap: 10px;
       text-decoration: none;
-      color: var(--text-dark);
     }
     .nav-logo {
-      width: 32px;
-      height: 32px;
-    }
-    .nav-brand span {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.25rem;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      line-height: 1; /* Center the text properly with the logo */
+      width: 40px;
+      height: 40px;
+      color: var(--primary);
     }
     .nav-links {
       display: flex;
-      gap: 30px;
-      padding-right: 140px; /* Expand to comfortably clear the profile button */
+      gap: 20px;
       align-items: center;
+      flex-wrap: wrap;
+      justify-content: center;
+      padding-right: 80px;
     }
-    .nav-links a {
-      color: var(--text-dark);
+    .navbar a {
+      color: var(--black);
       text-decoration: none;
-      font-size: 0.75rem;
-      letter-spacing: 1px;
+      font-size: 1rem;
+      font-weight: 700;
       text-transform: uppercase;
-      position: relative;
+      transition: color 0.3s;
+      padding: 5px 10px;
     }
-    .nav-links a::after {
-      content: '';
-      position: absolute;
-      width: 0;
-      height: 1px;
-      bottom: -4px;
-      left: 0;
-      background-color: var(--text-dark);
-      transition: width 0.3s ease;
+    .navbar a:hover, .navbar a.active {
+      color: var(--primary);
     }
-    .nav-links a:hover::after, .nav-links a.active::after {
-      width: 100%;
+    .nav-cta {
+      background: var(--primary);
+      color: var(--white) !important;
+      padding: 10px 20px !important;
+      border-radius: 4px;
+      border: 2px solid var(--primary);
+    }
+    .nav-cta:hover {
+      background: var(--white);
+      color: var(--primary) !important;
     }
 
-    /* Hero / Cover */
-    .hero {
-      height: 80vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+    /* Hero / About */
+    .hero-section {
       text-align: center;
-      background: url('https://images.unsplash.com/photo-1599351431202-1e0f0137899a?auto=format&fit=crop&w=2000&q=80') center/cover no-repeat;
-      position: relative;
+      padding: 100px 20px;
+      background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://images.unsplash.com/photo-1599351431202-1e0f0137899a?auto=format&fit=crop&w=2000&q=80') center/cover;
+      color: var(--white);
     }
-    .hero::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.4); /* Dark overlay to make text pop */
+    .hero-section h1 {
+      font-size: clamp(3rem, 8vw, 5rem);
+      margin: 0 0 10px 0;
+      color: var(--white);
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
     }
-    .hero-content {
-      position: relative;
-      z-index: 1;
-      color: white;
-      max-width: 600px;
+    .hero-section p {
+      font-size: 1.5rem;
+      max-width: 800px;
+      margin: 0 auto 30px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+    
+    /* Containers */
+    .container {
+      max-width: 1200px;
+      margin: 60px auto;
       padding: 0 20px;
     }
-    .hero h1 {
-      font-size: clamp(2rem, 5vw, 3.5rem);
-      margin: 0;
-      letter-spacing: 4px;
+    .section-header {
+      font-size: 3rem;
+      color: var(--black);
+      margin-bottom: 20px;
+      position: relative;
+      display: inline-block;
       text-transform: uppercase;
+      font-weight: 900;
     }
-    .hero p {
-      font-size: 1rem;
-      letter-spacing: 1px;
-      margin-top: 15px;
-      font-weight: 300;
+    .section-header::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60px;
+      height: 4px;
+      background: var(--primary);
     }
-
-    /* Split Section Layout (Image + Text) */
-    .split-section {
-      display: flex;
-      flex-wrap: wrap;
-      min-height: 60vh;
-    }
-    .split-section.reverse {
-      flex-direction: row-reverse;
-    }
-    .split-image {
-      flex: 1 1 50%;
-      min-height: 400px;
-      background-size: cover;
-      background-position: center;
-    }
-    .split-content {
-      flex: 1 1 50%;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      padding: 6% 6%;
-      box-sizing: border-box;
-      background: var(--bg);
-    }
-    
-    .section-tag {
-      font-size: 0.7rem;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      color: var(--text-light);
-      margin-bottom: 15px;
-    }
-    .section-heading {
-      font-size: clamp(2rem, 3vw, 2.5rem);
-      margin: 0 0 25px 0;
-      line-height: 1.2;
-      color: var(--text-dark);
-    }
-
-    /* List Layout (Replacing Cards) */
-    .item-list {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-      width: 100%;
-    }
-    .item-row {
-      display: flex;
-      flex-direction: column;
-      padding: 15px 0;
-      border-bottom: 1px solid rgba(0,0,0,0.05);
-    }
-    .item-row:last-child {
-      border-bottom: none;
-    }
-    .item-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      margin-bottom: 5px;
-    }
-    .item-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.1rem;
-      margin: 0;
-      color: var(--text-dark);
-      font-weight: 600;
-    }
-    .item-price {
-      font-size: 0.9rem;
-      color: var(--text-dark);
-      font-weight: 500;
-    }
-    .item-desc {
-      color: var(--text-light);
-      font-size: 0.85rem;
-      margin: 0 0 10px 0;
-      max-width: 95%;
-      line-height: 1.4;
-    }
-    
-    /* Buttons */
-    .btn-solid {
-      background: var(--text-dark);
-      color: white;
-      border: none;
-      padding: 12px 25px;
-      font-family: 'Montserrat', sans-serif;
-      font-size: 0.7rem;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      cursor: pointer;
-      transition: background 0.3s;
-      align-self: flex-start;
-    }
-    .btn-solid:hover {
-      background: #333;
-    }
-    .btn-text {
-      background: none;
-      border: none;
-      padding: 0;
-      font-family: 'Montserrat', sans-serif;
-      font-size: 0.7rem;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      cursor: pointer;
-      color: var(--text-dark);
-      border-bottom: 1px solid var(--text-dark);
-      padding-bottom: 3px;
-      margin-right: 15px;
-      transition: opacity 0.3s;
-    }
-    .btn-text:hover {
-      opacity: 0.6;
-    }
-
-    /* Testimonials Carousel feel */
-    .testimonial-wrap {
-      padding: 80px 20px;
+    .section-header-wrap {
       text-align: center;
-      background: #F0F0F0;
+      margin-bottom: 50px;
     }
-    .testimonial {
-      max-width: 600px;
-      margin: 0 auto 40px auto;
+
+    /* Grid Layout */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 16px;
     }
-    .quote {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(1.2rem, 2vw, 1.8rem);
-      font-style: italic;
-      color: var(--text-dark);
+
+    /* Cards */
+    .card {
+      background: var(--light-gray);
+      border-top: 4px solid var(--primary);
+      padding: 18px 14px 14px 14px;
+      text-align: center;
+      transition: transform 0.3s, box-shadow 0.3s;
+      width: 100%;
+      min-width: 0;
+      min-height: 270px;
+      max-width: 340px;
+      height: 100%;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: stretch;
+      margin: 0 auto;
+    }
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    }
+    .card-title {
+      font-size: 1.15rem;
+      color: var(--black);
+      margin: 0 0 15px 0;
+      text-transform: uppercase;
+      font-weight: 900;
+    }
+    .card-price {
+      font-size: 1.1rem;
+      font-weight: 900;
+      color: var(--primary);
       margin-bottom: 15px;
     }
-    .stars {
-      color: var(--text-dark);
-      letter-spacing: 3px;
+    .card-desc {
+      font-size: 0.85rem;
+      margin-bottom: 12px;
+      color: var(--text-main);
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      min-height: 3.8em;
+      max-height: 4.2em;
+    }
+
+    .card-actions {
+      display: flex;
+      gap: 10px;
+      width: 100%;
+      margin-top: auto;
+      justify-content: center;
+      align-items: stretch;
+    }
+
+    .card-actions .btn {
+      flex: 1;
+      min-width: 0;
+      width: 100%;
+      max-width: none;
+      margin: 0;
+      padding: 14px 0;
+    }
+
+    .card-actions .btn-outline {
+      background: transparent;
+      color: var(--black);
+      border-color: var(--black);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-block;
+      background: var(--primary);
+      color: var(--white);
+      border: 2px solid var(--primary);
+      padding: 16px 0;
+      font-family: 'Roboto', sans-serif;
+      font-size: 1.08rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.3s;
+      border-radius: 6px;
+      width: 96%;
+      max-width: 260px;
+      letter-spacing: 0.5px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+      margin-top: auto;
+      margin-bottom: 0;
+      align-self: center;
+    }
+
+    /* Make the Check In button larger and more prominent */
+    .b-book.btn {
+      padding: 14px 0;
+      font-size: 1.05rem;
+      font-weight: 800;
+      border-radius: 24px;
+      max-width: 220px;
+      box-shadow: 0 2px 8px rgba(227,24,55,0.10);
+      letter-spacing: 0.5px;
+      margin-top: auto;
+      margin-bottom: 0;
+      background: linear-gradient(90deg, var(--primary) 60%, #ff5a5f 100%);
+      border: none;
+      color: #fff;
+      transition: background 0.2s, box-shadow 0.2s, transform 0.2s;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.07);
+    }
+    .b-book.btn:hover {
+      background: linear-gradient(90deg, #ff5a5f 0%, var(--primary) 100%);
+      box-shadow: 0 4px 16px rgba(227,24,55,0.18);
+      transform: translateY(-2px) scale(1.03);
+    }
+    .btn:hover {
+      background: var(--black);
+      border-color: var(--black);
+      color: var(--white);
+    }
+    .btn-outline {
+      background: transparent;
+      color: var(--black);
+      border-color: var(--black);
+      font-weight: 800;
+      padding: 16px 0;
+      border-radius: 6px;
+      width: 96%;
+      max-width: 260px;
+      letter-spacing: 0.5px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    }
+    .btn.b-view, .btn-outline.b-view {
+      font-size: 1.22rem !important;
+    }
+    .btn-outline:hover {
+      background: var(--black);
+      color: var(--white);
+    }
+
+    /* Testimonials */
+    .testimonial {
+      background: var(--white);
+      border: 1px solid #ddd;
+      padding: 30px;
+      position: relative;
+    }
+    .testimonial::before {
+      content: '"';
+      position: absolute;
+      top: 10px;
+      left: 20px;
+      font-size: 4rem;
+      color: var(--light-gray);
+      font-family: Georgia, serif;
+      line-height: 1;
+    }
+    .testimonial-stars {
+      color: var(--primary);
+      font-size: 1.5rem;
+      margin-bottom: 15px;
+    }
+    .testimonial-quote {
+      font-size: 1.1rem;
+      font-style: italic;
+      position: relative;
+      z-index: 1;
     }
 
     .loading {
       text-align: center;
-      padding: 60px;
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.2rem;
-      font-style: italic;
+      font-size: 1.5rem;
+      padding: 50px 0;
+      font-weight: 900;
+      text-transform: uppercase;
+      color: var(--primary);
+      animation: pulse 1s infinite alternate;
     }
+    @keyframes pulse { 0% { opacity: 0.5; } 100% { opacity: 1; } }
 
-    @media (max-width: 900px) {
-      .split-image { min-height: 250px; }
-      .navbar { padding: 12px 20px; }
-      .nav-links { display: none; }
-      .split-content { padding: 30px 20px; }
+    @media (max-width: 768px) {
+      .nav-container { flex-direction: column; gap: 15px; }
+      .hero-section { padding: 60px 20px; }
+      .section-header { font-size: 2.2rem; }
     }
   </style>
 </head>
 <body>
 
-  <nav class="navbar" id="navbar">
-    <a href="#" class="nav-brand">
-      <object data="logo.svg" type="image/svg+xml" class="nav-logo" style="pointer-events: none;"></object>
-      <span>HERITAGE</span>
-    </a>
-    <div class="nav-links">
-      <a href="#about" class="nav-link active">About</a>
-      <a href="#services" class="nav-link">Services</a>
-      <a href="#shop" class="nav-link">Shop</a>
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="#" class="nav-brand">
+        <object data="logo.svg" type="image/svg+xml" class="nav-logo" style="pointer-events: none;"></object>
+        <span id="dyn-shop-name-nav" style="font-family: 'Roboto', sans-serif; font-weight: 900; font-size: 1.5rem; text-transform: uppercase; letter-spacing: -1px; color: var(--primary);">SPORT CLIPS</span>
+      </a>
+      <div class="nav-links">
+        <a href="#about" class="nav-link active">The MVP</a>
+        <a href="#services" class="nav-link">Haircuts</a>
+        <a href="#shop" class="nav-link">Products</a>
+        <a href="#reviews" class="nav-link">Reviews</a>
+        <a href="#services" class="nav-link nav-cta">Check In Now</a>
+      </div>
     </div>
   </nav>
 
-  <div id="about-loading" class="loading">Curating experience...</div>
-  <div id="about-content" style="display: none;">
-    <section class="hero" id="about">
-      <div class="hero-content">
-        <h1 id="dyn-shop-name">Heritage Haircuts</h1>
-        <p id="dyn-shop-desc">The modern standard for classic grooming.</p>
-      </div>
-    </section>
+  <article id="about">
+    <div id="about-loading" class="loading">Loading Stats...</div>
+    <div id="about-content" style="display: none;">
+      <section class="hero-section">
+        <h1 id="dyn-shop-name">Sport Clips Haircuts</h1>
+        <p id="dyn-shop-desc">It's good to be a guy.</p>
+        <button class="btn hero-btn" style="max-width: 340px; min-height: 56px; font-size: 1.22rem; font-weight: 900; border-radius: 28px; letter-spacing: 1px; margin: 0 auto 10px auto; display: block; box-shadow: 0 4px 18px rgba(227,24,55,0.13); background: linear-gradient(90deg, var(--primary) 60%, #ff5a5f 100%); border: none;" onclick="document.querySelector('#services').scrollIntoView({behavior: 'smooth'})">Find a Service</button>
+      </section>
+    </div>
+  </article>
 
-    <!-- The "Carte Blanche" style split section for Services -->
-    <section class="split-section" id="services">
-      <div class="split-image" style="background-image: url('https://images.unsplash.com/photo-1622286342621-4bd786c2447c?auto=format&fit=crop&w=1000&q=80');"></div>
-      <div class="split-content">
-        <span class="section-tag">Our Menu</span>
-        <h2 class="section-heading">Bespoke<br>Services.</h2>
-        <div id="services-loading" class="loading" style="padding: 20px 0;">Loading...</div>
-        <ul class="item-list" id="services-list" style="display: none;"></ul>
+  <article id="services" class="container">
+    <div id="services-loading" class="loading">Loading Playbook...</div>
+    <div id="services-content" style="display: none;">
+      <div class="section-header-wrap">
+        <h2 class="section-header">Haircuts & Services</h2>
       </div>
-    </section>
+      <div class="grid" id="services-list"></div>
+    </div>
+  </article>
 
-    <!-- Reverse split section for Products -->
-    <section class="split-section reverse" id="shop">
-      <div class="split-image" style="background-image: url('https://images.unsplash.com/photo-1585232004423-244e0e6904e3?auto=format&fit=crop&w=1000&q=80');"></div>
-      <div class="split-content">
-        <span class="section-tag">Apothecary</span>
-        <h2 class="section-heading">Curated<br>Goods.</h2>
-        <div id="products-loading" class="loading" style="padding: 20px 0;">Loading...</div>
-        <ul class="item-list" id="products-list" style="display: none;"></ul>
+  <article id="shop" class="container" style="background-color: var(--light-gray); padding-top: 60px; padding-bottom: 60px; max-width: 100%;">
+    <div style="max-width: 1200px; margin: 0 auto;">
+      <div id="products-loading" class="loading">Loading Gear...</div>
+      <div id="products-content" style="display: none;">
+        <div class="section-header-wrap">
+          <h2 class="section-header">Pro Gear</h2>
+        </div>
+        <div class="grid" id="products-list"></div>
       </div>
-    </section>
+    </div>
+  </article>
 
-    <!-- Testimonials -->
-    <section class="testimonial-wrap">
-      <span class="section-tag">Client Words</span>
-      <div id="reviews-loading" class="loading" style="padding: 20px 0;">Loading...</div>
-      <div id="reviews-content" style="display: none;">
-        <div id="reviews-list"></div>
-        <button class="btn-solid" id="add-review-btn" style="margin-top: 40px;">Leave a Review</button>
+  <article id="reviews" class="container" style="margin-bottom: 100px;">
+    <div id="reviews-loading" class="loading">Loading Highlights...</div>
+    <div id="reviews-content" style="display: none;">
+      <div class="section-header-wrap">
+        <h2 class="section-header">Fan Highlights</h2>
       </div>
-    </section>
-  </div>
+      <div class="grid" id="reviews-list"></div>
+      <div style="text-align: center; margin-top: 50px;">
+        <button class="btn btn-outline" id="add-review-btn" style="max-width: 300px;">Submit Highlight</button>
+      </div>
+    </div>
+  </article>
 
   <!-- Core SDK -->
   <script>
@@ -355,10 +426,9 @@
       document.head.appendChild(sdkScript);
     })();
   </script>
-
   <script>
-    // Smooth scroll for nav
-    document.querySelectorAll('.nav-link').forEach(link => {
+    // Smooth scrolling nav
+    document.querySelectorAll('.nav-link:not(.nav-cta)').forEach(link => {
       link.addEventListener('click', function(e) {
         e.preventDefault();
         document.querySelectorAll('.nav-link').forEach(a => a.classList.remove('active'));
@@ -375,7 +445,7 @@
     });
 
     window.addEventListener("load", function () {
-      function init() {
+      function initializeShop() {
         if (typeof BarberSaaS === "undefined") return;
         
         const urlParams = new URLSearchParams(window.location.search);
@@ -405,7 +475,7 @@
         }
         
         const apiUrlToUse = (domain.includes("localhost") || domain.includes("127.0.0.1")) && !isFileProtocol ? domain : "https://barbersaas-henna.vercel.app";
-        
+
         // Initialize SDK without hardcoded colors so it can fetch the shop data
         BarberSaaS.init(shopId, { 
             position: "bottom-right",
@@ -417,19 +487,21 @@
             const shop = data.shop || {};
             
             // 1. Extract dynamic theme colors set by THIS specific shop's admin
-            const primaryColor = shop.primaryColor || "#000000";
-            const secondaryColor = shop.secondaryColor || "#ffffff";
+            const primaryColor = shop.primaryColor || "#E31837"; // fallback to Sport Clips Red (primary/accent for widgets)
+            const secondaryColor = shop.secondaryColor || "#000000"; // fallback to black
             
             // 2. Set them on the SDK so widgets can read them
             window.BarberSaaS.primaryColor = primaryColor;
-            window.BarberSaaS.secondaryColor = primaryColor;
+            window.BarberSaaS.secondaryColor = secondaryColor;
             
             // 3. Inject CSS Variables onto the page so user profile avatars inherit them
             document.documentElement.style.setProperty('--primary', primaryColor);
+            document.documentElement.style.setProperty('--primary-color', primaryColor);
             document.documentElement.style.setProperty('--theme-color', primaryColor);
             document.documentElement.style.setProperty('--brand-color', primaryColor);
             if (document.body) {
                document.body.style.setProperty('--primary', primaryColor);
+               document.body.style.setProperty('--primary-color', primaryColor);
                document.body.style.setProperty('--theme-color', primaryColor);
                document.body.style.setProperty('--brand-color', primaryColor);
             }
@@ -451,7 +523,7 @@
               }
             `;
             document.head.appendChild(styleEl);
-            
+
             // 4. Inject the Chatbot and Booking widgets dynamically NOW that colors are set
             setTimeout(() => {
                 let domain = window.location.origin;
@@ -480,12 +552,14 @@
                 widgetScript.setAttribute("data-secondary-color", primaryColor);
                 document.body.appendChild(widgetScript);
             }, 50);
+
           } catch(e) { console.error(e); }
 
-          // General
+          // About
           try {
-            document.getElementById('dyn-shop-name').textContent = data.shop.name || "Heritage Haircuts";
-            document.getElementById('dyn-shop-desc').textContent = data.shop.description || "The modern standard for classic grooming.";
+            document.getElementById('dyn-shop-name').textContent = data.shop.name || "Sport Clips Haircuts";
+            document.getElementById('dyn-shop-name-nav').textContent = data.shop.name || "SPORT CLIPS";
+            document.getElementById('dyn-shop-desc').textContent = data.shop.description || "It's good to be a guy.";
             document.getElementById("about-loading").style.display = "none";
             document.getElementById("about-content").style.display = "block";
           } catch(e) {}
@@ -495,26 +569,22 @@
             const services = (data.services || []).filter(s => s.duration > 0);
             if (services.length > 0) {
               document.getElementById("services-list").innerHTML = services.map(s => {
-                const desc = s.description || "A tailored experience.";
+                const desc = s.description || "The MVP Experience.";
                 const truncatedDesc = desc.length > 80 ? desc.substring(0, 80) + "..." : desc;
                 return `
-                <li class="item-row">
-                  <div class="item-header">
-                    <h3 class="item-title">${s.name}</h3>
-                    <span class="item-price">$${Number(s.price).toFixed(2)}</span>
-                  </div>
-                  <p class="item-desc">${truncatedDesc} &mdash; ${s.duration} Min</p>
-                  <div>
-                    <button class="btn-text b-book" data-id="${s.id}">Book Appointment</button>
-                  </div>
-                </li>
+                <div class="card">
+                  <h3 class="card-title">${s.name}</h3>
+                  <div class="card-price">$${Number(s.price).toFixed(2)} <span style="font-size: 1rem; color: var(--text-main);">/ ${s.duration} MIN</span></div>
+                  <p class="card-desc">${truncatedDesc}</p>
+                  <button class="btn b-book" data-id="${s.id}">Check In</button>
+                </div>
               `}).join('');
               document.querySelectorAll(".b-book").forEach(b => b.addEventListener('click', e => {
                 if (window.BarberBooking) window.BarberBooking.open(e.target.dataset.id);
               }));
             }
             document.getElementById("services-loading").style.display = "none";
-            document.getElementById("services-list").style.display = "block";
+            document.getElementById("services-content").style.display = "block";
           } catch(e) {}
 
           // Products
@@ -522,50 +592,47 @@
             const products = data.products || [];
             if (products.length > 0) {
               document.getElementById("products-list").innerHTML = products.map(p => {
-                const desc = p.description || "Premium grooming essential.";
+                const desc = p.description || "Top-tier grooming gear.";
                 const truncatedDesc = desc.length > 80 ? desc.substring(0, 80) + "..." : desc;
                 return `
-                <li class="item-row">
-                  <div class="item-header">
-                    <h3 class="item-title">${p.name}</h3>
-                    <span class="item-price">$${Number(p.price).toFixed(2)}</span>
+                <div class="card" style="background: var(--white);">
+                  <h3 class="card-title">${p.name}</h3>
+                  <div class="card-price">$${Number(p.price).toFixed(2)}</div>
+                  <p class="card-desc">${truncatedDesc}</p>
+                  <div class="card-actions">
+                    <button class="btn btn-outline b-view" data-id="${p.id}">Details</button>
+                    <button class="btn b-buy" data-id="${p.id}">Buy Now</button>
                   </div>
-                  <p class="item-desc">${truncatedDesc}</p>
-                  <div>
-                    <button class="btn-text b-view" data-id="${p.id}">Details</button>
-                    <button class="btn-text b-buy" data-id="${p.id}">Purchase</button>
-                  </div>
-                </li>
+                </div>
               `}).join('');
               document.querySelectorAll(".b-buy").forEach(btn => btn.addEventListener("click", e => {
-                BarberSaaS.getProductDetails(e.target.dataset.id).then(p => alert("Checkout for 1x " + p.name));
+                BarberSaaS.getProductDetails(e.target.dataset.id).then(p => alert("Added to cart: 1x " + p.name));
               }));
               document.querySelectorAll(".b-view").forEach(btn => btn.addEventListener("click", e => {
                 BarberSaaS.getProductDetails(e.target.dataset.id).then(p => alert(p.name + "\\n$" + p.price + "\\n" + p.description));
               }));
             }
             document.getElementById("products-loading").style.display = "none";
-            document.getElementById("products-list").style.display = "block";
+            document.getElementById("products-content").style.display = "block";
           } catch(e) {}
 
           // Reviews
           try {
             const reviews = data.reviews || [];
             if (reviews.length > 0) {
-              // Only show top 3 for this layout to keep it clean
-              document.getElementById("reviews-list").innerHTML = reviews.slice(0,3).map(r => `
+              document.getElementById("reviews-list").innerHTML = reviews.slice(0, 3).map(r => `
                 <div class="testimonial">
-                  <div class="stars">${"★".repeat(r.rating || 5)}</div>
-                  <p class="quote">"${r.comment || "An absolutely stellar experience."}"</p>
+                  <div class="testimonial-stars">${"★".repeat(r.rating || 5)}</div>
+                  <p class="testimonial-quote">${r.comment || "Great experience, highly recommend!"}</p>
                 </div>
               `).join('');
             }
             document.getElementById("add-review-btn").addEventListener("click", () => {
-              const aptId = prompt("Appointment ID:");
+              const aptId = prompt("Enter Check-In ID:");
               const rating = prompt("Rating (1-5):", "5");
               const comment = prompt("Comments:");
               if(aptId && rating && comment) {
-                BarberSaaS.submitReview({appointmentId: aptId, rating: parseInt(rating), comment}).then(() => alert("Thank you.")).catch(e => alert("Error: " + e.message));
+                BarberSaaS.submitReview({appointmentId: aptId, rating: parseInt(rating), comment}).then(() => alert("Highlight submitted!")).catch(e => alert("Error: " + e.message));
               }
             });
             document.getElementById("reviews-loading").style.display = "none";
@@ -574,12 +641,12 @@
         });
       }
 
-      if (typeof BarberSaaS !== "undefined") init();
+      if (typeof BarberSaaS !== "undefined") initializeShop();
       else {
         let attempts = 0;
         let intv = setInterval(() => {
           attempts++;
-          if(typeof BarberSaaS !== "undefined" || attempts >= 50) { clearInterval(intv); init(); }
+          if(typeof BarberSaaS !== "undefined" || attempts >= 50) { clearInterval(intv); initializeShop(); }
         }, 100);
       }
     });
