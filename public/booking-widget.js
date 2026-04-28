@@ -468,17 +468,19 @@
       setTimeout(() => { sheet.innerHTML = ''; }, 400);
     }
   }
-
   async function sendChatRequest(messageText, displayUserText) {
     hidePickerSheet();
     if (displayUserText) {
       addMessageToUI(displayUserText, true);
     }
     messages.push({ role: 'user', content: messageText });
-    
+
     input.disabled = true;
     sendBtn.disabled = true;
     showTyping();
+
+    // Give UI a chance to render the typing indicator before fetching
+    await new Promise(resolve => setTimeout(resolve, 150));
 
     try {
       const fetchUrl = (apiUrl.startsWith('http') || apiUrl.startsWith('/')) 
@@ -823,13 +825,13 @@
         }
       }
     } catch (err) {
+      console.error(err);
       hideTyping();
       addMessageToUI('Sorry, there was a network error. Please try again.', false);
-      console.error(err);
     } finally {
       input.disabled = false;
       sendBtn.disabled = false;
-      input.focus();
+      setTimeout(() => input.focus(), 100);
     }
   }
 
