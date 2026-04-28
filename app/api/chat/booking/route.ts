@@ -255,8 +255,8 @@ Follow this flow for booking:
 If the user wants to check, cancel, or reschedule their appointments:
 1. Ask for their phone number or email if not already provided.
 2. Call check_appointments to retrieve their upcoming appointments and present them clearly (with their IDs so you know which one to act on).
-3. For cancellation: Call cancel_appointment with the ID.
-4. For rescheduling: Call reschedule_appointment with the ID, new date, and new time (you may need to call check_availability first to find a new slot).`;
+3. For cancellation: Call cancel_appointment with the ID. You will FORGET the IDs between messages, so you must call check_appointments AGAIN to get the ID based on the user's selection.
+4. For rescheduling: Call reschedule_appointment with the ID, new date, and new time (call check_appointments AGAIN to get the ID, and check_availability to find a new slot).`;
 
     // Let's reconstruct the conversation for a fresh generateContent call instead of chats.create
     const formattedContents: any[] = truncatedMessages.map((m: any) => ({

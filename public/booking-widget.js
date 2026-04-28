@@ -287,16 +287,18 @@
     }
     
     .typing-indicator {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      padding: 12px 16px;
-      background-color: var(--msg-bot-bg);
-      border-radius: 16px;
-      border-bottom-left-radius: 4px;
-      align-self: flex-start;
-      margin-bottom: 12px;
-      animation: fadeIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1) forwards;
+      display: inline-flex !important;
+      align-items: center !important;
+      gap: 4px !important;
+      padding: 12px 16px !important;
+      background-color: var(--msg-bot-bg) !important;
+      border-radius: 16px !important;
+      border-bottom-left-radius: 4px !important;
+      align-self: flex-start !important;
+      margin-bottom: 12px !important;
+      border: 1px solid var(--border-color) !important;
+      min-width: 60px !important;
+      min-height: 24px !important;
     }
     
     .typing-indicator span {
@@ -436,17 +438,18 @@
   }
 
   function showTyping() {
+    hideTyping(); // ensure no duplicates
     const el = document.createElement('div');
     el.className = 'typing-indicator';
     el.id = 'typing-indicator';
-    el.innerHTML = '<span></span><span></span><span></span>';
+    el.innerHTML = '<span style="display:inline-block; margin-right:2px;"></span><span style="display:inline-block; margin-right:2px;"></span><span style="display:inline-block;"></span><div class="processing-text" style="margin-left: 8px; font-size: 13px; font-style: italic; opacity: 0.8; color: var(--text-color);">Processing...</div>';
     messagesEl.appendChild(el);
     messagesEl.scrollTop = messagesEl.scrollHeight;
   }
 
   function hideTyping() {
-    const el = shadow.getElementById('typing-indicator');
-    if (el) el.remove();
+    const els = messagesEl.querySelectorAll('.typing-indicator');
+    els.forEach(el => el.remove());
   }
 
   function showPickerSheet(contentElement) {
@@ -480,7 +483,7 @@
     showTyping();
 
     // Give UI a chance to render the typing indicator before fetching
-    await new Promise(resolve => setTimeout(resolve, 150));
+    await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(() => setTimeout(resolve, 50))));
 
     try {
       const fetchUrl = (apiUrl.startsWith('http') || apiUrl.startsWith('/')) 
@@ -519,6 +522,8 @@
         
         if (displayText) {
           addMessageToUI(displayText, false);
+        } else if (options.length > 0) {
+          addMessageToUI("Please select an option:", false);
         }
         
         messages.push({ role: 'assistant', content: data.text });

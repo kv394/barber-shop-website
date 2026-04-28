@@ -383,7 +383,7 @@
       }
       
       const sdkScript = document.createElement("script");
-      sdkScript.src = isFileProtocol && domain === "file://" ? "../barbersaas-sdk.js?v=4" : domain + "/barbersaas-sdk.js?v=4";
+      sdkScript.src = isFileProtocol && domain === "file://" ? "../barbersaas-sdk.js?v=" + new Date().getTime() : domain + "/barbersaas-sdk.js?v=" + new Date().getTime();
       document.head.appendChild(sdkScript);
     })();
   </script>
