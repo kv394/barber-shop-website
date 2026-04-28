@@ -51,8 +51,29 @@ export async function GET(request: Request, { params }: { params: Promise<{ shop
       });
 
       shop = candidates.find(
-        (s: any) => s.name.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '') === shopId.toLowerCase()
+        (s: any) => s.name.toLowerCase().replace(/\\s+/g, '-').replace(/[^\\w-]/g, '') === shopId.toLowerCase()
       ) || null;
+    }
+
+    if (!shop) {
+      // Fallback: If still not found, check if this is the demo shop
+      if (shopId === 'missouri-city' || shopId === 'sugarland') {
+        shop = await prisma.shop.findFirst({
+           where: { id: 'cmn9kj24n0000lqzc7kcsmpst' },
+           select: {
+              id: true,
+              name: true,
+              companyName: true,
+              description: true,
+              timezone: true,
+              customDomain: true,
+              subdomain: true,
+              customization: true,
+              template: true,
+              dynamicTemplates: true
+           }
+        });
+      }
     }
 
     if (!shop) {
