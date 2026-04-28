@@ -274,7 +274,7 @@ If the user wants to check, cancel, or reschedule their appointments:
     });
 
     // Handle tool calls
-    let finalResponseText = response.text;
+    let finalResponseText = response.candidates?.[0]?.content?.parts?.map((p: any) => p.text).filter(Boolean).join("") || "";
     
     // We need to iterate if there are function calls
     let functionCalls = response.functionCalls;
@@ -550,7 +550,8 @@ If the user wants to check, cancel, or reschedule their appointments:
             }
         });
 
-        finalResponseText = response.text;
+        finalResponseText = response.candidates?.[0]?.content?.parts?.map((p: any) => p.text).filter(Boolean).join("") || "";
+        
         functionCalls = response.functionCalls;
     }
 
