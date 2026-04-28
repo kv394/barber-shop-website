@@ -34,16 +34,18 @@
       letter-spacing: 1px;
     }
 
-    /* Navbar */
+    /* Navbar - Aligned with user profile */
     .navbar {
       background: var(--white);
       color: var(--black);
-      padding: 15px 0;
+      padding: 21px 0;
       position: sticky;
       top: 0;
       z-index: 1000;
       border-bottom: 2px solid var(--primary);
       box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      min-height: 82px;
+      box-sizing: border-box;
     }
     .nav-container {
       max-width: 1200px;
@@ -61,26 +63,26 @@
       text-decoration: none;
     }
     .nav-logo {
-      width: 40px;
-      height: 40px;
+      width: 36px;
+      height: 36px;
       color: var(--primary);
     }
     .nav-links {
       display: flex;
-      gap: 20px;
+      gap: 15px;
       align-items: center;
       flex-wrap: wrap;
       justify-content: center;
-      padding-right: 80px;
+      padding-right: 90px;
     }
     .navbar a {
       color: var(--black);
       text-decoration: none;
-      font-size: 1rem;
+      font-size: 0.9rem;
       font-weight: 700;
       text-transform: uppercase;
       transition: color 0.3s;
-      padding: 5px 10px;
+      padding: 5px 8px;
     }
     .navbar a:hover, .navbar a.active {
       color: var(--primary);
@@ -88,7 +90,7 @@
     .nav-cta {
       background: var(--primary);
       color: var(--white) !important;
-      padding: 10px 20px !important;
+      padding: 8px 16px !important;
       border-radius: 4px;
       border: 2px solid var(--primary);
     }
@@ -100,18 +102,18 @@
     /* Hero / About */
     .hero-section {
       text-align: center;
-      padding: 100px 20px;
+      padding: 80px 20px;
       background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://images.unsplash.com/photo-1599351431202-1e0f0137899a?auto=format&fit=crop&w=2000&q=80') center/cover;
       color: var(--white);
     }
     .hero-section h1 {
-      font-size: clamp(3rem, 8vw, 5rem);
+      font-size: clamp(2rem, 6vw, 4rem);
       margin: 0 0 10px 0;
       color: var(--white);
       text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
     }
     .hero-section p {
-      font-size: 1.5rem;
+      font-size: 1.2rem;
       max-width: 800px;
       margin: 0 auto 30px;
       font-weight: 700;
@@ -121,11 +123,11 @@
     /* Containers */
     .container {
       max-width: 1200px;
-      margin: 60px auto;
+      margin: 50px auto;
       padding: 0 20px;
     }
     .section-header {
-      font-size: 3rem;
+      font-size: 2.2rem;
       color: var(--black);
       margin-bottom: 20px;
       position: relative;
@@ -136,52 +138,48 @@
     .section-header::after {
       content: '';
       position: absolute;
-      bottom: -10px;
+      bottom: -8px;
       left: 50%;
       transform: translateX(-50%);
-      width: 60px;
+      width: 50px;
       height: 4px;
       background: var(--primary);
     }
     .section-header-wrap {
       text-align: center;
-      margin-bottom: 50px;
+      margin-bottom: 40px;
     }
 
     /* Grid Layout */
     .grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 16px;
+      gap: 20px;
     }
 
-    /* Cards */
+    /* Cards - Uniform */
     .card {
       background: var(--light-gray);
       border-top: 4px solid var(--primary);
-      padding: 18px 14px 14px 14px;
+      padding: 20px;
       text-align: center;
       transition: transform 0.3s, box-shadow 0.3s;
       width: 100%;
-      min-width: 0;
-      min-height: 270px;
-      max-width: 340px;
-      height: 100%;
       box-sizing: border-box;
       display: flex;
       flex-direction: column;
       justify-content: flex-start;
-      align-items: stretch;
-      margin: 0 auto;
+      min-height: 250px;
+      height: 100%;
     }
     .card:hover {
       transform: translateY(-5px);
-      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+      box-shadow: 0 8px 16px rgba(0,0,0,0.1);
     }
     .card-title {
-      font-size: 1.15rem;
+      font-size: 1.05rem;
       color: var(--black);
-      margin: 0 0 15px 0;
+      margin: 0 0 10px 0;
       text-transform: uppercase;
       font-weight: 900;
     }
@@ -189,18 +187,17 @@
       font-size: 1.1rem;
       font-weight: 900;
       color: var(--primary);
-      margin-bottom: 15px;
+      margin-bottom: 12px;
     }
     .card-desc {
       font-size: 0.85rem;
-      margin-bottom: 12px;
+      margin-bottom: 15px;
       color: var(--text-main);
       display: -webkit-box;
-      -webkit-line-clamp: 3;
+      -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
       overflow: hidden;
-      min-height: 3.8em;
-      max-height: 4.2em;
+      min-height: 2.8em;
     }
 
     .card-actions {
@@ -209,23 +206,11 @@
       width: 100%;
       margin-top: auto;
       justify-content: center;
-      align-items: stretch;
     }
 
     .card-actions .btn {
       flex: 1;
-      min-width: 0;
-      width: 100%;
-      max-width: none;
-      margin: 0;
-      padding: 14px 0;
-    }
-
-    .card-actions .btn-outline {
-      background: transparent;
-      color: var(--black);
-      border-color: var(--black);
-      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+      padding: 12px 0;
     }
 
     /* Buttons */
@@ -234,44 +219,29 @@
       background: var(--primary);
       color: var(--white);
       border: 2px solid var(--primary);
-      padding: 16px 0;
+      padding: 14px 0;
       font-family: 'Roboto', sans-serif;
-      font-size: 1.08rem;
+      font-size: 0.95rem;
       font-weight: 800;
       text-transform: uppercase;
       cursor: pointer;
       transition: all 0.3s;
       border-radius: 6px;
-      width: 96%;
-      max-width: 260px;
-      letter-spacing: 0.5px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+      width: 100%;
+      box-sizing: border-box;
       margin-top: auto;
-      margin-bottom: 0;
-      align-self: center;
     }
-
-    /* Make the Check In button larger and more prominent */
     .b-book.btn {
-      padding: 14px 0;
-      font-size: 1.05rem;
-      font-weight: 800;
-      border-radius: 24px;
-      max-width: 220px;
-      box-shadow: 0 2px 8px rgba(227,24,55,0.10);
-      letter-spacing: 0.5px;
-      margin-top: auto;
-      margin-bottom: 0;
+      border-radius: 20px;
+      box-shadow: 0 2px 6px rgba(227,24,55,0.10);
       background: linear-gradient(90deg, var(--primary) 60%, #ff5a5f 100%);
       border: none;
       color: #fff;
-      transition: background 0.2s, box-shadow 0.2s, transform 0.2s;
-      text-shadow: 0 1px 2px rgba(0,0,0,0.07);
     }
     .b-book.btn:hover {
       background: linear-gradient(90deg, #ff5a5f 0%, var(--primary) 100%);
-      box-shadow: 0 4px 16px rgba(227,24,55,0.18);
-      transform: translateY(-2px) scale(1.03);
+      box-shadow: 0 4px 12px rgba(227,24,55,0.18);
+      transform: translateY(-2px);
     }
     .btn:hover {
       background: var(--black);
@@ -282,16 +252,6 @@
       background: transparent;
       color: var(--black);
       border-color: var(--black);
-      font-weight: 800;
-      padding: 16px 0;
-      border-radius: 6px;
-      width: 96%;
-      max-width: 260px;
-      letter-spacing: 0.5px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-    }
-    .btn.b-view, .btn-outline.b-view {
-      font-size: 1.22rem !important;
     }
     .btn-outline:hover {
       background: var(--black);
@@ -302,26 +262,26 @@
     .testimonial {
       background: var(--white);
       border: 1px solid #ddd;
-      padding: 30px;
+      padding: 25px;
       position: relative;
     }
     .testimonial::before {
       content: '"';
       position: absolute;
-      top: 10px;
-      left: 20px;
-      font-size: 4rem;
+      top: 5px;
+      left: 15px;
+      font-size: 3rem;
       color: var(--light-gray);
       font-family: Georgia, serif;
       line-height: 1;
     }
     .testimonial-stars {
       color: var(--primary);
-      font-size: 1.5rem;
-      margin-bottom: 15px;
+      font-size: 1.2rem;
+      margin-bottom: 10px;
     }
     .testimonial-quote {
-      font-size: 1.1rem;
+      font-size: 0.95rem;
       font-style: italic;
       position: relative;
       z-index: 1;
@@ -329,8 +289,8 @@
 
     .loading {
       text-align: center;
-      font-size: 1.5rem;
-      padding: 50px 0;
+      font-size: 1.2rem;
+      padding: 40px 0;
       font-weight: 900;
       text-transform: uppercase;
       color: var(--primary);
@@ -339,9 +299,10 @@
     @keyframes pulse { 0% { opacity: 0.5; } 100% { opacity: 1; } }
 
     @media (max-width: 768px) {
-      .nav-container { flex-direction: column; gap: 15px; }
-      .hero-section { padding: 60px 20px; }
-      .section-header { font-size: 2.2rem; }
+      .nav-container { flex-direction: column; gap: 10px; }
+      .nav-links { padding-right: 0; padding-top: 10px; }
+      .hero-section { padding: 50px 20px; }
+      .section-header { font-size: 1.8rem; }
     }
   </style>
 </head>
@@ -351,7 +312,7 @@
     <div class="nav-container">
       <a href="#" class="nav-brand">
         <object data="logo.svg" type="image/svg+xml" class="nav-logo" style="pointer-events: none;"></object>
-        <span id="dyn-shop-name-nav" style="font-family: 'Roboto', sans-serif; font-weight: 900; font-size: 1.5rem; text-transform: uppercase; letter-spacing: -1px; color: var(--primary);">SPORT CLIPS</span>
+        <span id="dyn-shop-name-nav" style="font-family: 'Roboto', sans-serif; font-weight: 900; font-size: 1.2rem; text-transform: uppercase; letter-spacing: -1px; color: var(--primary);">SPORT CLIPS</span>
       </a>
       <div class="nav-links">
         <a href="#about" class="nav-link active">The MVP</a>
@@ -369,7 +330,7 @@
       <section class="hero-section">
         <h1 id="dyn-shop-name">Sport Clips Haircuts</h1>
         <p id="dyn-shop-desc">It's good to be a guy.</p>
-        <button class="btn hero-btn" style="max-width: 340px; min-height: 56px; font-size: 1.22rem; font-weight: 900; border-radius: 28px; letter-spacing: 1px; margin: 0 auto 10px auto; display: block; box-shadow: 0 4px 18px rgba(227,24,55,0.13); background: linear-gradient(90deg, var(--primary) 60%, #ff5a5f 100%); border: none;" onclick="document.querySelector('#services').scrollIntoView({behavior: 'smooth'})">Find a Service</button>
+        <button class="btn b-book" style="max-width: 280px; min-height: 48px; font-size: 1.05rem; margin: 0 auto; display: block;" onclick="document.querySelector('#services').scrollIntoView({behavior: 'smooth'})">Find a Service</button>
       </section>
     </div>
   </article>
@@ -384,7 +345,7 @@
     </div>
   </article>
 
-  <article id="shop" class="container" style="background-color: var(--light-gray); padding-top: 60px; padding-bottom: 60px; max-width: 100%;">
+  <article id="shop" class="container" style="background-color: var(--light-gray); padding-top: 50px; padding-bottom: 50px; max-width: 100%;">
     <div style="max-width: 1200px; margin: 0 auto;">
       <div id="products-loading" class="loading">Loading Gear...</div>
       <div id="products-content" style="display: none;">
@@ -396,15 +357,15 @@
     </div>
   </article>
 
-  <article id="reviews" class="container" style="margin-bottom: 100px;">
+  <article id="reviews" class="container" style="margin-bottom: 80px;">
     <div id="reviews-loading" class="loading">Loading Highlights...</div>
     <div id="reviews-content" style="display: none;">
       <div class="section-header-wrap">
         <h2 class="section-header">Fan Highlights</h2>
       </div>
       <div class="grid" id="reviews-list"></div>
-      <div style="text-align: center; margin-top: 50px;">
-        <button class="btn btn-outline" id="add-review-btn" style="max-width: 300px;">Submit Highlight</button>
+      <div style="text-align: center; margin-top: 40px;">
+        <button class="btn btn-outline" id="add-review-btn" style="max-width: 260px;">Submit Highlight</button>
       </div>
     </div>
   </article>
@@ -476,7 +437,7 @@
         
         const apiUrlToUse = (domain.includes("localhost") || domain.includes("127.0.0.1")) && !isFileProtocol ? domain : "https://barbersaas-henna.vercel.app";
 
-        // Initialize SDK without hardcoded colors so it can fetch the shop data
+        // Initialize SDK
         BarberSaaS.init(shopId, { 
             position: "bottom-right",
             apiUrl: apiUrlToUse
@@ -486,25 +447,16 @@
           try {
             const shop = data.shop || {};
             
-            // 1. Extract dynamic theme colors set by THIS specific shop's admin
-            const primaryColor = shop.primaryColor || "#E31837"; // fallback to Sport Clips Red (primary/accent for widgets)
-            const secondaryColor = shop.secondaryColor || "#000000"; // fallback to black
+            // Extract dynamic theme colors
+            const primaryColor = shop.primaryColor || "#E31837"; // fallback to Sport Clips Red
+            const secondaryColor = shop.secondaryColor || "#000000"; 
             
-            // 2. Set them on the SDK so widgets can read them
+            // Set on SDK
             window.BarberSaaS.primaryColor = primaryColor;
             window.BarberSaaS.secondaryColor = secondaryColor;
             
-            // 3. Inject CSS Variables onto the page so user profile avatars inherit them
+            // Inject CSS Variables for iframe
             document.documentElement.style.setProperty('--primary', primaryColor, 'important');
-            document.documentElement.style.setProperty('--primary-color', primaryColor, 'important');
-            document.documentElement.style.setProperty('--theme-color', primaryColor, 'important');
-            document.documentElement.style.setProperty('--brand-color', primaryColor, 'important');
-            if (document.body) {
-               document.body.style.setProperty('--primary', primaryColor, 'important');
-               document.body.style.setProperty('--primary-color', primaryColor, 'important');
-               document.body.style.setProperty('--theme-color', primaryColor, 'important');
-               document.body.style.setProperty('--brand-color', primaryColor, 'important');
-            }
             
             const styleEl = document.createElement('style');
             styleEl.innerHTML = `
@@ -512,34 +464,37 @@
                 --primary: ${primaryColor} !important;
                 --brand-color: ${primaryColor} !important;
                 --theme-color: ${primaryColor} !important;
-                --widget-border: ${primaryColor} !important;
               }
-              .supabase-auth-ui_ui-button, .supabase-account-avatar, [id*="supabase-"], [class*="supabase-"], [class*="avatar"], [id*="avatar"], [class*="user-profile"], [class*="profile-badge"], a[href*="/sign-in"], .text-crm-primary {
-                 color: ${primaryColor} !important;
-                 border-color: ${primaryColor} !important;
-                 outline-color: ${primaryColor} !important;
-              }
-              [class*="avatar"] svg, [class*="user-profile"] svg, [class*="chat-button"], #widget-button, .bg-crm-primary {
-                 fill: ${primaryColor} !important;
+              .bg-crm-primary, [class*="chat-button"], #widget-button, [class*="avatar"] svg {
                  background-color: ${primaryColor} !important;
+                 fill: ${primaryColor} !important;
               }
-              #widget-button svg {
-                 fill: #ffffff !important;
-              }
+              #widget-button svg { fill: #ffffff !important; }
             `;
             document.body.appendChild(styleEl);
+            
+            // IMPORTANT FIX: Inject CSS Variables into Parent Next.js Page (for Auth Button alignment and color)
+            try {
+               const parentDoc = window.parent.document;
+               if (parentDoc) {
+                   const parentStyleEl = parentDoc.createElement('style');
+                   parentStyleEl.innerHTML = `
+                     :root {
+                       --crm-primary: ${primaryColor} !important;
+                     }
+                     .bg-crm-primary { background-color: ${primaryColor} !important; }
+                     .text-crm-primary { color: ${primaryColor} !important; }
+                     .border-crm-primary { border-color: ${primaryColor} !important; }
+                     
+                     /* Targeting the specific SupabaseAuthButton inside the Next.js parent */
+                     div.bg-crm-primary { background-color: ${primaryColor} !important; }
+                   `;
+                   parentDoc.body.appendChild(parentStyleEl);
+               }
+            } catch(e) { console.log('Could not inject styles into parent page (CORS or direct load)'); }
 
-            // 4. Inject the Chatbot and Booking widgets dynamically NOW that colors are set
+            // Inject Chatbot and Booking widgets
             setTimeout(() => {
-                let domain = window.location.origin;
-                let isFileProtocol = window.location.protocol === "file:";
-                if (domain === "null" || domain === "about://" || window.location.protocol === "about:" || isFileProtocol) {
-                  try { domain = window.parent.location.origin; } catch(e) {}
-                }
-                if (domain === "null" || domain === "about://" || !domain) {
-                  domain = "https://barbersaas-henna.vercel.app";
-                }
-                
                 const cacheBuster = "?v=" + new Date().getTime();
                 const widgetUrlPrefix = (isFileProtocol && domain === "file://") ? ".." : domain;
                 
@@ -547,20 +502,18 @@
                 modalScript.src = widgetUrlPrefix + "/booking-modal.js" + cacheBuster;
                 modalScript.setAttribute("data-shop-id", shopId);
                 modalScript.setAttribute("data-theme-color", primaryColor);
-                modalScript.setAttribute("data-secondary-color", primaryColor);
                 document.body.appendChild(modalScript);
                 
                 const widgetScript = document.createElement("script");
                 widgetScript.src = widgetUrlPrefix + "/booking-widget.js" + cacheBuster;
                 widgetScript.setAttribute("data-shop-id", shopId);
                 widgetScript.setAttribute("data-theme-color", primaryColor);
-                widgetScript.setAttribute("data-secondary-color", primaryColor);
                 document.body.appendChild(widgetScript);
             }, 50);
 
           } catch(e) { console.error(e); }
 
-          // About
+          // Render Content
           try {
             document.getElementById('dyn-shop-name').textContent = data.shop.name || "Sport Clips Haircuts";
             document.getElementById('dyn-shop-name-nav').textContent = data.shop.name || "SPORT CLIPS";
@@ -569,7 +522,6 @@
             document.getElementById("about-content").style.display = "block";
           } catch(e) {}
 
-          // Services
           try {
             const services = (data.services || []).filter(s => s.duration > 0);
             if (services.length > 0) {
@@ -579,8 +531,8 @@
                 return `
                 <div class="card">
                   <h3 class="card-title">${s.name}</h3>
-                  <div class="card-price">$${Number(s.price).toFixed(2)} <span style="font-size: 1rem; color: var(--text-main);">/ ${s.duration} MIN</span></div>
-                  <p class="card-desc">${truncatedDesc}</p>
+                  <div class="card-price">$${Number(s.price).toFixed(2)} <span style="font-size: 0.85rem; color: var(--text-main);">/ ${s.duration} MIN</span></div>
+                  <p class="card-desc" title="${s.description || ""}">${truncatedDesc}</p>
                   <button class="btn b-book" data-id="${s.id}">Check In</button>
                 </div>
               `}).join('');
@@ -592,7 +544,6 @@
             document.getElementById("services-content").style.display = "block";
           } catch(e) {}
 
-          // Products
           try {
             const products = data.products || [];
             if (products.length > 0) {
@@ -603,7 +554,7 @@
                 <div class="card" style="background: var(--white);">
                   <h3 class="card-title">${p.name}</h3>
                   <div class="card-price">$${Number(p.price).toFixed(2)}</div>
-                  <p class="card-desc">${truncatedDesc}</p>
+                  <p class="card-desc" title="${p.description || ""}">${truncatedDesc}</p>
                   <div class="card-actions">
                     <button class="btn btn-outline b-view" data-id="${p.id}">Details</button>
                     <button class="btn b-buy" data-id="${p.id}">Buy Now</button>
@@ -621,7 +572,6 @@
             document.getElementById("products-content").style.display = "block";
           } catch(e) {}
 
-          // Reviews
           try {
             const reviews = data.reviews || [];
             if (reviews.length > 0) {
