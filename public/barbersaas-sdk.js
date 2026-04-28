@@ -11,6 +11,7 @@
       this.shopId = null;
       this.apiUrl = 'https://barbersaas-henna.vercel.app'; // Default production URL
       this._publicDataCache = null;
+      this._publicDataPromise = null;
     }
 
     /**
@@ -82,15 +83,29 @@
         return this._publicDataCache;
       }
 
-      const res = await fetch(`${this.apiUrl}/api/shops/${this.shopId}/public-data?_t=${Date.now()}`);
-      if (!res.ok) {
-        const errorData = await res.json().catch(() => ({}));
-        throw new Error(errorData.error || 'Failed to fetch public data.');
+      if (this._publicDataPromise && !forceRefresh) {
+        return this._publicDataPromise;
       }
 
-      const data = await res.json();
-      this._publicDataCache = data;
-      return data;
+      this._publicDataPromise = fetch(`${this.apiUrl}/api/shops/${this.shopId}/public-data?_t=${Date.now()}`)
+        .then(async (res) => {
+          if (!res.ok) {
+            const errorData = await res.json().catch(() => ({}));
+            throw new Error(errorData.error || 'Failed to fetch public data.');
+          }
+          return res.json();
+        })
+        .then((data) => {
+          this._publicDataCache = data;
+          this._publicDataPromise = null;
+          return data;
+        })
+        .catch((err) => {
+          this._publicDataPromise = null;
+          throw err;
+        });
+
+      return this._publicDataPromise;
     }
 
     /**

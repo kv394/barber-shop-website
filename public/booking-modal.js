@@ -1,4 +1,14 @@
 (function() {
+  if (window.BarberBooking) {
+    // If re-injected (e.g. by React), just re-bind the button and return to avoid duplicate DOM elements
+    const btn = document.getElementById('barber-booking-btn');
+    if (btn) {
+      btn.removeEventListener('click', window.BarberBooking.open);
+      btn.addEventListener('click', window.BarberBooking.open);
+    }
+    return;
+  }
+
   let scriptTag = document.currentScript;
   
   if (!scriptTag || !scriptTag.getAttribute('data-shop-id')) {

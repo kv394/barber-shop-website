@@ -137,6 +137,18 @@
       transform: translateY(0) scale(1);
     }
     
+    @media (max-width: 480px) {
+      #chat-window {
+        width: calc(100vw - 32px);
+        left: 16px !important;
+        right: 16px !important;
+        bottom: 100px;
+        height: calc(100vh - 120px);
+        max-height: none;
+        transform-origin: bottom center;
+      }
+    }
+    
     #chat-header {
       background-color: var(--bg-color);
       color: var(--text-color);
@@ -210,7 +222,7 @@
       padding: 10px 14px;
       border-radius: 20px;
       outline: none;
-      font-size: 14px;
+      font-size: 16px;
       color-scheme: light; /* Helps date picker match light theme */
     }
     
