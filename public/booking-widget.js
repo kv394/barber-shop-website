@@ -513,8 +513,8 @@
       
       if (data.error) {
         addMessageToUI('Sorry, I encountered an error: ' + data.error, false);
-      } else if (data.text) {
-        let displayText = data.text;
+      } else if (data.text !== undefined || data.ui) {
+        let displayText = data.text || "";
         let options = [];
         
         // Parse numbered lists like "1. Option A"

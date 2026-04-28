@@ -10,16 +10,6 @@ import QRCode from 'qrcode';
 
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
-const getServicesDecl: FunctionDeclaration = {
-  name: 'get_services',
-  description: 'Get a list of available services and their prices for the shop',
-};
-
-const getStaffDecl: FunctionDeclaration = {
-  name: 'get_staff',
-  description: 'Get a list of available staff members for the shop',
-};
-
 const checkAvailabilityDecl: FunctionDeclaration = {
   name: 'check_availability',
   description: 'Check available time slots for a specific date, service, and optionally staff member',
@@ -176,6 +166,24 @@ export async function POST(req: Request) {
     const c = (shop.customization as any) || {};
     const configuredWebsite = c.contact?.website || c.website || '';
 
+    // Fetch services and staff to inject into prompt for massive performance boost
+    const services = await prisma.service.findMany({
+        where: { shopId: realShopId, type: 'CUSTOMER' },
+        select: { id: true, name: true, price: true, duration: true }
+    });
+    const staff = await prisma.user.findMany({
+        where: { shopId: realShopId, role: 'STAFF' },
+        select: { id: true, name: true }
+    });
+
+    const servicesText = services.length > 0 
+        ? services.map(s => `- ${s.name}: $${s.price} (${s.duration} mins) [ID: ${s.id}]`).join('\n')
+        : 'No services available currently.';
+    
+    const staffText = staff.length > 0
+        ? staff.map(s => `- ${s.name} [ID: ${s.id}]`).join('\n')
+        : 'No specific staff available.';
+
     // 4. Origin Validation (CORS Hardening)
     const originHeader = req.headers.get('origin') || '';
     const refererHeader = req.headers.get('referer') || '';
@@ -235,18 +243,23 @@ Shop Knowledge Base:
 - Details & Settings (JSON): ${JSON.stringify(c)}
 Use this information to answer user questions about the shop's location, hours, or policies.
 
+AVAILABLE SERVICES:
+${servicesText}
+
+AVAILABLE STAFF:
+${staffText}
+
 CRITICAL UX INSTRUCTIONS:
 - Whenever you present multiple options to the user (like services, staff members, or time slots), ALWAYS format them as a clean, numbered list starting each option on a new line with "1. ", "2. ", etc. 
 - The frontend will automatically convert these numbered lists into clickable buttons. DO NOT add extra text like "Reply with 1, 2, etc." anymore, as they will click the buttons.
-- When listing services, ALWAYS include the price and duration (e.g., "1. Haircut - $30 (45 mins)").
-- CRITICAL: When calling tools that require IDs (like check_availability and book_appointment), you MUST use the actual ID string (e.g., "cuid...") returned from the get_services or get_staff tool, NOT the number from your numbered list.
-- IMPORTANT STATELESSNESS RULE: The chat history ONLY saves text, not tool responses. You will FORGET the actual IDs (serviceId, staffId) between user messages. 
-- Therefore, BEFORE calling 'check_availability' or 'book_appointment', you MUST call 'get_services' (and 'get_staff' if needed) AGAIN in the SAME turn to retrieve the correct IDs based on the user's selection. NEVER guess IDs or pass names/numbers as IDs.
+- When listing services, ALWAYS include the price and duration (e.g., "1. Haircut - $30 (45 mins)"). DO NOT output their IDs to the user.
+- CRITICAL: When calling tools that require IDs (like check_availability and book_appointment), you MUST use the actual ID string (e.g., "cuid...") from the AVAILABLE SERVICES or AVAILABLE STAFF lists provided above.
+- NEVER guess IDs or pass names/numbers as IDs. Map the user's numbered choice back to the correct ID internally.
 - Keep your messages very short and easy to read on mobile. Avoid large walls of text.
 
 Follow this flow for booking:
-1. Ask what service they want. Call get_services to list them (with price and duration). Present as a numbered list.
-2. Ask if they have a preferred staff member (call get_staff). Present as a numbered list (always include an "Any staff" option).
+1. Ask what service they want. List the AVAILABLE SERVICES (with price and duration). Present as a numbered list.
+2. Ask if they have a preferred staff member. Present the AVAILABLE STAFF as a numbered list (always include an "Any staff" option).
 3. Do NOT call request_date_picker. Instead, immediately call check_availability for today's date (or a specific date if the user provided one). This will present a combined date and time picker to the user. Present slots as a numbered list.
 4. Once they pick a time, ask for their name, phone, and optionally email.
 5. Call book_appointment to finalize.
@@ -269,7 +282,7 @@ If the user wants to check, cancel, or reschedule their appointments:
         contents: formattedContents,
         config: {
             systemInstruction,
-            tools: [{ functionDeclarations: [getServicesDecl, getStaffDecl, checkAvailabilityDecl, bookAppointmentDecl, checkAppointmentsDecl, sendCalendarInviteDecl, cancelAppointmentDecl, rescheduleAppointmentDecl] }],
+            tools: [{ functionDeclarations: [checkAvailabilityDecl, bookAppointmentDecl, checkAppointmentsDecl, sendCalendarInviteDecl, cancelAppointmentDecl, rescheduleAppointmentDecl] }],
         }
     });
 
@@ -299,19 +312,7 @@ If the user wants to check, cancel, or reschedule their appointments:
         for (const call of functionCalls) {
             let result: any = {};
             try {
-                if (call.name === 'get_services') {
-                    const services = await prisma.service.findMany({
-                        where: { shopId: realShopId, type: 'CUSTOMER' },
-                        select: { id: true, name: true, price: true, duration: true }
-                    });
-                    result = { services };
-                } else if (call.name === 'get_staff') {
-                    const staff = await prisma.user.findMany({
-                        where: { shopId: realShopId, role: 'STAFF' },
-                        select: { id: true, name: true }
-                    });
-                    result = { staff };
-                } else if (call.name === 'check_availability') {
+                if (call.name === 'check_availability') {
                     const args = call.args as any;
                     const { date, serviceId, staffId } = args;
                     lastAvailabilityDate = date;
@@ -540,12 +541,20 @@ If the user wants to check, cancel, or reschedule their appointments:
             });
         }
 
-        // Append tool calls and responses to contents
+        // Append exactly what the model returned to keep history intact
+        if (response.candidates?.[0]?.content?.parts) {
+            formattedContents.push(
+                { role: 'model', parts: response.candidates[0].content.parts }
+            );
+        } else {
+            formattedContents.push(
+                { role: 'model', parts: functionCalls.map(c => ({ functionCall: c })) }
+            );
+        }
+        
+        // Use the proper role for tool responses (in @google/genai it's 'user' or 'function', 'user' usually works for tool responses if parts has functionResponse)
         formattedContents.push(
-            { role: 'model', parts: functionCalls.map(c => ({ functionCall: c })) }
-        );
-        formattedContents.push(
-            { role: 'user', parts: toolResponses } // Note: tool responses are usually passed as "user" or "tool" role depending on SDK version
+            { role: 'user', parts: toolResponses } 
         );
 
         response = await ai.models.generateContent({
@@ -553,7 +562,7 @@ If the user wants to check, cancel, or reschedule their appointments:
             contents: formattedContents,
             config: {
                 systemInstruction,
-                tools: [{ functionDeclarations: [getServicesDecl, getStaffDecl, checkAvailabilityDecl, bookAppointmentDecl, checkAppointmentsDecl, sendCalendarInviteDecl, cancelAppointmentDecl, rescheduleAppointmentDecl] }],
+                tools: [{ functionDeclarations: [checkAvailabilityDecl, bookAppointmentDecl, checkAppointmentsDecl, sendCalendarInviteDecl, cancelAppointmentDecl, rescheduleAppointmentDecl] }],
             }
         });
 
