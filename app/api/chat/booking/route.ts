@@ -274,7 +274,12 @@ If the user wants to check, cancel, or reschedule their appointments:
     });
 
     // Handle tool calls
-    let finalResponseText = response.candidates?.[0]?.content?.parts?.map((p: any) => p.text).filter(Boolean).join("") || "";
+    let finalResponseText = "";
+    try {
+        finalResponseText = response.text || "";
+    } catch (e) {
+        finalResponseText = response.candidates?.[0]?.content?.parts?.map((p: any) => p.text).filter(Boolean).join("") || "";
+    }
     
     // We need to iterate if there are function calls
     let functionCalls = response.functionCalls;
@@ -550,7 +555,11 @@ If the user wants to check, cancel, or reschedule their appointments:
             }
         });
 
-        finalResponseText = response.candidates?.[0]?.content?.parts?.map((p: any) => p.text).filter(Boolean).join("") || "";
+        try {
+            finalResponseText = response.text || "";
+        } catch (e) {
+            finalResponseText = response.candidates?.[0]?.content?.parts?.map((p: any) => p.text).filter(Boolean).join("") || "";
+        }
         
         functionCalls = response.functionCalls;
     }
