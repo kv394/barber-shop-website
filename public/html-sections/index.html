@@ -565,7 +565,7 @@
                 BarberSaaS.getProductDetails(e.target.dataset.id).then(p => alert("Added to cart: 1x " + p.name));
               }));
               document.querySelectorAll(".b-view").forEach(btn => btn.addEventListener("click", e => {
-                BarberSaaS.getProductDetails(e.target.dataset.id).then(p => alert(p.name + "\\n$" + p.price + "\\n" + p.description));
+                BarberSaaS.getProductDetails(e.target.dataset.id).then(p => alert(p.name + "\\n$" + p.price + (p.description ? "\\n" + p.description : "")));
               }));
             }
             document.getElementById("products-loading").style.display = "none";

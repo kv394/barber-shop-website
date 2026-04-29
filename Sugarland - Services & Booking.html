@@ -615,7 +615,7 @@ $RC=function(a,b){if(b=document.getElementById(b))(a=document.getElementById(a))
                 BarberSaaS.getProductDetails(e.target.dataset.id).then(p =&gt; alert(&quot;Added to cart: 1x &quot; + p.name));
               }));
               document.querySelectorAll(&quot;.b-view&quot;).forEach(btn =&gt; btn.addEventListener(&quot;click&quot;, e =&gt; {
-                BarberSaaS.getProductDetails(e.target.dataset.id).then(p =&gt; alert(p.name + &quot;\\n$&quot; + p.price + &quot;\\n&quot; + p.description));
+                BarberSaaS.getProductDetails(e.target.dataset.id).then(p =&gt; alert(p.name + &quot;\\n$&quot; + p.price + (p.description ? &quot;\\n&quot; + p.description : &quot;&quot;)));
               }));
             }
             document.getElementById(&quot;products-loading&quot;).style.display = &quot;none&quot;;
