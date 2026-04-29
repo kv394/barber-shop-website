@@ -202,10 +202,10 @@ export default function SupabaseAuthButton({
             {user.email?.charAt(0).toUpperCase() || 'U'}
           </div>
         </button>
-        {isRendered && mounted && createPortal(menuContent, document.body)}
+        {isRendered && mounted && typeof document !== 'undefined' ? createPortal(menuContent, document.body) : null}
         {/* Iframe Modal Overlay */}
-        {modalUrl && mounted && createPortal(
-          <div className="fixed inset-0 z-[999999] flex items-center justify-center bg-black/70 backdrop-blur-sm p-4 animate-in fade-in duration-200">
+        {modalUrl && mounted && typeof document !== 'undefined' ? createPortal(
+          <div className="fixed inset-0 z-[9999999] flex items-center justify-center bg-black/70 backdrop-blur-sm p-4 animate-in fade-in duration-200">
             <div className="bg-crm-surface w-full max-w-4xl h-[90vh] max-h-[900px] rounded-2xl shadow-2xl overflow-hidden relative flex flex-col border border-crm-border animate-in zoom-in-95 duration-300">
               <div className="flex justify-between items-center px-4 py-3 bg-crm-bg border-b border-crm-border shrink-0">
                 <h3 className="font-bold text-crm-text">Account Portal</h3>
@@ -215,7 +215,7 @@ export default function SupabaseAuthButton({
             </div>
           </div>,
           document.body
-        )}
+        ) : null}
       </div>
     );
   }

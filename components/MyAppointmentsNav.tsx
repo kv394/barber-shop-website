@@ -1,10 +1,17 @@
 'use client';
-
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 export default function MyAppointmentsNav() {
   const pathname = usePathname();
+  const [isIframe, setIsIframe] = useState(false);
+
+  useEffect(() => {
+    setIsIframe(window.self !== window.top);
+  }, []);
+
+  if (isIframe) return null;
 
   const links = [
     { href: '/my-appointments', label: 'Appointments', icon: '📅' },

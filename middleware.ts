@@ -123,7 +123,7 @@ export async function middleware(req: NextRequest) {
   }
   
   // Prevent clickjacking for non-embed routes
-  if (!req.nextUrl.pathname.startsWith('/embed/')) {
+  if (!req.nextUrl.pathname.startsWith('/embed/') && !req.nextUrl.pathname.startsWith('/my-appointments') && !req.nextUrl.pathname.startsWith('/update-password')) {
     response.headers.set('X-Frame-Options', 'DENY');
   }
   // Prevent MIME type sniffing
