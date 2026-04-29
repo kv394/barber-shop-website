@@ -689,7 +689,7 @@ $RC=function(a,b){if(b=document.getElementById(b))(a=document.getElementById(a))
             }
             document.getElementById(&quot;add-review-btn&quot;).addEventListener(&quot;click&quot;, () =&gt; {
               if (window.BarberReviews) {
-                window.BarberReviews.open();
+                window.BarberReviews.open(true);
               } else {
                 const aptId = prompt(&quot;Enter Check-In ID:&quot;);
                 const rating = prompt(&quot;Rating (1-5):&quot;, &quot;5&quot;);

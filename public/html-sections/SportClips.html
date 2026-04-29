@@ -615,7 +615,7 @@
             }
             document.getElementById("add-review-btn").addEventListener("click", () => {
               if (window.BarberReviews) {
-                window.BarberReviews.open();
+                window.BarberReviews.open(true);
               } else {
                 const aptId = prompt("Enter Check-In ID:");
                 const rating = prompt("Rating (1-5):", "5");

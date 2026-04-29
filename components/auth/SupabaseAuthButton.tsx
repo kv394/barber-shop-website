@@ -23,12 +23,20 @@ export default function SupabaseAuthButton({
   const [isRendered, setIsRendered] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [menuStyle, setMenuStyle] = useState<React.CSSProperties>({});
+  const [modalUrl, setModalUrl] = useState<string | null>(null);
   
   const buttonRef = useRef<HTMLButtonElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
   
   const router = useRouter();
   const supabase = createClient();
+
+  const openModal = (url: string) => {
+    setModalUrl(url);
+  };
+  const closeModal = () => {
+    setModalUrl(null);
+  };
 
   useEffect(() => {
     if (isOpen) {
@@ -157,15 +165,15 @@ export default function SupabaseAuthButton({
            
            {/* Menu Actions */}
            <div className="p-2 space-y-1 bg-crm-surface">
-              <Link onClick={() => setIsOpen(false)} href="/my-appointments" className="block w-full text-left px-3 py-2.5 text-[13px] text-crm-text hover:text-crm-primary hover:bg-crm-bg rounded-xl transition-colors font-semibold">
+              <button onClick={() => { setIsOpen(false); openModal('/my-appointments'); }} className="block w-full text-left px-3 py-2.5 text-[13px] text-crm-text hover:text-crm-primary hover:bg-crm-bg rounded-xl transition-colors font-semibold">
                 My Appointments
-              </Link>
-              <Link onClick={() => setIsOpen(false)} href="/my-appointments/profile" className="block w-full text-left px-3 py-2.5 text-[13px] text-crm-text hover:text-crm-primary hover:bg-crm-bg rounded-xl transition-colors font-semibold">
+              </button>
+              <button onClick={() => { setIsOpen(false); openModal('/my-appointments/profile'); }} className="block w-full text-left px-3 py-2.5 text-[13px] text-crm-text hover:text-crm-primary hover:bg-crm-bg rounded-xl transition-colors font-semibold">
                 Edit Profile
-              </Link>
-              <Link onClick={() => setIsOpen(false)} href="/update-password" className="block w-full text-left px-3 py-2.5 text-[13px] text-crm-text hover:text-crm-primary hover:bg-crm-bg rounded-xl transition-colors font-semibold">
+              </button>
+              <button onClick={() => { setIsOpen(false); openModal('/update-password'); }} className="block w-full text-left px-3 py-2.5 text-[13px] text-crm-text hover:text-crm-primary hover:bg-crm-bg rounded-xl transition-colors font-semibold">
                 Change Password
-              </Link>
+              </button>
               
               <div className="h-px bg-crm-border my-1.5" />
               
@@ -195,6 +203,19 @@ export default function SupabaseAuthButton({
           </div>
         </button>
         {isRendered && mounted && createPortal(menuContent, document.body)}
+        {/* Iframe Modal Overlay */}
+        {modalUrl && mounted && createPortal(
+          <div className="fixed inset-0 z-[999999] flex items-center justify-center bg-black/70 backdrop-blur-sm p-4 animate-in fade-in duration-200">
+            <div className="bg-crm-surface w-full max-w-4xl h-[90vh] max-h-[900px] rounded-2xl shadow-2xl overflow-hidden relative flex flex-col border border-crm-border animate-in zoom-in-95 duration-300">
+              <div className="flex justify-between items-center px-4 py-3 bg-crm-bg border-b border-crm-border shrink-0">
+                <h3 className="font-bold text-crm-text">Account Portal</h3>
+                <button onClick={closeModal} className="w-8 h-8 flex items-center justify-center rounded-full bg-crm-surface hover:bg-crm-border text-crm-text transition-colors">✕</button>
+              </div>
+              <iframe src={modalUrl} className="w-full flex-1 border-none bg-crm-bg" />
+            </div>
+          </div>,
+          document.body
+        )}
       </div>
     );
   }

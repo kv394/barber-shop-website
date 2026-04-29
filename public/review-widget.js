@@ -426,10 +426,14 @@
   };
 
   window.BarberReviews = {
-    open: function() {
+    open: function(showWriteForm = false) {
       modalOverlay.style.display = 'flex';
-      cancelBtn.onclick(); // Reset to view mode
-      loadReviews();
+      if (showWriteForm) {
+        switchToWriteBtn.onclick();
+      } else {
+        cancelBtn.onclick(); // Reset to view mode
+        loadReviews();
+      }
     }
   };
 
