@@ -143,12 +143,14 @@
         max-width: none;
         left: 0 !important;
         right: 0 !important;
-        top: 0 !important;
+        top: auto !important;
         bottom: 0 !important;
-        height: auto;
-        max-height: none;
-        border-radius: 0;
+        height: 75vh;
+        max-height: 85%;
+        border-radius: 20px 20px 0 0;
         border: none;
+        border-top: 1px solid var(--border-color);
+        box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.15);
         transform-origin: bottom center;
         z-index: 9999999;
         display: flex;
@@ -162,7 +164,8 @@
 
       #chat-header {
         flex-shrink: 0;
-        padding-top: max(16px, env(safe-area-inset-top));
+        padding-top: 16px;
+        border-radius: 20px 20px 0 0;
       }
       
       #chat-messages {
