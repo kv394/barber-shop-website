@@ -139,13 +139,28 @@
     
     @media (max-width: 480px) {
       #chat-window {
-        width: calc(100vw - 32px);
-        left: 16px !important;
-        right: 16px !important;
-        bottom: 100px;
-        height: calc(100vh - 120px);
-        max-height: none;
+        width: 100vw;
+        max-width: 100vw;
+        left: 0 !important;
+        right: 0 !important;
+        bottom: 0 !important;
+        height: 100vh;
+        max-height: 100vh;
+        border-radius: 0;
         transform-origin: bottom center;
+        z-index: 9999999;
+      }
+      
+      #chat-window.open {
+        transform: translateY(0) scale(1);
+      }
+      
+      #chat-messages {
+        height: calc(100vh - 120px);
+      }
+      
+      #widget-button {
+        bottom: 16px;
       }
     }
     
