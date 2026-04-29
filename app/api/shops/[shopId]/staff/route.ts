@@ -4,6 +4,15 @@ import { NextResponse } from 'next/server';
 
 export const dynamic = 'force-dynamic';
 
+export async function OPTIONS() {
+  return new NextResponse(null, {
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET, OPTIONS',
+    },
+  });
+}
+
 export async function GET(
   request: Request,
   { params }: { params: Promise<{ shopId: string }> }
@@ -12,6 +21,11 @@ export async function GET(
     const { shopId } = await params;
     const { searchParams } = new URL(request.url);
     const dateStr = searchParams.get('date');
+
+    const headers = {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET, OPTIONS',
+    };
 
     if (!dateStr) {
       // Return all staff if no date is provided (for admin/settings use cases)
@@ -33,13 +47,13 @@ export async function GET(
           workingHours: true,
         },
       });
-      return NextResponse.json({ staff: allStaff });
+      return NextResponse.json({ staff: allStaff }, { headers });
     }
 
     const targetDate = new Date(dateStr);
     // SECURITY: Validate the date is a real date
     if (isNaN(targetDate.getTime())) {
-      return NextResponse.json({ error: 'Invalid date format' }, { status: 400 });
+      return NextResponse.json({ error: 'Invalid date format' }, { status: 400, headers });
     }
 
     const staffWithLeave = await prisma.user.findMany({

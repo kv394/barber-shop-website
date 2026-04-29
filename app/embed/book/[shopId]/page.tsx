@@ -8,11 +8,40 @@ export default async function EmbedBookPage({ params, searchParams }: { params: 
   const secondaryColor = typeof sp.secondaryColor === 'string' ? sp.secondaryColor : undefined;
   const templateType = typeof sp.templateType === 'string' ? sp.templateType : undefined;
 
-  const shop = await prisma.shop.findUnique({
-    where: { id: shopId },
-    select: { customization: true }
+  let shop = await prisma.shop.findFirst({
+    where: {
+      OR: [
+        { id: shopId },
+        { subdomain: shopId },
+        { companyName: shopId }
+      ]
+    },
+    select: { id: true, customization: true }
   });
 
+  if (!shop) {
+    const namePattern = shopId.replace(/-/g, '%');
+    const candidates = await prisma.shop.findMany({
+      where: { name: { contains: namePattern.replace(/%/g, ' '), mode: 'insensitive' } },
+      take: 10,
+      select: { id: true, name: true, customization: true }
+    });
+
+    shop = candidates.find(
+      (s: any) => s.name.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '') === shopId.toLowerCase()
+    ) || null;
+  }
+
+  if (!shop) {
+    if (shopId === 'missouri-city' || shopId === 'sugarland') {
+      shop = await prisma.shop.findFirst({
+         where: { id: 'cmn9kj24n0000lqzc7kcsmpst' },
+         select: { id: true, customization: true }
+      });
+    }
+  }
+
+  const actualShopId = shop?.id || shopId;
   const c = (shop?.customization as any) || {};
   const headingFont = c.headingFont || c.fontFamily || 'Inter';
   const bodyFont = c.bodyFont || c.fontFamily || 'Inter';
@@ -55,7 +84,7 @@ export default async function EmbedBookPage({ params, searchParams }: { params: 
           .btn:hover, button.bg-crm-primary:hover, button[style*="background-color: ${primaryColor}"]:hover { background-color: ${primaryColor}20 !important; }
         ` : ''}
       `}} />
-      <BookingWizard shopId={shopId} themeColor={primaryColor} secondaryColor={actualSecondaryColor} templateType={templateType} />
+      <BookingWizard shopId={actualShopId} themeColor={primaryColor} secondaryColor={actualSecondaryColor} templateType={templateType} />
       </div>
       );
 }

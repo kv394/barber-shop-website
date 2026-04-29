@@ -63,7 +63,7 @@ export default function BookingWizard({ shopId, themeColor, secondaryColor, temp
 
     Promise.all([
       fetch(`/api/shops/${shopId}/services`).then(r => r.ok ? r.json() : []),
-      fetch(`/api/shops/${shopId}/staff`).then(r => r.ok ? r.json() : []),
+      fetch(`/api/shops/${shopId}/staff?date=${new Date().toISOString().split('T')[0]}`).then(r => r.ok ? r.json() : []),
       fetch(`/api/shops/${shopId}/business-hours`).then(r => r.ok ? r.json() : {}),
     ]).then(([svcs, stfResponse, hours]) => {
       const parsedServices = Array.isArray(svcs) ? svcs : [];

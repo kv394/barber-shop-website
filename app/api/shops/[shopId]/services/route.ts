@@ -12,35 +12,39 @@ export async function GET(
 ) {
   try {
     const { shopId } = await params;
-    const supabase = await createClient();
-  const { data: { user: authUserSession } } = await supabase.auth.getUser();
-  let userId = authUserSession?.id;
-  const authUserEmail = authUserSession?.email;
-    if (!userId) return new Response("Unauthorized", { status: 401 });
-
-    // SECURITY: Verify user belongs to this shop (IDOR prevention)
-    const user = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
-    if (!user || (user.role !== 'SITE_ADMIN' && (user.shopId !== shopId && !(await prisma.shopAccess.findFirst({ where: { userId: user.id, shopId } }))))) {
-      return new Response("Forbidden", { status: 403 });
-    }
 
     // Fetch from Redis Cache if available
     const services = await cacheService.getOrSet(
-      `shop_services:${shopId}`,
+      `shop_services_public:${shopId}`,
       async () => {
         return await prisma.service.findMany({
-          where: { shopId },
+          where: { shopId, type: 'CUSTOMER' },
           include: { addons: true }
         });
       },
       300 // Cache for 5 minutes
     );
 
-    return NextResponse.json(services, { status: 200 });
+    return NextResponse.json(services, { 
+      status: 200,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET, OPTIONS',
+      }
+    });
   } catch (error: any) {
     logger.error("Error fetching services:", error);
     return NextResponse.json({ error: 'Failed to fetch services' }, { status: 500 });
   }
+}
+
+export async function OPTIONS() {
+  return new NextResponse(null, {
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET, OPTIONS',
+    },
+  });
 }
 
 export async function POST(
