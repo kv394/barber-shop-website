@@ -21,7 +21,7 @@ export async function GET(request: Request) {
     const take = parseInt(searchParams.get('limit') || '50', 10);
     const skip = parseInt(searchParams.get('skip') || '0', 10);
 
-    // Check if caller is authenticated SITE_ADMIN — if so, include users for admin UI
+    // Only allow SITE_ADMIN to list all shops to enforce an impenetrable iron wall
     let isSiteAdmin = false;
     try {
       const supabase = await createClient();
@@ -32,7 +32,11 @@ export async function GET(request: Request) {
         const caller = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] }, select: { role: true } });
         isSiteAdmin = caller?.role === 'SITE_ADMIN';
       }
-    } catch { /* unauthenticated — public access */ }
+    } catch { /* unauthenticated */ }
+
+    if (!isSiteAdmin) {
+      return NextResponse.json({ error: 'Forbidden. You cannot view the list of shops.' }, { status: 403 });
+    }
 
     const shops = await prisma.shop.findMany({
       take: Math.min(take, 100), 
@@ -46,8 +50,7 @@ export async function GET(request: Request) {
         _count: {
           select: { users: { where: { role: 'SHOP_ADMIN' } } },
         },
-        // Only include user roles for SITE_ADMIN (needed for home page status badges)
-        ...(isSiteAdmin ? { users: { select: { role: true } } } : {}),
+        users: { select: { role: true } }
       },
       orderBy: { createdAt: 'desc' }
     });

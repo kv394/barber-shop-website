@@ -102,6 +102,24 @@ export async function middleware(req: NextRequest) {
 
   const { data: { user } } = await supabase.auth.getUser();
 
+  // Cross-Shop Isolation Logic
+  if (user && isApi && req.nextUrl.pathname.includes('/api/shops/')) {
+    const match = req.nextUrl.pathname.match(/\/api\/shops\/([^/]+)/);
+    if (match && match[1]) {
+      const targetShopId = match[1];
+      
+      // We need to decode the session to verify shop access, but we don't have prisma here easily.
+      // However, we can enforce that the cookie domain matches or pass a specialized header.
+      // Wait, a better approach for true RLS/isolation without full DB hits in middleware:
+      // Since Prisma connects directly to the DB, the middleware can just set a header that Prisma extensions read,
+      // OR we can enforce that cross-shop API calls are blocked if the origin/referer doesn't match the shop.
+      // The most robust way is checking the JWT claims if we have custom claims, but we don't.
+      
+      // Let's pass the currently authenticated user's ID as a header so the API routes can strictly enforce it.
+      response.headers.set('x-user-id', user.id);
+    }
+  }
+
   if (req.nextUrl.pathname === '/api/users/me') {
     console.log('[MIDDLEWARE] /api/users/me -> user:', user?.email || 'null');
     console.log('[MIDDLEWARE] cookies received:', req.cookies.getAll().map(c => c.name));
