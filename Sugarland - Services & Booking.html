@@ -604,7 +604,7 @@ $RC=function(a,b){if(b=document.getElementById(b))(a=document.getElementById(a))
                 &lt;div class=&quot;card&quot; style=&quot;background: var(--white);&quot;&gt;
                   &lt;h3 class=&quot;card-title&quot;&gt;${p.name}&lt;/h3&gt;
                   &lt;div class=&quot;card-price&quot;&gt;$${Number(p.price).toFixed(2)}&lt;/div&gt;
-                  &lt;p class=&quot;card-desc&quot;&gt;${truncatedDesc}&lt;/p&gt;
+                  &lt;p class=&quot;card-desc&quot; title=&quot;${p.name}${p.description ? '&#92;n&#92;n' + p.description : ''}&quot;&gt;${truncatedDesc}&lt;/p&gt;
                   &lt;div class=&quot;card-actions&quot;&gt;
                     &lt;button class=&quot;btn btn-outline b-view&quot; data-id=&quot;${p.id}&quot;&gt;Details&lt;/button&gt;
                     &lt;button class=&quot;btn b-buy&quot; data-id=&quot;${p.id}&quot;&gt;Buy Now&lt;/button&gt;
@@ -615,7 +615,50 @@ $RC=function(a,b){if(b=document.getElementById(b))(a=document.getElementById(a))
                 BarberSaaS.getProductDetails(e.target.dataset.id).then(p =&gt; alert(&quot;Added to cart: 1x &quot; + p.name));
               }));
               document.querySelectorAll(&quot;.b-view&quot;).forEach(btn =&gt; btn.addEventListener(&quot;click&quot;, e =&gt; {
-                BarberSaaS.getProductDetails(e.target.dataset.id).then(p =&gt; alert(p.name + &quot;\\n$&quot; + p.price + (p.description ? &quot;\\n&quot; + p.description : &quot;&quot;)));
+                BarberSaaS.getProductDetails(e.target.dataset.id).then(p =&gt; {
+                  let modal = document.getElementById(&quot;product-modal&quot;);
+                  if (!modal) {
+                    modal = document.createElement(&quot;div&quot;);
+                    modal.id = &quot;product-modal&quot;;
+                    modal.style.cssText = &quot;display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);z-index:10001;align-items:center;justify-content:center;&quot;;
+                    
+                    const modalContent = document.createElement(&quot;div&quot;);
+                    modalContent.style.cssText = &quot;background:white;padding:30px;border-radius:8px;max-width:500px;width:90%;position:relative;box-shadow:0 10px 25px rgba(0,0,0,0.2);&quot;;
+                    
+                    const closeBtn = document.createElement(&quot;button&quot;);
+                    closeBtn.innerHTML = &quot;&amp;times;&quot;;
+                    closeBtn.style.cssText = &quot;position:absolute;top:15px;right:15px;background:none;border:none;font-size:24px;cursor:pointer;color:#333;&quot;;
+                    closeBtn.onclick = () =&gt; modal.style.display = &quot;none&quot;;
+                    
+                    const title = document.createElement("h2");
+                    title.id = "product-modal-title";
+                    title.style.cssText = "color:var(--primary,#E31837);margin-top:0;margin-bottom:10px;text-transform:uppercase;font-weight:900;border-bottom:2px solid var(--primary,#E31837);padding-bottom:10px;";
+                    
+                    const price = document.createElement(&quot;div&quot;);
+                    price.id = &quot;product-modal-price&quot;;
+                    price.style.cssText = &quot;font-size:1.2rem;font-weight:900;margin-bottom:20px;&quot;;
+                    
+                    const desc = document.createElement(&quot;p&quot;);
+                    desc.id = &quot;product-modal-desc&quot;;
+                    desc.style.cssText = &quot;color:#555;line-height:1.6;&quot;;
+                    
+                    modalContent.appendChild(closeBtn);
+                    modalContent.appendChild(title);
+                    modalContent.appendChild(price);
+                    modalContent.appendChild(desc);
+                    modal.appendChild(modalContent);
+                    document.body.appendChild(modal);
+                    
+                    modal.addEventListener(&quot;click&quot;, e =&gt; {
+                      if(e.target === modal) modal.style.display = &quot;none&quot;;
+                    });
+                  }
+                  
+                  document.getElementById(&quot;product-modal-title&quot;).textContent = p.name;
+                  document.getElementById(&quot;product-modal-price&quot;).textContent = &quot;$&quot; + Number(p.price).toFixed(2);
+                  document.getElementById(&quot;product-modal-desc&quot;).textContent = p.description || &quot;No description available.&quot;;
+                  modal.style.display = &quot;flex&quot;;
+                });
               }));
             }
             document.getElementById(&quot;products-loading&quot;).style.display = &quot;none&quot;;

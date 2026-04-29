@@ -532,7 +532,7 @@
                 <div class="card" style="background: var(--white);">
                   <h3 class="card-title">\${p.name}</h3>
                   <div class="card-price">$\${Number(p.price).toFixed(2)}</div>
-                  <p class="card-desc" title="\${p.description || ""}"><span style="display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:2.8em;">\${p.description || "Top-tier grooming gear."}</span></p>
+                  <p class="card-desc" title="\${p.name}\${p.description ? '\\n\\n' + p.description : ''}"><span style="display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:2.8em;">\${p.description || "Top-tier grooming gear."}</span></p>
                   <div class="card-actions">
                     <button class="btn btn-outline b-view" data-id="\${p.id}">Details</button>
                     <button class="btn b-buy" data-id="\${p.id}">Buy Now</button>
@@ -543,7 +543,50 @@
                 BarberSaaS.getProductDetails(e.target.dataset.id).then(p => alert("Added to cart: 1x " + p.name));
               }));
               document.querySelectorAll(".b-view").forEach(btn => btn.addEventListener("click", e => {
-                BarberSaaS.getProductDetails(e.target.dataset.id).then(p => alert(p.name + "\\\\n$" + p.price + (p.description ? "\\\\n" + p.description : "")));
+                BarberSaaS.getProductDetails(e.target.dataset.id).then(p => {
+                  let modal = document.getElementById("product-modal");
+                  if (!modal) {
+                    modal = document.createElement("div");
+                    modal.id = "product-modal";
+                    modal.style.cssText = "display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);z-index:10001;align-items:center;justify-content:center;";
+                    
+                    const modalContent = document.createElement("div");
+                    modalContent.style.cssText = "background:white;padding:30px;border-radius:8px;max-width:500px;width:90%;position:relative;box-shadow:0 10px 25px rgba(0,0,0,0.2);";
+                    
+                    const closeBtn = document.createElement("button");
+                    closeBtn.innerHTML = "&times;";
+                    closeBtn.style.cssText = "position:absolute;top:15px;right:15px;background:none;border:none;font-size:24px;cursor:pointer;color:#333;";
+                    closeBtn.onclick = () => modal.style.display = "none";
+                    
+                    const title = document.createElement("h2");
+                    title.id = "product-modal-title";
+                    title.style.cssText = "color:var(--primary,#E31837);margin-top:0;margin-bottom:10px;text-transform:uppercase;font-weight:900;border-bottom:2px solid var(--primary,#E31837);padding-bottom:10px;";
+                    
+                    const price = document.createElement("div");
+                    price.id = "product-modal-price";
+                    price.style.cssText = "font-size:1.2rem;font-weight:900;margin-bottom:20px;";
+                    
+                    const desc = document.createElement("p");
+                    desc.id = "product-modal-desc";
+                    desc.style.cssText = "color:#555;line-height:1.6;";
+                    
+                    modalContent.appendChild(closeBtn);
+                    modalContent.appendChild(title);
+                    modalContent.appendChild(price);
+                    modalContent.appendChild(desc);
+                    modal.appendChild(modalContent);
+                    document.body.appendChild(modal);
+                    
+                    modal.addEventListener("click", e => {
+                      if(e.target === modal) modal.style.display = "none";
+                    });
+                  }
+                  
+                  document.getElementById("product-modal-title").textContent = p.name;
+                  document.getElementById("product-modal-price").textContent = "$" + Number(p.price).toFixed(2);
+                  document.getElementById("product-modal-desc").textContent = p.description || "No description available.";
+                  modal.style.display = "flex";
+                });
               }));
             }
             document.getElementById("products-loading").style.display = "none";
