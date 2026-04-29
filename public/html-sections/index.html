@@ -319,7 +319,7 @@
         <a href="#services" class="nav-link">Haircuts</a>
         <a href="#shop" class="nav-link">Products</a>
         <a href="#reviews" class="nav-link">Reviews</a>
-        <a href="#services" class="nav-link nav-cta">Check In Now</a>
+        <a href="#" onclick="event.preventDefault(); if(window.BarberBooking) window.BarberBooking.open();" class="nav-link nav-cta">Check In Now</a>
       </div>
     </div>
   </nav>
@@ -330,7 +330,6 @@
       <section class="hero-section">
         <h1 id="dyn-shop-name">Sport Clips Haircuts</h1>
         <p id="dyn-shop-desc">It's good to be a guy.</p>
-        <button class="btn b-book" style="max-width: 280px; min-height: 48px; font-size: 1.05rem; margin: 0 auto; display: block;" onclick="document.querySelector('#services').scrollIntoView({behavior: 'smooth'})">Find a Service</button>
       </section>
     </div>
   </article>
@@ -509,6 +508,12 @@
                 widgetScript.setAttribute("data-shop-id", shopId);
                 widgetScript.setAttribute("data-theme-color", primaryColor);
                 document.body.appendChild(widgetScript);
+                
+                const reviewScript = document.createElement("script");
+                reviewScript.src = widgetUrlPrefix + "/review-widget.js" + cacheBuster;
+                reviewScript.setAttribute("data-shop-id", shopId);
+                reviewScript.setAttribute("data-theme-color", primaryColor);
+                document.body.appendChild(reviewScript);
             }, 50);
 
           } catch(e) { console.error(e); }
@@ -626,11 +631,15 @@
               `).join('');
             }
             document.getElementById("add-review-btn").addEventListener("click", () => {
-              const aptId = prompt("Enter Check-In ID:");
-              const rating = prompt("Rating (1-5):", "5");
-              const comment = prompt("Comments:");
-              if(aptId && rating && comment) {
-                BarberSaaS.submitReview({appointmentId: aptId, rating: parseInt(rating), comment}).then(() => alert("Highlight submitted!")).catch(e => alert("Error: " + e.message));
+              if (window.BarberReviews) {
+                window.BarberReviews.open();
+              } else {
+                const aptId = prompt("Enter Check-In ID:");
+                const rating = prompt("Rating (1-5):", "5");
+                const comment = prompt("Comments:");
+                if(aptId && rating && comment) {
+                  BarberSaaS.submitReview({appointmentId: aptId, rating: parseInt(rating), comment}).then(() => alert("Highlight submitted!")).catch(e => alert("Error: " + e.message));
+                }
               }
             });
             document.getElementById("reviews-loading").style.display = "none";

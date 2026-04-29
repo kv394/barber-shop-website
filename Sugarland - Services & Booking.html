@@ -359,7 +359,7 @@ $RC=function(a,b){if(b=document.getElementById(b))(a=document.getElementById(a))
         &lt;a href=&quot;#services&quot; class=&quot;nav-link&quot;&gt;Haircuts&lt;/a&gt;
         &lt;a href=&quot;#shop&quot; class=&quot;nav-link&quot;&gt;Products&lt;/a&gt;
         &lt;a href=&quot;#reviews&quot; class=&quot;nav-link&quot;&gt;Reviews&lt;/a&gt;
-        &lt;a href=&quot;#services&quot; class=&quot;nav-link nav-cta&quot;&gt;Check In Now&lt;/a&gt;
+        &lt;a href=&quot;#&quot; onclick=&quot;event.preventDefault(); if(window.BarberBooking) window.BarberBooking.open();&quot; class=&quot;nav-link nav-cta&quot;&gt;Check In Now&lt;/a&gt;
       &lt;/div&gt;
     &lt;/div&gt;
   &lt;/nav&gt;
@@ -370,7 +370,6 @@ $RC=function(a,b){if(b=document.getElementById(b))(a=document.getElementById(a))
       &lt;section class=&quot;hero-section&quot;&gt;
         &lt;h1 id=&quot;dyn-shop-name&quot;&gt;Sport Clips Haircuts&lt;/h1&gt;
         &lt;p id=&quot;dyn-shop-desc&quot;&gt;It&#x27;s good to be a guy.&lt;/p&gt;
-        &lt;button class=&quot;btn hero-btn&quot; style=&quot;max-width: 340px; min-height: 56px; font-size: 1.22rem; font-weight: 900; border-radius: 28px; letter-spacing: 1px; margin: 0 auto 10px auto; display: block; box-shadow: 0 4px 18px rgba(227,24,55,0.13); background: linear-gradient(90deg, var(--primary) 60%, #ff5a5f 100%); border: none;&quot; onclick=&quot;document.querySelector(&#x27;#services&#x27;).scrollIntoView({behavior: &#x27;smooth&#x27;})&quot;&gt;Find a Service&lt;/button&gt;
       &lt;/section&gt;
     &lt;/div&gt;
   &lt;/article&gt;
@@ -557,6 +556,12 @@ $RC=function(a,b){if(b=document.getElementById(b))(a=document.getElementById(a))
                 widgetScript.setAttribute(&quot;data-theme-color&quot;, primaryColor);
                 widgetScript.setAttribute(&quot;data-secondary-color&quot;, primaryColor);
                 document.body.appendChild(widgetScript);
+
+                const reviewScript = document.createElement(&quot;script&quot;);
+                reviewScript.src = widgetUrlPrefix + &quot;/review-widget.js&quot; + cacheBuster;
+                reviewScript.setAttribute(&quot;data-shop-id&quot;, shopId);
+                reviewScript.setAttribute(&quot;data-theme-color&quot;, primaryColor);
+                document.body.appendChild(reviewScript);
             }, 50);
 
           } catch(e) { console.error(e); }
@@ -677,11 +682,15 @@ $RC=function(a,b){if(b=document.getElementById(b))(a=document.getElementById(a))
               `).join(&#x27;&#x27;);
             }
             document.getElementById(&quot;add-review-btn&quot;).addEventListener(&quot;click&quot;, () =&gt; {
-              const aptId = prompt(&quot;Enter Check-In ID:&quot;);
-              const rating = prompt(&quot;Rating (1-5):&quot;, &quot;5&quot;);
-              const comment = prompt(&quot;Comments:&quot;);
-              if(aptId &amp;&amp; rating &amp;&amp; comment) {
-                BarberSaaS.submitReview({appointmentId: aptId, rating: parseInt(rating), comment}).then(() =&gt; alert(&quot;Highlight submitted!&quot;)).catch(e =&gt; alert(&quot;Error: &quot; + e.message));
+              if (window.BarberReviews) {
+                window.BarberReviews.open();
+              } else {
+                const aptId = prompt(&quot;Enter Check-In ID:&quot;);
+                const rating = prompt(&quot;Rating (1-5):&quot;, &quot;5&quot;);
+                const comment = prompt(&quot;Comments:&quot;);
+                if(aptId &amp;&amp; rating &amp;&amp; comment) {
+                  BarberSaaS.submitReview({appointmentId: aptId, rating: parseInt(rating), comment}).then(() =&gt; alert(&quot;Highlight submitted!&quot;)).catch(e =&gt; alert(&quot;Error: &quot; + e.message));
+                }
               }
             });
             document.getElementById(&quot;reviews-loading&quot;).style.display = &quot;none&quot;;
