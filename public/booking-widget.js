@@ -208,7 +208,7 @@
       cursor: pointer;
       background: none;
       border: none;
-      color: var(--msg-user-text);
+      color: var(--text-color);
       font-size: 24px;
       line-height: 1;
     }
