@@ -386,7 +386,7 @@
     
     <div id="chat-window">
       <div id="chat-header">
-        <span>Book Appointment</span>
+        <span>AI Chat</span>
         <button id="close-button">&times;</button>
       </div>
       <div id="chat-messages">
