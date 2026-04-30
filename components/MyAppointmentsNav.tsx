@@ -15,8 +15,6 @@ export default function MyAppointmentsNav() {
 
   const links = [
     { href: '/my-appointments', label: 'Appointments', icon: '📅' },
-    { href: '/my-appointments/profile', label: 'Profile', icon: '👤' },
-    { href: '/my-appointments/loyalty', label: 'Loyalty', icon: '⭐' },
     { href: '/my-appointments/notifications', label: 'Notifications', icon: '🔔' },
     { href: '/my-appointments/referrals', label: 'Referrals', icon: '🔗' },
   ];
