@@ -1,12 +1,15 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
-import Link from 'next/link';
-import dynamic from 'next/dynamic';
-import MyAppointmentsNav from '@/components/MyAppointmentsNav';
-import { formatDateTimeInShopTz } from '@/lib/timezone';
+import { useEffect, useState } from "react";
+import Link from "next/link";
+import dynamic from "next/dynamic";
+import MyAppointmentsNav from "@/components/MyAppointmentsNav";
+import { formatDateTimeInShopTz } from "@/lib/timezone";
 
-const RescheduleModal = dynamic(() => import('@/components/appointments/RescheduleModal'), { ssr: false });
+const RescheduleModal = dynamic(
+  () => import("@/components/appointments/RescheduleModal"),
+  { ssr: false },
+);
 
 interface Appointment {
   id: string;
@@ -23,26 +26,46 @@ interface Appointment {
   review: { id: string } | null;
 }
 
-const STATUS_STYLES: Record<string, { bg: string; text: string; label: string }> = {
-  SCHEDULED:  { bg: 'bg-status-info/20',   text: 'text-status-info',   label: 'Upcoming' },
-  COMPLETED:  { bg: 'bg-status-confirmed/20',  text: 'text-status-confirmed',  label: 'Completed' },
-  CANCELLED:  { bg: 'bg-status-cancelled/20',    text: 'text-status-cancelled',    label: 'Cancelled' },
-  NO_SHOW:    { bg: 'bg-amber-900/40',  text: 'text-amber-300',  label: 'No-show' },
+const STATUS_STYLES: Record<
+  string,
+  { bg: string; text: string; label: string }
+> = {
+  SCHEDULED: {
+    bg: "bg-status-info/20",
+    text: "text-status-info",
+    label: "Upcoming",
+  },
+  COMPLETED: {
+    bg: "bg-status-confirmed/20",
+    text: "text-status-confirmed",
+    label: "Completed",
+  },
+  CANCELLED: {
+    bg: "bg-status-cancelled/20",
+    text: "text-status-cancelled",
+    label: "Cancelled",
+  },
+  NO_SHOW: { bg: "bg-amber-900/40", text: "text-amber-300", label: "No-show" },
 };
 
 export default function MyAppointmentsPage() {
   const [upcoming, setUpcoming] = useState<Appointment[]>([]);
   const [past, setPast] = useState<Appointment[]>([]);
-  const [user, setUser] = useState<{ role: string, shopId: string | null } | null>(null);
+  const [user, setUser] = useState<{
+    role: string;
+    shopId: string | null;
+  } | null>(null);
   const [loading, setLoading] = useState(true);
   const [cancelling, setCancelling] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [rescheduleTarget, setRescheduleTarget] = useState<Appointment | null>(null);
+  const [rescheduleTarget, setRescheduleTarget] = useState<Appointment | null>(
+    null,
+  );
 
   async function fetchAppointments() {
     try {
-      const res = await fetch('/api/my-appointments');
-      if (!res.ok) throw new Error('Failed to load appointments');
+      const res = await fetch("/api/my-appointments");
+      if (!res.ok) throw new Error("Failed to load appointments");
       const data = await res.json();
       setUpcoming(data.upcoming || []);
       setPast(data.past || []);
@@ -60,7 +83,7 @@ export default function MyAppointmentsPage() {
 
   async function handleCancel(id: string) {
     const confirmed = window.confirm(
-      'Are you sure you want to cancel this appointment? This cannot be undone.'
+      "Are you sure you want to cancel this appointment? This cannot be undone.",
     );
     if (!confirmed) return;
 
@@ -68,13 +91,13 @@ export default function MyAppointmentsPage() {
     setError(null);
     try {
       const res = await fetch(`/api/my-appointments/${id}`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ status: 'CANCELLED' }),
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status: "CANCELLED" }),
       });
       if (!res.ok) {
         const data = await res.json();
-        throw new Error(data.error || 'Failed to cancel');
+        throw new Error(data.error || "Failed to cancel");
       }
       // Refresh the list
       await fetchAppointments();
@@ -86,13 +109,13 @@ export default function MyAppointmentsPage() {
   }
 
   async function handleSignOut() {
-    const { createClient } = await import('@/utils/supabase/client');
+    const { createClient } = await import("@/utils/supabase/client");
     const supabase = createClient();
     await supabase.auth.signOut();
     if (window.parent) {
       window.parent.location.reload();
     } else {
-      window.location.href = '/';
+      window.location.href = "/";
     }
   }
 
@@ -101,7 +124,9 @@ export default function MyAppointmentsPage() {
       <div className="h-[100dvh] overflow-y-auto overflow-x-hidden flex items-center justify-center bg-crm-surface">
         <div className="flex flex-col items-center gap-4">
           <div className="w-12 h-12 border-4 border-brand-gold border-t-transparent rounded-full animate-spin"></div>
-          <p className="text-crm-accent animate-pulse font-medium tracking-wide uppercase text-[13px]">Loading Appointments...</p>
+          <p className="text-crm-accent animate-pulse font-medium tracking-wide uppercase text-[13px]">
+            Loading Appointments...
+          </p>
         </div>
       </div>
     );
@@ -110,7 +135,6 @@ export default function MyAppointmentsPage() {
   return (
     <main className="h-[100dvh] overflow-y-auto overflow-x-hidden">
       {/* Header */}
-      
 
       {/* Reschedule Modal (C3) */}
       {rescheduleTarget && (
@@ -120,9 +144,12 @@ export default function MyAppointmentsPage() {
           currentDate={rescheduleTarget.startTime}
           currentStaffId={rescheduleTarget.staffId}
           serviceDuration={rescheduleTarget.service?.duration || 30}
-          serviceName={rescheduleTarget.service?.name || 'Service'}
+          serviceName={rescheduleTarget.service?.name || "Service"}
           onClose={() => setRescheduleTarget(null)}
-          onSuccess={() => { setRescheduleTarget(null); fetchAppointments(); }}
+          onSuccess={() => {
+            setRescheduleTarget(null);
+            fetchAppointments();
+          }}
         />
       )}
 
@@ -145,13 +172,9 @@ export default function MyAppointmentsPage() {
           {upcoming.length === 0 ? (
             <div className="text-center py-12 border border-dashed border-crm-border rounded-xl">
               <p className="mb-3 text-[13px]">📅</p>
-              <p className="text-crm-muted text-[13px]">No upcoming appointments</p>
-              <Link
-                href="/shops"
-                className="inline-block mt-4 text-crm-accent hover:text-crm-text text-[13px] font-semibold transition-colors"
-              >
-                Browse shops to book →
-              </Link>
+              <p className="text-crm-muted text-[13px] mb-2 mt-4">
+                You have no upcoming appointments.
+              </p>
             </div>
           ) : (
             <div className="space-y-3">
@@ -180,7 +203,9 @@ export default function MyAppointmentsPage() {
 
           {past.length === 0 ? (
             <div className="text-center py-12 border border-dashed border-crm-border rounded-xl">
-              <p className="text-crm-muted italic text-[13px]">No past appointments yet.</p>
+              <p className="text-crm-muted italic text-[13px]">
+                No past appointments yet.
+              </p>
             </div>
           ) : (
             <div className="space-y-3">
@@ -218,8 +243,12 @@ function AppointmentCard({
   showRebook?: boolean;
 }) {
   const style = STATUS_STYLES[apt.status] || STATUS_STYLES.SCHEDULED;
-  const tz = apt.shop?.timezone || 'America/New_York';
-  const shopSlug = apt.shop?.name?.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '') || '';
+  const tz = apt.shop?.timezone || "America/New_York";
+  const shopSlug =
+    apt.shop?.name
+      ?.toLowerCase()
+      .replace(/\s+/g, "-")
+      .replace(/[^\w-]/g, "") || "";
 
   return (
     <div className="bg-crm-surface border border-crm-border shadow-sm rounded-xl p-4 sm:p-5 hover:border-crm-border transition-colors">
@@ -229,16 +258,20 @@ function AppointmentCard({
           {/* Shop name + status */}
           <div className="flex items-center gap-2 flex-wrap">
             <span className="font-bold text-crm-text text-[13px] sm:text-base truncate">
-              {apt.shop?.name || 'Unknown Shop'}
+              {apt.shop?.name || "Unknown Shop"}
             </span>
-            <span className={`text-[13px] font-bold px-2 py-0.5 rounded-full ${style.bg} ${style.text}`}>
+            <span
+              className={`text-[13px] font-bold px-2 py-0.5 rounded-full ${style.bg} ${style.text}`}
+            >
               {style.label}
             </span>
           </div>
 
           {/* Service + Staff */}
           <div className="flex items-center gap-2 text-[13px]">
-            <span className="text-crm-muted">{apt.service?.name || 'Service'}</span>
+            <span className="text-crm-muted">
+              {apt.service?.name || "Service"}
+            </span>
             {apt.staff?.name && (
               <>
                 <span className="text-crm-muted">·</span>
@@ -254,22 +287,36 @@ function AppointmentCard({
               {formatDateTimeInShopTz(apt.startTime, tz)}
             </span>
             {apt.service?.duration && (
-              <span className="text-[11px] text-crm-muted">({apt.service.duration} min)</span>
+              <span className="text-[11px] text-crm-muted">
+                ({apt.service.duration} min)
+              </span>
             )}
           </div>
 
           {/* Price */}
-          {apt.status === 'COMPLETED' && apt.totalAmount > 0 && (
+          {apt.status === "COMPLETED" && apt.totalAmount > 0 && (
             <div className="flex items-center gap-3 text-[11px] text-crm-muted">
-              <span>Total: <span className="text-crm-text font-semibold">${apt.totalAmount.toFixed(2)}</span></span>
-              {apt.tipAmount > 0 && <span>Tip: <span className="text-status-confirmed">${apt.tipAmount.toFixed(2)}</span></span>}
+              <span>
+                Total:{" "}
+                <span className="text-crm-text font-semibold">
+                  ${apt.totalAmount.toFixed(2)}
+                </span>
+              </span>
+              {apt.tipAmount > 0 && (
+                <span>
+                  Tip:{" "}
+                  <span className="text-status-confirmed">
+                    ${apt.tipAmount.toFixed(2)}
+                  </span>
+                </span>
+              )}
             </div>
           )}
         </div>
 
         {/* Right: Actions */}
         <div className="shrink-0 flex flex-col gap-2">
-          {showCancel && apt.status === 'SCHEDULED' && (
+          {showCancel && apt.status === "SCHEDULED" && (
             <div className="flex gap-2">
               {onReschedule && (
                 <button
@@ -284,7 +331,7 @@ function AppointmentCard({
                 disabled={cancelling}
                 className="px-4 py-2 text-[13px] font-semibold bg-status-cancelled/20 text-status-cancelled border border-status-cancelled/30 rounded-lg hover:bg-status-cancelled/40 hover:text-status-cancelled transition-all disabled:opacity-50 disabled:cursor-wait"
               >
-                {cancelling ? 'Cancelling…' : 'Cancel'}
+                {cancelling ? "Cancelling…" : "Cancel"}
               </button>
             </div>
           )}
@@ -296,7 +343,7 @@ function AppointmentCard({
               Rebook
             </Link>
           )}
-          {showRebook && apt.status === 'COMPLETED' && !apt.review && (
+          {showRebook && apt.status === "COMPLETED" && !apt.review && (
             <Link
               href={`/my-appointments/review/${apt.id}`}
               className="px-4 py-2 text-[13px] font-semibold bg-purple-600/20 text-crm-accent border border-crm-accent/30 rounded-lg hover:bg-purple-600/40 transition-all text-center"
@@ -305,11 +352,12 @@ function AppointmentCard({
             </Link>
           )}
           {apt.review && (
-            <span className="px-4 py-2 text-[13px] text-status-confirmed/70 text-center">✅ Reviewed</span>
+            <span className="px-4 py-2 text-[13px] text-status-confirmed/70 text-center">
+              ✅ Reviewed
+            </span>
           )}
         </div>
       </div>
     </div>
   );
 }
-
