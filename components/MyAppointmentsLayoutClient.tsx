@@ -40,12 +40,6 @@ export default function MyAppointmentsLayoutClient({ children }: { children: Rea
             >
               Sign Out
             </button>
-            <Link
-              href="/shops"
-              className="bg-crm-primary text-white font-bold px-4 py-2 rounded-lg text-[13px] hover:bg-crm-surface hover:text-crm-primary border border-transparent hover:border-crm-primary/30 transition-colors"
-            >
-              Book New
-            </Link>
           </div>
         </div>
         
