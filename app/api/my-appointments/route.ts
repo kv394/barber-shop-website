@@ -33,7 +33,10 @@ export async function GET(request: Request) {
     const [upcoming, past] = await Promise.all([
       prisma.appointment.findMany({
         where: {
-          userId,
+          OR: [
+            { userId: userId },
+            { user: { email: authUserEmail } }
+          ],
           status: 'SCHEDULED',
           startTime: { gte: now },
         },
@@ -49,11 +52,18 @@ export async function GET(request: Request) {
       }),
       prisma.appointment.findMany({
         where: {
-          userId,
           OR: [
-            { status: { in: ['COMPLETED', 'CANCELLED', 'NO_SHOW'] } },
-            { startTime: { lt: now }, status: 'SCHEDULED' },
+            { userId: userId },
+            { user: { email: authUserEmail } }
           ],
+          AND: [
+            {
+              OR: [
+                { status: { in: ['COMPLETED', 'CANCELLED', 'NO_SHOW'] } },
+                { startTime: { lt: now }, status: 'SCHEDULED' },
+              ],
+            }
+          ]
         },
         include: {
           service: { select: { id: true, name: true, price: true, duration: true } },

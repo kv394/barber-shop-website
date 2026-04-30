@@ -40,7 +40,7 @@ const generateCsp = () => {
     connect-src 'self' https://*.supabase.co wss://*.supabase.co https://*.stripe.com;
     img-src 'self' data: https://images.unsplash.com https://cdn.pixabay.com;
     style-src 'self' 'unsafe-inline';
-    frame-src 'self' https://js.stripe.com https://hooks.stripe.com;
+    frame-src *;
     font-src 'self' data:;
   `.replace(/\s{2,}/g, ' ').trim();
   
