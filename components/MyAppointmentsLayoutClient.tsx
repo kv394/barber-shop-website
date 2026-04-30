@@ -35,7 +35,7 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
             <h1 className="font-bold text-crm-text text-2xl">Account Portal</h1>
             <p className="text-crm-muted text-[13px]">Manage your account & bookings</p>
           </div>
-          <div className="flex gap-2 items-center">
+          <div className="flex gap-2 items-center mr-12 sm:mr-14">
             <button
               onClick={handleSignOut}
               className="bg-red-500/10 border border-red-500/20 text-red-500 font-bold px-4 py-2 rounded-lg text-[13px] hover:bg-red-500/20 transition-colors"
