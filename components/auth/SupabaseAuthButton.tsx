@@ -192,7 +192,7 @@ export default function SupabaseAuthButton({
       <div className="relative inline-block z-50">
         <button
           ref={buttonRef}
-          onClick={() => openModal('/my-appointments')}
+          onClick={() => openModal('/my-appointments/profile')}
           className="flex items-center gap-2 bg-crm-surface hover:bg-crm-bg border border-crm-border shadow-sm px-3 py-1.5 rounded-full transition-colors"
         >
           <div 
