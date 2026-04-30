@@ -35,7 +35,7 @@ export async function GET(request: Request) {
         where: {
           OR: [
             { userId: userId },
-            { user: { email: authUserEmail } }
+            ...(authUserEmail ? [{ user: { email: authUserEmail } }] : [])
           ],
           status: 'SCHEDULED',
           startTime: { gte: now },
@@ -54,7 +54,7 @@ export async function GET(request: Request) {
         where: {
           OR: [
             { userId: userId },
-            { user: { email: authUserEmail } }
+            ...(authUserEmail ? [{ user: { email: authUserEmail } }] : [])
           ],
           AND: [
             {
