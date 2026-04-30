@@ -1,10 +1,12 @@
 "use client";
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useSearchParams } from 'next/navigation';
 
-export default function MyAppointmentsLayoutClient({ children }: { children: React.ReactNode }) {
+function LayoutContent({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const themeColor = searchParams.get('themeColor') || undefined;
   
   const handleSignOut = async () => {
     const { createClient } = await import('@/utils/supabase/client');
@@ -25,7 +27,7 @@ export default function MyAppointmentsLayoutClient({ children }: { children: Rea
   ];
 
   return (
-    <div className="flex flex-col h-[100dvh] bg-crm-bg overflow-hidden text-crm-text">
+    <div className="flex flex-col h-[100dvh] bg-crm-bg overflow-hidden text-crm-text" style={themeColor ? { '--crm-primary': themeColor } as any : {}}>
       {/* Persistent Header */}
       <header className="bg-crm-surface backdrop-blur-md border-b border-crm-border shrink-0 z-20">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 py-4 flex flex-wrap justify-between gap-x-2 gap-y-2 items-center">
@@ -49,8 +51,9 @@ export default function MyAppointmentsLayoutClient({ children }: { children: Rea
             return (
               <Link 
                 key={t.id} 
-                href={t.id}
-                className={`text-[13px] px-1 pb-3 whitespace-nowrap transition-colors font-semibold border-b-2 relative top-[1px] ${isActive ? 'text-crm-accent border-brand-gold' : 'text-crm-muted hover:text-crm-text border-transparent'}`}
+                href={t.id + (themeColor ? `?themeColor=${encodeURIComponent(themeColor)}` : '')}
+                className={`text-[13px] px-1 pb-3 whitespace-nowrap transition-colors font-semibold border-b-2 relative top-[1px] ${isActive ? 'text-crm-text' : 'text-crm-muted hover:text-crm-text border-transparent'}`}
+                style={isActive ? { borderColor: themeColor || '#eab308', color: themeColor || '#eab308' } : {}}
               >
                 {t.label}
               </Link>
@@ -64,5 +67,13 @@ export default function MyAppointmentsLayoutClient({ children }: { children: Rea
         {children}
       </main>
     </div>
+  );
+}
+
+export default function MyAppointmentsLayoutClient({ children }: { children: React.ReactNode }) {
+  return (
+    <Suspense fallback={<div className="h-[100dvh] bg-crm-bg flex justify-center items-center">Loading...</div>}>
+      <LayoutContent>{children}</LayoutContent>
+    </Suspense>
   );
 }

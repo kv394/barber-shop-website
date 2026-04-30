@@ -32,7 +32,11 @@ export default function SupabaseAuthButton({
   const supabase = createClient();
 
   const openModal = (url: string) => {
-    setModalUrl(url);
+    let finalUrl = url;
+    if (primaryColor) {
+      finalUrl += (finalUrl.includes('?') ? '&' : '?') + `themeColor=${encodeURIComponent(primaryColor)}`;
+    }
+    setModalUrl(finalUrl);
   };
   const closeModal = () => {
     setModalUrl(null);
