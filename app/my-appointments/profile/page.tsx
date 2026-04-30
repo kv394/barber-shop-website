@@ -56,31 +56,7 @@ function ProfileContent() {
 
   return (
     <main className="h-[100dvh] overflow-y-auto overflow-x-hidden">
-      <header className="bg-crm-surface backdrop-blur-md border-b border-crm-border sticky top-0 z-20 print:hidden">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 py-4 flex flex-wrap justify-between gap-x-2 gap-y-2 items-center">
-          <div>
-            <h1 className="font-bold text-crm-text text-2xl font-bold">My Profile</h1>
-            <p className="text-crm-muted text-[13px]">Update your personal information</p>
-          </div>
-          
-          {profile?.role === 'SITE_ADMIN' ? (
-            <Link href="/siteadmin" className="text-[13px] bg-crm-surface hover:bg-crm-surface border border-slate-600 text-crm-text px-4 py-2 rounded-lg font-semibold transition-colors">
-              Back to Siteadmin
-            </Link>
-          ) : profile?.shopId && (profile?.role === 'SHOP_ADMIN' || profile?.role === 'STAFF') ? (
-            <Link href={`/shop/${profile.shopId}`} className="text-[13px] bg-crm-surface hover:bg-crm-surface border border-slate-600 text-crm-text px-4 py-2 rounded-lg font-semibold transition-colors">
-              Back to Dashboard
-            </Link>
-          ) : null}
-        </div>
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 pb-2 flex gap-4 overflow-x-auto scrollbar-none">
-          <Link href="/my-appointments" className="text-[13px] text-crm-muted hover:text-crm-text px-1 pb-1 whitespace-nowrap transition-colors">📅 Appointments</Link>
-          <Link href="/my-appointments/profile" className="text-[13px] text-crm-accent border-b-2 border-brand-gold px-1 pb-1 font-semibold whitespace-nowrap">👤 Profile</Link>
-          <Link href="/my-appointments/loyalty" className="text-[13px] text-crm-muted hover:text-crm-text px-1 pb-1 whitespace-nowrap transition-colors">⭐ Loyalty</Link>
-          <Link href="/my-appointments/notifications" className="text-[13px] text-crm-muted hover:text-crm-text px-1 pb-1 whitespace-nowrap transition-colors">🔔 Notifications</Link>
-          <Link href="/my-appointments/referrals" className="text-[13px] text-crm-muted hover:text-crm-text px-1 pb-1 whitespace-nowrap transition-colors">🔗 Referrals</Link>
-        </div>
-      </header>
+      
 
       <div className="max-w-2xl mx-auto px-4 sm:px-6 py-8 space-y-6">
         {msg && (

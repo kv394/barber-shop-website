@@ -1,8 +1,7 @@
-import MyAppointmentsNav from '@/components/MyAppointmentsNav';
+import MyAppointmentsLayoutClient from '@/components/MyAppointmentsLayoutClient';
 import { createClient } from '@/utils/supabase/server';
 import { redirect } from 'next/navigation';
 import { prisma } from '@/lib/prisma';
-import { headers } from 'next/headers';
 
 export default async function MyAppointmentsLayout({
   children,
@@ -26,15 +25,9 @@ export default async function MyAppointmentsLayout({
      redirect('/');
   }
 
-  const reqHeaders = await headers();
-  const isIframe = reqHeaders.get('sec-fetch-dest') === 'iframe';
-
   return (
-    <div className="bg-crm-surface h-[100dvh] overflow-y-auto overflow-x-hidden text-crm-text font-sans flex flex-col">
-      {!isIframe && <MyAppointmentsNav />}
-      <main className="flex-1 w-full bg-crm-bg">
-        {children}
-      </main>
-    </div>
+    <MyAppointmentsLayoutClient>
+      {children}
+    </MyAppointmentsLayoutClient>
   );
 }

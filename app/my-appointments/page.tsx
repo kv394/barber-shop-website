@@ -110,45 +110,7 @@ export default function MyAppointmentsPage() {
   return (
     <main className="h-[100dvh] overflow-y-auto overflow-x-hidden">
       {/* Header */}
-      <header className="bg-crm-surface backdrop-blur-md border-b border-crm-border sticky top-0 z-20">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
-          <div>
-            <h1 className="font-bold text-crm-text text-2xl font-bold">My Appointments</h1>
-            <p className="text-crm-muted text-[13px]">Manage your upcoming bookings</p>
-          </div>
-          <div className="flex gap-2">
-            {user?.role === 'SITE_ADMIN' ? (
-              <Link href="/siteadmin" className="bg-crm-surface border border-slate-600 text-crm-text font-bold px-4 py-2 rounded-lg text-[13px] hover:bg-crm-surface transition-colors">
-                Back to Siteadmin
-              </Link>
-            ) : user?.shopId && (user?.role === 'SHOP_ADMIN' || user?.role === 'STAFF') ? (
-              <Link href={`/shop/${user.shopId}`} className="bg-crm-surface border border-slate-600 text-crm-text font-bold px-4 py-2 rounded-lg text-[13px] hover:bg-crm-surface transition-colors">
-                Back to Dashboard
-              </Link>
-            ) : null}
-            <Link
-              href="/my-appointments/profile"
-              className="bg-crm-surface border border-slate-600 text-crm-text font-bold px-4 py-2 rounded-lg text-[13px] hover:bg-crm-bg transition-colors"
-            >
-              Edit Profile
-            </Link>
-            <button
-              onClick={handleSignOut}
-              className="bg-red-500/10 border border-red-500/20 text-red-500 font-bold px-4 py-2 rounded-lg text-[13px] hover:bg-red-500/20 transition-colors"
-            >
-              Sign Out
-            </button>
-            <Link
-              href="/shops"
-              className="bg-crm-primary text-white font-bold px-4 py-2 rounded-lg text-[13px] hover:bg-crm-surface hover:text-crm-primary border border-transparent hover:border-crm-primary/30 transition-colors"
-            >
-              Book New
-            </Link>
-          </div>
-        </div>
-        {/* Client portal nav (C2) */}
-        <MyAppointmentsNav />
-      </header>
+      
 
       {/* Reschedule Modal (C3) */}
       {rescheduleTarget && (

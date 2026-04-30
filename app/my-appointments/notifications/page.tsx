@@ -48,16 +48,7 @@ export default function NotificationsPage() {
 
   return (
     <main className="h-[100dvh] overflow-y-auto overflow-x-hidden">
-      <header className="bg-crm-surface backdrop-blur-md border-b border-crm-border sticky top-0 z-20">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 py-4 flex flex-wrap justify-between gap-x-2 gap-y-2 items-center">
-          <div>
-            <h1 className="font-bold text-crm-text text-2xl font-bold">Notification Preferences</h1>
-            <p className="text-crm-muted text-[13px]">Control what emails and texts you receive</p>
-          </div>
-          <BackButton />
-        </div>
-        <MyAppointmentsNav />
-      </header>
+      
 
       <div className="max-w-2xl mx-auto px-4 sm:px-6 py-8">
         {msg && <div className="mb-4 p-3 rounded-lg bg-status-confirmed/20 border border-status-confirmed/30 text-status-confirmed text-[13px]">{msg}</div>}
