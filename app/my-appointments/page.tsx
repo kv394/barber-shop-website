@@ -85,6 +85,17 @@ export default function MyAppointmentsPage() {
     }
   }
 
+  async function handleSignOut() {
+    const { createClient } = await import('@/utils/supabase/client');
+    const supabase = createClient();
+    await supabase.auth.signOut();
+    if (window.parent) {
+      window.parent.location.reload();
+    } else {
+      window.location.href = '/';
+    }
+  }
+
   if (loading) {
     return (
       <div className="h-[100dvh] overflow-y-auto overflow-x-hidden flex items-center justify-center bg-crm-surface">
@@ -115,6 +126,18 @@ export default function MyAppointmentsPage() {
                 Back to Dashboard
               </Link>
             ) : null}
+            <Link
+              href="/my-appointments/profile"
+              className="bg-crm-surface border border-slate-600 text-crm-text font-bold px-4 py-2 rounded-lg text-[13px] hover:bg-crm-bg transition-colors"
+            >
+              Edit Profile
+            </Link>
+            <button
+              onClick={handleSignOut}
+              className="bg-red-500/10 border border-red-500/20 text-red-500 font-bold px-4 py-2 rounded-lg text-[13px] hover:bg-red-500/20 transition-colors"
+            >
+              Sign Out
+            </button>
             <Link
               href="/shops"
               className="bg-crm-primary text-white font-bold px-4 py-2 rounded-lg text-[13px] hover:bg-crm-surface hover:text-crm-primary border border-transparent hover:border-crm-primary/30 transition-colors"
