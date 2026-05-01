@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { google } from 'googleapis';
 import { Redis } from '@upstash/redis';
+import { getDriveService } from '@/lib/google-drive';
 
 // Note: Ensure you have NEXT_PUBLIC_UPSTASH_REDIS_REST_URL and NEXT_PUBLIC_UPSTASH_REDIS_REST_TOKEN in your environment.
 let redis: Redis | null = null;
@@ -14,25 +14,6 @@ try {
 } catch (e) {
   console.warn('Upstash Redis not configured properly:', e);
 }
-
-// Initialize Google Drive API
-const getDriveService = () => {
-  const credentialsString = process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON;
-  if (!credentialsString) {
-    return null;
-  }
-  try {
-    const credentials = JSON.parse(credentialsString);
-    const auth = new google.auth.GoogleAuth({
-      credentials,
-      scopes: ['https://www.googleapis.com/auth/drive.readonly'],
-    });
-    return google.drive({ version: 'v3', auth });
-  } catch (e) {
-    console.error('Error initializing Google Drive API:', e);
-    return null;
-  }
-};
 
 export async function GET(req: NextRequest, { params }: { params: Promise<{ fileId: string }> }) {
   const { fileId } = await params;

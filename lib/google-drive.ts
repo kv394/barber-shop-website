@@ -1,7 +1,7 @@
 import { google } from 'googleapis';
 import { Readable } from 'stream';
 
-const getDriveService = () => {
+export const getDriveService = () => {
   const credentialsString = process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON;
   if (!credentialsString) return null;
 
