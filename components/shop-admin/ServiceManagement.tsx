@@ -340,14 +340,12 @@ export function ServiceManagement({ shopId }: ServiceManagementProps) {
               </label>
             </div>
 
-            {newService.isBookable && (
-              <div className="md:col-span-2">
-                <label className="block font-medium text-crm-muted mb-2 text-[13px]">
-                  Service Image (optional)
-                </label>
-                <MediaPicker shopId={shopId} currentUrl={newService.imageUrl} onSelect={(url) => setNewService({ ...newService, imageUrl: url })} label="Upload/Select Service Image" />
-              </div>
-            )}
+            <div className="md:col-span-2">
+              <label className="block font-medium text-crm-muted mb-2 text-[13px]">
+                Service Image (optional)
+              </label>
+              <MediaPicker shopId={shopId} currentUrl={newService.imageUrl} onSelect={(url) => setNewService({ ...newService, imageUrl: url })} label="Upload/Select Service Image" />
+            </div>
 
             <div className="flex items-center space-x-3 py-2">
               <input 

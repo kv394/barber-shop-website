@@ -182,12 +182,10 @@ export default function ProductManager({ shopId, products }: { shopId: string, p
               <textarea rows={3} value={formData.description} onChange={(e) => setFormData({ ...formData, description: e.target.value })} className="w-full bg-crm-bg border border-crm-border shadow-sm rounded-lg px-4 py-2 text-crm-text" placeholder="Product details..."></textarea>
             </div>
 
-            {formData.isSellable && (
-              <div className="col-span-1 md:col-span-2 mt-2">
-                <label className="block font-medium text-crm-muted mb-1 text-[13px]">Product Image</label>
-                <MediaPicker shopId={shopId} currentUrl={formData.imageUrl} onSelect={(url) => setFormData({ ...formData, imageUrl: url })} label="Upload/Select Product Image" />
-              </div>
-            )}
+            <div className="col-span-1 md:col-span-2 mt-2">
+              <label className="block font-medium text-crm-muted mb-1 text-[13px]">Product Image</label>
+              <MediaPicker shopId={shopId} currentUrl={formData.imageUrl} onSelect={(url) => setFormData({ ...formData, imageUrl: url })} label="Upload/Select Product Image" />
+            </div>
 
             {formData.trackInventory && (
               <>
