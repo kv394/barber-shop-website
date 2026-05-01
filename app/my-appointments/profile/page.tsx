@@ -4,7 +4,7 @@ import { useEffect, useState, Suspense } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { QRCodeSVG } from 'qrcode.react';
-import MyAppointmentsNav from '@/components/MyAppointmentsNav';
+
 
 function ProfileContent() {
   const searchParams = useSearchParams();
@@ -48,14 +48,14 @@ function ProfileContent() {
 
   if (loading) {
     return (
-      <div className="h-[100dvh] overflow-y-auto overflow-x-hidden">
+      <div className="flex items-center justify-center py-12">
         <p className="text-crm-muted animate-pulse text-[13px]">Loading profile…</p>
       </div>
     );
   }
 
   return (
-    <main className="h-[100dvh] overflow-y-auto overflow-x-hidden">
+    <main className="pb-12">
       
 
       <div className="max-w-2xl mx-auto px-4 sm:px-6 py-8 space-y-6">
@@ -136,7 +136,7 @@ function ProfileContent() {
 
 export default function ProfilePage() {
   return (
-    <Suspense fallback={<div className="h-[100dvh] overflow-y-auto overflow-x-hidden"><p className="text-crm-muted text-[13px]">Loading...</p></div>}>
+    <Suspense fallback={<div className="flex items-center justify-center py-12"><p className="text-crm-muted text-[13px]">Loading...</p></div>}>
       <ProfileContent />
     </Suspense>
   );

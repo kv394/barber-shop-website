@@ -1,9 +1,6 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import Link from 'next/link';
-import BackButton from '@/components/BackButton';
-import MyAppointmentsNav from '@/components/MyAppointmentsNav';
 
 interface ReferralData {
   referralCode: string;
@@ -62,14 +59,14 @@ export default function ReferralsPage() {
 
   if (loading) {
     return (
-      <div className="h-[100dvh] overflow-y-auto overflow-x-hidden">
+      <div className="py-12 flex items-center justify-center">
         <p className="text-crm-muted animate-pulse text-[13px]">Loading referrals…</p>
       </div>
     );
   }
 
   return (
-    <main className="h-[100dvh] overflow-y-auto overflow-x-hidden">
+    <main className="pb-12">
       
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8 space-y-8">

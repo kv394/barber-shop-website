@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import dynamic from "next/dynamic";
-import MyAppointmentsNav from "@/components/MyAppointmentsNav";
+
 import { formatDateTimeInShopTz } from "@/lib/timezone";
 
 const RescheduleModal = dynamic(
@@ -121,7 +121,7 @@ export default function MyAppointmentsPage() {
 
   if (loading) {
     return (
-      <div className="h-[100dvh] overflow-y-auto overflow-x-hidden flex items-center justify-center bg-crm-surface">
+      <div className="py-20 flex items-center justify-center">
         <div className="flex flex-col items-center gap-4">
           <div className="w-12 h-12 border-4 border-brand-gold border-t-transparent rounded-full animate-spin"></div>
           <p className="text-crm-accent animate-pulse font-medium tracking-wide uppercase text-[13px]">
@@ -133,7 +133,7 @@ export default function MyAppointmentsPage() {
   }
 
   return (
-    <main className="h-[100dvh] overflow-y-auto overflow-x-hidden">
+    <main className="pb-12">
       {/* Header */}
 
       {/* Reschedule Modal (C3) */}

@@ -23,7 +23,6 @@ export default function SupabaseAuthButton({
   const [isRendered, setIsRendered] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [menuStyle, setMenuStyle] = useState<React.CSSProperties>({});
-  const [modalUrl, setModalUrl] = useState<string | null>(null);
   
   const buttonRef = useRef<HTMLButtonElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
@@ -31,15 +30,16 @@ export default function SupabaseAuthButton({
   const router = useRouter();
   const supabase = createClient();
 
-  const openModal = (url: string) => {
+  const navigateTo = (url: string) => {
     let finalUrl = url;
     if (primaryColor) {
       finalUrl += (finalUrl.includes('?') ? '&' : '?') + `themeColor=${encodeURIComponent(primaryColor)}`;
     }
-    setModalUrl(finalUrl);
-  };
-  const closeModal = () => {
-    setModalUrl(null);
+    if (window.parent && window.parent !== window) {
+      window.parent.location.href = finalUrl;
+    } else {
+      router.push(finalUrl);
+    }
   };
 
   useEffect(() => {
@@ -169,13 +169,13 @@ export default function SupabaseAuthButton({
            
            {/* Menu Actions */}
            <div className="p-2 space-y-1 bg-crm-surface">
-              <button onClick={() => { setIsOpen(false); openModal('/my-appointments'); }} className="block w-full text-left px-3 py-2.5 text-[13px] text-crm-text hover:text-crm-primary hover:bg-crm-bg rounded-xl transition-colors font-semibold">
+              <button onClick={() => { setIsOpen(false); navigateTo('/my-appointments'); }} className="block w-full text-left px-3 py-2.5 text-[13px] text-crm-text hover:text-crm-primary hover:bg-crm-bg rounded-xl transition-colors font-semibold">
                 My Appointments
               </button>
-              <button onClick={() => { setIsOpen(false); openModal('/my-appointments/profile'); }} className="block w-full text-left px-3 py-2.5 text-[13px] text-crm-text hover:text-crm-primary hover:bg-crm-bg rounded-xl transition-colors font-semibold">
+              <button onClick={() => { setIsOpen(false); navigateTo('/my-appointments/profile'); }} className="block w-full text-left px-3 py-2.5 text-[13px] text-crm-text hover:text-crm-primary hover:bg-crm-bg rounded-xl transition-colors font-semibold">
                 Edit Profile
               </button>
-              <button onClick={() => { setIsOpen(false); openModal('/update-password'); }} className="block w-full text-left px-3 py-2.5 text-[13px] text-crm-text hover:text-crm-primary hover:bg-crm-bg rounded-xl transition-colors font-semibold">
+              <button onClick={() => { setIsOpen(false); navigateTo('/update-password'); }} className="block w-full text-left px-3 py-2.5 text-[13px] text-crm-text hover:text-crm-primary hover:bg-crm-bg rounded-xl transition-colors font-semibold">
                 Change Password
               </button>
               
@@ -207,18 +207,6 @@ export default function SupabaseAuthButton({
           </div>
         </button>
         {isRendered && mounted && typeof document !== 'undefined' ? createPortal(menuContent, document.body) : null}
-        {/* Iframe Modal Overlay */}
-        {modalUrl && mounted && typeof document !== 'undefined' ? createPortal(
-          <div className="fixed inset-0 z-[9999999] flex items-center justify-center bg-black/70 backdrop-blur-sm p-4 animate-in fade-in duration-200">
-            <div className="bg-crm-surface w-full max-w-4xl h-[90vh] max-h-[900px] rounded-2xl shadow-2xl overflow-hidden relative flex flex-col border border-crm-border animate-in zoom-in-95 duration-300">
-              <div className="absolute top-3 right-3 z-50">
-                <button onClick={closeModal} className="w-8 h-8 flex items-center justify-center rounded-full bg-crm-surface hover:bg-crm-border text-crm-text transition-colors shadow-sm border border-crm-border">✕</button>
-              </div>
-              <iframe src={modalUrl} className="w-full flex-1 border-none bg-crm-bg" />
-            </div>
-          </div>,
-          document.body
-        ) : null}
       </div>
     );
   }
