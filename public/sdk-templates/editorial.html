@@ -1,184 +1,150 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Editorial Barber Shop</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Editorial Barber Shop</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: 'var(--theme-color)',
+            secondary: '#1a1a1a',
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    /* Dynamic theme variables */
+    :root {
+      --theme-color: #c0a05b;
+    }
+  </style>
+</head>
+<body class="bg-gray-50 text-gray-900 transition-colors duration-300">
+
+  <div id="app-container" class="min-h-screen flex flex-col">
+
+    <div id="app-content" class="hidden bg-[#f4f4f0] text-black font-sans min-h-screen selection:bg-black selection:text-white">
+      <header class="py-32 px-8 border-b-[3px] border-black text-center">
+        <h1 id="shop-name" class="text-6xl md:text-8xl font-bold tracking-tighter mb-8 uppercase leading-none"></h1>
+        <p id="shop-desc" class="text-2xl max-w-2xl mx-auto font-serif opacity-80 italic"></p>
+      </header>
+      <main class="max-w-4xl mx-auto px-8 py-32 space-y-40">
+        <section>
+          <h2 class="text-5xl font-bold tracking-tighter mb-20 text-center uppercase">The Collection</h2>
+          <div id="services-container" class="space-y-0 border-t-[3px] border-black"></div>
+        </section>
+      </main>
+    </div>
     <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            colors: {
-              primary: "var(--theme-color)",
-              secondary: "#1a1a1a",
-            },
-          },
-        },
-      };
-    </script>
-    <style>
-      body {
-        font-family: "Inter", sans-serif;
-      }
-      /* Dynamic theme variables */
-      :root {
-        --theme-color: #c0a05b;
-      }
-    </style>
-  </head>
-  <body class="bg-gray-50 text-gray-900 transition-colors duration-300">
-    <div id="app-container" class="min-h-screen flex flex-col">
-      <div
-        id="app-content"
-        class="hidden bg-[#f4f4f0] text-black font-sans min-h-screen selection:bg-black selection:text-white"
-      >
-        <header class="py-32 px-8 border-b-[3px] border-black text-center">
-          <h1
-            id="shop-name"
-            class="text-6xl md:text-8xl font-bold tracking-tighter mb-8 uppercase leading-none"
-          ></h1>
-          <p
-            id="shop-desc"
-            class="text-2xl max-w-2xl mx-auto font-serif opacity-80 italic"
-          ></p>
-        </header>
-        <main class="max-w-4xl mx-auto px-8 py-32 space-y-40">
-          <section>
-            <h2
-              class="text-5xl font-bold tracking-tighter mb-20 text-center uppercase"
-            >
-              The Collection
-            </h2>
-            <div
-              id="services-container"
-              class="space-y-0 border-t-[3px] border-black"
-            ></div>
-          </section>
-        </main>
-      </div>
-      <script>
-        window.renderServices = (services) =>
-          services
-            .map(
-              (s) => `
+      window.renderServices = (services) => services.map(s => `
         <div class="flex flex-col md:flex-row justify-between items-start md:items-center py-12 border-b-[3px] border-black group">
           <div class="flex-1 md:pr-16 mb-8 md:mb-0">
             <h3 class="text-4xl font-bold tracking-tight mb-4 group-hover:italic transition-all uppercase">${s.name}</h3>
-            <p class="text-xl font-serif opacity-80 leading-relaxed">${s.description || ""}</p>
+            <p class="text-xl font-serif opacity-80 leading-relaxed">${s.description || ''}</p>
           </div>
           <div class="flex flex-col md:items-end w-full md:w-auto">
             <span class="text-3xl font-bold mb-6 tracking-tighter">${s.price.toFixed(2)}</span>
             <button class="book-btn bg-black text-white px-12 py-5 uppercase tracking-[0.2em] text-sm font-bold hover:bg-gray-800 transition-colors w-full md:w-auto" data-id="${s.id}">RESERVE</button>
           </div>
         </div>
-      `,
-            )
-            .join("");
-        window.renderProducts = () => "";
-      </script>
-
-      <!-- Loading State -->
-      <div id="loading" class="flex-1 flex items-center justify-center">
-        <div
-          class="animate-spin rounded-full h-12 w-12 border-b-2 border-black"
-        ></div>
-      </div>
+      `).join('');
+      window.renderProducts = () => ''; 
+    </script>
+  
+    <!-- Loading State -->
+    <div id="loading" class="flex-1 flex items-center justify-center">
+      <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-black"></div>
     </div>
+  </div>
 
-    <script src="../../barbersaas-sdk.js"></script>
+  <script src="../../barbersaas-sdk.js"></script>
 
-    <script>
-      const templateType = "editorial";
+  <script>
+    const templateType = 'editorial';
+    
+    window.addEventListener('load', async () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const shopId = urlParams.get('shopId') || 'cmn9kj24n0000lqzc7kcsmpst';
 
-      window.addEventListener("load", async () => {
-        const urlParams = new URLSearchParams(window.location.search);
-        const shopId = urlParams.get("shopId") || "cmn9kj24n0000lqzc7kcsmpst";
+      const modalScript = document.createElement('script');
+      modalScript.src = '../../booking-modal.js';
+      modalScript.setAttribute('data-shop-id', shopId);
+      document.head.appendChild(modalScript);
 
-        const modalScript = document.createElement("script");
-        modalScript.src = "../../booking-modal.js";
-        modalScript.setAttribute("data-shop-id", shopId);
-        document.head.appendChild(modalScript);
+      try {
+        if (typeof BarberSaaS === 'undefined') throw new Error("SDK failed to load");
+        
+        BarberSaaS.init(shopId);
+        const data = await BarberSaaS.getPublicData();
+        renderApp(data);
+      } catch (err) {
+        document.getElementById('app-container').innerHTML = 
+          '<div class="p-8 text-center text-red-500">Error loading SDK: ' + err.message + '</div>';
+      }
+    });
 
-        try {
-          if (typeof BarberSaaS === "undefined")
-            throw new Error("SDK failed to load");
+    function renderApp(data) {
+      const shop = data.shop || {};
+      const services = (data.services || []).filter(s => s.duration > 0);
+      const products = data.products || [];
+      const reviews = data.reviews || [];
+      
+      const themeColor = shop.customization?.primaryColor || '#c0a05b';
+      document.documentElement.style.setProperty('--theme-color', themeColor);
 
-          BarberSaaS.init(shopId);
-          const data = await BarberSaaS.getPublicData();
-          renderApp(data);
-        } catch (err) {
-          document.getElementById("app-container").innerHTML =
-            '<div class="p-8 text-center text-red-500">Error loading SDK: ' +
-            err.message +
-            "</div>";
-        }
+      const nameEl = document.getElementById('shop-name');
+      if (nameEl) nameEl.textContent = shop.name;
+      
+      const descEl = document.getElementById('shop-desc');
+      if (descEl) descEl.textContent = shop.description || 'Welcome';
+
+      const servicesContainer = document.getElementById('services-container');
+      if (servicesContainer && window.renderServices) {
+        servicesContainer.innerHTML = window.renderServices(services);
+      }
+
+      const productsContainer = document.getElementById('products-container');
+      if (productsContainer && window.renderProducts) {
+        productsContainer.innerHTML = window.renderProducts(products);
+      }
+      
+      const loadingEl = document.getElementById('loading');
+      if (loadingEl) loadingEl.remove();
+      
+      const appContent = document.getElementById('app-content');
+      if (appContent) appContent.classList.remove('hidden');
+      
+      // Wire up buttons
+      document.querySelectorAll('.book-btn').forEach(btn => {
+        btn.onclick = (e) => {
+          e.preventDefault();
+          if (window.BarberBooking) {
+            window.BarberBooking.open(btn.dataset.id);
+          }
+        };
       });
 
-      function renderApp(data) {
-        const shop = data.shop || {};
-        const services = (data.services || []).filter((s) => s.duration > 0);
-        const products = data.products || [];
-        const reviews = data.reviews || [];
-
-        const themeColor = shop.primaryColor || "#c0a05b";
-        document.documentElement.style.setProperty("--theme-color", themeColor);
-
-        const nameEl = document.getElementById("shop-name");
-        if (nameEl) nameEl.textContent = shop.name;
-
-        const descEl = document.getElementById("shop-desc");
-        if (descEl) descEl.textContent = shop.description || "Welcome";
-
-        const servicesContainer = document.getElementById("services-container");
-        if (servicesContainer && window.renderServices) {
-          servicesContainer.innerHTML = window.renderServices(services);
-        }
-
-        const productsContainer = document.getElementById("products-container");
-        if (productsContainer && window.renderProducts) {
-          productsContainer.innerHTML = window.renderProducts(products);
-        }
-
-        const loadingEl = document.getElementById("loading");
-        if (loadingEl) loadingEl.remove();
-
-        const appContent = document.getElementById("app-content");
-        if (appContent) appContent.classList.remove("hidden");
-
-        // Wire up buttons
-        document.querySelectorAll(".book-btn").forEach((btn) => {
-          btn.onclick = (e) => {
-            e.preventDefault();
-            if (window.BarberBooking) {
-              window.BarberBooking.open(btn.dataset.id);
-            }
-          };
-        });
-
-        document.querySelectorAll(".buy-btn").forEach((btn) => {
-          btn.onclick = (e) => {
-            e.preventDefault();
-            const originalAlert = window.alert;
-            window.alert = () => {};
-            BarberSaaS.buyProduct(btn.dataset.id, 1)
-              .then((res) => {
-                window.alert = originalAlert;
-                alert(
-                  "Added " +
-                    res.quantity +
-                    "x " +
-                    res.product.name +
-                    " to cart!",
-                );
-              })
-              .catch((err) => {
-                window.alert = originalAlert;
-                alert("Error: " + err.message);
-              });
-          };
-        });
-      }
-    </script>
-  </body>
+      document.querySelectorAll('.buy-btn').forEach(btn => {
+        btn.onclick = (e) => {
+          e.preventDefault();
+          const originalAlert = window.alert;
+          window.alert = () => {};
+          BarberSaaS.buyProduct(btn.dataset.id, 1).then(res => {
+            window.alert = originalAlert;
+            alert('Added ' + res.quantity + 'x ' + res.product.name + ' to cart!');
+          }).catch(err => {
+            window.alert = originalAlert;
+            alert('Error: ' + err.message);
+          });
+        };
+      });
+    }
+  </script>
+</body>
 </html>

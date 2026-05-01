@@ -1,205 +1,159 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vibrant Barber Shop</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vibrant Barber Shop</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: 'var(--theme-color)',
+            secondary: '#1a1a1a',
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    /* Dynamic theme variables */
+    :root {
+      --theme-color: #c0a05b;
+    }
+  </style>
+</head>
+<body class="bg-gray-50 text-gray-900 transition-colors duration-300">
+
+  <div id="app-container" class="min-h-screen flex flex-col">
+
+    <div id="app-content" class="hidden bg-gray-50 text-gray-900 font-sans min-h-screen pb-20">
+      <header class="bg-gradient-to-r from-purple-600 to-pink-500 text-white py-32 text-center shadow-2xl relative overflow-hidden">
+        <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-20"></div>
+        <h1 id="shop-name" class="relative text-7xl font-black tracking-tight mb-6 drop-shadow-lg"></h1>
+        <p id="shop-desc" class="relative text-2xl font-medium opacity-90 max-w-3xl mx-auto drop-shadow"></p>
+      </header>
+      <main class="max-w-6xl mx-auto px-6 py-16 space-y-24 -mt-16 relative z-10">
+        <section>
+          <div id="services-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10"></div>
+        </section>
+        <section>
+          <h2 class="text-4xl font-black text-center mb-12 text-purple-600">Products</h2>
+          <div id="products-container" class="grid grid-cols-2 md:grid-cols-4 gap-6"></div>
+        </section>
+      </main>
+    </div>
     <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            colors: {
-              primary: "var(--theme-color)",
-              secondary: "#1a1a1a",
-            },
-          },
-        },
-      };
-    </script>
-    <style>
-      body {
-        font-family: "Inter", sans-serif;
-      }
-      /* Dynamic theme variables */
-      :root {
-        --theme-color: #c0a05b;
-      }
-    </style>
-  </head>
-  <body class="bg-gray-50 text-gray-900 transition-colors duration-300">
-    <div id="app-container" class="min-h-screen flex flex-col">
-      <div
-        id="app-content"
-        class="hidden bg-gray-50 text-gray-900 font-sans min-h-screen pb-20"
-      >
-        <header
-          class="bg-gradient-to-r from-purple-600 to-pink-500 text-white py-32 text-center shadow-2xl relative overflow-hidden"
-        >
-          <div
-            class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-20"
-          ></div>
-          <h1
-            id="shop-name"
-            class="relative text-7xl font-black tracking-tight mb-6 drop-shadow-lg"
-          ></h1>
-          <p
-            id="shop-desc"
-            class="relative text-2xl font-medium opacity-90 max-w-3xl mx-auto drop-shadow"
-          ></p>
-        </header>
-        <main
-          class="max-w-6xl mx-auto px-6 py-16 space-y-24 -mt-16 relative z-10"
-        >
-          <section>
-            <div
-              id="services-container"
-              class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10"
-            ></div>
-          </section>
-          <section>
-            <h2 class="text-4xl font-black text-center mb-12 text-purple-600">
-              Products
-            </h2>
-            <div
-              id="products-container"
-              class="grid grid-cols-2 md:grid-cols-4 gap-6"
-            ></div>
-          </section>
-        </main>
-      </div>
-      <script>
-        window.renderServices = (services) =>
-          services
-            .map(
-              (s, i) => `
+      window.renderServices = (services) => services.map((s, i) => `
         <div class="bg-white rounded-[2rem] shadow-xl p-10 transform hover:scale-105 transition-transform flex flex-col text-center border border-gray-100 relative overflow-hidden">
           <div class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-pink-500/20 to-purple-600/0 rounded-bl-[4rem]"></div>
-          <div class="w-20 h-20 bg-purple-100 text-purple-600 rounded-3xl flex items-center justify-center mx-auto mb-8 text-3xl font-bold shadow-inner">${["✨", "🔥", "💈", "✂️", "💈", "🔥"][i % 6]}</div>
+          <div class="w-20 h-20 bg-purple-100 text-purple-600 rounded-3xl flex items-center justify-center mx-auto mb-8 text-3xl font-bold shadow-inner">${['✨','🔥','💈','✂️','💈','🔥'][i%6]}</div>
           <h3 class="text-3xl font-black mb-4 tracking-tight">${s.name}</h3>
-          <p class="text-gray-500 mb-10 flex-1 leading-relaxed text-lg">${s.description || ""}</p>
+          <p class="text-gray-500 mb-10 flex-1 leading-relaxed text-lg">${s.description || ''}</p>
           <div class="text-3xl font-black mb-8 text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-pink-500">${s.price.toFixed(2)}</div>
           <button class="book-btn w-full bg-black text-white px-8 py-5 rounded-[1.5rem] font-bold text-lg hover:shadow-[0_10px_20px_rgba(0,0,0,0.2)] hover:-translate-y-1 transition-all" data-id="${s.id}">Book Now</button>
         </div>
-      `,
-            )
-            .join("");
-
-        window.renderProducts = (products) =>
-          products
-            .map(
-              (p) => `
+      `).join('');
+      
+      window.renderProducts = (products) => products.map(p => `
         <div class="bg-white rounded-3xl shadow-lg p-6 flex flex-col text-center border border-purple-100">
           <h3 class="text-lg font-bold mb-2 tracking-tight">${p.name}</h3>
           <div class="text-xl font-black mb-6 text-pink-500">${p.price.toFixed(2)}</div>
           <button class="buy-btn w-full bg-purple-100 text-purple-700 font-bold py-3 rounded-xl hover:bg-purple-600 hover:text-white transition-colors mt-auto" data-id="${p.id}">Buy</button>
         </div>
-      `,
-            )
-            .join("");
-      </script>
-
-      <!-- Loading State -->
-      <div id="loading" class="flex-1 flex items-center justify-center">
-        <div
-          class="animate-spin rounded-full h-12 w-12 border-b-2 border-black"
-        ></div>
-      </div>
+      `).join('');
+    </script>
+  
+    <!-- Loading State -->
+    <div id="loading" class="flex-1 flex items-center justify-center">
+      <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-black"></div>
     </div>
+  </div>
 
-    <script src="../../barbersaas-sdk.js"></script>
+  <script src="../../barbersaas-sdk.js"></script>
 
-    <script>
-      const templateType = "vibrant";
+  <script>
+    const templateType = 'vibrant';
+    
+    window.addEventListener('load', async () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const shopId = urlParams.get('shopId') || 'cmn9kj24n0000lqzc7kcsmpst';
 
-      window.addEventListener("load", async () => {
-        const urlParams = new URLSearchParams(window.location.search);
-        const shopId = urlParams.get("shopId") || "cmn9kj24n0000lqzc7kcsmpst";
+      const modalScript = document.createElement('script');
+      modalScript.src = '../../booking-modal.js';
+      modalScript.setAttribute('data-shop-id', shopId);
+      document.head.appendChild(modalScript);
 
-        const modalScript = document.createElement("script");
-        modalScript.src = "../../booking-modal.js";
-        modalScript.setAttribute("data-shop-id", shopId);
-        document.head.appendChild(modalScript);
+      try {
+        if (typeof BarberSaaS === 'undefined') throw new Error("SDK failed to load");
+        
+        BarberSaaS.init(shopId);
+        const data = await BarberSaaS.getPublicData();
+        renderApp(data);
+      } catch (err) {
+        document.getElementById('app-container').innerHTML = 
+          '<div class="p-8 text-center text-red-500">Error loading SDK: ' + err.message + '</div>';
+      }
+    });
 
-        try {
-          if (typeof BarberSaaS === "undefined")
-            throw new Error("SDK failed to load");
+    function renderApp(data) {
+      const shop = data.shop || {};
+      const services = (data.services || []).filter(s => s.duration > 0);
+      const products = data.products || [];
+      const reviews = data.reviews || [];
+      
+      const themeColor = shop.customization?.primaryColor || '#c0a05b';
+      document.documentElement.style.setProperty('--theme-color', themeColor);
 
-          BarberSaaS.init(shopId);
-          const data = await BarberSaaS.getPublicData();
-          renderApp(data);
-        } catch (err) {
-          document.getElementById("app-container").innerHTML =
-            '<div class="p-8 text-center text-red-500">Error loading SDK: ' +
-            err.message +
-            "</div>";
-        }
+      const nameEl = document.getElementById('shop-name');
+      if (nameEl) nameEl.textContent = shop.name;
+      
+      const descEl = document.getElementById('shop-desc');
+      if (descEl) descEl.textContent = shop.description || 'Welcome';
+
+      const servicesContainer = document.getElementById('services-container');
+      if (servicesContainer && window.renderServices) {
+        servicesContainer.innerHTML = window.renderServices(services);
+      }
+
+      const productsContainer = document.getElementById('products-container');
+      if (productsContainer && window.renderProducts) {
+        productsContainer.innerHTML = window.renderProducts(products);
+      }
+      
+      const loadingEl = document.getElementById('loading');
+      if (loadingEl) loadingEl.remove();
+      
+      const appContent = document.getElementById('app-content');
+      if (appContent) appContent.classList.remove('hidden');
+      
+      // Wire up buttons
+      document.querySelectorAll('.book-btn').forEach(btn => {
+        btn.onclick = (e) => {
+          e.preventDefault();
+          if (window.BarberBooking) {
+            window.BarberBooking.open(btn.dataset.id);
+          }
+        };
       });
 
-      function renderApp(data) {
-        const shop = data.shop || {};
-        const services = (data.services || []).filter((s) => s.duration > 0);
-        const products = data.products || [];
-        const reviews = data.reviews || [];
-
-        const themeColor = shop.primaryColor || "#c0a05b";
-        document.documentElement.style.setProperty("--theme-color", themeColor);
-
-        const nameEl = document.getElementById("shop-name");
-        if (nameEl) nameEl.textContent = shop.name;
-
-        const descEl = document.getElementById("shop-desc");
-        if (descEl) descEl.textContent = shop.description || "Welcome";
-
-        const servicesContainer = document.getElementById("services-container");
-        if (servicesContainer && window.renderServices) {
-          servicesContainer.innerHTML = window.renderServices(services);
-        }
-
-        const productsContainer = document.getElementById("products-container");
-        if (productsContainer && window.renderProducts) {
-          productsContainer.innerHTML = window.renderProducts(products);
-        }
-
-        const loadingEl = document.getElementById("loading");
-        if (loadingEl) loadingEl.remove();
-
-        const appContent = document.getElementById("app-content");
-        if (appContent) appContent.classList.remove("hidden");
-
-        // Wire up buttons
-        document.querySelectorAll(".book-btn").forEach((btn) => {
-          btn.onclick = (e) => {
-            e.preventDefault();
-            if (window.BarberBooking) {
-              window.BarberBooking.open(btn.dataset.id);
-            }
-          };
-        });
-
-        document.querySelectorAll(".buy-btn").forEach((btn) => {
-          btn.onclick = (e) => {
-            e.preventDefault();
-            const originalAlert = window.alert;
-            window.alert = () => {};
-            BarberSaaS.buyProduct(btn.dataset.id, 1)
-              .then((res) => {
-                window.alert = originalAlert;
-                alert(
-                  "Added " +
-                    res.quantity +
-                    "x " +
-                    res.product.name +
-                    " to cart!",
-                );
-              })
-              .catch((err) => {
-                window.alert = originalAlert;
-                alert("Error: " + err.message);
-              });
-          };
-        });
-      }
-    </script>
-  </body>
+      document.querySelectorAll('.buy-btn').forEach(btn => {
+        btn.onclick = (e) => {
+          e.preventDefault();
+          const originalAlert = window.alert;
+          window.alert = () => {};
+          BarberSaaS.buyProduct(btn.dataset.id, 1).then(res => {
+            window.alert = originalAlert;
+            alert('Added ' + res.quantity + 'x ' + res.product.name + ' to cart!');
+          }).catch(err => {
+            window.alert = originalAlert;
+            alert('Error: ' + err.message);
+          });
+        };
+      });
+    }
+  </script>
+</body>
 </html>

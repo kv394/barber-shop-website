@@ -136,6 +136,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ shop
           name: true,
           description: true,
           price: true,
+          imageUrl: true,
           type: true,
           trackInventory: true,
           inventoryCount: true
@@ -150,6 +151,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ shop
           name: true,
           description: true,
           price: true,
+          imageUrl: true,
           duration: true
         },
         orderBy: { name: 'asc' }

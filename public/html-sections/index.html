@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Premium Salon & Grooming</title>
+  <title>Premium Salon & Grooming | Book Online</title>
   
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
   
   <style>
     :root {
@@ -20,11 +20,11 @@
       --text-muted: #666666;
       --border-color: #EAEAEA;
       
+      --font-fancy: 'Great Vibes', cursive;
       --font-heading: 'Playfair Display', serif;
       --font-body: 'Inter', sans-serif;
     }
     
-    /* Hide default cursor, but allow it inside iframes just in case tracking drops */
     @media (pointer: fine) {
       html, body { cursor: none; scroll-behavior: smooth; }
       a, button, .scroll-arrow, .horizontal-card { cursor: none !important; }
@@ -32,201 +32,114 @@
     }
     
     body {
-      font-family: var(--font-body);
-      background-color: var(--bg-body);
-      color: var(--text-main);
-      margin: 0;
-      padding: 0;
-      line-height: 1.6;
-      overflow-x: hidden;
+      font-family: var(--font-body); background-color: var(--bg-body); color: var(--text-main); margin: 0; padding: 0; line-height: 1.6; overflow-x: hidden;
     }
 
-    h1, h2, h3 {
-      font-family: var(--font-heading);
-      margin: 0;
-      color: var(--secondary);
-    }
+    h1, h2, h3 { font-family: var(--font-heading); margin: 0; color: var(--secondary); }
 
-    /* --- Custom Luxury Cursor (FIXED) --- */
+    /* --- Custom Luxury Cursor --- */
     .cursor-dot {
-      position: fixed; top: 0; left: 0; width: 10px; height: 10px;
-      background-color: var(--primary); border-radius: 50%;
-      pointer-events: none; 
-      z-index: 2147483647; /* Maximum possible z-index to always stay on top of SDK */
-      transform: translate(-50%, -50%);
-      transition: width 0.2s ease, height 0.2s ease, background-color 0.2s ease, border 0.2s ease;
-      box-shadow: 0 0 4px rgba(255,255,255,0.8); /* Ensures visibility over dark buttons */
+      position: fixed; top: 0; left: 0; width: 10px; height: 10px; background-color: var(--primary); border-radius: 50%;
+      pointer-events: none; z-index: 2147483647; transform: translate(-50%, -50%);
+      transition: width 0.2s ease, height 0.2s ease, background-color 0.2s ease, border 0.2s ease; box-shadow: 0 0 4px rgba(255,255,255,0.8);
     }
-    .cursor-dot.hover-state {
-      width: 45px; height: 45px; 
-      background-color: rgba(211, 17, 69, 0.15); /* Soft tint instead of fully transparent */
-      border: 2px solid var(--primary); 
-    }
+    .cursor-dot.hover-state { width: 45px; height: 45px; background-color: rgba(211, 17, 69, 0.15); border: 2px solid var(--primary); }
 
-    /* --- Scroll Reveal Animation --- */
-    .reveal {
-      opacity: 0; transform: translateY(40px); transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    }
-    .reveal.active {
-      opacity: 1; transform: translateY(0);
-    }
+    .reveal { opacity: 0; transform: translateY(40px); transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+    .reveal.active { opacity: 1; transform: translateY(0); }
 
     /* --- Navigation --- */
     .navbar {
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-      border-bottom: 1px solid var(--border-color);
-      padding: 16px 0; position: fixed; top: 0; width: 100%; z-index: 1000;
+      background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border-color); padding: 16px 0; position: fixed; top: 0; width: 100%; z-index: 1000;
     }
-    .nav-container {
-      max-width: 1280px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 0 24px;
-    }
+    .nav-container { max-width: 1280px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 0 24px; }
     .nav-brand { text-decoration: none; display: flex; align-items: center; }
-    #dyn-shop-name-nav {
-      font-family: var(--font-heading); font-weight: 700; font-size: 1.8rem; color: var(--primary); letter-spacing: -0.5px; margin: 0;
-    }
+    #dyn-shop-name-nav { font-family: var(--font-heading); font-weight: 700; font-size: 1.8rem; color: var(--primary); letter-spacing: -0.5px; margin: 0; }
     .nav-links { display: flex; gap: 36px; align-items: center; }
-    .navbar a.nav-link {
-      color: var(--secondary); text-decoration: none; font-size: 0.9rem; font-weight: 600;
-      text-transform: uppercase; letter-spacing: 1px; transition: color 0.3s;
-    }
+    .navbar a.nav-link { color: var(--secondary); text-decoration: none; font-size: 0.9rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; transition: color 0.3s; }
     .navbar a.nav-link:hover, .navbar a.nav-link.active { color: var(--primary); }
     
     .nav-cta {
-      background: var(--primary); color: #ffffff !important; padding: 10px 28px !important;
+      background: var(--primary); color: #ffffff !important; padding: 12px 28px !important; /* Min 44px height for mobile guidelines */
       border-radius: 4px; font-weight: 600; transition: all 0.3s ease;
     }
     .nav-cta:hover { background: var(--secondary); color: #ffffff !important; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.1);}
 
-    /* --- Parallax Hero Section --- */
-    .hero-wrapper {
-      position: relative; height: 80vh; min-height: 600px; display: flex; align-items: center; overflow: hidden; margin-top: 70px; background: #000; 
+    /* --- Parallax Hero Section (Visible Offer Focus) --- */
+    .hero-wrapper { position: relative; height: 85vh; min-height: 600px; display: flex; align-items: center; overflow: hidden; margin-top: 70px; background: #000; }
+    .hero-video { position: absolute; top: 0; left: 0; width: 100%; height: 120%; object-fit: cover; z-index: -2; }
+    .hero-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to right, rgba(10, 28, 46, 0.9) 0%, rgba(10, 28, 46, 0.4) 100%); z-index: -1; }
+    .hero-content { max-width: 1280px; margin: 0 auto; width: 100%; padding: 0 24px; position: relative; z-index: 1; }
+    
+    .offer-badge { 
+      display: inline-block; background: var(--primary); color: #fff; padding: 8px 16px; font-size: 0.85rem; 
+      font-weight: 700; text-transform: uppercase; letter-spacing: 2px; border-radius: 4px; margin-bottom: 24px; 
     }
-    .hero-video {
-      position: absolute; top: 0; left: 0; width: 100%; height: 120%;
-      object-fit: cover; z-index: -2; 
-    }
-    .hero-overlay {
-      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-      background: linear-gradient(to right, rgba(10, 28, 46, 0.9) 0%, rgba(10, 28, 46, 0.3) 100%); z-index: -1;
-    }
-    .hero-content {
-      max-width: 1280px; margin: 0 auto; width: 100%; padding: 0 24px; position: relative; z-index: 1;
-    }
-    .hero-wrapper h1 { 
-      font-size: clamp(3.5rem, 8vw, 5.5rem); line-height: 1.05; margin-bottom: 24px; color: #ffffff; 
-    }
-    .hero-wrapper h1 i { font-weight: 600; color: #e0e0e0; }
-    .hero-wrapper p { 
-      font-size: 1.2rem; font-weight: 400; max-width: 500px; margin: 0 0 40px 0; color: #f0f0f0; letter-spacing: 0.5px;
-    }
-    .hero-btn { 
-      display: inline-block; background: var(--primary); color: #fff; padding: 16px 36px; 
-      font-size: 1rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; 
-      text-decoration: none; border-radius: 4px; transition: all 0.3s;
-    }
-    .hero-btn:hover { background: #ffffff; color: var(--secondary); }
-
-    /* --- Seamless Kinetic Marquee --- */
-    .marquee-container {
-      background: var(--secondary); color: #ffffff; padding: 16px 0; 
-      overflow: hidden; white-space: nowrap; border-bottom: 4px solid var(--primary); display: flex;
-    }
-    .marquee-track {
-      display: flex; width: max-content; animation: marquee 25s linear infinite;
-    }
-    .marquee-text {
-      font-size: 0.9rem; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; padding-right: 12px;
-    }
-    @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+    .hero-wrapper h1 { font-family: var(--font-fancy); font-size: clamp(4rem, 9vw, 6.5rem); font-weight: 400; line-height: 1.1; margin-bottom: 16px; color: #ffffff; text-transform: none; letter-spacing: 2px; }
+    .hero-wrapper p { font-size: 1.2rem; font-weight: 400; max-width: 500px; margin: 0 0 40px 0; color: #f0f0f0; letter-spacing: 0.5px; }
+    .hero-btn { display: inline-block; background: #ffffff; color: var(--secondary); padding: 18px 40px; font-size: 1rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; text-decoration: none; border-radius: 4px; transition: all 0.3s; }
+    .hero-btn:hover { background: var(--primary); color: #ffffff; }
 
     /* --- Sections & Layout --- */
-    .section-wrap { padding: 100px 0; }
+    .section-wrap { padding: 80px 0; }
     .bg-gray { background-color: var(--bg-gray); }
-    .section-header-wrap { 
-      max-width: 1280px; margin: 0 auto 50px auto; padding: 0 24px;
-      display: flex; justify-content: space-between; align-items: flex-end; 
-    }
-    .section-header { font-size: 3rem; }
+    .container { max-width: 1280px; margin: 0 auto; padding: 0 24px; }
+    .section-header { font-size: 2.8rem; margin-bottom: 16px; text-align: center; }
+    .section-subtitle { text-align: center; color: var(--text-muted); font-size: 1.1rem; max-width: 600px; margin: 0 auto 50px auto; }
 
-    /* --- Edge-to-Edge Carousel --- */
+    /* --- 1. Stylist Profiles (Real Faces = Trust) --- */
+    .stylist-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 32px; }
+    .stylist-card { text-align: center; transition: transform 0.3s ease; }
+    .stylist-card:hover { transform: translateY(-5px); }
+    .stylist-img { width: 100%; aspect-ratio: 3/4; object-fit: cover; border-radius: 4px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); }
+    .stylist-name { font-size: 1.5rem; margin-bottom: 4px; }
+    .stylist-specialty { font-size: 0.85rem; color: var(--primary); text-transform: uppercase; font-weight: 700; letter-spacing: 1px; margin-bottom: 16px; }
+    .btn-stylist { background: transparent; color: var(--secondary); border: 1px solid var(--secondary); padding: 10px 20px; width: 100%; font-weight: 600; text-transform: uppercase; cursor: pointer; transition: all 0.2s; border-radius: 4px; }
+    .btn-stylist:hover { background: var(--secondary); color: #fff; }
+
+    /* --- 2. Transparent Pricing Menu --- */
+    .pricing-menu { max-width: 800px; margin: 0 auto; background: #fff; padding: 48px; border: 1px solid var(--border-color); box-shadow: 0 10px 40px rgba(0,0,0,0.03); border-radius: 8px;}
+    .menu-item { display: flex; align-items: center; margin-bottom: 24px; }
+    .menu-item-img { width: 60px; height: 60px; object-fit: cover; border-radius: 6px; margin-right: 16px; flex-shrink: 0; background: var(--bg-gray); }
+    .menu-item-content { display: flex; flex-grow: 1; justify-content: space-between; align-items: baseline; }
+    .menu-item-info { background: #fff; padding-right: 16px; flex-shrink: 1; }
+    .menu-item-name { font-size: 1.2rem; font-weight: 600; color: var(--secondary); display: block; }
+    .menu-item-desc { font-size: 0.9rem; color: var(--text-muted); margin-top: 4px; display: block; }
+    .menu-item-dots { flex-grow: 1; border-bottom: 2px dotted var(--border-color); margin: 0 8px; position: relative; top: -6px; }
+    .menu-item-price { font-size: 1.25rem; font-weight: 700; color: var(--primary); background: #fff; padding-left: 16px; white-space: nowrap; flex-shrink: 0; }
+
+    /* --- 3. Before/After Gallery --- */
+    .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; }
+    .gallery-item { position: relative; aspect-ratio: 4/5; overflow: hidden; border-radius: 4px; }
+    .gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease; }
+    .gallery-item:hover img { transform: scale(1.05); }
+    .gallery-overlay { position: absolute; bottom: 0; left: 0; width: 100%; padding: 24px; background: linear-gradient(to top, rgba(0,0,0,0.8), transparent); color: #fff; box-sizing: border-box; }
+    .gallery-overlay span { font-weight: 700; font-size: 1.1rem; }
+
+    /* --- 4. Edge-to-Edge Reviews --- */
     .carousel-wrapper { position: relative; width: 100%; display: flex; align-items: center; }
     .horizontal-scroll {
-      display: flex; overflow-x: auto; gap: 32px; padding-top: 10px; padding-bottom: 20px;
+      display: flex; overflow-x: auto; gap: 16px; padding-top: 10px; padding-bottom: 20px;
       scroll-snap-type: x mandatory; scroll-behavior: smooth; width: 100%;
       padding-left: max(24px, calc((100vw - 1280px) / 2 + 24px)); padding-right: 40px; 
       -ms-overflow-style: none; scrollbar-width: none;  
     }
     .horizontal-scroll::-webkit-scrollbar { display: none; }
-
-    /* Arrow Buttons */
     .scroll-arrow {
-      background: #FFFFFF; color: var(--secondary); border: none; box-shadow: 0 8px 16px rgba(0,0,0,0.1);
-      width: 50px; height: 50px; border-radius: 50%; font-size: 1.2rem;
-      display: flex; justify-content: center; align-items: center; cursor: pointer;
-      position: absolute; z-index: 10; transition: all 0.3s ease;
+      background: #FFFFFF; color: var(--secondary); border: none; box-shadow: 0 8px 16px rgba(0,0,0,0.1); width: 50px; height: 50px; border-radius: 50%; font-size: 1.2rem;
+      display: flex; justify-content: center; align-items: center; cursor: pointer; position: absolute; z-index: 10; transition: all 0.3s ease;
     }
     .scroll-arrow:hover { background: var(--secondary); color: #FFFFFF; transform: scale(1.1); }
     .scroll-arrow.left { left: max(10px, calc((100vw - 1280px) / 2 - 25px)); }
     .scroll-arrow.right { right: max(10px, calc((100vw - 1280px) / 2 - 25px)); }
-
-    /* --- Cards --- */
-    .horizontal-card {
-      flex: 0 0 calc(33.333% - 21px); min-width: 340px; scroll-snap-align: start;
-      background: #FFFFFF; display: flex; flex-direction: column;
-      transition: box-shadow 0.4s ease; border: 1px solid var(--border-color);
-    }
-    .horizontal-card:hover { box-shadow: 0 20px 40px rgba(0,0,0,0.08); }
-    
-    /* Kinetic Image Zoom */
-    .card-img {
-      width: 100%; height: 260px; position: relative; overflow: hidden; background: #000;
-    }
-    .card-img-bg {
-      width: 100%; height: 100%; object-fit: cover; transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    }
-    .horizontal-card:hover .card-img-bg { transform: scale(1.08); }
-    
-    /* Floating Badges */
-    .badge {
-      position: absolute; top: 16px; left: 16px;
-      background: #ffffff; color: var(--secondary);
-      padding: 6px 14px; font-size: 0.75rem; font-weight: 700;
-      text-transform: uppercase; letter-spacing: 1px; border-radius: 99px;
-      z-index: 2; box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    }
-
-    .card-body { padding: 32px 24px; display: flex; flex-direction: column; flex-grow: 1; }
-    .card-title { font-size: 1.6rem; margin-bottom: 8px; }
-    .card-price { font-size: 1.2rem; font-weight: 600; color: var(--primary); margin-bottom: 20px; font-family: var(--font-body); }
-    
-    .card-desc { 
-      font-size: 0.95rem; color: var(--text-muted); margin-bottom: 32px; line-height: 1.7;
-      display: -webkit-box; -webkit-line-clamp: 5; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; flex-grow: 1;
-    }
-
-    /* Buttons */
-    .card-actions { margin-top: auto; }
-    .btn {
-      display: block; width: 100%; text-align: center; padding: 14px 20px;
-      font-family: var(--font-body); font-size: 0.9rem; font-weight: 600; letter-spacing: 1px;
-      text-transform: uppercase; cursor: pointer; transition: all 0.3s ease;
-      border: 1px solid transparent; box-sizing: border-box; text-decoration: none;
-    }
-    .btn-primary { background: var(--secondary); color: #FFFFFF; }
-    .btn-primary:hover { background: var(--primary); }
-    
-    .btn-outline { background: transparent; color: var(--secondary); border-color: var(--secondary); margin-bottom: 12px;}
-    .btn-outline:hover { background: var(--secondary); color: #ffffff; }
-
-    /* --- Reviews (Infinite Grid Format for Consistency) --- */
     .testimonial { 
-      flex: 0 0 calc(33.333% - 21px); min-width: 340px; scroll-snap-align: start;
+      flex: 0 0 calc(25% - 12px); min-width: 300px; scroll-snap-align: start;
       background: #FFFFFF; padding: 40px; border-top: 4px solid var(--primary); 
       box-shadow: 0 10px 30px rgba(0,0,0,0.04); display: flex; flex-direction: column; box-sizing: border-box;
     }
-    .testimonial-stars { color: var(--primary); font-size: 1.2rem; margin-bottom: 20px; letter-spacing: 3px; }
-    .testimonial-quote { font-size: 1.15rem; color: var(--text-main); font-style: italic; line-height: 1.6; font-family: var(--font-heading); flex-grow: 1; }
+    .testimonial-stars { color: var(--primary); font-size: 1.2rem; margin-bottom: 16px; letter-spacing: 3px; }
+    .testimonial-quote { font-size: 1.05rem; color: var(--text-main); font-style: italic; line-height: 1.6; font-family: var(--font-heading); flex-grow: 1; }
 
     .loading { text-align: center; font-size: 1rem; font-weight: 600; color: var(--secondary); padding: 40px 0; text-transform: uppercase; letter-spacing: 2px; }
 
@@ -234,28 +147,34 @@
     .mobile-sticky-cta { display: none; }
 
     @media (max-width: 1024px) {
-      .horizontal-card, .testimonial { flex: 0 0 calc(45% - 16px); min-width: 280px; }
+      .testimonial { flex: 0 0 calc(33.333% - 11px); min-width: 280px; }
     }
     @media (max-width: 768px) {
       .nav-links { display: none; }
-      .hero-wrapper { min-height: 500px; height: 60vh; }
-      .hero-wrapper h1 { font-size: 3rem; }
+      .hero-wrapper { min-height: 500px; height: 75vh; }
+      .hero-wrapper h1 { font-size: 4rem; }
       .section-header { font-size: 2.2rem; }
-      .horizontal-card, .testimonial { flex: 0 0 85%; }
+      .testimonial { flex: 0 0 85%; min-width: 260px; }
+      .pricing-menu { padding: 24px; border: none; box-shadow: none; }
+      .menu-item { flex-direction: column; }
+      .menu-item-dots { display: none; }
+      .menu-item-price { padding-left: 0; margin-top: 8px; }
       .horizontal-scroll { padding-left: 24px; padding-right: 24px; }
       .scroll-arrow { display: none; }
       
       /* Display Mobile Sticky Bar */
       .mobile-sticky-cta {
         display: block; position: fixed; bottom: 0; left: 0; width: 100%;
-        background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-        border-top: 1px solid var(--border-color); padding: 12px 24px; box-sizing: border-box; z-index: 1000;
-        box-shadow: 0 -4px 10px rgba(0,0,0,0.05);
+        background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+        border-top: 1px solid var(--border-color); padding: 16px 24px; box-sizing: border-box; z-index: 1000;
+        box-shadow: 0 -4px 20px rgba(0,0,0,0.1);
       }
       .mobile-sticky-btn {
         display: block; width: 100%; background: var(--primary); color: #fff; text-align: center;
-        padding: 14px 0; font-weight: 700; border-radius: 4px; text-decoration: none; text-transform: uppercase;
+        padding: 16px 0; font-size: 1.1rem; font-weight: 700; border-radius: 4px; text-decoration: none; text-transform: uppercase;
       }
+      /* Add padding to body so sticky bar doesn't cover content */
+      body { padding-bottom: 80px; }
     }
   </style>
 </head>
@@ -269,10 +188,10 @@
         <span id="dyn-shop-name-nav">HAIR SALON</span>
       </div>
       <div class="nav-links">
-        <a href="#services" class="nav-link interactable">Services</a>
-        <a href="#shop" class="nav-link interactable">Products</a>
-        <a href="#reviews" class="nav-link interactable">Reviews</a>
-        <a href="#" onclick="event.preventDefault(); if(window.BarberBooking) window.BarberBooking.open();" class="nav-link nav-cta interactable">Reserve</a>
+        <a href="#team" class="nav-link interactable">Stylists</a>
+        <a href="#menu" class="nav-link interactable">Service Menu</a>
+        <a href="#gallery" class="nav-link interactable">Gallery</a>
+        <a href="#" onclick="event.preventDefault(); if(window.BarberBooking) window.BarberBooking.open();" class="nav-link nav-cta interactable">Book Online</a>
       </div>
     </div>
   </nav>
@@ -286,55 +205,86 @@
         </video>
         <div class="hero-overlay"></div>
         <div class="hero-content">
-          <h1 id="dyn-shop-name">The Art of <i>Grooming</i></h1>
+          <div class="offer-badge">New Client Special: 20% Off</div>
+          <h1 id="dyn-shop-name">Heritage Haircut</h1>
           <p id="dyn-shop-desc">Precision styling and expert care tailored for the modern individual.</p>
-          <a href="#" onclick="event.preventDefault(); if(window.BarberBooking) window.BarberBooking.open();" class="hero-btn interactable">Book Appointment</a>
+          <a href="#" onclick="event.preventDefault(); if(window.BarberBooking) window.BarberBooking.open();" class="hero-btn interactable">Claim Offer & Book</a>
         </div>
       </section>
     </div>
   </article>
 
-  <div class="marquee-container reveal">
-    <div class="marquee-track">
-      <div class="marquee-text">PRECISION CUTS &nbsp;&bull;&nbsp; PREMIUM STYLING &nbsp;&bull;&nbsp; EXPERT COLOR &nbsp;&bull;&nbsp; HOT TOWEL SHAVES &nbsp;&bull;&nbsp;</div>
-      <div class="marquee-text">PRECISION CUTS &nbsp;&bull;&nbsp; PREMIUM STYLING &nbsp;&bull;&nbsp; EXPERT COLOR &nbsp;&bull;&nbsp; HOT TOWEL SHAVES &nbsp;&bull;&nbsp;</div>
-      <div class="marquee-text">PRECISION CUTS &nbsp;&bull;&nbsp; PREMIUM STYLING &nbsp;&bull;&nbsp; EXPERT COLOR &nbsp;&bull;&nbsp; HOT TOWEL SHAVES &nbsp;&bull;&nbsp;</div>
-      <div class="marquee-text">PRECISION CUTS &nbsp;&bull;&nbsp; PREMIUM STYLING &nbsp;&bull;&nbsp; EXPERT COLOR &nbsp;&bull;&nbsp; HOT TOWEL SHAVES &nbsp;&bull;&nbsp;</div>
-    </div>
-  </div>
-
-  <article id="services" class="section-wrap">
-    <div class="section-header-wrap reveal">
-      <h2 class="section-header">Service Menu</h2>
-    </div>
-    <div id="services-loading" class="loading">Loading Services...</div>
-    
-    <div class="carousel-wrapper reveal" id="services-content" style="display: none;">
-      <button class="scroll-arrow left interactable" onclick="scrollCarousel('services-list', -1)">&#10094;</button>
-      <div class="horizontal-scroll interactable-area" id="services-list">
-          </div>
-      <button class="scroll-arrow right interactable" onclick="scrollCarousel('services-list', 1)">&#10095;</button>
+  <article id="team" class="section-wrap bg-gray">
+    <div class="container reveal">
+      <h2 class="section-header">Meet Your Stylists</h2>
+      <p class="section-subtitle">Real professionals dedicated to your perfect look. Choose your expert below.</p>
+      
+      <div class="stylist-grid">
+        <div class="stylist-card interactable">
+          <img src="https://images.unsplash.com/photo-1595152772835-219674b2a8a6?auto=format&fit=crop&w=600&q=80" alt="Stylist" class="stylist-img">
+          <h3 class="stylist-name">Elena R.</h3>
+          <div class="stylist-specialty">Master Colorist</div>
+          <button class="btn-stylist" onclick="if(window.BarberBooking) window.BarberBooking.open();">Book Elena</button>
+        </div>
+        <div class="stylist-card interactable">
+          <img src="https://images.unsplash.com/photo-1580618672591-eb180b1a973f?auto=format&fit=crop&w=600&q=80" alt="Stylist" class="stylist-img">
+          <h3 class="stylist-name">Marcus T.</h3>
+          <div class="stylist-specialty">Precision Fades</div>
+          <button class="btn-stylist" onclick="if(window.BarberBooking) window.BarberBooking.open();">Book Marcus</button>
+        </div>
+        <div class="stylist-card interactable">
+          <img src="https://images.unsplash.com/photo-1605497788044-5a32c7078486?auto=format&fit=crop&w=600&q=80" alt="Stylist" class="stylist-img">
+          <h3 class="stylist-name">Sarah Jenkins</h3>
+          <div class="stylist-specialty">Extensions & Balayage</div>
+          <button class="btn-stylist" onclick="if(window.BarberBooking) window.BarberBooking.open();">Book Sarah</button>
+        </div>
+      </div>
     </div>
   </article>
 
-  <article id="shop" class="section-wrap bg-gray">
-    <div class="section-header-wrap reveal">
-      <h2 class="section-header">Curated Products</h2>
+  <article id="menu" class="section-wrap">
+    <div class="container reveal">
+      <h2 class="section-header">Service Menu</h2>
+      <p class="section-subtitle">No hidden fees, no surprises. Straightforward pricing for premium services.</p>
+      
+      <div id="services-loading" class="loading">Loading Pricing...</div>
+      <div class="pricing-menu" id="services-list" style="display: none;">
+        </div>
+      
+      <div style="text-align: center; margin-top: 40px;">
+        <button class="hero-btn interactable" style="background: var(--primary); color: #fff; border: none; cursor: pointer;" onclick="if(window.BarberBooking) window.BarberBooking.open();">Book an Appointment</button>
+      </div>
     </div>
-    <div id="products-loading" class="loading">Loading Inventory...</div>
-    
-    <div class="carousel-wrapper reveal" id="products-content" style="display: none;">
-      <button class="scroll-arrow left interactable" onclick="scrollCarousel('products-list', -1)">&#10094;</button>
-      <div class="horizontal-scroll interactable-area" id="products-list">
-          </div>
-      <button class="scroll-arrow right interactable" onclick="scrollCarousel('products-list', 1)">&#10095;</button>
+  </article>
+
+  <article id="gallery" class="section-wrap bg-gray">
+    <div class="container reveal">
+      <h2 class="section-header">Real Results</h2>
+      <p class="section-subtitle">Professional photography of our actual clients. Find your inspiration.</p>
+      
+      <div class="gallery-grid">
+        <div class="gallery-item interactable">
+          <img src="https://images.unsplash.com/photo-1600948836101-f9ffda59d250?auto=format&fit=crop&w=800&q=80" alt="Result">
+          <div class="gallery-overlay"><span>Balayage & Trim</span></div>
+        </div>
+        <div class="gallery-item interactable">
+          <img src="https://images.unsplash.com/photo-1562322140-8baeececf3df?auto=format&fit=crop&w=800&q=80" alt="Result">
+          <div class="gallery-overlay"><span>Classic Pompadour</span></div>
+        </div>
+        <div class="gallery-item interactable">
+          <img src="https://images.unsplash.com/photo-1595476108010-b4d1f10d5e43?auto=format&fit=crop&w=800&q=80" alt="Result">
+          <div class="gallery-overlay"><span>Vivid Color Correction</span></div>
+        </div>
+      </div>
     </div>
   </article>
 
   <article id="reviews" class="section-wrap">
-    <div class="section-header-wrap reveal">
+    <div class="container reveal" style="max-width: 1280px; padding: 0;">
       <h2 class="section-header">Client Perspectives</h2>
+      <p class="section-subtitle">Don't just take our word for it.</p>
     </div>
+    
     <div id="reviews-loading" class="loading">Loading Feedback...</div>
     
     <div class="carousel-wrapper reveal" id="reviews-content" style="display: none;">
@@ -343,10 +293,6 @@
             </div>
         <button class="scroll-arrow right interactable" onclick="scrollCarousel('reviews-list', 1)">&#10095;</button>
     </div>
-    
-    <div class="reveal" style="text-align: center; margin-top: 64px; margin-bottom: 80px;">
-      <button class="btn btn-outline interactable" id="add-review-btn" style="max-width: 260px; margin: 0 auto; border-color: var(--border-color); color: var(--text-main);">Leave a Review</button>
-    </div>
   </article>
 
   <div class="mobile-sticky-cta">
@@ -354,68 +300,34 @@
   </div>
 
   <script>
-    // Parallax Hero Video
     window.addEventListener('scroll', () => {
       const scrollY = window.scrollY;
       const heroVideo = document.getElementById('heroVideo');
-      if(heroVideo) {
-        heroVideo.style.transform = `translate(-50%, calc(-50% + ${scrollY * 0.4}px))`;
-      }
+      if(heroVideo) heroVideo.style.transform = `translate(-50%, calc(-50% + ${scrollY * 0.4}px))`;
     });
 
-    // Custom Cursor Logic
     const cursor = document.getElementById('cursor');
     if(window.matchMedia("(pointer: fine)").matches) {
-      document.addEventListener('mousemove', (e) => {
-        cursor.style.left = e.clientX + 'px';
-        cursor.style.top = e.clientY + 'px';
-      });
-
+      document.addEventListener('mousemove', (e) => { cursor.style.left = e.clientX + 'px'; cursor.style.top = e.clientY + 'px'; });
       document.addEventListener('mouseover', (e) => {
-        const isInteractive = e.target.closest('.interactable') || 
-                              e.target.closest('.btn') || 
-                              e.target.closest('button') || 
-                              e.target.closest('a') || 
-                              e.target.closest('.horizontal-card');
-        if(isInteractive) {
-          cursor.classList.add('hover-state');
-        }
+        if(e.target.closest('.interactable') || e.target.closest('button') || e.target.closest('a') || e.target.closest('.horizontal-card')) cursor.classList.add('hover-state');
       });
       document.addEventListener('mouseout', (e) => {
-        const isInteractive = e.target.closest('.interactable') || 
-                              e.target.closest('.btn') || 
-                              e.target.closest('button') || 
-                              e.target.closest('a') || 
-                              e.target.closest('.horizontal-card');
-        if(isInteractive) {
-          cursor.classList.remove('hover-state');
-        }
+        if(e.target.closest('.interactable') || e.target.closest('button') || e.target.closest('a') || e.target.closest('.horizontal-card')) cursor.classList.remove('hover-state');
       });
     }
 
-    // Scroll Reveal Intersection Observer
     const revealElements = document.querySelectorAll('.reveal');
     const revealObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('active');
-          revealObserver.unobserve(entry.target); 
-        }
-      });
+      entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('active'); revealObserver.unobserve(entry.target); }});
     }, { threshold: 0.1 });
-    
     revealElements.forEach(el => revealObserver.observe(el));
 
-    // SDK Init
     (function() {
       let domain = window.location.origin;
       let isFileProtocol = window.location.protocol === "file:";
-      if (domain === "null" || domain === "about://" || window.location.protocol === "about:" || isFileProtocol) {
-        try { domain = window.parent.location.origin; } catch(e) {}
-      }
-      if (domain === "null" || domain === "about://" || !domain) {
-        domain = "https://barbersaas-henna.vercel.app";
-      }
+      if (domain === "null" || domain === "about://" || window.location.protocol === "about:" || isFileProtocol) { try { domain = window.parent.location.origin; } catch(e) {} }
+      if (domain === "null" || domain === "about://" || !domain) { domain = "https://barbersaas-henna.vercel.app"; }
       const sdkScript = document.createElement("script");
       sdkScript.src = isFileProtocol && domain === "file://" ? "../barbersaas-sdk.js?v=" + new Date().getTime() : domain + "/barbersaas-sdk.js?v=" + new Date().getTime();
       document.head.appendChild(sdkScript);
@@ -423,31 +335,10 @@
 
     function scrollCarousel(containerId, direction) {
       const container = document.getElementById(containerId);
-      const scrollAmount = 360;
+      const scrollAmount = 316; // Review card width + gap
       container.scrollBy({ left: direction * scrollAmount, behavior: 'smooth' });
     }
     
-    document.addEventListener('click', function(e) {
-      if (e.target.closest('.b-book')) {
-        const btn = e.target.closest('.b-book');
-        if (window.BarberBooking) window.BarberBooking.open(btn.dataset.id);
-      }
-      if (e.target.closest('.b-buy')) {
-        const btn = e.target.closest('.b-buy');
-        if (window.BarberSaaS) {
-            window.BarberSaaS.getProductDetails(btn.dataset.id).then(p => alert("Added to cart: 1x " + p.name));
-        }
-      }
-      if (e.target.closest('.b-view')) {
-        const btn = e.target.closest('.b-view');
-        if (window.BarberSaaS) {
-            window.BarberSaaS.getProductDetails(btn.dataset.id).then(p => {
-              alert(p.name + "\n$" + Number(p.price).toFixed(2) + "\n\n" + (p.description || "No description available."));
-            });
-        }
-      }
-    });
-
     document.querySelectorAll('.nav-link:not(.nav-cta)').forEach(link => {
       link.addEventListener('click', function(e) {
         e.preventDefault();
@@ -469,13 +360,9 @@
         
         const urlParams = new URLSearchParams(window.location.search);
         let shopId = urlParams.get("shopId") || "cmn9kj24n0000lqzc7kcsmpst";
-        
         let domain = window.location.origin;
         let isFileProtocol = window.location.protocol === "file:";
-        if (domain === "null" || domain === "about://" || domain === "file://" || !domain) {
-          domain = "https://barbersaas-henna.vercel.app";
-        }
-        
+        if (domain === "null" || domain === "about://" || domain === "file://" || !domain) { domain = "https://barbersaas-henna.vercel.app"; }
         const apiUrlToUse = (domain.includes("localhost") || domain.includes("127.0.0.1")) && !isFileProtocol ? domain : "https://barbersaas-henna.vercel.app";
 
         BarberSaaS.init(shopId, { position: "bottom-right", apiUrl: apiUrlToUse });
@@ -488,7 +375,6 @@
             
             window.BarberSaaS.primaryColor = primaryColor;
             window.BarberSaaS.secondaryColor = secondaryColor;
-            
             document.documentElement.style.setProperty('--primary', primaryColor, 'important');
             document.documentElement.style.setProperty('--secondary', secondaryColor, 'important');
             
@@ -503,7 +389,7 @@
             setTimeout(() => {
                 const cacheBuster = "?v=" + new Date().getTime();
                 const widgetUrlPrefix = (isFileProtocol && domain === "file://") ? ".." : domain;
-                ["booking-modal.js", "booking-widget.js", "review-widget.js"].forEach(script => {
+                ["booking-modal.js", "booking-widget.js"].forEach(script => {
                   const s = document.createElement("script");
                   s.src = widgetUrlPrefix + "/" + script + cacheBuster;
                   s.setAttribute("data-shop-id", shopId);
@@ -511,123 +397,47 @@
                   document.body.appendChild(s);
                 });
             }, 50);
-
           } catch(e) { console.error(e); }
 
           try {
-            const shopName = data.shop.name || "Premium Grooming";
+            const shopName = data.shop.name || "Heritage Haircut";
             document.getElementById('dyn-shop-name').innerHTML = shopName;
             document.getElementById('dyn-shop-name-nav').textContent = shopName;
             document.getElementById('dyn-shop-desc').textContent = data.shop.description || "Precision styling and expert care tailored for the modern individual.";
-            
             document.getElementById("about-loading").style.display = "none";
             document.getElementById("about-content").style.display = "block";
-            // Manually trigger hero reveal
             document.querySelector('.hero-wrapper').classList.add('active');
           } catch(e) {}
 
-          // --- SERVICES RENDER ---
+          // --- TRANSPARENT PRICING MENU RENDER ---
           try {
             const services = (data.services || []).filter(s => s.duration > 0);
-            if (services.length > 0) {
-              const container = document.getElementById("services-list");
-              let serviceCount = 0;
-              const serviceVideos = [
-                'https://assets.mixkit.co/videos/preview/mixkit-hairdresser-cutting-hair-with-scissors-41709-large.mp4',
-                'https://assets.mixkit.co/videos/preview/mixkit-washing-hair-in-a-hair-salon-41716-large.mp4',
-                'https://assets.mixkit.co/videos/preview/mixkit-barber-cutting-hair-with-scissors-41712-large.mp4'
-              ];
+            const products = (data.products || []);
+            const allItems = [...services, ...products];
 
-              const appendServices = () => {
-                const html = services.map((s) => {
-                  const badgeHtml = serviceCount === 0 ? `<span class="badge">Popular</span>` : (serviceCount === 1 ? `<span class="badge">Stylist Pick</span>` : ``);
-                  const vidSrc = serviceVideos[serviceCount % serviceVideos.length];
-                  serviceCount++;
-                  
-                  return `
-                    <div class="horizontal-card interactable">
-                      <div class="card-img">
-                        ${badgeHtml}
-                        <video class="card-img-bg" autoplay loop muted playsinline>
-                          <source src="${vidSrc}" type="video/mp4">
-                        </video>
-                      </div>
-                      <div class="card-body">
-                        <h3 class="card-title">${s.name}</h3>
-                        <div class="card-price">$${Number(s.price).toFixed(2)}</div>
-                        <p class="card-desc">${s.description || ""}</p>
-                        <div class="card-actions">
-                          <button class="btn btn-primary b-book" data-id="${s.id}">Book Now</button>
-                        </div>
-                      </div>
+            if (allItems.length > 0) {
+              document.getElementById("services-list").innerHTML = allItems.map((s) => {
+                const isProduct = s.duration === undefined || s.duration === null || s.duration === 0;
+                const clickAction = isProduct ? "" : `onclick="if(window.BarberBooking) window.BarberBooking.open('${s.id}');" style="cursor: pointer;"`;
+                const imgHtml = s.imageUrl ? `<img src="${s.imageUrl}" alt="${s.name}" class="menu-item-img">` : ``;
+
+                return `
+                <div class="menu-item interactable" ${clickAction}>
+                  ${imgHtml}
+                  <div class="menu-item-content">
+                    <div class="menu-item-info">
+                      <span class="menu-item-name">${s.name}</span>
+                      <span class="menu-item-desc">${s.description || (isProduct ? "Premium product." : "Expert consultation and service.")}</span>
                     </div>
-                  `;
-                }).join('');
-                container.insertAdjacentHTML('beforeend', html);
-              };
-
-              appendServices();
-              appendServices();
-              appendServices();
-
-              container.addEventListener('scroll', () => {
-                if (container.scrollLeft + container.clientWidth >= container.scrollWidth - 600) { appendServices(); }
-              });
-
+                    <div class="menu-item-dots"></div>
+                    <div class="menu-item-price">$${Number(s.price).toFixed(2)}</div>
+                  </div>
+                </div>
+              `}).join('');
               document.getElementById("services-loading").style.display = "none";
-              document.getElementById("services-content").style.display = "flex";
-            }
-          } catch(e) {}
-
-          // --- PRODUCTS RENDER ---
-          try {
-            const products = data.products || [];
-            if (products.length > 0) {
-              const container = document.getElementById("products-list");
-              let prodCount = 0;
-              const productVideos = [
-                'https://assets.mixkit.co/videos/preview/mixkit-applying-shaving-cream-to-a-client-41710-large.mp4',
-                'https://assets.mixkit.co/videos/preview/mixkit-barber-preparing-shaving-foam-41713-large.mp4'
-              ];
-
-              const appendProducts = () => {
-                const html = products.map((p) => {
-                  const badgeHtml = prodCount === 0 ? `<span class="badge">Best Seller</span>` : ``;
-                  const vidSrc = productVideos[prodCount % productVideos.length];
-                  prodCount++;
-                  return `
-                    <div class="horizontal-card interactable">
-                      <div class="card-img">
-                        ${badgeHtml}
-                        <video class="card-img-bg" autoplay loop muted playsinline>
-                          <source src="${vidSrc}" type="video/mp4">
-                        </video>
-                      </div>
-                      <div class="card-body">
-                        <h3 class="card-title">${p.name}</h3>
-                        <div class="card-price">$${Number(p.price).toFixed(2)}</div>
-                        <p class="card-desc">${p.description || ""}</p>
-                        <div class="card-actions">
-                          <button class="btn btn-outline b-view" data-id="${p.id}">View Details</button>
-                          <button class="btn btn-primary b-buy" data-id="${p.id}">Add to Cart</button>
-                        </div>
-                      </div>
-                    </div>
-                  `;
-                }).join('');
-                container.insertAdjacentHTML('beforeend', html);
-              };
-
-              appendProducts();
-              appendProducts();
-              appendProducts();
-
-              container.addEventListener('scroll', () => {
-                if (container.scrollLeft + container.clientWidth >= container.scrollWidth - 600) { appendProducts(); }
-              });
-
-              document.getElementById("products-loading").style.display = "none";
-              document.getElementById("products-content").style.display = "flex";
+              document.getElementById("services-list").style.display = "block";
+            } else {
+              document.getElementById("services-loading").textContent = "No items available.";
             }
           } catch(e) {}
 
@@ -646,17 +456,12 @@
                   container.insertAdjacentHTML('beforeend', html);
                };
 
-               appendReviews();
-               appendReviews();
-               appendReviews();
+               appendReviews(); appendReviews(); appendReviews();
 
                container.addEventListener('scroll', () => {
                 if (container.scrollLeft + container.clientWidth >= container.scrollWidth - 600) { appendReviews(); }
               });
 
-              document.getElementById("add-review-btn").addEventListener("click", () => {
-                if (window.BarberReviews) { window.BarberReviews.open(true); }
-              });
               document.getElementById("reviews-loading").style.display = "none";
               document.getElementById("reviews-content").style.display = "flex";
             }
