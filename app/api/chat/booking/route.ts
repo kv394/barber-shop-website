@@ -127,11 +127,17 @@ export async function POST(req: Request) {
     }
 
     // Restrict history size to the last 20 messages to prevent prompt stuffing
-    const truncatedMessages = messages.slice(-20).map((msg: any) => ({
-        role: msg.role === 'assistant' ? 'model' : (msg.role === 'user' ? 'user' : 'user'),
-        // Limit individual message length to 500 characters
-        content: String(msg.content || '').substring(0, 500)
-    }));
+    const truncatedMessages = messages.slice(-20);
+    // Let's reconstruct the conversation for a fresh generateContent call instead of chats.create
+    const formattedContents: any[] = truncatedMessages.map((m: any) => {
+        if (m.parts) {
+            return m; // Use raw Gemini format
+        }
+        return {
+            role: m.role === 'assistant' ? 'model' : 'user',
+            parts: [{ text: String(m.content || '').substring(0, 500) }]
+        };
+    });
 
     let shop = await prisma.shop.findFirst({
       where: {
@@ -271,12 +277,6 @@ If the user wants to check, cancel, or reschedule their appointments:
 3. For cancellation: Call cancel_appointment with the ID. You will FORGET the IDs between messages, so you must call check_appointments AGAIN to get the ID based on the user's selection.
 4. For rescheduling: Call reschedule_appointment with the ID, new date, and new time (call check_appointments AGAIN to get the ID, and check_availability to find a new slot).`;
 
-    // Let's reconstruct the conversation for a fresh generateContent call instead of chats.create
-    const formattedContents: any[] = truncatedMessages.map((m: any) => ({
-        role: m.role,
-        parts: [{ text: m.content }]
-    }));
-
     let response = await ai.models.generateContent({
         model: 'gemini-2.5-flash',
         contents: formattedContents,
@@ -321,27 +321,67 @@ If the user wants to check, cancel, or reschedule their appointments:
                     if (!service) {
                         result = { error: "Service not found" };
                     } else {
-                        // Dummy logic for availability to keep it simple for AI demo
-                        // In production, this would use google calendar & working hours
+                        
+                        const shopTz = shop.timezone || 'America/New_York';
+                        const { startOfDay, endOfDay } = toShopTzDayBounds(date, shopTz);
+                        
+                        const appointments = await prisma.appointment.findMany({
+                            where: { shopId: realShopId, startTime: { gte: startOfDay, lt: endOfDay }, status: { notIn: ['CANCELLED', 'NO_SHOW'] } },
+                            select: { startTime: true, endTime: true, staffId: true }
+                        });
+                        
+                        let targetStaff = await prisma.user.findMany({
+                            where: { shopId: realShopId, role: 'STAFF', ...(staffId ? { id: staffId } : {}) }
+                        });
+                        if (targetStaff.length === 0) {
+                            targetStaff = await prisma.user.findMany({ where: { shopId: realShopId, role: 'STAFF' } });
+                        }
+                        
+                        const googleBusySlotsPromises = targetStaff.map(async (st) => {
+                            const busySlots = await getCalendarBusySlots(st.id, startOfDay, endOfDay);
+                            return busySlots.map(slot => ({ startTime: slot.startTime, endTime: slot.endTime, staffId: st.id }));
+                        });
+                        const googleBusySlotsNested = await Promise.all(googleBusySlotsPromises);
+                        const allBusySlots = [...appointments, ...googleBusySlotsNested.flat()];
+                        
                         const generatedSlots = [];
                         for (let hour = 9; hour <= 17; hour++) {
-                            for (const min of ["00", "30"]) {
-                                if (hour === 17 && min === "30") continue;
-                                const timeStr = `${hour.toString().padStart(2, '0')}:${min}`;
+                            for (const min of [0, 30]) {
+                                if (hour === 17 && min === 30) continue;
                                 
-                                // Simulate some unavailable slots (e.g., 12:00, 12:30, 13:00, 13:30 are greyed out)
-                                const isAvailable = (hour !== 12 && hour !== 13);
-
-                                generatedSlots.push({ time: timeStr, staffId: staffId || "any", available: isAvailable });
+                                const timeStr = `${hour.toString().padStart(2, '0')}:${min.toString().padStart(2, '0')}`;
+                                const slotStartTime = new Date(startOfDay.getTime() + (hour * 60 + min) * 60000);
+                                const slotEndTime = new Date(slotStartTime.getTime() + service.duration * 60000);
+                                
+                                let isAvailable = false;
+                                let availableStaffId = null;
+                                
+                                for (const st of targetStaff) {
+                                    const staffBusy = allBusySlots.filter(s => s.staffId === st.id);
+                                    const hasOverlap = staffBusy.some(bs => slotStartTime < bs.endTime && slotEndTime > bs.startTime);
+                                    if (!hasOverlap) {
+                                        isAvailable = true;
+                                        availableStaffId = st.id;
+                                        break;
+                                    }
+                                }
+                                
+                                if (isAvailable) {
+                                    generatedSlots.push({ time: timeStr, staffId: staffId || availableStaffId, available: true });
+                                }
                             }
                         }
-
-                        result = {
-                            availableSlots: generatedSlots.filter(s => s.available).map(s => ({ time: s.time, staffId: s.staffId })),
-                            message: "Returning simulated available slots for demonstration."
-                        };
-                        lastAvailabilitySlots = generatedSlots;
-                        lastUiType = 'time_picker';
+                        
+                        if (generatedSlots.length === 0) {
+                            result = { message: "No available slots on this date. Please try another date." };
+                        } else {
+                            result = {
+                                availableSlots: generatedSlots.map(s => ({ time: s.time, staffId: s.staffId })),
+                                message: "Returning available slots to the user interface."
+                            };
+                            lastAvailabilitySlots = generatedSlots;
+                            lastUiType = 'time_picker';
+                        }
                     }
                 } else if (call.name === 'book_appointment') {
                     const args = call.args as any;
@@ -369,7 +409,10 @@ If the user wants to check, cancel, or reschedule their appointments:
                         });
                     }
 
-                    const startTime = new Date(`${date}T${time}:00Z`); // Note: Timezone needs proper handling
+                    const shopTz = shop.timezone || 'America/New_York';
+                    const { startOfDay } = toShopTzDayBounds(date, shopTz);
+                    const [h, m] = time.split(':');
+                    const startTime = new Date(startOfDay.getTime() + (parseInt(h) * 60 + parseInt(m)) * 60000);
                     const service = await prisma.service.findUnique({ where: { id: serviceId } });
 
                     if (service) {
@@ -516,7 +559,10 @@ If the user wants to check, cancel, or reschedule their appointments:
                         if (!apt) {
                             result = { error: "Appointment not found." };
                         } else {
-                            const startTime = new Date(`${date}T${time}:00Z`); // Timezone needs proper handling
+                            const shopTz = shop.timezone || 'America/New_York';
+                            const { startOfDay } = toShopTzDayBounds(date, shopTz);
+                            const [h, m] = time.split(':');
+                            const startTime = new Date(startOfDay.getTime() + (parseInt(h) * 60 + parseInt(m)) * 60000);
                             const service = await prisma.service.findUnique({ where: { id: apt.serviceId || undefined } });
                             const endTime = new Date(startTime.getTime() + (service?.duration || 30) * 60000);
                             
@@ -578,7 +624,7 @@ If the user wants to check, cancel, or reschedule their appointments:
         functionCalls = response.functionCalls;
     }
 
-    const payload: any = { text: finalResponseText };
+    const payload: any = { text: finalResponseText, history: formattedContents };
     if (lastUiType === 'date_picker') {
         payload.ui = {
             type: 'date_picker'

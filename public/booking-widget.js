@@ -581,7 +581,11 @@
           addMessageToUI("Please select an option:", false);
         }
         
-        messages.push({ role: 'assistant', content: data.text });
+        if (data.history) {
+          messages = data.history;
+        } else {
+          messages.push({ role: 'assistant', content: data.text });
+        }
         
         if (options.length > 0 && (!data.ui || data.ui.type !== 'time_picker')) {
           const container = document.createElement('div');

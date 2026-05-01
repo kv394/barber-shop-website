@@ -3,379 +3,410 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sport Clips - Haircuts for Men</title>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,700;0,900;1,400&display=swap" rel="stylesheet">
+  <title>Premium Salon & Grooming</title>
+  
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+  
   <style>
     :root {
-      --primary: #E31837; /* Sport Clips Red */
-      --black: #000000;
-      --dark-gray: #222222;
-      --light-gray: #F4F4F4;
-      --white: #FFFFFF;
-      --text-main: #333333;
+      --primary: #D31145; 
+      --primary-hover: #B00D39;
+      --secondary: #0A1C2E; 
+      
+      --bg-body: #FFFFFF;
+      --bg-gray: #F8F9FA;
+      
+      --text-main: #1A1A1A;
+      --text-muted: #666666;
+      --border-color: #EAEAEA;
+      
+      --font-heading: 'Playfair Display', serif;
+      --font-body: 'Inter', sans-serif;
     }
     
-    html { scroll-behavior: smooth; }
+    /* Hide default cursor, but allow it inside iframes just in case tracking drops */
+    @media (pointer: fine) {
+      html, body { cursor: none; scroll-behavior: smooth; }
+      a, button, .scroll-arrow, .horizontal-card { cursor: none !important; }
+      iframe { cursor: auto !important; }
+    }
     
     body {
-      font-family: 'Roboto', sans-serif;
-      background-color: var(--white);
+      font-family: var(--font-body);
+      background-color: var(--bg-body);
       color: var(--text-main);
       margin: 0;
       padding: 0;
       line-height: 1.6;
+      overflow-x: hidden;
     }
 
-    h1, h2, h3, .sport-title {
-      font-family: 'Roboto', sans-serif;
-      font-weight: 900;
-      text-transform: uppercase;
-      text-align: center;
-      letter-spacing: 1px;
+    h1, h2, h3 {
+      font-family: var(--font-heading);
+      margin: 0;
+      color: var(--secondary);
     }
 
-    /* Navbar - Aligned with user profile */
+    /* --- Custom Luxury Cursor (FIXED) --- */
+    .cursor-dot {
+      position: fixed; top: 0; left: 0; width: 10px; height: 10px;
+      background-color: var(--primary); border-radius: 50%;
+      pointer-events: none; 
+      z-index: 2147483647; /* Maximum possible z-index to always stay on top of SDK */
+      transform: translate(-50%, -50%);
+      transition: width 0.2s ease, height 0.2s ease, background-color 0.2s ease, border 0.2s ease;
+      box-shadow: 0 0 4px rgba(255,255,255,0.8); /* Ensures visibility over dark buttons */
+    }
+    .cursor-dot.hover-state {
+      width: 45px; height: 45px; 
+      background-color: rgba(211, 17, 69, 0.15); /* Soft tint instead of fully transparent */
+      border: 2px solid var(--primary); 
+    }
+
+    /* --- Scroll Reveal Animation --- */
+    .reveal {
+      opacity: 0; transform: translateY(40px); transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+    .reveal.active {
+      opacity: 1; transform: translateY(0);
+    }
+
+    /* --- Navigation --- */
     .navbar {
-      background: var(--white);
-      color: var(--black);
-      padding: 21px 0;
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-      border-bottom: 2px solid var(--primary);
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-      min-height: 82px;
-      box-sizing: border-box;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border-color);
+      padding: 16px 0; position: fixed; top: 0; width: 100%; z-index: 1000;
     }
     .nav-container {
-      max-width: 1200px;
-      margin: 0 auto;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0 20px;
-      flex-wrap: wrap;
+      max-width: 1280px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 0 24px;
     }
-    .nav-brand {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      text-decoration: none;
+    .nav-brand { text-decoration: none; display: flex; align-items: center; }
+    #dyn-shop-name-nav {
+      font-family: var(--font-heading); font-weight: 700; font-size: 1.8rem; color: var(--primary); letter-spacing: -0.5px; margin: 0;
     }
-    .nav-logo {
-      width: 36px;
-      height: 36px;
-      color: var(--primary);
+    .nav-links { display: flex; gap: 36px; align-items: center; }
+    .navbar a.nav-link {
+      color: var(--secondary); text-decoration: none; font-size: 0.9rem; font-weight: 600;
+      text-transform: uppercase; letter-spacing: 1px; transition: color 0.3s;
     }
-    .nav-links {
-      display: flex;
-      gap: 15px;
-      align-items: center;
-      flex-wrap: wrap;
-      justify-content: center;
-      padding-right: 90px;
-    }
-    .navbar a {
-      color: var(--black);
-      text-decoration: none;
-      font-size: 0.9rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      transition: color 0.3s;
-      padding: 5px 8px;
-    }
-    .navbar a:hover, .navbar a.active {
-      color: var(--primary);
-    }
-    .nav-cta {
-      background: var(--primary);
-      color: var(--white) !important;
-      padding: 8px 16px !important;
-      border-radius: 4px;
-      border: 2px solid var(--primary);
-    }
-    .nav-cta:hover {
-      background: var(--white);
-      color: var(--primary) !important;
-    }
-
-    /* Hero / About */
-    .hero-section {
-      text-align: center;
-      padding: 80px 20px;
-      background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://images.unsplash.com/photo-1599351431202-1e0f0137899a?auto=format&fit=crop&w=2000&q=80') center/cover;
-      color: var(--white);
-    }
-    .hero-section h1 {
-      font-size: clamp(2rem, 6vw, 4rem);
-      margin: 0 0 10px 0;
-      color: var(--white);
-      text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-    }
-    .hero-section p {
-      font-size: 1.2rem;
-      max-width: 800px;
-      margin: 0 auto 30px;
-      font-weight: 700;
-      text-transform: uppercase;
-    }
+    .navbar a.nav-link:hover, .navbar a.nav-link.active { color: var(--primary); }
     
-    /* Containers */
-    .container {
-      max-width: 1200px;
-      margin: 50px auto;
-      padding: 0 20px;
+    .nav-cta {
+      background: var(--primary); color: #ffffff !important; padding: 10px 28px !important;
+      border-radius: 4px; font-weight: 600; transition: all 0.3s ease;
     }
-    .section-header {
-      font-size: 2.2rem;
-      color: var(--black);
-      margin-bottom: 20px;
-      position: relative;
-      display: inline-block;
-      text-transform: uppercase;
-      font-weight: 900;
+    .nav-cta:hover { background: var(--secondary); color: #ffffff !important; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.1);}
+
+    /* --- Parallax Hero Section --- */
+    .hero-wrapper {
+      position: relative; height: 80vh; min-height: 600px; display: flex; align-items: center; overflow: hidden; margin-top: 70px; background: #000; 
     }
-    .section-header::after {
-      content: '';
-      position: absolute;
-      bottom: -8px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 50px;
-      height: 4px;
-      background: var(--primary);
+    .hero-video {
+      position: absolute; top: 0; left: 0; width: 100%; height: 120%;
+      object-fit: cover; z-index: -2; 
     }
-    .section-header-wrap {
-      text-align: center;
-      margin-bottom: 40px;
+    .hero-overlay {
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+      background: linear-gradient(to right, rgba(10, 28, 46, 0.9) 0%, rgba(10, 28, 46, 0.3) 100%); z-index: -1;
+    }
+    .hero-content {
+      max-width: 1280px; margin: 0 auto; width: 100%; padding: 0 24px; position: relative; z-index: 1;
+    }
+    .hero-wrapper h1 { 
+      font-size: clamp(3.5rem, 8vw, 5.5rem); line-height: 1.05; margin-bottom: 24px; color: #ffffff; 
+    }
+    .hero-wrapper h1 i { font-weight: 600; color: #e0e0e0; }
+    .hero-wrapper p { 
+      font-size: 1.2rem; font-weight: 400; max-width: 500px; margin: 0 0 40px 0; color: #f0f0f0; letter-spacing: 0.5px;
+    }
+    .hero-btn { 
+      display: inline-block; background: var(--primary); color: #fff; padding: 16px 36px; 
+      font-size: 1rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; 
+      text-decoration: none; border-radius: 4px; transition: all 0.3s;
+    }
+    .hero-btn:hover { background: #ffffff; color: var(--secondary); }
+
+    /* --- Seamless Kinetic Marquee --- */
+    .marquee-container {
+      background: var(--secondary); color: #ffffff; padding: 16px 0; 
+      overflow: hidden; white-space: nowrap; border-bottom: 4px solid var(--primary); display: flex;
+    }
+    .marquee-track {
+      display: flex; width: max-content; animation: marquee 25s linear infinite;
+    }
+    .marquee-text {
+      font-size: 0.9rem; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; padding-right: 12px;
+    }
+    @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+    /* --- Sections & Layout --- */
+    .section-wrap { padding: 100px 0; }
+    .bg-gray { background-color: var(--bg-gray); }
+    .section-header-wrap { 
+      max-width: 1280px; margin: 0 auto 50px auto; padding: 0 24px;
+      display: flex; justify-content: space-between; align-items: flex-end; 
+    }
+    .section-header { font-size: 3rem; }
+
+    /* --- Edge-to-Edge Carousel --- */
+    .carousel-wrapper { position: relative; width: 100%; display: flex; align-items: center; }
+    .horizontal-scroll {
+      display: flex; overflow-x: auto; gap: 32px; padding-top: 10px; padding-bottom: 20px;
+      scroll-snap-type: x mandatory; scroll-behavior: smooth; width: 100%;
+      padding-left: max(24px, calc((100vw - 1280px) / 2 + 24px)); padding-right: 40px; 
+      -ms-overflow-style: none; scrollbar-width: none;  
+    }
+    .horizontal-scroll::-webkit-scrollbar { display: none; }
+
+    /* Arrow Buttons */
+    .scroll-arrow {
+      background: #FFFFFF; color: var(--secondary); border: none; box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+      width: 50px; height: 50px; border-radius: 50%; font-size: 1.2rem;
+      display: flex; justify-content: center; align-items: center; cursor: pointer;
+      position: absolute; z-index: 10; transition: all 0.3s ease;
+    }
+    .scroll-arrow:hover { background: var(--secondary); color: #FFFFFF; transform: scale(1.1); }
+    .scroll-arrow.left { left: max(10px, calc((100vw - 1280px) / 2 - 25px)); }
+    .scroll-arrow.right { right: max(10px, calc((100vw - 1280px) / 2 - 25px)); }
+
+    /* --- Cards --- */
+    .horizontal-card {
+      flex: 0 0 calc(33.333% - 21px); min-width: 340px; scroll-snap-align: start;
+      background: #FFFFFF; display: flex; flex-direction: column;
+      transition: box-shadow 0.4s ease; border: 1px solid var(--border-color);
+    }
+    .horizontal-card:hover { box-shadow: 0 20px 40px rgba(0,0,0,0.08); }
+    
+    /* Kinetic Image Zoom */
+    .card-img {
+      width: 100%; height: 260px; position: relative; overflow: hidden; background: #000;
+    }
+    .card-img-bg {
+      width: 100%; height: 100%; object-fit: cover; transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+    .horizontal-card:hover .card-img-bg { transform: scale(1.08); }
+    
+    /* Floating Badges */
+    .badge {
+      position: absolute; top: 16px; left: 16px;
+      background: #ffffff; color: var(--secondary);
+      padding: 6px 14px; font-size: 0.75rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 1px; border-radius: 99px;
+      z-index: 2; box-shadow: 0 4px 10px rgba(0,0,0,0.1);
     }
 
-    /* Grid Layout */
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 20px;
-    }
-
-    /* Cards - Uniform */
-    .card {
-      background: var(--light-gray);
-      border-top: 4px solid var(--primary);
-      padding: 20px;
-      text-align: center;
-      transition: transform 0.3s, box-shadow 0.3s;
-      width: 100%;
-      box-sizing: border-box;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
-      min-height: 250px;
-      height: 100%;
-    }
-    .card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 8px 16px rgba(0,0,0,0.1);
-    }
-    .card-title {
-      font-size: 1.05rem;
-      color: var(--black);
-      margin: 0 0 10px 0;
-      text-transform: uppercase;
-      font-weight: 900;
-    }
-    .card-price {
-      font-size: 1.1rem;
-      font-weight: 900;
-      color: var(--primary);
-      margin-bottom: 12px;
-    }
-    .card-desc {
-      font-size: 0.85rem;
-      margin-bottom: 15px;
-      color: var(--text-main);
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-      min-height: 2.8em;
-    }
-
-    .card-actions {
-      display: flex;
-      gap: 10px;
-      width: 100%;
-      margin-top: auto;
-      justify-content: center;
-    }
-
-    .card-actions .btn {
-      flex: 1;
-      padding: 12px 0;
+    .card-body { padding: 32px 24px; display: flex; flex-direction: column; flex-grow: 1; }
+    .card-title { font-size: 1.6rem; margin-bottom: 8px; }
+    .card-price { font-size: 1.2rem; font-weight: 600; color: var(--primary); margin-bottom: 20px; font-family: var(--font-body); }
+    
+    .card-desc { 
+      font-size: 0.95rem; color: var(--text-muted); margin-bottom: 32px; line-height: 1.7;
+      display: -webkit-box; -webkit-line-clamp: 5; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; flex-grow: 1;
     }
 
     /* Buttons */
+    .card-actions { margin-top: auto; }
     .btn {
-      display: inline-block;
-      background: var(--primary);
-      color: var(--white);
-      border: 2px solid var(--primary);
-      padding: 14px 0;
-      font-family: 'Roboto', sans-serif;
-      font-size: 0.95rem;
-      font-weight: 800;
-      text-transform: uppercase;
-      cursor: pointer;
-      transition: all 0.3s;
-      border-radius: 6px;
-      width: 100%;
-      box-sizing: border-box;
-      margin-top: auto;
+      display: block; width: 100%; text-align: center; padding: 14px 20px;
+      font-family: var(--font-body); font-size: 0.9rem; font-weight: 600; letter-spacing: 1px;
+      text-transform: uppercase; cursor: pointer; transition: all 0.3s ease;
+      border: 1px solid transparent; box-sizing: border-box; text-decoration: none;
     }
-    .b-book.btn {
-      border-radius: 20px;
-      box-shadow: 0 2px 6px rgba(227,24,55,0.10);
-      background: linear-gradient(90deg, var(--primary) 60%, #ff5a5f 100%);
-      border: none;
-      color: #fff;
-    }
-    .b-book.btn:hover {
-      background: linear-gradient(90deg, #ff5a5f 0%, var(--primary) 100%);
-      box-shadow: 0 4px 12px rgba(227,24,55,0.18);
-      transform: translateY(-2px);
-    }
-    .btn:hover {
-      background: var(--black);
-      border-color: var(--black);
-      color: var(--white);
-    }
-    .btn-outline {
-      background: transparent;
-      color: var(--black);
-      border-color: var(--black);
-    }
-    .btn-outline:hover {
-      background: var(--black);
-      color: var(--white);
-    }
+    .btn-primary { background: var(--secondary); color: #FFFFFF; }
+    .btn-primary:hover { background: var(--primary); }
+    
+    .btn-outline { background: transparent; color: var(--secondary); border-color: var(--secondary); margin-bottom: 12px;}
+    .btn-outline:hover { background: var(--secondary); color: #ffffff; }
 
-    /* Testimonials */
-    .testimonial {
-      background: var(--white);
-      border: 1px solid #ddd;
-      padding: 25px;
-      position: relative;
+    /* --- Reviews (Infinite Grid Format for Consistency) --- */
+    .testimonial { 
+      flex: 0 0 calc(33.333% - 21px); min-width: 340px; scroll-snap-align: start;
+      background: #FFFFFF; padding: 40px; border-top: 4px solid var(--primary); 
+      box-shadow: 0 10px 30px rgba(0,0,0,0.04); display: flex; flex-direction: column; box-sizing: border-box;
     }
-    .testimonial::before {
-      content: '"';
-      position: absolute;
-      top: 5px;
-      left: 15px;
-      font-size: 3rem;
-      color: var(--light-gray);
-      font-family: Georgia, serif;
-      line-height: 1;
-    }
-    .testimonial-stars {
-      color: var(--primary);
-      font-size: 1.2rem;
-      margin-bottom: 10px;
-    }
-    .testimonial-quote {
-      font-size: 0.95rem;
-      font-style: italic;
-      position: relative;
-      z-index: 1;
-    }
+    .testimonial-stars { color: var(--primary); font-size: 1.2rem; margin-bottom: 20px; letter-spacing: 3px; }
+    .testimonial-quote { font-size: 1.15rem; color: var(--text-main); font-style: italic; line-height: 1.6; font-family: var(--font-heading); flex-grow: 1; }
 
-    .loading {
-      text-align: center;
-      font-size: 1.2rem;
-      padding: 40px 0;
-      font-weight: 900;
-      text-transform: uppercase;
-      color: var(--primary);
-      animation: pulse 1s infinite alternate;
-    }
-    @keyframes pulse { 0% { opacity: 0.5; } 100% { opacity: 1; } }
+    .loading { text-align: center; font-size: 1rem; font-weight: 600; color: var(--secondary); padding: 40px 0; text-transform: uppercase; letter-spacing: 2px; }
 
+    /* --- Mobile Sticky Action Bar --- */
+    .mobile-sticky-cta { display: none; }
+
+    @media (max-width: 1024px) {
+      .horizontal-card, .testimonial { flex: 0 0 calc(45% - 16px); min-width: 280px; }
+    }
     @media (max-width: 768px) {
-      .nav-container { flex-direction: column; gap: 10px; padding: 15px; }
-      .nav-links { padding-right: 0; padding-top: 10px; width: 100%; justify-content: center; gap: 10px; }
-      .navbar a { font-size: 0.85rem; padding: 5px; }
-      .nav-cta { width: 100%; text-align: center; margin-top: 5px; }
-      .hero-section { padding: 40px 15px; }
-      .hero-section h1 { font-size: 2.2rem; }
-      .hero-section p { font-size: 1rem; }
-      .section-header { font-size: 1.8rem; }
-      .grid { grid-template-columns: 1fr; }
+      .nav-links { display: none; }
+      .hero-wrapper { min-height: 500px; height: 60vh; }
+      .hero-wrapper h1 { font-size: 3rem; }
+      .section-header { font-size: 2.2rem; }
+      .horizontal-card, .testimonial { flex: 0 0 85%; }
+      .horizontal-scroll { padding-left: 24px; padding-right: 24px; }
+      .scroll-arrow { display: none; }
+      
+      /* Display Mobile Sticky Bar */
+      .mobile-sticky-cta {
+        display: block; position: fixed; bottom: 0; left: 0; width: 100%;
+        background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+        border-top: 1px solid var(--border-color); padding: 12px 24px; box-sizing: border-box; z-index: 1000;
+        box-shadow: 0 -4px 10px rgba(0,0,0,0.05);
+      }
+      .mobile-sticky-btn {
+        display: block; width: 100%; background: var(--primary); color: #fff; text-align: center;
+        padding: 14px 0; font-weight: 700; border-radius: 4px; text-decoration: none; text-transform: uppercase;
+      }
     }
   </style>
 </head>
 <body>
 
+  <div class="cursor-dot" id="cursor"></div>
+
   <nav class="navbar">
     <div class="nav-container">
-      <a href="#" class="nav-brand">
-        <object data="logo.svg" type="image/svg+xml" class="nav-logo" style="pointer-events: none;"></object>
-        <span id="dyn-shop-name-nav" style="font-family: 'Roboto', sans-serif; font-weight: 900; font-size: 1.2rem; text-transform: uppercase; letter-spacing: -1px; color: var(--primary);">SPORT CLIPS</span>
-      </a>
+      <div class="nav-brand">
+        <span id="dyn-shop-name-nav">HAIR SALON</span>
+      </div>
       <div class="nav-links">
-        <a href="#about" class="nav-link active">The MVP</a>
-        <a href="#services" class="nav-link">Haircuts</a>
-        <a href="#shop" class="nav-link">Products</a>
-        <a href="#reviews" class="nav-link">Reviews</a>
-        <a href="#" onclick="event.preventDefault(); if(window.BarberBooking) window.BarberBooking.open();" class="nav-link nav-cta">Check In Now</a>
+        <a href="#services" class="nav-link interactable">Services</a>
+        <a href="#shop" class="nav-link interactable">Products</a>
+        <a href="#reviews" class="nav-link interactable">Reviews</a>
+        <a href="#" onclick="event.preventDefault(); if(window.BarberBooking) window.BarberBooking.open();" class="nav-link nav-cta interactable">Reserve</a>
       </div>
     </div>
   </nav>
 
   <article id="about">
-    <div id="about-loading" class="loading">Loading Stats...</div>
+    <div id="about-loading" class="loading" style="margin-top: 100px;">Loading...</div>
     <div id="about-content" style="display: none;">
-      <section class="hero-section">
-        <h1 id="dyn-shop-name">Sport Clips Haircuts</h1>
-        <p id="dyn-shop-desc">It's good to be a guy.</p>
+      <section class="hero-wrapper reveal">
+        <video autoplay loop muted playsinline class="hero-video" id="heroVideo" poster="https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&w=2000&q=80">
+          <source src="https://assets.mixkit.co/videos/preview/mixkit-barber-cutting-hair-with-scissors-41712-large.mp4" type="video/mp4">
+        </video>
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+          <h1 id="dyn-shop-name">The Art of <i>Grooming</i></h1>
+          <p id="dyn-shop-desc">Precision styling and expert care tailored for the modern individual.</p>
+          <a href="#" onclick="event.preventDefault(); if(window.BarberBooking) window.BarberBooking.open();" class="hero-btn interactable">Book Appointment</a>
+        </div>
       </section>
     </div>
   </article>
 
-  <article id="services" class="container">
-    <div id="services-loading" class="loading">Loading Playbook...</div>
-    <div id="services-content" style="display: none;">
-      <div class="section-header-wrap">
-        <h2 class="section-header">Haircuts & Services</h2>
-      </div>
-      <div class="grid" id="services-list"></div>
+  <div class="marquee-container reveal">
+    <div class="marquee-track">
+      <div class="marquee-text">PRECISION CUTS &nbsp;&bull;&nbsp; PREMIUM STYLING &nbsp;&bull;&nbsp; EXPERT COLOR &nbsp;&bull;&nbsp; HOT TOWEL SHAVES &nbsp;&bull;&nbsp;</div>
+      <div class="marquee-text">PRECISION CUTS &nbsp;&bull;&nbsp; PREMIUM STYLING &nbsp;&bull;&nbsp; EXPERT COLOR &nbsp;&bull;&nbsp; HOT TOWEL SHAVES &nbsp;&bull;&nbsp;</div>
+      <div class="marquee-text">PRECISION CUTS &nbsp;&bull;&nbsp; PREMIUM STYLING &nbsp;&bull;&nbsp; EXPERT COLOR &nbsp;&bull;&nbsp; HOT TOWEL SHAVES &nbsp;&bull;&nbsp;</div>
+      <div class="marquee-text">PRECISION CUTS &nbsp;&bull;&nbsp; PREMIUM STYLING &nbsp;&bull;&nbsp; EXPERT COLOR &nbsp;&bull;&nbsp; HOT TOWEL SHAVES &nbsp;&bull;&nbsp;</div>
+    </div>
+  </div>
+
+  <article id="services" class="section-wrap">
+    <div class="section-header-wrap reveal">
+      <h2 class="section-header">Service Menu</h2>
+    </div>
+    <div id="services-loading" class="loading">Loading Services...</div>
+    
+    <div class="carousel-wrapper reveal" id="services-content" style="display: none;">
+      <button class="scroll-arrow left interactable" onclick="scrollCarousel('services-list', -1)">&#10094;</button>
+      <div class="horizontal-scroll interactable-area" id="services-list">
+          </div>
+      <button class="scroll-arrow right interactable" onclick="scrollCarousel('services-list', 1)">&#10095;</button>
     </div>
   </article>
 
-  <article id="shop" class="container" style="background-color: var(--light-gray); padding-top: 50px; padding-bottom: 50px; max-width: 100%;">
-    <div style="max-width: 1200px; margin: 0 auto;">
-      <div id="products-loading" class="loading">Loading Gear...</div>
-      <div id="products-content" style="display: none;">
-        <div class="section-header-wrap">
-          <h2 class="section-header">Pro Gear</h2>
-        </div>
-        <div class="grid" id="products-list"></div>
-      </div>
+  <article id="shop" class="section-wrap bg-gray">
+    <div class="section-header-wrap reveal">
+      <h2 class="section-header">Curated Products</h2>
+    </div>
+    <div id="products-loading" class="loading">Loading Inventory...</div>
+    
+    <div class="carousel-wrapper reveal" id="products-content" style="display: none;">
+      <button class="scroll-arrow left interactable" onclick="scrollCarousel('products-list', -1)">&#10094;</button>
+      <div class="horizontal-scroll interactable-area" id="products-list">
+          </div>
+      <button class="scroll-arrow right interactable" onclick="scrollCarousel('products-list', 1)">&#10095;</button>
     </div>
   </article>
 
-  <article id="reviews" class="container" style="margin-bottom: 80px;">
-    <div id="reviews-loading" class="loading">Loading Highlights...</div>
-    <div id="reviews-content" style="display: none;">
-      <div class="section-header-wrap">
-        <h2 class="section-header">Fan Highlights</h2>
-      </div>
-      <div class="grid" id="reviews-list"></div>
-      <div style="text-align: center; margin-top: 40px;">
-        <button class="btn btn-outline" id="add-review-btn" style="max-width: 260px;">Submit Highlight</button>
-      </div>
+  <article id="reviews" class="section-wrap">
+    <div class="section-header-wrap reveal">
+      <h2 class="section-header">Client Perspectives</h2>
+    </div>
+    <div id="reviews-loading" class="loading">Loading Feedback...</div>
+    
+    <div class="carousel-wrapper reveal" id="reviews-content" style="display: none;">
+        <button class="scroll-arrow left interactable" onclick="scrollCarousel('reviews-list', -1)">&#10094;</button>
+        <div class="horizontal-scroll interactable-area" id="reviews-list">
+            </div>
+        <button class="scroll-arrow right interactable" onclick="scrollCarousel('reviews-list', 1)">&#10095;</button>
+    </div>
+    
+    <div class="reveal" style="text-align: center; margin-top: 64px; margin-bottom: 80px;">
+      <button class="btn btn-outline interactable" id="add-review-btn" style="max-width: 260px; margin: 0 auto; border-color: var(--border-color); color: var(--text-main);">Leave a Review</button>
     </div>
   </article>
 
-  <!-- Core SDK -->
+  <div class="mobile-sticky-cta">
+    <a href="#" onclick="event.preventDefault(); if(window.BarberBooking) window.BarberBooking.open();" class="mobile-sticky-btn interactable">Book Appointment</a>
+  </div>
+
   <script>
+    // Parallax Hero Video
+    window.addEventListener('scroll', () => {
+      const scrollY = window.scrollY;
+      const heroVideo = document.getElementById('heroVideo');
+      if(heroVideo) {
+        heroVideo.style.transform = `translate(-50%, calc(-50% + ${scrollY * 0.4}px))`;
+      }
+    });
+
+    // Custom Cursor Logic
+    const cursor = document.getElementById('cursor');
+    if(window.matchMedia("(pointer: fine)").matches) {
+      document.addEventListener('mousemove', (e) => {
+        cursor.style.left = e.clientX + 'px';
+        cursor.style.top = e.clientY + 'px';
+      });
+
+      document.addEventListener('mouseover', (e) => {
+        const isInteractive = e.target.closest('.interactable') || 
+                              e.target.closest('.btn') || 
+                              e.target.closest('button') || 
+                              e.target.closest('a') || 
+                              e.target.closest('.horizontal-card');
+        if(isInteractive) {
+          cursor.classList.add('hover-state');
+        }
+      });
+      document.addEventListener('mouseout', (e) => {
+        const isInteractive = e.target.closest('.interactable') || 
+                              e.target.closest('.btn') || 
+                              e.target.closest('button') || 
+                              e.target.closest('a') || 
+                              e.target.closest('.horizontal-card');
+        if(isInteractive) {
+          cursor.classList.remove('hover-state');
+        }
+      });
+    }
+
+    // Scroll Reveal Intersection Observer
+    const revealElements = document.querySelectorAll('.reveal');
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('active');
+          revealObserver.unobserve(entry.target); 
+        }
+      });
+    }, { threshold: 0.1 });
+    
+    revealElements.forEach(el => revealObserver.observe(el));
+
+    // SDK Init
     (function() {
       let domain = window.location.origin;
       let isFileProtocol = window.location.protocol === "file:";
@@ -385,20 +416,43 @@
       if (domain === "null" || domain === "about://" || !domain) {
         domain = "https://barbersaas-henna.vercel.app";
       }
-      
       const sdkScript = document.createElement("script");
       sdkScript.src = isFileProtocol && domain === "file://" ? "../barbersaas-sdk.js?v=" + new Date().getTime() : domain + "/barbersaas-sdk.js?v=" + new Date().getTime();
       document.head.appendChild(sdkScript);
     })();
-  </script>
-  <script>
-    // Smooth scrolling nav
+
+    function scrollCarousel(containerId, direction) {
+      const container = document.getElementById(containerId);
+      const scrollAmount = 360;
+      container.scrollBy({ left: direction * scrollAmount, behavior: 'smooth' });
+    }
+    
+    document.addEventListener('click', function(e) {
+      if (e.target.closest('.b-book')) {
+        const btn = e.target.closest('.b-book');
+        if (window.BarberBooking) window.BarberBooking.open(btn.dataset.id);
+      }
+      if (e.target.closest('.b-buy')) {
+        const btn = e.target.closest('.b-buy');
+        if (window.BarberSaaS) {
+            window.BarberSaaS.getProductDetails(btn.dataset.id).then(p => alert("Added to cart: 1x " + p.name));
+        }
+      }
+      if (e.target.closest('.b-view')) {
+        const btn = e.target.closest('.b-view');
+        if (window.BarberSaaS) {
+            window.BarberSaaS.getProductDetails(btn.dataset.id).then(p => {
+              alert(p.name + "\n$" + Number(p.price).toFixed(2) + "\n\n" + (p.description || "No description available."));
+            });
+        }
+      }
+    });
+
     document.querySelectorAll('.nav-link:not(.nav-cta)').forEach(link => {
       link.addEventListener('click', function(e) {
         e.preventDefault();
         document.querySelectorAll('.nav-link').forEach(a => a.classList.remove('active'));
         this.classList.add('active');
-        
         const targetId = this.getAttribute('href');
         const targetElement = document.querySelector(targetId);
         if (targetElement) {
@@ -414,241 +468,198 @@
         if (typeof BarberSaaS === "undefined") return;
         
         const urlParams = new URLSearchParams(window.location.search);
-        let shopId = urlParams.get("shopId");
-        if (!shopId) {
-            try {
-                const parentParams = new URLSearchParams(window.parent.location.search);
-                shopId = parentParams.get("shopId");
-            } catch(e) {}
-        }
-        if (!shopId) {
-            try {
-                const paths = window.parent.location.pathname.split('/');
-                shopId = paths[paths.length - 1];
-            } catch(e) {}
-        }
-        shopId = shopId || "cmn9kj24n0000lqzc7kcsmpst";
+        let shopId = urlParams.get("shopId") || "cmn9kj24n0000lqzc7kcsmpst";
         
         let domain = window.location.origin;
         let isFileProtocol = window.location.protocol === "file:";
-        
-        if (domain === "null" || domain === "about://" || window.location.protocol === "about:" || isFileProtocol) {
-          try { domain = window.parent.location.origin; } catch(e) {}
-        }
         if (domain === "null" || domain === "about://" || domain === "file://" || !domain) {
           domain = "https://barbersaas-henna.vercel.app";
         }
         
         const apiUrlToUse = (domain.includes("localhost") || domain.includes("127.0.0.1")) && !isFileProtocol ? domain : "https://barbersaas-henna.vercel.app";
 
-        // Initialize SDK
-        BarberSaaS.init(shopId, { 
-            position: "bottom-right",
-            apiUrl: apiUrlToUse
-        });
+        BarberSaaS.init(shopId, { position: "bottom-right", apiUrl: apiUrlToUse });
 
         BarberSaaS.getPublicData().then((data) => {
           try {
             const shop = data.shop || {};
+            const primaryColor = shop.primaryColor || "#D31145"; 
+            const secondaryColor = shop.secondaryColor || "#0A1C2E";
             
-            // Extract dynamic theme colors
-            const primaryColor = shop.primaryColor || "#E31837"; // fallback to Sport Clips Red
-            const secondaryColor = shop.secondaryColor || "#000000"; 
-            
-            // Set on SDK
             window.BarberSaaS.primaryColor = primaryColor;
             window.BarberSaaS.secondaryColor = secondaryColor;
             
-            // Inject CSS Variables for iframe
             document.documentElement.style.setProperty('--primary', primaryColor, 'important');
+            document.documentElement.style.setProperty('--secondary', secondaryColor, 'important');
             
             const styleEl = document.createElement('style');
             styleEl.innerHTML = `
-              :root {
-                --primary: ${primaryColor} !important;
-                --brand-color: ${primaryColor} !important;
-                --theme-color: ${primaryColor} !important;
-              }
-              .bg-crm-primary, [class*="chat-button"], #widget-button, [class*="avatar"] svg {
-                 background-color: ${primaryColor} !important;
-                 fill: ${primaryColor} !important;
-              }
+              :root { --primary: ${primaryColor} !important; --secondary: ${secondaryColor} !important; }
+              .bg-crm-primary, [class*="chat-button"], #widget-button { background-color: ${primaryColor} !important; fill: #ffffff !important; }
               #widget-button svg { fill: #ffffff !important; }
             `;
             document.body.appendChild(styleEl);
             
-            // IMPORTANT FIX: Inject CSS Variables into Parent Next.js Page (for Auth Button alignment and color)
-            try {
-               const parentDoc = window.parent.document;
-               if (parentDoc) {
-                   const parentStyleEl = parentDoc.createElement('style');
-                   parentStyleEl.innerHTML = `
-                     :root {
-                       --crm-primary: ${primaryColor} !important;
-                     }
-                     .bg-crm-primary { background-color: ${primaryColor} !important; }
-                     .text-crm-primary { color: ${primaryColor} !important; }
-                     .border-crm-primary { border-color: ${primaryColor} !important; }
-                     
-                     /* Targeting the specific SupabaseAuthButton inside the Next.js parent */
-                     div.bg-crm-primary { background-color: ${primaryColor} !important; }
-                   `;
-                   parentDoc.body.appendChild(parentStyleEl);
-               }
-            } catch(e) { console.log('Could not inject styles into parent page (CORS or direct load)'); }
-
-            // Inject Chatbot and Booking widgets
             setTimeout(() => {
                 const cacheBuster = "?v=" + new Date().getTime();
                 const widgetUrlPrefix = (isFileProtocol && domain === "file://") ? ".." : domain;
-                
-                const modalScript = document.createElement("script");
-                modalScript.src = widgetUrlPrefix + "/booking-modal.js" + cacheBuster;
-                modalScript.setAttribute("data-shop-id", shopId);
-                modalScript.setAttribute("data-theme-color", primaryColor);
-                document.body.appendChild(modalScript);
-                
-                const widgetScript = document.createElement("script");
-                widgetScript.src = widgetUrlPrefix + "/booking-widget.js" + cacheBuster;
-                widgetScript.setAttribute("data-shop-id", shopId);
-                widgetScript.setAttribute("data-theme-color", primaryColor);
-                document.body.appendChild(widgetScript);
-                
-                const reviewScript = document.createElement("script");
-                reviewScript.src = widgetUrlPrefix + "/review-widget.js" + cacheBuster;
-                reviewScript.setAttribute("data-shop-id", shopId);
-                reviewScript.setAttribute("data-theme-color", primaryColor);
-                document.body.appendChild(reviewScript);
+                ["booking-modal.js", "booking-widget.js", "review-widget.js"].forEach(script => {
+                  const s = document.createElement("script");
+                  s.src = widgetUrlPrefix + "/" + script + cacheBuster;
+                  s.setAttribute("data-shop-id", shopId);
+                  s.setAttribute("data-theme-color", primaryColor);
+                  document.body.appendChild(s);
+                });
             }, 50);
 
           } catch(e) { console.error(e); }
 
-          // Render Content
           try {
-            document.getElementById('dyn-shop-name').textContent = data.shop.name || "Sport Clips Haircuts";
-            document.getElementById('dyn-shop-name-nav').textContent = data.shop.name || "SPORT CLIPS";
-            document.getElementById('dyn-shop-desc').textContent = data.shop.description || "It's good to be a guy.";
+            const shopName = data.shop.name || "Premium Grooming";
+            document.getElementById('dyn-shop-name').innerHTML = shopName;
+            document.getElementById('dyn-shop-name-nav').textContent = shopName;
+            document.getElementById('dyn-shop-desc').textContent = data.shop.description || "Precision styling and expert care tailored for the modern individual.";
+            
             document.getElementById("about-loading").style.display = "none";
             document.getElementById("about-content").style.display = "block";
+            // Manually trigger hero reveal
+            document.querySelector('.hero-wrapper').classList.add('active');
           } catch(e) {}
 
+          // --- SERVICES RENDER ---
           try {
             const services = (data.services || []).filter(s => s.duration > 0);
             if (services.length > 0) {
-              document.getElementById("services-list").innerHTML = services.map(s => {
-                const desc = s.description || "The MVP Experience.";
-                const truncatedDesc = desc.length > 80 ? desc.substring(0, 80) + "..." : desc;
-                return `
-                <div class="card">
-                  <h3 class="card-title">${s.name}</h3>
-                  <div class="card-price">$${Number(s.price).toFixed(2)} <span style="font-size: 0.85rem; color: var(--text-main);">/ ${s.duration} MIN</span></div>
-                  <p class="card-desc" title="${s.description || ""}">${truncatedDesc}</p>
-                  <button class="btn b-book" data-id="${s.id}">Check In</button>
-                </div>
-              `}).join('');
-              document.querySelectorAll(".b-book").forEach(b => b.addEventListener('click', e => {
-                if (window.BarberBooking) window.BarberBooking.open(e.target.dataset.id);
-              }));
+              const container = document.getElementById("services-list");
+              let serviceCount = 0;
+              const serviceVideos = [
+                'https://assets.mixkit.co/videos/preview/mixkit-hairdresser-cutting-hair-with-scissors-41709-large.mp4',
+                'https://assets.mixkit.co/videos/preview/mixkit-washing-hair-in-a-hair-salon-41716-large.mp4',
+                'https://assets.mixkit.co/videos/preview/mixkit-barber-cutting-hair-with-scissors-41712-large.mp4'
+              ];
+
+              const appendServices = () => {
+                const html = services.map((s) => {
+                  const badgeHtml = serviceCount === 0 ? `<span class="badge">Popular</span>` : (serviceCount === 1 ? `<span class="badge">Stylist Pick</span>` : ``);
+                  const vidSrc = serviceVideos[serviceCount % serviceVideos.length];
+                  serviceCount++;
+                  
+                  return `
+                    <div class="horizontal-card interactable">
+                      <div class="card-img">
+                        ${badgeHtml}
+                        <video class="card-img-bg" autoplay loop muted playsinline>
+                          <source src="${vidSrc}" type="video/mp4">
+                        </video>
+                      </div>
+                      <div class="card-body">
+                        <h3 class="card-title">${s.name}</h3>
+                        <div class="card-price">$${Number(s.price).toFixed(2)}</div>
+                        <p class="card-desc">${s.description || ""}</p>
+                        <div class="card-actions">
+                          <button class="btn btn-primary b-book" data-id="${s.id}">Book Now</button>
+                        </div>
+                      </div>
+                    </div>
+                  `;
+                }).join('');
+                container.insertAdjacentHTML('beforeend', html);
+              };
+
+              appendServices();
+              appendServices();
+              appendServices();
+
+              container.addEventListener('scroll', () => {
+                if (container.scrollLeft + container.clientWidth >= container.scrollWidth - 600) { appendServices(); }
+              });
+
+              document.getElementById("services-loading").style.display = "none";
+              document.getElementById("services-content").style.display = "flex";
             }
-            document.getElementById("services-loading").style.display = "none";
-            document.getElementById("services-content").style.display = "block";
           } catch(e) {}
 
+          // --- PRODUCTS RENDER ---
           try {
             const products = data.products || [];
             if (products.length > 0) {
-              document.getElementById("products-list").innerHTML = products.map(p => {
-                const desc = p.description || "Top-tier grooming gear.";
-                const truncatedDesc = desc.length > 80 ? desc.substring(0, 80) + "..." : desc;
-                return `
-                <div class="card" style="background: var(--white);">
-                  <h3 class="card-title">${p.name}</h3>
-                  <div class="card-price">$${Number(p.price).toFixed(2)}</div>
-                  <p class="card-desc" title="${p.name}${p.description ? '\n\n' + p.description : ''}">${truncatedDesc}</p>
-                  <div class="card-actions">
-                    <button class="btn btn-outline b-view" data-id="${p.id}">Details</button>
-                    <button class="btn b-buy" data-id="${p.id}">Buy Now</button>
-                  </div>
-                </div>
-              `}).join('');
-              document.querySelectorAll(".b-buy").forEach(btn => btn.addEventListener("click", e => {
-                BarberSaaS.getProductDetails(e.target.dataset.id).then(p => alert("Added to cart: 1x " + p.name));
-              }));
-              document.querySelectorAll(".b-view").forEach(btn => btn.addEventListener("click", e => {
-                BarberSaaS.getProductDetails(e.target.dataset.id).then(p => {
-                  let modal = document.getElementById("product-modal");
-                  if (!modal) {
-                    modal = document.createElement("div");
-                    modal.id = "product-modal";
-                    modal.style.cssText = "display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);z-index:10001;align-items:center;justify-content:center;";
-                    
-                    const modalContent = document.createElement("div");
-                    modalContent.style.cssText = "background:white;padding:30px;border-radius:8px;max-width:500px;width:90%;position:relative;box-shadow:0 10px 25px rgba(0,0,0,0.2);";
-                    
-                    const closeBtn = document.createElement("button");
-                    closeBtn.innerHTML = "&times;";
-                    closeBtn.style.cssText = "position:absolute;top:15px;right:15px;background:none;border:none;font-size:24px;cursor:pointer;color:#333;";
-                    closeBtn.onclick = () => modal.style.display = "none";
-                    
-                    const title = document.createElement("h2");
-                    title.id = "product-modal-title";
-                    title.style.cssText = "color:var(--primary,#E31837);margin-top:0;margin-bottom:10px;text-transform:uppercase;font-weight:900;border-bottom:2px solid var(--primary,#E31837);padding-bottom:10px;";
-                    
-                    const price = document.createElement("div");
-                    price.id = "product-modal-price";
-                    price.style.cssText = "font-size:1.2rem;font-weight:900;margin-bottom:20px;";
-                    
-                    const desc = document.createElement("p");
-                    desc.id = "product-modal-desc";
-                    desc.style.cssText = "color:#555;line-height:1.6;";
-                    
-                    modalContent.appendChild(closeBtn);
-                    modalContent.appendChild(title);
-                    modalContent.appendChild(price);
-                    modalContent.appendChild(desc);
-                    modal.appendChild(modalContent);
-                    document.body.appendChild(modal);
-                    
-                    modal.addEventListener("click", e => {
-                      if(e.target === modal) modal.style.display = "none";
-                    });
-                  }
-                  
-                  document.getElementById("product-modal-title").textContent = p.name;
-                  document.getElementById("product-modal-price").textContent = "$" + Number(p.price).toFixed(2);
-                  document.getElementById("product-modal-desc").textContent = p.description || "No description available.";
-                  modal.style.display = "flex";
-                });
-              }));
+              const container = document.getElementById("products-list");
+              let prodCount = 0;
+              const productVideos = [
+                'https://assets.mixkit.co/videos/preview/mixkit-applying-shaving-cream-to-a-client-41710-large.mp4',
+                'https://assets.mixkit.co/videos/preview/mixkit-barber-preparing-shaving-foam-41713-large.mp4'
+              ];
+
+              const appendProducts = () => {
+                const html = products.map((p) => {
+                  const badgeHtml = prodCount === 0 ? `<span class="badge">Best Seller</span>` : ``;
+                  const vidSrc = productVideos[prodCount % productVideos.length];
+                  prodCount++;
+                  return `
+                    <div class="horizontal-card interactable">
+                      <div class="card-img">
+                        ${badgeHtml}
+                        <video class="card-img-bg" autoplay loop muted playsinline>
+                          <source src="${vidSrc}" type="video/mp4">
+                        </video>
+                      </div>
+                      <div class="card-body">
+                        <h3 class="card-title">${p.name}</h3>
+                        <div class="card-price">$${Number(p.price).toFixed(2)}</div>
+                        <p class="card-desc">${p.description || ""}</p>
+                        <div class="card-actions">
+                          <button class="btn btn-outline b-view" data-id="${p.id}">View Details</button>
+                          <button class="btn btn-primary b-buy" data-id="${p.id}">Add to Cart</button>
+                        </div>
+                      </div>
+                    </div>
+                  `;
+                }).join('');
+                container.insertAdjacentHTML('beforeend', html);
+              };
+
+              appendProducts();
+              appendProducts();
+              appendProducts();
+
+              container.addEventListener('scroll', () => {
+                if (container.scrollLeft + container.clientWidth >= container.scrollWidth - 600) { appendProducts(); }
+              });
+
+              document.getElementById("products-loading").style.display = "none";
+              document.getElementById("products-content").style.display = "flex";
             }
-            document.getElementById("products-loading").style.display = "none";
-            document.getElementById("products-content").style.display = "block";
           } catch(e) {}
 
+          // --- REVIEWS RENDER ---
           try {
             const reviews = data.reviews || [];
             if (reviews.length > 0) {
-              document.getElementById("reviews-list").innerHTML = reviews.slice(0, 3).map(r => `
-                <div class="testimonial">
-                  <div class="testimonial-stars">${"★".repeat(r.rating || 5)}</div>
-                  <p class="testimonial-quote">${r.comment || "Great experience, highly recommend!"}</p>
-                </div>
-              `).join('');
+               const container = document.getElementById("reviews-list");
+               const appendReviews = () => {
+                 const html = reviews.map(r => `
+                    <div class="testimonial interactable">
+                      <div class="testimonial-stars">${"★".repeat(r.rating || 5)}</div>
+                      <p class="testimonial-quote">"${r.comment || "An exceptional standard of service."}"</p>
+                    </div>
+                  `).join('');
+                  container.insertAdjacentHTML('beforeend', html);
+               };
+
+               appendReviews();
+               appendReviews();
+               appendReviews();
+
+               container.addEventListener('scroll', () => {
+                if (container.scrollLeft + container.clientWidth >= container.scrollWidth - 600) { appendReviews(); }
+              });
+
+              document.getElementById("add-review-btn").addEventListener("click", () => {
+                if (window.BarberReviews) { window.BarberReviews.open(true); }
+              });
+              document.getElementById("reviews-loading").style.display = "none";
+              document.getElementById("reviews-content").style.display = "flex";
             }
-            document.getElementById("add-review-btn").addEventListener("click", () => {
-              if (window.BarberReviews) {
-                window.BarberReviews.open(true);
-              } else {
-                const aptId = prompt("Enter Check-In ID:");
-                const rating = prompt("Rating (1-5):", "5");
-                const comment = prompt("Comments:");
-                if(aptId && rating && comment) {
-                  BarberSaaS.submitReview({appointmentId: aptId, rating: parseInt(rating), comment}).then(() => alert("Highlight submitted!")).catch(e => alert("Error: " + e.message));
-                }
-              }
-            });
-            document.getElementById("reviews-loading").style.display = "none";
-            document.getElementById("reviews-content").style.display = "block";
           } catch(e) {}
         });
       }
