@@ -34,13 +34,14 @@ export default function TeamDashboardClient({
 
   return (
     <>
-      <div className="flex justify-end mb-4">
-        <Link href={`/shop/${shopId}/portfolio`} className="bg-crm-surface text-crm-text border border-crm-border shadow-sm px-4 py-2 rounded-lg hover:bg-crm-bg transition-colors font-bold uppercase tracking-wider flex items-center gap-2 shadow-lg">
+      <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mb-4">
+        <div className="w-full sm:w-auto">
+          <StaffAvailability defaultDate={initialDate} />
+        </div>
+        <Link href={`/shop/${shopId}/portfolio`} className="w-full sm:w-auto bg-crm-surface text-crm-text border border-crm-border shadow-sm px-4 py-2 rounded-lg hover:bg-crm-bg transition-colors font-bold uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg whitespace-nowrap">
           📸 Shop Portfolio Gallery
         </Link>
       </div>
-
-      <StaffAvailability defaultDate={initialDate} />
       
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {initialStaff.map((staffMember: any) => {
@@ -85,16 +86,6 @@ export default function TeamDashboardClient({
                     </span>
                   ) : (
                     <span className="text-[13px] bg-blue-50 text-blue-700 border border-blue-200 px-2.5 py-1 rounded-full font-bold uppercase tracking-wider">Scheduled</span>
-                  )}
-                  
-                  {removeUserAction && (
-                    <form action={removeUserAction}>
-                      <input type="hidden" name="userId" value={staffMember.id} />
-                      <input type="hidden" name="shopId" value={shopId} />
-                      <button type="submit" className="text-[11px] text-red-600 hover:text-red-800 uppercase tracking-wider font-bold transition-colors">
-                        Remove User
-                      </button>
-                    </form>
                   )}
                 </div>
               </div>
@@ -224,6 +215,15 @@ export default function TeamDashboardClient({
                             Mark On Leave
                         </button>
                     </form>
+                )}
+                {removeUserAction && (
+                  <form action={removeUserAction} className="mt-2 pt-2 border-t border-crm-border flex justify-center">
+                    <input type="hidden" name="userId" value={staffMember.id} />
+                    <input type="hidden" name="shopId" value={shopId} />
+                    <button type="submit" className="text-[11px] text-red-600 hover:text-red-800 uppercase tracking-wider font-bold transition-colors">
+                      Remove User from Shop
+                    </button>
+                  </form>
                 )}
               </div>
               )}
