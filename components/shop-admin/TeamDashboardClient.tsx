@@ -54,7 +54,7 @@ export default function TeamDashboardClient({
             <div key={staffMember.id} className={`bg-crm-surface border border-crm-border shadow-sm rounded-2xl p-5 flex flex-col shadow-lg transition-all duration-200 hover:shadow-xl hover:border-crm-border ${isOnLeave ? 'ring-1 ring-status-cancelled/50' : ''}`}>
               
               <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-start mb-4">
-                <StaffProfileModalWrapper staff={staffMember}>
+                <StaffProfileModalWrapper staff={staffMember} shopId={shopId}>
                   <div className="flex items-center gap-3 text-left">
                     <div className="w-10 h-10 rounded-full overflow-hidden bg-crm-surface border border-crm-border shadow-sm flex items-center justify-center shrink-0">
                       {staffMember.imageUrl ? (

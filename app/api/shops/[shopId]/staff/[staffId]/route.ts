@@ -60,6 +60,7 @@ export async function PATCH(
     if (body.name !== undefined) allowedFields.name = body.name;
     if (body.phone !== undefined) allowedFields.phone = body.phone;
     if (body.canManageInventory !== undefined) allowedFields.canManageInventory = body.canManageInventory;
+    if (body.imageUrl !== undefined) allowedFields.imageUrl = body.imageUrl;
 
     const updated = await prisma.user.update({ where: { id: staffId }, data: allowedFields });
     return NextResponse.json(JSON.parse(JSON.stringify(updated)));
