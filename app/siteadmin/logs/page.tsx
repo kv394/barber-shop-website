@@ -69,7 +69,7 @@ export default async function SiteAdminLogsPage() {
         <h1 className="font-serif font-bold text-crm-accent mb-2 text-2xl font-bold">System Logs</h1>
         <p className="text-crm-muted text-[13px]">{logs.length} log entr{logs.length !== 1 ? 'ies' : 'y'} • {logs.filter((l: any) => !l.isResolved).length} unresolved</p>
       </div>
-      <div className="bg-crm-surface rounded-xl border border-crm-border shadow-sm overflow-hidden">
+      <div className="bg-crm-surface rounded-xl border border-crm-border shadow-sm overflow-hidden overflow-x-auto">
         <table className="min-w-full divide-y divide-white/10 text-crm-text">
           <thead className="bg-crm-surface">
             <tr>

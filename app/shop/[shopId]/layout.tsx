@@ -8,6 +8,7 @@ import SupabaseAuthButton from '@/components/auth/SupabaseAuthButton';
 import GlobalChatWidget from '@/components/shop-admin/GlobalChatWidget';
 import ShopSidebarLinks from '@/components/shop-admin/ShopSidebarLinks';
 import ShopSwitcher from '@/components/shop-admin/ShopSwitcher';
+import MobileHeader from '@/components/shop-admin/MobileHeader';
 
 export const dynamic = 'force-dynamic';
 
@@ -111,14 +112,13 @@ export default async function ShopLayout({
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden relative">
         {/* Mobile Header (All Roles except Site Admin) */}
         {!isSiteAdmin && (
-          <header className="md:hidden sticky top-0 z-[100] flex justify-between items-center bg-crm-surface border-b border-crm-border px-4 py-3 shadow-sm">
-            <div className="flex flex-col min-w-0 pr-4 flex-1">
-               <ShopSwitcher currentShopId={shopId} currentShopName={data.shop.name} shops={(data as any).accessibleShops} userRole={data.userRole} />
-            </div>
-            <div className="shrink-0">
-               <SupabaseAuthButton redirectUrl={fallbackRedirect} />
-            </div>
-          </header>
+          <MobileHeader 
+            shopId={shopId}
+            currentShopName={data.shop.name}
+            accessibleShops={(data as any).accessibleShops}
+            userRole={data.userRole}
+            fallbackRedirect={fallbackRedirect}
+          />
         )}
 
         {/* Main Scrolling Area */}

@@ -4,6 +4,7 @@ import { prisma } from '@/lib/prisma';
 import Link from 'next/link';
 import SupabaseAuthButton from '@/components/auth/SupabaseAuthButton';
 import SiteAdminSidebarLinks from '@/components/siteadmin/SiteAdminSidebarLinks';
+import MobileHeader from '@/components/siteadmin/MobileHeader';
 
 export const dynamic = 'force-dynamic';
 
