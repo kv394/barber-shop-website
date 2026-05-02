@@ -1,6 +1,5 @@
-const { PrismaClient } = require('@prisma/client');
-const fs = require('fs');
-const prisma = new PrismaClient();
+import { prisma } from './lib/prisma';
+import fs from 'fs';
 
 async function main() {
   const htmlContent = fs.readFileSync('public/html-sections/SportClips.html', 'utf8');
@@ -10,7 +9,7 @@ async function main() {
   });
   
   if (shop && shop.customization) {
-    let custom = shop.customization;
+    let custom: any = shop.customization;
     custom.customHtml = htmlContent;
     
     await prisma.shop.update({
@@ -21,4 +20,4 @@ async function main() {
   }
 }
 
-main().catch(console.error).finally(() => prisma.$disconnect());
+main().catch(console.error);

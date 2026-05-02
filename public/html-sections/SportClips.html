@@ -977,6 +977,27 @@
 
               // Render Data
               try {
+                // Update Logo
+                if (shop.customization && shop.customization.logoUrl) {
+                  const logoObj = document.querySelector('.nav-logo');
+                  if (logoObj) {
+                    const img = document.createElement('img');
+                    img.src = shop.customization.logoUrl;
+                    img.alt = shop.name + " Logo";
+                    img.className = logoObj.className;
+                    img.style.objectFit = 'contain';
+                    logoObj.parentNode.replaceChild(img, logoObj);
+                  }
+                }
+
+                // Update Hero Image
+                if (shop.customization && shop.customization.heroImageUrl) {
+                  const heroSection = document.querySelector('.hero-section');
+                  if (heroSection) {
+                    heroSection.style.background = `linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url("${shop.customization.heroImageUrl}") center/cover`;
+                  }
+                }
+
                 document.getElementById("dyn-shop-name").textContent =
                   data.shop.name || "Sport Clips Haircuts";
                 document.getElementById("dyn-shop-name-nav").textContent =
