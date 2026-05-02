@@ -135,27 +135,27 @@ export default function CommissionReportClient({
       ) : (
         <>
           {/* Staff Summary Table */}
-          <div className="overflow-x-auto">
-            <table className="w-full text-[13px]">
-              <thead>
-                <tr className="border-b border-crm-border text-crm-muted text-[11px] uppercase">
-                  <th className="text-left p-3">Staff</th>
-                  <th className="text-right p-3">Services</th>
-                  <th className="text-right p-3">Revenue</th>
-                  <th className="text-right p-3">Commission</th>
-                  <th className="text-right p-3">Tips</th>
-                  <th className="text-right p-3 text-crm-accent">Payout</th>
+          <div className="overflow-x-auto bg-crm-bg rounded-lg border border-crm-border shadow-sm mb-4">
+            <table className="w-full text-[13px] border-collapse whitespace-nowrap">
+              <thead className="bg-crm-surface/50">
+                <tr className="border-b border-crm-border text-crm-muted text-[11px] uppercase tracking-wider">
+                  <th className="text-left p-3 sm:p-4 font-semibold">Staff</th>
+                  <th className="text-right p-3 sm:p-4 font-semibold">Services</th>
+                  <th className="text-right p-3 sm:p-4 font-semibold">Revenue</th>
+                  <th className="text-right p-3 sm:p-4 font-semibold">Commission</th>
+                  <th className="text-right p-3 sm:p-4 font-semibold">Tips</th>
+                  <th className="text-right p-3 sm:p-4 font-semibold text-crm-accent">Payout</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody className="divide-y divide-crm-border/50">
                 {summary.map(s => (
-                  <tr key={s.staffId} className="border-b border-crm-border hover:bg-crm-surface">
-                    <td className="p-3 font-medium text-crm-text">{s.staffName}</td>
-                    <td className="p-3 text-right text-crm-muted">{s.servicesCount}</td>
-                    <td className="p-3 text-right text-crm-muted">${s.grossRevenue.toFixed(2)}</td>
-                    <td className="p-3 text-right text-status-info">${s.totalCommission.toFixed(2)}</td>
-                    <td className="p-3 text-right text-status-pending">${s.totalTips.toFixed(2)}</td>
-                    <td className="p-3 text-right text-crm-accent font-bold">${s.totalPayout.toFixed(2)}</td>
+                  <tr key={s.staffId} className="hover:bg-crm-surface/50 transition-colors">
+                    <td className="p-3 sm:p-4 font-medium text-crm-text">{s.staffName}</td>
+                    <td className="p-3 sm:p-4 text-right text-crm-muted">{s.servicesCount}</td>
+                    <td className="p-3 sm:p-4 text-right text-crm-muted">${s.grossRevenue.toFixed(2)}</td>
+                    <td className="p-3 sm:p-4 text-right font-medium text-status-info">${s.totalCommission.toFixed(2)}</td>
+                    <td className="p-3 sm:p-4 text-right font-medium text-status-pending">${s.totalTips.toFixed(2)}</td>
+                    <td className="p-3 sm:p-4 text-right text-crm-accent font-bold">${s.totalPayout.toFixed(2)}</td>
                   </tr>
                 ))}
               </tbody>
@@ -168,27 +168,27 @@ export default function CommissionReportClient({
           </button>
 
           {showDetails && (
-            <div className="overflow-x-auto max-h-80 overflow-y-auto">
-              <table className="w-full text-[11px]">
-                <thead>
-                  <tr className="border-b border-crm-border text-crm-muted uppercase sticky top-0 bg-crm-surface">
-                    <th className="text-left p-2">Staff</th>
-                    <th className="text-left p-2">Service</th>
-                    <th className="text-right p-2">Amount</th>
-                    <th className="text-right p-2">Tip</th>
-                    <th className="text-right p-2">Commission</th>
-                    <th className="text-left p-2">Rule</th>
+            <div className="overflow-x-auto bg-crm-bg rounded-lg border border-crm-border shadow-sm">
+              <table className="w-full text-[11px] border-collapse whitespace-nowrap">
+                <thead className="bg-crm-surface/50">
+                  <tr className="border-b border-crm-border text-crm-muted uppercase tracking-wider">
+                    <th className="text-left p-2 sm:p-3 font-semibold">Staff</th>
+                    <th className="text-left p-2 sm:p-3 font-semibold">Service</th>
+                    <th className="text-right p-2 sm:p-3 font-semibold">Amount</th>
+                    <th className="text-right p-2 sm:p-3 font-semibold">Tip</th>
+                    <th className="text-right p-2 sm:p-3 font-semibold">Commission</th>
+                    <th className="text-left p-2 sm:p-3 font-semibold">Rule</th>
                   </tr>
                 </thead>
-                <tbody>
+                <tbody className="divide-y divide-crm-border/50">
                   {details.map((d, i) => (
-                    <tr key={i} className="border-b border-crm-border">
-                      <td className="p-2 text-crm-muted">{d.staffName}</td>
-                      <td className="p-2 text-crm-muted">{d.serviceName}</td>
-                      <td className="p-2 text-right text-crm-muted">${d.serviceAmount.toFixed(2)}</td>
-                      <td className="p-2 text-right text-status-pending">${d.tipAmount.toFixed(2)}</td>
-                      <td className="p-2 text-right text-status-info">${d.commission.toFixed(2)}</td>
-                      <td className="p-2 text-crm-muted">{d.rateValue}{d.rateType === 'PERCENTAGE' ? '%' : ' flat'} ({d.commissionSource})</td>
+                    <tr key={i} className="hover:bg-crm-surface/50 transition-colors">
+                      <td className="p-2 sm:p-3 text-crm-muted">{d.staffName}</td>
+                      <td className="p-2 sm:p-3 text-crm-text">{d.serviceName}</td>
+                      <td className="p-2 sm:p-3 text-right text-crm-text font-medium">${d.serviceAmount.toFixed(2)}</td>
+                      <td className="p-2 sm:p-3 text-right text-status-pending font-medium">${d.tipAmount.toFixed(2)}</td>
+                      <td className="p-2 sm:p-3 text-right text-status-info font-medium">${d.commission.toFixed(2)}</td>
+                      <td className="p-2 sm:p-3 text-crm-muted text-[10px]">{d.rateValue}{d.rateType === 'PERCENTAGE' ? '%' : ' flat'} ({d.commissionSource})</td>
                     </tr>
                   ))}
                 </tbody>
