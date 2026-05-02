@@ -54,24 +54,11 @@ export function ShopProfileForm({ shopId, initialName, initialDescription, initi
 
   return (
     <div className="bg-crm-bg/50 p-6 rounded-xl border border-crm-border shadow-sm mb-6">
-      <div className="flex justify-between items-center mb-6">
-        <div>
-          <h2 className="font-bold text-crm-text mb-2 text-xl">Shop Profile</h2>
-          <p className="text-crm-muted text-[13px]">
-            Update the basic details of your shop, which appear on your public portal.
-          </p>
-        </div>
-        <button
-          onClick={handleSave}
-          disabled={isLoading}
-          className={`px-4 py-2 rounded-lg font-bold text-[13px] transition-all \${
-            isLoading
-              ? 'bg-crm-surface text-crm-muted cursor-not-allowed'
-              : 'bg-crm-primary text-white hover:bg-crm-primary/90 shadow-sm'
-          }`}
-        >
-          {isLoading ? 'Saving...' : 'Save Profile'}
-        </button>
+      <div className="mb-6">
+        <h2 className="font-bold text-crm-text mb-2 text-xl">Shop Profile</h2>
+        <p className="text-crm-muted text-[13px]">
+          Update the basic details of your shop, which appear on your public portal.
+        </p>
       </div>
 
       {error && (
@@ -118,6 +105,20 @@ export function ShopProfileForm({ shopId, initialName, initialDescription, initi
             placeholder="Tell your clients a little bit about your shop's history, atmosphere, and specialties."
             className="w-full bg-crm-bg border border-crm-border shadow-sm rounded-lg px-4 py-2 text-crm-text placeholder-gray-500"
           />
+        </div>
+
+        <div className="pt-4">
+          <button
+            onClick={handleSave}
+            disabled={isLoading}
+            className={`w-full py-3 rounded-lg font-bold text-[13px] transition-all ${
+              isLoading
+                ? 'bg-crm-surface text-crm-muted cursor-not-allowed'
+                : 'bg-crm-primary text-white hover:bg-crm-surface hover:text-crm-primary border border-transparent hover:border-crm-primary/30 shadow-sm'
+            }`}
+          >
+            {isLoading ? 'Saving...' : 'Save Profile'}
+          </button>
         </div>
       </div>
     </div>

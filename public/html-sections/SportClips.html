@@ -419,11 +419,12 @@
         overflow: visible; 
       }
       .team-name {
-        font-family: "Dancing Script", "Pacifico", "Brush Script MT", cursive;
-        font-weight: 700; /* Bold pen look */
+        font-family: "Roboto", sans-serif;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
         margin: 0;
-        transform: rotate(-3deg); 
-        color: #0f172a; /* Very dark ink */
+        color: var(--text-main);
         display: inline-block;
         text-shadow: none;
         white-space: nowrap; 
@@ -689,7 +690,7 @@
   <body>
     <nav class="navbar">
       <div class="nav-container">
-        <a href="#" class="nav-brand">
+        <div class="nav-brand">
           <object
             data="logo.svg"
             type="image/svg+xml"
@@ -708,7 +709,7 @@
             "
             >SPORT CLIPS</span
           >
-        </a>
+        </div>
         <div class="nav-links">
           <a href="#about" class="nav-link active">The MVP</a>
           <a href="#services" class="nav-link">Haircuts</a>
