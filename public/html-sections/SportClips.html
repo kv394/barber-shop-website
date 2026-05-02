@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Sport Clips - Haircuts for Men</title>
     <link
-      href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,700;0,900;1,400&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,700;0,900;1,400&family=Dancing+Script:wght@400;700&display=swap"
       rel="stylesheet"
     />
     <style>
@@ -364,47 +364,69 @@
       
       .photo-frame {
         width: 100%;
-        max-width: 380px;
+        max-width: 300px;
         aspect-ratio: 3/4;
         margin: 0 auto;
-        border: 12px solid var(--white);
-        box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-        background: var(--light-gray);
+        box-shadow: 0 4px 10px rgba(0,0,0,0.2), 0 15px 30px rgba(0,0,0,0.15);
+        background: #ffffff; /* Pure white for polaroid look */
         position: relative;
-        border-radius: 4px;
-        overflow: hidden;
+        border-radius: 2px;
+        padding: 12px 12px 75px 12px; /* Thick bottom border for the name */
+        box-sizing: border-box;
+        display: flex !important;
+        flex-direction: column;
+        transform: rotate(2deg); /* Casual polaroid tilt */
+        transition: transform 0.3s ease;
+      }
+      .photo-frame:hover {
+        transform: rotate(0deg) scale(1.03); /* Straightens on hover */
+      }
+      .photo-frame-inner {
+        width: 100%;
+        flex: 1; /* Takes up remaining height */
+        position: relative;
+        background: #000;
+        overflow: hidden; /* Hide overflowing images */
+      }
+      .team-slide, .team-slide-info {
+        position: absolute;
+        opacity: 0;
+        transition: opacity 2s ease-in-out;
       }
       .team-slide {
-        position: absolute;
-        top: 0; left: 0; width: 100%; height: 100%;
-        opacity: 0;
-        transition: opacity 2.5s ease-in-out; /* Slower fade */
+        top: 0; left: 0; width: 100%; height: 100%; 
         display: flex;
         flex-direction: column;
       }
-      .team-slide.active {
+      .team-slide.active, .team-slide-info.active {
         opacity: 1;
         z-index: 2;
       }
       .team-img {
         width: 100%;
-        height: 100%;
+        height: 100%; 
         object-fit: cover;
       }
       .team-info {
-        position: absolute;
-        bottom: 0; left: 0; width: 100%;
-        background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
-        color: var(--white);
-        padding: 30px 20px 20px;
-        text-align: center;
+        bottom: 10px; 
+        left: 0;
+        right: 0;
+        height: 55px;
+        display: flex;
+        align-items: center;
+        justify-content: center; /* Center the text horizontally in the strip */
+        z-index: 10;
+        overflow: visible; 
       }
       .team-name {
-        font-size: 1.4rem;
-        font-weight: 900;
-        text-transform: uppercase;
+        font-family: "Dancing Script", "Pacifico", "Brush Script MT", cursive;
+        font-weight: 700; /* Bold pen look */
         margin: 0;
-        text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
+        transform: rotate(-3deg); 
+        color: #0f172a; /* Very dark ink */
+        display: inline-block;
+        text-shadow: none;
+        white-space: nowrap; 
       }
 
       /* Carousel */
@@ -1222,34 +1244,52 @@
                 const staff = data.staff || [];
                 const teamContent = document.getElementById("team-content");
                 if (staff.length > 0) {
-                  teamContent.innerHTML = staff.map((s, index) => {
-                    const fallbackImg = "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=600&q=80";
-                    return `
-                      <div class="team-slide ${index === 0 ? 'active' : ''}">
-                        <img src="${s.imageUrl || s.avatarUrl || s.profileUrl || fallbackImg}" alt="${s.name}" class="team-img">
-                        <div class="team-info">
-                          <h3 class="team-name">${s.name}</h3>
-                          ${s.title ? `<p style="margin:5px 0 0 0; font-size:0.9rem;">${s.title}</p>` : ''}
-                        </div>
-                      </div>
-                    `;
-                  }).join("");
+                  teamContent.innerHTML = `
+                    <div class="photo-frame-inner">
+                      ${staff.map((s, index) => {
+                        const fallbackImg = "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=600&q=80";
+                        return `
+                          <div class="team-slide ${index === 0 ? 'active' : ''}">
+                            <img src="${s.imageUrl || s.avatarUrl || s.profileUrl || fallbackImg}" alt="${s.name}" class="team-img">
+                          </div>
+                        `;
+                      }).join("")}
+                    </div>
+                    ${staff.map((s, index) => {
+                        // Calculate a dynamic font size based on name length so longer names fit
+                        const nameLength = (s.name || '').length;
+                        let fontSize = '1.2rem';
+                        if (nameLength > 12) fontSize = '1.1rem';
+                        if (nameLength > 18) fontSize = '0.95rem';
+                        
+                        return `
+                          <div class="team-info team-slide-info ${index === 0 ? 'active' : ''}">
+                            <h3 class="team-name" style="font-size: ${fontSize}">${s.name}</h3>
+                          </div>
+                        `;
+                    }).join("")}
+                  `;
                   
                   // Setup fading transition
                   let currentSlide = 0;
                   const slides = teamContent.querySelectorAll('.team-slide');
+                  const infos = teamContent.querySelectorAll('.team-slide-info');
                   if (slides.length > 1) {
                     setInterval(() => {
                       slides[currentSlide].classList.remove('active');
+                      if (infos[currentSlide]) infos[currentSlide].classList.remove('active');
+                      
                       currentSlide = (currentSlide + 1) % slides.length;
+                      
                       slides[currentSlide].classList.add('active');
+                      if (infos[currentSlide]) infos[currentSlide].classList.add('active');
                     }, 6500); // Increased interval to accommodate slower fade
                   }
                 } else {
                   teamContent.innerHTML = "<div style='display:flex;align-items:center;justify-content:center;height:100%;background:#eee;'><p>Team coming soon!</p></div>";
                 }
                 document.getElementById("team-loading").style.display = "none";
-                teamContent.style.display = "block";
+                teamContent.style.display = "flex"; // Ensure it shows as a flex container
               } catch (e) {
                 console.error("Team Error:", e);
               }
@@ -1276,3 +1316,4 @@
     </script>
   </body>
 </html>
+ml>

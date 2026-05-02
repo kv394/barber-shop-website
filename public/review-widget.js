@@ -379,15 +379,6 @@
   // Submit Review Logic
   submitBtn.onclick = async () => {
     const comment = commentInput.value.trim();
-    
-    // In our backend, creating a review requires an appointmentId.
-    // Since we don't have one in a generic widget, we'll prompt the user for an appointment reference or just alert the requirement.
-    const appointmentId = prompt("Please enter your Appointment ID to leave a verified review:\\n\\n(You can find this in your confirmation email)");
-    
-    if (!appointmentId) {
-        alert("An Appointment ID is required to leave a verified review.");
-        return;
-    }
 
     submitBtn.disabled = true;
     submitBtn.textContent = 'Submitting...';
@@ -397,7 +388,6 @@
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
-            appointmentId: appointmentId,
             rating: selectedRating, 
             comment: comment 
         })

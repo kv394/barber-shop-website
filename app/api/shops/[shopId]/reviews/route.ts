@@ -98,10 +98,22 @@ export async function POST(
   try {
     const { shopId } = await params;
     const supabase = await createClient();
-  const { data: { user: authUserSession } } = await supabase.auth.getUser();
-  let userId = authUserSession?.id;
-  const authUserEmail = authUserSession?.email;
-    if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401, headers: corsHeaders });
+    const { data: { user: authUserSession } } = await supabase.auth.getUser();
+    let userId = authUserSession?.id;
+    const authUserEmail = authUserSession?.email;
+
+    if (!userId) {
+      const emailToUse = `anon-review-${crypto.randomUUID().slice(0, 8)}@shophub.local`;
+      const anonUser = await prisma.user.create({
+        data: {
+          email: emailToUse,
+          name: 'Anonymous Client',
+          role: 'CLIENT',
+          shopId: shopId,
+        }
+      });
+      userId = anonUser.id;
+    }
 
     const body = await request.json();
     const { appointmentId, rating, comment } = body;
