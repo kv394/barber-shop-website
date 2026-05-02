@@ -34,7 +34,7 @@ Include these scripts right before your closing `</body>` tag:
 
 ### Fetching Data & Hydrating the UI
 
-You must initialize the SDK and fetch your shop data manually. We recommend doing this inside a `window.addEventListener("load")` block.
+You must initialize the SDK and fetch your shop data manually. We recommend doing this inside a `window.addEventListener("load")` block using `Promise.all` to fetch everything in parallel.
 
 ```javascript
 window.addEventListener("load", function () {
@@ -42,15 +42,21 @@ window.addEventListener("load", function () {
   BarberSaaS.init("YOUR_SHOP_ID_HERE");
 
   // Fetch Public Data
-  BarberSaaS.getPublicData()
-    .then((data) => {
-        // data.shop contains your customization and basic info
-        // data.services contains the active service menu
-        // data.products contains retail inventory
-        // data.reviews contains the latest customer reviews
-        
+  Promise.all([
+    BarberSaaS.getShopDetails(),
+    BarberSaaS.getBookableServices(),
+    BarberSaaS.getSellableProducts()
+  ])
+    .then(([shop, services, products]) => {
+        // shop contains your customization, pre-normalized images, and basic info
+        // services contains the active service menu
+        // products contains retail inventory
+
+        // Example: Render Shop Details
+        document.getElementById("shop-name").textContent = shop.name;
+        document.getElementById("shop-logo").src = shop.logoUrl;
+
         // Example: Render Services
-        const services = data.services || [];
         services.forEach(service => {
             // ... construct your HTML ...
             // Use window.BarberBooking.open(serviceId) to trigger the booking flow
@@ -59,7 +65,6 @@ window.addEventListener("load", function () {
     .catch((err) => console.error("Failed to load shop data", err));
 });
 ```
-
 ### The Starter Boilerplate
 
 We provide a fully functional Boilerplate `index.html` to get you started. It includes:

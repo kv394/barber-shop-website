@@ -18,14 +18,24 @@ export default function WidgetEmbedCode({ shopId }: { shopId: string }) {
   const reviewScriptCode = `<script src="https://barbersaas-henna.vercel.app/review-widget.js" data-shop-id="${shopId}"></script>`;
   
   const sdkScriptCode = `<script src="https://barbersaas-henna.vercel.app/barbersaas-sdk.js"></script>
-<script>
+  <script>
   window.addEventListener('load', function() {
     BarberSaaS.init("${shopId}");
-    
-    // Example: Fetch public products, services, staff, and reviews
-    BarberSaaS.getPublicData().then(data => console.log('Shop Data:', data));
+
+    // Example: Fetch and destructure all public data natively
+    Promise.all([
+      BarberSaaS.getShopDetails(),
+      BarberSaaS.getBookableServices(),
+      BarberSaaS.getSellableProducts(),
+      BarberSaaS.getReviews(),
+      BarberSaaS.getPublicStaff()
+    ]).then(([shop, services, products, reviews, staff]) => {
+      console.log('Shop Name:', shop.name);
+      console.log('Logo URL:', shop.logoUrl);
+      console.log('Services:', services);
+    });
   });
-</script>`;
+  </script>`;
 
   const copyToClipboard = (text: string, setCopied: (val: boolean) => void) => {
     navigator.clipboard.writeText(text);
@@ -147,7 +157,7 @@ export default function WidgetEmbedCode({ shopId }: { shopId: string }) {
 
         <div className="mb-6">
           <h3 className="font-semibold text-crm-text mb-2 text-[14px]">Step 1: Initialize the SDK</h3>
-          <p className="text-crm-muted mb-3 text-[13px]">Add this script tag and initialization code. You can then call methods like <code>BarberSaaS.getPublicData()</code> or <code>BarberSaaS.bookService()</code>.</p>
+          <p className="text-crm-muted mb-3 text-[13px]">Add this script tag and initialization code. We recommend using <code>Promise.all</code> to fetch your data simultaneously.</p>
           <div className="flex items-start gap-4 bg-crm-surface p-4 rounded-lg border border-crm-border relative">
             <div className="flex-1 overflow-x-auto pb-1 custom-scrollbar">
               <pre className="text-crm-accent text-[13px] whitespace-pre-wrap font-mono">
@@ -169,7 +179,7 @@ export default function WidgetEmbedCode({ shopId }: { shopId: string }) {
             
             <div className="bg-crm-surface p-4 rounded-lg border border-crm-border">
               <code className="text-status-info font-bold text-[13px] block mb-1">async BarberSaaS.getShopDetails()</code>
-              <p className="text-crm-muted text-[13px]">Returns general shop details including name, description, address, contact info, business hours, and branding colors/logos.</p>
+              <p className="text-crm-muted text-[13px]">Returns general shop details (name, description, address, business hours, and colors). <strong>Bonus:</strong> Automatically normalizes <code>logoUrl</code> and <code>heroImageUrl</code> for Google Drive links so they can be dropped straight into an <code>&lt;img&gt;</code> tag!</p>
             </div>
 
             <div className="bg-crm-surface p-4 rounded-lg border border-crm-border">

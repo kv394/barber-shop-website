@@ -44,17 +44,23 @@ BarberSaaS.init('${shopId}');`}</code>
         <div className="space-y-6">
           <div className="border border-gray-100 p-5 rounded-xl bg-gray-50">
             <h3 className="font-bold text-gray-900 mb-2">Fetch Public Data</h3>
-            <p className="text-gray-600 text-[13px] mb-3">Retrieve your shop's sellable products, bookable services, public staff, and approved reviews.</p>
+            <p className="text-gray-600 text-[13px] mb-3">Retrieve your shop's sellable products, bookable services, public staff, and approved reviews using our modular helper methods.</p>
             <pre className="bg-gray-900 text-gray-100 p-3 rounded-lg text-[12px] overflow-x-auto">
-              <code>{`// Fetch all data at once (optimized, heavily cached)
-const data = await BarberSaaS.getPublicData();
-console.log(data.shop, data.products, data.services, data.staff, data.reviews);
+              <code>{`// Fetch everything simultaneously using Promise.all (Recommended)
+Promise.all([
+  BarberSaaS.getShopDetails(),
+  BarberSaaS.getBookableServices(),
+  BarberSaaS.getSellableProducts(),
+  BarberSaaS.getReviews(),
+  BarberSaaS.getPublicStaff()
+]).then(([shop, services, products, reviews, staff]) => {
+  console.log('Shop Name:', shop.name);
+  console.log('Services:', services);
+});
 
-// Or fetch individual collections
+// Or fetch individual collections if you only need certain data
 const products = await BarberSaaS.getSellableProducts();
 const services = await BarberSaaS.getBookableServices();
-const staff = await BarberSaaS.getPublicStaff();
-const reviews = await BarberSaaS.getReviews();
 
 // Get specific details
 const product = await BarberSaaS.getProductDetails('product_123');
