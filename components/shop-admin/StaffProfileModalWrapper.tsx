@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { QRCodeSVG } from 'qrcode.react';
 import { createPortal } from 'react-dom';
+import { useRouter } from 'next/navigation';
 import MediaPicker from './MediaPicker';
 
 export default function StaffProfileModalWrapper({ staff, shopId, children }: { staff: any, shopId?: string, children: React.ReactNode }) {
@@ -11,14 +12,33 @@ export default function StaffProfileModalWrapper({ staff, shopId, children }: { 
   const [mounted, setMounted] = useState(false);
   const [imageUrl, setImageUrl] = useState(staff.imageUrl);
   const [isSaving, setIsSaving] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  
+  const [formData, setFormData] = useState({
+    name: staff.name || '',
+    phone: staff.phone || '',
+    canManageInventory: staff.canManageInventory || false
+  });
+
+  const router = useRouter();
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
   useEffect(() => {
+    setImageUrl(staff.imageUrl);
+    setFormData({
+      name: staff.name || '',
+      phone: staff.phone || '',
+      canManageInventory: staff.canManageInventory || false
+    });
+  }, [staff]);
+
+  useEffect(() => {
     if (isOpen) {
       setIsRendered(true);
+      setIsEditing(false); // reset edit state when opening
     } else {
       const timeout = setTimeout(() => setIsRendered(false), 200);
       return () => clearTimeout(timeout);
@@ -37,8 +57,32 @@ export default function StaffProfileModalWrapper({ staff, shopId, children }: { 
         body: JSON.stringify({ imageUrl: newUrl })
       });
       if (!res.ok) throw new Error('Failed to update image');
-      // Update the local staff object so the avatar outside the modal updates immediately if passed by reference (though nextjs router refresh is usually better)
       staff.imageUrl = newUrl;
+      router.refresh();
+    } catch (e: any) {
+      alert(e.message);
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  const handleSaveProfile = async () => {
+    if (!shopId) return;
+    setIsSaving(true);
+    try {
+      const res = await fetch(`/api/shops/${shopId}/staff/${staff.id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData)
+      });
+      if (!res.ok) throw new Error('Failed to update profile');
+      
+      staff.name = formData.name;
+      staff.phone = formData.phone;
+      staff.canManageInventory = formData.canManageInventory;
+      
+      setIsEditing(false);
+      router.refresh();
     } catch (e: any) {
       alert(e.message);
     } finally {
@@ -81,30 +125,63 @@ export default function StaffProfileModalWrapper({ staff, shopId, children }: { 
             </div>
           )}
 
-          <h2 className="font-bold text-crm-primary mb-1 text-center text-xl">{staff.name || staff.email || 'Unnamed Staff'}</h2>
-          <span className="text-[11px] bg-crm-primary/20 text-crm-accent px-3 py-1 rounded-full uppercase tracking-wider font-bold mb-6 hover:opacity-90">
-            {staff.role?.replace('_', ' ')}
-          </span>
+          {isEditing ? (
+             <div className="w-full mb-4 space-y-3">
+               <div>
+                 <label className="block text-[11px] font-bold text-crm-muted uppercase tracking-wider mb-1">Name</label>
+                 <input type="text" value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})} className="w-full p-2 text-[13px] bg-crm-surface border border-crm-border rounded" />
+               </div>
+               <div>
+                 <label className="block text-[11px] font-bold text-crm-muted uppercase tracking-wider mb-1">Phone</label>
+                 <input type="text" value={formData.phone} onChange={e => setFormData({...formData, phone: e.target.value})} className="w-full p-2 text-[13px] bg-crm-surface border border-crm-border rounded" />
+               </div>
+               <div className="flex items-center gap-2 mt-2">
+                 <input type="checkbox" id="inv" checked={formData.canManageInventory} onChange={e => setFormData({...formData, canManageInventory: e.target.checked})} className="rounded text-crm-primary focus:ring-crm-primary" />
+                 <label htmlFor="inv" className="text-[13px] font-medium text-crm-text">Can Manage Inventory</label>
+               </div>
+             </div>
+          ) : (
+            <>
+              <h2 className="font-bold text-crm-primary mb-1 text-center text-xl">{staff.name || staff.email || 'Unnamed Staff'}</h2>
+              <span className="text-[11px] bg-crm-primary/20 text-crm-accent px-3 py-1 rounded-full uppercase tracking-wider font-bold mb-6 hover:opacity-90">
+                {staff.role?.replace('_', ' ')}
+              </span>
+            </>
+          )}
 
           <div className="bg-crm-surface p-3 rounded-xl mb-6 shadow-sm">
             <QRCodeSVG value={staff.barcode || staff.id} size={120} level="H" />
             <p className="text-center text-crm-muted font-mono mt-2 tracking-wider text-[13px]">{staff.barcode || 'NO_CODE'}</p>
           </div>
           
-          <div className="w-full space-y-4 text-[13px] bg-crm-surface p-4 rounded-xl border border-crm-border shadow-sm">
+          <div className="w-full space-y-4 text-[13px] bg-crm-surface p-4 rounded-xl border border-crm-border shadow-sm mb-4">
             <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center border-b border-crm-border pb-3">
               <span className="text-crm-muted font-medium">Email</span>
               <span className="text-crm-text font-medium truncate ml-4">{staff.email}</span>
             </div>
-            <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center border-b border-crm-border pb-3">
-              <span className="text-crm-muted font-medium">Phone</span>
-              <span className="text-crm-text font-medium">{staff.phone || 'Not provided'}</span>
-            </div>
-            <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center">
-              <span className="text-crm-muted font-medium">Manage Inventory</span>
-              <span className="text-crm-text font-medium">{staff.canManageInventory ? 'Yes' : 'No'}</span>
-            </div>
+            {!isEditing && (
+              <>
+                <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center border-b border-crm-border pb-3">
+                  <span className="text-crm-muted font-medium">Phone</span>
+                  <span className="text-crm-text font-medium">{staff.phone || 'Not provided'}</span>
+                </div>
+                <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center">
+                  <span className="text-crm-muted font-medium">Manage Inventory</span>
+                  <span className="text-crm-text font-medium">{staff.canManageInventory ? 'Yes' : 'No'}</span>
+                </div>
+              </>
+            )}
           </div>
+          
+          {shopId && (
+            <button 
+              onClick={() => isEditing ? handleSaveProfile() : setIsEditing(true)} 
+              disabled={isSaving}
+              className={`w-full py-2 rounded-lg text-[13px] font-bold border transition-colors ${isEditing ? 'bg-status-confirmed text-white border-status-confirmed hover:opacity-90' : 'bg-crm-surface text-crm-text border-crm-border hover:border-crm-primary'}`}
+            >
+              {isSaving ? 'Saving...' : isEditing ? 'Save Profile' : 'Edit Profile Details'}
+            </button>
+          )}
         </div>
         
         <div className="pt-4 border-t border-crm-border shrink-0 mt-auto">

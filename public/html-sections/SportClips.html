@@ -1226,7 +1226,7 @@
                     const fallbackImg = "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=600&q=80";
                     return `
                       <div class="team-slide ${index === 0 ? 'active' : ''}">
-                        <img src="${s.avatarUrl || s.profileUrl || fallbackImg}" alt="${s.name}" class="team-img">
+                        <img src="${s.imageUrl || s.avatarUrl || s.profileUrl || fallbackImg}" alt="${s.name}" class="team-img">
                         <div class="team-info">
                           <h3 class="team-name">${s.name}</h3>
                           ${s.title ? `<p style="margin:5px 0 0 0; font-size:0.9rem;">${s.title}</p>` : ''}
