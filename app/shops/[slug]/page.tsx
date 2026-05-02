@@ -42,12 +42,13 @@ const getShopBySlug = cache(async (slug: string) => {
   if (!shop) {
     // 2. Case-insensitive name search — avoids loading ALL shops into memory.
     //    The slug is derived from name via: lower → spaces→hyphens → strip non-word.
-    //    Reverse the slug to a LIKE-able pattern (hyphens → space wildcard).
-    const namePattern = slug.replace(/-/g, '%');
+    //    Because of special characters like '[', the exact name with spaces might not match.
+    //    We can search using the first substantial word of the slug to narrow down.
+    const firstWord = slug.split('-').find(w => w.length > 2) || slug.split('-')[0];
     const candidates = await prisma.shop.findMany({
-      where: { name: { contains: namePattern.replace(/%/g, ' '), mode: 'insensitive' } },
+      where: { name: { contains: firstWord, mode: 'insensitive' } },
       include: serviceInclude,
-      take: 10, // Bounded — never fetches entire table
+      take: 50, // Bounded — never fetches entire table
     });
 
     shop = candidates.find(

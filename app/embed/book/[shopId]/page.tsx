@@ -20,10 +20,10 @@ export default async function EmbedBookPage({ params, searchParams }: { params: 
   });
 
   if (!shop) {
-    const namePattern = shopId.replace(/-/g, '%');
+    const firstWord = shopId.split('-').find(w => w.length > 2) || shopId.split('-')[0];
     const candidates = await prisma.shop.findMany({
-      where: { name: { contains: namePattern.replace(/%/g, ' '), mode: 'insensitive' } },
-      take: 10,
+      where: { name: { contains: firstWord, mode: 'insensitive' } },
+      take: 50,
       select: { id: true, name: true, customization: true }
     });
 

@@ -151,10 +151,10 @@ export async function POST(req: Request) {
     });
 
     if (!shop) {
-      const namePattern = shopId.replace(/-/g, '%');
+      const firstWord = shopId.split('-').find(w => w.length > 2) || shopId.split('-')[0];
       const candidates = await prisma.shop.findMany({
-        where: { name: { contains: namePattern.replace(/%/g, ' '), mode: 'insensitive' } },
-        take: 10,
+        where: { name: { contains: firstWord, mode: 'insensitive' } },
+        take: 50,
         select: { id: true, name: true, timezone: true, customDomain: true, subdomain: true, customization: true, description: true }
       });
       shop = candidates.find(
