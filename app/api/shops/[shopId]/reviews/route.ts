@@ -31,6 +31,22 @@ export async function GET(
   try {
     const { shopId } = await params;
     
+    const resolvedShop = await prisma.shop.findFirst({
+      where: {
+        OR: [
+          { id: shopId },
+          { subdomain: shopId },
+          { customDomain: shopId }
+        ]
+      },
+      select: { id: true, customDomain: true, subdomain: true, customization: true }
+    });
+
+    if (!resolvedShop) {
+      return NextResponse.json({ error: 'Shop not found' }, { status: 404, headers: corsHeaders });
+    }
+    const realShopId = resolvedShop.id;
+    
     // Domain Validation
     const referer = request.headers.get('referer');
     let requestDomain = null;
@@ -45,31 +61,24 @@ export async function GET(
     }
 
     if (requestDomain) {
-      const shop = await prisma.shop.findUnique({
-        where: { id: shopId },
-        select: { customDomain: true, subdomain: true, customization: true }
-      });
+      const customization = (resolvedShop.customization as any) || {};
+      const allowedDomains: string[] = customization.allowedDomains || [];
+      if (resolvedShop.customDomain) allowedDomains.push(resolvedShop.customDomain);
+      if (resolvedShop.subdomain) allowedDomains.push(`${resolvedShop.subdomain}.barbersaas.com`);
+      allowedDomains.push('barbersaas.com', 'localhost', '127.0.0.1', 'barbersaas-henna.vercel.app');
       
-      if (shop) {
-        const customization = (shop.customization as any) || {};
-        const allowedDomains: string[] = customization.allowedDomains || [];
-        if (shop.customDomain) allowedDomains.push(shop.customDomain);
-        if (shop.subdomain) allowedDomains.push(`${shop.subdomain}.barbersaas.com`);
-        allowedDomains.push('barbersaas.com', 'localhost', '127.0.0.1', 'barbersaas-henna.vercel.app');
-        
-        const isAllowed = allowedDomains.some(domain => 
-          requestDomain === domain || requestDomain?.endsWith(`.${domain}`)
-        );
+      const isAllowed = allowedDomains.some(domain => 
+        requestDomain === domain || requestDomain?.endsWith(`.${domain}`)
+      );
 
-        if (!isAllowed) {
-          // TEMPORARY: Allow all domains for demo/local testing purposes.
-          logger.warn(`Allowing unauthorized access to reviews from domain for demo: ${requestDomain}`);
-        }
+      if (!isAllowed) {
+        // TEMPORARY: Allow all domains for demo/local testing purposes.
+        logger.warn(`Allowing unauthorized access to reviews from domain for demo: ${requestDomain}`);
       }
     }
 
     const reviews = await prisma.review.findMany({
-      where: { shopId: shopId },
+      where: { shopId: realShopId },
       include: {
         user: { select: { name: true } },
         appointment: { include: { service: { select: { name: true } }, staff: { select: { name: true } } } },
@@ -97,6 +106,23 @@ export async function POST(
 
   try {
     const { shopId } = await params;
+    
+    const resolvedShop = await prisma.shop.findFirst({
+      where: {
+        OR: [
+          { id: shopId },
+          { subdomain: shopId },
+          { customDomain: shopId }
+        ]
+      },
+      select: { id: true }
+    });
+
+    if (!resolvedShop) {
+      return NextResponse.json({ error: 'Shop not found' }, { status: 404, headers: corsHeaders });
+    }
+    const realShopId = resolvedShop.id;
+
     const supabase = await createClient();
     const { data: { user: authUserSession } } = await supabase.auth.getUser();
     let userId = authUserSession?.id;
@@ -109,7 +135,7 @@ export async function POST(
           email: emailToUse,
           name: 'Anonymous Client',
           role: 'CLIENT',
-          shopId: shopId,
+          shopId: realShopId,
         }
       });
       userId = anonUser.id;
@@ -128,7 +154,7 @@ export async function POST(
         where: { id: appointmentId },
       });
 
-      if (!appointment || (appointment.shopId !== shopId && !(await prisma.shopAccess.findFirst({ where: { userId: appointment.id, shopId } }))) || appointment.userId !== userId) {
+      if (!appointment || (appointment.shopId !== realShopId && !(await prisma.shopAccess.findFirst({ where: { userId: appointment.id, shopId: realShopId } }))) || appointment.userId !== userId) {
         return NextResponse.json({ error: 'Appointment not found or not yours' }, { status: 404, headers: corsHeaders });
       }
 
@@ -150,7 +176,7 @@ export async function POST(
         comment: comment ? String(comment).replace(/<[^>]*>/g, '').slice(0, 2000) : null,
         appointmentId: appointmentId || null,
         userId,
-        shopId: shopId,
+        shopId: realShopId,
       },
     });
 
