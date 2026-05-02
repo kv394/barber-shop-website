@@ -83,20 +83,20 @@ export default function PortfolioManager({ shopId, currentUserId, userRole }: { 
 
       <form onSubmit={addImage} className="mb-8 p-4 bg-crm-bg/50 rounded-lg border border-crm-border shadow-sm space-y-4">
         <h4 className="font-semibold text-crm-text text-base font-semibold">Add New Photo</h4>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
+          <div className="flex flex-col">
             <label className="block text-crm-muted mb-1 text-[13px]">Image File or URL</label>
-            <div className="flex gap-2">
-              <input 
-                type="url" 
-                value={imageUrl} 
-                onChange={e => setImageUrl(e.target.value)} 
-                placeholder="e.g. https://..." 
-                className="flex-1 bg-crm-surface border border-crm-border shadow-sm rounded px-3 py-2 text-crm-text text-[13px] focus:outline-none focus:border-brand-gold" 
+            <div className="flex flex-col sm:flex-row gap-2 sm:items-center">
+              <input
+                type="url"
+                value={imageUrl}
+                onChange={e => setImageUrl(e.target.value)}
+                placeholder="e.g. https://..."
+                className="flex-1 w-full bg-crm-surface border border-crm-border shadow-sm rounded px-3 py-2 text-crm-text text-[13px] focus:outline-none focus:border-brand-gold min-w-0"
               />
-              <span className="text-crm-muted py-2 text-[13px]">OR</span>
-              <input 
-                type="file" 
+              <span className="text-crm-muted py-1 sm:py-2 text-[13px] text-center">OR</span>
+              <input
+                type="file"
                 accept="image/*"
                 onChange={async (e) => {
                   const file = e.target.files?.[0];
@@ -106,7 +106,7 @@ export default function PortfolioManager({ shopId, currentUserId, userRole }: { 
                     const formData = new FormData();
                     formData.append('file', file);
                     formData.append('type', 'portfolio');
-                    
+
                     const res = await fetch(`/api/shops/${shopId}/upload`, {
                       method: 'POST',
                       body: formData,
@@ -119,29 +119,31 @@ export default function PortfolioManager({ shopId, currentUserId, userRole }: { 
                   } finally {
                     setSaving(false);
                   }
-                }} 
-                className="flex-1 bg-crm-surface border border-crm-border shadow-sm rounded px-3 py-2 text-crm-text text-[13px] focus:outline-none focus:border-brand-gold file:mr-4 file:py-1 file:px-4 file:rounded file:border-0 file:text-[13px] file:bg-crm-primary/20 file:text-crm-primary hover:file:bg-crm-primary/30 hover:opacity-90" 
+                }}
+                className="flex-1 w-full bg-crm-surface border border-crm-border shadow-sm rounded px-3 py-2 text-crm-text text-[13px] focus:outline-none focus:border-brand-gold file:mr-4 file:py-1 file:px-4 file:rounded file:border-0 file:text-[13px] file:bg-crm-primary/20 file:text-crm-primary hover:file:bg-crm-primary/30 hover:opacity-90 min-w-0"
               />
             </div>
           </div>
-          <div>
+          <div className="flex flex-col">
             <label className="block text-crm-muted mb-1 text-[13px]">Caption (Optional)</label>
-            <input 
-              type="text" 
-              value={caption} 
-              onChange={e => setCaption(e.target.value)} 
-              placeholder="e.g. Balayage & Cut" 
-              className="w-full bg-crm-surface border border-crm-border shadow-sm rounded px-3 py-2 text-crm-text text-[13px] focus:outline-none focus:border-brand-gold" 
+            <input
+              type="text"
+              value={caption}
+              onChange={e => setCaption(e.target.value)}
+              placeholder="e.g. Balayage & Cut"
+              className="w-full bg-crm-surface border border-crm-border shadow-sm rounded px-3 py-2 text-crm-text text-[13px] focus:outline-none focus:border-brand-gold min-w-0"
             />
           </div>
         </div>
-        <button 
-          type="submit" 
-          disabled={saving || !imageUrl.trim()} 
-          className="px-4 py-2 bg-crm-primary text-white rounded text-[13px] font-bold hover:bg-crm-surface hover:text-crm-primary border border-transparent hover:border-crm-primary/30 transition disabled:opacity-50"
-        >
-          {saving ? 'Uploading...' : 'Add to Portfolio'}
-        </button>
+        <div className="mt-4 pt-2">
+          <button 
+            type="submit" 
+            disabled={saving || !imageUrl.trim()} 
+            className="px-4 py-2 bg-crm-primary text-white rounded text-[13px] font-bold hover:bg-crm-surface hover:text-crm-primary border border-transparent hover:border-crm-primary/30 transition disabled:opacity-50"
+          >
+            {saving ? 'Uploading...' : 'Add to Portfolio'}
+          </button>
+        </div>
       </form>
 
       {loading ? (
