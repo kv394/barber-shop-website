@@ -96,7 +96,28 @@ export function ServiceManagement({ shopId }: ServiceManagementProps) {
     fetchData();
   }, [shopId]);
 
-  const handleAddService = async (e: React.FormEvent) => {
+  const resetForm = () => {
+    setNewService({ name: '', description: '', price: '', duration: '', trackInventory: false, type: 'CUSTOMER', addonIds: [], isBookable: true, imageUrl: '' });
+    setEditingServiceId(null);
+  };
+
+  const handleEditClick = (service: Service) => {
+    setEditingServiceId(service.id);
+    setNewService({
+      name: service.name,
+      description: service.description || '',
+      price: service.price.toString(),
+      duration: service.duration.toString(),
+      trackInventory: service.trackInventory,
+      type: service.type,
+      addonIds: service.addons?.map(a => a.id) || [],
+      isBookable: service.isBookable,
+      imageUrl: service.imageUrl || '',
+    });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleSubmitService = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
     setError(null);
@@ -113,8 +134,13 @@ export function ServiceManagement({ shopId }: ServiceManagementProps) {
         throw new Error('Duration must be greater than 0');
       }
 
-      const response = await fetch(`/api/shops/${shopId}/services`, {
-        method: 'POST',
+      const method = editingServiceId ? 'PUT' : 'POST';
+      const url = editingServiceId 
+        ? `/api/shops/${shopId}/services/${editingServiceId}`
+        : `/api/shops/${shopId}/services`;
+
+      const response = await fetch(url, {
+        method: method,
         headers: {
           'Content-Type': 'application/json',
         },
@@ -133,13 +159,20 @@ export function ServiceManagement({ shopId }: ServiceManagementProps) {
 
       if (!response.ok) {
         const data = await response.json();
-        throw new Error(data.error || 'Failed to add service');
+        throw new Error(data.error || `Failed to ${editingServiceId ? 'update' : 'add'} service`);
       }
 
-      const addedService = await response.json();
-      setServices([...services, addedService]);
-      setNewService({ name: '', description: '', price: '', duration: '', trackInventory: false, type: 'CUSTOMER', addonIds: [], isBookable: true, imageUrl: '' });
-      setSuccess(`Service "${newService.name}" added successfully!`);
+      const savedService = await response.json();
+      
+      if (editingServiceId) {
+        setServices(services.map(s => s.id === editingServiceId ? savedService : s));
+        setSuccess(`Service "${savedService.name}" updated successfully!`);
+      } else {
+        setServices([...services, savedService]);
+        setSuccess(`Service "${savedService.name}" added successfully!`);
+      }
+      
+      resetForm();
       setTimeout(() => setSuccess(null), 3000);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
@@ -247,8 +280,21 @@ export function ServiceManagement({ shopId }: ServiceManagementProps) {
 
         {/* Add Service Form */}
         <div className="bg-crm-surface p-4 sm:p-6 rounded-lg border border-crm-border shadow-sm mb-6 sm:mb-8">
-          <h3 className="font-bold text-crm-text mb-4 text-lg font-bold">Add New Service</h3>
-          <form onSubmit={handleAddService} className="space-y-4">
+          <div className="flex justify-between items-center mb-4">
+            <h3 className="font-bold text-crm-text text-lg font-bold">
+              {editingServiceId ? 'Edit Service' : 'Add New Service'}
+            </h3>
+            {editingServiceId && (
+              <button 
+                type="button" 
+                onClick={resetForm}
+                className="text-[13px] text-crm-muted hover:text-crm-text transition-colors border border-crm-border px-3 py-1 rounded-md"
+              >
+                Cancel Edit
+              </button>
+            )}
+          </div>
+          <form onSubmit={handleSubmitService} className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="block font-medium text-crm-muted mb-2 text-[13px]">
@@ -400,7 +446,9 @@ export function ServiceManagement({ shopId }: ServiceManagementProps) {
               disabled={isSubmitting || !newService.name || !newService.price || !newService.duration}
               className="w-full bg-crm-primary text-white hover:bg-crm-surface hover:text-crm-primary border border-transparent hover:border-crm-primary/30 disabled:opacity-50 font-bold py-2 rounded-lg transition-colors"
             >
-              {isSubmitting ? 'Adding Service...' : 'Add Service'}
+              {isSubmitting 
+                ? (editingServiceId ? 'Updating Service...' : 'Adding Service...') 
+                : (editingServiceId ? 'Update Service' : 'Add Service')}
             </button>
           </form>
         </div>
@@ -426,7 +474,9 @@ export function ServiceManagement({ shopId }: ServiceManagementProps) {
                       )}
                       <div className="flex-1">
                       <div className="flex items-center flex-wrap gap-2 mb-1">
-                          <h4 className="font-semibold text-crm-text text-base font-semibold">{service.name}</h4>
+                          <button onClick={() => handleEditClick(service)} className="text-left hover:text-crm-primary transition-colors focus:outline-none">
+                            <h4 className="font-semibold text-crm-text text-base font-semibold hover:text-crm-primary">{service.name}</h4>
+                          </button>
                           <div className={`text-[13px] sm:text-[11px] font-semibold px-2 py-0.5 sm:py-1 rounded border ${service.type === 'INTERNAL' ? 'bg-crm-accent/20 text-crm-accent border-crm-accent/30' : 'bg-status-confirmed/20 text-status-confirmed border-status-confirmed/30'}`}>
                               {service.type}
                           </div>
