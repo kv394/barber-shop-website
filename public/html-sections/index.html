@@ -951,8 +951,8 @@
           BarberSaaS.getPublicData().then((data) => {
             try {
               const shop = data.shop || {};
-              const primaryColor = shop.customization?.primaryColor || shop.primaryColor || "#D31145";
-              const secondaryColor = shop.customization?.secondaryColor || shop.secondaryColor || "#0A1C2E";
+              const primaryColor = shop.primaryColor || "#D31145";
+              const secondaryColor = shop.secondaryColor || "#0A1C2E";
 
               window.BarberSaaS.primaryColor = primaryColor;
               window.BarberSaaS.secondaryColor = secondaryColor;
@@ -992,40 +992,25 @@
             }
 
             try {
-              const normalizeImageUrl = (url) => {
-                if (!url) return null;
-                const fileMatch = url.match(/drive\.google\.com\/file\/d\/([^/]+)/);
-                if (fileMatch) return `https://lh3.googleusercontent.com/d/${fileMatch[1]}`;
-                const openMatch = url.match(/drive\.google\.com\/open\?id=([^&]+)/);
-                if (openMatch) return `https://lh3.googleusercontent.com/d/${openMatch[1]}`;
-                const ucMatch = url.match(/drive\.google\.com\/uc\?.*id=([^&]+)/);
-                if (ucMatch) return `https://lh3.googleusercontent.com/d/${ucMatch[1]}`;
-                return url;
-              };
-
-              const shopName = data.shop?.customization?.seo?.title || data.shop?.name || "Heritage Haircut";
+              const shopName = data.shop?.name || "Heritage Haircut";
               document.getElementById("dyn-shop-name").innerHTML = shopName;
 
-              if (data.shop?.customization?.logoUrl || data.shop?.logoUrl) {
-                const rawLogoUrl = data.shop?.customization?.logoUrl || data.shop?.logoUrl;
-                const logoUrl = normalizeImageUrl(rawLogoUrl);
+              if (data.shop?.logoUrl) {
                 document.querySelector(".nav-brand").innerHTML =
-                  `<img src="${logoUrl}" alt="${shopName}" style="max-height: 40px;">`;
+                  `<img src="${data.shop.logoUrl}" alt="${shopName}" style="max-height: 40px;">`;
               } else {
                 document.getElementById("dyn-shop-name-nav").textContent =
                   shopName;
               }
 
-              const shopDesc = data.shop?.customization?.seo?.description || data.shop?.description || "Precision styling and expert care tailored for the modern individual.";
+              const shopDesc = data.shop?.description || "Precision styling and expert care tailored for the modern individual.";
               document.getElementById("dyn-shop-desc").textContent = shopDesc;
 
-              if (data.shop?.customization?.heroImageUrl || data.shop?.heroImageUrl) {
-                const rawHeroImageUrl = data.shop?.customization?.heroImageUrl || data.shop?.heroImageUrl;
-                const heroImageUrl = normalizeImageUrl(rawHeroImageUrl);
+              if (data.shop?.heroImageUrl) {
                 const heroVideo = document.getElementById("heroVideo");
                 if (heroVideo) {
                   const img = document.createElement("img");
-                  img.src = heroImageUrl;
+                  img.src = data.shop.heroImageUrl;
                   img.className = "hero-video";
                   img.id = "heroVideo";
                   heroVideo.parentNode.replaceChild(img, heroVideo);

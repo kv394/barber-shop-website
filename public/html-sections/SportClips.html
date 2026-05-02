@@ -913,8 +913,8 @@
                 const shop = data.shop || {};
 
                 // 1. Extract dynamic theme colors
-                const primaryColor = shop.customization?.primaryColor || shop.primaryColor || "#E31837";
-                const secondaryColor = shop.customization?.secondaryColor || shop.secondaryColor || "#000000";
+                const primaryColor = shop.primaryColor || "#E31837";
+                const secondaryColor = shop.secondaryColor || "#000000";
 
                 window.BarberSaaS.primaryColor = primaryColor;
                 window.BarberSaaS.secondaryColor = secondaryColor;
@@ -977,25 +977,12 @@
 
               // Render Data
               try {
-                const normalizeImageUrl = (url) => {
-                  if (!url) return null;
-                  const fileMatch = url.match(/drive\.google\.com\/file\/d\/([^/]+)/);
-                  if (fileMatch) return `https://lh3.googleusercontent.com/d/${fileMatch[1]}`;
-                  const openMatch = url.match(/drive\.google\.com\/open\?id=([^&]+)/);
-                  if (openMatch) return `https://lh3.googleusercontent.com/d/${openMatch[1]}`;
-                  const ucMatch = url.match(/drive\.google\.com\/uc\?.*id=([^&]+)/);
-                  if (ucMatch) return `https://lh3.googleusercontent.com/d/${ucMatch[1]}`;
-                  return url;
-                };
-
                 // Update Logo
-                const rawLogoUrl = shop.customization?.logoUrl || shop.logoUrl;
-                const logoUrl = normalizeImageUrl(rawLogoUrl);
-                if (logoUrl) {
+                if (shop.logoUrl) {
                   const logoObj = document.querySelector('.nav-logo');
                   if (logoObj) {
                     const img = document.createElement('img');
-                    img.src = logoUrl;
+                    img.src = shop.logoUrl;
                     img.alt = shop.name + " Logo";
                     img.className = logoObj.className;
                     img.style.objectFit = 'contain';
@@ -1004,21 +991,16 @@
                 }
 
                 // Update Hero Image
-                const rawHeroImageUrl = shop.customization?.heroImageUrl || shop.heroImageUrl;
-                const heroImageUrl = normalizeImageUrl(rawHeroImageUrl);
-                if (heroImageUrl) {
+                if (shop.heroImageUrl) {
                   const heroSection = document.querySelector('.hero-section');
                   if (heroSection) {
-                    heroSection.style.background = `linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url("${heroImageUrl}") center/cover`;
+                    heroSection.style.background = `linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url("${shop.heroImageUrl}") center/cover`;
                   }
                 }
 
-                const shopName = shop.customization?.seo?.title || shop.name || "Sport Clips Haircuts";
-                const shopDesc = shop.customization?.seo?.description || shop.description || "It's good to be a guy.";
-
-                document.getElementById("dyn-shop-name").textContent = shopName;
-                document.getElementById("dyn-shop-name-nav").textContent = shopName.toUpperCase();
-                document.getElementById("dyn-shop-desc").textContent = shopDesc;
+                document.getElementById("dyn-shop-name").textContent = shop.name || "Sport Clips Haircuts";
+                document.getElementById("dyn-shop-name-nav").textContent = (shop.name || "Sport Clips Haircuts").toUpperCase();
+                document.getElementById("dyn-shop-desc").textContent = shop.description || "It's good to be a guy.";
                 document.getElementById("about-loading").style.display = "none";
                 document.getElementById("about-content").style.display =
                   "block";

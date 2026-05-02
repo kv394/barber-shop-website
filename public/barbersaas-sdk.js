@@ -96,6 +96,29 @@
           return res.json();
         })
         .then((data) => {
+          if (data && data.shop) {
+            const shop = data.shop;
+            const custom = shop.customization || {};
+            const seo = custom.seo || {};
+
+            const normalizeImageUrl = (url) => {
+              if (!url) return null;
+              const fileMatch = url.match(/drive\.google\.com\/file\/d\/([^/]+)/);
+              if (fileMatch) return `https://lh3.googleusercontent.com/d/${fileMatch[1]}`;
+              const openMatch = url.match(/drive\.google\.com\/open\?id=([^&]+)/);
+              if (openMatch) return `https://lh3.googleusercontent.com/d/${openMatch[1]}`;
+              const ucMatch = url.match(/drive\.google\.com\/uc\?.*id=([^&]+)/);
+              if (ucMatch) return `https://lh3.googleusercontent.com/d/${ucMatch[1]}`;
+              return url;
+            };
+
+            data.shop.name = seo.title || shop.name || "Shop";
+            data.shop.description = seo.description || shop.description || "";
+            data.shop.logoUrl = normalizeImageUrl(custom.logoUrl || shop.logoUrl);
+            data.shop.heroImageUrl = normalizeImageUrl(custom.heroImageUrl || shop.heroImageUrl);
+            data.shop.primaryColor = custom.primaryColor || shop.primaryColor || "#E31837";
+            data.shop.secondaryColor = custom.secondaryColor || shop.secondaryColor || "#000000";
+          }
           this._publicDataCache = data;
           this._publicDataPromise = null;
           return data;
