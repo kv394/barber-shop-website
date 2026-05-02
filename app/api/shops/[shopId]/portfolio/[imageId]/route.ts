@@ -1,7 +1,8 @@
-import { logger } from "@/lib/logger";
-import { prisma } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
 import { createClient } from '@/utils/supabase/server';
+import { prisma } from '@/lib/prisma';
+import { logger } from '@/lib/logger';
+import { cacheService } from '@/lib/cache';
 
 export async function DELETE(
   request: Request,
@@ -35,6 +36,9 @@ export async function DELETE(
     await prisma.portfolioImage.delete({
       where: { id: imageId }
     });
+
+    await cacheService.invalidate(`portfolio:${shopId}:${image.staffId}`);
+    await cacheService.invalidatePattern(`shop_portfolio_public:${shopId}*`);
 
     return NextResponse.json({ success: true }, { status: 200 });
   } catch (error: any) {

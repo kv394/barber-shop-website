@@ -33,87 +33,90 @@ const serviceInclude = {
 };
 
 const getShopBySlug = cache(async (slug: string) => {
-  // 1. Try to find by exact ID (backward compat)
-  let shop: any = await prisma.shop.findUnique({
-    where: { id: slug },
-    include: serviceInclude,
-  });
+  return await cacheService.getOrSet(
+    `shop_public_page_data:${slug}`,
+    async () => {
+      // 1. Try to find by exact ID (backward compat)
+      let shop: any = await prisma.shop.findUnique({
+        where: { id: slug },
+        include: serviceInclude,
+      });
 
-  if (!shop) {
-    // 2. Case-insensitive name search — avoids loading ALL shops into memory.
-    //    The slug is derived from name via: lower → spaces→hyphens → strip non-word.
-    //    Because of special characters like '[', the exact name with spaces might not match.
-    //    We can search using the first substantial word of the slug to narrow down.
-    const firstWord = slug.split('-').find(w => w.length > 2) || slug.split('-')[0];
-    const candidates = await prisma.shop.findMany({
-      where: { name: { contains: firstWord, mode: 'insensitive' } },
-      include: serviceInclude,
-      take: 50, // Bounded — never fetches entire table
-    });
+      if (!shop) {
+        // 2. Case-insensitive name search — avoids loading ALL shops into memory.
+        const firstWord = slug.split('-').find(w => w.length > 2) || slug.split('-')[0];
+        const candidates = await prisma.shop.findMany({
+          where: { name: { contains: firstWord, mode: 'insensitive' } },
+          include: serviceInclude,
+          take: 50, // Bounded — never fetches entire table
+        });
 
-    shop = candidates.find(
-      (s: any) => s.name.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '') === slug.toLowerCase()
-    ) || null;
-  }
+        shop = candidates.find(
+          (s: any) => s.name.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '') === slug.toLowerCase()
+        ) || null;
+      }
 
-  if (!shop) return null;
+      if (!shop) return null;
 
-  // Fetch reviews for this shop
-  const reviews = await prisma.review.findMany({
-    where: { shopId: shop.id },
-    include: {
-      user: { select: { name: true } },
-      appointment: {
+      // Fetch reviews for this shop
+      const reviews = await prisma.review.findMany({
+        where: { shopId: shop.id },
         include: {
-          service: { select: { name: true } },
-          staff: { select: { name: true } },
+          user: { select: { name: true } },
+          appointment: {
+            include: {
+              service: { select: { name: true } },
+              staff: { select: { name: true } },
+            },
+          },
         },
-      },
+        orderBy: { createdAt: 'desc' },
+        take: 20,
+      });
+
+      const serialized = JSON.parse(JSON.stringify(shop));
+      // SECURITY: Only expose public-facing customization fields to the client.
+      // Internal settings like notifSettings, bookingSettings, businessHours are admin-only.
+      const rawCustom = serialized.customization || {};
+      
+      // Format address if it's an object
+      const rawAddress = rawCustom.address;
+      const formattedAddress = typeof rawAddress === 'object' && rawAddress !== null
+        ? [rawAddress.street, rawAddress.suite, rawAddress.city, rawAddress.state, rawAddress.zip, rawAddress.country].filter(Boolean).join(', ')
+        : rawAddress;
+
+      const publicCustomization = {
+        primaryColor: rawCustom.primaryColor,
+        secondaryColor: rawCustom.secondaryColor,
+        logoUrl: rawCustom.logoUrl,
+        bannerUrl: rawCustom.bannerUrl,
+        tagline: rawCustom.tagline,
+        address: formattedAddress,
+        phone: rawCustom.phone,
+        aboutText: rawCustom.aboutText,
+        socialLinks: rawCustom.socialLinks,
+        // Expose business hours for public schedule display
+        businessHours: rawCustom.businessHours,
+        pages: rawCustom.pages,
+        editorialCustomization: rawCustom.editorialCustomization,
+        fontFamily: rawCustom.fontFamily,
+        ctaText: rawCustom.ctaText,
+        heroVideoUrl: rawCustom.heroVideoUrl,
+        announcement: rawCustom.announcement,
+        seo: rawCustom.seo,
+        customHtml: rawCustom.customHtml,
+        authPosition: rawCustom.authPosition,
+        chatbotPosition: rawCustom.chatbotPosition,
+      };
+      return {
+        ...serialized,
+        customization: publicCustomization,
+        template: serialized.template || 'modern',
+        reviews: JSON.parse(JSON.stringify(reviews)),
+      };
     },
-    orderBy: { createdAt: 'desc' },
-    take: 20,
-  });
-
-  const serialized = JSON.parse(JSON.stringify(shop));
-  // SECURITY: Only expose public-facing customization fields to the client.
-  // Internal settings like notifSettings, bookingSettings, businessHours are admin-only.
-  const rawCustom = serialized.customization || {};
-  
-  // Format address if it's an object
-  const rawAddress = rawCustom.address;
-  const formattedAddress = typeof rawAddress === 'object' && rawAddress !== null
-    ? [rawAddress.street, rawAddress.suite, rawAddress.city, rawAddress.state, rawAddress.zip, rawAddress.country].filter(Boolean).join(', ')
-    : rawAddress;
-
-  const publicCustomization = {
-    primaryColor: rawCustom.primaryColor,
-    secondaryColor: rawCustom.secondaryColor,
-    logoUrl: rawCustom.logoUrl,
-    bannerUrl: rawCustom.bannerUrl,
-    tagline: rawCustom.tagline,
-    address: formattedAddress,
-    phone: rawCustom.phone,
-    aboutText: rawCustom.aboutText,
-    socialLinks: rawCustom.socialLinks,
-    // Expose business hours for public schedule display
-    businessHours: rawCustom.businessHours,
-    pages: rawCustom.pages,
-    editorialCustomization: rawCustom.editorialCustomization,
-    fontFamily: rawCustom.fontFamily,
-    ctaText: rawCustom.ctaText,
-    heroVideoUrl: rawCustom.heroVideoUrl,
-    announcement: rawCustom.announcement,
-    seo: rawCustom.seo,
-    customHtml: rawCustom.customHtml,
-    authPosition: rawCustom.authPosition,
-    chatbotPosition: rawCustom.chatbotPosition,
-  };
-  return {
-    ...serialized,
-    customization: publicCustomization,
-    template: serialized.template || 'modern',
-    reviews: JSON.parse(JSON.stringify(reviews)),
-  };
+    60 * 60 // 1 hour cache
+  );
 });
 
 export async function generateMetadata({

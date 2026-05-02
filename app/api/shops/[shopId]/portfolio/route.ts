@@ -2,6 +2,7 @@ import { logger } from "@/lib/logger";
 import { prisma } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
 import { createClient } from '@/utils/supabase/server';
+import { cacheService } from '@/lib/cache';
 
 export async function GET(
   request: Request,
@@ -29,10 +30,17 @@ export async function GET(
        return new Response("Forbidden", { status: 403 });
     }
 
-    const images = await prisma.portfolioImage.findMany({
-      where: { shopId, staffId },
-      orderBy: { displayOrder: 'asc' }
-    });
+    const cacheKey = `portfolio:${shopId}:${staffId}`;
+    const images = await cacheService.getOrSet(
+      cacheKey,
+      async () => {
+        return await prisma.portfolioImage.findMany({
+          where: { shopId, staffId },
+          orderBy: { displayOrder: 'asc' }
+        });
+      },
+      60 * 60 // cache for 1 hour
+    );
 
     return NextResponse.json(images, { status: 200 });
   } catch (error: any) {
@@ -80,6 +88,9 @@ export async function POST(
         shopId: String(shopId)
       }
     });
+
+    await cacheService.invalidate(`portfolio:${shopId}:${staffId}`);
+    await cacheService.invalidatePattern(`shop_portfolio_public:${shopId}*`);
 
     return NextResponse.json(newImage, { status: 201 });
   } catch (error: any) {
