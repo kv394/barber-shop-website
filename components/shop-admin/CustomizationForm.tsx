@@ -114,58 +114,6 @@ export function CustomizationForm({
                 />
               </div>
             </div>
-            
-<div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-  <div>
-    <label className="block font-medium text-crm-muted mb-2 text-[13px]">Heading Font</label>
-    <select
-      value={formData.headingFont || formData.fontFamily || 'Inter'}
-      onChange={(e) => handleInputChange('headingFont', e.target.value)}
-      className="w-full bg-crm-bg border border-crm-border shadow-sm rounded px-4 py-2 text-crm-text"
-    >
-      <option value="Inter">Inter (Modern)</option>
-      <option value="Playfair Display">Playfair Display (Elegant)</option>
-      <option value="Roboto">Roboto (Clean)</option>
-      <option value="Oswald">Oswald (Classic)</option>
-      <option value="Montserrat">Montserrat (Bold)</option>
-    </select>
-  </div>
-  <div>
-    <label className="block font-medium text-crm-muted mb-2 text-[13px]">Body Font</label>
-    <select
-      value={formData.bodyFont || formData.fontFamily || 'Inter'}
-      onChange={(e) => handleInputChange('bodyFont', e.target.value)}
-      className="w-full bg-crm-bg border border-crm-border shadow-sm rounded px-4 py-2 text-crm-text"
-    >
-      <option value="Inter">Inter (Modern)</option>
-      <option value="Playfair Display">Playfair Display (Elegant)</option>
-      <option value="Roboto">Roboto (Clean)</option>
-      <option value="Oswald">Oswald (Classic)</option>
-      <option value="Montserrat">Montserrat (Bold)</option>
-    </select>
-  </div>
-</div>
-  
-            <div>
-              <label className="block font-medium text-crm-muted mb-2 text-[13px]">Call to Action Text</label>
-              <input
-                type="text"
-                value={formData.ctaText || ''}
-                onChange={(e) => handleInputChange('ctaText', e.target.value)}
-                placeholder="E.g., Book Now"
-                className="w-full bg-crm-bg border border-crm-border shadow-sm rounded px-4 py-2 text-crm-text placeholder-gray-500"
-              />
-            </div>
-            <div className="md:col-span-2">
-              <label className="block font-medium text-crm-muted mb-2 text-[13px]">Hero Video URL (.mp4 or YouTube)</label>
-              <input
-                type="url"
-                value={formData.heroVideoUrl || ''}
-                onChange={(e) => handleInputChange('heroVideoUrl', e.target.value)}
-                placeholder="https://example.com/video.mp4"
-                className="w-full bg-crm-bg border border-crm-border shadow-sm rounded px-4 py-2 text-crm-text placeholder-gray-500"
-              />
-            </div>
         </div>
 
         <div>
