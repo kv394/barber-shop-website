@@ -187,13 +187,27 @@ export async function GET(request: Request, { params }: { params: Promise<{ shop
       })
     ]);
 
+    const requestHost = request.headers.get('host') || 'localhost:3000';
+    const protocol = requestHost.includes('localhost') ? 'http' : 'https';
+    const baseUrl = `${protocol}://${requestHost}`;
+
+    const formatImageUrl = (url: string | null) => {
+      if (!url) return null;
+      if (url.startsWith('/')) return `${baseUrl}${url}`;
+      return url;
+    };
+
+    const formattedProducts = products.map(p => ({ ...p, imageUrl: formatImageUrl(p.imageUrl) }));
+    const formattedServices = services.map(s => ({ ...s, imageUrl: formatImageUrl(s.imageUrl) }));
+    const formattedStaff = staff.map(s => ({ ...s, imageUrl: formatImageUrl(s.imageUrl) }));
+
     // Clean up customization to only include public-safe fields (branding, contact, hours)
     const publicCustomization = {
         address: customization.address,
         contact: customization.contact,
         branding: customization.branding,
-        logoUrl: customization.logoUrl,
-        heroImageUrl: customization.heroImageUrl,
+        logoUrl: formatImageUrl(customization.logoUrl),
+        heroImageUrl: formatImageUrl(customization.heroImageUrl),
         businessHours: customization.businessHours,
         primaryColor: customization.primaryColor,
         secondaryColor: customization.secondaryColor,
@@ -220,9 +234,9 @@ export async function GET(request: Request, { params }: { params: Promise<{ shop
 
     return NextResponse.json({
       shop: cleanShop,
-      products,
-      services,
-      staff,
+      products: formattedProducts,
+      services: formattedServices,
+      staff: formattedStaff,
       reviews
     }, { headers: corsHeaders });
 
