@@ -189,29 +189,6 @@ export default async function ShopDashboardPage({ params }: { params: Promise<{ 
       userRole={userRole as string}
       activeTab="dashboard"
     >
-      {/* ── Clock In Button (STAFF only) ── */}
-      {isStaff && (
-        <div className="mb-6">
-          <DirectClockInButton shopId={shopId} initialIsClockedIn={isClockedIn} />
-        </div>
-      )}
-      {isShopAdmin && billingAlert && (
-        <div className={`mb-6 p-4 rounded-xl border flex items-start gap-3 ${
-          billingAlert.type === 'warning' 
-            ? 'bg-amber-900/20 border-status-pending/30 text-amber-200' 
-            : 'bg-status-cancelled/20 border-status-cancelled/30 text-red-200'
-        }`}>
-          <span className="text-base mt-0.5">⚠️</span>
-          <div className="flex-1">
-            <h3 className="font-bold mb-1 text-lg font-bold">Billing & Usage Alert</h3>
-            <p className="opacity-90 text-[13px]">{billingAlert.message}</p>
-            <Link href={`/shop/${shopId}/settings/billing`} className="mt-2 inline-block text-[11px] font-bold underline hover:no-underline">
-              View Billing Report →
-            </Link>
-          </div>
-        </div>
-      )}
-
       {/* ── Low Stock Alert (shop admin only) ── */}
       {isShopAdmin && lowStockItems.length > 0 && (
         <div className="flex flex-col sm:flex-row gap-3 mb-6">
@@ -230,6 +207,17 @@ export default async function ShopDashboardPage({ params }: { params: Promise<{ 
               Restock now →
             </Link>
           </div>
+        </div>
+      )}
+
+      {/* ── Empty State (if no alerts) ── */}
+      {(!isShopAdmin || lowStockItems.length === 0) && (
+        <div className="flex flex-col items-center justify-center py-20 text-center bg-crm-surface/50 rounded-2xl border border-dashed border-crm-border">
+          <span className="text-4xl mb-4 opacity-50">✨</span>
+          <h2 className="text-xl font-bold text-crm-text mb-2">All Clear</h2>
+          <p className="text-crm-muted text-[13px] max-w-sm mx-auto">
+            Your shop is running smoothly. There are no active alerts or low-stock items at this time.
+          </p>
         </div>
       )}
 
