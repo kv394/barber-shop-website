@@ -39,21 +39,19 @@ export function SettingsFormManager({
         />
       </div>
 
-      {selectedTemplate !== 'custom' && (
-        <>
-          <CustomizationForm
-            shopId={shopId}
-            customization={customization}
-            isSiteAdmin={isSiteAdmin}
-            currentTemplate={selectedTemplate}
-            dynamicTemplates={dynamicTemplates}
-          />
+      <CustomizationForm
+        shopId={shopId}
+        customization={customization}
+        isSiteAdmin={isSiteAdmin}
+        currentTemplate={selectedTemplate}
+        dynamicTemplates={dynamicTemplates}
+      />
 
-          <CustomPagesForm
-            shopId={shopId}
-            customization={customization}
-          />
-        </>
+      {selectedTemplate !== 'custom' && (
+        <CustomPagesForm
+          shopId={shopId}
+          customization={customization}
+        />
       )}
 
       <WidgetEmbedCode shopId={shopId} />

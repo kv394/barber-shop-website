@@ -125,7 +125,7 @@ export function TemplateSelector({
             <label className="block font-bold text-crm-text mb-2 text-lg">Custom HTML Code</label>
             <p className="text-crm-muted text-sm mb-4">
               Paste your complete single-page HTML here. This will be served exactly as provided. 
-              Because you are using a custom template, standard customization forms and custom pages have been disabled below.
+              Because you are using a custom template, the standard page builder is disabled below, but you can still configure your Logo, Hero Image, and SEO details.
             </p>
             <textarea
               value={customHtml}
