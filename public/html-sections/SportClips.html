@@ -743,14 +743,25 @@
 
                             const modalContent = document.createElement("div");
                             modalContent.style.cssText =
-                              "background:white;padding:30px;border-radius:8px;max-width:500px;width:90%;position:relative;box-shadow:0 10px 25px rgba(0,0,0,0.2);";
+                              "background:white;padding:30px;border-radius:8px;max-width:800px;width:90%;position:relative;box-shadow:0 10px 25px rgba(0,0,0,0.2);display:flex;gap:30px;flex-wrap:wrap;";
 
                             const closeBtn = document.createElement("button");
                             closeBtn.innerHTML = "&times;";
                             closeBtn.style.cssText =
-                              "position:absolute;top:15px;right:15px;background:none;border:none;font-size:24px;cursor:pointer;color:#333;";
+                              "position:absolute;top:15px;right:15px;background:none;border:none;font-size:24px;cursor:pointer;color:#333;z-index:2;";
                             closeBtn.onclick = () =>
                               (modal.style.display = "none");
+
+                            const imageContainer = document.createElement("div");
+                            imageContainer.style.cssText = "flex: 1; min-width: 250px; display: flex; align-items: center; justify-content: center; background: var(--light-gray); border-radius: 4px; overflow: hidden;";
+                            
+                            const img = document.createElement("img");
+                            img.id = "product-modal-img";
+                            img.style.cssText = "width: 100%; height: auto; object-fit: contain; max-height: 400px;";
+                            imageContainer.appendChild(img);
+
+                            const textContainer = document.createElement("div");
+                            textContainer.style.cssText = "flex: 1.5; min-width: 250px; display: flex; flex-direction: column;";
 
                             const title = document.createElement("h2");
                             title.id = "product-modal-title";
@@ -766,10 +777,20 @@
                             desc.id = "product-modal-desc";
                             desc.style.cssText = "color:#555;line-height:1.6;";
 
+                            const buyBtn = document.createElement("button");
+                            buyBtn.id = "product-modal-buy";
+                            buyBtn.className = "btn b-buy";
+                            buyBtn.textContent = "Buy Now";
+                            buyBtn.style.cssText = "margin-top: auto; max-width: 200px;";
+
+                            textContainer.appendChild(title);
+                            textContainer.appendChild(price);
+                            textContainer.appendChild(desc);
+                            textContainer.appendChild(buyBtn);
+
                             modalContent.appendChild(closeBtn);
-                            modalContent.appendChild(title);
-                            modalContent.appendChild(price);
-                            modalContent.appendChild(desc);
+                            modalContent.appendChild(imageContainer);
+                            modalContent.appendChild(textContainer);
                             modal.appendChild(modalContent);
                             document.body.appendChild(modal);
 
@@ -789,6 +810,13 @@
                             "product-modal-desc",
                           ).textContent =
                             p.description || "No description available.";
+                          document.getElementById("product-modal-img").src = 
+                            p.imageUrl || "https://images.unsplash.com/photo-1556228453-efd6c1ff04f6?auto=format&fit=crop&w=600&q=80";
+                          document.getElementById("product-modal-img").alt = p.name;
+                          document.getElementById("product-modal-buy").onclick = () => {
+                            alert("Added to cart: 1x " + p.name);
+                            modal.style.display = "none";
+                          };
                           modal.style.display = "flex";
                         },
                       );
