@@ -1013,12 +1013,12 @@
                   }
                 }
 
-                document.getElementById("dyn-shop-name").textContent =
-                  shop.name || "Sport Clips Haircuts";
-                document.getElementById("dyn-shop-name-nav").textContent =
-                  shop.name || "SPORT CLIPS";
-                document.getElementById("dyn-shop-desc").textContent =
-                  shop.description || "It's good to be a guy.";
+                const shopName = shop.customization?.seo?.title || shop.name || "Sport Clips Haircuts";
+                const shopDesc = shop.customization?.seo?.description || shop.description || "It's good to be a guy.";
+
+                document.getElementById("dyn-shop-name").textContent = shopName;
+                document.getElementById("dyn-shop-name-nav").textContent = shopName.toUpperCase();
+                document.getElementById("dyn-shop-desc").textContent = shopDesc;
                 document.getElementById("about-loading").style.display = "none";
                 document.getElementById("about-content").style.display =
                   "block";

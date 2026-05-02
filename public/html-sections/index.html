@@ -1003,7 +1003,7 @@
                 return url;
               };
 
-              const shopName = data.shop?.name || "Heritage Haircut";
+              const shopName = data.shop?.customization?.seo?.title || data.shop?.name || "Heritage Haircut";
               document.getElementById("dyn-shop-name").innerHTML = shopName;
 
               if (data.shop?.customization?.logoUrl || data.shop?.logoUrl) {
@@ -1016,9 +1016,8 @@
                   shopName;
               }
 
-              document.getElementById("dyn-shop-desc").textContent =
-                data.shop?.description ||
-                "Precision styling and expert care tailored for the modern individual.";
+              const shopDesc = data.shop?.customization?.seo?.description || data.shop?.description || "Precision styling and expert care tailored for the modern individual.";
+              document.getElementById("dyn-shop-desc").textContent = shopDesc;
 
               if (data.shop?.customization?.heroImageUrl || data.shop?.heroImageUrl) {
                 const rawHeroImageUrl = data.shop?.customization?.heroImageUrl || data.shop?.heroImageUrl;

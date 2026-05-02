@@ -206,6 +206,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ shop
         address: customization.address,
         contact: customization.contact,
         branding: customization.branding,
+        seo: customization.seo,
         logoUrl: formatImageUrl(customization.logoUrl),
         heroImageUrl: formatImageUrl(customization.heroImageUrl),
         businessHours: customization.businessHours,
@@ -222,7 +223,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ shop
 
     const cleanShop = {
         id: shop.id,
-        name: shop.companyName || shop.name,
+        name: shop.name || shop.companyName,
         locationName: shop.name,
         companyName: shop.companyName,
         description: shop.description,
