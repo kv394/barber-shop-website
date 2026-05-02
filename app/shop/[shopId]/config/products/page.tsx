@@ -6,6 +6,7 @@ import ShopAdminLayout from '@/components/shop-admin/ShopAdminLayout';
 import ProductManager from '@/components/shop-admin/ProductManager';
 
 export const dynamic = 'force-dynamic';
+// Cache bust 1
 
 export default async function ConfigProductsPage({ params }: { params: Promise<{ shopId: string }> }) {
   const supabase = await createClient();

@@ -232,25 +232,33 @@ export default function ProductManager({ shopId, products }: { shopId: string, p
             {products.map((product) => (
               <tr key={product.id} className="hover:bg-crm-surface transition-colors duration-200">
                 <td className="px-6 py-4">
-                  <div className="relative group inline-block">
-                    <div 
-                      onClick={() => handleEditClick(product)}
-                      className="font-bold text-crm-text cursor-pointer hover:text-crm-accent transition-colors inline-block"
-                    >
-                      {product.name}
-                    </div>
-                    {product.barcode && <p className="text-crm-muted font-mono mt-1 text-[13px]">{product.barcode}</p>}
-                    
-                    <div className="absolute left-0 top-full mt-2 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-opacity z-50">
-                      <div className="bg-crm-surface p-4 rounded-xl shadow-2xl border border-crm-border shadow-sm min-w-[200px] flex flex-col items-center">
-                        <Barcode value={product.barcode || product.id} displayValue={false} height={60} width={2} margin={0} background="transparent" />
-                        <p className="text-center text-crm-muted font-mono mt-3 truncate max-w-full px-2 text-[13px]">{product.barcode || product.id}</p>
+                  <div className="flex items-center gap-3">
+                    {product.imageUrl ? (
+                      <img src={product.imageUrl} alt={product.name} className="w-10 h-10 rounded object-cover shadow-sm bg-crm-surface" />
+                    ) : (
+                      <div className="w-10 h-10 rounded shadow-sm bg-crm-surface flex items-center justify-center text-crm-muted">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+                      </div>
+                    )}
+                    <div className="relative group inline-block">
+                      <div
+                        onClick={() => handleEditClick(product)}
+                        className="font-bold text-crm-text cursor-pointer hover:text-crm-accent transition-colors inline-block"
+                      >
+                        {product.name}
+                      </div>
+                      {product.barcode && <p className="text-crm-muted font-mono mt-1 text-[13px]">{product.barcode}</p>}
+
+                      <div className="absolute left-0 top-full mt-2 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-opacity z-50">
+                        <div className="bg-crm-surface p-4 rounded-xl shadow-2xl border border-crm-border shadow-sm min-w-[200px] flex flex-col items-center">
+                          <Barcode value={product.barcode || product.id} displayValue={false} height={60} width={2} margin={0} background="transparent" />
+                          <p className="text-center text-crm-muted font-mono mt-3 truncate max-w-full px-2 text-[13px]">{product.barcode || product.id}</p>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </td>
-                <td className="px-6 py-4">${product.price.toFixed(2)}</td>
-                <td className="px-6 py-4">
+                <td className="px-6 py-4">${product.price.toFixed(2)}</td>                <td className="px-6 py-4">
                   <span className={`px-2 py-1 rounded-full text-[11px] font-medium ${product.type === 'RETAIL' ? 'bg-status-info/20 text-status-info' : 'bg-crm-accent/20 text-crm-accent'}`}>
                     {product.type}
                   </span>

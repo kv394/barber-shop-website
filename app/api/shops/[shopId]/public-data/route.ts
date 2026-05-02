@@ -3,6 +3,7 @@ import { prisma } from '@/lib/prisma';
 import { logger } from '@/lib/logger';
 
 export const dynamic = 'force-dynamic';
+// Cache bust 1
 
 export async function GET(request: Request, { params }: { params: Promise<{ shopId: string }> }) {
   try {
