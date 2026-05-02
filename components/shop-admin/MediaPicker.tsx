@@ -94,6 +94,7 @@ export default function MediaPicker({ shopId, onSelect, currentUrl, label = 'Sel
         <div className="fixed inset-0 bg-black/60 z-[100] flex items-center justify-center p-4 backdrop-blur-sm">
           <div className="bg-crm-surface rounded-2xl border border-crm-border shadow-2xl p-6 w-full max-w-2xl max-h-[80vh] flex flex-col relative">
             <button
+              type="button"
               onClick={() => setIsOpen(false)}
               className="absolute top-4 right-4 text-crm-muted hover:text-crm-text bg-crm-bg w-8 h-8 rounded-full flex items-center justify-center"
             >
@@ -103,13 +104,15 @@ export default function MediaPicker({ shopId, onSelect, currentUrl, label = 'Sel
 
             <div className="flex border-b border-crm-border mb-6">
               <button
-                className={`pb-2 px-4 text-[13px] font-bold border-b-2 transition-colors \${activeTab === 'upload' ? 'border-crm-primary text-crm-text' : 'border-transparent text-crm-muted'}`}
+                type="button"
+                className={`pb-2 px-4 text-[13px] font-bold border-b-2 transition-colors ${activeTab === 'upload' ? 'border-crm-primary text-crm-text' : 'border-transparent text-crm-muted'}`}
                 onClick={() => setActiveTab('upload')}
               >
                 Upload New
               </button>
               <button
-                className={`pb-2 px-4 text-[13px] font-bold border-b-2 transition-colors \${activeTab === 'existing' ? 'border-crm-primary text-crm-text' : 'border-transparent text-crm-muted'}`}
+                type="button"
+                className={`pb-2 px-4 text-[13px] font-bold border-b-2 transition-colors ${activeTab === 'existing' ? 'border-crm-primary text-crm-text' : 'border-transparent text-crm-muted'}`}
                 onClick={() => setActiveTab('existing')}
               >
                 Select Existing
@@ -135,18 +138,25 @@ export default function MediaPicker({ shopId, onSelect, currentUrl, label = 'Sel
                   <div className="flex justify-center items-center h-full text-crm-muted text-[13px]">No images found in your library.</div>
                 ) : (
                   <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-                    {existingImages.map((img) => (
+                    {existingImages.map((img, index) => {
+                      if (!img) return null;
+                      const id = typeof img === 'object' && img.id ? img.id : String(index);
+                      const url = typeof img === 'string' ? img : (img.url || '');
+                      const name = typeof img === 'object' && img.name ? img.name : 'Image';
+                      
+                      return (
                       <div
-                        key={img.id}
+                        key={id}
                         className="cursor-pointer group relative aspect-square rounded-xl overflow-hidden border border-crm-border hover:border-crm-primary"
-                        onClick={() => handleSelectExisting(img.url)}
+                        onClick={() => handleSelectExisting(url)}
                       >
-                        <img src={img.url} alt={img.name} className="w-full h-full object-cover transition-transform group-hover:scale-105" />
+                        <img src={url} alt={name} className="w-full h-full object-cover transition-transform group-hover:scale-105" />
                         <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                           <span className="text-white font-bold text-[13px]">Select</span>
                         </div>
                       </div>
-                    ))}
+                      );
+                    })}
                   </div>
                 )}
               </div>
