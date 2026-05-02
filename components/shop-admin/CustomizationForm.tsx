@@ -157,8 +157,22 @@ export function CustomizationForm({
         </div>
 
         <div>
-          <h3 className="font-bold text-crm-text mb-4 text-lg font-bold">SEO & Social Sharing</h3>
+          <h3 className="font-bold text-crm-text mb-4 text-lg font-bold">SEO, Social Sharing & Landing Page SDK</h3>
           <div className="space-y-4 mb-6">
+            <div className="bg-crm-bg/50 p-4 border border-crm-border rounded-lg mb-4">
+              <label className="block font-medium text-crm-text mb-2 text-[13px]">Custom Landing Page / SDK Allowed Domains (CORS)</label>
+              <p className="text-crm-muted text-[11px] mb-3">If you embed BarberSaaS onto your own completely custom landing page or website using the developer SDK, list your domains here (comma-separated, e.g., <code className="bg-crm-surface border border-crm-border px-1 rounded text-crm-text">my-salon.com, www.my-salon.com</code>) to authorize widget access.</p>
+              <input
+                type="text"
+                value={(formData.allowedDomains || []).join(', ')}
+                onChange={(e) => {
+                  const domains = e.target.value.split(',').map(d => d.trim()).filter(Boolean);
+                  handleInputChange('allowedDomains', domains);
+                }}
+                placeholder="e.g. my-barbershop.com, www.my-barbershop.com"
+                className="w-full bg-crm-surface border border-crm-border shadow-sm rounded px-4 py-2 text-crm-text placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-crm-primary/50"
+              />
+            </div>
             <div>
               <label className="block font-medium text-crm-muted mb-2 text-[13px]">SEO Title</label>
               <input
