@@ -111,6 +111,49 @@ console.log('Review submitted:', review);`}</code>
           </div>
         </div>
       </div>
+
+      <div className="bg-white p-8 rounded-xl shadow-sm border border-gray-200">
+        <h2 className="font-bold text-lg mb-6">Drop-in Pre-built Widgets</h2>
+        <p className="text-gray-600 text-[13px] mb-6">If you do not want to build your UI from scratch using the Headless methods above, you can simply drop in our pre-built widgets anywhere on your site.</p>
+
+        <div className="space-y-8">
+          <div>
+            <h3 className="font-bold text-gray-900 mb-2 border-b pb-2">Booking Modal Widget</h3>
+            <p className="text-gray-600 text-[13px] mb-3">Embed the multi-step booking modal directly into your external website.</p>
+            <p className="text-gray-600 text-[13px] mb-2 font-semibold">1. Add the Script Tag:</p>
+            <pre className="bg-gray-900 text-gray-100 p-3 rounded-lg text-[12px] overflow-x-auto mb-4">
+              <code>{`<script src="https://barbersaas-henna.vercel.app/booking-modal.js" data-shop-id="${shopId}"></script>`}</code>
+            </pre>
+            <p className="text-gray-600 text-[13px] mb-2 font-semibold">2. Add the Booking Button:</p>
+            <p className="text-gray-600 text-[13px] mb-2">Place this button anywhere on your page. The modal will open when clicked. Note: The button MUST have the <code>id="barber-booking-btn"</code>.</p>
+            <pre className="bg-gray-900 text-gray-100 p-3 rounded-lg text-[12px] overflow-x-auto">
+              <code>{`<button id="barber-booking-btn" style="padding: 10px 20px; background: #000; color: #fff; border: none; border-radius: 5px; cursor: pointer;">
+  Book Appointment
+</button>`}</code>
+            </pre>
+          </div>
+
+          <div>
+            <h3 className="font-bold text-gray-900 mb-2 border-b pb-2">Product Checkout Widget</h3>
+            <p className="text-gray-600 text-[13px] mb-3">Display a pop-up modal for product details and initiate checkout.</p>
+            <p className="text-gray-600 text-[13px] mb-2 font-semibold">1. Add the Script Tag:</p>
+            <p className="text-gray-600 text-[13px] mb-2">It will automatically detect any buttons with the class <code>btn-details</code> or <code>btn-buy</code> inside a <code>.service-card</code>.</p>
+            <pre className="bg-gray-900 text-gray-100 p-3 rounded-lg text-[12px] overflow-x-auto">
+              <code>{`<script src="https://barbersaas-henna.vercel.app/product-widget.js" data-shop-id="${shopId}"></script>`}</code>
+            </pre>
+          </div>
+
+          <div>
+            <h3 className="font-bold text-gray-900 mb-2 border-b pb-2">Client Reviews Widget</h3>
+            <p className="text-gray-600 text-[13px] mb-3">Embed a pop-up modal that displays your shop's reviews and allows clients to submit new ones.</p>
+            <p className="text-gray-600 text-[13px] mb-2 font-semibold">1. Add the Script Tag:</p>
+            <p className="text-gray-600 text-[13px] mb-2">To open the modal, add the class <code>barber-reviews-trigger</code> to any button or link on your site.</p>
+            <pre className="bg-gray-900 text-gray-100 p-3 rounded-lg text-[12px] overflow-x-auto">
+              <code>{`<script src="https://barbersaas-henna.vercel.app/review-widget.js" data-shop-id="${shopId}"></script>`}</code>
+            </pre>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

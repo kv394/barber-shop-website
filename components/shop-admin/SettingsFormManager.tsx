@@ -4,7 +4,6 @@ import { useState } from 'react';
 import { TemplateSelector } from '@/components/shop-admin/TemplateSelector';
 import { CustomizationForm } from '@/components/shop-admin/CustomizationForm';
 import { CustomPagesForm } from '@/components/shop-admin/CustomPagesForm';
-import WidgetEmbedCode from '@/components/shop-admin/WidgetEmbedCode';
 
 interface SettingsFormManagerProps {
   shopId: string;
@@ -53,8 +52,6 @@ export function SettingsFormManager({
           customization={customization}
         />
       )}
-
-      <WidgetEmbedCode shopId={shopId} />
     </>
   );
 }

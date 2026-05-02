@@ -121,8 +121,6 @@ export async function GET(request: Request, { params }: { params: Promise<{ shop
       }
     }
 
-    const origin = request.headers.get('origin');
-
     // CORS Headers for allowed requests
     const corsHeaders: Record<string, string> = {
       'Access-Control-Allow-Origin': (!origin || origin === 'null') ? '*' : origin,

@@ -70,15 +70,9 @@ export function TemplateSelector({
   };
 
   const allTemplates = [
-    ...Object.values(AVAILABLE_TEMPLATES),
-    ...dynamicTemplates.map(dt => ({
-      id: dt.name,
-      name: `✨ ${dt.name}`,
-      description: dt.description || 'Custom AI Generated Template',
-    })),
     {
       id: 'custom',
-      name: 'Custom HTML',
+      name: 'Headless Custom Landing Page',
       description: 'Provide your own completely custom headless landing page.'
     }
   ];
@@ -122,12 +116,11 @@ export function TemplateSelector({
       {selectedTemplate === 'custom' && (
         <div className="mt-6 space-y-6 border-2 border-crm-border rounded-xl bg-crm-surface shadow-sm p-6">
           <div>
-            <label className="block font-bold text-crm-text mb-2 text-lg">Custom HTML Code</label>
-            <p className="text-crm-muted text-sm mb-4">
-              Paste your complete single-page HTML here. This will be served exactly as provided. 
-              Because you are using a custom template, the standard page builder is disabled below, but you can still configure your Logo, Hero Image, and SEO details.
-            </p>
-            <textarea
+            <label className="block font-bold text-crm-text mb-2 text-lg">Headless HTML Override</label>
+            <p className="text-crm-muted text-[13px] mb-4">
+              Paste your complete single-page HTML here. This will be served exactly as provided.
+              You can still configure your Logo, Hero Image, and SEO details below, and the system will automatically inject them into your HTML.
+            </p>            <textarea
               value={customHtml}
               onChange={(e) => setCustomHtml(e.target.value)}
               rows={20}

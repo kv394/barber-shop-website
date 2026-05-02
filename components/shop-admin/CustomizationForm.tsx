@@ -144,6 +144,7 @@ export function CustomizationForm({
       <option value="Montserrat">Montserrat (Bold)</option>
     </select>
   </div>
+</div>
   
             <div>
               <label className="block font-medium text-crm-muted mb-2 text-[13px]">Call to Action Text</label>
@@ -165,7 +166,6 @@ export function CustomizationForm({
                 className="w-full bg-crm-bg border border-crm-border shadow-sm rounded px-4 py-2 text-crm-text placeholder-gray-500"
               />
             </div>
-          </div>
         </div>
 
         <div>
@@ -248,9 +248,6 @@ export function CustomizationForm({
           <EditorialCustomizationForm customization={formData} onUpdate={handleInputChange} shopId={shopId} />
         )}
 
-        {activeVariables.length > 0 && (
-          <div>
-            
         <div>
           <h3 className="font-bold text-crm-text mb-4 text-lg font-bold">Advanced UI & Theme Overrides</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
@@ -312,27 +309,12 @@ export function CustomizationForm({
                 <MediaPicker shopId={shopId} currentUrl={formData.faviconUrl} onSelect={(url) => handleInputChange('faviconUrl', url)} label="Upload" />
               </div>
             </div>
-            <div className="md:col-span-2">
-              <label className="block font-medium text-crm-muted mb-2 text-[13px]">Section Ordering (Comma separated: hero, services, team, gallery, reviews, contact)</label>
-              <input type="text" value={(formData.sectionOrder || ['hero', 'services', 'team', 'gallery', 'reviews', 'contact']).join(', ')} onChange={(e) => handleInputChange('sectionOrder', e.target.value.split(',').map(s=>s.trim()))} className="w-full bg-crm-bg border border-crm-border shadow-sm rounded px-4 py-2 text-crm-text placeholder-gray-500" />
-            </div>
-            <div className="md:col-span-2 flex items-center space-x-3 mt-4">
-              <input type="checkbox" id="enableScrollAnimations" checked={formData.enableScrollAnimations || false} onChange={(e) => handleInputChange('enableScrollAnimations', e.target.checked)} className="w-4 h-4 accent-blue-600 bg-crm-bg border-crm-border rounded cursor-pointer" />
-              <label htmlFor="enableScrollAnimations" className="text-crm-muted text-[13px] cursor-pointer">Enable Scroll Animations</label>
-            </div>
-            <div className="md:col-span-2 mt-4">
-              <label className="block font-medium text-crm-muted mb-2 text-[13px]">Custom CSS (Advanced)</label>
-              <textarea rows={4} value={formData.customCss || ''} onChange={(e) => handleInputChange('customCss', e.target.value)} placeholder=".my-custom-class { color: red; }" className="w-full bg-crm-bg border border-crm-border shadow-sm rounded px-4 py-2 text-crm-text font-mono text-[13px] placeholder-gray-500" />
-            </div>
-            <div className="md:col-span-2 mt-4">
-              <label className="block font-medium text-crm-muted mb-2 text-[13px]">Custom HTML (Override Entire Page)</label>
-              <p className="text-xs text-crm-muted mb-2">If provided, this completely overrides the template design and custom pages. Supports standard HTML and dynamic data binding strings.</p>
-              <textarea rows={10} value={formData.customHtml || ''} onChange={(e) => handleInputChange('customHtml', e.target.value)} placeholder="<html>...</html>" className="w-full bg-crm-bg border border-crm-border shadow-sm rounded px-4 py-2 text-crm-text font-mono text-[13px] placeholder-gray-500" />
-            </div>
           </div>
         </div>
 
-<h3 className="font-bold text-crm-text mb-4 text-lg font-bold">Template Custom Variables</h3>
+        {activeVariables.length > 0 && (
+          <div className="mb-8 p-6 bg-crm-surface border border-crm-border rounded-xl shadow-sm">
+            <h3 className="font-bold text-crm-text mb-4 text-lg font-bold">Template Custom Variables</h3>
             <p className="text-crm-muted mb-4 text-[13px]">
               These fields were automatically detected from your selected custom template. Fill them in to customize your landing page.
             </p>
