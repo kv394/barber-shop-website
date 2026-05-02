@@ -78,7 +78,7 @@ export default function ShopMobileBottomNav({ shopId, userRole }: { shopId: stri
   };
 
   return (
-    <div className="md:hidden fixed bottom-0 left-0 right-0 bg-crm-surface border-t border-crm-border flex items-center overflow-x-auto scrollbar-none z-[2000] pb-[env(safe-area-inset-bottom)] shadow-[0_-4px_10px_rgba(0,0,0,0.02)]">
+    <div className="md:hidden fixed bottom-0 left-0 right-0 bg-crm-surface border-t border-crm-border flex items-center overflow-x-auto hide-scrollbar scrollbar-none z-[2000] pb-[env(safe-area-inset-bottom)] shadow-[0_-4px_10px_rgba(0,0,0,0.02)]">
       {section === 'main' && (
         <div className="flex w-full justify-around">
           {navLink(`/shop/${shopId}`, 'Home', icons.home, true)}

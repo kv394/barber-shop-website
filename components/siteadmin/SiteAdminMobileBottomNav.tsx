@@ -30,7 +30,7 @@ export default function SiteAdminMobileBottomNav() {
   };
 
   return (
-    <div className="md:hidden fixed bottom-0 left-0 right-0 bg-crm-surface border-t border-crm-border flex items-center justify-around z-[2000] pb-[env(safe-area-inset-bottom)]">
+    <div className="md:hidden fixed bottom-0 left-0 right-0 bg-crm-surface border-t border-crm-border flex items-center justify-around overflow-x-auto hide-scrollbar scrollbar-none z-[2000] pb-[env(safe-area-inset-bottom)]">
       {navLink('/siteadmin', 'Home', <><rect x="3" y="3" width="7" height="9"></rect><rect x="14" y="3" width="7" height="5"></rect><rect x="14" y="12" width="7" height="9"></rect><rect x="3" y="16" width="7" height="5"></rect></>)}
       {navLink('/siteadmin/shops', 'Shops', <><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></>)}
       {navLink('/siteadmin/users', 'Users', <><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></>)}
