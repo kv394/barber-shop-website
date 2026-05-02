@@ -131,7 +131,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ shop
     const [products, services, staff, reviews] = await Promise.all([
       // 1. Sellable Products
       prisma.product.findMany({
-        where: { shopId: shop.id },
+        where: { shopId: shop.id, isSellable: true },
         select: {
           id: true,
           name: true,
