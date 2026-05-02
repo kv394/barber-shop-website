@@ -913,8 +913,8 @@
                 const shop = data.shop || {};
 
                 // 1. Extract dynamic theme colors
-                const primaryColor = shop.primaryColor || "#E31837";
-                const secondaryColor = shop.secondaryColor || "#000000";
+                const primaryColor = shop.customization?.primaryColor || shop.primaryColor || "#E31837";
+                const secondaryColor = shop.customization?.secondaryColor || shop.secondaryColor || "#000000";
 
                 window.BarberSaaS.primaryColor = primaryColor;
                 window.BarberSaaS.secondaryColor = secondaryColor;
@@ -978,11 +978,12 @@
               // Render Data
               try {
                 // Update Logo
-                if (shop.customization && shop.customization.logoUrl) {
+                const logoUrl = shop.customization?.logoUrl || shop.logoUrl;
+                if (logoUrl) {
                   const logoObj = document.querySelector('.nav-logo');
                   if (logoObj) {
                     const img = document.createElement('img');
-                    img.src = shop.customization.logoUrl;
+                    img.src = logoUrl;
                     img.alt = shop.name + " Logo";
                     img.className = logoObj.className;
                     img.style.objectFit = 'contain';
@@ -991,19 +992,20 @@
                 }
 
                 // Update Hero Image
-                if (shop.customization && shop.customization.heroImageUrl) {
+                const heroImageUrl = shop.customization?.heroImageUrl || shop.heroImageUrl;
+                if (heroImageUrl) {
                   const heroSection = document.querySelector('.hero-section');
                   if (heroSection) {
-                    heroSection.style.background = `linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url("${shop.customization.heroImageUrl}") center/cover`;
+                    heroSection.style.background = `linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url("${heroImageUrl}") center/cover`;
                   }
                 }
 
                 document.getElementById("dyn-shop-name").textContent =
-                  data.shop.name || "Sport Clips Haircuts";
+                  shop.name || "Sport Clips Haircuts";
                 document.getElementById("dyn-shop-name-nav").textContent =
-                  data.shop.name || "SPORT CLIPS";
+                  shop.name || "SPORT CLIPS";
                 document.getElementById("dyn-shop-desc").textContent =
-                  data.shop.description || "It's good to be a guy.";
+                  shop.description || "It's good to be a guy.";
                 document.getElementById("about-loading").style.display = "none";
                 document.getElementById("about-content").style.display =
                   "block";

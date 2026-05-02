@@ -951,8 +951,8 @@
           BarberSaaS.getPublicData().then((data) => {
             try {
               const shop = data.shop || {};
-              const primaryColor = shop.primaryColor || "#D31145";
-              const secondaryColor = shop.secondaryColor || "#0A1C2E";
+              const primaryColor = shop.customization?.primaryColor || shop.primaryColor || "#D31145";
+              const secondaryColor = shop.customization?.secondaryColor || shop.secondaryColor || "#0A1C2E";
 
               window.BarberSaaS.primaryColor = primaryColor;
               window.BarberSaaS.secondaryColor = secondaryColor;
@@ -995,9 +995,10 @@
               const shopName = data.shop?.name || "Heritage Haircut";
               document.getElementById("dyn-shop-name").innerHTML = shopName;
 
-              if (data.shop?.logoUrl) {
+              if (data.shop?.customization?.logoUrl || data.shop?.logoUrl) {
+                const logoUrl = data.shop?.customization?.logoUrl || data.shop?.logoUrl;
                 document.querySelector(".nav-brand").innerHTML =
-                  `<img src="${data.shop.logoUrl}" alt="${shopName}" style="max-height: 40px;">`;
+                  `<img src="${logoUrl}" alt="${shopName}" style="max-height: 40px;">`;
               } else {
                 document.getElementById("dyn-shop-name-nav").textContent =
                   shopName;
@@ -1007,11 +1008,12 @@
                 data.shop?.description ||
                 "Precision styling and expert care tailored for the modern individual.";
 
-              if (data.shop?.heroImageUrl) {
+              if (data.shop?.customization?.heroImageUrl || data.shop?.heroImageUrl) {
+                const heroImageUrl = data.shop?.customization?.heroImageUrl || data.shop?.heroImageUrl;
                 const heroVideo = document.getElementById("heroVideo");
                 if (heroVideo) {
                   const img = document.createElement("img");
-                  img.src = data.shop.heroImageUrl;
+                  img.src = heroImageUrl;
                   img.className = "hero-video";
                   img.id = "heroVideo";
                   heroVideo.parentNode.replaceChild(img, heroVideo);
