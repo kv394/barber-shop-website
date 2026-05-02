@@ -22,7 +22,7 @@ export default function ShopAdminLayout({
   return (
     <div className="pb-20 sm:pb-0">
       {tabs && tabs.length > 0 && (
-        <div className="flex items-end justify-between relative z-10 w-full mt-2 sm:-mt-6 border-b sm:border-b-0 border-crm-border">
+        <div className="hidden sm:flex items-end justify-between relative z-10 w-full mt-2 sm:-mt-6 border-b sm:border-b-0 border-crm-border">
           <div className="flex items-end overflow-x-auto hide-scrollbar whitespace-nowrap">
             {tabs.map((tab, index) => {
               const isActive = activeTab === tab.id;

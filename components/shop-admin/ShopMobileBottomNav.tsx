@@ -1,10 +1,13 @@
 'use client';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import React from 'react';
 
 export default function ShopMobileBottomNav({ shopId, userRole }: { shopId: string, userRole: string }) {
   const pathname = usePathname();
   const isAll = shopId === 'all';
+
+  if (isAll) return null;
 
   const navLink = (href: string, label: string, iconPath: React.ReactNode, isExact = false) => {
     const active = isExact ? pathname === href : pathname.startsWith(href);
@@ -12,7 +15,7 @@ export default function ShopMobileBottomNav({ shopId, userRole }: { shopId: stri
     return (
       <Link 
         href={href} 
-        className={`flex flex-col items-center justify-center w-full py-2 transition-colors ${
+        className={`flex flex-col items-center justify-center min-w-[72px] flex-1 py-2 px-1 transition-colors whitespace-nowrap ${
           active 
             ? 'text-crm-primary' 
             : 'text-crm-muted hover:text-crm-text'
@@ -28,24 +31,119 @@ export default function ShopMobileBottomNav({ shopId, userRole }: { shopId: stri
     );
   };
 
-  if (isAll) return null;
+  // Determine Active Section to show context-specific bottom nav
+  const getSection = () => {
+    if (pathname.startsWith(`/shop/${shopId}/settings/team`) || pathname.startsWith(`/shop/${shopId}/portfolio`)) return 'team';
+    
+    const configPaths = ['/config/services', '/config/products', '/settings/booking', '/settings/resources', '/settings/forms', '/settings/memberships'];
+    if (configPaths.some(p => pathname.startsWith(`/shop/${shopId}${p}`))) return 'config';
+    
+    const settingsPaths = ['/settings', '/settings/notifications', '/settings/kiosk', '/settings/billing', '/settings/commissions'];
+    if (pathname === `/shop/${shopId}/settings` || settingsPaths.some(p => p !== '/settings' && pathname.startsWith(`/shop/${shopId}${p}`))) return 'settings';
+
+    const engagementPaths = ['/engagement', '/loyalty', '/referrals', '/campaigns', '/gift-cards', '/reviews'];
+    if (engagementPaths.some(p => pathname.startsWith(`/shop/${shopId}${p}`))) return 'engagement';
+
+    const reportPaths = ['/reports', '/reports/commissions', '/reports/staff-working', '/expenses'];
+    if (pathname === `/shop/${shopId}/reports` || reportPaths.some(p => p !== '/reports' && pathname.startsWith(`/shop/${shopId}${p}`))) return 'reports';
+
+    return 'main';
+  };
+
+  const section = getSection();
+
+  // Common Icons
+  const icons = {
+    home: <><rect x="3" y="3" width="7" height="9"></rect><rect x="14" y="3" width="7" height="5"></rect><rect x="14" y="12" width="7" height="9"></rect><rect x="3" y="16" width="7" height="5"></rect></>,
+    user: <><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></>,
+    settings: <><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></>,
+    users: <><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></>,
+    calendar: <><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></>,
+    tag: <><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line></>,
+    star: <><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></>,
+    heart: <><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></>,
+    chart: <><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></>,
+    image: <><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></>,
+    file: <><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></>,
+    clock: <><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></>,
+    scissors: <><circle cx="6" cy="6" r="3"></circle><circle cx="6" cy="18" r="3"></circle><line x1="20" y1="4" x2="8.12" y2="15.88"></line><line x1="14.47" y1="14.48" x2="20" y2="20"></line><line x1="8.12" y1="8.12" x2="12" y2="12"></line></>,
+    package: <><line x1="16.5" y1="9.4" x2="7.5" y2="4.21"></line><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></>,
+    chair: <><path d="M20 9v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V9"></path><path d="M9 22V12h6v10M2 9h20M3 9l2-5M21 9l-2-5M12 12v-5"></path></>,
+    ticket: <><path d="M15 5.05A4 4 0 1 0 15 18.95M15 5.05A4 4 0 1 1 15 18.95M15 5.05L19 2M15 18.95L19 22M5 2L9 5.05M5 22L9 18.95M9 5.05A4 4 0 1 1 9 18.95M9 5.05A4 4 0 1 0 9 18.95"></path></>,
+    dollar: <><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></>,
+    message: <><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></>,
+    bell: <><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></>,
+    creditCard: <><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></>,
+    terminal: <><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></>
+  };
 
   return (
-    <div className="md:hidden fixed bottom-0 left-0 right-0 bg-crm-surface border-t border-crm-border flex items-center justify-around z-[2000] pb-[env(safe-area-inset-bottom)]">
-      {navLink(`/shop/${shopId}`, 'Home', <><rect x="3" y="3" width="7" height="9"></rect><rect x="14" y="3" width="7" height="5"></rect><rect x="14" y="12" width="7" height="9"></rect><rect x="3" y="16" width="7" height="5"></rect></>, true)}
-      
-      {userRole === 'SHOP_ADMIN' ? (
-        <>
-          {navLink(`/shop/${shopId}/bookings`, 'Bookings', <><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></>)}
-          {navLink(`/shop/${shopId}/clients`, 'Clients', <><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></>)}
-          {navLink(`/shop/${shopId}/settings`, 'Settings', <><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></>)}
-        </>
-      ) : (
-        <>
-          {navLink(`/shop/${shopId}/staff`, 'Schedule', <><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></>)}
-          {navLink(`/shop/${shopId}/clients`, 'Clients', <><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></>)}
-          {navLink(`/shop/${shopId}/profile`, 'Profile', <><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></>)}
-        </>
+    <div className="md:hidden fixed bottom-0 left-0 right-0 bg-crm-surface border-t border-crm-border flex items-center overflow-x-auto scrollbar-none z-[2000] pb-[env(safe-area-inset-bottom)] shadow-[0_-4px_10px_rgba(0,0,0,0.02)]">
+      {section === 'main' && (
+        <div className="flex w-full justify-around">
+          {navLink(`/shop/${shopId}`, 'Home', icons.home, true)}
+          {userRole === 'SHOP_ADMIN' ? (
+            <>
+              {navLink(`/shop/${shopId}/bookings`, 'Bookings', icons.calendar)}
+              {navLink(`/shop/${shopId}/clients`, 'Clients', icons.users)}
+              {navLink(`/shop/${shopId}/settings`, 'Settings', icons.settings)}
+            </>
+          ) : (
+            <>
+              {navLink(`/shop/${shopId}/staff`, 'Schedule', icons.calendar)}
+              {navLink(`/shop/${shopId}/clients`, 'Clients', icons.users)}
+              {navLink(`/shop/${shopId}/profile`, 'Profile', icons.user)}
+            </>
+          )}
+        </div>
+      )}
+
+      {section === 'team' && (
+        <div className="flex w-full justify-around">
+          {navLink(`/shop/${shopId}/settings/team`, 'Team', icons.users, true)}
+          {navLink(`/shop/${shopId}/portfolio`, 'Portfolio', icons.image, true)}
+        </div>
+      )}
+
+      {section === 'config' && (
+        <div className="flex w-full min-w-max px-2">
+          {navLink(`/shop/${shopId}/config/services`, 'Services', icons.scissors, true)}
+          {navLink(`/shop/${shopId}/config/products`, 'Products', icons.package, true)}
+          {navLink(`/shop/${shopId}/settings/booking`, 'Booking', icons.clock, true)}
+          {navLink(`/shop/${shopId}/settings/resources`, 'Resources', icons.chair, true)}
+          {navLink(`/shop/${shopId}/settings/forms`, 'Forms', icons.file, true)}
+          {navLink(`/shop/${shopId}/settings/memberships`, 'Memberships', icons.star, true)}
+        </div>
+      )}
+
+      {section === 'settings' && (
+        <div className="flex w-full min-w-max px-2">
+          {navLink(`/shop/${shopId}/settings`, 'Appearance', icons.image, true)}
+          {navLink(`/shop/${shopId}/settings/notifications`, 'Alerts', icons.bell, true)}
+          {navLink(`/shop/${shopId}/settings/commissions`, 'Commissions', icons.dollar, true)}
+          {navLink(`/shop/${shopId}/settings/kiosk`, 'Kiosk', icons.terminal, true)}
+          {navLink(`/shop/${shopId}/settings/billing`, 'Billing', icons.creditCard, true)}
+        </div>
+      )}
+
+      {section === 'engagement' && (
+        <div className="flex w-full min-w-max px-2">
+          {navLink(`/shop/${shopId}/engagement`, 'Analytics', icons.chart, true)}
+          {navLink(`/shop/${shopId}/campaigns`, 'Campaigns', icons.message, true)}
+          {navLink(`/shop/${shopId}/gift-cards`, 'Gift Cards', icons.ticket, true)}
+          {navLink(`/shop/${shopId}/loyalty`, 'Loyalty', icons.heart, true)}
+          {navLink(`/shop/${shopId}/referrals`, 'Referrals', icons.users, true)}
+          {navLink(`/shop/${shopId}/reviews`, 'Reviews', icons.star, true)}
+        </div>
+      )}
+
+      {section === 'reports' && (
+        <div className="flex w-full justify-around px-2">
+          {navLink(`/shop/${shopId}/reports`, 'Sales', icons.chart, true)}
+          {navLink(`/shop/${shopId}/reports/commissions`, 'Commissions', icons.dollar, true)}
+          {navLink(`/shop/${shopId}/reports/staff-working`, 'Hours', icons.clock, true)}
+          {navLink(`/shop/${shopId}/expenses`, 'Expenses', icons.tag, true)}
+        </div>
       )}
     </div>
   );
