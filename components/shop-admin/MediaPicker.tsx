@@ -25,6 +25,10 @@ export default function MediaPicker({ shopId, onSelect, currentUrl, label = 'Sel
         .then(data => {
           setExistingImages(data.files || []);
         })
+        .catch(err => {
+          console.error("Error fetching existing images:", err);
+          setExistingImages([]);
+        })
         .finally(() => setIsLoadingExisting(false));
     }
   }, [isOpen, activeTab, shopId]);
