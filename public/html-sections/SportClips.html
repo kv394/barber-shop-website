@@ -290,33 +290,121 @@
         color: var(--white);
       }
 
-      /* Testimonials */
-      .testimonial {
-        background: var(--white);
-        border: 1px solid #ddd;
-        padding: 25px;
-        position: relative;
+      /* Testimonials & Team */
+      .split-section {
+        display: flex;
+        gap: 40px;
+        flex-wrap: wrap;
       }
-      .testimonial::before {
+      .reviews-container, .team-container {
+        flex: 1;
+        min-width: 300px;
+      }
+      .reviews-scroller {
+        height: 400px;
+        overflow: hidden;
+        position: relative;
+        background: var(--light-gray);
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        padding: 20px;
+      }
+      .reviews-scroller-inner {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        animation: scrollUp 40s linear infinite; /* Slower scroll */
+      }
+      .reviews-scroller:hover .reviews-scroller-inner {
+        animation-play-state: paused;
+      }
+      @keyframes scrollUp {
+        0% { transform: translateY(10%); }
+        100% { transform: translateY(-100%); }
+      }
+      .testimonial-item {
+        background: var(--white);
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        position: relative;
+        transition: transform 0.3s, box-shadow 0.3s;
+        cursor: pointer;
+      }
+      .testimonial-item::before {
         content: '"';
         position: absolute;
-        top: 5px;
+        top: -5px;
         left: 15px;
-        font-size: 3rem;
-        color: var(--light-gray);
+        font-size: 4rem;
+        color: rgba(0,0,0,0.05);
         font-family: Georgia, serif;
         line-height: 1;
+        z-index: 0;
+      }
+      .testimonial-item:hover {
+        transform: scale(1.05) translateY(-5px);
+        z-index: 10;
+        box-shadow: 0 15px 30px rgba(0,0,0,0.2);
       }
       .testimonial-stars {
         color: var(--primary);
         font-size: 1.2rem;
         margin-bottom: 10px;
+        position: relative;
+        z-index: 1;
       }
       .testimonial-quote {
         font-size: 0.95rem;
         font-style: italic;
+        margin: 0;
         position: relative;
         z-index: 1;
+      }
+      
+      .photo-frame {
+        width: 100%;
+        max-width: 380px;
+        aspect-ratio: 3/4;
+        margin: 0 auto;
+        border: 12px solid var(--white);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        background: var(--light-gray);
+        position: relative;
+        border-radius: 4px;
+        overflow: hidden;
+      }
+      .team-slide {
+        position: absolute;
+        top: 0; left: 0; width: 100%; height: 100%;
+        opacity: 0;
+        transition: opacity 2.5s ease-in-out; /* Slower fade */
+        display: flex;
+        flex-direction: column;
+      }
+      .team-slide.active {
+        opacity: 1;
+        z-index: 2;
+      }
+      .team-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .team-info {
+        position: absolute;
+        bottom: 0; left: 0; width: 100%;
+        background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+        color: var(--white);
+        padding: 30px 20px 20px;
+        text-align: center;
+      }
+      .team-name {
+        font-size: 1.4rem;
+        font-weight: 900;
+        text-transform: uppercase;
+        margin: 0;
+        text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
       }
 
       /* Carousel */
@@ -407,11 +495,11 @@
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
         gap: 20px;
-        grid-auto-rows: 200px;
         grid-auto-flow: dense;
       }
       .bento-card {
-        background: var(--light-gray);
+        background-color: #fafafa;
+        background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23e0e0e0' fill-opacity='0.6' fill-rule='evenodd'%3E%3Cpath d='M2 0h4v2H2zM0 6h2v4H0zM12 4h4v2h-4zM6 10h2v4H6zM16 12h4v2h-4zM10 16h4v2h-4zM0 18h2v2H0z'/%3E%3C/g%3E%3C/svg%3E");
         border-radius: 12px;
         overflow: hidden;
         position: relative;
@@ -420,8 +508,9 @@
         display: flex;
         flex-direction: column;
         justify-content: flex-end;
-        padding: 25px;
+        padding: 20px;
         border-top: 4px solid var(--primary);
+        min-height: 250px;
       }
       .bento-card:hover {
         transform: translateY(-8px) scale(1.02);
@@ -433,16 +522,15 @@
       @media (min-width: 768px) {
         .bento-grid {
           grid-template-columns: repeat(4, 1fr);
-          grid-auto-rows: 200px;
         }
         /* Hero feature (1st) */
         .bento-grid > .bento-card:nth-child(1) {
           grid-column: span 2;
           grid-row: span 2;
-          padding: 40px;
+          padding: 30px;
         }
         .bento-grid > .bento-card:nth-child(1) .bento-title {
-          font-size: 2rem;
+          font-size: 1.6rem;
         }
         
         /* Tall feature (2nd) */
@@ -485,58 +573,37 @@
         
         /* Standard small boxes default to span 1/span 1 */
       }
-      .bento-card .bg-image {
-        position: absolute;
-        top: 0; left: 0; width: 100%; height: 100%;
-        object-fit: cover;
-        z-index: 0;
-        transition: transform 0.6s ease;
-      }
-      .bento-card:hover .bg-image {
-        transform: scale(1.08);
-      }
-      .bento-card .overlay {
-        position: absolute;
-        top: 0; left: 0; width: 100%; height: 100%;
-        background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.2) 60%, transparent 100%);
-        z-index: 1;
-      }
       .bento-content {
         position: relative;
         z-index: 2;
-        color: var(--white);
+        color: var(--text-main);
         display: flex;
         flex-direction: column;
         height: 100%;
         justify-content: flex-end;
       }
       .bento-title {
-        font-size: 1.4rem;
+        font-size: 1.1rem;
         font-weight: 900;
         text-transform: uppercase;
         margin: 0 0 5px 0;
-        text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
+        color: var(--black);
       }
       .bento-price {
-        font-size: 1.1rem;
+        font-size: 0.95rem;
         font-weight: 900;
         color: var(--primary);
-        margin-bottom: 10px;
-        text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+        margin-bottom: 8px;
       }
       .bento-desc {
-        font-size: 0.9rem;
-        margin-bottom: 15px;
-        color: #e0e0e0;
-        display: -webkit-box;
-        -webkit-line-clamp: 2;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
+        font-size: 0.8rem;
+        margin-bottom: 12px;
+        color: var(--text-main);
       }
       .bento-btn {
         align-self: flex-start;
-        padding: 8px 24px;
-        font-size: 0.9rem;
+        padding: 6px 16px;
+        font-size: 0.8rem;
       }
       
       .loading {
@@ -683,21 +750,29 @@
       </div>
     </article>
 
-    <article id="reviews" class="container" style="margin-bottom: 80px">
-      <div id="reviews-loading" class="loading">Loading Highlights...</div>
-      <div id="reviews-content" style="display: none">
-        <div class="section-header-wrap">
-          <h2 class="section-header">Fan Highlights</h2>
+    <article id="reviews-team" class="container" style="margin-bottom: 80px">
+      <div class="section-header-wrap">
+        <h2 class="section-header">Fan Highlights & The Team</h2>
+      </div>
+      
+      <div class="split-section">
+        <!-- Left: Reviews -->
+        <div class="reviews-container">
+          <div id="reviews-loading" class="loading">Loading Highlights...</div>
+          <div id="reviews-content" style="display: none">
+             <div class="reviews-scroller" id="reviews-scroller"></div>
+             <div style="text-align: center; margin-top: 20px">
+              <button class="btn btn-outline" id="add-review-btn" style="max-width: 260px">
+                Submit Highlight
+              </button>
+             </div>
+          </div>
         </div>
-        <div class="grid" id="reviews-list"></div>
-        <div style="text-align: center; margin-top: 40px">
-          <button
-            class="btn btn-outline"
-            id="add-review-btn"
-            style="max-width: 260px"
-          >
-            Submit Highlight
-          </button>
+
+        <!-- Right: Team -->
+        <div class="team-container">
+          <div id="team-loading" class="loading">Loading Team...</div>
+          <div id="team-content" style="display: none;" class="photo-frame"></div>
         </div>
       </div>
     </article>
@@ -892,7 +967,7 @@
 
               try {
                 const rawServices = (data.services || []).filter(
-                  (s) => s.duration > 0,
+                  (s) => s.duration > 0 && s.isBookable !== false,
                 );
 
                 // Deduplicate services by name
@@ -905,15 +980,11 @@
                 if (services.length > 0) {
                   document.getElementById("services-list").innerHTML = services
                     .map((s) => {
-                      const fallbackImg =
-                        "https://images.unsplash.com/photo-1562322140-8baeececf3df?auto=format&fit=crop&w=600&q=80";
                       return `
                 <div class="bento-card">
-                  <img class="bg-image" src="${s.imageUrl || fallbackImg}" alt="${s.name}">
-                  <div class="overlay"></div>
                   <div class="bento-content">
                     <h3 class="bento-title">${s.name}</h3>
-                    <div class="bento-price">$${Number(s.price).toFixed(2)} <span style="font-size: 0.85rem; color: #ccc;">/ ${s.duration} MIN</span></div>
+                    <div class="bento-price">$${Number(s.price).toFixed(2)} <span style="font-size: 0.85rem; color: #777;">/ ${s.duration} MIN</span></div>
                     <p class="bento-desc" title="${s.description || ""}">${s.description || "The MVP Experience."}</p>
                     <button class="btn b-book bento-btn" data-id="${s.id}">Check In</button>
                   </div>
@@ -1101,18 +1172,26 @@
               try {
                 const reviews = data.reviews || [];
                 if (reviews.length > 0) {
-                  document.getElementById("reviews-list").innerHTML = reviews
-                    .slice(0, 3)
+                  const scrollerInner = document.createElement('div');
+                  scrollerInner.className = 'reviews-scroller-inner';
+                  // Duplicate reviews to make continuous scrolling smoother if there are few
+                  const displayReviews = [...reviews, ...reviews, ...reviews, ...reviews].slice(0, 15);
+                  scrollerInner.innerHTML = displayReviews
                     .map(
                       (r) => `
-                <div class="testimonial">
+                <div class="testimonial-item">
                   <div class="testimonial-stars">${"★".repeat(r.rating || 5)}</div>
                   <p class="testimonial-quote">${r.comment || "Great experience, highly recommend!"}</p>
+                  <div style="font-size: 0.8rem; color: #777; margin-top: 10px;">- ${r.authorName || "Valued Client"}</div>
                 </div>
-              `,
+              `
                     )
                     .join("");
+                  document.getElementById("reviews-scroller").appendChild(scrollerInner);
+                } else {
+                  document.getElementById("reviews-scroller").innerHTML = "<p style='padding:20px;text-align:center;'>No highlights yet.</p>";
                 }
+
                 document
                   .getElementById("add-review-btn")
                   .addEventListener("click", () => {
@@ -1138,6 +1217,42 @@
                 document.getElementById("reviews-content").style.display =
                   "block";
               } catch (e) {}
+
+              try {
+                const staff = data.staff || [];
+                const teamContent = document.getElementById("team-content");
+                if (staff.length > 0) {
+                  teamContent.innerHTML = staff.map((s, index) => {
+                    const fallbackImg = "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=600&q=80";
+                    return `
+                      <div class="team-slide ${index === 0 ? 'active' : ''}">
+                        <img src="${s.avatarUrl || s.profileUrl || fallbackImg}" alt="${s.name}" class="team-img">
+                        <div class="team-info">
+                          <h3 class="team-name">${s.name}</h3>
+                          ${s.title ? `<p style="margin:5px 0 0 0; font-size:0.9rem;">${s.title}</p>` : ''}
+                        </div>
+                      </div>
+                    `;
+                  }).join("");
+                  
+                  // Setup fading transition
+                  let currentSlide = 0;
+                  const slides = teamContent.querySelectorAll('.team-slide');
+                  if (slides.length > 1) {
+                    setInterval(() => {
+                      slides[currentSlide].classList.remove('active');
+                      currentSlide = (currentSlide + 1) % slides.length;
+                      slides[currentSlide].classList.add('active');
+                    }, 6500); // Increased interval to accommodate slower fade
+                  }
+                } else {
+                  teamContent.innerHTML = "<div style='display:flex;align-items:center;justify-content:center;height:100%;background:#eee;'><p>Team coming soon!</p></div>";
+                }
+                document.getElementById("team-loading").style.display = "none";
+                teamContent.style.display = "block";
+              } catch (e) {
+                console.error("Team Error:", e);
+              }
             })
             .catch((err) => {
               console.error("Public Data Error: ", err);
