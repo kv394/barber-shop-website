@@ -118,6 +118,7 @@
             data.shop.heroImageUrl = normalizeImageUrl(custom.heroImageUrl || shop.heroImageUrl);
             data.shop.primaryColor = custom.primaryColor || shop.primaryColor || "#E31837";
             data.shop.secondaryColor = custom.secondaryColor || shop.secondaryColor || "#000000";
+            data.shop.customDomain = shop.customDomain || null;
           }
           this._publicDataCache = data;
           this._publicDataPromise = null;

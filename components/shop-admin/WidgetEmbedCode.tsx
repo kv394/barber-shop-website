@@ -33,10 +33,15 @@ export default function WidgetEmbedCode({ shopId }: { shopId: string }) {
       console.log('Shop Name:', shop.name);
       console.log('Logo URL:', shop.logoUrl);
       console.log('Services:', services);
+
+      // If you have a custom domain configured in settings, 
+      // you can redirect users or conditionally render based on it:
+      if (shop.customDomain) {
+        console.log('Custom Domain:', shop.customDomain);
+      }
     });
   });
   </script>`;
-
   const copyToClipboard = (text: string, setCopied: (val: boolean) => void) => {
     navigator.clipboard.writeText(text);
     setCopied(true);

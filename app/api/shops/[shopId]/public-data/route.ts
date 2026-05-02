@@ -120,12 +120,29 @@ export async function GET(request: Request, { params }: { params: Promise<{ shop
         logger.warn(`Allowing unauthorized access to shop data from domain for demo: ${requestDomain}`);
       }
     }
+
+    const origin = request.headers.get('origin');
+
     // CORS Headers for allowed requests
-    const corsHeaders = {
+    const corsHeaders: Record<string, string> = {
       'Access-Control-Allow-Origin': (!origin || origin === 'null') ? '*' : origin,
       'Access-Control-Allow-Methods': 'GET, OPTIONS',
       'Access-Control-Allow-Headers': 'Content-Type, Authorization',
     };
+
+    // Set dynamic CORS origin if valid
+    if (origin) {
+        try {
+            const originHost = new URL(origin).hostname;
+            const isOriginAllowed = allowedDomains.some(domain => originHost === domain || originHost.endsWith(`.${domain}`));
+            if (isOriginAllowed) {
+                corsHeaders['Access-Control-Allow-Origin'] = origin;
+            } else {
+                 // For demo purposes, we will allow it, but in production we'd restrict it
+                 corsHeaders['Access-Control-Allow-Origin'] = origin;
+            }
+        } catch(e) {}
+    }
 
     // Run remaining public data queries in parallel using the actual resolved shop.id
     const [products, services, staff, reviews] = await Promise.all([
@@ -230,6 +247,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ shop
         timezone: shop.timezone,
         template: shop.template,
         dynamicTemplates: shop.dynamicTemplates,
+        customDomain: shop.customDomain,
         customization: publicCustomization
     };
 
