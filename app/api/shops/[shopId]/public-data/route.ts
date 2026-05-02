@@ -52,7 +52,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ shop
       });
 
       shop = candidates.find(
-        (s: any) => s.name.toLowerCase().replace(/\\s+/g, '-').replace(/[^\\w-]/g, '') === shopId.toLowerCase()
+        (s: any) => s.name.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '') === shopId.toLowerCase()
       ) || null;
     }
 
