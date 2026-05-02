@@ -197,59 +197,8 @@ export function CustomizationForm({
         )}
 
         <div>
-          <h3 className="font-bold text-crm-text mb-4 text-lg font-bold">Advanced UI & Theme Overrides</h3>
+          <h3 className="font-bold text-crm-text mb-4 text-lg font-bold">Browser Icon</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-            <div>
-              <label className="block font-medium text-crm-muted mb-2 text-[13px]">Button Shape</label>
-              <select value={formData.buttonShape || 'rounded'} onChange={(e) => handleInputChange('buttonShape', e.target.value)} className="w-full bg-crm-bg border border-crm-border shadow-sm rounded px-4 py-2 text-crm-text">
-                <option value="sharp">Sharp (Square)</option>
-                <option value="rounded">Rounded</option>
-                <option value="pill">Pill (Fully Rounded)</option>
-              </select>
-            </div>
-            <div>
-              <label className="block font-medium text-crm-muted mb-2 text-[13px]">Button Variant</label>
-              <select value={formData.buttonVariant || 'solid'} onChange={(e) => handleInputChange('buttonVariant', e.target.value)} className="w-full bg-crm-bg border border-crm-border shadow-sm rounded px-4 py-2 text-crm-text">
-                <option value="solid">Solid Color</option>
-                <option value="outline">Outline</option>
-                <option value="ghost">Ghost (No Background)</option>
-              </select>
-            </div>
-            <div>
-              <label className="block font-medium text-crm-muted mb-2 text-[13px]">Color Theme</label>
-              <select value={formData.colorTheme || 'light'} onChange={(e) => handleInputChange('colorTheme', e.target.value)} className="w-full bg-crm-bg border border-crm-border shadow-sm rounded px-4 py-2 text-crm-text">
-                <option value="light">Force Light</option>
-                <option value="dark">Force Dark</option>
-                <option value="auto">Auto / System</option>
-              </select>
-            </div>
-            <div>
-              <label className="block font-medium text-crm-muted mb-2 text-[13px]">Header Style</label>
-              <select value={formData.headerStyle || 'classic'} onChange={(e) => handleInputChange('headerStyle', e.target.value)} className="w-full bg-crm-bg border border-crm-border shadow-sm rounded px-4 py-2 text-crm-text">
-                <option value="classic">Classic (Logo Left, Nav Right)</option>
-                <option value="centered">Centered (Logo Center, Nav Below)</option>
-                <option value="minimal">Minimal (Logo Left, Menu Right)</option>
-              </select>
-            </div>
-            <div>
-              <label className="block font-medium text-crm-muted mb-2 text-[13px]">Hero Layout</label>
-              <select value={formData.heroLayout || 'full'} onChange={(e) => handleInputChange('heroLayout', e.target.value)} className="w-full bg-crm-bg border border-crm-border shadow-sm rounded px-4 py-2 text-crm-text">
-                <option value="full">Full Background Image</option>
-                <option value="split">Split Screen (Image Left/Text Right)</option>
-                <option value="floating">Floating Image</option>
-              </select>
-            </div>
-            <div className="flex flex-col gap-2">
-              <label className="block font-medium text-crm-muted mb-2 text-[13px]">Hero Overlay Color</label>
-              <div className="flex gap-2">
-                <input type="color" value={formData.heroOverlayColor || '#000000'} onChange={(e) => handleInputChange('heroOverlayColor', e.target.value)} className="h-10 w-16 rounded cursor-pointer" />
-                <input type="text" value={formData.heroOverlayColor || '#000000'} onChange={(e) => handleInputChange('heroOverlayColor', e.target.value)} className="flex-1 bg-crm-bg border border-crm-border shadow-sm rounded px-3 py-2 text-crm-text" />
-              </div>
-            </div>
-            <div>
-              <label className="block font-medium text-crm-muted mb-2 text-[13px]">Hero Overlay Opacity ({formData.heroOverlayOpacity !== undefined ? formData.heroOverlayOpacity : 0}%)</label>
-              <input type="range" min="0" max="100" value={formData.heroOverlayOpacity !== undefined ? formData.heroOverlayOpacity : 0} onChange={(e) => handleInputChange('heroOverlayOpacity', parseInt(e.target.value))} className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer mt-4" />
-            </div>
             <div>
               <label className="block font-medium text-crm-muted mb-2 text-[13px]">Favicon URL</label>
               <div className="flex gap-2 items-center">
