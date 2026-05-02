@@ -64,76 +64,73 @@ export default function StaffAvailability({ defaultDate, defaultFrom, defaultTo,
   const showTimeFilters = defaultFrom !== undefined && defaultTo !== undefined;
 
   return (
-    <div className="mb-8 bg-crm-surface rounded-2xl border border-crm-border shadow-sm shadow-xl overflow-hidden">
+    <div className="bg-crm-surface rounded-2xl border border-crm-border shadow-sm overflow-hidden w-full max-w-full">
       {/* Gold accent */}
       <div className="h-1 bg-gradient-to-r from-crm-primary via-crm-primary/60 to-transparent" />
 
-      <div className="p-5">
+      <div className="p-3 sm:p-5">
         {/* Header row with day navigation */}
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-crm-primary/20 flex items-center justify-center text-xl hover:opacity-90">📅</div>
-            <div>
-              <h3 className="font-bold text-crm-text text-lg font-bold">{dayName}</h3>
-              <p className="text-crm-muted text-[13px]">{dateStr}</p>
+        <div className="flex items-center justify-between mb-4 gap-2">
+          <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+            <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-crm-primary/20 flex items-center justify-center text-lg sm:text-xl hover:opacity-90 flex-shrink-0">📅</div>
+            <div className="min-w-0 truncate">
+              <h3 className="font-bold text-crm-text text-base sm:text-lg font-bold truncate">{dayName}</h3>
+              <p className="text-crm-muted text-[11px] sm:text-[13px] truncate">{dateStr}</p>
             </div>
-            {isToday && (
-              <span className="text-[13px] bg-crm-primary/20 text-crm-primary px-2.5 py-0.5 rounded-full font-bold uppercase tracking-wider hover:opacity-90">Today</span>
-            )}
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1 sm:gap-2 flex-shrink-0">
             {!isToday && (
               <button onClick={goToToday}
-                className="text-[13px] text-crm-primary hover:text-crm-text bg-crm-primary/10 hover:bg-crm-primary/20 border border-crm-primary/20 transition-all duration-200">
+                className="text-[11px] sm:text-[13px] text-crm-primary hover:text-crm-text bg-crm-primary/10 hover:bg-crm-primary/20 border border-crm-primary/20 transition-all duration-200 px-2 py-1 rounded-md">
                 Today
               </button>
             )}
             <button onClick={() => navigateDays(-1)}
-              className="w-9 h-9 flex items-center justify-center rounded-xl bg-crm-surface border border-crm-border shadow-sm hover:border-crm-primary/40 text-crm-muted hover:text-crm-text transition-all duration-200 text-[13px] font-bold">
+              className="w-7 h-7 sm:w-9 sm:h-9 flex items-center justify-center rounded-lg sm:rounded-xl bg-crm-surface border border-crm-border shadow-sm hover:border-crm-primary/40 text-crm-muted hover:text-crm-text transition-all duration-200 text-[11px] sm:text-[13px] font-bold">
               ←
             </button>
             <button onClick={() => navigateDays(1)}
-              className="w-9 h-9 flex items-center justify-center rounded-xl bg-crm-surface border border-crm-border shadow-sm hover:border-crm-primary/40 text-crm-muted hover:text-crm-text transition-all duration-200 text-[13px] font-bold">
+              className="w-7 h-7 sm:w-9 sm:h-9 flex items-center justify-center rounded-lg sm:rounded-xl bg-crm-surface border border-crm-border shadow-sm hover:border-crm-primary/40 text-crm-muted hover:text-crm-text transition-all duration-200 text-[11px] sm:text-[13px] font-bold">
               →
             </button>
           </div>
         </div>
 
         {/* Inputs row */}
-        <div className={`grid grid-cols-1 ${showTimeFilters ? 'md:grid-cols-3' : 'md:grid-cols-1'} gap-3`}>
-          <div>
-            <label className="block text-crm-muted mb-1 font-semibold uppercase tracking-wider text-[13px]">📅 Date</label>
+        <div className={`grid grid-cols-1 ${showTimeFilters ? 'sm:grid-cols-3' : 'sm:grid-cols-1'} gap-2 sm:gap-3`}>
+          <div className="w-full">
+            <label className="block text-crm-muted mb-1 font-semibold uppercase tracking-wider text-[11px] sm:text-[13px]">📅 Date</label>
             <input
               type="date"
               value={defaultDate}
               onChange={handleDateChange}
               style={timeStyle}
-              className="w-full p-2.5 rounded-lg border border-crm-border shadow-sm text-crm-text text-[13px] focus:ring-2 focus:ring-crm-primary focus:outline-none transition-all"
+              className="w-full p-2 sm:p-2.5 rounded-lg border border-crm-border shadow-sm text-crm-text text-[11px] sm:text-[13px] focus:ring-2 focus:ring-crm-primary focus:outline-none transition-all"
             />
           </div>
           {showTimeFilters && (
             <>
-              <div>
-                <label className="block text-crm-muted mb-1 font-semibold uppercase tracking-wider text-[13px]">🕐 From</label>
+              <div className="w-full flex-1">
+                <label className="block text-crm-muted mb-1 font-semibold uppercase tracking-wider text-[11px] sm:text-[13px]">🕐 From</label>
                 <input
                   type="time"
                   name="from"
                   value={defaultFrom}
                   onChange={handleTimeChange}
                   style={timeStyle}
-                  className="w-full p-2.5 rounded-lg border border-crm-border shadow-sm text-crm-text text-[13px] focus:ring-2 focus:ring-crm-primary focus:outline-none transition-all"
+                  className="w-full p-2 sm:p-2.5 rounded-lg border border-crm-border shadow-sm text-crm-text text-[11px] sm:text-[13px] focus:ring-2 focus:ring-crm-primary focus:outline-none transition-all"
                 />
               </div>
-              <div>
-                <label className="block text-crm-muted mb-1 font-semibold uppercase tracking-wider text-[13px]">🕐 To</label>
+              <div className="w-full flex-1">
+                <label className="block text-crm-muted mb-1 font-semibold uppercase tracking-wider text-[11px] sm:text-[13px]">🕐 To</label>
                 <input
                   type="time"
                   name="to"
                   value={defaultTo}
                   onChange={handleTimeChange}
                   style={timeStyle}
-                  className="w-full p-2.5 rounded-lg border border-crm-border shadow-sm text-crm-text text-[13px] focus:ring-2 focus:ring-crm-primary focus:outline-none transition-all"
+                  className="w-full p-2 sm:p-2.5 rounded-lg border border-crm-border shadow-sm text-crm-text text-[11px] sm:text-[13px] focus:ring-2 focus:ring-crm-primary focus:outline-none transition-all"
                 />
               </div>
             </>

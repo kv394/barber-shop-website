@@ -34,13 +34,15 @@ export default function TeamDashboardClient({
 
   return (
     <>
-      <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mb-4">
-        <div className="w-full sm:w-auto">
+      <div className="flex flex-col sm:flex-row justify-between items-stretch sm:items-end gap-6 sm:gap-4 mb-8">
+        <div className="w-full sm:w-auto min-w-0 flex-shrink-0">
           <StaffAvailability defaultDate={initialDate} />
         </div>
-        <Link href={`/shop/${shopId}/portfolio`} className="w-full sm:w-auto bg-crm-surface text-crm-text border border-crm-border shadow-sm px-4 py-2 rounded-lg hover:bg-crm-bg transition-colors font-bold uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg whitespace-nowrap">
-          📸 Shop Portfolio Gallery
-        </Link>
+        <div className="w-full sm:w-auto min-w-0 flex-shrink-0">
+          <Link href={`/shop/${shopId}/portfolio`} className="w-full sm:w-auto bg-crm-surface text-crm-text border border-crm-border shadow-sm px-4 py-3 sm:py-2 rounded-lg hover:bg-crm-bg transition-colors font-bold uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg truncate text-[12px] sm:text-[13px] h-full sm:h-10">
+            📸 Shop Portfolio Gallery
+          </Link>
+        </div>
       </div>
       
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
