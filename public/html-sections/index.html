@@ -992,11 +992,23 @@
             }
 
             try {
+              const normalizeImageUrl = (url) => {
+                if (!url) return null;
+                const fileMatch = url.match(/drive\.google\.com\/file\/d\/([^/]+)/);
+                if (fileMatch) return `https://lh3.googleusercontent.com/d/${fileMatch[1]}`;
+                const openMatch = url.match(/drive\.google\.com\/open\?id=([^&]+)/);
+                if (openMatch) return `https://lh3.googleusercontent.com/d/${openMatch[1]}`;
+                const ucMatch = url.match(/drive\.google\.com\/uc\?.*id=([^&]+)/);
+                if (ucMatch) return `https://lh3.googleusercontent.com/d/${ucMatch[1]}`;
+                return url;
+              };
+
               const shopName = data.shop?.name || "Heritage Haircut";
               document.getElementById("dyn-shop-name").innerHTML = shopName;
 
               if (data.shop?.customization?.logoUrl || data.shop?.logoUrl) {
-                const logoUrl = data.shop?.customization?.logoUrl || data.shop?.logoUrl;
+                const rawLogoUrl = data.shop?.customization?.logoUrl || data.shop?.logoUrl;
+                const logoUrl = normalizeImageUrl(rawLogoUrl);
                 document.querySelector(".nav-brand").innerHTML =
                   `<img src="${logoUrl}" alt="${shopName}" style="max-height: 40px;">`;
               } else {
@@ -1009,7 +1021,8 @@
                 "Precision styling and expert care tailored for the modern individual.";
 
               if (data.shop?.customization?.heroImageUrl || data.shop?.heroImageUrl) {
-                const heroImageUrl = data.shop?.customization?.heroImageUrl || data.shop?.heroImageUrl;
+                const rawHeroImageUrl = data.shop?.customization?.heroImageUrl || data.shop?.heroImageUrl;
+                const heroImageUrl = normalizeImageUrl(rawHeroImageUrl);
                 const heroVideo = document.getElementById("heroVideo");
                 if (heroVideo) {
                   const img = document.createElement("img");
