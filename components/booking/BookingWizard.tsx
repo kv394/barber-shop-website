@@ -344,20 +344,6 @@ export default function BookingWizard({ shopId, themeColor, secondaryColor, temp
     );
   }
 
-  // Auth Check View
-  if (!isSignedIn) {
-      const currentPath = typeof window !== 'undefined' ? window.location.pathname : '';
-      return (
-        <div className="flex flex-col items-center justify-center h-full w-full p-8 bg-white text-center">
-            <h2 className="text-xl font-bold text-gray-900 mb-2">Sign in to book</h2>
-            <p className="text-gray-600 mb-6">Please sign in or create an account to continue with your booking.</p>
-            <a href={`/sign-in?redirect_url=${encodeURIComponent(currentPath)}`} className="w-full max-w-xs bg-gray-900 text-white p-3 rounded-xl font-medium hover:bg-black transition-colors">
-              Sign In
-            </a>
-        </div>
-      );
-  }
-
   return (
     <div className="flex flex-col h-full bg-white relative font-sans w-full max-w-md mx-auto">
       {/* Header */}
