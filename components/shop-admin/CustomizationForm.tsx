@@ -94,6 +94,27 @@ export function CustomizationForm({
         <div>
             <h3 className="font-bold text-crm-text mb-4 text-lg font-bold">Brand Look & Feel</h3>
             
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+              <div>
+                <label className="block font-medium text-crm-muted mb-2 text-[13px]">Shop Logo</label>
+                <MediaPicker
+                  shopId={shopId}
+                  currentUrl={formData.logoUrl || ''}
+                  onSelect={(url) => handleInputChange('logoUrl', url)}
+                  label="Upload Logo"
+                />
+              </div>
+              <div>
+                <label className="block font-medium text-crm-muted mb-2 text-[13px]">Hero / Header Image</label>
+                <MediaPicker
+                  shopId={shopId}
+                  currentUrl={formData.heroImageUrl || ''}
+                  onSelect={(url) => handleInputChange('heroImageUrl', url)}
+                  label="Upload Hero Image"
+                />
+              </div>
+            </div>
+            
 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
   <div>
     <label className="block font-medium text-crm-muted mb-2 text-[13px]">Heading Font</label>
