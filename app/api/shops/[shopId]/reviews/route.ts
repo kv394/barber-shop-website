@@ -36,7 +36,8 @@ export async function GET(
         OR: [
           { id: shopId },
           { subdomain: shopId },
-          { customDomain: shopId }
+          { customDomain: shopId },
+          { name: { equals: shopId.replace(/-/g, ' '), mode: 'insensitive' } }
         ]
       },
       select: { id: true, customDomain: true, subdomain: true, customization: true }
@@ -112,7 +113,8 @@ export async function POST(
         OR: [
           { id: shopId },
           { subdomain: shopId },
-          { customDomain: shopId }
+          { customDomain: shopId },
+          { name: { equals: shopId.replace(/-/g, ' '), mode: 'insensitive' } }
         ]
       },
       select: { id: true }
