@@ -9,6 +9,7 @@ import GlobalChatWidget from '@/components/shop-admin/GlobalChatWidget';
 import ShopSidebarLinks from '@/components/shop-admin/ShopSidebarLinks';
 import ShopSwitcher from '@/components/shop-admin/ShopSwitcher';
 import MobileHeader from '@/components/shop-admin/MobileHeader';
+import ShopMobileBottomNav from '@/components/shop-admin/ShopMobileBottomNav';
 
 export const dynamic = 'force-dynamic';
 
@@ -122,13 +123,17 @@ export default async function ShopLayout({
         )}
 
         {/* Main Scrolling Area */}
-        <main className="flex-1 overflow-y-auto bg-gradient-to-br from-gray-200 to-white p-4 md:p-8 pt-8">
+        <main className="flex-1 overflow-y-auto bg-gradient-to-br from-gray-200 to-white p-4 md:p-8 pt-8 pb-24 md:pb-8">
           <div className="mx-auto max-w-7xl">
             {children}
           </div>
         </main>
       </div>
 
+      {!isSiteAdmin && (
+        <ShopMobileBottomNav shopId={shopId} userRole={data.userRole} />
+      )}
+      
       <GlobalChatWidget shopId={shopId} currentUserId={userId} userRole={data.userRole} />
     </div>
   );

@@ -5,6 +5,7 @@ import Link from 'next/link';
 import SupabaseAuthButton from '@/components/auth/SupabaseAuthButton';
 import SiteAdminSidebarLinks from '@/components/siteadmin/SiteAdminSidebarLinks';
 import MobileHeader from '@/components/siteadmin/MobileHeader';
+import SiteAdminMobileBottomNav from '@/components/siteadmin/SiteAdminMobileBottomNav';
 
 export const dynamic = 'force-dynamic';
 
@@ -41,25 +42,17 @@ export default async function SiteAdminLayout({ children }: { children: React.Re
 
       {/* Main Content Area */}
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden relative">
-        {/* Mobile Header */}
-        <header className="md:hidden sticky top-0 z-[100] flex justify-between items-center bg-crm-surface border-b border-crm-border px-4 py-3 shadow-sm">
-          <div className="flex flex-col min-w-0 pr-4 flex-1">
-             <Link href="/siteadmin" className="font-bold text-xl tracking-tight flex items-center gap-2">
-               <span className="text-crm-text">Barber</span><span className="text-crm-primary">SaaS</span>
-             </Link>
-          </div>
-          <div className="shrink-0">
-             <SupabaseAuthButton redirectUrl="/" />
-          </div>
-        </header>
+        <MobileHeader />
 
         {/* Main Scrolling Area */}
-        <main className="flex-1 overflow-y-auto bg-gradient-to-br from-gray-200 to-white p-4 md:p-8 pt-8">
+        <main className="flex-1 overflow-y-auto bg-gradient-to-br from-gray-200 to-white p-4 md:p-8 pt-8 pb-24 md:pb-8">
           <div className="mx-auto max-w-7xl">
             {children}
           </div>
         </main>
       </div>
+
+      <SiteAdminMobileBottomNav />
     </div>
   );
 }
