@@ -21,9 +21,16 @@ export default function MediaPicker({ shopId, onSelect, currentUrl, label = 'Sel
     if (isOpen && activeTab === 'existing') {
       setIsLoadingExisting(true);
       fetch(`/api/shops/${shopId}/pictures`)
-        .then(r => r.ok ? r.json() : { files: [] })
+        .then(async r => {
+          if (!r.ok) return { files: [] };
+          try {
+            return await r.json();
+          } catch (e) {
+            return { files: [] };
+          }
+        })
         .then(data => {
-          setExistingImages(data.files || []);
+          setExistingImages(data && Array.isArray(data.files) ? data.files : []);
         })
         .catch(err => {
           console.error("Error fetching existing images:", err);
@@ -124,7 +131,7 @@ export default function MediaPicker({ shopId, onSelect, currentUrl, label = 'Sel
               <div className="flex-1 overflow-y-auto min-h-[300px] hide-scrollbar">
                 {isLoadingExisting ? (
                   <div className="flex justify-center items-center h-full text-crm-muted text-[13px]">Loading images...</div>
-                ) : existingImages.length === 0 ? (
+                ) : (!Array.isArray(existingImages) || existingImages.length === 0) ? (
                   <div className="flex justify-center items-center h-full text-crm-muted text-[13px]">No images found in your library.</div>
                 ) : (
                   <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
