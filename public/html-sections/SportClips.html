@@ -822,8 +822,8 @@
         const sdkScript = document.createElement("script");
         sdkScript.src =
           isFileProtocol && domain === "file://"
-            ? "../barbersaas-sdk.js?v=5"
-            : domain + "/barbersaas-sdk.js?v=5";
+            ? "../barbersaas-sdk.js?v=" + new Date().getTime()
+            : domain + "/barbersaas-sdk.js?v=" + new Date().getTime();
         document.head.appendChild(sdkScript);
       })();
     </script>
@@ -907,11 +907,17 @@
             apiUrl: apiUrlToUse,
           });
 
-          BarberSaaS.getPublicData()
-            .then((data) => {
+          // Use the specific SDK helper methods
+          Promise.all([
+            BarberSaaS.getShopDetails(),
+            BarberSaaS.getBookableServices(),
+            BarberSaaS.getSellableProducts(),
+            BarberSaaS.getReviews(),
+            BarberSaaS.getPublicStaff()
+          ])
+            .then(([shop, rawServices, rawProducts, reviews, staff]) => {
+              // --- SHOP DETAILS & BRANDING ---
               try {
-                const shop = data.shop || {};
-
                 // 1. Extract dynamic theme colors
                 const primaryColor = shop.primaryColor || "#E31837";
                 const secondaryColor = shop.secondaryColor || "#000000";
@@ -920,11 +926,7 @@
                 window.BarberSaaS.secondaryColor = secondaryColor;
 
                 // 2. Apply Theme colors to root
-                document.documentElement.style.setProperty(
-                  "--primary",
-                  primaryColor,
-                  "important",
-                );
+                document.documentElement.style.setProperty("--primary", primaryColor, "important");
 
                 // 3. Inject CSS overrides for the external user profile (which loads outside the iframe) and Chatbot
                 const styleEl = document.createElement("style");
@@ -947,35 +949,22 @@
                 // 4. Safely Inject Chatbot and Booking widgets
                 setTimeout(() => {
                   const cacheBuster = "?v=" + new Date().getTime();
-                  const widgetUrlPrefix =
-                    isFileProtocol && domain === "file://" ? ".." : domain;
+                  const widgetUrlPrefix = isFileProtocol && domain === "file://" ? ".." : domain;
 
-                  const modalScript = document.createElement("script");
-                  modalScript.src =
-                    widgetUrlPrefix + "/booking-modal.js" + cacheBuster;
-                  modalScript.setAttribute("data-shop-id", shopId);
-                  modalScript.setAttribute("data-theme-color", primaryColor);
-                  document.body.appendChild(modalScript);
-
-                  const widgetScript = document.createElement("script");
-                  widgetScript.src =
-                    widgetUrlPrefix + "/booking-widget.js" + cacheBuster;
-                  widgetScript.setAttribute("data-shop-id", shopId);
-                  widgetScript.setAttribute("data-theme-color", primaryColor);
-                  document.body.appendChild(widgetScript);
-
-                  const reviewScript = document.createElement("script");
-                  reviewScript.src =
-                    widgetUrlPrefix + "/review-widget.js" + cacheBuster;
-                  reviewScript.setAttribute("data-shop-id", shopId);
-                  reviewScript.setAttribute("data-theme-color", primaryColor);
-                  document.body.appendChild(reviewScript);
+                  const scriptsToInject = ["booking-modal.js", "booking-widget.js", "review-widget.js"];
+                  scriptsToInject.forEach(scriptName => {
+                    const scriptEl = document.createElement("script");
+                    scriptEl.src = widgetUrlPrefix + "/" + scriptName + cacheBuster;
+                    scriptEl.setAttribute("data-shop-id", shopId);
+                    scriptEl.setAttribute("data-theme-color", primaryColor);
+                    document.body.appendChild(scriptEl);
+                  });
                 }, 50);
               } catch (e) {
-                console.error(e);
+                console.error("Theme Error:", e);
               }
 
-              // Render Data
+              // Render Shop Details
               try {
                 // Update Logo
                 if (shop.logoUrl) {
@@ -1002,26 +991,23 @@
                 document.getElementById("dyn-shop-name-nav").textContent = (shop.name || "Sport Clips Haircuts").toUpperCase();
                 document.getElementById("dyn-shop-desc").textContent = shop.description || "It's good to be a guy.";
                 document.getElementById("about-loading").style.display = "none";
-                document.getElementById("about-content").style.display =
-                  "block";
-              } catch (e) {}
+                document.getElementById("about-content").style.display = "block";
+              } catch (e) {
+                console.error("Shop Details Error:", e);
+              }
 
+              // --- SERVICES ---
               try {
-                const rawServices = (data.services || []).filter(
-                  (s) => s.duration > 0 && s.isBookable !== false,
-                );
-
-                // Deduplicate services by name
+                const bookableServices = (rawServices || []).filter(s => s.duration > 0 && s.isBookable !== false);
                 const servicesMap = new Map();
-                rawServices.forEach((s) => {
+                bookableServices.forEach(s => {
                   if (!servicesMap.has(s.name)) servicesMap.set(s.name, s);
                 });
                 const services = Array.from(servicesMap.values());
 
                 if (services.length > 0) {
                   document.getElementById("services-list").innerHTML = services
-                    .map((s) => {
-                      return `
+                    .map((s) => `
                 <div class="bento-card">
                   <div class="bento-content">
                     <h3 class="bento-title">${s.name}</h3>
@@ -1030,28 +1016,24 @@
                     <button class="btn b-book bento-btn" data-id="${s.id}">Check In</button>
                   </div>
                 </div>
-              `;
-                    })
-                    .join("");
+              `).join("");
+                  
                   document.querySelectorAll(".b-book").forEach((b) =>
                     b.addEventListener("click", (e) => {
-                      if (window.BarberBooking)
-                        window.BarberBooking.open(e.target.dataset.id);
-                    }),
+                      if (window.BarberBooking) window.BarberBooking.open(e.target.dataset.id);
+                    })
                   );
                 }
-                document.getElementById("services-loading").style.display =
-                  "none";
-                document.getElementById("services-content").style.display =
-                  "block";
-              } catch (e) {}
+                document.getElementById("services-loading").style.display = "none";
+                document.getElementById("services-content").style.display = "block";
+              } catch (e) {
+                 console.error("Services Error:", e);
+              }
 
+              // --- PRODUCTS ---
               try {
-                const rawProducts = data.products || [];
-
-                // Deduplicate products by name
                 const productsMap = new Map();
-                rawProducts.forEach((p) => {
+                (rawProducts || []).forEach(p => {
                   if (!productsMap.has(p.name)) productsMap.set(p.name, p);
                 });
                 const products = Array.from(productsMap.values());
@@ -1059,8 +1041,7 @@
                 if (products.length > 0) {
                   document.getElementById("products-list").innerHTML = products
                     .map((p) => {
-                      const fallbackImg =
-                        "https://images.unsplash.com/photo-1556228453-efd6c1ff04f6?auto=format&fit=crop&w=600&q=80";
+                      const fallbackImg = "https://images.unsplash.com/photo-1556228453-efd6c1ff04f6?auto=format&fit=crop&w=600&q=80";
                       return `
                 <div class="card" style="background: var(--white);">
                   <div class="card-img-container">
@@ -1068,22 +1049,22 @@
                   </div>
                   <h3 class="card-title">${p.name}</h3>
                   <div class="card-price">$${Number(p.price).toFixed(2)}</div>
-                  <p class="card-desc" title="${p.name}${p.description ? "\n\n" + p.description : ""}"><span style="display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:2.8em;">${p.description || "Top-tier grooming gear."}</span></p>
+                  <p class="card-desc" title="${p.name}${p.description ? "\\n\\n" + p.description : ""}"><span style="display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:2.8em;">${p.description || "Top-tier grooming gear."}</span></p>
                   <div class="card-actions">
                     <button class="btn btn-outline b-view" data-id="${p.id}">Details</button>
                     <button class="btn b-buy" data-id="${p.id}">Buy Now</button>
                   </div>
                 </div>
               `;
-                    })
-                    .join("");
+                    }).join("");
+                  
                   document.querySelectorAll(".b-buy").forEach((btn) =>
                     btn.addEventListener("click", (e) => {
-                      BarberSaaS.getProductDetails(e.target.dataset.id).then(
-                        (p) => alert("Added to cart: 1x " + p.name),
-                      );
-                    }),
+                      BarberSaaS.getProductDetails(e.target.dataset.id).then(p => alert("Added to cart: 1x " + p.name));
+                    })
                   );
+                  
+                  // Product details modal logic (kept as is for brevity, though could be optimized)
                   document.querySelectorAll(".b-view").forEach((btn) =>
                     btn.addEventListener("click", (e) => {
                       BarberSaaS.getProductDetails(e.target.dataset.id).then(
@@ -1092,19 +1073,15 @@
                           if (!modal) {
                             modal = document.createElement("div");
                             modal.id = "product-modal";
-                            modal.style.cssText =
-                              "display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);z-index:10001;align-items:center;justify-content:center;";
+                            modal.style.cssText = "display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);z-index:10001;align-items:center;justify-content:center;";
 
                             const modalContent = document.createElement("div");
-                            modalContent.style.cssText =
-                              "background:white;padding:30px;border-radius:8px;max-width:800px;width:90%;position:relative;box-shadow:0 10px 25px rgba(0,0,0,0.2);display:flex;gap:30px;flex-wrap:wrap;";
+                            modalContent.style.cssText = "background:white;padding:30px;border-radius:8px;max-width:800px;width:90%;position:relative;box-shadow:0 10px 25px rgba(0,0,0,0.2);display:flex;gap:30px;flex-wrap:wrap;";
 
                             const closeBtn = document.createElement("button");
                             closeBtn.innerHTML = "&times;";
-                            closeBtn.style.cssText =
-                              "position:absolute;top:15px;right:15px;background:none;border:none;font-size:24px;cursor:pointer;color:#333;z-index:2;";
-                            closeBtn.onclick = () =>
-                              (modal.style.display = "none");
+                            closeBtn.style.cssText = "position:absolute;top:15px;right:15px;background:none;border:none;font-size:24px;cursor:pointer;color:#333;z-index:2;";
+                            closeBtn.onclick = () => (modal.style.display = "none");
 
                             const imageContainer = document.createElement("div");
                             imageContainer.style.cssText = "flex: 1; min-width: 250px; display: flex; align-items: center; justify-content: center; background: var(--light-gray); border-radius: 4px; overflow: hidden;";
@@ -1119,13 +1096,11 @@
 
                             const title = document.createElement("h2");
                             title.id = "product-modal-title";
-                            title.style.cssText =
-                              "color:var(--primary,#E31837);margin-top:0;margin-bottom:10px;text-transform:uppercase;font-weight:900;border-bottom:2px solid var(--primary,#E31837);padding-bottom:10px;";
+                            title.style.cssText = "color:var(--primary,#E31837);margin-top:0;margin-bottom:10px;text-transform:uppercase;font-weight:900;border-bottom:2px solid var(--primary,#E31837);padding-bottom:10px;";
 
                             const price = document.createElement("div");
                             price.id = "product-modal-price";
-                            price.style.cssText =
-                              "font-size:1.2rem;font-weight:900;margin-bottom:20px;";
+                            price.style.cssText = "font-size:1.2rem;font-weight:900;margin-bottom:20px;";
 
                             const desc = document.createElement("p");
                             desc.id = "product-modal-desc";
@@ -1149,38 +1124,27 @@
                             document.body.appendChild(modal);
 
                             modal.addEventListener("click", (e) => {
-                              if (e.target === modal)
-                                modal.style.display = "none";
+                              if (e.target === modal) modal.style.display = "none";
                             });
                           }
 
-                          document.getElementById(
-                            "product-modal-title",
-                          ).textContent = p.name;
-                          document.getElementById(
-                            "product-modal-price",
-                          ).textContent = "$" + Number(p.price).toFixed(2);
-                          document.getElementById(
-                            "product-modal-desc",
-                          ).textContent =
-                            p.description || "No description available.";
-                          document.getElementById("product-modal-img").src = 
-                            p.imageUrl || "https://images.unsplash.com/photo-1556228453-efd6c1ff04f6?auto=format&fit=crop&w=600&q=80";
+                          document.getElementById("product-modal-title").textContent = p.name;
+                          document.getElementById("product-modal-price").textContent = "$" + Number(p.price).toFixed(2);
+                          document.getElementById("product-modal-desc").textContent = p.description || "No description available.";
+                          document.getElementById("product-modal-img").src = p.imageUrl || "https://images.unsplash.com/photo-1556228453-efd6c1ff04f6?auto=format&fit=crop&w=600&q=80";
                           document.getElementById("product-modal-img").alt = p.name;
                           document.getElementById("product-modal-buy").onclick = () => {
                             alert("Added to cart: 1x " + p.name);
                             modal.style.display = "none";
                           };
                           modal.style.display = "flex";
-                        },
+                        }
                       );
-                    }),
+                    })
                   );
                 }
-                document.getElementById("products-loading").style.display =
-                  "none";
-                document.getElementById("products-content").style.display =
-                  "block";
+                document.getElementById("products-loading").style.display = "none";
+                document.getElementById("products-content").style.display = "block";
 
                 // Initialize Carousel Logic
                 const track = document.getElementById("products-list");
@@ -1190,13 +1154,11 @@
 
                 const updateArrows = () => {
                   if (!track || !prevBtn || !nextBtn || !wrapper) return;
-                  
                   const hasLeft = track.scrollLeft > 0;
                   const hasRight = Math.ceil(track.scrollLeft + track.clientWidth) < track.scrollWidth;
                   
                   prevBtn.style.display = hasLeft ? 'flex' : 'none';
                   nextBtn.style.display = hasRight ? 'flex' : 'none';
-                  
                   wrapper.classList.toggle('show-left', hasLeft);
                   wrapper.classList.toggle('show-right', hasRight);
                 };
@@ -1208,61 +1170,54 @@
                 prevBtn.onclick = () => track.scrollBy({ left: -280, behavior: 'smooth' });
                 nextBtn.onclick = () => track.scrollBy({ left: 280, behavior: 'smooth' });
 
-              } catch (e) {}
+              } catch (e) {
+                 console.error("Products Error:", e);
+              }
 
+              // --- REVIEWS ---
               try {
-                const reviews = data.reviews || [];
-                if (reviews.length > 0) {
+                if (reviews && reviews.length > 0) {
                   const scrollerInner = document.createElement('div');
                   scrollerInner.className = 'reviews-scroller-inner';
                   // Duplicate reviews to make continuous scrolling smoother if there are few
                   const displayReviews = [...reviews, ...reviews, ...reviews, ...reviews].slice(0, 15);
                   scrollerInner.innerHTML = displayReviews
-                    .map(
-                      (r) => `
+                    .map((r) => `
                 <div class="testimonial-item">
                   <div class="testimonial-stars">${"★".repeat(r.rating || 5)}</div>
                   <p class="testimonial-quote">${r.comment || "Great experience, highly recommend!"}</p>
-                  <div style="font-size: 0.8rem; color: #777; margin-top: 10px;">- ${r.authorName || "Valued Client"}</div>
+                  <div style="font-size: 0.8rem; color: #777; margin-top: 10px;">- ${r.authorName || r.user?.name || "Valued Client"}</div>
                 </div>
-              `
-                    )
-                    .join("");
+              `).join("");
                   document.getElementById("reviews-scroller").appendChild(scrollerInner);
                 } else {
                   document.getElementById("reviews-scroller").innerHTML = "<p style='padding:20px;text-align:center;'>No highlights yet.</p>";
                 }
 
-                document
-                  .getElementById("add-review-btn")
-                  .addEventListener("click", () => {
-                    if (window.BarberReviews) {
-                      window.BarberReviews.open(true);
-                    } else {
-                      const aptId = prompt("Enter Check-In ID:");
-                      const rating = prompt("Rating (1-5):", "5");
-                      const comment = prompt("Comments:");
-                      if (aptId && rating && comment) {
-                        BarberSaaS.submitReview({
-                          appointmentId: aptId,
-                          rating: parseInt(rating),
-                          comment,
-                        })
-                          .then(() => alert("Highlight submitted!"))
-                          .catch((e) => alert("Error: " + e.message));
-                      }
+                document.getElementById("add-review-btn").addEventListener("click", () => {
+                  if (window.BarberReviews) {
+                    window.BarberReviews.open(true);
+                  } else {
+                    const aptId = prompt("Enter Check-In ID:");
+                    const rating = prompt("Rating (1-5):", "5");
+                    const comment = prompt("Comments:");
+                    if (aptId && rating && comment) {
+                      BarberSaaS.submitReview({ appointmentId: aptId, rating: parseInt(rating), comment })
+                        .then(() => alert("Highlight submitted!"))
+                        .catch((e) => alert("Error: " + e.message));
                     }
-                  });
-                document.getElementById("reviews-loading").style.display =
-                  "none";
-                document.getElementById("reviews-content").style.display =
-                  "block";
-              } catch (e) {}
+                  }
+                });
+                document.getElementById("reviews-loading").style.display = "none";
+                document.getElementById("reviews-content").style.display = "block";
+              } catch (e) {
+                 console.error("Reviews Error:", e);
+              }
 
+              // --- STAFF ---
               try {
-                const staff = data.staff || [];
                 const teamContent = document.getElementById("team-content");
-                if (staff.length > 0) {
+                if (staff && staff.length > 0) {
                   teamContent.innerHTML = `
                     <div class="photo-frame-inner">
                       ${staff.map((s, index) => {
@@ -1314,9 +1269,8 @@
               }
             })
             .catch((err) => {
-              console.error("Public Data Error: ", err);
-              document.getElementById("services-loading").textContent =
-                "Failed to load data. Please refresh.";
+              console.error("SDK Data Loading Error: ", err);
+              document.getElementById("services-loading").textContent = "Failed to load data. Please refresh.";
             });
         }
 
