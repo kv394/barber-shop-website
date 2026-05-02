@@ -125,14 +125,7 @@ export default function SupabaseAuthButton({
   }, [isOpen]);
 
   const handleSignOut = async () => {
-    await supabase.auth.signOut();
-    setUser(null);
-    setProfile(null);
-    if (redirectUrl) {
-      window.location.href = redirectUrl;
-    } else {
-      window.location.reload();
-    }
+    window.location.href = '/logout';
   };
 
   if (loading) {

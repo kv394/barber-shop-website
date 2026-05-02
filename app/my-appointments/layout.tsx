@@ -15,15 +15,8 @@ export default async function MyAppointmentsLayout({
     redirect('/sign-in?redirect_url=/my-appointments');
   }
 
-  // Redirect STAFF/ADMIN out of client views
-  const dbUser = await prisma.user.findUnique({
-    where: { email: user.email || '' },
-    select: { role: true, shopId: true }
-  });
-
-  if (dbUser && dbUser.role !== 'CLIENT') {
-     redirect('/');
-  }
+  // Note: We used to redirect STAFF/ADMIN out of here, but they need access to /my-appointments/profile
+  // to edit their global account details (name, phone, etc.).
 
   return (
     <MyAppointmentsLayoutClient>

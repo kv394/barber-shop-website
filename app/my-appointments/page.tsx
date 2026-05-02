@@ -109,14 +109,7 @@ export default function MyAppointmentsPage() {
   }
 
   async function handleSignOut() {
-    const { createClient } = await import("@/utils/supabase/client");
-    const supabase = createClient();
-    await supabase.auth.signOut();
-    if (window.parent) {
-      window.parent.location.reload();
-    } else {
-      window.location.href = "/";
-    }
+    window.location.href = '/logout';
   }
 
   if (loading) {

@@ -9,13 +9,7 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
   const themeColor = searchParams.get('themeColor') || undefined;
   
   const handleSignOut = async () => {
-    const { createClient } = await import('@/utils/supabase/client');
-    await createClient().auth.signOut();
-    if (window.parent && window.parent !== window) {
-      window.parent.location.reload();
-    } else {
-      window.location.href = '/';
-    }
+    window.location.href = '/logout';
   };
 
   const tabs = [
