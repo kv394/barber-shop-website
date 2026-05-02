@@ -8,27 +8,20 @@ interface TemplateSelectorProps {
   shopId: string;
   dynamicTemplates?: { name: string; description: string | null }[];
   initialCustomHtml?: string;
-  initialAuthPosition?: string;
-  initialChatbotPosition?: string;
   onTemplateSelect?: (template: string) => void;
 }
 
-export function TemplateSelector({ 
-  currentTemplate, 
-  shopId, 
-  dynamicTemplates = [], 
+export function TemplateSelector({
+  currentTemplate,
+  shopId,
+  dynamicTemplates = [],
   initialCustomHtml = '',
-  initialAuthPosition = 'top-right',
-  initialChatbotPosition = 'bottom-right',
   onTemplateSelect
 }: TemplateSelectorProps) {
   const [selectedTemplate, setSelectedTemplate] = useState<string>(currentTemplate);
   const [customHtml, setCustomHtml] = useState<string>(initialCustomHtml);
-  const [authPosition, setAuthPosition] = useState<string>(initialAuthPosition);
-  const [chatbotPosition, setChatbotPosition] = useState<string>(initialChatbotPosition);
   const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
-
   const handleTemplateClick = (id: string) => {
     setSelectedTemplate(id);
     if (onTemplateSelect) {
@@ -46,14 +39,11 @@ export function TemplateSelector({
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ 
+        body: JSON.stringify({
           template: selectedTemplate,
           customHtml: selectedTemplate === 'custom' ? customHtml : undefined,
-          authPosition: selectedTemplate === 'custom' ? authPosition : undefined,
-          chatbotPosition: selectedTemplate === 'custom' ? chatbotPosition : undefined
         }),
-      });
-
+        });
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
         setError(errorData.error || `Failed to update template (${response.status})`);
@@ -78,7 +68,7 @@ export function TemplateSelector({
   ];
 
   const hasChanges = selectedTemplate !== currentTemplate || 
-    (selectedTemplate === 'custom' && (customHtml !== initialCustomHtml || authPosition !== initialAuthPosition || chatbotPosition !== initialChatbotPosition));
+    (selectedTemplate === 'custom' && customHtml !== initialCustomHtml);
 
   return (
     <div className="space-y-6">
@@ -127,34 +117,6 @@ export function TemplateSelector({
               className="w-full bg-crm-bg border border-crm-border rounded-lg p-4 font-mono text-[13px] text-crm-text focus:outline-none focus:border-crm-primary shadow-inner"
               placeholder="<!DOCTYPE html>\n<html>\n<head>...</head>\n<body>...</body>\n</html>"
             />
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-              <label className="block text-sm font-bold text-crm-text mb-2">User Profile Button Position</label>
-              <select
-                value={authPosition}
-                onChange={(e) => setAuthPosition(e.target.value)}
-                className="w-full bg-crm-bg border border-crm-border rounded-lg p-3 text-[13px] text-crm-text focus:outline-none focus:border-crm-primary"
-              >
-                <option value="top-right">Top Right</option>
-                <option value="top-left">Top Left</option>
-                <option value="bottom-right">Bottom Right</option>
-                <option value="bottom-left">Bottom Left</option>
-                <option value="hidden">Hidden</option>
-              </select>
-            </div>
-            <div>
-              <label className="block text-sm font-bold text-crm-text mb-2">AI Chatbot Position</label>
-              <select
-                value={chatbotPosition}
-                onChange={(e) => setChatbotPosition(e.target.value)}
-                className="w-full bg-crm-bg border border-crm-border rounded-lg p-3 text-[13px] text-crm-text focus:outline-none focus:border-crm-primary"
-              >
-                <option value="bottom-right">Bottom Right</option>
-                <option value="bottom-left">Bottom Left</option>
-              </select>
-            </div>
           </div>
         </div>
       )}

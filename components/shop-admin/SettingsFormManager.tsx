@@ -32,8 +32,6 @@ export function SettingsFormManager({
           shopId={shopId}
           dynamicTemplates={dynamicTemplates}
           initialCustomHtml={customization?.customHtml || ''}
-          initialAuthPosition={customization?.authPosition || 'top-right'}
-          initialChatbotPosition={customization?.chatbotPosition || 'bottom-right'}
           onTemplateSelect={setSelectedTemplate}
         />
       </div>
