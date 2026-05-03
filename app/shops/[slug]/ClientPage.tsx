@@ -590,8 +590,6 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
     if (dynamicTemplateHtml) {
         return (
             <main className="h-[100dvh] overflow-y-auto overflow-x-hidden bg-crm-surface text-crm-mutedrm-textrm-text font-sans relative" onClick={handleDynamicTemplateClick}>
-      {announcementBanner}
-
       {faviconUrl && (
         <link rel="icon" href={faviconUrl} />
       )}
