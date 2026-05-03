@@ -121,12 +121,14 @@ function ProfileContent() {
 
           <div className="pt-6 mt-6 border-t border-crm-border">
             <h3 className="font-semibold text-crm-text mb-2 text-lg font-bold">Security</h3>
-            <Link href="/update-password" className="inline-block px-4 py-2 bg-crm-surface hover:bg-crm-border text-crm-text text-[13px] font-medium rounded-lg transition-colors border border-slate-600">
-              Change Password
-            </Link>
-            <Link href="/my-appointments/profile/security" className="inline-block ml-3 px-4 py-2 bg-crm-surface hover:bg-crm-border text-crm-text text-[13px] font-medium rounded-lg transition-colors border border-slate-600">
-              Security & Recovery
-            </Link>
+            <div className="flex flex-col sm:flex-row gap-3">
+              <Link href="/update-password" className="inline-block px-4 py-2 bg-crm-surface hover:bg-crm-border text-crm-text text-[13px] font-medium rounded-lg transition-colors border border-slate-600 text-center">
+                Change Password
+              </Link>
+              <Link href="/my-appointments/profile/security" className="inline-block px-4 py-2 bg-crm-surface hover:bg-crm-border text-crm-text text-[13px] font-medium rounded-lg transition-colors border border-slate-600 text-center">
+                Security & Recovery
+              </Link>
+            </div>
           </div>
         </div>
       </div>
