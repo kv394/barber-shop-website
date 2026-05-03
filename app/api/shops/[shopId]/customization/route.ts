@@ -47,6 +47,8 @@ export async function POST(
 
     // Clear the Redis cache for anyone accessing this shop
     await cacheService.invalidatePattern(`shop_layout:*:${shopId}`);
+    await cacheService.invalidatePattern(`shop_public_page_data:*`);
+    await cacheService.invalidatePattern(`shop-template-content:${shopId}:*`);
 
     // Clear the Next.js router cache so the new customization is applied everywhere
     revalidatePath(`/shop/${shopId}`);

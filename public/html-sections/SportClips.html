@@ -919,6 +919,12 @@
     </style>
   </head>
   <body>
+    <div id="smart-banner" style="background-color: var(--primary); color: var(--white); padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; font-size: 0.95rem; font-weight: 700; text-transform: uppercase;">
+      <div style="flex-grow: 1; text-align: center;">
+        <span id="dyn-announcement-text">20% off on all haircuts this week !!!</span>
+      </div>
+      <button onclick="document.getElementById('smart-banner').style.display='none'" style="background: none; border: none; color: var(--white); font-size: 1.5rem; cursor: pointer; padding: 0 5px; line-height: 1;">&times;</button>
+    </div>
     <nav class="navbar">
       <div class="nav-container">
         <div class="nav-brand">
@@ -964,7 +970,8 @@
       <div id="about-content" style="display: none">
         <section class="hero-section">
           <h1 id="dyn-shop-name">Sport Clips Haircuts</h1>
-          <p id="dyn-shop-desc">It's good to be a guy.</p>
+          <p id="dyn-shop-desc">CLASSIC BARBERSHOP EXPERIENCE WITH A MODERN TWIST. SERVING THE COMMUNITY SINCE 2018.</p>
+          <a href="#" onclick="event.preventDefault(); window.parent.location.href='/sign-in';" class="btn b-book" style="max-width: 200px; display: inline-block; margin-top: 15px;">Sign In</a>
         </section>
       </div>
     </article>
@@ -1259,7 +1266,7 @@
 
                 document.getElementById("dyn-shop-name").textContent = shop.name || "Sport Clips Haircuts";
                 document.getElementById("dyn-shop-name-nav").textContent = (shop.name || "Sport Clips Haircuts").toUpperCase();
-                document.getElementById("dyn-shop-desc").textContent = shop.description || "It's good to be a guy.";
+                document.getElementById("dyn-shop-desc").textContent = shop.description || "CLASSIC BARBERSHOP EXPERIENCE WITH A MODERN TWIST. SERVING THE COMMUNITY SINCE 2018.";
                 document.getElementById("about-loading").style.display = "none";
                 document.getElementById("about-content").style.display = "block";
               } catch (e) {
