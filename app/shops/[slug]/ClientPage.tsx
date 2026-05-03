@@ -540,6 +540,18 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
     const logoUrl     = normalizeImageUrl(c.logoUrl) || null;
     const heroImageUrl = normalizeImageUrl(c.heroImageUrl || c.bannerUrl) || null;
 
+    const announcementBanner = announcement?.isActive && announcement.text ? (
+        <div className="w-full text-white text-center py-2 px-4 text-[13px] font-medium z-[100] relative" style={{ backgroundColor: primaryColor || '#000' }}>
+            {announcement.linkUrl ? (
+                <a href={announcement.linkUrl} target="_blank" rel="noopener noreferrer" className="hover:underline">
+                    {announcement.text}
+                </a>
+            ) : (
+                <span>{announcement.text}</span>
+            )}
+        </div>
+    ) : null;
+
     // Auth button for client sign-in/out
     const authButton = (
         <div className="absolute top-6 right-6 z-50">
@@ -578,6 +590,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
     if (dynamicTemplateHtml) {
         return (
             <main className="h-[100dvh] overflow-y-auto overflow-x-hidden bg-crm-surface text-crm-mutedrm-textrm-text font-sans relative" onClick={handleDynamicTemplateClick}>
+      {announcementBanner}
 
       {faviconUrl && (
         <link rel="icon" href={faviconUrl} />
@@ -692,6 +705,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
     if (templateType === 'sporty') {
         return (
             <main className="h-[100dvh] overflow-y-auto overflow-x-hidden bg-crm-surface text-crm-mutedrm-textrm-text font-sans relative">
+      {announcementBanner}
 
       {faviconUrl && (
         <link rel="icon" href={faviconUrl} />
@@ -888,6 +902,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
       if (templateType === 'corporate') {
         return (
           <main className="h-[100dvh] overflow-y-auto overflow-x-hidden bg-crm-bg text-crm-mutedrm-textrm-text font-sans relative">
+      {announcementBanner}
 
       {faviconUrl && (
         <link rel="icon" href={faviconUrl} />
@@ -1059,6 +1074,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
       if (templateType === 'noir') {
         return (
           <main className="h-[100dvh] overflow-y-auto overflow-x-hidden bg-crm-surface text-crm-mutedrm-textrm-text font-serif relative">
+      {announcementBanner}
 
       {faviconUrl && (
         <link rel="icon" href={faviconUrl} />
@@ -1197,6 +1213,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
       if (templateType === 'sunset') {
         return (
           <main className="h-[100dvh] overflow-y-auto overflow-x-hidden bg-gradient-to-br from-purple-900 via-black to-orange-900 text-crm-mutedrm-textrm-text font-sans relative">
+      {announcementBanner}
 
       {faviconUrl && (
         <link rel="icon" href={faviconUrl} />
@@ -1337,6 +1354,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
         
         return (
           <main className="h-[100dvh] overflow-y-auto overflow-x-hidden bg-[#121412] text-crm-text selection:bg-[#d4af37] selection:text-[#554300] font-sans">
+      {announcementBanner}
 
       {faviconUrl && (
         <link rel="icon" href={faviconUrl} />
@@ -1663,6 +1681,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
       if (templateType === 'minimal') {
         return (
           <main className="h-[100dvh] overflow-y-auto overflow-x-hidden bg-[#fafafa] text-[#333333] font-sans relative">
+      {announcementBanner}
 
       {faviconUrl && (
         <link rel="icon" href={faviconUrl} />
@@ -1818,6 +1837,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
       if (templateType === 'classic') {
         return (
           <main className="h-[100dvh] overflow-y-auto overflow-x-hidden bg-[#fdfbf7] text-crm-text font-serif relative">
+      {announcementBanner}
 
       {faviconUrl && (
         <link rel="icon" href={faviconUrl} />
@@ -1961,6 +1981,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
       // Default 'modern' template (Redesigned)
     return (
       <main className="h-[100dvh] overflow-y-auto overflow-x-hidden bg-gray-50 text-gray-800 font-sans relative">
+      {announcementBanner}
 
       {faviconUrl && (
         <link rel="icon" href={faviconUrl} />

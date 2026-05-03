@@ -919,7 +919,7 @@
     </style>
   </head>
   <body>
-    <div id="announcement-banner" style="display: none; background: var(--primary); color: var(--white); text-align: center; padding: 10px; font-size: 0.9rem; font-weight: 700; z-index: 1001; position: relative;"></div>
+    <div id="announcement-banner" style="background: var(--primary); color: var(--white); text-align: center; padding: 0; font-size: 0.9rem; font-weight: 700; z-index: 1001; position: relative; width: 100%; transition: all 0.3s ease; height: 0; overflow: hidden;"></div>
     <nav class="navbar">
       <div class="nav-container">
         <div class="nav-brand">
@@ -1247,7 +1247,8 @@
                     } else {
                        banner.textContent = announcement.text;
                     }
-                    banner.style.display = 'block';
+                    banner.style.padding = '10px';
+                    banner.style.height = 'auto';
                   }
                 }
 
