@@ -182,8 +182,20 @@ export default function Home() {
   const isSignedIn = !!userProfile;
 
   return (
-    <main className="h-[100dvh] overflow-y-auto overflow-x-hidden bg-crm-bg">
-      <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+    <main className="h-[100dvh] overflow-y-auto overflow-x-hidden bg-crm-bg flex flex-col">
+      {/* --- Announcement & Advertisement Banner --- */}
+      <div className="bg-crm-surface border-b border-crm-border p-3 text-center shadow-sm relative z-50 w-full shrink-0">
+         <p className="text-crm-text text-[13px] font-bold flex items-center justify-center gap-2 flex-wrap">
+           <span className="text-crm-accent text-base">📢</span> 
+           <span className="bg-crm-primary/10 text-crm-primary px-1.5 py-0.5 rounded text-[10px] uppercase tracking-wider mr-2">Sponsored</span>
+           Upgrade Your Style Today! Get 20% off your first 3 visits. 
+           <Link href="/sign-up" className="ml-2 bg-crm-primary text-white px-3 py-1 rounded text-[12px] hover:bg-crm-primary/90 transition-colors">
+             Claim Offer
+           </Link>
+         </p>
+      </div>
+
+      <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 flex-grow">
         
         <header className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-12 sm:mb-20">
           <h1 className="font-serif font-bold tracking-tight text-2xl font-bold">
@@ -207,25 +219,6 @@ export default function Home() {
           <p className="mt-4 sm:mt-6 text-crm-accent/80 font-medium tracking-wide text-[13px]">
             {userProfile ? (userProfile.role === 'SITE_ADMIN' ? 'Platform Administrator Dashboard' : '') : (isSignedIn ? 'Loading...' : 'Please sign in to continue.')}
           </p>
-        </div>
-
-        {/* --- Announcement & Advertisement Area --- */}
-        <div className="mb-12 bg-crm-surface border border-crm-border p-6 rounded-lg shadow-sm">
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="font-serif text-lg font-bold text-crm-text flex items-center gap-2">
-              <span className="text-crm-accent">📢</span> Announcements & Offers
-            </h3>
-            <span className="text-[11px] uppercase tracking-wider font-bold text-crm-muted bg-crm-surface border border-crm-border px-2 py-1 rounded">Sponsored</span>
-          </div>
-          <div className="bg-crm-bg rounded-md p-6 text-center border border-dashed border-crm-border/50">
-             <h4 className="font-serif text-xl font-bold text-crm-text mb-2">Upgrade Your Style Today</h4>
-             <p className="text-crm-muted text-[14px] max-w-2xl mx-auto mb-4">
-               Sign up for our premium grooming membership and get 20% off your first 3 visits. Experience the difference with our top-rated barbers.
-             </p>
-             <Link href="/sign-up" className="inline-block bg-crm-primary text-white px-6 py-2 rounded-md font-semibold hover:bg-crm-surface hover:text-crm-primary border border-transparent hover:border-crm-primary/30 transition-colors text-[14px]">
-               Claim Offer
-             </Link>
-          </div>
         </div>
 
         <div>
