@@ -1242,8 +1242,8 @@
                 if (announcement && announcement.isActive && announcement.text) {
                   const banner = document.getElementById('announcement-banner');
                   if (banner) {
-                    if (announcement.url) {
-                       banner.innerHTML = `<a href="${announcement.url}" target="_blank" rel="noopener noreferrer" style="color: inherit; text-decoration: underline; text-underline-offset: 2px;">${announcement.text}</a>`;
+                    if (announcement.linkUrl || (announcement.linkUrl || announcement.url)) {
+                       banner.innerHTML = `<a href="${(announcement.linkUrl || announcement.url)}" target="_blank" rel="noopener noreferrer" style="color: inherit; text-decoration: underline; text-underline-offset: 2px;">${announcement.text}</a>`;
                     } else {
                        banner.textContent = announcement.text;
                     }
