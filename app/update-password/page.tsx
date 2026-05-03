@@ -2,7 +2,6 @@ import { createClient } from '@/utils/supabase/server';
 import { redirect } from 'next/navigation';
 import { headers } from 'next/headers';
 import { rateLimit } from '@/lib/rate-limiter';
-import BackButton from '@/components/BackButton';
 
 export default async function UpdatePasswordPage({
   searchParams,
@@ -42,9 +41,6 @@ export default async function UpdatePasswordPage({
   return (
     <div className="flex min-h-[80vh] items-center justify-center p-4">
       <div className="w-full max-w-md bg-crm-surface border border-crm-border shadow-sm rounded-2xl shadow-2xl p-8 mt-12 mb-12 relative">
-        <div className="absolute -top-14 left-0">
-          <BackButton />
-        </div>
         <div className="text-center mb-8">
           <h1 className="font-serif font-bold text-crm-text mb-2 text-2xl font-bold">Update Password</h1>
           <p className="text-crm-muted text-[13px]">Enter your new password below</p>
