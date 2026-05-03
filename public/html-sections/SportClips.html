@@ -687,6 +687,7 @@
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;
+          display: block;
         }
         
         /* Bottom Navigation Bar */
@@ -773,6 +774,10 @@
           border-radius: 0 0 24px 24px;
           box-shadow: 0 10px 20px rgba(0,0,0,0.05);
           margin-bottom: 20px;
+          min-height: 40vh;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
         }
         .hero-section h1 {
           font-size: 2.2rem;
@@ -1188,6 +1193,17 @@
                     scriptEl.setAttribute("data-theme-color", primaryColor);
                     document.body.appendChild(scriptEl);
                   });
+                  
+                  // Fix mobile chat widget positioning in Shadow DOM
+                  setInterval(() => {
+                    const container = document.getElementById('barbersaas-booking-widget-container');
+                    if (container && container.shadowRoot && !container.dataset.mobileFixed) {
+                       const style = document.createElement('style');
+                       style.textContent = "@media (max-width: 768px) { #widget-button { bottom: calc(100px + env(safe-area-inset-bottom, 15px)) !important; } }";
+                       container.shadowRoot.appendChild(style);
+                       container.dataset.mobileFixed = 'true';
+                    }
+                  }, 500);
                 }, 50);
               } catch (e) {
                 console.error("Theme Error:", e);
@@ -1218,10 +1234,7 @@
                     if (isMobile && optimizedHeroUrl.includes('unsplash.com')) {
                        optimizedHeroUrl = optimizedHeroUrl.replace(/w=\d+/, 'w=800');
                     }
-                    heroSection.style.backgroundImage = `linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url("${optimizedHeroUrl}")`;
-                    heroSection.style.backgroundPosition = 'center';
-                    heroSection.style.backgroundSize = 'cover';
-                    heroSection.style.backgroundRepeat = 'no-repeat';
+                    heroSection.style.background = `linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url("${optimizedHeroUrl}") center / cover no-repeat`;
                   }
                 }
 
