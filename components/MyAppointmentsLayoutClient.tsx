@@ -23,8 +23,8 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex flex-col h-[100dvh] bg-crm-bg overflow-hidden text-crm-text" style={themeColor ? { '--crm-primary': themeColor } as any : {}}>
       {/* Persistent Header */}
-      <header className="bg-crm-surface backdrop-blur-md border-b border-crm-border shrink-0 z-20">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 py-4 flex flex-wrap justify-between gap-x-2 gap-y-2 items-center">
+      <header className="bg-crm-surface backdrop-blur-md border-b border-crm-border shrink-0 z-20 relative">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 py-4 flex flex-col sm:flex-row justify-between gap-4 items-start sm:items-center pr-12 sm:pr-16">
           <div>
             <h1 className="font-bold text-crm-text text-xl md:text-2xl">Account Portal</h1>
             <p className="text-crm-muted text-[12px] md:text-[13px]">Manage your account & bookings</p>
