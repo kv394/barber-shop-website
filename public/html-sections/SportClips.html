@@ -1288,45 +1288,6 @@
                 </div>
               `);
 
-                  // Retrieve dynamic announcement configured by the shop admin
-                  const announcement = shop.customization?.announcement;
-                  let adContent = "20% off on all haircuts this week !!!"; // Default site admin advertisement
-                  
-                  if (announcement && announcement.isActive && announcement.text) {
-                      // Alternate between shop announcement and site advertisement
-                      // We can use a simple flip-flop logic based on session storage or just randomly, 
-                      // or just show the shop announcement if available, else site ad.
-                      // Since the prompt asks to alternate, we'll use session storage to flip.
-                      try {
-                          const lastShown = sessionStorage.getItem('lastShownAd');
-                          if (lastShown === 'shop') {
-                              adContent = "20% off on all haircuts this week !!!"; // Site ad
-                              sessionStorage.setItem('lastShownAd', 'site');
-                          } else {
-                              adContent = announcement.text; // Shop ad
-                              sessionStorage.setItem('lastShownAd', 'shop');
-                          }
-                      } catch (e) {
-                          adContent = announcement.text;
-                      }
-                  }
-
-                  const adCardHtml = `
-                <div class="bento-card" style="background: var(--dark-gray); color: var(--white); border-color: var(--dark-gray); box-shadow: 0 0 20px rgba(0,0,0,0.4);">
-                  <div class="bento-content" style="color: var(--white);">
-                    <h3 class="bento-title" style="color: var(--white); font-size: 1.3rem;">Special Offer</h3>
-                    <p class="bento-desc" style="color: var(--light-gray); font-size: 1rem; font-weight: 700; margin-bottom: 20px;">${adContent}</p>
-                    <button class="btn b-book bento-btn" style="background: var(--white); color: var(--primary); font-weight: 900; width: 100%; border: none;" onclick="if (window.BarberBooking) window.BarberBooking.open();">${shop.customization?.ctaText || 'Check In Now'}</button>
-                  </div>
-                </div>
-              `;
-
-                  if (cardsHtml.length >= 2) {
-                     cardsHtml.splice(2, 0, adCardHtml);
-                  } else {
-                     cardsHtml.push(adCardHtml);
-                  }
-
                   document.getElementById("services-list").innerHTML = cardsHtml.join("");
                   
                   document.querySelectorAll(".b-book").forEach((b) =>
@@ -1335,6 +1296,32 @@
                     })
                   );
                 }
+                
+                // Retrieve dynamic announcement configured by the shop admin
+                const announcement = shop.customization?.announcement;
+                let adContent = "20% off on all haircuts this week !!!"; // Default site admin advertisement
+                
+                if (announcement && announcement.isActive && announcement.text) {
+                    try {
+                        const lastShown = sessionStorage.getItem('lastShownAd');
+                        if (lastShown === 'shop') {
+                            adContent = "20% off on all haircuts this week !!!"; // Site ad
+                            sessionStorage.setItem('lastShownAd', 'site');
+                        } else {
+                            adContent = announcement.text; // Shop ad
+                            sessionStorage.setItem('lastShownAd', 'shop');
+                        }
+                    } catch (e) {
+                        adContent = announcement.text;
+                    }
+                }
+                
+                const toastTextEl = document.getElementById("dyn-announcement-text");
+                if (toastTextEl) {
+                    toastTextEl.textContent = adContent;
+                    document.getElementById('toast-notification').style.display = 'flex';
+                }
+
                 document.getElementById("services-loading").style.display = "none";
                 document.getElementById("services-content").style.display = "block";
               } catch (e) {
