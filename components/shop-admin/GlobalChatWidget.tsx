@@ -73,7 +73,7 @@ export default function GlobalChatWidget({ shopId, currentUserId, userRole }: { 
       {/* Floating Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="fixed bottom-32 sm:bottom-8 right-4 sm:right-8 w-14 h-14 bg-crm-primary text-white rounded-full shadow-[0_0_20px_rgba(0,0,0,0.5)] flex items-center justify-center text-3xl hover:bg-status-pending hover:scale-105 active:scale-95 transition-all z-[90]"
+        className="fixed bottom-32 sm:bottom-8 right-4 sm:right-8 w-14 h-14 bg-crm-primary text-white rounded-full shadow-[0_0_20px_rgba(0,0,0,0.5)] flex items-center justify-center text-3xl hover:bg-status-pending hover:scale-105 active:scale-95 transition-all z-[9999]"
         title="Team Chat"
       >
         💬
@@ -86,12 +86,12 @@ export default function GlobalChatWidget({ shopId, currentUserId, userRole }: { 
 
       {/* Chat Popover */}
       {isOpen && (
-        <div className="fixed bottom-0 sm:bottom-28 right-0 sm:right-8 w-full sm:w-[400px] h-[80dvh] sm:h-[600px] max-h-screen z-[100]">
+        <div className="fixed bottom-0 sm:bottom-28 right-0 sm:right-8 w-full sm:w-[400px] h-[80dvh] sm:h-[600px] max-h-screen z-[10000]">
           <div className="relative h-full w-full shadow-2xl">
             {/* Close button layered over the chat header */}
-            <button 
+            <button
                 onClick={() => setIsOpen(false)}
-                className="absolute top-3 right-4 text-crm-primary bg-white hover:bg-gray-100 shadow-md z-50 w-7 h-7 rounded-full flex items-center justify-center transition-colors font-bold text-[13px]"
+                className="absolute top-3 right-4 text-crm-primary bg-white hover:bg-gray-100 shadow-md z-[10001] w-7 h-7 rounded-full flex items-center justify-center transition-colors font-bold text-[13px]"
             >
                 ✕
             </button>
@@ -99,11 +99,10 @@ export default function GlobalChatWidget({ shopId, currentUserId, userRole }: { 
           </div>
         </div>
       )}
-      
+
       {/* Mobile overlay */}
       {isOpen && (
-         <div className="fixed inset-0 bg-crm-surface z-[95] sm:hidden" onClick={() => setIsOpen(false)} />
-      )}
-    </>
+         <div className="fixed inset-0 bg-crm-surface z-[9998] sm:hidden" onClick={() => setIsOpen(false)} />
+      )}    </>
   );
 }
