@@ -40,6 +40,8 @@
   // Create a container for the shadow DOM
   const container = document.createElement('div');
   container.id = containerId;
+  container.style.position = 'relative';
+  container.style.zIndex = '9999999';
 
   // Attach shadow DOM
   const shadow = container.attachShadow({ mode: 'closed' });
