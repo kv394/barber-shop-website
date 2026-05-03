@@ -552,31 +552,17 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
     
     if (templateType === 'custom') {
         const htmlToRender = c.customHtml || '<div style="padding: 100px; text-align: center;">No custom HTML provided yet.</div>';
-        
-        let authClasses = "absolute z-50 ";
-        switch (c.authPosition) {
-            case 'top-left': authClasses += "top-6 left-6"; break;
-            case 'bottom-left': authClasses += "bottom-6 left-6"; break;
-            case 'bottom-right': authClasses += "bottom-6 right-6"; break;
-            case 'hidden': authClasses = "hidden"; break;
-            case 'top-right':
-            default: authClasses += "top-6 right-6"; break;
-        }
 
         return (
             <div style={{ width: '100vw', height: '100dvh', position: 'relative' }}>
-                <div className={authClasses}>
-                    <SupabaseAuthButton redirectUrl={pathname} primaryColor={primaryColor} secondaryColor={secondaryColor} />
-                </div>
-                <iframe 
-                    srcDoc={htmlToRender} 
-                    style={{ width: '100%', height: '100%', border: 'none', display: 'block' }} 
+                <iframe
+                    srcDoc={htmlToRender}
+                    style={{ width: '100%', height: '100%', border: 'none', display: 'block' }}
                     title={`${shop.name} Custom Landing Page`}
                 />
             </div>
         );
     }
-
     if (dynamicTemplateHtml) {
         return (
             <main className="h-[100dvh] overflow-y-auto overflow-x-hidden bg-crm-surface text-crm-mutedrm-textrm-text font-sans relative" onClick={handleDynamicTemplateClick}>

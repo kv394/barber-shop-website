@@ -919,12 +919,6 @@
     </style>
   </head>
   <body>
-    <div id="smart-banner" style="background-color: var(--primary); color: var(--white); padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; font-size: 0.95rem; font-weight: 700; text-transform: uppercase;">
-      <div style="flex-grow: 1; text-align: center;">
-        <span id="dyn-announcement-text">20% off on all haircuts this week !!!</span>
-      </div>
-      <button onclick="document.getElementById('smart-banner').style.display='none'" style="background: none; border: none; color: var(--white); font-size: 1.5rem; cursor: pointer; padding: 0 5px; line-height: 1;">&times;</button>
-    </div>
     <nav class="navbar">
       <div class="nav-container">
         <div class="nav-brand">
@@ -1283,7 +1277,7 @@
                 const services = Array.from(servicesMap.values());
 
                 if (services.length > 0) {
-                  document.getElementById("services-list").innerHTML = services.map((s) => `
+                  let cardsHtml = services.map((s) => `
                 <div class="bento-card">
                   <div class="bento-content">
                     <h3 class="bento-title">${s.name}</h3>
@@ -1292,7 +1286,48 @@
                     <button class="btn b-book bento-btn" data-id="${s.id}">Check In</button>
                   </div>
                 </div>
-              `).join("");
+              `);
+
+                  // Retrieve dynamic announcement configured by the shop admin
+                  const announcement = shop.customization?.announcement;
+                  let adContent = "20% off on all haircuts this week !!!"; // Default site admin advertisement
+                  
+                  if (announcement && announcement.isActive && announcement.text) {
+                      // Alternate between shop announcement and site advertisement
+                      // We can use a simple flip-flop logic based on session storage or just randomly, 
+                      // or just show the shop announcement if available, else site ad.
+                      // Since the prompt asks to alternate, we'll use session storage to flip.
+                      try {
+                          const lastShown = sessionStorage.getItem('lastShownAd');
+                          if (lastShown === 'shop') {
+                              adContent = "20% off on all haircuts this week !!!"; // Site ad
+                              sessionStorage.setItem('lastShownAd', 'site');
+                          } else {
+                              adContent = announcement.text; // Shop ad
+                              sessionStorage.setItem('lastShownAd', 'shop');
+                          }
+                      } catch (e) {
+                          adContent = announcement.text;
+                      }
+                  }
+
+                  const adCardHtml = `
+                <div class="bento-card" style="background: var(--dark-gray); color: var(--white); border-color: var(--dark-gray); box-shadow: 0 0 20px rgba(0,0,0,0.4);">
+                  <div class="bento-content" style="color: var(--white);">
+                    <h3 class="bento-title" style="color: var(--white); font-size: 1.3rem;">Special Offer</h3>
+                    <p class="bento-desc" style="color: var(--light-gray); font-size: 1rem; font-weight: 700; margin-bottom: 20px;">${adContent}</p>
+                    <button class="btn b-book bento-btn" style="background: var(--white); color: var(--primary); font-weight: 900; width: 100%; border: none;" onclick="if (window.BarberBooking) window.BarberBooking.open();">${shop.customization?.ctaText || 'Check In Now'}</button>
+                  </div>
+                </div>
+              `;
+
+                  if (cardsHtml.length >= 2) {
+                     cardsHtml.splice(2, 0, adCardHtml);
+                  } else {
+                     cardsHtml.push(adCardHtml);
+                  }
+
+                  document.getElementById("services-list").innerHTML = cardsHtml.join("");
                   
                   document.querySelectorAll(".b-book").forEach((b) =>
                     b.addEventListener("click", (e) => {
