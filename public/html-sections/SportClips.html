@@ -919,6 +919,7 @@
     </style>
   </head>
   <body>
+    <div id="announcement-banner" style="display: none; background: var(--primary); color: var(--white); text-align: center; padding: 10px; font-size: 0.9rem; font-weight: 700; z-index: 1001; position: relative;"></div>
     <nav class="navbar">
       <div class="nav-container">
         <div class="nav-brand">
@@ -1233,6 +1234,20 @@
                     img.className = logoObj.className;
                     img.style.objectFit = 'contain';
                     logoObj.parentNode.replaceChild(img, logoObj);
+                  }
+                }
+
+                // Update Announcement Banner
+                const announcement = shop.customization?.announcement;
+                if (announcement && announcement.isActive && announcement.text) {
+                  const banner = document.getElementById('announcement-banner');
+                  if (banner) {
+                    if (announcement.url) {
+                       banner.innerHTML = `<a href="${announcement.url}" target="_blank" rel="noopener noreferrer" style="color: inherit; text-decoration: underline; text-underline-offset: 2px;">${announcement.text}</a>`;
+                    } else {
+                       banner.textContent = announcement.text;
+                    }
+                    banner.style.display = 'block';
                   }
                 }
 

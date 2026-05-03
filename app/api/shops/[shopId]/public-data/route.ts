@@ -234,6 +234,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ shop
         customHtml: customization.customHtml,
         authPosition: customization.authPosition,
         chatbotPosition: customization.chatbotPosition,
+        announcement: customization.announcement,
     };
 
     const cleanShop = {
