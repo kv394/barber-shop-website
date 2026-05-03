@@ -209,6 +209,25 @@ export default function Home() {
           </p>
         </div>
 
+        {/* --- Announcement & Advertisement Area --- */}
+        <div className="mb-12 bg-crm-surface border border-crm-border p-6 rounded-lg shadow-sm">
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="font-serif text-lg font-bold text-crm-text flex items-center gap-2">
+              <span className="text-crm-accent">📢</span> Announcements & Offers
+            </h3>
+            <span className="text-[11px] uppercase tracking-wider font-bold text-crm-muted bg-crm-surface border border-crm-border px-2 py-1 rounded">Sponsored</span>
+          </div>
+          <div className="bg-crm-bg rounded-md p-6 text-center border border-dashed border-crm-border/50">
+             <h4 className="font-serif text-xl font-bold text-crm-text mb-2">Upgrade Your Style Today</h4>
+             <p className="text-crm-muted text-[14px] max-w-2xl mx-auto mb-4">
+               Sign up for our premium grooming membership and get 20% off your first 3 visits. Experience the difference with our top-rated barbers.
+             </p>
+             <Link href="/sign-up" className="inline-block bg-crm-primary text-white px-6 py-2 rounded-md font-semibold hover:bg-crm-surface hover:text-crm-primary border border-transparent hover:border-crm-primary/30 transition-colors text-[14px]">
+               Claim Offer
+             </Link>
+          </div>
+        </div>
+
         <div>
           {userProfile?.role === 'SITE_ADMIN' && (
             <div className="space-y-6">
