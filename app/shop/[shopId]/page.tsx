@@ -189,6 +189,16 @@ export default async function ShopDashboardPage({ params }: { params: Promise<{ 
       userRole={userRole as string}
       activeTab="dashboard"
     >
+      {/* ── Shop ID Display ── */}
+      {isShopAdmin && (
+        <div className="mb-6 p-4 rounded-xl border border-crm-border bg-crm-surface flex items-center justify-between">
+          <div>
+            <p className="text-crm-muted text-[11px] uppercase tracking-wider font-semibold mb-1">Shop ID</p>
+            <p className="text-crm-text font-mono text-[13px] select-all">{shopId}</p>
+          </div>
+        </div>
+      )}
+
       {/* ── Low Stock Alert (shop admin only) ── */}
       {isShopAdmin && lowStockItems.length > 0 && (
         <div className="flex flex-col sm:flex-row gap-3 mb-6">
