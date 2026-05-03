@@ -919,7 +919,6 @@
     </style>
   </head>
   <body>
-    <div id="announcement-banner" style="background: var(--primary); color: var(--white); text-align: center; padding: 0; font-size: 0.9rem; font-weight: 700; z-index: 1001; position: relative; width: 100%; transition: all 0.3s ease; height: 0; overflow: hidden;"></div>
     <nav class="navbar">
       <div class="nav-container">
         <div class="nav-brand">
@@ -1186,7 +1185,7 @@
             `;
                 document.body.appendChild(styleEl);
 
-                // 4. Safely Inject Chatbot and Booking widgets
+                // 4. Safely Inject Chatbot, Booking widgets, and Custom Shop Scripts
                 setTimeout(() => {
                   const cacheBuster = "?v=" + new Date().getTime();
                   const widgetUrlPrefix = isFileProtocol && domain === "file://" ? ".." : domain;
@@ -1199,9 +1198,16 @@
                     scriptEl.setAttribute("data-theme-color", primaryColor);
                     document.body.appendChild(scriptEl);
                   });
-                  
-                  // Fix mobile chat widget positioning in Shadow DOM
-                  let widgetFixAttempts = 0;
+
+                  // Fetch and inject shop-specific custom script from Google Drive
+                  const customScriptUrl = apiUrlToUse + "/api/shops/" + shopId + "/scripts/landing.js";
+                  const customScriptEl = document.createElement("script");
+                  customScriptEl.src = customScriptUrl + cacheBuster;
+                  customScriptEl.setAttribute("data-shop-id", shopId);
+                  customScriptEl.onerror = () => console.log("No custom landing script found for this shop.");
+                  document.body.appendChild(customScriptEl);
+
+                  // Fix mobile chat widget positioning in Shadow DOM                  let widgetFixAttempts = 0;
                   const widgetFixInterval = setInterval(() => {
                     widgetFixAttempts++;
                     const container = document.getElementById('barbersaas-booking-widget-container');
@@ -1234,21 +1240,6 @@
                     img.className = logoObj.className;
                     img.style.objectFit = 'contain';
                     logoObj.parentNode.replaceChild(img, logoObj);
-                  }
-                }
-
-                // Update Announcement Banner
-                const announcement = shop.customization?.announcement;
-                if (announcement && announcement.isActive && announcement.text) {
-                  const banner = document.getElementById('announcement-banner');
-                  if (banner) {
-                    if (announcement.linkUrl || (announcement.linkUrl || announcement.url)) {
-                       banner.innerHTML = `<a href="${(announcement.linkUrl || announcement.url)}" target="_blank" rel="noopener noreferrer" style="color: inherit; text-decoration: underline; text-underline-offset: 2px;">${announcement.text}</a>`;
-                    } else {
-                       banner.textContent = announcement.text;
-                    }
-                    banner.style.padding = '10px';
-                    banner.style.height = 'auto';
                   }
                 }
 
@@ -1285,8 +1276,7 @@
                 const services = Array.from(servicesMap.values());
 
                 if (services.length > 0) {
-                  document.getElementById("services-list").innerHTML = services
-                    .map((s) => `
+                  document.getElementById("services-list").innerHTML = services.map((s) => `
                 <div class="bento-card">
                   <div class="bento-content">
                     <h3 class="bento-title">${s.name}</h3>

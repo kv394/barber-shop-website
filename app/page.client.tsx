@@ -183,18 +183,6 @@ export default function Home() {
 
   return (
     <main className="h-[100dvh] overflow-y-auto overflow-x-hidden bg-crm-bg flex flex-col">
-      {/* --- Announcement & Advertisement Banner --- */}
-      <div className="bg-crm-surface border-b border-crm-border p-3 text-center shadow-sm relative z-50 w-full shrink-0">
-         <p className="text-crm-text text-[13px] font-bold flex items-center justify-center gap-2 flex-wrap">
-           <span className="text-crm-accent text-base">📢</span> 
-           <span className="bg-crm-primary/10 text-crm-primary px-1.5 py-0.5 rounded text-[10px] uppercase tracking-wider mr-2">Sponsored</span>
-           Upgrade Your Style Today! Get 20% off your first 3 visits. 
-           <Link href="/sign-up" className="ml-2 bg-crm-primary text-white px-3 py-1 rounded text-[12px] hover:bg-crm-primary/90 transition-colors">
-             Claim Offer
-           </Link>
-         </p>
-      </div>
-
       <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 flex-grow">
         
         <header className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-12 sm:mb-20">
