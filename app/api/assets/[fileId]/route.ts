@@ -5,10 +5,13 @@ import { getDriveService } from '@/lib/google-drive';
 // Note: Ensure you have NEXT_PUBLIC_UPSTASH_REDIS_REST_URL and NEXT_PUBLIC_UPSTASH_REDIS_REST_TOKEN in your environment.
 let redis: Redis | null = null;
 try {
-  if (process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN) {
+  const redisUrl = process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL;
+  const redisToken = process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN;
+  
+  if (redisUrl && redisToken) {
     redis = new Redis({
-      url: process.env.UPSTASH_REDIS_REST_URL,
-      token: process.env.UPSTASH_REDIS_REST_TOKEN,
+      url: redisUrl,
+      token: redisToken,
     });
   }
 } catch (e) {
