@@ -669,14 +669,24 @@
         }
         .nav-brand {
           width: 100%;
-          justify-content: center;
+          justify-content: flex-start;
+          padding-left: 10px;
+          padding-right: 60px; /* Space for absolute positioned auth button */
+          box-sizing: border-box;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
         }
         .nav-logo {
           width: 28px;
           height: 28px;
+          flex-shrink: 0;
         }
         #dyn-shop-name-nav {
           font-size: 1.1rem !important;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
         }
         
         /* Bottom Navigation Bar */
@@ -704,7 +714,9 @@
           display: flex;
           flex-direction: column;
           align-items: center;
-          padding: 5px;
+          justify-content: center;
+          padding: 8px 5px;
+          min-height: 48px;
           color: #888;
           text-transform: capitalize;
           gap: 4px;
@@ -730,11 +742,11 @@
         /* Floating Action Button for Booking */
         .nav-cta {
           position: fixed !important;
-          bottom: 90px;
+          bottom: calc(80px + env(safe-area-inset-bottom, 15px)) !important;
           right: 20px;
           border-radius: 30px !important;
           padding: 14px 24px !important;
-          box-shadow: 0 8px 20px rgba(227, 24, 55, 0.4);
+          box-shadow: 0 8px 25px rgba(227, 24, 55, 0.5);
           font-size: 1rem !important;
           font-weight: 900 !important;
           z-index: 2000;
@@ -838,17 +850,18 @@
           display: none;
         }
         .carousel-track {
-          padding: 10px 15px 20px;
+          padding: 10px 20px 20px;
+          scroll-padding-left: 20px;
           gap: 15px;
           scroll-snap-type: x mandatory;
         }
         .carousel-track .card {
-          min-width: 75vw;
-          max-width: 75vw;
+          min-width: 80vw;
+          max-width: 80vw;
           border-radius: 20px;
           box-shadow: 0 4px 15px rgba(0,0,0,0.06);
           border-top: none;
-          scroll-snap-align: center;
+          scroll-snap-align: start;
         }
         .carousel-arrow {
           display: none !important;
@@ -869,10 +882,17 @@
           background: var(--white);
           box-shadow: 0 4px 15px rgba(0,0,0,0.04);
           height: 350px;
+          overflow-y: auto;
+          scroll-snap-type: y mandatory;
+          -webkit-overflow-scrolling: touch;
+        }
+        .reviews-scroller-inner {
+          animation: none;
         }
         .testimonial-item {
           box-shadow: 0 2px 8px rgba(0,0,0,0.04);
           border: 1px solid #f0f0f0;
+          scroll-snap-align: start;
         }
         
         .photo-frame {
@@ -1144,6 +1164,14 @@
                  fill: \${primaryColor} !important;
                  background-color: \${primaryColor} !important;
               }
+              @media (max-width: 768px) {
+                #widget-button, [class*="chat-button"] {
+                  bottom: calc(150px + env(safe-area-inset-bottom, 15px)) !important;
+                }
+                body > #widget-button {
+                  bottom: calc(150px + env(safe-area-inset-bottom, 15px)) !important;
+                }
+              }
             `;
                 document.body.appendChild(styleEl);
 
@@ -1184,7 +1212,16 @@
                 if (shop.heroImageUrl) {
                   const heroSection = document.querySelector('.hero-section');
                   if (heroSection) {
-                    heroSection.style.background = `linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url("${shop.heroImageUrl}") center/cover`;
+                    const isMobile = window.innerWidth <= 768;
+                    // On mobile, if the original URL has a specific width, replace it. Otherwise, rely on background-size: cover
+                    let optimizedHeroUrl = shop.heroImageUrl;
+                    if (isMobile && optimizedHeroUrl.includes('unsplash.com')) {
+                       optimizedHeroUrl = optimizedHeroUrl.replace(/w=\d+/, 'w=800');
+                    }
+                    heroSection.style.backgroundImage = `linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url("${optimizedHeroUrl}")`;
+                    heroSection.style.backgroundPosition = 'center';
+                    heroSection.style.backgroundSize = 'cover';
+                    heroSection.style.backgroundRepeat = 'no-repeat';
                   }
                 }
 
