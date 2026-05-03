@@ -112,10 +112,10 @@
       .hero-section {
         text-align: center;
         padding: 80px 20px;
-        background:
-          linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
-          url("https://images.unsplash.com/photo-1599351431202-1e0f0137899a?auto=format&fit=crop&w=2000&q=80")
-            center/cover;
+        background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), var(--hero-img, url("https://images.unsplash.com/photo-1599351431202-1e0f0137899a?auto=format&fit=crop&w=2000&q=80"));
+        background-position: center;
+        background-size: cover;
+        background-repeat: no-repeat;
         color: var(--white);
       }
       .hero-section h1 {
@@ -664,18 +664,20 @@
         }
         .nav-container {
           flex-direction: row;
-          justify-content: center;
-          padding: 0;
+          justify-content: space-between;
+          padding: 0 15px;
+          position: relative;
         }
         .nav-brand {
-          width: 100%;
+          width: calc(100% - 60px);
+          max-width: calc(100% - 60px);
           justify-content: flex-start;
-          padding-left: 10px;
-          padding-right: 60px; /* Space for absolute positioned auth button */
+          padding: 0;
           box-sizing: border-box;
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;
+          display: flex;
         }
         .nav-logo {
           width: 28px;
@@ -687,7 +689,8 @@
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;
-          display: block;
+          display: inline-block;
+          max-width: calc(100% - 35px); /* leave room for logo */
         }
         
         /* Bottom Navigation Bar */
@@ -774,10 +777,12 @@
           border-radius: 0 0 24px 24px;
           box-shadow: 0 10px 20px rgba(0,0,0,0.05);
           margin-bottom: 20px;
-          min-height: 40vh;
+          min-height: 350px;
+          height: 45vh;
           display: flex;
           flex-direction: column;
           justify-content: center;
+          background-attachment: scroll;
         }
         .hero-section h1 {
           font-size: 2.2rem;
@@ -1195,15 +1200,22 @@
                   });
                   
                   // Fix mobile chat widget positioning in Shadow DOM
-                  setInterval(() => {
+                  let widgetFixAttempts = 0;
+                  const widgetFixInterval = setInterval(() => {
+                    widgetFixAttempts++;
                     const container = document.getElementById('barbersaas-booking-widget-container');
-                    if (container && container.shadowRoot && !container.dataset.mobileFixed) {
-                       const style = document.createElement('style');
-                       style.textContent = "@media (max-width: 768px) { #widget-button { bottom: calc(100px + env(safe-area-inset-bottom, 15px)) !important; } }";
-                       container.shadowRoot.appendChild(style);
-                       container.dataset.mobileFixed = 'true';
+                    if (container && container.shadowRoot) {
+                       const btn = container.shadowRoot.getElementById('widget-button');
+                       if (btn) {
+                          if (window.innerWidth <= 768) {
+                             btn.style.setProperty('bottom', 'calc(100px + env(safe-area-inset-bottom, 15px))', 'important');
+                             btn.style.setProperty('margin-bottom', '20px', 'important');
+                          }
+                          clearInterval(widgetFixInterval);
+                       }
                     }
-                  }, 500);
+                    if (widgetFixAttempts > 40) clearInterval(widgetFixInterval);
+                  }, 250);
                 }, 50);
               } catch (e) {
                 console.error("Theme Error:", e);
@@ -1229,12 +1241,12 @@
                   const heroSection = document.querySelector('.hero-section');
                   if (heroSection) {
                     const isMobile = window.innerWidth <= 768;
-                    // On mobile, if the original URL has a specific width, replace it. Otherwise, rely on background-size: cover
+                    // On mobile, if the original URL has a specific width, replace it.
                     let optimizedHeroUrl = shop.heroImageUrl;
                     if (isMobile && optimizedHeroUrl.includes('unsplash.com')) {
                        optimizedHeroUrl = optimizedHeroUrl.replace(/w=\d+/, 'w=800');
                     }
-                    heroSection.style.background = `linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url("${optimizedHeroUrl}") center / cover no-repeat`;
+                    heroSection.style.setProperty('--hero-img', `url("${optimizedHeroUrl}")`);
                   }
                 }
 
