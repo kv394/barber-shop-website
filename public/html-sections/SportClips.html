@@ -970,13 +970,161 @@
       </div>
     </article>
 
+    <style>
+      /* Editorial Grid for Services */
+      .editorial-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 30px;
+        margin-top: 40px;
+      }
+      .editorial-card {
+        background: #fff;
+        border: 1px solid #e5e5e5;
+        padding: 30px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        transition: all 0.3s ease;
+        min-height: 250px;
+      }
+      .editorial-card:hover {
+        border-color: var(--black);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+      }
+      .editorial-title {
+        font-family: "Roboto", sans-serif;
+        font-weight: 700;
+        font-size: 1.2rem;
+        letter-spacing: 2px;
+        margin: 0 0 10px 0;
+        text-transform: uppercase;
+      }
+      .editorial-price {
+        font-size: 1rem;
+        color: #666;
+        margin-bottom: 20px;
+        letter-spacing: 1px;
+      }
+      .editorial-desc {
+        font-size: 0.95rem;
+        color: #444;
+        line-height: 1.6;
+        flex-grow: 1;
+      }
+      .editorial-ad-card {
+        background: #111;
+        color: #fff;
+        border: none;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        padding: 30px;
+        position: relative;
+        overflow: hidden;
+      }
+      .editorial-ad-card::before {
+        content: '';
+        position: absolute;
+        top: 0; left: 0; right: 0; bottom: 0;
+        box-shadow: inset 0 0 50px rgba(255,255,255,0.05);
+        pointer-events: none;
+      }
+      .editorial-ad-text {
+        font-size: 1.4rem;
+        font-weight: 700;
+        margin-bottom: 25px;
+        line-height: 1.4;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        position: relative;
+        z-index: 1;
+      }
+      .editorial-btn {
+        background: transparent;
+        color: #111;
+        border: 1px solid #111;
+        padding: 12px 24px;
+        text-transform: uppercase;
+        font-weight: 700;
+        letter-spacing: 1px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        align-self: flex-start;
+      }
+      .editorial-btn:hover {
+        background: #111;
+        color: #fff;
+      }
+      .editorial-ad-btn {
+        background: #fff;
+        color: #111;
+        border: none;
+        padding: 15px 30px;
+        text-transform: uppercase;
+        font-weight: 900;
+        letter-spacing: 2px;
+        cursor: pointer;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        position: relative;
+        z-index: 1;
+      }
+      .editorial-ad-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px rgba(255,255,255,0.1);
+      }
+      .section-title-editorial {
+        font-family: "Roboto", sans-serif;
+        font-size: 2.5rem;
+        font-weight: 300;
+        letter-spacing: 4px;
+        text-align: center;
+        text-transform: uppercase;
+        margin-bottom: 20px;
+        color: var(--black);
+      }
+      @media (max-width: 768px) {
+        .editorial-grid {
+          grid-template-columns: 1fr;
+          gap: 15px;
+        }
+        .section-title-editorial {
+          font-size: 1.8rem;
+        }
+      }
+    </style>
     <article id="services" class="container">
       <div id="services-loading" class="loading">Loading Playbook...</div>
       <div id="services-content" style="display: none">
         <div class="section-header-wrap">
-          <h2 class="section-header">Haircuts & Services</h2>
+          <h2 class="section-title-editorial">Haircuts & Services</h2>
         </div>
-        <div class="bento-grid" id="services-list"></div>
+        <div class="editorial-grid">
+          <div class="editorial-card">
+            <div>
+              <h3 class="editorial-title">FACIAL</h3>
+              <div class="editorial-price">$80.00 / 90 MIN</div>
+              <p class="editorial-desc">The MVP Experience.</p>
+            </div>
+            <button class="editorial-btn b-book" data-id="mock-facial">Book Now</button>
+          </div>
+          <div class="editorial-card">
+            <div>
+              <h3 class="editorial-title">BEARD TRIM & SHAPE</h3>
+              <div class="editorial-price">$50.00 / 45 MIN</div>
+              <p class="editorial-desc">Precision beard grooming with hot towel finish.</p>
+            </div>
+            <button class="editorial-btn b-book" data-id="mock-beard">Book Now</button>
+          </div>
+          <div class="editorial-card editorial-ad-card">
+            <div class="editorial-ad-text">20% off on all haircuts this week !!!</div>
+            <button class="editorial-ad-btn b-book" data-id="mock-ad">CHECK IN NOW</button>
+          </div>
+        </div>
+        <!-- Hidden container for JS compatibility -->
+        <div id="services-list" style="display:none;"></div>
       </div>
     </article>
 
