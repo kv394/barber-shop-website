@@ -1096,12 +1096,13 @@
       }
     </style>
     <article id="services" class="container">
-      <div id="services-loading" class="loading">Loading Playbook...</div>
-      <div id="services-content" style="display: none">
+      <div id="services-loading" class="loading" style="display: none;">Loading Playbook...</div>
+      <div id="services-content" style="display: block">
         <div class="section-header-wrap">
           <h2 class="section-title-editorial">Haircuts & Services</h2>
         </div>
-        <div class="editorial-grid">
+        <!-- Dynamic Services Grid (Hardcoded Mockup) -->
+        <div class="editorial-grid" id="services-list">
           <div class="editorial-card">
             <div>
               <h3 class="editorial-title">FACIAL</h3>
@@ -1118,13 +1119,11 @@
             </div>
             <button class="editorial-btn b-book" data-id="mock-beard">Book Now</button>
           </div>
-          <div class="editorial-card editorial-ad-card">
-            <div class="editorial-ad-text">20% off on all haircuts this week !!!</div>
-            <button class="editorial-ad-btn b-book" data-id="mock-ad">CHECK IN NOW</button>
+          <div class="editorial-card editorial-special-card">
+            <div class="editorial-special-text">20% off on all haircuts this week !!!</div>
+            <button class="editorial-special-btn b-book" data-id="special-offer">CHECK IN NOW</button>
           </div>
         </div>
-        <!-- Hidden container for JS compatibility -->
-        <div id="services-list" style="display:none;"></div>
       </div>
     </article>
 
@@ -1424,26 +1423,40 @@
                 });
                 const services = Array.from(servicesMap.values());
 
-                if (services.length > 0) {
-                  let cardsHtml = services.map((s) => `
-                <div class="bento-card">
-                  <div class="bento-content">
-                    <h3 class="bento-title">${s.name}</h3>
-                    <div class="bento-price">$${Number(s.price).toFixed(2)} <span style="font-size: 0.85rem; color: #777;">/ ${s.duration} MIN</span></div>
-                    <p class="bento-desc" title="${s.description || ""}">${s.description || "The MVP Experience."}</p>
-                    <button class="btn b-book bento-btn" data-id="${s.id}">Check In</button>
+                if (services.length === 0) {
+                  // If no services from API, we'll still inject the Ad Card and mock data
+                  services.push(
+                    { id: "mock-facial", name: "FACIAL", price: 80, duration: 90, description: "The MVP Experience." },
+                    { id: "mock-beard", name: "BEARD TRIM & SHAPE", price: 50, duration: 45, description: "Precision beard grooming with hot towel finish." }
+                  );
+                }
+
+                let cardsHtml = services.map((s) => `
+                <div class="editorial-card">
+                  <div>
+                    <h3 class="editorial-title">${s.name}</h3>
+                    <div class="editorial-price">$${Number(s.price).toFixed(2)} <span style="font-size: 0.85rem; color: #777;">/ ${s.duration} MIN</span></div>
+                    <p class="editorial-desc" title="${s.description || ""}">${s.description || "The MVP Experience."}</p>
                   </div>
+                  <button class="editorial-btn b-book" data-id="${s.id}">Check In</button>
                 </div>
               `);
 
-                  document.getElementById("services-list").innerHTML = cardsHtml.join("");
-                  
-                  document.querySelectorAll(".b-book").forEach((b) =>
-                    b.addEventListener("click", (e) => {
-                      if (window.BarberBooking) window.BarberBooking.open(e.target.dataset.id);
-                    })
-                  );
-                }
+                // Append the Promotional Card directly into the grid
+                cardsHtml.push(`
+                <div class="editorial-card editorial-special-card">
+                  <div class="editorial-special-text">20% off on all haircuts this week !!!</div>
+                  <button class="editorial-special-btn b-book" data-id="special-offer">CHECK IN NOW</button>
+                </div>
+                `);
+
+                document.getElementById("services-list").innerHTML = cardsHtml.join("");
+                
+                document.querySelectorAll(".b-book").forEach((b) =>
+                  b.addEventListener("click", (e) => {
+                    if (window.BarberBooking) window.BarberBooking.open(e.target.dataset.id);
+                  })
+                );
                 
                 // Retrieve dynamic announcement configured by the shop admin
                 const announcement = shop.customization?.announcement;
