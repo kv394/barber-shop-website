@@ -472,15 +472,12 @@
       .carousel-track::-webkit-scrollbar {
         display: none;
       }
-      .carousel-track .card, .carousel-track .bento-card {
+      .carousel-track .card {
         min-width: 260px;
         max-width: 260px;
         height: auto;
         min-height: 450px;
         flex: 0 0 auto;
-      }
-      .carousel-track .bento-card {
-        min-height: 250px; /* Services cards are shorter than product cards */
       }
       .carousel-arrow {
         position: absolute;
@@ -920,16 +917,13 @@
           gap: 15px;
           scroll-snap-type: x mandatory;
         }
-        .carousel-track .card, .carousel-track .bento-card {
+        .carousel-track .card {
           min-width: 80vw;
           max-width: 80vw;
           border-radius: 20px;
           box-shadow: 0 4px 15px rgba(0,0,0,0.06);
           border-top: none;
           scroll-snap-align: start;
-        }
-        .carousel-track .bento-card {
-          min-height: auto;
         }
         .carousel-arrow {
           display: none !important;
@@ -1034,9 +1028,9 @@
         <div class="section-header-wrap">
           <h2 class="section-header">Haircuts & Services</h2>
         </div>
-        <div class="carousel-wrapper">
-          <button id="services-prev" class="carousel-arrow left" aria-label="Previous">&#10094;</button>
-          <div class="carousel-track" id="services-list" style="padding-bottom: 20px;">
+        <div class="services-wrapper">
+          <button id="services-prev" class="services-arrow left" aria-label="Previous">&#10094;</button>
+          <div class="services-scroller" id="services-list">
             <!-- Dynamic Services Grid (Hardcoded Mockup) -->
             <div class="bento-card">
               <div class="bento-content">
@@ -1061,7 +1055,7 @@
               </div>
             </div>
           </div>
-          <button id="services-next" class="carousel-arrow right" aria-label="Next">&#10095;</button>
+          <button id="services-next" class="services-arrow right" aria-label="Next">&#10095;</button>
         </div>
       </div>
     </article>
