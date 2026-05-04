@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { requireShopRole, isAuthError } from '@/lib/auth';
+import { cacheService } from '@/lib/cache';
 export const dynamic = 'force-dynamic';
 
 export async function GET(_: NextRequest, { params }: { params: Promise<{ shopId: string }> }) {
@@ -47,12 +48,20 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ shop
     }
   }
 
-  const shop = await prisma.shop.findUnique({ where: { id: shopId }, select: { customization: true } });
+  const shop = await prisma.shop.findUnique({ where: { id: shopId }, select: { customization: true, name: true } });
   const c = (shop?.customization as any) || {};
   await prisma.shop.update({
     where: { id: shopId },
     data: { customization: { ...c, businessHours } },
   });
+
+  // Clear public cache so business hours show up immediately
+  await cacheService.invalidate(`shop_public_page_data:${shopId}`);
+  if (shop?.name) {
+    const slug = shop.name.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '');
+    await cacheService.invalidate(`shop_public_page_data:${slug}`);
+  }
+
   return NextResponse.json({ ok: true });
 }
 

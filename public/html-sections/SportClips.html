@@ -811,48 +811,9 @@
           display: none;
         }
 
-        /* Bento Cards (Services) -> Modern Vertical List */
+        /* Bento Grid (Mobile adjustments) */
         .bento-grid {
-          display: flex;
-          flex-direction: column;
-          gap: 12px;
           padding: 0 15px;
-        }
-        .bento-card {
-          min-height: auto;
-          padding: 20px;
-          border-radius: 16px;
-          background-color: var(--white);
-          border-top: none;
-          border-left: 4px solid var(--primary);
-          box-shadow: 0 2px 10px rgba(0,0,0,0.03);
-          flex-direction: column;
-          align-items: flex-start;
-          justify-content: center;
-          background-image: none; /* Cleaner look on mobile */
-        }
-        .bento-content {
-          width: 100%;
-        }
-        .bento-title {
-          font-size: 1.1rem;
-        }
-        .bento-desc {
-          font-size: 0.85rem;
-          line-height: 1.4;
-          margin-bottom: 15px;
-          color: #666;
-        }
-        .bento-price {
-          font-size: 1.1rem;
-          margin-bottom: 0;
-        }
-        .bento-btn {
-          margin-top: 10px;
-          padding: 10px 20px;
-          border-radius: 20px;
-          font-size: 0.9rem;
-          width: 100%;
         }
 
         /* Shop Carousel */
@@ -970,158 +931,35 @@
       </div>
     </article>
 
-    <style>
-      /* Editorial Grid for Services */
-      .editorial-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        gap: 30px;
-        margin-top: 40px;
-      }
-      .editorial-card {
-        background: #fff;
-        border: 1px solid #e5e5e5;
-        padding: 30px;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        transition: all 0.3s ease;
-        min-height: 250px;
-      }
-      .editorial-card:hover {
-        border-color: var(--black);
-        box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-      }
-      .editorial-title {
-        font-family: "Roboto", sans-serif;
-        font-weight: 700;
-        font-size: 1.2rem;
-        letter-spacing: 2px;
-        margin: 0 0 10px 0;
-        text-transform: uppercase;
-      }
-      .editorial-price {
-        font-size: 1rem;
-        color: #666;
-        margin-bottom: 20px;
-        letter-spacing: 1px;
-      }
-      .editorial-desc {
-        font-size: 0.95rem;
-        color: #444;
-        line-height: 1.6;
-        flex-grow: 1;
-      }
-      .editorial-ad-card {
-        background: #111;
-        color: #fff;
-        border: none;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        text-align: center;
-        padding: 30px;
-        position: relative;
-        overflow: hidden;
-      }
-      .editorial-ad-card::before {
-        content: '';
-        position: absolute;
-        top: 0; left: 0; right: 0; bottom: 0;
-        box-shadow: inset 0 0 50px rgba(255,255,255,0.05);
-        pointer-events: none;
-      }
-      .editorial-ad-text {
-        font-size: 1.4rem;
-        font-weight: 700;
-        margin-bottom: 25px;
-        line-height: 1.4;
-        letter-spacing: 1px;
-        text-transform: uppercase;
-        position: relative;
-        z-index: 1;
-      }
-      .editorial-btn {
-        background: transparent;
-        color: #111;
-        border: 1px solid #111;
-        padding: 12px 24px;
-        text-transform: uppercase;
-        font-weight: 700;
-        letter-spacing: 1px;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        align-self: flex-start;
-      }
-      .editorial-btn:hover {
-        background: #111;
-        color: #fff;
-      }
-      .editorial-ad-btn {
-        background: #fff;
-        color: #111;
-        border: none;
-        padding: 15px 30px;
-        text-transform: uppercase;
-        font-weight: 900;
-        letter-spacing: 2px;
-        cursor: pointer;
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-        position: relative;
-        z-index: 1;
-      }
-      .editorial-ad-btn:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 10px 20px rgba(255,255,255,0.1);
-      }
-      .section-title-editorial {
-        font-family: "Roboto", sans-serif;
-        font-size: 2.5rem;
-        font-weight: 300;
-        letter-spacing: 4px;
-        text-align: center;
-        text-transform: uppercase;
-        margin-bottom: 20px;
-        color: var(--black);
-      }
-      @media (max-width: 768px) {
-        .editorial-grid {
-          grid-template-columns: 1fr;
-          gap: 15px;
-        }
-        .section-title-editorial {
-          font-size: 1.8rem;
-        }
-      }
-    </style>
     <article id="services" class="container">
       <div id="services-loading" class="loading" style="display: none;">Loading Playbook...</div>
       <div id="services-content" style="display: block">
         <div class="section-header-wrap">
-          <h2 class="section-title-editorial">Haircuts & Services</h2>
+          <h2 class="section-header">Haircuts & Services</h2>
         </div>
         <!-- Dynamic Services Grid (Hardcoded Mockup) -->
-        <div class="editorial-grid" id="services-list">
-          <div class="editorial-card">
-            <div>
-              <h3 class="editorial-title">FACIAL</h3>
-              <div class="editorial-price">$80.00 / 90 MIN</div>
-              <p class="editorial-desc">The MVP Experience.</p>
+        <div class="bento-grid" id="services-list">
+          <div class="bento-card">
+            <div class="bento-content">
+              <h3 class="bento-title">FACIAL</h3>
+              <div class="bento-price">$80.00 / 90 MIN</div>
+              <p class="bento-desc">The MVP Experience.</p>
+              <button class="bento-btn b-book" data-id="mock-facial">Book Now</button>
             </div>
-            <button class="editorial-btn b-book" data-id="mock-facial">Book Now</button>
           </div>
-          <div class="editorial-card">
-            <div>
-              <h3 class="editorial-title">BEARD TRIM & SHAPE</h3>
-              <div class="editorial-price">$50.00 / 45 MIN</div>
-              <p class="editorial-desc">Precision beard grooming with hot towel finish.</p>
+          <div class="bento-card">
+            <div class="bento-content">
+              <h3 class="bento-title">BEARD TRIM & SHAPE</h3>
+              <div class="bento-price">$50.00 / 45 MIN</div>
+              <p class="bento-desc">Precision beard grooming with hot towel finish.</p>
+              <button class="bento-btn b-book" data-id="mock-beard">Book Now</button>
             </div>
-            <button class="editorial-btn b-book" data-id="mock-beard">Book Now</button>
           </div>
-          <div class="editorial-card editorial-special-card">
-            <div class="editorial-special-text">20% off on all haircuts this week !!!</div>
-            <button class="editorial-special-btn b-book" data-id="special-offer">CHECK IN NOW</button>
+          <div class="bento-card" style="background-color: var(--primary); border: none;">
+            <div class="bento-content" style="color: white;">
+              <div class="bento-desc" style="color: white; font-weight: bold; font-size: 1.2rem; margin-bottom: 15px;">20% off on all haircuts this week !!!</div>
+              <button class="bento-btn b-book" data-id="special-offer" style="background-color: white; color: var(--primary);">CHECK IN NOW</button>
+            </div>
           </div>
         </div>
       </div>
@@ -1432,21 +1270,23 @@
                 }
 
                 let cardsHtml = services.map((s) => `
-                <div class="editorial-card">
-                  <div>
-                    <h3 class="editorial-title">${s.name}</h3>
-                    <div class="editorial-price">$${Number(s.price).toFixed(2)} <span style="font-size: 0.85rem; color: #777;">/ ${s.duration} MIN</span></div>
-                    <p class="editorial-desc" title="${s.description || ""}">${s.description || "The MVP Experience."}</p>
+                <div class="bento-card">
+                  <div class="bento-content">
+                    <h3 class="bento-title">${s.name}</h3>
+                    <div class="bento-price">$${Number(s.price).toFixed(2)} <span style="font-size: 0.85rem; color: #777;">/ ${s.duration} MIN</span></div>
+                    <p class="bento-desc" title="${s.description || ""}">${s.description || "The MVP Experience."}</p>
+                    <button class="bento-btn b-book" data-id="${s.id}">Check In</button>
                   </div>
-                  <button class="editorial-btn b-book" data-id="${s.id}">Check In</button>
                 </div>
               `);
 
                 // Append the Promotional Card directly into the grid
                 cardsHtml.push(`
-                <div class="editorial-card editorial-special-card">
-                  <div class="editorial-special-text">20% off on all haircuts this week !!!</div>
-                  <button class="editorial-special-btn b-book" data-id="special-offer">CHECK IN NOW</button>
+                <div class="bento-card" style="background-color: var(--primary); border: none;">
+                  <div class="bento-content" style="color: white;">
+                    <div class="bento-desc" style="color: white; font-weight: bold; font-size: 1.2rem; margin-bottom: 15px;">20% off on all haircuts this week !!!</div>
+                    <button class="bento-btn b-book" data-id="special-offer" style="background-color: white; color: var(--primary);">CHECK IN NOW</button>
+                  </div>
                 </div>
                 `);
 

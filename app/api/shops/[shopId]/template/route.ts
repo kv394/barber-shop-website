@@ -4,6 +4,7 @@ import { NextResponse } from 'next/server';
 import { createClient } from '@/utils/supabase/server';
 import { revalidatePath } from 'next/cache';
 import { AVAILABLE_TEMPLATES } from '@/lib/templates';
+import { cacheService } from '@/lib/cache';
 
 export async function POST(
   request: Request,
@@ -86,6 +87,8 @@ export async function POST(
     });
     
     // Clear the cache so the new template is applied everywhere
+    await cacheService.invalidate(`shop_public_page_data:${shopId}`);
+    
     revalidatePath(`/shop/${shopId}`);
     revalidatePath(`/shop/${shopId}/config`);
     revalidatePath(`/shops/${shopId}`);
