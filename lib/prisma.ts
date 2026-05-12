@@ -33,6 +33,8 @@ function createPrismaClient() {
   const pool = new Pool({ 
     connectionString,
     connectionTimeoutMillis: 5000,
+    // Limit connections in serverless environment to prevent MaxClientsInSessionMode errors
+    max: process.env.NODE_ENV === 'production' ? 1 : 10,
   });
   const adapter = new PrismaPg(pool);
   
@@ -43,7 +45,7 @@ function createPrismaClient() {
 }
 
 // Force Next.js hot reload to pick up latest Prisma client changes (Gen 2)
-export const prisma = createPrismaClient();
+export const prisma = global.prismaGlobal || createPrismaClient();
 
 if (process.env.NODE_ENV !== 'production') {
   global.prismaGlobal = prisma;
