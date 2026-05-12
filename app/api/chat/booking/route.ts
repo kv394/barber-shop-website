@@ -203,8 +203,12 @@ export async function POST(req: Request) {
       `http://${shop.subdomain}.barbersaas.com`,
       `http://localhost:3000`, // Allow local testing
       // Also allow the main saas domain if needed
-      `https://barbersaas-henna.vercel.app`,
     ];
+    const rootDomainStr = process.env.NEXT_PUBLIC_ROOT_DOMAIN || 'localhost:3000,barbersaas.vercel.app';
+    rootDomainStr.split(',').forEach(d => {
+        allowedOrigins.push(`https://${d}`);
+        allowedOrigins.push(`http://${d}`);
+    });
 
     if (configuredWebsite) {
       // Add the configured website directly

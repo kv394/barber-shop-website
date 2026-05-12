@@ -66,7 +66,7 @@ export async function GET(
       const allowedDomains: string[] = customization.allowedDomains || [];
       if (resolvedShop.customDomain) allowedDomains.push(resolvedShop.customDomain);
       if (resolvedShop.subdomain) allowedDomains.push(`${resolvedShop.subdomain}.barbersaas.com`);
-      allowedDomains.push('barbersaas.com', 'localhost', '127.0.0.1', 'barbersaas-henna.vercel.app');
+      allowedDomains.push('barbersaas.com', 'localhost', '127.0.0.1');
       
       const isAllowed = allowedDomains.some(domain => 
         requestDomain === domain || requestDomain?.endsWith(`.${domain}`)

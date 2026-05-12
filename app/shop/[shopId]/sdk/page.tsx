@@ -28,7 +28,7 @@ export default async function SDKDocsPage({ params }: { params: Promise<{ shopId
         <h2 className="font-bold text-lg mb-4">1. Include the SDK</h2>
         <p className="text-gray-600 text-[13px] mb-4">Add the following script tag to the <code>&lt;head&gt;</code> of your HTML file:</p>
         <pre className="bg-gray-900 text-gray-100 p-4 rounded-lg text-[13px] overflow-x-auto mb-6">
-          <code>{`<script src="https://barbersaas-henna.vercel.app/barbersaas-sdk.js"></script>`}</code>
+          <code>{`<script src="https://your-domain.com/barbersaas-sdk.js"></script>`}</code>
         </pre>
 
         <h2 className="font-bold text-lg mb-4">2. Initialize the SDK</h2>
@@ -122,7 +122,7 @@ console.log('Review submitted:', review);`}</code>
             <p className="text-gray-600 text-[13px] mb-3">Embed the multi-step booking modal directly into your external website.</p>
             <p className="text-gray-600 text-[13px] mb-2 font-semibold">1. Add the Script Tag:</p>
             <pre className="bg-gray-900 text-gray-100 p-3 rounded-lg text-[12px] overflow-x-auto mb-4">
-              <code>{`<script src="https://barbersaas-henna.vercel.app/booking-modal.js" data-shop-id="${shopId}"></script>`}</code>
+              <code>{`<script src="https://your-domain.com/booking-modal.js" data-shop-id="${shopId}"></script>`}</code>
             </pre>
             <p className="text-gray-600 text-[13px] mb-2 font-semibold">2. Add the Booking Button:</p>
             <p className="text-gray-600 text-[13px] mb-2">Place this button anywhere on your page. The modal will open when clicked. Note: The button MUST have the <code>id="barber-booking-btn"</code>.</p>
@@ -139,7 +139,7 @@ console.log('Review submitted:', review);`}</code>
             <p className="text-gray-600 text-[13px] mb-2 font-semibold">1. Add the Script Tag:</p>
             <p className="text-gray-600 text-[13px] mb-2">It will automatically detect any buttons with the class <code>btn-details</code> or <code>btn-buy</code> inside a <code>.service-card</code>.</p>
             <pre className="bg-gray-900 text-gray-100 p-3 rounded-lg text-[12px] overflow-x-auto">
-              <code>{`<script src="https://barbersaas-henna.vercel.app/product-widget.js" data-shop-id="${shopId}"></script>`}</code>
+              <code>{`<script src="https://your-domain.com/product-widget.js" data-shop-id="${shopId}"></script>`}</code>
             </pre>
           </div>
 
@@ -149,7 +149,7 @@ console.log('Review submitted:', review);`}</code>
             <p className="text-gray-600 text-[13px] mb-2 font-semibold">1. Add the Script Tag:</p>
             <p className="text-gray-600 text-[13px] mb-2">To open the modal, add the class <code>barber-reviews-trigger</code> to any button or link on your site.</p>
             <pre className="bg-gray-900 text-gray-100 p-3 rounded-lg text-[12px] overflow-x-auto">
-              <code>{`<script src="https://barbersaas-henna.vercel.app/review-widget.js" data-shop-id="${shopId}"></script>`}</code>
+              <code>{`<script src="https://your-domain.com/review-widget.js" data-shop-id="${shopId}"></script>`}</code>
             </pre>
           </div>
         </div>
