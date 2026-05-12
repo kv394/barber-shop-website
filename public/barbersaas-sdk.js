@@ -9,7 +9,18 @@
   class BarberSaaSClient {
     constructor() {
       this.shopId = null;
-      this.apiUrl = 'https://barbersaas-henna.vercel.app'; // Default production URL
+      
+      let defaultOrigin = 'http://localhost:3000';
+      if (typeof window !== 'undefined') {
+        defaultOrigin = window.location.origin;
+        const scriptEls = document.querySelectorAll('script[src*="barbersaas-sdk.js"]');
+        if (scriptEls.length > 0 && scriptEls[0].src.startsWith('http')) {
+            try {
+               defaultOrigin = new URL(scriptEls[0].src).origin;
+            } catch(e) {}
+        }
+      }
+      this.apiUrl = defaultOrigin;
       this._publicDataCache = null;
       this._publicDataPromise = null;
     }

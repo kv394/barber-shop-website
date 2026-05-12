@@ -31,14 +31,16 @@
   const themeColor = (window.BarberSaaS && window.BarberSaaS.primaryColor) || (scriptTag && scriptTag.getAttribute('data-theme-color')) || '';
   const secondaryColor = (window.BarberSaaS && window.BarberSaaS.secondaryColor) || (scriptTag && scriptTag.getAttribute('data-secondary-color')) || '';
   const templateType = (scriptTag && scriptTag.getAttribute('data-template-type')) || '';
-  const scriptTagSrc = (scriptTag && scriptTag.src) || 'https://barbersaas-henna.vercel.app/booking-modal.js';
-  let baseUrl = 'https://barbersaas-henna.vercel.app';
+  
+  const scriptTagSrc = (scriptTag && scriptTag.src) || '';
+  let fallbackOrigin = window.location.origin;
   try {
-    const parsedUrl = new URL(scriptTagSrc, window.location.origin);
-    baseUrl = scriptTag.getAttribute('data-base-url') || parsedUrl.origin;
-  } catch (e) {
-    baseUrl = scriptTag.getAttribute('data-base-url') || 'https://barbersaas-henna.vercel.app';
-  }
+    if (scriptTagSrc && scriptTagSrc.startsWith('http')) {
+      fallbackOrigin = new URL(scriptTagSrc).origin;
+    }
+  } catch (e) {}
+  
+  let baseUrl = scriptTag ? (scriptTag.getAttribute('data-base-url') || fallbackOrigin) : fallbackOrigin;
   
   // Create styles
   const style = document.createElement('style');
