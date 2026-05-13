@@ -36,7 +36,17 @@ function createPrismaClient() {
   }
   
   // For the `pg` driver adapter, we need a clean connection string without Prisma-specific params like ?pgbouncer=true
-  const pgConnectionString = connectionString ? connectionString.replace(/[?&]pgbouncer=true/g, '') : undefined;
+  let pgConnectionString = connectionString ? connectionString.replace(/[?&]pgbouncer=true/g, '') : undefined;
+  
+  // Vercel's POSTGRES_URL might contain `sslmode=require` which conflicts with `{ rejectUnauthorized: false }` 
+  // in the pg driver, causing the SELF_SIGNED_CERT_IN_CHAIN error to persist.
+  // We rewrite it to sslmode=no-verify for production serverless connections.
+  if (process.env.NODE_ENV === 'production' && pgConnectionString) {
+    pgConnectionString = pgConnectionString.replace(/sslmode=require/g, 'sslmode=no-verify');
+    if (!pgConnectionString.includes('sslmode=')) {
+      pgConnectionString += (pgConnectionString.includes('?') ? '&' : '?') + 'sslmode=no-verify';
+    }
+  }
   
   const pool = new Pool({ 
     connectionString: pgConnectionString,
