@@ -62,10 +62,13 @@ export async function middleware(req: NextRequest) {
   const isStatic = url.pathname.startsWith('/_next') || url.pathname.startsWith('/static') || url.pathname.includes('.');
   
   // We identify root domains so we know when to treat a host as a tenant subdomain vs base saas
-  const rootDomainStr = process.env.NEXT_PUBLIC_ROOT_DOMAIN || 'localhost:3000,barbersaas.vercel.app,barbersaas-henna.vercel.app';
+  const rootDomainStr = process.env.NEXT_PUBLIC_ROOT_DOMAIN || 'localhost:3000,barbersaas.vercel.app';
   const rootDomains = rootDomainStr.split(',');
   
-  const shouldRewrite = !isApi && !isAdmin && !isStatic && !rootDomains.includes(hostname) && !url.pathname.startsWith('/sites');
+  // Allow Vercel preview URLs (which have dynamic hashes) to act as the root domain automatically
+  const isVercelPreview = hostname.endsWith('.vercel.app') && (hostname.includes('barber-shop-website') || hostname.includes('barbersaas-'));
+  
+  const shouldRewrite = !isApi && !isAdmin && !isStatic && !rootDomains.includes(hostname) && !isVercelPreview && !url.pathname.startsWith('/sites');
 
   let response: NextResponse;
   if (shouldRewrite) {
