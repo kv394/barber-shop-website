@@ -31,6 +31,12 @@ function createPrismaClient() {
   if (!connectionString) {
     console.warn("DATABASE_URL is missing. PrismaClient may fail to initialize.");
   } else {
+    // Prisma's Rust engine requires explicit trust of self-signed certs from serverless databases like Vercel Postgres/Supabase
+    if (process.env.NODE_ENV === 'production') {
+      if (!connectionString.includes('sslaccept=')) {
+        connectionString += (connectionString.includes('?') ? '&' : '?') + 'sslaccept=accept_invalid_certs';
+      }
+    }
     // Set env var for Prisma
     process.env.DATABASE_URL = connectionString;
   }
