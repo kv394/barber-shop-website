@@ -1301,7 +1301,8 @@
                   customScriptEl.onerror = () => console.log("No custom landing script found for this shop.");
                   document.body.appendChild(customScriptEl);
 
-                  // Fix mobile chat widget positioning in Shadow DOM                  let widgetFixAttempts = 0;
+                  // Fix mobile chat widget positioning in Shadow DOM
+                  let widgetFixAttempts = 0;
                   const widgetFixInterval = setInterval(() => {
                     widgetFixAttempts++;
                     const container = document.getElementById('barbersaas-booking-widget-container');
