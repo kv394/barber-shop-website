@@ -20,19 +20,29 @@ if (typeof process !== 'undefined' && process.env.NODE_ENV !== 'development') {
 }
 
 function createPrismaClient() {
-  // Use Vercel integration variable first if available, then fallback to manual URL
-  const connectionString = process.env.SUPABASE_DATABASE_URL || process.env.DATABASE_URL;
+  // 1. Prioritize Vercel's Supabase Integration Prisma pooler URL (POSTGRES_PRISMA_URL) which is pre-configured for port 6543 with correct username
+  // 2. Fall back to other URLs
+  let connectionString = 
+    process.env.POSTGRES_PRISMA_URL || 
+    process.env.POSTGRES_URL || 
+    process.env.SUPABASE_DATABASE_URL || 
+    process.env.DATABASE_URL;
+  
   if (!connectionString) {
     console.warn("DATABASE_URL is missing. PrismaClient may fail to initialize.");
-  }
-
-  if (connectionString) {
+  } else {
+    // Set env var for Prisma
     process.env.DATABASE_URL = connectionString;
   }
   
+  // For the `pg` driver adapter, we need a clean connection string without Prisma-specific params like ?pgbouncer=true
+  const pgConnectionString = connectionString ? connectionString.replace(/[?&]pgbouncer=true/g, '') : undefined;
+  
   const pool = new Pool({ 
-    connectionString,
-    connectionTimeoutMillis: 5000,
+    connectionString: pgConnectionString,
+    connectionTimeoutMillis: 10000,
+    // Limit connections in serverless environment to prevent connection exhaustion
+    max: process.env.NODE_ENV === 'production' ? 1 : 10,
   });
   const adapter = new PrismaPg(pool);
   
@@ -43,7 +53,7 @@ function createPrismaClient() {
 }
 
 // Force Next.js hot reload to pick up latest Prisma client changes (Gen 2)
-export const prisma = createPrismaClient();
+export const prisma = global.prismaGlobal || createPrismaClient();
 
 if (process.env.NODE_ENV !== 'production') {
   global.prismaGlobal = prisma;

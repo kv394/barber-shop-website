@@ -33,13 +33,17 @@ class CacheService {
       return await fetcher();
     }
 
+    // Namespace keys by environment (e.g., 'production:shop_...', 'development:shop_...', etc.)
+    const envPrefix = process.env.VERCEL_ENV || process.env.NODE_ENV || 'development';
+    const namespacedKey = `${envPrefix}:${key}`;
+
     try {
-      const cached = await this.redis.get<T>(key);
+      const cached = await this.redis.get<T>(namespacedKey);
       if (cached) {
         return cached;
       }
     } catch (err) {
-      logger.warn(`Redis GET failed for key: ${key}`, err);
+      logger.warn(`Redis GET failed for key: ${namespacedKey}`, err);
     }
 
     // Cache miss or failure, fetch fresh data
@@ -47,10 +51,10 @@ class CacheService {
 
     try {
       if (data !== undefined && data !== null) {
-        await this.redis.set(key, data, { ex: ttlSeconds });
+        await this.redis.set(namespacedKey, data, { ex: ttlSeconds });
       }
     } catch (err) {
-      logger.warn(`Redis SET failed for key: ${key}`, err);
+      logger.warn(`Redis SET failed for key: ${namespacedKey}`, err);
     }
 
     return data;
@@ -61,10 +65,14 @@ class CacheService {
    */
   async invalidate(key: string): Promise<void> {
     if (!this.redis) return;
+    
+    const envPrefix = process.env.VERCEL_ENV || process.env.NODE_ENV || 'development';
+    const namespacedKey = `${envPrefix}:${key}`;
+
     try {
-      await this.redis.del(key);
+      await this.redis.del(namespacedKey);
     } catch (err) {
-      logger.warn(`Redis DEL failed for key: ${key}`, err);
+      logger.warn(`Redis DEL failed for key: ${namespacedKey}`, err);
     }
   }
 
@@ -73,15 +81,19 @@ class CacheService {
    */
   async invalidatePattern(pattern: string): Promise<void> {
     if (!this.redis) return;
+    
+    const envPrefix = process.env.VERCEL_ENV || process.env.NODE_ENV || 'development';
+    const namespacedPattern = `${envPrefix}:${pattern}`;
+
     try {
       // Upstash Redis provides `keys` command
-      const keys = await this.redis.keys(pattern);
+      const keys = await this.redis.keys(namespacedPattern);
       if (keys && keys.length > 0) {
         // Upstash del takes multiple keys as spread
         await this.redis.del(...keys);
       }
     } catch (err) {
-      logger.warn(`Redis pattern literal invalidation failed: ${pattern}`, err);
+      logger.warn(`Redis pattern literal invalidation failed: ${namespacedPattern}`, err);
     }
   }
 }

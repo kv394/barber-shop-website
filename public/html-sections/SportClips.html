@@ -1134,14 +1134,20 @@
           } catch (e) {}
         }
         if (domain === "null" || domain === "about://" || !domain) {
-          domain = "https://barbersaas-henna.vercel.app";
+          domain = "https://barber-shop-website-ashy.vercel.app";
+        }
+
+        let scriptBaseUrl = domain;
+        if (isFileProtocol) {
+           // If opened from a local desktop file, fetch scripts from the live staging server
+           scriptBaseUrl = "https://barber-shop-website-ashy.vercel.app";
+        } else if (window.location.pathname.includes('/html-sections/')) {
+           // If developing locally inside the public/html-sections folder
+           scriptBaseUrl = "..";
         }
 
         const sdkScript = document.createElement("script");
-        sdkScript.src =
-          isFileProtocol && domain === "file://"
-            ? "../barbersaas-sdk.js?v=" + new Date().getTime()
-            : domain + "/barbersaas-sdk.js?v=" + new Date().getTime();
+        sdkScript.src = scriptBaseUrl + "/barbersaas-sdk.js?v=" + new Date().getTime();
         document.head.appendChild(sdkScript);
       })();
     </script>
@@ -1210,14 +1216,10 @@
             domain === "file://" ||
             !domain
           ) {
-            domain = "https://barbersaas-henna.vercel.app";
+            domain = "https://barber-shop-website-ashy.vercel.app";
           }
 
-          const apiUrlToUse =
-            (domain.includes("localhost") || domain.includes("127.0.0.1")) &&
-            !isFileProtocol
-              ? domain
-              : "https://barbersaas-henna.vercel.app";
+          const apiUrlToUse = domain;
 
           // Initialize SDK
           BarberSaaS.init(shopId, {
@@ -1275,7 +1277,12 @@
                 // 4. Safely Inject Chatbot, Booking widgets, and Custom Shop Scripts
                 setTimeout(() => {
                   const cacheBuster = "?v=" + new Date().getTime();
-                  const widgetUrlPrefix = isFileProtocol && domain === "file://" ? ".." : domain;
+                  let widgetUrlPrefix = domain;
+                  if (isFileProtocol) {
+                     widgetUrlPrefix = "https://barber-shop-website-ashy.vercel.app";
+                  } else if (window.location.pathname.includes('/html-sections/')) {
+                     widgetUrlPrefix = "..";
+                  }
 
                   const scriptsToInject = ["booking-modal.js", "booking-widget.js", "review-widget.js"];
                   scriptsToInject.forEach(scriptName => {

@@ -882,13 +882,17 @@
           } catch (e) {}
         }
         if (domain === "null" || domain === "about://" || !domain) {
-          domain = "https://barbersaas-henna.vercel.app";
+          domain = "https://barber-shop-website-ashy.vercel.app";
         }
+        let scriptBaseUrl = domain;
+        if (isFileProtocol) {
+           scriptBaseUrl = "https://barber-shop-website-ashy.vercel.app";
+        } else if (window.location.pathname.includes('/html-sections/')) {
+           scriptBaseUrl = "..";
+        }
+
         const sdkScript = document.createElement("script");
-        sdkScript.src =
-          isFileProtocol && domain === "file://"
-            ? "../barbersaas-sdk.js?v=" + new Date().getTime()
-            : domain + "/barbersaas-sdk.js?v=" + new Date().getTime();
+        sdkScript.src = scriptBaseUrl + "/barbersaas-sdk.js?v=" + new Date().getTime();
         document.head.appendChild(sdkScript);
       })();
 
@@ -935,13 +939,9 @@
             domain === "file://" ||
             !domain
           ) {
-            domain = "https://barbersaas-henna.vercel.app";
+            domain = "https://barber-shop-website-ashy.vercel.app";
           }
-          const apiUrlToUse =
-            (domain.includes("localhost") || domain.includes("127.0.0.1")) &&
-            !isFileProtocol
-              ? domain
-              : "https://barbersaas-henna.vercel.app";
+          const apiUrlToUse = domain;
 
           BarberSaaS.init(shopId, {
             position: "bottom-right",
@@ -977,8 +977,12 @@
 
               setTimeout(() => {
                 const cacheBuster = "?v=" + new Date().getTime();
-                const widgetUrlPrefix =
-                  isFileProtocol && domain === "file://" ? ".." : domain;
+                let widgetUrlPrefix = domain;
+                if (isFileProtocol) {
+                   widgetUrlPrefix = "https://barber-shop-website-ashy.vercel.app";
+                } else if (window.location.pathname.includes('/html-sections/')) {
+                   widgetUrlPrefix = "..";
+                }
                 ["booking-modal.js", "booking-widget.js"].forEach((script) => {
                   const s = document.createElement("script");
                   s.src = widgetUrlPrefix + "/" + script + cacheBuster;

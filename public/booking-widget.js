@@ -28,7 +28,16 @@
 
   const scriptApiUrl = scriptTag ? scriptTag.getAttribute('data-api-url') : null;
   const sdkApiUrl = (window.BarberSaaS && window.BarberSaaS.apiUrl) ? window.BarberSaaS.apiUrl + '/api/chat/booking' : null;
-  const defaultApiUrl = 'https://barbersaas-henna.vercel.app/api/chat/booking';
+  
+  const scriptSrc = scriptTag ? scriptTag.src : '';
+  let fallbackOrigin = window.location.origin;
+  try {
+    if (scriptSrc && scriptSrc.startsWith('http')) {
+      fallbackOrigin = new URL(scriptSrc).origin;
+    }
+  } catch (e) {}
+  
+  const defaultApiUrl = fallbackOrigin + '/api/chat/booking';
   const apiUrl = scriptApiUrl || sdkApiUrl || defaultApiUrl;
   
   const themeColor = (window.BarberSaaS && window.BarberSaaS.primaryColor) || (scriptTag && scriptTag.getAttribute('data-theme-color')) || '#d4af37';
