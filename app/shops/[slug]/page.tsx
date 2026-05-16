@@ -255,6 +255,19 @@ export default async function PublicShopPage({
       } catch (e) {
         console.error('Handlebars error:', e);
       }
+    } else if (templateType === 'custom' && shop.customization?.customHtml) {
+      try {
+        const Handlebars = (await import('handlebars')).default;
+        const compiledTemplate = Handlebars.compile(shop.customization.customHtml);
+        shop.customization.customHtml = compiledTemplate({
+          ...shop.customization,
+          shop,
+          primaryColor,
+          secondaryColor
+        });
+      } catch (e) {
+        console.error('Handlebars error parsing customHtml:', e);
+      }
     }
   }
 
