@@ -21,7 +21,7 @@ export async function PUT(
     }
 
     const body = await request.json();
-    const { addonIds, ...rest } = body;
+    const { addonIds, resourceRequirements, ...rest } = body;
 
     const dataToUpdate: any = { ...rest };
     
@@ -32,9 +32,23 @@ export async function PUT(
       };
     }
 
+    if (Array.isArray(resourceRequirements)) {
+      // First delete existing, then create new ones
+      await prisma.serviceResourceRequirement.deleteMany({
+        where: { serviceId }
+      });
+      dataToUpdate.resourceRequirements = {
+        create: resourceRequirements.map((req: any) => ({
+          resourceType: req.resourceType,
+          quantity: req.quantity || 1
+        }))
+      };
+    }
+
     const updatedService = await prisma.service.update({
       where: { id: serviceId },
-      data: dataToUpdate
+      data: dataToUpdate,
+      include: { resourceRequirements: true, addons: true }
     });
 
     await cacheService.invalidate(`shop_services:${shopId}`);

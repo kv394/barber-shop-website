@@ -66,7 +66,7 @@ export async function POST(
     }
 
     const body = await request.json();
-    const { name, description, price, duration, processingTime, finishingTime, trackInventory, type, itemType, brand, bufferMinutes, imageUrl, addonIds, isBookable } = body;
+    const { name, description, price, duration, processingTime, finishingTime, trackInventory, type, itemType, brand, bufferMinutes, imageUrl, addonIds, isBookable, resourceRequirements } = body;
 
     if (!name || price === undefined || duration === undefined) {
         return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
@@ -120,8 +120,18 @@ export async function POST(
        };
     }
 
+    if (Array.isArray(resourceRequirements)) {
+      dataToCreate.resourceRequirements = {
+        create: resourceRequirements.map((req: any) => ({
+          resourceType: req.resourceType,
+          quantity: req.quantity || 1
+        }))
+      };
+    }
+
     const newService = await prisma.service.create({
-      data: dataToCreate
+      data: dataToCreate,
+      include: { resourceRequirements: true, addons: true }
     });
 
     // Invalidate the cache since we just added a new service

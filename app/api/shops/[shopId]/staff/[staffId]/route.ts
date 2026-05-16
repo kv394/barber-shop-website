@@ -61,6 +61,10 @@ export async function PATCH(
     if (body.phone !== undefined) allowedFields.phone = body.phone;
     if (body.canManageInventory !== undefined) allowedFields.canManageInventory = body.canManageInventory;
     if (body.imageUrl !== undefined) allowedFields.imageUrl = body.imageUrl;
+    if (body.employmentType !== undefined) allowedFields.employmentType = body.employmentType;
+    if (body.boothRentAmount !== undefined) allowedFields.boothRentAmount = body.boothRentAmount;
+    if (body.boothRentInterval !== undefined) allowedFields.boothRentInterval = body.boothRentInterval;
+    if (body.stripeConnectAccountId !== undefined) allowedFields.stripeConnectAccountId = body.stripeConnectAccountId;
 
     const updated = await prisma.user.update({ where: { id: staffId }, data: allowedFields });
     return NextResponse.json(JSON.parse(JSON.stringify(updated)));
