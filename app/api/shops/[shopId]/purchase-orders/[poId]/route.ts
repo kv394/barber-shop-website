@@ -30,7 +30,7 @@ export async function PATCH(
     if (status === 'RECEIVED' && currentPo.status !== 'RECEIVED') {
       updateData.receivedAt = new Date();
       // Need a transaction to update inventory counts
-      await prisma.$transaction(async (tx) => {
+      await prisma.$transaction(async (tx: any) => {
         // Update PO
         await tx.purchaseOrder.update({
           where: { id: poId },
