@@ -17,7 +17,10 @@ export default function StaffProfileModalWrapper({ staff, shopId, children }: { 
   const [formData, setFormData] = useState({
     name: staff.name || '',
     phone: staff.phone || '',
-    canManageInventory: staff.canManageInventory || false
+    canManageInventory: staff.canManageInventory || false,
+    employmentType: staff.employmentType || 'W2',
+    boothRentAmount: staff.boothRentAmount || '',
+    boothRentInterval: staff.boothRentInterval || 'WEEKLY'
   });
 
   const router = useRouter();
@@ -31,7 +34,10 @@ export default function StaffProfileModalWrapper({ staff, shopId, children }: { 
     setFormData({
       name: staff.name || '',
       phone: staff.phone || '',
-      canManageInventory: staff.canManageInventory || false
+      canManageInventory: staff.canManageInventory || false,
+      employmentType: staff.employmentType || 'W2',
+      boothRentAmount: staff.boothRentAmount || '',
+      boothRentInterval: staff.boothRentInterval || 'WEEKLY'
     });
   }, [staff]);
 
@@ -70,16 +76,30 @@ export default function StaffProfileModalWrapper({ staff, shopId, children }: { 
     if (!shopId) return;
     setIsSaving(true);
     try {
+      const payload: any = { ...formData };
+      if (payload.boothRentAmount) {
+        payload.boothRentAmount = parseFloat(payload.boothRentAmount);
+      } else {
+        payload.boothRentAmount = null;
+      }
+      if (payload.employmentType === 'W2') {
+         payload.boothRentAmount = null;
+         payload.boothRentInterval = null;
+      }
+
       const res = await fetch(`/api/shops/${shopId}/staff/${staff.id}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData)
+        body: JSON.stringify(payload)
       });
       if (!res.ok) throw new Error('Failed to update profile');
       
       staff.name = formData.name;
       staff.phone = formData.phone;
       staff.canManageInventory = formData.canManageInventory;
+      staff.employmentType = payload.employmentType;
+      staff.boothRentAmount = payload.boothRentAmount;
+      staff.boothRentInterval = payload.boothRentInterval;
       
       setIsEditing(false);
       router.refresh();
@@ -135,6 +155,28 @@ export default function StaffProfileModalWrapper({ staff, shopId, children }: { 
                  <label className="block text-[11px] font-bold text-crm-muted uppercase tracking-wider mb-1">Phone</label>
                  <input type="text" value={formData.phone} onChange={e => setFormData({...formData, phone: e.target.value})} className="w-full p-2 text-[13px] bg-crm-surface border border-crm-border rounded" />
                </div>
+               <div>
+                 <label className="block text-[11px] font-bold text-crm-muted uppercase tracking-wider mb-1">Employment Type</label>
+                 <select value={formData.employmentType} onChange={e => setFormData({...formData, employmentType: e.target.value})} className="w-full p-2 text-[13px] bg-crm-surface border border-crm-border rounded">
+                   <option value="W2">W2 Employee</option>
+                   <option value="CONTRACTOR">Independent Contractor (Booth Rent)</option>
+                 </select>
+               </div>
+               {formData.employmentType === 'CONTRACTOR' && (
+                 <div className="flex gap-2">
+                   <div className="flex-1">
+                     <label className="block text-[11px] font-bold text-crm-muted uppercase tracking-wider mb-1">Rent Amount</label>
+                     <input type="number" value={formData.boothRentAmount} onChange={e => setFormData({...formData, boothRentAmount: e.target.value})} placeholder="0.00" className="w-full p-2 text-[13px] bg-crm-surface border border-crm-border rounded" />
+                   </div>
+                   <div className="flex-1">
+                     <label className="block text-[11px] font-bold text-crm-muted uppercase tracking-wider mb-1">Interval</label>
+                     <select value={formData.boothRentInterval} onChange={e => setFormData({...formData, boothRentInterval: e.target.value})} className="w-full p-2 text-[13px] bg-crm-surface border border-crm-border rounded">
+                       <option value="WEEKLY">Weekly</option>
+                       <option value="MONTHLY">Monthly</option>
+                     </select>
+                   </div>
+                 </div>
+               )}
                <div className="flex items-center gap-2 mt-2">
                  <input type="checkbox" id="inv" checked={formData.canManageInventory} onChange={e => setFormData({...formData, canManageInventory: e.target.checked})} className="rounded text-crm-primary focus:ring-crm-primary" />
                  <label htmlFor="inv" className="text-[13px] font-medium text-crm-text">Can Manage Inventory</label>
@@ -143,9 +185,14 @@ export default function StaffProfileModalWrapper({ staff, shopId, children }: { 
           ) : (
             <>
               <h2 className="font-bold text-crm-primary mb-1 text-center text-xl">{staff.name || staff.email || 'Unnamed Staff'}</h2>
-              <span className="text-[11px] bg-crm-primary/20 text-crm-accent px-3 py-1 rounded-full uppercase tracking-wider font-bold mb-6 hover:opacity-90">
-                {staff.role?.replace('_', ' ')}
-              </span>
+              <div className="flex gap-2 mb-6 justify-center">
+                <span className="text-[11px] bg-crm-primary/20 text-crm-accent px-3 py-1 rounded-full uppercase tracking-wider font-bold hover:opacity-90">
+                  {staff.role?.replace('_', ' ')}
+                </span>
+                <span className="text-[11px] bg-crm-surface border border-crm-border text-crm-text px-3 py-1 rounded-full uppercase tracking-wider font-bold hover:opacity-90">
+                  {staff.employmentType || 'W2'}
+                </span>
+              </div>
             </>
           )}
 
@@ -165,6 +212,12 @@ export default function StaffProfileModalWrapper({ staff, shopId, children }: { 
                   <span className="text-crm-muted font-medium">Phone</span>
                   <span className="text-crm-text font-medium">{staff.phone || 'Not provided'}</span>
                 </div>
+                {staff.employmentType === 'CONTRACTOR' && staff.boothRentAmount && (
+                  <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center border-b border-crm-border pb-3">
+                    <span className="text-crm-muted font-medium">Booth Rent</span>
+                    <span className="text-crm-text font-medium">${staff.boothRentAmount} / {staff.boothRentInterval?.toLowerCase()}</span>
+                  </div>
+                )}
                 <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center">
                   <span className="text-crm-muted font-medium">Manage Inventory</span>
                   <span className="text-crm-text font-medium">{staff.canManageInventory ? 'Yes' : 'No'}</span>
