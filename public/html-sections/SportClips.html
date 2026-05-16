@@ -1228,6 +1228,46 @@
           const apiUrlToUse = domain;
 
           // --- AUTHENTICATION LOGIC (Decoupled from SDK Data) ---
+          window.BarberAppointments = (function() {
+            const overlay = document.createElement('div');
+            overlay.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:999998;display:none;align-items:center;justify-content:center;';
+
+            const content = document.createElement('div');
+            content.style.cssText = 'width:100%;max-width:900px;height:90vh;max-height:800px;background:white;border-radius:12px;overflow:hidden;box-shadow:0 10px 25px rgba(0,0,0,0.2);z-index:999999;position:relative;';
+
+            const closeBtn = document.createElement('button');
+            closeBtn.innerHTML = '&times;';
+            closeBtn.style.cssText = 'position:absolute;top:10px;right:15px;background:transparent;border:none;font-size:24px;cursor:pointer;color:#333;z-index:1000000;';
+            closeBtn.onclick = () => overlay.style.display = 'none';
+
+            const iframe = document.createElement('iframe');
+            iframe.style.cssText = 'width:100%;height:100%;border:none;';
+
+            content.appendChild(closeBtn);
+            content.appendChild(iframe);
+            overlay.appendChild(content);
+            document.body.appendChild(overlay);
+
+            overlay.addEventListener('click', (e) => {
+              if (e.target === overlay) overlay.style.display = 'none';
+            });
+
+            const style = document.createElement('style');
+            style.innerHTML = '@media(max-width:600px){.barber-appointments-modal-content{height:100vh!important;max-height:100vh!important;border-radius:0!important;top:auto!important;bottom:0!important;position:absolute!important;}}';
+            document.head.appendChild(style);
+            content.className = 'barber-appointments-modal-content';
+
+            return {
+              open: function() {
+                iframe.src = domain + '/my-appointments';
+                overlay.style.display = 'flex';
+              },
+              close: function() {
+                overlay.style.display = 'none';
+              }
+            };
+          })();
+
           window.BarberSignIn = (function() {
             const overlay = document.createElement('div');
             overlay.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:999998;display:none;align-items:center;justify-content:center;';
@@ -1302,9 +1342,14 @@
                    emailHeader.textContent = userEmail;
 
                    const appointmentsLink = document.createElement('a');
-                   appointmentsLink.href = '/my-appointments';
-                   appointmentsLink.style.cssText = 'padding:12px 16px; color:var(--black); text-decoration:none; font-size:13px; font-weight:bold; text-align:left; border-bottom:1px solid #eee; transition: background 0.2s;';
+                   appointmentsLink.href = '#';
+                   appointmentsLink.style.cssText = 'padding:12px 16px; color:var(--black); text-decoration:none; font-size:13px; font-weight:bold; text-align:left; border-bottom:1px solid #eee; transition: background 0.2s; cursor:pointer;';
                    appointmentsLink.textContent = 'My Appointments';
+                   appointmentsLink.onclick = (e) => {
+                     e.preventDefault();
+                     if (window.BarberAppointments) window.BarberAppointments.open();
+                     dropdown.style.display = 'none';
+                   };
                    appointmentsLink.onmouseover = () => appointmentsLink.style.backgroundColor = '#f9f9f9';
                    appointmentsLink.onmouseout = () => appointmentsLink.style.backgroundColor = 'transparent';
 
