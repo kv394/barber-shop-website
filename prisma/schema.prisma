@@ -54,6 +54,8 @@ model Shop {
   users               User[]
   userMemberships     UserMembership[]
   waitlist            Waitlist[]
+  purchaseOrders      PurchaseOrder[]
+  boothRentPayments   BoothRentPayment[]
 
   @@index([createdAt])
 }
@@ -105,62 +107,65 @@ model User {
   timeLogs                TimeLog[]
   shop                    Shop?                   @relation(fields: [shopId], references: [id])
   memberships             UserMembership[]
+  boothRentPayments       BoothRentPayment[]
 
   @@index([shopId, role])
   @@index([email])
 }
 
 model Product {
-  id               String            @id @default(cuid())
-  name             String
-  description      String?
-  sku              String?
-  barcode          String?           @unique
-  price            Float
-  cost             Float?
-  taxRate          Float             @default(0)
-  trackInventory   Boolean           @default(false)
-  inventoryCount   Int               @default(0)
-  reorderPoint     Int               @default(0)
-  type             ProductType       @default(RETAIL)
-  supplier         String?
-  shopId           String
-  createdAt        DateTime          @default(now())
-  updatedAt        DateTime          @updatedAt
-  isSellable       Boolean           @default(true)
-  imageUrl         String?
-  appointmentItems AppointmentItem[]
-  shop             Shop              @relation(fields: [shopId], references: [id])
+  id                 String              @id @default(cuid())
+  name               String
+  description        String?
+  sku                String?
+  barcode            String?             @unique
+  price              Float
+  cost               Float?
+  taxRate            Float               @default(0)
+  trackInventory     Boolean             @default(false)
+  inventoryCount     Int                 @default(0)
+  reorderPoint       Int                 @default(0)
+  type               ProductType         @default(RETAIL)
+  supplier           String?
+  shopId             String
+  createdAt          DateTime            @default(now())
+  updatedAt          DateTime            @updatedAt
+  isSellable         Boolean             @default(true)
+  imageUrl           String?
+  appointmentItems   AppointmentItem[]
+  shop               Shop                @relation(fields: [shopId], references: [id])
+  purchaseOrderItems PurchaseOrderItem[]
 
   @@index([shopId, type])
 }
 
 model Service {
-  id               String            @id @default(cuid())
-  name             String
-  description      String?
-  price            Float
-  duration         Int
-  trackInventory   Boolean           @default(false)
-  inventoryCount   Int               @default(0)
-  type             ServiceType       @default(CUSTOMER)
-  itemType         String?
-  brand            String?
-  barcode          String?           @unique
-  shopId           String
-  createdAt        DateTime          @default(now())
-  updatedAt        DateTime          @updatedAt
-  taxRate          Float             @default(0)
-  bufferMinutes    Int               @default(0)
-  imageUrl         String?
-  finishingTime    Int               @default(0)
-  processingTime   Int               @default(0)
-  isBookable       Boolean           @default(true)
-  appointments     Appointment[]
-  appointmentItems AppointmentItem[]
-  commissionRules  CommissionRule[]
-  shop             Shop              @relation(fields: [shopId], references: [id])
-  addons           ServiceAddon[]    @relation("ServiceToAddons")
+  id                   String                       @id @default(cuid())
+  name                 String
+  description          String?
+  price                Float
+  duration             Int
+  trackInventory       Boolean                      @default(false)
+  inventoryCount       Int                          @default(0)
+  type                 ServiceType                  @default(CUSTOMER)
+  itemType             String?
+  brand                String?
+  barcode              String?                      @unique
+  shopId               String
+  createdAt            DateTime                     @default(now())
+  updatedAt            DateTime                     @updatedAt
+  taxRate              Float                        @default(0)
+  bufferMinutes        Int                          @default(0)
+  imageUrl             String?
+  finishingTime        Int                          @default(0)
+  processingTime       Int                          @default(0)
+  isBookable           Boolean                      @default(true)
+  appointments         Appointment[]
+  appointmentItems     AppointmentItem[]
+  commissionRules      CommissionRule[]
+  resourceRequirements ServiceResourceRequirement[]
+  shop                 Shop                         @relation(fields: [shopId], references: [id])
+  addons               ServiceAddon[]               @relation("ServiceToAddons")
 
   @@index([shopId, type])
 }
@@ -772,4 +777,82 @@ enum GiftCardStatus {
   REDEEMED
   EXPIRED
   CANCELLED
+}
+
+enum EmploymentType {
+  W2
+  CONTRACTOR
+}
+
+enum BoothRentInterval {
+  WEEKLY
+  MONTHLY
+}
+
+enum PurchaseOrderStatus {
+  DRAFT
+  SENT
+  RECEIVED
+  CANCELLED
+}
+
+model ServiceResourceRequirement {
+  id           String  @id @default(cuid())
+  serviceId    String
+  resourceType String
+  quantity     Int     @default(1)
+  service      Service @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+
+  @@index([serviceId])
+}
+
+model PurchaseOrder {
+  id                   String              @id @default(cuid())
+  shopId               String
+  supplier             String
+  status               PurchaseOrderStatus @default(DRAFT)
+  totalAmount          Float               @default(0)
+  orderDate            DateTime            @default(now())
+  expectedDeliveryDate DateTime?
+  receivedAt           DateTime?
+  notes                String?
+  createdAt            DateTime            @default(now())
+  updatedAt            DateTime            @updatedAt
+  shop                 Shop                @relation(fields: [shopId], references: [id])
+  items                PurchaseOrderItem[]
+
+  @@index([shopId, status])
+}
+
+model PurchaseOrderItem {
+  id               String        @id @default(cuid())
+  purchaseOrderId  String
+  productId        String
+  quantity         Int
+  receivedQuantity Int           @default(0)
+  unitCost         Float
+  purchaseOrder    PurchaseOrder @relation(fields: [purchaseOrderId], references: [id], onDelete: Cascade)
+  product          Product       @relation(fields: [productId], references: [id])
+
+  @@index([purchaseOrderId])
+  @@index([productId])
+}
+
+model BoothRentPayment {
+  id               String        @id @default(cuid())
+  shopId           String
+  userId           String
+  amount           Float
+  periodStart      DateTime
+  periodEnd        DateTime
+  status           PaymentStatus @default(PENDING)
+  paidAt           DateTime?
+  stripeTransferId String?
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+  shop             Shop          @relation(fields: [shopId], references: [id])
+  user             User          @relation(fields: [userId], references: [id])
+
+  @@index([shopId])
+  @@index([userId])
 }
