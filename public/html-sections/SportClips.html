@@ -1019,6 +1019,9 @@
             >Check In Now</a
           >
         </div>
+        <div id="auth-container" style="display: flex; align-items: center; justify-content: center; margin-left: 1rem; z-index: 2001;">
+          <a href="#" id="auth-btn" onclick="event.preventDefault(); if (window.BarberSignIn) window.BarberSignIn.open();" class="btn" style="padding: 8px 16px; border: 2px solid var(--primary); border-radius: 4px; color: var(--primary); background: transparent; font-size: 0.85rem; line-height: 1; max-width: max-content; margin-top: 0; text-decoration: none; font-weight: bold; font-family: 'Roboto', sans-serif; cursor: pointer;">Sign In</a>
+        </div>
       </div>
     </nav>
 
