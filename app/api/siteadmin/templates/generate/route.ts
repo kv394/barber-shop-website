@@ -131,16 +131,16 @@ Social Links: ${JSON.stringify(c.socialLinks || {})}
 About Us / Story: ${c.aboutUs || 'N/A'}
 
 Services Available:
-${shop.services.map(s => `- ${s.name}: $${s.price} (${s.duration} mins)`).join('\n')}
+${shop.services.map((s: any) => `- ${s.name}: $${s.price} (${s.duration} mins)`).join('\n')}
 
 Products Available:
-${shop.products.map(p => `- ${p.name}: $${p.price}`).join('\n')}
+${shop.products.map((p: any) => `- ${p.name}: $${p.price}`).join('\n')}
 
 Staff Members:
-${shop.users.map(u => `- ${u.name} (${u.role})`).join('\n')}
+${shop.users.map((u: any) => `- ${u.name} (${u.role})`).join('\n')}
 
 Reviews:
-${shop.reviews.map(r => `- ${r.user?.name || 'Anonymous'}: ${r.rating} stars - "${r.comment || ''}"`).join('\n')}
+${shop.reviews.map((r: any) => `- ${r.user?.name || 'Anonymous'}: ${r.rating} stars - "${r.comment || ''}"`).join('\n')}
 
 Gallery Images Available:
 ${galleryImages.length > 0 ? galleryImages.map((g: string) => `- ${g}`).join('\n') : 'N/A'}

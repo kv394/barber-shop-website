@@ -61,9 +61,9 @@ export async function GET(
     });
 
     // Fetch busy slots from Google Calendar for each linked staff member
-    const googleBusySlotsPromises = staffMembers.map(async (staff) => {
+    const googleBusySlotsPromises = staffMembers.map(async (staff: any) => {
       const busySlots = await getCalendarBusySlots(staff.id, startOfDay, endOfDay);
-      return busySlots.map(slot => ({
+      return busySlots.map((slot: any) => ({
         startTime: slot.startTime,
         endTime: slot.endTime,
         staffId: staff.id,
@@ -149,9 +149,9 @@ export async function POST(
       const dbAddons = await prisma.serviceAddon.findMany({
         where: { id: { in: addonIds }, shopId }
       });
-      addonsJson = dbAddons.map(a => ({ id: a.id, name: a.name, price: a.price, durationMin: a.durationMin }));
-      totalDuration += dbAddons.reduce((sum, a) => sum + a.durationMin, 0);
-      totalPrice += dbAddons.reduce((sum, a) => sum + a.price, 0);
+      addonsJson = dbAddons.map((a: any) => ({ id: a.id, name: a.name, price: a.price, durationMin: a.durationMin }));
+      totalDuration += dbAddons.reduce((sum: number, a: any) => sum + a.durationMin, 0);
+      totalPrice += dbAddons.reduce((sum: number, a: any) => sum + a.price, 0);
     }
 
     // SECURITY: Verify staff belongs to this shop (prevent cross-shop staff assignment)

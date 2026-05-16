@@ -183,11 +183,11 @@ export async function POST(req: Request) {
     });
 
     const servicesText = services.length > 0 
-        ? services.map(s => `- ${s.name}: $${s.price} (${s.duration} mins) [ID: ${s.id}]`).join('\n')
+        ? services.map((s: { id: string; name: string; price: number; duration: number }) => `- ${s.name}: $${s.price} (${s.duration} mins) [ID: ${s.id}]`).join('\n')
         : 'No services available currently.';
     
     const staffText = staff.length > 0
-        ? staff.map(s => `- ${s.name} [ID: ${s.id}]`).join('\n')
+        ? staff.map((s: { id: string; name: string }) => `- ${s.name} [ID: ${s.id}]`).join('\n')
         : 'No specific staff available.';
 
     // 4. Origin Validation (CORS Hardening)
@@ -341,9 +341,9 @@ If the user wants to check, cancel, or reschedule their appointments:
                             targetStaff = await prisma.user.findMany({ where: { shopId: realShopId, role: 'STAFF' } });
                         }
                         
-                        const googleBusySlotsPromises = targetStaff.map(async (st) => {
+                        const googleBusySlotsPromises = targetStaff.map(async (st: any) => {
                             const busySlots = await getCalendarBusySlots(st.id, startOfDay, endOfDay);
-                            return busySlots.map(slot => ({ startTime: slot.startTime, endTime: slot.endTime, staffId: st.id }));
+                            return busySlots.map((slot: any) => ({ startTime: slot.startTime, endTime: slot.endTime, staffId: st.id }));
                         });
                         const googleBusySlotsNested = await Promise.all(googleBusySlotsPromises);
                         const allBusySlots = [...appointments, ...googleBusySlotsNested.flat()];
@@ -460,7 +460,7 @@ If the user wants to check, cancel, or reschedule their appointments:
                         if (users.length === 0) {
                             result = { message: "No user found with that contact information." };
                         } else {
-                            const userIds = users.map(u => u.id);
+                            const userIds = users.map((u: any) => u.id);
                             const appointments = await prisma.appointment.findMany({
                                 where: { 
                                     shopId: realShopId, 
@@ -480,7 +480,7 @@ If the user wants to check, cancel, or reschedule their appointments:
                                 result = { message: "You have no upcoming appointments." };
                             } else {
                                 result = { 
-                                    appointments: appointments.map(apt => ({
+                                    appointments: appointments.map((apt: any) => ({
                                         id: apt.id,
                                         service: apt.service?.name,
                                         staff: apt.staff?.name,
