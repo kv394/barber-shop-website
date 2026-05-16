@@ -180,11 +180,29 @@ export default async function SitePage({ params }: { params: Promise<{ site: str
       try {
         const Handlebars = (await import('handlebars')).default;
         const compiledTemplate = Handlebars.compile(htmlCode);
+
+        const normalizeImageUrl = (url: string | null): string | null => {
+          if (!url) return null;
+          const fileMatch = url.match(/drive\.google\.com\/file\/d\/([^/]+)/);
+          if (fileMatch) return `https://lh3.googleusercontent.com/d/${fileMatch[1]}`;
+          const openMatch = url.match(/drive\.google\.com\/open\?id=([^&]+)/);
+          if (openMatch) return `https://lh3.googleusercontent.com/d/${openMatch[1]}`;
+          const ucMatch = url.match(/drive\.google\.com\/uc\?.*id=([^&]+)/);
+          if (ucMatch) return `https://lh3.googleusercontent.com/d/${ucMatch[1]}`;
+          return url;
+        };
+
+        const shopForTemplate = {
+          ...shop,
+          logoUrl: normalizeImageUrl(shop.customization?.logoUrl) || shop.logoUrl,
+          heroImageUrl: normalizeImageUrl(shop.customization?.heroImageUrl) || shop.heroImageUrl
+        };
+
         dynamicTemplateHtml = compiledTemplate({
-          shop,
+          ...(shop.customization || {}),
+          shop: shopForTemplate,
           primaryColor,
-          secondaryColor,
-          ...(shop.customization || {})
+          secondaryColor
         });
         dynamicTemplateCss = cssCode;
       } catch (e) {
