@@ -1009,9 +1009,6 @@
           <a href="#services" class="nav-link">Haircuts</a>
           <a href="#shop" class="nav-link">Products</a>
           <a href="#reviews-team" class="nav-link">Reviews</a>
-          <div id="auth-container" style="display: flex; align-items: center; justify-content: center; margin-left: 10px;">
-            <a href="#" id="auth-btn" onclick="event.preventDefault(); if (window.BarberSignIn) window.BarberSignIn.open();" class="nav-link" style="padding: 6px 12px; border: 2px solid var(--primary); border-radius: 4px; color: var(--primary);">Sign In</a>
-          </div>
           <a
             href="#"
             onclick="
@@ -1021,6 +1018,9 @@
             class="nav-link nav-cta"
             >Check In Now</a
           >
+        </div>
+        <div id="auth-container" style="display: flex; align-items: center; justify-content: center; margin-left: auto; z-index: 2001;">
+          <a href="#" id="auth-btn" onclick="event.preventDefault(); if (window.BarberSignIn) window.BarberSignIn.open();" class="btn" style="padding: 8px 16px; border: 2px solid var(--primary); border-radius: 4px; color: var(--primary); background: transparent; font-size: 0.85rem; line-height: 1; max-width: max-content; margin-top: 0;">Sign In</a>
         </div>
       </div>
     </nav>
