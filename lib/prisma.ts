@@ -23,10 +23,10 @@ function createPrismaClient() {
   // 1. Prioritize Vercel's Supabase Integration Prisma pooler URL (POSTGRES_PRISMA_URL) which is pre-configured for port 6543 with correct username
   // 2. Fall back to other URLs
   let connectionString = 
-    process.env.POSTGRES_PRISMA_URL || 
-    process.env.POSTGRES_URL || 
+    process.env.DATABASE_URL || 
     process.env.SUPABASE_DATABASE_URL || 
-    process.env.DATABASE_URL;
+    process.env.POSTGRES_PRISMA_URL || 
+    process.env.POSTGRES_URL;
   
   if (!connectionString) {
     console.warn("DATABASE_URL is missing. PrismaClient may fail to initialize.");
