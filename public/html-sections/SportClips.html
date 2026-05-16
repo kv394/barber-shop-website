@@ -981,12 +981,16 @@
     <nav class="navbar">
       <div class="nav-container">
         <div class="nav-brand">
+          {{#if shop.logoUrl}}
+          <img src="{{shop.logoUrl}}" alt="{{shop.name}} Logo" class="nav-logo" style="object-fit: contain;">
+          {{else}}
           <object
             data="logo.svg"
             type="image/svg+xml"
             class="nav-logo"
             style="pointer-events: none"
           ></object>
+          {{/if}}
           <span
             id="dyn-shop-name-nav"
             style="
@@ -997,7 +1001,7 @@
               letter-spacing: -1px;
               color: var(--primary);
             "
-            >SPORT CLIPS</span
+            >{{#if shop.name}}{{shop.name}}{{else}}SPORT CLIPS{{/if}}</span
           >
         </div>
         <div class="nav-links">
@@ -1019,11 +1023,10 @@
     </nav>
 
     <article id="about">
-      <div id="about-loading" class="loading">Loading Stats...</div>
-      <div id="about-content" style="display: none">
-        <section class="hero-section">
-          <h1 id="dyn-shop-name">Sport Clips Haircuts</h1>
-          <p id="dyn-shop-desc">CLASSIC BARBERSHOP EXPERIENCE WITH A MODERN TWIST. SERVING THE COMMUNITY SINCE 2018.</p>
+      <div id="about-content">
+        <section class="hero-section" style="--hero-img: url('{{#if shop.heroImageUrl}}{{shop.heroImageUrl}}{{else}}https://images.unsplash.com/photo-1599351431202-1e0f0137899a?auto=format&fit=crop&w=2000&q=80{{/if}}');">
+          <h1 id="dyn-shop-name">{{#if shop.name}}{{shop.name}}{{else}}Sport Clips Haircuts{{/if}}</h1>
+          <p id="dyn-shop-desc">{{#if shop.description}}{{shop.description}}{{else}}CLASSIC BARBERSHOP EXPERIENCE WITH A MODERN TWIST. SERVING THE COMMUNITY SINCE 2018.{{/if}}</p>
           <a href="#" onclick="event.preventDefault(); window.parent.location.href='/sign-in';" class="btn b-book" style="max-width: 200px; display: inline-block; margin-top: 15px;">Sign In</a>
         </section>
       </div>
@@ -1356,8 +1359,8 @@
                 document.getElementById("dyn-shop-name").textContent = shop.name || "Sport Clips Haircuts";
                 document.getElementById("dyn-shop-name-nav").textContent = (shop.name || "Sport Clips Haircuts").toUpperCase();
                 document.getElementById("dyn-shop-desc").textContent = shop.description || "CLASSIC BARBERSHOP EXPERIENCE WITH A MODERN TWIST. SERVING THE COMMUNITY SINCE 2018.";
-                document.getElementById("about-loading").style.display = "none";
-                document.getElementById("about-content").style.display = "block";
+                if (document.getElementById("about-loading")) document.getElementById("about-loading").style.display = "none";
+                if (document.getElementById("about-content")) document.getElementById("about-content").style.display = "block";
               } catch (e) {
                 console.error("Shop Details Error:", e);
               }
