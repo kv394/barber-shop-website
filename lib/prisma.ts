@@ -4,7 +4,7 @@ import { PrismaPg } from '@prisma/adapter-pg';
 
 declare global {
   // eslint-disable-next-line no-var
-  var prismaGlobal: PrismaClient | undefined;
+  var prismaGlobal: any;
 }
 
 // Force Node.js to use IPv6 first for Supabase database connections
@@ -64,9 +64,33 @@ function createPrismaClient() {
   });
   const adapter = new PrismaPg(pool);
   
-  return new PrismaClient({
+  const baseClient = new PrismaClient({
     adapter,
     log: ['error']
+  });
+
+  // Prisma Client Extension to automatically scope queries to a shopId if provided via context or async_hooks.
+  // In a robust implementation, you would typically use AsyncLocalStorage to pass the tenant ID.
+  // Here, we're providing a foundational extension structure. You'll need an 'rlsClient' wrapper
+  // to pass the shopId for standard isolated queries.
+  return baseClient.$extends({
+    name: 'tenant-isolation',
+    query: {
+      $allModels: {
+        async $allOperations({ model, operation, args, query }) {
+          // This is a placeholder for actual tenant isolation logic.
+          // To fully implement this, you would:
+          // 1. Retrieve the current shopId from AsyncLocalStorage (or pass it explicitly)
+          // 2. Check if the model has a 'shopId' field.
+          // 3. Mutate 'args.where' to inject `{ shopId: currentShopId }` if applicable.
+          // Example:
+          // if (currentShopId && Prisma.dmmf.datamodel.models.find(m => m.name === model)?.fields.some(f => f.name === 'shopId')) {
+          //   args.where = { ...args.where, shopId: currentShopId };
+          // }
+          return query(args);
+        },
+      },
+    },
   });
 }
 
