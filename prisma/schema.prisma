@@ -1,6 +1,7 @@
 generator client {
-  provider   = "prisma-client-js"
-  engineType = "library"
+  provider        = "prisma-client-js"
+  engineType      = "library"
+  previewFeatures = ["postgresqlExtensions"]
 }
 
 datasource db {
@@ -221,6 +222,7 @@ model Appointment {
   @@index([shopId, status])
   @@index([staffId, startTime, endTime])
   @@index([userId])
+  @@index([addons], type: Gin)
 }
 
 model AppointmentItem {
