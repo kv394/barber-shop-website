@@ -21,6 +21,7 @@ interface Service {
   isBookable: boolean;
   imageUrl: string | null;
   addons?: ServiceAddon[];
+  resourceRequirements?: { id: string, resourceType: string, quantity: number }[];
 }
 
 interface ServiceManagementProps {
@@ -30,6 +31,7 @@ interface ServiceManagementProps {
 export function ServiceManagement({ shopId }: ServiceManagementProps) {
   const [services, setServices] = useState<Service[]>([]);
   const [allAddons, setAllAddons] = useState<ServiceAddon[]>([]);
+  const [resources, setResources] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
@@ -44,6 +46,7 @@ export function ServiceManagement({ shopId }: ServiceManagementProps) {
     addonIds: [] as string[],
     isBookable: true,
     imageUrl: '',
+    resourceRequirements: [] as { resourceType: string, quantity: number }[],
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
@@ -74,18 +77,21 @@ export function ServiceManagement({ shopId }: ServiceManagementProps) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [servicesRes, addonsRes] = await Promise.all([
+        const [servicesRes, addonsRes, resourcesRes] = await Promise.all([
           fetch(`/api/shops/${shopId}/services`),
-          fetch(`/api/shops/${shopId}/services/addons`)
+          fetch(`/api/shops/${shopId}/services/addons`),
+          fetch(`/api/shops/${shopId}/resources`)
         ]);
 
-        if (!servicesRes.ok || !addonsRes.ok) throw new Error('Failed to fetch data');
+        if (!servicesRes.ok || !addonsRes.ok || !resourcesRes.ok) throw new Error('Failed to fetch data');
         
         const servicesData = await servicesRes.json();
         const addonsData = await addonsRes.json();
+        const resourcesData = await resourcesRes.json();
         
         setServices(Array.isArray(servicesData) ? servicesData : []);
         setAllAddons(Array.isArray(addonsData) ? addonsData : []);
+        setResources(Array.isArray(resourcesData) ? resourcesData : []);
       } catch (err) {
         setError(err instanceof Error ? err.message : 'An error occurred');
       } finally {
@@ -97,7 +103,7 @@ export function ServiceManagement({ shopId }: ServiceManagementProps) {
   }, [shopId]);
 
   const resetForm = () => {
-    setNewService({ name: '', description: '', price: '', duration: '', trackInventory: false, type: 'CUSTOMER', addonIds: [], isBookable: true, imageUrl: '' });
+    setNewService({ name: '', description: '', price: '', duration: '', trackInventory: false, type: 'CUSTOMER', addonIds: [], isBookable: true, imageUrl: '', resourceRequirements: [] });
     setEditingServiceId(null);
   };
 
@@ -113,6 +119,7 @@ export function ServiceManagement({ shopId }: ServiceManagementProps) {
       addonIds: service.addons?.map(a => a.id) || [],
       isBookable: service.isBookable,
       imageUrl: service.imageUrl || '',
+      resourceRequirements: service.resourceRequirements?.map(r => ({ resourceType: r.resourceType, quantity: r.quantity })) || [],
     });
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -154,6 +161,7 @@ export function ServiceManagement({ shopId }: ServiceManagementProps) {
           isBookable: newService.isBookable,
           imageUrl: newService.imageUrl,
           addonIds: newService.addonIds,
+          resourceRequirements: newService.resourceRequirements,
         }),
       });
 
@@ -440,6 +448,73 @@ export function ServiceManagement({ shopId }: ServiceManagementProps) {
                 </div>
               </div>
             )}
+
+            <div className="bg-crm-bg p-4 rounded border border-crm-border">
+              <div className="flex justify-between items-center mb-3">
+                <label className="block font-medium text-crm-text text-[13px]">
+                  Resource Requirements (Optional)
+                </label>
+                <button
+                  type="button"
+                  onClick={() => setNewService(prev => ({
+                    ...prev,
+                    resourceRequirements: [...prev.resourceRequirements, { resourceType: '', quantity: 1 }]
+                  }))}
+                  className="text-[11px] font-bold text-crm-primary"
+                >
+                  + Add Requirement
+                </button>
+              </div>
+              <p className="text-[11px] text-crm-muted mb-3">Does this service require a specific physical resource to be available (e.g., Pedicure Chair)?</p>
+              
+              {newService.resourceRequirements.length === 0 ? (
+                <p className="text-[12px] text-crm-muted italic">No resources required.</p>
+              ) : (
+                <div className="space-y-2">
+                  {newService.resourceRequirements.map((req, index) => (
+                    <div key={index} className="flex gap-2 items-center">
+                      <select
+                        value={req.resourceType}
+                        onChange={e => {
+                          const newReqs = [...newService.resourceRequirements];
+                          newReqs[index].resourceType = e.target.value;
+                          setNewService({ ...newService, resourceRequirements: newReqs });
+                        }}
+                        className="flex-1 bg-crm-surface border border-crm-border text-[13px] rounded p-1.5 text-crm-text"
+                      >
+                        <option value="">Select Resource Type...</option>
+                        {/* We will just use the unique types from existing resources, or list them all. For simplicity, let's use the names or types. Actually, the backend uses `resourceType`, which maps to Resource.type. */}
+                        {Array.from(new Set(resources.map(r => r.type))).map(type => (
+                           <option key={type as string} value={type as string}>{type as string}</option>
+                        ))}
+                      </select>
+                      <input
+                        type="number"
+                        min="1"
+                        value={req.quantity}
+                        onChange={e => {
+                          const newReqs = [...newService.resourceRequirements];
+                          newReqs[index].quantity = parseInt(e.target.value) || 1;
+                          setNewService({ ...newService, resourceRequirements: newReqs });
+                        }}
+                        className="w-16 bg-crm-surface border border-crm-border text-[13px] rounded p-1.5 text-crm-text text-center"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const newReqs = [...newService.resourceRequirements];
+                          newReqs.splice(index, 1);
+                          setNewService({ ...newService, resourceRequirements: newReqs });
+                        }}
+                        className="text-status-cancelled text-lg font-bold px-2"
+                      >
+                        ×
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
 
             <button
               type="submit"

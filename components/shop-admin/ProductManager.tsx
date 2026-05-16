@@ -7,9 +7,11 @@ import ProductBarcodeScannerWrapper from '@/components/checkout/ProductBarcodeSc
 import { QRCodeSVG } from 'qrcode.react';
 import Barcode from 'react-barcode';
 import MediaPicker from './MediaPicker';
+import PurchaseOrderManager from './PurchaseOrderManager';
 
 export default function ProductManager({ shopId, products }: { shopId: string, products: any[] }) {
   const router = useRouter();
+  const [activeTab, setActiveTab] = useState<'INVENTORY' | 'PO'>('INVENTORY');
   const [isAdding, setIsAdding] = useState(false);
   const [editingProduct, setEditingProduct] = useState<any | null>(null);
   const [editingBarcodeId, setEditingBarcodeId] = useState<string | null>(null);
@@ -132,23 +134,43 @@ export default function ProductManager({ shopId, products }: { shopId: string, p
   return (
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-        <h2 className="font-bold text-crm-text text-xl font-bold">Products & Inventory</h2>
-        <div className="flex flex-wrap items-center gap-3 w-full sm:w-auto">
-          <ProductBarcodeScannerWrapper shopId={shopId} products={products} />
-          <button onClick={() => {
-            if (isAdding) {
-              setIsAdding(false);
-              resetForm();
-            } else {
-              setIsAdding(true);
-            }
-          }} className="bg-crm-primary text-white px-4 py-2 rounded-lg font-bold hover:bg-status-pending transition-colors shrink-0">
-            {isAdding ? 'Cancel' : 'Add Product'}
+        <div className="flex gap-4 border-b border-crm-border w-full sm:w-auto">
+          <button 
+            onClick={() => setActiveTab('INVENTORY')}
+            className={`pb-2 font-bold text-lg ${activeTab === 'INVENTORY' ? 'text-crm-text border-b-2 border-crm-primary' : 'text-crm-muted hover:text-crm-text'}`}
+          >
+            Inventory
+          </button>
+          <button 
+            onClick={() => setActiveTab('PO')}
+            className={`pb-2 font-bold text-lg ${activeTab === 'PO' ? 'text-crm-text border-b-2 border-crm-primary' : 'text-crm-muted hover:text-crm-text'}`}
+          >
+            Purchase Orders
           </button>
         </div>
+        
+        {activeTab === 'INVENTORY' && (
+          <div className="flex flex-wrap items-center gap-3 w-full sm:w-auto">
+            <ProductBarcodeScannerWrapper shopId={shopId} products={products} />
+            <button onClick={() => {
+              if (isAdding) {
+                setIsAdding(false);
+                resetForm();
+              } else {
+                setIsAdding(true);
+              }
+            }} className="bg-crm-primary text-white px-4 py-2 rounded-lg font-bold hover:bg-status-pending transition-colors shrink-0">
+              {isAdding ? 'Cancel' : 'Add Product'}
+            </button>
+          </div>
+        )}
       </div>
 
-      {isAdding && (
+      {activeTab === 'PO' ? (
+        <PurchaseOrderManager shopId={shopId} products={products} />
+      ) : (
+        <>
+          {isAdding && (
         <form onSubmit={handleSubmit} className="bg-crm-surface p-6 rounded-lg border border-crm-border shadow-sm space-y-4">
           <h3 className="font-bold text-crm-text mb-4 text-lg font-bold">{editingProduct ? 'Edit Product' : 'Add New Product'}</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -300,6 +322,8 @@ export default function ProductManager({ shopId, products }: { shopId: string, p
           </tbody>
         </table>
       </div>
+        </>
+      )}
     </div>
   );
 }
