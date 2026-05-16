@@ -1347,18 +1347,67 @@
                     }
                   });
 
-                  // Check Auth State
+                  // Check Auth State and render User Menu
                   function checkAuthState() {
                     fetch(apiUrlToUse + '/api/users/me')
                       .then(res => res.json())
                       .then(user => {
                         const authBtn = document.getElementById('auth-btn');
                         if (user && !user.error && authBtn) {
-                           authBtn.textContent = 'My Appointments';
-                           authBtn.onclick = (e) => {
+                           // User is signed in. Replace the button with a profile dropdown.
+                           const userEmail = user.email || 'User';
+                           const initial = userEmail.charAt(0).toUpperCase();
+                           
+                           // Create wrapper
+                           const menuWrapper = document.createElement('div');
+                           menuWrapper.style.cssText = 'position:relative; display:inline-block; margin-top:15px;';
+                           
+                           // Create avatar button
+                           const avatarBtn = document.createElement('button');
+                           avatarBtn.className = 'btn b-book';
+                           avatarBtn.style.cssText = 'max-width:200px; display:flex; align-items:center; gap:8px; padding:8px 16px; font-size:14px;';
+                           avatarBtn.innerHTML = \`<div style="width:24px; height:24px; background:var(--white); color:var(--primary); border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:bold;">\${initial}</div> Profile\`;
+                           
+                           // Create dropdown menu
+                           const dropdown = document.createElement('div');
+                           dropdown.style.cssText = 'position:absolute; top:100%; right:0; margin-top:8px; background:var(--white); border:2px solid var(--primary); border-radius:8px; box-shadow:0 4px 12px rgba(0,0,0,0.15); width:200px; display:none; flex-direction:column; z-index:10000; overflow:hidden;';
+                           
+                           const appointmentsLink = document.createElement('a');
+                           appointmentsLink.href = '/my-appointments';
+                           appointmentsLink.style.cssText = 'padding:12px 16px; color:var(--black); text-decoration:none; font-weight:bold; text-align:left; border-bottom:1px solid #eee;';
+                           appointmentsLink.textContent = 'My Appointments';
+                           appointmentsLink.onmouseover = () => appointmentsLink.style.backgroundColor = '#f9f9f9';
+                           appointmentsLink.onmouseout = () => appointmentsLink.style.backgroundColor = 'transparent';
+
+                           const logoutLink = document.createElement('a');
+                           logoutLink.href = '/logout';
+                           logoutLink.style.cssText = 'padding:12px 16px; color:#E31837; text-decoration:none; font-weight:bold; text-align:left;';
+                           logoutLink.textContent = 'Sign Out';
+                           logoutLink.onmouseover = () => logoutLink.style.backgroundColor = '#f9f9f9';
+                           logoutLink.onmouseout = () => logoutLink.style.backgroundColor = 'transparent';
+
+                           dropdown.appendChild(appointmentsLink);
+                           dropdown.appendChild(logoutLink);
+                           
+                           menuWrapper.appendChild(avatarBtn);
+                           menuWrapper.appendChild(dropdown);
+
+                           // Toggle logic
+                           avatarBtn.onclick = (e) => {
                              e.preventDefault();
-                             window.parent.location.href = '/my-appointments';
+                             e.stopPropagation();
+                             dropdown.style.display = dropdown.style.display === 'none' ? 'flex' : 'none';
                            };
+
+                           // Close when clicking outside
+                           document.addEventListener('click', (e) => {
+                             if (!menuWrapper.contains(e.target)) {
+                               dropdown.style.display = 'none';
+                             }
+                           });
+
+                           // Replace the original button
+                           authBtn.parentNode.replaceChild(menuWrapper, authBtn);
                         }
                       })
                       .catch(err => console.log('Not signed in', err));
