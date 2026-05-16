@@ -299,4 +299,99 @@
   const root = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : global;
   root.BarberSaaS = new BarberSaaSClient();
 
+  if (typeof document !== 'undefined') {
+    // Expose BarberAppointments
+    root.BarberAppointments = (function() {
+      const overlay = document.createElement('div');
+      overlay.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:2147483647;display:none;align-items:center;justify-content:center;';
+
+      const content = document.createElement('div');
+      content.style.cssText = 'width:100%;max-width:900px;height:90vh;max-height:800px;background:white;border-radius:12px;overflow:hidden;box-shadow:0 10px 25px rgba(0,0,0,0.2);z-index:2147483647;position:relative;';
+
+      const closeBtn = document.createElement('button');
+      closeBtn.innerHTML = '&times;';
+      closeBtn.style.cssText = 'position:absolute;top:10px;right:15px;background:transparent;border:none;font-size:24px;cursor:pointer;color:#333;z-index:2147483647;';
+      closeBtn.onclick = () => overlay.style.display = 'none';
+
+      const iframe = document.createElement('iframe');
+      iframe.style.cssText = 'width:100%;height:100%;border:none;';
+
+      content.appendChild(closeBtn);
+      content.appendChild(iframe);
+      overlay.appendChild(content);
+      
+      // Wait for body
+      const attach = () => {
+        if (document.body) document.body.appendChild(overlay);
+        else requestAnimationFrame(attach);
+      };
+      attach();
+
+      overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) overlay.style.display = 'none';
+      });
+
+      return {
+        open: function() {
+          const apiUrl = root.BarberSaaS.apiUrl || 'https://barber-shop-website-ashy.vercel.app';
+          iframe.src = apiUrl + '/my-appointments';
+          if (!document.body.contains(overlay)) {
+            document.body.appendChild(overlay);
+          }
+          overlay.style.display = 'flex';
+          overlay.style.zIndex = '2147483647';
+        },
+        close: function() {
+          overlay.style.display = 'none';
+        }
+      };
+    })();
+
+    // Expose BarberSignIn
+    root.BarberSignIn = (function() {
+      const overlay = document.createElement('div');
+      overlay.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:2147483647;display:none;align-items:center;justify-content:center;';
+
+      const content = document.createElement('div');
+      content.style.cssText = 'width:100%;max-width:500px;height:90vh;max-height:800px;background:white;border-radius:12px;overflow:hidden;box-shadow:0 10px 25px rgba(0,0,0,0.2);z-index:2147483647;position:relative;';
+
+      const closeBtn = document.createElement('button');
+      closeBtn.innerHTML = '&times;';
+      closeBtn.style.cssText = 'position:absolute;top:10px;right:15px;background:transparent;border:none;font-size:24px;cursor:pointer;color:#333;z-index:2147483647;';
+      closeBtn.onclick = () => overlay.style.display = 'none';
+
+      const iframe = document.createElement('iframe');
+      iframe.style.cssText = 'width:100%;height:100%;border:none;';
+
+      content.appendChild(closeBtn);
+      content.appendChild(iframe);
+      overlay.appendChild(content);
+      
+      const attach = () => {
+        if (document.body) document.body.appendChild(overlay);
+        else requestAnimationFrame(attach);
+      };
+      attach();
+
+      overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) overlay.style.display = 'none';
+      });
+
+      return {
+        open: function() {
+          const apiUrl = root.BarberSaaS.apiUrl || 'https://barber-shop-website-ashy.vercel.app';
+          iframe.src = apiUrl + '/sign-in';
+          if (!document.body.contains(overlay)) {
+            document.body.appendChild(overlay);
+          }
+          overlay.style.display = 'flex';
+          overlay.style.zIndex = '2147483647';
+        },
+        close: function() {
+          overlay.style.display = 'none';
+        }
+      };
+    })();
+  }
+
 })(typeof window !== 'undefined' ? window : this);

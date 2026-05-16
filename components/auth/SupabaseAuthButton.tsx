@@ -202,7 +202,7 @@ export default function SupabaseAuthButton({
         {isRendered && mounted && typeof document !== 'undefined' ? createPortal(menuContent, document.body) : null}
         {/* Iframe Modal Overlay */}
         {modalUrl && mounted && typeof document !== 'undefined' ? createPortal(
-          <div className="fixed inset-0 z-[9999999] flex items-center justify-center bg-black/70 backdrop-blur-sm p-4 animate-in fade-in duration-200">
+          <div className="fixed inset-0 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4 animate-in fade-in duration-200" style={{ zIndex: 2147483647 }}>
             <div className="bg-crm-surface w-full max-w-4xl h-[90vh] max-h-[900px] rounded-2xl shadow-2xl overflow-hidden relative flex flex-col border border-crm-border animate-in zoom-in-95 duration-300">
               <div className="absolute top-3 right-3 z-50">
                 <button onClick={closeModal} className="w-8 h-8 flex items-center justify-center rounded-full bg-crm-surface hover:bg-crm-border text-crm-text transition-colors shadow-sm border border-crm-border">✕</button>

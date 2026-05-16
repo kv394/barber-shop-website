@@ -1259,8 +1259,11 @@
 
             return {
               open: function() {
+                console.log("BarberAppointments.open() called. Domain:", domain);
                 iframe.src = domain + '/my-appointments';
                 overlay.style.display = 'flex';
+                // Bring to front explicitly
+                overlay.style.zIndex = '2147483647';
               },
               close: function() {
                 overlay.style.display = 'none';
@@ -1317,7 +1320,7 @@
           });
 
           function checkAuthState() {
-            fetch(apiUrlToUse + '/api/users/me')
+            fetch(apiUrlToUse + '/api/users/me', { credentials: 'include' })
               .then(res => res.json())
               .then(user => {
                 const authContainer = document.getElementById('auth-container');
@@ -1347,6 +1350,8 @@
                    appointmentsLink.textContent = 'My Appointments';
                    appointmentsLink.onclick = (e) => {
                      e.preventDefault();
+                     e.stopPropagation();
+                     console.log("My Appointments clicked. window.BarberAppointments:", !!window.BarberAppointments);
                      if (window.BarberAppointments) window.BarberAppointments.open();
                      dropdown.style.display = 'none';
                    };
