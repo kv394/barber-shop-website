@@ -1327,44 +1327,6 @@
                 console.error("Theme Error:", e);
               }
 
-              // Render Shop Details
-              try {
-                // Update Logo
-                if (shop.logoUrl) {
-                  const logoObj = document.querySelector('.nav-logo');
-                  if (logoObj) {
-                    const img = document.createElement('img');
-                    img.src = shop.logoUrl;
-                    img.alt = shop.name + " Logo";
-                    img.className = logoObj.className;
-                    img.style.objectFit = 'contain';
-                    logoObj.parentNode.replaceChild(img, logoObj);
-                  }
-                }
-
-                // Update Hero Image
-                if (shop.heroImageUrl) {
-                  const heroSection = document.querySelector('.hero-section');
-                  if (heroSection) {
-                    const isMobile = window.innerWidth <= 768;
-                    // On mobile, if the original URL has a specific width, replace it.
-                    let optimizedHeroUrl = shop.heroImageUrl;
-                    if (isMobile && optimizedHeroUrl.includes('unsplash.com')) {
-                       optimizedHeroUrl = optimizedHeroUrl.replace(/w=\d+/, 'w=800');
-                    }
-                    heroSection.style.setProperty('--hero-img', `url("${optimizedHeroUrl}")`);
-                  }
-                }
-
-                document.getElementById("dyn-shop-name").textContent = shop.name || "Sport Clips Haircuts";
-                document.getElementById("dyn-shop-name-nav").textContent = (shop.name || "Sport Clips Haircuts").toUpperCase();
-                document.getElementById("dyn-shop-desc").textContent = shop.description || "CLASSIC BARBERSHOP EXPERIENCE WITH A MODERN TWIST. SERVING THE COMMUNITY SINCE 2018.";
-                if (document.getElementById("about-loading")) document.getElementById("about-loading").style.display = "none";
-                if (document.getElementById("about-content")) document.getElementById("about-content").style.display = "block";
-              } catch (e) {
-                console.error("Shop Details Error:", e);
-              }
-
               // --- SERVICES ---
               try {
                 const bookableServices = (rawServices || []).filter(s => s.duration > 0 && s.isBookable !== false);
