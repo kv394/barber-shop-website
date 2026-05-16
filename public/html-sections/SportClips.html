@@ -10,7 +10,7 @@
     />
     <style>
       :root {
-        --primary: #999999; /* Placeholder neutral gray before SDK loads dynamic color */
+        --primary: {{#if primaryColor}}{{primaryColor}}{{else}}#999999{{/if}}; /* Dynamic primary color injected via SSR */
         --black: #000000;
         --dark-gray: #222222;
         --light-gray: #f4f4f4;
