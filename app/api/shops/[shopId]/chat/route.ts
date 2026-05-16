@@ -95,7 +95,7 @@ export async function POST(
     // Handle @ mentions for notifications
     if (message.content) {
       const mentionRegex = /@(\w+)/g;
-      const mentions = Array.from(message.content.matchAll(mentionRegex)).map(m => m[1].toLowerCase());
+      const mentions = Array.from(message.content.matchAll(mentionRegex)).map((m: any) => m[1].toLowerCase());
       
       if (mentions.length > 0) {
         // Find users in the shop whose first name matches the mentions
@@ -106,14 +106,14 @@ export async function POST(
           }
         });
 
-        const mentionedUsers = shopUsers.filter(u => {
+        const mentionedUsers = shopUsers.filter((u: any) => {
           if (!u.name) return false;
           const firstName = u.name.split(' ')[0].toLowerCase();
           return mentions.includes(firstName);
         });
 
         // Create a notification for each mentioned user
-        const notifications = mentionedUsers.filter(u => u.id !== user.id).map(u => ({
+        const notifications = mentionedUsers.filter((u: any) => u.id !== user.id).map((u: any) => ({
           shopId,
           userId: u.id,
           type: 'CHAT_MENTION',

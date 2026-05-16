@@ -35,7 +35,7 @@ async function getShopData(shopId: string, userId: string) {
         products: { orderBy: { name: 'asc' } },
         users: { orderBy: { role: 'asc' } },
       },
-    }).then(res => res ? [res] : []),
+    }).then((res: any) => res ? [res] : []),
     prisma.appointment.findMany({
       where: { 
         shopId: { in: shopIds }, 

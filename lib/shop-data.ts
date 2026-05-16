@@ -60,7 +60,7 @@ export const getShopLayoutData = cache(async (userId: string, shopId: string) =>
           accessibleShopsMap.set(allAccesses.shop.id, { id: allAccesses.shop.id, name: allAccesses.shop.name || '', companyName: allAccesses.shop.companyName });
         }
         if (Array.isArray(allAccesses?.shopAccesses)) {
-          allAccesses.shopAccesses.forEach(access => {
+          allAccesses.shopAccesses.forEach((access: any) => {
             if (access?.shop?.id) {
               accessibleShopsMap.set(access.shop.id, { id: access.shop.id, name: access.shop.name || '', companyName: access.shop.companyName });
             }

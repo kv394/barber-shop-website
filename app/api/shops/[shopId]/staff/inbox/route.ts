@@ -54,7 +54,7 @@ export async function GET(
         take: 5
     });
 
-    const virtualNotifications = upcomingAppointments.map(apt => ({
+    const virtualNotifications = upcomingAppointments.map((apt: any) => ({
         id: `virt-${apt.id}`,
         type: 'UPCOMING_APPOINTMENT',
         title: 'Upcoming Appointment',

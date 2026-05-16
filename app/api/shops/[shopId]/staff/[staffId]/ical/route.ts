@@ -46,7 +46,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ shop
     'METHOD:PUBLISH',
   ];
 
-  appointments.forEach(apt => {
+  appointments.forEach((apt: any) => {
     const serviceName = apt.service?.name || 'Appointment';
     const clientName = apt.user?.name || 'Client';
     const shopName = apt.shop?.name || 'Shop';

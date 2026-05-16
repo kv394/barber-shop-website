@@ -5,7 +5,7 @@ async function main() {
     where: { name: 'Heritage Haircuts' }
   });
   
-  console.log('Found shops:', shops.map(s => ({ id: s.id, name: s.name, companyName: s.companyName })));
+  console.log('Found shops:', shops.map((s: any) => ({ id: s.id, name: s.name, companyName: s.companyName })));
   
   for (const shop of shops) {
     if (!shop.companyName) {

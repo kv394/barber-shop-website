@@ -221,9 +221,9 @@ export async function GET(request: Request, { params }: { params: Promise<{ shop
       return url;
     };
 
-    const formattedProducts = products.map(p => ({ ...p, imageUrl: formatImageUrl(p.imageUrl) }));
-    const formattedServices = services.map(s => ({ ...s, imageUrl: formatImageUrl(s.imageUrl) }));
-    const formattedStaff = staff.map(s => ({ ...s, imageUrl: formatImageUrl(s.imageUrl) }));
+    const formattedProducts = products.map((p: any) => ({ ...p, imageUrl: formatImageUrl(p.imageUrl) }));
+    const formattedServices = services.map((s: any) => ({ ...s, imageUrl: formatImageUrl(s.imageUrl) }));
+    const formattedStaff = staff.map((s: any) => ({ ...s, imageUrl: formatImageUrl(s.imageUrl) }));
 
     // Clean up customization to only include public-safe fields (branding, contact, hours)
     const publicCustomization = {
