@@ -208,6 +208,15 @@ export async function GET(request: Request, { params }: { params: Promise<{ shop
 
     const formatImageUrl = (url: string | null) => {
       if (!url) return null;
+      
+      // Handle Google Drive links
+      const fileMatch = url.match(/drive\.google\.com\/file\/d\/([^/]+)/);
+      if (fileMatch) return `https://lh3.googleusercontent.com/d/${fileMatch[1]}`;
+      const openMatch = url.match(/drive\.google\.com\/open\?id=([^&]+)/);
+      if (openMatch) return `https://lh3.googleusercontent.com/d/${openMatch[1]}`;
+      const ucMatch = url.match(/drive\.google\.com\/uc\?.*id=([^&]+)/);
+      if (ucMatch) return `https://lh3.googleusercontent.com/d/${ucMatch[1]}`;
+      
       if (url.startsWith('/')) return `${baseUrl}${url}`;
       return url;
     };
