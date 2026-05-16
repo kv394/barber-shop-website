@@ -5,22 +5,28 @@ import { revalidatePath } from 'next/cache';
 import { cookies, headers } from 'next/headers';
 import { rateLimit } from '@/lib/rate-limiter';
 import { prisma } from '@/lib/prisma';
+import IframeAuthHandler from '@/components/auth/IframeAuthHandler';
 
 export default async function SignInPage({
   searchParams,
 }: {
-  searchParams: Promise<{ error?: string, message?: string, redirect_url?: string }>;
+  searchParams: Promise<{ error?: string, message?: string, redirect_url?: string, success?: string }>;
 }) {
   const resolvedSearchParams = await searchParams;
   const error = resolvedSearchParams.error;
   const message = resolvedSearchParams.message;
   const redirectUrl = resolvedSearchParams.redirect_url || '/';
+  const success = resolvedSearchParams.success === 'true';
+
+  if (success) {
+    return <IframeAuthHandler redirectUrl={redirectUrl} />;
+  }
 
   // If the user is already signed in, redirect them immediately!
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (user) {
-    return redirect(redirectUrl);
+    return <IframeAuthHandler redirectUrl={redirectUrl} />;
   }
 
   const signInAction = async (formData: FormData) => {
@@ -89,7 +95,7 @@ export default async function SignInPage({
       }
     }
 
-    return redirect(finalRedirectUrl);
+    return redirect(`/sign-in?success=true&redirect_url=${encodeURIComponent(finalRedirectUrl)}`);
   };
 
   return (
