@@ -59,7 +59,10 @@ export default function PurchaseOrderManager({ shopId, products }: { shopId: str
           totalAmount: items.reduce((sum, item) => sum + (item.quantity * item.unitCost), 0)
         })
       });
-      if (!res.ok) throw new Error("Failed to create PO");
+      if (!res.ok) {
+        const errData = await res.json().catch(() => ({}));
+        throw new Error(errData.error || "Failed to create PO");
+      }
       setIsCreating(false);
       setSupplier('');
       setItems([]);
