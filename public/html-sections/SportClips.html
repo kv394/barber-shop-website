@@ -1027,7 +1027,7 @@
         <section class="hero-section" style="--hero-img: url('{{#if shop.heroImageUrl}}{{shop.heroImageUrl}}{{else}}https://images.unsplash.com/photo-1599351431202-1e0f0137899a?auto=format&fit=crop&w=2000&q=80{{/if}}');">
           <h1 id="dyn-shop-name">{{#if shop.name}}{{shop.name}}{{else}}Sport Clips Haircuts{{/if}}</h1>
           <p id="dyn-shop-desc">{{#if shop.description}}{{shop.description}}{{else}}CLASSIC BARBERSHOP EXPERIENCE WITH A MODERN TWIST. SERVING THE COMMUNITY SINCE 2018.{{/if}}</p>
-          <a href="#" onclick="event.preventDefault(); if (window.BarberSignIn) window.BarberSignIn.open();" class="btn b-book" style="max-width: 200px; display: inline-block; margin-top: 15px;">Sign In</a>
+          <a href="#" id="auth-btn" onclick="event.preventDefault(); if (window.BarberSignIn) window.BarberSignIn.open();" class="btn b-book" style="max-width: 200px; display: inline-block; margin-top: 15px;">Sign In</a>
         </section>
       </div>
     </article>
@@ -1332,9 +1332,38 @@
                       open: function() {
                         iframe.src = domain + '/sign-in';
                         overlay.style.display = 'flex';
+                      },
+                      close: function() {
+                        overlay.style.display = 'none';
                       }
                     };
                   })();
+                  
+                  // Listen for close message from the sign-in iframe to refresh auth state
+                  window.addEventListener('message', (e) => {
+                    if (e.data && e.data.type === 'CLOSE_MODAL') {
+                      if (window.BarberSignIn) window.BarberSignIn.close();
+                      checkAuthState(); // Re-check auth state after modal closes
+                    }
+                  });
+
+                  // Check Auth State
+                  function checkAuthState() {
+                    fetch(apiUrlToUse + '/api/users/me')
+                      .then(res => res.json())
+                      .then(user => {
+                        const authBtn = document.getElementById('auth-btn');
+                        if (user && !user.error && authBtn) {
+                           authBtn.textContent = 'My Appointments';
+                           authBtn.onclick = (e) => {
+                             e.preventDefault();
+                             window.parent.location.href = '/my-appointments';
+                           };
+                        }
+                      })
+                      .catch(err => console.log('Not signed in', err));
+                  }
+                  checkAuthState();
 
                   // Fetch and inject shop-specific custom script from Google Drive
                   const customScriptUrl = apiUrlToUse + "/api/shops/" + shopId + "/scripts/landing.js";
