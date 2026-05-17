@@ -273,8 +273,7 @@ export default function ProductManager({ shopId, products }: { shopId: string, p
 
                       <div className="absolute left-0 top-full mt-2 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-opacity z-50">
                         <div className="bg-crm-surface p-4 rounded-xl shadow-2xl border border-crm-border shadow-sm min-w-[200px] flex flex-col items-center">
-                          <Barcode value={product.barcode || product.id} displayValue={false} height={60} width={2} margin={0} background="transparent" />
-                          <p className="text-center text-crm-muted font-mono mt-3 truncate max-w-full px-2 text-[13px]">{product.barcode || product.id}</p>
+                          <Barcode value={product.barcode || product.id} displayValue={true} height={60} width={2} margin={0} background="transparent" />
                         </div>
                       </div>
                     </div>
