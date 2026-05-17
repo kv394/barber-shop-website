@@ -227,7 +227,7 @@ export default function ProductManager({ shopId, products }: { shopId: string, p
             </div>
             <div>
               <label className="block font-medium text-crm-muted mb-1 text-[13px]">Barcode (Optional)</label>
-              <input type="text" value={formData.barcode} onChange={(e) => setFormData({ ...formData, barcode: e.target.value })} className="w-full bg-crm-bg border border-crm-border shadow-sm rounded-lg px-4 py-2 text-crm-text" />
+              <input type="text" value={formData.barcode} onChange={(e) => setFormData({ ...formData, barcode: e.target.value })} placeholder={editingProduct ? editingProduct.id : 'Scan or enter custom barcode'} className="w-full bg-crm-bg border border-crm-border shadow-sm rounded-lg px-4 py-2 text-crm-text placeholder:text-crm-muted/50" />
             </div>
           </div>
           <div className="flex justify-end pt-4">
@@ -273,7 +273,8 @@ export default function ProductManager({ shopId, products }: { shopId: string, p
 
                       <div className="absolute left-0 top-full mt-2 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-opacity z-50">
                         <div className="bg-crm-surface p-4 rounded-xl shadow-2xl border border-crm-border shadow-sm min-w-[200px] flex flex-col items-center">
-                          <Barcode value={product.barcode || product.id} displayValue={true} height={60} width={2} margin={0} background="transparent" />
+                          <Barcode value={product.barcode || product.id} displayValue={false} height={60} width={2} margin={0} background="transparent" lineColor="currentColor" />
+                          <p className="text-center text-crm-text font-mono mt-3 truncate max-w-full px-2 text-[13px]">{product.barcode || product.id}</p>
                         </div>
                       </div>
                     </div>
