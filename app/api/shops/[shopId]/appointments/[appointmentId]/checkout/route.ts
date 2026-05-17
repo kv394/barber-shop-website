@@ -150,8 +150,9 @@ export async function POST(
           }))
         });
 
-        // 3. Deduct Inventory for Products — with underflow protection
+        // 3. Deduct Inventory for Products
         for (const item of cartItems) {
+          // Direct product purchases
           if (item.productId && item.trackInventory) {
              const product = await tx.product.findUnique({
                where: { id: item.productId },
@@ -167,6 +168,30 @@ export async function POST(
                where: { id: item.productId },
                data: { inventoryCount: { decrement: item.quantity } }
              });
+          }
+
+          // Service-to-Product automatic inventory deduction
+          if (item.serviceId) {
+             const usages = await tx.serviceProductUsage.findMany({
+               where: { serviceId: item.serviceId }
+             });
+             for (const usage of usages) {
+               const newCount = usage.currentServiceCount + (item.quantity || 1);
+               const deductions = Math.floor(newCount / usage.servicesPerProduct);
+               const remainder = newCount % usage.servicesPerProduct;
+
+               await tx.serviceProductUsage.update({
+                 where: { id: usage.id },
+                 data: { currentServiceCount: remainder }
+               });
+
+               if (deductions > 0) {
+                 await tx.product.update({
+                   where: { id: usage.productId },
+                   data: { inventoryCount: { decrement: deductions } }
+                 });
+               }
+             }
           }
         }
       }

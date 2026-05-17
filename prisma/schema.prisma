@@ -135,6 +135,7 @@ model Product {
   appointmentItems   AppointmentItem[]
   shop               Shop                @relation(fields: [shopId], references: [id])
   purchaseOrderItems PurchaseOrderItem[]
+  productUsages      ServiceProductUsage[]
 
   @@index([shopId, type])
 }
@@ -166,6 +167,7 @@ model Service {
   resourceRequirements ServiceResourceRequirement[]
   shop                 Shop                         @relation(fields: [shopId], references: [id])
   addons               ServiceAddon[]               @relation("ServiceToAddons")
+  productUsages        ServiceProductUsage[]
 
   @@index([shopId, type])
 }
@@ -855,4 +857,21 @@ model BoothRentPayment {
 
   @@index([shopId])
   @@index([userId])
+}
+
+model ServiceProductUsage {
+  id                 String   @id @default(cuid())
+  serviceId          String
+  productId          String
+  servicesPerProduct Int      @default(1)
+  currentServiceCount Int     @default(0)
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  service            Service  @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+  product            Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@unique([serviceId, productId])
+  @@index([serviceId])
+  @@index([productId])
 }

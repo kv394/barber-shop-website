@@ -12,14 +12,23 @@ export async function GET(
 ) {
   try {
     const { shopId } = await params;
+    const url = new URL(request.url);
+    const isAdmin = url.searchParams.get('admin') === 'true';
 
     // Fetch from Redis Cache if available
+    const cacheKey = isAdmin ? `shop_services_admin:${shopId}` : `shop_services_public:${shopId}`;
     const services = await cacheService.getOrSet(
-      `shop_services_public:${shopId}`,
+      cacheKey,
       async () => {
         return await prisma.service.findMany({
-          where: { shopId, type: 'CUSTOMER' },
-          include: { addons: true }
+          where: isAdmin ? { shopId } : { shopId, type: 'CUSTOMER' },
+          include: { 
+            addons: true,
+            resourceRequirements: true,
+            productUsages: {
+              include: { product: true }
+            }
+          }
         });
       },
       300 // Cache for 5 minutes
@@ -66,7 +75,7 @@ export async function POST(
     }
 
     const body = await request.json();
-    const { name, description, price, duration, processingTime, finishingTime, trackInventory, type, itemType, brand, bufferMinutes, imageUrl, addonIds, isBookable, resourceRequirements } = body;
+    const { name, description, price, duration, processingTime, finishingTime, trackInventory, type, itemType, brand, bufferMinutes, imageUrl, addonIds, isBookable, resourceRequirements, productUsages } = body;
 
     if (!name || price === undefined || duration === undefined) {
         return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
@@ -129,13 +138,24 @@ export async function POST(
       };
     }
 
+    if (Array.isArray(productUsages)) {
+      dataToCreate.productUsages = {
+        create: productUsages.map((usage: any) => ({
+          productId: usage.productId,
+          servicesPerProduct: usage.servicesPerProduct || 1,
+          currentServiceCount: 0
+        }))
+      };
+    }
+
     const newService = await prisma.service.create({
       data: dataToCreate,
-      include: { resourceRequirements: true, addons: true }
+      include: { resourceRequirements: true, addons: true, productUsages: { include: { product: true } } }
     });
 
     // Invalidate the cache since we just added a new service
-    await cacheService.invalidate(`shop_services:${shopId}`);
+    await cacheService.invalidate(`shop_services_public:${shopId}`);
+    await cacheService.invalidate(`shop_services_admin:${shopId}`);
 
     revalidatePath(`/shop/${shopId}`);
 
