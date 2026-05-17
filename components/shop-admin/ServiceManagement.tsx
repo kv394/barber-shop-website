@@ -22,6 +22,7 @@ interface Service {
   imageUrl: string | null;
   addons?: ServiceAddon[];
   resourceRequirements?: { id: string, resourceType: string, quantity: number }[];
+  productUsages?: { id: string, productId: string, servicesPerProduct: number, product: { name: string } }[];
 }
 
 interface ServiceManagementProps {
@@ -32,6 +33,7 @@ export function ServiceManagement({ shopId }: ServiceManagementProps) {
   const [services, setServices] = useState<Service[]>([]);
   const [allAddons, setAllAddons] = useState<ServiceAddon[]>([]);
   const [resources, setResources] = useState<any[]>([]);
+  const [products, setProducts] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
@@ -47,6 +49,7 @@ export function ServiceManagement({ shopId }: ServiceManagementProps) {
     isBookable: true,
     imageUrl: '',
     resourceRequirements: [] as { resourceType: string, quantity: number }[],
+    productUsages: [] as { productId: string, servicesPerProduct: number }[],
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
@@ -77,21 +80,24 @@ export function ServiceManagement({ shopId }: ServiceManagementProps) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [servicesRes, addonsRes, resourcesRes] = await Promise.all([
-          fetch(`/api/shops/${shopId}/services`),
+        const [servicesRes, addonsRes, resourcesRes, productsRes] = await Promise.all([
+          fetch(`/api/shops/${shopId}/services?admin=true`),
           fetch(`/api/shops/${shopId}/services/addons`),
-          fetch(`/api/shops/${shopId}/resources`)
+          fetch(`/api/shops/${shopId}/resources`),
+          fetch(`/api/shops/${shopId}/products`)
         ]);
 
-        if (!servicesRes.ok || !addonsRes.ok || !resourcesRes.ok) throw new Error('Failed to fetch data');
+        if (!servicesRes.ok || !addonsRes.ok || !resourcesRes.ok || !productsRes.ok) throw new Error('Failed to fetch data');
         
         const servicesData = await servicesRes.json();
         const addonsData = await addonsRes.json();
         const resourcesData = await resourcesRes.json();
+        const productsData = await productsRes.json();
         
         setServices(Array.isArray(servicesData) ? servicesData : []);
         setAllAddons(Array.isArray(addonsData) ? addonsData : []);
         setResources(Array.isArray(resourcesData) ? resourcesData : []);
+        setProducts(Array.isArray(productsData) ? productsData : []);
       } catch (err) {
         setError(err instanceof Error ? err.message : 'An error occurred');
       } finally {
@@ -103,7 +109,7 @@ export function ServiceManagement({ shopId }: ServiceManagementProps) {
   }, [shopId]);
 
   const resetForm = () => {
-    setNewService({ name: '', description: '', price: '', duration: '', trackInventory: false, type: 'CUSTOMER', addonIds: [], isBookable: true, imageUrl: '', resourceRequirements: [] });
+    setNewService({ name: '', description: '', price: '', duration: '', trackInventory: false, type: 'CUSTOMER', addonIds: [], isBookable: true, imageUrl: '', resourceRequirements: [], productUsages: [] });
     setEditingServiceId(null);
   };
 
@@ -120,6 +126,7 @@ export function ServiceManagement({ shopId }: ServiceManagementProps) {
       isBookable: service.isBookable,
       imageUrl: service.imageUrl || '',
       resourceRequirements: service.resourceRequirements?.map(r => ({ resourceType: r.resourceType, quantity: r.quantity })) || [],
+      productUsages: service.productUsages?.map(p => ({ productId: p.productId, servicesPerProduct: p.servicesPerProduct })) || [],
     });
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -162,6 +169,7 @@ export function ServiceManagement({ shopId }: ServiceManagementProps) {
           imageUrl: newService.imageUrl,
           addonIds: newService.addonIds,
           resourceRequirements: newService.resourceRequirements,
+          productUsages: newService.productUsages,
         }),
       });
 
@@ -516,6 +524,74 @@ export function ServiceManagement({ shopId }: ServiceManagementProps) {
               )}
             </div>
 
+            <div className="bg-crm-bg p-4 rounded border border-crm-border">
+              <div className="flex justify-between items-center mb-3">
+                <label className="block font-medium text-crm-text text-[13px]">
+                  Product Inventory Usage (Optional)
+                </label>
+                <button
+                  type="button"
+                  onClick={() => setNewService(prev => ({
+                    ...prev,
+                    productUsages: [...prev.productUsages, { productId: '', servicesPerProduct: 1 }]
+                  }))}
+                  className="text-[11px] font-bold text-crm-primary"
+                >
+                  + Add Product Usage
+                </button>
+              </div>
+              <p className="text-[11px] text-crm-muted mb-3">Automatically deduct inventory for products after a certain number of services are completed (e.g., 1 bottle of shampoo used per 20 haircuts).</p>
+              
+              {newService.productUsages.length === 0 ? (
+                <p className="text-[12px] text-crm-muted italic">No products mapped.</p>
+              ) : (
+                <div className="space-y-2">
+                  {newService.productUsages.map((usage, index) => (
+                    <div key={index} className="flex gap-2 items-center">
+                      <select
+                        value={usage.productId}
+                        onChange={e => {
+                          const newUsages = [...newService.productUsages];
+                          newUsages[index].productId = e.target.value;
+                          setNewService({ ...newService, productUsages: newUsages });
+                        }}
+                        className="flex-1 bg-crm-surface border border-crm-border text-[13px] rounded p-1.5 text-crm-text"
+                      >
+                        <option value="">Select Product...</option>
+                        {products.map(p => (
+                           <option key={p.id} value={p.id}>{p.name} ({p.inventoryCount} in stock)</option>
+                        ))}
+                      </select>
+                      <span className="text-[12px] text-crm-muted">deduct 1 per</span>
+                      <input
+                        type="number"
+                        min="1"
+                        value={usage.servicesPerProduct}
+                        onChange={e => {
+                          const newUsages = [...newService.productUsages];
+                          newUsages[index].servicesPerProduct = parseInt(e.target.value) || 1;
+                          setNewService({ ...newService, productUsages: newUsages });
+                        }}
+                        className="w-16 bg-crm-surface border border-crm-border text-[13px] rounded p-1.5 text-crm-text text-center"
+                      />
+                      <span className="text-[12px] text-crm-muted">services</span>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const newUsages = [...newService.productUsages];
+                          newUsages.splice(index, 1);
+                          setNewService({ ...newService, productUsages: newUsages });
+                        }}
+                        className="text-status-cancelled text-lg font-bold px-2"
+                      >
+                        ×
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
             <button
               type="submit"
               disabled={isSubmitting || !newService.name || !newService.price || !newService.duration}
@@ -567,6 +643,15 @@ export function ServiceManagement({ shopId }: ServiceManagementProps) {
                       </div>
                       {service.description && (
                         <p className="text-crm-muted mt-1 text-[13px]">{service.description}</p>
+                      )}
+                      {service.productUsages && service.productUsages.length > 0 && (
+                        <div className="mt-1 flex flex-wrap gap-1">
+                          {service.productUsages.map(pu => (
+                            <span key={pu.id} className="text-[11px] bg-crm-surface border border-crm-border text-crm-muted px-2 py-0.5 rounded">
+                              Uses 1 <b>{pu.product?.name}</b> per {pu.servicesPerProduct} services
+                            </span>
+                          ))}
+                        </div>
                       )}
                       <div className="flex gap-4 sm:gap-6 mt-2 text-[11px] sm:text-[13px] text-crm-muted">
                         <span>💰 ${service.price.toFixed(2)}</span>

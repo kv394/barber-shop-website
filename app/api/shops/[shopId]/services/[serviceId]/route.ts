@@ -21,7 +21,7 @@ export async function PUT(
     }
 
     const body = await request.json();
-    const { addonIds, resourceRequirements, ...rest } = body;
+    const { addonIds, resourceRequirements, productUsages, ...rest } = body;
 
     const dataToUpdate: any = { ...rest };
     
@@ -45,13 +45,27 @@ export async function PUT(
       };
     }
 
+    if (Array.isArray(productUsages)) {
+      await prisma.serviceProductUsage.deleteMany({
+        where: { serviceId }
+      });
+      dataToUpdate.productUsages = {
+        create: productUsages.map((usage: any) => ({
+          productId: usage.productId,
+          servicesPerProduct: usage.servicesPerProduct || 1,
+          currentServiceCount: 0
+        }))
+      };
+    }
+
     const updatedService = await prisma.service.update({
       where: { id: serviceId },
       data: dataToUpdate,
-      include: { resourceRequirements: true, addons: true }
+      include: { resourceRequirements: true, addons: true, productUsages: { include: { product: true } } }
     });
 
-    await cacheService.invalidate(`shop_services:${shopId}`);
+    await cacheService.invalidate(`shop_services_public:${shopId}`);
+    await cacheService.invalidate(`shop_services_admin:${shopId}`);
     revalidatePath(`/shop/${shopId}`);
     revalidatePath(`/shop/${shopId}/config/services`);
 
