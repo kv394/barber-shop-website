@@ -58,7 +58,7 @@ export default function BarcodeScannerWrapper({ shopId, services = [] }: { shopI
 
     if (shopId) {
       // 1. Inventory barcode match
-      const foundService = services.find(s => s.barcode === decodedText);
+      const foundService = services.find(s => s.barcode === decodedText || s.id === decodedText);
       if (foundService) {
         setScannedCode(decodedText);
         setMatchedService(foundService);

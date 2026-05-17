@@ -37,7 +37,7 @@ export default function ProductBarcodeScannerWrapper({ shopId, products = [] }: 
     setIsScanning(false);
     resetAll();
 
-    const foundProduct = products.find(p => p.barcode === decodedText);
+    const foundProduct = products.find(p => p.barcode === decodedText || p.id === decodedText);
     if (foundProduct) {
       setScannedCode(decodedText);
       setMatchedProduct(foundProduct);

@@ -108,7 +108,7 @@ export default function ProductManager({ shopId, products }: { shopId: string, p
       trackInventory: product.trackInventory,
       type: product.type,
       sku: product.sku || '',
-      barcode: product.barcode || '',
+      barcode: product.barcode || product.id,
       isSellable: product.isSellable ?? true,
       imageUrl: product.imageUrl || ''
     });
