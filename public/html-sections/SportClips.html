@@ -1199,6 +1199,7 @@
             try {
               const paths = window.parent.location.pathname.split("/");
               shopId = paths[paths.length - 1];
+              if (shopId && shopId.endsWith(".html")) { shopId = null; }
             } catch (e) {}
           }
           shopId = shopId || "cmn9kj24n0000lqzc7kcsmpst";
