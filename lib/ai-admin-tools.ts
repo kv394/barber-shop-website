@@ -112,6 +112,18 @@ export const adminToolDeclarations = [
       },
       required: ['action']
     }
+  },
+  {
+    name: 'get_staff_schedule',
+    description: 'Retrieve staff appointments and schedule for a specific date to check availability.',
+    parameters: {
+      type: Type.OBJECT,
+      properties: {
+        date: { type: Type.STRING, description: 'Date in YYYY-MM-DD format (e.g., 2026-05-19)' },
+        staffId: { type: Type.STRING, description: 'Optional. Filter by specific staff member ID' }
+      },
+      required: ['date']
+    }
   }
 ];
 
@@ -281,6 +293,53 @@ export async function executeAdminTool(call: any, shopId: string, user: any) {
           return { success: true, message: `Staff member removed from shop` };
         }
         return { error: "Unknown action" };
+      }
+
+      case 'get_staff_schedule': {
+        if (!args.date) return { error: "Date is required" };
+        const targetDate = new Date(args.date);
+        if (isNaN(targetDate.getTime())) return { error: "Invalid date format. Use YYYY-MM-DD." };
+        
+        const startOfDay = new Date(targetDate);
+        startOfDay.setHours(0, 0, 0, 0);
+        const endOfDay = new Date(targetDate);
+        endOfDay.setHours(23, 59, 59, 999);
+
+        const whereClause: any = {
+          shopId,
+          startTime: { gte: startOfDay, lt: endOfDay },
+          status: { notIn: ['CANCELLED'] }
+        };
+        
+        if (args.staffId) {
+          whereClause.staffId = args.staffId;
+        }
+
+        const appointments = await prisma.appointment.findMany({
+          where: whereClause,
+          include: {
+            service: { select: { name: true, duration: true } },
+            staff: { select: { name: true } },
+            user: { select: { name: true } }
+          },
+          orderBy: { startTime: 'asc' }
+        });
+
+        const schedule = appointments.map((apt: any) => ({
+          id: apt.id,
+          startTime: apt.startTime.toISOString(),
+          endTime: apt.endTime.toISOString(),
+          service: apt.service?.name,
+          staffName: apt.staff?.name,
+          clientName: apt.user?.name,
+          status: apt.status
+        }));
+
+        return {
+          date: args.date,
+          appointmentsCount: schedule.length,
+          schedule: schedule.length > 0 ? schedule : "No appointments for this date."
+        };
       }
 
       default:
