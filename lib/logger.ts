@@ -20,22 +20,36 @@ export const logger = {
       return;
     }
 
-    // Store in Database if possible
-    try {
-        const { prisma } = await import('@/lib/prisma');
-        await prisma.systemLog.create({
-            data: {
-                level: 'ERROR',
-                message: message,
-                stack: stackTrace,
-                path: context?.path,
-                shopId: context?.shopId,
-                userId: context?.userId,
-                metadata: error ? JSON.parse(JSON.stringify(error, Object.getOwnPropertyNames(error))) : undefined
-            }
-        });
-    } catch (dbErr) {
-        console.error('Failed to write error to database:', dbErr);
+    const isDatabaseConnectionError = (err: any) => {
+      const msg = err instanceof Error ? err.message : typeof err === 'string' ? err : JSON.stringify(err);
+      const code = err?.code?.toString?.();
+      return /connection terminated due to connection timeout|connection terminated unexpectedly|connection timeout|connection refused|ECONNRESET|ETIMEDOUT|ECONNREFUSED/i.test(msg + ' ' + code);
+    };
+
+    // Store in Database if possible, but skip DB logging when the database appears unreachable.
+    if (!isDatabaseConnectionError(error)) {
+      try {
+          const { prisma } = await import('@/lib/prisma');
+          await prisma.systemLog.create({
+              data: {
+                  level: 'ERROR',
+                  message: message,
+                  stack: stackTrace,
+                  path: context?.path,
+                  shopId: context?.shopId,
+                  userId: context?.userId,
+                  metadata: error ? JSON.parse(JSON.stringify(error, Object.getOwnPropertyNames(error))) : undefined
+              }
+          });
+      } catch (dbErr) {
+          if (isDatabaseConnectionError(dbErr)) {
+            console.error('Skipping DB error log because database connection is unavailable:', dbErr);
+          } else {
+            console.error('Failed to write error to database:', dbErr);
+          }
+      }
+    } else {
+      console.error('Skipping DB error log because the error indicates a database connection issue.');
     }
 
     // Proactive reporting via Webhook

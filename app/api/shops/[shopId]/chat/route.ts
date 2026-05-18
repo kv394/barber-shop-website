@@ -3,6 +3,12 @@ import { prisma } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
 import { createClient } from '@/utils/supabase/server';
 
+const isDatabaseConnectionError = (error: any) => {
+  const msg = error instanceof Error ? error.message : typeof error === 'string' ? error : JSON.stringify(error);
+  const code = error?.code?.toString?.();
+  return /connection terminated due to connection timeout|connection terminated unexpectedly|connection timeout|connection refused|ECONNRESET|ETIMEDOUT|ECONNREFUSED/i.test(msg + ' ' + code);
+};
+
 export async function GET(
   request: Request,
   { params }: { params: Promise<{ shopId: string }> }
@@ -42,7 +48,11 @@ export async function GET(
 
     return NextResponse.json(messages);
   } catch (error: any) {
-    logger.error("Error fetching messages:", error);
+    const { shopId } = await params;
+    logger.error("Error fetching messages:", error, { path: `/api/shops/${shopId}/chat`, shopId });
+    if (isDatabaseConnectionError(error)) {
+      return NextResponse.json({ error: 'Database temporarily unavailable' }, { status: 503 });
+    }
     return NextResponse.json({ error: 'Failed to fetch messages' }, { status: 500 });
   }
 }
@@ -214,7 +224,11 @@ INSTRUCTIONS:
 
     return NextResponse.json(message);
   } catch (error: any) {
-    logger.error("Error sending message:", error);
+    const { shopId } = await params;
+    logger.error("Error sending message:", error, { path: `/api/shops/${shopId}/chat`, shopId });
+    if (isDatabaseConnectionError(error)) {
+      return NextResponse.json({ error: 'Database temporarily unavailable' }, { status: 503 });
+    }
     return NextResponse.json({ error: 'Failed to send message' }, { status: 500 });
   }
 }
