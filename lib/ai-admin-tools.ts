@@ -82,6 +82,36 @@ export const adminToolDeclarations = [
         depositRequired: { type: Type.BOOLEAN, description: 'Whether deposits are required' }
       }
     }
+  },
+  {
+    name: 'manage_resource',
+    description: 'Create, update, or delete a resource (like a chair, station, or seat) in the shop.',
+    parameters: {
+      type: Type.OBJECT,
+      properties: {
+        action: { type: Type.STRING, description: '"create", "update", or "delete"' },
+        resourceId: { type: Type.STRING, description: 'Required for update or delete' },
+        name: { type: Type.STRING, description: 'Name of the resource (e.g., Chair 1, VIP Station)' },
+        type: { type: Type.STRING, description: 'Type of resource (e.g., CHAIR, ROOM, STATION)' }
+      },
+      required: ['action']
+    }
+  },
+  {
+    name: 'manage_staff',
+    description: 'Create, update, or remove a staff member (user) in the shop.',
+    parameters: {
+      type: Type.OBJECT,
+      properties: {
+        action: { type: Type.STRING, description: '"create", "update", or "delete"' },
+        userId: { type: Type.STRING, description: 'Required for update or delete' },
+        name: { type: Type.STRING, description: 'Name of the staff member' },
+        email: { type: Type.STRING, description: 'Email of the staff member (required for create)' },
+        phone: { type: Type.STRING, description: 'Phone number' },
+        role: { type: Type.STRING, description: 'Role (e.g., STAFF, SHOP_ADMIN)' }
+      },
+      required: ['action']
+    }
   }
 ];
 
@@ -204,6 +234,52 @@ export async function executeAdminTool(call: any, shopId: string, user: any) {
         
         await prisma.shop.update({ where: { id: shopId }, data: dataToUpdate });
         return { success: true, message: `Shop settings updated` };
+      }
+
+      case 'manage_resource': {
+        if (args.action === 'create') {
+          if (!args.name || !args.type) return { error: "Missing required fields: name, type" };
+          const r = await prisma.resource.create({
+            data: { shopId, name: args.name, type: args.type }
+          });
+          return { success: true, message: `Resource '${r.name}' created` };
+        } else if (args.action === 'update') {
+          if (!args.resourceId) return { error: "resourceId required for update" };
+          const dataToUpdate: any = {};
+          if (args.name !== undefined) dataToUpdate.name = args.name;
+          if (args.type !== undefined) dataToUpdate.type = args.type;
+          const r = await prisma.resource.update({ where: { id: args.resourceId }, data: dataToUpdate });
+          return { success: true, message: `Resource '${r.name}' updated` };
+        } else if (args.action === 'delete') {
+          if (!args.resourceId) return { error: "resourceId required for delete" };
+          await prisma.resource.delete({ where: { id: args.resourceId } });
+          return { success: true, message: `Resource deleted` };
+        }
+        return { error: "Unknown action" };
+      }
+
+      case 'manage_staff': {
+        if (args.action === 'create') {
+          if (!args.email || !args.name) return { error: "Missing required fields: email, name" };
+          const u = await prisma.user.create({
+            data: { shopId, email: args.email, name: args.name, role: args.role || 'STAFF', phone: args.phone }
+          });
+          return { success: true, message: `Staff member '${u.name}' created` };
+        } else if (args.action === 'update') {
+          if (!args.userId) return { error: "userId required for update" };
+          const dataToUpdate: any = {};
+          if (args.name !== undefined) dataToUpdate.name = args.name;
+          if (args.email !== undefined) dataToUpdate.email = args.email;
+          if (args.phone !== undefined) dataToUpdate.phone = args.phone;
+          if (args.role !== undefined) dataToUpdate.role = args.role;
+          const u = await prisma.user.update({ where: { id: args.userId }, data: dataToUpdate });
+          return { success: true, message: `Staff member '${u.name}' updated` };
+        } else if (args.action === 'delete') {
+          if (!args.userId) return { error: "userId required for delete" };
+          await prisma.user.update({ where: { id: args.userId }, data: { shopId: null } });
+          return { success: true, message: `Staff member removed from shop` };
+        }
+        return { error: "Unknown action" };
       }
 
       default:
