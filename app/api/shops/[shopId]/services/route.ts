@@ -17,23 +17,66 @@ async function fetchShopServices(shopId: string, isAdmin: boolean) {
     where: isAdmin ? { shopId } : { shopId, type: 'CUSTOMER' }
   };
 
+  const includeFull = {
+    ...serviceInclude,
+    resourceRequirements: true
+  };
+
+  const isMissingTableError = (err: any, tableName: string) =>
+    err?.code === 'P2021' && typeof err.meta?.table === 'string' && err.meta.table.includes(tableName);
+
   try {
     return await prisma.service.findMany({
       ...baseArgs,
-      include: {
-        ...serviceInclude,
-        resourceRequirements: true
-      }
+      include: includeFull
     });
   } catch (error: any) {
-    if (error.code === 'P2021' && typeof error.meta?.table === 'string' && error.meta.table.includes('ServiceResourceRequirement')) {
-      logger.warn('ServiceResourceRequirement table is missing; returning services without resource requirements.', { shopId, isAdmin, errorMeta: error.meta });
+    const missingResourceRequirements = isMissingTableError(error, 'ServiceResourceRequirement');
+    const missingProductUsage = isMissingTableError(error, 'ServiceProductUsage');
+
+    if (!missingResourceRequirements && !missingProductUsage) {
+      throw error;
+    }
+
+    logger.warn('Service related table is missing; retrying without the missing includes.', {
+      shopId,
+      isAdmin,
+      missingResourceRequirements,
+      missingProductUsage,
+      errorMeta: error.meta
+    });
+
+    const includeRetry: any = { addons: true };
+    if (!missingProductUsage) {
+      includeRetry.productUsages = includeFull.productUsages;
+    }
+    if (!missingResourceRequirements) {
+      includeRetry.resourceRequirements = true;
+    }
+
+    try {
       return await prisma.service.findMany({
         ...baseArgs,
-        include: serviceInclude
+        include: includeRetry
       });
+    } catch (retryError: any) {
+      const missingResourceRequirements2 = isMissingTableError(retryError, 'ServiceResourceRequirement');
+      const missingProductUsage2 = isMissingTableError(retryError, 'ServiceProductUsage');
+      if (missingResourceRequirements2 || missingProductUsage2) {
+        logger.warn('Second retry still failed due to missing service relation tables; returning services with addons only.', {
+          shopId,
+          isAdmin,
+          missingResourceRequirements2,
+          missingProductUsage2,
+          errorMeta: retryError.meta
+        });
+        return await prisma.service.findMany({
+          ...baseArgs,
+          include: { addons: true }
+        });
+      }
+      throw retryError;
     }
-    throw error;
   }
 }
 
