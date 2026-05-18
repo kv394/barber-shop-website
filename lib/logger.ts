@@ -23,7 +23,7 @@ export const logger = {
     const isDatabaseConnectionError = (err: any) => {
       const msg = err instanceof Error ? err.message : typeof err === 'string' ? err : JSON.stringify(err);
       const code = err?.code?.toString?.();
-      return /connection terminated due to connection timeout|connection terminated unexpectedly|connection timeout|connection refused|ECONNRESET|ETIMEDOUT|ECONNREFUSED/i.test(msg + ' ' + code);
+      return /connection terminated due to connection timeout|connection terminated unexpectedly|connection timeout|connection refused|ECONNRESET|ETIMEDOUT|ECONNREFUSED|EMAXCONNSESSION|max clients reached|session mode/i.test(msg + ' ' + code);
     };
 
     // Store in Database if possible, but skip DB logging when the database appears unreachable.

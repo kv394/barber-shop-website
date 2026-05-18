@@ -6,7 +6,7 @@ import { createClient } from '@/utils/supabase/server';
 const isDatabaseConnectionError = (error: any) => {
   const msg = error instanceof Error ? error.message : typeof error === 'string' ? error : JSON.stringify(error);
   const code = error?.code?.toString?.();
-  return /connection terminated due to connection timeout|connection terminated unexpectedly|connection timeout|connection refused|ECONNRESET|ETIMEDOUT|ECONNREFUSED/i.test(msg + ' ' + code);
+  return /connection terminated due to connection timeout|connection terminated unexpectedly|connection timeout|connection refused|ECONNRESET|ETIMEDOUT|ECONNREFUSED|EMAXCONNSESSION|max clients reached|session mode/i.test(msg + ' ' + code);
 };
 
 export async function GET(
