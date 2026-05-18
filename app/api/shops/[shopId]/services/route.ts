@@ -5,6 +5,37 @@ import { createClient } from '@/utils/supabase/server';
 import { revalidatePath } from 'next/cache';
 import { cacheService } from '@/lib/cache';
 
+const serviceInclude = {
+  addons: true,
+  productUsages: {
+    include: { product: true }
+  }
+};
+
+async function fetchShopServices(shopId: string, isAdmin: boolean) {
+  const baseArgs = {
+    where: isAdmin ? { shopId } : { shopId, type: 'CUSTOMER' }
+  };
+
+  try {
+    return await prisma.service.findMany({
+      ...baseArgs,
+      include: {
+        ...serviceInclude,
+        resourceRequirements: true
+      }
+    });
+  } catch (error: any) {
+    if (error.code === 'P2021' && typeof error.meta?.table === 'string' && error.meta.table.includes('ServiceResourceRequirement')) {
+      logger.warn('ServiceResourceRequirement table is missing; returning services without resource requirements.', { shopId, isAdmin, errorMeta: error.meta });
+      return await prisma.service.findMany({
+        ...baseArgs,
+        include: serviceInclude
+      });
+    }
+    throw error;
+  }
+}
 
 export async function GET(
   request: Request,
@@ -19,18 +50,7 @@ export async function GET(
     const cacheKey = isAdmin ? `shop_services_admin:${shopId}` : `shop_services_public:${shopId}`;
     const services = await cacheService.getOrSet(
       cacheKey,
-      async () => {
-        return await prisma.service.findMany({
-          where: isAdmin ? { shopId } : { shopId, type: 'CUSTOMER' },
-          include: { 
-            addons: true,
-            resourceRequirements: true,
-            productUsages: {
-              include: { product: true }
-            }
-          }
-        });
-      },
+      async () => fetchShopServices(shopId, isAdmin),
       300 // Cache for 5 minutes
     );
 
