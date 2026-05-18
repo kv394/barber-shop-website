@@ -12,6 +12,14 @@ const serviceInclude = {
   }
 };
 
+const isMissingTableError = (err: any, tableName: string) => {
+  if (err?.code !== 'P2021') return false;
+  if (err.message && err.message.includes(tableName)) return true;
+  if (err.meta && typeof err.meta.table === 'string' && err.meta.table.includes(tableName)) return true;
+  if (err.meta && typeof err.meta.modelName === 'string' && err.meta.modelName.includes(tableName)) return true;
+  return false;
+};
+
 async function fetchShopServices(shopId: string, isAdmin: boolean) {
   const baseArgs = {
     where: isAdmin ? { shopId } : { shopId, type: 'CUSTOMER' }
@@ -20,14 +28,6 @@ async function fetchShopServices(shopId: string, isAdmin: boolean) {
   const includeFull = {
     ...serviceInclude,
     resourceRequirements: true
-  };
-
-  const isMissingTableError = (err: any, tableName: string) => {
-    if (err?.code !== 'P2021') return false;
-    if (err.message && err.message.includes(tableName)) return true;
-    if (err.meta && typeof err.meta.table === 'string' && err.meta.table.includes(tableName)) return true;
-    if (err.meta && typeof err.meta.modelName === 'string' && err.meta.modelName.includes(tableName)) return true;
-    return false;
   };
 
   try {
@@ -216,10 +216,46 @@ export async function POST(
       };
     }
 
-    const newService = await prisma.service.create({
-      data: dataToCreate,
-      include: { resourceRequirements: true, addons: true, productUsages: { include: { product: true } } }
-    });
+    const includeFull: any = { addons: true, resourceRequirements: true, productUsages: { include: { product: true } } };
+    let newService;
+
+    try {
+      newService = await prisma.service.create({
+        data: dataToCreate,
+        include: includeFull
+      });
+    } catch (err: any) {
+      const isMissingResource = isMissingTableError(err, 'ServiceResourceRequirement');
+      const isMissingProduct = isMissingTableError(err, 'ServiceProductUsage');
+      
+      if (isMissingResource || isMissingProduct) {
+        logger.warn('Missing service relation tables during create, retrying without them.', {
+          shopId,
+          isMissingResource,
+          isMissingProduct
+        });
+        
+        const fallbackInclude: any = { addons: true };
+        if (!isMissingResource) {
+          fallbackInclude.resourceRequirements = true;
+        } else {
+          delete dataToCreate.resourceRequirements;
+        }
+        
+        if (!isMissingProduct) {
+          fallbackInclude.productUsages = { include: { product: true } };
+        } else {
+          delete dataToCreate.productUsages;
+        }
+
+        newService = await prisma.service.create({
+          data: dataToCreate,
+          include: fallbackInclude
+        });
+      } else {
+        throw err;
+      }
+    }
 
     // Invalidate the cache since we just added a new service
     await cacheService.invalidate(`shop_services_public:${shopId}`);

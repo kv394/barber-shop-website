@@ -32,37 +32,102 @@ export async function PUT(
       };
     }
 
+    const isMissingTableError = (err: any, tableName: string) => {
+      if (err?.code !== 'P2021') return false;
+      if (err.message && err.message.includes(tableName)) return true;
+      if (err.meta && typeof err.meta.table === 'string' && err.meta.table.includes(tableName)) return true;
+      if (err.meta && typeof err.meta.modelName === 'string' && err.meta.modelName.includes(tableName)) return true;
+      return false;
+    };
+
+    let skipResourceRequirements = false;
+    let skipProductUsages = false;
+
     if (Array.isArray(resourceRequirements)) {
-      // First delete existing, then create new ones
-      await prisma.serviceResourceRequirement.deleteMany({
-        where: { serviceId }
-      });
-      dataToUpdate.resourceRequirements = {
-        create: resourceRequirements.map((req: any) => ({
-          resourceType: req.resourceType,
-          quantity: req.quantity || 1
-        }))
-      };
+      try {
+        // First delete existing, then create new ones
+        await prisma.serviceResourceRequirement.deleteMany({
+          where: { serviceId }
+        });
+        dataToUpdate.resourceRequirements = {
+          create: resourceRequirements.map((req: any) => ({
+            resourceType: req.resourceType,
+            quantity: req.quantity || 1
+          }))
+        };
+      } catch (err: any) {
+        if (isMissingTableError(err, 'ServiceResourceRequirement')) {
+          skipResourceRequirements = true;
+          logger.warn('ServiceResourceRequirement table missing, skipping update');
+        } else {
+          throw err;
+        }
+      }
     }
 
     if (Array.isArray(productUsages)) {
-      await prisma.serviceProductUsage.deleteMany({
-        where: { serviceId }
-      });
-      dataToUpdate.productUsages = {
-        create: productUsages.map((usage: any) => ({
-          productId: usage.productId,
-          servicesPerProduct: usage.servicesPerProduct || 1,
-          currentServiceCount: 0
-        }))
-      };
+      try {
+        await prisma.serviceProductUsage.deleteMany({
+          where: { serviceId }
+        });
+        dataToUpdate.productUsages = {
+          create: productUsages.map((usage: any) => ({
+            productId: usage.productId,
+            servicesPerProduct: usage.servicesPerProduct || 1,
+            currentServiceCount: 0
+          }))
+        };
+      } catch (err: any) {
+        if (isMissingTableError(err, 'ServiceProductUsage')) {
+          skipProductUsages = true;
+          logger.warn('ServiceProductUsage table missing, skipping update');
+        } else {
+          throw err;
+        }
+      }
     }
 
-    const updatedService = await prisma.service.update({
-      where: { id: serviceId },
-      data: dataToUpdate,
-      include: { resourceRequirements: true, addons: true, productUsages: { include: { product: true } } }
-    });
+    const includeFull: any = { addons: true };
+    if (!skipResourceRequirements) {
+      includeFull.resourceRequirements = true;
+    }
+    if (!skipProductUsages) {
+      includeFull.productUsages = { include: { product: true } };
+    }
+
+    let updatedService;
+    try {
+      updatedService = await prisma.service.update({
+        where: { id: serviceId },
+        data: dataToUpdate,
+        include: includeFull
+      });
+    } catch (err: any) {
+      const missingResource = isMissingTableError(err, 'ServiceResourceRequirement');
+      const missingProduct = isMissingTableError(err, 'ServiceProductUsage');
+      
+      if (missingResource || missingProduct) {
+        const fallbackInclude: any = { addons: true };
+        if (!missingResource && !skipResourceRequirements) {
+          fallbackInclude.resourceRequirements = true;
+        } else {
+          delete dataToUpdate.resourceRequirements;
+        }
+        if (!missingProduct && !skipProductUsages) {
+          fallbackInclude.productUsages = { include: { product: true } };
+        } else {
+          delete dataToUpdate.productUsages;
+        }
+        
+        updatedService = await prisma.service.update({
+          where: { id: serviceId },
+          data: dataToUpdate,
+          include: fallbackInclude
+        });
+      } else {
+        throw err;
+      }
+    }
 
     await cacheService.invalidate(`shop_services_public:${shopId}`);
     await cacheService.invalidate(`shop_services_admin:${shopId}`);
