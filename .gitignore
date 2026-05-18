@@ -35,3 +35,12 @@ certificates
 .vercel
 barber shop SaaS.png
 Missouri City - Services & Booking.html
+
+# Vercel Environment Variables
+.env.*.vercel
+.env.vercel
+
+# Test Scripts
+check-tables*.js
+test-adapter*.js
+test-prisma.js

@@ -2,6 +2,7 @@ import { logger } from "@/lib/logger";
 import { prisma } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
 import { createClient } from '@/utils/supabase/server';
+import { adminToolDeclarations, executeAdminTool } from '@/lib/ai-admin-tools';
 
 const isDatabaseConnectionError = (error: any) => {
   const msg = error instanceof Error ? error.message : typeof error === 'string' ? error : JSON.stringify(error);
@@ -140,82 +141,106 @@ export async function POST(
       // Handle @help AI Assistant
       if (mentions.includes('help') && process.env.GEMINI_API_KEY) {
         const question = message.content.replace(/@help/gi, '').trim() || "What can you help me with?";
-        const systemInstruction = `You are a helpful expert AI assistant for this specific barbershop/salon management platform.
-The user asking this question has the role: ${user.role}. Tailor your answer specifically to this role.
-Your job is to answer questions about how to use the site's functionality based ONLY on the exact layout provided below. 
-
-SITE NAVIGATION MAP:
-- **Dashboard:** Main landing page for the shop, showing today's stats, active time logs, and low stock alerts.
-- **Bookings:** A full calendar interface to view and manage appointments.
-- **Waitlist:** Manage clients waiting for an opening.
-- **Clients:** Client database, history, formulas, and gallery.
-- **Team:** For Shop Admins, this sidebar link goes to a page with two horizontal tabs: "Team & Availability" (to manage staff, set working hours, invite users) and "Portfolio" (to manage all staff portfolio images).
-- **Engagement:** Contains sub-tabs for Analytics, Loyalty programs, Referrals, Marketing Campaigns, Gift Cards, and Reviews.
-- **Reports:** Contains sub-tabs for Sales & Insights, Commissions, Staff Working Hours, and Expenses.
-- **Configuration (Config):** Contains sub-tabs for Services, Add-ons, Products (Inventory), Booking Rules, Resources (Chairs/Stations), Intake Forms, and Memberships.
-- **Settings:** Contains sub-tabs for Appearance (where you find Shop Location/Address, Contact Info, Brand Colors), Notifications, Commissions, Kiosk, and Billing.
-
-For non-admin staff ("My Area" in the sidebar):
-- **My Schedule:** Where staff can view their own appointments.
-- **My Leave:** Where staff can request time off.
-- **My Portfolio:** Where staff can manage their own public portfolio images.
-- **My Earnings:** Where staff can see their commission reports.
-- **Profile:** Basic user profile settings.
-
-INSTRUCTIONS:
-1. When asked how to do something, point them to the exact menu path listed above. Pay special attention to their role (if implied).
-2. Keep your answers concise, friendly, and formatted with markdown.
-3. If a Shop Admin asks about portfolio images, tell them to click "Team" in the sidebar and then click the "Portfolio" tab. If a Staff member asks, tell them to click "My Portfolio" under "My Area" in the sidebar.
-4. If they ask about "staff availability", tell them to click "Team" in the sidebar and use the "Team & Availability" tab.
-5. If they ask about transferring or sharing staff between locations, explain that they should use the Location Dropdown at the top left to switch to the *new* location, go to the "Team" menu, and invite the staff member using their existing email address. To completely transfer them, they can then switch to the *old* location and click "Remove from Shop" on that staff member's card.
-6. If they ask about the shop location, address, contact information, or brand colors, tell them to navigate to **Settings** in the sidebar, then use the **Appearance** tab.
-7. If they ask about customizing the landing page design (e.g., typography, button styles, light/dark mode themes, hero layouts, overlay controls, scroll animations, favicon, or advanced Custom CSS) or how to reorder standard sections (Hero, Services, Team, Gallery, Reviews, Contact), tell them to navigate to **Settings** in the sidebar, then use the **Appearance** tab where they will find a full suite of website builder tools.
-8. If they ask about making the "About Us" section or custom pages less plain, explain that they can use the new Rich Text Formatting Toolbar in the **Custom Pages (Menus)** section (under **Settings -> Appearance**). This toolbar allows them to easily add Bold, Italic, Underline, Headings (H2/H3), Bulleted Lists, Line Breaks, and Links directly into their content without writing code.`;
-
+        
         try {
-          const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${process.env.GEMINI_API_KEY}`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              system_instruction: { parts: [{ text: systemInstruction }] },
-              contents: [{ parts: [{ text: question }] }],
-              generationConfig: { temperature: 0.7 }
-            })
-          });
+          const { GoogleGenAI } = require('@google/genai');
+          const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+
+          const systemInstruction = `You are an expert AI assistant and Shop Administrator for this barbershop platform.
+The user asking this question has the role: ${user.role}.
+If they ask for information, you can answer.
+If they ask you to modify shop data (e.g. add a service, change a price), use your tools to perform the action and report back what you did.
+ONLY use tools if the user role is SHOP_ADMIN or SITE_ADMIN.`;
+
+          const tools = [{ functionDeclarations: adminToolDeclarations }];
           
-          if (response.ok) {
-            const data = await response.json();
-            const answer = data.candidates?.[0]?.content?.parts?.[0]?.text || "I'm not sure how to help with that right now.";
-            const tokensUsed = data.usageMetadata?.totalTokenCount || 0;
+          let formattedContents: any[] = [{ role: 'user', parts: [{ text: question }] }];
 
-            if (tokensUsed > 0) {
-              await prisma.shop.update({
-                where: { id: shopId },
-                data: { aiTokens: { increment: tokensUsed } }
-              });
-            }
-            
-            const aiUser = await prisma.user.upsert({
-              where: { email: 'ai-assistant@system.local' },
-              update: {},
-              create: {
-                id: 'system_ai_assistant',
-                email: 'ai-assistant@system.local',
-                name: 'AI Assistant',
-                role: 'SITE_ADMIN',
-              }
-            });
+          let response = await ai.models.generateContent({
+              model: 'gemini-2.5-flash',
+              contents: formattedContents,
+              config: { systemInstruction, tools }
+          });
 
-            await prisma.message.create({
-              data: {
-                shopId,
-                senderId: aiUser.id,
-                content: answer,
+          let finalResponseText = "";
+          if (response.candidates?.[0]?.content?.parts) {
+              for (const part of response.candidates[0].content.parts) {
+                  if (typeof part.text === 'string' && !part.thought) {
+                      finalResponseText += part.text;
+                  }
               }
-            });
-          } else {
-             logger.error("AI Assistant error response:", await response.text());
           }
+
+          let functionCalls = response.functionCalls;
+          let loopCount = 0;
+          let totalTokensUsed = response.usageMetadata?.totalTokenCount || 0;
+
+          while (functionCalls && functionCalls.length > 0 && loopCount < 5) {
+              loopCount++;
+              const toolResponses: any[] = [];
+
+              for (const call of functionCalls) {
+                  let result: any = {};
+                  try {
+                      result = await executeAdminTool(call, shopId, user);
+                  } catch (err: any) {
+                      result = { error: err.message };
+                  }
+                  toolResponses.push({ functionResponse: { name: call.name, response: result } });
+              }
+
+              if (response.candidates?.[0]?.content?.parts) {
+                  formattedContents.push({ role: 'model', parts: response.candidates[0].content.parts });
+              } else {
+                  formattedContents.push({ role: 'model', parts: functionCalls.map((c: any) => ({ functionCall: c })) });
+              }
+              
+              formattedContents.push({ role: 'user', parts: toolResponses });
+
+              response = await ai.models.generateContent({
+                  model: 'gemini-2.5-flash',
+                  contents: formattedContents,
+                  config: { systemInstruction, tools }
+              });
+              
+              totalTokensUsed += response.usageMetadata?.totalTokenCount || 0;
+
+              finalResponseText = "";
+              if (response.candidates?.[0]?.content?.parts) {
+                  for (const part of response.candidates[0].content.parts) {
+                      if (typeof part.text === 'string' && !part.thought) {
+                          finalResponseText += part.text;
+                      }
+                  }
+              }
+              functionCalls = response.functionCalls;
+          }
+
+          if (totalTokensUsed > 0) {
+            await prisma.shop.update({
+              where: { id: shopId },
+              data: { aiTokens: { increment: totalTokensUsed } }
+            });
+          }
+          
+          const aiUser = await prisma.user.upsert({
+            where: { email: 'ai-assistant@system.local' },
+            update: {},
+            create: {
+              id: 'system_ai_assistant',
+              email: 'ai-assistant@system.local',
+              name: 'AI Assistant',
+              role: 'SITE_ADMIN',
+            }
+          });
+
+          await prisma.message.create({
+            data: {
+              shopId,
+              senderId: aiUser.id,
+              content: finalResponseText || "I have completed the task.",
+            }
+          });
         } catch (aiError) {
           logger.error("Error triggering AI assistant:", aiError);
         }
