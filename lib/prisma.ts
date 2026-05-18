@@ -23,10 +23,10 @@ function createPrismaClient() {
   // 1. Prioritize Vercel's Supabase Integration Prisma pooler URL (POSTGRES_PRISMA_URL) which is pre-configured for port 6543 with correct username
   // 2. Fall back to other URLs
   let connectionString = 
-    process.env.DATABASE_URL || 
-    process.env.SUPABASE_DATABASE_URL || 
     process.env.POSTGRES_PRISMA_URL || 
-    process.env.POSTGRES_URL;
+    process.env.POSTGRES_URL || 
+    process.env.SUPABASE_DATABASE_URL || 
+    process.env.DATABASE_URL;
   
   if (!connectionString) {
     console.warn("DATABASE_URL is missing. PrismaClient may fail to initialize.");
@@ -44,13 +44,18 @@ function createPrismaClient() {
   // For the `pg` driver adapter, we need a clean connection string without Prisma-specific params like ?pgbouncer=true
   let pgConnectionString = connectionString ? connectionString.replace(/[?&]pgbouncer=true/g, '') : undefined;
   
-  // Vercel's POSTGRES_URL might contain `sslmode=require` which conflicts with `{ rejectUnauthorized: false }` 
-  // in the pg driver, causing the SELF_SIGNED_CERT_IN_CHAIN error to persist.
-  // We rewrite it to sslmode=no-verify for production serverless connections.
   if (process.env.NODE_ENV === 'production' && pgConnectionString) {
+    // Vercel's POSTGRES_URL might contain `sslmode=require` which conflicts with `{ rejectUnauthorized: false }` 
+    // in the pg driver, causing the SELF_SIGNED_CERT_IN_CHAIN error to persist.
+    // We rewrite it to sslmode=no-verify for production serverless connections.
     pgConnectionString = pgConnectionString.replace(/sslmode=require/g, 'sslmode=no-verify');
     if (!pgConnectionString.includes('sslmode=')) {
       pgConnectionString += (pgConnectionString.includes('?') ? '&' : '?') + 'sslmode=no-verify';
+    }
+    
+    // Force transaction mode for Supabase pooler (Supavisor) to avoid the 15 connection session mode limit
+    if (pgConnectionString.includes('pooler.supabase.com') && !pgConnectionString.includes('pool_mode=')) {
+      pgConnectionString += (pgConnectionString.includes('?') ? '&' : '?') + 'pool_mode=transaction';
     }
   }
   
