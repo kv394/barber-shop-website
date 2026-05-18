@@ -22,8 +22,13 @@ async function fetchShopServices(shopId: string, isAdmin: boolean) {
     resourceRequirements: true
   };
 
-  const isMissingTableError = (err: any, tableName: string) =>
-    err?.code === 'P2021' && typeof err.meta?.table === 'string' && err.meta.table.includes(tableName);
+  const isMissingTableError = (err: any, tableName: string) => {
+    if (err?.code !== 'P2021') return false;
+    if (err.message && err.message.includes(tableName)) return true;
+    if (err.meta && typeof err.meta.table === 'string' && err.meta.table.includes(tableName)) return true;
+    if (err.meta && typeof err.meta.modelName === 'string' && err.meta.modelName.includes(tableName)) return true;
+    return false;
+  };
 
   try {
     return await prisma.service.findMany({
