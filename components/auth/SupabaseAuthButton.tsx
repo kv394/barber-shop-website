@@ -219,7 +219,7 @@ export default function SupabaseAuthButton({
   return (
     <Link 
       href={`/sign-in?redirect_url=${encodeURIComponent(redirectUrl || (typeof window !== 'undefined' ? window.location.pathname : '/'))}`} 
-      className="px-4 py-2 rounded-lg text-[13px] font-semibold transition-colors shadow-sm border"
+      className="inline-block px-4 py-2 rounded-lg text-[13px] font-semibold transition-colors shadow-sm border"
       style={{ 
         backgroundColor: primaryColor || 'var(--crm-surface)', 
         color: primaryColor ? '#ffffff' : 'var(--crm-text)',
