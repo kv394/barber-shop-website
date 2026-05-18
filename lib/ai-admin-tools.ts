@@ -4,7 +4,7 @@ import { prisma } from '@/lib/prisma';
 export const adminToolDeclarations = [
   {
     name: 'get_shop_context',
-    description: 'Retrieve current services, products, addons, blackout dates, staff, and general settings for the shop to understand its current state before making changes.',
+    description: 'Retrieve current services, products, addons, blackout dates, staff, resources (seats/stations), and general settings for the shop to understand its current state before making changes.',
     parameters: {
       type: Type.OBJECT,
       properties: {}
@@ -125,15 +125,16 @@ export async function executeAdminTool(call: any, shopId: string, user: any) {
   try {
     switch (call.name) {
       case 'get_shop_context': {
-        const [services, products, addons, blackoutDates, shop, staff] = await Promise.all([
+        const [services, products, addons, blackoutDates, shop, staff, resources] = await Promise.all([
           prisma.service.findMany({ where: { shopId }, select: { id: true, name: true, price: true, duration: true } }),
           prisma.product.findMany({ where: { shopId }, select: { id: true, name: true, price: true, inventoryCount: true } }),
           prisma.serviceAddon.findMany({ where: { shopId }, select: { id: true, name: true, price: true, durationMin: true } }),
           prisma.shopBlackoutDate.findMany({ where: { shopId }, select: { id: true, date: true, reason: true } }),
           prisma.shop.findUnique({ where: { id: shopId }, select: { name: true, timezone: true, depositAmount: true, depositRequired: true } }),
-          prisma.user.findMany({ where: { shopId, role: { in: ['STAFF', 'SHOP_ADMIN'] } }, select: { id: true, name: true, role: true } })
+          prisma.user.findMany({ where: { shopId, role: { in: ['STAFF', 'SHOP_ADMIN'] } }, select: { id: true, name: true, role: true } }),
+          prisma.resource.findMany({ where: { shopId }, select: { id: true, name: true, type: true } })
         ]);
-        return { services, products, addons, blackoutDates, shop, staff };
+        return { services, products, addons, blackoutDates, shop, staff, resources };
       }
 
       case 'manage_service': {
