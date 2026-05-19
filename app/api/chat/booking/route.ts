@@ -333,9 +333,14 @@ If the user wants to check, cancel, or reschedule their appointments:
                     const { date, serviceId, staffId } = args;
                     lastAvailabilityDate = date;
                     
-                    const service = await prisma.service.findUnique({ where: { id: serviceId }});
+                    let service = await prisma.service.findUnique({ where: { id: serviceId }});
+                    if (!service && serviceId) {
+                        // Fallback to name search in case LLM passes name instead of ID
+                        service = await prisma.service.findFirst({ where: { shopId: realShopId, name: { contains: serviceId, mode: 'insensitive' } } });
+                    }
+
                     if (!service) {
-                        result = { error: "Service not found" };
+                        result = { error: "Service not found. Ensure you provided a valid service ID or name." };
                     } else {
                         
                         const shopTz = shop.timezone || 'America/New_York';
@@ -346,9 +351,18 @@ If the user wants to check, cancel, or reschedule their appointments:
                             select: { startTime: true, endTime: true, staffId: true }
                         });
                         
-                        let targetStaff = await prisma.user.findMany({
-                            where: { shopId: realShopId, role: 'STAFF', ...(staffId ? { id: staffId } : {}) }
-                        });
+                        let targetStaff: any[] = [];
+                        if (staffId) {
+                            targetStaff = await prisma.user.findMany({
+                                where: { shopId: realShopId, role: 'STAFF', id: staffId }
+                            });
+                            if (targetStaff.length === 0) {
+                                // Fallback to searching by staff name
+                                targetStaff = await prisma.user.findMany({
+                                    where: { shopId: realShopId, role: 'STAFF', name: { contains: staffId, mode: 'insensitive' } }
+                                });
+                            }
+                        }
                         if (targetStaff.length === 0) {
                             targetStaff = await prisma.user.findMany({ where: { shopId: realShopId, role: 'STAFF' } });
                         }
@@ -429,15 +443,28 @@ If the user wants to check, cancel, or reschedule their appointments:
                     const { startOfDay } = toShopTzDayBounds(date, shopTz);
                     const [h, m] = time.split(':');
                     const startTime = new Date(startOfDay.getTime() + (parseInt(h) * 60 + parseInt(m)) * 60000);
-                    const service = await prisma.service.findUnique({ where: { id: serviceId } });
+                    
+                    let service = await prisma.service.findUnique({ where: { id: serviceId } });
+                    if (!service && serviceId) {
+                        service = await prisma.service.findFirst({ where: { shopId: realShopId, name: { contains: serviceId, mode: 'insensitive' } } });
+                    }
+                    
+                    let finalStaffId = staffId;
+                    if (staffId) {
+                        let staffCheck = await prisma.user.findUnique({ where: { id: staffId } });
+                        if (!staffCheck) {
+                            staffCheck = await prisma.user.findFirst({ where: { shopId: realShopId, role: 'STAFF', name: { contains: staffId, mode: 'insensitive' } } });
+                            if (staffCheck) finalStaffId = staffCheck.id;
+                        }
+                    }
 
                     if (service) {
                         const endTime = new Date(startTime.getTime() + service.duration * 60000);
                         const apt = await prisma.appointment.create({
                             data: {
                                 shopId: realShopId,
-                                serviceId,
-                                staffId,
+                                serviceId: service.id,
+                                staffId: finalStaffId,
                                 userId: user.id,
                                 startTime,
                                 endTime,
