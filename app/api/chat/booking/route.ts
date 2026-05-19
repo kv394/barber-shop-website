@@ -115,7 +115,7 @@ export async function POST(req: Request) {
     }
 
     // 2. Parse Payload
-    const { shopId, messages } = await req.json();
+    const { shopId, messages, userTimezone } = await req.json();
 
     // 3. Strict Input Validation (Prevent injection / huge payloads)
     if (!shopId || typeof shopId !== 'string' || shopId.length > 100) {
@@ -243,8 +243,9 @@ export async function POST(req: Request) {
     }
 
     const shopTz = shop.timezone || 'America/New_York';
-    const shopDateStr = new Intl.DateTimeFormat('en-CA', { 
-        timeZone: shopTz, 
+    const effectiveTz = userTimezone || shopTz;
+    const userDateStr = new Intl.DateTimeFormat('en-CA', { 
+        timeZone: effectiveTz, 
         year: 'numeric', 
         month: '2-digit', 
         day: '2-digit' 
@@ -255,9 +256,9 @@ Your goal is to help users discover services, find availability, book appointmen
 Always be polite, concise, and highly intuitive. You are chatting via a lightweight website widget.
 
 Shop Knowledge Base:
-- Timezone: ${shop.timezone}
-- Today's Date: ${shopDateStr}
-- Date Calculation: If the user uses relative dates like "tomorrow", "next week", or a day of the week, you MUST calculate the exact YYYY-MM-DD date based on Today's Date. Do not ask the user for the date if you can determine it.
+- Shop Timezone: ${shop.timezone}
+- User's Current Date: ${userDateStr}
+- Date Calculation: If the user uses relative dates like "tomorrow", "next week", or a day of the week, you MUST calculate the exact YYYY-MM-DD date based on the User's Current Date. Do not ask the user for the date if you can determine it.
 - Description: ${shop.description || 'A great barbershop.'}
 - Details & Settings (JSON): ${JSON.stringify(c)}
 Use this information to answer user questions about the shop's location, hours, or policies.
@@ -274,13 +275,13 @@ CRITICAL UX INSTRUCTIONS:
 - When listing services, ALWAYS include the price and duration (e.g., "1. Haircut - $30 (45 mins)"). DO NOT output their IDs to the user.
 - CRITICAL: When calling tools that require IDs (like check_availability and book_appointment), you MUST use the actual ID string (e.g., "cuid...") from the AVAILABLE SERVICES or AVAILABLE STAFF lists provided above.
 - NEVER guess IDs or pass names/numbers as IDs. Map the user's input (numbered choice or name) back to the correct ID internally.
-- NEVER ask the user for a Staff ID, Service ID, or an exact date (like YYYY-MM-DD) if they provide a name or a relative date (like "tomorrow"). You have the lists and Today's Date; resolve them internally!
+- NEVER ask the user for a Staff ID, Service ID, or an exact date (like YYYY-MM-DD) if they provide a name or a relative date (like "tomorrow"). You have the lists and the User's Current Date; resolve them internally!
 - Keep your messages very short and easy to read on mobile. Avoid large walls of text.
 
 Follow this flow for booking:
 1. Ask what service they want. List the AVAILABLE SERVICES (with price and duration). Present as a numbered list.
 2. Ask if they have a preferred staff member. Present the AVAILABLE STAFF as a numbered list (always include an "Any staff" option).
-3. Do NOT call request_date_picker. Instead, immediately call check_availability for today's date (or a specific date if the user provided one). This will present a combined date and time picker to the user. Present slots as a numbered list.
+3. Do NOT call request_date_picker. Instead, immediately call check_availability for the User's Current Date (or a specific date if the user provided one). This will present a combined date and time picker to the user. Present slots as a numbered list.
 4. Once they pick a time, ask for their name, phone, and optionally email.
 5. Call book_appointment to finalize.
 6. After successfully booking, ask the user if they would like you to send them an email with a calendar invite. If they say yes, call send_calendar_invite.

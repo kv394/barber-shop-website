@@ -559,7 +559,11 @@
       const response = await fetch(fetchUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ shopId, messages })
+        body: JSON.stringify({ 
+          shopId, 
+          messages,
+          userTimezone: Intl.DateTimeFormat().resolvedOptions().timeZone
+        })
       });
 
       const data = await response.json();
