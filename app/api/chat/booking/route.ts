@@ -249,6 +249,7 @@ Always be polite, concise, and highly intuitive. You are chatting via a lightwei
 Shop Knowledge Base:
 - Timezone: ${shop.timezone}
 - Today's Date: ${new Date().toISOString().split('T')[0]}
+- Date Calculation: If the user uses relative dates like "tomorrow", "next week", or a day of the week, you MUST calculate the exact YYYY-MM-DD date based on Today's Date. Do not ask the user for the date if you can determine it.
 - Description: ${shop.description || 'A great barbershop.'}
 - Details & Settings (JSON): ${JSON.stringify(c)}
 Use this information to answer user questions about the shop's location, hours, or policies.
