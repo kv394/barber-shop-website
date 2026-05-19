@@ -288,9 +288,9 @@ Follow this flow for booking:
 5. Call book_appointment to finalize.
 6. After successfully booking, ask the user if they would like you to send them an email with a calendar invite. If they say yes, call send_calendar_invite.
 
-If the user wants to check, cancel, or reschedule their appointments:
+If the user wants to check, cancel, or reschedule their appointments, or asks for client details:
 1. Ask for their name, phone number, or email if not already provided.
-2. Call check_appointments to retrieve their upcoming appointments and present them clearly (with their IDs so you know which one to act on).
+2. Call check_appointments to retrieve their user details and upcoming appointments. Present them clearly (with their IDs so you know which one to act on).
 3. For cancellation: Call cancel_appointment with the ID. You will FORGET the IDs between messages, so you must call check_appointments AGAIN to get the ID based on the user's selection.
 4. For rescheduling: Call reschedule_appointment with the ID, new date, and new time (call check_appointments AGAIN to get the ID, and check_availability to find a new slot).`;
 
@@ -495,17 +495,17 @@ If the user wants to check, cancel, or reschedule their appointments:
                         
                         const users = await prisma.user.findMany({
                             where: { shopId: realShopId, OR: userConditions },
-                            select: { id: true }
+                            select: { id: true, name: true, phone: true, email: true }
                         });
                         
                         if (users.length === 0) {
                             result = { message: "No user found with that contact information." };
                         } else {
-                            const userIds = users.map((u: any) => u.id);
+                            const user = users[0];
                             const appointments = await prisma.appointment.findMany({
                                 where: { 
                                     shopId: realShopId, 
-                                    userId: { in: userIds },
+                                    userId: user.id,
                                     startTime: { gte: new Date() },
                                     status: { notIn: ['CANCELLED', 'NO_SHOW'] }
                                 },
@@ -517,19 +517,20 @@ If the user wants to check, cancel, or reschedule their appointments:
                                 take: 5
                             });
                             
-                            if (appointments.length === 0) {
-                                result = { message: "You have no upcoming appointments." };
-                            } else {
-                                result = { 
-                                    appointments: appointments.map((apt: any) => ({
-                                        id: apt.id,
-                                        service: apt.service?.name,
-                                        staff: apt.staff?.name,
-                                        date: apt.startTime.toISOString().split('T')[0],
-                                        time: apt.startTime.toISOString().split('T')[1].substring(0, 5)
-                                    }))
-                                };
-                            }
+                            result = { 
+                                userDetails: {
+                                    name: user.name,
+                                    phone: user.phone,
+                                    email: user.email
+                                },
+                                appointments: appointments.length > 0 ? appointments.map((apt: any) => ({
+                                    id: apt.id,
+                                    service: apt.service?.name,
+                                    staff: apt.staff?.name,
+                                    date: apt.startTime.toISOString().split('T')[0],
+                                    time: apt.startTime.toISOString().split('T')[1].substring(0, 5)
+                                })) : "No upcoming appointments."
+                            };
                         }
                     }
                 } else if (call.name === 'send_calendar_invite') {
