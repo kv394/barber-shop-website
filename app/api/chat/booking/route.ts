@@ -16,9 +16,9 @@ const checkAvailabilityDecl: FunctionDeclaration = {
   parameters: {
     type: Type.OBJECT,
     properties: {
-      date: { type: Type.STRING, description: 'Date in YYYY-MM-DD format' },
-      serviceId: { type: Type.STRING },
-      staffId: { type: Type.STRING, description: 'Optional staff ID. If not provided, checks any staff.' }
+      date: { type: Type.STRING, description: 'Date in YYYY-MM-DD format. MUST calculate internally if user provides relative date.' },
+      serviceId: { type: Type.STRING, description: 'The ID of the service. MUST map from service name internally.' },
+      staffId: { type: Type.STRING, description: 'Optional staff ID. MUST map from staff name internally. If not provided, checks any staff.' }
     },
     required: ['date', 'serviceId']
   }
@@ -30,9 +30,9 @@ const bookAppointmentDecl: FunctionDeclaration = {
   parameters: {
     type: Type.OBJECT,
     properties: {
-      serviceId: { type: Type.STRING },
-      staffId: { type: Type.STRING },
-      date: { type: Type.STRING, description: 'Date in YYYY-MM-DD format' },
+      serviceId: { type: Type.STRING, description: 'The ID of the service. MUST map from service name internally.' },
+      staffId: { type: Type.STRING, description: 'The ID of the staff. MUST map from staff name internally.' },
+      date: { type: Type.STRING, description: 'Date in YYYY-MM-DD format. MUST calculate internally.' },
       time: { type: Type.STRING, description: 'Time in HH:MM format (24-hour, local to shop timezone)' },
       clientName: { type: Type.STRING },
       clientPhone: { type: Type.STRING },
@@ -242,13 +242,21 @@ export async function POST(req: Request) {
        return NextResponse.json({ error: 'Unauthorized origin' }, { status: 403, headers: corsHeaders });
     }
 
+    const shopTz = shop.timezone || 'America/New_York';
+    const shopDateStr = new Intl.DateTimeFormat('en-CA', { 
+        timeZone: shopTz, 
+        year: 'numeric', 
+        month: '2-digit', 
+        day: '2-digit' 
+    }).format(new Date());
+
     const systemInstruction = `You are a helpful AI booking assistant for a barbershop named "${shop.name}". 
 Your goal is to help users discover services, find availability, book appointments, check existing appointments, cancel/reschedule appointments, and answer general questions about the shop (location, hours, policies).
 Always be polite, concise, and highly intuitive. You are chatting via a lightweight website widget.
 
 Shop Knowledge Base:
 - Timezone: ${shop.timezone}
-- Today's Date: ${new Date().toISOString().split('T')[0]}
+- Today's Date: ${shopDateStr}
 - Date Calculation: If the user uses relative dates like "tomorrow", "next week", or a day of the week, you MUST calculate the exact YYYY-MM-DD date based on Today's Date. Do not ask the user for the date if you can determine it.
 - Description: ${shop.description || 'A great barbershop.'}
 - Details & Settings (JSON): ${JSON.stringify(c)}
