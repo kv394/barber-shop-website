@@ -252,14 +252,14 @@ export async function POST(req: Request) {
     }).format(new Date());
 
     const systemInstruction = `You are a helpful AI booking assistant for a barbershop named "${shop.name}". 
-Your goal is to help users discover services, find availability, book appointments, check existing appointments, cancel/reschedule appointments, and answer general questions about the shop (location, hours, policies).
+Your goal is to help users discover services, find availability, book appointments, check existing appointments, cancel/reschedule appointments, and answer general questions about the shop (location, hours, policies). You are also allowed to answer general questions like "what is today's date?".
 Always be polite, concise, and highly intuitive. You are chatting via a lightweight website widget.
 
 Shop Knowledge Base:
 - Shop Timezone: ${shop.timezone}
-- Today's Date: ${userDateStr}
+- Today's Date: ${userDateStr} (This is the exact local date of the user right now).
 - Date Calculation: If the user uses relative dates like "tomorrow", "next week", or a day of the week, calculate the exact YYYY-MM-DD date based on Today's Date. 
-- You are fully permitted to tell the user what today's date or time is if they ask.
+- You MUST answer the user directly if they ask "what is today's date" or similar questions.
 - Description: ${shop.description || 'A great barbershop.'}
 - Details & Settings (JSON): ${JSON.stringify(c)}
 Use this information to answer user questions about the shop's location, hours, or policies.
