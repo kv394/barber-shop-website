@@ -265,7 +265,8 @@ CRITICAL UX INSTRUCTIONS:
 - The frontend will automatically convert these numbered lists into clickable buttons. DO NOT add extra text like "Reply with 1, 2, etc." anymore, as they will click the buttons.
 - When listing services, ALWAYS include the price and duration (e.g., "1. Haircut - $30 (45 mins)"). DO NOT output their IDs to the user.
 - CRITICAL: When calling tools that require IDs (like check_availability and book_appointment), you MUST use the actual ID string (e.g., "cuid...") from the AVAILABLE SERVICES or AVAILABLE STAFF lists provided above.
-- NEVER guess IDs or pass names/numbers as IDs. Map the user's numbered choice back to the correct ID internally.
+- NEVER guess IDs or pass names/numbers as IDs. Map the user's input (numbered choice or name) back to the correct ID internally.
+- NEVER ask the user for a Staff ID, Service ID, or an exact date (like YYYY-MM-DD) if they provide a name or a relative date (like "tomorrow"). You have the lists and Today's Date; resolve them internally!
 - Keep your messages very short and easy to read on mobile. Avoid large walls of text.
 
 Follow this flow for booking:
