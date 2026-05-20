@@ -146,8 +146,6 @@ model Service {
   description          String?
   price                Float
   duration             Int
-  trackInventory       Boolean                      @default(false)
-  inventoryCount       Int                          @default(0)
   type                 ServiceType                  @default(CUSTOMER)
   itemType             String?
   brand                String?

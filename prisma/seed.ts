@@ -68,7 +68,7 @@ async function main() {
     { id: 'svc-haircut', name: 'Classic Haircut', price: 35, duration: 30, type: 'CUSTOMER' as const },
     { id: 'svc-beard',   name: 'Beard Trim',     price: 20, duration: 15, type: 'CUSTOMER' as const },
     { id: 'svc-combo',   name: 'Haircut + Beard', price: 50, duration: 45, type: 'CUSTOMER' as const },
-    { id: 'svc-shampoo', name: 'Premium Shampoo', price: 12, duration: 0,  type: 'INTERNAL' as const, trackInventory: true, inventoryCount: 48, brand: 'American Crew' },
+    { id: 'svc-shampoo', name: 'Premium Shampoo', price: 12, duration: 0,  type: 'INTERNAL' as const, brand: 'American Crew' },
   ];
 
   for (const svc of services) {
@@ -82,8 +82,6 @@ async function main() {
         duration: svc.duration,
         type: svc.type,
         shopId: shop.id,
-        trackInventory: (svc as any).trackInventory ?? false,
-        inventoryCount: (svc as any).inventoryCount ?? 0,
         brand: (svc as any).brand ?? null,
       },
     });

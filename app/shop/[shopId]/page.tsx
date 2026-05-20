@@ -27,7 +27,7 @@ async function getShopData(shopId: string, userId: string) {
   const shopIds = isAll ? data.accessibleShops.map((s: any) => s.id) : [shopId];
 
   // Run queries
-  const [shopFromDbArray, todayAppointments, allTrackedServices, allTrackedProducts, latestReports, activeLogs] = await Promise.all([
+  const [shopFromDbArray, todayAppointments, allTrackedProducts, latestReports, activeLogs] = await Promise.all([
     isAll ? Promise.resolve([]) : prisma.shop.findUnique({
       where: { id: shopId },
       include: {
@@ -44,10 +44,6 @@ async function getShopData(shopId: string, userId: string) {
       },
       include: { service: { select: { price: true, name: true } }, user: { select: { name: true } }, staff: { select: { name: true } } },
       orderBy: { startTime: 'asc' },
-    }),
-    prisma.service.findMany({
-      where: { shopId: { in: shopIds }, trackInventory: true },
-      select: { id: true, name: true, inventoryCount: true },
     }),
     prisma.product.findMany({
       where: { shopId: { in: shopIds }, trackInventory: true },
@@ -69,7 +65,6 @@ async function getShopData(shopId: string, userId: string) {
 
   // Flag items at or below 5 units as low stock
   const lowStockItems = [
-    ...allTrackedServices.filter((s: any) => (s.inventoryCount || 0) <= 5).map((s: any) => ({ ...s, isProduct: false })),
     ...allTrackedProducts.filter((p: any) => (p.inventoryCount || 0) <= (p.reorderPoint || 5)).map((p: any) => ({ ...p, isProduct: true }))
   ];
 

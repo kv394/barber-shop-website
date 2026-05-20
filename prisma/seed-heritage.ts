@@ -215,7 +215,7 @@ async function main() {
   for (const item of inventoryItems) {
     await prisma.service.upsert({
       where: { id: item.id },
-      update: { name: item.name, price: item.price, brand: item.brand, inventoryCount: item.stock },
+      update: { name: item.name, price: item.price, brand: item.brand },
       create: {
         id: item.id,
         name: item.name,
@@ -223,8 +223,6 @@ async function main() {
         duration: 0,
         type: 'INTERNAL',
         shopId: SHOP_ID,
-        trackInventory: true,
-        inventoryCount: item.stock,
         brand: item.brand,
         itemType: 'Supply',
       },

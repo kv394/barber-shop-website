@@ -16,7 +16,6 @@ interface Service {
   description: string | null;
   price: number;
   duration: number;
-  trackInventory: boolean;
   type: 'CUSTOMER' | 'INTERNAL';
   isBookable: boolean;
   imageUrl: string | null;
@@ -43,7 +42,6 @@ export function ServiceManagement({ shopId }: ServiceManagementProps) {
     description: '',
     price: '',
     duration: '',
-    trackInventory: false,
     type: 'CUSTOMER' as 'CUSTOMER' | 'INTERNAL',
     addonIds: [] as string[],
     isBookable: true,
@@ -109,7 +107,7 @@ export function ServiceManagement({ shopId }: ServiceManagementProps) {
   }, [shopId]);
 
   const resetForm = () => {
-    setNewService({ name: '', description: '', price: '', duration: '', trackInventory: false, type: 'CUSTOMER', addonIds: [], isBookable: true, imageUrl: '', resourceRequirements: [], productUsages: [] });
+    setNewService({ name: '', description: '', price: '', duration: '', type: 'CUSTOMER', addonIds: [], isBookable: true, imageUrl: '', resourceRequirements: [], productUsages: [] });
     setEditingServiceId(null);
   };
 
@@ -120,7 +118,6 @@ export function ServiceManagement({ shopId }: ServiceManagementProps) {
       description: service.description || '',
       price: service.price.toString(),
       duration: service.duration.toString(),
-      trackInventory: service.trackInventory,
       type: service.type,
       addonIds: service.addons?.map(a => a.id) || [],
       isBookable: service.isBookable,
@@ -163,7 +160,6 @@ export function ServiceManagement({ shopId }: ServiceManagementProps) {
           description: newService.description || null,
           price: parseFloat(newService.price),
           duration: parseInt(newService.duration),
-          trackInventory: newService.trackInventory,
           type: newService.type,
           isBookable: newService.isBookable,
           imageUrl: newService.imageUrl,
@@ -409,21 +405,7 @@ export function ServiceManagement({ shopId }: ServiceManagementProps) {
               <MediaPicker shopId={shopId} currentUrl={newService.imageUrl} onSelect={(url) => setNewService({ ...newService, imageUrl: url })} label="Upload/Select Service Image" />
             </div>
 
-            <div className="flex items-center space-x-3 py-2">
-              <input 
-                type="checkbox" 
-                id="trackInventory" 
-                checked={newService.trackInventory} 
-                onChange={(e) => setNewService({ ...newService, trackInventory: e.target.checked })}
-                className="w-4 h-4 accent-blue-600 bg-crm-bg border-crm-border rounded"
-              />
-              <label htmlFor="trackInventory" className="text-crm-muted cursor-pointer select-none text-[13px]">
-                Enable Inventory Tracking for this service (e.g., track hair products used)
-              </label>
-            </div>
-
-            {allAddons.length > 0 && (
-              <div className="bg-crm-bg p-4 rounded border border-crm-border">
+            {allAddons.length > 0 && (              <div className="bg-crm-bg p-4 rounded border border-crm-border">
                 <label className="block font-medium text-crm-text mb-3 text-[13px]">
                   Select Available Add-Ons for this Service
                 </label>
@@ -630,9 +612,6 @@ export function ServiceManagement({ shopId }: ServiceManagementProps) {
                           </button>
                           <div className={`text-[13px] sm:text-[11px] font-semibold px-2 py-0.5 sm:py-1 rounded border ${service.type === 'INTERNAL' ? 'bg-crm-accent/20 text-crm-accent border-crm-accent/30' : 'bg-status-confirmed/20 text-status-confirmed border-status-confirmed/30'}`}>
                               {service.type}
-                          </div>
-                          <div className={`text-[13px] sm:text-[11px] font-semibold px-2 py-0.5 sm:py-1 rounded border ${service.trackInventory ? 'bg-status-info/20 text-status-info border-status-info/30' : 'bg-crm-surface text-crm-muted border-crm-border'}`}>
-                              Inventory: {service.trackInventory ? 'ON' : 'OFF'}
                           </div>
                           <button
                             onClick={() => handleToggleBookable(service)}

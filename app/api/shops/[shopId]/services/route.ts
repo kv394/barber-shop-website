@@ -143,7 +143,7 @@ export async function POST(
     }
 
     const body = await request.json();
-    const { name, description, price, duration, processingTime, finishingTime, trackInventory, type, itemType, brand, bufferMinutes, imageUrl, addonIds, isBookable, resourceRequirements, productUsages } = body;
+    const { name, description, price, duration, processingTime, finishingTime, type, itemType, brand, bufferMinutes, imageUrl, addonIds, isBookable, resourceRequirements, productUsages } = body;
 
     if (!name || price === undefined || duration === undefined) {
         return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
@@ -181,7 +181,6 @@ export async function POST(
         duration: parsedDuration,
         processingTime: parsedProcessingTime,
         finishingTime: parsedFinishingTime,
-        trackInventory: Boolean(trackInventory),
         isBookable: isBookable ?? true,
         type: type === 'INTERNAL' ? 'INTERNAL' : 'CUSTOMER',
         itemType: itemType ? String(itemType).slice(0, 100) : null,
