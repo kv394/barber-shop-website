@@ -16,6 +16,7 @@ export default function ShopMobileBottomNav({
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(false);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const isAll = shopId === 'all';
 
@@ -24,6 +25,7 @@ export default function ShopMobileBottomNav({
       if (!scrollContainerRef.current) return;
       const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current;
       setCanScrollRight(Math.ceil(scrollLeft + clientWidth) < scrollWidth - 2);
+      setCanScrollLeft(scrollLeft > 2);
     };
 
     handleScroll();
@@ -185,7 +187,10 @@ export default function ShopMobileBottomNav({
           )}
           </div>
           
-          {/* Scroll Indicator Overlay */}
+          {/* Scroll Indicator Overlay - Left */}
+          <div className={`absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-crm-surface to-transparent pointer-events-none transition-opacity duration-300 ${canScrollLeft ? 'opacity-100' : 'opacity-0'}`} />
+          
+          {/* Scroll Indicator Overlay - Right */}
           <div className={`absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-crm-surface to-transparent pointer-events-none transition-opacity duration-300 ${canScrollRight ? 'opacity-100' : 'opacity-0'}`} />
         </div>
 
