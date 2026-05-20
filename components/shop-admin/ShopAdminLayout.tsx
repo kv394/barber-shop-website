@@ -73,7 +73,7 @@ export default function ShopAdminLayout({
         </div>
       )}
 
-      <div className={`shadow-lg bg-transparent sm:bg-crm-surface p-3 sm:p-4 md:p-8 border-0 sm:border ${finalTabs && finalTabs.length > 0 ? (isFirstTabActive ? 'sm:rounded-2xl sm:rounded-tl-none' : 'sm:rounded-2xl') : 'sm:rounded-xl'} border-crm-border relative z-0`}>
+      <div className={`shadow-lg bg-crm-surface p-4 md:p-8 border-x border-b sm:border ${finalTabs && finalTabs.length > 0 ? (isFirstTabActive ? 'rounded-b-xl sm:rounded-2xl sm:rounded-tl-none' : 'rounded-b-xl sm:rounded-2xl') : 'rounded-xl'} border-crm-border relative z-0`}>
         {children}
       </div>
 
