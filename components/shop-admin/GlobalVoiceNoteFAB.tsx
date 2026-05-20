@@ -79,7 +79,7 @@ export default function GlobalVoiceNoteFAB({ shopId }: { shopId: string }) {
   };
 
   return (
-    <div className="fixed bottom-6 right-6 z-[100] flex flex-col items-end gap-2 pointer-events-none">
+    <div className="fixed bottom-48 sm:bottom-24 right-4 sm:right-8 z-[9998] flex flex-col items-end gap-2 pointer-events-none">
       {/* Tooltip / Feedback bubble */}
       {feedback && (
         <div className={`pointer-events-auto shadow-lg rounded-xl p-3 text-[13px] font-medium max-w-[250px] animate-fade-in-up
