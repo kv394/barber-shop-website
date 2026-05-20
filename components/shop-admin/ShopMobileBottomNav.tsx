@@ -1,13 +1,21 @@
 'use client';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import React from 'react';
+import React, { useState } from 'react';
+import ShopSidebarLinks from './ShopSidebarLinks';
+import ShopSwitcher from './ShopSwitcher';
+import SupabaseAuthButton from '@/components/auth/SupabaseAuthButton';
 
-export default function ShopMobileBottomNav({ shopId, userRole }: { shopId: string, userRole: string }) {
+export default function ShopMobileBottomNav({ 
+  shopId, 
+  userRole, 
+  currentShopName, 
+  accessibleShops, 
+  fallbackRedirect 
+}: any) {
   const pathname = usePathname();
+  const [isOpen, setIsOpen] = useState(false);
   const isAll = shopId === 'all';
-
-  if (isAll) return null;
 
   const navLink = (href: string, label: string, iconPath: React.ReactNode, isExact = false) => {
     const active = isExact ? pathname === href : pathname.startsWith(href);
@@ -33,6 +41,8 @@ export default function ShopMobileBottomNav({ shopId, userRole }: { shopId: stri
 
   // Determine Active Section to show context-specific bottom nav
   const getSection = () => {
+    if (isAll) return 'all';
+    
     if (pathname.startsWith(`/shop/${shopId}/settings/team`) || pathname.startsWith(`/shop/${shopId}/portfolio`)) return 'team';
     
     const configPaths = ['/config/services', '/config/products', '/settings/booking', '/settings/resources', '/settings/forms', '/settings/memberships'];
@@ -74,76 +84,138 @@ export default function ShopMobileBottomNav({ shopId, userRole }: { shopId: stri
     message: <><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></>,
     bell: <><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></>,
     creditCard: <><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></>,
-    terminal: <><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></>
+    terminal: <><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></>,
+    menu: <><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></>
   };
 
   return (
-    <div className="md:hidden fixed bottom-0 left-0 right-0 bg-crm-surface/85 backdrop-blur-xl border-t border-crm-border/50 flex items-center overflow-x-auto hide-scrollbar scrollbar-none snap-x snap-mandatory z-[2000] pb-[env(safe-area-inset-bottom)] shadow-[0_-8px_30px_rgba(0,0,0,0.06)]">
-      {section === 'main' && (
-        <div className="flex w-full justify-around">
-          {navLink(`/shop/${shopId}`, 'Home', icons.home, true)}
-          {userRole === 'SHOP_ADMIN' ? (
-            <>
-              {navLink(`/shop/${shopId}/bookings`, 'Bookings', icons.calendar)}
-              {navLink(`/shop/${shopId}/clients`, 'Clients', icons.users)}
-            </>
-          ) : (
-            <>
-              {navLink(`/shop/${shopId}/staff`, 'Schedule', icons.calendar)}
-              {navLink(`/shop/${shopId}/clients`, 'Clients', icons.users)}
-              {navLink(`/shop/${shopId}/profile`, 'Profile', icons.user)}
-            </>
+    <>
+      <div className="md:hidden fixed bottom-0 left-0 right-0 bg-crm-surface/90 backdrop-blur-xl border-t border-crm-border/50 flex items-center z-[2000] pb-[env(safe-area-inset-bottom)] shadow-[0_-8px_30px_rgba(0,0,0,0.06)]">
+        
+        {/* Scrollable Context Nav */}
+        <div className="flex-1 flex overflow-x-auto hide-scrollbar scrollbar-none snap-x snap-mandatory">
+          {section === 'all' && (
+            <div className="flex w-full justify-around min-w-max px-2">
+              {navLink(`/shop/all`, 'Dashboard', icons.chart, true)}
+            </div>
+          )}
+
+          {section === 'main' && (
+            <div className="flex w-full justify-around min-w-max px-2">
+              {navLink(`/shop/${shopId}`, 'Home', icons.home, true)}
+              {userRole === 'SHOP_ADMIN' ? (
+                <>
+                  {navLink(`/shop/${shopId}/bookings`, 'Bookings', icons.calendar)}
+                  {navLink(`/shop/${shopId}/clients`, 'Clients', icons.users)}
+                </>
+              ) : (
+                <>
+                  {navLink(`/shop/${shopId}/staff`, 'Schedule', icons.calendar)}
+                  {navLink(`/shop/${shopId}/clients`, 'Clients', icons.users)}
+                  {navLink(`/shop/${shopId}/profile`, 'Profile', icons.user)}
+                </>
+              )}
+            </div>
+          )}
+
+          {section === 'team' && (
+            <div className="flex w-full justify-around min-w-max px-2">
+              {navLink(`/shop/${shopId}/settings/team`, 'Team', icons.users, true)}
+              {navLink(`/shop/${shopId}/portfolio`, 'Portfolio', icons.image, true)}
+            </div>
+          )}
+
+          {section === 'config' && (
+            <div className="flex w-full justify-around min-w-max px-2">
+              {navLink(`/shop/${shopId}/config/services`, 'Services', icons.scissors, true)}
+              {navLink(`/shop/${shopId}/config/products`, 'Products', icons.package, true)}
+              {navLink(`/shop/${shopId}/settings/booking`, 'Booking', icons.clock, true)}
+              {navLink(`/shop/${shopId}/settings/resources`, 'Resources', icons.chair, true)}
+              {navLink(`/shop/${shopId}/settings/forms`, 'Forms', icons.file, true)}
+              {navLink(`/shop/${shopId}/settings/memberships`, 'Memberships', icons.star, true)}
+            </div>
+          )}
+
+          {section === 'settings' && (
+            <div className="flex w-full justify-around min-w-max px-2">
+              {navLink(`/shop/${shopId}/settings`, 'Appearance', icons.image, true)}
+              {navLink(`/shop/${shopId}/settings/notifications`, 'Alerts', icons.bell, true)}
+              {navLink(`/shop/${shopId}/settings/commissions`, 'Commissions', icons.dollar, true)}
+              {navLink(`/shop/${shopId}/settings/kiosk`, 'Kiosk', icons.terminal, true)}
+              {navLink(`/shop/${shopId}/settings/billing`, 'Billing', icons.creditCard, true)}
+            </div>
+          )}
+
+          {section === 'engagement' && (
+            <div className="flex w-full justify-around min-w-max px-2">
+              {navLink(`/shop/${shopId}/engagement`, 'Analytics', icons.chart, true)}
+              {navLink(`/shop/${shopId}/campaigns`, 'Campaigns', icons.message, true)}
+              {navLink(`/shop/${shopId}/gift-cards`, 'Gift Cards', icons.ticket, true)}
+              {navLink(`/shop/${shopId}/loyalty`, 'Loyalty', icons.heart, true)}
+              {navLink(`/shop/${shopId}/referrals`, 'Referrals', icons.users, true)}
+              {navLink(`/shop/${shopId}/reviews`, 'Reviews', icons.star, true)}
+            </div>
+          )}
+
+          {section === 'reports' && (
+            <div className="flex w-full justify-around min-w-max px-2">
+              {navLink(`/shop/${shopId}/reports`, 'Sales', icons.chart, true)}
+              {navLink(`/shop/${shopId}/reports/commissions`, 'Commissions', icons.dollar, true)}
+              {navLink(`/shop/${shopId}/reports/staff-working`, 'Hours', icons.clock, true)}
+              {navLink(`/shop/${shopId}/expenses`, 'Expenses', icons.tag, true)}
+            </div>
           )}
         </div>
-      )}
 
-      {section === 'team' && (
-        <div className="flex w-full justify-around">
-          {navLink(`/shop/${shopId}/settings/team`, 'Team', icons.users, true)}
-          {navLink(`/shop/${shopId}/portfolio`, 'Portfolio', icons.image, true)}
+        {/* Fixed Menu Button */}
+        <div className="flex shrink-0 border-l border-crm-border/30 bg-crm-surface/10 pl-1 pr-2 relative z-10">
+          <button 
+            onClick={() => setIsOpen(true)} 
+            className={`flex flex-col items-center justify-center min-w-[70px] pt-3 pb-2 px-1 transition-all duration-200 ${isOpen ? 'text-crm-primary' : 'text-crm-muted hover:text-crm-text'}`}
+          >
+            <div className={`mb-1 transition-transform duration-300 ${isOpen ? 'scale-110' : 'active:scale-90'}`}>
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={isOpen ? "2.5" : "2"} strokeLinecap="round" strokeLinejoin="round">
+                {icons.menu}
+              </svg>
+            </div>
+            <span className={`text-[10px] tracking-tight truncate w-full text-center px-1 transition-all ${isOpen ? 'font-bold' : 'font-medium'}`}>Menu</span>
+          </button>
         </div>
-      )}
+      </div>
 
-      {section === 'config' && (
-        <div className="flex w-full min-w-max px-2">
-          {navLink(`/shop/${shopId}/config/services`, 'Services', icons.scissors, true)}
-          {navLink(`/shop/${shopId}/config/products`, 'Products', icons.package, true)}
-          {navLink(`/shop/${shopId}/settings/booking`, 'Booking', icons.clock, true)}
-          {navLink(`/shop/${shopId}/settings/resources`, 'Resources', icons.chair, true)}
-          {navLink(`/shop/${shopId}/settings/forms`, 'Forms', icons.file, true)}
-          {navLink(`/shop/${shopId}/settings/memberships`, 'Memberships', icons.star, true)}
-        </div>
-      )}
+      {/* Drawer */}
+      <div className={`fixed inset-0 z-[3000] flex md:hidden transition-opacity duration-300 ${isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
+        <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setIsOpen(false)} />
+        <aside 
+          className={`relative w-[300px] max-w-[85vw] bg-crm-surface h-full flex flex-col shadow-2xl transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${isOpen ? 'translate-x-0' : '-translate-x-full'}`} 
+          onClick={e => e.stopPropagation()}
+        >
+          <div className="flex flex-col border-b border-crm-border bg-crm-bg/30">
+            <div className="h-14 flex items-center justify-between px-5">
+              <span className="font-bold text-lg tracking-tight text-crm-text">Menu</span>
+              <button onClick={() => setIsOpen(false)} className="p-2 -mr-2 text-crm-muted hover:text-crm-text bg-transparent hover:bg-crm-border/50 rounded-full transition-colors active:scale-95">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+              </button>
+            </div>
+            {currentShopName && accessibleShops && (
+              <div className="px-3 pb-3">
+                 <ShopSwitcher currentShopId={shopId} currentShopName={currentShopName} shops={accessibleShops} userRole={userRole} />
+              </div>
+            )}
+          </div>
+          
+          <nav className="flex-1 overflow-y-auto py-4 px-3" onClick={() => setIsOpen(false)}>
+            <ShopSidebarLinks shopId={shopId} userRole={userRole} />
+          </nav>
 
-      {section === 'settings' && (
-        <div className="flex w-full min-w-max px-2">
-          {navLink(`/shop/${shopId}/settings`, 'Appearance', icons.image, true)}
-          {navLink(`/shop/${shopId}/settings/notifications`, 'Alerts', icons.bell, true)}
-          {navLink(`/shop/${shopId}/settings/commissions`, 'Commissions', icons.dollar, true)}
-          {navLink(`/shop/${shopId}/settings/kiosk`, 'Kiosk', icons.terminal, true)}
-          {navLink(`/shop/${shopId}/settings/billing`, 'Billing', icons.creditCard, true)}
-        </div>
-      )}
-
-      {section === 'engagement' && (
-        <div className="flex w-full min-w-max px-2">
-          {navLink(`/shop/${shopId}/engagement`, 'Analytics', icons.chart, true)}
-          {navLink(`/shop/${shopId}/campaigns`, 'Campaigns', icons.message, true)}
-          {navLink(`/shop/${shopId}/gift-cards`, 'Gift Cards', icons.ticket, true)}
-          {navLink(`/shop/${shopId}/loyalty`, 'Loyalty', icons.heart, true)}
-          {navLink(`/shop/${shopId}/referrals`, 'Referrals', icons.users, true)}
-          {navLink(`/shop/${shopId}/reviews`, 'Reviews', icons.star, true)}
-        </div>
-      )}
-
-      {section === 'reports' && (
-        <div className="flex w-full justify-around px-2">
-          {navLink(`/shop/${shopId}/reports`, 'Sales', icons.chart, true)}
-          {navLink(`/shop/${shopId}/reports/commissions`, 'Commissions', icons.dollar, true)}
-          {navLink(`/shop/${shopId}/reports/staff-working`, 'Hours', icons.clock, true)}
-          {navLink(`/shop/${shopId}/expenses`, 'Expenses', icons.tag, true)}
-        </div>
-      )}
-    </div>
+          <div className="p-4 border-t border-crm-border flex flex-col gap-3 bg-crm-bg/30 pb-[calc(1.5rem+env(safe-area-inset-bottom))]">
+            <span className="block text-[11px] font-semibold text-crm-muted uppercase tracking-wider">{userRole.replace('_', ' ')}</span>
+            <div className="flex justify-start">
+               <SupabaseAuthButton redirectUrl={fallbackRedirect} />
+            </div>
+          </div>
+        </aside>
+      </div>
+    </>
   );
 }
