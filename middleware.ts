@@ -157,7 +157,7 @@ export async function middleware(req: NextRequest) {
   // Referrer Policy
   response.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
   // Permissions Policy
-  response.headers.set('Permissions-Policy', 'camera=(self), microphone=(), geolocation=(), interest-cohort=()');
+  response.headers.set('Permissions-Policy', 'camera=(self), microphone=(self), geolocation=(), interest-cohort=()');
 
   // Clean up old cookies
   const legacyCookies = req.cookies.getAll().filter(c => c.name.includes('__session') || c.name.includes('__client'));
