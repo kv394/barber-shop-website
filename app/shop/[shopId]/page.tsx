@@ -9,6 +9,7 @@ import StaffInbox from '@/components/shop-admin/StaffInbox';
 import DirectClockInButton from '@/components/shop-admin/DirectClockInButton';
 import ClientNameClickable from '@/components/clients/ClientNameClickable';
 import { calculateUsageCostStrategy, getSaaSTiers } from '@/lib/cost-calculator';
+import InventoryForecast from '@/components/shop-admin/InventoryForecast';
 
 export const dynamic = 'force-dynamic';
 
@@ -213,6 +214,11 @@ export default async function ShopDashboardPage({ params }: { params: Promise<{ 
             </Link>
           </div>
         </div>
+      )}
+
+      {/* ── AI Inventory Forecast (shop admin + inventory staff) ── */}
+      {showInventoryControls && (
+        <InventoryForecast shopId={shopId} />
       )}
 
       {/* ── Empty State (if no alerts) ── */}
