@@ -45,11 +45,8 @@ export default function ShopMobileBottomNav({
     
     if (pathname.startsWith(`/shop/${shopId}/settings/team`) || pathname.startsWith(`/shop/${shopId}/portfolio`)) return 'team';
     
-    const configPaths = ['/config/services', '/config/products', '/settings/booking', '/settings/resources', '/settings/forms', '/settings/memberships'];
-    if (configPaths.some(p => pathname.startsWith(`/shop/${shopId}${p}`))) return 'config';
-    
-    const settingsPaths = ['/settings', '/settings/notifications', '/settings/kiosk', '/settings/billing', '/settings/commissions'];
-    if (pathname === `/shop/${shopId}/settings` || settingsPaths.some(p => p !== '/settings' && pathname.startsWith(`/shop/${shopId}${p}`))) return 'settings';
+    const settingsAndConfigPaths = ['/config/services', '/config/products', '/settings/booking', '/settings/resources', '/settings/forms', '/settings/memberships', '/settings', '/settings/notifications', '/settings/kiosk', '/settings/billing', '/settings/commissions'];
+    if (pathname === `/shop/${shopId}/settings` || settingsAndConfigPaths.some(p => p !== '/settings' && pathname.startsWith(`/shop/${shopId}${p}`))) return 'settings';
 
     const engagementPaths = ['/engagement', '/loyalty', '/referrals', '/campaigns', '/gift-cards', '/reviews'];
     if (engagementPaths.some(p => pathname.startsWith(`/shop/${shopId}${p}`))) return 'engagement';
@@ -125,19 +122,14 @@ export default function ShopMobileBottomNav({
             </div>
           )}
 
-          {section === 'config' && (
+          {section === 'settings' && (
             <div className="flex w-full justify-around min-w-max px-2">
               {navLink(`/shop/${shopId}/config/services`, 'Services', icons.scissors, true)}
               {navLink(`/shop/${shopId}/config/products`, 'Products', icons.package, true)}
+              {navLink(`/shop/${shopId}/settings/memberships`, 'Memberships', icons.star, true)}
               {navLink(`/shop/${shopId}/settings/booking`, 'Booking', icons.clock, true)}
               {navLink(`/shop/${shopId}/settings/resources`, 'Resources', icons.chair, true)}
               {navLink(`/shop/${shopId}/settings/forms`, 'Forms', icons.file, true)}
-              {navLink(`/shop/${shopId}/settings/memberships`, 'Memberships', icons.star, true)}
-            </div>
-          )}
-
-          {section === 'settings' && (
-            <div className="flex w-full justify-around min-w-max px-2">
               {navLink(`/shop/${shopId}/settings`, 'Appearance', icons.image, true)}
               {navLink(`/shop/${shopId}/settings/notifications`, 'Alerts', icons.bell, true)}
               {navLink(`/shop/${shopId}/settings/commissions`, 'Commissions', icons.dollar, true)}
