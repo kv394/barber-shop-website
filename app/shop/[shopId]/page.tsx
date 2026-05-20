@@ -196,15 +196,15 @@ export default async function ShopDashboardPage({ params }: { params: Promise<{ 
                 {new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' })}
               </div>
             </div>
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4">
+            <div className="flex sm:grid sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4 overflow-x-auto hide-scrollbar snap-x snap-mandatory pb-2 sm:pb-0 -mx-4 px-4 sm:mx-0 sm:px-0 scrollbar-none">
               {[
                 { label: 'Bookings', value: todayStats.totalBookings, color: 'text-blue-600' },
                 { label: 'Revenue', value: `$${todayStats.revenue.toFixed(0)}`, color: 'text-emerald-600' },
                 { label: 'Tips', value: `$${todayStats.tips.toFixed(0)}`, color: 'text-amber-600' },
                 { label: 'Completed', value: todayStats.completedCount, color: 'text-purple-600' },
-                { label: 'Upcoming', value: todayStats.upcomingCount, color: 'text-cyan-600', colSpan: 'col-span-2 sm:col-span-1' },
+                { label: 'Upcoming', value: todayStats.upcomingCount, color: 'text-cyan-600' },
               ].map((stat, i) => (
-                <div key={i} className={`bg-crm-surface border border-crm-border p-4 rounded-xl text-center shadow-sm hover:shadow-md transition-shadow ${stat.colSpan || ''}`}>
+                <div key={i} className="min-w-[130px] sm:min-w-0 shrink-0 snap-start bg-crm-surface border border-crm-border p-4 rounded-xl text-center shadow-sm hover:shadow-md transition-shadow">
                   <p className={`text-2xl font-black mb-1 ${stat.color}`}>{stat.value}</p>
                   <p className="text-[10px] font-bold text-crm-muted uppercase tracking-wider">{stat.label}</p>
                 </div>

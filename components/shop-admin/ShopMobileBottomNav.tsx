@@ -15,18 +15,18 @@ export default function ShopMobileBottomNav({ shopId, userRole }: { shopId: stri
     return (
       <Link 
         href={href} 
-        className={`flex flex-col items-center justify-center min-w-[72px] flex-1 py-2 px-1 transition-colors whitespace-nowrap ${
+        className={`flex flex-col items-center justify-center min-w-[76px] flex-1 pt-3 pb-2 px-1 transition-all duration-200 whitespace-nowrap snap-center ${
           active 
             ? 'text-crm-primary' 
             : 'text-crm-muted hover:text-crm-text'
         }`}
       >
-        <div className={`mb-1 ${active ? 'scale-110 transition-transform' : ''}`}>
+        <div className={`mb-1 transition-all duration-300 ${active ? 'scale-110 -translate-y-0.5' : ''}`}>
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={active ? "2.5" : "2"} strokeLinecap="round" strokeLinejoin="round">
             {iconPath}
           </svg>
         </div>
-        <span className="text-[10px] font-medium tracking-tight truncate w-full text-center px-1">{label}</span>
+        <span className={`text-[10px] tracking-tight truncate w-full text-center px-1 transition-all ${active ? 'font-bold' : 'font-medium'}`}>{label}</span>
       </Link>
     );
   };
@@ -78,7 +78,7 @@ export default function ShopMobileBottomNav({ shopId, userRole }: { shopId: stri
   };
 
   return (
-    <div className="md:hidden fixed bottom-0 left-0 right-0 bg-crm-surface border-t border-crm-border flex items-center overflow-x-auto hide-scrollbar scrollbar-none z-[2000] pb-[env(safe-area-inset-bottom)] shadow-[0_-4px_10px_rgba(0,0,0,0.02)]">
+    <div className="md:hidden fixed bottom-0 left-0 right-0 bg-crm-surface/85 backdrop-blur-xl border-t border-crm-border/50 flex items-center overflow-x-auto hide-scrollbar scrollbar-none snap-x snap-mandatory z-[2000] pb-[env(safe-area-inset-bottom)] shadow-[0_-8px_30px_rgba(0,0,0,0.06)]">
       {section === 'main' && (
         <div className="flex w-full justify-around">
           {navLink(`/shop/${shopId}`, 'Home', icons.home, true)}

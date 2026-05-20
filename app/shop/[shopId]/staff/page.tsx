@@ -108,6 +108,15 @@ async function getShopData(shopId: string, userId: string, date: string, from: s
     return { ...staff, schedule, isOnLeave: false, using };
   });
 
+  // Sort so current user is always first, then alphabetically
+  staffWithSchedule.sort((a: any, b: any) => {
+    if (a.id === actualUserId) return -1;
+    if (b.id === actualUserId) return 1;
+    const nameA = (a.name || a.email || '').toLowerCase();
+    const nameB = (b.name || b.email || '').toLowerCase();
+    return nameA.localeCompare(nameB);
+  });
+
   return { 
     shop: JSON.parse(JSON.stringify(shop)), 
     shopSlug: data.shopSlug,
@@ -187,21 +196,21 @@ export default async function StaffBookingPage({
                   {staffMember.using === 'shop' && <span className="text-[13px] sm:text-[11px] bg-status-info/20 text-status-info px-2 py-0.5 sm:py-1 rounded-full">Shop Hours</span>}
                 </div>
               </div>
-              <div className="flex-grow max-h-80 overflow-y-auto pr-1 sm:pr-2 space-y-1">
+              <div className="flex-grow max-h-[85vh] sm:max-h-96 overflow-y-auto pr-1 sm:pr-2 space-y-1.5 mt-2 scrollbar-thin">
                 {isOnLeave ? (
-                  <div className="text-center py-4 h-full flex flex-col justify-center items-center rounded-md bg-status-cancelled/20">
-                    <p className="font-bold text-status-cancelled text-[13px]">ON LEAVE</p>
+                  <div className="text-center py-6 h-full flex flex-col justify-center items-center rounded-xl bg-status-cancelled/10 border border-status-cancelled/20">
+                    <p className="font-bold text-status-cancelled tracking-widest text-[13px]">ON LEAVE</p>
                   </div>
                 ) : isNotWorking ? (
-                    <div className="text-center py-4 h-full flex flex-col justify-center items-center rounded-md bg-crm-surface">
-                        <p className="font-bold text-crm-muted text-[13px]">NOT WORKING</p>
+                    <div className="text-center py-6 h-full flex flex-col justify-center items-center rounded-xl bg-crm-surface/50 border border-crm-border border-dashed">
+                        <p className="font-bold text-crm-muted tracking-widest text-[13px]">NOT WORKING</p>
                     </div>
                 ) : staffMember.schedule.length > 0 ? (
                   staffMember.schedule.map((slot: any) => (
-                    <div key={slot.time} className={`p-2 rounded-md text-[11px] sm:text-[13px] flex justify-between items-center ${slot.isBooked ? 'bg-amber-800/60' : 'bg-status-confirmed/20'}`}>
-                      <span className="font-mono text-crm-muted">{slot.time}</span>
-                      <div className="flex items-center">
-                        {slot.isBooked ? <span className="font-bold text-amber-300">Booked</span> : <span className="font-semibold text-status-confirmed">Available</span>}
+                    <div key={slot.time} className={`p-3 sm:p-2.5 rounded-xl border sm:rounded-md text-[13px] flex justify-between items-center ${slot.isBooked ? 'bg-amber-800/60 border-amber-700/50' : 'bg-status-confirmed/10 border-status-confirmed/20'}`}>
+                      <span className={`font-mono font-medium ${slot.isBooked ? 'text-amber-200/70' : 'text-crm-text'}`}>{slot.time}</span>
+                      <div className="flex items-center gap-2">
+                        {slot.isBooked ? <span className="font-bold text-amber-300 tracking-tight">Booked</span> : <span className="font-semibold text-status-confirmed">Available</span>}
                         {!slot.isBooked && (userRole === 'SHOP_ADMIN' || userRole === 'SITE_ADMIN' || staffMember.id === actualUserId) && (
                           <BlockTimeButton shopId={shopId} staffId={staffMember.id} date={selectedDate} time={slot.isoTime} />
                         )}
@@ -209,7 +218,7 @@ export default async function StaffBookingPage({
                     </div>
                   ))
                 ) : (
-                  <div className="text-center py-4 h-full flex flex-col justify-center items-center rounded-md bg-crm-surface">
+                  <div className="text-center py-6 h-full flex flex-col justify-center items-center rounded-xl bg-crm-surface/50 border border-crm-border border-dashed">
                     <p className="text-crm-muted italic text-[13px]">No slots in selected range.</p>
                   </div>
                 )}
