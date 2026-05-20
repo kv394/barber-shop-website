@@ -21,10 +21,10 @@ export default function ReviewsSection({ reviews, variant = 'dark' }: { reviews:
     : variant === 'warm'
       ? 'bg-[#f5efe6]'
       : 'bg-crm-surface';
-  const textClass = variant === 'light' ? 'text-crm-mutedrm-textrm-text' : variant === 'warm' ? 'text-crm-text' : 'text-crm-mutedrm-textrm-text';
-  const subTextClass = variant === 'light' ? 'text-crm-mutedrm-textrm-muted' : variant === 'warm' ? 'text-crm-muted' : 'text-crm-mutedrm-textrm-muted';
+  const textClass = variant === 'light' ? 'text-crm-text' : variant === 'warm' ? 'text-crm-text' : 'text-crm-text';
+  const subTextClass = variant === 'light' ? 'text-crm-muted' : variant === 'warm' ? 'text-crm-muted' : 'text-crm-muted';
   const cardClass = variant === 'light'
-    ? 'bg-crm-surface border border-crm-border shadow-sm shadow-sm'
+    ? 'bg-crm-surface border border-crm-border shadow-sm'
     : variant === 'warm'
       ? 'bg-[#fdfbf7] border border-[#e6d9c6]'
       : 'bg-crm-surface border border-crm-border shadow-sm';
@@ -32,7 +32,7 @@ export default function ReviewsSection({ reviews, variant = 'dark' }: { reviews:
   return (
     <section className={`${bgClass} py-16`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-crm-mutedrm-textenter mb-12">
+        <div className="text-center mb-12">
           <h2 className={`${` font-bold ${textClass} text-xl font-bold`} mb-2`}>What Our Clients Say</h2>
           <div className="flex items-center justify-center gap-2 mt-3">
             <StarRating rating={Math.round(avgRating)} />

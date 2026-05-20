@@ -69,53 +69,7 @@ export default function ClassicTemplate({ ctx }: { ctx: any }) {
       `}} />
   
 
-      {faviconUrl && (
-        <link rel="icon" href={faviconUrl} />
-      )}
-      <style dangerouslySetInnerHTML={{__html: `
-        @import url('https://fonts.googleapis.com/css2?family=${headingFont.replace(/ /g, '+')}:wght@400;600;700;900&family=${bodyFont.replace(/ /g, '+')}:wght@400;500;600&display=swap');
-        
-        h1, h2, h3, h4, h5, h6, .font-heading { font-family: '${headingFont}', sans-serif !important; }
-        body, p, span, a, div, .font-body { font-family: '${bodyFont}', sans-serif; }
-        
-        ${isDark ? `
-          .bg-crm-bg, .bg-white, .bg-crm-surface { background-color: ${themeBg} !important; border-color: ${themeBorder} !important; }
-          .text-crm-mutedrm-textrm-text, .text-gray-900, .text-crm-mutedlack { color: ${themeText} !important; }
-          .text-crm-mutedrm-textrm-muted, .text-gray-500, .text-gray-600 { color: ${themeMuted} !important; }
-          .border-gray-100, .border-gray-200, .border-crm-border { border-color: ${themeBorder} !important; }
-        ` : ''}
 
-        ${buttonShape === 'sharp' ? '.btn, button { border-radius: 0 !important; }' : ''}
-        ${buttonShape === 'pill' ? '.btn, button { border-radius: 9999px !important; }' : ''}
-        
-        ${buttonVariant === 'outline' ? `
-          .btn, button.bg-crm-primary { background-color: transparent !important; border: 2px solid ${primaryColor} !important; color: ${primaryColor} !important; }
-          .btn:hover, button.bg-crm-primary:hover { background-color: ${primaryColor}20 !important; }
-        ` : ''}
-        
-        ${buttonVariant === 'ghost' ? `
-          .btn, button.bg-crm-primary { background-color: transparent !important; border: none !important; color: ${primaryColor} !important; }
-          .btn:hover, button.bg-crm-primary:hover { background-color: ${primaryColor}20 !important; }
-        ` : ''}
-
-        ${enableScrollAnimations ? `
-          .animate-on-scroll {
-            animation: fadeInUp 0.8s ease forwards;
-          }
-          @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-          }
-        ` : ''}
-
-        .hero-overlay {
-          background-color: ${heroOverlayColor};
-          opacity: ${heroOverlayOpacity / 100};
-        }
-
-        ${customCss}
-      `}} />
-  
             <div className="absolute top-6 left-8 z-50">
                 {pages.filter((p: any) => p.isVisible).length > 0 && (
                     <nav className="flex gap-6 font-sans text-[11px] font-bold uppercase tracking-widest">
@@ -130,10 +84,10 @@ export default function ClassicTemplate({ ctx }: { ctx: any }) {
                 <SupabaseAuthButton redirectUrl={pathname} primaryColor={primaryColor} secondaryColor={secondaryColor} />
             </div>
 
-                        <header className="border-b-4 border-[#2c1e16] pt-32 pb-16 text-crm-mutedrm-textenter relative bg-cover bg-center" style={{ backgroundImage: heroImageUrl ? `url(${heroImageUrl})` : "url('https://www.transparenttextures.com/patterns/aged-paper.png')" }}>
+                        <header className="border-b-4 border-[#2c1e16] pt-32 pb-16 text-center relative bg-cover bg-center" style={{ backgroundImage: heroImageUrl ? `url(${heroImageUrl})` : "url('https://www.transparenttextures.com/patterns/aged-paper.png')" }}>
     <div className={heroImageUrl ? "absolute inset-0 bg-[#fdfbf7]/80" : ""} />
     <div className="relative z-10">
-              {logoUrl ? <img src={logoUrl} alt={shop.name} className="h-24 mx-auto object-contain mb-4" onError={(e) => { e.currentTarget.style.display = 'none'; }} /> : <h1 className="font-bold uppercase tracking-widest mb-4 text-crm-mutedrm-textxl font-bold" style={{ color: primaryColor }}>{shop.name}</h1>}
+              {logoUrl ? <img src={logoUrl} alt={shop.name} className="h-24 mx-auto object-contain mb-4" onError={(e) => { e.currentTarget.style.display = 'none'; }} /> : <h1 className="font-bold uppercase tracking-widest mb-4 text-2xl font-bold" style={{ color: primaryColor }}>{shop.name}</h1>}
               {shop.slogan && <h2 className="text-[#8b7355] font-serif text-xl italic mb-6">{shop.slogan}</h2>}
               {shop.description && <p className="max-w-xl mx-auto text-crm-muted text-[13px]">{shop.description}</p>}
             </div>
@@ -142,12 +96,12 @@ export default function ClassicTemplate({ ctx }: { ctx: any }) {
             {pages.filter((p: any) => p.isVisible).map((p: any) => (
 
                 <section key={p.id} id={p.id} className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-32 min-h-[60vh]">
-                    <h1 className="font-bold uppercase tracking-widest mb-12 text-crm-mutedrm-textenter text-crm-mutedrm-textxl font-bold" style={{ color: primaryColor }}>{p.title}</h1>
+                    <h1 className="font-bold uppercase tracking-widest mb-12 text-center text-2xl font-bold" style={{ color: primaryColor }}>{p.title}</h1>
                     <CustomPageContent content={p.content || ""} shop={shop} themeColor={primaryColor} className="prose prose-lg max-w-none text-crm-muted"  onBookClick={handleBookClick}  reviews={reviews}  templateType={templateType} />
                 </section>
             ))}
 
-            <footer className="bg-[#2c1e16] text-[#e6d9c6] py-12 text-crm-mutedrm-textenter text-[13px] font-sans tracking-widest uppercase">
+            <footer className="bg-[#2c1e16] text-[#e6d9c6] py-12 text-center text-[13px] font-sans tracking-widest uppercase">
                  {shopAddress && <p className="mb-2 text-[13px]">{shopAddress}</p>}
                  {!shopAddress && <p className="mb-2 text-[13px]">Visit us today</p>}
                  <p className="text-[13px]">{shopPhone}{shopPhone && shopEmail ? ' | ' : ''}{shopEmail}</p>

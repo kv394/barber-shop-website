@@ -70,52 +70,6 @@ export default function EditorialTemplate({ ctx }: { ctx: any }) {
       `}} />
   
 
-      {faviconUrl && (
-        <link rel="icon" href={faviconUrl} />
-      )}
-      <style dangerouslySetInnerHTML={{__html: `
-        @import url('https://fonts.googleapis.com/css2?family=${headingFont.replace(/ /g, '+')}:wght@400;600;700;900&family=${bodyFont.replace(/ /g, '+')}:wght@400;500;600&display=swap');
-        
-        h1, h2, h3, h4, h5, h6, .font-heading { font-family: '${headingFont}', sans-serif !important; }
-        body, p, span, a, div, .font-body { font-family: '${bodyFont}', sans-serif; }
-        
-        ${isDark ? `
-          .bg-crm-bg, .bg-white, .bg-crm-surface { background-color: ${themeBg} !important; border-color: ${themeBorder} !important; }
-          .text-crm-mutedrm-textrm-text, .text-gray-900, .text-crm-mutedlack { color: ${themeText} !important; }
-          .text-crm-mutedrm-textrm-muted, .text-gray-500, .text-gray-600 { color: ${themeMuted} !important; }
-          .border-gray-100, .border-gray-200, .border-crm-border { border-color: ${themeBorder} !important; }
-        ` : ''}
-
-        ${buttonShape === 'sharp' ? '.btn, button { border-radius: 0 !important; }' : ''}
-        ${buttonShape === 'pill' ? '.btn, button { border-radius: 9999px !important; }' : ''}
-        
-        ${buttonVariant === 'outline' ? `
-          .btn, button.bg-crm-primary { background-color: transparent !important; border: 2px solid ${primaryColor} !important; color: ${primaryColor} !important; }
-          .btn:hover, button.bg-crm-primary:hover { background-color: ${primaryColor}20 !important; }
-        ` : ''}
-        
-        ${buttonVariant === 'ghost' ? `
-          .btn, button.bg-crm-primary { background-color: transparent !important; border: none !important; color: ${primaryColor} !important; }
-          .btn:hover, button.bg-crm-primary:hover { background-color: ${primaryColor}20 !important; }
-        ` : ''}
-
-        ${enableScrollAnimations ? `
-          .animate-on-scroll {
-            animation: fadeInUp 0.8s ease forwards;
-          }
-          @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-          }
-        ` : ''}
-
-        .hero-overlay {
-          background-color: ${heroOverlayColor};
-          opacity: ${heroOverlayOpacity / 100};
-        }
-
-        ${customCss}
-      `}} />
   
             <style dangerouslySetInnerHTML={{__html: `
               @import url('https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,700;1,400&family=Manrope:wght@300;400;500;600;700&display=swap');
@@ -128,7 +82,7 @@ export default function EditorialTemplate({ ctx }: { ctx: any }) {
             {/* TopNavBar */}
             <nav className="fixed top-0 w-full z-50 bg-[#121412]/80 backdrop-blur-xl shadow-none no-border">
               <div className="flex justify-between items-center px-8 py-6 max-w-screen-2xl mx-auto">
-                <div className="text-crm-mutedrm-textxl font-bold font-headline tracking-tighter" style={{ color: primaryColor }}>
+                <div className="text-2xl font-bold font-headline tracking-tighter" style={{ color: primaryColor }}>
                   {shop.name}
                 </div>
                 {/* Desktop Navigation */}
@@ -152,14 +106,14 @@ export default function EditorialTemplate({ ctx }: { ctx: any }) {
     
             <div className="pt-24">
                             {/* Hero Section */}
-              <section className="relative min-h-[921px] flex items-center px-8 md:px-16 overflow-hidden">
+              <section className="relative min-h-[70vh] md:min-h-[921px] flex items-center px-8 md:px-16 overflow-hidden">
                 <div className="max-w-7xl mx-auto w-full grid grid-cols-1 md:grid-cols-12 gap-12 items-center">
                   <div className="md:col-span-6 z-10">
                     <span className="font-label tracking-[0.2em] uppercase text-[11px] mb-6 block" style={{ color: primaryColor }}>
                       {editorial.heroTagline || 'Editorial Excellence'}
                     </span>
                     <h1 
-                      className="font-headline leading-[1.1] mb-8 tracking-tight text-crm-mutedrm-textxl font-bold"
+                      className="font-headline leading-[1.1] mb-8 tracking-tight text-5xl font-bold"
                       dangerouslySetInnerHTML={{ __html: editorial.heroTitle || `Your Sanctuary of <br/> <span class="italic" style="color: ${primaryColor}">Sophisticated Care</span>` }}
                     />
                     <p className="text-crm-muted font-body max-w-md mb-10 leading-relaxed text-[13px]">
@@ -184,7 +138,7 @@ export default function EditorialTemplate({ ctx }: { ctx: any }) {
                       </a>
                     </div>
                   </div>
-                  <div className="md:col-span-6 relative h-[600px] md:h-[750px]">
+                  <div className="md:col-span-6 relative h-[300px] md:h-[600px] lg:h-[750px]">
                     <div className="absolute inset-0 bg-[#1a1c1a] rounded-3xl overflow-hidden -rotate-2 transform translate-x-4 translate-y-4"></div>
                     <img 
                       alt="Hero" 
@@ -202,7 +156,7 @@ export default function EditorialTemplate({ ctx }: { ctx: any }) {
 
                  <section key={p.id} id={p.id} className="py-32 px-8 min-h-[60vh] w-full max-w-7xl mx-auto">
                     <div className="w-full">
-                        <h1 className="font-headline mb-12 text-crm-mutedrm-textxl font-bold" style={{ color: primaryColor }}>{p.title}</h1>
+                        <h1 className="font-headline mb-12 text-3xl font-bold" style={{ color: primaryColor }}>{p.title}</h1>
                         <CustomPageContent content={p.content || ""} shop={shop} themeColor={primaryColor} className="prose prose-invert prose-lg max-w-none font-body text-crm-muted"  onBookClick={handleBookClick}  reviews={reviews}  templateType={templateType} />
                     </div>
                 </section>
@@ -257,7 +211,7 @@ export default function EditorialTemplate({ ctx }: { ctx: any }) {
                       <div className="md:col-span-8 flex gap-8">
                         {editorial.testimonials.slice(0,2).map((t: any, i: number) => (
                           <div key={i} className={`bg-[#0d0f0d] p-10 rounded-3xl shadow-sm max-w-sm ${i === 1 ? 'hidden md:block opacity-60' : ''}`}>
-                            <span className="material-symbols-outlined text-crm-mutedxl mb-6" style={{ color: secondaryColor }}>format_quote</span>
+                            <span className="material-symbols-outlined text-4xl mb-6" style={{ color: secondaryColor }}>format_quote</span>
                             <p className="font-body italic text-crm-text mb-8 leading-relaxed text-[13px]">"{t.quote}"</p>
                             <div className="flex items-center gap-4">
                               <div className="w-12 h-12 rounded-full bg-[#292a29]"></div>
@@ -284,14 +238,14 @@ export default function EditorialTemplate({ ctx }: { ctx: any }) {
                         <div className="flex gap-6">
                           <span className="material-symbols-outlined" style={{ color: primaryColor }}>location_on</span>
                           <div>
-                            <h4 className="font-bold mb-2 text-crm-mutedase font-semibold">Our Location</h4>
+                            <h4 className="font-bold mb-2 text-base font-semibold">Our Location</h4>
                             <p className="text-crm-muted text-[13px]">{shopAddress || 'Address not provided'}</p>
                           </div>
                         </div>
                         <div className="flex gap-6">
                           <span className="material-symbols-outlined" style={{ color: primaryColor }}>call</span>
                           <div>
-                            <h4 className="font-bold mb-2 text-crm-mutedase font-semibold">Contact Details</h4>
+                            <h4 className="font-bold mb-2 text-base font-semibold">Contact Details</h4>
                             <p className="text-crm-muted text-[13px]">{shop.customization?.phone || 'Phone not provided'}<br/>{shop.customization?.email || 'Email not provided'}</p>
                           </div>
                         </div>
@@ -302,7 +256,7 @@ export default function EditorialTemplate({ ctx }: { ctx: any }) {
                         <img alt="Map View" className="w-full h-full object-cover" src={editorial.mapImageUrl || "https://lh3.googleusercontent.com/aida-public/AB6AXuBPBUELt3H48sCkgUERZL-bYjLp_g4nyaMrAaWgWqv1QMVuCaaZub4OKguOms2xp_UClFnqWJd5F1jE8c8_9V8GbtLNhZwardBznAcbPP6O5ofImMcqWosMtI8MOhCDK6ERy1aepwuU8Jjoomg4v3oHOH1T-k1vmTJMASUVHIRN_wlzdQm3IGpjqWBgBHRYOEeLiJKp7GgD_lnnDst0M8NdV_0egB1TFqQmXLS5pgBlZELH0ExIL_x5_OEryY1I7lK2NPfP3cKIUjs"} />
                       </div>
                       <div className="absolute inset-0 flex items-center justify-center">
-                        <div className="bg-[#121412] p-8 rounded-2xl shadow-xl border text-crm-mutedrm-textenter max-w-xs" style={{ borderColor: `${primaryColor}20` }}>
+                        <div className="bg-[#121412] p-8 rounded-2xl shadow-xl border text-center max-w-xs" style={{ borderColor: `${primaryColor}20` }}>
                           <div className="w-12 h-12 rounded-full mx-auto mb-4 flex items-center justify-center" style={{ backgroundColor: primaryColor }}>
                             <span className="material-symbols-outlined text-crm-text">pin_drop</span>
                           </div>

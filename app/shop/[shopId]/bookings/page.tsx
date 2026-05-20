@@ -185,7 +185,7 @@ export default async function BookingsPage({ params }: { params: Promise<{ shopI
                         </div>
 
                         {/* Actions Column */}
-                        <div className="w-full sm:w-auto flex flex-row sm:flex-col justify-end items-end gap-2 border-t sm:border-t-0 sm:border-l border-crm-border pt-4 sm:pt-0 sm:pl-6">
+                        <div className="w-full sm:w-auto flex flex-row flex-wrap sm:flex-nowrap sm:flex-col justify-end items-end gap-2 border-t sm:border-t-0 sm:border-l border-crm-border pt-4 sm:pt-0 sm:pl-6">
                           {isWorkCompleted && <CheckoutButton shopId={shop.id} appointmentId={apt.id} price={apt.service.price} serviceName={apt.service.name} serviceId={apt.serviceId} shopName={shop.name} clientName={apt.user?.name || apt.user?.email || "Guest"} addons={apt.addons} />}
                           {isAccepted && <CompleteWorkButton shopId={shop.id} appointmentId={apt.id} userName={apt.user?.name || apt.user?.email || "Guest"} />}
                           {isScheduled && <AcceptAppointmentButton shopId={shop.id} appointmentId={apt.id} userName={apt.user?.name || apt.user?.email || "Guest"} />}

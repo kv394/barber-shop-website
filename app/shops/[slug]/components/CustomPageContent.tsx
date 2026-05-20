@@ -20,37 +20,37 @@ export default function CustomPageContent({ content, shop, themeColor, className
     switch (templateType) {
       case 'sporty':
         return {
-          card: 'bg-crm-surface border-2 border-crm-border p-6 text-crm-mutedrm-textenter shadow-sm flex flex-col items-center',
-          serviceCard: 'bg-crm-surface border-2 border-crm-border p-6 text-crm-mutedrm-textenter shadow-sm flex flex-col',
+          card: 'bg-crm-surface border-2 border-crm-border p-6 text-center shadow-sm flex flex-col items-center',
+          serviceCard: 'bg-crm-surface border-2 border-crm-border p-6 text-center shadow-sm flex flex-col',
           title: 'font-black uppercase italic text-lg',
-          price: 'text-crm-mutedrm-textxl font-bold mb-4',
-          desc: 'text-crm-mutedrm-textrm-muted mb-6 min-h-[3rem] text-[13px]',
+          price: 'text-2xl font-bold mb-4',
+          desc: 'text-crm-muted mb-6 min-h-[3rem] text-[13px]',
           btn: 'w-full text-white font-bold py-3 uppercase tracking-wider transition-all hover:scale-[1.02] shadow-md',
           btnStyle: { backgroundColor: themeColor || '#ef4444' }
         };
       case 'corporate':
         return {
-          card: 'bg-white rounded-lg shadow-lg border border-gray-100 p-6 flex flex-col items-center text-crm-mutedrm-textenter',
+          card: 'bg-white rounded-lg shadow-lg border border-gray-100 p-6 flex flex-col items-center text-center',
           serviceCard: 'bg-white rounded-lg shadow-lg border border-gray-100 p-6 flex flex-col',
           title: 'font-bold text-gray-900 mb-2 text-lg',
-          price: 'text-lg font-bold text-crm-mutedlue-600',
+          price: 'text-lg font-bold text-blue-600',
           desc: 'text-gray-500 mb-4 text-[13px] flex-grow',
           btn: 'w-full text-white font-bold py-2 rounded transition-all hover:opacity-90 shadow-sm mt-4',
           btnStyle: { backgroundColor: themeColor || '#2563eb' }
         };
       case 'noir':
         return {
-          card: 'bg-transparent border border-gray-800 p-6 hover:bg-gray-900/50 transition-colors flex flex-col items-center text-crm-mutedrm-textenter',
-          serviceCard: 'bg-transparent border border-gray-800 p-6 hover:bg-gray-900/50 transition-colors flex flex-col text-crm-mutedrm-textenter',
+          card: 'bg-transparent border border-gray-800 p-6 hover:bg-gray-900/50 transition-colors flex flex-col items-center text-center',
+          serviceCard: 'bg-transparent border border-gray-800 p-6 hover:bg-gray-900/50 transition-colors flex flex-col text-center',
           title: 'font-bold uppercase tracking-widest text-lg mb-2',
           price: 'text-lg font-bold mb-4',
           desc: 'text-gray-400 mb-6 text-[13px] flex-grow',
-          btn: 'w-full bg-white text-crm-mutedlack font-bold uppercase py-3 tracking-[0.2em] hover:bg-gray-200 transition-colors',
+          btn: 'w-full bg-white text-black font-bold uppercase py-3 tracking-[0.2em] hover:bg-gray-200 transition-colors',
           btnStyle: { color: 'black' }
         };
       case 'sunset':
         return {
-          card: 'bg-black/20 backdrop-blur-md border border-white/10 rounded-xl p-6 text-white shadow-xl flex flex-col items-center text-crm-mutedrm-textenter hover:border-orange-500/50 transition-colors',
+          card: 'bg-black/20 backdrop-blur-md border border-white/10 rounded-xl p-6 text-white shadow-xl flex flex-col items-center text-center hover:border-orange-500/50 transition-colors',
           serviceCard: 'bg-black/20 backdrop-blur-md border border-white/10 rounded-xl p-6 text-white shadow-xl flex flex-col hover:border-orange-500/50 transition-colors',
           title: 'font-bold text-lg text-orange-400 mb-2',
           price: 'text-xl font-bold text-orange-400',
@@ -60,17 +60,17 @@ export default function CustomPageContent({ content, shop, themeColor, className
         };
       case 'editorial':
         return {
-          card: 'bg-[#0d0f0d] p-8 rounded-2xl flex flex-col items-center text-crm-mutedrm-textenter border border-[#292a29]',
+          card: 'bg-[#0d0f0d] p-8 rounded-2xl flex flex-col items-center text-center border border-[#292a29]',
           serviceCard: 'bg-[#0d0f0d] p-8 rounded-2xl flex flex-col border border-[#292a29]',
           title: 'font-serif text-crm-text text-xl mb-4',
           price: 'text-[13px] font-bold text-white mb-4',
           desc: 'text-crm-muted leading-relaxed text-[13px] mb-6 flex-grow',
-          btn: 'font-semibold flex items-center justify-center gap-2 uppercase tracking-widest py-3 border border-[#d4af37] text-[#d4af37] hover:bg-[#d4af37] hover:text-crm-mutedlack transition-colors',
+          btn: 'font-semibold flex items-center justify-center gap-2 uppercase tracking-widest py-3 border border-[#d4af37] text-[#d4af37] hover:bg-[#d4af37] hover:text-black transition-colors',
           btnStyle: themeColor ? { borderColor: themeColor, color: themeColor } : {}
         };
       case 'minimal':
         return {
-          card: 'bg-transparent border border-gray-200 p-6 flex flex-col items-center text-crm-mutedrm-textenter',
+          card: 'bg-transparent border border-gray-200 p-6 flex flex-col items-center text-center',
           serviceCard: 'bg-transparent border-b border-gray-200 pb-6 flex flex-col md:flex-row justify-between md:items-center',
           title: 'font-medium text-lg text-gray-900',
           price: 'font-medium text-gray-900',
@@ -80,8 +80,8 @@ export default function CustomPageContent({ content, shop, themeColor, className
         };
       case 'classic':
         return {
-          card: 'bg-[#fdfbf7] border border-[#e6d9c6] p-8 text-crm-mutedrm-textenter flex flex-col items-center shadow-sm',
-          serviceCard: 'bg-[#fdfbf7] border border-[#e6d9c6] p-8 text-crm-mutedrm-textenter flex flex-col items-center shadow-sm',
+          card: 'bg-[#fdfbf7] border border-[#e6d9c6] p-8 text-center flex flex-col items-center shadow-sm',
+          serviceCard: 'bg-[#fdfbf7] border border-[#e6d9c6] p-8 text-center flex flex-col items-center shadow-sm',
           title: 'font-bold mb-2 text-lg text-crm-text',
           price: 'text-[#8b7355] text-[13px] tracking-widest uppercase mb-3 font-semibold',
           desc: 'text-crm-muted italic mb-6 text-[13px] flex-grow',
@@ -91,7 +91,7 @@ export default function CustomPageContent({ content, shop, themeColor, className
       case 'modern':
       default:
         return {
-          card: 'bg-white rounded-2xl p-6 shadow-sm border border-gray-100 flex flex-col items-center text-crm-mutedrm-textenter',
+          card: 'bg-white rounded-2xl p-6 shadow-sm border border-gray-100 flex flex-col items-center text-center',
           serviceCard: 'bg-white rounded-2xl p-6 shadow-sm border border-gray-100 flex flex-col',
           title: 'font-bold text-gray-900 text-lg mb-2',
           price: 'px-3 py-1 rounded-full text-[13px] font-bold inline-block mb-4',
@@ -151,7 +151,7 @@ export default function CustomPageContent({ content, shop, themeColor, className
                     </div>
                   )}
                   <div className="p-8 overflow-y-auto">
-                    <h3 className="font-extrabold text-crm-mutedrm-textxl mb-2 text-gray-900">{selectedProduct.name}</h3>
+                    <h3 className="font-extrabold text-2xl mb-2 text-gray-900">{selectedProduct.name}</h3>
                     <div className="font-bold text-xl mb-6" style={{ color: themeColor || '#111827' }}>
                       \$\{typeof selectedProduct.price === 'number' ? selectedProduct.price.toFixed(2) : '0.00'}
                     </div>
@@ -214,7 +214,7 @@ export default function CustomPageContent({ content, shop, themeColor, className
         
                         <div className="mt-auto pt-6 border-t border-gray-100 flex items-center justify-between">
                           {templateType !== 'classic' && (
-                            <div className={`text-[12px] opacity-70 font-semibold uppercase tracking-widest ${templateType === 'sporty' ? 'text-crm-mutedrm-textrm-muted' : 'text-gray-500'}`}>
+                            <div className={`text-[12px] opacity-70 font-semibold uppercase tracking-widest ${templateType === 'sporty' ? 'text-crm-muted' : 'text-gray-500'}`}>
                               ⏱️ {service.duration} MIN
                             </div>
                           )}
@@ -247,7 +247,7 @@ export default function CustomPageContent({ content, shop, themeColor, className
                    {member.imageUrl ? (
                      <img src={member.imageUrl} alt={member.name} className="w-28 h-28 rounded-full mx-auto object-cover border-4 mb-6 shadow-sm" style={{ borderColor: themeColor || '#e5e7eb' }} />
                    ) : (
-                     <div className="w-28 h-28 rounded-full mx-auto bg-gray-100 flex items-center justify-center text-gray-400 text-crm-mutedrm-textxl mb-6 border-4 shadow-sm" style={{ borderColor: themeColor || '#e5e7eb' }}>
+                     <div className="w-28 h-28 rounded-full mx-auto bg-gray-100 flex items-center justify-center text-gray-400 text-2xl mb-6 border-4 shadow-sm" style={{ borderColor: themeColor || '#e5e7eb' }}>
                        {member.name ? member.name.charAt(0).toUpperCase() : 'S'}
                      </div>
                    )}
@@ -292,19 +292,19 @@ export default function CustomPageContent({ content, shop, themeColor, className
                   <div className="space-y-6 mt-8">
                     {address && (
                       <div className="flex items-start gap-4 group">
-                        <span className="text-crm-mutedrm-textxl mt-1" style={{ color: themeColor || 'inherit' }}>📍</span>
+                        <span className="text-2xl mt-1" style={{ color: themeColor || 'inherit' }}>📍</span>
                         <p className={styles.desc + " !mb-0 group-hover:text-gray-900 transition-colors"}>{address}</p>
                       </div>
                     )}
                     {phone && (
                       <div className="flex items-center gap-4 group">
-                        <span className="text-crm-mutedrm-textxl" style={{ color: themeColor || 'inherit' }}>📞</span>
+                        <span className="text-2xl" style={{ color: themeColor || 'inherit' }}>📞</span>
                         <a href={`tel:${phone}`} className={styles.desc + " !mb-0 group-hover:text-gray-900 transition-colors"}>{phone}</a>
                       </div>
                     )}
                     {email && (
                       <div className="flex items-center gap-4 group">
-                        <span className="text-crm-mutedrm-textxl" style={{ color: themeColor || 'inherit' }}>✉️</span>
+                        <span className="text-2xl" style={{ color: themeColor || 'inherit' }}>✉️</span>
                         <a href={`mailto:${email}`} className={styles.desc + " !mb-0 group-hover:text-gray-900 transition-colors"}>{email}</a>
                       </div>
                     )}

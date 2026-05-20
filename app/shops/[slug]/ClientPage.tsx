@@ -12,7 +12,7 @@ import InteractiveReviewsSection from '@/components/reviews/InteractiveReviewsSe
 // Lazy-load the BookingModal component
 const BookingModal = dynamic(() => import('@/components/appointments/BookingModal'), {
     ssr: false, // This component will only be rendered on the client side
-    loading: () => <div className="fixed inset-0 bg-crm-surface z-[100] flex items-center justify-center"><p className="text-crm-mutedrm-textrm-text text-[13px]">Loading...</p></div>
+    loading: () => <div className="fixed inset-0 bg-crm-surface z-[100] flex items-center justify-center"><p className="text-crm-muted text-[13px]">Loading...</p></div>
 });
 
 const BookingWizard = dynamic(() => import('@/components/booking/BookingWizard'), {
@@ -192,52 +192,6 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
       `}} />
   
 
-      {faviconUrl && (
-        <link rel="icon" href={faviconUrl} />
-      )}
-      <style dangerouslySetInnerHTML={{__html: `
-        @import url('https://fonts.googleapis.com/css2?family=${headingFont.replace(/ /g, '+')}:wght@400;600;700;900&family=${bodyFont.replace(/ /g, '+')}:wght@400;500;600&display=swap');
-        
-        h1, h2, h3, h4, h5, h6, .font-heading { font-family: '${headingFont}', sans-serif !important; }
-        body, p, span, a, div, .font-body { font-family: '${bodyFont}', sans-serif; }
-        
-        ${isDark ? `
-          .bg-crm-bg, .bg-white, .bg-crm-surface { background-color: ${themeBg} !important; border-color: ${themeBorder} !important; }
-          .text-crm-mutedrm-textrm-text, .text-gray-900, .text-crm-mutedlack { color: ${themeText} !important; }
-          .text-crm-mutedrm-textrm-muted, .text-gray-500, .text-gray-600 { color: ${themeMuted} !important; }
-          .border-gray-100, .border-gray-200, .border-crm-border { border-color: ${themeBorder} !important; }
-        ` : ''}
-
-        ${buttonShape === 'sharp' ? '.btn, button { border-radius: 0 !important; }' : ''}
-        ${buttonShape === 'pill' ? '.btn, button { border-radius: 9999px !important; }' : ''}
-        
-        ${buttonVariant === 'outline' ? `
-          .btn, button.bg-crm-primary { background-color: transparent !important; border: 2px solid ${primaryColor} !important; color: ${primaryColor} !important; }
-          .btn:hover, button.bg-crm-primary:hover { background-color: ${primaryColor}20 !important; }
-        ` : ''}
-        
-        ${buttonVariant === 'ghost' ? `
-          .btn, button.bg-crm-primary { background-color: transparent !important; border: none !important; color: ${primaryColor} !important; }
-          .btn:hover, button.bg-crm-primary:hover { background-color: ${primaryColor}20 !important; }
-        ` : ''}
-
-        ${enableScrollAnimations ? `
-          .animate-on-scroll {
-            animation: fadeInUp 0.8s ease forwards;
-          }
-          @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-          }
-        ` : ''}
-
-        .hero-overlay {
-          background-color: ${heroOverlayColor};
-          opacity: ${heroOverlayOpacity / 100};
-        }
-
-        ${customCss}
-      `}} />
   
         {/* Header / Nav */}
         <header className="absolute w-full top-0 left-0 p-6 flex flex-wrap justify-between items-center z-50">
@@ -266,19 +220,19 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
           )}
           <div className="absolute inset-0 bg-black/60 z-0" />
           
-          <div className="relative z-10 w-full max-w-7xl mx-auto text-crm-mutedrm-textenter flex flex-col items-center">
+          <div className="relative z-10 w-full max-w-7xl mx-auto text-center flex flex-col items-center">
             {logoUrl ? (
               <div className="w-28 h-28 md:w-36 md:h-36 mb-8 rounded-full overflow-hidden border-4 shadow-2xl bg-white flex items-center justify-center p-2" style={{ borderColor: primaryColor || '#ffffff' }}>
                 <img src={logoUrl} alt={shop.name} className="max-w-full max-h-full object-contain" onError={(e) => { e.currentTarget.style.display = 'none'; }} />
               </div>
             ) : (
-              <h1 className="font-extrabold tracking-tight text-crm-mutedrm-textxl md:text-crm-mutedrm-textxl mb-6 text-white drop-shadow-md">
+              <h1 className="font-extrabold tracking-tight text-4xl md:text-6xl mb-6 text-white drop-shadow-md">
                 {shop.name}
               </h1>
             )}
             
             {shop.slogan && (
-              <p className="text-white/90 font-medium text-xl md:text-crm-mutedrm-textxl tracking-wide mb-6 max-w-2xl drop-shadow-sm">
+              <p className="text-white/90 font-medium text-xl md:text-2xl tracking-wide mb-6 max-w-2xl drop-shadow-sm">
                 {shop.slogan}
               </p>
             )}
@@ -303,7 +257,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
         <div className="relative z-20 -mt-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12 pb-24">
           {pages.filter((p: any) => p.isVisible).map((p: any) => (
             <section key={p.id} id={p.id} className="bg-white p-8 md:p-12 rounded-3xl shadow-lg border border-gray-100 overflow-hidden w-full max-w-7xl mx-auto">
-               <h2 className="font-extrabold mb-10 text-crm-mutedrm-textxl md:text-crm-mutedrm-textxl text-gray-900 text-crm-mutedrm-textenter tracking-tight" style={{ color: primaryColor }}>{p.title}</h2>
+               <h2 className="font-extrabold mb-10 text-2xl md:text-3xl text-gray-900 text-center tracking-tight" style={{ color: primaryColor }}>{p.title}</h2>
                <CustomPageContent content={p.content || ""} shop={shop} themeColor={primaryColor} className="prose prose-lg max-w-none text-gray-600 mx-auto" onBookClick={handleBookClick} reviews={reviews} templateType={templateType} />
             </section>
           ))}
@@ -312,7 +266,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
         {/* Footer */}
         <footer className="bg-white border-t border-gray-200 pt-16 pb-8">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 lg:px-8">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12 text-crm-mutedrm-textenter md:text-left">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12 text-center md:text-left">
               <div>
                 <h3 className="font-bold text-gray-900 mb-6 text-xl">{shop.name}</h3>
                 <p className="text-gray-500 mb-6 text-[14px] leading-relaxed max-w-xs mx-auto md:mx-0">
@@ -346,7 +300,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
 
               <div>
                 <h4 className="font-bold text-gray-900 mb-6 text-sm uppercase tracking-widest">Follow Us</h4>
-                <div className="flex justify-center md:justify-start gap-6 text-crm-mutedrm-textxl">
+                <div className="flex justify-center md:justify-start gap-6 text-2xl">
                   {shopFB && <a href={shopFB} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-[#1877F2] transition-transform hover:scale-110">📘</a>}
                   {shopIG && <a href={shopIG.startsWith('http') ? shopIG : `https://instagram.com/${shopIG.replace('@','')}`} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-[#E4405F] transition-transform hover:scale-110">📸</a>}
                   {shopTW && <a href={shopTW} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-[#1DA1F2] transition-transform hover:scale-110">🐦</a>}
@@ -354,7 +308,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
               </div>
             </div>
             
-            <div className="border-t border-gray-100 pt-8 text-crm-mutedrm-textenter text-gray-400 text-[13px] font-medium tracking-wide">
+            <div className="border-t border-gray-100 pt-8 text-center text-gray-400 text-[13px] font-medium tracking-wide">
               &copy; {new Date().getFullYear()} {shop.name}. All rights reserved.
             </div>
           </div>

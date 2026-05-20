@@ -367,7 +367,7 @@ export default function BookingWizard({ shopId, themeColor, secondaryColor, temp
   return (
     <div className="flex flex-col h-full bg-white relative font-sans w-full max-w-md mx-auto">
       {/* Header */}
-      <div className="flex items-center justify-between p-4 pr-12 border-b border-gray-100 shrink-0">
+      <div className="flex items-center justify-between p-4 pr-10 border-b border-gray-100 shrink-0">
         <div className="flex items-center space-x-2">
           {step > 1 && (
             <button onClick={handleBack} className="text-gray-500 hover:text-black">
@@ -381,7 +381,7 @@ export default function BookingWizard({ shopId, themeColor, secondaryColor, temp
             {step === 4 && 'Your Details'}
           </h2>
         </div>
-        <div className="text-sm text-gray-400 font-medium">Step {step} of 4</div>
+        <div className="text-xs sm:text-sm text-gray-400 font-medium whitespace-nowrap">{step}/4</div>
       </div>
       
       {/* Scrollable Content */}
@@ -506,12 +506,12 @@ export default function BookingWizard({ shopId, themeColor, secondaryColor, temp
                 {loadingSlots ? (
                     <div className="py-8 flex justify-center"><div className="animate-spin rounded-full h-6 w-6 border-b-2 border-gray-900"></div></div>
                 ) : availableTimeSlots.length > 0 ? (
-                    <div className="grid grid-cols-3 gap-2">
+                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                     {availableTimeSlots.map(slot => (
                         <button
                         key={slot.time}
                         onClick={() => setSelectedTime(slot.time)}
-                        className={`p-3 text-sm transition-all font-medium relative ${selectedTime === slot.time ? tStyles.cardActive : tStyles.cardInactive}`} style={selectedTime === slot.time ? { borderColor: themeColor || '#111827', backgroundColor: themeColor || '#111827', color: templateType === 'editorial' ? '#121412' : '#ffffff' } : {}}
+                        className={`p-4 text-base sm:p-3 sm:text-sm transition-all font-medium relative ${selectedTime === slot.time ? tStyles.cardActive : tStyles.cardInactive}`} style={selectedTime === slot.time ? { borderColor: themeColor || '#111827', backgroundColor: themeColor || '#111827', color: templateType === 'editorial' ? '#121412' : '#ffffff' } : {}}
                         >
                         {formatTime(slot.time)}
                         {slot.isRecommended && selectedTime !== slot.time && (
@@ -597,7 +597,7 @@ export default function BookingWizard({ shopId, themeColor, secondaryColor, temp
 
       {/* Footer */}
       {step >= 3 && (
-        <div className="p-4 border-t border-gray-100 bg-white shrink-0">
+        <div className="p-4 pb-[max(1rem,env(safe-area-inset-bottom))] border-t border-gray-100 bg-white shrink-0">
           {step === 3 ? (
               <button 
                 disabled={!selectedDate || !selectedTime}

@@ -92,3 +92,59 @@ input[type="date"]::-moz-text-control {
   -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;  /* Firefox */
 }
+
+/* ===== DayPicker mobile touch target overrides ===== */
+.rdp {
+  --rdp-cell-size: 44px;
+}
+
+@media (max-width: 767px) {
+  .rdp {
+    --rdp-cell-size: 44px;
+    font-size: 16px;
+    margin: 0;
+    width: 100%;
+  }
+  .rdp-day {
+    min-width: 44px;
+    min-height: 44px;
+  }
+  .rdp-table {
+    width: 100%;
+  }
+  .rdp-caption_label {
+    font-size: 1rem;
+  }
+  .rdp-nav_button {
+    width: 44px;
+    height: 44px;
+  }
+}
+
+/* ===== DayPicker mobile touch target overrides ===== */
+.rdp {
+  --rdp-cell-size: 44px;
+}
+
+@media (max-width: 767px) {
+  .rdp {
+    --rdp-cell-size: 44px;
+    font-size: 16px;
+    margin: 0;
+    width: 100%;
+  }
+  .rdp-day {
+    min-width: 44px;
+    min-height: 44px;
+  }
+  .rdp-table {
+    width: 100%;
+  }
+  .rdp-caption_label {
+    font-size: 1rem;
+  }
+  .rdp-nav_button {
+    width: 44px;
+    height: 44px;
+  }
+}
