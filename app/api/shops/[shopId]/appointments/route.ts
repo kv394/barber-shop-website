@@ -86,7 +86,7 @@ export async function POST(
       if (!clientName) {
         return NextResponse.json({ error: 'Client name is required for walk-in bookings' }, { status: 400 });
       }
-      const emailToUse = clientEmail?.trim().toLowerCase() || `walkin-${crypto.randomBytes(4).toString('hex')}@shophub.local`;
+      const emailToUse = clientEmail?.trim().toLowerCase() || `walkin-${crypto.randomBytes(4).toString('hex')}@barbersaas.local`;
       const userBarcode = crypto.createHash('sha256').update(`${emailToUse}-${process.env.JWT_SECRET || 'secret'}`).digest('hex').substring(0, 12).toUpperCase();
 
       const guestUser = await prisma.user.upsert({

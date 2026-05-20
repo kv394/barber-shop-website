@@ -28,8 +28,8 @@ input[type="date"] {
 input[type="time"]:focus,
 input[type="date"]:focus {
   outline: none;
-  border-color: #d4a853 !important; /* brand-gold */
-  box-shadow: 0 0 0 2px rgba(212, 168, 83, 0.3);
+  border-color: #c5a059 !important; /* brand-gold */
+  box-shadow: 0 0 0 2px rgba(197, 160, 89, 0.3);
 }
 
 /* Make the native picker icon large, white, and always visible */

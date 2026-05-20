@@ -29,7 +29,7 @@ export function ShopNav({ shopId, userRole, activeTab }: { shopId: string, userR
   return (
     <div className="mb-6 sm:mb-8">
       {/* ── Main Navigation ── */}
-      <div className="flex gap-1 sm:gap-4 border-b border-white/10 pb-3 sm:pb-4 overflow-x-auto scrollbar-none -mx-3 px-3 sm:mx-0 sm:px-0">
+      <div className="flex gap-1 sm:gap-4 border-b border-white/10 pb-3 sm:pb-4 overflow-x-auto scrollbar-none -mx-3 px-3 sm:mx-0 sm:px-0" role="tablist" aria-label="Shop navigation">
         {isSuperAdmin && (
           <Link href="/" className="px-4 py-2 text-gray-400 hover:text-white transition whitespace-nowrap">
             ← Super Admin
@@ -84,7 +84,7 @@ export function ShopNav({ shopId, userRole, activeTab }: { shopId: string, userR
 
       {/* ── Sub-nav: Staff section ── */}
       {(isShopAdmin || isStaff) && isStaffSection && (
-        <div className="flex gap-2 mt-3 overflow-x-auto scrollbar-none -mx-3 px-3 sm:mx-0 sm:px-0">
+        <div className="flex gap-2 mt-3 overflow-x-auto scrollbar-none -mx-3 px-3 sm:mx-0 sm:px-0" role="tablist" aria-label="Staff section">
           <Link href={`/shop/${shopId}/staff`} className={subTabClass('staff')}>
             📅 Availability
           </Link>
@@ -104,7 +104,7 @@ export function ShopNav({ shopId, userRole, activeTab }: { shopId: string, userR
 
       {/* ── Sub-nav: Reports section ── */}
       {isShopAdmin && !isSuperAdmin && isReportsSection && (
-        <div className="flex gap-2 mt-3 overflow-x-auto scrollbar-none -mx-3 px-3 sm:mx-0 sm:px-0">
+        <div className="flex gap-2 mt-3 overflow-x-auto scrollbar-none -mx-3 px-3 sm:mx-0 sm:px-0" role="tablist" aria-label="Reports section">
           <Link href={`/shop/${shopId}/reports`} className={subTabClass('reports')}>
             💰 Financial
           </Link>

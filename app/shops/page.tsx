@@ -58,7 +58,7 @@ export default async function ShopsDirectoryPage({
       </section>
 
       {/* Shops Grid Section */}
-      <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-20">
+      <section id="shops-grid" className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-20">
         {shops && shops.length > 0 ? (
           <>
             <div className="mb-8 sm:mb-16 flex flex-col sm:flex-row sm:justify-between sm:items-end gap-2">
@@ -66,7 +66,7 @@ export default async function ShopsDirectoryPage({
                 <h2 className="text-2xl sm:text-4xl font-bold text-white mb-2 sm:mb-4">
                   Featured Shops
                 </h2>
-                <div className="w-20 h-1 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full"></div>
+                <div className="w-20 h-1 bg-gradient-to-r from-brand-gold to-yellow-500 rounded-full"></div>
                 <p className="text-gray-400 mt-2 sm:mt-4 text-sm">
                   Showing {shops.length} of {totalCount} shop{totalCount !== 1 ? 's' : ''}
                 </p>
@@ -82,15 +82,15 @@ export default async function ShopsDirectoryPage({
 
                 return (
                   <Link key={shop.id} href={`/shops/${shopSlug}`}>
-                    <div className="group bg-gradient-to-br from-slate-800 to-slate-900 rounded-xl overflow-hidden border border-slate-700 hover:border-blue-500 transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/20 cursor-pointer h-full flex flex-col">
+                    <div className="group bg-gradient-to-br from-slate-800 to-slate-900 rounded-xl overflow-hidden border border-slate-700 hover:border-brand-gold transition-all duration-300 hover:shadow-lg hover:shadow-brand-gold/20 cursor-pointer h-full flex flex-col">
                       {/* Shop Image Placeholder */}
-                      <div className="w-full h-48 bg-gradient-to-br from-blue-600/20 to-cyan-600/20 group-hover:from-blue-600/30 group-hover:to-cyan-600/30 transition-colors flex items-center justify-center">
+                      <div className="w-full h-48 bg-gradient-to-br from-brand-gold/20 to-yellow-600/20 group-hover:from-brand-gold/30 group-hover:to-yellow-600/30 transition-colors flex items-center justify-center">
                         <div className="text-5xl">🏪</div>
                       </div>
 
                       {/* Shop Info */}
                       <div className="p-6 flex flex-col flex-grow">
-                        <h3 className="text-2xl font-bold text-white group-hover:text-blue-400 transition-colors mb-2">
+                        <h3 className="text-2xl font-bold text-white group-hover:text-brand-gold transition-colors mb-2">
                           {shop.name}
                         </h3>
 
@@ -121,9 +121,9 @@ export default async function ShopsDirectoryPage({
                         </div>
 
                         {/* CTA */}
-                        <button className="w-full mt-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded-lg transition-colors">
+                        <div className="w-full mt-4 bg-brand-gold hover:bg-yellow-400 text-brand-dark font-semibold py-2 rounded-lg transition-colors text-center">
                           View Shop →
-                        </button>
+                        </div>
                       </div>
                     </div>
                   </Link>
@@ -206,7 +206,7 @@ export default async function ShopsDirectoryPage({
             ].map((feature, index) => (
               <div
                 key={index}
-                className="text-center bg-slate-800/50 rounded-lg p-6 sm:p-8 border border-slate-700 hover:border-blue-500 transition-colors"
+                className="text-center bg-slate-800/50 rounded-lg p-6 sm:p-8 border border-slate-700 hover:border-brand-gold transition-colors"
               >
                 <div className="text-3xl sm:text-4xl mb-3 sm:mb-4">{feature.icon}</div>
                 <h3 className="text-lg sm:text-xl font-bold text-white mb-2 sm:mb-3">
@@ -220,18 +220,18 @@ export default async function ShopsDirectoryPage({
       </section>
 
       {/* CTA Section */}
-      <section className="bg-gradient-to-r from-blue-600 to-cyan-600 py-10 sm:py-16">
+      <section className="bg-gradient-to-r from-brand-gold to-yellow-500 py-10 sm:py-16">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-4 sm:mb-6">
             Ready to Start?
           </h2>
-          <p className="text-blue-100 text-base sm:text-lg mb-6 sm:mb-8">
+          <p className="text-yellow-100 text-base sm:text-lg mb-6 sm:mb-8">
             Browse our shops, find the perfect service, and book your appointment
             today.
           </p>
-          <button className="bg-white hover:bg-gray-100 text-blue-600 font-bold py-3 px-8 rounded-lg transition-colors text-lg">
+          <a href="#shops-grid" className="inline-block bg-white hover:bg-gray-100 text-brand-dark font-bold py-3 px-8 rounded-lg transition-colors text-lg">
             Explore Shops
-          </button>
+          </a>
         </div>
       </section>
 
@@ -240,7 +240,7 @@ export default async function ShopsDirectoryPage({
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
             <div>
-              <h3 className="text-white font-bold text-lg mb-4">ShopHub</h3>
+              <h3 className="text-white font-bold text-lg mb-4">BarberSaaS</h3>
               <p className="text-gray-400">
                 Your one-stop destination for quality services.
               </p>
@@ -249,48 +249,39 @@ export default async function ShopsDirectoryPage({
               <h4 className="text-white font-bold mb-4">Quick Links</h4>
               <ul className="space-y-2 text-gray-400">
                 <li>
-                  <a href="#" className="hover:text-white transition">
+                  <span className="text-gray-400">
                     About Us
-                  </a>
+                  </span>
                 </li>
                 <li>
-                  <a href="#" className="hover:text-white transition">
+                  <span className="text-gray-400">
                     Contact
-                  </a>
+                  </span>
                 </li>
                 <li>
-                  <a href="#" className="hover:text-white transition">
+                  <span className="text-gray-400">
                     FAQ
-                  </a>
+                  </span>
                 </li>
               </ul>
             </div>
             <div>
               <h4 className="text-white font-bold mb-4">Follow Us</h4>
               <div className="flex gap-4">
-                <a
-                  href="#"
-                  className="text-gray-400 hover:text-white transition"
-                >
+                <span className="text-gray-400">
                   Facebook
-                </a>
-                <a
-                  href="#"
-                  className="text-gray-400 hover:text-white transition"
-                >
+                </span>
+                <span className="text-gray-400">
                   Instagram
-                </a>
-                <a
-                  href="#"
-                  className="text-gray-400 hover:text-white transition"
-                >
+                </span>
+                <span className="text-gray-400">
                   Twitter
-                </a>
+                </span>
               </div>
             </div>
           </div>
           <div className="border-t border-slate-700 pt-8 text-center text-gray-500 text-sm">
-            <p>&copy; {new Date().getFullYear()} ShopHub. All rights reserved.</p>
+            <p>&copy; {new Date().getFullYear()} BarberSaaS. All rights reserved.</p>
           </div>
         </div>
       </footer>

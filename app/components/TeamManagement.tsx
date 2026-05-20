@@ -57,6 +57,15 @@ export function TeamManagement({ shopId, currentUserRole }: TeamManagementProps)
     fetchUsers();
   }, [shopId]);
 
+  useEffect(() => {
+    if (!viewQrCodeUser) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setViewQrCodeUser(null);
+    };
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [viewQrCodeUser]);
+
   const handleAddUser = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -371,8 +380,8 @@ export function TeamManagement({ shopId, currentUserRole }: TeamManagementProps)
 
       {/* ═══ QR Code Modal ═══ */}
       {viewQrCodeUser && viewQrCodeUser.barcode && (
-        <div className="fixed inset-0 bg-black/80 z-[100] flex items-center justify-center p-4 backdrop-blur-sm">
-          <div className="bg-gradient-to-br from-slate-900 to-slate-800 rounded-2xl border border-brand-gold/30 shadow-2xl relative flex flex-col items-center overflow-hidden max-w-sm w-full">
+        <div className="fixed inset-0 bg-black/80 z-[100] flex items-center justify-center p-4 backdrop-blur-sm" role="dialog" aria-modal="true" onClick={() => setViewQrCodeUser(null)}>
+          <div className="bg-gradient-to-br from-slate-900 to-slate-800 rounded-2xl border border-brand-gold/30 shadow-2xl relative flex flex-col items-center overflow-hidden max-w-sm w-full" onClick={e => e.stopPropagation()}>
             <div className="h-1 w-full bg-gradient-to-r from-brand-gold via-brand-gold/60 to-transparent" />
             <button onClick={() => setViewQrCodeUser(null)}
               className="absolute top-4 right-4 text-gray-400 hover:text-white bg-slate-800 hover:bg-slate-700 rounded-xl w-8 h-8 flex items-center justify-center transition-all duration-200 border border-white/10">

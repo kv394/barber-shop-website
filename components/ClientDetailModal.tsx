@@ -24,6 +24,7 @@ export default function ClientDetailModal({ shopId, clientId, clientName, onClos
   
   const [savingNotes, setSavingNotes] = useState(false);
   const [savedNotes, setSavedNotes] = useState(false);
+  const [saveError, setSaveError] = useState<string | null>(null);
 
   useEffect(() => {
     fetch(`/api/shops/${shopId}/clients/${clientId}`)
@@ -42,8 +43,17 @@ export default function ClientDetailModal({ shopId, clientId, clientName, onClos
       .catch(() => setLoading(false));
   }, [shopId, clientId]);
 
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [onClose]);
+
   const saveCrmData = async () => {
     setSavingNotes(true);
+    setSaveError(null);
     try {
       const res = await fetch(`/api/shops/${shopId}/clients/${clientId}`, {
         method: 'PATCH',
@@ -55,7 +65,7 @@ export default function ClientDetailModal({ shopId, clientId, clientName, onClos
         setTimeout(() => setSavedNotes(false), 2000);
       }
     } catch {
-      alert('Failed to save profile');
+      setSaveError('Failed to save profile');
     } finally {
       setSavingNotes(false);
     }
@@ -79,7 +89,7 @@ export default function ClientDetailModal({ shopId, clientId, clientName, onClos
   };
 
   return (
-    <div className="fixed inset-0 bg-black/80 z-[100] flex items-center justify-center p-4 backdrop-blur-sm" onClick={onClose}>
+    <div className="fixed inset-0 bg-black/80 z-[100] flex items-center justify-center p-4 backdrop-blur-sm" role="dialog" aria-modal="true" onClick={onClose}>
       <div className="bg-slate-900 rounded-xl p-6 w-full max-w-2xl border border-slate-700 shadow-2xl max-h-[90vh] overflow-y-auto custom-scrollbar" onClick={e => e.stopPropagation()}>
         <div className="flex justify-between items-start mb-6 border-b border-white/10 pb-4">
           <div>
@@ -211,6 +221,10 @@ export default function ClientDetailModal({ shopId, clientId, clientName, onClos
                   </div>
                 </div>
               </div>
+
+              {saveError && (
+                <p className="text-red-400 text-sm bg-red-900/20 p-3 rounded mt-2">{saveError}</p>
+              )}
 
               <div className="pt-4 flex items-center justify-between border-t border-white/10 mt-4">
                 <p className="text-[10px] text-gray-600">

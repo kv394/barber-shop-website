@@ -98,6 +98,14 @@ export default function BookingModal({ shopId, service, onClose, shopHours }: Bo
     return () => controller.abort();
   }, [selectedDate, shopId]);
 
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [onClose]);
+
   // Helper: get working hours for a staff member on the selected date
   const getStaffHours = (staffMember: Staff) => {
     if (!selectedDate) return null;
@@ -218,8 +226,8 @@ export default function BookingModal({ shopId, service, onClose, shopHours }: Bo
 
   if (success) {
       return (
-        <div className="fixed inset-0 bg-black/80 z-[100] flex items-center justify-center p-4 backdrop-blur-sm">
-            <div className="bg-slate-900 rounded-xl p-8 max-w-md w-full border border-green-500 shadow-2xl text-center">
+        <div className="fixed inset-0 bg-black/80 z-[100] flex items-center justify-center p-4 backdrop-blur-sm" role="dialog" aria-modal="true" onClick={onClose}>
+            <div className="bg-slate-900 rounded-xl p-8 max-w-md w-full border border-green-500 shadow-2xl text-center" onClick={e => e.stopPropagation()}>
                 <div className="text-6xl mb-4">🎉</div>
                 <h3 className="text-2xl font-bold text-white mb-2">Booking Confirmed!</h3>
                 <p className="text-gray-300 mb-6">The appointment for {service.name} has been scheduled.</p>
@@ -232,8 +240,8 @@ export default function BookingModal({ shopId, service, onClose, shopHours }: Bo
   }
 
   return (
-    <div className="fixed inset-0 bg-black/80 z-[100] flex items-center justify-center p-4 backdrop-blur-sm">
-      <div className="bg-slate-900 rounded-xl p-6 w-full max-w-md border border-slate-700 shadow-2xl relative text-left max-h-[90vh] overflow-y-auto custom-scrollbar">
+    <div className="fixed inset-0 bg-black/80 z-[100] flex items-center justify-center p-4 backdrop-blur-sm" role="dialog" aria-modal="true" onClick={onClose}>
+      <div className="bg-slate-900 rounded-xl p-6 w-full max-w-md border border-slate-700 shadow-2xl relative text-left max-h-[90vh] overflow-y-auto custom-scrollbar" aria-label="Book appointment" onClick={e => e.stopPropagation()}>
         <button onClick={onClose} className="absolute top-4 right-4 text-gray-400 hover:text-white bg-slate-800 rounded-full w-8 h-8 flex items-center justify-center z-10">✕</button>
         <h3 className="text-xl font-bold text-white mb-1">Book Appointment</h3>
         <p className="text-brand-gold font-semibold mb-6">{service.name} <span className="text-gray-400 font-normal ml-2">({service.duration} mins • ${service.price})</span></p>

@@ -12,9 +12,12 @@ export default function ProductManager({ shopId, products }: { shopId: string, p
     type: 'RETAIL', sku: '', barcode: ''
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError(null);
     setIsSubmitting(true);
     try {
       const res = await fetch(`/api/shops/${shopId}/products`, {
@@ -32,10 +35,12 @@ export default function ProductManager({ shopId, products }: { shopId: string, p
 
       setIsAdding(false);
       setFormData({ name: '', price: '', inventoryCount: '0', reorderPoint: '0', trackInventory: false, type: 'RETAIL', sku: '', barcode: '' });
+      setSuccessMessage('Product created successfully');
+      setTimeout(() => setSuccessMessage(null), 3000);
       router.refresh();
     } catch (error) {
       console.error(error);
-      alert('Error creating product');
+      setError('Failed to create product');
     } finally {
       setIsSubmitting(false);
     }
@@ -43,6 +48,7 @@ export default function ProductManager({ shopId, products }: { shopId: string, p
 
   const handleDelete = async (id: string) => {
     if (!confirm('Are you sure you want to delete this product?')) return;
+    setError(null);
     try {
       const res = await fetch(`/api/shops/${shopId}/products/${id}`, {
         method: 'DELETE',
@@ -51,7 +57,7 @@ export default function ProductManager({ shopId, products }: { shopId: string, p
       router.refresh();
     } catch (error) {
       console.error(error);
-      alert('Error deleting product');
+      setError('Failed to delete product');
     }
   };
 
@@ -63,6 +69,20 @@ export default function ProductManager({ shopId, products }: { shopId: string, p
           {isAdding ? 'Cancel' : 'Add Product'}
         </button>
       </div>
+
+      {error && (
+        <div className="flex items-center gap-3 bg-red-500/10 border border-red-500/20 text-red-400 p-4 rounded-xl text-sm">
+          <span className="text-lg">❌</span>
+          <span>{error}</span>
+          <button onClick={() => setError(null)} className="ml-auto text-red-400/60 hover:text-red-400 transition-colors">✕</button>
+        </div>
+      )}
+      {successMessage && (
+        <div className="flex items-center gap-3 bg-green-500/10 border border-green-500/20 text-green-400 p-4 rounded-xl text-sm">
+          <span className="text-lg">✅</span>
+          <span>{successMessage}</span>
+        </div>
+      )}
 
       {isAdding && (
         <form onSubmit={handleSubmit} className="bg-slate-800 p-6 rounded-lg border border-white/10 space-y-4">
@@ -116,7 +136,44 @@ export default function ProductManager({ shopId, products }: { shopId: string, p
         </form>
       )}
 
-      <div className="bg-slate-800 rounded-lg border border-white/10 overflow-hidden">
+      {/* Mobile card layout */}
+      <div className="sm:hidden space-y-3">
+        {products.map((product) => (
+          <div key={product.id} className="bg-slate-800/50 rounded-xl p-4 border border-white/10 space-y-3">
+            <div className="flex justify-between items-start">
+              <div>
+                <h3 className="font-medium text-white">{product.name}</h3>
+                <p className="text-brand-gold font-bold mt-1">${product.price.toFixed(2)}</p>
+              </div>
+              <span className={`px-2 py-1 rounded-full text-xs font-medium ${product.type === 'RETAIL' ? 'bg-blue-500/20 text-blue-400' : 'bg-purple-500/20 text-purple-400'}`}>
+                {product.type}
+              </span>
+            </div>
+            <div className="flex justify-between items-center pt-2 border-t border-white/5">
+              <div className="text-sm">
+                {product.trackInventory ? (
+                  <span className={product.inventoryCount <= product.reorderPoint ? 'text-red-400 font-bold' : 'text-green-400'}>
+                    {product.inventoryCount} in stock
+                  </span>
+                ) : (
+                  <span className="text-gray-500">Not tracked</span>
+                )}
+              </div>
+              <button onClick={() => handleDelete(product.id)} className="text-red-400 hover:text-red-300 text-sm transition-colors">
+                Delete
+              </button>
+            </div>
+          </div>
+        ))}
+        {products.length === 0 && (
+          <div className="text-center py-8 text-gray-500 bg-slate-800/50 rounded-xl border border-white/10">
+            No products found. Add your first product to manage inventory!
+          </div>
+        )}
+      </div>
+
+      {/* Desktop table layout */}
+      <div className="hidden sm:block bg-slate-800 rounded-lg border border-white/10 overflow-hidden">
         <table className="w-full text-left text-sm text-gray-400">
           <thead className="bg-slate-900/50 text-xs uppercase text-gray-500 border-b border-white/10">
             <tr>

@@ -263,8 +263,9 @@ export default function Home() {
                 <form onSubmit={handleCreateShop} className="space-y-4 mt-6">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div>
-                          <label className="block text-sm text-gray-400 mb-1">Shop Name *</label>
+                          <label htmlFor="shopName" className="block text-sm text-gray-400 mb-1">Shop Name *</label>
                           <input 
+                              id="shopName"
                               type="text" 
                               value={newShopName} 
                               onChange={(e) => setNewShopName(e.target.value)} 
@@ -274,8 +275,9 @@ export default function Home() {
                           />
                       </div>
                       <div>
-                          <label className="block text-sm text-gray-400 mb-1">Kiosk Email Address *</label>
+                          <label htmlFor="kioskEmail" className="block text-sm text-gray-400 mb-1">Kiosk Email Address *</label>
                           <input 
+                              id="kioskEmail"
                               type="email" 
                               value={kioskEmail} 
                               onChange={(e) => setKioskEmail(e.target.value)} 
@@ -285,8 +287,9 @@ export default function Home() {
                           />
                       </div>
                       <div className="md:col-span-2">
-                          <label className="block text-sm text-gray-400 mb-1">Primary Shop Admin Email (Optional)</label>
+                          <label htmlFor="adminEmail" className="block text-sm text-gray-400 mb-1">Primary Shop Admin Email (Optional)</label>
                           <input 
+                              id="adminEmail"
                               type="email" 
                               value={newShopAdminEmail} 
                               onChange={(e) => setNewShopAdminEmail(e.target.value)} 
