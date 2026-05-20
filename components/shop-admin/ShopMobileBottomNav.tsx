@@ -45,9 +45,11 @@ export default function ShopMobileBottomNav({
     const timeout = setTimeout(() => {
       const activeLink = document.getElementById('active-bottom-nav-link');
       if (activeLink && scrollContainerRef.current) {
-        activeLink.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+        const container = scrollContainerRef.current;
+        const scrollLeftPosition = activeLink.offsetLeft - (container.clientWidth / 2) + (activeLink.clientWidth / 2);
+        container.scrollTo({ left: scrollLeftPosition, behavior: 'smooth' });
       }
-    }, 100);
+    }, 150);
     return () => clearTimeout(timeout);
   }, [pathname, section]);
 
@@ -128,7 +130,7 @@ export default function ShopMobileBottomNav({
         <div className="flex-1 relative overflow-hidden flex">
           <div 
             ref={scrollContainerRef}
-            className="flex-1 flex overflow-x-auto hide-scrollbar scrollbar-none snap-x snap-mandatory"
+            className="flex-1 relative flex overflow-x-auto hide-scrollbar scrollbar-none snap-x snap-mandatory"
           >
           {section === 'all' && (
             <div className="flex w-full justify-around min-w-max px-2">
