@@ -162,7 +162,7 @@ export default async function ShopDashboardPage({ params }: { params: Promise<{ 
     return (
         <div className="h-[100dvh] overflow-y-auto overflow-x-hidden">
             <div className="text-center">
-                <h1 className="font-bold text-status-cancelled mb-4 text-2xl font-bold">Access Denied</h1>
+                <h1 className="font-bold text-status-cancelled mb-4 text-2xl">Access Denied</h1>
                 <p className="text-crm-muted text-[13px]">You do not have permission to view this page.</p>
             </div>
         </div>
@@ -206,7 +206,7 @@ export default async function ShopDashboardPage({ params }: { params: Promise<{ 
               ].map((stat, i) => (
                 <div key={i} className="min-w-[130px] sm:min-w-0 shrink-0 snap-start bg-crm-surface border border-crm-border p-4 rounded-xl text-center shadow-sm hover:shadow-md transition-shadow">
                   <p className={`text-2xl font-black mb-1 ${stat.color}`}>{stat.value}</p>
-                  <p className="text-[10px] font-bold text-crm-muted uppercase tracking-wider">{stat.label}</p>
+                  <p className="text-[11px] font-bold text-crm-muted uppercase tracking-wider">{stat.label}</p>
                 </div>
               ))}
             </div>
@@ -261,7 +261,7 @@ export default async function ShopDashboardPage({ params }: { params: Promise<{ 
                   ))}
                   {lowStockItems.length > 3 && <p className="text-crm-muted text-[11px] font-semibold mt-2">+{lowStockItems.length - 3} more items need restocking</p>}
                 </div>
-                <Link href={`/shop/${shopId}/config/products`} className="text-status-pending hover:text-crm-text font-semibold transition-colors text-[12px] underline mt-3 inline-block">
+                <Link href={`/shop/${shopId}/config/products`} className="text-status-pending hover:text-crm-text font-semibold transition-colors text-[12px] underline mt-3 inline-flex items-center py-2">
                   Restock Inventory →
                 </Link>
               </div>

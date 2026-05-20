@@ -29,6 +29,7 @@ export default function NoShowButton({ shopId, appointmentId, userName }: { shop
       disabled={loading}
       className="text-status-pending hover:text-status-pending text-[11px] font-semibold uppercase tracking-wider disabled:opacity-50 transition-colors mr-2"
       title="Mark as No-Show"
+      aria-label="Mark as no-show"
     >
       {loading ? '...' : 'No-Show'}
     </button>

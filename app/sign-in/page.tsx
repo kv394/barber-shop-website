@@ -6,6 +6,7 @@ import { cookies, headers } from 'next/headers';
 import { rateLimit } from '@/lib/rate-limiter';
 import { prisma } from '@/lib/prisma';
 import IframeAuthHandler from '@/components/auth/IframeAuthHandler';
+import SubmitButton from '@/components/auth/SubmitButton';
 
 export default async function SignInPage({
   searchParams,
@@ -102,7 +103,7 @@ export default async function SignInPage({
     <div className="flex min-h-[80vh] items-center justify-center p-4">
       <div className="w-full max-w-md bg-crm-surface border border-crm-border shadow-sm rounded-2xl shadow-2xl p-8 mt-12 mb-12">
         <div className="text-center mb-8">
-          <h1 className="font-serif font-bold text-crm-text mb-2 text-2xl font-bold">Welcome Back</h1>
+          <h1 className="font-serif font-bold text-crm-text mb-2 text-2xl">Welcome Back</h1>
           <p className="text-crm-muted text-[13px]">Sign in to manage your appointments</p>
         </div>
         
@@ -112,16 +113,16 @@ export default async function SignInPage({
         <form action={signInAction} className="space-y-5">
           <div>
             <label className="block font-medium text-crm-muted mb-1.5 text-[13px]">Email Address</label>
-            <input name="email" type="email" required placeholder="you@example.com" className="w-full bg-crm-surface border border-crm-border shadow-sm rounded-lg p-3 text-crm-text focus:ring-2 focus:ring-crm-primary focus:border-transparent outline-none" />
+            <input name="email" type="email" required placeholder="you@example.com" autoComplete="email" className="w-full bg-crm-surface border border-crm-border shadow-sm rounded-lg p-3 text-crm-text focus:ring-2 focus:ring-crm-primary focus:border-transparent outline-none" />
           </div>
           <div>
             <label className="block font-medium text-crm-muted mb-1.5 text-[13px]">Password</label>
-            <input name="password" type="password" required placeholder="••••••••" className="w-full bg-crm-surface border border-crm-border shadow-sm rounded-lg p-3 text-crm-text focus:ring-2 focus:ring-crm-primary focus:border-transparent outline-none" />
+            <input name="password" type="password" required placeholder="••••••••" autoComplete="current-password" className="w-full bg-crm-surface border border-crm-border shadow-sm rounded-lg p-3 text-crm-text focus:ring-2 focus:ring-crm-primary focus:border-transparent outline-none" />
             <Link href="/recover-password" className="mt-2 block text-right text-[13px] text-crm-accent hover:underline">
               Forgot password?
             </Link>
           </div>
-          <button type="submit" className="w-full bg-crm-primary text-white font-bold py-3 rounded-lg hover:bg-crm-surface hover:text-crm-primary border border-transparent hover:border-crm-primary/30 transition-colors mt-2">Sign In</button>
+          <SubmitButton className="w-full bg-crm-primary text-white font-bold py-3 rounded-lg hover:bg-crm-surface hover:text-crm-primary border border-transparent hover:border-crm-primary/30 transition-colors mt-2">Sign In</SubmitButton>
         </form>
         
         <p className="text-center text-crm-muted mt-8 text-[13px]">Don't have an account? <Link href="/sign-up" className="text-crm-accent hover:underline">Sign Up</Link></p>

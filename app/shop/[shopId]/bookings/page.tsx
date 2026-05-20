@@ -67,7 +67,7 @@ export default async function BookingsPage({ params }: { params: Promise<{ shopI
       return (
         <div className="h-[100dvh] overflow-y-auto overflow-x-hidden">
             <div className="text-center">
-                <h1 className="font-bold text-status-cancelled mb-4 text-2xl font-bold">Access Denied</h1>
+                <h1 className="font-bold text-status-cancelled mb-4 text-2xl">Access Denied</h1>
                 <p className="text-crm-muted text-[13px]">You do not have permission to view this page.</p>
             </div>
         </div>
@@ -94,7 +94,7 @@ export default async function BookingsPage({ params }: { params: Promise<{ shopI
       >
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-4 sm:mb-6">
           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-            <h2 className="font-bold text-crm-text text-xl font-bold">Upcoming Bookings</h2>
+            <h2 className="font-bold text-crm-text text-xl">Upcoming Bookings</h2>
             <BookingDatePicker dates={Object.keys(groupedAppointments)} />
           </div>
           <AddBookingWrapper shopId={shopId} />
@@ -106,7 +106,7 @@ export default async function BookingsPage({ params }: { params: Promise<{ shopI
           <div className="space-y-6 sm:space-y-8">
             {Object.keys(groupedAppointments).map((date) => (
               <div key={date} id={`date-${date.replace(/\s+/g, '-')}`} className="scroll-mt-24">
-                <h3 className="font-bold text-crm-accent border-b border-crm-border pb-2 mb-3 sm:mb-4 text-lg font-bold">{date}</h3>
+                <h3 className="font-bold text-crm-accent border-b border-crm-border pb-2 mb-3 sm:mb-4 text-lg">{date}</h3>
                 <div className="flex flex-col gap-3 sm:gap-4 relative before:hidden sm:before:block before:absolute before:left-[108px] before:top-0 before:bottom-0 before:w-px before:bg-crm-border before:z-0">
                   {groupedAppointments[date].map((apt: any) => {
                     const start = new Date(apt.startTime);

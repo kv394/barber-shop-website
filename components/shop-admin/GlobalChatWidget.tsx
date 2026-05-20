@@ -27,6 +27,14 @@ export default function GlobalChatWidget({ shopId, currentUserId, userRole }: { 
     }
   }, [isOpen, shopId]);
 
+  // Close on Escape key
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleEsc = (e: KeyboardEvent) => { if (e.key === 'Escape') setIsOpen(false); };
+    window.addEventListener('keydown', handleEsc);
+    return () => window.removeEventListener('keydown', handleEsc);
+  }, [isOpen]);
+
   // Poll for messages to check unread count
   useEffect(() => {
     let isMounted = true;
@@ -75,6 +83,7 @@ export default function GlobalChatWidget({ shopId, currentUserId, userRole }: { 
         onClick={() => setIsOpen(!isOpen)}
         className="fixed bottom-20 sm:bottom-8 left-4 sm:left-auto sm:right-8 w-14 h-14 bg-crm-primary text-white rounded-full shadow-[0_0_20px_rgba(0,0,0,0.5)] flex items-center justify-center text-3xl hover:bg-status-pending hover:scale-105 active:scale-95 transition-all z-[9999]"
         title="Team Chat"
+        aria-label="Open team chat"
       >
         💬
         {unreadCount > 0 && !isOpen && (

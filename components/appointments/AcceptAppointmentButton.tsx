@@ -29,6 +29,7 @@ export default function AcceptAppointmentButton({ shopId, appointmentId, userNam
       disabled={loading}
       className="bg-crm-primary text-white hover:bg-crm-surface hover:text-crm-primary border border-transparent hover:border-crm-primary/30 text-[11px] font-bold px-4 py-2 rounded uppercase tracking-wider transition-colors disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
       title="Accept Booking"
+      aria-label="Accept appointment"
     >
       {loading ? '...' : 'Accept'}
     </button>

@@ -62,6 +62,7 @@ export default function RefundButton({
       onClick={() => setShowForm(true)}
       className="text-status-pending text-[13px] hover:text-amber-300 px-2 py-1 bg-amber-900/20 border border-status-pending/20 rounded"
       title="Refund"
+      aria-label="Refund payment"
     >
       💸 Refund
     </button>

@@ -390,7 +390,7 @@ export default function BookingWizard({ shopId, themeColor, secondaryColor, temp
           <div className="space-y-3">
             <div className="mb-2">
               <input
-                type="text"
+                type="search"
                 placeholder="Search services..."
                 className={tStyles.input} style={{ '--tw-ring-color': themeColor } as any}
                 value={serviceSearchQuery}
@@ -511,7 +511,7 @@ export default function BookingWizard({ shopId, themeColor, secondaryColor, temp
                         <button
                         key={slot.time}
                         onClick={() => setSelectedTime(slot.time)}
-                        className={`p-4 text-base sm:p-3 sm:text-sm transition-all font-medium relative ${selectedTime === slot.time ? tStyles.cardActive : tStyles.cardInactive}`} style={selectedTime === slot.time ? { borderColor: themeColor || '#111827', backgroundColor: themeColor || '#111827', color: templateType === 'editorial' ? '#121412' : '#ffffff' } : {}}
+                        className={`p-4 text-base sm:p-3 sm:text-sm transition-all font-medium relative focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-gray-900 ${selectedTime === slot.time ? tStyles.cardActive : tStyles.cardInactive}`} style={selectedTime === slot.time ? { borderColor: themeColor || '#111827', backgroundColor: themeColor || '#111827', color: templateType === 'editorial' ? '#121412' : '#ffffff' } : {}}
                         >
                         {formatTime(slot.time)}
                         {slot.isRecommended && selectedTime !== slot.time && (
@@ -557,6 +557,7 @@ export default function BookingWizard({ shopId, themeColor, secondaryColor, temp
               <input 
                 type="text" 
                 placeholder="John Doe"
+                autoComplete="name"
                 className={tStyles.input} style={{ '--tw-ring-color': themeColor } as any}
                 value={name}
                 onChange={e => setName(e.target.value)}
@@ -567,6 +568,7 @@ export default function BookingWizard({ shopId, themeColor, secondaryColor, temp
               <input 
                 type="email" 
                 placeholder="john@example.com"
+                autoComplete="email"
                 className={tStyles.input} style={{ '--tw-ring-color': themeColor } as any}
                 value={email}
                 onChange={e => setEmail(e.target.value)}
@@ -577,6 +579,7 @@ export default function BookingWizard({ shopId, themeColor, secondaryColor, temp
               <input 
                 type="tel" 
                 placeholder="(555) 000-0000"
+                autoComplete="tel"
                 className={tStyles.input} style={{ '--tw-ring-color': themeColor } as any}
                 value={phone}
                 onChange={e => setPhone(e.target.value)}

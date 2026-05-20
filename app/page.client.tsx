@@ -186,7 +186,7 @@ export default function Home() {
       <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 flex-grow">
         
         <header className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-12 sm:mb-20">
-          <h1 className="font-serif font-bold tracking-tight text-2xl font-bold">
+          <h1 className="font-serif font-bold tracking-tight text-2xl">
             {userProfile?.role === 'SITE_ADMIN' ? (
                 <><span className="text-crm-text">Barber</span><span className="text-crm-accent">SaaS</span></>
             ) : userProfile?.shop?.name ? (
@@ -201,7 +201,7 @@ export default function Home() {
         </header>
 
         <div className="text-center mb-12 sm:mb-20">
-          <h2 className="font-serif font-bold leading-tight tracking-tight text-crm-text max-w-4xl mx-auto drop-shadow-sm text-xl font-bold">
+          <h2 className="font-serif font-bold leading-tight tracking-tight text-crm-text max-w-4xl mx-auto drop-shadow-sm text-xl">
             {isSignedIn ? `Welcome, ${userProfile?.name || 'User'}` : "Book Your Next Appointment"}
           </h2>
           <p className="mt-4 sm:mt-6 text-crm-accent/80 font-medium tracking-wide text-[13px]">

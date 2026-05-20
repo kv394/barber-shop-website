@@ -162,6 +162,12 @@ export default function BookingModal({ shopId, service, onClose, shopHours, them
     });
   }, []);
   
+  useEffect(() => {
+    const handleEsc = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
+    window.addEventListener('keydown', handleEsc);
+    return () => window.removeEventListener('keydown', handleEsc);
+  }, [onClose]);
+
   const [selectedDate, setSelectedDate] = useState<string>('');
   const [selectedTime, setSelectedTime] = useState<string>('');
   const [selectedStaff, setSelectedStaff] = useState<string>('');
@@ -474,9 +480,9 @@ export default function BookingModal({ shopId, service, onClose, shopHours, them
   // ────────────── SUCCESS SCREEN ──────────────
   if (success) {
       return (
-        <div className="fixed inset-0 bg-black/60 z-[100] flex items-center justify-center p-4 backdrop-blur-sm">
+        <div className="fixed inset-0 bg-black/60 z-[100] flex items-center justify-center p-4 backdrop-blur-sm" role="dialog" aria-modal="true">
             <div className="bg-crm-surface rounded-xl p-8 max-w-md w-full border border-status-confirmed shadow-2xl text-center relative">
-                <button onClick={onClose} className="absolute top-3 right-4 bg-white hover:bg-gray-100 shadow-sm z-10 w-7 h-7 rounded-full flex items-center justify-center transition-colors font-bold text-[13px]" style={{ color: themeColor || "#111827" }}>✕</button>
+                <button onClick={onClose} aria-label="Close" className="absolute top-3 right-4 bg-white hover:bg-gray-100 shadow-sm z-10 w-10 h-10 rounded-full flex items-center justify-center transition-colors font-bold text-[13px]" style={{ color: themeColor || "#111827" }}>✕</button>
                 <div className="text-6xl mb-4">🎉</div>
                 <h3 className="font-bold text-crm-primary mb-2 text-lg">Booking Confirmed!</h3>
                 <p className="text-crm-muted mb-2 text-[13px]">The appointment for <span className="text-crm-accent font-semibold">{service.name}</span> has been scheduled.</p>
@@ -510,10 +516,10 @@ export default function BookingModal({ shopId, service, onClose, shopHours, them
   // ────────────── SUMMARY / REVIEW SCREEN ──────────────
   if (showSummary) {
     return (
-      <div className="fixed inset-0 bg-black/60 z-[100] flex items-center justify-center p-4 backdrop-blur-sm">
+      <div className="fixed inset-0 bg-black/60 z-[100] flex items-center justify-center p-4 backdrop-blur-sm" role="dialog" aria-modal="true">
         <div className="bg-crm-surface rounded-xl p-6 w-full max-w-md border border-crm-border shadow-sm shadow-2xl relative text-left">
           <button onClick={() => setShowSummary(false)} className="absolute top-4 left-4 text-crm-muted hover:text-crm-text bg-crm-surface rounded-full w-8 h-8 flex items-center justify-center z-10">←</button>
-          <button onClick={onClose} className="absolute top-3 right-4 bg-white hover:bg-gray-100 shadow-sm z-10 w-7 h-7 rounded-full flex items-center justify-center transition-colors font-bold text-[13px]" style={{ color: themeColor || "#111827" }}>✕</button>
+          <button onClick={onClose} aria-label="Close" className="absolute top-3 right-4 bg-white hover:bg-gray-100 shadow-sm z-10 w-10 h-10 rounded-full flex items-center justify-center transition-colors font-bold text-[13px]" style={{ color: themeColor || "#111827" }}>✕</button>
           <h3 className="font-bold text-crm-primary mb-1 text-lg text-center mt-2">Review Your Booking</h3>
           <p className="text-crm-muted mb-5 text-[13px] text-center">Please confirm the details below.</p>
 
@@ -591,9 +597,9 @@ export default function BookingModal({ shopId, service, onClose, shopHours, them
 
   // ────────────── MAIN BOOKING FORM ──────────────
   return (
-    <div className="fixed inset-0 bg-black/60 z-[100] flex items-center justify-center p-4 backdrop-blur-sm">
+    <div className="fixed inset-0 bg-black/60 z-[100] flex items-center justify-center p-4 backdrop-blur-sm" role="dialog" aria-modal="true">
       <div className="bg-crm-surface rounded-xl p-6 w-full max-w-md border border-crm-border shadow-sm shadow-2xl relative text-left max-h-[90vh] overflow-y-auto scrollbar-hide">
-        <button onClick={onClose} className="absolute top-3 right-4 bg-white hover:bg-gray-100 shadow-sm z-10 w-7 h-7 rounded-full flex items-center justify-center transition-colors font-bold text-[13px]" style={{ color: themeColor || "#111827" }}>✕</button>
+        <button onClick={onClose} aria-label="Close" className="absolute top-3 right-4 bg-white hover:bg-gray-100 shadow-sm z-10 w-10 h-10 rounded-full flex items-center justify-center transition-colors font-bold text-[13px]" style={{ color: themeColor || "#111827" }}>✕</button>
         <h3 className="font-bold text-crm-primary mb-1 text-lg">Book Appointment</h3>
         <p className="text-crm-accent font-semibold mb-2 text-[13px]">{service.name} <span className="text-crm-muted font-normal ml-2">({totalDuration} mins • ${totalPrice.toFixed(2)})</span></p>
 
