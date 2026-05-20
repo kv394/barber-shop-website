@@ -43,6 +43,7 @@ export class NotificationService {
           (type === 'APPOINTMENT_REMINDER' && !prefs.appointmentReminders) ||
           (type === 'REVIEW_REQUEST' && !prefs.reviewRequests) ||
           (type === 'CAMPAIGN' && !prefs.promotions) ||
+          (type === 'REBOOKING_PROMPT' && !prefs.promotions) ||
           (type === 'BIRTHDAY' && !prefs.birthdayMessages) ||
           (type === 'LOYALTY_EARNED' && !prefs.loyaltyUpdates);
         if (shouldSkip) return null;

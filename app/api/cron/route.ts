@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { NotificationService } from '@/lib/notifications';
 import { LoyaltyService } from '@/lib/loyalty';
 import { UsageService } from '@/lib/usage-service';
+import { RebookingService } from '@/lib/rebooking-prompts';
 import { logger } from '@/lib/logger';
 import { getProviderStatus } from '@/lib/messaging-providers';
 import { timingSafeEqual } from 'crypto';
@@ -70,6 +71,9 @@ export async function GET(request: Request) {
     // 3. Generate hourly usage reports for all shops
     const usageReportsGenerated = await UsageService.generateHourlyReports();
 
+    // 4. Process predictive rebooking prompts ("Time for a trim?")
+    const rebookingPromptsQueued = await RebookingService.processAllShops();
+
     const duration = Date.now() - startTime;
     const providers = getProviderStatus();
 
@@ -78,6 +82,7 @@ export async function GET(request: Request) {
       notificationsProcessed,
       pointsExpired,
       usageReportsGenerated,
+      rebookingPromptsQueued,
       durationMs: duration,
       providers,
       timestamp: new Date().toISOString(),

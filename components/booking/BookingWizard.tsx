@@ -4,6 +4,7 @@ import { DayPicker } from 'react-day-picker';
 import 'react-day-picker/dist/style.css';
 import { format } from 'date-fns';
 import { scoreAndSortSlots, type ScoredSlot } from '@/lib/schedule-optimizer';
+import StyleDiscovery from '@/components/booking/StyleDiscovery';
 
 // Steps: 1: Service, 2: Staff, 3: DateTime, 4: Details
 
@@ -413,6 +414,10 @@ export default function BookingWizard({ shopId, themeColor, secondaryColor, temp
             {services.length > 0 && services.filter(s => s.name.toLowerCase().includes(serviceSearchQuery.toLowerCase())).length === 0 && (
               <p className="text-gray-500 text-center py-4">No services match your search.</p>
             )}
+            {/* Style Discovery AI */}
+            <div className="mt-4 pt-4 border-t border-gray-100">
+              <StyleDiscovery shopId={shopId} themeColor={themeColor} />
+            </div>
           </div>
         )}
 

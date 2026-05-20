@@ -3,6 +3,7 @@ import { createClient } from '@/utils/supabase/server';
 import { getShopLayoutData } from '@/lib/shop-data';
 import ShopAdminLayout from '@/components/shop-admin/ShopAdminLayout';
 import ReviewsManager from '@/components/marketing/ReviewsManager';
+import ReviewSummary from '@/components/marketing/ReviewSummary';
 
 export const dynamic = 'force-dynamic';
 
@@ -27,6 +28,7 @@ export default async function ReviewsPage({ params }: { params: Promise<{ shopId
 
   return (
     <ShopAdminLayout shopName={data.shop.name} shopSlug={data.shopSlug} pageTitle={undefined} tabs={engagementTabs} shopId={shopId} userRole={data.userRole} activeTab="reviews">
+      <ReviewSummary shopId={shopId} />
       <ReviewsManager shopId={shopId} />
     </ShopAdminLayout>
   );
