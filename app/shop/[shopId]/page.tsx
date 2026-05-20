@@ -185,53 +185,123 @@ export default async function ShopDashboardPage({ params }: { params: Promise<{ 
       userRole={userRole as string}
       activeTab="dashboard"
     >
-      {/* ── Shop ID Display ── */}
-      {isShopAdmin && (
-        <div className="mb-6 p-4 rounded-xl border border-crm-border bg-crm-surface flex items-center justify-between">
-          <div>
-            <p className="text-crm-muted text-[11px] uppercase tracking-wider font-semibold mb-1">Shop ID</p>
-            <p className="text-crm-text font-mono text-[13px] select-all">{shopId}</p>
-          </div>
-        </div>
-      )}
-
-      {/* ── Low Stock Alert (shop admin only) ── */}
-      {isShopAdmin && lowStockItems.length > 0 && (
-        <div className="flex flex-col sm:flex-row gap-3 mb-6">
-          <div className="flex-1 bg-status-pending/10 border border-status-pending/30 rounded-xl p-4">
-            <p className="text-status-pending font-semibold mb-2 text-[13px]">⚠️ {lowStockItems.length} Low-Stock Item{lowStockItems.length > 1 ? 's' : ''}</p>
-            <div className="space-y-1">
-              {lowStockItems.slice(0, 3).map((item: any) => (
-                <div key={item.id} className="flex flex-wrap justify-between gap-x-2 gap-y-2 text-[11px]">
-                  <span className="text-crm-muted truncate">{item.name}</span>
-                  <span className="text-status-pending font-mono ml-2 flex-shrink-0">{item.inventoryCount} left</span>
+      <div className="space-y-8">
+        
+        {/* ── Today's Overview ── */}
+        {todayStats && (
+          <section>
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4 gap-2">
+              <h2 className="text-lg font-bold text-crm-text tracking-tight">Today&apos;s Overview</h2>
+              <div className="text-xs font-semibold text-crm-muted bg-crm-surface px-3 py-1.5 rounded-full border border-crm-border self-start sm:self-auto">
+                {new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' })}
+              </div>
+            </div>
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4">
+              {[
+                { label: 'Bookings', value: todayStats.totalBookings, color: 'text-blue-600' },
+                { label: 'Revenue', value: `$${todayStats.revenue.toFixed(0)}`, color: 'text-emerald-600' },
+                { label: 'Tips', value: `$${todayStats.tips.toFixed(0)}`, color: 'text-amber-600' },
+                { label: 'Completed', value: todayStats.completedCount, color: 'text-purple-600' },
+                { label: 'Upcoming', value: todayStats.upcomingCount, color: 'text-cyan-600', colSpan: 'col-span-2 sm:col-span-1' },
+              ].map((stat, i) => (
+                <div key={i} className={`bg-crm-surface border border-crm-border p-4 rounded-xl text-center shadow-sm hover:shadow-md transition-shadow ${stat.colSpan || ''}`}>
+                  <p className={`text-2xl font-black mb-1 ${stat.color}`}>{stat.value}</p>
+                  <p className="text-[10px] font-bold text-crm-muted uppercase tracking-wider">{stat.label}</p>
                 </div>
               ))}
-              {lowStockItems.length > 3 && <p className="text-crm-muted text-[13px]">+{lowStockItems.length - 3} more</p>}
             </div>
-            <Link href={`/shop/${shopId}/config/products`} className="text-status-pending hover:text-crm-text transition-colors text-[11px] underline mt-2 inline-block">
-              Restock now →
-            </Link>
+          </section>
+        )}
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
+          
+          {/* ── Left Column: Action Items ── */}
+          <div className="space-y-6">
+            <h3 className="text-md font-bold text-crm-text flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-crm-primary"></span>
+              Needs Attention
+            </h3>
+            
+            {/* Up Next Appointment */}
+            {todayStats?.nextAppointment && (
+              <div className="bg-crm-surface border-l-4 border-l-crm-primary border-y border-r border-crm-border p-5 rounded-r-xl shadow-sm hover:shadow-md transition-all">
+                <div className="flex items-start justify-between mb-3">
+                  <div>
+                    <p className="text-xs font-bold text-crm-primary mb-1 uppercase tracking-wider">
+                      Up Next • {new Date(todayStats.nextAppointment.startTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                    </p>
+                    <h4 className="text-lg font-bold text-crm-text">{todayStats.nextAppointment.user?.name || 'Guest'}</h4>
+                  </div>
+                </div>
+                <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-6 text-sm text-crm-muted mt-3 pt-3 border-t border-crm-border">
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-[11px] uppercase tracking-wider font-semibold">Service:</span>
+                    <span className="font-medium text-crm-text">{todayStats.nextAppointment.service?.name}</span>
+                  </div>
+                  {todayStats.nextAppointment.staff?.name && (
+                    <div className="flex items-center gap-1.5">
+                      <span className="text-[11px] uppercase tracking-wider font-semibold">Staff:</span>
+                      <span className="font-medium text-crm-text">{todayStats.nextAppointment.staff.name}</span>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {/* Low Stock Alert (shop admin only) */}
+            {isShopAdmin && lowStockItems.length > 0 && (
+              <div className="bg-status-pending/5 border border-status-pending/20 rounded-xl p-5 shadow-sm">
+                <p className="text-status-pending font-bold mb-3 text-[13px] uppercase tracking-wider">⚠️ {lowStockItems.length} Low-Stock Item{lowStockItems.length > 1 ? 's' : ''}</p>
+                <div className="space-y-2">
+                  {lowStockItems.slice(0, 3).map((item: any) => (
+                    <div key={item.id} className="flex justify-between items-center text-[13px] bg-white/50 px-3 py-2 rounded-md border border-status-pending/10">
+                      <span className="text-crm-text font-medium truncate">{item.name}</span>
+                      <span className="text-status-pending font-bold font-mono ml-2">{item.inventoryCount} left</span>
+                    </div>
+                  ))}
+                  {lowStockItems.length > 3 && <p className="text-crm-muted text-[11px] font-semibold mt-2">+{lowStockItems.length - 3} more items need restocking</p>}
+                </div>
+                <Link href={`/shop/${shopId}/config/products`} className="text-status-pending hover:text-crm-text font-semibold transition-colors text-[12px] underline mt-3 inline-block">
+                  Restock Inventory →
+                </Link>
+              </div>
+            )}
+
+            {/* Empty State */}
+            {(!todayStats?.nextAppointment && (!isShopAdmin || lowStockItems.length === 0)) && (
+              <div className="flex flex-col items-center justify-center py-12 text-center bg-crm-surface/50 rounded-2xl border border-dashed border-crm-border">
+                <span className="text-3xl mb-3 opacity-50">✨</span>
+                <h2 className="text-lg font-bold text-crm-text mb-1">All Clear</h2>
+                <p className="text-crm-muted text-[13px] max-w-[250px] mx-auto">
+                  You have no pending action items right now. Great job!
+                </p>
+              </div>
+            )}
           </div>
+
+          {/* ── Right Column: Insights & Forecasts ── */}
+          <div className="space-y-6">
+            <h3 className="text-md font-bold text-crm-text flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-status-info"></span>
+              Insights
+            </h3>
+            
+            {showInventoryControls && (
+              <InventoryForecast shopId={shopId} />
+            )}
+            
+            {isShopAdmin && (
+              <div className="p-4 rounded-xl border border-crm-border bg-crm-surface flex items-center justify-between shadow-sm">
+                <div>
+                  <p className="text-crm-muted text-[10px] uppercase tracking-widest font-bold mb-0.5">System Identifier</p>
+                  <p className="text-crm-text font-mono text-[12px] select-all">Shop ID: {shopId}</p>
+                </div>
+              </div>
+            )}
+          </div>
+
         </div>
-      )}
-
-      {/* ── AI Inventory Forecast (shop admin + inventory staff) ── */}
-      {showInventoryControls && (
-        <InventoryForecast shopId={shopId} />
-      )}
-
-      {/* ── Empty State (if no alerts) ── */}
-      {(!isShopAdmin || lowStockItems.length === 0) && (
-        <div className="flex flex-col items-center justify-center py-20 text-center bg-crm-surface/50 rounded-2xl border border-dashed border-crm-border">
-          <span className="text-4xl mb-4 opacity-50">✨</span>
-          <h2 className="text-xl font-bold text-crm-text mb-2">All Clear</h2>
-          <p className="text-crm-muted text-[13px] max-w-sm mx-auto">
-            Your shop is running smoothly. There are no active alerts or low-stock items at this time.
-          </p>
-        </div>
-      )}
-
+      </div>
     </ShopAdminLayout>
   );
 }
