@@ -41,12 +41,23 @@ export default function ShopMobileBottomNav({
     }
   }, [pathname]); // Re-run when pathname changes because items might change
 
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      const activeLink = document.getElementById('active-bottom-nav-link');
+      if (activeLink && scrollContainerRef.current) {
+        activeLink.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+      }
+    }, 100);
+    return () => clearTimeout(timeout);
+  }, [pathname, section]);
+
   const navLink = (href: string, label: string, iconPath: React.ReactNode, isExact = false) => {
     const active = isExact ? pathname === href : pathname.startsWith(href);
 
     return (
       <Link 
         href={href} 
+        id={active ? 'active-bottom-nav-link' : undefined}
         className={`flex flex-col items-center justify-center min-w-[76px] flex-1 pt-3 pb-2 px-1 transition-all duration-200 whitespace-nowrap snap-center ${
           active 
             ? 'text-crm-primary' 
