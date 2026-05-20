@@ -43,7 +43,7 @@ export default function ShopAdminLayout({
   return (
     <div className="pb-20 sm:pb-0">
       {finalTabs && finalTabs.length > 0 && (
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between relative z-10 w-full mt-2 sm:-mt-6 border-b sm:border-b-0 border-crm-border">
+        <div className="hidden sm:flex sm:flex-row sm:items-end justify-between relative z-10 w-full mt-2 sm:-mt-6 border-b sm:border-b-0 border-crm-border">
           <div className="flex items-end overflow-x-auto hide-scrollbar whitespace-nowrap">
             {finalTabs.map((tab, index) => {
               const isActive = activeTab === tab.id;
@@ -73,7 +73,7 @@ export default function ShopAdminLayout({
         </div>
       )}
 
-      <div className={`shadow-lg bg-crm-surface p-4 md:p-8 border-x border-b sm:border ${finalTabs && finalTabs.length > 0 ? (isFirstTabActive ? 'rounded-b-xl sm:rounded-2xl sm:rounded-tl-none' : 'rounded-b-xl sm:rounded-2xl') : 'rounded-xl'} border-crm-border relative z-0`}>
+      <div className={`shadow-lg bg-crm-surface p-4 md:p-8 border sm:border ${finalTabs && finalTabs.length > 0 ? (isFirstTabActive ? 'rounded-xl sm:rounded-2xl sm:rounded-tl-none' : 'rounded-xl sm:rounded-2xl') : 'rounded-xl sm:rounded-2xl'} border-crm-border relative z-0`}>
         {children}
       </div>
 
