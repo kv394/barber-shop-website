@@ -1,7 +1,7 @@
 'use client';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import ShopSidebarLinks from './ShopSidebarLinks';
 import ShopSwitcher from './ShopSwitcher';
 import SupabaseAuthButton from '@/components/auth/SupabaseAuthButton';
@@ -15,7 +15,29 @@ export default function ShopMobileBottomNav({
 }: any) {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(false);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
   const isAll = shopId === 'all';
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!scrollContainerRef.current) return;
+      const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current;
+      setCanScrollRight(Math.ceil(scrollLeft + clientWidth) < scrollWidth - 2);
+    };
+
+    handleScroll();
+    
+    const el = scrollContainerRef.current;
+    if (el) {
+      el.addEventListener('scroll', handleScroll, { passive: true });
+      window.addEventListener('resize', handleScroll);
+      return () => {
+        el.removeEventListener('scroll', handleScroll);
+        window.removeEventListener('resize', handleScroll);
+      };
+    }
+  }, [pathname]); // Re-run when pathname changes because items might change
 
   const navLink = (href: string, label: string, iconPath: React.ReactNode, isExact = false) => {
     const active = isExact ? pathname === href : pathname.startsWith(href);
@@ -89,8 +111,12 @@ export default function ShopMobileBottomNav({
     <>
       <div className="md:hidden fixed bottom-0 left-0 right-0 bg-crm-surface/90 backdrop-blur-xl border-t border-crm-border/50 flex items-center z-[2000] pb-[env(safe-area-inset-bottom)] shadow-[0_-8px_30px_rgba(0,0,0,0.06)]">
         
-        {/* Scrollable Context Nav */}
-        <div className="flex-1 flex overflow-x-auto hide-scrollbar scrollbar-none snap-x snap-mandatory">
+        {/* Scrollable Context Nav Container */}
+        <div className="flex-1 relative overflow-hidden flex">
+          <div 
+            ref={scrollContainerRef}
+            className="flex-1 flex overflow-x-auto hide-scrollbar scrollbar-none snap-x snap-mandatory"
+          >
           {section === 'all' && (
             <div className="flex w-full justify-around min-w-max px-2">
               {navLink(`/shop/all`, 'Dashboard', icons.chart, true)}
@@ -157,6 +183,10 @@ export default function ShopMobileBottomNav({
               {navLink(`/shop/${shopId}/expenses`, 'Expenses', icons.tag, true)}
             </div>
           )}
+          </div>
+          
+          {/* Scroll Indicator Overlay */}
+          <div className={`absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-crm-surface to-transparent pointer-events-none transition-opacity duration-300 ${canScrollRight ? 'opacity-100' : 'opacity-0'}`} />
         </div>
 
         {/* Fixed Menu Button */}
