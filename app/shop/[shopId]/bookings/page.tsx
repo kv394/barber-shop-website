@@ -107,7 +107,7 @@ export default async function BookingsPage({ params }: { params: Promise<{ shopI
             {Object.keys(groupedAppointments).map((date) => (
               <div key={date} id={`date-${date.replace(/\s+/g, '-')}`} className="scroll-mt-24">
                 <h3 className="font-bold text-crm-accent border-b border-crm-border pb-2 mb-3 sm:mb-4 text-lg font-bold">{date}</h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
+                <div className="flex flex-col gap-3 sm:gap-4 relative before:hidden sm:before:block before:absolute before:left-[108px] before:top-0 before:bottom-0 before:w-px before:bg-crm-border before:z-0">
                   {groupedAppointments[date].map((apt: any) => {
                     const start = new Date(apt.startTime);
                     const end = new Date(apt.endTime);
@@ -121,63 +121,78 @@ export default async function BookingsPage({ params }: { params: Promise<{ shopI
                     const isActive = isScheduled || isAccepted || isWorkCompleted;
 
                     const statusBadge = isScheduled ? (
-                      <span className="px-2 py-0.5 text-[13px] uppercase font-bold rounded bg-crm-surface text-crm-text border border-slate-600 whitespace-nowrap">Scheduled</span>
+                      <span className="px-2 py-0.5 text-[11px] uppercase font-bold rounded bg-crm-surface text-crm-text border border-crm-border whitespace-nowrap shadow-sm">Scheduled</span>
                     ) : isAccepted ? (
-                      <span className="px-2 py-0.5 text-[13px] uppercase font-bold rounded bg-status-info/20 text-status-info border border-status-info/30 whitespace-nowrap">Accepted</span>
+                      <span className="px-2 py-0.5 text-[11px] uppercase font-bold rounded bg-status-info/10 text-status-info border border-status-info/30 whitespace-nowrap shadow-sm">Accepted</span>
                     ) : isWorkCompleted ? (
-                      <span className="px-2 py-0.5 text-[13px] uppercase font-bold rounded bg-crm-primary/20 text-crm-accent border border-brand-gold/30 whitespace-nowrap hover:opacity-90">Ready for Checkout</span>
+                      <span className="px-2 py-0.5 text-[11px] uppercase font-bold rounded bg-crm-primary/10 text-crm-primary border border-crm-primary/30 whitespace-nowrap shadow-sm">Ready for Checkout</span>
                     ) : null;
 
                     return (
-                      <div key={apt.id} className={`bg-crm-surface p-5 rounded-lg border ${isNow ? 'border-status-confirmed/50 shadow-[0_0_15px_rgba(34,197,94,0.2)]' : 'border-crm-border'}`}>
-                                           <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-start mb-3 gap-2">
-                                               <div className="flex flex-col items-start gap-1">
-                                                   <div className="flex flex-wrap items-center gap-2">
-                                                       {apt.userId ? (
-                                                         <ClientNameClickable 
-                                                           shopId={shop.id} 
-                                                           clientId={apt.userId} 
-                                                           clientName={apt.user?.name || "Guest"} 
-                                                           className="font-bold leading-tight text-base font-semibold"
-                                                         />
-                                                       ) : (
-                                                         <h4 className="font-bold leading-tight text-base font-semibold">{apt.user?.name || "Guest"}</h4>
-                                                       )}
-                                                       {statusBadge}
-                                                   </div>
-                                                   <p className="text-crm-muted text-[13px]">{apt.user?.email || "No email"}</p>
-                                               </div>
-                                               <div className="text-right">
-                                                   <p className="font-mono text-crm-accent text-[13px]">{formatInShopTz(apt.startTime, shop.timezone || 'America/New_York')}</p>
-                                                   <p className="text-crm-muted text-[13px]">{apt.service.duration} mins</p>
-                                               </div>
-                                           </div>
-                                           <div className="pt-2 sm:pt-3 border-t border-crm-border flex flex-col sm:flex-row justify-between items-start sm:items-end gap-2">
-                                               <div>
-                                                   <p className="font-semibold text-crm-muted text-[13px]">{apt.service.name}</p>
-                                                   <p className="text-crm-muted text-[13px]">${apt.service.price.toFixed(2)}</p>
-                                               </div>
-                                               <div className="flex flex-wrap items-center justify-end gap-4 shrink-0 mt-3 sm:mt-0 w-full sm:w-auto">
-                                                 {isActive && <NoShowButton shopId={shop.id} appointmentId={apt.id} userName={apt.user?.name || apt.user?.email || "Guest"} />}
-                                                 {isActive && <DeleteAppointmentButton shopId={shop.id} appointmentId={apt.id} userName={apt.user?.name || apt.user?.email || "Guest"} />}
-                                                 {isScheduled && <AcceptAppointmentButton shopId={shop.id} appointmentId={apt.id} userName={apt.user?.name || apt.user?.email || "Guest"} />}
-                                                 {isAccepted && <CompleteWorkButton shopId={shop.id} appointmentId={apt.id} userName={apt.user?.name || apt.user?.email || "Guest"} />}
-                                                 {isWorkCompleted && <CheckoutButton shopId={shop.id} appointmentId={apt.id} price={apt.service.price} serviceName={apt.service.name} serviceId={apt.serviceId} shopName={shop.name} clientName={apt.user?.name || apt.user?.email || "Guest"} addons={apt.addons} />}                                               </div>
-                                           </div>
-                                           {isNow && (isScheduled || isAccepted) && (
-                                             <div className="mt-3 text-[11px] text-status-confirmed font-bold tracking-widest uppercase flex items-center gap-2">
-                                               <span className="w-2 h-2 rounded-full bg-status-confirmed animate-pulse"></span> IN PROGRESS
-                                             </div>
-                                           )}
-                                           <AppointmentNotes 
-                                              shopId={shop.id} 
-                                              appointmentId={apt.id} 
-                                              initialNotes={apt.notes}
-                                              clientNotes={apt.user?.clientNotes}
-                                              preferences={apt.user?.preferences}
-                                              allergies={apt.user?.allergies}
-                                            />
-                                         </div>
+                      <div key={apt.id} className={`group flex flex-col sm:flex-row gap-4 sm:gap-6 bg-crm-surface p-4 sm:p-5 rounded-lg border relative z-10 transition-shadow hover:shadow-md ${isNow ? 'border-status-confirmed shadow-[0_0_15px_rgba(34,197,94,0.1)] ring-1 ring-status-confirmed/50' : 'border-crm-border'}`}>
+                        
+                        {/* Time Column */}
+                        <div className="w-full sm:w-20 flex-shrink-0 flex flex-row sm:flex-col justify-between sm:justify-start items-center sm:items-end border-b sm:border-b-0 border-crm-border pb-3 sm:pb-0 text-right">
+                          <p className={`font-mono font-bold text-lg leading-none ${isNow ? 'text-status-confirmed' : 'text-crm-text'}`}>
+                            {formatInShopTz(apt.startTime, shop.timezone || 'America/New_York')}
+                          </p>
+                          <p className="text-crm-muted text-[12px] font-medium mt-1">{apt.service.duration} min</p>
+                          {isNow && (
+                            <div className="mt-0 sm:mt-3 text-[10px] text-status-confirmed font-bold tracking-widest flex items-center gap-1.5 bg-status-confirmed/10 px-2 py-1 rounded-full border border-status-confirmed/20">
+                              <span className="w-1.5 h-1.5 rounded-full bg-status-confirmed animate-pulse"></span> NOW
+                            </div>
+                          )}
+                        </div>
+
+                        {/* Timeline Node (Desktop only) */}
+                        <div className="hidden sm:flex absolute left-[108px] top-1/2 -translate-y-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-crm-surface border-[3px] border-crm-border group-hover:border-crm-primary transition-colors z-20"></div>
+
+                        {/* Details Column */}
+                        <div className="flex-1 flex flex-col min-w-0 sm:pl-6">
+                          <div className="flex flex-wrap items-center gap-2 mb-1">
+                            {apt.userId ? (
+                              <ClientNameClickable 
+                                shopId={shop.id} 
+                                clientId={apt.userId} 
+                                clientName={apt.user?.name || "Guest"} 
+                                className="font-bold text-[17px] text-crm-text leading-tight truncate hover:text-crm-primary"
+                              />
+                            ) : (
+                              <h4 className="font-bold text-[17px] text-crm-text leading-tight truncate">{apt.user?.name || "Guest"}</h4>
+                            )}
+                            {statusBadge}
+                          </div>
+                          
+                          <p className="text-crm-muted text-[13px] mb-3">{apt.user?.email || "No email"}</p>
+                          
+                          <div className="flex flex-wrap items-center gap-2 mb-3">
+                            <span className="font-medium text-crm-text text-[13px] bg-crm-bg px-2.5 py-1 rounded-md border border-crm-border">
+                              {apt.service.name}
+                            </span>
+                            <span className="text-crm-muted text-[13px] font-medium">
+                              ${apt.service.price.toFixed(2)}
+                            </span>
+                          </div>
+
+                          <AppointmentNotes 
+                            shopId={shop.id} 
+                            appointmentId={apt.id} 
+                            initialNotes={apt.notes}
+                            clientNotes={apt.user?.clientNotes}
+                            preferences={apt.user?.preferences}
+                            allergies={apt.user?.allergies}
+                          />
+                        </div>
+
+                        {/* Actions Column */}
+                        <div className="w-full sm:w-auto flex flex-row sm:flex-col justify-end items-end gap-2 border-t sm:border-t-0 sm:border-l border-crm-border pt-4 sm:pt-0 sm:pl-6">
+                          {isWorkCompleted && <CheckoutButton shopId={shop.id} appointmentId={apt.id} price={apt.service.price} serviceName={apt.service.name} serviceId={apt.serviceId} shopName={shop.name} clientName={apt.user?.name || apt.user?.email || "Guest"} addons={apt.addons} />}
+                          {isAccepted && <CompleteWorkButton shopId={shop.id} appointmentId={apt.id} userName={apt.user?.name || apt.user?.email || "Guest"} />}
+                          {isScheduled && <AcceptAppointmentButton shopId={shop.id} appointmentId={apt.id} userName={apt.user?.name || apt.user?.email || "Guest"} />}
+                          {isActive && <NoShowButton shopId={shop.id} appointmentId={apt.id} userName={apt.user?.name || apt.user?.email || "Guest"} />}
+                          {isActive && <DeleteAppointmentButton shopId={shop.id} appointmentId={apt.id} userName={apt.user?.name || apt.user?.email || "Guest"} />}
+                        </div>
+                      </div>
                     );
                   })}
                 </div>

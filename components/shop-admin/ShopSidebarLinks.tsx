@@ -9,24 +9,18 @@ export default function ShopSidebarLinks({ shopId, userRole }: { shopId: string,
   const isActive = (path: string, label: string) => {
     if (path === `/shop/${shopId}` && pathname === `/shop/${shopId}`) return true;
     
-    if (label === 'Settings') {
+    if (label === 'Settings & Config') {
       const settingsPrefix = `/shop/${shopId}/settings`;
+      const configPrefix = `/shop/${shopId}/config`;
       const configPaths = ['/booking', '/resources', '/forms', '/memberships'];
       const teamPaths = ['/team'];
       
       if (pathname.startsWith(settingsPrefix)) {
         const subPath = pathname.replace(settingsPrefix, '');
-        if (configPaths.some(p => subPath.startsWith(p))) return false;
         if (teamPaths.some(p => subPath.startsWith(p))) return false;
         return true;
       }
-      return false;
-    }
-
-    if (label === 'Configuration') {
-      if (pathname.startsWith(`/shop/${shopId}/config`)) return true;
-      const configPaths = ['/settings/booking', '/settings/resources', '/settings/forms', '/settings/memberships'];
-      if (configPaths.some(p => pathname.startsWith(`/shop/${shopId}${p}`))) return true;
+      if (pathname.startsWith(configPrefix)) return true;
       return false;
     }
 
@@ -80,8 +74,7 @@ export default function ShopSidebarLinks({ shopId, userRole }: { shopId: string,
             {navLink(`/shop/${shopId}/settings/team`, 'Team')}
             {navLink(`/shop/${shopId}/engagement`, 'Engagement')}
             {navLink(`/shop/${shopId}/reports`, 'Reports')}
-            {navLink(`/shop/${shopId}/config/services`, 'Configuration')}
-            {navLink(`/shop/${shopId}/settings`, 'Settings')}
+            {navLink(`/shop/${shopId}/config/services`, 'Settings & Config')}
             {navLink(`/shop/${shopId}/sdk`, 'SDK Docs')}
           </>
         )}
