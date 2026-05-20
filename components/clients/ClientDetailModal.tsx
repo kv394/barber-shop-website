@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import UserQRCode from '@/components/clients/UserQRCode';
 
@@ -53,6 +53,72 @@ export default function ClientDetailModal({ shopId, clientId, clientName, onClos
   const [newImageUrl, setNewImageUrl] = useState('');
   const [savingFormula, setSavingFormula] = useState(false);
   const [savingImage, setSavingImage] = useState(false);
+
+  // Voice recording state
+  const [isRecording, setIsRecording] = useState(false);
+  const [isProcessingVoice, setIsProcessingVoice] = useState(false);
+  const mediaRecorderRef = useRef<MediaRecorder | null>(null);
+  const audioChunksRef = useRef<Blob[]>([]);
+
+  const startRecording = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      const mediaRecorder = new MediaRecorder(stream);
+      mediaRecorderRef.current = mediaRecorder;
+      audioChunksRef.current = [];
+
+      mediaRecorder.ondataavailable = (event) => {
+        if (event.data.size > 0) {
+          audioChunksRef.current.push(event.data);
+        }
+      };
+
+      mediaRecorder.onstop = async () => {
+        const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/webm' });
+        await processVoiceNote(audioBlob);
+        stream.getTracks().forEach(track => track.stop());
+      };
+
+      mediaRecorder.start();
+      setIsRecording(true);
+    } catch (err) {
+      alert("Failed to access microphone. Please ensure microphone permissions are granted.");
+      console.error(err);
+    }
+  };
+
+  const stopRecording = () => {
+    if (mediaRecorderRef.current && isRecording) {
+      mediaRecorderRef.current.stop();
+      setIsRecording(false);
+    }
+  };
+
+  const processVoiceNote = async (audioBlob: Blob) => {
+    setIsProcessingVoice(true);
+    try {
+      const fd = new FormData();
+      fd.append('audio', audioBlob, 'voice-note.webm');
+
+      const res = await fetch(`/api/shops/${shopId}/clients/${clientId}/voice-notes`, {
+        method: 'POST',
+        body: fd
+      });
+
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Failed to process voice note');
+
+      setFormData(prev => ({
+        ...prev,
+        clientNotes: data.newNoteBlock + prev.clientNotes,
+        preferences: data.parsed.preferences && !prev.preferences ? data.parsed.preferences : prev.preferences
+      }));
+    } catch (err: any) {
+      alert(err.message);
+    } finally {
+      setIsProcessingVoice(false);
+    }
+  };
 
   useEffect(() => {
     Promise.all([
@@ -211,7 +277,29 @@ export default function ClientDetailModal({ shopId, clientId, clientName, onClos
                 <div className="space-y-4 bg-crm-surface p-4 rounded-xl border border-crm-border shadow-sm">
                   <div className="space-y-3">
                     <div>
-                      <label className="block text-crm-muted mb-1 uppercase tracking-wider text-[13px]">General Notes</label>
+                      <div className="flex items-center justify-between mb-1">
+                        <label className="block text-crm-muted uppercase tracking-wider text-[13px]">General Notes</label>
+                        <button
+                          type="button"
+                          onClick={isRecording ? stopRecording : startRecording}
+                          disabled={isProcessingVoice}
+                          className={`flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold transition-all ${
+                            isRecording 
+                              ? 'bg-status-cancelled text-white animate-pulse' 
+                              : isProcessingVoice 
+                                ? 'bg-crm-border text-crm-muted'
+                                : 'bg-crm-primary/10 text-crm-primary hover:bg-crm-primary/20'
+                          }`}
+                        >
+                          {isRecording ? (
+                            <><span>🛑</span> Stop & Save</>
+                          ) : isProcessingVoice ? (
+                            <><span>⏳</span> Processing AI...</>
+                          ) : (
+                            <><span>🎤</span> Voice-to-CRM</>
+                          )}
+                        </button>
+                      </div>
                       <textarea
                         name="clientNotes"
                         value={formData.clientNotes}
