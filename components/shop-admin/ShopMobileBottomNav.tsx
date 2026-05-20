@@ -41,17 +41,7 @@ export default function ShopMobileBottomNav({
     }
   }, [pathname]); // Re-run when pathname changes because items might change
 
-  useEffect(() => {
-    const timeout = setTimeout(() => {
-      const activeLink = document.getElementById('active-bottom-nav-link');
-      if (activeLink && scrollContainerRef.current) {
-        const container = scrollContainerRef.current;
-        const scrollLeftPosition = activeLink.offsetLeft - (container.clientWidth / 2) + (activeLink.clientWidth / 2);
-        container.scrollTo({ left: scrollLeftPosition, behavior: 'smooth' });
-      }
-    }, 150);
-    return () => clearTimeout(timeout);
-  }, [pathname, section]);
+
 
   const navLink = (href: string, label: string, iconPath: React.ReactNode, isExact = false) => {
     const active = isExact ? pathname === href : pathname.startsWith(href);
@@ -95,6 +85,18 @@ export default function ShopMobileBottomNav({
   };
 
   const section = getSection();
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      const activeLink = document.getElementById('active-bottom-nav-link');
+      if (activeLink && scrollContainerRef.current) {
+        const container = scrollContainerRef.current;
+        const scrollLeftPosition = activeLink.offsetLeft - (container.clientWidth / 2) + (activeLink.clientWidth / 2);
+        container.scrollTo({ left: scrollLeftPosition, behavior: 'smooth' });
+      }
+    }, 150);
+    return () => clearTimeout(timeout);
+  }, [pathname, section]);
 
   // Common Icons
   const icons = {
