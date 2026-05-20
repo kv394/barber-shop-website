@@ -16,106 +16,105 @@ export function ShopNav({ shopId, userRole, activeTab }: { shopId: string, userR
   const mainTabClass = (tabName: string, groupTabs?: string[]) => {
     const isActive = activeTab === tabName || (groupTabs && groupTabs.includes(activeTab));
     return isActive
-      ? "px-3 py-2 text-sm sm:text-base text-brand-gold border-b-2 border-brand-gold whitespace-nowrap font-semibold"
-      : "px-3 py-2 text-sm sm:text-base text-gray-400 hover:text-white transition whitespace-nowrap";
+      ? "block px-4 py-3 text-sm font-semibold text-brand-gold bg-brand-gold/10 rounded-xl transition-all shadow-sm border border-brand-gold/20"
+      : "block px-4 py-3 text-sm font-medium text-gray-400 hover:text-white hover:bg-white/5 rounded-xl transition-all border border-transparent";
   };
 
-  // Sub-tab: pill style
+  // Sub-tab: pill style -> vertical list style
   const subTabClass = (tabName: string) =>
     activeTab === tabName
-      ? "px-3 py-1.5 text-xs sm:text-sm text-brand-gold bg-brand-gold/10 border border-brand-gold/30 rounded-lg font-semibold whitespace-nowrap"
-      : "px-3 py-1.5 text-xs sm:text-sm text-gray-400 hover:text-white hover:bg-white/5 border border-transparent rounded-lg transition whitespace-nowrap";
+      ? "block px-4 py-2 text-xs font-semibold text-brand-gold bg-brand-gold/5 border-l-2 border-brand-gold ml-2 transition-all rounded-r-lg"
+      : "block px-4 py-2 text-xs font-medium text-gray-500 hover:text-gray-300 hover:bg-white/5 border-l-2 border-transparent ml-2 transition-all rounded-r-lg";
 
   return (
-    <div className="mb-6 sm:mb-8">
-      {/* ── Main Navigation ── */}
-      <div className="flex gap-1 sm:gap-4 border-b border-white/10 pb-3 sm:pb-4 overflow-x-auto scrollbar-none -mx-3 px-3 sm:mx-0 sm:px-0" role="tablist" aria-label="Shop navigation">
-        {isSuperAdmin && (
-          <Link href="/" className="px-4 py-2 text-gray-400 hover:text-white transition whitespace-nowrap">
-            ← Super Admin
-          </Link>
-        )}
+    <nav className="flex flex-col gap-2">
+      {/* Super Admin back link */}
+      {isSuperAdmin && (
+        <Link href="/" className="px-4 py-2 text-xs font-semibold uppercase tracking-wider text-gray-500 hover:text-white mb-4 transition-colors">
+          ← Back to Super Admin
+        </Link>
+      )}
 
-        {(isShopAdmin || isStaff) && (
-          <>
-            <Link href={`/shop/${shopId}`} className={mainTabClass('dashboard')}>
-              Dashboard
-            </Link>
-            <Link href={`/shop/${shopId}/bookings`} className={mainTabClass('bookings')}>
-              Bookings
-            </Link>
-            <Link href={`/shop/${shopId}/waitlist`} className={mainTabClass('waitlist')}>
-              Waitlist
-            </Link>
-            <Link href={`/shop/${shopId}/clients`} className={mainTabClass('clients')}>
-              Clients
-            </Link>
-            <Link href={`/shop/${shopId}/staff`} className={mainTabClass('staff', staffTabs)}>
-              Staff
-            </Link>
-          </>
-        )}
-
-        {isSuperAdmin && (
-          <>
-            <Link href={`/shop/${shopId}/config`} className={mainTabClass('setup')}>
-              Setup & Templates
-            </Link>
-            <Link href={`/shop/${shopId}/settings`} className={mainTabClass('appearance')}>
-              Appearance & Settings
-            </Link>
-            <Link href={`/shop/${shopId}/settings/team`} className={mainTabClass('team')}>
-              Team
-            </Link>
-          </>
-        )}
-
-        {isShopAdmin && !isSuperAdmin && (
-          <>
-            <Link href={`/shop/${shopId}/reports`} className={mainTabClass('reports', reportsTabs)}>
-              Reports
-            </Link>
-            <Link href={`/shop/${shopId}/settings`} className={mainTabClass('appearance')}>
-              Settings
-            </Link>
-          </>
-        )}
-      </div>
-
-      {/* ── Sub-nav: Staff section ── */}
-      {(isShopAdmin || isStaff) && isStaffSection && (
-        <div className="flex gap-2 mt-3 overflow-x-auto scrollbar-none -mx-3 px-3 sm:mx-0 sm:px-0" role="tablist" aria-label="Staff section">
-          <Link href={`/shop/${shopId}/staff`} className={subTabClass('staff')}>
-            📅 Availability
+      {/* Shop Admin & Staff Links */}
+      {(isShopAdmin || isStaff) && (
+        <div className="space-y-1">
+          <div className="px-4 text-[10px] font-bold tracking-widest text-gray-600 uppercase mb-2 mt-2">Overview</div>
+          <Link href={`/shop/${shopId}`} className={mainTabClass('dashboard')}>
+            Dashboard
           </Link>
-          <Link href={`/shop/${shopId}/attendance`} className={subTabClass('attendance')}>
-            🕐 Attendance
+          <Link href={`/shop/${shopId}/bookings`} className={mainTabClass('bookings')}>
+            Bookings
           </Link>
-          <Link href={`/shop/${shopId}/leave`} className={subTabClass('leave')}>
-            🏖️ Leave
+          <Link href={`/shop/${shopId}/waitlist`} className={mainTabClass('waitlist')}>
+            Waitlist
           </Link>
-          {isShopAdmin && (
-            <Link href={`/shop/${shopId}/settings/team`} className={subTabClass('team')}>
-              👥 Manage Team
-            </Link>
+          <Link href={`/shop/${shopId}/clients`} className={mainTabClass('clients')}>
+            Clients
+          </Link>
+          
+          <div className="px-4 text-[10px] font-bold tracking-widest text-gray-600 uppercase mb-2 mt-6">Team</div>
+          <Link href={`/shop/${shopId}/staff`} className={mainTabClass('staff', staffTabs)}>
+            Staff Area
+          </Link>
+          
+          {isStaffSection && (
+            <div className="flex flex-col gap-1 mt-1 mb-2">
+              <Link href={`/shop/${shopId}/staff`} className={subTabClass('staff')}>
+                Availability
+              </Link>
+              <Link href={`/shop/${shopId}/attendance`} className={subTabClass('attendance')}>
+                Attendance
+              </Link>
+              <Link href={`/shop/${shopId}/leave`} className={subTabClass('leave')}>
+                Leave
+              </Link>
+              {isShopAdmin && (
+                <Link href={`/shop/${shopId}/settings/team`} className={subTabClass('team')}>
+                  Manage Team
+                </Link>
+              )}
+            </div>
           )}
         </div>
       )}
 
-      {/* ── Sub-nav: Reports section ── */}
-      {isShopAdmin && !isSuperAdmin && isReportsSection && (
-        <div className="flex gap-2 mt-3 overflow-x-auto scrollbar-none -mx-3 px-3 sm:mx-0 sm:px-0" role="tablist" aria-label="Reports section">
-          <Link href={`/shop/${shopId}/reports`} className={subTabClass('reports')}>
-            💰 Financial
+      {/* Reports & Settings (Shop Admin only) */}
+      {isShopAdmin && !isSuperAdmin && (
+        <div className="space-y-1 mt-4">
+          <div className="px-4 text-[10px] font-bold tracking-widest text-gray-600 uppercase mb-2 mt-4">Management</div>
+          <Link href={`/shop/${shopId}/reports`} className={mainTabClass('reports', reportsTabs)}>
+            Reports
           </Link>
-          <Link href={`/shop/${shopId}/reports/staff-working`} className={subTabClass('staff-report')}>
-            📊 Staff Performance
-          </Link>
-          <Link href={`/shop/${shopId}/expenses`} className={subTabClass('expenses')}>
-            💸 Expenses
+          
+          {isReportsSection && (
+             <div className="flex flex-col gap-1 mt-1 mb-2">
+               <Link href={`/shop/${shopId}/reports`} className={subTabClass('reports')}>Financial</Link>
+               <Link href={`/shop/${shopId}/reports/staff-working`} className={subTabClass('staff-report')}>Staff Performance</Link>
+               <Link href={`/shop/${shopId}/expenses`} className={subTabClass('expenses')}>Expenses</Link>
+             </div>
+          )}
+
+          <Link href={`/shop/${shopId}/settings`} className={mainTabClass('appearance')}>
+            Settings
           </Link>
         </div>
       )}
-    </div>
+
+      {/* Super Admin Links */}
+      {isSuperAdmin && (
+        <div className="space-y-1 mt-4">
+          <div className="px-4 text-[10px] font-bold tracking-widest text-gray-600 uppercase mb-2 mt-4">Super Admin</div>
+          <Link href={`/shop/${shopId}/config`} className={mainTabClass('setup')}>
+            Setup & Templates
+          </Link>
+          <Link href={`/shop/${shopId}/settings`} className={mainTabClass('appearance')}>
+            Appearance & Settings
+          </Link>
+          <Link href={`/shop/${shopId}/settings/team`} className={mainTabClass('team')}>
+            Team
+          </Link>
+        </div>
+      )}
+    </nav>
   );
 }

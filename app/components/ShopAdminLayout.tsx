@@ -18,16 +18,21 @@ export default function ShopAdminLayout({
   activeTab,
 }: ShopAdminLayoutProps) {
   return (
-    <>
-      {pageTitle && (
-        <p className="text-gray-400 text-sm sm:text-lg -mt-6 sm:-mt-8 mb-6 sm:mb-8">{pageTitle}</p>
-      )}
+    <div className="flex flex-col lg:flex-row gap-6 lg:gap-10">
+      {/* Sidebar Navigation */}
+      <aside className="lg:w-64 shrink-0">
+        <ShopNav shopId={shopId} userRole={userRole} activeTab={activeTab} />
+      </aside>
 
-      <ShopNav shopId={shopId} userRole={userRole} activeTab={activeTab} />
-
-      <div className="bg-slate-800/50 p-3 sm:p-4 md:p-8 rounded-xl border border-white/10 shadow-lg">
-        {children}
+      {/* Main Content Area */}
+      <div className="flex-1 min-w-0">
+        {pageTitle && (
+          <h2 className="text-xl sm:text-2xl font-bold text-white mb-6 tracking-tight">{pageTitle}</h2>
+        )}
+        <div className="bg-slate-800/40 backdrop-blur-md p-4 sm:p-6 md:p-8 rounded-2xl border border-white/5 shadow-2xl">
+          {children}
+        </div>
       </div>
-    </>
+    </div>
   );
 }
