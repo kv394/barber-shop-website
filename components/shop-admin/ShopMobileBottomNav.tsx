@@ -86,7 +86,6 @@ export default function ShopMobileBottomNav({ shopId, userRole }: { shopId: stri
             <>
               {navLink(`/shop/${shopId}/bookings`, 'Bookings', icons.calendar)}
               {navLink(`/shop/${shopId}/clients`, 'Clients', icons.users)}
-              {navLink(`/shop/${shopId}/settings`, 'Settings', icons.settings)}
             </>
           ) : (
             <>
