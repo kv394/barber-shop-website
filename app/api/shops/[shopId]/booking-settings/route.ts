@@ -27,6 +27,7 @@ export async function GET(_: NextRequest, { params }: { params: Promise<{ shopId
     aiReceptionistEnabled:    c.bookingSettings?.aiReceptionistEnabled    ?? false,
     aiReceptionistPrompt:     c.bookingSettings?.aiReceptionistPrompt     ?? 'You are a helpful AI receptionist for a premium barbershop. Be polite and concise.',
     autoFillWaitlist:         c.bookingSettings?.autoFillWaitlist         ?? false,
+    smartSchedulingEnabled:   c.bookingSettings?.smartSchedulingEnabled   ?? true,
   });
 }
 
@@ -53,6 +54,7 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ shop
     aiReceptionistEnabled: (v) => Boolean(v),
     aiReceptionistPrompt: (v) => typeof v === 'string' ? v.slice(0, 2000) : '',
     autoFillWaitlist: (v) => Boolean(v),
+    smartSchedulingEnabled: (v) => Boolean(v),
   };
   const sanitized: Record<string, any> = {};
   for (const [key, transform] of Object.entries(allowedFields)) {

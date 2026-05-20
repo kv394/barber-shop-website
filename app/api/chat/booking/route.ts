@@ -6,6 +6,7 @@ import { toShopTzDayBounds } from '@/lib/timezone';
 import { getCalendarBusySlots } from '@/lib/google-calendar';
 import { rateLimit } from '@/lib/rate-limiter';
 import { getEmailProvider } from '@/lib/messaging-providers';
+import { scoreAndSortSlots } from '@/lib/schedule-optimizer';
 import QRCode from 'qrcode';
 
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
@@ -406,11 +407,18 @@ If the user wants to check, cancel, or reschedule their appointments, or asks fo
                         if (generatedSlots.length === 0) {
                             result = { message: "No available slots on this date. Please try another date." };
                         } else {
+                            // Score and sort slots by gap-fill efficiency
+                            const scoredSlots = scoreAndSortSlots(
+                              generatedSlots.map(s => ({ time: s.time, staffId: s.staffId || '' })),
+                              allBusySlots.map(b => ({ startTime: b.startTime, endTime: b.endTime, staffId: b.staffId })),
+                              date,
+                              service.duration
+                            );
                             result = {
-                                availableSlots: generatedSlots.map(s => ({ time: s.time, staffId: s.staffId })),
-                                message: "Returning available slots to the user interface."
+                                availableSlots: scoredSlots.map(s => ({ time: s.time, staffId: s.staffId, isRecommended: s.isRecommended })),
+                                message: "Returning available slots to the user interface. Slots marked as recommended are the best fit for the schedule."
                             };
-                            lastAvailabilitySlots = generatedSlots;
+                            lastAvailabilitySlots = scoredSlots;
                             lastUiType = 'time_picker';
                         }
                     }

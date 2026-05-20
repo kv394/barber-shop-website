@@ -3,6 +3,7 @@ import { useState, useEffect, useCallback, useMemo } from 'react';
 import { DayPicker } from 'react-day-picker';
 import 'react-day-picker/dist/style.css';
 import { format } from 'date-fns';
+import { scoreAndSortSlots, type ScoredSlot } from '@/lib/schedule-optimizer';
 
 // Steps: 1: Service, 2: Staff, 3: DateTime, 4: Details
 
@@ -36,6 +37,7 @@ export default function BookingWizard({ shopId, themeColor, secondaryColor, temp
   const [bookedSlots, setBookedSlots] = useState<BookedSlot[]>([]);
   const [loadingSlots, setLoadingSlots] = useState(false);
   const [isBooking, setIsBooking] = useState(false);
+  const [sortByFit, setSortByFit] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
 
@@ -229,9 +231,9 @@ export default function BookingWizard({ shopId, themeColor, secondaryColor, temp
     });
   }, [selectedDate, totalDuration, bookedSlots]);
 
-  const availableTimeSlots = useMemo(() => {
+  const availableTimeSlots = useMemo((): ScoredSlot[] => {
     if (!selectedDate || staff.length === 0) return [];
-    const slotSet = new Set<string>();
+    const rawSlots: { time: string; staffId: string }[] = [];
     const staffToCheck = selectedStaff ? [selectedStaff] : staff;
 
     for (const staffMember of staffToCheck) {
@@ -247,13 +249,30 @@ export default function BookingWizard({ shopId, themeColor, secondaryColor, temp
       while (cursor < end) {
         const timeStr = cursor.toUTCString().split(' ')[4].substring(0, 5);
         if (isStaffFreeAt(staffMember.id, timeStr)) {
-          slotSet.add(timeStr);
+          rawSlots.push({ time: timeStr, staffId: staffMember.id });
         }
         cursor = new Date(cursor.getTime() + 30 * 60000);
       }
     }
-    return Array.from(slotSet).sort();
-  }, [selectedDate, staff, selectedStaff, getStaffHours, isStaffFreeAt]);
+
+    // Deduplicate by time (keep first staff match per time)
+    const seenTimes = new Set<string>();
+    const uniqueSlots = rawSlots.filter(s => {
+      if (seenTimes.has(s.time)) return false;
+      seenTimes.add(s.time);
+      return true;
+    });
+
+    // Score and sort by gap-fill efficiency
+    const scored = scoreAndSortSlots(uniqueSlots, bookedSlots, selectedDate, totalDuration);
+
+    // If user prefers chronological, re-sort by time but keep isRecommended flags
+    if (!sortByFit) {
+      scored.sort((a, b) => a.time.localeCompare(b.time));
+    }
+
+    return scored;
+  }, [selectedDate, staff, selectedStaff, getStaffHours, isStaffFreeAt, bookedSlots, totalDuration, sortByFit]);
 
   const formatTime = (timeStr: string) => {
     const [h, m] = timeStr.split(':').map(Number);
@@ -467,18 +486,32 @@ export default function BookingWizard({ shopId, themeColor, secondaryColor, temp
               </div>
               {selectedDate && (
               <div className="pt-4">
-                <label className="block text-sm font-medium text-gray-700 mb-2">Select Time</label>
+                <div className="flex items-center justify-between mb-2">
+                  <label className="block text-sm font-medium text-gray-700">Select Time</label>
+                  {availableTimeSlots.some(s => s.isRecommended) && (
+                    <button
+                      type="button"
+                      onClick={() => setSortByFit(v => !v)}
+                      className="text-xs text-gray-500 hover:text-gray-800 transition-colors flex items-center gap-1"
+                    >
+                      {sortByFit ? '🕐 Sort by time' : '⭐ Sort by best fit'}
+                    </button>
+                  )}
+                </div>
                 {loadingSlots ? (
                     <div className="py-8 flex justify-center"><div className="animate-spin rounded-full h-6 w-6 border-b-2 border-gray-900"></div></div>
                 ) : availableTimeSlots.length > 0 ? (
                     <div className="grid grid-cols-3 gap-2">
-                    {availableTimeSlots.map(time => (
+                    {availableTimeSlots.map(slot => (
                         <button
-                        key={time}
-                        onClick={() => setSelectedTime(time)}
-                        className={`p-3 text-sm transition-all font-medium ${selectedTime === time ? tStyles.cardActive : tStyles.cardInactive}`} style={selectedTime === time ? { borderColor: themeColor || '#111827', backgroundColor: themeColor || '#111827', color: templateType === 'editorial' ? '#121412' : '#ffffff' } : {}}
+                        key={slot.time}
+                        onClick={() => setSelectedTime(slot.time)}
+                        className={`p-3 text-sm transition-all font-medium relative ${selectedTime === slot.time ? tStyles.cardActive : tStyles.cardInactive}`} style={selectedTime === slot.time ? { borderColor: themeColor || '#111827', backgroundColor: themeColor || '#111827', color: templateType === 'editorial' ? '#121412' : '#ffffff' } : {}}
                         >
-                        {formatTime(time)}
+                        {formatTime(slot.time)}
+                        {slot.isRecommended && selectedTime !== slot.time && (
+                          <span className="absolute -top-1.5 -right-1.5 bg-amber-400 text-[9px] font-bold text-amber-900 px-1.5 py-0.5 rounded-full leading-none shadow-sm">⭐</span>
+                        )}
                         </button>
                     ))}
                     </div>
