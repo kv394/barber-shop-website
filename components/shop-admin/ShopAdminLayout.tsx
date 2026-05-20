@@ -36,14 +36,14 @@ export default function ShopAdminLayout({
   ];
 
   const isSettingsOrConfig = unifiedSettingsTabs.some(t => t.id === activeTab);
-  const finalTabs = (isSettingsOrConfig && userRole === 'SHOP_ADMIN') ? unifiedSettingsTabs : tabs;
+  const finalTabs = isSettingsOrConfig ? unifiedSettingsTabs : tabs;
 
   const isFirstTabActive = finalTabs && finalTabs.length > 0 && finalTabs[0].id === activeTab;
 
   return (
     <div className="pb-20 sm:pb-0">
       {finalTabs && finalTabs.length > 0 && (
-        <div className="hidden sm:flex items-end justify-between relative z-10 w-full mt-2 sm:-mt-6 border-b sm:border-b-0 border-crm-border">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between relative z-10 w-full mt-2 sm:-mt-6 border-b sm:border-b-0 border-crm-border">
           <div className="flex items-end overflow-x-auto hide-scrollbar whitespace-nowrap">
             {finalTabs.map((tab, index) => {
               const isActive = activeTab === tab.id;
