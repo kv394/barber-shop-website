@@ -74,7 +74,7 @@ async function getPageData(shopId: string, userId: string, pageStr: string) {
   };
 }
 
-export default async function ClientsPage({ params, searchParams }: { params: Promise<{ shopId: string }>, searchParams: Promise<{ page?: string }> }) {
+export default async function ClientsPage({ params, searchParams }: { params: Promise<{ shopId: string }>, searchParams: Promise<{ page?: string, openClient?: string }> }) {
   const { shopId } = await params;
   const resolvedSearchParams = await searchParams;
   const supabase = await createClient();
@@ -113,11 +113,11 @@ export default async function ClientsPage({ params, searchParams }: { params: Pr
         </h2>
       </div>
       
-      {clients.length === 0 ? (
+      {clients.length === 0 && !resolvedSearchParams.openClient ? (
         <p className="text-crm-muted italic text-center py-8 sm:py-12 border border-dashed border-crm-border rounded text-[13px]">No clients registered to this shop yet.</p>
       ) : (
         <>
-          <ClientGrid clients={clients} shopId={shopId} />
+          <ClientGrid clients={clients} shopId={shopId} initialSelectedClientId={resolvedSearchParams.openClient} />
           
           {totalPages > 1 && (
             <div className="flex justify-center mt-8 gap-2">

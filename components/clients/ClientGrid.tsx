@@ -1,12 +1,24 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import UserQRCode from '@/components/clients/UserQRCode';
 import ClientDetailModal from '@/components/clients/ClientDetailModal';
 
-export default function ClientGrid({ clients, shopId }: { clients: any[]; shopId: string }) {
+export default function ClientGrid({ clients, shopId, initialSelectedClientId }: { clients: any[]; shopId: string; initialSelectedClientId?: string }) {
   const [selectedClient, setSelectedClient] = useState<any>(null);
   const [searchTerm, setSearchTerm] = useState('');
+
+  useEffect(() => {
+    if (initialSelectedClientId) {
+      // Find the client in the list if available, or just create a dummy object to open the modal
+      const existingClient = clients.find(c => c.id === initialSelectedClientId);
+      if (existingClient) {
+        setSelectedClient(existingClient);
+      } else {
+        setSelectedClient({ id: initialSelectedClientId, name: 'Loading...' });
+      }
+    }
+  }, [initialSelectedClientId, clients]);
 
   const filteredClients = clients.filter(client => {
     const term = searchTerm.toLowerCase();

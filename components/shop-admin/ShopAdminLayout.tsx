@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import GlobalVoiceNoteFAB from './GlobalVoiceNoteFAB';
 
 interface ShopAdminLayoutProps {
   children: React.ReactNode;
@@ -14,6 +15,8 @@ interface ShopAdminLayoutProps {
 export default function ShopAdminLayout({
   children,
   pageTitle,
+  shopId,
+  userRole,
   tabs,
   activeTab,
 }: ShopAdminLayoutProps) {
@@ -57,6 +60,9 @@ export default function ShopAdminLayout({
       <div className={`shadow-lg bg-transparent sm:bg-crm-surface p-3 sm:p-4 md:p-8 border-0 sm:border ${tabs && tabs.length > 0 ? (isFirstTabActive ? 'sm:rounded-2xl sm:rounded-tl-none' : 'sm:rounded-2xl') : 'sm:rounded-xl'} border-crm-border relative z-0`}>
         {children}
       </div>
+
+      {/* Global Quick Voice Note FAB */}
+      <GlobalVoiceNoteFAB shopId={shopId} />
     </div>
   );
 }
