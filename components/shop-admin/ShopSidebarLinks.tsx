@@ -64,7 +64,7 @@ export default function ShopSidebarLinks({ shopId, userRole }: { shopId: string,
             {/* Settings Accordion */}
             <div className="pt-2 pb-1">
               <div className="px-3 text-[11px] font-bold text-crm-muted uppercase tracking-wider mb-2">Settings & Config</div>
-              <div className="space-y-1 border-l-2 border-crm-border ml-4 pl-2">
+              <div className="space-y-1 border-l-2 border-crm-border ml-5 pl-4">
                 <div className="text-[10px] font-bold text-crm-muted uppercase tracking-wider mt-2 mb-1 px-2">Setup</div>
                 {navLink(`/shop/${shopId}/config/services`, 'Services')}
                 {navLink(`/shop/${shopId}/config/products`, 'Products')}
