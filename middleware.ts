@@ -22,7 +22,8 @@ const publicRoutes = [
   '^/sites/[^/]+(?:/.*)?$',
   '^/api/users/init$',
   '^/api/users/me$',
-  '^/api/cron$',
+  '^/api/inngest(?:/.*)?$',
+  '^/api/webhooks(?:/.*)?$',
   '^/api/apply-heritage$',
   '^/api/debug-kiosk-login$',
   '^/api/chat/booking(?:/.*)?$',
@@ -61,7 +62,8 @@ export async function middleware(req: NextRequest) {
   const isApi = url.pathname.startsWith('/api');
 
   // ── Global API Rate Limiting ──
-  if (isApi) {
+  // Skip rate limiting for server-to-server webhooks (they have their own signature verification)
+  if (isApi && !url.pathname.startsWith('/api/inngest') && !url.pathname.startsWith('/api/webhooks')) {
     const ip = req.headers.get('x-forwarded-for') || 'unknown-ip';
     let limit = 100; // Default generic limit (100 req / min)
 
