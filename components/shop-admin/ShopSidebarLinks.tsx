@@ -74,7 +74,30 @@ export default function ShopSidebarLinks({ shopId, userRole }: { shopId: string,
             {navLink(`/shop/${shopId}/settings/team`, 'Team')}
             {navLink(`/shop/${shopId}/engagement`, 'Engagement')}
             {navLink(`/shop/${shopId}/reports`, 'Reports')}
-            {navLink(`/shop/${shopId}/config/services`, 'Settings & Config')}
+            
+            {/* Settings Accordion */}
+            <div className="pt-2 pb-1">
+              <div className="px-3 text-[11px] font-bold text-crm-muted uppercase tracking-wider mb-2">Settings & Config</div>
+              <div className="space-y-1 border-l-2 border-crm-border ml-4 pl-2">
+                <div className="text-[10px] font-bold text-crm-muted uppercase tracking-wider mt-2 mb-1 px-2">Setup</div>
+                {navLink(`/shop/${shopId}/config/services`, 'Services')}
+                {navLink(`/shop/${shopId}/config/products`, 'Products')}
+                {navLink(`/shop/${shopId}/settings/booking`, 'Booking & Hours')}
+                {navLink(`/shop/${shopId}/settings/resources`, 'Resources')}
+                
+                <div className="text-[10px] font-bold text-crm-muted uppercase tracking-wider mt-3 mb-1 px-2">Experience</div>
+                {navLink(`/shop/${shopId}/settings`, 'Appearance')}
+                {navLink(`/shop/${shopId}/settings/memberships`, 'Memberships')}
+                {navLink(`/shop/${shopId}/settings/forms`, 'Intake Forms')}
+                
+                <div className="text-[10px] font-bold text-crm-muted uppercase tracking-wider mt-3 mb-1 px-2">Operations</div>
+                {navLink(`/shop/${shopId}/settings/commissions`, 'Commissions')}
+                {navLink(`/shop/${shopId}/settings/notifications`, 'Alerts')}
+                {navLink(`/shop/${shopId}/settings/kiosk`, 'Kiosk')}
+                {navLink(`/shop/${shopId}/settings/billing`, 'Billing')}
+              </div>
+            </div>
+            
             {navLink(`/shop/${shopId}/sdk`, 'SDK Docs')}
           </>
         )}

@@ -21,29 +21,10 @@ export default function ShopAdminLayout({
   activeTab,
 }: ShopAdminLayoutProps) {
   
-  const unifiedSettingsTabs = [
-    { id: 'services', label: 'Services', href: `/shop/${shopId}/config/services`, category: 'Shop Setup' },
-    { id: 'products', label: 'Products', href: `/shop/${shopId}/config/products`, category: 'Shop Setup' },
-    { id: 'settings-booking', label: 'Booking & Hours', href: `/shop/${shopId}/settings/booking`, category: 'Shop Setup' },
-    { id: 'settings-resources', label: 'Resources', href: `/shop/${shopId}/settings/resources`, category: 'Shop Setup' },
-    
-    { id: 'settings', label: 'Appearance', href: `/shop/${shopId}/settings`, category: 'Client Experience' },
-    { id: 'settings-memberships', label: 'Memberships', href: `/shop/${shopId}/settings/memberships`, category: 'Client Experience' },
-    { id: 'settings-forms', label: 'Intake Forms', href: `/shop/${shopId}/settings/forms`, category: 'Client Experience' },
-    
-    { id: 'settings-commissions', label: 'Commissions', href: `/shop/${shopId}/settings/commissions`, category: 'Business Operations' },
-    { id: 'settings-notifications', label: 'Notifications', href: `/shop/${shopId}/settings/notifications`, category: 'Business Operations' },
-    { id: 'settings-kiosk', label: 'Kiosk', href: `/shop/${shopId}/settings/kiosk`, category: 'Business Operations' },
-    { id: 'settings-billing', label: 'Billing', href: `/shop/${shopId}/settings/billing`, category: 'Business Operations' }
-  ];
-
-  const isSettingsOrConfig = unifiedSettingsTabs.some(t => t.id === activeTab);
-  const categories = ['Shop Setup', 'Client Experience', 'Business Operations'];
-
   return (
     <div className="pb-20 sm:pb-0 h-full flex flex-col">
-      {/* Show horizontal tabs ONLY if we are NOT in Settings (e.g. Clients page with 'List' vs 'Segments' tabs) */}
-      {!isSettingsOrConfig && tabs && tabs.length > 0 && (
+      {/* Show horizontal tabs if they exist (e.g. Clients page with 'List' vs 'Segments' tabs) */}
+      {tabs && tabs.length > 0 && (
         <div className="hidden sm:flex sm:flex-row sm:items-end justify-between relative z-10 w-full mt-2 sm:-mt-6 border-b sm:border-b-0 border-crm-border">
           <div className="flex items-end overflow-x-auto hide-scrollbar whitespace-nowrap">
             {tabs.map((tab, index) => {
@@ -73,49 +54,10 @@ export default function ShopAdminLayout({
         </div>
       )}
 
-      {isSettingsOrConfig ? (
-        <div className="flex flex-col md:flex-row gap-6 lg:gap-8 flex-1 h-full">
-          {/* Settings Navigation Sidebar */}
-          <div className="w-full md:w-56 lg:w-64 shrink-0 overflow-y-auto hidden sm:block h-full pr-2">
-            <h2 className="font-serif text-2xl font-bold text-crm-text mb-6">Settings</h2>
-            <div className="space-y-8 pb-10">
-              {categories.map(category => (
-                <div key={category}>
-                  <h3 className="text-[11px] font-bold text-crm-muted uppercase tracking-wider mb-3 px-3">{category}</h3>
-                  <div className="space-y-1">
-                    {unifiedSettingsTabs.filter(t => t.category === category).map(tab => {
-                      const isActive = activeTab === tab.id;
-                      return (
-                        <Link
-                          key={tab.id}
-                          href={tab.href}
-                          className={`flex items-center px-3 py-2 text-[14px] rounded-lg transition-colors ${
-                            isActive 
-                              ? 'bg-crm-primary/10 text-crm-primary font-semibold' 
-                              : 'text-crm-text hover:bg-crm-surface hover:text-crm-primary'
-                          }`}
-                        >
-                          {tab.label}
-                        </Link>
-                      );
-                    })}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-          
-          {/* Settings Content Area */}
-          <div className="flex-1 bg-crm-surface shadow-lg border border-crm-border rounded-xl sm:rounded-2xl p-4 md:p-8 min-w-0">
-            {children}
-          </div>
-        </div>
-      ) : (
-        /* Regular Content Area (Non-Settings) */
-        <div className={`shadow-lg bg-crm-surface p-4 md:p-8 border sm:border ${tabs && tabs.length > 0 && tabs[0].id === activeTab ? 'rounded-xl sm:rounded-2xl sm:rounded-tl-none' : 'rounded-xl sm:rounded-2xl'} border-crm-border relative z-0`}>
-          {children}
-        </div>
-      )}
+      {/* Main Content Area */}
+      <div className={`flex-1 shadow-lg bg-crm-surface p-4 md:p-8 border sm:border ${tabs && tabs.length > 0 && tabs[0].id === activeTab ? 'rounded-xl sm:rounded-2xl sm:rounded-tl-none' : 'rounded-xl sm:rounded-2xl'} border-crm-border relative z-0`}>
+        {children}
+      </div>
 
       {/* Global Quick Voice Note FAB */}
       <GlobalVoiceNoteFAB shopId={shopId} />
