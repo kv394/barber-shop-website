@@ -41,13 +41,7 @@ export default function Error({
         We apologize for the inconvenience. Our system has automatically been notified about this technical issue.
       </p>
 
-      {/* DEBUG: Show detailed error stack */}
-      <div className="mb-8 w-full max-w-full overflow-auto bg-black/50 p-4 rounded-lg text-left">
-        <p className="text-red-400 font-mono text-sm mb-2">{error?.message || String(error)}</p>
-        <pre className="text-gray-300 font-mono text-[11px] whitespace-pre-wrap">
-          {error?.stack}
-        </pre>
-      </div>
+      {/* DEBUG block removed for security */}
       
       <div className="flex gap-4">
         <button

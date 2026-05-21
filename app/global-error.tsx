@@ -32,13 +32,7 @@ export default function GlobalError({
               A critical error occurred. Our team has been notified.
             </p>
 
-            {/* DEBUG: Show detailed error stack */}
-            <div className="mb-6 w-full max-w-full overflow-auto bg-black/50 p-4 rounded-lg text-left">
-              <p className="text-red-400 font-mono text-sm mb-2">{error?.message || String(error)}</p>
-              <pre className="text-gray-300 font-mono text-[11px] whitespace-pre-wrap">
-                {error?.stack}
-              </pre>
-            </div>
+            {/* DEBUG block removed for security */}
 
             <button
               onClick={() => reset()}
