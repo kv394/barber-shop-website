@@ -12,32 +12,20 @@ export default function ShopSidebarLinks({ shopId, userRole }: { shopId: string,
   const setupPaths = ['/config/services', '/config/products', '/settings/booking', '/settings/resources'];
   const experiencePaths = ['/settings/memberships', '/settings/forms'];
   const operationsPaths = ['/settings/commissions', '/settings/notifications', '/settings/kiosk', '/settings/billing'];
+  const teamPaths = ['/settings/team', '/portfolio'];
+  const engagementPaths = ['/engagement', '/loyalty', '/referrals', '/campaigns', '/gift-cards', '/reviews'];
+  const reportsPaths = ['/reports', '/expenses'];
   
   const [isSetupOpen, setIsSetupOpen] = useState(setupPaths.some(p => pathname.includes(p)));
   const [isExperienceOpen, setIsExperienceOpen] = useState(pathname === `/shop/${shopId}/settings` || experiencePaths.some(p => pathname.includes(p)));
   const [isOperationsOpen, setIsOperationsOpen] = useState(operationsPaths.some(p => pathname.includes(p)));
+  const [isTeamOpen, setIsTeamOpen] = useState(teamPaths.some(p => pathname.includes(p)));
+  const [isEngagementOpen, setIsEngagementOpen] = useState(engagementPaths.some(p => pathname.includes(p)));
+  const [isReportsOpen, setIsReportsOpen] = useState(reportsPaths.some(p => pathname.includes(p)));
 
   const isActive = (path: string, label: string, exact: boolean = false) => {
     if (exact) return pathname === path;
     if (path === `/shop/${shopId}` && pathname === `/shop/${shopId}`) return true;
-
-    if (label === 'Team') {
-      if (pathname.startsWith(`/shop/${shopId}/settings/team`)) return true;
-      if (pathname.startsWith(`/shop/${shopId}/portfolio`)) return true;
-      return false;
-    }
-
-    if (label === 'Reports') {
-      if (pathname.startsWith(`/shop/${shopId}/reports`)) return true;
-      if (pathname.startsWith(`/shop/${shopId}/expenses`)) return true;
-      return false;
-    }
-
-    if (label === 'Engagement') {
-      const engagementPaths = ['/engagement', '/loyalty', '/referrals', '/campaigns', '/gift-cards', '/reviews'];
-      if (engagementPaths.some(p => pathname.startsWith(`/shop/${shopId}${p}`))) return true;
-      return false;
-    }
 
     if (path !== `/shop/${shopId}` && pathname.startsWith(path)) return true;
     return false;
@@ -68,9 +56,65 @@ export default function ShopSidebarLinks({ shopId, userRole }: { shopId: string,
         {!isAll && navLink(`/shop/${shopId}/clients`, 'Clients')}
         {userRole === 'SHOP_ADMIN' && !isAll && (
           <>
-            {navLink(`/shop/${shopId}/settings/team`, 'Team')}
-            {navLink(`/shop/${shopId}/engagement`, 'Engagement')}
-            {navLink(`/shop/${shopId}/reports`, 'Reports')}
+            {/* Team Accordion */}
+            <div className="pt-1 pb-1">
+              <button onClick={() => setIsTeamOpen(!isTeamOpen)} className="w-full flex items-center justify-between px-3 py-2 rounded-lg text-[14px] font-medium text-crm-muted hover:text-crm-text hover:bg-crm-bg transition-colors">
+                <span>Team</span>
+                <svg className={`w-3.5 h-3.5 transition-transform duration-200 ${isTeamOpen ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+              <div className={`grid transition-all duration-300 ease-in-out ${isTeamOpen ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'}`}>
+                <div className="overflow-hidden">
+                  <div className="space-y-1 ml-4 pl-3 border-l-2 border-crm-border py-1">
+                    {navLink(`/shop/${shopId}/settings/team`, 'Availability & Staff')}
+                    {navLink(`/shop/${shopId}/portfolio`, 'Portfolio')}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Engagement Accordion */}
+            <div className="pb-1">
+              <button onClick={() => setIsEngagementOpen(!isEngagementOpen)} className="w-full flex items-center justify-between px-3 py-2 rounded-lg text-[14px] font-medium text-crm-muted hover:text-crm-text hover:bg-crm-bg transition-colors">
+                <span>Engagement</span>
+                <svg className={`w-3.5 h-3.5 transition-transform duration-200 ${isEngagementOpen ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+              <div className={`grid transition-all duration-300 ease-in-out ${isEngagementOpen ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'}`}>
+                <div className="overflow-hidden">
+                  <div className="space-y-1 ml-4 pl-3 border-l-2 border-crm-border py-1">
+                    {navLink(`/shop/${shopId}/engagement`, 'Dashboard', true)}
+                    {navLink(`/shop/${shopId}/loyalty`, 'Loyalty Program')}
+                    {navLink(`/shop/${shopId}/referrals`, 'Referrals')}
+                    {navLink(`/shop/${shopId}/campaigns`, 'Campaigns')}
+                    {navLink(`/shop/${shopId}/gift-cards`, 'Gift Cards')}
+                    {navLink(`/shop/${shopId}/reviews`, 'Reviews')}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Reports Accordion */}
+            <div className="pb-1">
+              <button onClick={() => setIsReportsOpen(!isReportsOpen)} className="w-full flex items-center justify-between px-3 py-2 rounded-lg text-[14px] font-medium text-crm-muted hover:text-crm-text hover:bg-crm-bg transition-colors">
+                <span>Reports</span>
+                <svg className={`w-3.5 h-3.5 transition-transform duration-200 ${isReportsOpen ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+              <div className={`grid transition-all duration-300 ease-in-out ${isReportsOpen ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'}`}>
+                <div className="overflow-hidden">
+                  <div className="space-y-1 ml-4 pl-3 border-l-2 border-crm-border py-1">
+                    {navLink(`/shop/${shopId}/reports`, 'Overview', true)}
+                    {navLink(`/shop/${shopId}/reports/commissions`, 'Commissions')}
+                    {navLink(`/shop/${shopId}/reports/staff-working`, 'Working Hours')}
+                    {navLink(`/shop/${shopId}/expenses`, 'Expenses')}
+                  </div>
+                </div>
+              </div>
+            </div>
             
             {/* Settings Accordion */}
             <div className="pt-2 pb-1">

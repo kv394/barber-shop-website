@@ -347,7 +347,7 @@ export default async function TeamDashboardPage({ params, searchParams }: { para
   ];
 
   return (
-    <ShopAdminLayout shopName={shop.name} shopSlug={shopSlug} pageTitle={userRole === 'SITE_ADMIN' ? 'Assign Shop Admin & Kiosk' : undefined} tabs={userRole === 'SITE_ADMIN' ? undefined : teamTabs} shopId={shopId} userRole={userRole} activeTab="team">
+    <ShopAdminLayout shopName={shop.name} shopSlug={shopSlug} pageTitle={userRole === 'SITE_ADMIN' ? 'Assign Shop Admin & Kiosk' : undefined} shopId={shopId} userRole={userRole}>
 
       {kioskUser && (
          <div className="bg-blue-50 border border-blue-200 p-5 rounded-2xl shadow-lg mb-8">

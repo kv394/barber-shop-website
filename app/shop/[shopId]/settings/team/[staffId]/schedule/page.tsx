@@ -91,8 +91,6 @@ export default function SchedulePage() {
       pageTitle={`Edit Profile & Schedule for ${staffMember.name || staffMember.email.split('@')[0]}`}
       shopId={shop.id}
       userRole={userRole || ''}
-      activeTab="team"
-      tabs={userRole === 'SITE_ADMIN' ? undefined : teamTabs}
     >
       <div className="bg-crm-bg/50 p-6 rounded-lg border border-crm-border shadow-sm mb-8">
         <h3 className="font-bold mb-6 text-crm-text text-lg font-bold">Staff Details</h3>

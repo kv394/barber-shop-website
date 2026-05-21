@@ -31,10 +31,8 @@ export default async function ReferralsPage({ params }: { params: Promise<{ shop
       shopName={data.shop.name}
       shopSlug={data.shopSlug}
       pageTitle={undefined}
-      tabs={engagementTabs}
       shopId={shopId}
       userRole={data.userRole}
-      activeTab="referrals"
     >
       <ReferralTracker shopId={shopId} />
     </ShopAdminLayout>

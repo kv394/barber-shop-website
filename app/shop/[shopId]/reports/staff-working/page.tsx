@@ -110,10 +110,8 @@ export default async function StaffWorkingPage({ params }: { params: Promise<{ s
       shopName={shop.name}
       shopSlug={shopSlug}
       pageTitle="Staff Working Report"
-      tabs={userRole === 'SITE_ADMIN' ? undefined : reportTabs}
       shopId={shopId}
       userRole={userRole as string}
-      activeTab="staff-report"
     >
       <StaffWorkingReport staffMembers={staffMembers} />
     </ShopAdminLayout>

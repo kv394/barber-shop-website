@@ -42,10 +42,8 @@ export default async function CommissionReportsPage({ params }: { params: Promis
       shopName={data.shop.name}
       shopSlug={data.shopSlug}
       pageTitle={data.isStaff ? 'My Earnings' : 'Commission & Payroll Reports'}
-      tabs={data.userRole === 'SITE_ADMIN' || data.isStaff ? undefined : reportTabs}
       shopId={shopId}
       userRole={data.userRole}
-      activeTab="commissions"
     >
       <CommissionReportClient shopId={shopId} staffId={staffId} isPersonalView={data.isStaff} />
     </ShopAdminLayout>

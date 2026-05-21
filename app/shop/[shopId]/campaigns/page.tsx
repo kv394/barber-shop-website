@@ -31,10 +31,8 @@ export default async function CampaignsPage({ params }: { params: Promise<{ shop
       shopName={data.shop.name}
       shopSlug={data.shopSlug}
       pageTitle={undefined}
-      tabs={engagementTabs}
       shopId={shopId}
       userRole={data.userRole}
-      activeTab="campaigns"
     >
       <CampaignBuilder shopId={shopId} />
     </ShopAdminLayout>

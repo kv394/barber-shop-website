@@ -31,10 +31,8 @@ export default async function EngagementPage({ params }: { params: Promise<{ sho
       shopName={data.shop.name}
       shopSlug={data.shopSlug}
       pageTitle={undefined}
-      tabs={engagementTabs}
       shopId={shopId}
       userRole={data.userRole}
-      activeTab="engagement"
     >
       <EngagementAnalytics shopId={shopId} />
     </ShopAdminLayout>

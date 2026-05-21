@@ -38,10 +38,8 @@ export default async function ExpensesPage({ params }: { params: Promise<{ shopI
       shopName={data.shop.name}
       shopSlug={data.shopSlug}
       pageTitle="Expense Tracking"
-      tabs={data.userRole === 'SITE_ADMIN' ? undefined : reportTabs}
       shopId={shopId}
       userRole={data.userRole}
-      activeTab="expenses"
     >
       <ExpensesClient shopId={shopId} />
     </ShopAdminLayout>

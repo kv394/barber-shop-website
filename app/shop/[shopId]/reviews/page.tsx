@@ -27,7 +27,7 @@ export default async function ReviewsPage({ params }: { params: Promise<{ shopId
   ];
 
   return (
-    <ShopAdminLayout shopName={data.shop.name} shopSlug={data.shopSlug} pageTitle={undefined} tabs={engagementTabs} shopId={shopId} userRole={data.userRole} activeTab="reviews">
+    <ShopAdminLayout shopName={data.shop.name} shopSlug={data.shopSlug} pageTitle={undefined} shopId={shopId} userRole={data.userRole}>
       <ReviewSummary shopId={shopId} />
       <ReviewsManager shopId={shopId} />
     </ShopAdminLayout>

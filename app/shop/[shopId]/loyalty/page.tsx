@@ -31,10 +31,8 @@ export default async function LoyaltyPage({ params }: { params: Promise<{ shopId
       shopName={data.shop.name}
       shopSlug={data.shopSlug}
       pageTitle={undefined}
-      tabs={engagementTabs}
       shopId={shopId}
       userRole={data.userRole}
-      activeTab="loyalty"
     >
       <LoyaltyDashboard shopId={shopId} />
     </ShopAdminLayout>

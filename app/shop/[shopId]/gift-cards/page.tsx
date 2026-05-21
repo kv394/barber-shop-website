@@ -40,10 +40,8 @@ export default async function GiftCardsPage({ params }: { params: Promise<{ shop
       shopName={data.shop.name}
       shopSlug={data.shopSlug}
       pageTitle={undefined}
-      tabs={engagementTabs}
       shopId={shopId}
       userRole={data.userRole}
-      activeTab="gift-cards"
     >
       <GiftCardManager shopId={shopId} />
     </ShopAdminLayout>
