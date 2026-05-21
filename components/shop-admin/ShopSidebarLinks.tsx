@@ -6,23 +6,9 @@ export default function ShopSidebarLinks({ shopId, userRole }: { shopId: string,
   const pathname = usePathname();
   const isAll = shopId === 'all';
 
-  const isActive = (path: string, label: string) => {
+  const isActive = (path: string, label: string, exact: boolean = false) => {
+    if (exact) return pathname === path;
     if (path === `/shop/${shopId}` && pathname === `/shop/${shopId}`) return true;
-    
-    if (label === 'Settings & Config') {
-      const settingsPrefix = `/shop/${shopId}/settings`;
-      const configPrefix = `/shop/${shopId}/config`;
-      const configPaths = ['/booking', '/resources', '/forms', '/memberships'];
-      const teamPaths = ['/team'];
-      
-      if (pathname.startsWith(settingsPrefix)) {
-        const subPath = pathname.replace(settingsPrefix, '');
-        if (teamPaths.some(p => subPath.startsWith(p))) return false;
-        return true;
-      }
-      if (pathname.startsWith(configPrefix)) return true;
-      return false;
-    }
 
     if (label === 'Team') {
       if (pathname.startsWith(`/shop/${shopId}/settings/team`)) return true;
@@ -46,8 +32,8 @@ export default function ShopSidebarLinks({ shopId, userRole }: { shopId: string,
     return false;
   };
 
-  const navLink = (href: string, label: string) => {
-    const active = isActive(href, label);
+  const navLink = (href: string, label: string, exact: boolean = false) => {
+    const active = isActive(href, label, exact);
     return (
       <Link 
         href={href} 
@@ -86,7 +72,7 @@ export default function ShopSidebarLinks({ shopId, userRole }: { shopId: string,
                 {navLink(`/shop/${shopId}/settings/resources`, 'Resources')}
                 
                 <div className="text-[10px] font-bold text-crm-muted uppercase tracking-wider mt-3 mb-1 px-2">Experience</div>
-                {navLink(`/shop/${shopId}/settings`, 'Appearance')}
+                {navLink(`/shop/${shopId}/settings`, 'Appearance', true)}
                 {navLink(`/shop/${shopId}/settings/memberships`, 'Memberships')}
                 {navLink(`/shop/${shopId}/settings/forms`, 'Intake Forms')}
                 
