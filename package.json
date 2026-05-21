@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "dev:https": "next dev --experimental-https",
-    "build": "prisma generate && prisma migrate deploy && next build",
+    "build": "prisma generate && (prisma migrate deploy || (prisma migrate resolve --applied 20240520000000_init && prisma migrate deploy)) && next build",
     "start": "next start",
     "lint": "next lint",
     "postinstall": "prisma generate"
