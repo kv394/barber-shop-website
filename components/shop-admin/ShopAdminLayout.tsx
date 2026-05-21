@@ -8,7 +8,7 @@ interface ShopAdminLayoutProps {
   pageTitle?: string;
   shopId: string;
   userRole: string;
-  activeTab: string;
+  activeTab?: string;
   tabs?: { id: string; label: string; href: string }[];
 }
 
