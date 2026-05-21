@@ -115,13 +115,13 @@ export function getTenantClient(shopId: string) {
     name: 'tenant-isolation',
     query: {
       $allModels: {
-        async $allOperations({ model, operation, args, query }) {
+        async $allOperations({ model, operation, args, query }: any) {
           if (TENANT_MODELS.has(model)) {
             // Auto-inject shopId into the where clause for read/update/delete
             if (operation === 'create' || operation === 'createMany') {
               if (args.data) {
                 if (Array.isArray(args.data)) {
-                  args.data = args.data.map(d => ({ ...d, shopId }));
+                  args.data = args.data.map((d: any) => ({ ...d, shopId }));
                 } else {
                   args.data = { ...args.data, shopId };
                 }

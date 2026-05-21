@@ -5,8 +5,7 @@ import { UsageService } from '@/lib/usage-service';
 import { RebookingService } from '@/lib/rebooking-prompts';
 
 export const processDailyTasks = inngest.createFunction(
-  { id: 'process-daily-tasks' },
-  { cron: '0 0 * * *' }, // Runs every day at midnight UTC
+  { id: 'process-daily-tasks', triggers: [{ cron: '0 0 * * *' }] },
   async ({ step }) => {
     // 1. Process pending + retry failed notifications
     const notificationsProcessed = await step.run('process-scheduled-notifications', async () => {
@@ -28,8 +27,7 @@ export const processDailyTasks = inngest.createFunction(
 );
 
 export const generateHourlyUsageReports = inngest.createFunction(
-  { id: 'generate-hourly-usage-reports' },
-  { cron: '0 * * * *' }, // Runs at the top of every hour
+  { id: 'generate-hourly-usage-reports', triggers: [{ cron: '0 * * * *' }] },
   async ({ step }) => {
     const usageReportsGenerated = await step.run('generate-usage-reports', async () => {
       return await UsageService.generateHourlyReports();

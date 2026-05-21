@@ -62,7 +62,7 @@ export async function middleware(req: NextRequest) {
 
   // ── Global API Rate Limiting ──
   if (isApi) {
-    const ip = req.ip || req.headers.get('x-forwarded-for') || 'unknown-ip';
+    const ip = req.headers.get('x-forwarded-for') || 'unknown-ip';
     let limit = 100; // Default generic limit (100 req / min)
 
     if (url.pathname.includes('/auth') || url.pathname.includes('/sign-in') || url.pathname.includes('/sign-up')) {
