@@ -41,7 +41,6 @@ export default async function ShopConfigPage({
       pageTitle="Shop Configuration & Setup"
       shopId={shopId}
       userRole={data.userRole}
-      activeTab="setup"
     >
       <div className="space-y-8">
         <div className="bg-crm-bg/50 p-6 rounded-lg border border-crm-border shadow-sm">

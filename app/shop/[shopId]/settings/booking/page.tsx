@@ -30,7 +30,7 @@ export default async function BookingSettingsPage({ params }: { params: Promise<
   ];
 
   return (
-    <ShopAdminLayout shopName={data.shop.name} shopSlug={data.shopSlug} pageTitle="Booking & Hours" tabs={data.userRole === 'SITE_ADMIN' ? undefined : configTabs} shopId={shopId} userRole={data.userRole} activeTab="settings-booking">
+    <ShopAdminLayout shopName={data.shop.name} shopSlug={data.shopSlug} pageTitle="Booking & Hours" shopId={shopId} userRole={data.userRole}>
       <div className="space-y-6">
         <BusinessHoursEditor shopId={shopId} />
         <BookingSettingsForm shopId={shopId} />

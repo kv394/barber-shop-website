@@ -28,7 +28,7 @@ export default async function FormsSettingsPage({ params }: { params: Promise<{ 
   ];
 
   return (
-    <ShopAdminLayout shopName={data.shop.name} shopSlug={data.shopSlug} pageTitle="Digital Intake Forms" tabs={data.userRole === 'SITE_ADMIN' ? undefined : configTabs} shopId={shopId} userRole={data.userRole} activeTab="settings-forms">
+    <ShopAdminLayout shopName={data.shop.name} shopSlug={data.shopSlug} pageTitle="Digital Intake Forms" shopId={shopId} userRole={data.userRole}>
       <FormBuilder shopId={shopId} />
     </ShopAdminLayout>
   );

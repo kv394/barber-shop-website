@@ -27,7 +27,7 @@ export default async function NotificationsSettingsPage({ params }: { params: Pr
   ];
 
   return (
-    <ShopAdminLayout shopName={data.shop.name} shopSlug={data.shopSlug} pageTitle="Notification Settings" tabs={data.userRole === 'SITE_ADMIN' ? undefined : settingsTabs} shopId={shopId} userRole={data.userRole} activeTab="settings-notifications">
+    <ShopAdminLayout shopName={data.shop.name} shopSlug={data.shopSlug} pageTitle="Notification Settings" shopId={shopId} userRole={data.userRole}>
       <NotificationSettingsForm shopId={shopId} />
     </ShopAdminLayout>
   );

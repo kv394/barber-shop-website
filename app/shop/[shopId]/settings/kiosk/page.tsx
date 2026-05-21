@@ -32,7 +32,7 @@ export default async function KioskSettingsPage({ params }: { params: Promise<{ 
   ];
 
   return (
-    <ShopAdminLayout shopName={data.shop.name} shopSlug={data.shopSlug} pageTitle="Kiosk Setup" tabs={data.userRole === 'SITE_ADMIN' ? undefined : settingsTabs} shopId={shopId} userRole={data.userRole} activeTab="settings-kiosk">
+    <ShopAdminLayout shopName={data.shop.name} shopSlug={data.shopSlug} pageTitle="Kiosk Setup" shopId={shopId} userRole={data.userRole}>
       <KioskSetupClient shopId={shopId} shopName={data.shop.name} kioskEmail={kioskUser?.email || ''} />
     </ShopAdminLayout>
   );

@@ -93,10 +93,8 @@ export default async function ShopBillingPage({ params }: { params: Promise<{ sh
       shopName={layoutData.shop.name}
       shopSlug={layoutData.shopSlug}
       pageTitle="Billing & Usage"
-      tabs={layoutData.userRole === 'SITE_ADMIN' ? undefined : settingsTabs}
       shopId={shopId}
       userRole={layoutData.userRole}
-      activeTab="settings-billing"
     >
       <div className="max-w-4xl mx-auto">
         <div className="mb-8">

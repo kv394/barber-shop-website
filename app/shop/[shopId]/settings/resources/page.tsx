@@ -28,7 +28,7 @@ export default async function ResourcesSettingsPage({ params }: { params: Promis
   ];
 
   return (
-    <ShopAdminLayout shopName={data.shop.name} shopSlug={data.shopSlug} pageTitle="Resource Management" tabs={data.userRole === 'SITE_ADMIN' ? undefined : configTabs} shopId={shopId} userRole={data.userRole} activeTab="settings-resources">
+    <ShopAdminLayout shopName={data.shop.name} shopSlug={data.shopSlug} pageTitle="Resource Management" shopId={shopId} userRole={data.userRole}>
       <ResourceManagement shopId={shopId} />
     </ShopAdminLayout>
   );

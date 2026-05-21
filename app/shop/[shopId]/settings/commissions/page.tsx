@@ -27,7 +27,7 @@ export default async function CommissionsSettingsPage({ params }: { params: Prom
   ];
 
   return (
-    <ShopAdminLayout shopName={data.shop.name} shopSlug={data.shopSlug} pageTitle="Commission Rates" tabs={data.userRole === 'SITE_ADMIN' ? undefined : settingsTabs} shopId={shopId} userRole={data.userRole} activeTab="settings-commissions">
+    <ShopAdminLayout shopName={data.shop.name} shopSlug={data.shopSlug} pageTitle="Commission Rates" shopId={shopId} userRole={data.userRole}>
       <CommissionSetup shopId={shopId} />
     </ShopAdminLayout>
   );

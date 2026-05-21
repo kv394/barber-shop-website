@@ -60,10 +60,8 @@ export default async function ShopSettingsPage({
       shopName={data.shop.name}
       shopSlug={data.shopSlug}
       pageTitle="Appearance & Settings"
-      tabs={data.userRole === 'SITE_ADMIN' ? undefined : settingsTabs}
       shopId={shopId}
       userRole={data.userRole}
-      activeTab="settings"
     >
       <TimezoneSelector shopId={shopId} currentTimezone={data.shop.timezone || 'America/New_York'} />
 

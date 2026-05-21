@@ -41,10 +41,8 @@ export default async function ConfigProductsPage({ params }: { params: Promise<{
       shopName={shop.name}
       shopSlug={data.shopSlug}
       pageTitle="Products & Inventory"
-      tabs={userRole === 'SITE_ADMIN' ? undefined : configTabs}
       shopId={shopId}
       userRole={userRole}
-      activeTab="products"
     >
       <div className="max-w-4xl mx-auto py-8">
         <ProductManager shopId={shopId} products={products} />

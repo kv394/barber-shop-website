@@ -32,10 +32,8 @@ export default async function ServicesConfigPage({ params }: { params: Promise<{
       shopName={data.shop.name}
       shopSlug={shopSlug}
       pageTitle="Manage Services"
-      tabs={data.userRole === 'SITE_ADMIN' ? undefined : configTabs}
       shopId={shopId}
       userRole={data.userRole}
-      activeTab="services"
     >
       <ServiceManagement shopId={shopId} />
       <AddonManagement shopId={shopId} />

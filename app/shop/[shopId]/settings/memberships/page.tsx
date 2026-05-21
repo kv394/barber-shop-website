@@ -28,7 +28,7 @@ export default async function MembershipsSettingsPage({ params }: { params: Prom
   ];
 
   return (
-    <ShopAdminLayout shopName={data.shop.name} shopSlug={data.shopSlug} pageTitle="Membership Tiers" tabs={data.userRole === 'SITE_ADMIN' ? undefined : configTabs} shopId={shopId} userRole={data.userRole} activeTab="settings-memberships">
+    <ShopAdminLayout shopName={data.shop.name} shopSlug={data.shopSlug} pageTitle="Membership Tiers" shopId={shopId} userRole={data.userRole}>
       <MembershipManager shopId={shopId} />
     </ShopAdminLayout>
   );
