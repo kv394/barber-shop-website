@@ -8,6 +8,14 @@ export default function ShopSidebarLinks({ shopId, userRole }: { shopId: string,
   const isAll = shopId === 'all';
   
   const [isSettingsOpen, setIsSettingsOpen] = useState(pathname.includes('/settings') || pathname.includes('/config'));
+  
+  const setupPaths = ['/config/services', '/config/products', '/settings/booking', '/settings/resources'];
+  const experiencePaths = ['/settings/memberships', '/settings/forms'];
+  const operationsPaths = ['/settings/commissions', '/settings/notifications', '/settings/kiosk', '/settings/billing'];
+  
+  const [isSetupOpen, setIsSetupOpen] = useState(setupPaths.some(p => pathname.includes(p)));
+  const [isExperienceOpen, setIsExperienceOpen] = useState(pathname === `/shop/${shopId}/settings` || experiencePaths.some(p => pathname.includes(p)));
+  const [isOperationsOpen, setIsOperationsOpen] = useState(operationsPaths.some(p => pathname.includes(p)));
 
   const isActive = (path: string, label: string, exact: boolean = false) => {
     if (exact) return pathname === path;
@@ -87,22 +95,64 @@ export default function ShopSidebarLinks({ shopId, userRole }: { shopId: string,
               >
                 <div className="overflow-hidden">
                   <div className="space-y-1 border-l-2 border-crm-border ml-5 pl-4 pb-2">
-                    <div className="text-[10px] font-bold text-crm-muted uppercase tracking-wider mt-2 mb-1 px-2">Setup</div>
-                    {navLink(`/shop/${shopId}/config/services`, 'Services')}
-                    {navLink(`/shop/${shopId}/config/products`, 'Products')}
-                    {navLink(`/shop/${shopId}/settings/booking`, 'Booking & Hours')}
-                    {navLink(`/shop/${shopId}/settings/resources`, 'Resources')}
+                    <div className="mb-3">
+                      <button 
+                        onClick={() => setIsSetupOpen(!isSetupOpen)} 
+                        className="w-full flex items-center justify-between px-2 text-[10px] font-bold text-crm-muted hover:text-crm-text uppercase tracking-wider mb-1 transition-colors"
+                      >
+                        <span>Setup</span>
+                        <svg className={`w-3 h-3 transition-transform duration-200 ${isSetupOpen ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                        </svg>
+                      </button>
+                      <div className={`grid transition-all duration-300 ease-in-out ${isSetupOpen ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'}`}>
+                        <div className="overflow-hidden space-y-1">
+                          {navLink(`/shop/${shopId}/config/services`, 'Services')}
+                          {navLink(`/shop/${shopId}/config/products`, 'Products')}
+                          {navLink(`/shop/${shopId}/settings/booking`, 'Booking & Hours')}
+                          {navLink(`/shop/${shopId}/settings/resources`, 'Resources')}
+                        </div>
+                      </div>
+                    </div>
                     
-                    <div className="text-[10px] font-bold text-crm-muted uppercase tracking-wider mt-3 mb-1 px-2">Experience</div>
-                    {navLink(`/shop/${shopId}/settings`, 'Appearance', true)}
-                    {navLink(`/shop/${shopId}/settings/memberships`, 'Memberships')}
-                    {navLink(`/shop/${shopId}/settings/forms`, 'Intake Forms')}
+                    <div className="mb-3">
+                      <button 
+                        onClick={() => setIsExperienceOpen(!isExperienceOpen)} 
+                        className="w-full flex items-center justify-between px-2 text-[10px] font-bold text-crm-muted hover:text-crm-text uppercase tracking-wider mb-1 transition-colors"
+                      >
+                        <span>Experience</span>
+                        <svg className={`w-3 h-3 transition-transform duration-200 ${isExperienceOpen ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                        </svg>
+                      </button>
+                      <div className={`grid transition-all duration-300 ease-in-out ${isExperienceOpen ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'}`}>
+                        <div className="overflow-hidden space-y-1">
+                          {navLink(`/shop/${shopId}/settings`, 'Appearance', true)}
+                          {navLink(`/shop/${shopId}/settings/memberships`, 'Memberships')}
+                          {navLink(`/shop/${shopId}/settings/forms`, 'Intake Forms')}
+                        </div>
+                      </div>
+                    </div>
                     
-                    <div className="text-[10px] font-bold text-crm-muted uppercase tracking-wider mt-3 mb-1 px-2">Operations</div>
-                    {navLink(`/shop/${shopId}/settings/commissions`, 'Commissions')}
-                    {navLink(`/shop/${shopId}/settings/notifications`, 'Alerts')}
-                    {navLink(`/shop/${shopId}/settings/kiosk`, 'Kiosk')}
-                    {navLink(`/shop/${shopId}/settings/billing`, 'Billing')}
+                    <div className="mb-1">
+                      <button 
+                        onClick={() => setIsOperationsOpen(!isOperationsOpen)} 
+                        className="w-full flex items-center justify-between px-2 text-[10px] font-bold text-crm-muted hover:text-crm-text uppercase tracking-wider mb-1 transition-colors"
+                      >
+                        <span>Operations</span>
+                        <svg className={`w-3 h-3 transition-transform duration-200 ${isOperationsOpen ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                        </svg>
+                      </button>
+                      <div className={`grid transition-all duration-300 ease-in-out ${isOperationsOpen ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'}`}>
+                        <div className="overflow-hidden space-y-1">
+                          {navLink(`/shop/${shopId}/settings/commissions`, 'Commissions')}
+                          {navLink(`/shop/${shopId}/settings/notifications`, 'Alerts')}
+                          {navLink(`/shop/${shopId}/settings/kiosk`, 'Kiosk')}
+                          {navLink(`/shop/${shopId}/settings/billing`, 'Billing')}
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
