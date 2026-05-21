@@ -8,6 +8,8 @@
     "build": "prisma generate && (prisma migrate deploy || (prisma migrate resolve --applied 20240520000000_init && prisma migrate deploy)) && next build",
     "start": "next start",
     "lint": "next lint",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "postinstall": "prisma generate"
   },
   "dependencies": {
@@ -41,6 +43,10 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
+    "@playwright/test": "^1.60.0",
+    "@testing-library/dom": "^10.4.1",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
     "@types/adm-zip": "^0.5.8",
     "@types/handlebars": "^4.0.40",
     "@types/node": "^20",
@@ -48,12 +54,16 @@
     "@types/qrcode": "^1.5.6",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "@vitejs/plugin-react": "^6.0.2",
+    "@vitest/ui": "^4.1.7",
     "autoprefixer": "^10.4.19",
     "eslint": "^9",
     "eslint-config-next": "15.2.0",
+    "jsdom": "^29.1.1",
     "postcss": "^8",
     "prisma": "^7.6.0",
     "tailwindcss": "^3.4.1",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vitest": "^4.1.7"
   }
 }
