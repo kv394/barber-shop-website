@@ -75,29 +75,9 @@ function createPrismaClient() {
     log: ['error']
   });
 
-  // Prisma Client Extension to automatically scope queries to a shopId if provided via context or async_hooks.
-  // In a robust implementation, you would typically use AsyncLocalStorage to pass the tenant ID.
-  // Here, we're providing a foundational extension structure. You'll need an 'rlsClient' wrapper
-  // to pass the shopId for standard isolated queries.
-  return baseClient.$extends({
-    name: 'tenant-isolation',
-    query: {
-      $allModels: {
-        async $allOperations({ model, operation, args, query }) {
-          // This is a placeholder for actual tenant isolation logic.
-          // To fully implement this, you would:
-          // 1. Retrieve the current shopId from AsyncLocalStorage (or pass it explicitly)
-          // 2. Check if the model has a 'shopId' field.
-          // 3. Mutate 'args.where' to inject `{ shopId: currentShopId }` if applicable.
-          // Example:
-          // if (currentShopId && Prisma.dmmf.datamodel.models.find(m => m.name === model)?.fields.some(f => f.name === 'shopId')) {
-          //   args.where = { ...args.where, shopId: currentShopId };
-          // }
-          return query(args);
-        },
-      },
-    },
-  });
+  // We don't apply the tenant extension globally because some routes (like webhooks or cron)
+  // need cross-shop access.
+  return baseClient;
 }
 
 // Force Next.js hot reload to pick up latest Prisma client changes (Gen 2)
@@ -105,4 +85,75 @@ export const prisma = global.prismaGlobal || createPrismaClient();
 
 if (process.env.NODE_ENV !== 'production') {
   global.prismaGlobal = prisma;
+}
+
+// Set of models that belong to a specific shop (tenant)
+const TENANT_MODELS = new Set([
+  'Appointment',
+  'Service',
+  'Staff',
+  'BusinessHour',
+  'Review',
+  'LoyaltyProgram',
+  'LoyaltyPoint',
+  'Payment',
+  'Customer',
+  'Booking',
+  'Break',
+  'TimeOff'
+]);
+
+/**
+ * Returns a Prisma Client instance that automatically scopes ALL queries
+ * to the specified shopId for models that support it.
+ * This ensures data isolation between tenants.
+ */
+export function getTenantClient(shopId: string) {
+  if (!shopId) throw new Error('shopId is required for tenant client');
+  
+  return prisma.$extends({
+    name: 'tenant-isolation',
+    query: {
+      $allModels: {
+        async $allOperations({ model, operation, args, query }) {
+          if (TENANT_MODELS.has(model)) {
+            // Auto-inject shopId into the where clause for read/update/delete
+            if (operation === 'create' || operation === 'createMany') {
+              if (args.data) {
+                if (Array.isArray(args.data)) {
+                  args.data = args.data.map(d => ({ ...d, shopId }));
+                } else {
+                  args.data = { ...args.data, shopId };
+                }
+              }
+            } else if (
+              operation === 'findUnique' ||
+              operation === 'findUniqueOrThrow'
+            ) {
+              // findUnique requires unique indexes. If shopId isn't part of the unique index,
+              // Prisma will complain. In those cases, we gracefully convert to findFirst
+              // if it's safe, but standard practice is to rely on compound unique indexes.
+              // For safety, we just inject it and let Prisma throw if the schema isn't setup for it,
+              // forcing developers to fix their schema.
+              args.where = { ...args.where, shopId };
+            } else if (
+              operation === 'findMany' ||
+              operation === 'findFirst' ||
+              operation === 'findFirstOrThrow' ||
+              operation === 'update' ||
+              operation === 'updateMany' ||
+              operation === 'delete' ||
+              operation === 'deleteMany' ||
+              operation === 'count' ||
+              operation === 'aggregate' ||
+              operation === 'groupBy'
+            ) {
+              args.where = { ...args.where, shopId };
+            }
+          }
+          return query(args);
+        },
+      },
+    },
+  });
 }

@@ -1,5 +1,6 @@
 import { NextResponse, type NextRequest } from 'next/server';
 import { createServerClient, type CookieOptions } from '@supabase/ssr';
+import { rateLimit } from '@/lib/rate-limiter';
 
 const publicRoutes = [
   '^/$',
@@ -58,6 +59,27 @@ export async function middleware(req: NextRequest) {
   const hostname = req.headers.get('host') || '';
   
   const isApi = url.pathname.startsWith('/api');
+
+  // ── Global API Rate Limiting ──
+  if (isApi) {
+    const ip = req.ip || req.headers.get('x-forwarded-for') || 'unknown-ip';
+    let limit = 100; // Default generic limit (100 req / min)
+
+    if (url.pathname.includes('/auth') || url.pathname.includes('/sign-in') || url.pathname.includes('/sign-up')) {
+      limit = 10; // Stricter for auth
+    } else if (url.pathname.includes('/appointments') && req.method === 'POST') {
+      limit = 30; // Stricter for bookings
+    }
+
+    const { success } = await rateLimit(`mw:${ip}`, limit, 60);
+    
+    if (!success) {
+      return NextResponse.json(
+        { error: 'Too many requests. Please try again later.' },
+        { status: 429, headers: { 'Retry-After': '60' } }
+      );
+    }
+  }
   const isAdmin = url.pathname.startsWith('/siteadmin');
   const isStatic = url.pathname.startsWith('/_next') || url.pathname.startsWith('/static') || url.pathname.includes('.');
   
