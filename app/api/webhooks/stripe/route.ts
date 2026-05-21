@@ -1,0 +1,123 @@
+import { NextResponse } from 'next/server';
+import Stripe from 'stripe';
+import { prisma } from '@/lib/prisma';
+import { logger } from '@/lib/logger';
+import stripe from '@/lib/stripe';
+
+export async function POST(req: Request) {
+  const body = await req.text();
+  const signature = req.headers.get('stripe-signature');
+
+  if (!signature) {
+    return NextResponse.json({ error: 'Missing stripe signature' }, { status: 400 });
+  }
+
+  const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
+
+  if (!webhookSecret) {
+    logger.error('STRIPE_WEBHOOK_SECRET is not set');
+    return NextResponse.json({ error: 'Webhook secret not configured' }, { status: 500 });
+  }
+
+  let event: Stripe.Event;
+
+  try {
+    event = stripe.webhooks.constructEvent(body, signature, webhookSecret);
+  } catch (err: any) {
+    logger.error(`Webhook signature verification failed: ${err.message}`);
+    return NextResponse.json({ error: 'Invalid signature' }, { status: 400 });
+  }
+
+  try {
+    switch (event.type) {
+      case 'payment_intent.succeeded': {
+        const intent = event.data.object as Stripe.PaymentIntent;
+        const type = intent.metadata?.type;
+
+        if (type === 'no_show_deposit') {
+          // Deposit was successfully authorized/captured.
+          const shopId = intent.metadata?.shopId;
+          const userId = intent.metadata?.userId;
+          logger.info(`Deposit PaymentIntent ${intent.id} succeeded for user ${userId} at shop ${shopId}`);
+          
+          // NOTE: The actual appointment might not be created until after this intent is authorized on the frontend.
+          // If the appointment exists and is linked, we could update it. 
+          // For now, we update any appointment that happens to have this depositPaymentIntentId.
+          await prisma.appointment.updateMany({
+            where: { depositPaymentIntentId: intent.id },
+            data: { status: 'ACCEPTED' } // Auto-accept if paid? Or leave as SCHEDULED, up to business logic.
+          });
+        }
+        
+        break;
+      }
+
+      case 'payment_intent.payment_failed': {
+        const intent = event.data.object as Stripe.PaymentIntent;
+        logger.warn(`PaymentIntent ${intent.id} failed. Reason: ${intent.last_payment_error?.message}`);
+        
+        // Find if this was an actual appointment checkout payment
+        const payment = await prisma.payment.findFirst({
+          where: { transactionId: intent.id }
+        });
+
+        if (payment) {
+          await prisma.payment.update({
+            where: { id: payment.id },
+            data: { status: 'FAILED' }
+          });
+          logger.info(`Marked Payment ${payment.id} as FAILED`);
+        }
+        break;
+      }
+
+      case 'charge.dispute.created': {
+        const dispute = event.data.object as Stripe.Dispute;
+        const paymentIntentId = dispute.payment_intent as string;
+        logger.warn(`Dispute created for PaymentIntent ${paymentIntentId}. Amount: ${dispute.amount}`);
+
+        // If the dispute maps to a payment, flag the appointment
+        const payment = await prisma.payment.findFirst({
+          where: { transactionId: paymentIntentId },
+          include: { appointment: true }
+        });
+
+        if (payment?.appointment) {
+          await prisma.appointment.update({
+            where: { id: payment.appointment.id },
+            data: {
+              notes: payment.appointment.notes 
+                ? `${payment.appointment.notes}\n\n⚠️ DISPUTE FILED ON STRIPE: ${dispute.id}`
+                : `⚠️ DISPUTE FILED ON STRIPE: ${dispute.id}`
+            }
+          });
+        }
+        break;
+      }
+
+      case 'setup_intent.succeeded': {
+        const setupIntent = event.data.object as Stripe.SetupIntent;
+        const customerId = setupIntent.customer as string;
+        const paymentMethodId = setupIntent.payment_method as string;
+
+        if (customerId && paymentMethodId) {
+          // Update the user's saved payment method
+          await prisma.user.updateMany({
+            where: { stripeCustomerId: customerId },
+            data: { stripePaymentMethodId: paymentMethodId }
+          });
+          logger.info(`Successfully saved PaymentMethod ${paymentMethodId} for Customer ${customerId}`);
+        }
+        break;
+      }
+
+      default:
+        logger.info(`Unhandled Stripe event type: ${event.type}`);
+    }
+
+    return NextResponse.json({ received: true });
+  } catch (error: any) {
+    logger.error(`Error processing Stripe webhook: ${error.message}`);
+    return NextResponse.json({ error: 'Webhook processing failed' }, { status: 500 });
+  }
+}
