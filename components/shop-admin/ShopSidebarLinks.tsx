@@ -120,7 +120,7 @@ export default function ShopSidebarLinks({ shopId, userRole }: { shopId: string,
             <div className="pt-2 pb-1">
               <button 
                 onClick={() => setIsSettingsOpen(!isSettingsOpen)} 
-                className="w-full flex items-center justify-between px-3 text-[11px] font-bold text-crm-muted hover:text-crm-text mb-2 transition-colors"
+                className="w-full flex items-center justify-between px-3 py-2 rounded-lg text-[14px] font-medium text-crm-muted hover:text-crm-text hover:bg-crm-bg mb-1 transition-colors"
               >
                 <span>Settings & Config</span>
                 <svg 
@@ -142,7 +142,7 @@ export default function ShopSidebarLinks({ shopId, userRole }: { shopId: string,
                     <div className="mb-3">
                       <button 
                         onClick={() => setIsSetupOpen(!isSetupOpen)} 
-                        className="w-full flex items-center justify-between px-2 text-[10px] font-bold text-crm-muted hover:text-crm-text mb-1 transition-colors"
+                        className="w-full flex items-center justify-between px-3 py-2 rounded-lg text-[14px] font-medium text-crm-muted hover:text-crm-text hover:bg-crm-bg mb-1 transition-colors"
                       >
                         <span>Setup</span>
                         <svg className={`w-3 h-3 transition-transform duration-200 ${isSetupOpen ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
@@ -162,7 +162,7 @@ export default function ShopSidebarLinks({ shopId, userRole }: { shopId: string,
                     <div className="mb-3">
                       <button 
                         onClick={() => setIsExperienceOpen(!isExperienceOpen)} 
-                        className="w-full flex items-center justify-between px-2 text-[10px] font-bold text-crm-muted hover:text-crm-text mb-1 transition-colors"
+                        className="w-full flex items-center justify-between px-3 py-2 rounded-lg text-[14px] font-medium text-crm-muted hover:text-crm-text hover:bg-crm-bg mb-1 transition-colors"
                       >
                         <span>Experience</span>
                         <svg className={`w-3 h-3 transition-transform duration-200 ${isExperienceOpen ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
@@ -181,7 +181,7 @@ export default function ShopSidebarLinks({ shopId, userRole }: { shopId: string,
                     <div className="mb-1">
                       <button 
                         onClick={() => setIsOperationsOpen(!isOperationsOpen)} 
-                        className="w-full flex items-center justify-between px-2 text-[10px] font-bold text-crm-muted hover:text-crm-text mb-1 transition-colors"
+                        className="w-full flex items-center justify-between px-3 py-2 rounded-lg text-[14px] font-medium text-crm-muted hover:text-crm-text hover:bg-crm-bg mb-1 transition-colors"
                       >
                         <span>Operations</span>
                         <svg className={`w-3 h-3 transition-transform duration-200 ${isOperationsOpen ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
