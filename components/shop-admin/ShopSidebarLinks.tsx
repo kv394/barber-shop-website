@@ -150,11 +150,13 @@ export default function ShopSidebarLinks({ shopId, userRole }: { shopId: string,
                         </svg>
                       </button>
                       <div className={`grid transition-all duration-300 ease-in-out ${isSetupOpen ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'}`}>
-                        <div className="overflow-hidden space-y-1">
-                          {navLink(`/shop/${shopId}/config/services`, 'Services')}
-                          {navLink(`/shop/${shopId}/config/products`, 'Products')}
-                          {navLink(`/shop/${shopId}/settings/booking`, 'Booking & Hours')}
-                          {navLink(`/shop/${shopId}/settings/resources`, 'Resources')}
+                        <div className="overflow-hidden">
+                          <div className="space-y-1 ml-4 pl-3 border-l-2 border-crm-border py-1">
+                            {navLink(`/shop/${shopId}/config/services`, 'Services')}
+                            {navLink(`/shop/${shopId}/config/products`, 'Products')}
+                            {navLink(`/shop/${shopId}/settings/booking`, 'Booking & Hours')}
+                            {navLink(`/shop/${shopId}/settings/resources`, 'Resources')}
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -170,10 +172,12 @@ export default function ShopSidebarLinks({ shopId, userRole }: { shopId: string,
                         </svg>
                       </button>
                       <div className={`grid transition-all duration-300 ease-in-out ${isExperienceOpen ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'}`}>
-                        <div className="overflow-hidden space-y-1">
-                          {navLink(`/shop/${shopId}/settings`, 'Appearance', true)}
-                          {navLink(`/shop/${shopId}/settings/memberships`, 'Memberships')}
-                          {navLink(`/shop/${shopId}/settings/forms`, 'Intake Forms')}
+                        <div className="overflow-hidden">
+                          <div className="space-y-1 ml-4 pl-3 border-l-2 border-crm-border py-1">
+                            {navLink(`/shop/${shopId}/settings`, 'Appearance', true)}
+                            {navLink(`/shop/${shopId}/settings/memberships`, 'Memberships')}
+                            {navLink(`/shop/${shopId}/settings/forms`, 'Intake Forms')}
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -189,11 +193,13 @@ export default function ShopSidebarLinks({ shopId, userRole }: { shopId: string,
                         </svg>
                       </button>
                       <div className={`grid transition-all duration-300 ease-in-out ${isOperationsOpen ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'}`}>
-                        <div className="overflow-hidden space-y-1">
-                          {navLink(`/shop/${shopId}/settings/commissions`, 'Commissions')}
-                          {navLink(`/shop/${shopId}/settings/notifications`, 'Alerts')}
-                          {navLink(`/shop/${shopId}/settings/kiosk`, 'Kiosk')}
-                          {navLink(`/shop/${shopId}/settings/billing`, 'Billing')}
+                        <div className="overflow-hidden">
+                          <div className="space-y-1 ml-4 pl-3 border-l-2 border-crm-border py-1">
+                            {navLink(`/shop/${shopId}/settings/commissions`, 'Commissions')}
+                            {navLink(`/shop/${shopId}/settings/notifications`, 'Alerts')}
+                            {navLink(`/shop/${shopId}/settings/kiosk`, 'Kiosk')}
+                            {navLink(`/shop/${shopId}/settings/billing`, 'Billing')}
+                          </div>
                         </div>
                       </div>
                     </div>
