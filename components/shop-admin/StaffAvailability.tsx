@@ -5,6 +5,8 @@ import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 import TimeFilterRow from '@/components/shop-admin/TimeFilterRow';
 import ScheduleGrid from '@/components/shop-admin/ScheduleGrid';
 import TimelineGrid from '@/components/shop-admin/TimelineGrid';
+import { DayPicker } from 'react-day-picker';
+import 'react-day-picker/dist/style.css';
 
 interface StaffAvailabilityProps {
   defaultDate: string;
@@ -21,6 +23,7 @@ export default function StaffAvailability({ defaultDate, defaultFrom, defaultTo,
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const [viewMode, setViewMode] = useState<'timeline' | 'list'>('timeline');
+  const [isCalendarOpen, setIsCalendarOpen] = useState(false);
 
   const updateUrl = (newValues: Record<string, string>) => {
     const currentParams = new URLSearchParams(searchParams.toString());
@@ -66,9 +69,41 @@ export default function StaffAvailability({ defaultDate, defaultFrom, defaultTo,
   return (
     <div className="bg-crm-surface rounded-2xl border border-crm-border shadow-sm overflow-hidden w-full max-w-full glass p-4">
       <div className={`grid grid-cols-1 ${showTimeFilters ? 'sm:grid-cols-3' : 'sm:grid-cols-1'} gap-2 sm:gap-3 mb-4`}>
-        <div className="w-full">
+        <div className="w-full relative">
           <label className="block text-crm-muted mb-2 font-bold uppercase tracking-wider text-[13px] sm:text-[14px]">📅 Date</label>
-          <input type="date" value={defaultDate} onChange={(e) => changeDate(e.target.value)} className="w-full p-3 sm:p-4 rounded-xl border-2 border-crm-border shadow-sm text-crm-text text-[15px] sm:text-[16px] font-medium focus:ring-2 focus:ring-crm-primary focus:outline-none transition-all" />
+          <button 
+            onClick={() => setIsCalendarOpen(!isCalendarOpen)}
+            className="w-full text-left p-3 sm:p-4 rounded-xl border-2 border-crm-border shadow-sm bg-crm-surface text-crm-text text-[15px] sm:text-[16px] font-medium hover:border-crm-primary/50 focus:ring-2 focus:ring-crm-primary focus:outline-none transition-all flex justify-between items-center"
+          >
+            <span>{new Date(defaultDate + 'T12:00:00').toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}</span>
+            <span className="text-crm-muted">▼</span>
+          </button>
+          
+          {isCalendarOpen && (
+            <>
+              <div 
+                className="fixed inset-0 z-40" 
+                onClick={() => setIsCalendarOpen(false)}
+              ></div>
+              <div className="absolute top-full left-0 mt-2 z-50 bg-crm-surface border border-crm-border shadow-2xl rounded-xl p-4 animate-in fade-in slide-in-from-top-2">
+                <DayPicker
+                  mode="single"
+                  selected={new Date(defaultDate + 'T12:00:00')}
+                  onSelect={(date) => {
+                    if (date) {
+                      // Format date properly compensating for timezone to yyyy-mm-dd
+                      const yyyy = date.getFullYear();
+                      const mm = String(date.getMonth() + 1).padStart(2, '0');
+                      const dd = String(date.getDate()).padStart(2, '0');
+                      changeDate(`${yyyy}-${mm}-${dd}`);
+                      setIsCalendarOpen(false);
+                    }
+                  }}
+                  className="bg-crm-surface text-crm-text"
+                />
+              </div>
+            </>
+          )}
         </div>
         {showTimeFilters && (
           <TimeFilterRow defaultFrom={defaultFrom} defaultTo={defaultTo} onTimeChange={handleTimeChangeByName} />
