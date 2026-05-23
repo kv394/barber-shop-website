@@ -66,7 +66,7 @@ const ScheduleGrid: React.FC<ScheduleGridProps> = ({ staff, selectedDate }) => {
                         <span className="font-semibold text-status-confirmed">Available</span>
                       )}
                       {!slot.isBooked && (
-                        <BlockTimeButton shopId={"${"}"}"} staffId={staffMember.id} date={selectedDate} time={slot.isoTime} />
+                        <BlockTimeButton shopId={staffMember.shopId} staffId={staffMember.id} date={selectedDate} time={slot.isoTime} />
                       )}
                     </div>
                   </div>

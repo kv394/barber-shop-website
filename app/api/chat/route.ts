@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server';
 import { processMessage } from '@/lib/ai/chat';
-import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
-import { cookies } from 'next/headers';
+import { createClient } from '@/utils/supabase/server';
 
 export async function POST(req: Request) {
   try {
@@ -11,7 +10,7 @@ export async function POST(req: Request) {
     }
 
     // Get session via Supabase server client
-    const supabase = createServerComponentClient({ cookies });
+    const supabase = await createClient();
     const { data: { session } } = await supabase.auth.getSession();
     const userRole = role || session?.user?.app_metadata?.role || 'SHOP_STAFF';
 
