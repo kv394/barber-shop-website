@@ -1,4 +1,10 @@
 {
   "buildCommand": "prisma generate && next build",
-  "framework": "nextjs"
+  "framework": "nextjs",
+  "git": {
+    "deploymentEnabled": {
+      "main": true,
+      "staging": true
+    }
+  }
 }
