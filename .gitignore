@@ -44,3 +44,10 @@ Missouri City - Services & Booking.html
 check-tables*.js
 test-adapter*.js
 test-prisma.js
+
+# Playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+/playwright/.auth/
