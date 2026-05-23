@@ -67,8 +67,8 @@ export default function StaffAvailability({ defaultDate, defaultFrom, defaultTo,
     <div className="bg-crm-surface rounded-2xl border border-crm-border shadow-sm overflow-hidden w-full max-w-full glass p-4">
       <div className={`grid grid-cols-1 ${showTimeFilters ? 'sm:grid-cols-3' : 'sm:grid-cols-1'} gap-2 sm:gap-3 mb-4`}>
         <div className="w-full">
-          <label className="block text-crm-muted mb-1 font-semibold uppercase tracking-wider text-[11px] sm:text-[13px]">📅 Date</label>
-          <input type="date" value={defaultDate} onChange={(e) => changeDate(e.target.value)} className="w-full p-2 sm:p-2.5 rounded-lg border border-crm-border shadow-sm text-crm-text text-[11px] sm:text-[13px] focus:ring-2 focus:ring-crm-primary focus:outline-none transition-all" />
+          <label className="block text-crm-muted mb-2 font-bold uppercase tracking-wider text-[13px] sm:text-[14px]">📅 Date</label>
+          <input type="date" value={defaultDate} onChange={(e) => changeDate(e.target.value)} className="w-full p-3 sm:p-4 rounded-xl border-2 border-crm-border shadow-sm text-crm-text text-[15px] sm:text-[16px] font-medium focus:ring-2 focus:ring-crm-primary focus:outline-none transition-all" />
         </div>
         {showTimeFilters && (
           <TimeFilterRow defaultFrom={defaultFrom} defaultTo={defaultTo} onTimeChange={handleTimeChangeByName} />
