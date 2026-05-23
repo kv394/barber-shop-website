@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { createClientComponentClient } from '@supabase/ssr';
+import { createClient } from '@/utils/supabase/client';
 import ReactMarkdown from 'react-markdown';
 
 // Simple message interface
@@ -11,7 +11,7 @@ interface Message {
 export default function ChatBox({ shopId }: { shopId: string }) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
-  const supabase = createClientComponentClient();
+  const supabase = createClient();
   const chatEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {

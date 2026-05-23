@@ -35,12 +35,16 @@ export default function StaffAvailability({ defaultDate, defaultFrom, defaultTo,
     }
   };
 
-  const handleTimeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleTimeChangeByName = (name: string, value: string) => {
     if (onTimeChange) {
-      onTimeChange(e.target.name, e.target.value);
+      onTimeChange(name, value);
     } else {
-      updateUrl({ [e.target.name]: e.target.value });
+      updateUrl({ [name]: value });
     }
+  };
+
+  const handleTimeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    handleTimeChangeByName(e.target.name, e.target.value);
   };
 
   const navigateDays = (amount: number) => {
@@ -62,7 +66,7 @@ export default function StaffAvailability({ defaultDate, defaultFrom, defaultTo,
       {showTimeFilters && (
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-3 mb-4">
           <input type="date" value={defaultDate} onChange={(e) => changeDate(e.target.value)} className="hidden" />
-          <TimeFilterRow defaultFrom={defaultFrom} defaultTo={defaultTo} onTimeChange={handleTimeChange} />
+          <TimeFilterRow defaultFrom={defaultFrom} defaultTo={defaultTo} onTimeChange={handleTimeChangeByName} />
         </div>
       )}
       {staff ? (

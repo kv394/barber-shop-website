@@ -10,7 +10,7 @@ export async function generateSalesReport(args: { startDate: string; endDate: st
     },
     select: { amount: true, createdAt: true },
   });
-  const total = sales.reduce((sum, s) => sum + Number(s.amount), 0);
+  const total = sales.reduce((sum: number, s: any) => sum + Number(s.amount), 0);
   return { total, count: sales.length, period: { start: args.startDate, end: args.endDate } };
 }
 

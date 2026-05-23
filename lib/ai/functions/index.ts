@@ -188,7 +188,7 @@ export const functionDefinitions = [
     description: 'Retrieve current shop settings',
     parameters: { type: 'object', properties: {}, required: [] },
   },
-];
+
   {
     name: 'createService',
     description: 'Create a new service for the shop',
