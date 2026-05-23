@@ -32,7 +32,7 @@ export default async function ShopSettingsPage({
 
   const shopDetails = await prisma.shop.findUnique({
     where: { id: shopId },
-    select: { depositRequired: true, depositAmount: true },
+    select: { depositRequired: true, depositAmount: true, country: true, currency: true, locale: true },
   });
 
   const dynamicTemplates = await prisma.dynamicTemplate.findMany({
@@ -76,6 +76,9 @@ export default async function ShopSettingsPage({
         initialName={data.shop.name}
         initialDescription={data.shop.description}
         initialSlogan={data.shop.slogan}
+        initialCountry={shopDetails?.country || 'US'}
+        initialCurrency={shopDetails?.currency || 'USD'}
+        initialLocale={shopDetails?.locale || 'en-US'}
       />
 
       <SettingsFormManager

@@ -43,6 +43,15 @@ export async function PATCH(
     if (body.depositAmount !== undefined) {
       updateData.depositAmount = Math.max(0, parseFloat(body.depositAmount) || 0);
     }
+    if (body.country && typeof body.country === 'string' && ['US', 'IN'].includes(body.country)) {
+      updateData.country = body.country;
+    }
+    if (body.currency && typeof body.currency === 'string') {
+      updateData.currency = body.currency.trim();
+    }
+    if (body.locale && typeof body.locale === 'string') {
+      updateData.locale = body.locale.trim();
+    }
     // Buffer time (I2) - shop-level setting handled at service level
 
     if (Object.keys(updateData).length === 0) {

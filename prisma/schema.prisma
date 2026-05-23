@@ -35,6 +35,10 @@ model Shop {
   companyName         String?
   aiTokens            Int                  @default(0)
   slogan              String?
+  country             Country              @default(US)
+  currency            String               @default("USD")
+  locale              String               @default("en-US")
+  paymentGateway      String               @default("STRIPE")
   appointments        Appointment[]
   campaigns           Campaign[]
   clientFormulas      ClientFormula[]
@@ -804,6 +808,11 @@ enum PurchaseOrderStatus {
   SENT
   RECEIVED
   CANCELLED
+}
+
+enum Country {
+  US
+  IN
 }
 
 model ServiceResourceRequirement {

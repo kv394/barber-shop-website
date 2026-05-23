@@ -3,18 +3,29 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
+const COUNTRY_OPTIONS = [
+  { value: 'US', label: '🇺🇸 United States', currency: 'USD', locale: 'en-US' },
+  { value: 'IN', label: '🇮🇳 India', currency: 'INR', locale: 'en-IN' },
+];
+
 interface ShopProfileFormProps {
   shopId: string;
   initialName: string;
   initialDescription: string | null;
   initialSlogan: string | null;
+  initialCountry?: string;
+  initialCurrency?: string;
+  initialLocale?: string;
 }
 
-export function ShopProfileForm({ shopId, initialName, initialDescription, initialSlogan }: ShopProfileFormProps) {
+export function ShopProfileForm({ shopId, initialName, initialDescription, initialSlogan, initialCountry, initialCurrency, initialLocale }: ShopProfileFormProps) {
   const [formData, setFormData] = useState({
     name: initialName || '',
     description: initialDescription || '',
     slogan: initialSlogan || '',
+    country: initialCountry || 'US',
+    currency: initialCurrency || 'USD',
+    locale: initialLocale || 'en-US',
   });
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -105,6 +116,31 @@ export function ShopProfileForm({ shopId, initialName, initialDescription, initi
             placeholder="Tell your clients a little bit about your shop's history, atmosphere, and specialties."
             className="w-full bg-crm-bg border border-crm-border shadow-sm rounded-lg px-4 py-2 text-crm-text placeholder-gray-500"
           />
+        </div>
+
+        <div>
+          <label className="block font-medium text-crm-muted mb-2 text-[13px]">Country / Region</label>
+          <select
+            value={formData.country}
+            onChange={(e) => {
+              const selected = COUNTRY_OPTIONS.find(c => c.value === e.target.value);
+              if (selected) {
+                setFormData({
+                  ...formData,
+                  country: selected.value,
+                  currency: selected.currency,
+                  locale: selected.locale,
+                });
+                setSuccess(false);
+              }
+            }}
+            className="w-full bg-crm-bg border border-crm-border shadow-sm rounded-lg px-4 py-2 text-crm-text"
+          >
+            {COUNTRY_OPTIONS.map((opt) => (
+              <option key={opt.value} value={opt.value}>{opt.label} — {opt.currency}</option>
+            ))}
+          </select>
+          <p className="text-crm-muted text-[11px] mt-1">This sets the currency ({formData.currency}) and locale ({formData.locale}) for your shop.</p>
         </div>
 
         <div className="pt-4">
