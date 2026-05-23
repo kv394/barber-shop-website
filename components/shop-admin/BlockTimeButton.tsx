@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
-export default function BlockTimeButton({ shopId, staffId, date, time }: { shopId: string, staffId: string, date: string, time: string }) {
+export default function BlockTimeButton({ shopId, staffId, date, time, className }: { shopId: string, staffId: string, date: string, time: string, className?: string }) {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
@@ -43,7 +43,7 @@ export default function BlockTimeButton({ shopId, staffId, date, time }: { shopI
     <button 
       onClick={handleBlock} 
       disabled={loading}
-      className="ml-2 px-2 py-1 text-[13px] bg-crm-surface hover:bg-crm-border text-crm-muted rounded border border-crm-border shadow-sm uppercase font-bold tracking-wider disabled:opacity-50 transition-colors"
+      className={className || "ml-2 px-2 py-1 text-[13px] bg-crm-surface hover:bg-crm-border text-crm-muted rounded border border-crm-border shadow-sm uppercase font-bold tracking-wider disabled:opacity-50 transition-colors"}
       title="Block this time slot"
     >
       {loading ? '...' : 'Block'}
