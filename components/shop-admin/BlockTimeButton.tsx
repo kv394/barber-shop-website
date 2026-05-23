@@ -8,7 +8,6 @@ export default function BlockTimeButton({ shopId, staffId, date, time }: { shopI
   const router = useRouter();
 
   const handleBlock = async () => {
-    if (!confirm(`Block this 30-minute slot at ${time}?`)) return;
     setLoading(true);
 
     try {

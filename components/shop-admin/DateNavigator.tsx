@@ -48,9 +48,18 @@ const DateNavigator: React.FC<DateNavigatorProps> = ({ defaultDate, onDateChange
         <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-crm-primary/20 flex items-center justify-center text-lg sm:text-xl hover:opacity-90 flex-shrink-0">
           📅
         </div>
-        <div className="min-w-0 truncate">
-          <h3 className="font-bold text-crm-text text-base sm:text-lg truncate">{dayName}</h3>
-          <p className="text-crm-muted text-[11px] sm:text-[13px] truncate">{dateStr}</p>
+        <div className="min-w-0 truncate relative group">
+          <label className="cursor-pointer block relative z-10">
+            <h3 className="font-bold text-crm-text text-base sm:text-lg truncate group-hover:text-crm-primary transition-colors">{dayName}</h3>
+            <p className="text-crm-muted text-[11px] sm:text-[13px] truncate group-hover:text-crm-primary/80 transition-colors">{dateStr}</p>
+            <input 
+              type="date" 
+              value={defaultDate} 
+              onChange={(e) => changeDate(e.target.value)} 
+              className="absolute inset-0 opacity-0 cursor-pointer w-full h-full"
+              title="Select Date"
+            />
+          </label>
         </div>
       </div>
       <div className="flex items-center gap-1 sm:gap-2 flex-shrink-0">
