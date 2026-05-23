@@ -39,6 +39,11 @@ jobs:
         run: npx playwright test
         env:
           CI: true
+      - name: Build
+        run: npm run build
       - name: Deploy to Vercel
         if: github.ref == 'refs/heads/staging'
-        run: npx vercel --prod --token ${{ secrets.VERCEL_TOKEN }}
+        uses: vercel/action@v2
+        with:
+          token: ${{ secrets.VERCEL_TOKEN }}
+          args: '--prod'

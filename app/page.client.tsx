@@ -51,6 +51,7 @@ export default function Home() {
   const [newShopName, setNewShopName] = useState('');
   const [newShopAdminEmail, setNewShopAdminEmail] = useState('');
   const [kioskEmail, setKioskEmail] = useState('');
+  const [country, setCountry] = useState<'US'|'IN'>('US');
   const [isLoading, setIsLoading] = useState(true);
   const [createError, setCreateError] = useState<string | null>(null);
   const router = useRouter();
@@ -130,7 +131,8 @@ export default function Home() {
         body: JSON.stringify({ 
             name: newShopName,
             kioskEmail: kioskEmail,
-            adminEmail: newShopAdminEmail.trim() || null
+            adminEmail: newShopAdminEmail.trim() || null,
+            country: country
         }),
       });
 
@@ -220,6 +222,49 @@ export default function Home() {
                 </Link>
               </div>
             </div>
+          )}
+          {/* Create Shop Form */}
+          {!isSignedIn && (
+            <form className="max-w-md mx-auto mt-8 space-y-4" onSubmit={handleCreateShop}>
+              <input
+                type="text"
+                placeholder="Shop Name"
+                value={newShopName}
+                onChange={e => setNewShopName(e.target.value)}
+                className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-crm-primary"
+                required
+              />
+              <input
+                type="email"
+                placeholder="Kiosk Email"
+                value={kioskEmail}
+                onChange={e => setKioskEmail(e.target.value)}
+                className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-crm-primary"
+                required
+              />
+              <input
+                type="email"
+                placeholder="Admin Email (optional)"
+                value={newShopAdminEmail}
+                onChange={e => setNewShopAdminEmail(e.target.value)}
+                className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-crm-primary"
+              />
+              <select
+                value={country}
+                onChange={e => setCountry(e.target.value as 'US'|'IN')}
+                className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-crm-primary"
+              >
+                <option value="US">United States</option>
+                <option value="IN">India</option>
+              </select>
+              {createError && <p className="text-red-500 text-sm">{createError}</p>}
+              <button
+                type="submit"
+                className="w-full bg-crm-primary text-white py-2 rounded-md hover:bg-crm-primary/90"
+              >
+                Create Shop
+              </button>
+            </form>
           )}
         </div>
 

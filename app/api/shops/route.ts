@@ -85,7 +85,7 @@ export async function POST(request: Request) {
     }
 
     const body = await request.json();
-    const { name, description, kioskEmail, adminEmail, address, companyName } = body;
+    const { name, description, kioskEmail, adminEmail, address, companyName, country } = body;
 
     // HARDENING: Input validation & sanitization
     if (!name || typeof name !== 'string' || name.trim() === '') {
@@ -124,14 +124,27 @@ export async function POST(request: Request) {
     const customization = { ...DEFAULT_CUSTOMIZATION, address: sanitizedAddress };
 
     // 1. Create the shop
-    const newShop = await prisma.shop.create({
-      data: {
-        name: sanitizedName,
-        companyName: sanitizedCompanyName,
-        description: sanitizedDesc,
-        customization: customization as any,
-      },
-    });
+    // Country configuration map
+const countryConfig: Record<string, { currency: string; locale: string; paymentGateway: string }> = {
+  IN: { currency: 'INR', locale: 'hi', paymentGateway: 'RAZORPAY' },
+  US: { currency: 'USD', locale: 'en', paymentGateway: 'STRIPE' },
+};
+// Determine effective country (default US)
+const selectedCountry = (country && Object.keys(countryConfig).includes(country)) ? country as keyof typeof countryConfig : 'US';
+const { currency, locale, paymentGateway } = countryConfig[selectedCountry];
+
+const newShop = await prisma.shop.create({
+  data: {
+    name: sanitizedName,
+    companyName: sanitizedCompanyName,
+    description: sanitizedDesc,
+    customization: customization as any,
+    country: selectedCountry,
+    currency,
+    locale,
+    paymentGateway,
+  },
+});
 
     // 2. Create or update the Kiosk User placeholder
     const kioskBarcode = crypto.randomBytes(6).toString('hex').toUpperCase();
