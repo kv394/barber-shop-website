@@ -13,9 +13,10 @@ interface StaffAvailabilityProps {
   onDateChange?: (date: string) => void;
   onTimeChange?: (name: string, value: string) => void;
   staff?: any[]; // optional prop for external usage
+  children?: React.ReactNode;
 }
 
-export default function StaffAvailability({ defaultDate, defaultFrom, defaultTo, onDateChange, onTimeChange, staff }: StaffAvailabilityProps) {
+export default function StaffAvailability({ defaultDate, defaultFrom, defaultTo, onDateChange, onTimeChange, staff, children }: StaffAvailabilityProps) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -94,9 +95,14 @@ export default function StaffAvailability({ defaultDate, defaultFrom, defaultTo,
           {viewMode === 'timeline' ? (
             <TimelineGrid staff={staff} selectedDate={defaultDate} />
           ) : (
-            <ScheduleGrid staff={staff} selectedDate={defaultDate} />
+            children ? children : <ScheduleGrid staff={staff} selectedDate={defaultDate} />
           )}
         </>
+      )}
+      {!staff && children && (
+        <div className="mt-4">
+          {children}
+        </div>
       )}
     </div>
   );

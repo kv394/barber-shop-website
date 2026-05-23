@@ -35,12 +35,8 @@ export default function TeamDashboardClient({
   return (
     <>
       <div className="flex flex-col sm:flex-row justify-between items-stretch sm:items-end gap-6 sm:gap-4 mb-8">
-        <div className="w-full sm:w-auto min-w-0 flex-shrink-0">
-          <StaffAvailability defaultDate={initialDate} />
-        </div>
-
-      </div>
-      
+        <div className="w-full">
+          <StaffAvailability defaultDate={initialDate} staff={initialStaff}>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {initialStaff.map((staffMember: any) => {
           const isOnLeave = staffMember.isOnLeave;
@@ -229,6 +225,9 @@ export default function TeamDashboardClient({
             </div>
           );
         })}
+      </div>
+      </StaffAvailability>
+        </div>
       </div>
     </>
   );
