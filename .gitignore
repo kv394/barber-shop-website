@@ -51,3 +51,4 @@ test-prisma.js
 /blob-report/
 /playwright/.cache/
 /playwright/.auth/
+tsconfig.tsbuildinfo
