@@ -10,11 +10,13 @@ import { createPortal } from 'react-dom';
 export default function SupabaseAuthButton({ 
   redirectUrl,
   primaryColor,
-  secondaryColor 
+  secondaryColor,
+  isIconOnly 
 }: { 
   redirectUrl?: string;
   primaryColor?: string;
   secondaryColor?: string;
+  isIconOnly?: boolean;
 }) {
   const [user, setUser] = useState<any>(null);
   const [profile, setProfile] = useState<any>(null);
@@ -190,10 +192,10 @@ export default function SupabaseAuthButton({
         <button
           ref={buttonRef}
           onClick={() => setIsOpen(!isOpen)}
-          className="flex items-center gap-2 bg-crm-surface hover:bg-crm-bg border border-crm-border shadow-sm px-3 py-1.5 rounded-full transition-colors"
+          className={`flex items-center justify-center bg-crm-surface hover:bg-crm-bg border border-crm-border shadow-sm rounded-full transition-colors ${isIconOnly ? 'w-10 h-10 p-0' : 'px-3 py-1.5 gap-2'}`}
         >
           <div 
-            className="w-6 h-6 rounded-full bg-crm-primary flex items-center justify-center text-white font-bold text-[11px] shadow-inner hover:opacity-90"
+            className={`rounded-full bg-crm-primary flex items-center justify-center text-white font-bold shadow-inner hover:opacity-90 ${isIconOnly ? 'w-8 h-8 text-[13px]' : 'w-6 h-6 text-[11px]'}`}
             style={{ backgroundColor: primaryColor || undefined }}
           >
             {user.email?.charAt(0).toUpperCase() || 'U'}
@@ -219,14 +221,19 @@ export default function SupabaseAuthButton({
   return (
     <Link 
       href={`/sign-in?redirect_url=${encodeURIComponent(redirectUrl || (typeof window !== 'undefined' ? window.location.pathname : '/'))}`} 
-      className="inline-block px-4 py-2 rounded-lg text-[13px] font-semibold transition-colors shadow-sm border"
+      className={`inline-flex items-center justify-center transition-colors shadow-sm border ${isIconOnly ? 'w-10 h-10 rounded-xl' : 'px-4 py-2 rounded-lg text-[13px] font-semibold'}`}
       style={{ 
         backgroundColor: primaryColor || 'var(--crm-surface)', 
         color: primaryColor ? '#ffffff' : 'var(--crm-text)',
         borderColor: primaryColor || 'var(--crm-border)'
       }}
+      title="Sign In"
     >
-      Sign In
+      {isIconOnly ? (
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5M15 12H3"/></svg>
+      ) : (
+        "Sign In"
+      )}
     </Link>
   );
 }

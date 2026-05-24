@@ -9,7 +9,7 @@ interface Shop {
   companyName?: string | null;
 }
 
-export default function ShopSwitcher({ currentShopId, currentShopName, shops, userRole }: { currentShopId: string, currentShopName: string, shops: Shop[], userRole?: string }) {
+export default function ShopSwitcher({ currentShopId, currentShopName, shops, userRole, isCollapsed }: { currentShopId: string, currentShopName: string, shops: Shop[], userRole?: string, isCollapsed?: boolean }) {
   const [isOpen, setIsOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
@@ -84,6 +84,13 @@ export default function ShopSwitcher({ currentShopId, currentShopName, shops, us
   // Don't show switcher if user only has 1 shop AND they aren't a SHOP_ADMIN who can create more
   const canCreate = userRole === 'SHOP_ADMIN' || userRole === 'SITE_ADMIN';
   if ((!shops || shops.length <= 1) && !canCreate && currentShopId !== 'all') {
+    if (isCollapsed) {
+      return (
+        <div className="w-10 h-10 rounded-xl bg-crm-bg flex items-center justify-center font-bold text-lg text-crm-text border border-crm-border/50 shrink-0">
+          {currentShopName.charAt(0).toUpperCase()}
+        </div>
+      );
+    }
     return <span className="font-bold text-xl truncate tracking-tight text-crm-text">{currentShopName}</span>;
   }
 
@@ -129,17 +136,27 @@ export default function ShopSwitcher({ currentShopId, currentShopName, shops, us
   }
 
   return (
-    <div className="relative w-full" ref={dropdownRef}>
-      <button 
-        onClick={() => setIsOpen(!isOpen)}
-        className="w-full flex items-center justify-between font-bold text-xl tracking-tight text-crm-text hover:bg-crm-bg px-2 py-1 -ml-2 rounded-md transition-colors"
-      >
-        <span className="truncate" title={displayName}>{displayName}</span>
-        <svg className={`w-5 h-5 transition-transform ${isOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
-      </button>
+    <div className={`relative ${isCollapsed ? '' : 'w-full'}`} ref={dropdownRef}>
+      {isCollapsed ? (
+        <button 
+          onClick={() => setIsOpen(!isOpen)}
+          title={displayName}
+          className={`w-10 h-10 rounded-xl flex items-center justify-center font-bold text-lg border transition-all ${isOpen ? 'bg-crm-primary text-white border-crm-primary' : 'bg-crm-bg text-crm-text border-crm-border/50 hover:bg-crm-surface hover:border-crm-border shrink-0'}`}
+        >
+          {displayName.charAt(0).toUpperCase()}
+        </button>
+      ) : (
+        <button 
+          onClick={() => setIsOpen(!isOpen)}
+          className="w-full flex items-center justify-between font-bold text-xl tracking-tight text-crm-text hover:bg-crm-bg px-2 py-1 -ml-2 rounded-md transition-colors"
+        >
+          <span className="truncate" title={displayName}>{displayName}</span>
+          <svg className={`w-5 h-5 transition-transform ${isOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
+        </button>
+      )}
 
       {isOpen && (
-        <div className="absolute top-full left-0 right-0 mt-2 bg-crm-surface border border-crm-border rounded-md shadow-lg overflow-hidden z-50">
+        <div className={`absolute top-full mt-2 bg-crm-surface border border-crm-border rounded-md shadow-lg overflow-hidden z-50 ${isCollapsed ? 'left-0 w-64' : 'left-0 right-0'}`}>
           <div className="max-h-[70vh] overflow-y-auto">
             {Array.from(companies.entries()).map(([companyName, companyShops]) => (
               <div key={companyName} className="mb-2">

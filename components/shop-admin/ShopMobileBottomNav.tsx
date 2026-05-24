@@ -2,7 +2,6 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import React, { useState, useRef, useEffect } from 'react';
-import ShopSidebarLinks from './ShopSidebarLinks';
 import ShopSwitcher from './ShopSwitcher';
 import SupabaseAuthButton from '@/components/auth/SupabaseAuthButton';
 

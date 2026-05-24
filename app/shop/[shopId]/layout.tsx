@@ -6,7 +6,8 @@ import { headers } from 'next/headers';
 import Link from 'next/link';
 import SupabaseAuthButton from '@/components/auth/SupabaseAuthButton';
 import GlobalChatWidget from '@/components/shop-admin/GlobalChatWidget';
-import ShopSidebarLinks from '@/components/shop-admin/ShopSidebarLinks';
+import PrimarySidebar from '@/components/shop-admin/PrimarySidebar';
+import SecondarySidebar from '@/components/shop-admin/SecondarySidebar';
 import ShopSwitcher from '@/components/shop-admin/ShopSwitcher';
 import ShopMobileBottomNav from '@/components/shop-admin/ShopMobileBottomNav';
 
@@ -81,31 +82,22 @@ export default async function ShopLayout({
   return (
     <div className="flex h-[100dvh] overflow-hidden bg-crm-bg text-crm-text">
       {/* Persistent Left Sidebar */}
+      {/* Persistent Left Sidebar (Dual Sidebar Layout) */}
       {!isSiteAdmin && (
-        <aside className="hidden md:flex flex-col w-64 bg-crm-surface border-r border-crm-border flex-shrink-0 z-10 shadow-sm">
-          <div className="h-16 flex items-center px-6 border-b border-crm-border">
-             <ShopSwitcher currentShopId={shopId} currentShopName={data.shop.name} shops={(data as any).accessibleShops} userRole={data.userRole} />
-          </div>
-          <nav className="flex-1 overflow-y-auto py-4 px-3">
-            <ShopSidebarLinks shopId={shopId} userRole={data.userRole} />
-          </nav>
-          <div className="p-4 border-t border-crm-border flex items-center justify-between">
-            <div>
-               <span className="block text-[11px] font-semibold text-crm-muted uppercase tracking-wider mb-2">{data.userRole.replace('_', ' ')}</span>
-               <SupabaseAuthButton redirectUrl={fallbackRedirect} />
-            </div>
-            {!isSiteAdmin && (
-              <Link
-                href={`/shops/${data.shopSlug}?preview=true`}
-                target="_blank"
-                className="text-crm-muted hover:text-crm-text transition-colors p-2"
-                title="View Public Page"
-              >
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
-              </Link>
-            )}
-          </div>
-        </aside>
+        <div className="hidden md:flex h-full shadow-sm">
+          <PrimarySidebar 
+            shopId={shopId} 
+            userRole={data.userRole} 
+            shopName={data.shop.name} 
+            accessibleShops={(data as any).accessibleShops} 
+            fallbackRedirect={fallbackRedirect}
+            shopSlug={data.shopSlug}
+          />
+          <SecondarySidebar 
+            shopId={shopId} 
+            userRole={data.userRole} 
+          />
+        </div>
       )}
 
       {/* Main Content Area */}
