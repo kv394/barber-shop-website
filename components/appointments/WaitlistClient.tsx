@@ -93,7 +93,15 @@ export default function WaitlistClient({ shopId, services, staff }: { shopId: st
         <h3 className="font-bold text-crm-text text-lg font-bold">+ Add Walk-in</h3>
         <div className="grid grid-cols-1 sm:grid-cols-5 gap-3">
           <input type="text" value={clientName} onChange={e => setClientName(e.target.value)} placeholder="Client Name *" required style={inputStyle} className="border border-crm-border shadow-sm rounded p-2.5 text-[13px] focus:outline-none focus:border-brand-gold" />
-          <input type="tel" value={clientPhone} onChange={e => setClientPhone(e.target.value)} placeholder="Phone (optional)" style={inputStyle} className="border border-crm-border shadow-sm rounded p-2.5 text-[13px] focus:outline-none focus:border-brand-gold" />
+          <input type="tel" value={clientPhone} onChange={e => {
+            // Only import here if needed, but actually we should import at top level
+            setClientPhone(e.target.value);
+          }} onBlur={() => {
+            // Format on blur
+            import('@/lib/formatters').then(({ formatPhoneNumberIN }) => {
+              setClientPhone(formatPhoneNumberIN(clientPhone));
+            });
+          }} placeholder="Phone (10 digits)" style={inputStyle} className="border border-crm-border shadow-sm rounded p-2.5 text-[13px] focus:outline-none focus:border-brand-gold" />
           <select value={serviceId} onChange={e => setServiceId(e.target.value)} style={inputStyle} className="border border-crm-border shadow-sm rounded p-2.5 text-[13px] focus:outline-none focus:border-brand-gold">
             <option value="">Any Service</option>
             {services.map(s => <option key={s.id} value={s.id}>{s.name} ({s.duration}m)</option>)}

@@ -100,7 +100,8 @@ export default function ReportsClient({
   const isFiltered = dateFrom || dateTo;
 
   const formatCurrency = (value: number) => {
-    return value.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+    // We default to INR via the global formatter to cater to the Indian market
+    return new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(value);
   };
 
   return (
