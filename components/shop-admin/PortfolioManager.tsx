@@ -36,14 +36,12 @@ export default function PortfolioManager({ shopId, currentUserId, userRole }: { 
     loadImages(selectedStaffId);
   }, [shopId, selectedStaffId, userRole]);
 
-  const addImage = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!imageUrl.trim()) return;
+  const submitToPortfolio = async (url: string, currentCaption: string) => {
     setSaving(true);
     try {
       const res = await fetch(`/api/shops/${shopId}/portfolio`, {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ imageUrl, caption, staffId: selectedStaffId }),
+        body: JSON.stringify({ imageUrl: url, caption: currentCaption, staffId: selectedStaffId }),
       });
       if (!res.ok) {
         const errorData = await res.json();
@@ -62,6 +60,12 @@ export default function PortfolioManager({ shopId, currentUserId, userRole }: { 
       setSaving(false);
       setTimeout(() => setMsg(''), 3000);
     }
+  };
+
+  const addImage = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!imageUrl.trim()) return;
+    await submitToPortfolio(imageUrl, caption);
   };
 
   const removeImage = async (id: string) => {
@@ -127,7 +131,7 @@ export default function PortfolioManager({ shopId, currentUserId, userRole }: { 
                     });
                     const data = await res.json();
                     if (data.error) throw new Error(data.error);
-                    setImageUrl(data.url);
+                    await submitToPortfolio(data.url, caption);
                   } catch (err: any) {
                     alert('Upload failed: ' + err.message);
                   } finally {
