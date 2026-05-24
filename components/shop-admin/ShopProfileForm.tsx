@@ -9,6 +9,12 @@ const COUNTRY_OPTIONS = [
   { value: 'IN', label: '🇮🇳 India', currency: 'INR', locale: 'en-IN' },
 ];
 
+const PAYMENT_GATEWAYS = [
+  { value: 'STRIPE', label: 'Stripe', icon: '💳', description: 'Cards, Apple Pay, Google Pay (US, EU, etc.)' },
+  { value: 'RAZORPAY', label: 'Razorpay', icon: '🇮🇳', description: 'UPI, cards, wallets (India)' },
+  { value: 'NONE', label: 'No online payments', icon: '🚫', description: 'Cash / manual payments only' },
+];
+
 interface ShopProfileFormProps {
   shopId: string;
   initialName: string;
@@ -20,6 +26,7 @@ interface ShopProfileFormProps {
   initialTimezone?: string;
   initialDepositRequired?: boolean;
   initialDepositAmount?: number;
+  initialPaymentGateway?: string;
 }
 
 export function ShopProfileForm({
@@ -33,6 +40,7 @@ export function ShopProfileForm({
   initialTimezone,
   initialDepositRequired,
   initialDepositAmount,
+  initialPaymentGateway,
 }: ShopProfileFormProps) {
   const [formData, setFormData] = useState({
     name: initialName || '',
@@ -44,6 +52,7 @@ export function ShopProfileForm({
     timezone: initialTimezone || 'America/New_York',
     depositRequired: initialDepositRequired || false,
     depositAmount: initialDepositAmount || 0,
+    paymentGateway: initialPaymentGateway || 'STRIPE',
   });
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -192,6 +201,36 @@ export function ShopProfileForm({
               </select>
               <p className="text-crm-muted text-[11px] mt-1">All appointment times use this timezone.</p>
             </div>
+          </div>
+        </div>
+
+        {/* ── Payment Gateway ── */}
+        <div className="pt-2 border-t border-crm-border/50">
+          <h3 className="font-bold text-crm-text mb-4 text-[15px] flex items-center gap-2">
+            <span>💳</span> Payment Gateway
+          </h3>
+          <p className="text-crm-muted mb-4 text-[13px]">
+            Choose how your shop processes online payments for bookings, deposits, and gift cards.
+          </p>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+            {PAYMENT_GATEWAYS.map((gw) => (
+              <button
+                key={gw.value}
+                type="button"
+                onClick={() => handleChange('paymentGateway', gw.value)}
+                className={`p-4 rounded-lg border-2 text-left transition-all ${
+                  formData.paymentGateway === gw.value
+                    ? 'border-crm-primary bg-crm-primary/10 shadow-sm'
+                    : 'border-crm-border bg-crm-bg hover:border-crm-primary/40'
+                }`}
+              >
+                <div className="flex items-center gap-2 mb-1">
+                  <span className="text-lg">{gw.icon}</span>
+                  <span className="font-bold text-crm-text text-[14px]">{gw.label}</span>
+                </div>
+                <p className="text-crm-muted text-[11px]">{gw.description}</p>
+              </button>
+            ))}
           </div>
         </div>
 

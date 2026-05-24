@@ -52,6 +52,9 @@ export async function PATCH(
     if (body.locale && typeof body.locale === 'string') {
       updateData.locale = body.locale.trim();
     }
+    if (body.paymentGateway && typeof body.paymentGateway === 'string' && ['STRIPE', 'RAZORPAY', 'NONE'].includes(body.paymentGateway)) {
+      updateData.paymentGateway = body.paymentGateway;
+    }
     // Buffer time (I2) - shop-level setting handled at service level
 
     if (Object.keys(updateData).length === 0) {

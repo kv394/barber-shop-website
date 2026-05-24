@@ -36,6 +36,7 @@ export default async function ShopSettingsPage({
       country: true,
       currency: true,
       locale: true,
+      paymentGateway: true,
     },
   });
 
@@ -71,6 +72,7 @@ export default async function ShopSettingsPage({
         initialTimezone={data.shop.timezone || 'America/New_York'}
         initialDepositRequired={shopDetails?.depositRequired || false}
         initialDepositAmount={shopDetails?.depositAmount || 0}
+        initialPaymentGateway={shopDetails?.paymentGateway || 'STRIPE'}
       />
 
       {/* Section 2: Appearance & Branding (template + customization save buttons) */}
