@@ -299,15 +299,13 @@ export default function ShopMobileBottomNav({
                     <span>Clients</span>
                   </Link>
 
-                  <div className="my-2 border-t border-crm-border/50"></div>
-
                   <Link 
                     href={`/shop/${shopId}/settings/team`} 
                     className={`flex items-center gap-3 px-4 py-3 rounded-lg text-[15px] font-medium transition-colors ${
                       pathname.startsWith(`/shop/${shopId}/settings/team`) || pathname.startsWith(`/shop/${shopId}/portfolio`) ? 'bg-[#FFF5F2] text-[#ea580c] font-bold' : 'text-crm-muted hover:text-crm-text hover:bg-crm-bg'
                     }`}
                   >
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">{icons.users}</svg>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">{icons.idCard}</svg>
                     <span>Team</span>
                   </Link>
 

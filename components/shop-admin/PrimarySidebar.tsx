@@ -69,9 +69,6 @@ export default function PrimarySidebar({
             {navLink(`/shop/${shopId}/bookings`, 'Bookings', icons.calendar, () => pathname.startsWith(`/shop/${shopId}/bookings`))}
             {navLink(`/shop/${shopId}/waitlist`, 'Waitlist', icons.clock, () => pathname.startsWith(`/shop/${shopId}/waitlist`))}
             {navLink(`/shop/${shopId}/clients`, 'Clients', icons.users, () => pathname.startsWith(`/shop/${shopId}/clients`))}
-            
-            <div className="w-8 h-px bg-crm-border/50 my-1"></div>
-            
             {navLink(`/shop/${shopId}/settings/team`, 'Team', icons.idCard, () => pathname.startsWith(`/shop/${shopId}/settings/team`) || pathname.startsWith(`/shop/${shopId}/portfolio`))}
             {navLink(`/shop/${shopId}/engagement`, 'Engagement', icons.heart, () => ['/engagement', '/loyalty', '/referrals', '/campaigns', '/gift-cards', '/reviews'].some(p => pathname.startsWith(`/shop/${shopId}${p}`)))}
             {navLink(`/shop/${shopId}/reports`, 'Reports', icons.chart, () => ['/reports', '/expenses'].some(p => pathname.startsWith(`/shop/${shopId}${p}`)))}
