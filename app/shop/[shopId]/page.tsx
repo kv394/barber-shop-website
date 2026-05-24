@@ -41,7 +41,7 @@ async function getShopData(shopId: string, userId: string) {
       where: { 
         shopId: { in: shopIds }, 
         startTime: { gte: today, lt: tomorrow },
-        ...(data.userRole === 'STAFF' ? { staffId: data.user.id } : {})
+        ...(data.userRole === 'STAFF' || data.userRole === 'BOOTH_RENTER' ? { staffId: data.user.id } : {})
       },
       include: { service: { select: { price: true, name: true } }, user: { select: { name: true } }, staff: { select: { name: true } } },
       orderBy: { startTime: 'asc' },
@@ -172,6 +172,8 @@ export default async function ShopDashboardPage({ params }: { params: Promise<{ 
   const isSiteAdmin = userRole === 'SITE_ADMIN';
   const isShopAdmin = userRole === 'SHOP_ADMIN';
   const isStaff = userRole === 'STAFF';
+  const isBoothRenter = userRole === 'BOOTH_RENTER';
+  const isStaffLike = isStaff || isBoothRenter;
   const canEditServices = isShopAdmin; // SITE_ADMIN CANNOT EDIT
   const showInventoryControls = isShopAdmin || (isStaff && canManageInventory); // SITE_ADMIN CANNOT MANAGE INVENTORY
   const resolvedSlug = shopSlug || shop.name.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '');
@@ -180,7 +182,7 @@ export default async function ShopDashboardPage({ params }: { params: Promise<{ 
     <ShopAdminLayout
       shopName={shop.name}
       shopSlug={resolvedSlug}
-      pageTitle={isStaff ? 'Staff Dashboard' : isSiteAdmin ? 'Platform Admin View' : 'Shop Admin Dashboard'}
+      pageTitle={isBoothRenter ? 'Booth Renter Dashboard' : isStaff ? 'Staff Dashboard' : isSiteAdmin ? 'Platform Admin View' : 'Shop Admin Dashboard'}
       shopId={shopId}
       userRole={userRole as string}
       activeTab="dashboard"

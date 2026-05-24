@@ -11,11 +11,17 @@ export async function GET(
 ) {
   try {
     const { shopId } = await params;
-    const authResult = await requireShopRole(shopId, ['SITE_ADMIN', 'SHOP_ADMIN']);
+    const authResult = await requireShopRole(shopId, ['SITE_ADMIN', 'SHOP_ADMIN', 'BOOTH_RENTER']);
     if (isAuthError(authResult)) return authResult;
 
+    // If booth renter, only return their own payments
+    const isBoothRenter = authResult.user.role === 'BOOTH_RENTER';
+    const whereClause = isBoothRenter
+      ? { shopId, userId: authResult.user.id }
+      : { shopId };
+
     const payments = await prisma.boothRentPayment.findMany({
-      where: { shopId },
+      where: whereClause,
       include: { user: { select: { id: true, name: true, email: true } } },
       orderBy: { periodStart: 'desc' }
     });
@@ -58,5 +64,37 @@ export async function POST(
   } catch (error) {
     logger.error('Error creating booth rent payment:', error);
     return NextResponse.json({ error: 'Failed to create booth rent payment' }, { status: 500 });
+  }
+}
+
+export async function PATCH(
+  request: Request,
+  { params }: { params: Promise<{ shopId: string }> }
+) {
+  try {
+    const { shopId } = await params;
+    const authResult = await requireShopRole(shopId, ['SITE_ADMIN', 'SHOP_ADMIN']);
+    if (isAuthError(authResult)) return authResult;
+
+    const body = await request.json();
+    const { paymentId, status, paymentMethod } = body;
+
+    if (!paymentId) {
+      return NextResponse.json({ error: 'paymentId is required' }, { status: 400 });
+    }
+
+    const updated = await prisma.boothRentPayment.update({
+      where: { id: paymentId },
+      data: {
+        status: status || 'COMPLETED',
+        paidAt: status === 'COMPLETED' ? new Date() : null,
+        paymentMethod: paymentMethod || null,
+      }
+    });
+
+    return NextResponse.json(JSON.parse(JSON.stringify(updated)));
+  } catch (error) {
+    logger.error('Error updating booth rent payment:', error);
+    return NextResponse.json({ error: 'Failed to update booth rent payment' }, { status: 500 });
   }
 }

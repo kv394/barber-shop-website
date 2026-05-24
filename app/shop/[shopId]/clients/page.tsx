@@ -23,8 +23,8 @@ async function getPageData(shopId: string, userId: string, pageStr: string) {
     ]
   };
 
-  // If staff, force them to see only their clients
-  if (data.userRole === 'STAFF') {
+  // If staff or booth renter, force them to see only their clients
+  if (data.userRole === 'STAFF' || data.userRole === 'BOOTH_RENTER') {
       whereClause = {
           role: 'CLIENT' as const,
           clientAppointments: {

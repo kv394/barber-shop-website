@@ -68,7 +68,7 @@ export default async function ShopLayout({
   }
 
   const isSiteAdmin = data.isSiteAdmin;
-  const isStaff = data.userRole === 'STAFF';
+  const isStaff = data.userRole === 'STAFF' || data.userRole === 'BOOTH_RENTER';
 
   // SITE_ADMIN is a site admin — only allowed on the team assignment page
   if (isSiteAdmin) {

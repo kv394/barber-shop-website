@@ -2,7 +2,7 @@ import { createClient } from '@/utils/supabase/server';
 import { prisma } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
 
-type Role = 'SITE_ADMIN' | 'SHOP_ADMIN' | 'STAFF' | 'CLIENT' | 'ATTENDANCE_KIOSK';
+type Role = 'SITE_ADMIN' | 'SHOP_ADMIN' | 'STAFF' | 'BOOTH_RENTER' | 'CLIENT' | 'ATTENDANCE_KIOSK';
 
 interface AuthResult {
   user: { id: string; role: string; shopId: string | null; email: string; name: string | null };

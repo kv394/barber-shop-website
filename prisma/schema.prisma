@@ -862,6 +862,7 @@ model BoothRentPayment {
   periodEnd        DateTime
   status           PaymentStatus @default(PENDING)
   paidAt           DateTime?
+  paymentMethod    String?
   stripeTransferId String?
   createdAt        DateTime      @default(now())
   updatedAt        DateTime      @updatedAt

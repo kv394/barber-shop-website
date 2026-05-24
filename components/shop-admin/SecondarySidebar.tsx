@@ -20,7 +20,7 @@ export default function SecondarySidebar({ shopId, userRole }: { shopId: string,
     const engagementPaths = ['/engagement', '/loyalty', '/referrals', '/campaigns', '/gift-cards', '/reviews'];
     if (engagementPaths.some(p => pathname.startsWith(`/shop/${shopId}${p}`))) return 'engagement';
 
-    const reportPaths = ['/reports', '/reports/commissions', '/reports/staff-working', '/expenses'];
+    const reportPaths = ['/reports', '/reports/commissions', '/reports/staff-working', '/expenses', '/booth-rent'];
     if (pathname === `/shop/${shopId}/reports` || reportPaths.some(p => p !== '/reports' && pathname.startsWith(`/shop/${shopId}${p}`))) return 'reports';
 
     return null;
@@ -85,6 +85,7 @@ export default function SecondarySidebar({ shopId, userRole }: { shopId: string,
               {navLink(`/shop/${shopId}/reports/commissions`, 'Commissions')}
               {navLink(`/shop/${shopId}/reports/staff-working`, 'Working Hours')}
               {navLink(`/shop/${shopId}/expenses`, 'Expenses')}
+              {navLink(`/shop/${shopId}/booth-rent`, 'Booth Rent')}
             </div>
           </>
         );
