@@ -111,6 +111,7 @@ export default async function ShopBillingPage({ params }: { params: Promise<{ sh
               { label: 'Users', val: metrics.userCount, colorClass: 'text-status-confirmed', bgClass: 'bg-status-confirmed/80', icon: '👥' },
               { label: 'Intake Forms', val: metrics.formSubmissionCount, colorClass: 'text-crm-accent', bgClass: 'bg-crm-accent/80', icon: '📝' },
               { label: 'Images', val: metrics.portfolioImageCount + metrics.clientHistoryImageCount, colorClass: 'text-status-pending', bgClass: 'bg-status-pending/80', icon: '📸' },
+              { label: 'AI Tokens', val: metrics.aiTokenCount.toLocaleString(), colorClass: 'text-purple-400', bgClass: 'bg-purple-500/80', icon: '🤖' },
             ].map(m => (
               <div key={m.label} className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-crm-surface transition-all duration-300 min-w-0 border-t md:border-t-0 md:border-l border-crm-border first:border-0">
                 <div className={`absolute top-0 left-0 w-full h-1 ${m.bgClass}`}></div>
