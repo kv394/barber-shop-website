@@ -116,10 +116,10 @@ export default async function ShopBillingPage({ params }: { params: Promise<{ sh
               <div key={m.label} className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-crm-surface transition-all duration-300 min-w-0 border-t md:border-t-0 md:border-l border-crm-border first:border-0">
                 <div className={`absolute top-0 left-0 w-full h-1 ${m.bgClass}`}></div>
                 <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-2 sm:mb-3">
-                  <h3 className="text-crm-muted uppercase tracking-widest font-semibold truncate text-lg font-bold">{m.label}</h3>
+                  <h3 className="text-crm-muted uppercase tracking-widest font-semibold truncate text-[11px]">{m.label}</h3>
                   <span className={`${m.colorClass} text-[13px]`}>{m.icon}</span>
                 </div>
-                <p className="font-black text-crm-text break-words leading-tight text-[13px]">{m.val}</p>
+                <p className="font-black text-crm-text break-words leading-tight text-xl font-bold">{m.val}</p>
               </div>
             ))}
           </div>
