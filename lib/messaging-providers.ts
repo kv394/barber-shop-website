@@ -136,6 +136,48 @@ class TwilioProvider implements SMSProvider {
   }
 }
 
+// ─── Twilio WhatsApp Provider ─────────────────────────────────────
+// Uses the same Twilio Messages API but with whatsapp: prefix on From/To.
+// Requires TWILIO_WHATSAPP_NUMBER env var (e.g. "whatsapp:+14155238886")
+
+class TwilioWhatsAppProvider implements SMSProvider {
+  name = 'twilio-whatsapp';
+  private accountSid: string;
+  private authToken: string;
+  private from: string;
+
+  constructor() {
+    this.accountSid = process.env.TWILIO_ACCOUNT_SID || '';
+    this.authToken = process.env.TWILIO_AUTH_TOKEN || '';
+    // WhatsApp sender must be in format "whatsapp:+1234567890"
+    this.from = process.env.TWILIO_WHATSAPP_NUMBER || '';
+  }
+
+  async send(to: string, body: string) {
+    try {
+      // Ensure the recipient number has whatsapp: prefix
+      const whatsappTo = to.startsWith('whatsapp:') ? to : `whatsapp:${to}`;
+      
+      const res = await fetch(
+        `https://api.twilio.com/2010-04-01/Accounts/${this.accountSid}/Messages.json`,
+        {
+          method: 'POST',
+          headers: {
+            'Authorization': 'Basic ' + Buffer.from(`${this.accountSid}:${this.authToken}`).toString('base64'),
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          body: new URLSearchParams({ To: whatsappTo, From: this.from, Body: body }),
+        }
+      );
+      const data = await res.json();
+      if (!res.ok) return { success: false, error: data.message || `HTTP ${res.status}` };
+      return { success: true, messageId: data.sid };
+    } catch (error: any) {
+      return { success: false, error: error.message };
+    }
+  }
+}
+
 // ─── Console Fallback Providers (dev/testing) ──────────────────────
 
 class ConsoleEmailProvider implements EmailProvider {
@@ -182,14 +224,24 @@ export function getSMSProvider(): SMSProvider {
   return new ConsoleSMSProvider();
 }
 
+export function getWhatsAppProvider(): SMSProvider {
+  // WhatsApp requires both Twilio credentials AND a WhatsApp sender number
+  if (process.env.TWILIO_ACCOUNT_SID && process.env.TWILIO_AUTH_TOKEN && process.env.TWILIO_WHATSAPP_NUMBER) {
+    return new TwilioWhatsAppProvider();
+  }
+  return new ConsoleSMSProvider();
+}
+
 // ─── Provider Status Utility ───────────────────────────────────────
 
 export function getProviderStatus() {
   const email = getEmailProvider();
   const sms = getSMSProvider();
+  const whatsapp = getWhatsAppProvider();
   return {
     email: { provider: email.name, configured: email.name !== 'console' },
     sms: { provider: sms.name, configured: sms.name !== 'console' },
+    whatsapp: { provider: whatsapp.name, configured: whatsapp.name !== 'console' },
   };
 }
 

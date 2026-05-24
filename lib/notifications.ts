@@ -1,6 +1,6 @@
 import { prisma } from '@/lib/prisma';
 import { logger } from '@/lib/logger';
-import { getEmailProvider, getSMSProvider } from '@/lib/messaging-providers';
+import { getEmailProvider, getSMSProvider, getWhatsAppProvider } from '@/lib/messaging-providers';
 
 /**
  * Notification Service — Provider-agnostic delivery engine
@@ -365,6 +365,14 @@ export class NotificationService {
           const provider = getSMSProvider();
           const result = await provider.send(user.phone, message);
           results.push({ channel: 'SMS', ...result });
+        }
+      }
+
+      if (channel === 'WHATSAPP' || channel === 'BOTH') {
+        if (user.phone) {
+          const provider = getWhatsAppProvider();
+          const result = await provider.send(user.phone, message);
+          results.push({ channel: 'WHATSAPP', ...result });
         }
       }
 
