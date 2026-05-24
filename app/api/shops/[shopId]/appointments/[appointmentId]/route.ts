@@ -95,15 +95,15 @@ export async function PATCH(
     // Fetch current appointment for deposit handling
     const currentAppointment = await prisma.appointment.findUnique({
       where: { id: appointmentId, shopId },
-      include: { user: true, service: true, shop: { select: { stripeAccountId: true } } },
+      include: { user: true, service: true, shop: { select: { stripeAccountId: true, paymentGateway: true } } },
     });
 
     if (!currentAppointment) {
       return NextResponse.json({ error: 'Appointment not found' }, { status: 404 });
     }
 
-    // C5: Handle deposit capture/release on status change
-    if (updateData.status) {
+    // C5: Handle deposit capture/release on status change (only for Stripe shops)
+    if (updateData.status && currentAppointment.shop.paymentGateway === 'STRIPE') {
       try {
         if (updateData.status === 'NO_SHOW') {
           if (currentAppointment.depositPaymentIntentId) {

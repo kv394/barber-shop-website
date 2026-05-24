@@ -29,8 +29,18 @@ export async function POST(
       return new Response('Forbidden', { status: 403 });
     }
 
-    // Call Stripe to create a terminal connection token
-    const token = await createTerminalConnectionToken();
+    // Fetch shop's payment config
+    const shop = await prisma.shop.findUnique({
+      where: { id: shopId },
+      select: { stripeAccountId: true, paymentGateway: true },
+    });
+
+    if (!shop || shop.paymentGateway !== 'STRIPE') {
+      return NextResponse.json({ error: 'Stripe is not configured for this shop' }, { status: 400 });
+    }
+
+    // Call Stripe to create a terminal connection token using the shop's own account
+    const token = await createTerminalConnectionToken(shop.stripeAccountId);
     
     return NextResponse.json({ secret: token });
   } catch (error) {

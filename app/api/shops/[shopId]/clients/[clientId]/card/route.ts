@@ -37,14 +37,25 @@ export async function POST(
 
     if (!clientUser) return new Response('Client not found', { status: 404 });
 
+    // Fetch shop's payment config
+    const shop = await prisma.shop.findUnique({
+      where: { id: shopId },
+      select: { stripeAccountId: true, paymentGateway: true },
+    });
+
+    if (!shop || shop.paymentGateway !== 'STRIPE') {
+      return NextResponse.json({ error: 'Stripe is not configured for this shop' }, { status: 400 });
+    }
+
     const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '', {
       apiVersion: '2025-03-31.basil' as any,
     });
+    const stripeOptions = shop.stripeAccountId ? { stripeAccount: shop.stripeAccountId } : undefined;
 
     let customerId = clientUser.stripeCustomerId;
 
     if (!customerId) {
-      // Create a new Stripe customer
+      // Create a new Stripe customer on the shop's own account
       const customer = await stripe.customers.create({
         email: clientUser.email,
         name: clientUser.name || 'Client',
@@ -52,7 +63,7 @@ export async function POST(
           userId: clientUser.id,
           shopId: shopId
         }
-      });
+      }, stripeOptions);
       customerId = customer.id;
       
       await prisma.user.update({
@@ -61,8 +72,8 @@ export async function POST(
       });
     }
 
-    // Call Stripe to create a SetupIntent
-    const intent = await createSetupIntent(customerId, { userId: clientUser.id, shopId });
+    // Call Stripe to create a SetupIntent on the shop's own account
+    const intent = await createSetupIntent(customerId, { userId: clientUser.id, shopId }, shop.stripeAccountId);
     
     return NextResponse.json(intent);
   } catch (error) {
