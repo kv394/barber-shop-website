@@ -32,6 +32,9 @@ interface ShopProfileFormProps {
   initialDepositRequired?: boolean;
   initialDepositAmount?: number;
   initialPaymentGateway?: string;
+  initialStripeAccountId?: string;
+  initialRazorpayKeyId?: string;
+  initialRazorpayKeySecret?: string;
 }
 
 export function ShopProfileForm({
@@ -46,6 +49,9 @@ export function ShopProfileForm({
   initialDepositRequired,
   initialDepositAmount,
   initialPaymentGateway,
+  initialStripeAccountId,
+  initialRazorpayKeyId,
+  initialRazorpayKeySecret,
 }: ShopProfileFormProps) {
   const [formData, setFormData] = useState({
     name: initialName || '',
@@ -58,6 +64,9 @@ export function ShopProfileForm({
     depositRequired: initialDepositRequired || false,
     depositAmount: initialDepositAmount || 0,
     paymentGateway: initialPaymentGateway || 'STRIPE',
+    stripeAccountId: initialStripeAccountId || '',
+    razorpayKeyId: initialRazorpayKeyId || '',
+    razorpayKeySecret: initialRazorpayKeySecret || '',
   });
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -238,6 +247,59 @@ export function ShopProfileForm({
               </button>
             ))}
           </div>
+
+          {/* Credential fields based on selected gateway */}
+          {formData.paymentGateway === 'STRIPE' && (
+            <div className="mt-4 p-4 bg-crm-bg rounded-lg border border-crm-border space-y-3">
+              <h4 className="font-bold text-crm-text text-[13px] flex items-center gap-2">
+                <span>⚡</span> Stripe Configuration
+              </h4>
+              <div>
+                <label className={labelClass}>Stripe Connect Account ID</label>
+                <input
+                  type="text"
+                  value={formData.stripeAccountId}
+                  onChange={(e) => handleChange('stripeAccountId', e.target.value)}
+                  placeholder="acct_1234567890"
+                  className={inputClass}
+                />
+                <p className="text-crm-muted text-[11px] mt-1">
+                  Your Stripe Connect account ID. Payments will be routed to this account.
+                </p>
+              </div>
+            </div>
+          )}
+
+          {formData.paymentGateway === 'RAZORPAY' && (
+            <div className="mt-4 p-4 bg-crm-bg rounded-lg border border-crm-border space-y-3">
+              <h4 className="font-bold text-crm-text text-[13px] flex items-center gap-2">
+                <span>⚡</span> Razorpay Configuration
+              </h4>
+              <div>
+                <label className={labelClass}>Razorpay Key ID</label>
+                <input
+                  type="text"
+                  value={formData.razorpayKeyId}
+                  onChange={(e) => handleChange('razorpayKeyId', e.target.value)}
+                  placeholder="rzp_live_..."
+                  className={inputClass}
+                />
+              </div>
+              <div>
+                <label className={labelClass}>Razorpay Key Secret</label>
+                <input
+                  type="password"
+                  value={formData.razorpayKeySecret}
+                  onChange={(e) => handleChange('razorpayKeySecret', e.target.value)}
+                  placeholder="••••••••••••"
+                  className={inputClass}
+                />
+                <p className="text-crm-muted text-[11px] mt-1">
+                  Find these in your <a href="https://dashboard.razorpay.com/app/keys" target="_blank" rel="noopener noreferrer" className="text-crm-primary underline">Razorpay Dashboard → Settings → API Keys</a>.
+                </p>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* ── Booking Deposit ── */}

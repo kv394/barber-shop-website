@@ -55,6 +55,15 @@ export async function PATCH(
     if (body.paymentGateway && typeof body.paymentGateway === 'string' && ['STRIPE', 'RAZORPAY', 'NONE'].includes(body.paymentGateway)) {
       updateData.paymentGateway = body.paymentGateway;
     }
+    if (body.stripeAccountId !== undefined) {
+      updateData.stripeAccountId = body.stripeAccountId ? String(body.stripeAccountId).trim() : null;
+    }
+    if (body.razorpayKeyId !== undefined) {
+      updateData.razorpayKeyId = body.razorpayKeyId ? String(body.razorpayKeyId).trim() : null;
+    }
+    if (body.razorpayKeySecret !== undefined) {
+      updateData.razorpayKeySecret = body.razorpayKeySecret ? String(body.razorpayKeySecret).trim() : null;
+    }
     // Buffer time (I2) - shop-level setting handled at service level
 
     if (Object.keys(updateData).length === 0) {

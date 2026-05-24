@@ -37,6 +37,9 @@ export default async function ShopSettingsPage({
       currency: true,
       locale: true,
       paymentGateway: true,
+      stripeAccountId: true,
+      razorpayKeyId: true,
+      razorpayKeySecret: true,
     },
   });
 
@@ -73,6 +76,9 @@ export default async function ShopSettingsPage({
         initialDepositRequired={shopDetails?.depositRequired || false}
         initialDepositAmount={shopDetails?.depositAmount || 0}
         initialPaymentGateway={shopDetails?.paymentGateway || 'STRIPE'}
+        initialStripeAccountId={shopDetails?.stripeAccountId || ''}
+        initialRazorpayKeyId={shopDetails?.razorpayKeyId || ''}
+        initialRazorpayKeySecret={shopDetails?.razorpayKeySecret || ''}
       />
 
       {/* Section 2: Appearance & Branding (template + customization save buttons) */}

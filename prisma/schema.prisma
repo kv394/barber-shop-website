@@ -25,6 +25,8 @@ model Shop {
   depositAmount       Float                @default(0)
   depositRequired     Boolean              @default(false)
   stripeAccountId     String?
+  razorpayKeyId       String?
+  razorpayKeySecret   String?
   customDomain        String?              @unique
   subdomain           String?              @unique
   companyName         String?
