@@ -30,6 +30,7 @@ model Shop {
   customDomain        String?              @unique
   subdomain           String?              @unique
   companyName         String?
+  googleMapsUrl       String?
   aiTokens            Int                  @default(0)
   slogan              String?
   inventoryForecast           Json?
@@ -90,6 +91,7 @@ model User {
   preferences             String?
   smsConsent              Boolean                 @default(false)
   birthday                DateTime?
+  winBackSentAt           DateTime?
   referralCode            String?                 @unique
   googleCalendarId        String?
   googleRefreshToken      String?
@@ -207,6 +209,7 @@ model Appointment {
   shopId                 String
   status                 AppointmentStatus    @default(SCHEDULED)
   paymentId              String?              @unique
+  managementToken        String?              @unique
   createdAt              DateTime             @default(now())
   updatedAt              DateTime             @updatedAt
   notes                  String?
