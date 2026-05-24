@@ -41,6 +41,7 @@ export default function BookingWizard({ shopId, themeColor, secondaryColor, temp
   const [sortByFit, setSortByFit] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
+  const [bookedAppointmentId, setBookedAppointmentId] = useState<string | null>(null);
 
   // Auth state
   const [authUser, setAuthUser] = useState<any>(null);
@@ -332,12 +333,14 @@ export default function BookingWizard({ shopId, themeColor, secondaryColor, temp
         const data = await res.json();
         throw new Error(data.error || "Booking failed");
       }
+      const appointmentData = await res.json();
+      setBookedAppointmentId(appointmentData.id);
       setSuccess(true);
       setTimeout(() => {
           if (typeof window !== 'undefined' && window.parent) {
             window.parent.postMessage({ type: 'CLOSE_MODAL' }, '*');
           }
-      }, 3000);
+      }, 5000); // Extended to 5s so user can tap "Add to Calendar"
     } catch (err: any) {
       setError(err.message);
     } finally {
@@ -345,7 +348,7 @@ export default function BookingWizard({ shopId, themeColor, secondaryColor, temp
     }
   };
 
-  if (loading || !isAuthLoaded) {
+  if (loading) {
     return (
       <div className="flex items-center justify-center h-full w-full p-12 bg-white">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
@@ -354,11 +357,21 @@ export default function BookingWizard({ shopId, themeColor, secondaryColor, temp
   }
 
   if (success) {
+    const calendarUrl = bookedAppointmentId ? `/api/shops/${shopId}/appointments/${bookedAppointmentId}/calendar` : null;
     return (
       <div className="flex flex-col items-center justify-center h-full w-full p-12 bg-white text-center">
         <div className="text-6xl mb-4">🎉</div>
         <h2 className="text-2xl font-bold text-gray-900 mb-2">Booking Confirmed!</h2>
         <p className="text-gray-600 mb-6">Your appointment for {selectedService?.name} has been scheduled.</p>
+        {calendarUrl && (
+          <a
+            href={calendarUrl}
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-white transition-all hover:opacity-90 mb-4"
+            style={{ backgroundColor: themeColor || '#111827' }}
+          >
+            📅 Add to Calendar
+          </a>
+        )}
         <p className="text-sm text-gray-400">This window will close automatically...</p>
       </div>
     );

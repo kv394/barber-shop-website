@@ -261,9 +261,14 @@ export async function POST(
           serviceName: service.name + (addonsJson?.length ? ` + ${addonsJson.length} Add-on(s)` : ''), staffName: staffUser?.name || 'Staff',
           dateTime: start, duration: totalDuration, price: totalPrice,
           timezone: shop.timezone || 'America/New_York',
+          appointmentId: appointment.id,
         }).catch(() => {});
         // 24h reminder
         NotificationService.scheduleAppointmentReminder(
+          shopId, targetUserId, start, service.name + (addonsJson?.length ? ` + ${addonsJson.length} Add-on(s)` : ''), shop.name
+        ).catch(() => {});
+        // 1h reminder
+        NotificationService.scheduleAppointmentReminder1Hour(
           shopId, targetUserId, start, service.name + (addonsJson?.length ? ` + ${addonsJson.length} Add-on(s)` : ''), shop.name
         ).catch(() => {});
         

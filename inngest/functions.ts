@@ -26,6 +26,17 @@ export const processDailyTasks = inngest.createFunction(
   }
 );
 
+export const processHourlyNotifications = inngest.createFunction(
+  { id: 'process-hourly-notifications', triggers: [{ cron: '*/15 * * * *' }] },
+  async ({ step }) => {
+    // Run every 15 minutes to ensure appointment reminders (24h & 1h before) fire on time
+    const notificationsProcessed = await step.run('process-scheduled-notifications', async () => {
+      return await NotificationService.processScheduled();
+    });
+    return { notificationsProcessed };
+  }
+);
+
 export const generateHourlyUsageReports = inngest.createFunction(
   { id: 'generate-hourly-usage-reports', triggers: [{ cron: '0 * * * *' }] },
   async ({ step }) => {

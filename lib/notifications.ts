@@ -152,6 +152,29 @@ export class NotificationService {
   }
 
   /**
+   * Schedule appointment reminder (1h before)
+   */
+  static async scheduleAppointmentReminder1Hour(
+    shopId: string,
+    userId: string,
+    appointmentTime: Date,
+    serviceName: string,
+    shopName: string
+  ) {
+    const reminderTime = new Date(appointmentTime.getTime() - 60 * 60 * 1000);
+    if (reminderTime <= new Date()) return;
+
+    return this.send({
+      shopId,
+      userId,
+      type: 'APPOINTMENT_REMINDER',
+      title: `Coming up: ${serviceName} at ${shopName}`,
+      message: `Heads up! Your ${serviceName} appointment at ${shopName} is in 1 hour (${appointmentTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}). See you soon! ✂️`,
+      scheduledAt: reminderTime,
+    });
+  }
+
+  /**
    * Send review request after checkout
    */
   static async sendReviewRequest(
@@ -182,6 +205,7 @@ export class NotificationService {
     duration,
     price,
     timezone,
+    appointmentId,
   }: {
     shopId: string;
     userId: string;
@@ -192,11 +216,17 @@ export class NotificationService {
     duration: number;
     price: number;
     timezone: string;
+    appointmentId?: string;
   }) {
     const { bookingConfirmationEmail } = await import('@/lib/email-templates');
     const { formatDateTimeInShopTz } = await import('@/lib/timezone');
 
     const formattedTime = formatDateTimeInShopTz(dateTime, timezone);
+    
+    // Build the "Add to Calendar" URL
+    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'https://barbersaas.com';
+    const calendarUrl = appointmentId ? `${baseUrl}/api/shops/${shopId}/appointments/${appointmentId}/calendar` : undefined;
+
     const html = bookingConfirmationEmail({
       shopName,
       serviceName,
@@ -204,6 +234,7 @@ export class NotificationService {
       dateTime: formattedTime,
       duration,
       price,
+      calendarUrl,
     });
 
     return this.send({

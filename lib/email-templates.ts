@@ -10,6 +10,7 @@ export function bookingConfirmationEmail({
   dateTime,
   duration,
   price,
+  calendarUrl,
 }: {
   shopName: string;
   serviceName: string;
@@ -17,6 +18,7 @@ export function bookingConfirmationEmail({
   dateTime: string;
   duration: number;
   price: number;
+  calendarUrl?: string;
 }) {
   return `
 <!DOCTYPE html>
@@ -52,6 +54,11 @@ export function bookingConfirmationEmail({
           <span style="color:#d4a843;font-size:20px;font-weight:bold;">$${price.toFixed(2)}</span>
         </td></tr>
       </table>
+      ${calendarUrl ? `
+      <div style="text-align:center;margin-top:24px;">
+        <a href="${calendarUrl}" style="display:inline-block;background:#d4a843;color:#fff;text-decoration:none;padding:12px 28px;border-radius:8px;font-size:14px;font-weight:bold;">📅 Add to Calendar</a>
+      </div>
+      ` : ''}
       <p style="color:#999;font-size:13px;margin-top:24px;text-align:center;">
         Need to cancel? You can do so up to 2 hours before your appointment from the My Appointments page.
       </p>
