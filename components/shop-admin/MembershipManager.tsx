@@ -43,7 +43,6 @@ export default function MembershipManager({ shopId }: { shopId: string }) {
 
   return (
     <div className="bg-crm-surface border border-crm-border shadow-sm rounded-xl p-6">
-      <h3 className="font-bold text-crm-text mb-2 text-lg font-bold">⭐ Membership Tiers</h3>
       <p className="text-crm-muted mb-6 text-[13px]">
         Create recurring subscription plans (e.g. VIP Barber Club: $100/mo for unlimited cuts).
       </p>

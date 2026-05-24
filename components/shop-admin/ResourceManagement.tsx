@@ -39,7 +39,6 @@ export default function ResourceManagement({ shopId }: { shopId: string }) {
 
   return (
     <div className="bg-crm-surface border border-crm-border shadow-sm rounded-xl p-6">
-      <h3 className="font-bold text-crm-text mb-2 text-lg font-bold">🪑 Shop Resources</h3>
       <p className="text-crm-muted mb-6 text-[13px]">
         Add physical resources like pedicure chairs, laser machines, or massage rooms. Appointments can be configured to require these resources.
       </p>

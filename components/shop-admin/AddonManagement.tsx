@@ -105,8 +105,6 @@ export function AddonManagement({ shopId, currency }: AddonManagementProps) {
   return (
     <div className="w-full space-y-6 sm:space-y-8 mt-12">
       <div>
-        <h2 className="font-bold text-crm-text mb-4 sm:mb-6 text-xl font-bold">Manage Add-Ons</h2>
-
         {error && (
           <div className="bg-status-cancelled/10 border border-status-cancelled text-status-cancelled p-3 sm:p-4 rounded-lg mb-4 sm:mb-6 text-[13px]">
             {error}
