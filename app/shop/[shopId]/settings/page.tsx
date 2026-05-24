@@ -3,8 +3,6 @@ import { createClient } from '@/utils/supabase/server';
 import { getShopLayoutData } from '@/lib/shop-data';
 import { DEFAULT_CUSTOMIZATION } from '@/lib/templates';
 import ShopAdminLayout from '@/components/shop-admin/ShopAdminLayout';
-import TimezoneSelector from '@/components/shop-admin/TimezoneSelector';
-import DepositSettings from '@/components/checkout/DepositSettings';
 import { prisma } from '@/lib/prisma';
 import DeleteLocationButton from '@/components/shop-admin/DeleteLocationButton';
 import { ShopProfileForm } from '@/components/shop-admin/ShopProfileForm';
@@ -32,7 +30,13 @@ export default async function ShopSettingsPage({
 
   const shopDetails = await prisma.shop.findUnique({
     where: { id: shopId },
-    select: { depositRequired: true, depositAmount: true, country: true, currency: true, locale: true },
+    select: {
+      depositRequired: true,
+      depositAmount: true,
+      country: true,
+      currency: true,
+      locale: true,
+    },
   });
 
   const dynamicTemplates = await prisma.dynamicTemplate.findMany({
@@ -47,14 +51,6 @@ export default async function ShopSettingsPage({
 
   const customization = data.shop.customization || DEFAULT_CUSTOMIZATION;
 
-  const settingsTabs = [
-    { id: 'settings', label: 'Appearance', href: `/shop/${shopId}/settings` },
-    { id: 'settings-notifications', label: 'Notifications', href: `/shop/${shopId}/settings/notifications` },
-    { id: 'settings-commissions', label: 'Commissions', href: `/shop/${shopId}/settings/commissions` },
-    { id: 'settings-kiosk', label: 'Kiosk', href: `/shop/${shopId}/settings/kiosk` },
-    { id: 'settings-billing', label: 'Billing', href: `/shop/${shopId}/settings/billing` }
-  ];
-
   return (
     <ShopAdminLayout
       shopName={data.shop.name}
@@ -63,14 +59,7 @@ export default async function ShopSettingsPage({
       shopId={shopId}
       userRole={data.userRole}
     >
-      <TimezoneSelector shopId={shopId} currentTimezone={data.shop.timezone || 'America/New_York'} />
-
-      <DepositSettings
-        shopId={shopId}
-        initialRequired={shopDetails?.depositRequired || false}
-        initialAmount={shopDetails?.depositAmount || 0}
-      />
-
+      {/* Section 1: General Settings (single save button) */}
       <ShopProfileForm
         shopId={shopId}
         initialName={data.shop.name}
@@ -79,8 +68,12 @@ export default async function ShopSettingsPage({
         initialCountry={shopDetails?.country || 'US'}
         initialCurrency={shopDetails?.currency || 'USD'}
         initialLocale={shopDetails?.locale || 'en-US'}
+        initialTimezone={data.shop.timezone || 'America/New_York'}
+        initialDepositRequired={shopDetails?.depositRequired || false}
+        initialDepositAmount={shopDetails?.depositAmount || 0}
       />
 
+      {/* Section 2: Appearance & Branding (template + customization save buttons) */}
       <SettingsFormManager
         shopId={shopId}
         customization={customization}
