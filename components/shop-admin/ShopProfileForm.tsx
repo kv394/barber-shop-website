@@ -10,10 +10,15 @@ const COUNTRY_OPTIONS = [
 ];
 
 const PAYMENT_GATEWAYS = [
-  { value: 'STRIPE', label: 'Stripe', icon: '💳', description: 'Cards, Apple Pay, Google Pay (US, EU, etc.)' },
-  { value: 'RAZORPAY', label: 'Razorpay', icon: '🇮🇳', description: 'UPI, cards, wallets (India)' },
-  { value: 'NONE', label: 'No online payments', icon: '🚫', description: 'Cash / manual payments only' },
+  { value: 'STRIPE', label: 'Stripe', icon: '💳', description: 'Cards, Apple Pay, Google Pay (US, EU, etc.)', countries: ['US'] },
+  { value: 'RAZORPAY', label: 'Razorpay', icon: '🇮🇳', description: 'UPI, cards, wallets (India)', countries: ['IN'] },
+  { value: 'NONE', label: 'No online payments', icon: '🚫', description: 'Cash / manual payments only', countries: ['US', 'IN'] },
 ];
+
+const DEFAULT_GATEWAY: Record<string, string> = {
+  US: 'STRIPE',
+  IN: 'RAZORPAY',
+};
 
 interface ShopProfileFormProps {
   shopId: string;
@@ -172,6 +177,7 @@ export function ShopProfileForm({
                       country: selected.value,
                       currency: selected.currency,
                       locale: selected.locale,
+                      paymentGateway: DEFAULT_GATEWAY[selected.value] || 'STRIPE',
                     });
                     setSuccess(false);
                   }
@@ -212,8 +218,8 @@ export function ShopProfileForm({
           <p className="text-crm-muted mb-4 text-[13px]">
             Choose how your shop processes online payments for bookings, deposits, and gift cards.
           </p>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-            {PAYMENT_GATEWAYS.map((gw) => (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            {PAYMENT_GATEWAYS.filter(gw => gw.countries.includes(formData.country)).map((gw) => (
               <button
                 key={gw.value}
                 type="button"
