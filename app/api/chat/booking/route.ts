@@ -201,8 +201,8 @@ export async function POST(req: Request) {
     const allowedOrigins = [
       `https://${shop.customDomain}`,
       `http://${shop.customDomain}`,
-      `https://${shop.subdomain}.barbersaas.com`,
-      `http://${shop.subdomain}.barbersaas.com`,
+      `https://${shop.subdomain}.kutzapp.com`,
+      `http://${shop.subdomain}.kutzapp.com`,
       `http://localhost:3000`, // Allow local testing
       // Also allow the main saas domain if needed
     ];
@@ -563,9 +563,9 @@ If the user wants to check, cancel, or reschedule their appointments, or asks fo
                             const icsContent = [
                                 'BEGIN:VCALENDAR',
                                 'VERSION:2.0',
-                                'PRODID:-//BarberSaaS//EN',
+                                'PRODID:-//Kutz//EN',
                                 'BEGIN:VEVENT',
-                                `UID:${apt.id}@barbersaas.com`,
+                                `UID:${apt.id}@kutzapp.com`,
                                 `DTSTAMP:${startStr}`,
                                 `DTSTART:${startStr}`,
                                 `DTEND:${endStr}`,

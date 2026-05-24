@@ -102,8 +102,8 @@ export async function GET(request: Request, { params }: { params: Promise<{ shop
     
     // Add default allowed domains
     if (shop.customDomain) allowedDomains.push(shop.customDomain);
-    if (shop.subdomain) allowedDomains.push(`${shop.subdomain}.barbersaas.com`);
-    allowedDomains.push('barbersaas.com'); // Allow main app domain
+    if (shop.subdomain) allowedDomains.push(`${shop.subdomain}.kutzapp.com`);
+    allowedDomains.push('kutzapp.com'); // Allow main app domain
     allowedDomains.push('localhost'); // Allow local development
     allowedDomains.push('127.0.0.1'); // Allow local IP development
 

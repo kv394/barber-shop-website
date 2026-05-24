@@ -161,7 +161,7 @@ export function CustomizationForm({
           <div className="space-y-4 mb-6">
             <div className="bg-crm-bg/50 p-4 border border-crm-border rounded-lg mb-4">
               <label className="block font-medium text-crm-text mb-2 text-[13px]">Custom Landing Page / SDK Allowed Domains (CORS)</label>
-              <p className="text-crm-muted text-[11px] mb-3">If you embed BarberSaaS onto your own completely custom landing page or website using the developer SDK, list your domains here (comma-separated, e.g., <code className="bg-crm-surface border border-crm-border px-1 rounded text-crm-text">my-salon.com, www.my-salon.com</code>) to authorize widget access.</p>
+              <p className="text-crm-muted text-[11px] mb-3">If you embed Kutz onto your own completely custom landing page or website using the developer SDK, list your domains here (comma-separated, e.g., <code className="bg-crm-surface border border-crm-border px-1 rounded text-crm-text">my-salon.com, www.my-salon.com</code>) to authorize widget access.</p>
               <input
                 type="text"
                 value={(formData.allowedDomains || []).join(', ')}

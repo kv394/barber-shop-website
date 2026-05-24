@@ -1,5 +1,5 @@
 /**
- * HTML email templates for BarberSaaS notifications.
+ * HTML email templates for Kutz notifications.
  * Uses inline CSS for maximum email client compatibility.
  */
 
@@ -64,7 +64,7 @@ export function bookingConfirmationEmail({
       </p>
     </td></tr>
     <tr><td style="background:#1a1a2e;padding:16px 32px;text-align:center;">
-      <p style="color:#666;font-size:12px;margin:0;">Powered by BarberSaaS</p>
+      <p style="color:#666;font-size:12px;margin:0;">Powered by Kutz</p>
     </td></tr>
   </table>
 </body>
@@ -118,7 +118,7 @@ export function rescheduleConfirmationEmail({
       </table>
     </td></tr>
     <tr><td style="background:#1a1a2e;padding:16px 32px;text-align:center;">
-      <p style="color:#666;font-size:12px;margin:0;">Powered by BarberSaaS</p>
+      <p style="color:#666;font-size:12px;margin:0;">Powered by Kutz</p>
     </td></tr>
   </table>
 </body>
@@ -162,7 +162,7 @@ export function giftCardEmail({
       <p style="color:#999;font-size:13px;">Present this code at checkout to redeem.</p>
     </td></tr>
     <tr><td style="background:#1a1a2e;padding:16px 32px;text-align:center;">
-      <p style="color:#666;font-size:12px;margin:0;">Powered by BarberSaaS</p>
+      <p style="color:#666;font-size:12px;margin:0;">Powered by Kutz</p>
     </td></tr>
   </table>
 </body>

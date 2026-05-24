@@ -224,7 +224,7 @@ export class NotificationService {
     const formattedTime = formatDateTimeInShopTz(dateTime, timezone);
     
     // Build the "Add to Calendar" URL
-    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'https://barbersaas.com';
+    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'https://kutzapp.com';
     const calendarUrl = appointmentId ? `${baseUrl}/api/shops/${shopId}/appointments/${appointmentId}/calendar` : undefined;
 
     const html = bookingConfirmationEmail({

@@ -16,7 +16,7 @@ export default async function SDKDocsPage({ params }: { params: Promise<{ shopId
       <div className="mb-6">
         <h1 className="text-2xl font-bold text-gray-900 mb-2">Developer SDK & Headless Integration</h1>
         <p className="text-gray-600 text-[14px]">
-          Use the BarberSaaS Client SDK to build completely custom headless front-ends or embed functionality into your existing website. The SDK is hardened to only expose public-facing customer functionality (Products, Services, Staff, Reviews, Booking, and Purchasing).
+          Use the Kutz Client SDK to build completely custom headless front-ends or embed functionality into your existing website. The SDK is hardened to only expose public-facing customer functionality (Products, Services, Staff, Reviews, Booking, and Purchasing).
         </p>
       </div>
 
@@ -35,7 +35,7 @@ export default async function SDKDocsPage({ params }: { params: Promise<{ shopId
         <p className="text-gray-600 text-[13px] mb-4">Initialize the SDK using your unique Shop ID before calling any functions:</p>
         <pre className="bg-gray-900 text-gray-100 p-4 rounded-lg text-[13px] overflow-x-auto mb-6">
           <code>{`// Initialize with your Shop ID
-BarberSaaS.init('${shopId}');`}</code>
+Kutz.init('${shopId}');`}</code>
         </pre>
 
         <h2 className="font-bold text-lg mb-4">3. Available Functions</h2>
@@ -48,23 +48,23 @@ BarberSaaS.init('${shopId}');`}</code>
             <pre className="bg-gray-900 text-gray-100 p-3 rounded-lg text-[12px] overflow-x-auto">
               <code>{`// Fetch everything simultaneously using Promise.all (Recommended)
 Promise.all([
-  BarberSaaS.getShopDetails(),
-  BarberSaaS.getBookableServices(),
-  BarberSaaS.getSellableProducts(),
-  BarberSaaS.getReviews(),
-  BarberSaaS.getPublicStaff()
+  Kutz.getShopDetails(),
+  Kutz.getBookableServices(),
+  Kutz.getSellableProducts(),
+  Kutz.getReviews(),
+  Kutz.getPublicStaff()
 ]).then(([shop, services, products, reviews, staff]) => {
   console.log('Shop Name:', shop.name);
   console.log('Services:', services);
 });
 
 // Or fetch individual collections if you only need certain data
-const products = await BarberSaaS.getSellableProducts();
-const services = await BarberSaaS.getBookableServices();
+const products = await Kutz.getSellableProducts();
+const services = await Kutz.getBookableServices();
 
 // Get specific details
-const product = await BarberSaaS.getProductDetails('product_123');
-const service = await BarberSaaS.getServiceDetails('service_456');`}</code>
+const product = await Kutz.getProductDetails('product_123');
+const service = await Kutz.getServiceDetails('service_456');`}</code>
             </pre>
           </div>
 
@@ -72,7 +72,7 @@ const service = await BarberSaaS.getServiceDetails('service_456');`}</code>
             <h3 className="font-bold text-gray-900 mb-2">Book an Appointment</h3>
             <p className="text-gray-600 text-[13px] mb-3">Submit a new booking. The SDK will automatically create a guest profile if the client is not signed in.</p>
             <pre className="bg-gray-900 text-gray-100 p-3 rounded-lg text-[12px] overflow-x-auto">
-              <code>{`const booking = await BarberSaaS.bookService({
+              <code>{`const booking = await Kutz.bookService({
   serviceId: 'service_123',
   staffId: 'staff_456',
   startTime: '2023-12-25T14:30:00.000Z', // ISO-8601 UTC
@@ -92,7 +92,7 @@ console.log('Booking successful:', booking);`}</code>
             <p className="text-gray-600 text-[13px] mb-3">Initiate a secure checkout session for a specific product.</p>
             <pre className="bg-gray-900 text-gray-100 p-3 rounded-lg text-[12px] overflow-x-auto">
               <code>{`// Initiates the checkout flow (redirects to Stripe)
-const checkout = await BarberSaaS.buyProduct('product_123', 2); // Quantity: 2`}</code>
+const checkout = await Kutz.buyProduct('product_123', 2); // Quantity: 2`}</code>
             </pre>
           </div>
 
@@ -100,7 +100,7 @@ const checkout = await BarberSaaS.buyProduct('product_123', 2); // Quantity: 2`}
             <h3 className="font-bold text-gray-900 mb-2">Submit a Review</h3>
             <p className="text-gray-600 text-[13px] mb-3">Submit a new review linked to a specific appointment ID.</p>
             <pre className="bg-gray-900 text-gray-100 p-3 rounded-lg text-[12px] overflow-x-auto">
-              <code>{`const review = await BarberSaaS.submitReview({
+              <code>{`const review = await Kutz.submitReview({
   appointmentId: 'appt_123', // The confirmed Appointment ID
   rating: 5, // 1 to 5
   comment: 'Great haircut!' // Optional

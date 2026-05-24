@@ -128,7 +128,7 @@ export class RebookingService {
       const bookingUrl = shop.customDomain
         ? `https://${shop.customDomain}`
         : shop.subdomain
-        ? `https://${shop.subdomain}.barbersaas.com`
+        ? `https://${shop.subdomain}.kutzapp.com`
         : '';
 
       const message = `Hi ${client.name?.split(' ')[0] || 'there'}! It's been ${roundedDays} days since your last ${lastService} at ${shop.name}. You usually come in every ${avgDaysRounded} days — time for a fresh look? ${bookingUrl ? `Book now: ${bookingUrl}` : ''} 💈`;

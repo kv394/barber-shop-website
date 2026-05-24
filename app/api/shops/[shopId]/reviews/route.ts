@@ -65,8 +65,8 @@ export async function GET(
       const customization = (resolvedShop.customization as any) || {};
       const allowedDomains: string[] = customization.allowedDomains || [];
       if (resolvedShop.customDomain) allowedDomains.push(resolvedShop.customDomain);
-      if (resolvedShop.subdomain) allowedDomains.push(`${resolvedShop.subdomain}.barbersaas.com`);
-      allowedDomains.push('barbersaas.com', 'localhost', '127.0.0.1');
+      if (resolvedShop.subdomain) allowedDomains.push(`${resolvedShop.subdomain}.kutzapp.com`);
+      allowedDomains.push('kutzapp.com', 'localhost', '127.0.0.1');
       
       const isAllowed = allowedDomains.some(domain => 
         requestDomain === domain || requestDomain?.endsWith(`.${domain}`)

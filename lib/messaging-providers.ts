@@ -29,7 +29,7 @@ class ResendProvider implements EmailProvider {
 
   constructor() {
     this.apiKey = process.env.RESEND_API_KEY || '';
-    this.from = process.env.EMAIL_FROM || 'BarberSaaS <noreply@barbersaas.com>';
+    this.from = process.env.EMAIL_FROM || 'Kutz <noreply@kutzapp.com>';
   }
 
   async send(to: string, subject: string, body: string, html?: string, attachments?: EmailAttachment[]) {
@@ -66,7 +66,7 @@ class SendGridProvider implements EmailProvider {
 
   constructor() {
     this.apiKey = process.env.SENDGRID_API_KEY || '';
-    this.from = process.env.EMAIL_FROM || 'noreply@barbersaas.com';
+    this.from = process.env.EMAIL_FROM || 'noreply@kutzapp.com';
   }
 
   async send(to: string, subject: string, body: string, html?: string, attachments?: EmailAttachment[]) {

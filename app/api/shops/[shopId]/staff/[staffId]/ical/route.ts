@@ -40,7 +40,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ shop
   let icalContent = [
     'BEGIN:VCALENDAR',
     'VERSION:2.0',
-    'PRODID:-//BarberSaaS//EN',
+    'PRODID:-//Kutz//EN',
     `X-WR-CALNAME:${staff.name} Appointments`,
     'CALSCALE:GREGORIAN',
     'METHOD:PUBLISH',
@@ -52,7 +52,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ shop
     const shopName = apt.shop?.name || 'Shop';
     
     icalContent.push('BEGIN:VEVENT');
-    icalContent.push(`UID:${apt.id}@barbersaas.com`);
+    icalContent.push(`UID:${apt.id}@kutzapp.com`);
     icalContent.push(`DTSTAMP:${formatDateForICal(new Date())}`);
     icalContent.push(`DTSTART:${formatDateForICal(new Date(apt.startTime))}`);
     icalContent.push(`DTEND:${formatDateForICal(new Date(apt.endTime))}`);
