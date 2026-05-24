@@ -43,7 +43,7 @@ jobs:
         run: npm run build
       - name: Deploy to Vercel
         if: github.ref == 'refs/heads/staging'
-        uses: vercel/action@v2
+        uses: amondnet/vercel-action@v25
         with:
-          token: ${{ secrets.VERCEL_TOKEN }}
-          args: '--prod'
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-args: '--prod'
