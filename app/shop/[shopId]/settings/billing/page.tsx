@@ -135,7 +135,7 @@ export default async function ShopBillingPage({ params }: { params: Promise<{ sh
               </div>
               <div className="md:text-right">
                 <p className="text-crm-accent uppercase tracking-widest font-semibold mb-2 text-[13px]">Estimated Monthly Fee</p>
-                <p className="font-black text-crm-text leading-tight text-[13px]">${analysis.suggestedMonthlyFeeUSD}<span className="text-[13px] text-crm-muted font-medium">/mo</span></p>
+                <p className="font-black text-crm-text leading-tight text-lg font-bold">${analysis.suggestedMonthlyFeeUSD}<span className="text-[13px] text-crm-muted font-medium">/mo</span></p>
               </div>
             </div>
 
