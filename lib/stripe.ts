@@ -124,3 +124,78 @@ export async function createTerminalConnectionToken(stripeAccountId?: string | n
   return connectionToken.secret;
 }
 
+/**
+ * Create a Stripe Checkout Session for a booth renter booking (Phase 2).
+ * Money goes directly to the renter's Stripe Connect account.
+ * Platform optionally takes application_fee_amount (set PLATFORM_FEE_PERCENT env var, e.g. "5").
+ */
+export async function createBoothRenterCheckoutSession({
+  renterStripeAccountId,
+  serviceId,
+  serviceName,
+  amount,        // in dollars
+  currency,
+  renterId,
+  shopId,
+  slotStart,
+  slotEnd,
+  clientName,
+  clientEmail,
+  clientPhone,
+  successUrl,
+  cancelUrl,
+}: {
+  renterStripeAccountId: string;
+  serviceId: string;
+  serviceName: string;
+  amount: number;
+  currency: string;
+  renterId: string;
+  shopId: string;
+  slotStart: string;
+  slotEnd: string;
+  clientName: string;
+  clientEmail: string;
+  clientPhone?: string;
+  successUrl: string;
+  cancelUrl: string;
+}) {
+  const amountCents = Math.round(amount * 100);
+  const feePct = parseFloat(process.env.PLATFORM_FEE_PERCENT || '0') / 100;
+  const applicationFeeAmount = feePct > 0 ? Math.round(amountCents * feePct) : undefined;
+
+  const session = await stripe.checkout.sessions.create(
+    {
+      mode: 'payment',
+      payment_method_types: ['card'],
+      line_items: [
+        {
+          quantity: 1,
+          price_data: {
+            currency: currency.toLowerCase(),
+            unit_amount: amountCents,
+            product_data: { name: serviceName },
+          },
+        },
+      ],
+      customer_email: clientEmail,
+      ...(applicationFeeAmount ? { payment_intent_data: { application_fee_amount: applicationFeeAmount } } : {}),
+      metadata: {
+        type: 'booth_renter_booking',
+        renterId,
+        shopId,
+        serviceId,
+        slotStart,
+        slotEnd,
+        clientName,
+        clientEmail,
+        clientPhone: clientPhone || '',
+      },
+      success_url: successUrl,
+      cancel_url: cancelUrl,
+    },
+    { stripeAccount: renterStripeAccountId }
+  );
+
+  return { url: session.url, sessionId: session.id };
+}

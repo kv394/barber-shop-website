@@ -80,6 +80,7 @@ export default function PrimarySidebar({
             {navLink(`/shop/${shopId}/staff`, 'My Schedule', icons.calendar, () => pathname.startsWith(`/shop/${shopId}/staff`))}
             {navLink(`/shop/${shopId}/clients`, 'Clients', icons.users, () => pathname.startsWith(`/shop/${shopId}/clients`))}
             {isBoothRenter && navLink(`/shop/${shopId}/booth-rent`, 'My Rent', icons.badge, () => pathname.startsWith(`/shop/${shopId}/booth-rent`))}
+            {isBoothRenter && navLink(`/shop/${shopId}/my-booking-link`, 'My Booking Link', icons.idCard, () => pathname.startsWith(`/shop/${shopId}/my-booking-link`))}
             {navLink(`/shop/${shopId}/profile`, 'Profile', icons.user, () => pathname.startsWith(`/shop/${shopId}/profile`))}
           </>
         )}

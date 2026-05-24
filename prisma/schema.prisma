@@ -65,6 +65,7 @@ model Shop {
   waitlist            Waitlist[]
   purchaseOrders      PurchaseOrder[]
   boothRentPayments   BoothRentPayment[]
+  renterServices      RenterService[]
 
   @@index([createdAt])
 }
@@ -96,6 +97,8 @@ model User {
   recoveryTotpSecret      String?
   stripeCustomerId        String?
   stripePaymentMethodId   String?
+  stripeConnectAccountId  String?
+  stripeConnectOnboarded  Boolean                 @default(false)
   staffAppointments       Appointment[]           @relation("StaffAppointments")
   clientAppointments      Appointment[]           @relation("ClientAppointments")
   clientFormulas          ClientFormula[]         @relation("ClientFormulas")
@@ -117,6 +120,7 @@ model User {
   shop                    Shop?                   @relation(fields: [shopId], references: [id])
   memberships             UserMembership[]
   boothRentPayments       BoothRentPayment[]
+  renterServices          RenterService[]
 
   @@index([shopId, role])
   @@index([email])
@@ -888,4 +892,22 @@ model ServiceProductUsage {
   @@unique([serviceId, productId])
   @@index([serviceId])
   @@index([productId])
+}
+
+model RenterService {
+  id          String   @id @default(cuid())
+  userId      String
+  shopId      String
+  name        String
+  description String?
+  price       Float
+  duration    Int      // minutes
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  shop        Shop     @relation(fields: [shopId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([shopId])
 }

@@ -30,6 +30,51 @@ export async function POST(req: Request) {
 
   try {
     switch (event.type) {
+      case 'checkout.session.completed': {
+        const session = event.data.object as any;
+        const meta = session.metadata || {};
+
+        if (meta.type === 'booth_renter_booking') {
+          const { renterId, shopId, serviceId, slotStart, slotEnd, clientName, clientEmail, clientPhone } = meta;
+
+          // Find or create the client user record
+          let clientUser = await prisma.user.findFirst({ where: { email: clientEmail } });
+          if (!clientUser) {
+            clientUser = await prisma.user.create({
+              data: {
+                email: clientEmail,
+                name: clientName,
+                role: 'CLIENT',
+                shopId,
+                phone: clientPhone || null,
+                marketingConsent: false,
+              },
+            });
+          }
+
+          // Create the appointment
+          await prisma.appointment.create({
+            data: {
+              shopId,
+              staffId: renterId,
+              userId: clientUser.id,
+              serviceId: serviceId || null,
+              startTime: new Date(slotStart),
+              endTime: new Date(slotEnd),
+              status: 'SCHEDULED',
+              notes: `Booked via QR. Paid via Stripe (${session.id})`,
+              paymentId: session.payment_intent || session.id,
+              totalAmount: (session.amount_total || 0) / 100,
+              subtotal: (session.amount_total || 0) / 100,
+              paymentMethod: 'CARD',
+            },
+          });
+
+          logger.info(`Booth renter booking created for renter ${renterId}, client ${clientEmail}`);
+        }
+        break;
+      }
+
       case 'payment_intent.succeeded': {
         const intent = event.data.object as Stripe.PaymentIntent;
         const type = intent.metadata?.type;
