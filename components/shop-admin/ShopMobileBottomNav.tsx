@@ -256,7 +256,125 @@ export default function ShopMobileBottomNav({
               }
             }}
           >
-            <ShopSidebarLinks shopId={shopId} userRole={userRole} />
+            <div className="space-y-1">
+              <Link 
+                href={`/shop/${shopId}`} 
+                className={`flex items-center gap-3 px-4 py-3 rounded-lg text-[15px] font-medium transition-colors ${
+                  pathname === `/shop/${shopId}` ? 'bg-[#FFF5F2] text-[#ea580c] font-bold' : 'text-crm-muted hover:text-crm-text hover:bg-crm-bg'
+                }`}
+              >
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">{icons.home}</svg>
+                <span>Dashboard</span>
+              </Link>
+
+              {userRole === 'SHOP_ADMIN' ? (
+                <>
+                  <Link 
+                    href={`/shop/${shopId}/bookings`} 
+                    className={`flex items-center gap-3 px-4 py-3 rounded-lg text-[15px] font-medium transition-colors ${
+                      pathname.startsWith(`/shop/${shopId}/bookings`) ? 'bg-[#FFF5F2] text-[#ea580c] font-bold' : 'text-crm-muted hover:text-crm-text hover:bg-crm-bg'
+                    }`}
+                  >
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">{icons.calendar}</svg>
+                    <span>Bookings</span>
+                  </Link>
+
+                  <Link 
+                    href={`/shop/${shopId}/waitlist`} 
+                    className={`flex items-center gap-3 px-4 py-3 rounded-lg text-[15px] font-medium transition-colors ${
+                      pathname.startsWith(`/shop/${shopId}/waitlist`) ? 'bg-[#FFF5F2] text-[#ea580c] font-bold' : 'text-crm-muted hover:text-crm-text hover:bg-crm-bg'
+                    }`}
+                  >
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">{icons.users}</svg>
+                    <span>Waitlist</span>
+                  </Link>
+
+                  <Link 
+                    href={`/shop/${shopId}/clients`} 
+                    className={`flex items-center gap-3 px-4 py-3 rounded-lg text-[15px] font-medium transition-colors ${
+                      pathname.startsWith(`/shop/${shopId}/clients`) ? 'bg-[#FFF5F2] text-[#ea580c] font-bold' : 'text-crm-muted hover:text-crm-text hover:bg-crm-bg'
+                    }`}
+                  >
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">{icons.users}</svg>
+                    <span>Clients</span>
+                  </Link>
+
+                  <div className="my-2 border-t border-crm-border/50"></div>
+
+                  <Link 
+                    href={`/shop/${shopId}/settings/team`} 
+                    className={`flex items-center gap-3 px-4 py-3 rounded-lg text-[15px] font-medium transition-colors ${
+                      pathname.startsWith(`/shop/${shopId}/settings/team`) || pathname.startsWith(`/shop/${shopId}/portfolio`) ? 'bg-[#FFF5F2] text-[#ea580c] font-bold' : 'text-crm-muted hover:text-crm-text hover:bg-crm-bg'
+                    }`}
+                  >
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">{icons.users}</svg>
+                    <span>Team</span>
+                  </Link>
+
+                  <Link 
+                    href={`/shop/${shopId}/engagement`} 
+                    className={`flex items-center gap-3 px-4 py-3 rounded-lg text-[15px] font-medium transition-colors ${
+                      ['/engagement', '/loyalty', '/referrals', '/campaigns', '/gift-cards', '/reviews'].some(p => pathname.startsWith(`/shop/${shopId}${p}`)) ? 'bg-[#FFF5F2] text-[#ea580c] font-bold' : 'text-crm-muted hover:text-crm-text hover:bg-crm-bg'
+                    }`}
+                  >
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">{icons.heart}</svg>
+                    <span>Engagement</span>
+                  </Link>
+
+                  <Link 
+                    href={`/shop/${shopId}/reports`} 
+                    className={`flex items-center gap-3 px-4 py-3 rounded-lg text-[15px] font-medium transition-colors ${
+                      ['/reports', '/expenses'].some(p => pathname.startsWith(`/shop/${shopId}${p}`)) ? 'bg-[#FFF5F2] text-[#ea580c] font-bold' : 'text-crm-muted hover:text-crm-text hover:bg-crm-bg'
+                    }`}
+                  >
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">{icons.chart}</svg>
+                    <span>Reports</span>
+                  </Link>
+
+                  <Link 
+                    href={`/shop/${shopId}/settings`} 
+                    className={`flex items-center gap-3 px-4 py-3 rounded-lg text-[15px] font-medium transition-colors ${
+                      (pathname.startsWith(`/shop/${shopId}/settings`) || pathname.startsWith(`/shop/${shopId}/config`)) && !pathname.startsWith(`/shop/${shopId}/settings/team`) ? 'bg-[#FFF5F2] text-[#ea580c] font-bold' : 'text-crm-muted hover:text-crm-text hover:bg-crm-bg'
+                    }`}
+                  >
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">{icons.settings}</svg>
+                    <span>Settings & Config</span>
+                  </Link>
+                </>
+              ) : (
+                <>
+                  <Link 
+                    href={`/shop/${shopId}/staff`} 
+                    className={`flex items-center gap-3 px-4 py-3 rounded-lg text-[15px] font-medium transition-colors ${
+                      pathname.startsWith(`/shop/${shopId}/staff`) ? 'bg-[#FFF5F2] text-[#ea580c] font-bold' : 'text-crm-muted hover:text-crm-text hover:bg-crm-bg'
+                    }`}
+                  >
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">{icons.calendar}</svg>
+                    <span>My Schedule</span>
+                  </Link>
+
+                  <Link 
+                    href={`/shop/${shopId}/clients`} 
+                    className={`flex items-center gap-3 px-4 py-3 rounded-lg text-[15px] font-medium transition-colors ${
+                      pathname.startsWith(`/shop/${shopId}/clients`) ? 'bg-[#FFF5F2] text-[#ea580c] font-bold' : 'text-crm-muted hover:text-crm-text hover:bg-crm-bg'
+                    }`}
+                  >
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">{icons.users}</svg>
+                    <span>Clients</span>
+                  </Link>
+
+                  <Link 
+                    href={`/shop/${shopId}/profile`} 
+                    className={`flex items-center gap-3 px-4 py-3 rounded-lg text-[15px] font-medium transition-colors ${
+                      pathname.startsWith(`/shop/${shopId}/profile`) ? 'bg-[#FFF5F2] text-[#ea580c] font-bold' : 'text-crm-muted hover:text-crm-text hover:bg-crm-bg'
+                    }`}
+                  >
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">{icons.user}</svg>
+                    <span>Profile</span>
+                  </Link>
+                </>
+              )}
+            </div>
           </nav>
 
           <div className="p-4 border-t border-crm-border flex flex-col gap-3 bg-crm-bg/30 pb-[calc(1.5rem+env(safe-area-inset-bottom))]">
