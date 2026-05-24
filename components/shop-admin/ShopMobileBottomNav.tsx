@@ -284,7 +284,7 @@ export default function ShopMobileBottomNav({
                       pathname.startsWith(`/shop/${shopId}/waitlist`) ? 'bg-[#FFF5F2] text-[#ea580c] font-bold' : 'text-crm-muted hover:text-crm-text hover:bg-crm-bg'
                     }`}
                   >
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">{icons.users}</svg>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">{icons.clock}</svg>
                     <span>Waitlist</span>
                   </Link>
 

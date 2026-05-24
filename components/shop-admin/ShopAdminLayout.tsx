@@ -56,6 +56,11 @@ export default function ShopAdminLayout({
 
       {/* Main Content Area */}
       <div className={`flex-1 shadow-lg bg-crm-surface p-4 md:p-8 border sm:border ${tabs && tabs.length > 0 && tabs[0].id === activeTab ? 'rounded-xl sm:rounded-2xl sm:rounded-tl-none' : 'rounded-xl sm:rounded-2xl'} border-crm-border relative z-0`}>
+        {pageTitle && (
+          <h1 className="text-2xl font-black text-crm-text mb-6 tracking-tight flex items-center gap-2">
+            {pageTitle}
+          </h1>
+        )}
         {children}
       </div>
 

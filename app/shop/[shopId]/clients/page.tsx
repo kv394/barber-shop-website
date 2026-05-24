@@ -107,10 +107,8 @@ export default async function ClientsPage({ params, searchParams }: { params: Pr
       userRole={userRole as string}
       activeTab="clients"
     >
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 sm:mb-6 gap-4">
-        <h2 className="font-bold text-crm-text text-xl font-bold">
-          {userRole === 'STAFF' ? 'My Clients' : 'Registered Clients'}
-        </h2>
+      <div className="flex flex-col sm:flex-row justify-end items-start sm:items-center mb-4 sm:mb-6 gap-4">
+        {/* Buttons or other actions could go here in the future */}
       </div>
       
       {clients.length === 0 && !resolvedSearchParams.openClient ? (

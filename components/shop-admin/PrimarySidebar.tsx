@@ -24,7 +24,8 @@ export default function PrimarySidebar({
     users: <><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></>,
     calendar: <><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></>,
     heart: <><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></>,
-    chart: <><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></>
+    chart: <><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></>,
+    clock: <><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></>
   };
 
   const navLink = (href: string, label: string, iconPath: React.ReactNode, isActiveCheck: () => boolean) => {
@@ -64,7 +65,7 @@ export default function PrimarySidebar({
         {isShopAdmin ? (
           <>
             {navLink(`/shop/${shopId}/bookings`, 'Bookings', icons.calendar, () => pathname.startsWith(`/shop/${shopId}/bookings`))}
-            {navLink(`/shop/${shopId}/waitlist`, 'Waitlist', icons.users, () => pathname.startsWith(`/shop/${shopId}/waitlist`))}
+            {navLink(`/shop/${shopId}/waitlist`, 'Waitlist', icons.clock, () => pathname.startsWith(`/shop/${shopId}/waitlist`))}
             {navLink(`/shop/${shopId}/clients`, 'Clients', icons.users, () => pathname.startsWith(`/shop/${shopId}/clients`))}
             
             <div className="w-8 h-px bg-crm-border/50 my-1"></div>
