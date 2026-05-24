@@ -51,7 +51,6 @@ export default function CommissionSetup({ shopId }: { shopId: string }) {
 
   return (
     <div className="bg-crm-surface border border-crm-border shadow-sm rounded-xl p-6 space-y-4">
-      <h3 className="font-bold text-crm-text text-lg font-bold">💼 Commission Rates</h3>
       <p className="text-crm-muted text-[13px]">Set service and retail product commission rates per staff member.</p>
       {msg && <div className="p-2 bg-status-confirmed/20 border border-status-confirmed/30 text-status-confirmed rounded text-[13px]">{msg}</div>}
       <div className="space-y-3">

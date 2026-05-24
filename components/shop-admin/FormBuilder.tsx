@@ -42,7 +42,6 @@ export default function FormBuilder({ shopId }: { shopId: string }) {
 
   return (
     <div className="bg-crm-surface border border-crm-border shadow-sm rounded-xl p-6">
-      <h3 className="font-bold text-crm-text mb-2 text-lg font-bold">📝 Digital Intake Forms</h3>
       <p className="text-crm-muted mb-6 text-[13px]">
         Create waivers, consultation forms, and medical histories. Clients will be prompted to sign these before their appointment.
       </p>

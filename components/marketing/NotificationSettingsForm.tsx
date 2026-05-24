@@ -41,7 +41,6 @@ export default function NotificationSettingsForm({ shopId }: { shopId: string })
 
   return (
     <div className="bg-crm-surface border border-crm-border shadow-sm rounded-xl p-6 space-y-4">
-      <h3 className="font-bold text-crm-text text-lg font-bold">🔔 Notification Settings</h3>
       <p className="text-crm-muted text-[13px]">Configure automated messages sent to clients and staff.</p>
       {msg && <div className="p-3 bg-status-confirmed/20 border border-status-confirmed/30 text-status-confirmed rounded-lg text-[13px]">{msg}</div>}
 
