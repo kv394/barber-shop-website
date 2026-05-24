@@ -150,7 +150,7 @@ export default function StaffWorkingReport({ staffMembers, currency }: StaffWork
       </div>
 
       {/* Date Filters */}
-      <div className="flex flex-col sm:flex-row gap-3 mb-6 p-4 bg-crm-surface rounded-lg border border-crm-border shadow-sm">
+      <div className="flex flex-col sm:flex-row gap-3 mb-6 p-4 bg-crm-surface rounded-lg border border-crm-border shadow-sm items-end">
         <div className="flex-1">
           <label className="block text-crm-muted uppercase tracking-wider mb-1 text-[13px]">From Date</label>
           <input type="date" value={dateFrom} onChange={e => setDateFrom(e.target.value)} style={inputStyle}
@@ -162,7 +162,8 @@ export default function StaffWorkingReport({ staffMembers, currency }: StaffWork
             className="w-full border border-crm-border shadow-sm rounded p-2 text-[13px] focus:outline-none focus:border-brand-gold " />
         </div>
         {isFiltered && (
-          <div className="flex items-end">
+          <div>
+            <label className="block text-crm-muted uppercase tracking-wider mb-1 text-[13px] invisible select-none">Clear</label>
             <button onClick={() => { setDateFrom(''); setDateTo(''); }} className="text-[11px] text-crm-muted hover:text-crm-text px-4 py-2 border border-crm-border shadow-sm rounded">
               Clear Filters
             </button>

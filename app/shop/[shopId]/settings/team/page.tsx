@@ -394,6 +394,7 @@ export default async function TeamDashboardPage({ params, searchParams }: { para
               </select>
             </div>
             <div className="md:col-span-3">
+              <label className="block text-crm-muted mb-1 font-semibold uppercase tracking-wider text-[13px] invisible select-none">Action</label>
               <button type="submit" disabled={userRole === 'SITE_ADMIN' && !canAddShopAdmin}
                 className="w-full bg-crm-primary text-white font-bold py-2.5 px-6 rounded-xl hover:bg-crm-primary/90 hover:scale-[1.02] active:scale-95 transition-all duration-200 shadow-md text-[13px] disabled:opacity-50 disabled:cursor-not-allowed">
                 Invite Member
