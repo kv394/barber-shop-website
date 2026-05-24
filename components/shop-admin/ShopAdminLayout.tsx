@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import GlobalVoiceNoteFAB from './GlobalVoiceNoteFAB';
+import PageTitleUpdater from './PageTitleUpdater';
 
 interface ShopAdminLayoutProps {
   children: React.ReactNode;
@@ -19,10 +20,12 @@ export default function ShopAdminLayout({
   userRole,
   tabs,
   activeTab,
+  shopName,
 }: ShopAdminLayoutProps) {
   
   return (
     <div className="pb-20 sm:pb-0 h-full flex flex-col">
+      <PageTitleUpdater title={pageTitle} shopName={shopName} />
       {/* Show horizontal tabs if they exist (e.g. Clients page with 'List' vs 'Segments' tabs) */}
       {tabs && tabs.length > 0 && (
         <div className="hidden sm:flex sm:flex-row sm:items-end justify-between relative z-10 w-full mt-2 sm:-mt-6 border-b sm:border-b-0 border-crm-border">
