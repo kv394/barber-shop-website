@@ -8,11 +8,6 @@ datasource db {
   provider = "postgresql"
 }
 
-enum Country {
-  IN
-  US
-}
-
 
 model Shop {
   id                  String               @id @default(cuid())
@@ -35,10 +30,6 @@ model Shop {
   companyName         String?
   aiTokens            Int                  @default(0)
   slogan              String?
-  country             Country              @default(US)
-  currency            String               @default("USD")
-  locale              String               @default("en-US")
-  paymentGateway      String               @default("STRIPE")
   appointments        Appointment[]
   campaigns           Campaign[]
   clientFormulas      ClientFormula[]
