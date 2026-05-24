@@ -133,7 +133,7 @@ export async function createBoothRenterCheckoutSession({
   renterStripeAccountId,
   serviceId,
   serviceName,
-  amount,        // in dollars
+  amount,
   currency,
   renterId,
   shopId,
@@ -161,7 +161,11 @@ export async function createBoothRenterCheckoutSession({
   cancelUrl: string;
 }) {
   const amountCents = Math.round(amount * 100);
-  const feePct = parseFloat(process.env.PLATFORM_FEE_PERCENT || '0') / 100;
+
+  const { getPlatformSettings } = await import('@/lib/platform-settings');
+  const settings = await getPlatformSettings();
+  const feePct = (settings.platformFeePercent || 0) / 100;
+  
   const applicationFeeAmount = feePct > 0 ? Math.round(amountCents * feePct) : undefined;
 
   const session = await stripe.checkout.sessions.create(

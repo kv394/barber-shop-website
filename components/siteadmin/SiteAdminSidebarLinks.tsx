@@ -33,6 +33,7 @@ export default function SiteAdminSidebarLinks() {
       {navLink('/siteadmin/tiers', 'Pricing Tiers')}
       {navLink('/siteadmin/logs', 'System Logs')}
       {navLink('/siteadmin/templates', 'AI Templates')}
+      {navLink('/siteadmin/settings', 'Global Settings')}
     </div>
   );
 }

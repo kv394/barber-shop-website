@@ -8,6 +8,23 @@ datasource db {
   provider = "postgresql"
 }
 
+model PlatformSettings {
+  id                    String   @id @default("global")
+  platformName          String   @default("KutzApp")
+  supportEmail          String?
+  platformFeePercent    Float    @default(0)
+  
+  // Feature Toggles
+  enableSms             Boolean  @default(false)
+  enableAi              Boolean  @default(true)
+  
+  // Branding & SEO
+  logoUrl               String?
+  primaryColor          String?  @default("#f59e0b")
+  analyticsId           String?
+  
+  updatedAt             DateTime @updatedAt
+}
 
 model Shop {
   id                  String               @id @default(cuid())
