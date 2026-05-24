@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 
 export default function PortfolioManager({ shopId, currentUserId, userRole }: { shopId: string, currentUserId: string, userRole: string }) {
   const [images, setImages] = useState<any[]>([]);
@@ -7,7 +7,9 @@ export default function PortfolioManager({ shopId, currentUserId, userRole }: { 
   const [imageUrl, setImageUrl] = useState('');
   const [caption, setCaption] = useState('');
   const [saving, setSaving] = useState(false);
+  const [uploading, setUploading] = useState(false);
   const [msg, setMsg] = useState('');
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [staffList, setStaffList] = useState<any[]>([]);
   const [selectedStaffId, setSelectedStaffId] = useState(currentUserId);
@@ -44,6 +46,9 @@ export default function PortfolioManager({ shopId, currentUserId, userRole }: { 
     });
     setImageUrl('');
     setCaption('');
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
     setMsg('Image added to portfolio!');
     await loadImages(selectedStaffId);
     setSaving(false);
@@ -101,7 +106,7 @@ export default function PortfolioManager({ shopId, currentUserId, userRole }: { 
                 onChange={async (e) => {
                   const file = e.target.files?.[0];
                   if (!file) return;
-                  setSaving(true);
+                  setUploading(true);
                   try {
                     const formData = new FormData();
                     formData.append('file', file);
@@ -117,9 +122,10 @@ export default function PortfolioManager({ shopId, currentUserId, userRole }: { 
                   } catch (err: any) {
                     alert('Upload failed: ' + err.message);
                   } finally {
-                    setSaving(false);
+                    setUploading(false);
                   }
                 }}
+                ref={fileInputRef}
                 className="flex-1 w-full bg-crm-surface border border-crm-border shadow-sm rounded px-3 py-2 text-crm-text text-[13px] focus:outline-none focus:border-brand-gold file:mr-4 file:py-1 file:px-4 file:rounded file:border-0 file:text-[13px] file:bg-crm-primary/20 file:text-crm-primary hover:file:bg-crm-primary/30 hover:opacity-90 min-w-0"
               />
             </div>
@@ -138,10 +144,10 @@ export default function PortfolioManager({ shopId, currentUserId, userRole }: { 
         <div className="mt-4 pt-2">
           <button 
             type="submit" 
-            disabled={saving || !imageUrl.trim()} 
+            disabled={saving || uploading || !imageUrl.trim()} 
             className="px-4 py-2 bg-crm-primary text-white rounded text-[13px] font-bold hover:bg-crm-surface hover:text-crm-primary border border-transparent hover:border-crm-primary/30 transition disabled:opacity-50"
           >
-            {saving ? 'Uploading...' : 'Add to Portfolio'}
+            {uploading ? 'Uploading Image...' : saving ? 'Adding...' : 'Add to Portfolio'}
           </button>
         </div>
       </form>
