@@ -43,7 +43,7 @@ export default async function GiftCardsPage({ params }: { params: Promise<{ shop
       shopId={shopId}
       userRole={data.userRole}
     >
-      <GiftCardManager shopId={shopId} />
+      <GiftCardManager shopId={shopId} currency={data.shop.currency} />
     </ShopAdminLayout>
   );
 }

@@ -5,6 +5,7 @@ import 'react-day-picker/dist/style.css';
 import { format } from 'date-fns';
 import { scoreAndSortSlots, type ScoredSlot } from '@/lib/schedule-optimizer';
 import StyleDiscovery from '@/components/booking/StyleDiscovery';
+import { fmtPrice } from '@/lib/formatters';
 
 // Steps: 1: Service, 2: Staff, 3: DateTime, 4: Details
 
@@ -12,7 +13,7 @@ interface Service { id: string; name: string; price: number; duration: number; }
 interface Staff { id: string; name: string; workingHours: any; }
 interface BookedSlot { startTime: string; endTime: string; staffId: string; }
 
-export default function BookingWizard({ shopId, themeColor, secondaryColor, templateType }: { shopId: string, themeColor?: string, secondaryColor?: string, templateType?: string }) {
+export default function BookingWizard({ shopId, themeColor, secondaryColor, templateType, currency }: { shopId: string, themeColor?: string, secondaryColor?: string, templateType?: string, currency: string }) {
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(true);
   const [services, setServices] = useState<Service[]>([]);
@@ -418,7 +419,7 @@ export default function BookingWizard({ shopId, themeColor, secondaryColor, temp
               >
                 <div className="flex justify-between items-center">
                   <span className="font-medium text-gray-800">{s.name}</span>
-                  <span className="font-semibold text-gray-900">${s.price.toFixed(2)}</span>
+                  <span className="font-semibold text-gray-900">{fmtPrice(s.price, currency)}</span>
                 </div>
                 <div className="text-sm text-gray-500 mt-1">{s.duration} mins</div>
               </div>
@@ -550,7 +551,7 @@ export default function BookingWizard({ shopId, themeColor, secondaryColor, temp
               <div className="text-sm text-gray-600 space-y-2">
                 <div className="flex justify-between items-center pb-2 border-b border-gray-100">
                   <span>{selectedService?.name}</span>
-                  <span className="font-medium text-gray-900">${selectedService?.price.toFixed(2)}</span>
+                  <span className="font-medium text-gray-900">{fmtPrice(selectedService?.price || 0, currency)}</span>
                 </div>
                 <div className="flex justify-between items-center pb-2 border-b border-gray-100">
                   <span>Professional</span>

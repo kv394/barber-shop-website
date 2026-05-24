@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useMemo } from 'react';
+import { fmtPrice } from '@/lib/formatters';
 
 interface TimeLogEntry {
   id: string;
@@ -44,7 +45,12 @@ function filterByDate<T>(items: T[], getDate: (item: T) => Date, from: string, t
   });
 }
 
-export default function StaffWorkingReport({ staffMembers }: { staffMembers: StaffMember[] }) {
+export interface StaffWorkingReportProps {
+  staffMembers: StaffMember[];
+  currency: string;
+}
+
+export default function StaffWorkingReport({ staffMembers, currency }: StaffWorkingReportProps) {
   const [dateFrom, setDateFrom] = useState('');
   const [dateTo, setDateTo] = useState('');
   const [selectedStaff, setSelectedStaff] = useState<string | null>(null);
@@ -138,7 +144,7 @@ export default function StaffWorkingReport({ staffMembers }: { staffMembers: Sta
             <h3 className="text-crm-muted uppercase tracking-widest font-semibold truncate text-[11px]">Revenue Generated</h3>
             <span className="text-status-pending text-[13px]">💰</span>
           </div>
-          <p className="font-black text-crm-text break-words leading-tight text-xl font-bold">${totalRevenue.toFixed(2)}</p>
+          <p className="font-black text-crm-text break-words leading-tight text-xl font-bold">{fmtPrice(totalRevenue, currency)}</p>
           {isFiltered && <p className="text-crm-muted mt-2 truncate opacity-0 group-hover:opacity-100 transition-opacity text-[13px]">In selected date range</p>}
         </div>
       </div>
@@ -211,7 +217,7 @@ export default function StaffWorkingReport({ staffMembers }: { staffMembers: Sta
                       </div>
                       <div>
                         <p className="text-crm-muted uppercase tracking-wider text-[13px]">Revenue</p>
-                        <p className="font-bold text-status-pending text-xl font-bold">${staff.revenue.toFixed(2)}</p>
+                        <p className="font-bold text-status-pending text-xl font-bold">{fmtPrice(staff.revenue, currency)}</p>
                       </div>
                     </div>
                   </div>
@@ -310,7 +316,7 @@ export default function StaffWorkingReport({ staffMembers }: { staffMembers: Sta
                                   <span className="text-crm-text ml-2">{apt.user?.name || apt.user?.email || 'Guest'}</span>
                                   <span className="text-crm-accent ml-2">— {apt.service.name}</span>
                                 </div>
-                                <span className="font-semibold text-status-confirmed">${apt.service.price.toFixed(2)}</span>
+                                <span className="font-semibold text-status-confirmed">{fmtPrice(apt.service.price, currency)}</span>
                               </div>
                             ))}
                           </div>

@@ -45,7 +45,7 @@ export default async function CommissionReportsPage({ params }: { params: Promis
       shopId={shopId}
       userRole={data.userRole}
     >
-      <CommissionReportClient shopId={shopId} staffId={staffId} isPersonalView={data.isStaff} />
+      <CommissionReportClient shopId={shopId} staffId={staffId} isPersonalView={data.isStaff} currency={data.shop.currency} />
     </ShopAdminLayout>
   );
 }

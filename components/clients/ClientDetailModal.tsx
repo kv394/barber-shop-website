@@ -3,15 +3,17 @@
 import { useState, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import UserQRCode from '@/components/clients/UserQRCode';
+import { fmtPrice } from '@/lib/formatters';
 
 interface ClientDetailProps {
   shopId: string;
   clientId: string;
   clientName: string;
   onClose: () => void;
+  currency: string;
 }
 
-export default function ClientDetailModal({ shopId, clientId, clientName, onClose }: ClientDetailProps): React.ReactNode {
+export default function ClientDetailModal({ shopId, clientId, clientName, onClose, currency }: ClientDetailProps): React.ReactNode {
   const [client, setClient] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [loyaltyData, setLoyaltyData] = useState<any>(null);
@@ -360,7 +362,7 @@ export default function ClientDetailModal({ shopId, clientId, clientName, onClos
                     </div>
                     <div className="bg-crm-surface p-3 rounded-lg text-center border border-crm-border shadow-sm">
                       <p className="font-bold text-status-confirmed text-[13px]">
-                        ${client.clientAppointments?.filter((a: any) => a.status === 'COMPLETED').reduce((sum: number, a: any) => sum + (a.totalAmount > 0 ? a.totalAmount : (a.service?.price || 0)), 0).toFixed(0) || '0'}
+                        {fmtPrice(client.clientAppointments?.filter((a: any) => a.status === 'COMPLETED').reduce((sum: number, a: any) => sum + (a.totalAmount > 0 ? a.totalAmount : (a.service?.price || 0)), 0) || 0, currency)}
                       </p>
                       <p className="text-crm-muted uppercase tracking-wider text-[13px]">Spent</p>
                     </div>
@@ -398,7 +400,7 @@ export default function ClientDetailModal({ shopId, clientId, clientName, onClos
                             </p>
                           </div>
                           <div className="text-right shrink-0 ml-2">
-                            <p className="font-bold text-status-confirmed text-[13px]">${(apt.totalAmount > 0 ? apt.totalAmount : (apt.service?.price || 0)).toFixed(2)}</p>
+                            <p className="font-bold text-status-confirmed text-[13px]">{fmtPrice(apt.totalAmount > 0 ? apt.totalAmount : (apt.service?.price || 0), currency)}</p>
                             {getStatusBadge(apt.status)}
                           </div>
                         </div>

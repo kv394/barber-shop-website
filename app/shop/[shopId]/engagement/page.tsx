@@ -34,7 +34,7 @@ export default async function EngagementPage({ params }: { params: Promise<{ sho
       shopId={shopId}
       userRole={data.userRole}
     >
-      <EngagementAnalytics shopId={shopId} />
+      <EngagementAnalytics shopId={shopId} currency={data.shop.currency} />
     </ShopAdminLayout>
   );
 }

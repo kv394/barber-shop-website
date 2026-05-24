@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import dynamic from 'next/dynamic';
 import { createClient } from '@/utils/supabase/client';
+import { fmtPrice, getCurrencySymbol } from '@/lib/formatters';
 
 const BarcodeScanner = dynamic(() => import('@/components/checkout/BarcodeScanner'), { ssr: false });
 
@@ -29,6 +30,7 @@ export default function CheckoutButton({
   shopName: _shopName,
   clientName,
   addons,
+  currency,
 }: {
   shopId: string;
   appointmentId: string;
@@ -38,6 +40,7 @@ export default function CheckoutButton({
   shopName?: string;
   clientName?: string;
   addons?: any;
+  currency: string;
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
@@ -289,9 +292,9 @@ export default function CheckoutButton({
                     <div key={item.id} className="flex items-center gap-3 bg-crm-surface rounded-lg px-3 py-2">
                       <div className="flex-1 min-w-0">
                         <p className="text-crm-text font-medium truncate text-[13px]">{item.name}</p>
-                        <p className="text-crm-muted text-[13px]">${item.price.toFixed(2)} × {item.quantity}</p>
+                        <p className="text-crm-muted text-[13px]">{fmtPrice(item.price, currency)} × {item.quantity}</p>
                       </div>
-                      <span className="text-[13px] font-bold text-crm-text shrink-0">${(item.price * item.quantity).toFixed(2)}</span>
+                      <span className="text-[13px] font-bold text-crm-text shrink-0">{fmtPrice(item.price * item.quantity, currency)}</span>
                       {item.id !== 'primary-service' && (
                         <button
                           onClick={() => removeFromCart(item.id)}
@@ -321,7 +324,7 @@ export default function CheckoutButton({
                               </span>
                             )}
                             <p className="font-medium text-crm-text truncate pr-4 text-[13px]">{p.name}</p>
-                            <p className="text-crm-accent text-[13px]">${p.price.toFixed(2)}</p>
+                            <p className="text-crm-accent text-[13px]">{fmtPrice(p.price, currency)}</p>
                           </button>
                         );
                       })}
@@ -344,11 +347,11 @@ export default function CheckoutButton({
                           : 'bg-crm-surface text-crm-muted hover:bg-crm-surface'
                       }`}
                     >
-                      {t === 0 ? 'No Tip' : `$${t}`}
+                      {t === 0 ? 'No Tip' : fmtPrice(t, currency)}
                     </button>
                   ))}
                   <div className={`flex items-center gap-1 rounded-lg px-3 py-1.5 border transition-colors ${customTip ? 'bg-crm-primary/10 border-brand-gold/40' : 'bg-crm-surface border-transparent'} hover:opacity-90 text-white`}>
-                    <span className="text-crm-muted text-[13px]">$</span>
+                    <span className="text-crm-muted text-[13px]">{getCurrencySymbol(currency)}</span>
                     <input
                       type="number" min={0} step={0.5}
                       value={customTip}
@@ -368,7 +371,7 @@ export default function CheckoutButton({
                 <h3 className="font-semibold text-crm-muted uppercase tracking-wider mb-2 text-lg font-bold">Discount</h3>
                 <div className="flex flex-wrap gap-2">
                   <div className="flex items-center gap-1 bg-crm-surface rounded-lg px-3 py-2 w-36 border border-transparent focus-within:border-brand-gold/40 transition-colors shadow-sm">
-                    <span className="text-crm-muted text-[13px]">$</span>
+                    <span className="text-crm-muted text-[13px]">{getCurrencySymbol(currency)}</span>
                     <input
                       type="number" min={0} step={0.5} max={subtotal}
                       value={discount || ''}
@@ -412,21 +415,21 @@ export default function CheckoutButton({
               {/* ── Total Summary ── */}
               <section className="bg-crm-surface rounded-xl p-4 space-y-1.5 border border-crm-border shadow-sm">
                 <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 text-[13px] text-crm-muted">
-                  <span>Subtotal</span><span>${subtotal.toFixed(2)}</span>
+                  <span>Subtotal</span><span>{fmtPrice(subtotal, currency)}</span>
                 </div>
                 {effectiveDiscount > 0 && (
                   <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 text-[13px] text-status-cancelled">
-                    <span>Discount</span><span>−${effectiveDiscount.toFixed(2)}</span>
+                    <span>Discount</span><span>−{fmtPrice(effectiveDiscount, currency)}</span>
                   </div>
                 )}
                 {tipAmount > 0 && (
                   <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 text-[13px] text-status-pending">
-                    <span>Tip</span><span>+${tipAmount.toFixed(2)}</span>
+                    <span>Tip</span><span>+{fmtPrice(tipAmount, currency)}</span>
                   </div>
                 )}
                 <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 text-xl font-black text-crm-text border-t border-crm-border pt-2 mt-1">
                   <span>Total</span>
-                  <span className="text-crm-accent">${finalTotal.toFixed(2)}</span>
+                  <span className="text-crm-accent">{fmtPrice(finalTotal, currency)}</span>
                 </div>
               </section>
 
@@ -436,7 +439,7 @@ export default function CheckoutButton({
                 disabled={isProcessing}
                 className="w-full bg-status-confirmed hover:bg-status-confirmed disabled:opacity-50 text-crm-text font-bold py-3.5 rounded-xl text-[13px] uppercase tracking-wider transition-colors"
               >
-                {isProcessing ? 'Processing…' : `Confirm ${paymentMethod === 'CASH' ? '💵' : paymentMethod === 'CARD' ? '💳' : '📱'} · $${finalTotal.toFixed(2)}`}
+                {isProcessing ? 'Processing…' : `Confirm ${paymentMethod === 'CASH' ? '💵' : paymentMethod === 'CARD' ? '💳' : '📱'} · ${fmtPrice(finalTotal, currency)}`}
               </button>
             </div>
           </div>

@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import UserQRCode from '@/components/clients/UserQRCode';
 import ClientDetailModal from '@/components/clients/ClientDetailModal';
 
-export default function ClientGrid({ clients, shopId, initialSelectedClientId }: { clients: any[]; shopId: string; initialSelectedClientId?: string }) {
+export default function ClientGrid({ clients, shopId, initialSelectedClientId, currency = 'USD' }: { clients: any[]; shopId: string; initialSelectedClientId?: string; currency?: string }) {
   const [selectedClient, setSelectedClient] = useState<any>(null);
   const [searchTerm, setSearchTerm] = useState('');
 
@@ -139,6 +139,7 @@ export default function ClientGrid({ clients, shopId, initialSelectedClientId }:
           clientId={selectedClient.id}
           clientName={selectedClient.name || 'Guest User'}
           onClose={() => setSelectedClient(null)}
+          currency={currency}
         />
       )}
     </>

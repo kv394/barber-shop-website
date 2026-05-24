@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useMemo } from 'react';
+import { fmtPrice } from '@/lib/formatters';
 import RefundButton from '@/components/checkout/RefundButton';
 
 interface Appointment {
@@ -23,6 +24,7 @@ export interface ReportsClientProps {
   totalRevenue: number;
   totalTips: number;
   shopId: string;
+  currency: string;
 }
 
 export default function ReportsClient({
@@ -30,10 +32,12 @@ export default function ReportsClient({
   totalRevenue: allTimeRevenue,
   totalTips: allTimeTips,
   shopId,
+  currency,
 }: ReportsClientProps) {
   const [dateFrom, setDateFrom] = useState('');
   const [dateTo, setDateTo] = useState('');
   const [activeView, setActiveView] = useState<'transactions' | 'byStaff' | 'byService'>('transactions');
+  const formatCurrency = (val: number) => fmtPrice(val, currency);
 
   const filtered = useMemo(() => {
     return appointments.filter(apt => {
@@ -80,9 +84,9 @@ export default function ReportsClient({
       apt.user.name || apt.user.email,
       apt.service.name,
       apt.staff?.name || 'N/A',
-      `$${apt.service.price.toFixed(2)}`,
-      `$${(apt.discount || 0).toFixed(2)}`,
-      `$${(apt.tipAmount || 0).toFixed(2)}`,
+      fmtPrice(apt.service.price, currency),
+      fmtPrice(apt.discount || 0, currency),
+      fmtPrice(apt.tipAmount || 0, currency),
       apt.paymentMethod || 'N/A',
       apt.status,
     ]);
@@ -99,9 +103,8 @@ export default function ReportsClient({
   const inputStyle: React.CSSProperties = {};
   const isFiltered = dateFrom || dateTo;
 
-  const formatCurrency = (value: number) => {
-    // We default to INR via the global formatter to cater to the Indian market
-    return new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(value);
+  const formatCurrencyLocal = (value: number) => {
+    return fmtPrice(value, currency);
   };
 
   return (
@@ -219,9 +222,9 @@ export default function ReportsClient({
                         </div>
                         <div className="text-right shrink-0 ml-2">
                           {isRefunded ? (
-                            <span className="font-bold text-status-pending text-[13px] line-through">${paid.toFixed(2)}</span>
+                            <span className="font-bold text-status-pending text-[13px] line-through">{fmtPrice(paid, currency)}</span>
                           ) : (
-                            <span className="font-bold text-status-confirmed text-[13px]">${paid.toFixed(2)}</span>
+                            <span className="font-bold text-status-confirmed text-[13px]">{fmtPrice(paid, currency)}</span>
                           )}
                         </div>
                       </div>
@@ -266,21 +269,21 @@ export default function ReportsClient({
                           <td className="p-3 sm:p-4 text-crm-text font-medium">{apt.user.name || apt.user.email}</td>
                           <td className="p-3 sm:p-4 text-crm-accent">
                             <div>{apt.service.name}</div>
-                            {apt.tipAmount > 0 && <div className="text-[13px] text-status-pending">+${apt.tipAmount.toFixed(2)} tip</div>}
-                            {apt.discount > 0 && <div className="text-[13px] text-status-cancelled">-${apt.discount.toFixed(2)} disc.</div>}
+                            {apt.tipAmount > 0 && <div className="text-[13px] text-status-pending">+{fmtPrice(apt.tipAmount, currency)} tip</div>}
+                            {apt.discount > 0 && <div className="text-[13px] text-status-cancelled">-{fmtPrice(apt.discount, currency)} disc.</div>}
                           </td>
                           <td className="p-3 sm:p-4 text-crm-accent">{apt.staff?.name || '—'}</td>
                           <td className="p-3 sm:p-4 text-right font-bold">
                             {isRefunded ? (
-                              <span className="text-status-pending line-through">${paid.toFixed(2)}</span>
+                              <span className="text-status-pending line-through">{fmtPrice(paid, currency)}</span>
                             ) : (
-                              <span className="text-status-confirmed">${paid.toFixed(2)}</span>
+                              <span className="text-status-confirmed">{fmtPrice(paid, currency)}</span>
                             )}
                           </td>
                           <td className="p-3 sm:p-4 text-right">
                             {isRefunded ? (
                               <span className="text-[13px] text-status-pending bg-amber-900/20 border border-status-pending/20 px-2 py-1 rounded">
-                                💸 Refunded ${(apt.refundAmount || 0).toFixed(2)}
+                                💸 Refunded {fmtPrice(apt.refundAmount || 0, currency)}
                               </span>
                             ) : (
                               <RefundButton shopId={shopId} appointmentId={apt.id} totalAmount={paid} />
@@ -312,7 +315,7 @@ export default function ReportsClient({
                     <p className="text-crm-muted text-[13px]">{staff.count} services completed</p>
                   </div>
                   <div className="text-right">
-                    <p className="font-bold text-status-confirmed text-xl font-bold">${staff.revenue.toFixed(2)}</p>
+                    <p className="font-bold text-status-confirmed text-xl font-bold">{formatCurrencyLocal(staff.revenue)}</p>
                     <p className="text-crm-muted text-[13px]">{pct.toFixed(1)}% of total</p>
                   </div>
                 </div>
@@ -340,7 +343,7 @@ export default function ReportsClient({
                     <p className="text-crm-muted text-[13px]">{svc.count} times booked</p>
                   </div>
                   <div className="text-right">
-                    <p className="font-bold text-status-confirmed text-xl font-bold">${svc.revenue.toFixed(2)}</p>
+                    <p className="font-bold text-status-confirmed text-xl font-bold">{fmtPrice(svc.revenue, currency)}</p>
                     <p className="text-crm-muted text-[13px]">{pct.toFixed(1)}% of total</p>
                   </div>
                 </div>

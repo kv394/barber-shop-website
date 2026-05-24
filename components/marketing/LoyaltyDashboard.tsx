@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { fmtPrice } from '@/lib/formatters';
 
 interface Tier {
   name: string;
@@ -24,7 +25,7 @@ const TIER_COLORS: Record<string, string> = {
 };
 const TIER_ICONS: Record<string, string> = { Bronze: '🥉', Silver: '🥈', Gold: '🥇', Platinum: '💎' };
 
-export default function LoyaltyDashboard({ shopId }: { shopId: string }) {
+export default function LoyaltyDashboard({ shopId, currency }: { shopId: string, currency: string }) {
   const [program, setProgram] = useState<any>(null);
   const [accounts, setAccounts] = useState<any[]>([]);
   const [tiers, setTiers] = useState<Tier[]>(DEFAULT_TIERS);
@@ -115,7 +116,7 @@ export default function LoyaltyDashboard({ shopId }: { shopId: string }) {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
           <div>
-            <label className="block text-crm-muted mb-1 uppercase tracking-wider text-[13px]">Pts / $1 Spent</label>
+            <label className="block text-crm-muted mb-1 uppercase tracking-wider text-[13px]">Pts / {fmtPrice(1, currency)} Spent</label>
             <input type="number" step="0.1" min="0" value={form.pointsPerDollar}
               onChange={e => setForm(f => ({ ...f, pointsPerDollar: parseFloat(e.target.value) || 0 }))}
               className={inputClass} />
@@ -148,8 +149,8 @@ export default function LoyaltyDashboard({ shopId }: { shopId: string }) {
         </div>
 
         <div className="mt-4 p-3 bg-crm-primary/5 border border-brand-gold/20 rounded-lg text-[13px] text-crm-muted hover:opacity-90">
-          <strong className="text-crm-accent">How it works:</strong> Clients earn <strong>{form.pointsPerVisit} pts</strong> per visit + <strong>{form.pointsPerDollar} pts</strong> per $1 spent (base rate, multiplied by tier).
-          Redeem at <strong>{form.redeemThreshold} pts</strong> for <strong>${form.redeemValue.toFixed(2)}</strong> off.
+          <strong className="text-crm-accent">How it works:</strong> Clients earn <strong>{form.pointsPerVisit} pts</strong> per visit + <strong>{form.pointsPerDollar} pts</strong> per {fmtPrice(1, currency)} spent (base rate, multiplied by tier).
+          Redeem at <strong>{form.redeemThreshold} pts</strong> for <strong>{fmtPrice(form.redeemValue, currency)}</strong> off.
           {form.pointExpiryDays > 0 && <> Points expire after <strong>{form.pointExpiryDays} days</strong>.</>}
         </div>
 

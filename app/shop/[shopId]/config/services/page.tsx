@@ -35,8 +35,8 @@ export default async function ServicesConfigPage({ params }: { params: Promise<{
       shopId={shopId}
       userRole={data.userRole}
     >
-      <ServiceManagement shopId={shopId} />
-      <AddonManagement shopId={shopId} />
+      <ServiceManagement shopId={shopId} currency={data.shop.currency} />
+      <AddonManagement shopId={shopId} currency={data.shop.currency} />
     </ShopAdminLayout>
   );
 }

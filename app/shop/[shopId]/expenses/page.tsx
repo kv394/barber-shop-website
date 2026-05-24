@@ -41,7 +41,7 @@ export default async function ExpensesPage({ params }: { params: Promise<{ shopI
       shopId={shopId}
       userRole={data.userRole}
     >
-      <ExpensesClient shopId={shopId} />
+      <ExpensesClient shopId={shopId} currency={data.shop.currency} />
     </ShopAdminLayout>
   );
 }

@@ -114,7 +114,7 @@ export default async function ReportsPage({ params }: { params: Promise<{ shopId
       shopId={shopId}
       userRole={userRole as string}
     >
-      <ReportsClient appointments={recentCompletedAppointments} totalRevenue={totalRevenue} totalTips={totalTips} shopId={shopId} />
+      <ReportsClient appointments={recentCompletedAppointments} totalRevenue={totalRevenue} totalTips={totalTips} shopId={shopId} currency={shop.currency} />
     </ShopAdminLayout>
   );
 }

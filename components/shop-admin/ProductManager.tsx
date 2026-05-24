@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { fmtPrice } from '@/lib/formatters';
 import ProductInventoryManager from './ProductInventoryManager';
 import ProductBarcodeScannerWrapper from '@/components/checkout/ProductBarcodeScannerWrapper';
 import { QRCodeSVG } from 'qrcode.react';
@@ -9,7 +10,7 @@ import Barcode from 'react-barcode';
 import MediaPicker from './MediaPicker';
 import PurchaseOrderManager from './PurchaseOrderManager';
 
-export default function ProductManager({ shopId, products }: { shopId: string, products: any[] }) {
+export default function ProductManager({ shopId, products, currency }: { shopId: string, products: any[], currency: string }) {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState<'INVENTORY' | 'PO'>('INVENTORY');
   const [isAdding, setIsAdding] = useState(false);
@@ -167,7 +168,7 @@ export default function ProductManager({ shopId, products }: { shopId: string, p
       </div>
 
       {activeTab === 'PO' ? (
-        <PurchaseOrderManager shopId={shopId} products={products} />
+        <PurchaseOrderManager shopId={shopId} products={products} currency={currency} />
       ) : (
         <>
           {isAdding && (
@@ -280,7 +281,7 @@ export default function ProductManager({ shopId, products }: { shopId: string, p
                     </div>
                   </div>
                 </td>
-                <td className="px-6 py-4">${product.price.toFixed(2)}</td>                <td className="px-6 py-4">
+                <td className="px-6 py-4">{fmtPrice(product.price, currency)}</td>                <td className="px-6 py-4">
                   <span className={`px-2 py-1 rounded-full text-[11px] font-medium ${product.type === 'RETAIL' ? 'bg-status-info/20 text-status-info' : 'bg-crm-accent/20 text-crm-accent'}`}>
                     {product.type}
                   </span>

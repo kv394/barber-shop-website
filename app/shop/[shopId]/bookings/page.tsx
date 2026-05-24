@@ -3,6 +3,7 @@ import { createClient } from '@/utils/supabase/server';
 import { prisma } from '@/lib/prisma';
 import { getShopLayoutData } from '@/lib/shop-data';
 import { formatDateInShopTz, formatInShopTz, getTodayInShopTz, toShopTzDayBounds } from '@/lib/timezone';
+import { fmtPrice } from '@/lib/formatters';
 import Link from 'next/link';
 import DeleteAppointmentButton from '@/components/appointments/DeleteAppointmentButton';
 import CheckoutButton from '@/components/checkout/CheckoutButton';
@@ -156,6 +157,7 @@ export default async function BookingsPage({ params }: { params: Promise<{ shopI
                                 clientId={apt.userId} 
                                 clientName={apt.user?.name || "Guest"} 
                                 className="font-bold text-[17px] text-crm-text leading-tight truncate hover:text-crm-primary"
+                                currency={shop.currency}
                               />
                             ) : (
                               <h4 className="font-bold text-[17px] text-crm-text leading-tight truncate">{apt.user?.name || "Guest"}</h4>
@@ -170,7 +172,7 @@ export default async function BookingsPage({ params }: { params: Promise<{ shopI
                               {apt.service.name}
                             </span>
                             <span className="text-crm-muted text-[13px] font-medium">
-                              ${apt.service.price.toFixed(2)}
+                              {fmtPrice(apt.service.price, shop.currency)}
                             </span>
                           </div>
 
@@ -186,7 +188,7 @@ export default async function BookingsPage({ params }: { params: Promise<{ shopI
 
                         {/* Actions Column */}
                         <div className="w-full sm:w-auto flex flex-row flex-wrap sm:flex-nowrap sm:flex-col justify-end items-end gap-2 border-t sm:border-t-0 sm:border-l border-crm-border pt-4 sm:pt-0 sm:pl-6">
-                          {isWorkCompleted && <CheckoutButton shopId={shop.id} appointmentId={apt.id} price={apt.service.price} serviceName={apt.service.name} serviceId={apt.serviceId} shopName={shop.name} clientName={apt.user?.name || apt.user?.email || "Guest"} addons={apt.addons} />}
+                          {isWorkCompleted && <CheckoutButton shopId={shop.id} appointmentId={apt.id} price={apt.service.price} serviceName={apt.service.name} serviceId={apt.serviceId} shopName={shop.name} clientName={apt.user?.name || apt.user?.email || "Guest"} addons={apt.addons} currency={shop.currency} />}
                           {isAccepted && <CompleteWorkButton shopId={shop.id} appointmentId={apt.id} userName={apt.user?.name || apt.user?.email || "Guest"} />}
                           {isScheduled && <AcceptAppointmentButton shopId={shop.id} appointmentId={apt.id} userName={apt.user?.name || apt.user?.email || "Guest"} />}
                           {isActive && <NoShowButton shopId={shop.id} appointmentId={apt.id} userName={apt.user?.name || apt.user?.email || "Guest"} />}

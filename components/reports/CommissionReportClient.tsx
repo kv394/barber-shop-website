@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { fmtPrice } from '@/lib/formatters';
 
 interface StaffSummary {
   staffId: string;
@@ -28,12 +29,14 @@ export interface CommissionReportClientProps {
   shopId: string;
   staffId?: string;
   isPersonalView?: boolean;
+  currency: string;
 }
 
 export default function CommissionReportClient({
   shopId,
   staffId,
   isPersonalView = false,
+  currency,
 }: CommissionReportClientProps) {
   const [summary, setSummary] = useState<StaffSummary[]>([]);
   const [details, setDetails] = useState<DetailRow[]>([]);
@@ -100,7 +103,7 @@ export default function CommissionReportClient({
             <h3 className="text-crm-muted uppercase tracking-widest font-semibold truncate text-[11px]">{isPersonalView ? 'My Revenue' : 'Gross Revenue'}</h3>
             <span className="text-status-confirmed text-[13px]">💵</span>
           </div>
-          <p className="font-black text-crm-text break-words leading-tight text-xl font-bold">${totalRevenue.toFixed(0)}</p>
+          <p className="font-black text-crm-text break-words leading-tight text-xl font-bold">{fmtPrice(totalRevenue, currency)}</p>
         </div>
         <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-crm-surface transition-all duration-300 min-w-0">
           <div className="absolute top-0 left-0 w-full h-1 bg-status-info/80"></div>
@@ -108,7 +111,7 @@ export default function CommissionReportClient({
             <h3 className="text-crm-muted uppercase tracking-widest font-semibold truncate text-[11px]">{isPersonalView ? 'My Commission' : 'Commission'}</h3>
             <span className="text-status-info text-[13px]">💎</span>
           </div>
-          <p className="font-black text-crm-text break-words leading-tight text-xl font-bold">${totalCommission.toFixed(0)}</p>
+          <p className="font-black text-crm-text break-words leading-tight text-xl font-bold">{fmtPrice(totalCommission, currency)}</p>
         </div>
         <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-crm-surface transition-all duration-300 min-w-0">
           <div className="absolute top-0 left-0 w-full h-1 bg-status-pending/80"></div>
@@ -116,7 +119,7 @@ export default function CommissionReportClient({
             <h3 className="text-crm-muted uppercase tracking-widest font-semibold truncate text-[11px]">{isPersonalView ? 'My Tips' : 'Tips'}</h3>
             <span className="text-status-pending text-[13px]">🪙</span>
           </div>
-          <p className="font-black text-crm-text break-words leading-tight text-xl font-bold">${totalTips.toFixed(0)}</p>
+          <p className="font-black text-crm-text break-words leading-tight text-xl font-bold">{fmtPrice(totalTips, currency)}</p>
         </div>
         <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-crm-surface transition-all duration-300 min-w-0">
           <div className="absolute top-0 left-0 w-full h-1 bg-crm-accent/80"></div>
@@ -124,7 +127,7 @@ export default function CommissionReportClient({
             <h3 className="text-crm-muted uppercase tracking-widest font-semibold truncate text-[11px]">{isPersonalView ? 'My Total Pay' : 'Total Payout'}</h3>
             <span className="text-crm-accent text-[13px]">💳</span>
           </div>
-          <p className="font-black text-crm-text break-words leading-tight text-xl font-bold">${totalPayout.toFixed(0)}</p>
+          <p className="font-black text-crm-text break-words leading-tight text-xl font-bold">{fmtPrice(totalPayout, currency)}</p>
         </div>
       </div>
 
@@ -152,10 +155,10 @@ export default function CommissionReportClient({
                   <tr key={s.staffId} className="hover:bg-crm-surface/50 transition-colors">
                     <td className="p-3 sm:p-4 font-medium text-crm-text">{s.staffName}</td>
                     <td className="p-3 sm:p-4 text-right text-crm-muted">{s.servicesCount}</td>
-                    <td className="p-3 sm:p-4 text-right text-crm-muted">${s.grossRevenue.toFixed(2)}</td>
-                    <td className="p-3 sm:p-4 text-right font-medium text-status-info">${s.totalCommission.toFixed(2)}</td>
-                    <td className="p-3 sm:p-4 text-right font-medium text-status-pending">${s.totalTips.toFixed(2)}</td>
-                    <td className="p-3 sm:p-4 text-right text-crm-accent font-bold">${s.totalPayout.toFixed(2)}</td>
+                    <td className="p-3 sm:p-4 text-right text-crm-muted">{fmtPrice(s.grossRevenue, currency)}</td>
+                    <td className="p-3 sm:p-4 text-right font-medium text-status-info">{fmtPrice(s.totalCommission, currency)}</td>
+                    <td className="p-3 sm:p-4 text-right font-medium text-status-pending">{fmtPrice(s.totalTips, currency)}</td>
+                    <td className="p-3 sm:p-4 text-right text-crm-accent font-bold">{fmtPrice(s.totalPayout, currency)}</td>
                   </tr>
                 ))}
               </tbody>
@@ -185,9 +188,9 @@ export default function CommissionReportClient({
                     <tr key={i} className="hover:bg-crm-surface/50 transition-colors">
                       <td className="p-2 sm:p-3 text-crm-muted">{d.staffName}</td>
                       <td className="p-2 sm:p-3 text-crm-text">{d.serviceName}</td>
-                      <td className="p-2 sm:p-3 text-right text-crm-text font-medium">${d.serviceAmount.toFixed(2)}</td>
-                      <td className="p-2 sm:p-3 text-right text-status-pending font-medium">${d.tipAmount.toFixed(2)}</td>
-                      <td className="p-2 sm:p-3 text-right text-status-info font-medium">${d.commission.toFixed(2)}</td>
+                      <td className="p-2 sm:p-3 text-right text-crm-text font-medium">{fmtPrice(d.serviceAmount, currency)}</td>
+                      <td className="p-2 sm:p-3 text-right text-status-pending font-medium">{fmtPrice(d.tipAmount, currency)}</td>
+                      <td className="p-2 sm:p-3 text-right text-status-info font-medium">{fmtPrice(d.commission, currency)}</td>
                       <td className="p-2 sm:p-3 text-crm-muted text-[10px]">{d.rateValue}{d.rateType === 'PERCENTAGE' ? '%' : ' flat'} ({d.commissionSource})</td>
                     </tr>
                   ))}

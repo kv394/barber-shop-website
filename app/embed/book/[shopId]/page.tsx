@@ -16,7 +16,7 @@ export default async function EmbedBookPage({ params, searchParams }: { params: 
         { companyName: shopId }
       ]
     },
-    select: { id: true, customization: true }
+    select: { id: true, customization: true, currency: true }
   });
 
   if (!shop) {
@@ -24,7 +24,7 @@ export default async function EmbedBookPage({ params, searchParams }: { params: 
     const candidates = await prisma.shop.findMany({
       where: { name: { contains: firstWord, mode: 'insensitive' } },
       take: 50,
-      select: { id: true, name: true, customization: true }
+      select: { id: true, name: true, customization: true, currency: true }
     });
 
     shop = candidates.find(
@@ -36,7 +36,7 @@ export default async function EmbedBookPage({ params, searchParams }: { params: 
     if (shopId === 'missouri-city' || shopId === 'sugarland') {
       shop = await prisma.shop.findFirst({
          where: { id: 'cmn9kj24n0000lqzc7kcsmpst' },
-         select: { id: true, customization: true }
+         select: { id: true, customization: true, currency: true }
       });
     }
   }
@@ -84,7 +84,7 @@ export default async function EmbedBookPage({ params, searchParams }: { params: 
           .btn:hover, button.bg-crm-primary:hover, button[style*="background-color: ${primaryColor}"]:hover { background-color: ${primaryColor}20 !important; }
         ` : ''}
       `}} />
-      <BookingWizard shopId={actualShopId} themeColor={primaryColor} secondaryColor={actualSecondaryColor} templateType={templateType} />
+      <BookingWizard shopId={actualShopId} themeColor={primaryColor} secondaryColor={actualSecondaryColor} templateType={templateType} currency={shop?.currency || 'INR'} />
       </div>
       );
 }

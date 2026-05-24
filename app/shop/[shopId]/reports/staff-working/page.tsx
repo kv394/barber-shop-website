@@ -113,7 +113,7 @@ export default async function StaffWorkingPage({ params }: { params: Promise<{ s
       shopId={shopId}
       userRole={userRole as string}
     >
-      <StaffWorkingReport staffMembers={staffMembers} />
+      <StaffWorkingReport staffMembers={staffMembers} currency={shop.currency} />
     </ShopAdminLayout>
   );
 }

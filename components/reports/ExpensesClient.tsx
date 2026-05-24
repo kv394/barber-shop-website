@@ -1,10 +1,11 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { fmtPrice } from '@/lib/formatters';
 
 const CATEGORIES = ['RENT', 'SUPPLIES', 'UTILITIES', 'EQUIPMENT', 'MARKETING', 'OTHER'];
 
-export default function ExpensesClient({ shopId }: { shopId: string }) {
+export default function ExpensesClient({ shopId, currency }: { shopId: string, currency: string }) {
   const [expenses, setExpenses] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [month, setMonth] = useState(() => {
@@ -76,7 +77,7 @@ export default function ExpensesClient({ shopId }: { shopId: string }) {
               <h3 className="text-crm-muted uppercase tracking-widest font-semibold truncate text-[11px]">Total Expenses</h3>
               <span className="text-status-cancelled text-[13px]">💸</span>
             </div>
-            <p className="font-black text-crm-text break-words leading-tight text-xl font-bold">${total.toFixed(2)}</p>
+            <p className="font-black text-crm-text break-words leading-tight text-xl font-bold">{fmtPrice(total, currency)}</p>
           </div>
         </div>
       </div>
@@ -88,7 +89,7 @@ export default function ExpensesClient({ shopId }: { shopId: string }) {
             <div key={c.cat} className="bg-crm-surface p-3 rounded-lg border border-crm-border shadow-sm text-center">
               <p className="text-[13px]">{catEmojis[c.cat]}</p>
               <p className="text-crm-muted text-[13px]">{c.cat}</p>
-              <p className="font-bold text-crm-text text-xl font-bold">${c.total.toFixed(2)}</p>
+              <p className="font-bold text-crm-text text-xl font-bold">{fmtPrice(c.total, currency)}</p>
             </div>
           ))}
         </div>
@@ -131,7 +132,7 @@ export default function ExpensesClient({ shopId }: { shopId: string }) {
                 </div>
               </div>
               <div className="flex items-center gap-3">
-                <span className="font-bold text-status-cancelled">${exp.amount.toFixed(2)}</span>
+                <span className="font-bold text-status-cancelled">{fmtPrice(exp.amount, currency)}</span>
                 <button onClick={() => handleDelete(exp.id)} className="text-crm-muted hover:text-status-cancelled text-[11px]">✕</button>
               </div>
             </div>

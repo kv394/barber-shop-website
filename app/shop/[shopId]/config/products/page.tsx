@@ -45,7 +45,7 @@ export default async function ConfigProductsPage({ params }: { params: Promise<{
       userRole={userRole}
     >
       <div className="max-w-4xl mx-auto py-8">
-        <ProductManager shopId={shopId} products={products} />
+        <ProductManager shopId={shopId} products={products} currency={shop.currency} />
       </div>
     </ShopAdminLayout>
   );

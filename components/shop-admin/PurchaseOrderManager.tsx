@@ -2,8 +2,9 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { fmtPrice } from '@/lib/formatters';
 
-export default function PurchaseOrderManager({ shopId, products }: { shopId: string, products: any[] }) {
+export default function PurchaseOrderManager({ shopId, products, currency }: { shopId: string, products: any[], currency: string }) {
   const [purchaseOrders, setPurchaseOrders] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [isCreating, setIsCreating] = useState(false);
@@ -159,7 +160,7 @@ export default function PurchaseOrderManager({ shopId, products }: { shopId: str
                     <span className={`text-[11px] px-2 py-1 rounded-full font-bold uppercase ${po.status === 'RECEIVED' ? 'bg-status-confirmed/20 text-status-confirmed' : 'bg-status-pending/20 text-status-pending'}`}>
                       {po.status}
                     </span>
-                    <p className="font-bold mt-1">${po.totalAmount.toFixed(2)}</p>
+                    <p className="font-bold mt-1">{fmtPrice(po.totalAmount, currency)}</p>
                   </div>
                 </div>
 
@@ -168,7 +169,7 @@ export default function PurchaseOrderManager({ shopId, products }: { shopId: str
                   {po.items.map((item: any) => (
                     <div key={item.id} className="flex justify-between text-[13px]">
                        <span>{item.quantity}x {item.product.name}</span>
-                       <span className="text-crm-muted">${item.unitCost.toFixed(2)} / ea</span>
+                       <span className="text-crm-muted">{fmtPrice(item.unitCost, currency)} / ea</span>
                     </div>
                   ))}
                 </div>

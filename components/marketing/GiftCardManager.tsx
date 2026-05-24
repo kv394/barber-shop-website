@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { fmtPrice } from '@/lib/formatters';
 
 interface GiftCard {
   id: string;
@@ -15,7 +16,7 @@ interface GiftCard {
   createdAt: string;
 }
 
-export default function GiftCardManager({ shopId }: { shopId: string }) {
+export default function GiftCardManager({ shopId, currency }: { shopId: string, currency: string }) {
   const [cards, setCards] = useState<GiftCard[]>([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
@@ -59,11 +60,11 @@ export default function GiftCardManager({ shopId }: { shopId: string }) {
         <div className="flex gap-6">
           <div>
             <p className="text-crm-muted uppercase text-[13px]">Total Sold</p>
-            <p className="font-bold text-crm-accent text-xl font-bold">${totalSold.toFixed(0)}</p>
+            <p className="font-bold text-crm-accent text-xl font-bold">{fmtPrice(totalSold, currency)}</p>
           </div>
           <div>
             <p className="text-crm-muted uppercase text-[13px]">Outstanding</p>
-            <p className="font-bold text-status-confirmed text-xl font-bold">${totalValue.toFixed(0)}</p>
+            <p className="font-bold text-status-confirmed text-xl font-bold">{fmtPrice(totalValue, currency)}</p>
           </div>
           <div>
             <p className="text-crm-muted uppercase text-[13px]">Cards Issued</p>
@@ -124,8 +125,8 @@ export default function GiftCardManager({ shopId }: { shopId: string }) {
                 <tr key={card.id} className="border-b border-crm-border hover:bg-crm-surface">
                   <td className="p-3 font-mono text-crm-accent font-bold tracking-wider text-[11px]">{card.code}</td>
                   <td className="p-3 text-crm-muted">{card.recipientName || card.recipientEmail || '—'}</td>
-                  <td className="p-3 text-right text-crm-text">${card.initialBalance.toFixed(2)}</td>
-                  <td className="p-3 text-right font-semibold text-status-confirmed">${card.currentBalance.toFixed(2)}</td>
+                  <td className="p-3 text-right text-crm-text">{fmtPrice(card.initialBalance, currency)}</td>
+                  <td className="p-3 text-right font-semibold text-status-confirmed">{fmtPrice(card.currentBalance, currency)}</td>
                   <td className="p-3 text-center">
                     <span className={`text-[13px] font-bold px-2 py-0.5 rounded-full ${card.status === 'ACTIVE' ? 'bg-status-confirmed/20 text-status-confirmed' : card.status === 'REDEEMED' ? 'bg-status-info/20 text-status-info' : 'bg-crm-surface/40 text-crm-muted'}`}>
                       {card.status}

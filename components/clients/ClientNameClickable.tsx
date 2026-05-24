@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import ClientDetailModal from '@/components/clients/ClientDetailModal';
 
-export default function ClientNameClickable({ shopId, clientId, clientName, className }: { shopId: string, clientId: string, clientName: string, className?: string }) {
+export default function ClientNameClickable({ shopId, clientId, clientName, className, currency = 'USD' }: { shopId: string, clientId: string, clientName: string, className?: string, currency?: string }) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -20,6 +20,7 @@ export default function ClientNameClickable({ shopId, clientId, clientName, clas
           clientId={clientId} 
           clientName={clientName} 
           onClose={() => setIsOpen(false)} 
+          currency={currency}
         />
       )}
     </>

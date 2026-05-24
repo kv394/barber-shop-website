@@ -1,8 +1,9 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { fmtPrice } from '@/lib/formatters';
 
-export default function EngagementAnalytics({ shopId }: { shopId: string }) {
+export default function EngagementAnalytics({ shopId, currency }: { shopId: string, currency: string }) {
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
@@ -141,7 +142,7 @@ export default function EngagementAnalytics({ shopId }: { shopId: string }) {
                       <p className="text-crm-muted truncate text-[13px]">{c.email}</p>
                     </td>
                     <td className="py-2 px-2 text-right text-status-info font-semibold">{c.visitCount}</td>
-                    <td className="py-2 px-2 text-right text-status-confirmed font-semibold">${c.totalSpend.toFixed(0)}</td>
+                    <td className="py-2 px-2 text-right text-status-confirmed font-semibold">{fmtPrice(c.totalSpend, currency)}</td>
                     <td className="py-2 px-2 text-right text-crm-accent font-semibold">{c.loyaltyPoints}</td>
                   </tr>
                 ))}

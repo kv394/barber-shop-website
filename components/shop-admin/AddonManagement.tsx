@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { fmtPrice } from '@/lib/formatters';
 
 interface ServiceAddon {
   id: string;
@@ -11,9 +12,10 @@ interface ServiceAddon {
 
 interface AddonManagementProps {
   shopId: string;
+  currency: string;
 }
 
-export function AddonManagement({ shopId }: AddonManagementProps) {
+export function AddonManagement({ shopId, currency }: AddonManagementProps) {
   const [addons, setAddons] = useState<ServiceAddon[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -186,7 +188,7 @@ export function AddonManagement({ shopId }: AddonManagementProps) {
                   <div className="mb-4">
                     <h4 className="font-semibold text-crm-text text-base">{addon.name}</h4>
                     <p className="text-crm-muted text-[13px]">
-                      +${addon.price.toFixed(2)} {addon.durationMin > 0 ? `• Adds ${addon.durationMin} min` : ''}
+                      +{fmtPrice(addon.price, currency)} {addon.durationMin > 0 ? `• Adds ${addon.durationMin} min` : ''}
                     </p>
                   </div>
                   <button

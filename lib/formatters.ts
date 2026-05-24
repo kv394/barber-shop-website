@@ -1,22 +1,49 @@
 /**
- * Formats a number as a currency string.
- * Defaults to INR (Indian Rupees) and en-IN locale to cater to the Indian market.
+ * Formats a number as a currency string using Intl.NumberFormat.
+ * Pass the shop's currency and locale for correct formatting.
  */
 export function formatCurrency(
   value: number,
-  currencyCode: string = 'INR',
-  locale: string = 'en-IN'
+  currencyCode: string = 'USD',
+  locale: string = 'en-US'
 ): string {
   try {
     return new Intl.NumberFormat(locale, {
       style: 'currency',
       currency: currencyCode,
-      maximumFractionDigits: 0, // In India, decimals are rarely shown unless strictly necessary
+      maximumFractionDigits: currencyCode === 'INR' ? 0 : 2,
     }).format(value);
   } catch (error) {
-    // Fallback if the environment does not support the locale/currency
-    return `${currencyCode === 'INR' ? '₹' : '$'}${value.toLocaleString()}`;
+    const symbol = getCurrencySymbol(currencyCode);
+    return `${symbol}${value.toLocaleString()}`;
   }
+}
+
+/**
+ * Returns the currency symbol for a given currency code.
+ */
+export function getCurrencySymbol(currencyCode: string = 'USD'): string {
+  const symbols: Record<string, string> = {
+    USD: '$',
+    INR: '₹',
+    EUR: '€',
+    GBP: '£',
+    AUD: 'A$',
+    CAD: 'C$',
+  };
+  return symbols[currencyCode] || currencyCode;
+}
+
+/**
+ * Quick price formatter — returns symbol + value (e.g. "$25.00" or "₹500").
+ * Use this in JSX where you need a simple inline price display.
+ */
+export function fmtPrice(value: number, currencyCode: string = 'USD'): string {
+  const symbol = getCurrencySymbol(currencyCode);
+  if (currencyCode === 'INR') {
+    return `${symbol}${Math.round(value).toLocaleString('en-IN')}`;
+  }
+  return `${symbol}${value.toFixed(2)}`;
 }
 
 /**
@@ -34,3 +61,4 @@ export function formatPhoneNumberIN(phone: string): string {
   
   return cleaned;
 }
+

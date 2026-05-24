@@ -115,7 +115,7 @@ export default async function ClientsPage({ params, searchParams }: { params: Pr
         <p className="text-crm-muted italic text-center py-8 sm:py-12 border border-dashed border-crm-border rounded text-[13px]">No clients registered to this shop yet.</p>
       ) : (
         <>
-          <ClientGrid clients={clients} shopId={shopId} initialSelectedClientId={resolvedSearchParams.openClient} />
+          <ClientGrid clients={clients} shopId={shopId} initialSelectedClientId={resolvedSearchParams.openClient} currency={shop.currency} />
           
           {totalPages > 1 && (
             <div className="flex justify-center mt-8 gap-2">

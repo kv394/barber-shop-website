@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { fmtPrice } from '@/lib/formatters';
 import MediaPicker from './MediaPicker';
 
 interface ServiceAddon {
@@ -26,9 +27,10 @@ interface Service {
 
 interface ServiceManagementProps {
   shopId: string;
+  currency: string;
 }
 
-export function ServiceManagement({ shopId }: ServiceManagementProps) {
+export function ServiceManagement({ shopId, currency }: ServiceManagementProps) {
   const [services, setServices] = useState<Service[]>([]);
   const [allAddons, setAllAddons] = useState<ServiceAddon[]>([]);
   const [resources, setResources] = useState<any[]>([]);
@@ -431,7 +433,7 @@ export function ServiceManagement({ shopId }: ServiceManagementProps) {
                         }`}
                       >
                         {isSelected && <span>✓</span>}
-                        {addon.name} (+${addon.price})
+                        {addon.name} (+{fmtPrice(addon.price, currency)})
                       </button>
                     );
                   })}
@@ -633,7 +635,7 @@ export function ServiceManagement({ shopId }: ServiceManagementProps) {
                         </div>
                       )}
                       <div className="flex gap-4 sm:gap-6 mt-2 text-[11px] sm:text-[13px] text-crm-muted">
-                        <span>💰 ${service.price.toFixed(2)}</span>
+                        <span>💰 {fmtPrice(service.price, currency)}</span>
                         <span>⏱️ {service.duration} minutes</span>
                       </div>
                       
@@ -657,7 +659,7 @@ export function ServiceManagement({ shopId }: ServiceManagementProps) {
                                   }`}
                                 >
                                   {isSelected && <span>✓</span>}
-                                  {addon.name} (+${addon.price})
+                                  {addon.name} (+{fmtPrice(addon.price, currency)})
                                 </button>
                               );
                             })}

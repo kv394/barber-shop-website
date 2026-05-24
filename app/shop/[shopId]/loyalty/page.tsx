@@ -34,7 +34,7 @@ export default async function LoyaltyPage({ params }: { params: Promise<{ shopId
       shopId={shopId}
       userRole={data.userRole}
     >
-      <LoyaltyDashboard shopId={shopId} />
+      <LoyaltyDashboard shopId={shopId} currency={data.shop.currency} />
     </ShopAdminLayout>
   );
 }
