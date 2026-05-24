@@ -122,8 +122,10 @@ export async function GET(
       };
     });
 
-    // 4. Send to Gemini for narrative insights
-    const prompt = `You are an inventory analyst for a barbershop/salon. Analyze the following product inventory data and generate actionable insights.
+    // 4. Send to Gemini for narrative insights, with a programmatic fallback
+    let insights = [];
+    try {
+      const prompt = `You are an inventory analyst for a barbershop/salon. Analyze the following product inventory data and generate actionable insights.
 
 ## INVENTORY DATA
 ${JSON.stringify(productMetrics, null, 2)}
@@ -161,28 +163,91 @@ Rules:
 - Keep predictions and recommendations under 100 characters each
 - Maximum 5 insights`;
 
-    const response = await ai.models.generateContent({
-      model: 'gemini-2.5-flash',
-      contents: [
-        {
-          role: 'user',
-          parts: [{ text: prompt }],
+      const response = await ai.models.generateContent({
+        model: 'gemini-2.5-flash',
+        contents: [
+          {
+            role: 'user',
+            parts: [{ text: prompt }],
+          },
+        ],
+        config: {
+          responseMimeType: 'application/json',
         },
-      ],
-      config: {
-        responseMimeType: 'application/json',
-      },
-    });
+      });
 
-    const resultText = response.candidates?.[0]?.content?.parts?.[0]?.text;
-    if (!resultText) {
-      throw new Error('No response from AI');
+      const resultText = response.candidates?.[0]?.content?.parts?.[0]?.text;
+      if (!resultText) {
+        throw new Error('No response from AI');
+      }
+
+      const parsed = JSON.parse(resultText);
+      insights = parsed.insights || [];
+    } catch (aiError: any) {
+      logger.warn('AI Forecast failed, falling back to programmatic algorithm:', aiError.message);
+      
+      // Basic algorithmic fallback
+      const fallbackInsights = [];
+      for (const pm of productMetrics) {
+        if (pm.currentStock === 0) {
+          fallbackInsights.push({
+            productName: pm.name,
+            urgency: 'critical',
+            prediction: 'Out of stock',
+            recommendation: 'Order more immediately',
+            estimatedDaysRemaining: 0,
+            icon: '🚨'
+          });
+        } else if (pm.estimatedDaysRemaining <= 7 && pm.avgDailyUsage > 0) {
+          fallbackInsights.push({
+            productName: pm.name,
+            urgency: 'critical',
+            prediction: `Will run out in ~${pm.estimatedDaysRemaining} days`,
+            recommendation: 'Order more immediately to avoid stockout',
+            estimatedDaysRemaining: pm.estimatedDaysRemaining,
+            icon: '🚨'
+          });
+        } else if (pm.estimatedDaysRemaining <= 30 && pm.avgDailyUsage > 0) {
+          fallbackInsights.push({
+            productName: pm.name,
+            urgency: 'warning',
+            prediction: `Will run out in ~${pm.estimatedDaysRemaining} days`,
+            recommendation: 'Consider reordering soon',
+            estimatedDaysRemaining: pm.estimatedDaysRemaining,
+            icon: '⚠️'
+          });
+        } else if (pm.reorderPoint !== null && pm.currentStock <= pm.reorderPoint) {
+          fallbackInsights.push({
+            productName: pm.name,
+            urgency: 'warning',
+            prediction: 'Stock is at or below reorder point',
+            recommendation: 'Time to reorder',
+            estimatedDaysRemaining: pm.estimatedDaysRemaining,
+            icon: '⚠️'
+          });
+        }
+      }
+      
+      if (fallbackInsights.length === 0 && productMetrics.length > 0) {
+        fallbackInsights.push({
+          productName: 'All Products',
+          urgency: 'info',
+          prediction: 'Inventory levels are healthy',
+          recommendation: 'No immediate action required',
+          estimatedDaysRemaining: 999,
+          icon: '✅'
+        });
+      }
+
+      // Sort by urgency
+      const sortOrder: Record<string, number> = { critical: 0, warning: 1, info: 2 };
+      fallbackInsights.sort((a, b) => sortOrder[a.urgency] - sortOrder[b.urgency]);
+      
+      insights = fallbackInsights.slice(0, 5);
     }
 
-    const parsed = JSON.parse(resultText);
-
     return NextResponse.json({
-      insights: parsed.insights || [],
+      insights: insights,
       generatedAt: new Date().toISOString(),
       productCount: products.length,
       appointmentCount30d: last30DaysCount,
