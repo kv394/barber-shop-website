@@ -122,7 +122,8 @@ export default function ShopMobileBottomNav({
     bell: <><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></>,
     creditCard: <><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></>,
     terminal: <><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></>,
-    menu: <><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></>
+    menu: <><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></>,
+    idCard: <><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><circle cx="9" cy="11" r="3"></circle><line x1="14" y1="11" x2="18" y2="11"></line><line x1="14" y1="15" x2="18" y2="15"></line></>
   };
 
   return (
@@ -161,7 +162,7 @@ export default function ShopMobileBottomNav({
 
           {section === 'team' && (
             <div className="flex w-full justify-around min-w-max px-2">
-              {navLink(`/shop/${shopId}/settings/team`, 'Team', icons.users, true)}
+              {navLink(`/shop/${shopId}/settings/team`, 'Team', icons.idCard, true)}
               {navLink(`/shop/${shopId}/portfolio`, 'Portfolio', icons.image, true)}
             </div>
           )}

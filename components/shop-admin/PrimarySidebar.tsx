@@ -25,7 +25,9 @@ export default function PrimarySidebar({
     calendar: <><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></>,
     heart: <><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></>,
     chart: <><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></>,
-    clock: <><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></>
+    clock: <><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></>,
+    badge: <><path d="M3 7v4a1 1 0 0 0 1 1h3"></path><path d="M7 7v10"></path><path d="M10 9L12 7l2 2"></path><path d="M12 7v10"></path><path d="M15 11l2-2 2 2"></path><path d="M17 9v8"></path></>,
+    idCard: <><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><circle cx="9" cy="11" r="3"></circle><line x1="14" y1="11" x2="18" y2="11"></line><line x1="14" y1="15" x2="18" y2="15"></line></>
   };
 
   const navLink = (href: string, label: string, iconPath: React.ReactNode, isActiveCheck: () => boolean) => {
@@ -70,7 +72,7 @@ export default function PrimarySidebar({
             
             <div className="w-8 h-px bg-crm-border/50 my-1"></div>
             
-            {navLink(`/shop/${shopId}/settings/team`, 'Team', icons.users, () => pathname.startsWith(`/shop/${shopId}/settings/team`) || pathname.startsWith(`/shop/${shopId}/portfolio`))}
+            {navLink(`/shop/${shopId}/settings/team`, 'Team', icons.idCard, () => pathname.startsWith(`/shop/${shopId}/settings/team`) || pathname.startsWith(`/shop/${shopId}/portfolio`))}
             {navLink(`/shop/${shopId}/engagement`, 'Engagement', icons.heart, () => ['/engagement', '/loyalty', '/referrals', '/campaigns', '/gift-cards', '/reviews'].some(p => pathname.startsWith(`/shop/${shopId}${p}`)))}
             {navLink(`/shop/${shopId}/reports`, 'Reports', icons.chart, () => ['/reports', '/expenses'].some(p => pathname.startsWith(`/shop/${shopId}${p}`)))}
             {navLink(`/shop/${shopId}/settings`, 'Settings', icons.settings, () => (pathname.startsWith(`/shop/${shopId}/settings`) || pathname.startsWith(`/shop/${shopId}/config`)) && !pathname.startsWith(`/shop/${shopId}/settings/team`))}
