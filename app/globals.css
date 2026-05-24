@@ -18,7 +18,23 @@ body {
 /* ===== Modern Gradient Backgrounds ===== */
 @layer utilities {
   .bg-modern-gradient {
-    background: #F9FAFB;
+    /* Subtle warm glow fading into standard app background */
+    background: radial-gradient(circle at 50% -20%, #fef3f0 0%, #f4f5f7 40%, #f4f5f7 100%);
+  }
+
+  .animate-page-in {
+    animation: slideUpFade 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+}
+
+@keyframes slideUpFade {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 

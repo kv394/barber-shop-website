@@ -36,10 +36,10 @@ export default function PrimarySidebar({
       <Link 
         href={href} 
         title={label}
-        className={`flex items-center justify-center w-10 h-10 rounded-xl transition-all duration-200 ${
+        className={`flex items-center justify-center w-10 h-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95 ${
           active 
             ? 'bg-crm-primary text-white shadow-md' 
-            : 'text-crm-muted hover:text-crm-text hover:bg-crm-surface'
+            : 'text-crm-muted hover:text-crm-primary hover:bg-[#FFF5F2]'
         }`}
       >
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={active ? "2.5" : "2"} strokeLinecap="round" strokeLinejoin="round">
