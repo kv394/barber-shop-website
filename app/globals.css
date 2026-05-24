@@ -38,13 +38,14 @@ body {
   }
 }
 
-/* ===== Force time & date pickers to match the Botanical Utility theme ===== */
+/* ===== Force time & date pickers to match the Premium Glass theme ===== */
 input[type="time"],
 input[type="date"] {
   color-scheme: light;
-  color: #2A2C31 !important; /* Deep Charcoal */
-  background-color: #FFFFFF !important; /* Pure White */
-  border: 1px solid #E2E0D9 !important; /* Oatmeal */
+  color: #1f2937 !important; /* crm-text */
+  background-color: rgba(255, 255, 255, 0.6) !important; /* Glass effect */
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.4) !important; /* Glass border */
   border-radius: 0.5rem;
   padding: 0.625rem 0.75rem;
   font-size: 0.875rem;
@@ -54,12 +55,20 @@ input[type="date"] {
   width: 100%;
   -webkit-appearance: none;
   appearance: none;
-  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); /* shadow-sm equivalent */
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
   position: relative;
   padding-right: 2.5rem;
   background-repeat: no-repeat;
+  transition: all 0.2s ease-in-out;
   background-position: right 0.75rem center;
   background-size: 1.25rem;
+}
+
+input[type="time"]:focus,
+input[type="date"]:focus {
+  outline: none;
+  border-color: #4F46E5 !important; /* brand-gold / Indigo */
+  box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.2);
 }
 
 input[type="date"] {

@@ -50,8 +50,8 @@ export default function PrimarySidebar({
   };
 
   return (
-    <aside className="hidden md:flex flex-col w-16 bg-crm-bg border-r border-crm-border flex-shrink-0 z-20">
-      <div className="h-16 flex items-center justify-center border-b border-crm-border relative z-50">
+    <aside className="hidden md:flex flex-col w-16 bg-white/40 backdrop-blur-xl border-r border-white/40 flex-shrink-0 z-20">
+      <div className="h-16 flex items-center justify-center border-b border-white/40 relative z-50">
         <ShopSwitcher 
           currentShopId={shopId} 
           currentShopName={shopName} 

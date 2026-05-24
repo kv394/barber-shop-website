@@ -14,10 +14,10 @@ export default function SiteAdminSidebarLinks() {
     return (
       <Link 
         href={href} 
-        className={`block px-3 py-2 rounded-lg text-[14px] font-medium transition-colors ${
+        className={`block px-3 py-2 rounded-lg text-[13px] font-medium transition-colors ${
           active 
             ? 'bg-[#FFF5F2] text-[#ea580c] font-semibold' 
-            : 'text-crm-muted hover:text-crm-text hover:bg-crm-bg'
+            : 'text-crm-muted hover:text-[#ea580c] hover:bg-[#FFF5F2]'
         }`}
       >
         {label}

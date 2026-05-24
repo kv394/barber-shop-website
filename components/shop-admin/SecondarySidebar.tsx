@@ -125,8 +125,8 @@ export default function SecondarySidebar({ shopId, userRole }: { shopId: string,
   };
 
   return (
-    <aside className="hidden md:flex flex-col w-56 bg-crm-surface border-r border-crm-border flex-shrink-0 z-10">
-      <div className="h-16 flex items-center px-4 border-b border-crm-border">
+    <aside className="hidden md:flex flex-col w-56 bg-white/60 backdrop-blur-xl border-r border-white/40 flex-shrink-0 z-10">
+      <div className="h-16 flex items-center px-4 border-b border-white/40">
         <span className="font-bold text-lg tracking-tight text-crm-text capitalize">{section}</span>
       </div>
       <nav className="flex-1 overflow-y-auto py-2 px-2">

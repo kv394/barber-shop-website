@@ -51,7 +51,7 @@ export default async function SiteAdminDashboard() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
         {/* User Breakdown */}
-        <div className="bg-crm-surface rounded-xl border border-crm-border shadow-sm p-6">
+        <div className="bg-white/60 backdrop-blur-xl rounded-xl border border-white/40 shadow-sm shadow-brand-gold/5 p-6">
           <h2 className="font-bold text-crm-text mb-4 text-xl font-bold">👥 Users by Role</h2>
           <div className="space-y-3">
             {(['SITE_ADMIN', 'SHOP_ADMIN', 'STAFF', 'CLIENT', 'ATTENDANCE_KIOSK'] as const).map(role => (
@@ -66,7 +66,7 @@ export default async function SiteAdminDashboard() {
         </div>
 
         {/* Recent Shops */}
-        <div className="bg-crm-surface rounded-xl border border-crm-border shadow-sm p-6">
+        <div className="bg-white/60 backdrop-blur-xl rounded-xl border border-white/40 shadow-sm shadow-brand-gold/5 p-6">
           <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-4">
             <h2 className="font-bold text-crm-text text-xl font-bold">🏪 Recent Shops & Locations</h2>
             <Link href="/siteadmin/shops" className="text-crm-accent text-[13px] hover:underline">
@@ -113,18 +113,18 @@ export default async function SiteAdminDashboard() {
 
 function KpiCard({ label, value, color }: { label: string; value: string | number; color: string }) {
   const colorMap: Record<string, string> = {
-    blue: 'from-blue-900/40 to-blue-800/20 border-status-info/30 text-status-info',
-    purple: 'from-purple-900/40 to-purple-800/20 border-crm-accent/30 text-crm-accent',
-    green: 'from-green-900/40 to-green-800/20 border-status-confirmed/30 text-status-confirmed',
-    amber: 'from-amber-900/40 to-amber-800/20 border-status-pending/30 text-status-pending',
-    cyan: 'from-cyan-900/40 to-cyan-800/20 border-cyan-500/30 text-cyan-400',
-    red: 'from-red-900/40 to-red-800/20 border-status-cancelled/30 text-status-cancelled',
+    blue: 'bg-white/60 border-white/40 shadow-brand-gold/5 text-status-info',
+    purple: 'bg-white/60 border-white/40 shadow-brand-gold/5 text-crm-accent',
+    green: 'bg-white/60 border-white/40 shadow-brand-gold/5 text-status-confirmed',
+    amber: 'bg-white/60 border-white/40 shadow-brand-gold/5 text-status-pending',
+    cyan: 'bg-white/60 border-white/40 shadow-brand-gold/5 text-cyan-600',
+    red: 'bg-white/60 border-white/40 shadow-brand-gold/5 text-status-cancelled',
   };
   const classes = colorMap[color] || colorMap.blue;
   const textColor = classes.split(' ').pop() || 'text-crm-text';
 
   return (
-    <div className={`bg-gradient-to-br ${classes} border p-4 rounded-xl text-center`}>
+    <div className={`backdrop-blur-xl ${classes} border shadow-sm p-4 rounded-xl text-center transition-transform hover:scale-105`}>
       <p className={`font-black ${textColor} text-3xl sm:text-4xl`}>{value}</p>
       <p className="text-[11px] text-crm-muted uppercase tracking-wider mt-1">{label}</p>
     </div>

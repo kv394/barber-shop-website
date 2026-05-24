@@ -23,16 +23,16 @@ export default async function SiteAdminLayout({ children }: { children: React.Re
   return (
     <div className="flex h-[100dvh] overflow-hidden bg-crm-bg text-crm-text">
       {/* Persistent Left Sidebar */}
-      <aside className="hidden md:flex flex-col w-64 bg-crm-surface border-r border-crm-border flex-shrink-0 z-10 shadow-sm">
-        <div className="h-16 flex items-center px-6 border-b border-crm-border">
+      <aside className="hidden md:flex flex-col w-64 bg-white/60 backdrop-blur-xl border-r border-white/40 flex-shrink-0 z-10 shadow-sm">
+        <div className="h-16 flex items-center px-6 border-b border-white/40">
            <Link href="/siteadmin" className="font-bold text-xl tracking-tight flex items-center gap-2">
-             <span className="text-crm-text">Barber</span><span className="text-crm-primary">SaaS</span>
+             <span className="text-crm-text">Kutz</span><span className="text-crm-primary">Admin</span>
            </Link>
         </div>
         <nav className="flex-1 overflow-y-auto py-4 px-3">
           <SiteAdminSidebarLinks />
         </nav>
-        <div className="p-4 border-t border-crm-border flex items-center justify-between">
+        <div className="p-4 border-t border-white/40 flex items-center justify-between">
           <div>
             <span className="block text-[11px] font-semibold text-crm-muted uppercase tracking-wider mb-2">SITE ADMIN</span>
             <SupabaseAuthButton redirectUrl="/" />
@@ -45,8 +45,9 @@ export default async function SiteAdminLayout({ children }: { children: React.Re
         <MobileHeader />
 
         {/* Main Scrolling Area */}
-        <main className="flex-1 overflow-y-auto bg-gradient-to-br from-gray-200 to-white p-4 md:p-8 pt-8 pb-24 md:pb-8">
-          <div className="mx-auto max-w-7xl">
+        <main className="flex-1 overflow-y-auto bg-crm-bg relative p-4 md:p-8 pt-8 pb-24 md:pb-8">
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-brand-gold/10 via-crm-bg/20 to-crm-bg pointer-events-none"></div>
+          <div className="mx-auto max-w-7xl relative z-10">
             {children}
           </div>
         </main>
