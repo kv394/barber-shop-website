@@ -62,6 +62,7 @@ export default function TeamDashboardClient({
                       <h2 className="font-bold text-crm-text mb-0.5 flex items-center gap-2 text-xl font-bold">
                         {staffMember.name || staffMember.email.split('@')[0]}
                         {staffMember.role === 'SHOP_ADMIN' && <span className="text-[11px] bg-crm-primary/20 text-crm-primary px-1.5 py-0.5 rounded uppercase tracking-wider font-bold hover:opacity-90">Admin</span>}
+                        {staffMember.role === 'BOOTH_RENTER' && <span className="text-[11px] bg-amber-100 text-amber-700 px-1.5 py-0.5 rounded uppercase tracking-wider font-bold hover:opacity-90">Booth Renter</span>}
                       </h2>
                       <p className="text-crm-muted text-[13px]">{staffMember.email}</p>
                     </div>

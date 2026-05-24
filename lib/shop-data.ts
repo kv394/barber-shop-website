@@ -44,7 +44,7 @@ export const getShopLayoutData = cache(async (userId: string, shopId: string) =>
 
       const isSiteAdmin = effectiveRole === 'SITE_ADMIN';
       const isShopAdmin = effectiveRole === 'SHOP_ADMIN'; // Broadened for 'all'
-      const isStaff = effectiveRole === 'STAFF';
+      const isStaff = effectiveRole === 'STAFF' || effectiveRole === 'BOOTH_RENTER';
 
       if (!isSiteAdmin && !isShopAdmin && !isStaff) return null;
 

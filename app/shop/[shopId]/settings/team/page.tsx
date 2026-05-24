@@ -19,8 +19,8 @@ async function getPageData(shopId: string, userId: string, date: string) {
   const targetDate = new Date(date);
   
   // Site Admins manage SHOP_ADMINs and ATTENDANCE_KIOSKs. 
-  // Shop Admins manage STAFF.
-  const rolesToFetch: any[] = data.isSiteAdmin ? ['SHOP_ADMIN', 'ATTENDANCE_KIOSK'] : ['SHOP_ADMIN', 'STAFF'];
+  // Shop Admins manage STAFF and BOOTH_RENTERs.
+  const rolesToFetch: any[] = data.isSiteAdmin ? ['SHOP_ADMIN', 'ATTENDANCE_KIOSK'] : ['SHOP_ADMIN', 'STAFF', 'BOOTH_RENTER'];
   
   const [allStaff, kioskUser] = await Promise.all([
     prisma.user.findMany({
@@ -95,7 +95,7 @@ async function getPageData(shopId: string, userId: string, date: string) {
 async function inviteUser(formData: FormData) {
   'use server';
   const email = formData.get('email') as string;
-  const role = formData.get('role') as 'SHOP_ADMIN' | 'STAFF' | 'ATTENDANCE_KIOSK';
+  const role = formData.get('role') as 'SHOP_ADMIN' | 'STAFF' | 'BOOTH_RENTER' | 'ATTENDANCE_KIOSK';
   const shopId = formData.get('shopId') as string;
   if (!email || !role || !shopId) return;
 
@@ -123,6 +123,8 @@ async function inviteUser(formData: FormData) {
   if (!callerHasAccess) return;
   // Only SITE_ADMIN can assign SHOP_ADMIN or ATTENDANCE_KIOSK roles
   if ((role === 'SHOP_ADMIN' || role === 'ATTENDANCE_KIOSK') && caller.role !== 'SITE_ADMIN') return;
+  // BOOTH_RENTER can be assigned by SHOP_ADMIN or SITE_ADMIN
+  if (role !== 'STAFF' && role !== 'BOOTH_RENTER' && role !== 'SHOP_ADMIN' && role !== 'ATTENDANCE_KIOSK') return;
 
   const existingUser = await prisma.user.findUnique({ where: { email } });
   if (existingUser) {
@@ -382,6 +384,7 @@ export default async function TeamDashboardPage({ params, searchParams }: { para
               <select name="role" defaultValue={userRole === 'SITE_ADMIN' ? 'SHOP_ADMIN' : 'STAFF'}
                 className="w-full p-2.5 rounded-lg border border-crm-border shadow-sm bg-crm-surface text-crm-text text-[13px] focus:ring-2 focus:ring-crm-primary focus:outline-none transition-all">
                 {userRole === 'SHOP_ADMIN' && <option value="STAFF">Staff</option>}
+                {userRole === 'SHOP_ADMIN' && <option value="BOOTH_RENTER">Booth Renter</option>}
                 {userRole === 'SITE_ADMIN' && (
                   <>
                     <option value="SHOP_ADMIN">Shop Admin</option>

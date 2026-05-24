@@ -187,7 +187,7 @@ export default function StaffProfileModalWrapper({ staff, shopId, children }: { 
               <h2 className="font-bold text-crm-primary mb-1 text-center text-xl">{staff.name || staff.email || 'Unnamed Staff'}</h2>
               <div className="flex gap-2 mb-6 justify-center">
                 <span className="text-[11px] bg-crm-primary/20 text-crm-accent px-3 py-1 rounded-full uppercase tracking-wider font-bold hover:opacity-90">
-                  {staff.role?.replace('_', ' ')}
+                  {staff.role === 'BOOTH_RENTER' ? 'Booth Renter' : staff.role?.replace(/_/g, ' ')}
                 </span>
                 <span className="text-[11px] bg-crm-surface border border-crm-border text-crm-text px-3 py-1 rounded-full uppercase tracking-wider font-bold hover:opacity-90">
                   {staff.employmentType || 'W2'}
