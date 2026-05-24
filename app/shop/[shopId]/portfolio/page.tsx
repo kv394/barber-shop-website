@@ -24,7 +24,7 @@ export default async function StaffPortfolioPage({ params }: { params: Promise<{
 
   return (
     <ShopAdminLayout shopName={data.shop.name} shopSlug={data.shopSlug} pageTitle={data.isSiteAdmin ? 'Staff Portfolio' : undefined} shopId={shopId} userRole={data.userRole}>
-      <PortfolioManager shopId={shopId} currentUserId={userId} userRole={data.userRole as string} />
+      <PortfolioManager shopId={shopId} currentUserId={data.user.id} userRole={data.userRole as string} />
     </ShopAdminLayout>
   );
 }
