@@ -38,11 +38,14 @@ export default function InventoryForecast({ shopId }: { shopId: string }) {
   const [error, setError] = useState<string | null>(null);
   const [generatedAt, setGeneratedAt] = useState<string | null>(null);
 
-  const fetchForecast = async () => {
+  const fetchForecast = async (force: boolean = false) => {
     setLoading(true);
     setError(null);
     try {
-      const res = await fetch(`/api/shops/${shopId}/products/forecast`);
+      const url = force 
+        ? `/api/shops/${shopId}/products/forecast?force=true`
+        : `/api/shops/${shopId}/products/forecast`;
+      const res = await fetch(url);
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Failed to load forecast');
       setInsights(data.insights || []);
@@ -84,7 +87,7 @@ export default function InventoryForecast({ shopId }: { shopId: string }) {
           <span>⚠️</span>
           <span className="font-bold">Forecast unavailable</span>
           <button
-            onClick={fetchForecast}
+            onClick={() => fetchForecast(true)}
             className="ml-auto text-[11px] underline hover:no-underline"
           >
             Retry
@@ -115,7 +118,7 @@ export default function InventoryForecast({ shopId }: { shopId: string }) {
             </span>
           )}
           <button
-            onClick={fetchForecast}
+            onClick={() => fetchForecast(true)}
             disabled={loading}
             className="text-crm-muted hover:text-crm-text transition-colors text-[12px] p-1 rounded hover:bg-crm-surface"
             title="Refresh forecast"

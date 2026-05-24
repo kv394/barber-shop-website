@@ -14,6 +14,24 @@ export async function GET(
     const { shopId } = await params;
     const authResult = await requireShopRole(shopId, ['SITE_ADMIN', 'SHOP_ADMIN', 'STAFF']);
     if (isAuthError(authResult)) return authResult;
+    const { searchParams } = new URL(request.url);
+    const forceRefresh = searchParams.get('force') === 'true';
+
+    // 0. Check database cache first (24-hour expiration)
+    const shop = await prisma.shop.findUnique({
+      where: { id: shopId },
+      select: { inventoryForecast: true, inventoryForecastUpdatedAt: true }
+    });
+
+    if (!forceRefresh && shop?.inventoryForecast && shop.inventoryForecastUpdatedAt) {
+      const cacheAgeMs = Date.now() - shop.inventoryForecastUpdatedAt.getTime();
+      const twentyFourHoursMs = 24 * 60 * 60 * 1000;
+      
+      if (cacheAgeMs < twentyFourHoursMs) {
+        // Return cached payload directly
+        return NextResponse.json(shop.inventoryForecast);
+      }
+    }
 
     // 1. Fetch all tracked products
     const products = await prisma.product.findMany({
@@ -246,12 +264,23 @@ Rules:
       insights = fallbackInsights.slice(0, 5);
     }
 
-    return NextResponse.json({
+    const payload = {
       insights: insights,
       generatedAt: new Date().toISOString(),
       productCount: products.length,
       appointmentCount30d: last30DaysCount,
+    };
+
+    // 5. Save the generated forecast to the database cache
+    await prisma.shop.update({
+      where: { id: shopId },
+      data: {
+        inventoryForecast: payload,
+        inventoryForecastUpdatedAt: new Date(),
+      }
     });
+
+    return NextResponse.json(payload);
   } catch (err: any) {
     logger.error('Inventory Forecast Error:', err);
     return NextResponse.json(

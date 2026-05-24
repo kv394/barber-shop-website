@@ -32,6 +32,8 @@ model Shop {
   companyName         String?
   aiTokens            Int                  @default(0)
   slogan              String?
+  inventoryForecast           Json?
+  inventoryForecastUpdatedAt  DateTime?
   appointments        Appointment[]
   campaigns           Campaign[]
   clientFormulas      ClientFormula[]
