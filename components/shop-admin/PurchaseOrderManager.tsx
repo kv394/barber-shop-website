@@ -99,107 +99,138 @@ export default function PurchaseOrderManager({ shopId, products, currency }: { s
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <h3 className="font-bold text-crm-text text-lg">Purchase Orders</h3>
-        <button onClick={() => setIsCreating(!isCreating)} className="bg-crm-primary text-white px-4 py-2 rounded-lg font-bold text-[13px]">
-          {isCreating ? 'Cancel' : 'Create PO'}
+      <div className="flex justify-between items-center mb-6">
+        <h3 className="font-bold text-crm-text text-xl">Purchase Orders</h3>
+        <button onClick={() => setIsCreating(!isCreating)} className="bg-gradient-to-r from-crm-primary to-crm-primary/80 text-white px-6 py-2.5 rounded-full font-black uppercase tracking-wider text-[13px] hover:shadow-[0_0_20px_rgba(var(--color-crm-primary),0.4)] transition-all shrink-0 border border-white/10 shadow-lg hover:scale-[1.02] active:scale-95">
+          {isCreating ? '✕ Cancel' : '➕ Create PO'}
         </button>
       </div>
 
       {isCreating && (
-        <form onSubmit={handleCreate} className="bg-crm-surface p-4 border border-crm-border rounded-xl space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-             <div>
-               <label className="block text-[11px] font-bold text-crm-muted uppercase mb-1">Supplier *</label>
-               <input type="text" required value={supplier} onChange={e => setSupplier(e.target.value)} className="w-full p-2 text-[13px] bg-crm-bg border border-crm-border rounded" />
-             </div>
-             <div>
-               <label className="block text-[11px] font-bold text-crm-muted uppercase mb-1">Expected Delivery</label>
-               <input type="date" value={expectedDeliveryDate} onChange={e => setExpectedDeliveryDate(e.target.value)} className="w-full p-2 text-[13px] bg-crm-bg border border-crm-border rounded" />
-             </div>
-          </div>
-          
-          <div className="space-y-2">
-            <label className="block text-[11px] font-bold text-crm-muted uppercase mb-1">Products *</label>
-            {items.map((item, i) => (
-              <div key={i} className="flex gap-2 items-center bg-crm-bg p-2 rounded border border-crm-border">
-                <select value={item.productId} onChange={e => updateItem(i, 'productId', e.target.value)} required className="flex-1 p-2 text-[13px] bg-crm-surface border border-crm-border rounded">
-                  <option value="">Select Product...</option>
-                  {products.map(p => <option key={p.id} value={p.id}>{p.name} (Stock: {p.inventoryCount})</option>)}
-                </select>
-                <input type="number" min="1" value={item.quantity} onChange={e => updateItem(i, 'quantity', parseInt(e.target.value))} placeholder="Qty" className="w-24 p-2 text-[13px] bg-crm-surface border border-crm-border rounded" />
-                <input type="number" step="0.01" value={item.unitCost} onChange={e => updateItem(i, 'unitCost', parseFloat(e.target.value))} placeholder="Unit Cost" className="w-24 p-2 text-[13px] bg-crm-surface border border-crm-border rounded" />
-                <button type="button" onClick={() => removeItem(i)} className="text-status-cancelled text-lg font-bold px-2">×</button>
+        <div className="animate-in fade-in slide-in-from-top-4 duration-300 ease-out mb-8">
+          <form onSubmit={handleCreate} className="bg-white/5 backdrop-blur-xl p-8 border border-white/10 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] space-y-6 relative overflow-hidden">
+            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-crm-primary to-brand-gold"></div>
+            <h3 className="font-bold text-crm-text text-lg">📝 New Purchase Order</h3>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+               <div className="space-y-1.5">
+                 <label className="block text-[13px] font-bold text-crm-muted uppercase tracking-wider">Supplier *</label>
+                 <input type="text" required value={supplier} onChange={e => setSupplier(e.target.value)} className="w-full px-4 py-3 bg-crm-bg/50 backdrop-blur-sm border border-white/10 shadow-inner rounded-xl text-crm-text focus:ring-2 focus:ring-crm-primary transition-all focus:border-transparent outline-none" placeholder="e.g. Suavecito Wholesale" />
+               </div>
+               <div className="space-y-1.5">
+                 <label className="block text-[13px] font-bold text-crm-muted uppercase tracking-wider">Expected Delivery</label>
+                 <input type="date" value={expectedDeliveryDate} onChange={e => setExpectedDeliveryDate(e.target.value)} className="w-full px-4 py-3 bg-crm-bg/50 backdrop-blur-sm border border-white/10 shadow-inner rounded-xl text-crm-text focus:ring-2 focus:ring-crm-primary transition-all focus:border-transparent outline-none [&::-webkit-calendar-picker-indicator]:invert-[0.8]" />
+               </div>
+            </div>
+            
+            <div className="space-y-3 bg-black/10 p-5 rounded-xl border border-white/5">
+              <label className="block text-[13px] font-bold text-crm-muted uppercase tracking-wider">Products *</label>
+              <div className="space-y-3">
+                {items.map((item, i) => (
+                  <div key={i} className="flex flex-wrap gap-3 items-center">
+                    <select value={item.productId} onChange={e => updateItem(i, 'productId', e.target.value)} required className="flex-1 min-w-[200px] px-4 py-3 bg-crm-bg/50 backdrop-blur-sm border border-white/10 shadow-inner rounded-xl text-crm-text focus:ring-2 focus:ring-crm-primary transition-all focus:border-transparent outline-none appearance-none">
+                      <option value="">Select Product...</option>
+                      {products.map(p => <option key={p.id} value={p.id}>{p.name} (Stock: {p.inventoryCount})</option>)}
+                    </select>
+                    <input type="number" min="1" value={item.quantity} onChange={e => updateItem(i, 'quantity', parseInt(e.target.value))} placeholder="Qty" className="w-24 px-4 py-3 bg-crm-bg/50 backdrop-blur-sm border border-white/10 shadow-inner rounded-xl text-crm-text focus:ring-2 focus:ring-crm-primary transition-all focus:border-transparent outline-none text-center" />
+                    <input type="number" step="0.01" value={item.unitCost} onChange={e => updateItem(i, 'unitCost', parseFloat(e.target.value))} placeholder="Unit Cost" className="w-32 px-4 py-3 bg-crm-bg/50 backdrop-blur-sm border border-white/10 shadow-inner rounded-xl text-crm-text focus:ring-2 focus:ring-crm-primary transition-all focus:border-transparent outline-none" />
+                    <button type="button" onClick={() => removeItem(i)} className="text-status-cancelled/70 hover:text-status-cancelled hover:bg-status-cancelled/10 text-xl font-bold w-10 h-10 flex items-center justify-center rounded-lg transition-colors">×</button>
+                  </div>
+                ))}
               </div>
-            ))}
-            <button type="button" onClick={addItem} className="text-crm-primary text-[13px] font-bold">+ Add Product Line</button>
-          </div>
-
-          <div>
-             <label className="block text-[11px] font-bold text-crm-muted uppercase mb-1">Notes</label>
-             <textarea value={notes} onChange={e => setNotes(e.target.value)} className="w-full p-2 text-[13px] bg-crm-bg border border-crm-border rounded" rows={2}></textarea>
-          </div>
-
-          <button type="submit" className="w-full py-2 bg-status-confirmed text-white rounded-lg font-bold">Submit Purchase Order</button>
-        </form>
+              <button type="button" onClick={addItem} className="text-crm-primary hover:text-crm-primary/80 text-[13px] font-black uppercase tracking-wider mt-2 transition-colors flex items-center gap-1">
+                <span>➕</span> Add Product Line
+              </button>
+            </div>
+  
+            <div className="space-y-1.5">
+               <label className="block text-[13px] font-bold text-crm-muted uppercase tracking-wider">Notes</label>
+               <textarea value={notes} onChange={e => setNotes(e.target.value)} className="w-full px-4 py-3 bg-crm-bg/50 backdrop-blur-sm border border-white/10 shadow-inner rounded-xl text-crm-text focus:ring-2 focus:ring-crm-primary transition-all focus:border-transparent outline-none" rows={2} placeholder="Any delivery instructions or references..."></textarea>
+            </div>
+            
+            <div className="flex justify-end pt-4 border-t border-white/10">
+               <button type="submit" className="bg-gradient-to-r from-crm-primary to-crm-primary/80 text-white px-8 py-3 rounded-xl font-black uppercase tracking-widest text-[13px] hover:shadow-[0_0_20px_rgba(var(--color-crm-primary),0.4)] transition-all hover:scale-[1.02] active:scale-95">Save Purchase Order</button>
+            </div>
+          </form>
+        </div>
       )}
 
-      <div className="space-y-4">
+      <div className="space-y-6 relative">
         {purchaseOrders.length === 0 ? (
-           <p className="text-crm-muted text-[13px]">No purchase orders found.</p>
+           <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-12 text-center text-crm-muted">
+             <div className="text-4xl opacity-50 mb-3">📄</div>
+             <p className="text-[14px]">No purchase orders found. Create your first PO to restock inventory!</p>
+           </div>
         ) : (
            purchaseOrders.map(po => (
-             <div key={po.id} className="bg-crm-surface border border-crm-border rounded-xl p-4">
-                <div className="flex justify-between items-start mb-4">
+             <div key={po.id} className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-6 shadow-lg hover:shadow-xl hover:bg-white/10 transition-all duration-300 group">
+                <div className="flex flex-wrap justify-between items-start mb-6 gap-4 border-b border-white/10 pb-4">
                   <div>
-                    <h4 className="font-bold text-crm-text">{po.supplier}</h4>
-                    <p className="text-[11px] text-crm-muted">Ordered: {new Date(po.createdAt).toLocaleDateString()}</p>
-                    {po.expectedDeliveryDate && <p className="text-[11px] text-crm-muted">Expected: {new Date(po.expectedDeliveryDate).toLocaleDateString()}</p>}
+                    <h4 className="font-bold text-crm-text text-lg flex items-center gap-2">
+                      <span className="text-2xl">📦</span> {po.supplier}
+                    </h4>
+                    <p className="text-crm-muted text-[13px] mt-1">Expected Delivery: <span className="font-semibold text-crm-text">{po.expectedDeliveryDate ? new Date(po.expectedDeliveryDate).toLocaleDateString() : 'TBD'}</span></p>
                   </div>
                   <div className="text-right">
-                    <span className={`text-[11px] px-2 py-1 rounded-full font-bold uppercase ${po.status === 'RECEIVED' ? 'bg-status-confirmed/20 text-status-confirmed' : 'bg-status-pending/20 text-status-pending'}`}>
+                    <span className={`inline-block px-3 py-1 rounded-full text-[11px] font-black tracking-widest uppercase mb-2 shadow-sm ${po.status === 'PENDING' ? 'bg-status-pending/20 text-status-pending border border-status-pending/30' : 'bg-status-confirmed/20 text-status-confirmed border border-status-confirmed/30'}`}>
                       {po.status}
                     </span>
-                    <p className="font-bold mt-1">{fmtPrice(po.totalAmount, currency)}</p>
+                    <p className="font-black text-crm-text text-xl">{fmtPrice(po.totalAmount, currency)}</p>
                   </div>
                 </div>
 
-                <div className="space-y-2 border-t border-crm-border pt-4">
-                  <p className="text-[11px] font-bold text-crm-muted uppercase">Items</p>
-                  {po.items.map((item: any) => (
-                    <div key={item.id} className="flex justify-between text-[13px]">
-                       <span>{item.quantity}x {item.product.name}</span>
-                       <span className="text-crm-muted">{fmtPrice(item.unitCost, currency)} / ea</span>
-                    </div>
-                  ))}
+                <div className="space-y-3">
+                  <h5 className="text-[11px] font-bold text-crm-muted uppercase tracking-widest">Order Items</h5>
+                  <div className="bg-black/20 rounded-xl border border-white/5 overflow-hidden">
+                    {po.items.map((item: any) => (
+                      <div key={item.id} className="flex justify-between items-center p-3 border-b border-white/5 last:border-0 hover:bg-white/5 transition-colors">
+                        <div className="flex flex-col">
+                          <span className="text-crm-text font-semibold text-[14px]">{item.product.name}</span>
+                          <span className="text-crm-muted text-[12px]">{item.quantity} units @ {fmtPrice(item.unitCost, currency)}</span>
+                        </div>
+                        {po.status === 'PENDING' && receivingPoId === po.id ? (
+                          <div className="flex items-center gap-2">
+                            <label className="text-[11px] font-bold text-crm-muted uppercase">Rcvd:</label>
+                            <input 
+                              type="number" 
+                              min="0" 
+                              max={item.quantity}
+                              value={receivedItems[item.id] ?? item.quantity}
+                              onChange={(e) => setReceivedItems({...receivedItems, [item.id]: parseInt(e.target.value) || 0})}
+                              className="w-16 px-3 py-2 text-center text-[13px] bg-crm-bg/50 border border-white/10 rounded-lg text-crm-text focus:ring-2 focus:ring-crm-primary outline-none"
+                            />
+                          </div>
+                        ) : (
+                          <div className="text-right">
+                            <span className="text-crm-text font-bold">{fmtPrice(item.quantity * item.unitCost, currency)}</span>
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
                 </div>
 
-                {po.status !== 'RECEIVED' && (
-                  <div className="mt-4 pt-4 border-t border-crm-border">
+                {po.notes && (
+                  <div className="mt-4 p-4 bg-crm-bg/30 rounded-xl border border-white/5 text-[13px] text-crm-muted">
+                    <strong className="text-crm-text block mb-1">Notes:</strong>
+                    {po.notes}
+                  </div>
+                )}
+
+                {po.status === 'PENDING' && (
+                  <div className="mt-6 flex justify-end gap-3 pt-4 border-t border-white/10">
                     {receivingPoId === po.id ? (
-                      <div className="space-y-4">
-                        <p className="text-[11px] font-bold text-status-pending uppercase">Verify Received Quantities</p>
-                        {po.items.map((item: any) => (
-                          <div key={item.id} className="flex justify-between items-center text-[13px] gap-4">
-                            <span className="flex-1 truncate">{item.product.name} (Ordered: {item.quantity})</span>
-                            <div className="flex items-center gap-2 shrink-0">
-                               <label className="text-[11px] text-crm-muted">Received:</label>
-                               <input type="number" min="0" 
-                                 value={receivedItems[item.id] !== undefined ? receivedItems[item.id] : item.quantity}
-                                 onChange={e => setReceivedItems({...receivedItems, [item.id]: parseInt(e.target.value) || 0})}
-                                 className="w-16 p-1 bg-crm-bg border border-crm-border rounded text-center" />
-                            </div>
-                          </div>
-                        ))}
-                        <div className="flex gap-2 justify-end">
-                           <button onClick={() => setReceivingPoId(null)} className="px-4 py-2 text-[13px] border border-crm-border rounded">Cancel</button>
-                           <button onClick={() => handleReceive(po.id)} className="px-4 py-2 text-[13px] bg-status-confirmed text-white rounded font-bold">Confirm Receipt & Update Inventory</button>
-                        </div>
-                      </div>
+                      <>
+                        <button onClick={() => setReceivingPoId(null)} className="px-5 py-2 rounded-xl text-[13px] font-bold text-crm-muted hover:text-crm-text hover:bg-white/5 transition-colors">Cancel</button>
+                        <button onClick={() => handleReceive(po.id)} className="bg-gradient-to-r from-status-confirmed to-status-confirmed/80 text-white px-6 py-2 rounded-xl font-bold text-[13px] hover:shadow-[0_0_15px_rgba(var(--color-status-confirmed),0.4)] transition-all uppercase tracking-wider">Confirm Receipt</button>
+                      </>
                     ) : (
-                      <button onClick={() => setReceivingPoId(po.id)} className="w-full py-2 bg-status-pending text-white font-bold rounded-lg text-[13px]">
-                        Mark as Received
-                      </button>
+                      <button onClick={() => {
+                        setReceivingPoId(po.id);
+                        const initialReceived: Record<string, number> = {};
+                        po.items.forEach((i: any) => initialReceived[i.id] = i.quantity);
+                        setReceivedItems(initialReceived);
+                      }} className="bg-white/10 border border-white/20 text-crm-text px-6 py-2 rounded-xl font-bold text-[13px] hover:bg-white/20 transition-all uppercase tracking-wider group-hover:border-white/30">Receive Items</button>
                     )}
                   </div>
                 )}
