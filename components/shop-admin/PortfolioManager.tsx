@@ -16,7 +16,7 @@ export default function PortfolioManager({ shopId, currentUserId, userRole }: { 
 
   const loadImages = (targetStaffId: string) => {
     setLoading(true);
-    fetch(`/api/shops/${shopId}/portfolio?staffId=${targetStaffId}`)
+    fetch(`/api/shops/${shopId}/portfolio?staffId=${targetStaffId}&t=${Date.now()}`)
       .then(r => r.json())
       .then(d => setImages(Array.isArray(d) ? d : []))
       .finally(() => setLoading(false));
@@ -40,19 +40,28 @@ export default function PortfolioManager({ shopId, currentUserId, userRole }: { 
     e.preventDefault();
     if (!imageUrl.trim()) return;
     setSaving(true);
-    await fetch(`/api/shops/${shopId}/portfolio`, {
-      method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ imageUrl, caption, staffId: selectedStaffId }),
-    });
-    setImageUrl('');
-    setCaption('');
-    if (fileInputRef.current) {
-      fileInputRef.current.value = '';
+    try {
+      const res = await fetch(`/api/shops/${shopId}/portfolio`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ imageUrl, caption, staffId: selectedStaffId }),
+      });
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.error || 'Failed to add image');
+      }
+      setImageUrl('');
+      setCaption('');
+      if (fileInputRef.current) {
+        fileInputRef.current.value = '';
+      }
+      setMsg('Image added to portfolio!');
+      await loadImages(selectedStaffId);
+    } catch (e: any) {
+      alert('Error adding to portfolio: ' + e.message);
+    } finally {
+      setSaving(false);
+      setTimeout(() => setMsg(''), 3000);
     }
-    setMsg('Image added to portfolio!');
-    await loadImages(selectedStaffId);
-    setSaving(false);
-    setTimeout(() => setMsg(''), 3000);
   };
 
   const removeImage = async (id: string) => {
