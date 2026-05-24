@@ -248,26 +248,15 @@ export default function ShopMobileBottomNav({
             )}
           </div>
           
-          <nav className="flex-1 overflow-y-auto py-4 px-3" onClick={() => setIsOpen(false)}>
-            {/* Main Menu Links */}
-            <div className="space-y-2">
-              {navLink(`/shop/${shopId}`, 'Dashboard', icons.home, true)}
-              {userRole === 'SHOP_ADMIN' ? (
-                <>
-                  {navLink(`/shop/${shopId}/bookings`, 'Bookings', icons.calendar)}
-                  {navLink(`/shop/${shopId}/waitlist`, 'Waitlist', icons.users)}
-                  {navLink(`/shop/${shopId}/clients`, 'Clients', icons.users)}
-                </>
-              ) : (
-                <>
-                  {navLink(`/shop/${shopId}/staff`, 'Schedule', icons.calendar)}
-                  {navLink(`/shop/${shopId}/clients`, 'Clients', icons.users)}
-                  {navLink(`/shop/${shopId}/profile`, 'Profile', icons.user)}
-                </>
-              )}
-              {/* Easy access item when no sub‑menus */}
-              {navLink(`/shop/${shopId}/settings`, 'Settings', icons.settings, true)}
-            </div>
+          <nav 
+            className="flex-1 overflow-y-auto py-4 px-3" 
+            onClick={(e) => {
+              if ((e.target as HTMLElement).closest('a')) {
+                setIsOpen(false);
+              }
+            }}
+          >
+            <ShopSidebarLinks shopId={shopId} userRole={userRole} />
           </nav>
 
           <div className="p-4 border-t border-crm-border flex flex-col gap-3 bg-crm-bg/30 pb-[calc(1.5rem+env(safe-area-inset-bottom))]">
