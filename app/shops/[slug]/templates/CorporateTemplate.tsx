@@ -19,7 +19,7 @@ export default function CorporateTemplate({ ctx }: { ctx: any }) {
     } = ctx;
     
     return (
-          <main className="h-[100dvh] overflow-y-auto overflow-x-hidden bg-crm-bg text-crm-text font-sans relative">
+          <main className="min-h-screen overflow-x-hidden flex flex-col bg-crm-bg text-crm-text font-sans relative">
 
       {faviconUrl && (
         <link rel="icon" href={faviconUrl} />

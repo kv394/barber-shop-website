@@ -22,7 +22,7 @@ export default function ModernTemplate({ ctx }: { ctx: any }) {
     } = ctx;
 
     return (
-        <main className="h-[100dvh] overflow-y-auto overflow-x-hidden bg-gray-50 text-gray-800 font-sans relative">
+        <main className="min-h-screen overflow-x-hidden flex flex-col bg-gray-50 text-gray-800 font-sans relative">
 
             {faviconUrl && (
                 <link rel="icon" href={faviconUrl} />

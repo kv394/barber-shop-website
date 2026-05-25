@@ -157,7 +157,7 @@ export default function Home() {
 
   if (isLoading) {
     return (
-      <div className="h-[100dvh] overflow-y-auto overflow-x-hidden flex items-center justify-center bg-crm-bg">
+      <div className="min-h-screen overflow-x-hidden flex flex-col flex items-center justify-center bg-crm-bg">
         <div className="flex flex-col items-center gap-4">
           <div className="w-12 h-12 border-4 border-brand-gold border-t-transparent rounded-full animate-spin"></div>
           <p className="text-crm-muted animate-pulse font-medium tracking-wide uppercase text-[13px]">Initializing Platform...</p>
@@ -174,7 +174,7 @@ export default function Home() {
   // We can return a loading state while the redirect happens
   if (userProfile?.shopId && userProfile.role !== 'SITE_ADMIN') {
     return (
-      <div className="h-[100dvh] overflow-y-auto overflow-x-hidden flex items-center justify-center bg-crm-bg">
+      <div className="min-h-screen overflow-x-hidden flex flex-col flex items-center justify-center bg-crm-bg">
         <div className="flex flex-col items-center gap-4">
           <div className="w-12 h-12 border-4 border-brand-gold border-t-transparent rounded-full animate-spin"></div>
           <p className="text-crm-accent animate-pulse font-medium tracking-wide uppercase text-[13px]">Entering Shop Portal...</p>
@@ -186,7 +186,7 @@ export default function Home() {
   const isSignedIn = !!userProfile;
 
   return (
-    <main className="h-[100dvh] overflow-y-auto overflow-x-hidden bg-crm-bg flex flex-col">
+    <main className="min-h-screen overflow-x-hidden flex flex-col bg-crm-bg flex flex-col">
       <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 flex-grow">
         
         <header className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-12 sm:mb-20">

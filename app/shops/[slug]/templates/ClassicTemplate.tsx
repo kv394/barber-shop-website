@@ -19,7 +19,7 @@ export default function ClassicTemplate({ ctx }: { ctx: any }) {
     } = ctx;
     
     return (
-          <main className="h-[100dvh] overflow-y-auto overflow-x-hidden bg-[#fdfbf7] text-crm-text font-serif relative">
+          <main className="min-h-screen overflow-x-hidden flex flex-col bg-[#fdfbf7] text-crm-text font-serif relative">
 
       {faviconUrl && (
         <link rel="icon" href={faviconUrl} />

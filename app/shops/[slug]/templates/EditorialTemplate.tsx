@@ -20,7 +20,7 @@ export default function EditorialTemplate({ ctx }: { ctx: any }) {
     const editorial = shop.customization?.editorialCustomization || {};
         
     return (
-        <main className="h-[100dvh] overflow-y-auto overflow-x-hidden bg-[#121412] text-crm-text selection:bg-[#d4af37] selection:text-[#554300] font-sans">
+        <main className="min-h-screen overflow-x-hidden flex flex-col bg-[#121412] text-crm-text selection:bg-[#d4af37] selection:text-[#554300] font-sans">
 
       {faviconUrl && (
         <link rel="icon" href={faviconUrl} />
