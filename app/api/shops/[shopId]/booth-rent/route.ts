@@ -3,6 +3,8 @@ import { prisma } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
 import { requireShopRole, isAuthError } from '@/lib/auth';
 
+import { resolveShopId } from '@/lib/shop-resolution';
+
 export const dynamic = 'force-dynamic';
 
 export async function GET(
@@ -10,7 +12,9 @@ export async function GET(
   { params }: { params: Promise<{ shopId: string }> }
 ) {
   try {
-    const { shopId } = await params;
+    const { shopId: paramShopId } = await params;
+    const shopId = await resolveShopId(paramShopId);
+    if (!shopId) return NextResponse.json({ error: 'Shop not found' }, { status: 404 });
     const authResult = await requireShopRole(shopId, ['SITE_ADMIN', 'SHOP_ADMIN', 'BOOTH_RENTER']);
     if (isAuthError(authResult)) return authResult;
 
@@ -38,7 +42,9 @@ export async function POST(
   { params }: { params: Promise<{ shopId: string }> }
 ) {
   try {
-    const { shopId } = await params;
+    const { shopId: paramShopId } = await params;
+    const shopId = await resolveShopId(paramShopId);
+    if (!shopId) return NextResponse.json({ error: 'Shop not found' }, { status: 404 });
     const authResult = await requireShopRole(shopId, ['SITE_ADMIN', 'SHOP_ADMIN']);
     if (isAuthError(authResult)) return authResult;
 
@@ -72,7 +78,9 @@ export async function PATCH(
   { params }: { params: Promise<{ shopId: string }> }
 ) {
   try {
-    const { shopId } = await params;
+    const { shopId: paramShopId } = await params;
+    const shopId = await resolveShopId(paramShopId);
+    if (!shopId) return NextResponse.json({ error: 'Shop not found' }, { status: 404 });
     const authResult = await requireShopRole(shopId, ['SITE_ADMIN', 'SHOP_ADMIN']);
     if (isAuthError(authResult)) return authResult;
 

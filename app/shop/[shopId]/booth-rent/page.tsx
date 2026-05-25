@@ -29,7 +29,7 @@ export default async function BoothRentPage({ params }: { params: Promise<{ shop
   let renters: any[] = [];
   if (isAdmin) {
     renters = await prisma.user.findMany({
-      where: { shopId, role: 'BOOTH_RENTER' },
+      where: { shopId: shop.id, role: 'BOOTH_RENTER' },
       select: {
         id: true,
         name: true,
@@ -93,7 +93,7 @@ export default async function BoothRentPage({ params }: { params: Promise<{ shop
 
         {/* Main Manager Component */}
         <BoothRentManager
-          shopId={shopId}
+          shopId={shop.id}
           renters={renters}
           isRenterView={isBoothRenter}
           currentUserId={user.id}
