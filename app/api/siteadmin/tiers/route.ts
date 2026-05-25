@@ -8,58 +8,114 @@ export async function GET() {
   try {
     const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();
-    const userId = user?.id;
-    const authUserEmail = user?.email;
-    if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
-    const dbUser = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] }, select: { role: true } });
-    if (dbUser?.role !== 'SITE_ADMIN') return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+    const dbUser = await prisma.user.findUnique({ where: { email: user.email! } });
+    if (dbUser?.role !== 'SITE_ADMIN') {
+      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+    }
 
     const tiers = await prisma.saaSTier.findMany({
       orderBy: { baseFeeUSD: 'asc' }
     });
 
     return NextResponse.json(tiers);
-  } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+  } catch (error) {
+    console.error('Error fetching tiers:', error);
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
 
-export async function PUT(request: Request) {
+export async function POST(request: Request) {
   try {
     const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();
-    const userId = user?.id;
-    const authUserEmail = user?.email;
-    if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
-    const dbUser = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] }, select: { role: true } });
-    if (dbUser?.role !== 'SITE_ADMIN') return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
-
-    const updates: any[] = await request.json();
-
-    // Iterate through updates and update each tier
-    // A production app should probably validate this properly
-    for (const update of updates) {
-      if (update.id) {
-        await prisma.saaSTier.update({
-          where: { id: update.id },
-          data: {
-            name: update.name,
-            baseFeeUSD: Number(update.baseFeeUSD),
-            maxAppointments: Number(update.maxAppointments),
-            maxUsers: Number(update.maxUsers),
-            maxFormSubmissions: Number(update.maxFormSubmissions),
-            storageLimitMB: Number(update.storageLimitMB),
-            overageFeePer100MB: Number(update.overageFeePer100MB),
-            description: update.description
-          }
-        });
-      }
+    const dbUser = await prisma.user.findUnique({ where: { email: user.email! } });
+    if (dbUser?.role !== 'SITE_ADMIN') {
+      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
 
+    const body = await request.json();
+    
+    const newTier = await prisma.saaSTier.create({
+      data: {
+        name: body.name,
+        baseFeeUSD: parseFloat(body.baseFeeUSD),
+        maxAppointments: parseInt(body.maxAppointments),
+        maxUsers: parseInt(body.maxUsers),
+        maxFormSubmissions: parseInt(body.maxFormSubmissions),
+        storageLimitMB: parseFloat(body.storageLimitMB),
+        overageFeePer100MB: parseFloat(body.overageFeePer100MB || '1'),
+        description: body.description || ''
+      }
+    });
+
+    return NextResponse.json(newTier);
+  } catch (error) {
+    console.error('Error creating tier:', error);
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+  }
+}
+
+export async function PATCH(request: Request) {
+  try {
+    const supabase = await createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+
+    const dbUser = await prisma.user.findUnique({ where: { email: user.email! } });
+    if (dbUser?.role !== 'SITE_ADMIN') {
+      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+    }
+
+    const body = await request.json();
+    
+    const updatedTier = await prisma.saaSTier.update({
+      where: { id: body.id },
+      data: {
+        name: body.name,
+        baseFeeUSD: parseFloat(body.baseFeeUSD),
+        maxAppointments: parseInt(body.maxAppointments),
+        maxUsers: parseInt(body.maxUsers),
+        maxFormSubmissions: parseInt(body.maxFormSubmissions),
+        storageLimitMB: parseFloat(body.storageLimitMB),
+        overageFeePer100MB: parseFloat(body.overageFeePer100MB || '1'),
+        description: body.description || ''
+      }
+    });
+
+    return NextResponse.json(updatedTier);
+  } catch (error) {
+    console.error('Error updating tier:', error);
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+  }
+}
+
+export async function DELETE(request: Request) {
+  try {
+    const supabase = await createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+
+    const dbUser = await prisma.user.findUnique({ where: { email: user.email! } });
+    if (dbUser?.role !== 'SITE_ADMIN') {
+      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+    }
+
+    const { searchParams } = new URL(request.url);
+    const id = searchParams.get('id');
+
+    if (!id) return NextResponse.json({ error: 'ID is required' }, { status: 400 });
+
+    await prisma.saaSTier.delete({
+      where: { id }
+    });
+
     return NextResponse.json({ success: true });
-  } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+  } catch (error) {
+    console.error('Error deleting tier:', error);
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }

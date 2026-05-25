@@ -18,6 +18,21 @@ model PlatformSettings {
   enableSms             Boolean  @default(false)
   enableAi              Boolean  @default(true)
   
+  // Operational Controls
+  maintenanceMode       Boolean  @default(false)
+  allowNewRegistrations Boolean  @default(true)
+  defaultTimezone       String   @default("America/New_York")
+  defaultCurrency       String   @default("USD")
+
+  // API Keys (Encrypted/Plain depending on implementation)
+  stripeSecretKey       String?
+  stripeWebhookSecret   String?
+  twilioAccountSid      String?
+  twilioAuthToken       String?
+  twilioFromNumber      String?
+  openAiKey             String?
+  resendApiKey          String?
+  
   // Branding & SEO
   logoUrl               String?
   primaryColor          String?  @default("#f59e0b")
@@ -25,6 +40,7 @@ model PlatformSettings {
   
   updatedAt             DateTime @updatedAt
 }
+
 
 model Shop {
   id                  String               @id @default(cuid())

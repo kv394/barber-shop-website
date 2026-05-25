@@ -44,7 +44,10 @@ export async function PATCH(request: Request) {
     // Whitelist editable fields
     const allowedFields = [
       'platformName', 'supportEmail', 'platformFeePercent',
-      'enableSms', 'enableAi', 'logoUrl', 'primaryColor', 'analyticsId'
+      'enableSms', 'enableAi', 'logoUrl', 'primaryColor', 'analyticsId',
+      'maintenanceMode', 'allowNewRegistrations', 'defaultTimezone', 'defaultCurrency',
+      'stripeSecretKey', 'stripeWebhookSecret', 'twilioAccountSid', 'twilioAuthToken', 
+      'twilioFromNumber', 'openAiKey', 'resendApiKey'
     ];
     
     const updateData: any = {};
@@ -52,7 +55,7 @@ export async function PATCH(request: Request) {
       if (body[field] !== undefined) {
         if (field === 'platformFeePercent') {
           updateData[field] = parseFloat(body[field]) || 0;
-        } else if (field === 'enableSms' || field === 'enableAi') {
+        } else if (field === 'enableSms' || field === 'enableAi' || field === 'maintenanceMode' || field === 'allowNewRegistrations') {
           updateData[field] = Boolean(body[field]);
         } else {
           updateData[field] = body[field];
