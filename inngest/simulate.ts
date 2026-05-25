@@ -14,7 +14,7 @@ export const simulateLiveShop = inngest.createFunction(
       });
     });
 
-    const shopIds = demoAdmins.map(a => a.shopId).filter((id): id is string => id !== null);
+    const shopIds = demoAdmins.map((a: any) => a.shopId).filter((id: any): id is string => id !== null);
 
     if (!shopIds.length) {
       return { message: 'Demo shops not found.' };
