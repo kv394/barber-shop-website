@@ -65,7 +65,7 @@ export async function middleware(req: NextRequest) {
   // Skip rate limiting for server-to-server webhooks (they have their own signature verification)
   if (isApi && !url.pathname.startsWith('/api/inngest') && !url.pathname.startsWith('/api/webhooks')) {
     const ip = req.headers.get('x-forwarded-for') || 'unknown-ip';
-    let limit = 100; // Default generic limit (100 req / min)
+    let limit = 300; // Default generic limit (300 req / min)
 
     if (url.pathname.includes('/auth') || url.pathname.includes('/sign-in') || url.pathname.includes('/sign-up')) {
       limit = 10; // Stricter for auth
