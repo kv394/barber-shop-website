@@ -3,9 +3,13 @@ import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { requireShopRole, isAuthError } from '@/lib/auth';
 
+import { resolveShopId } from '@/lib/shop-resolution';
+
 export async function POST(req: Request, { params }: { params: Promise<{ shopId: string }> }) {
   try {
-    const { shopId } = await params;
+    const { shopId: paramShopId } = await params;
+    const shopId = await resolveShopId(paramShopId);
+    if (!shopId) return NextResponse.json({ error: 'Shop not found' }, { status: 404 });
 
     const authResult = await requireShopRole(shopId, ['SITE_ADMIN', 'SHOP_ADMIN', 'STAFF']);
     if (isAuthError(authResult)) return authResult;
@@ -63,7 +67,9 @@ export async function POST(req: Request, { params }: { params: Promise<{ shopId:
 
 export async function GET(req: Request, { params }: { params: Promise<{ shopId: string }> }) {
   try {
-    const { shopId } = await params;
+    const { shopId: paramShopId } = await params;
+    const shopId = await resolveShopId(paramShopId);
+    if (!shopId) return NextResponse.json({ error: 'Shop not found' }, { status: 404 });
 
     // SECURITY: Products include cost/supplier data — require shop membership
     const authResult = await requireShopRole(shopId, ['SITE_ADMIN', 'SHOP_ADMIN', 'STAFF']);

@@ -127,7 +127,7 @@ export const simulateLiveShop = inngest.createFunction(
         select: { staffId: true }
       });
 
-      const activeStaffIds = Array.from(new Set(activeAppointments.map(a => a.staffId)));
+      const activeStaffIds = Array.from(new Set(activeAppointments.map((a: any) => a.staffId)));
       
       let newClockIns = 0;
       // Ensure each active staff is clocked in for today

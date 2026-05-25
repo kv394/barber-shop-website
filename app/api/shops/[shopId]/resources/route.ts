@@ -3,12 +3,16 @@ import { prisma } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
 import { createClient } from '@/utils/supabase/server';
 
+import { resolveShopId } from '@/lib/shop-resolution';
+
 export async function GET(
   request: Request,
   { params }: { params: Promise<{ shopId: string }> }
 ) {
   try {
-    const { shopId } = await params;
+    const { shopId: paramShopId } = await params;
+    const shopId = await resolveShopId(paramShopId);
+    if (!shopId) return new Response("Shop not found", { status: 404 });
     const supabase = await createClient();
     const { data: { user: authUserSession } } = await supabase.auth.getUser();
     let userId = authUserSession?.id;
