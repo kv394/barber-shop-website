@@ -64,16 +64,18 @@ export default function BlackoutDatesManager({ shopId }: { shopId: string }) {
             min={new Date().toISOString().split('T')[0]}
           />
         </div>
-        <div className="flex-1 w-full sm:w-auto">
-          <label className="block font-semibold text-crm-muted text-[13px] uppercase tracking-wider mb-1.5">Reason</label>
-          <select value={newReason} onChange={e => setNewReason(e.target.value)}
-            className="w-full bg-crm-bg/50 backdrop-blur-sm border border-white/10 shadow-inner rounded-xl px-4 py-3 text-crm-text focus:ring-2 focus:ring-crm-primary outline-none appearance-none">
-            <option value="">Select reason (optional)</option>
-            {REASONS.map(r => <option key={r} value={r}>{r}</option>)}
-          </select>
+        <div className="flex-1 w-full sm:w-auto space-y-1.5">
+          <label className="block font-semibold text-crm-muted text-[13px] uppercase tracking-wider">Reason</label>
+          <div className="relative">
+            <select value={newReason} onChange={e => setNewReason(e.target.value)}
+              className="w-full bg-crm-bg/50 backdrop-blur-sm border border-white/10 shadow-inner rounded-xl px-4 py-3 text-crm-text focus:ring-2 focus:ring-crm-primary outline-none appearance-none">
+              <option value="">Select reason (optional)</option>
+              {REASONS.map(r => <option key={r} value={r}>{r}</option>)}
+            </select>
+          </div>
         </div>
         <div className="flex-shrink-0 w-full sm:w-auto">
-          <PremiumButton onClick={addDate} disabled={!newDate || adding} className="w-full sm:w-auto h-[46px] flex items-center justify-center">
+          <PremiumButton onClick={addDate} disabled={!newDate || adding} className="w-full sm:w-auto h-[48px] flex items-center justify-center">
             {adding ? 'Adding…' : '+ Add Date'}
           </PremiumButton>
         </div>
