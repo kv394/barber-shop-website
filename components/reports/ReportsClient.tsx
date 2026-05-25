@@ -163,29 +163,25 @@ export default function ReportsClient({
       </div>
 
       {/* Date Filters & Export */}
-      <div className="flex flex-col sm:flex-row gap-3 mb-6 p-4 bg-crm-surface rounded-lg border border-crm-border shadow-sm items-end">
-        <div className="flex-1">
-          <label className="block text-crm-muted uppercase tracking-wider mb-1 text-[13px]">From Date</label>
-          <input type="date" value={dateFrom} onChange={e => setDateFrom(e.target.value)} style={inputStyle}
-            className="w-full border border-crm-border shadow-sm rounded p-2 text-[13px] focus:outline-none focus:border-brand-gold " />
+      <div className="flex flex-wrap gap-4 items-end mb-6 p-4 bg-crm-surface rounded-lg border border-crm-border shadow-sm">
+        <div>
+          <label className="block text-crm-muted uppercase tracking-wider mb-1 text-[13px]">Start Date</label>
+          <input type="date" value={dateFrom} onChange={e => setDateFrom(e.target.value)} className="h-[38px] bg-crm-surface border border-crm-border shadow-sm rounded px-3 text-crm-text text-[13px] focus:outline-none focus:border-brand-gold w-full sm:w-auto" />
         </div>
-        <div className="flex-1">
-          <label className="block text-crm-muted uppercase tracking-wider mb-1 text-[13px]">To Date</label>
-          <input type="date" value={dateTo} onChange={e => setDateTo(e.target.value)} style={inputStyle}
-            className="w-full border border-crm-border shadow-sm rounded p-2 text-[13px] focus:outline-none focus:border-brand-gold " />
+        <div>
+          <label className="block text-crm-muted uppercase tracking-wider mb-1 text-[13px]">End Date</label>
+          <input type="date" value={dateTo} onChange={e => setDateTo(e.target.value)} className="h-[38px] bg-crm-surface border border-crm-border shadow-sm rounded px-3 text-crm-text text-[13px] focus:outline-none focus:border-brand-gold w-full sm:w-auto" />
         </div>
         {isFiltered && (
           <div>
-            <label className="block text-crm-muted uppercase tracking-wider mb-1 text-[13px] invisible select-none">Clear</label>
-            <button onClick={() => { setDateFrom(''); setDateTo(''); }} className="text-[11px] text-crm-muted hover:text-crm-text px-4 py-2 border border-crm-border shadow-sm rounded">
+            <button onClick={() => { setDateFrom(''); setDateTo(''); }} className="h-[38px] text-[11px] text-crm-muted hover:text-crm-text px-4 border border-crm-border shadow-sm rounded flex items-center justify-center">
               Clear Filters
             </button>
           </div>
         )}
         <div>
-          <label className="block text-crm-muted uppercase tracking-wider mb-1 text-[13px] invisible select-none">Export</label>
-          <button onClick={exportCSV} className="text-[13px] bg-crm-surface border border-crm-border shadow-sm hover:bg-crm-primary hover:text-white text-crm-text font-medium px-4 py-2 rounded transition-all flex items-center justify-center gap-2 w-full sm:w-auto">
-            <span>📥</span> Download CSV
+          <button onClick={exportCSV} className="h-[38px] text-[13px] bg-crm-surface border border-crm-border shadow-sm hover:bg-crm-primary hover:text-white text-crm-text font-medium px-4 rounded transition-all flex items-center justify-center gap-2 w-full sm:w-auto">
+            <span className="text-[14px]">📥</span> Export CSV
           </button>
         </div>
       </div>
