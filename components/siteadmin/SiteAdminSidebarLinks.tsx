@@ -32,6 +32,7 @@ export default function SiteAdminSidebarLinks() {
       {navLink('/siteadmin/users', 'Users')}
       {navLink('/siteadmin/tiers', 'Pricing Tiers')}
       {navLink('/siteadmin/logs', 'System Logs')}
+      {navLink('/siteadmin/performance', 'System Performance')}
       {navLink('/siteadmin/settings', 'Global Settings')}
     </div>
   );
