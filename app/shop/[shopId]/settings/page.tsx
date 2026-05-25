@@ -43,15 +43,7 @@ export default async function ShopSettingsPage({
     },
   });
 
-  const dynamicTemplates = await prisma.dynamicTemplate.findMany({
-    where: {
-      OR: [
-        { shopId: null },
-        { shopId: shopId }
-      ]
-    },
-    select: { name: true, description: true, variables: true }
-  });
+
 
   const customization = data.shop.customization || DEFAULT_CUSTOMIZATION;
 
@@ -87,7 +79,7 @@ export default async function ShopSettingsPage({
         customization={customization}
         isSiteAdmin={data.isSiteAdmin}
         currentTemplate={data.shop.template || 'modern'}
-        dynamicTemplates={dynamicTemplates as any}
+        dynamicTemplates={[]}
       />
 
       <div className="mt-12 pt-8 border-t border-crm-border">

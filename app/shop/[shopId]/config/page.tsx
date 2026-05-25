@@ -22,18 +22,6 @@ export default async function ShopConfigPage({
     notFound();
   }
 
-  // Import prisma to fetch templates
-  const { prisma } = await import('@/lib/prisma');
-  const dynamicTemplates = await prisma.dynamicTemplate.findMany({
-    where: {
-      OR: [
-        { shopId: null },
-        { shopId: shopId }
-      ]
-    },
-    select: { name: true, description: true }
-  });
-
   return (
     <ShopAdminLayout
       shopName={data.shop.name}
@@ -44,12 +32,9 @@ export default async function ShopConfigPage({
     >
       <div className="space-y-8">
         <div className="bg-crm-bg/50 p-6 rounded-lg border border-crm-border shadow-sm">
-          <h2 className="font-bold text-crm-text mb-4 text-xl font-bold">Shop Template</h2>
-          <p className="text-crm-muted leading-relaxed mb-2 text-[13px]">
-            Your shop is currently using the <strong>{data.shop.template || 'modern'}</strong> template.
-          </p>
+          <h2 className="font-bold text-crm-text mb-4 text-xl font-bold">General Configuration</h2>
           <p className="text-crm-muted leading-relaxed text-[13px]">
-            Template assignments are managed by Site Administrators. You can customize the content and appearance of your template in the <a href={`/shop/${shopId}/settings`} className="text-crm-accent hover:underline">Settings</a> tab.
+            Please use the <a href={`/shop/${shopId}/settings`} className="text-crm-accent hover:underline">Settings</a> tab to manage your Shop's profile, currency, and customization options.
           </p>
         </div>
       </div>
