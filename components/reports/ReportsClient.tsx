@@ -163,24 +163,26 @@ export default function ReportsClient({
       </div>
 
       {/* Date Filters & Export */}
-      <div className="flex flex-wrap gap-4 items-end mb-6 p-4 bg-crm-surface rounded-lg border border-crm-border shadow-sm">
-        <div>
+      <div className="flex flex-col sm:flex-row flex-wrap gap-4 sm:items-end mb-6 p-4 bg-crm-surface rounded-lg border border-crm-border shadow-sm">
+        <div className="flex-1 sm:flex-none">
           <label className="block text-crm-muted uppercase tracking-wider mb-1 text-[13px]">Start Date</label>
-          <input type="date" value={dateFrom} onChange={e => setDateFrom(e.target.value)} className="h-[38px] bg-crm-surface border border-crm-border shadow-sm rounded px-3 text-crm-text text-[13px] focus:outline-none focus:border-brand-gold w-full sm:w-auto" />
+          <input type="date" value={dateFrom} onChange={e => setDateFrom(e.target.value)} className="h-[40px] bg-crm-surface border border-crm-border shadow-sm rounded px-3 text-crm-text text-[13px] focus:outline-none focus:border-brand-gold w-full sm:w-auto" />
         </div>
-        <div>
+        <div className="flex-1 sm:flex-none">
           <label className="block text-crm-muted uppercase tracking-wider mb-1 text-[13px]">End Date</label>
-          <input type="date" value={dateTo} onChange={e => setDateTo(e.target.value)} className="h-[38px] bg-crm-surface border border-crm-border shadow-sm rounded px-3 text-crm-text text-[13px] focus:outline-none focus:border-brand-gold w-full sm:w-auto" />
+          <input type="date" value={dateTo} onChange={e => setDateTo(e.target.value)} className="h-[40px] bg-crm-surface border border-crm-border shadow-sm rounded px-3 text-crm-text text-[13px] focus:outline-none focus:border-brand-gold w-full sm:w-auto" />
         </div>
         {isFiltered && (
-          <div>
-            <button onClick={() => { setDateFrom(''); setDateTo(''); }} className="h-[38px] text-[11px] text-crm-muted hover:text-crm-text px-4 border border-crm-border shadow-sm rounded flex items-center justify-center">
+          <div className="w-full sm:w-auto">
+            <label className="hidden sm:block text-crm-muted uppercase tracking-wider mb-1 text-[13px] invisible">Clear</label>
+            <button onClick={() => { setDateFrom(''); setDateTo(''); }} className="h-[40px] text-[11px] text-crm-muted hover:text-crm-text px-4 border border-crm-border shadow-sm rounded flex items-center justify-center w-full sm:w-auto">
               Clear Filters
             </button>
           </div>
         )}
-        <div>
-          <button onClick={exportCSV} className="h-[38px] text-[13px] bg-crm-surface border border-crm-border shadow-sm hover:bg-crm-primary hover:text-white text-crm-text font-medium px-4 rounded transition-all flex items-center justify-center gap-2 w-full sm:w-auto">
+        <div className="w-full sm:w-auto">
+          <label className="hidden sm:block text-crm-muted uppercase tracking-wider mb-1 text-[13px] invisible">Export</label>
+          <button onClick={exportCSV} className="h-[40px] text-[13px] bg-crm-surface border border-crm-border shadow-sm hover:bg-crm-primary hover:text-white text-crm-text font-medium px-4 rounded transition-all flex items-center justify-center gap-2 w-full sm:w-auto">
             <span className="text-[14px]">📥</span> Export CSV
           </button>
         </div>
