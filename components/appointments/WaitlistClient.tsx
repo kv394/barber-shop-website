@@ -1,6 +1,9 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import PremiumGlassCard from '@/components/ui/PremiumGlassCard';
+import PremiumInput from '@/components/ui/PremiumInput';
+import PremiumButton from '@/components/ui/PremiumButton';
 
 export default function WaitlistClient({ shopId, services, staff }: { shopId: string; services: any[]; staff: any[] }) {
   const [waitlist, setWaitlist] = useState<any[]>([]);
@@ -52,7 +55,6 @@ export default function WaitlistClient({ shopId, services, staff }: { shopId: st
 
   const waiting = waitlist.filter(w => w.status === 'WAITING');
   const serving = waitlist.filter(w => w.status === 'SERVING');
-  const inputStyle: React.CSSProperties = {};
   const getWaitTime = (c: string) => { const m = Math.floor((Date.now() - new Date(c).getTime()) / 60000); return m < 1 ? 'Just now' : `${m} min`; };
   const getStaffName = (staffId: string | null) => { 
     if (!staffId) return null; 
@@ -62,118 +64,181 @@ export default function WaitlistClient({ shopId, services, staff }: { shopId: st
 
   return (
     <div>
-      <div className="bg-crm-surface backdrop-blur-xl shadow-2xl rounded-2xl border border-crm-border shadow-sm flex flex-col md:flex-row divide-y md:divide-y-0 md:divide-x divide-white/10 relative z-20 overflow-hidden transform sm:-translate-y-6 sm:-mx-2 mb-2 sm:mb-6">
-        <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-crm-surface transition-all duration-300 min-w-0">
-          <div className="absolute top-0 left-0 w-full h-1 bg-status-info/80"></div>
-          <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-2 sm:mb-3">
-            <h3 className="text-crm-muted uppercase tracking-widest font-semibold truncate text-[11px]">Waiting</h3>
-            <span className="text-status-info text-[13px]">⏳</span>
+      <PremiumGlassCard className="!p-0 mb-8 flex flex-col md:flex-row divide-y md:divide-y-0 md:divide-x divide-white/10 relative z-20 overflow-hidden transform sm:-translate-y-6 sm:-mx-2" accentColor="crm-primary">
+        <div className="flex-1 p-6 relative overflow-hidden group hover:bg-white/5 transition-all duration-300 min-w-0">
+          <div className="absolute top-0 left-0 w-full h-1 bg-cyan-500 shadow-[0_0_10px_rgba(6,182,212,0.8)]"></div>
+          <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-3">
+            <h3 className="text-crm-muted uppercase tracking-widest font-black text-[11px]">Waiting</h3>
+            <span className="text-cyan-400 text-xl drop-shadow-md">⏳</span>
           </div>
-          <p className="font-black text-crm-text break-words leading-tight text-xl font-bold">{waiting.length}</p>
+          <p className="font-black text-crm-text break-words leading-tight text-4xl">{waiting.length}</p>
         </div>
-        <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-crm-surface transition-all duration-300 min-w-0">
-          <div className="absolute top-0 left-0 w-full h-1 bg-status-confirmed/80"></div>
-          <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-2 sm:mb-3">
-            <h3 className="text-crm-muted uppercase tracking-widest font-semibold truncate text-[11px]">Being Served</h3>
-            <span className="text-status-confirmed text-[13px]">✂️</span>
+        <div className="flex-1 p-6 relative overflow-hidden group hover:bg-white/5 transition-all duration-300 min-w-0">
+          <div className="absolute top-0 left-0 w-full h-1 bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.8)]"></div>
+          <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-3">
+            <h3 className="text-crm-muted uppercase tracking-widest font-black text-[11px]">Being Served</h3>
+            <span className="text-emerald-400 text-xl drop-shadow-md">✂️</span>
           </div>
-          <p className="font-black text-crm-text break-words leading-tight text-xl font-bold">{serving.length}</p>
+          <p className="font-black text-crm-text break-words leading-tight text-4xl">{serving.length}</p>
         </div>
-        <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-crm-surface transition-all duration-300 min-w-0">
-          <div className="absolute top-0 left-0 w-full h-1 bg-crm-accent/80"></div>
-          <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-2 sm:mb-3">
-            <h3 className="text-crm-muted uppercase tracking-widest font-semibold truncate text-[11px]">Est. Wait</h3>
-            <span className="text-crm-accent text-[13px]">⏱️</span>
+        <div className="flex-1 p-6 relative overflow-hidden group hover:bg-white/5 transition-all duration-300 min-w-0">
+          <div className="absolute top-0 left-0 w-full h-1 bg-brand-gold shadow-[0_0_10px_rgba(212,175,55,0.8)]"></div>
+          <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-3">
+            <h3 className="text-crm-muted uppercase tracking-widest font-black text-[11px]">Est. Wait</h3>
+            <span className="text-brand-gold text-xl drop-shadow-md">⏱️</span>
           </div>
-          <p className="font-black text-crm-text break-words leading-tight text-xl font-bold">{waiting.length > 0 ? `~${waiting.length * 15}m` : '0m'}</p>
+          <p className="font-black text-crm-text break-words leading-tight text-4xl">{waiting.length > 0 ? `~${waiting.length * 15}m` : '0m'}</p>
         </div>
-      </div>
+      </PremiumGlassCard>
 
-      <form onSubmit={handleAdd} className="bg-crm-surface p-4 rounded-lg border border-crm-border shadow-sm mb-6 space-y-3">
-        <h3 className="font-bold text-crm-text text-lg font-bold">+ Add Walk-in</h3>
-        <div className="grid grid-cols-1 sm:grid-cols-5 gap-3">
-          <input type="text" value={clientName} onChange={e => setClientName(e.target.value)} placeholder="Client Name *" required style={inputStyle} className="border border-crm-border shadow-sm rounded p-2.5 text-[13px] focus:outline-none focus:border-brand-gold" />
-          <input type="tel" value={clientPhone} onChange={e => {
-            // Only import here if needed, but actually we should import at top level
-            setClientPhone(e.target.value);
-          }} onBlur={() => {
-            // Format on blur
-            import('@/lib/formatters').then(({ formatPhoneNumberIN }) => {
-              setClientPhone(formatPhoneNumberIN(clientPhone));
-            });
-          }} placeholder="Phone (10 digits)" style={inputStyle} className="border border-crm-border shadow-sm rounded p-2.5 text-[13px] focus:outline-none focus:border-brand-gold" />
-          <select value={serviceId} onChange={e => setServiceId(e.target.value)} style={inputStyle} className="border border-crm-border shadow-sm rounded p-2.5 text-[13px] focus:outline-none focus:border-brand-gold">
-            <option value="">Any Service</option>
-            {services.map(s => <option key={s.id} value={s.id}>{s.name} ({s.duration}m)</option>)}
-          </select>
-          <select value={staffId} onChange={e => setStaffId(e.target.value)} style={inputStyle} className="border border-crm-border shadow-sm rounded p-2.5 text-[13px] focus:outline-none focus:border-brand-gold">
-            <option value="">No Preference</option>
-            {staff.map(s => <option key={s.id} value={s.id}>{s.name || (s.email ? s.email.split('@')[0] : 'Staff')}</option>)}
-          </select>
-          <button type="submit" disabled={adding} className="bg-crm-primary text-white hover:bg-crm-surface hover:text-crm-primary border border-transparent hover:border-crm-primary/30 font-bold py-2.5 rounded text-[13px] disabled:opacity-50">{adding ? 'Adding...' : 'Add'}</button>
+      <form onSubmit={handleAdd} className="bg-black/20 p-6 rounded-2xl border border-white/5 shadow-inner mb-8">
+        <h3 className="font-bold text-crm-text text-xl mb-4 flex items-center gap-2">
+          <span className="text-crm-primary">➕</span> Add Walk-in
+        </h3>
+        <div className="grid grid-cols-1 sm:grid-cols-5 gap-4">
+          <PremiumInput 
+            label="Client Name *"
+            type="text" 
+            value={clientName} 
+            onChange={e => setClientName(e.target.value)} 
+            placeholder="e.g. John Doe" 
+            required 
+          />
+          <PremiumInput 
+            label="Phone (optional)"
+            type="tel" 
+            value={clientPhone} 
+            onChange={e => setClientPhone(e.target.value)} 
+            onBlur={() => {
+              import('@/lib/formatters').then(({ formatPhoneNumberIN }) => {
+                setClientPhone(formatPhoneNumberIN(clientPhone));
+              });
+            }} 
+            placeholder="(123) 456-7890" 
+          />
+          <div className="relative">
+            <label className="block text-[13px] font-bold text-crm-muted uppercase tracking-wider mb-2 ml-1">Service</label>
+            <select 
+              value={serviceId} 
+              onChange={e => setServiceId(e.target.value)} 
+              className="w-full bg-crm-bg/50 backdrop-blur-sm border border-white/10 shadow-inner rounded-xl px-4 py-3 text-crm-text focus:ring-2 focus:ring-crm-primary transition-all focus:border-transparent outline-none appearance-none font-medium"
+            >
+              <option value="">Any Service</option>
+              {services.map(s => <option key={s.id} value={s.id}>{s.name} ({s.duration}m)</option>)}
+            </select>
+          </div>
+          <div className="relative">
+            <label className="block text-[13px] font-bold text-crm-muted uppercase tracking-wider mb-2 ml-1">Staff</label>
+            <select 
+              value={staffId} 
+              onChange={e => setStaffId(e.target.value)} 
+              className="w-full bg-crm-bg/50 backdrop-blur-sm border border-white/10 shadow-inner rounded-xl px-4 py-3 text-crm-text focus:ring-2 focus:ring-crm-primary transition-all focus:border-transparent outline-none appearance-none font-medium"
+            >
+              <option value="">No Preference</option>
+              {staff.map(s => <option key={s.id} value={s.id}>{s.name || (s.email ? s.email.split('@')[0] : 'Staff')}</option>)}
+            </select>
+          </div>
+          <div className="flex items-end">
+            <PremiumButton type="submit" disabled={adding} className="w-full py-3 h-[48px]">
+              {adding ? 'Adding...' : 'Add to List'}
+            </PremiumButton>
+          </div>
         </div>
       </form>
 
-      {loading ? <p className="text-crm-muted text-center py-8 text-[13px]">Loading...</p> : (
-        <div className="space-y-3">
+      {loading ? <p className="text-crm-muted text-center py-12 text-[14px] font-bold uppercase tracking-wider animate-pulse">Loading waitlist...</p> : (
+        <div className="space-y-4">
           {serving.map(entry => (
-            <div key={entry.id} className="bg-status-confirmed/20 p-4 rounded-lg border border-status-confirmed/30 flex flex-wrap justify-between gap-x-2 gap-y-2 items-center">
-              <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-full bg-status-confirmed flex items-center justify-center text-crm-text font-bold text-[13px]">✂️</div>
-                <div>
-                  <p className="font-bold text-crm-text text-xl font-bold">{entry.clientName}</p>
-                  <p className="text-status-confirmed text-[13px]">Being served · {getWaitTime(entry.createdAt)} ago</p>
-                  {entry.staffId && <p className="text-crm-accent text-[13px]">✂️ {getStaffName(entry.staffId)}</p>}
-                  {entry.clientPhone && <p className="text-crm-muted text-[13px]">📱 {entry.clientPhone}</p>}
-                </div>
-              </div>
-              <button onClick={() => updateStatus(entry.id, 'DONE')} className="bg-status-confirmed hover:bg-status-confirmed text-crm-text text-[11px] font-bold px-3 py-1.5 rounded">Done ✓</button>
-            </div>
-          ))}
-          {waiting.map((entry, idx) => (
-            <div key={entry.id} className="bg-crm-surface p-4 rounded-lg border border-crm-border shadow-sm">
-              <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center">
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-full bg-crm-surface flex items-center justify-center text-crm-text font-bold text-[13px]">{idx + 1}</div>
+            <PremiumGlassCard key={entry.id} className="!p-5 bg-emerald-500/10 border-emerald-500/20" accentColor="emerald-500">
+              <div className="flex flex-wrap justify-between gap-x-4 gap-y-4 items-center">
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 rounded-full bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center text-xl shadow-[0_0_15px_rgba(16,185,129,0.3)] shrink-0">✂️</div>
                   <div>
-                    <p className="font-bold text-crm-text text-xl font-bold">{entry.clientName}</p>
-                    <p className="text-crm-muted text-[13px]">Waiting · {getWaitTime(entry.createdAt)}</p>
-                    {entry.staffId && <p className="text-crm-accent text-[13px]">✂️ {getStaffName(entry.staffId)}</p>}
-                    {entry.clientPhone && <p className="text-crm-muted text-[13px]">📱 {entry.clientPhone}</p>}
+                    <p className="font-black text-crm-text text-xl">{entry.clientName}</p>
+                    <div className="flex items-center gap-2 mt-1">
+                      <span className="bg-emerald-500/20 text-emerald-400 font-bold px-2 py-0.5 rounded text-[10px] uppercase tracking-wider border border-emerald-500/20 shadow-inner">Being served</span>
+                      <span className="text-white/50 text-[11px] font-medium">{getWaitTime(entry.createdAt)} ago</span>
+                    </div>
+                    {(entry.staffId || entry.clientPhone) && (
+                      <div className="flex items-center gap-3 mt-2 text-[12px]">
+                        {entry.staffId && <span className="text-brand-gold font-bold">✂️ {getStaffName(entry.staffId)}</span>}
+                        {entry.clientPhone && <span className="text-white/60">📱 {entry.clientPhone}</span>}
+                      </div>
+                    )}
                   </div>
                 </div>
-                <div className="flex gap-2">
-                  <button onClick={() => setAssigningId(entry.id)} className="bg-crm-accent/20 hover:bg-crm-accent/20 text-crm-accent border border-crm-accent/30 text-[11px] px-2 py-1.5 rounded">Reassign Barber</button>
-                  <button onClick={() => handleServe(entry.id)} className="bg-crm-primary text-white hover:bg-crm-surface hover:text-crm-primary border border-transparent hover:border-crm-primary/30 text-[11px] font-bold px-3 py-1.5 rounded">Serve</button>
-                  <button onClick={() => updateStatus(entry.id, 'LEFT')} className="bg-crm-surface hover:bg-crm-border text-crm-muted text-[11px] px-2 py-1.5 rounded">Left</button>
+                <button onClick={() => updateStatus(entry.id, 'DONE')} className="bg-emerald-500 hover:bg-emerald-400 text-white shadow-[0_0_15px_rgba(16,185,129,0.4)] text-[12px] font-black uppercase tracking-wider px-6 py-3 rounded-full transition-all hover:scale-105 active:scale-95 shrink-0">
+                  Done ✓
+                </button>
+              </div>
+            </PremiumGlassCard>
+          ))}
+          
+          {waiting.map((entry, idx) => (
+            <PremiumGlassCard key={entry.id} className="!p-5" accentColor="crm-primary">
+              <div className="flex flex-wrap justify-between gap-x-4 gap-y-4 items-center">
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 rounded-full bg-black/40 border border-white/10 flex items-center justify-center text-crm-muted font-black text-xl shadow-inner shrink-0">{idx + 1}</div>
+                  <div>
+                    <p className="font-black text-crm-text text-xl">{entry.clientName}</p>
+                    <div className="flex items-center gap-2 mt-1">
+                      <span className="bg-cyan-500/20 text-cyan-400 font-bold px-2 py-0.5 rounded text-[10px] uppercase tracking-wider border border-cyan-500/20 shadow-inner">Waiting</span>
+                      <span className="text-white/50 text-[11px] font-medium">{getWaitTime(entry.createdAt)}</span>
+                    </div>
+                    {(entry.staffId || entry.clientPhone) && (
+                      <div className="flex items-center gap-3 mt-2 text-[12px]">
+                        {entry.staffId && <span className="text-brand-gold font-bold">✂️ {getStaffName(entry.staffId)}</span>}
+                        {entry.clientPhone && <span className="text-white/60">📱 {entry.clientPhone}</span>}
+                      </div>
+                    )}
+                  </div>
+                </div>
+                <div className="flex flex-wrap gap-2 justify-end">
+                  <button onClick={() => setAssigningId(entry.id)} className="bg-brand-gold/10 hover:bg-brand-gold/20 text-brand-gold border border-brand-gold/30 text-[11px] font-bold uppercase tracking-wider px-4 py-2 rounded-lg transition-colors">
+                    Reassign
+                  </button>
+                  <button onClick={() => updateStatus(entry.id, 'LEFT')} className="bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/20 text-[11px] font-bold uppercase tracking-wider px-4 py-2 rounded-lg transition-colors">
+                    Left
+                  </button>
+                  <button onClick={() => handleServe(entry.id)} className="bg-crm-primary hover:bg-crm-primary/80 text-white shadow-[0_0_15px_rgba(var(--crm-primary-rgb),0.4)] text-[12px] font-black uppercase tracking-wider px-6 py-2 rounded-full transition-all hover:scale-105 active:scale-95">
+                    Serve
+                  </button>
                 </div>
               </div>
+              
               {/* Staff Picker Dropdown */}
               {assigningId === entry.id && (
-                <div className="mt-3 pt-3 border-t border-crm-border">
-                  <p className="text-crm-muted uppercase tracking-wider mb-2 text-[13px]">Assign barber:</p>
-                  <div className="flex flex-wrap gap-2">
+                <div className="mt-4 pt-4 border-t border-white/10 bg-black/20 -mx-5 px-5 -mb-5 pb-5">
+                  <p className="text-crm-muted uppercase tracking-widest font-black mb-3 text-[11px]">Assign barber:</p>
+                  <div className="flex flex-wrap gap-3">
                     {staff.map(s => (
                       <button key={s.id} onClick={() => updateStatus(entry.id, undefined, s.id)}
-                        className="bg-crm-accent/20 hover:bg-crm-accent/20 text-crm-accent border border-crm-accent/30 text-[11px] font-bold px-3 py-1.5 rounded transition-colors">
+                        className="bg-brand-gold/10 hover:bg-brand-gold/20 text-brand-gold border border-brand-gold/30 text-[12px] font-bold px-4 py-2 rounded-lg transition-all hover:scale-105 active:scale-95 shadow-inner">
                         ✂️ {s.name || (s.email ? s.email.split('@')[0] : 'Staff')}
                       </button>
                     ))}
                     <button onClick={() => updateStatus(entry.id, undefined, null)}
-                      className="bg-crm-surface hover:bg-crm-surface text-crm-muted text-[11px] px-3 py-1.5 rounded border border-crm-border shadow-sm transition-colors">
+                      className="bg-white/5 hover:bg-white/10 text-white/70 text-[12px] font-bold px-4 py-2 rounded-lg border border-white/10 transition-colors">
                       Remove assignment
                     </button>
                     <button onClick={() => setAssigningId(null)}
-                      className="text-crm-muted hover:text-crm-text text-[11px] px-2 py-1.5">
+                      className="text-white/40 hover:text-white/80 text-[12px] font-bold uppercase tracking-wider px-3 py-2 ml-auto">
                       Cancel
                     </button>
                   </div>
                 </div>
               )}
-            </div>
+            </PremiumGlassCard>
           ))}
+          
           {waiting.length === 0 && serving.length === 0 && (
-            <p className="text-crm-muted italic text-center py-8 border border-dashed border-crm-border rounded text-[13px]">No one in the queue. Add walk-in clients above.</p>
+            <div className="flex flex-col items-center justify-center py-16 text-center bg-white/5 rounded-2xl border border-dashed border-white/20">
+              <span className="text-4xl mb-4 opacity-50 drop-shadow-md">🪑</span>
+              <h2 className="text-xl font-bold text-crm-text mb-2">No one in the queue</h2>
+              <p className="text-crm-muted text-[14px] max-w-[250px] mx-auto font-medium">
+                Add walk-in clients above to start the queue.
+              </p>
+            </div>
           )}
         </div>
       )}

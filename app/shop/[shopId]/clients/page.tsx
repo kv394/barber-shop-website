@@ -112,21 +112,27 @@ export default async function ClientsPage({ params, searchParams }: { params: Pr
       </div>
       
       {clients.length === 0 && !resolvedSearchParams.openClient ? (
-        <p className="text-crm-muted italic text-center py-8 sm:py-12 border border-dashed border-crm-border rounded text-[13px]">No clients registered to this shop yet.</p>
+        <div className="flex flex-col items-center justify-center py-16 text-center bg-white/5 rounded-2xl border border-dashed border-white/20">
+          <span className="text-4xl mb-4 opacity-50 drop-shadow-md">📇</span>
+          <h2 className="text-xl font-bold text-crm-text mb-2">No clients registered</h2>
+          <p className="text-crm-muted text-[14px] max-w-[250px] mx-auto font-medium">
+            You don't have any clients in your directory yet.
+          </p>
+        </div>
       ) : (
         <>
           <ClientGrid clients={clients} shopId={shopId} initialSelectedClientId={resolvedSearchParams.openClient} currency={shop.currency} />
           
           {totalPages > 1 && (
-            <div className="flex justify-center mt-8 gap-2">
+            <div className="flex justify-center mt-10 gap-2">
               {Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => (
                 <a
                   key={p}
                   href={`/shop/${shopId}/clients?page=${p}`}
-                  className={`w-8 h-8 flex items-center justify-center rounded text-[13px] font-bold transition-colors ${
+                  className={`w-10 h-10 flex items-center justify-center rounded-xl text-[14px] font-black transition-all hover:scale-105 active:scale-95 shadow-inner ${
                     p === currentPage
-                      ? "bg-crm-primary text-white"
-                      : "bg-crm-surface text-crm-muted hover:bg-crm-surface hover:text-crm-text"
+                      ? "bg-crm-primary text-white shadow-[0_0_15px_rgba(var(--crm-primary-rgb),0.4)]"
+                      : "bg-black/20 text-crm-muted border border-white/5 hover:bg-white/10 hover:text-crm-text"
                   }`}
                 >
                   {p}

@@ -7,6 +7,7 @@ import ScheduleGrid from '@/components/shop-admin/ScheduleGrid';
 import TimelineGrid from '@/components/shop-admin/TimelineGrid';
 import { DayPicker } from 'react-day-picker';
 import 'react-day-picker/dist/style.css';
+import PremiumGlassCard from '@/components/ui/PremiumGlassCard';
 
 interface StaffAvailabilityProps {
   defaultDate: string;
@@ -67,7 +68,7 @@ export default function StaffAvailability({ defaultDate, defaultFrom, defaultTo,
   const showTimeFilters = defaultFrom !== undefined && defaultTo !== undefined;
 
   return (
-    <div className="bg-crm-surface rounded-2xl border border-crm-border shadow-sm overflow-hidden w-full max-w-full glass p-4">
+    <PremiumGlassCard className="w-full max-w-full !p-4 relative z-10" accentColor="crm-primary">
       <div className={`grid grid-cols-1 ${showTimeFilters ? 'sm:grid-cols-3' : 'sm:grid-cols-1'} gap-2 sm:gap-3 mb-4`}>
         <div className="w-full relative">
           <label className="block text-crm-muted mb-2 font-bold uppercase tracking-wider text-[13px] sm:text-[14px]">📅 Date</label>
@@ -139,6 +140,6 @@ export default function StaffAvailability({ defaultDate, defaultFrom, defaultTo,
           {children}
         </div>
       )}
-    </div>
+    </PremiumGlassCard>
   );
 }

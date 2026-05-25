@@ -4,6 +4,8 @@ import { useState, useEffect } from 'react';
 import UserQRCode from '@/components/clients/UserQRCode';
 import ClientDetailModal from '@/components/clients/ClientDetailModal';
 
+import PremiumGlassCard from '@/components/ui/PremiumGlassCard';
+
 export default function ClientGrid({ clients, shopId, initialSelectedClientId, currency = 'USD' }: { clients: any[]; shopId: string; initialSelectedClientId?: string; currency?: string }) {
   const [selectedClient, setSelectedClient] = useState<any>(null);
   const [searchTerm, setSearchTerm] = useState('');
@@ -32,44 +34,54 @@ export default function ClientGrid({ clients, shopId, initialSelectedClientId, c
 
   return (
     <>
-      <div className="mb-6">
+      <div className="mb-6 relative group">
+        <div className="absolute inset-0 bg-crm-primary/10 blur-[30px] rounded-full group-hover:bg-crm-primary/20 transition-all duration-500"></div>
         <div className="relative">
-          <span className="absolute left-4 top-1/2 -translate-y-1/2 text-crm-muted">🔍</span>
+          <span className="absolute left-4 top-1/2 -translate-y-1/2 text-crm-muted/70 text-lg">🔍</span>
           <input 
             type="text" 
             placeholder="Search by name, email, phone, or barcode ID..." 
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full bg-crm-surface border border-crm-border shadow-sm rounded-xl pl-12 pr-4 py-3 text-crm-text focus:outline-none focus:border-brand-gold focus:ring-1 focus:ring-crm-primary shadow-lg"
+            className="w-full bg-black/30 backdrop-blur-md border border-white/10 shadow-inner rounded-2xl pl-12 pr-4 py-4 text-crm-text focus:outline-none focus:ring-2 focus:ring-crm-primary transition-all placeholder:text-crm-muted/50 text-[15px] font-medium"
           />
         </div>
       </div>
 
       {filteredClients.length === 0 ? (
-        <p className="text-crm-muted italic text-center py-8 bg-crm-surface rounded-xl border border-dashed border-crm-border text-[13px]">No clients match your search.</p>
+        <div className="flex flex-col items-center justify-center py-16 text-center bg-white/5 rounded-2xl border border-dashed border-white/20">
+          <span className="text-4xl mb-4 opacity-50 drop-shadow-md">📇</span>
+          <h2 className="text-xl font-bold text-crm-text mb-2">No clients found</h2>
+          <p className="text-crm-muted text-[14px] max-w-[250px] mx-auto font-medium">
+            We couldn't find any clients matching your search.
+          </p>
+        </div>
       ) : (
-        <div className="bg-crm-surface border border-crm-border rounded-xl shadow-sm overflow-hidden">
+        <PremiumGlassCard className="!p-0 overflow-hidden" accentColor="crm-primary">
           {/* Mobile View (Cards) */}
-          <div className="md:hidden divide-y divide-crm-border">
+          <div className="md:hidden divide-y divide-white/10">
             {filteredClients.map((client: any) => (
               <div
                 key={client.id}
                 onClick={() => setSelectedClient(client)}
-                className="p-4 flex flex-col gap-3 hover:bg-crm-bg/50 transition-colors cursor-pointer"
+                className="p-5 flex flex-col gap-3 hover:bg-white/5 transition-colors cursor-pointer relative group"
               >
-                <div className="flex justify-between items-start gap-2">
+                <div className="flex justify-between items-start gap-4">
                   <div className="min-w-0">
-                    <h4 className="font-bold text-crm-text text-[15px] truncate">{client.name || "Guest User"}</h4>
-                    <p className="text-crm-muted text-[13px] truncate mt-0.5">{client.email.startsWith('walkin-') ? 'Walk-in (No Email)' : client.email}</p>
-                    {client.phone && <p className="text-crm-muted text-[13px] truncate mt-0.5">{client.phone}</p>}
+                    <h4 className="font-bold text-crm-text text-[16px] truncate group-hover:text-crm-primary transition-colors">{client.name || "Guest User"}</h4>
+                    <p className="text-crm-muted text-[13px] truncate mt-1">{client.email.startsWith('walkin-') ? 'Walk-in (No Email)' : client.email}</p>
+                    {client.phone && <p className="text-crm-muted text-[13px] truncate mt-0.5 font-medium">{client.phone}</p>}
                   </div>
-                  <div className="shrink-0">
+                  <div className="shrink-0 bg-white/5 p-1.5 rounded-xl border border-white/10 shadow-inner">
                     <UserQRCode barcode={client.barcode || client.id} userName={client.name || "Client"} showText={false} size={48} />
                   </div>
                 </div>
-                <div className="flex justify-between items-center text-[12px] text-crm-muted">
-                  <div className="font-mono truncate max-w-[150px]">ID: {client.barcode || client.id}</div>
-                  <div>Visits: <span className="font-bold text-crm-text">{client._count?.clientAppointments || 0}</span></div>
+                <div className="flex justify-between items-center text-[12px] text-white/50 bg-black/20 -mx-5 px-5 -mb-5 pb-5 pt-3 border-t border-white/5 mt-2">
+                  <div className="font-mono truncate max-w-[150px] font-bold">ID: {client.barcode || client.id}</div>
+                  <div className="flex items-center gap-2">
+                    <span className="uppercase tracking-widest font-black text-[10px]">Visits</span>
+                    <span className="font-black text-crm-text bg-white/10 px-2 py-0.5 rounded shadow-inner">{client._count?.clientAppointments || 0}</span>
+                  </div>
                 </div>
               </div>
             ))}
@@ -77,52 +89,52 @@ export default function ClientGrid({ clients, shopId, initialSelectedClientId, c
 
           {/* Desktop View (Table) */}
           <div className="hidden md:block overflow-x-auto">
-            <table className="w-full text-left border-collapse">
+            <table className="w-full text-left border-collapse whitespace-nowrap">
               <thead>
-                <tr className="bg-crm-bg border-b border-crm-border text-[11px] font-bold text-crm-muted uppercase tracking-wider">
-                  <th className="px-6 py-4">Client</th>
-                  <th className="px-6 py-4">Contact Info</th>
-                  <th className="px-6 py-4">Barcode ID</th>
-                  <th className="px-6 py-4 text-center">Visits</th>
-                  <th className="px-6 py-4">Last Visit</th>
-                  <th className="px-6 py-4 text-right">Actions</th>
+                <tr className="bg-black/40 border-b border-white/10 text-[11px] font-black text-crm-muted uppercase tracking-widest">
+                  <th className="px-6 py-5">Client</th>
+                  <th className="px-6 py-5">Contact Info</th>
+                  <th className="px-6 py-5">Barcode ID</th>
+                  <th className="px-6 py-5 text-center">Visits</th>
+                  <th className="px-6 py-5">Last Visit</th>
+                  <th className="px-6 py-5 text-right">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-crm-border">
+              <tbody className="divide-y divide-white/10">
                 {filteredClients.map((client: any) => (
                   <tr 
                     key={client.id} 
                     onClick={() => setSelectedClient(client)}
-                    className="group cursor-pointer hover:bg-crm-bg/50 transition-colors"
+                    className="group cursor-pointer hover:bg-white/5 transition-colors"
                   >
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-4">
-                        <div className="shrink-0 rounded-lg overflow-hidden border border-crm-border bg-white p-1">
-                          <UserQRCode barcode={client.barcode || client.id} userName={client.name || "Client"} showText={false} size={40} />
+                        <div className="shrink-0 rounded-xl overflow-hidden border border-white/20 bg-white/10 p-1.5 shadow-inner group-hover:border-crm-primary/50 transition-colors">
+                          <UserQRCode barcode={client.barcode || client.id} userName={client.name || "Client"} showText={false} size={44} />
                         </div>
                         <div>
-                          <div className="font-bold text-crm-text text-[15px] group-hover:text-crm-primary transition-colors">{client.name || "Guest User"}</div>
+                          <div className="font-black text-crm-text text-[15px] group-hover:text-crm-primary transition-colors">{client.name || "Guest User"}</div>
                         </div>
                       </div>
                     </td>
                     <td className="px-6 py-4">
-                      <div className="text-[13px] text-crm-muted">{client.email.startsWith('walkin-') ? 'Walk-in (No Email)' : client.email}</div>
-                      {client.phone && <div className="text-[13px] text-crm-muted mt-0.5">{client.phone}</div>}
+                      <div className="text-[13px] text-crm-muted font-medium">{client.email.startsWith('walkin-') ? 'Walk-in (No Email)' : client.email}</div>
+                      {client.phone && <div className="text-[13px] text-crm-muted mt-1 font-medium">{client.phone}</div>}
                     </td>
                     <td className="px-6 py-4">
-                      <div className="font-mono text-[12px] text-crm-muted tracking-wide break-all max-w-[150px]">{client.barcode || client.id}</div>
+                      <div className="font-mono text-[12px] font-bold text-white/50 tracking-wide bg-black/20 px-2 py-1 rounded shadow-inner inline-block">{client.barcode || client.id}</div>
                     </td>
                     <td className="px-6 py-4 text-center">
-                      <span className="inline-flex items-center justify-center min-w-[32px] px-2 py-1 rounded-md bg-crm-bg border border-crm-border text-crm-text font-bold text-[13px]">
+                      <span className="inline-flex items-center justify-center min-w-[32px] px-2 py-1 rounded-lg bg-white/10 border border-white/5 text-crm-text font-black text-[14px] shadow-inner">
                         {client._count?.clientAppointments || 0}
                       </span>
                     </td>
-                    <td className="px-6 py-4 text-[13px] text-crm-muted">
-                      {client.lastVisit ? new Date(client.lastVisit).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' }) : 'Never'}
+                    <td className="px-6 py-4 text-[13px] text-white/60 font-medium">
+                      {client.lastVisit ? new Date(client.lastVisit).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' }) : <span className="italic opacity-50">Never</span>}
                     </td>
                     <td className="px-6 py-4 text-right">
-                      <button className="text-[13px] font-bold text-crm-primary opacity-0 group-hover:opacity-100 transition-opacity">
-                        View Details →
+                      <button className="text-[11px] font-black text-crm-primary opacity-0 group-hover:opacity-100 transition-opacity uppercase tracking-wider bg-crm-primary/10 hover:bg-crm-primary/20 px-3 py-1.5 rounded-full border border-crm-primary/20">
+                        View Details
                       </button>
                     </td>
                   </tr>
@@ -130,7 +142,7 @@ export default function ClientGrid({ clients, shopId, initialSelectedClientId, c
               </tbody>
             </table>
           </div>
-        </div>
+        </PremiumGlassCard>
       )}
 
       {selectedClient && (

@@ -10,6 +10,7 @@ import DirectClockInButton from '@/components/shop-admin/DirectClockInButton';
 import ClientNameClickable from '@/components/clients/ClientNameClickable';
 import { calculateUsageCostStrategy, getSaaSTiers } from '@/lib/cost-calculator';
 import InventoryForecast from '@/components/shop-admin/InventoryForecast';
+import PremiumGlassCard from '@/components/ui/PremiumGlassCard';
 
 export const dynamic = 'force-dynamic';
 
@@ -192,89 +193,98 @@ export default async function ShopDashboardPage({ params }: { params: Promise<{ 
         {/* ── Today's Overview ── */}
         {todayStats && (
           <section>
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4 gap-2">
-              <h2 className="text-lg font-bold text-crm-text tracking-tight">Today&apos;s Overview</h2>
-              <div className="text-xs font-semibold text-crm-muted bg-crm-surface px-3 py-1.5 rounded-full border border-crm-border self-start sm:self-auto">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6 gap-2">
+              <h2 className="text-xl font-bold text-crm-text tracking-tight flex items-center gap-3">
+                <span className="text-2xl">📈</span> Today's Overview
+              </h2>
+              <div className="text-[13px] font-bold text-crm-muted bg-white/5 px-4 py-2 rounded-full border border-white/10 self-start sm:self-auto uppercase tracking-wider shadow-inner">
                 {new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' })}
               </div>
             </div>
-            <div className="flex sm:grid sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4 overflow-x-auto hide-scrollbar snap-x snap-mandatory pb-2 sm:pb-0 -mx-4 px-4 sm:mx-0 sm:px-0 scrollbar-none">
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
               {[
-                { label: 'Bookings', value: todayStats.totalBookings, color: 'text-blue-600' },
-                { label: 'Revenue', value: `$${todayStats.revenue.toFixed(0)}`, color: 'text-emerald-600' },
-                { label: 'Tips', value: `$${todayStats.tips.toFixed(0)}`, color: 'text-amber-600' },
-                { label: 'Completed', value: todayStats.completedCount, color: 'text-purple-600' },
-                { label: 'Upcoming', value: todayStats.upcomingCount, color: 'text-cyan-600' },
+                { label: 'Bookings', value: todayStats.totalBookings, color: 'text-blue-400', accent: 'bg-blue-500/10 border-blue-500/20' },
+                { label: 'Revenue', value: `$${todayStats.revenue.toFixed(0)}`, color: 'text-emerald-400', accent: 'bg-emerald-500/10 border-emerald-500/20' },
+                { label: 'Tips', value: `$${todayStats.tips.toFixed(0)}`, color: 'text-amber-400', accent: 'bg-amber-500/10 border-amber-500/20' },
+                { label: 'Completed', value: todayStats.completedCount, color: 'text-purple-400', accent: 'bg-purple-500/10 border-purple-500/20' },
+                { label: 'Upcoming', value: todayStats.upcomingCount, color: 'text-cyan-400', accent: 'bg-cyan-500/10 border-cyan-500/20' },
               ].map((stat, i) => (
-                <div key={i} className="min-w-[130px] sm:min-w-0 shrink-0 snap-start bg-crm-surface border border-crm-border p-4 rounded-xl text-center shadow-sm hover:shadow-md transition-shadow">
-                  <p className={`text-2xl font-black mb-1 ${stat.color}`}>{stat.value}</p>
-                  <p className="text-[11px] font-bold text-crm-muted uppercase tracking-wider">{stat.label}</p>
+                <div key={i} className={`flex-1 shrink-0 bg-black/20 border border-white/5 p-5 rounded-2xl text-center shadow-inner relative overflow-hidden group`}>
+                  <div className={`absolute inset-0 ${stat.accent} opacity-50 transition-opacity group-hover:opacity-100`}></div>
+                  <div className="relative z-10">
+                    <p className={`text-3xl font-black mb-1.5 ${stat.color} drop-shadow-md`}>{stat.value}</p>
+                    <p className="text-[11px] font-black text-crm-muted uppercase tracking-widest">{stat.label}</p>
+                  </div>
                 </div>
               ))}
             </div>
           </section>
         )}
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           
           {/* ── Left Column: Action Items ── */}
           <div className="space-y-6">
-            <h3 className="text-md font-bold text-crm-text flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-crm-primary"></span>
+            <h3 className="text-lg font-bold text-crm-text flex items-center gap-3">
+              <span className="w-2.5 h-2.5 rounded-full bg-crm-primary shadow-[0_0_10px_rgba(var(--crm-primary-rgb),0.8)] animate-pulse"></span>
               Needs Attention
             </h3>
             
             {/* Up Next Appointment */}
             {todayStats?.nextAppointment && (
-              <div className="bg-crm-surface border-l-4 border-l-crm-primary border-y border-r border-crm-border p-5 rounded-r-xl shadow-sm hover:shadow-md transition-all">
-                <div className="flex items-start justify-between mb-3">
-                  <div>
-                    <p className="text-xs font-bold text-crm-primary mb-1 uppercase tracking-wider">
-                      Up Next • {new Date(todayStats.nextAppointment.startTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                    </p>
-                    <h4 className="text-lg font-bold text-crm-text">{todayStats.nextAppointment.user?.name || 'Guest'}</h4>
-                  </div>
-                </div>
-                <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-6 text-sm text-crm-muted mt-3 pt-3 border-t border-crm-border">
-                  <div className="flex items-center gap-1.5">
-                    <span className="text-[11px] uppercase tracking-wider font-semibold">Service:</span>
-                    <span className="font-medium text-crm-text">{todayStats.nextAppointment.service?.name}</span>
-                  </div>
-                  {todayStats.nextAppointment.staff?.name && (
-                    <div className="flex items-center gap-1.5">
-                      <span className="text-[11px] uppercase tracking-wider font-semibold">Staff:</span>
-                      <span className="font-medium text-crm-text">{todayStats.nextAppointment.staff.name}</span>
+              <PremiumGlassCard className="!p-0 overflow-hidden" accentColor="crm-primary">
+                <div className="p-5">
+                  <div className="flex items-start justify-between mb-4">
+                    <div>
+                      <p className="text-[11px] font-black text-crm-primary mb-1.5 uppercase tracking-widest">
+                        Up Next • {new Date(todayStats.nextAppointment.startTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                      </p>
+                      <h4 className="text-xl font-bold text-crm-text">{todayStats.nextAppointment.user?.name || 'Guest'}</h4>
                     </div>
-                  )}
+                  </div>
+                  <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6 text-sm text-crm-muted mt-4 pt-4 border-t border-white/10 bg-black/10 -mx-5 px-5 -mb-5 pb-5">
+                    <div className="flex items-center gap-2">
+                      <span className="text-[11px] uppercase tracking-wider font-bold">Service:</span>
+                      <span className="font-bold text-crm-text">{todayStats.nextAppointment.service?.name}</span>
+                    </div>
+                    {todayStats.nextAppointment.staff?.name && (
+                      <div className="flex items-center gap-2">
+                        <span className="text-[11px] uppercase tracking-wider font-bold">Staff:</span>
+                        <span className="font-bold text-crm-text">{todayStats.nextAppointment.staff.name}</span>
+                      </div>
+                    )}
+                  </div>
                 </div>
-              </div>
+              </PremiumGlassCard>
             )}
 
             {/* Low Stock Alert (shop admin only) */}
             {isShopAdmin && lowStockItems.length > 0 && (
-              <div className="bg-status-pending/5 border border-status-pending/20 rounded-xl p-5 shadow-sm">
-                <p className="text-status-pending font-bold mb-3 text-[13px] uppercase tracking-wider">⚠️ {lowStockItems.length} Low-Stock Item{lowStockItems.length > 1 ? 's' : ''}</p>
-                <div className="space-y-2">
-                  {lowStockItems.slice(0, 3).map((item: any) => (
-                    <div key={item.id} className="flex justify-between items-center text-[13px] bg-white/50 px-3 py-2 rounded-md border border-status-pending/10">
-                      <span className="text-crm-text font-medium truncate">{item.name}</span>
-                      <span className="text-status-pending font-bold font-mono ml-2">{item.inventoryCount} left</span>
-                    </div>
-                  ))}
-                  {lowStockItems.length > 3 && <p className="text-crm-muted text-[11px] font-semibold mt-2">+{lowStockItems.length - 3} more items need restocking</p>}
+              <PremiumGlassCard className="!p-0 overflow-hidden" accentColor="brand-gold">
+                <div className="p-5 bg-status-pending/5">
+                  <p className="text-status-pending font-black mb-4 text-[13px] uppercase tracking-widest">⚠️ {lowStockItems.length} Low-Stock Item{lowStockItems.length > 1 ? 's' : ''}</p>
+                  <div className="space-y-3">
+                    {lowStockItems.slice(0, 3).map((item: any) => (
+                      <div key={item.id} className="flex justify-between items-center text-[13px] bg-black/20 px-4 py-3 rounded-lg border border-status-pending/20 shadow-inner">
+                        <span className="text-crm-text font-bold truncate">{item.name}</span>
+                        <span className="text-status-pending font-black font-mono ml-2 bg-status-pending/10 px-2 py-0.5 rounded">{item.inventoryCount} left</span>
+                      </div>
+                    ))}
+                    {lowStockItems.length > 3 && <p className="text-crm-muted text-[11px] font-bold mt-2 text-center uppercase tracking-wider">+{lowStockItems.length - 3} more items need restocking</p>}
+                  </div>
+                  <Link href={`/shop/${shopId}/config/products`} className="text-status-pending hover:text-crm-text font-bold transition-colors text-[12px] uppercase tracking-wider mt-4 flex items-center justify-center py-2 bg-status-pending/10 hover:bg-status-pending/20 rounded-lg border border-status-pending/20">
+                    Restock Inventory →
+                  </Link>
                 </div>
-                <Link href={`/shop/${shopId}/config/products`} className="text-status-pending hover:text-crm-text font-semibold transition-colors text-[12px] underline mt-3 inline-flex items-center py-2">
-                  Restock Inventory →
-                </Link>
-              </div>
+              </PremiumGlassCard>
             )}
 
             {/* Empty State */}
             {(!todayStats?.nextAppointment && (!isShopAdmin || lowStockItems.length === 0)) && (
-              <div className="flex flex-col items-center justify-center py-12 text-center bg-crm-surface/50 rounded-2xl border border-dashed border-crm-border">
-                <span className="text-3xl mb-3 opacity-50">✨</span>
-                <h2 className="text-lg font-bold text-crm-text mb-1">All Clear</h2>
-                <p className="text-crm-muted text-[13px] max-w-[250px] mx-auto">
+              <div className="flex flex-col items-center justify-center py-16 text-center bg-white/5 rounded-2xl border border-dashed border-white/20">
+                <span className="text-4xl mb-4 opacity-50 drop-shadow-md">✨</span>
+                <h2 className="text-xl font-bold text-crm-text mb-2">All Clear</h2>
+                <p className="text-crm-muted text-[14px] max-w-[250px] mx-auto font-medium">
                   You have no pending action items right now. Great job!
                 </p>
               </div>
@@ -283,8 +293,8 @@ export default async function ShopDashboardPage({ params }: { params: Promise<{ 
 
           {/* ── Right Column: Insights & Forecasts ── */}
           <div className="space-y-6">
-            <h3 className="text-md font-bold text-crm-text flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-status-info"></span>
+            <h3 className="text-lg font-bold text-crm-text flex items-center gap-3">
+              <span className="w-2.5 h-2.5 rounded-full bg-status-info shadow-[0_0_10px_rgba(var(--status-info-rgb),0.8)] animate-pulse"></span>
               Insights
             </h3>
             
@@ -293,12 +303,12 @@ export default async function ShopDashboardPage({ params }: { params: Promise<{ 
             )}
             
             {isShopAdmin && (
-              <div className="p-4 rounded-xl border border-crm-border bg-crm-surface flex items-center justify-between shadow-sm">
+              <PremiumGlassCard className="flex items-center justify-between" accentColor="cyan-500">
                 <div>
-                  <p className="text-crm-muted text-[10px] uppercase tracking-widest font-bold mb-0.5">System Identifier</p>
-                  <p className="text-crm-text font-mono text-[12px] select-all">Shop ID: {shopId}</p>
+                  <p className="text-crm-muted text-[10px] uppercase tracking-widest font-black mb-1">System Identifier</p>
+                  <p className="text-crm-text font-mono text-[12px] font-bold select-all bg-black/30 px-3 py-1.5 rounded-lg border border-white/5 inline-block">Shop ID: {shopId}</p>
                 </div>
-              </div>
+              </PremiumGlassCard>
             )}
           </div>
 

@@ -2,6 +2,9 @@
 
 import { useState, useEffect } from 'react';
 import { fmtPrice } from '@/lib/formatters';
+import PremiumGlassCard from '@/components/ui/PremiumGlassCard';
+import PremiumButton from '@/components/ui/PremiumButton';
+import PremiumInput from '@/components/ui/PremiumInput';
 
 interface ServiceAddon {
   id: string;
@@ -103,7 +106,7 @@ export function AddonManagement({ shopId, currency }: AddonManagementProps) {
   if (isLoading) return <div className="text-center py-4 text-crm-muted text-[13px]">Loading add-ons...</div>;
 
   return (
-    <div className="w-full space-y-6 sm:space-y-8 mt-12">
+    <div className="w-full space-y-6 sm:space-y-8 mt-12 relative">
       <div>
         {error && (
           <div className="bg-status-cancelled/10 border border-status-cancelled text-status-cancelled p-3 sm:p-4 rounded-lg mb-4 sm:mb-6 text-[13px]">
@@ -117,85 +120,74 @@ export function AddonManagement({ shopId, currency }: AddonManagementProps) {
           </div>
         )}
 
-        <div className="bg-crm-surface p-4 sm:p-6 rounded-lg border border-crm-border shadow-sm mb-6 sm:mb-8">
-          <h3 className="font-bold text-crm-text mb-4 text-lg font-bold">Add New Add-On</h3>
-          <form onSubmit={handleAddAddon} className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div>
-                <label className="block font-medium text-crm-muted mb-2 text-[13px]">Name *</label>
-                <input
-                  type="text"
-                  value={newAddon.name}
-                  onChange={(e) => setNewAddon({ ...newAddon, name: e.target.value })}
-                  placeholder="e.g., Beard Trim, Hot Towel"
-                  required
-                  className="w-full bg-crm-bg border border-crm-border shadow-sm rounded px-4 py-2 text-crm-text placeholder-gray-500"
-                />
-              </div>
+        <PremiumGlassCard className="mb-6 sm:mb-8" accentColor="crm-primary">
+          <h3 className="font-bold text-crm-text text-xl flex items-center gap-3 mb-6">✨ Add New Add-On</h3>
+          <form onSubmit={handleAddAddon} className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <PremiumInput
+                label="Name *"
+                value={newAddon.name}
+                onChange={(e) => setNewAddon({ ...newAddon, name: e.target.value })}
+                placeholder="e.g., Beard Trim, Hot Towel"
+                required
+              />
 
-              <div>
-                <label className="block font-medium text-crm-muted mb-2 text-[13px]">Price ($) *</label>
-                <input
-                  type="text"
-                  value={newAddon.price}
-                  onChange={(e) => {
-                    const val = e.target.value;
-                    if (val === '' || /^\d*\.?\d*$/.test(val)) setNewAddon({ ...newAddon, price: val });
-                  }}
-                  placeholder="15.00"
-                  required
-                  className="w-full bg-crm-bg border border-crm-border shadow-sm rounded px-4 py-2 text-crm-text placeholder-gray-500"
-                />
-              </div>
+              <PremiumInput
+                label="Price ($) *"
+                value={newAddon.price}
+                onChange={(e) => {
+                  const val = e.target.value;
+                  if (val === '' || /^\d*\.?\d*$/.test(val)) setNewAddon({ ...newAddon, price: val });
+                }}
+                placeholder="15.00"
+                required
+              />
 
-              <div>
-                <label className="block font-medium text-crm-muted mb-2 text-[13px]">Adds Duration (minutes)</label>
-                <input
-                  type="text"
-                  value={newAddon.durationMin}
-                  onChange={(e) => {
-                    const val = e.target.value;
-                    if (val === '' || /^\d+$/.test(val)) setNewAddon({ ...newAddon, durationMin: val });
-                  }}
-                  placeholder="15 (optional)"
-                  className="w-full bg-crm-bg border border-crm-border shadow-sm rounded px-4 py-2 text-crm-text placeholder-gray-500"
-                />
-              </div>
+              <PremiumInput
+                label="Adds Duration (minutes)"
+                value={newAddon.durationMin}
+                onChange={(e) => {
+                  const val = e.target.value;
+                  if (val === '' || /^\d+$/.test(val)) setNewAddon({ ...newAddon, durationMin: val });
+                }}
+                placeholder="15 (optional)"
+              />
             </div>
 
-            <button
+            <PremiumButton
               type="submit"
               disabled={isSubmitting || !newAddon.name || !newAddon.price}
-              className="w-full bg-crm-primary text-white hover:bg-crm-surface hover:text-crm-primary border border-transparent hover:border-crm-primary/30 disabled:opacity-50 font-bold py-2 rounded-lg transition-colors"
+              className="w-full mt-4"
             >
               {isSubmitting ? 'Adding...' : 'Add Add-On'}
-            </button>
+            </PremiumButton>
           </form>
-        </div>
+        </PremiumGlassCard>
 
         <div>
           <h3 className="font-bold text-crm-text mb-4 text-lg font-bold">Current Add-Ons</h3>
           {addons.length === 0 ? (
-            <div className="bg-crm-surface p-8 rounded-lg border border-crm-border shadow-sm text-center">
+            <PremiumGlassCard className="text-center">
               <p className="text-crm-muted text-[13px]">No add-ons added yet. Create one above to get started!</p>
-            </div>
+            </PremiumGlassCard>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
               {addons.map((addon) => (
-                <div key={addon.id} className="bg-crm-surface p-4 rounded-lg border border-crm-border shadow-sm flex flex-col justify-between">
+                <PremiumGlassCard key={addon.id} className="!p-4 flex flex-col justify-between" accentColor="brand-gold">
                   <div className="mb-4">
                     <h4 className="font-semibold text-crm-text text-base">{addon.name}</h4>
                     <p className="text-crm-muted text-[13px]">
                       +{fmtPrice(addon.price, currency)} {addon.durationMin > 0 ? `• Adds ${addon.durationMin} min` : ''}
                     </p>
                   </div>
-                  <button
+                  <PremiumButton
                     onClick={() => handleDeleteAddon(addon.id, addon.name)}
-                    className="bg-status-cancelled/20 hover:bg-status-cancelled/40 text-status-cancelled px-3 py-1.5 rounded-lg transition-colors text-[13px] self-start"
+                    variant="danger"
+                    className="self-start mt-2"
                   >
                     Delete
-                  </button>
-                </div>
+                  </PremiumButton>
+                </PremiumGlassCard>
               ))}
             </div>
           )}

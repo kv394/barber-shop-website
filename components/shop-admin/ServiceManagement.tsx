@@ -3,6 +3,10 @@
 import { useState, useEffect } from 'react';
 import { fmtPrice } from '@/lib/formatters';
 import MediaPicker from './MediaPicker';
+import PremiumGlassCard from '@/components/ui/PremiumGlassCard';
+import PremiumButton from '@/components/ui/PremiumButton';
+import PremiumInput from '@/components/ui/PremiumInput';
+import PremiumBadge from '@/components/ui/PremiumBadge';
 
 interface ServiceAddon {
   id: string;
@@ -276,7 +280,11 @@ export function ServiceManagement({ shopId, currency }: ServiceManagementProps) 
   }
 
   return (
-    <div className="w-full space-y-6 sm:space-y-8">
+    <div className="w-full space-y-6 sm:space-y-8 relative">
+      {/* Premium Radial Glows */}
+      <div className="absolute top-0 left-1/4 w-96 h-96 bg-crm-primary/10 rounded-full blur-[100px] pointer-events-none -z-10"></div>
+      <div className="absolute bottom-0 right-1/4 w-[30rem] h-[30rem] bg-brand-gold/10 rounded-full blur-[120px] pointer-events-none -z-10"></div>
+
       <div>
         {error && (
           <div className="bg-status-cancelled/10 border border-status-cancelled text-status-cancelled p-3 sm:p-4 rounded-lg mb-4 sm:mb-6 text-[13px]">
@@ -291,79 +299,60 @@ export function ServiceManagement({ shopId, currency }: ServiceManagementProps) 
         )}
 
         {/* Add Service Form */}
-        <div className="bg-crm-surface p-4 sm:p-6 rounded-lg border border-crm-border shadow-sm mb-6 sm:mb-8">
-          <div className="flex justify-between items-center mb-4">
-            <h3 className="font-bold text-crm-text text-lg font-bold">
-              {editingServiceId ? 'Edit Service' : 'Add New Service'}
+        <PremiumGlassCard className="mb-6 sm:mb-8" accentColor="crm-primary">
+          <div className="flex justify-between items-center mb-6">
+            <h3 className="font-bold text-crm-text text-xl flex items-center gap-3">
+              {editingServiceId ? '✏️ Edit Service' : '✨ Add New Service'}
             </h3>
             {editingServiceId && (
-              <button 
-                type="button" 
+              <PremiumButton 
                 onClick={resetForm}
-                className="text-[13px] text-crm-muted hover:text-crm-text transition-colors border border-crm-border px-3 py-1 rounded-md"
+                variant="secondary"
               >
                 Cancel Edit
-              </button>
+              </PremiumButton>
             )}
           </div>
-          <form onSubmit={handleSubmitService} className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label className="block font-medium text-crm-muted mb-2 text-[13px]">
-                  Service Name *
-                </label>
-                <input
-                  type="text"
-                  value={newService.name}
-                  onChange={(e) => setNewService({ ...newService, name: e.target.value })}
-                  placeholder="e.g., Haircut, Shave, Beard Trim"
-                  required
-                  className="w-full bg-crm-bg border border-crm-border shadow-sm rounded px-4 py-2 text-crm-text placeholder-gray-500"
-                />
-              </div>
+          <form onSubmit={handleSubmitService} className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <PremiumInput
+                label="Service Name *"
+                value={newService.name}
+                onChange={(e) => setNewService({ ...newService, name: e.target.value })}
+                placeholder="e.g., Haircut, Shave, Beard Trim"
+                required
+              />
 
-              <div>
-                <label className="block font-medium text-crm-muted mb-2 text-[13px]">
-                  Duration (minutes) *
-                </label>
-                <input
-                  type="text"
-                  value={newService.duration}
-                  onChange={(e) => {
-                    const val = e.target.value;
-                    if (val === '' || /^\d+$/.test(val)) setNewService({ ...newService, duration: val });
-                  }}
-                  placeholder="30"
-                  required
-                  className="w-full bg-crm-bg border border-crm-border shadow-sm rounded px-4 py-2 text-crm-text placeholder-gray-500"
-                />
-              </div>
+              <PremiumInput
+                label="Duration (minutes) *"
+                value={newService.duration}
+                onChange={(e) => {
+                  const val = e.target.value;
+                  if (val === '' || /^\d+$/.test(val)) setNewService({ ...newService, duration: val });
+                }}
+                placeholder="30"
+                required
+              />
 
-              <div>
-                <label className="block font-medium text-crm-muted mb-2 text-[13px]">
-                  Price ($) *
-                </label>
-                <input
-                  type="text"
-                  value={newService.price}
-                  onChange={(e) => {
-                    const val = e.target.value;
-                    if (val === '' || /^\d*\.?\d*$/.test(val)) setNewService({ ...newService, price: val });
-                  }}
-                  placeholder="25.00"
-                  required
-                  className="w-full bg-crm-bg border border-crm-border shadow-sm rounded px-4 py-2 text-crm-text placeholder-gray-500"
-                />
-              </div>
+              <PremiumInput
+                label="Price ($) *"
+                value={newService.price}
+                onChange={(e) => {
+                  const val = e.target.value;
+                  if (val === '' || /^\d*\.?\d*$/.test(val)) setNewService({ ...newService, price: val });
+                }}
+                placeholder="25.00"
+                required
+              />
               
-              <div>
-                <label className="block font-medium text-crm-muted mb-2 text-[13px]">
+              <div className="space-y-1.5">
+                <label className="block font-semibold text-crm-muted text-[13px] uppercase tracking-wider">
                   Service Type *
                 </label>
                 <select
                   value={newService.type}
                   onChange={(e) => setNewService({ ...newService, type: e.target.value as 'CUSTOMER' | 'INTERNAL' })}
-                  className="w-full bg-crm-bg border border-crm-border shadow-sm rounded px-4 py-2 text-crm-text"
+                  className="w-full bg-crm-bg/50 backdrop-blur-sm border border-white/10 shadow-inner rounded-xl px-4 py-3 text-crm-text focus:ring-2 focus:ring-crm-primary transition-all focus:border-transparent outline-none appearance-none"
                 >
                   <option value="CUSTOMER">Customer-Facing Service</option>
                   <option value="INTERNAL">Internal / Add-on Service</option>
@@ -371,29 +360,27 @@ export function ServiceManagement({ shopId, currency }: ServiceManagementProps) 
               </div>
 
               <div className="md:col-span-2">
-                <label className="block font-medium text-crm-muted mb-2 text-[13px]">
-                  Description (optional)
-                </label>
-                <input
-                  type="text"
+                <PremiumInput
+                  label="Description (optional)"
                   value={newService.description}
                   onChange={(e) => setNewService({ ...newService, description: e.target.value })}
                   placeholder="Brief description of the service"
-                  className="w-full bg-crm-bg border border-crm-border shadow-sm rounded px-4 py-2 text-crm-text placeholder-gray-500"
                 />
               </div>
             </div>
 
-            
-            <div className="flex items-center space-x-3 py-2">
-              <input 
-                type="checkbox" 
-                id="isBookable" 
-                checked={newService.isBookable} 
-                onChange={(e) => setNewService({ ...newService, isBookable: e.target.checked })}
-                className="w-4 h-4 accent-blue-600 bg-crm-bg border-crm-border rounded"
-              />
-              <label htmlFor="isBookable" className="text-crm-muted cursor-pointer select-none text-[13px]">
+            <div className="flex items-center space-x-3 py-2 cursor-pointer group">
+              <div className="relative flex items-center justify-center w-5 h-5">
+                <input 
+                  type="checkbox" 
+                  id="isBookable" 
+                  checked={newService.isBookable} 
+                  onChange={(e) => setNewService({ ...newService, isBookable: e.target.checked })}
+                  className="peer appearance-none w-5 h-5 border-2 border-white/20 rounded bg-crm-bg/50 checked:bg-crm-primary checked:border-crm-primary transition-all cursor-pointer"
+                />
+                <svg className="absolute w-3 h-3 text-white pointer-events-none opacity-0 peer-checked:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7"></path></svg>
+              </div>
+              <label htmlFor="isBookable" className="font-medium text-crm-text group-hover:text-crm-primary transition-colors text-[14px] cursor-pointer">
                 Available to Customer (Sellable/Bookable)
               </label>
             </div>
@@ -574,50 +561,52 @@ export function ServiceManagement({ shopId, currency }: ServiceManagementProps) 
               )}
             </div>
 
-            <button
+            <PremiumButton
               type="submit"
               disabled={isSubmitting || !newService.name || !newService.price || !newService.duration}
-              className="w-full bg-crm-primary text-white hover:bg-crm-surface hover:text-crm-primary border border-transparent hover:border-crm-primary/30 disabled:opacity-50 font-bold py-2 rounded-lg transition-colors"
+              className="w-full mt-4"
             >
               {isSubmitting 
                 ? (editingServiceId ? 'Updating Service...' : 'Adding Service...') 
                 : (editingServiceId ? 'Update Service' : 'Add Service')}
-            </button>
+            </PremiumButton>
           </form>
-        </div>
+        </PremiumGlassCard>
 
         {/* Services List */}
         <div>
           <h3 className="font-bold text-crm-text mb-4 text-lg font-bold">Current Services</h3>
           {services.length === 0 ? (
-            <div className="bg-crm-surface p-8 rounded-lg border border-crm-border shadow-sm text-center">
+            <PremiumGlassCard className="text-center">
               <p className="text-crm-muted text-[13px]">No services added yet. Create one above to get started!</p>
-            </div>
+            </PremiumGlassCard>
           ) : (
             <div className="space-y-3">
               {services.map((service) => (
-                <div
+                <PremiumGlassCard
                   key={service.id}
-                  className="bg-crm-surface p-3 sm:p-4 rounded-lg border border-crm-border shadow-sm"
+                  className="!p-3 sm:!p-4"
+                  accentColor={service.type === 'INTERNAL' ? 'crm-primary' : 'emerald-500'}
                 >
                   <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
                     <div className="flex-1 min-w-0 flex gap-4">
                       {service.imageUrl && (
-                        <img src={service.imageUrl} alt={service.name} className="w-16 h-16 object-cover rounded-lg border border-crm-border hidden sm:block" />
+                        <img src={service.imageUrl} alt={service.name} className="w-16 h-16 object-cover rounded-xl border border-white/10 hidden sm:block shadow-md" />
                       )}
                       <div className="flex-1">
                       <div className="flex items-center flex-wrap gap-2 mb-1">
                           <button onClick={() => handleEditClick(service)} className="text-left hover:text-crm-primary transition-colors focus:outline-none">
                             <h4 className="font-semibold text-crm-text text-base font-semibold hover:text-crm-primary">{service.name}</h4>
                           </button>
-                          <div className={`text-[13px] sm:text-[11px] font-semibold px-2 py-0.5 sm:py-1 rounded border ${service.type === 'INTERNAL' ? 'bg-crm-accent/20 text-crm-accent border-crm-accent/30' : 'bg-status-confirmed/20 text-status-confirmed border-status-confirmed/30'}`}>
-                              {service.type}
-                          </div>
-                          <button
-                            onClick={() => handleToggleBookable(service)}
-                            className={`text-[13px] sm:text-[11px] font-semibold px-2 py-0.5 sm:py-1 rounded border transition-colors ${service.isBookable ? 'bg-status-confirmed/20 text-status-confirmed border-status-confirmed/30 hover:opacity-80' : 'bg-status-cancelled/20 text-status-cancelled border-status-cancelled/30 hover:opacity-80'}`}
-                          >
-                            Consumer: {service.isBookable ? 'ON' : 'OFF'}
+                          
+                          <PremiumBadge variant={service.type === 'INTERNAL' ? 'warning' : 'success'}>
+                            {service.type}
+                          </PremiumBadge>
+
+                          <button onClick={() => handleToggleBookable(service)}>
+                            <PremiumBadge variant={service.isBookable ? 'success' : 'error'}>
+                              Consumer: {service.isBookable ? 'ON' : 'OFF'}
+                            </PremiumBadge>
                           </button>
                       </div>
                       {service.description && (
@@ -667,14 +656,15 @@ export function ServiceManagement({ shopId, currency }: ServiceManagementProps) 
                     </div>
                     </div>
 
-                    <button
+                    <PremiumButton
                       onClick={() => handleDeleteService(service.id, service.name)}
-                      className="bg-status-cancelled/20 hover:bg-status-cancelled/40 text-status-cancelled px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg transition-colors text-[11px] sm:text-[13px] shrink-0 self-start"
+                      variant="danger"
+                      className="self-start mt-2 sm:mt-0"
                     >
                       Delete
-                    </button>
+                    </PremiumButton>
                   </div>
-                </div>
+                </PremiumGlassCard>
               ))}
             </div>
           )}

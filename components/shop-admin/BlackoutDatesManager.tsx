@@ -1,5 +1,8 @@
 'use client';
 import { useEffect, useState } from 'react';
+import PremiumGlassCard from '@/components/ui/PremiumGlassCard';
+import PremiumButton from '@/components/ui/PremiumButton';
+import PremiumInput from '@/components/ui/PremiumInput';
 
 const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 const REASONS = ['Public Holiday','Shop Maintenance','Staff Training','Special Event','Personal','Other'];
@@ -47,51 +50,61 @@ export default function BlackoutDatesManager({ shopId }: { shopId: string }) {
   const past = dates.filter(d => new Date(d.date) < today);
 
   return (
-    <div className="bg-crm-surface border border-crm-border shadow-sm rounded-xl p-6 space-y-5">
-      <h3 className="font-bold text-crm-text text-lg font-bold">🚫 Blackout Dates & Holidays</h3>
+    <PremiumGlassCard className="space-y-6" accentColor="crm-primary">
+      <h3 className="font-bold text-crm-text text-xl flex items-center gap-3">🚫 Blackout Dates & Holidays</h3>
       <p className="text-crm-muted text-[13px]">Mark days when your shop is closed. Online booking will be disabled for these dates.</p>
       {msg && <div className="p-3 bg-status-confirmed/20 border border-status-confirmed/30 text-status-confirmed rounded-lg text-[13px]">{msg}</div>}
 
       {/* Add form */}
-      <div className="flex flex-col sm:flex-row gap-3">
-        <input type="date" value={newDate} onChange={e => setNewDate(e.target.value)}
-          min={new Date().toISOString().split('T')[0]}
-          className="bg-crm-surface border border-crm-border shadow-sm rounded px-3 py-2 text-crm-text text-[13px] focus:outline-none focus:border-brand-gold flex-shrink-0" />
-        <select value={newReason} onChange={e => setNewReason(e.target.value)}
-          className="flex-1 bg-crm-surface border border-crm-border shadow-sm rounded px-3 py-2 text-crm-text text-[13px] focus:outline-none focus:border-brand-gold">
-          <option value="">Select reason (optional)</option>
-          {REASONS.map(r => <option key={r} value={r}>{r}</option>)}
-        </select>
-        <button onClick={addDate} disabled={!newDate || adding}
-          className="px-4 py-2 bg-crm-primary text-white rounded-lg text-[13px] font-bold disabled:opacity-50 flex-shrink-0 hover:opacity-90">
-          {adding ? 'Adding…' : '+ Add Date'}
-        </button>
+      <div className="flex flex-col sm:flex-row gap-4 items-end">
+        <div className="flex-shrink-0 w-full sm:w-auto">
+          <PremiumInput
+            label="Date *"
+            type="date" value={newDate} onChange={e => setNewDate(e.target.value)}
+            min={new Date().toISOString().split('T')[0]}
+          />
+        </div>
+        <div className="flex-1 w-full sm:w-auto">
+          <label className="block font-semibold text-crm-muted text-[13px] uppercase tracking-wider mb-1.5">Reason</label>
+          <select value={newReason} onChange={e => setNewReason(e.target.value)}
+            className="w-full bg-crm-bg/50 backdrop-blur-sm border border-white/10 shadow-inner rounded-xl px-4 py-3 text-crm-text focus:ring-2 focus:ring-crm-primary outline-none appearance-none">
+            <option value="">Select reason (optional)</option>
+            {REASONS.map(r => <option key={r} value={r}>{r}</option>)}
+          </select>
+        </div>
+        <div className="flex-shrink-0 w-full sm:w-auto">
+          <PremiumButton onClick={addDate} disabled={!newDate || adding} className="w-full sm:w-auto h-[46px] flex items-center justify-center">
+            {adding ? 'Adding…' : '+ Add Date'}
+          </PremiumButton>
+        </div>
       </div>
 
       {loading && <div className="text-crm-muted animate-pulse text-[13px]">Loading…</div>}
 
       {/* Upcoming dates */}
       {upcoming.length > 0 && (
-        <div>
-          <p className="text-crm-muted uppercase tracking-widest mb-2 text-[13px]">Upcoming ({upcoming.length})</p>
-          <div className="space-y-2">
+        <div className="mt-8">
+          <p className="font-bold text-crm-text mb-4 text-lg">Upcoming ({upcoming.length})</p>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {upcoming.map(d => {
               const dt = new Date(d.date);
               const dayName = dt.toLocaleDateString('en-US', { weekday: 'long', timeZone: 'UTC' });
               return (
-                <div key={d.id} className="flex items-center justify-between p-3 bg-crm-surface rounded-lg">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-lg bg-status-cancelled/20 border border-status-cancelled/30 flex flex-col items-center justify-center">
-                      <span className="text-status-cancelled text-[11px] font-bold leading-none">{MONTHS[dt.getUTCMonth()]}</span>
-                      <span className="text-red-200 text-base font-black leading-none">{dt.getUTCDate()}</span>
+                <PremiumGlassCard key={d.id} className="!p-4" accentColor="crm-primary">
+                  <div className="flex items-start justify-between">
+                    <div className="flex items-center gap-4">
+                      <div className="w-12 h-12 rounded-xl bg-status-cancelled/20 border border-status-cancelled/30 flex flex-col items-center justify-center shadow-inner">
+                        <span className="text-status-cancelled text-[12px] font-bold leading-none">{MONTHS[dt.getUTCMonth()]}</span>
+                        <span className="text-red-200 text-xl font-black leading-none mt-0.5">{dt.getUTCDate()}</span>
+                      </div>
+                      <div>
+                        <p className="font-bold text-crm-text text-[15px]">{fmt(d.date)}</p>
+                        <p className="text-crm-muted text-[13px]">{dayName}{d.reason ? ` · ${d.reason}` : ''}</p>
+                      </div>
                     </div>
-                    <div>
-                      <p className="text-crm-text font-medium text-[13px]">{fmt(d.date)}</p>
-                      <p className="text-crm-muted text-[13px]">{dayName}{d.reason ? ` · ${d.reason}` : ''}</p>
-                    </div>
+                    <button onClick={() => remove(d.id)} className="text-crm-muted hover:text-status-cancelled text-2xl transition px-2 py-1 leading-none hover:bg-white/5 rounded-lg ml-2">×</button>
                   </div>
-                  <button onClick={() => remove(d.id)} className="text-crm-muted hover:text-status-cancelled text-lg transition">×</button>
-                </div>
+                </PremiumGlassCard>
               );
             })}
           </div>
@@ -99,24 +112,26 @@ export default function BlackoutDatesManager({ shopId }: { shopId: string }) {
       )}
 
       {upcoming.length === 0 && !loading && (
-        <p className="text-crm-muted italic text-center py-4 text-[13px]">No upcoming blackout dates. Add holidays or closures above.</p>
+        <PremiumGlassCard className="text-center !mt-8">
+          <p className="text-crm-muted italic py-2 text-[13px]">No upcoming blackout dates. Add holidays or closures above.</p>
+        </PremiumGlassCard>
       )}
 
       {/* Past dates (collapsed) */}
       {past.length > 0 && (
-        <details className="text-[13px]">
-          <summary className="cursor-pointer text-crm-muted hover:text-crm-muted">Past dates ({past.length})</summary>
-          <div className="mt-2 space-y-1">
+        <details className="text-[13px] mt-8 bg-black/20 border border-white/5 rounded-xl p-4 cursor-pointer">
+          <summary className="font-bold text-crm-muted hover:text-crm-text transition-colors">Past dates ({past.length})</summary>
+          <div className="mt-4 space-y-2">
             {past.map(d => (
-              <div key={d.id} className="flex items-center justify-between px-3 py-2 text-crm-muted text-[11px]">
+              <div key={d.id} className="flex items-center justify-between p-3 bg-white/5 rounded-lg text-crm-muted text-[12px]">
                 <span>{fmt(d.date)}{d.reason ? ` — ${d.reason}` : ''}</span>
-                <button onClick={() => remove(d.id)} className="hover:text-status-cancelled ml-2">×</button>
+                <button onClick={() => remove(d.id)} className="hover:text-status-cancelled ml-4 text-base transition px-2 py-1 leading-none hover:bg-white/5 rounded-md">×</button>
               </div>
             ))}
           </div>
         </details>
       )}
-    </div>
+    </PremiumGlassCard>
   );
 }
 
