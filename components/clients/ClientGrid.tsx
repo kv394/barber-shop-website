@@ -43,13 +43,13 @@ export default function ClientGrid({ clients, shopId, initialSelectedClientId, c
             placeholder="Search by name, email, phone, or barcode ID..." 
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full bg-black/30 backdrop-blur-md border border-white/10 shadow-inner rounded-2xl pl-12 pr-4 py-4 text-crm-text focus:outline-none focus:ring-2 focus:ring-crm-primary transition-all placeholder:text-crm-muted/50 text-[15px] font-medium"
+            className="w-full bg-crm-bg/50 backdrop-blur-md border border-white/10 shadow-inner rounded-2xl pl-12 pr-4 py-4 text-crm-text focus:outline-none focus:ring-2 focus:ring-crm-primary transition-all placeholder:text-crm-muted/50 text-[15px] font-medium"
           />
         </div>
       </div>
 
       {filteredClients.length === 0 ? (
-        <div className="flex flex-col items-center justify-center py-16 text-center bg-white/5 rounded-2xl border border-dashed border-white/20">
+        <div className="flex flex-col items-center justify-center py-16 text-center bg-white/5 backdrop-blur-sm rounded-2xl border border-dashed border-white/20">
           <span className="text-4xl mb-4 opacity-50 drop-shadow-md">📇</span>
           <h2 className="text-xl font-bold text-crm-text mb-2">No clients found</h2>
           <p className="text-crm-muted text-[14px] max-w-[250px] mx-auto font-medium">
@@ -64,7 +64,7 @@ export default function ClientGrid({ clients, shopId, initialSelectedClientId, c
               <div
                 key={client.id}
                 onClick={() => setSelectedClient(client)}
-                className="p-5 flex flex-col gap-3 hover:bg-white/5 transition-colors cursor-pointer relative group"
+                className="p-5 flex flex-col gap-3 hover:bg-white/30 transition-colors cursor-pointer relative group"
               >
                 <div className="flex justify-between items-start gap-4">
                   <div className="min-w-0">
@@ -72,15 +72,15 @@ export default function ClientGrid({ clients, shopId, initialSelectedClientId, c
                     <p className="text-crm-muted text-[13px] truncate mt-1">{client.email.startsWith('walkin-') ? 'Walk-in (No Email)' : client.email}</p>
                     {client.phone && <p className="text-crm-muted text-[13px] truncate mt-0.5 font-medium">{client.phone}</p>}
                   </div>
-                  <div className="shrink-0 bg-white/5 p-1.5 rounded-xl border border-white/10 shadow-inner">
+                  <div className="shrink-0 bg-white/50 p-1.5 rounded-xl border border-white/10 shadow-inner">
                     <UserQRCode barcode={client.barcode || client.id} userName={client.name || "Client"} showText={false} size={48} />
                   </div>
                 </div>
-                <div className="flex justify-between items-center text-[12px] text-white/50 bg-black/20 -mx-5 px-5 -mb-5 pb-5 pt-3 border-t border-white/5 mt-2">
+                <div className="flex justify-between items-center text-[12px] text-crm-muted bg-white/20 -mx-5 px-5 -mb-5 pb-5 pt-3 border-t border-white/5 mt-2">
                   <div className="font-mono truncate max-w-[150px] font-bold">ID: {client.barcode || client.id}</div>
                   <div className="flex items-center gap-2">
                     <span className="uppercase tracking-widest font-black text-[10px]">Visits</span>
-                    <span className="font-black text-crm-text bg-white/10 px-2 py-0.5 rounded shadow-inner">{client._count?.clientAppointments || 0}</span>
+                    <span className="font-black text-crm-text bg-white/50 px-2 py-0.5 rounded shadow-inner">{client._count?.clientAppointments || 0}</span>
                   </div>
                 </div>
               </div>
@@ -91,7 +91,7 @@ export default function ClientGrid({ clients, shopId, initialSelectedClientId, c
           <div className="hidden md:block overflow-x-auto">
             <table className="w-full text-left border-collapse whitespace-nowrap">
               <thead>
-                <tr className="bg-black/40 border-b border-white/10 text-[11px] font-black text-crm-muted uppercase tracking-widest">
+                <tr className="bg-crm-bg/60 border-b border-white/10 text-[11px] font-black text-crm-muted uppercase tracking-widest">
                   <th className="px-6 py-5">Client</th>
                   <th className="px-6 py-5">Contact Info</th>
                   <th className="px-6 py-5">Barcode ID</th>
@@ -105,11 +105,11 @@ export default function ClientGrid({ clients, shopId, initialSelectedClientId, c
                   <tr 
                     key={client.id} 
                     onClick={() => setSelectedClient(client)}
-                    className="group cursor-pointer hover:bg-white/5 transition-colors"
+                    className="group cursor-pointer hover:bg-white/30 transition-colors"
                   >
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-4">
-                        <div className="shrink-0 rounded-xl overflow-hidden border border-white/20 bg-white/10 p-1.5 shadow-inner group-hover:border-crm-primary/50 transition-colors">
+                        <div className="shrink-0 rounded-xl overflow-hidden border border-white/20 bg-white/50 p-1.5 shadow-inner group-hover:border-crm-primary/50 transition-colors">
                           <UserQRCode barcode={client.barcode || client.id} userName={client.name || "Client"} showText={false} size={44} />
                         </div>
                         <div>
@@ -122,14 +122,14 @@ export default function ClientGrid({ clients, shopId, initialSelectedClientId, c
                       {client.phone && <div className="text-[13px] text-crm-muted mt-1 font-medium">{client.phone}</div>}
                     </td>
                     <td className="px-6 py-4">
-                      <div className="font-mono text-[12px] font-bold text-white/50 tracking-wide bg-black/20 px-2 py-1 rounded shadow-inner inline-block">{client.barcode || client.id}</div>
+                      <div className="font-mono text-[12px] font-bold text-crm-muted tracking-wide bg-crm-bg/50 px-2 py-1 rounded shadow-inner inline-block">{client.barcode || client.id}</div>
                     </td>
                     <td className="px-6 py-4 text-center">
-                      <span className="inline-flex items-center justify-center min-w-[32px] px-2 py-1 rounded-lg bg-white/10 border border-white/5 text-crm-text font-black text-[14px] shadow-inner">
+                      <span className="inline-flex items-center justify-center min-w-[32px] px-2 py-1 rounded-lg bg-white/50 border border-white/10 text-crm-text font-black text-[14px] shadow-inner">
                         {client._count?.clientAppointments || 0}
                       </span>
                     </td>
-                    <td className="px-6 py-4 text-[13px] text-white/60 font-medium">
+                    <td className="px-6 py-4 text-[13px] text-crm-muted font-medium">
                       {client.lastVisit ? new Date(client.lastVisit).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' }) : <span className="italic opacity-50">Never</span>}
                     </td>
                     <td className="px-6 py-4 text-right">

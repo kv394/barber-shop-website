@@ -203,16 +203,16 @@ export default async function ShopDashboardPage({ params }: { params: Promise<{ 
             </div>
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
               {[
-                { label: 'Bookings', value: todayStats.totalBookings, color: 'text-blue-400', accent: 'bg-blue-500/10 border-blue-500/20' },
-                { label: 'Revenue', value: `$${todayStats.revenue.toFixed(0)}`, color: 'text-emerald-400', accent: 'bg-emerald-500/10 border-emerald-500/20' },
-                { label: 'Tips', value: `$${todayStats.tips.toFixed(0)}`, color: 'text-amber-400', accent: 'bg-amber-500/10 border-amber-500/20' },
-                { label: 'Completed', value: todayStats.completedCount, color: 'text-purple-400', accent: 'bg-purple-500/10 border-purple-500/20' },
-                { label: 'Upcoming', value: todayStats.upcomingCount, color: 'text-cyan-400', accent: 'bg-cyan-500/10 border-cyan-500/20' },
+                { label: 'Bookings', value: todayStats.totalBookings, color: 'text-blue-500', accent: 'bg-blue-500/10 border-blue-500/20' },
+                { label: 'Revenue', value: `$${todayStats.revenue.toFixed(0)}`, color: 'text-emerald-500', accent: 'bg-emerald-500/10 border-emerald-500/20' },
+                { label: 'Tips', value: `$${todayStats.tips.toFixed(0)}`, color: 'text-amber-500', accent: 'bg-amber-500/10 border-amber-500/20' },
+                { label: 'Completed', value: todayStats.completedCount, color: 'text-purple-500', accent: 'bg-purple-500/10 border-purple-500/20' },
+                { label: 'Upcoming', value: todayStats.upcomingCount, color: 'text-cyan-500', accent: 'bg-cyan-500/10 border-cyan-500/20' },
               ].map((stat, i) => (
-                <div key={i} className={`flex-1 shrink-0 bg-black/20 border border-white/5 p-5 rounded-2xl text-center shadow-inner relative overflow-hidden group`}>
+                <div key={i} className={`flex-1 shrink-0 bg-white/40 border border-white/20 p-5 rounded-2xl text-center shadow-inner relative overflow-hidden group`}>
                   <div className={`absolute inset-0 ${stat.accent} opacity-50 transition-opacity group-hover:opacity-100`}></div>
                   <div className="relative z-10">
-                    <p className={`text-3xl font-black mb-1.5 ${stat.color} drop-shadow-md`}>{stat.value}</p>
+                    <p className={`text-3xl font-black mb-1.5 ${stat.color} drop-shadow-sm`}>{stat.value}</p>
                     <p className="text-[11px] font-black text-crm-muted uppercase tracking-widest">{stat.label}</p>
                   </div>
                 </div>
@@ -242,7 +242,7 @@ export default async function ShopDashboardPage({ params }: { params: Promise<{ 
                       <h4 className="text-xl font-bold text-crm-text">{todayStats.nextAppointment.user?.name || 'Guest'}</h4>
                     </div>
                   </div>
-                  <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6 text-sm text-crm-muted mt-4 pt-4 border-t border-white/10 bg-black/10 -mx-5 px-5 -mb-5 pb-5">
+                  <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6 text-sm text-crm-muted mt-4 pt-4 border-t border-white/20 bg-crm-bg/50 -mx-5 px-5 -mb-5 pb-5">
                     <div className="flex items-center gap-2">
                       <span className="text-[11px] uppercase tracking-wider font-bold">Service:</span>
                       <span className="font-bold text-crm-text">{todayStats.nextAppointment.service?.name}</span>

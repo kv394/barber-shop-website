@@ -91,7 +91,7 @@ export default function WaitlistClient({ shopId, services, staff }: { shopId: st
         </div>
       </PremiumGlassCard>
 
-      <form onSubmit={handleAdd} className="bg-black/20 p-6 rounded-2xl border border-white/5 shadow-inner mb-8">
+      <form onSubmit={handleAdd} className="bg-white/5 backdrop-blur-xl p-8 rounded-2xl border border-white/10 shadow-[0_8px_30px_rgb(0,0,0,0.12)] space-y-6 relative overflow-hidden mb-8">
         <h3 className="font-bold text-crm-text text-xl mb-4 flex items-center gap-2">
           <span className="text-crm-primary">➕</span> Add Walk-in
         </h3>
@@ -156,13 +156,13 @@ export default function WaitlistClient({ shopId, services, staff }: { shopId: st
                   <div>
                     <p className="font-black text-crm-text text-xl">{entry.clientName}</p>
                     <div className="flex items-center gap-2 mt-1">
-                      <span className="bg-emerald-500/20 text-emerald-400 font-bold px-2 py-0.5 rounded text-[10px] uppercase tracking-wider border border-emerald-500/20 shadow-inner">Being served</span>
-                      <span className="text-white/50 text-[11px] font-medium">{getWaitTime(entry.createdAt)} ago</span>
+                      <span className="bg-emerald-500/20 text-emerald-600 font-bold px-2 py-0.5 rounded text-[10px] uppercase tracking-wider border border-emerald-500/20 shadow-inner">Being served</span>
+                      <span className="text-crm-muted text-[11px] font-medium">{getWaitTime(entry.createdAt)} ago</span>
                     </div>
                     {(entry.staffId || entry.clientPhone) && (
                       <div className="flex items-center gap-3 mt-2 text-[12px]">
-                        {entry.staffId && <span className="text-brand-gold font-bold">✂️ {getStaffName(entry.staffId)}</span>}
-                        {entry.clientPhone && <span className="text-white/60">📱 {entry.clientPhone}</span>}
+                        {entry.staffId && <span className="text-crm-primary font-bold">✂️ {getStaffName(entry.staffId)}</span>}
+                        {entry.clientPhone && <span className="text-crm-muted">📱 {entry.clientPhone}</span>}
                       </div>
                     )}
                   </div>
@@ -178,26 +178,26 @@ export default function WaitlistClient({ shopId, services, staff }: { shopId: st
             <PremiumGlassCard key={entry.id} className="!p-5" accentColor="crm-primary">
               <div className="flex flex-wrap justify-between gap-x-4 gap-y-4 items-center">
                 <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-full bg-black/40 border border-white/10 flex items-center justify-center text-crm-muted font-black text-xl shadow-inner shrink-0">{idx + 1}</div>
+                  <div className="w-12 h-12 rounded-full bg-crm-bg border border-white/10 flex items-center justify-center text-crm-muted font-black text-xl shadow-inner shrink-0">{idx + 1}</div>
                   <div>
                     <p className="font-black text-crm-text text-xl">{entry.clientName}</p>
                     <div className="flex items-center gap-2 mt-1">
-                      <span className="bg-cyan-500/20 text-cyan-400 font-bold px-2 py-0.5 rounded text-[10px] uppercase tracking-wider border border-cyan-500/20 shadow-inner">Waiting</span>
-                      <span className="text-white/50 text-[11px] font-medium">{getWaitTime(entry.createdAt)}</span>
+                      <span className="bg-cyan-500/20 text-cyan-600 font-bold px-2 py-0.5 rounded text-[10px] uppercase tracking-wider border border-cyan-500/20 shadow-inner">Waiting</span>
+                      <span className="text-crm-muted text-[11px] font-medium">{getWaitTime(entry.createdAt)}</span>
                     </div>
                     {(entry.staffId || entry.clientPhone) && (
                       <div className="flex items-center gap-3 mt-2 text-[12px]">
-                        {entry.staffId && <span className="text-brand-gold font-bold">✂️ {getStaffName(entry.staffId)}</span>}
-                        {entry.clientPhone && <span className="text-white/60">📱 {entry.clientPhone}</span>}
+                        {entry.staffId && <span className="text-crm-primary font-bold">✂️ {getStaffName(entry.staffId)}</span>}
+                        {entry.clientPhone && <span className="text-crm-muted">📱 {entry.clientPhone}</span>}
                       </div>
                     )}
                   </div>
                 </div>
                 <div className="flex flex-wrap gap-2 justify-end">
-                  <button onClick={() => setAssigningId(entry.id)} className="bg-brand-gold/10 hover:bg-brand-gold/20 text-brand-gold border border-brand-gold/30 text-[11px] font-bold uppercase tracking-wider px-4 py-2 rounded-lg transition-colors">
+                  <button onClick={() => setAssigningId(entry.id)} className="bg-crm-primary/10 hover:bg-crm-primary/20 text-crm-primary border border-crm-primary/30 text-[11px] font-bold uppercase tracking-wider px-4 py-2 rounded-lg transition-colors">
                     Reassign
                   </button>
-                  <button onClick={() => updateStatus(entry.id, 'LEFT')} className="bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/20 text-[11px] font-bold uppercase tracking-wider px-4 py-2 rounded-lg transition-colors">
+                  <button onClick={() => updateStatus(entry.id, 'LEFT')} className="bg-red-500/10 hover:bg-red-500/20 text-red-600 border border-red-500/20 text-[11px] font-bold uppercase tracking-wider px-4 py-2 rounded-lg transition-colors">
                     Left
                   </button>
                   <button onClick={() => handleServe(entry.id)} className="bg-crm-primary hover:bg-crm-primary/80 text-white shadow-[0_0_15px_rgba(var(--crm-primary-rgb),0.4)] text-[12px] font-black uppercase tracking-wider px-6 py-2 rounded-full transition-all hover:scale-105 active:scale-95">
@@ -208,21 +208,21 @@ export default function WaitlistClient({ shopId, services, staff }: { shopId: st
               
               {/* Staff Picker Dropdown */}
               {assigningId === entry.id && (
-                <div className="mt-4 pt-4 border-t border-white/10 bg-black/20 -mx-5 px-5 -mb-5 pb-5">
+                <div className="mt-4 pt-4 border-t border-white/10 bg-crm-bg/30 -mx-5 px-5 -mb-5 pb-5">
                   <p className="text-crm-muted uppercase tracking-widest font-black mb-3 text-[11px]">Assign barber:</p>
                   <div className="flex flex-wrap gap-3">
                     {staff.map(s => (
                       <button key={s.id} onClick={() => updateStatus(entry.id, undefined, s.id)}
-                        className="bg-brand-gold/10 hover:bg-brand-gold/20 text-brand-gold border border-brand-gold/30 text-[12px] font-bold px-4 py-2 rounded-lg transition-all hover:scale-105 active:scale-95 shadow-inner">
+                        className="bg-crm-primary/10 hover:bg-crm-primary/20 text-crm-primary border border-crm-primary/30 text-[12px] font-bold px-4 py-2 rounded-lg transition-all hover:scale-105 active:scale-95 shadow-inner">
                         ✂️ {s.name || (s.email ? s.email.split('@')[0] : 'Staff')}
                       </button>
                     ))}
                     <button onClick={() => updateStatus(entry.id, undefined, null)}
-                      className="bg-white/5 hover:bg-white/10 text-white/70 text-[12px] font-bold px-4 py-2 rounded-lg border border-white/10 transition-colors">
+                      className="bg-white/50 hover:bg-white/80 text-crm-text text-[12px] font-bold px-4 py-2 rounded-lg border border-white/40 transition-colors">
                       Remove assignment
                     </button>
                     <button onClick={() => setAssigningId(null)}
-                      className="text-white/40 hover:text-white/80 text-[12px] font-bold uppercase tracking-wider px-3 py-2 ml-auto">
+                      className="text-crm-muted hover:text-crm-text text-[12px] font-bold uppercase tracking-wider px-3 py-2 ml-auto">
                       Cancel
                     </button>
                   </div>
@@ -232,7 +232,7 @@ export default function WaitlistClient({ shopId, services, staff }: { shopId: st
           ))}
           
           {waiting.length === 0 && serving.length === 0 && (
-            <div className="flex flex-col items-center justify-center py-16 text-center bg-white/5 rounded-2xl border border-dashed border-white/20">
+            <div className="flex flex-col items-center justify-center py-16 text-center bg-white/5 backdrop-blur-sm rounded-2xl border border-dashed border-white/20">
               <span className="text-4xl mb-4 opacity-50 drop-shadow-md">🪑</span>
               <h2 className="text-xl font-bold text-crm-text mb-2">No one in the queue</h2>
               <p className="text-crm-muted text-[14px] max-w-[250px] mx-auto font-medium">

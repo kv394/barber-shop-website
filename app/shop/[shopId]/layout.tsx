@@ -104,7 +104,11 @@ export default async function ShopLayout({
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden relative">
         {/* Main Scrolling Area */}
         <main className="flex-1 overflow-y-auto bg-crm-bg relative p-4 md:p-8 pt-4 md:pt-8 pb-24 md:pb-8">
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-brand-gold/10 via-crm-bg/20 to-crm-bg pointer-events-none"></div>
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-brand-gold/5 via-crm-bg/20 to-crm-bg pointer-events-none"></div>
+          {/* Premium Radial Glows (Global) */}
+          <div className="absolute top-0 left-1/4 w-96 h-96 bg-crm-primary/10 rounded-full blur-[100px] pointer-events-none z-0 fixed"></div>
+          <div className="absolute bottom-0 right-1/4 w-[30rem] h-[30rem] bg-brand-gold/10 rounded-full blur-[120px] pointer-events-none z-0 fixed"></div>
+          
           <div className="mx-auto max-w-7xl relative z-10">
             {children}
           </div>

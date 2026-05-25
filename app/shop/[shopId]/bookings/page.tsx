@@ -138,14 +138,14 @@ export default async function BookingsPage({ params }: { params: Promise<{ shopI
                     ) : null;
 
                     return (
-                      <div key={apt.id} className={`group flex flex-col sm:flex-row gap-4 sm:gap-6 bg-black/20 p-5 sm:p-6 rounded-2xl border relative z-10 transition-all hover:bg-white/5 ${isNow ? 'border-brand-gold shadow-[0_0_20px_rgba(212,175,55,0.15)] ring-1 ring-brand-gold/50' : 'border-white/10'}`}>
+                      <div key={apt.id} className={`group flex flex-col sm:flex-row gap-4 sm:gap-6 bg-white/40 p-5 sm:p-6 rounded-2xl border relative z-10 transition-all hover:bg-white/60 ${isNow ? 'border-brand-gold shadow-[0_0_20px_rgba(212,175,55,0.15)] ring-1 ring-brand-gold/50' : 'border-white/20'}`}>
                         
                         {/* Time Column */}
-                        <div className="w-full sm:w-20 flex-shrink-0 flex flex-row sm:flex-col justify-between sm:justify-start items-center sm:items-end border-b sm:border-b-0 border-white/10 pb-4 sm:pb-0 text-right">
+                        <div className="w-full sm:w-20 flex-shrink-0 flex flex-row sm:flex-col justify-between sm:justify-start items-center sm:items-end border-b sm:border-b-0 border-white/20 pb-4 sm:pb-0 text-right">
                           <p className={`font-mono font-black text-xl leading-none tracking-tight ${isNow ? 'text-brand-gold drop-shadow-md' : 'text-crm-text'}`}>
                             {formatInShopTz(apt.startTime, shop.timezone || 'America/New_York')}
                           </p>
-                          <p className="text-white/40 text-[12px] font-bold uppercase tracking-widest mt-2">{apt.service.duration} min</p>
+                          <p className="text-crm-muted text-[12px] font-bold uppercase tracking-widest mt-2">{apt.service.duration} min</p>
                           {isNow && (
                             <div className="mt-0 sm:mt-4 text-[10px] text-brand-gold font-black tracking-widest flex items-center gap-1.5 bg-brand-gold/10 px-2.5 py-1 rounded-full border border-brand-gold/20 shadow-inner">
                               <span className="w-1.5 h-1.5 rounded-full bg-brand-gold animate-pulse shadow-[0_0_5px_rgba(212,175,55,1)]"></span> NOW
@@ -154,7 +154,7 @@ export default async function BookingsPage({ params }: { params: Promise<{ shopI
                         </div>
 
                         {/* Timeline Node (Desktop only) */}
-                        <div className={`hidden sm:flex absolute left-[108px] top-1/2 -translate-y-1/2 -translate-x-1/2 w-4 h-4 rounded-full border-[3px] transition-colors z-20 ${isNow ? 'bg-brand-gold border-brand-gold shadow-[0_0_10px_rgba(212,175,55,0.8)]' : 'bg-black border-white/30 group-hover:border-crm-primary'}`}></div>
+                        <div className={`hidden sm:flex absolute left-[108px] top-1/2 -translate-y-1/2 -translate-x-1/2 w-4 h-4 rounded-full border-[3px] transition-colors z-20 ${isNow ? 'bg-brand-gold border-brand-gold shadow-[0_0_10px_rgba(212,175,55,0.8)]' : 'bg-white border-white/50 group-hover:border-crm-primary'}`}></div>
 
                         {/* Details Column */}
                         <div className="flex-1 flex flex-col min-w-0 sm:pl-6">
@@ -164,19 +164,19 @@ export default async function BookingsPage({ params }: { params: Promise<{ shopI
                                 shopId={shop.id} 
                                 clientId={apt.userId} 
                                 clientName={apt.user?.name || "Guest"} 
-                                className="font-black text-[20px] text-crm-text leading-tight truncate hover:text-crm-primary transition-colors drop-shadow-md"
+                                className="font-black text-[20px] text-crm-text leading-tight truncate hover:text-crm-primary transition-colors drop-shadow-sm"
                                 currency={shop.currency}
                               />
                             ) : (
-                              <h4 className="font-black text-[20px] text-crm-text leading-tight truncate drop-shadow-md">{apt.user?.name || "Guest"}</h4>
+                              <h4 className="font-black text-[20px] text-crm-text leading-tight truncate drop-shadow-sm">{apt.user?.name || "Guest"}</h4>
                             )}
                             {statusBadge}
                           </div>
                           
-                          <p className="text-white/50 text-[14px] font-medium mb-4">{apt.user?.email || "No email"}</p>
+                          <p className="text-crm-muted text-[14px] font-medium mb-4">{apt.user?.email || "No email"}</p>
                           
                           <div className="flex flex-wrap items-center gap-3 mb-4">
-                            <span className="font-bold text-crm-text text-[13px] bg-white/10 px-3 py-1.5 rounded-lg border border-white/5 shadow-inner">
+                            <span className="font-bold text-crm-text text-[13px] bg-white/50 px-3 py-1.5 rounded-lg border border-white/20 shadow-inner">
                               {apt.service.name}
                             </span>
                             <span className="text-brand-gold text-[14px] font-black tracking-wide">
@@ -184,7 +184,7 @@ export default async function BookingsPage({ params }: { params: Promise<{ shopI
                             </span>
                           </div>
 
-                          <div className="bg-black/30 rounded-xl p-4 border border-white/5 shadow-inner">
+                          <div className="bg-crm-bg/50 rounded-xl p-4 border border-white/20 shadow-inner">
                             <AppointmentNotes 
                               shopId={shop.id} 
                               appointmentId={apt.id} 
@@ -197,7 +197,7 @@ export default async function BookingsPage({ params }: { params: Promise<{ shopI
                         </div>
 
                         {/* Actions Column */}
-                        <div className="w-full sm:w-auto flex flex-row flex-wrap sm:flex-nowrap sm:flex-col justify-end items-end gap-3 border-t sm:border-t-0 sm:border-l border-white/10 pt-5 sm:pt-0 sm:pl-6">
+                        <div className="w-full sm:w-auto flex flex-row flex-wrap sm:flex-nowrap sm:flex-col justify-end items-end gap-3 border-t sm:border-t-0 sm:border-l border-white/20 pt-5 sm:pt-0 sm:pl-6">
                           {isWorkCompleted && <CheckoutButton shopId={shop.id} appointmentId={apt.id} price={apt.service.price} serviceName={apt.service.name} serviceId={apt.serviceId} shopName={shop.name} clientName={apt.user?.name || apt.user?.email || "Guest"} addons={apt.addons} currency={shop.currency} />}
                           {isAccepted && <CompleteWorkButton shopId={shop.id} appointmentId={apt.id} userName={apt.user?.name || apt.user?.email || "Guest"} />}
                           {isScheduled && <AcceptAppointmentButton shopId={shop.id} appointmentId={apt.id} userName={apt.user?.name || apt.user?.email || "Guest"} />}
