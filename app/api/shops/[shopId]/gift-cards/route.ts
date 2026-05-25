@@ -22,7 +22,22 @@ export async function GET(
   const authUserEmail = authUserSession?.email;
   if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
-  const { shopId } = await params;
+  const { shopId: paramShopId } = await params;
+  const resolvedShop = await prisma.shop.findFirst({
+    where: {
+      OR: [
+        { id: paramShopId },
+        { subdomain: paramShopId },
+        { customDomain: paramShopId },
+        { name: { equals: paramShopId.replace(/-/g, ' '), mode: 'insensitive' } }
+      ]
+    },
+    select: { id: true }
+  });
+
+  if (!resolvedShop) return NextResponse.json({ error: 'Shop not found' }, { status: 404 });
+  const shopId = resolvedShop.id;
+
   const user = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
   const canManage = user?.role === 'SITE_ADMIN' ||
     (user?.role === 'SHOP_ADMIN' && user?.shopId === shopId);
@@ -52,7 +67,22 @@ export async function POST(
   if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
   try {
-    const { shopId } = await params;
+    const { shopId: paramShopId } = await params;
+    const resolvedShop = await prisma.shop.findFirst({
+      where: {
+        OR: [
+          { id: paramShopId },
+          { subdomain: paramShopId },
+          { customDomain: paramShopId },
+          { name: { equals: paramShopId.replace(/-/g, ' '), mode: 'insensitive' } }
+        ]
+      },
+      select: { id: true }
+    });
+
+    if (!resolvedShop) return NextResponse.json({ error: 'Shop not found' }, { status: 404 });
+    const shopId = resolvedShop.id;
+
     const user = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
     const canManage = user?.role === 'SITE_ADMIN' ||
       (user?.role === 'SHOP_ADMIN' && user?.shopId === shopId);

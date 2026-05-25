@@ -11,7 +11,22 @@ export async function GET(
   { params }: { params: Promise<{ shopId: string }> }
 ) {
   try {
-    const { shopId } = await params;
+    const { shopId: paramShopId } = await params;
+    const resolvedShop = await prisma.shop.findFirst({
+      where: {
+        OR: [
+          { id: paramShopId },
+          { subdomain: paramShopId },
+          { customDomain: paramShopId },
+          { name: { equals: paramShopId.replace(/-/g, ' '), mode: 'insensitive' } }
+        ]
+      },
+      select: { id: true }
+    });
+
+    if (!resolvedShop) return NextResponse.json({ error: 'Shop not found' }, { status: 404 });
+    const shopId = resolvedShop.id;
+
     const authResult = await requireShopRole(shopId, ['SITE_ADMIN', 'SHOP_ADMIN']);
     if (isAuthError(authResult)) return authResult;
 

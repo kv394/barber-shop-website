@@ -3,6 +3,7 @@ import { NotificationService } from '@/lib/notifications';
 import { LoyaltyService } from '@/lib/loyalty';
 import { UsageService } from '@/lib/usage-service';
 import { RebookingService } from '@/lib/rebooking-prompts';
+import { DemoAutomationService } from '@/lib/demo-automation';
 
 export const processDailyTasks = inngest.createFunction(
   { id: 'process-daily-tasks', triggers: [{ cron: '0 0 * * *' }] },
@@ -186,5 +187,15 @@ export const processWinBackCampaigns = inngest.createFunction(
     });
 
     return { sentCount };
+  }
+);
+
+export const runDemoAutomation = inngest.createFunction(
+  { id: 'run-demo-automation', triggers: [{ cron: '*/30 * * * *' }] },
+  async ({ step }) => {
+    const processed = await step.run('process-demo-automation', async () => {
+      return await DemoAutomationService.processAutomation();
+    });
+    return { processed };
   }
 );

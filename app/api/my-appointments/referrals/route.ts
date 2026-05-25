@@ -40,7 +40,7 @@ export async function GET() {
     const referralsMade = await prisma.referral.findMany({
       where: { referrerId: userId },
       include: {
-        referee: { select: { name: true, email: true } },
+        referredClient: { select: { name: true, email: true } },
         shop: { select: { name: true } },
       },
       orderBy: { createdAt: 'desc' },
@@ -61,10 +61,10 @@ export async function GET() {
       referralCode: user.referralCode,
       referrals: referralsMade.map((r: any) => ({
         id: r.id,
-        refereeName: r.referee.name || r.referee.email?.split('@')[0] || 'Someone',
+        refereeName: r.referredClient?.name || r.referredClient?.email?.split('@')[0] || 'Someone',
         shopName: r.shop.name,
         status: r.status,
-        rewardPoints: r.referrerRewardPoints,
+        rewardPoints: r.rewardAmount,
         createdAt: r.createdAt,
       })),
       shops: uniqueShops,

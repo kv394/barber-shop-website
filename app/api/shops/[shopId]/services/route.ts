@@ -90,9 +90,26 @@ export async function GET(
   { params }: { params: Promise<{ shopId: string }> }
 ) {
   try {
-    const { shopId } = await params;
+    const { shopId: paramShopId } = await params;
     const url = new URL(request.url);
     const isAdmin = url.searchParams.get('admin') === 'true';
+
+    const resolvedShop = await prisma.shop.findFirst({
+      where: {
+        OR: [
+          { id: paramShopId },
+          { subdomain: paramShopId },
+          { customDomain: paramShopId },
+          { name: { equals: paramShopId.replace(/-/g, ' '), mode: 'insensitive' } }
+        ]
+      },
+      select: { id: true }
+    });
+
+    if (!resolvedShop) {
+      return NextResponse.json({ error: 'Shop not found' }, { status: 404 });
+    }
+    const shopId = resolvedShop.id;
 
     // Fetch from Redis Cache if available
     const cacheKey = isAdmin ? `shop_services_admin:${shopId}` : `shop_services_public:${shopId}`;
@@ -129,7 +146,25 @@ export async function POST(
   { params }: { params: Promise<{ shopId: string }> }
 ) {
   try {
-    const { shopId } = await params;
+    const { shopId: paramShopId } = await params;
+    
+    const resolvedShop = await prisma.shop.findFirst({
+      where: {
+        OR: [
+          { id: paramShopId },
+          { subdomain: paramShopId },
+          { customDomain: paramShopId },
+          { name: { equals: paramShopId.replace(/-/g, ' '), mode: 'insensitive' } }
+        ]
+      },
+      select: { id: true }
+    });
+
+    if (!resolvedShop) {
+      return NextResponse.json({ error: 'Shop not found' }, { status: 404 });
+    }
+    const shopId = resolvedShop.id;
+
     const supabase = await createClient();
   const { data: { user: authUserSession } } = await supabase.auth.getUser();
   let userId = authUserSession?.id;

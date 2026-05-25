@@ -20,7 +20,22 @@ export async function GET(
   { params }: { params: Promise<{ shopId: string }> }
 ) {
   try {
-    const { shopId } = await params;
+    const { shopId: paramShopId } = await params;
+    const resolvedShop = await prisma.shop.findFirst({
+      where: {
+        OR: [
+          { id: paramShopId },
+          { subdomain: paramShopId },
+          { customDomain: paramShopId },
+          { name: { equals: paramShopId.replace(/-/g, ' '), mode: 'insensitive' } }
+        ]
+      },
+      select: { id: true }
+    });
+
+    if (!resolvedShop) return NextResponse.json({ error: 'Shop not found' }, { status: 404 });
+    const shopId = resolvedShop.id;
+
     const supabase = await createClient();
   const { data: { user: authUserSession } } = await supabase.auth.getUser();
   let userId = authUserSession?.id;
@@ -66,8 +81,8 @@ export async function GET(
       const referrals = await prisma.referral.findMany({
         where: { shopId },
         include: {
-          referrer: { select: { id: true, name: true, email: true } },
-          referee: { select: { id: true, name: true, email: true } },
+          referredBy: { select: { id: true, name: true, email: true } },
+          referredClient: { select: { id: true, name: true, email: true } },
         },
         orderBy: { createdAt: 'desc' },
         take: 100,
@@ -86,7 +101,7 @@ export async function GET(
     const referrals = await prisma.referral.findMany({
       where: { shopId, referrerId: userId },
       include: {
-        referee: { select: { name: true } },
+        referredClient: { select: { name: true } },
       },
       orderBy: { createdAt: 'desc' },
     });
@@ -104,7 +119,22 @@ export async function POST(
   { params }: { params: Promise<{ shopId: string }> }
 ) {
   try {
-    const { shopId } = await params;
+    const { shopId: paramShopId } = await params;
+    const resolvedShop = await prisma.shop.findFirst({
+      where: {
+        OR: [
+          { id: paramShopId },
+          { subdomain: paramShopId },
+          { customDomain: paramShopId },
+          { name: { equals: paramShopId.replace(/-/g, ' '), mode: 'insensitive' } }
+        ]
+      },
+      select: { id: true }
+    });
+
+    if (!resolvedShop) return NextResponse.json({ error: 'Shop not found' }, { status: 404 });
+    const shopId = resolvedShop.id;
+
     const supabase = await createClient();
   const { data: { user: authUserSession } } = await supabase.auth.getUser();
   let userId = authUserSession?.id;
