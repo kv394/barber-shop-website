@@ -102,7 +102,8 @@ export default async function StaffWorkingPage({ params }: { params: Promise<{ s
     { id: 'reports', label: 'Financial', href: `/shop/${shopId}/reports` },
     { id: 'staff-report', label: 'Staff Performance', href: `/shop/${shopId}/reports/staff-working` },
     { id: 'expenses', label: 'Expenses', href: `/shop/${shopId}/expenses` },
-    { id: 'commissions', label: 'Commissions', href: `/shop/${shopId}/reports/commissions` }
+    { id: 'commissions', label: 'Commissions', href: `/shop/${shopId}/reports/commissions` },
+    { id: 'booth-rent', label: 'Booth Rent', href: `/shop/${shopId}/booth-rent` }
   ];
 
   return (
@@ -112,6 +113,8 @@ export default async function StaffWorkingPage({ params }: { params: Promise<{ s
       pageTitle="Staff Working Report"
       shopId={shopId}
       userRole={userRole as string}
+      tabs={reportTabs}
+      activeTab="staff-report"
     >
       <StaffWorkingReport staffMembers={staffMembers} currency={shop.currency} />
     </ShopAdminLayout>

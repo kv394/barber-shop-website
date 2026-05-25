@@ -46,6 +46,14 @@ export default async function BoothRentPage({ params }: { params: Promise<{ shop
     ? 'Your booth rent history and outstanding balance'
     : `Manage rent payments for ${renters.length} booth renter${renters.length !== 1 ? 's' : ''}`;
 
+  const reportTabs = [
+    { id: 'reports', label: 'Financial', href: `/shop/${shopId}/reports` },
+    { id: 'staff-report', label: 'Staff Performance', href: `/shop/${shopId}/reports/staff-working` },
+    { id: 'expenses', label: 'Expenses', href: `/shop/${shopId}/expenses` },
+    { id: 'commissions', label: 'Commissions', href: `/shop/${shopId}/reports/commissions` },
+    { id: 'booth-rent', label: 'Booth Rent', href: `/shop/${shopId}/booth-rent` }
+  ];
+
   return (
     <ShopAdminLayout
       shopName={shop.name}
@@ -53,6 +61,8 @@ export default async function BoothRentPage({ params }: { params: Promise<{ shop
       pageTitle={title}
       shopId={shopId}
       userRole={userRole}
+      tabs={reportTabs}
+      activeTab="booth-rent"
     >
       <div className="space-y-6">
         {/* Page Header */}
