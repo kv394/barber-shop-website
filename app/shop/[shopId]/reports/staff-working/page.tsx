@@ -113,8 +113,6 @@ export default async function StaffWorkingPage({ params }: { params: Promise<{ s
       pageTitle="Staff Working Report"
       shopId={shopId}
       userRole={userRole as string}
-      tabs={reportTabs}
-      activeTab="staff-report"
     >
       <StaffWorkingReport staffMembers={staffMembers} currency={shop.currency} />
     </ShopAdminLayout>

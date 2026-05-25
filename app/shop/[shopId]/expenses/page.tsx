@@ -41,8 +41,6 @@ export default async function ExpensesPage({ params }: { params: Promise<{ shopI
       pageTitle="Expense Tracking"
       shopId={shopId}
       userRole={data.userRole}
-      tabs={reportTabs}
-      activeTab="expenses"
     >
       <ExpensesClient shopId={shopId} currency={data.shop.currency} />
     </ShopAdminLayout>

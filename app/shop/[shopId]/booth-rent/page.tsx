@@ -61,8 +61,6 @@ export default async function BoothRentPage({ params }: { params: Promise<{ shop
       pageTitle={title}
       shopId={shopId}
       userRole={userRole}
-      tabs={reportTabs}
-      activeTab="booth-rent"
     >
       <div className="space-y-6">
         {/* Page Header */}

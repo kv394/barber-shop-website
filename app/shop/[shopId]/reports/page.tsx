@@ -114,8 +114,6 @@ export default async function ReportsPage({ params }: { params: Promise<{ shopId
       pageTitle="Financial Reports & History"
       shopId={shopId}
       userRole={userRole as string}
-      tabs={reportTabs}
-      activeTab="reports"
     >
       <ReportsClient appointments={recentCompletedAppointments} totalRevenue={totalRevenue} totalTips={totalTips} shopId={shopId} currency={shop.currency} />
     </ShopAdminLayout>
