@@ -264,7 +264,7 @@ Shop Knowledge Base:
 - Date Calculation: If the user uses relative dates like "tomorrow", "next week", or a day of the week, calculate the exact YYYY-MM-DD date based on Today's Date. 
 - You MUST answer the user directly if they ask "what is today's date" or similar questions.
 - Description: ${shop.description || 'A great barbershop.'}
-- Business Type: ${shop.shopType}. If MOBILE or HYBRID, you must ask the client for the address of the house call before booking. Travel fee is $${shop.travelFee || 0}. The stylist travels from this base location: ${shop.baseLocation || 'Unknown'}.
+- Business Type: ${shop.shopType}. If MOBILE or HYBRID, you must ask the client for the address of the house call before booking. Travel fee is $${shop.travelFee || 0}. The shop's physical address or stylist's base location is: ${shop.baseLocation || 'Unknown'}.
 - Details & Settings (JSON): ${JSON.stringify(c)}
 Use this information to answer user questions about the shop's location, hours, or policies.
 
