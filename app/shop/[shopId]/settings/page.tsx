@@ -40,6 +40,9 @@ export default async function ShopSettingsPage({
       stripeAccountId: true,
       razorpayKeyId: true,
       razorpayKeySecret: true,
+      shopType: true,
+      travelFee: true,
+      maxTravelRadius: true,
     },
   });
 
@@ -71,6 +74,9 @@ export default async function ShopSettingsPage({
         initialStripeAccountId={shopDetails?.stripeAccountId || ''}
         initialRazorpayKeyId={shopDetails?.razorpayKeyId || ''}
         initialRazorpayKeySecret={shopDetails?.razorpayKeySecret || ''}
+        initialShopType={shopDetails?.shopType || 'PHYSICAL'}
+        initialTravelFee={shopDetails?.travelFee || 0}
+        initialMaxTravelRadius={shopDetails?.maxTravelRadius || null}
       />
 
       {/* Section 2: Appearance & Branding (template + customization save buttons) */}

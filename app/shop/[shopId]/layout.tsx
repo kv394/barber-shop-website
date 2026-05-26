@@ -96,6 +96,7 @@ export default async function ShopLayout({
           <SecondarySidebar 
             shopId={shopId} 
             userRole={data.userRole} 
+            shopType={(data.shop as any).shopType}
           />
         </div>
       )}

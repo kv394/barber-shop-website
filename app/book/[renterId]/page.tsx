@@ -13,7 +13,7 @@ export async function generateMetadata({ params }: { params: Promise<{ renterId:
   });
   if (!renter) return { title: 'Book an Appointment' };
   return {
-    title: `Book with ${renter.name || 'Stylist'} | ${renter.shop?.name || 'Kutz'}`,
+    title: `Book with ${renter.name || 'Stylist'} | ${renter.shop?.name || 'KutzApp'}`,
     description: `Book your appointment directly with ${renter.name || 'your stylist'} — pick a service, choose your time, and pay securely online.`,
   };
 }

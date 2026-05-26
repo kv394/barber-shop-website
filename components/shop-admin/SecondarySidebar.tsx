@@ -2,7 +2,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
-export default function SecondarySidebar({ shopId, userRole }: { shopId: string, userRole: string }) {
+export default function SecondarySidebar({ shopId, userRole, shopType }: { shopId: string, userRole: string, shopType?: string }) {
   const pathname = usePathname();
   const isAll = shopId === 'all';
   const isShopAdmin = userRole === 'SHOP_ADMIN';
@@ -55,8 +55,7 @@ export default function SecondarySidebar({ shopId, userRole }: { shopId: string,
       case 'team':
         return (
           <>
-            <h3 className="px-3 text-[11px] font-bold text-crm-muted uppercase tracking-wider mb-2 mt-4">Team</h3>
-            <div className="space-y-1">
+            <div className="space-y-1 mt-2">
               {navLink(`/shop/${shopId}/settings/team`, 'Availability & Staff')}
               {navLink(`/shop/${shopId}/portfolio`, 'Portfolio')}
             </div>
@@ -65,8 +64,7 @@ export default function SecondarySidebar({ shopId, userRole }: { shopId: string,
       case 'engagement':
         return (
           <>
-            <h3 className="px-3 text-[11px] font-bold text-crm-muted uppercase tracking-wider mb-2 mt-4">Engagement</h3>
-            <div className="space-y-1">
+            <div className="space-y-1 mt-2">
               {navLink(`/shop/${shopId}/engagement`, 'Dashboard', true)}
               {navLink(`/shop/${shopId}/loyalty`, 'Loyalty Program')}
               {navLink(`/shop/${shopId}/referrals`, 'Referrals')}
@@ -79,8 +77,7 @@ export default function SecondarySidebar({ shopId, userRole }: { shopId: string,
       case 'reports':
         return (
           <>
-            <h3 className="px-3 text-[11px] font-bold text-crm-muted uppercase tracking-wider mb-2 mt-4">Reports</h3>
-            <div className="space-y-1">
+            <div className="space-y-1 mt-2">
               {navLink(`/shop/${shopId}/reports`, 'Overview', true)}
               {navLink(`/shop/${shopId}/reports/commissions`, 'Commissions')}
               {navLink(`/shop/${shopId}/reports/staff-working`, 'Working Hours')}
@@ -111,7 +108,7 @@ export default function SecondarySidebar({ shopId, userRole }: { shopId: string,
             <div className="space-y-1 mb-6 border-l-2 border-crm-border ml-2 pl-2">
               {navLink(`/shop/${shopId}/settings/commissions`, 'Commissions')}
               {navLink(`/shop/${shopId}/settings/notifications`, 'Alerts')}
-              {navLink(`/shop/${shopId}/settings/kiosk`, 'Kiosk')}
+              {shopType !== 'MOBILE' && navLink(`/shop/${shopId}/settings/kiosk`, 'Kiosk')}
               {navLink(`/shop/${shopId}/settings/billing`, 'Billing')}
             </div>
             

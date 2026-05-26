@@ -50,6 +50,9 @@ model Shop {
   customization       Json?
   createdAt           DateTime             @default(now())
   updatedAt           DateTime             @updatedAt
+  shopType            ShopType             @default(PHYSICAL)
+  travelFee           Float                @default(0)
+  maxTravelRadius     Int?
   timezone            String               @default("America/New_York")
   country            Country              @default(US)
   currency           String               @default("USD")
@@ -249,6 +252,7 @@ model Appointment {
   createdAt              DateTime             @default(now())
   updatedAt              DateTime             @updatedAt
   notes                  String?
+  serviceLocation        String?
   discount               Float                @default(0)
   paymentMethod          String?
   tipAmount              Float                @default(0)
@@ -949,4 +953,10 @@ model RenterService {
 
   @@index([userId])
   @@index([shopId])
+}
+
+enum ShopType {
+  PHYSICAL
+  MOBILE
+  HYBRID
 }

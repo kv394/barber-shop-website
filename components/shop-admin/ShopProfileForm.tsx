@@ -35,6 +35,9 @@ interface ShopProfileFormProps {
   initialStripeAccountId?: string;
   initialRazorpayKeyId?: string;
   initialRazorpayKeySecret?: string;
+  initialShopType?: string;
+  initialTravelFee?: number;
+  initialMaxTravelRadius?: number | null;
 }
 
 export function ShopProfileForm({
@@ -52,6 +55,9 @@ export function ShopProfileForm({
   initialStripeAccountId,
   initialRazorpayKeyId,
   initialRazorpayKeySecret,
+  initialShopType,
+  initialTravelFee,
+  initialMaxTravelRadius,
 }: ShopProfileFormProps) {
   const [formData, setFormData] = useState({
     name: initialName || '',
@@ -67,6 +73,9 @@ export function ShopProfileForm({
     stripeAccountId: initialStripeAccountId || '',
     razorpayKeyId: initialRazorpayKeyId || '',
     razorpayKeySecret: initialRazorpayKeySecret || '',
+    shopType: initialShopType || 'PHYSICAL',
+    travelFee: initialTravelFee || 0,
+    maxTravelRadius: initialMaxTravelRadius || '',
   });
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -165,6 +174,56 @@ export function ShopProfileForm({
                 className={inputClass}
               />
             </div>
+          </div>
+        </div>
+
+        {/* ── Business Model ── */}
+        <div className="pt-2 border-t border-crm-border/50">
+          <h3 className="font-bold text-crm-text mb-4 text-[15px] flex items-center gap-2">
+            <span>🚀</span> Business Model
+          </h3>
+          <div className="space-y-4">
+            <div>
+              <label className={labelClass}>Shop Type</label>
+              <select
+                value={formData.shopType}
+                onChange={(e) => handleChange('shopType', e.target.value)}
+                className={inputClass}
+              >
+                <option value="PHYSICAL">Physical Salon (Customers come to you)</option>
+                <option value="MOBILE">Mobile Stylist (You go to customers)</option>
+                <option value="HYBRID">Hybrid (Both physical and house calls)</option>
+              </select>
+            </div>
+            
+            {(formData.shopType === 'MOBILE' || formData.shopType === 'HYBRID') && (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className={labelClass}>Flat Travel Fee ($)</label>
+                  <input
+                    type="number"
+                    min="0"
+                    step="0.50"
+                    value={formData.travelFee}
+                    onChange={(e) => handleChange('travelFee', parseFloat(e.target.value) || 0)}
+                    className={inputClass}
+                  />
+                  <p className="text-crm-muted text-[11px] mt-1">Fee automatically added to house calls.</p>
+                </div>
+                <div>
+                  <label className={labelClass}>Max Travel Radius</label>
+                  <input
+                    type="number"
+                    min="1"
+                    step="1"
+                    value={formData.maxTravelRadius || ''}
+                    onChange={(e) => handleChange('maxTravelRadius', e.target.value ? parseInt(e.target.value) : null)}
+                    placeholder="e.g. 20 miles"
+                    className={inputClass}
+                  />
+                </div>
+              </div>
+            )}
           </div>
         </div>
 

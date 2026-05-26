@@ -36,6 +36,15 @@ export async function PATCH(
     if (body.slogan !== undefined) {
       updateData.slogan = body.slogan ? String(body.slogan).trim() : null;
     }
+    if (body.shopType && typeof body.shopType === 'string' && ['PHYSICAL', 'MOBILE', 'HYBRID'].includes(body.shopType)) {
+      updateData.shopType = body.shopType;
+    }
+    if (body.travelFee !== undefined) {
+      updateData.travelFee = Math.max(0, parseFloat(body.travelFee) || 0);
+    }
+    if (body.maxTravelRadius !== undefined) {
+      updateData.maxTravelRadius = body.maxTravelRadius ? parseInt(body.maxTravelRadius) || null : null;
+    }
     // No-show deposit settings (C5)
     if (body.depositRequired !== undefined) {
       updateData.depositRequired = Boolean(body.depositRequired);
