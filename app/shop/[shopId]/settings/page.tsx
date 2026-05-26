@@ -43,6 +43,7 @@ export default async function ShopSettingsPage({
       shopType: true,
       travelFee: true,
       maxTravelRadius: true,
+      baseLocation: true,
     },
   });
 
@@ -77,6 +78,7 @@ export default async function ShopSettingsPage({
         initialShopType={shopDetails?.shopType || 'PHYSICAL'}
         initialTravelFee={shopDetails?.travelFee || 0}
         initialMaxTravelRadius={shopDetails?.maxTravelRadius || null}
+        initialBaseLocation={shopDetails?.baseLocation || ''}
       />
 
       {/* Section 2: Appearance & Branding (template + customization save buttons) */}

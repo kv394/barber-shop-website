@@ -45,6 +45,9 @@ export async function PATCH(
     if (body.maxTravelRadius !== undefined) {
       updateData.maxTravelRadius = body.maxTravelRadius ? parseInt(body.maxTravelRadius) || null : null;
     }
+    if (body.baseLocation !== undefined) {
+      updateData.baseLocation = body.baseLocation ? String(body.baseLocation).trim() : null;
+    }
     // No-show deposit settings (C5)
     if (body.depositRequired !== undefined) {
       updateData.depositRequired = Boolean(body.depositRequired);

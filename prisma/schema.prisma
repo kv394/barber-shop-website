@@ -53,6 +53,7 @@ model Shop {
   shopType            ShopType             @default(PHYSICAL)
   travelFee           Float                @default(0)
   maxTravelRadius     Int?
+  baseLocation        String?
   timezone            String               @default("America/New_York")
   country            Country              @default(US)
   currency           String               @default("USD")
