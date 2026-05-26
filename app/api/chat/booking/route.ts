@@ -150,7 +150,7 @@ export async function POST(req: Request) {
           { companyName: shopId }
         ]
       },
-      select: { id: true, name: true, timezone: true, customDomain: true, subdomain: true, customization: true, description: true, shopType: true, travelFee: true }
+      select: { id: true, name: true, timezone: true, customDomain: true, subdomain: true, customization: true, description: true, shopType: true, travelFee: true, baseLocation: true }
     });
 
     if (!shop) {
@@ -158,7 +158,7 @@ export async function POST(req: Request) {
       const candidates = await prisma.shop.findMany({
         where: { name: { contains: firstWord, mode: 'insensitive' } },
         take: 50,
-        select: { id: true, name: true, timezone: true, customDomain: true, subdomain: true, customization: true, description: true, shopType: true, travelFee: true }
+        select: { id: true, name: true, timezone: true, customDomain: true, subdomain: true, customization: true, description: true, shopType: true, travelFee: true, baseLocation: true }
       });
       shop = candidates.find(
         (s: any) => s.name.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '') === shopId.toLowerCase()
@@ -264,7 +264,7 @@ Shop Knowledge Base:
 - Date Calculation: If the user uses relative dates like "tomorrow", "next week", or a day of the week, calculate the exact YYYY-MM-DD date based on Today's Date. 
 - You MUST answer the user directly if they ask "what is today's date" or similar questions.
 - Description: ${shop.description || 'A great barbershop.'}
-- Business Type: ${shop.shopType}. If MOBILE or HYBRID, you must ask the client for the address of the house call before booking. Travel fee is $${shop.travelFee || 0}.
+- Business Type: ${shop.shopType}. If MOBILE or HYBRID, you must ask the client for the address of the house call before booking. Travel fee is $${shop.travelFee || 0}. The stylist travels from this base location: ${shop.baseLocation || 'Unknown'}.
 - Details & Settings (JSON): ${JSON.stringify(c)}
 Use this information to answer user questions about the shop's location, hours, or policies.
 
