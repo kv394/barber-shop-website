@@ -127,26 +127,26 @@
     </div>
   </article>
 
-  <!-- BarberSaaS SDK -->
-  <script src="https://barber-shop-website-ashy.vercel.app/barbersaas-sdk.js"></script>
+  <!-- KutzApp SDK -->
+  <script src="https://barber-shop-website-ashy.vercel.app/kutzapp-sdk.js"></script>
   <!-- Booking Modal logic -->
   <script src="https://barber-shop-website-ashy.vercel.app/booking-modal.js" data-shop-id="cmn9kj24n0000lqzc7kcsmpst"></script>
 
   <script>
     window.addEventListener("load", function () {
       function initializeShop() {
-        if (typeof BarberSaaS === "undefined") {
-          console.error("BarberSaaS SDK script failed to load or initialize.");
+        if (typeof KutzApp === "undefined") {
+          console.error("KutzApp SDK script failed to load or initialize.");
           document.getElementById("reviews-heritage-container").innerHTML =
-            '<div style="text-align: center; padding: 100px;"><h2>Failed to load BarberSaaS SDK.</h2><p>Please check your network connection and ad-blockers.</p></div>';
+            '<div style="text-align: center; padding: 100px;"><h2>Failed to load KutzApp SDK.</h2><p>Please check your network connection and ad-blockers.</p></div>';
           return;
         }
 
         // Initialize the SDK with the Shop ID
-        BarberSaaS.init();
+        KutzApp.init();
 
         // Fetch all data and render
-        BarberSaaS.getPublicData()
+        KutzApp.getPublicData()
           .then((data) => {
             // Execute page-specific rendering logic
             try {
@@ -211,9 +211,9 @@
 
       form.onsubmit = (e) => {
         e.preventDefault();
-        if (typeof BarberSaaS !== "undefined") {
+        if (typeof KutzApp !== "undefined") {
           submitBtn.textContent = "Submitting..."; submitBtn.disabled = true;
-          BarberSaaS.submitReview({ appointmentId: aptInput.value.trim(), rating: parseInt(ratingInput.value, 10), comment: commentInput.value.trim() })
+          KutzApp.submitReview({ appointmentId: aptInput.value.trim(), rating: parseInt(ratingInput.value, 10), comment: commentInput.value.trim() })
             .then((res) => { alert("Review submitted successfully!"); closeBtn.onclick(); window.location.reload(); })
             .catch((err) => { alert("Failed to submit review: " + err.message); submitBtn.textContent = "SUBMIT REVIEW"; submitBtn.disabled = false; });
         }
@@ -234,20 +234,20 @@
             }
           })
           .catch((err) => {
-            console.error("❌ BarberSaaS SDK initialization failed:", err);
+            console.error("❌ KutzApp SDK initialization failed:", err);
             document.getElementById("reviews-heritage-container").innerHTML =
               '<div style="text-align: center; padding: 100px;"><h2>Failed to load shop data.</h2><p>' + err.message + "</p></div>";
           });
       }
 
       // Safe script loading check
-      if (typeof BarberSaaS !== "undefined") {
+      if (typeof KutzApp !== "undefined") {
         initializeShop();
       } else {
         let attempts = 0;
         let checkInterval = setInterval(function () {
           attempts++;
-          if (typeof BarberSaaS !== "undefined") {
+          if (typeof KutzApp !== "undefined") {
             clearInterval(checkInterval);
             initializeShop();
           } else if (attempts >= 150) {

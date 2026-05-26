@@ -14,7 +14,7 @@ export async function POST(req: NextRequest) {
 
     // Generate a secure secret
     const secret = authenticator.generateSecret();
-    const otpauth = authenticator.keyuri(user.email || 'user', 'Barbersaas', secret);
+    const otpauth = authenticator.keyuri(user.email || 'user', 'KutzApp', secret);
 
     // Generate QR code data URI
     const qrCodeDataUrl = await QRCode.toDataURL(otpauth);

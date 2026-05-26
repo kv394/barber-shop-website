@@ -1,11 +1,11 @@
-Welcome to the BarberSaaS core features tutorial. In the next few minutes we’ll explore the dashboard, appointment booking, and commission calculations.
+Welcome to the KutzApp core features tutorial. In the next few minutes we’ll explore the dashboard, appointment booking, and commission calculations.
 First, the dashboard gives you a quick overview of total appointments, revenue, and a weekly trend chart.
 The left sidebar provides navigation to Dashboard, Appointments, Clients, and Settings. Clicking an icon switches the view without a full page reload.
 Next, the appointment booking flow. Users pick a date on the calendar, choose an available time slot, select a service, and confirm. The UI uses glass‑styled cards and subtle hover animations for a premium feel.
-Behind the scenes, BarberSaaS calculates staff commissions. The calculateCommission function resolves the most specific rule, while calculateCommissionsForAppointments runs this logic in batch for all completed appointments.
+Behind the scenes, KutzApp calculates staff commissions. The calculateCommission function resolves the most specific rule, while calculateCommissionsForAppointments runs this logic in batch for all completed appointments.
 Batch jobs are orchestrated by Inngest. Every night a cron triggers processDailyTasks, which calls the commission batch function, stores results in the database, and logs metrics.
 You can monitor these jobs in the Inngest dashboard – it displays execution status, retries, and payloads.
-BarberSaaS also includes AI‑driven re‑booking prompts that run as part of the daily cron job, encouraging repeat visits.
+KutzApp also includes AI‑driven re‑booking prompts that run as part of the daily cron job, encouraging repeat visits.
 The Clients page lets staff view and edit client details, attach voice notes, and view their appointment history.
 Settings give shop owners control over notifications, API integrations, and visual themes.
 We’ve covered the dashboard, appointment booking, commission batch processing, background job monitoring, re‑booking prompts, client management, and settings.

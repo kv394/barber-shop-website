@@ -1,6 +1,6 @@
 # Custom HTML & Headless Integrations Guide
 
-BarberSaaS provides shop administrators with ultimate flexibility over their brand's public presence. While we offer a variety of pre-built themes, you can also completely replace the public-facing shop page using the **Custom HTML Template** or expand your site by adding **Custom Pages**.
+KutzApp provides shop administrators with ultimate flexibility over their brand's public presence. While we offer a variety of pre-built themes, you can also completely replace the public-facing shop page using the **Custom HTML Template** or expand your site by adding **Custom Pages**.
 
 This document outlines how to use both features effectively.
 
@@ -15,18 +15,18 @@ If you want absolute control over your shop's landing page, you can choose the *
 When you select "Custom HTML":
 1. The standard styling, theming, and layout controls are disabled.
 2. A large code editor appears where you can paste a complete `index.html` file.
-3. BarberSaaS serves your raw HTML exactly as you provided it, wrapped safely in a fullscreen iframe.
+3. KutzApp serves your raw HTML exactly as you provided it, wrapped safely in a fullscreen iframe.
 4. The system automatically overlays the required **Client Login / Sign Out** button in the top right corner, ensuring your clients can still manage their accounts.
 
-### Integrating the BarberSaaS SDK
+### Integrating the KutzApp SDK
 
-Your custom HTML should serve as a headless front-end for BarberSaaS. To make it functional (showing services, handling bookings, processing checkouts), you need to integrate the BarberSaaS Javascript SDK.
+Your custom HTML should serve as a headless front-end for KutzApp. To make it functional (showing services, handling bookings, processing checkouts), you need to integrate the KutzApp Javascript SDK.
 
 Include these scripts right before your closing `</body>` tag:
 
 ```html
 <!-- Load the SDK Client -->
-<script src="https://your-domain.com/barbersaas-sdk.js"></script>
+<script src="https://your-domain.com/kutzapp-sdk.js"></script>
 
 <!-- Load the Booking Modal Logic -->
 <script src="https://your-domain.com/booking-modal.js" data-shop-id="YOUR_SHOP_ID_HERE"></script>
@@ -39,13 +39,13 @@ You must initialize the SDK and fetch your shop data manually. We recommend doin
 ```javascript
 window.addEventListener("load", function () {
   // Initialize the SDK
-  BarberSaaS.init("YOUR_SHOP_ID_HERE");
+  KutzApp.init("YOUR_SHOP_ID_HERE");
 
   // Fetch Public Data
   Promise.all([
-    BarberSaaS.getShopDetails(),
-    BarberSaaS.getBookableServices(),
-    BarberSaaS.getSellableProducts()
+    KutzApp.getShopDetails(),
+    KutzApp.getBookableServices(),
+    KutzApp.getSellableProducts()
   ])
     .then(([shop, services, products]) => {
         // shop contains your customization, pre-normalized images, and basic info
@@ -96,7 +96,7 @@ Custom pages automatically inherit:
 - The universal **Navigation Bar**, seamlessly adding your new pages to the top menu.
 - The shop's **Footer**.
 
-You do not need to provide `<head>` or `<body>` tags for Custom Pages. Simply provide the inner HTML (like paragraphs, headings, and images), and BarberSaaS will inject it securely into your existing layout.
+You do not need to provide `<head>` or `<body>` tags for Custom Pages. Simply provide the inner HTML (like paragraphs, headings, and images), and KutzApp will inject it securely into your existing layout.
 
 ### Custom Page Constraints
 

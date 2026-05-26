@@ -92,45 +92,45 @@ async function main() {
 
   // SITE_ADMIN — not tied to any shop
   const siteAdmin = await prisma.user.upsert({
-    where: { email: 'siteadmin@demo.barbersaas.com' },
+    where: { email: 'siteadmin@demo.kutzapp.com' },
     update: {},
     create: {
       id: 'seed-super-admin',
-      email: 'siteadmin@demo.barbersaas.com',
+      email: 'siteadmin@demo.kutzapp.com',
       name: 'Alex Super',
       role: 'SITE_ADMIN',
-      barcode: barcode('siteadmin@demo.barbersaas.com'),
+      barcode: barcode('siteadmin@demo.kutzapp.com'),
     },
   });
   console.log(`  ✅  SITE_ADMIN : ${siteAdmin.email}`);
 
   // SHOP_ADMIN — manages the demo shop
   const shopAdmin = await prisma.user.upsert({
-    where: { email: 'shopadmin@demo.barbersaas.com' },
+    where: { email: 'shopadmin@demo.kutzapp.com' },
     update: {},
     create: {
       id: 'seed-shop-admin',
-      email: 'shopadmin@demo.barbersaas.com',
+      email: 'shopadmin@demo.kutzapp.com',
       name: 'Jordan Shop-Admin',
       role: 'SHOP_ADMIN',
       shopId: shop.id,
-      barcode: barcode('shopadmin@demo.barbersaas.com'),
+      barcode: barcode('shopadmin@demo.kutzapp.com'),
     },
   });
   console.log(`  ✅  SHOP_ADMIN  : ${shopAdmin.email}  → ${shop.name}`);
 
   // STAFF — barber at the demo shop
   const staff = await prisma.user.upsert({
-    where: { email: 'staff@demo.barbersaas.com' },
+    where: { email: 'staff@demo.kutzapp.com' },
     update: {},
     create: {
       id: 'seed-staff',
-      email: 'staff@demo.barbersaas.com',
+      email: 'staff@demo.kutzapp.com',
       name: 'Taylor Barber',
       role: 'STAFF',
       shopId: shop.id,
       canManageInventory: true,
-      barcode: barcode('staff@demo.barbersaas.com'),
+      barcode: barcode('staff@demo.kutzapp.com'),
       workingHours: {
         monday:    { open: '09:00', close: '17:00' },
         tuesday:   { open: '09:00', close: '17:00' },
@@ -146,16 +146,16 @@ async function main() {
 
   // CLIENT — regular customer
   const client = await prisma.user.upsert({
-    where: { email: 'client@demo.barbersaas.com' },
+    where: { email: 'client@demo.kutzapp.com' },
     update: {},
     create: {
       id: 'seed-client',
-      email: 'client@demo.barbersaas.com',
+      email: 'client@demo.kutzapp.com',
       name: 'Sam Customer',
       role: 'CLIENT',
       shopId: shop.id,
       phone: '+1-555-0100',
-      barcode: barcode('client@demo.barbersaas.com'),
+      barcode: barcode('client@demo.kutzapp.com'),
       marketingConsent: true,
       smsConsent: true,
       birthday: new Date('1990-06-15'),
@@ -165,15 +165,15 @@ async function main() {
 
   // ATTENDANCE_KIOSK — tablet at the front desk
   const kiosk = await prisma.user.upsert({
-    where: { email: 'kiosk@demo.barbersaas.com' },
+    where: { email: 'kiosk@demo.kutzapp.com' },
     update: {},
     create: {
       id: 'seed-kiosk',
-      email: 'kiosk@demo.barbersaas.com',
+      email: 'kiosk@demo.kutzapp.com',
       name: 'Downtown Kiosk',
       role: 'ATTENDANCE_KIOSK',
       shopId: shop.id,
-      barcode: barcode('kiosk@demo.barbersaas.com'),
+      barcode: barcode('kiosk@demo.kutzapp.com'),
     },
   });
   console.log(`  ✅  KIOSK       : ${kiosk.email}  → ${shop.name}`);
@@ -231,11 +231,11 @@ async function main() {
   console.log('\n🎉  Seed complete! Here are the login emails:\n');
   console.log('   Role              Email');
   console.log('   ────────────────  ──────────────────────────────────');
-  console.log('   SITE_ADMIN       siteadmin@demo.barbersaas.com');
-  console.log('   SHOP_ADMIN        shopadmin@demo.barbersaas.com');
-  console.log('   STAFF             staff@demo.barbersaas.com');
-  console.log('   CLIENT            client@demo.barbersaas.com');
-  console.log('   ATTENDANCE_KIOSK  kiosk@demo.barbersaas.com');
+  console.log('   SITE_ADMIN       siteadmin@demo.kutzapp.com');
+  console.log('   SHOP_ADMIN        shopadmin@demo.kutzapp.com');
+  console.log('   STAFF             staff@demo.kutzapp.com');
+  console.log('   CLIENT            client@demo.kutzapp.com');
+  console.log('   ATTENDANCE_KIOSK  kiosk@demo.kutzapp.com');
   console.log('');
   console.log(`   Shop: "${shop.name}" (ID: ${shop.id})`);
   console.log('');

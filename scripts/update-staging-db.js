@@ -8,7 +8,7 @@ async function main() {
   });
 
   try {
-    const html = fs.readFileSync('/Users/rajaveerappan/barbersaas/barber-shop-website/public/html-sections/SportClips.html', 'utf8');
+    const html = fs.readFileSync('/Users/rajaveerappan/kutzapp/barber-shop-website/public/html-sections/SportClips.html', 'utf8');
     
     // 1. Force update the database directly to ensure it works
     const res = await pool.query(`SELECT customization FROM "Shop" WHERE id = 'cmn9kj24n0000lqzc7kcsmpst'`);

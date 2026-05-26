@@ -44,7 +44,7 @@ const baseHtml = (tmpl) => `<!DOCTYPE html>
     </div>
   </div>
 
-  <script src="../../barbersaas-sdk.js"></script>
+  <script src="../../kutzapp-sdk.js"></script>
 
   <script>
     const templateType = '${tmpl}';
@@ -59,10 +59,10 @@ const baseHtml = (tmpl) => `<!DOCTYPE html>
       document.head.appendChild(modalScript);
 
       try {
-        if (typeof BarberSaaS === 'undefined') throw new Error("SDK failed to load");
+        if (typeof KutzApp === 'undefined') throw new Error("SDK failed to load");
         
-        BarberSaaS.init(shopId);
-        const data = await BarberSaaS.getPublicData();
+        KutzApp.init(shopId);
+        const data = await KutzApp.getPublicData();
         renderApp(data);
       } catch (err) {
         document.getElementById('app-container').innerHTML = 
@@ -116,7 +116,7 @@ const baseHtml = (tmpl) => `<!DOCTYPE html>
           e.preventDefault();
           const originalAlert = window.alert;
           window.alert = () => {};
-          BarberSaaS.buyProduct(btn.dataset.id, 1).then(res => {
+          KutzApp.buyProduct(btn.dataset.id, 1).then(res => {
             window.alert = originalAlert;
             alert('Added ' + res.quantity + 'x ' + res.product.name + ' to cart!');
           }).catch(err => {

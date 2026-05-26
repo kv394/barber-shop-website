@@ -28,7 +28,7 @@ export default async function SDKDocsPage({ params }: { params: Promise<{ shopId
         <h2 className="font-bold text-lg mb-4">1. Include the SDK</h2>
         <p className="text-gray-600 text-[13px] mb-4">Add the following script tag to the <code>&lt;head&gt;</code> of your HTML file:</p>
         <pre className="bg-gray-900 text-gray-100 p-4 rounded-lg text-[13px] overflow-x-auto mb-6">
-          <code>{`<script src="https://your-domain.com/barbersaas-sdk.js"></script>`}</code>
+          <code>{`<script src="https://your-domain.com/kutzapp-sdk.js"></script>`}</code>
         </pre>
 
         <h2 className="font-bold text-lg mb-4">2. Initialize the SDK</h2>

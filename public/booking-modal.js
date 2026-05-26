@@ -21,15 +21,15 @@
     }
   }
 
-  const shopId = (scriptTag && scriptTag.getAttribute('data-shop-id')) || (window.BarberSaaS && window.BarberSaaS.shopId);
+  const shopId = (scriptTag && scriptTag.getAttribute('data-shop-id')) || (window.KutzApp && window.KutzApp.shopId);
   
   if (!shopId) {
-    console.error('Booking modal script tag or window.BarberSaaS.shopId not found');
+    console.error('Booking modal script tag or window.KutzApp.shopId not found');
     return;
   }
 
-  const themeColor = (window.BarberSaaS && window.BarberSaaS.primaryColor) || (scriptTag && scriptTag.getAttribute('data-theme-color')) || '';
-  const secondaryColor = (window.BarberSaaS && window.BarberSaaS.secondaryColor) || (scriptTag && scriptTag.getAttribute('data-secondary-color')) || '';
+  const themeColor = (window.KutzApp && window.KutzApp.primaryColor) || (scriptTag && scriptTag.getAttribute('data-theme-color')) || '';
+  const secondaryColor = (window.KutzApp && window.KutzApp.secondaryColor) || (scriptTag && scriptTag.getAttribute('data-secondary-color')) || '';
   const templateType = (scriptTag && scriptTag.getAttribute('data-template-type')) || '';
   
   const scriptTagSrc = (scriptTag && scriptTag.src) || '';

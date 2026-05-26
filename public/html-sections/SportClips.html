@@ -1153,7 +1153,7 @@
         }
 
         const sdkScript = document.createElement("script");
-        sdkScript.src = scriptBaseUrl + "/barbersaas-sdk.js?v=" + new Date().getTime();
+        sdkScript.src = scriptBaseUrl + "/kutzapp-sdk.js?v=" + new Date().getTime();
         document.head.appendChild(sdkScript);
       })();
     </script>
@@ -1183,7 +1183,7 @@
 
       window.addEventListener("load", function () {
         function initializeShop() {
-          if (typeof BarberSaaS === "undefined") return;
+          if (typeof KutzApp === "undefined") return;
 
           const urlParams = new URLSearchParams(window.location.search);
           let shopId = urlParams.get("shopId");
@@ -1394,18 +1394,18 @@
           // --- END AUTH LOGIC ---
 
           // Initialize SDK
-          BarberSaaS.init(shopId, {
+          KutzApp.init(shopId, {
             position: "bottom-right",
             apiUrl: apiUrlToUse,
           });
 
           // Use the specific SDK helper methods
           Promise.all([
-            BarberSaaS.getShopDetails(),
-            BarberSaaS.getBookableServices(),
-            BarberSaaS.getSellableProducts(),
-            BarberSaaS.getReviews(),
-            BarberSaaS.getPublicStaff()
+            KutzApp.getShopDetails(),
+            KutzApp.getBookableServices(),
+            KutzApp.getSellableProducts(),
+            KutzApp.getReviews(),
+            KutzApp.getPublicStaff()
           ])
             .then(([shop, rawServices, rawProducts, reviews, staff]) => {
               // --- SHOP DETAILS & BRANDING ---
@@ -1414,8 +1414,8 @@
                 const primaryColor = shop.primaryColor || "#E31837";
                 const secondaryColor = shop.secondaryColor || "#000000";
 
-                window.BarberSaaS.primaryColor = primaryColor;
-                window.BarberSaaS.secondaryColor = secondaryColor;
+                window.KutzApp.primaryColor = primaryColor;
+                window.KutzApp.secondaryColor = secondaryColor;
 
                 // 2. Apply Theme colors to root
                 document.documentElement.style.setProperty("--primary", primaryColor, "important");
@@ -1477,7 +1477,7 @@
                   let widgetFixAttempts = 0;
                   const widgetFixInterval = setInterval(() => {
                     widgetFixAttempts++;
-                    const container = document.getElementById('barbersaas-booking-widget-container');
+                    const container = document.getElementById('kutzapp-booking-widget-container');
                     if (container && container.shadowRoot) {
                        const btn = container.shadowRoot.getElementById('widget-button');
                        if (btn) {
@@ -1627,14 +1627,14 @@
                   
                   document.querySelectorAll(".b-buy").forEach((btn) =>
                     btn.addEventListener("click", (e) => {
-                      BarberSaaS.getProductDetails(e.target.dataset.id).then(p => alert("Added to cart: 1x " + p.name));
+                      KutzApp.getProductDetails(e.target.dataset.id).then(p => alert("Added to cart: 1x " + p.name));
                     })
                   );
                   
                   // Product details modal logic (kept as is for brevity, though could be optimized)
                   document.querySelectorAll(".b-view").forEach((btn) =>
                     btn.addEventListener("click", (e) => {
-                      BarberSaaS.getProductDetails(e.target.dataset.id).then(
+                      KutzApp.getProductDetails(e.target.dataset.id).then(
                         (p) => {
                           let modal = document.getElementById("product-modal");
                           if (!modal) {
@@ -1769,7 +1769,7 @@
                     const rating = prompt("Rating (1-5):", "5");
                     const comment = prompt("Comments:");
                     if (aptId && rating && comment) {
-                      BarberSaaS.submitReview({ appointmentId: aptId, rating: parseInt(rating), comment })
+                      KutzApp.submitReview({ appointmentId: aptId, rating: parseInt(rating), comment })
                         .then(() => alert("Highlight submitted!"))
                         .catch((e) => alert("Error: " + e.message));
                     }
@@ -1841,12 +1841,12 @@
             });
         }
 
-        if (typeof BarberSaaS !== "undefined") initializeShop();
+        if (typeof KutzApp !== "undefined") initializeShop();
         else {
           let attempts = 0;
           let intv = setInterval(() => {
             attempts++;
-            if (typeof BarberSaaS !== "undefined" || attempts >= 50) {
+            if (typeof KutzApp !== "undefined" || attempts >= 50) {
               clearInterval(intv);
               initializeShop();
             }

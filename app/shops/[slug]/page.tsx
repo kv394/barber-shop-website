@@ -180,7 +180,7 @@ export default async function PublicShopPage({
     );
   }
 
-  // Automatically redirect STAFF and ADMINS to their dashboard (the BarberSaaS base URL)
+  // Automatically redirect STAFF and ADMINS to their dashboard (the KutzApp base URL)
   // Only CLIENTS should be viewing the public shop landing page.
   if (!isPreview) {
     const supabase = await createClient();
@@ -221,9 +221,9 @@ export default async function PublicShopPage({
         let h = htmlCode;
         let c = cssCode;
         try {
-          const barbersaasFolderId = await getOrCreateFolder('barbersaas');
-          if (barbersaasFolderId) {
-            const shopFolderId = await getOrCreateFolder(shop.id, barbersaasFolderId);
+          const kutzappFolderId = await getOrCreateFolder('kutzapp');
+          if (kutzappFolderId) {
+            const shopFolderId = await getOrCreateFolder(shop.id, kutzappFolderId);
             if (shopFolderId) {
               const templateFolderId = await getOrCreateFolder(templateType, shopFolderId);
               if (templateFolderId) {
