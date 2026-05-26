@@ -55,8 +55,7 @@ export default function SecondarySidebar({ shopId, userRole }: { shopId: string,
       case 'team':
         return (
           <>
-            <h3 className="px-3 text-[11px] font-bold text-crm-muted uppercase tracking-wider mb-2 mt-4">Team</h3>
-            <div className="space-y-1">
+            <div className="space-y-1 mt-2">
               {navLink(`/shop/${shopId}/settings/team`, 'Availability & Staff')}
               {navLink(`/shop/${shopId}/portfolio`, 'Portfolio')}
             </div>
@@ -65,8 +64,7 @@ export default function SecondarySidebar({ shopId, userRole }: { shopId: string,
       case 'engagement':
         return (
           <>
-            <h3 className="px-3 text-[11px] font-bold text-crm-muted uppercase tracking-wider mb-2 mt-4">Engagement</h3>
-            <div className="space-y-1">
+            <div className="space-y-1 mt-2">
               {navLink(`/shop/${shopId}/engagement`, 'Dashboard', true)}
               {navLink(`/shop/${shopId}/loyalty`, 'Loyalty Program')}
               {navLink(`/shop/${shopId}/referrals`, 'Referrals')}
@@ -79,8 +77,7 @@ export default function SecondarySidebar({ shopId, userRole }: { shopId: string,
       case 'reports':
         return (
           <>
-            <h3 className="px-3 text-[11px] font-bold text-crm-muted uppercase tracking-wider mb-2 mt-4">Reports</h3>
-            <div className="space-y-1">
+            <div className="space-y-1 mt-2">
               {navLink(`/shop/${shopId}/reports`, 'Overview', true)}
               {navLink(`/shop/${shopId}/reports/commissions`, 'Commissions')}
               {navLink(`/shop/${shopId}/reports/staff-working`, 'Working Hours')}
