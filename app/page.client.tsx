@@ -191,7 +191,7 @@ export default function Home() {
         
         <header className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-12 sm:mb-20">
           <h1 className="font-serif font-bold tracking-tight text-2xl">
-            <span className="text-crm-text">Kutz</span>
+            <span className="text-crm-text">KutzApp</span>
           </h1>
           <div>
             <SupabaseAuthButton />
@@ -212,7 +212,7 @@ export default function Home() {
           {!isSignedIn && (
             <div className="bg-crm-surface p-8 rounded-lg text-center border border-crm-border shadow-sm max-w-2xl mx-auto mt-12">
               <h3 className="text-xl font-bold font-serif mb-4 text-crm-text">Ready to transform your business?</h3>
-              <p className="text-crm-muted mb-8 text-[14px]">Join thousands of barbershops using Kutz to streamline their operations, increase bookings, and grow their revenue.</p>
+              <p className="text-crm-muted mb-8 text-[14px]">Join thousands of barbershops using KutzApp to streamline their operations, increase bookings, and grow their revenue.</p>
               <div className="flex gap-4 justify-center">
                 <Link href="/sign-up" className="inline-block bg-crm-primary text-white px-8 py-3 rounded-md font-semibold hover:bg-crm-surface hover:text-crm-primary border border-transparent hover:border-crm-primary/30 transition-colors">
                   Start Free Trial

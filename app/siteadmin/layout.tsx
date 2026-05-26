@@ -26,7 +26,7 @@ export default async function SiteAdminLayout({ children }: { children: React.Re
       <aside className="hidden md:flex flex-col w-64 bg-white/60 backdrop-blur-xl border-r border-white/40 flex-shrink-0 z-10 shadow-sm">
         <div className="h-16 flex items-center px-6 border-b border-white/40">
            <Link href="/siteadmin" className="font-bold text-xl tracking-tight flex items-center gap-2">
-             <span className="text-crm-text">Kutz</span><span className="text-crm-primary">Admin</span>
+             <span className="text-crm-text">KutzApp</span><span className="text-crm-primary">Admin</span>
            </Link>
         </div>
         <nav className="flex-1 overflow-y-auto py-4 px-3">

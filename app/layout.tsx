@@ -7,8 +7,8 @@ const inter = Inter({ subsets: ["latin"], variable: '--font-sans', weight: ['300
 const cormorant = Cormorant_Garamond({ subsets: ["latin"], variable: '--font-serif', weight: ['400', '500', '600', '700'], style: ['normal', 'italic'] });
 
 export const metadata: Metadata = {
-  title: "Kutz — The All-in-One Barbershop Platform",
-  description: "Run your shop with Kutz. Bookings, payments, team management, and client engagement — all in one place.",
+  title: "KutzApp — The All-in-One Barbershop Platform",
+  description: "Run your shop with KutzApp. Bookings, payments, team management, and client engagement — all in one place.",
 };
 
 export default function RootLayout({
