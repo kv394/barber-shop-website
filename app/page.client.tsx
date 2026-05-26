@@ -191,7 +191,7 @@ export default function Home() {
         
         <header className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-12 sm:mb-20">
           <h1 className="font-serif font-bold tracking-tight text-2xl">
-            <span className="text-crm-text">Barber</span><span className="text-crm-accent">SaaS</span>
+            <span className="text-crm-text">Kutz</span>
           </h1>
           <div>
             <SupabaseAuthButton />
