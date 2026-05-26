@@ -199,44 +199,43 @@ export function ShopProfileForm({
               </select>
             </div>
             
+            <div>
+              <label className={labelClass}>Shop Address / Base Location</label>
+              <input
+                type="text"
+                value={formData.baseLocation || ''}
+                onChange={(e) => handleChange('baseLocation', e.target.value)}
+                placeholder="e.g. 123 Main St, Houston, TX 77002"
+                className={inputClass}
+              />
+              <p className="text-crm-muted text-[11px] mt-1">For physical shops, this is your storefront. For mobile stylists, this is your starting point.</p>
+            </div>
+
             {(formData.shopType === 'MOBILE' || formData.shopType === 'HYBRID') && (
-              <div className="space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label className={labelClass}>Flat Travel Fee ($)</label>
-                    <input
-                      type="number"
-                      min="0"
-                      step="0.50"
-                      value={formData.travelFee}
-                      onChange={(e) => handleChange('travelFee', parseFloat(e.target.value) || 0)}
-                      className={inputClass}
-                    />
-                    <p className="text-crm-muted text-[11px] mt-1">Fee automatically added to house calls.</p>
-                  </div>
-                  <div>
-                    <label className={labelClass}>Max Travel Radius</label>
-                    <input
-                      type="number"
-                      min="1"
-                      step="1"
-                      value={formData.maxTravelRadius || ''}
-                      onChange={(e) => handleChange('maxTravelRadius', e.target.value ? parseInt(e.target.value) : null)}
-                      placeholder="e.g. 20 miles"
-                      className={inputClass}
-                    />
-                  </div>
-                </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className={labelClass}>Base Location (Starting Address)</label>
+                  <label className={labelClass}>Flat Travel Fee ($)</label>
                   <input
-                    type="text"
-                    value={formData.baseLocation || ''}
-                    onChange={(e) => handleChange('baseLocation', e.target.value)}
-                    placeholder="e.g. 123 Main St, Houston, TX or 77002"
+                    type="number"
+                    min="0"
+                    step="0.50"
+                    value={formData.travelFee}
+                    onChange={(e) => handleChange('travelFee', parseFloat(e.target.value) || 0)}
                     className={inputClass}
                   />
-                  <p className="text-crm-muted text-[11px] mt-1">The starting point from which your travel radius is calculated.</p>
+                  <p className="text-crm-muted text-[11px] mt-1">Fee automatically added to house calls.</p>
+                </div>
+                <div>
+                  <label className={labelClass}>Max Travel Radius</label>
+                  <input
+                    type="number"
+                    min="1"
+                    step="1"
+                    value={formData.maxTravelRadius || ''}
+                    onChange={(e) => handleChange('maxTravelRadius', e.target.value ? parseInt(e.target.value) : null)}
+                    placeholder="e.g. 20 miles"
+                    className={inputClass}
+                  />
                 </div>
               </div>
             )}
