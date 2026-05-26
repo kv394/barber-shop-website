@@ -13,7 +13,7 @@ interface Service { id: string; name: string; price: number; duration: number; }
 interface Staff { id: string; name: string; workingHours: any; }
 interface BookedSlot { startTime: string; endTime: string; staffId: string; }
 
-export default function BookingWizard({ shopId, themeColor, secondaryColor, templateType, currency }: { shopId: string, themeColor?: string, secondaryColor?: string, templateType?: string, currency: string }) {
+export default function BookingWizard({ shopId, themeColor, secondaryColor, templateType, currency, shopType = 'PHYSICAL' }: { shopId: string, themeColor?: string, secondaryColor?: string, templateType?: string, currency: string, shopType?: string }) {
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(true);
   const [services, setServices] = useState<Service[]>([]);
@@ -34,6 +34,8 @@ export default function BookingWizard({ shopId, themeColor, secondaryColor, temp
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
   const [notes, setNotes] = useState('');
+  const [serviceLocation, setServiceLocation] = useState('');
+  const [isHouseCall, setIsHouseCall] = useState(shopType === 'MOBILE');
   
   // Availability state
   const [bookedSlots, setBookedSlots] = useState<BookedSlot[]>([]);
@@ -328,6 +330,7 @@ export default function BookingWizard({ shopId, themeColor, secondaryColor, temp
           clientName: name,
           clientEmail: email,
           clientPhone: phone,
+          serviceLocation: isHouseCall ? serviceLocation : undefined,
         })
       });
       if (!res.ok) {
@@ -599,6 +602,32 @@ export default function BookingWizard({ shopId, themeColor, secondaryColor, temp
                 onChange={e => setPhone(e.target.value)}
               />
             </div>
+
+            {shopType === 'HYBRID' && (
+              <div className="mb-4 bg-gray-50 p-3 rounded-xl border border-gray-100 flex items-center justify-between">
+                <div>
+                  <div className="font-medium text-gray-800 text-sm">Service Location</div>
+                  <div className="text-xs text-gray-500">{isHouseCall ? 'House Call' : 'In-Shop'}</div>
+                </div>
+                <div className="flex bg-gray-200 rounded-lg p-1">
+                  <button type="button" onClick={() => setIsHouseCall(false)} className={`px-3 py-1 text-xs font-medium rounded-md transition-colors ${!isHouseCall ? 'bg-white shadow-sm text-gray-900' : 'text-gray-500'}`}>In-Shop</button>
+                  <button type="button" onClick={() => setIsHouseCall(true)} className={`px-3 py-1 text-xs font-medium rounded-md transition-colors ${isHouseCall ? 'bg-white shadow-sm text-gray-900' : 'text-gray-500'}`}>House Call</button>
+                </div>
+              </div>
+            )}
+            
+            {isHouseCall && (
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Service Address</label>
+                <input 
+                  type="text" 
+                  placeholder="123 Main St, City, Zip"
+                  className={tStyles.input} style={{ '--tw-ring-color': themeColor } as any}
+                  value={serviceLocation}
+                  onChange={e => setServiceLocation(e.target.value)}
+                />
+              </div>
+            )}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Notes (Optional)</label>
               <textarea 
@@ -625,7 +654,7 @@ export default function BookingWizard({ shopId, themeColor, secondaryColor, temp
               </button>
           ) : (
               <button
-                disabled={!name || !email || isBooking}
+                disabled={!name || !email || isBooking || (isHouseCall && !serviceLocation)}
                 onClick={handleBook}
                 className={`${tStyles.btnPrimary} flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed`} style={{ backgroundColor: themeColor || '#111827', color: secondaryColor || undefined }}
               >

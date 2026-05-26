@@ -37,7 +37,8 @@ const bookAppointmentDecl: FunctionDeclaration = {
       time: { type: Type.STRING, description: 'Time in HH:MM format (24-hour, local to shop timezone)' },
       clientName: { type: Type.STRING },
       clientPhone: { type: Type.STRING },
-      clientEmail: { type: Type.STRING, description: 'Optional client email' }
+      clientEmail: { type: Type.STRING, description: 'Optional client email' },
+      serviceLocation: { type: Type.STRING, description: 'Optional physical address for mobile/house call services' }
     },
     required: ['serviceId', 'staffId', 'date', 'time', 'clientName', 'clientPhone']
   }
@@ -149,7 +150,7 @@ export async function POST(req: Request) {
           { companyName: shopId }
         ]
       },
-      select: { id: true, name: true, timezone: true, customDomain: true, subdomain: true, customization: true, description: true }
+      select: { id: true, name: true, timezone: true, customDomain: true, subdomain: true, customization: true, description: true, shopType: true, travelFee: true }
     });
 
     if (!shop) {
@@ -157,7 +158,7 @@ export async function POST(req: Request) {
       const candidates = await prisma.shop.findMany({
         where: { name: { contains: firstWord, mode: 'insensitive' } },
         take: 50,
-        select: { id: true, name: true, timezone: true, customDomain: true, subdomain: true, customization: true, description: true }
+        select: { id: true, name: true, timezone: true, customDomain: true, subdomain: true, customization: true, description: true, shopType: true, travelFee: true }
       });
       shop = candidates.find(
         (s: any) => s.name.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '') === shopId.toLowerCase()
@@ -263,6 +264,7 @@ Shop Knowledge Base:
 - Date Calculation: If the user uses relative dates like "tomorrow", "next week", or a day of the week, calculate the exact YYYY-MM-DD date based on Today's Date. 
 - You MUST answer the user directly if they ask "what is today's date" or similar questions.
 - Description: ${shop.description || 'A great barbershop.'}
+- Business Type: ${shop.shopType}. If MOBILE or HYBRID, you must ask the client for the address of the house call before booking. Travel fee is $${shop.travelFee || 0}.
 - Details & Settings (JSON): ${JSON.stringify(c)}
 Use this information to answer user questions about the shop's location, hours, or policies.
 
@@ -424,7 +426,7 @@ If the user wants to check, cancel, or reschedule their appointments, or asks fo
                     }
                 } else if (call.name === 'book_appointment') {
                     const args = call.args as any;
-                    const { serviceId, staffId, date, time, clientName, clientPhone, clientEmail } = args;
+                    const { serviceId, staffId, date, time, clientName, clientPhone, clientEmail, serviceLocation } = args;
 
                     // Create dummy client user
                     const emailToUse = clientEmail || `guest-${Date.now()}@example.com`;
@@ -477,7 +479,8 @@ If the user wants to check, cancel, or reschedule their appointments, or asks fo
                                 userId: user.id,
                                 startTime,
                                 endTime,
-                                status: 'SCHEDULED'
+                                status: 'SCHEDULED',
+                                serviceLocation: serviceLocation || null
                             }
                         });                        
                         if (isNewUser) {

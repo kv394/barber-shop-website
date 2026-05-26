@@ -2,7 +2,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
-export default function SecondarySidebar({ shopId, userRole }: { shopId: string, userRole: string }) {
+export default function SecondarySidebar({ shopId, userRole, shopType }: { shopId: string, userRole: string, shopType?: string }) {
   const pathname = usePathname();
   const isAll = shopId === 'all';
   const isShopAdmin = userRole === 'SHOP_ADMIN';
@@ -108,7 +108,7 @@ export default function SecondarySidebar({ shopId, userRole }: { shopId: string,
             <div className="space-y-1 mb-6 border-l-2 border-crm-border ml-2 pl-2">
               {navLink(`/shop/${shopId}/settings/commissions`, 'Commissions')}
               {navLink(`/shop/${shopId}/settings/notifications`, 'Alerts')}
-              {navLink(`/shop/${shopId}/settings/kiosk`, 'Kiosk')}
+              {shopType !== 'MOBILE' && navLink(`/shop/${shopId}/settings/kiosk`, 'Kiosk')}
               {navLink(`/shop/${shopId}/settings/billing`, 'Billing')}
             </div>
             
