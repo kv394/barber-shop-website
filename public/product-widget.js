@@ -1,5 +1,5 @@
 (function() {
-  const containerId = 'barbersaas-product-widget-container';
+  const containerId = 'kutzapp-product-widget-container';
   const existingContainer = document.getElementById(containerId);
   if (existingContainer) {
     existingContainer.remove();
@@ -17,12 +17,12 @@
     }
   }
 
-  const shopId = (scriptTag && scriptTag.getAttribute('data-shop-id')) || (window.BarberSaaS && window.BarberSaaS.shopId);
-  const primaryColor = (window.BarberSaaS && window.BarberSaaS.primaryColor) || (scriptTag && scriptTag.getAttribute('data-theme-color')) || '#1a1a1a';
-  const secondaryColor = (window.BarberSaaS && window.BarberSaaS.secondaryColor) || (scriptTag && scriptTag.getAttribute('data-secondary-color')) || '#c0a05b';
+  const shopId = (scriptTag && scriptTag.getAttribute('data-shop-id')) || (window.KutzApp && window.KutzApp.shopId);
+  const primaryColor = (window.KutzApp && window.KutzApp.primaryColor) || (scriptTag && scriptTag.getAttribute('data-theme-color')) || '#1a1a1a';
+  const secondaryColor = (window.KutzApp && window.KutzApp.secondaryColor) || (scriptTag && scriptTag.getAttribute('data-secondary-color')) || '#c0a05b';
 
   if (!shopId) {
-    console.error('Product widget requires data-shop-id attribute or window.BarberSaaS.shopId');
+    console.error('Product widget requires data-shop-id attribute or window.KutzApp.shopId');
     return;
   }
   const style = document.createElement('style');

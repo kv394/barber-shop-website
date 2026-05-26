@@ -46,11 +46,11 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
     });
 
     if (dynamicTemplate) {
-      // Copy the template to Google Drive under barbersaas / shopId
+      // Copy the template to Google Drive under kutzapp / shopId
       try {
-        const barbersaasFolderId = await getOrCreateFolder('barbersaas');
-        if (barbersaasFolderId) {
-          const shopFolderId = await getOrCreateFolder(shopId, barbersaasFolderId);
+        const kutzappFolderId = await getOrCreateFolder('kutzapp');
+        if (kutzappFolderId) {
+          const shopFolderId = await getOrCreateFolder(shopId, kutzappFolderId);
           if (shopFolderId) {
             const templateFolderId = await getOrCreateFolder(templateId, shopFolderId);
             if (templateFolderId) {

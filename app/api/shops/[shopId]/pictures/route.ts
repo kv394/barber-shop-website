@@ -24,7 +24,7 @@ export async function GET(
        return new NextResponse("Forbidden", { status: 403 });
     }
 
-    const FOLDER_PATH = `/barbersaas/${shopId}/pictures`;
+    const FOLDER_PATH = `/kutzapp/${shopId}/pictures`;
     const files = await listFilesInPath(FOLDER_PATH);
 
     return NextResponse.json({ files });

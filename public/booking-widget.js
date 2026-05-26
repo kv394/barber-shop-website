@@ -1,5 +1,5 @@
 (function() {
-  const containerId = 'barbersaas-booking-widget-container';
+  const containerId = 'kutzapp-booking-widget-container';
   const existingContainer = document.getElementById(containerId);
   if (existingContainer) {
     existingContainer.remove();
@@ -19,15 +19,15 @@
     }
   }
 
-  const shopId = (scriptTag && scriptTag.getAttribute('data-shop-id')) || (window.BarberSaaS && window.BarberSaaS.shopId);
+  const shopId = (scriptTag && scriptTag.getAttribute('data-shop-id')) || (window.KutzApp && window.KutzApp.shopId);
 
   if (!shopId) {
-    console.error('Booking widget requires data-shop-id attribute or window.BarberSaaS.shopId');
+    console.error('Booking widget requires data-shop-id attribute or window.KutzApp.shopId');
     return;
   }
 
   const scriptApiUrl = scriptTag ? scriptTag.getAttribute('data-api-url') : null;
-  const sdkApiUrl = (window.BarberSaaS && window.BarberSaaS.apiUrl) ? window.BarberSaaS.apiUrl + '/api/chat/booking' : null;
+  const sdkApiUrl = (window.KutzApp && window.KutzApp.apiUrl) ? window.KutzApp.apiUrl + '/api/chat/booking' : null;
   
   const scriptSrc = scriptTag ? scriptTag.src : '';
   let fallbackOrigin = window.location.origin;
@@ -40,9 +40,9 @@
   const defaultApiUrl = fallbackOrigin + '/api/chat/booking';
   const apiUrl = scriptApiUrl || sdkApiUrl || defaultApiUrl;
   
-  const themeColor = (window.BarberSaaS && window.BarberSaaS.primaryColor) || (scriptTag && scriptTag.getAttribute('data-theme-color')) || '#d4af37';
-  const secondaryColor = (window.BarberSaaS && window.BarberSaaS.secondaryColor) || (scriptTag && scriptTag.getAttribute('data-secondary-color')) || themeColor;
-  const position = (window.BarberSaaS && window.BarberSaaS.chatbotPosition) || (scriptTag && scriptTag.getAttribute('data-position')) || 'bottom-right';  const isLeft = position === 'bottom-left';
+  const themeColor = (window.KutzApp && window.KutzApp.primaryColor) || (scriptTag && scriptTag.getAttribute('data-theme-color')) || '#d4af37';
+  const secondaryColor = (window.KutzApp && window.KutzApp.secondaryColor) || (scriptTag && scriptTag.getAttribute('data-secondary-color')) || themeColor;
+  const position = (window.KutzApp && window.KutzApp.chatbotPosition) || (scriptTag && scriptTag.getAttribute('data-position')) || 'bottom-right';  const isLeft = position === 'bottom-left';
   const sideCSS = isLeft ? 'left: 24px;' : 'right: 24px;';
   const transformOrigin = isLeft ? 'bottom left' : 'bottom right';
 
@@ -491,7 +491,7 @@
   closeBtn.addEventListener('click', toggleChat);
 
   // Expose a global function to open the chat from outside
-  window.openBarberSaasChat = function(serviceName) {
+  window.openKutzAppChat = function(serviceName) {
     toggleChat(true);
   };
 

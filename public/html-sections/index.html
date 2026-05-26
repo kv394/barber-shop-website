@@ -892,7 +892,7 @@
         }
 
         const sdkScript = document.createElement("script");
-        sdkScript.src = scriptBaseUrl + "/barbersaas-sdk.js?v=" + new Date().getTime();
+        sdkScript.src = scriptBaseUrl + "/kutzapp-sdk.js?v=" + new Date().getTime();
         document.head.appendChild(sdkScript);
       })();
 
@@ -927,7 +927,7 @@
 
       window.addEventListener("load", function () {
         function initializeShop() {
-          if (typeof BarberSaaS === "undefined") return;
+          if (typeof KutzApp === "undefined") return;
 
           const urlParams = new URLSearchParams(window.location.search);
           let shopId = urlParams.get("shopId") || "cmn9kj24n0000lqzc7kcsmpst";
@@ -943,19 +943,19 @@
           }
           const apiUrlToUse = domain;
 
-          BarberSaaS.init(shopId, {
+          KutzApp.init(shopId, {
             position: "bottom-right",
             apiUrl: apiUrlToUse,
           });
 
-          BarberSaaS.getPublicData().then((data) => {
+          KutzApp.getPublicData().then((data) => {
             try {
               const shop = data.shop || {};
               const primaryColor = shop.primaryColor || "#D31145";
               const secondaryColor = shop.secondaryColor || "#0A1C2E";
 
-              window.BarberSaaS.primaryColor = primaryColor;
-              window.BarberSaaS.secondaryColor = secondaryColor;
+              window.KutzApp.primaryColor = primaryColor;
+              window.KutzApp.secondaryColor = secondaryColor;
               document.documentElement.style.setProperty(
                 "--primary",
                 primaryColor,
@@ -1169,12 +1169,12 @@
           });
         }
 
-        if (typeof BarberSaaS !== "undefined") initializeShop();
+        if (typeof KutzApp !== "undefined") initializeShop();
         else {
           let attempts = 0;
           let intv = setInterval(() => {
             attempts++;
-            if (typeof BarberSaaS !== "undefined" || attempts >= 50) {
+            if (typeof KutzApp !== "undefined" || attempts >= 50) {
               clearInterval(intv);
               initializeShop();
             }

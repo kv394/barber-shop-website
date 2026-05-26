@@ -31,8 +31,8 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
     const handleBookClick = (service: any) => {
         if (typeof window !== 'undefined' && (window as any).BarberBooking) {
             (window as any).BarberBooking.open(service?.id);
-        } else if (typeof window !== 'undefined' && (window as any).openBarberSaasChat) {
-            (window as any).openBarberSaasChat(service?.name);
+        } else if (typeof window !== 'undefined' && (window as any).openKutzAppChat) {
+            (window as any).openKutzAppChat(service?.name);
         } else {
             setSelectedService(service);
         }
@@ -52,8 +52,8 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
 
             if (typeof window !== 'undefined' && (window as any).BarberBooking) {
                 (window as any).BarberBooking.open(service?.id);
-            } else if (typeof window !== 'undefined' && (window as any).openBarberSaasChat) {
-                (window as any).openBarberSaasChat(service?.name);
+            } else if (typeof window !== 'undefined' && (window as any).openKutzAppChat) {
+                (window as any).openKutzAppChat(service?.name);
             } else if (service) {
                 setSelectedService(service);
             }

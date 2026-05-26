@@ -123,7 +123,7 @@ export default async function SitePage({ params }: { params: Promise<{ site: str
 
   if (!shop) {
     return (
-      <div className="h-[100dvh] overflow-y-auto overflow-x-hidden flex items-center justify-center">
+      <div className="min-h-screen overflow-x-hidden flex flex-col flex items-center justify-center">
         <div className="text-center">
           <h1 className="font-bold text-crm-text mb-4 text-2xl font-bold">Shop Not Found</h1>
           <p className="text-crm-muted text-[13px]">We couldn't find the shop for this domain ({site}).</p>
@@ -155,9 +155,9 @@ export default async function SitePage({ params }: { params: Promise<{ site: str
         let h = htmlCode;
         let c = cssCode;
         try {
-          const barbersaasFolderId = await getOrCreateFolder('barbersaas');
-          if (barbersaasFolderId) {
-            const shopFolderId = await getOrCreateFolder(shop.id, barbersaasFolderId);
+          const kutzappFolderId = await getOrCreateFolder('kutzapp');
+          if (kutzappFolderId) {
+            const shopFolderId = await getOrCreateFolder(shop.id, kutzappFolderId);
             if (shopFolderId) {
               const templateFolderId = await getOrCreateFolder(templateType, shopFolderId);
               if (templateFolderId) {

@@ -125,26 +125,26 @@ const getBaseHtml = (title, activePage, content, scriptBody) => `<!DOCTYPE html>
     </div>
   </article>
 
-  <!-- BarberSaaS SDK -->
-  <script src="https://barbersaas-henna.vercel.app/barbersaas-sdk.js"></script>
+  <!-- KutzApp SDK -->
+  <script src="https://kutzapp-henna.vercel.app/kutzapp-sdk.js"></script>
   <!-- Booking Modal logic -->
-  <script src="https://barbersaas-henna.vercel.app/booking-modal.js" data-shop-id="cmn9kj24n0000lqzc7kcsmpst"></script>
+  <script src="https://kutzapp-henna.vercel.app/booking-modal.js" data-shop-id="cmn9kj24n0000lqzc7kcsmpst"></script>
 
   <script>
     window.addEventListener("load", function () {
       function initializeShop() {
-        if (typeof BarberSaaS === "undefined") {
-          console.error("BarberSaaS SDK script failed to load or initialize.");
+        if (typeof KutzApp === "undefined") {
+          console.error("KutzApp SDK script failed to load or initialize.");
           document.getElementById("heritage-container").innerHTML =
-            '<div style="text-align: center; padding: 100px;"><h2>Failed to load BarberSaaS SDK.</h2><p>Please check your network connection and ad-blockers.</p></div>';
+            '<div style="text-align: center; padding: 100px;"><h2>Failed to load KutzApp SDK.</h2><p>Please check your network connection and ad-blockers.</p></div>';
           return;
         }
 
         // Initialize the SDK with the Shop ID
-        BarberSaaS.init("cmn9kj24n0000lqzc7kcsmpst");
+        KutzApp.init("cmn9kj24n0000lqzc7kcsmpst");
 
         // Fetch all data and render
-        BarberSaaS.getPublicData()
+        KutzApp.getPublicData()
           .then((data) => {
             // Execute page-specific rendering logic
             try {
@@ -157,20 +157,20 @@ const getBaseHtml = (title, activePage, content, scriptBody) => `<!DOCTYPE html>
             }
           })
           .catch((err) => {
-            console.error("❌ BarberSaaS SDK initialization failed:", err);
+            console.error("❌ KutzApp SDK initialization failed:", err);
             document.getElementById("heritage-container").innerHTML =
               '<div style="text-align: center; padding: 100px;"><h2>Failed to load shop data.</h2><p>' + err.message + "</p></div>";
           });
       }
 
       // Safe script loading check
-      if (typeof BarberSaaS !== "undefined") {
+      if (typeof KutzApp !== "undefined") {
         initializeShop();
       } else {
         let attempts = 0;
         let checkInterval = setInterval(function () {
           attempts++;
-          if (typeof BarberSaaS !== "undefined") {
+          if (typeof KutzApp !== "undefined") {
             clearInterval(checkInterval);
             initializeShop();
           } else if (attempts >= 150) {
@@ -267,9 +267,9 @@ const getBaseHtml = (title, activePage, content, scriptBody) => `<!DOCTYPE html>
           buyBtn.className = "btn btn-buy";
           Object.assign(buyBtn.style, { width: "100%", padding: "15px", fontSize: "1.1em" });
           buyBtn.onclick = () => {
-            if (typeof BarberSaaS !== "undefined") {
+            if (typeof KutzApp !== "undefined") {
               closeBtn.onclick(); 
-              BarberSaaS.getProductDetails(product.id)
+              KutzApp.getProductDetails(product.id)
                 .then((prod) => { window.showCheckoutModal(prod, 1); })
                 .catch((err) => { alert("Checkout failed: " + err.message); });
             }
@@ -437,12 +437,12 @@ const productsScript = `
       button.addEventListener("click", function (e) {
         e.preventDefault();
         var productId = this.getAttribute("data-product-id");
-        if (typeof BarberSaaS !== "undefined") {
-          BarberSaaS.getProductDetails(productId)
+        if (typeof KutzApp !== "undefined") {
+          KutzApp.getProductDetails(productId)
             .then((product) => { window.showCheckoutModal(product, 1); })
             .catch((err) => alert("Checkout failed: " + err.message));
         } else {
-          alert("BarberSaaS SDK not loaded.");
+          alert("KutzApp SDK not loaded.");
         }
       });
     });
@@ -452,8 +452,8 @@ const productsScript = `
       button.addEventListener("click", function (e) {
         e.preventDefault();
         var productId = this.getAttribute("data-product-id");
-        if (typeof BarberSaaS !== "undefined") {
-          BarberSaaS.getProductDetails(productId)
+        if (typeof KutzApp !== "undefined") {
+          KutzApp.getProductDetails(productId)
             .then((product) => { if (product) { window.showProductModal(product); } })
             .catch((err) => { alert("Failed to fetch product details: " + err.message); });
         }
@@ -542,9 +542,9 @@ const reviewsScript = `
 
       form.onsubmit = (e) => {
         e.preventDefault();
-        if (typeof BarberSaaS !== "undefined") {
+        if (typeof KutzApp !== "undefined") {
           submitBtn.textContent = "Submitting..."; submitBtn.disabled = true;
-          BarberSaaS.submitReview({ appointmentId: aptInput.value.trim(), rating: parseInt(ratingInput.value, 10), comment: commentInput.value.trim() })
+          KutzApp.submitReview({ appointmentId: aptInput.value.trim(), rating: parseInt(ratingInput.value, 10), comment: commentInput.value.trim() })
             .then((res) => { alert("Review submitted successfully!"); closeBtn.onclick(); window.location.reload(); })
             .catch((err) => { alert("Failed to submit review: " + err.message); submitBtn.textContent = "SUBMIT REVIEW"; submitBtn.disabled = false; });
         }

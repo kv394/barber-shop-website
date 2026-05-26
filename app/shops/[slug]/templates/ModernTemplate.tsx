@@ -22,7 +22,7 @@ export default function ModernTemplate({ ctx }: { ctx: any }) {
     } = ctx;
 
     return (
-        <main className="h-[100dvh] overflow-y-auto overflow-x-hidden bg-gray-50 text-gray-800 font-sans relative">
+        <main className="min-h-screen overflow-x-hidden flex flex-col bg-gray-50 text-gray-800 font-sans relative">
 
             {faviconUrl && (
                 <link rel="icon" href={faviconUrl} />
@@ -74,17 +74,17 @@ export default function ModernTemplate({ ctx }: { ctx: any }) {
 
         
             {/* Header / Nav */}
-            <header className="absolute w-full top-0 left-0 p-6 flex flex-wrap justify-between items-center z-50">
-                <nav className="flex items-center gap-6 bg-white/10 backdrop-blur-md px-6 py-3 rounded-full border border-white/20 shadow-sm w-full md:w-auto">
+            <header className="absolute w-full top-0 left-0 p-4 md:p-6 flex flex-wrap justify-between items-center z-50">
+                <nav className="flex items-center justify-between bg-white/10 backdrop-blur-md px-4 md:px-6 py-3 rounded-full border border-white/20 shadow-sm w-full">
                     {pages.filter((p: any) => p.isVisible).length > 0 && (
-                        <div className="hidden md:flex gap-6 items-center">
-                            <a href="#" className="text-[13px] font-medium text-white/90 hover:text-white transition-colors uppercase tracking-wider">Home</a>
+                        <div className="flex gap-4 md:gap-6 items-center overflow-x-auto hide-scrollbar">
+                            <a href="#" className="text-[12px] md:text-[13px] font-medium text-white/90 hover:text-white transition-colors uppercase tracking-wider shrink-0">Home</a>
                             {pages.filter((p: any) => p.isVisible).map((p: any) => (
-                                <a key={p.id} href={`#${p.id}`} className="text-[13px] font-medium text-white/90 hover:text-white transition-colors uppercase tracking-wider">{p.title}</a>
+                                <a key={p.id} href={`#${p.id}`} className="text-[12px] md:text-[13px] font-medium text-white/90 hover:text-white transition-colors uppercase tracking-wider shrink-0">{p.title}</a>
                             ))}
                         </div>
                     )}
-                    <div className="ml-auto md:ml-6 pl-0 md:pl-6 border-l-0 md:border-l border-white/20 flex items-center">
+                    <div className="ml-auto pl-4 border-l border-white/20 flex items-center shrink-0">
                         <SupabaseAuthButton redirectUrl={pathname} primaryColor={primaryColor} secondaryColor={secondaryColor} />
                     </div>
                 </nav>

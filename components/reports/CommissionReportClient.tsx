@@ -83,23 +83,25 @@ export default function CommissionReportClient({
   return (
     <div className="space-y-6">
       {/* Filters */}
-      <div className="flex flex-wrap gap-4 items-end">
-        <div>
+      <div className="flex flex-col sm:flex-row flex-wrap gap-4 sm:items-end">
+        <div className="flex-1 sm:flex-none">
           <label className="block text-crm-muted mb-1 text-[13px]">Start Date</label>
-          <input type="date" value={startDate} onChange={e => setStartDate(e.target.value)} className="bg-crm-surface border border-crm-border shadow-sm rounded p-2 text-crm-text text-[13px] focus:outline-none focus:border-brand-gold" />
+          <input type="date" value={startDate} onChange={e => setStartDate(e.target.value)} className="h-[40px] bg-crm-surface border border-crm-border shadow-sm rounded px-3 text-crm-text text-[13px] focus:outline-none focus:border-brand-gold w-full sm:w-auto" />
         </div>
-        <div>
+        <div className="flex-1 sm:flex-none">
           <label className="block text-crm-muted mb-1 text-[13px]">End Date</label>
-          <input type="date" value={endDate} onChange={e => setEndDate(e.target.value)} className="bg-crm-surface border border-crm-border shadow-sm rounded p-2 text-crm-text text-[13px] focus:outline-none focus:border-brand-gold" />
+          <input type="date" value={endDate} onChange={e => setEndDate(e.target.value)} className="h-[40px] bg-crm-surface border border-crm-border shadow-sm rounded px-3 text-crm-text text-[13px] focus:outline-none focus:border-brand-gold w-full sm:w-auto" />
         </div>
-        <div>
-          <label className="block text-crm-muted mb-1 text-[13px] invisible select-none">Export</label>
-          <button onClick={exportCSV} className="bg-crm-surface hover:bg-crm-surface text-crm-text px-4 py-2 rounded text-[13px] transition-colors border border-crm-border shadow-sm">📥 Export CSV</button>
+        <div className="w-full sm:w-auto">
+          <label className="hidden sm:block text-crm-muted mb-1 text-[13px] invisible">Export</label>
+          <button onClick={exportCSV} className="h-[40px] flex items-center justify-center bg-crm-surface hover:bg-crm-surface/80 text-crm-text px-4 rounded text-[13px] transition-colors border border-crm-border shadow-sm w-full sm:w-auto">
+            📥 Export CSV
+          </button>
         </div>
       </div>
 
       {/* Totals Floating Bar */}
-      <div className="bg-crm-surface backdrop-blur-xl shadow-2xl rounded-2xl border border-crm-border shadow-sm flex flex-col sm:flex-row divide-y sm:divide-y-0 sm:divide-x divide-white/10 relative z-20 overflow-hidden transform sm:-translate-y-6 sm:-mx-2 mb-2 sm:mb-6">
+      <div className="bg-crm-surface backdrop-blur-xl shadow-2xl rounded-2xl border border-crm-border shadow-sm flex flex-col sm:flex-row divide-y sm:divide-y-0 sm:divide-x divide-white/10 relative z-20 overflow-hidden mb-6">
         <div className="flex-1 p-5 sm:p-6 relative overflow-hidden group hover:bg-crm-surface transition-all duration-300 min-w-0">
           <div className="absolute top-0 left-0 w-full h-1 bg-status-confirmed/80"></div>
           <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-3">

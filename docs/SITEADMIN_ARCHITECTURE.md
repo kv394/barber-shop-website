@@ -1,10 +1,10 @@
-# Barbersaas Site Admin Architecture
+# KutzApp Site Admin Architecture
 
-This document provides a comprehensive overview of the Site Admin portion of the Barbersaas application. The Site Admin dashboard is the central command center for platform administrators to manage tenants (Shops), monitor platform usage, assign custom AI-generated templates, and track system health.
+This document provides a comprehensive overview of the Site Admin portion of the KutzApp application. The Site Admin dashboard is the central command center for platform administrators to manage tenants (Shops), monitor platform usage, assign custom AI-generated templates, and track system health.
 
 ## 1. Tech Stack Overview
 
-The Site Admin module is built on the same core stack as the rest of the Barbersaas application:
+The Site Admin module is built on the same core stack as the rest of the KutzApp application:
 
 *   **Framework:** Next.js (App Router)
 *   **Database ORM:** Prisma
@@ -60,7 +60,7 @@ Site Admins can view a detailed breakdown of a specific shop's resource consumpt
 A standout feature of the Site Admin is the ability to generate fully custom, single-page website templates for shops using AI.
 *   **Process:** The admin provides a prompt, base assets (images, zip files), and a target shop.
 *   **AI Prompting:** The system constructs a complex prompt for Groq/Gemini, injecting real shop data (services, staff, reviews) as context. It forces the AI to output standard Tailwind CSS and Handlebars templates (`{{shop.name}}`, `{{#each shop.services}}`).
-*   **Asset Management:** Uploaded assets (HTML, CSS, images) are parsed and uploaded to a structured folder in Google Drive (`/barbersaas/[shopId]/[name]`). Local asset paths in the generated code are automatically replaced with their respective Google Drive URLs.
+*   **Asset Management:** Uploaded assets (HTML, CSS, images) are parsed and uploaded to a structured folder in Google Drive (`/kutzapp/[shopId]/[name]`). Local asset paths in the generated code are automatically replaced with their respective Google Drive URLs.
 *   **Assignment:** The `AssignTemplateModal` allows the admin to switch a shop's active template between built-in options (Modern, Classic, Elegant) and the newly generated `DynamicTemplate`.
 
 ### D. System Health Monitoring

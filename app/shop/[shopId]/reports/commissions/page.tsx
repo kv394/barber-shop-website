@@ -34,7 +34,8 @@ export default async function CommissionReportsPage({ params }: { params: Promis
     { id: 'reports', label: 'Financial', href: `/shop/${shopId}/reports` },
     { id: 'staff-report', label: 'Staff Performance', href: `/shop/${shopId}/reports/staff-working` },
     { id: 'expenses', label: 'Expenses', href: `/shop/${shopId}/expenses` },
-    { id: 'commissions', label: 'Commissions', href: `/shop/${shopId}/reports/commissions` }
+    { id: 'commissions', label: 'Commissions', href: `/shop/${shopId}/reports/commissions` },
+    { id: 'booth-rent', label: 'Booth Rent', href: `/shop/${shopId}/booth-rent` }
   ];
 
   return (

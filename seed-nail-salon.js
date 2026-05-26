@@ -68,6 +68,36 @@ async function main() {
       phone: '555-0102',
     },
   });
+
+  const client3 = await prisma.user.create({
+    data: {
+      email: 'sarah.connor@example.com',
+      name: 'Sarah Connor',
+      role: 'CLIENT',
+      shopId: shop.id,
+      phone: '555-0103',
+    },
+  });
+
+  const client4 = await prisma.user.create({
+    data: {
+      email: 'mike.ross@example.com',
+      name: 'Mike Ross',
+      role: 'CLIENT',
+      shopId: shop.id,
+      phone: '555-0104',
+    },
+  });
+
+  const client5 = await prisma.user.create({
+    data: {
+      email: 'rachel.zane@example.com',
+      name: 'Rachel Zane',
+      role: 'CLIENT',
+      shopId: shop.id,
+      phone: '555-0105',
+    },
+  });
   console.log('Created admin, staff, and clients.');
 
   // Grant admin access explicitly via ShopAccess
@@ -208,6 +238,41 @@ async function main() {
     },
   });
   console.log('Created appointments.');
+
+  // 6. Create Referrals
+  await Promise.all([
+    prisma.referral.create({
+      data: {
+        shopId: shop.id,
+        referrerId: client1.id,
+        refereeId: client3.id,
+        status: 'COMPLETED',
+        referrerRewardPoints: 50,
+        refereeRewardPoints: 25,
+      }
+    }),
+    prisma.referral.create({
+      data: {
+        shopId: shop.id,
+        referrerId: client1.id,
+        refereeId: client4.id,
+        status: 'PENDING',
+        referrerRewardPoints: 50,
+        refereeRewardPoints: 25,
+      }
+    }),
+    prisma.referral.create({
+      data: {
+        shopId: shop.id,
+        referrerId: client2.id,
+        refereeId: client5.id,
+        status: 'COMPLETED',
+        referrerRewardPoints: 100,
+        refereeRewardPoints: 50,
+      }
+    })
+  ]);
+  console.log('Created referrals.');
 
   console.log('Mock seeding complete! ✅');
   console.log(`Login as Admin: admin@luxurynails.com`);

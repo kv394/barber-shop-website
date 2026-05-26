@@ -46,6 +46,14 @@ export default async function BoothRentPage({ params }: { params: Promise<{ shop
     ? 'Your booth rent history and outstanding balance'
     : `Manage rent payments for ${renters.length} booth renter${renters.length !== 1 ? 's' : ''}`;
 
+  const reportTabs = [
+    { id: 'reports', label: 'Financial', href: `/shop/${shopId}/reports` },
+    { id: 'staff-report', label: 'Staff Performance', href: `/shop/${shopId}/reports/staff-working` },
+    { id: 'expenses', label: 'Expenses', href: `/shop/${shopId}/expenses` },
+    { id: 'commissions', label: 'Commissions', href: `/shop/${shopId}/reports/commissions` },
+    { id: 'booth-rent', label: 'Booth Rent', href: `/shop/${shopId}/booth-rent` }
+  ];
+
   return (
     <ShopAdminLayout
       shopName={shop.name}
@@ -55,11 +63,10 @@ export default async function BoothRentPage({ params }: { params: Promise<{ shop
       userRole={userRole}
     >
       <div className="space-y-6">
-        {/* Page Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        {/* Page Header Extra Info */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 -mt-4 mb-2">
           <div>
-            <h1 className="text-2xl font-black text-crm-text">{title}</h1>
-            <p className="text-crm-muted text-[13px] mt-1">{subtitle}</p>
+            <p className="text-crm-muted text-[13px]">{subtitle}</p>
           </div>
           {isAdmin && (
             <div className="flex items-center gap-2 text-[11px] text-crm-muted bg-crm-surface border border-crm-border px-3 py-2 rounded-lg">

@@ -18,7 +18,7 @@ export default function DynamicTemplate({ ctx }: { ctx: any }) {
     } = ctx;
     
     return (
-            <main className="h-[100dvh] overflow-y-auto overflow-x-hidden bg-crm-surface text-crm-text font-sans relative" onClick={handleDynamicTemplateClick}>
+            <main className="min-h-screen overflow-x-hidden flex flex-col bg-crm-surface text-crm-text font-sans relative" onClick={handleDynamicTemplateClick}>
 
                 {authButton}
                 {dynamicTemplateCss && <style dangerouslySetInnerHTML={{ __html: dynamicTemplateCss }} />}

@@ -67,6 +67,16 @@ async function main() {
   await prisma.boothRentPayment.deleteMany({ where: { shopId } });
   const rentPayments = [];
   for (const c of contractors) {
+    // Update the user record with booth rent settings
+    await prisma.user.update({
+      where: { id: c.id },
+      data: {
+        boothRentAmount: 250.00,
+        boothRentInterval: 'WEEKLY',
+        employmentType: 'CONTRACTOR'
+      }
+    });
+
     rentPayments.push({ shopId, userId: c.id, amount: 250.00, periodStart: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000), periodEnd: new Date(), status: 'COMPLETED', paidAt: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000) });
     rentPayments.push({ shopId, userId: c.id, amount: 250.00, periodStart: new Date(Date.now() - 14 * 24 * 60 * 60 * 1000), periodEnd: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000), status: 'COMPLETED', paidAt: new Date(Date.now() - 8 * 24 * 60 * 60 * 1000) });
   }

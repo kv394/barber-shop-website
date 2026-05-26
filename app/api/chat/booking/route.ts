@@ -206,7 +206,7 @@ export async function POST(req: Request) {
       `http://localhost:3000`, // Allow local testing
       // Also allow the main saas domain if needed
     ];
-    const rootDomainStr = process.env.NEXT_PUBLIC_ROOT_DOMAIN || 'localhost:3000,barbersaas.vercel.app';
+    const rootDomainStr = process.env.NEXT_PUBLIC_ROOT_DOMAIN || 'localhost:3000,kutzapp.vercel.app';
     rootDomainStr.split(',').forEach(d => {
         allowedOrigins.push(`https://${d}`);
         allowedOrigins.push(`http://${d}`);
@@ -226,7 +226,7 @@ export async function POST(req: Request) {
 
     // Always allow requests if they come from the shop's specific sub-path on the SaaS
     // This allows previewing/testing on Vercel deployments.
-    // e.g. https://barbersaas-henna.vercel.app/shops/missouri-city
+    // e.g. https://kutzapp-henna.vercel.app/shops/missouri-city
     const isSaaSSubPath = refererHeader && shop.subdomain && refererHeader.includes(`/shops/${shop.subdomain}`);
     const isSaaSIdPath = refererHeader && refererHeader.includes(`/shops/${shopId}`);
     

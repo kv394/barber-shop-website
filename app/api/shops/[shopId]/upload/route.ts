@@ -52,8 +52,8 @@ export async function POST(
         return NextResponse.json({ error: 'Invalid file type. Only images are allowed.' }, { status: 400 });
     }
 
-    // Path structure: /barbersaas/<shopId>/<type> or /barbersaas/<shopId>/uploads/<type>
-    const FOLDER_PATH = (type === 'products' || type === 'services' || type === 'pictures') ? `/barbersaas/${shopId}/${type}` : `/barbersaas/${shopId}/uploads/${type}`;
+    // Path structure: /kutzapp/<shopId>/<type> or /kutzapp/<shopId>/uploads/<type>
+    const FOLDER_PATH = (type === 'products' || type === 'services' || type === 'pictures') ? `/kutzapp/${shopId}/${type}` : `/kutzapp/${shopId}/uploads/${type}`;
     const timestamp = Date.now();
     const safeFileName = `${timestamp}-${file.name.replace(/[^a-zA-Z0-9.-]/g, '_')}`;
 

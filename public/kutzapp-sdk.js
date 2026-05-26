@@ -1,19 +1,19 @@
 /**
- * BarberSaaS Client SDK
+ * KutzApp Client SDK
  * 
  * This SDK provides easy access to your shop's public data and core booking functionalities
  * so you can build entirely custom headless front-ends.
  */
 
 (function(global) {
-  class BarberSaaSClient {
+  class KutzAppClient {
     constructor() {
       this.shopId = null;
       
       let defaultOrigin = 'http://localhost:3000';
       if (typeof window !== 'undefined') {
         defaultOrigin = window.location.origin;
-        const scriptEls = document.querySelectorAll('script[src*="barbersaas-sdk.js"]');
+        const scriptEls = document.querySelectorAll('script[src*="kutzapp-sdk.js"]');
         if (scriptEls.length > 0 && scriptEls[0].src.startsWith('http')) {
             try {
                defaultOrigin = new URL(scriptEls[0].src).origin;
@@ -42,7 +42,7 @@
       }
 
       if (!shopId) {
-        console.error('BarberSaaS SDK: init() requires a valid shopId or a data-shop-id attribute on the script tag.');
+        console.error('KutzApp SDK: init() requires a valid shopId or a data-shop-id attribute on the script tag.');
         return;
       }
       this.shopId = shopId;
@@ -72,12 +72,12 @@
           }
         }
       }
-      console.log('BarberSaaS SDK initialized for shop:', shopId);
+      console.log('KutzApp SDK initialized for shop:', shopId);
     }
 
     _checkInit() {
       if (!this.shopId) {
-        throw new Error('BarberSaaS SDK is not initialized. Please call BarberSaaS.init("YOUR_SHOP_ID") first.');
+        throw new Error('KutzApp SDK is not initialized. Please call KutzApp.init("YOUR_SHOP_ID") first.');
       }
     }
 
@@ -297,7 +297,7 @@
 
   // Expose to global scope
   const root = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : global;
-  root.BarberSaaS = new BarberSaaSClient();
+  root.KutzApp = new KutzAppClient();
 
   if (typeof document !== 'undefined') {
     // Expose BarberAppointments
@@ -333,7 +333,7 @@
 
       return {
         open: function() {
-          const apiUrl = root.BarberSaaS.apiUrl || 'https://barber-shop-website-ashy.vercel.app';
+          const apiUrl = root.KutzApp.apiUrl || 'https://barber-shop-website-ashy.vercel.app';
           iframe.src = apiUrl + '/my-appointments';
           if (!document.body.contains(overlay)) {
             document.body.appendChild(overlay);
@@ -379,7 +379,7 @@
 
       return {
         open: function() {
-          const apiUrl = root.BarberSaaS.apiUrl || 'https://barber-shop-website-ashy.vercel.app';
+          const apiUrl = root.KutzApp.apiUrl || 'https://barber-shop-website-ashy.vercel.app';
           iframe.src = apiUrl + '/sign-in';
           if (!document.body.contains(overlay)) {
             document.body.appendChild(overlay);

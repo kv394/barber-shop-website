@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/barbersaas.iml" filepath="$PROJECT_DIR$/barbersaas.iml" />
+      <module fileurl="file://$PROJECT_DIR$/kutzapp.iml" filepath="$PROJECT_DIR$/kutzapp.iml" />
     </modules>
   </component>
 </project>
