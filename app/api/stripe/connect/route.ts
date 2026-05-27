@@ -1,43 +1,76 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@/utils/supabase/server';
 import { prisma } from '@/lib/prisma';
-import crypto from 'crypto';
+import Stripe from 'stripe';
 
-export const dynamic = 'force-dynamic';
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '', {
+  apiVersion: '2023-10-16' as any,
+});
 
-// Redirects the renter to Stripe's OAuth authorization page
 export async function GET(request: Request) {
- const supabase = await createClient();
- const { data: { user } } = await supabase.auth.getUser();
- if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  try {
+    const { searchParams } = new URL(request.url);
+    const shopId = searchParams.get('shopId');
 
- const dbUser = await prisma.user.findUnique({ where: { email: user.email! } });
- if (!dbUser || dbUser.role !== 'BOOTH_RENTER') {
- return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
- }
+    if (!shopId) {
+      return NextResponse.json({ error: 'Missing shopId' }, { status: 400 });
+    }
 
- const clientId = process.env.STRIPE_CLIENT_ID;
- const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
+    const supabase = await createClient();
+    const { data: { user: authUserSession } } = await supabase.auth.getUser();
+    const userId = authUserSession?.id;
+    const authUserEmail = authUserSession?.email;
+    
+    if (!userId) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
 
- if (!clientId) {
- return NextResponse.json({ error: 'Stripe Connect not configured' }, { status: 500 });
- }
+    const user = await prisma.user.findFirst({ 
+      where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } 
+    });
 
- // HMAC-sign the user ID to prevent state forgery in OAuth flow
- const hmac = crypto.createHmac('sha256', process.env.OAUTH_STATE_SECRET || 'fallback-secret').update(dbUser.id).digest('hex');
- const stateToken = `${hmac}:${dbUser.id}`;
+    if (!user || (user.role !== 'SITE_ADMIN' && (user.role !== 'SHOP_ADMIN' || (user.shopId !== shopId && !(await prisma.shopAccess.findFirst({ where: { userId: user.id, shopId, role: 'SHOP_ADMIN' } })))))) {
+      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+    }
 
- const params = new URLSearchParams({
- response_type: 'code',
- client_id: clientId,
- scope: 'read_write',
- redirect_uri: `${appUrl}/api/stripe/connect/callback`,
- state: stateToken,
- 'stripe_user[email]': dbUser.email,
- ...(dbUser.name ? { 'stripe_user[first_name]': dbUser.name.split(' ')[0] } : {}),
- });
+    const shop = await prisma.shop.findUnique({
+      where: { id: shopId }
+    });
 
- return NextResponse.redirect(
- `https://connect.stripe.com/oauth/authorize?${params.toString()}`
- );
+    if (!shop) {
+      return NextResponse.json({ error: 'Shop not found' }, { status: 404 });
+    }
+
+    let accountId = shop.stripeConnectAccountId;
+
+    if (!accountId) {
+      const account = await stripe.accounts.create({
+        type: 'express',
+        email: user.email || undefined,
+        business_type: 'company'
+      });
+      accountId = account.id;
+
+      await prisma.shop.update({
+        where: { id: shopId },
+        data: { stripeConnectAccountId: accountId }
+      });
+    }
+
+    const protocol = process.env.NODE_ENV === 'development' ? 'http' : 'https';
+    const host = request.headers.get('host') || 'localhost:3000';
+    const baseUrl = `${protocol}://${host}`;
+
+    const accountLink = await stripe.accountLinks.create({
+      account: accountId,
+      refresh_url: `${baseUrl}/shop/${shopId}/settings?tab=general&refresh=true`,
+      return_url: `${baseUrl}/shop/${shopId}/settings?tab=general&stripe_connected=true`,
+      type: 'account_onboarding',
+    });
+
+    return NextResponse.redirect(accountLink.url);
+  } catch (error: any) {
+    console.error('Stripe connect error:', error);
+    return NextResponse.json({ error: error.message || 'Internal server error' }, { status: 500 });
+  }
 }

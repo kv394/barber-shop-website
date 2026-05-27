@@ -39,6 +39,7 @@ interface ShopProfileFormProps {
  initialTravelFee?: number;
  initialMaxTravelRadius?: number | null;
  initialBaseLocation?: string;
+ initialStripeConnectOnboarded?: boolean;
 }
 
 export function ShopProfileForm({
@@ -60,6 +61,7 @@ export function ShopProfileForm({
  initialTravelFee,
  initialMaxTravelRadius,
  initialBaseLocation,
+ initialStripeConnectOnboarded = false,
 }: ShopProfileFormProps) {
  const [formData, setFormData] = useState({
  name: initialName || '',
@@ -293,20 +295,36 @@ export function ShopProfileForm({
  </div>
  </div>
 
- {/* ── Payments Powered by KutzApp ── */}
- <div className="pt-2 border-t border-crm-border/50">
-   <h3 className="font-bold text-crm-text mb-4 text-[15px] flex items-center gap-2">
-     <span>💳</span> Payment Processing
-   </h3>
-   <div className="p-4 bg-crm-primary/5 rounded-lg border border-crm-primary/20 space-y-2">
-     <h4 className="font-bold text-crm-text text-[13px] flex items-center gap-2">
-       <span className="text-crm-primary">✓</span> Payments Powered by KutzApp
-     </h4>
-     <p className="text-crm-muted text-[12px]">
-       KutzApp securely handles all credit card, Apple Pay, and Google Pay transactions. Payouts are routed directly to your linked bank account.
-     </p>
-   </div>
- </div>
+  {/* ── Payments Powered by KutzApp ── */}
+  <div className="pt-2 border-t border-crm-border/50">
+    <h3 className="font-bold text-crm-text mb-4 text-[15px] flex items-center gap-2">
+      <span>💳</span> Payment Processing
+    </h3>
+    <div className="p-4 bg-crm-primary/5 rounded-lg border border-crm-primary/20 space-y-4">
+      <div>
+        <h4 className="font-bold text-crm-text text-[13px] flex items-center gap-2">
+          <span className="text-crm-primary">✓</span> Payments Powered by KutzApp
+        </h4>
+        <p className="text-crm-muted text-[12px] mt-1">
+          KutzApp securely handles all credit card, Apple Pay, and Google Pay transactions. Payouts are routed directly to your linked bank account.
+        </p>
+      </div>
+
+      {initialStripeConnectOnboarded ? (
+        <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-status-confirmed/20 text-status-confirmed rounded-full text-[12px] font-medium border border-status-confirmed/30">
+          <span className="text-[14px]">✓</span> Bank Account Connected - Payouts Enabled
+        </div>
+      ) : (
+        <button
+          onClick={() => { window.location.href = `/api/stripe/connect?shopId=${shopId}` }}
+          type="button"
+          className="bg-[#635BFF] hover:bg-[#4B45D6] text-white px-5 py-2.5 rounded-lg font-medium text-[13px] shadow-sm transition-colors flex items-center gap-2"
+        >
+          <span>🏦</span> Connect Bank Account to Receive Payouts
+        </button>
+      )}
+    </div>
+  </div>
 
  {/* ── Booking Deposit ── */}
  <div className="pt-2 border-t border-crm-border/50">
