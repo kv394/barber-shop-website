@@ -121,7 +121,7 @@ export default function ReferralsPage() {
         <section>
           <div className="flex items-center gap-3 mb-5">
             <div className="w-2 h-8 bg-purple-500 rounded-full" />
-            <h2 className="font-bold text-crm-text text-xl font-bold">
+            <h2 className="font-bold text-crm-text text-xl">
               Referral History ({data?.referrals?.length || 0})
             </h2>
           </div>

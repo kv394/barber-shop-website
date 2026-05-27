@@ -57,6 +57,7 @@ export default function MyAppointmentsPage() {
   } | null>(null);
   const [loading, setLoading] = useState(true);
   const [cancelling, setCancelling] = useState<string | null>(null);
+  const [cancellingId, setCancellingId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [rescheduleTarget, setRescheduleTarget] = useState<Appointment | null>(
     null,
@@ -81,12 +82,11 @@ export default function MyAppointmentsPage() {
     fetchAppointments();
   }, []);
 
-  async function handleCancel(id: string) {
-    const confirmed = window.confirm(
-      "Are you sure you want to cancel this appointment? This cannot be undone.",
-    );
-    if (!confirmed) return;
+  function promptCancel(id: string) {
+    setCancellingId(id);
+  }
 
+  async function handleCancel(id: string) {
     setCancelling(id);
     setError(null);
     try {
@@ -157,7 +157,7 @@ export default function MyAppointmentsPage() {
         <section>
           <div className="flex items-center gap-3 mb-5">
             <div className="w-2 h-8 bg-status-info rounded-full" />
-            <h2 className="font-bold text-crm-text text-xl font-bold">
+            <h2 className="font-bold text-crm-text text-xl">
               Upcoming ({upcoming.length})
             </h2>
           </div>
@@ -175,7 +175,7 @@ export default function MyAppointmentsPage() {
                 <AppointmentCard
                   key={apt.id}
                   appointment={apt}
-                  onCancel={handleCancel}
+                  onCancel={promptCancel}
                   onReschedule={() => setRescheduleTarget(apt)}
                   cancelling={cancelling === apt.id}
                   showCancel
@@ -189,7 +189,7 @@ export default function MyAppointmentsPage() {
         <section>
           <div className="flex items-center gap-3 mb-5">
             <div className="w-2 h-8 bg-crm-border rounded-full" />
-            <h2 className="font-bold text-crm-text text-xl font-bold">
+            <h2 className="font-bold text-crm-text text-xl">
               Past ({past.length})
             </h2>
           </div>
@@ -216,6 +216,20 @@ export default function MyAppointmentsPage() {
           )}
         </section>
       </div>
+
+      {/* Cancel Confirmation Modal */}
+      {cancellingId && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-2xl p-6 max-w-sm w-full shadow-2xl">
+            <h3 className="font-bold text-lg text-gray-900 mb-2">Cancel Appointment?</h3>
+            <p className="text-gray-600 text-sm mb-6">This action cannot be undone. Are you sure you want to cancel this appointment?</p>
+            <div className="flex gap-3">
+              <button onClick={() => setCancellingId(null)} className="flex-1 px-4 py-2.5 rounded-lg border border-gray-300 text-gray-700 font-medium hover:bg-gray-50">Keep It</button>
+              <button onClick={() => { handleCancel(cancellingId); setCancellingId(null); }} className="flex-1 px-4 py-2.5 rounded-lg bg-red-600 text-white font-medium hover:bg-red-700">Yes, Cancel</button>
+            </div>
+          </div>
+        </div>
+      )}
     </main>
   );
 }
@@ -292,14 +306,14 @@ function AppointmentCard({
               <span>
                 Total:{" "}
                 <span className="text-crm-text font-semibold">
-                  ${apt.totalAmount.toFixed(2)}
+                  {new Intl.NumberFormat('en-US', { style: 'currency', currency: (apt.shop as any)?.currency || 'USD' }).format(apt.totalAmount)}
                 </span>
               </span>
               {apt.tipAmount > 0 && (
                 <span>
                   Tip:{" "}
                   <span className="text-status-confirmed">
-                    ${apt.tipAmount.toFixed(2)}
+                    {new Intl.NumberFormat('en-US', { style: 'currency', currency: (apt.shop as any)?.currency || 'USD' }).format(apt.tipAmount)}
                   </span>
                 </span>
               )}

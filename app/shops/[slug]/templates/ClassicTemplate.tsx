@@ -87,16 +87,21 @@ export default function ClassicTemplate({ ctx }: { ctx: any }) {
                         <header className="border-b-4 border-[#2c1e16] pt-32 pb-16 text-center relative bg-cover bg-center" style={{ backgroundImage: heroImageUrl ? `url(${heroImageUrl})` : "url('https://www.transparenttextures.com/patterns/aged-paper.png')" }}>
     <div className={heroImageUrl ? "absolute inset-0 bg-[#fdfbf7]/80" : ""} />
     <div className="relative z-10">
-              {logoUrl ? <img src={logoUrl} alt={shop.name} className="h-24 mx-auto object-contain mb-4" onError={(e) => { e.currentTarget.style.display = 'none'; }} /> : <h1 className="font-bold uppercase tracking-widest mb-4 text-2xl font-bold" style={{ color: primaryColor }}>{shop.name}</h1>}
+              {logoUrl ? <img src={logoUrl} alt={shop.name} className="h-24 mx-auto object-contain mb-4" onError={(e) => { e.currentTarget.style.display = 'none'; }} /> : <h1 className="font-bold uppercase tracking-widest mb-4 text-2xl" style={{ color: primaryColor }}>{shop.name}</h1>}
               {shop.slogan && <h2 className="text-[#8b7355] font-serif text-xl italic mb-6">{shop.slogan}</h2>}
               {shop.description && <p className="max-w-xl mx-auto text-crm-muted text-[13px]">{shop.description}</p>}
+              <button onClick={() => handleBookClick(shop.services?.[0])} 
+                className="mt-8 px-10 py-3 font-bold uppercase tracking-widest text-sm transition-all hover:opacity-90"
+                style={{ backgroundColor: primaryColor || '#2c1e16', color: '#fdfbf7' }}>
+                {ctaText || 'Book Now'}
+              </button>
             </div>
             </header>
     
             {pages.filter((p: any) => p.isVisible).map((p: any) => (
 
                 <section key={p.id} id={p.id} className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-32 min-h-[60vh]">
-                    <h1 className="font-bold uppercase tracking-widest mb-12 text-center text-2xl font-bold" style={{ color: primaryColor }}>{p.title}</h1>
+                    <h1 className="font-bold uppercase tracking-widest mb-12 text-center text-2xl" style={{ color: primaryColor }}>{p.title}</h1>
                     <CustomPageContent content={p.content || ""} shop={shop} themeColor={primaryColor} className="prose prose-lg max-w-none text-crm-muted"  onBookClick={handleBookClick}  reviews={reviews}  templateType={templateType} />
                 </section>
             ))}

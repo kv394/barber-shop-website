@@ -131,7 +131,7 @@ export default function KioskMode({ userProfile }: { userProfile: UserProfile })
 
     return (
         <main className="h-[100dvh] overflow-y-auto overflow-x-hidden bg-crm-bg">
-            <div className="absolute top-4 right-4 md:top-8 md:right-8 z-50">
+            <div className="absolute top-4 right-4 md:top-8 md:right-8 z-50 opacity-0 hover:opacity-100 transition-opacity duration-500">
                 <SupabaseAuthButton />
             </div>
             
@@ -148,7 +148,7 @@ export default function KioskMode({ userProfile }: { userProfile: UserProfile })
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 h-full min-h-[600px]">
                     
                     {/* Scanner Section (Left Side on Large Screens) */}
-                    <div className="lg:col-span-5 bg-crm-surface p-6 md:p-8 lg:p-12 rounded-3xl border border-crm-border shadow-sm shadow-2xl flex flex-col items-center justify-center relative overflow-hidden group">
+                    <div className="lg:col-span-5 bg-crm-surface p-6 md:p-8 lg:p-12 rounded-3xl border border-crm-border shadow-2xl flex flex-col items-center justify-center relative overflow-hidden group">
                         {/* Decorative background glow */}
                         <div className="absolute inset-0 bg-crm-primary/5 blur-[100px] rounded-full pointer-events-none group-hover:bg-crm-primary/10 transition-colors duration-700 text-white"></div>
 
@@ -223,7 +223,7 @@ export default function KioskMode({ userProfile }: { userProfile: UserProfile })
                     <div className="lg:col-span-7 flex flex-col gap-6 lg:gap-8">
                         
                         {/* Clocked In Staff */}
-                        <div className="flex-1 bg-crm-surface p-6 md:p-8 rounded-3xl border border-crm-border shadow-sm shadow-2xl flex flex-col max-h-[50vh] lg:max-h-[350px]">
+                        <div className="flex-1 bg-crm-surface p-6 md:p-8 rounded-3xl border border-crm-border shadow-2xl flex flex-col max-h-[50vh] lg:max-h-[350px]">
                             <div className="flex items-center gap-4 mb-6 shrink-0">
                                 <div className="w-12 h-12 rounded-xl bg-status-info/20 flex items-center justify-center text-2xl border border-status-info/30">👥</div>
                                 <h3 className="font-serif text-crm-text text-lg font-bold">Currently Clocked In</h3>
@@ -264,7 +264,7 @@ export default function KioskMode({ userProfile }: { userProfile: UserProfile })
                         </div>
 
                         {/* Checked-In Clients */}
-                        <div className="flex-1 bg-crm-surface p-6 md:p-8 rounded-3xl border border-crm-border shadow-sm shadow-2xl flex flex-col max-h-[50vh] lg:max-h-[350px]">
+                        <div className="flex-1 bg-crm-surface p-6 md:p-8 rounded-3xl border border-crm-border shadow-2xl flex flex-col max-h-[50vh] lg:max-h-[350px]">
                             <div className="flex items-center gap-4 mb-6 shrink-0">
                                 <div className="w-12 h-12 rounded-xl bg-crm-accent/20 flex items-center justify-center text-2xl border border-crm-accent/30">🛋️</div>
                                 <h3 className="font-serif text-crm-text text-lg font-bold">Checked-In Clients</h3>

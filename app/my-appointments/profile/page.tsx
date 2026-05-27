@@ -66,7 +66,7 @@ function ProfileContent() {
         )}
 
         <div className="bg-crm-surface border border-crm-border shadow-sm rounded-xl p-6 flex flex-col items-center justify-center space-y-4 print:bg-white print:border-none print:shadow-none print:text-black">
-          <h2 className="font-semibold text-crm-text print:text-black text-xl font-bold">My Check-in Code</h2>
+          <h2 className="font-bold text-crm-text print:text-black text-xl">My Check-in Code</h2>
           <div className="bg-crm-surface p-4 rounded-xl">
             <QRCodeSVG value={profile?.barcode || profile?.id || 'NO_ID'} size={150} level="H" />
           </div>
@@ -120,7 +120,7 @@ function ProfileContent() {
           </button>
 
           <div className="pt-6 mt-6 border-t border-crm-border">
-            <h3 className="font-semibold text-crm-text mb-2 text-lg font-bold">Security</h3>
+            <h3 className="font-bold text-crm-text mb-2 text-lg">Security</h3>
             <div className="flex flex-col sm:flex-row gap-3">
               <Link href="/update-password" className="inline-block px-4 py-2 bg-crm-surface hover:bg-crm-border text-crm-text text-[13px] font-medium rounded-lg transition-colors border border-slate-600 text-center">
                 Change Password

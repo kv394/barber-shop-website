@@ -89,7 +89,7 @@ export default function ReviewPage({ params }: { params: Promise<{ appointmentId
       <div className="h-[100dvh] overflow-y-auto overflow-x-hidden">
         <div className="text-center">
           <p className="mb-4 text-[13px]">🎉</p>
-          <h2 className="font-bold text-crm-text mb-2 text-xl font-bold">Thank You!</h2>
+          <h2 className="font-bold text-crm-text mb-2 text-xl">Thank You!</h2>
           <p className="text-crm-muted text-[13px]">Your review has been submitted.</p>
           <p className="text-crm-muted mt-2 text-[13px]">Redirecting…</p>
         </div>
@@ -118,14 +118,14 @@ export default function ReviewPage({ params }: { params: Promise<{ appointmentId
         ) : alreadyReviewed ? (
           <div className="text-center py-12 bg-crm-surface border border-crm-border shadow-sm rounded-xl p-8">
             <p className="mb-4 text-[13px]">✅</p>
-            <h2 className="font-bold text-crm-text mb-2 text-xl font-bold">Already Reviewed</h2>
+            <h2 className="font-bold text-crm-text mb-2 text-xl">Already Reviewed</h2>
             <p className="text-crm-muted text-[13px]">You&apos;ve already left a review for this appointment.</p>
             <Link href="/my-appointments" className="text-crm-accent hover:text-crm-text text-[13px] mt-4 inline-block">← Back to appointments</Link>
           </div>
         ) : appointment.status !== 'COMPLETED' ? (
           <div className="text-center py-12 bg-crm-surface border border-crm-border shadow-sm rounded-xl p-8">
             <p className="mb-4 text-[13px]">⏳</p>
-            <h2 className="font-bold text-crm-text mb-2 text-xl font-bold">Not Yet Completed</h2>
+            <h2 className="font-bold text-crm-text mb-2 text-xl">Not Yet Completed</h2>
             <p className="text-crm-muted text-[13px]">You can only review completed appointments.</p>
             <Link href="/my-appointments" className="text-crm-accent hover:text-crm-text text-[13px] mt-4 inline-block">← Back to appointments</Link>
           </div>
@@ -133,7 +133,7 @@ export default function ReviewPage({ params }: { params: Promise<{ appointmentId
           <div className="bg-crm-surface border border-crm-border shadow-sm rounded-xl overflow-hidden">
             {/* Appointment Summary */}
             <div className="p-6 bg-gradient-to-r from-purple-600/10 to-brand-gold/10 border-b border-crm-border">
-              <h2 className="font-bold text-crm-text text-xl font-bold">{appointment.shop.name}</h2>
+              <h2 className="font-bold text-crm-text text-xl">{appointment.shop.name}</h2>
               <div className="mt-2 space-y-1">
                 <p className="text-crm-muted text-[13px]">
                   {appointment.service?.name || 'Service'}

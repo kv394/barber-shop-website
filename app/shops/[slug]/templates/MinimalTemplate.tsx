@@ -94,10 +94,15 @@ export default function MinimalTemplate({ ctx }: { ctx: any }) {
                 )}
                 {shop.slogan && <p className="text-gray-900 font-medium text-lg tracking-wide mb-6">{shop.slogan}</p>}
                 {shop.description && <p className="text-gray-500 text-[15px] max-w-2xl leading-relaxed">{shop.description}</p>}
+                <button onClick={() => ctx.handleBookClick(ctx.shop.services?.[0])} 
+                  className="mt-6 px-8 py-3 rounded-lg font-semibold text-white transition-all hover:opacity-90"
+                  style={{ backgroundColor: ctx.primaryColor || '#111' }}>
+                  {ctx.ctaText || 'Book Now'}
+                </button>
                 
                 <div className="flex flex-wrap justify-center gap-8 mt-10 text-[13px] text-gray-400 font-medium uppercase tracking-widest">
                     {shopPhone && <a href={`tel:${shopPhone}`} className="hover:text-gray-800 transition-colors">📞 {shopPhone}</a>}
-                    {shopAddress && <span>📍 {shopAddress}</span>}
+                    {shopAddress && <a href={`https://maps.google.com/?q=${encodeURIComponent(shopAddress)}`} target="_blank" rel="noopener noreferrer" className="hover:underline">📍 {shopAddress}</a>}
                 </div>
             </section>
     

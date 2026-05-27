@@ -56,7 +56,7 @@ export default function LoyaltyPage() {
               <div className="p-6 bg-gradient-to-r from-brand-gold/10 to-purple-600/10 border-b border-crm-border">
                 <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center">
                   <div>
-                    <h2 className="font-bold text-crm-text text-xl font-bold">{acct.shopName}</h2>
+                    <h2 className="font-bold text-crm-text text-xl">{acct.shopName}</h2>
                     <span className="text-[11px] bg-crm-primary/20 text-crm-accent px-2 py-0.5 rounded-full font-semibold hover:opacity-90">{acct.currentTier}</span>
                   </div>
                   <div className="text-right">

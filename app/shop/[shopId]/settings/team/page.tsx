@@ -353,7 +353,7 @@ export default async function TeamDashboardPage({ params, searchParams }: { para
 
       {kioskUser && (
          <div className="bg-blue-50 border border-blue-200 p-5 rounded-2xl shadow-lg mb-8">
-             <h3 className="text-blue-800 font-bold mb-2 flex items-center gap-2 text-lg font-bold"><span>📱</span> Tablet Kiosk Setup</h3>
+             <h3 className="text-blue-800 font-bold mb-2 flex items-center gap-2 text-lg"><span>📱</span> Tablet Kiosk Setup</h3>
              <p className="text-crm-muted mb-4 text-[13px]">To set up the front desk attendance tablet, sign up for a new account on that device using this exact email:</p>
              <div className="bg-crm-surface p-3 rounded-lg text-center mb-3 border border-crm-border shadow-sm"><code className="text-crm-primary font-mono font-bold tracking-wider">{kioskUser.email}</code></div>
              <p className="text-blue-700 text-[13px]">Once an account is created with this email, that account will instantly inherit kiosk privileges for this shop.</p>
@@ -367,7 +367,7 @@ export default async function TeamDashboardPage({ params, searchParams }: { para
           <div className="flex items-center gap-3 mb-5">
             <div className="w-10 h-10 rounded-xl bg-crm-primary/10 flex items-center justify-center text-xl hover:opacity-90">✉️</div>
             <div>
-              <h3 className="font-bold text-crm-text text-lg font-bold">Invite Team Member</h3>
+              <h3 className="font-bold text-crm-text text-lg">Invite Team Member</h3>
               <p className="text-crm-muted text-[13px]">Invite a new user, or add an existing user to this location</p>
             </div>
           </div>
@@ -417,7 +417,7 @@ export default async function TeamDashboardPage({ params, searchParams }: { para
             <div key={staffMember.id} className="bg-crm-surface border border-crm-border shadow-sm rounded-2xl p-5 flex flex-col shadow-lg">
               <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-start mb-4">
                 <div>
-                  <h2 className="font-bold text-crm-text mb-1 flex items-center gap-2 text-xl font-bold">
+                  <h2 className="font-bold text-crm-text mb-1 flex items-center gap-2 text-xl">
                     {staffMember.name || staffMember.email.split('@')[0]}
                     <span className={`text-[11px] px-1.5 py-0.5 rounded uppercase tracking-wider font-bold ${staffMember.role === 'SHOP_ADMIN' ? 'bg-crm-primary/10 text-crm-primary border border-crm-primary/20' : 'bg-blue-50 text-blue-700 border border-blue-200'} hover:opacity-90`}>
                       {staffMember.role.replace('_', ' ')}
@@ -426,7 +426,7 @@ export default async function TeamDashboardPage({ params, searchParams }: { para
                   <p className="text-crm-muted text-[13px]">{staffMember.email}</p>
                 </div>
               </div>
-              <form action={removeUser} className="mt-auto">
+              <form action={removeUser} className="mt-auto" onSubmit={(e) => { if (!confirm('Are you sure you want to remove this team member from the shop? This cannot be undone.')) e.preventDefault(); }}>
                 <input type="hidden" name="userId" value={staffMember.id} />
                 <input type="hidden" name="shopId" value={shop.id} />
                 <button type="submit" className="w-full text-[11px] text-red-700 bg-red-50 hover:bg-red-100 hover:text-red-800 py-2 rounded-lg transition-colors border border-red-200">

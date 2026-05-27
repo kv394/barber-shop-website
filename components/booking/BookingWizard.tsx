@@ -326,7 +326,7 @@ export default function BookingWizard({ shopId, themeColor, secondaryColor, temp
           startTime: startDateTime.toISOString(),
           staffId: resolvedStaffId,
           notes: notes.trim() || undefined,
-          isWalkIn: true,
+          isWalkIn: false,
           clientName: name,
           clientEmail: email,
           clientPhone: phone,
@@ -344,7 +344,7 @@ export default function BookingWizard({ shopId, themeColor, secondaryColor, temp
           if (typeof window !== 'undefined' && window.parent) {
             window.parent.postMessage({ type: 'CLOSE_MODAL' }, window.location.origin);
           }
-      }, 5000); // Extended to 5s so user can tap "Add to Calendar"
+      }, 8000); // Extended to 8s so user can tap "Add to Calendar"
     } catch (err: any) {
       setError(err.message);
     } finally {
@@ -398,7 +398,11 @@ export default function BookingWizard({ shopId, themeColor, secondaryColor, temp
             {step === 4 && 'Your Details'}
           </h2>
         </div>
-        <div className="text-xs sm:text-sm text-gray-400 font-medium whitespace-nowrap">{step}/4</div>
+        <div className="flex items-center gap-1 mr-4">
+          {[1,2,3,4].map(s => (
+            <div key={s} className={`h-1.5 rounded-full transition-all duration-300 ${s <= step ? 'w-6' : 'bg-gray-300 w-4'}`} style={s <= step ? {backgroundColor: themeColor || '#111827'} : {}} />
+          ))}
+        </div>
       </div>
       
       {/* Scrollable Content */}
@@ -648,7 +652,7 @@ export default function BookingWizard({ shopId, themeColor, secondaryColor, temp
               <button 
                 disabled={!selectedDate || !selectedTime}
                 onClick={handleNext}
-                className={tStyles.btnPrimary} style={{ backgroundColor: themeColor || '#111827', color: secondaryColor || undefined }}
+                className={`${tStyles.btnPrimary} disabled:opacity-50 disabled:cursor-not-allowed`} style={{ backgroundColor: themeColor || '#111827', color: secondaryColor || undefined }}
               >
                 Continue to Details
               </button>

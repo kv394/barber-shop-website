@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 
 export default function InteractiveReviewsSection({ shopId, initialReviews = [], themeColor }: { shopId: string, initialReviews?: any[], themeColor?: string }) {
   const [reviews, setReviews] = useState(initialReviews);
-  const [rating, setRating] = useState(5);
+  const [rating, setRating] = useState(0);
   const [comment, setComment] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -77,7 +77,7 @@ export default function InteractiveReviewsSection({ shopId, initialReviews = [],
                       type="button"
                       key={star}
                       onClick={() => setRating(star)}
-                      className={`text-2xl transition-transform hover:scale-110 \${rating >= star ? 'text-yellow-400' : 'text-gray-300'}`}
+                      className={`text-2xl transition-transform hover:scale-110 ${rating >= star ? 'text-yellow-400' : 'text-gray-300'}`}
                     >
                       ★
                     </button>

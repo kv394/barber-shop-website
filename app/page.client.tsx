@@ -140,10 +140,10 @@ export default function Home() {
         </header>
 
         <div className="text-center mb-12 sm:mb-20">
-          <h2 className="font-serif font-bold leading-tight tracking-tight text-crm-text max-w-4xl mx-auto drop-shadow-sm text-xl">
+          <h2 className="font-serif font-bold leading-tight tracking-tight text-crm-text max-w-4xl mx-auto drop-shadow-sm text-2xl sm:text-3xl md:text-4xl lg:text-5xl">
             {isSignedIn ? `Welcome, ${userProfile?.name || 'User'}` : "The Ultimate Operating System for Barbershops"}
           </h2>
-          <p className="mt-4 sm:mt-6 text-crm-accent/80 font-medium tracking-wide text-[13px]">
+          <p className="mt-4 sm:mt-6 text-crm-accent/80 font-medium tracking-wide text-sm sm:text-base md:text-lg">
             {isSignedIn ? 'Redirecting to your dashboard...' : 'Manage your shop, bookings, and team all in one place.'}
           </p>
         </div>
@@ -152,7 +152,7 @@ export default function Home() {
           {!isSignedIn && (
             <div className="bg-crm-surface p-8 rounded-lg text-center border border-crm-border shadow-sm max-w-2xl mx-auto mt-12 transition-all duration-500 ease-in-out transform hover:-translate-y-1 hover:shadow-md">
               <h3 className="text-xl font-bold font-serif mb-4 text-crm-text">Ready to transform your business?</h3>
-              <p className="text-crm-muted mb-8 text-[14px]">Join thousands of barbershops using KutzApp to streamline their operations, increase bookings, and grow their revenue.</p>
+              <p className="text-crm-muted mb-8 text-[14px]">Join barbershops already growing with KutzApp to streamline their operations, increase bookings, and grow their revenue.</p>
               <div className="flex gap-4 justify-center">
                 <Link href="/sign-up" className="inline-block bg-crm-primary text-white px-8 py-3 rounded-md font-semibold hover:bg-crm-surface hover:text-crm-primary border border-transparent hover:border-crm-primary/30 transition-colors">
                   Start Free Trial

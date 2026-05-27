@@ -636,16 +636,112 @@ export default function BookingModal({ shopId, service, onClose, shopHours, them
         {!isLoaded ? (
              <p className="text-crm-muted text-center py-8 text-[13px]">Loading...</p>
         ) : (
-            <div className="text-center py-8 bg-crm-surface rounded-lg border border-crm-border shadow-sm flex flex-col items-center">
-                <div className="text-5xl mb-4">🤖</div>
-                <h4 className="font-bold text-crm-text text-lg mb-2">Book with our AI Assistant!</h4>
-                <p className="text-crm-muted mb-6 text-[14px] max-w-xs leading-relaxed">
-                   We've upgraded our booking experience. Please close this window and use the chatbot widget in the bottom right corner to easily schedule your appointment.
-                </p>
-                <button onClick={onClose} className="bg-crm-primary text-white px-6 py-3 rounded-lg font-bold hover:bg-crm-surface hover:text-crm-primary border border-transparent hover:border-crm-primary/30 transition-colors inline-block text-center w-full max-w-xs shadow-md hover:shadow-lg">
-                  Got it, close this window
-                </button>
+          <>
+            {error && <p className="text-status-cancelled bg-status-cancelled/20 p-3 rounded mb-4 text-[13px]">{error}</p>}
+
+            {/* Walk-in Toggle (staff only) */}
+            {userRole && (
+              <div className="mb-5 flex items-center gap-3">
+                <label className="flex items-center gap-2 cursor-pointer text-[13px]">
+                  <input type="checkbox" checked={isWalkIn} onChange={(e) => { setIsWalkIn(e.target.checked); setSelectedExistingClient(null); setClientName(''); setClientEmail(''); setClientPhone(''); }} className="w-4 h-4 accent-crm-primary" />
+                  <span className="text-crm-text font-semibold">Walk-in Booking</span>
+                </label>
+              </div>
+            )}
+
+            {/* Walk-in Client Details */}
+            {isWalkIn && (
+              <div className="mb-5 space-y-3 bg-crm-bg rounded-lg border border-crm-border p-4">
+                <p className="text-crm-text text-[12px] font-semibold mb-2">Client Details</p>
+                {selectedExistingClient ? (
+                  <div className="flex items-center justify-between bg-crm-surface p-3 rounded border border-crm-border">
+                    <div>
+                      <p className="text-crm-text font-semibold text-[13px]">{selectedExistingClient.name}</p>
+                      <p className="text-crm-muted text-[12px]">{selectedExistingClient.email}</p>
+                    </div>
+                    <button onClick={handleClearSelectedClient} className="text-crm-muted hover:text-crm-text text-[12px]">✕ Clear</button>
+                  </div>
+                ) : (
+                  <>
+                    <div className="relative">
+                      <input type="text" placeholder="Search existing client..." value={clientSearchQuery} onChange={(e) => setClientSearchQuery(e.target.value)} className={`${tStyles.input} text-[13px]`} />
+                      {isSearchingClients && <span className="absolute right-3 top-1/2 -translate-y-1/2 text-crm-muted text-[11px]">Searching...</span>}
+                      {clientSearchResults.length > 0 && (
+                        <div className="absolute z-50 w-full mt-1 bg-crm-surface border border-crm-border rounded-lg shadow-lg max-h-40 overflow-y-auto">
+                          {clientSearchResults.map(c => (
+                            <button key={c.id} onClick={() => handleSelectExistingClient(c)} className="w-full text-left px-3 py-2 hover:bg-crm-bg text-[13px] text-crm-text border-b border-crm-border last:border-0">
+                              {c.name || c.email} <span className="text-crm-muted text-[11px]">({c.email})</span>
+                            </button>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                    <input type="text" placeholder="Client Name *" value={clientName} onChange={(e) => setClientName(e.target.value)} className={`${tStyles.input} text-[13px]`} />
+                    <input type="email" placeholder="Client Email" value={clientEmail} onChange={(e) => setClientEmail(e.target.value)} className={`${tStyles.input} text-[13px]`} />
+                    <input type="tel" placeholder="Client Phone" value={clientPhone} onChange={(e) => setClientPhone(e.target.value)} className={`${tStyles.input} text-[13px]`} />
+                  </>
+                )}
+              </div>
+            )}
+
+            {/* Date Picker */}
+            <div className="mb-5">
+              <label className="block text-crm-text text-[12px] font-semibold mb-2">Select Date</label>
+              <input type="date" value={selectedDate} onChange={(e) => { setSelectedDate(e.target.value); setSelectedTime(''); setSelectedStaff(''); }} min={new Date().toISOString().split('T')[0]} className={`${tStyles.input} text-[13px]`} />
             </div>
+
+            {/* Time Slots */}
+            {selectedDate && (
+              <div className="mb-5">
+                <label className="block text-crm-text text-[12px] font-semibold mb-2">Select Time</label>
+                {isLoading ? (
+                  <p className="text-crm-muted text-center py-4 text-[13px]">Loading availability...</p>
+                ) : availableTimeSlots.length > 0 ? (
+                  <div className="grid grid-cols-3 gap-2 max-h-48 overflow-y-auto">
+                    {availableTimeSlots.map(time => (
+                      <button key={time} onClick={() => { setSelectedTime(time); setSelectedStaff(''); }} className={`p-2 text-[13px] rounded-lg border transition-colors ${selectedTime === time ? tStyles.cardActive : tStyles.cardInactive}`} style={selectedTime === time ? { borderColor: themeColor || '#111827', backgroundColor: activeBg } : {}}>
+                        {time}
+                      </button>
+                    ))}
+                  </div>
+                ) : (
+                  <p className="text-crm-muted text-center py-4 text-[13px] bg-crm-bg rounded-lg">No available times on this date.</p>
+                )}
+              </div>
+            )}
+
+            {/* Staff Selection */}
+            {selectedTime && (
+              <div className="mb-5">
+                <label className="block text-crm-text text-[12px] font-semibold mb-2">Select Staff</label>
+                <div className="space-y-2">
+                  <button onClick={() => setSelectedStaff(ANY_STAFF_VALUE)} className={`w-full p-3 text-left text-[13px] rounded-lg border transition-colors ${selectedStaff === ANY_STAFF_VALUE ? tStyles.cardActive : tStyles.cardInactive}`} style={selectedStaff === ANY_STAFF_VALUE ? { borderColor: themeColor || '#111827', backgroundColor: activeBg } : {}}>
+                    Any Available
+                  </button>
+                  {staffAtSelectedTime.map(s => (
+                    <button key={s.id} onClick={() => setSelectedStaff(s.id)} className={`w-full p-3 text-left text-[13px] rounded-lg border transition-colors ${selectedStaff === s.id ? tStyles.cardActive : tStyles.cardInactive}`} style={selectedStaff === s.id ? { borderColor: themeColor || '#111827', backgroundColor: activeBg } : {}}>
+                      {s.name}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Notes */}
+            {selectedStaff && (
+              <div className="mb-5">
+                <label className="block text-crm-text text-[12px] font-semibold mb-2">Notes (optional)</label>
+                <textarea value={bookingNotes} onChange={(e) => setBookingNotes(e.target.value)} placeholder="Any special requests?" className={`${tStyles.input} text-[13px] min-h-[60px] resize-none`} />
+              </div>
+            )}
+
+            {/* Review & Book Button */}
+            {selectedDate && selectedTime && selectedStaff && (
+              <button onClick={handleReviewBooking} className="bg-crm-primary text-white font-bold py-3 rounded-lg hover:bg-crm-surface hover:text-crm-primary border border-transparent hover:border-crm-primary/30 transition-colors w-full text-[13px]">
+                Review & Book
+              </button>
+            )}
+          </>
         )}
 
         {/* Scroll Indicator */}

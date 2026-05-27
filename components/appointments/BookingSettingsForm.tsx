@@ -15,12 +15,17 @@ export default function BookingSettingsForm({ shopId }: { shopId: string }) {
 
   const save = async () => {
     setSaving(true);
-    await fetch(`/api/shops/${shopId}/booking-settings`, {
+    const response = await fetch(`/api/shops/${shopId}/booking-settings`, {
       method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(settings),
     });
+    if (!response.ok) {
+      setMsg('Failed to save settings. Please try again.');
+      setSaving(false);
+      return;
+    }
     setMsg('Booking settings saved!');
     setSaving(false);
-    setTimeout(() => setMsg(''), 3000);
+    setTimeout(() => setMsg(''), 5000);
   };
 
   const upd = (k: string, v: any) => setSettings((s: any) => ({ ...s, [k]: v }));

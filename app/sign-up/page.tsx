@@ -137,9 +137,9 @@ export default async function SignUpPage({
 
   return (
     <div className="flex min-h-[80vh] items-center justify-center p-4">
-      <div className="w-full max-w-md bg-crm-surface border border-crm-border shadow-sm rounded-2xl shadow-2xl p-8 mt-12 mb-12">
+      <div className="w-full max-w-md bg-crm-surface border border-crm-border rounded-2xl shadow-2xl p-8 mt-12 mb-12">
         <div className="text-center mb-8">
-          <h1 className="font-serif font-bold text-crm-text mb-2 text-2xl font-bold">Create Account</h1>
+          <h1 className="font-serif font-bold text-crm-text mb-2 text-2xl">Create Account</h1>
           <p className="text-crm-muted text-[13px]">Join to book your next appointment</p>
         </div>
 
@@ -150,15 +150,16 @@ export default async function SignUpPage({
         <form action={signUpAction} className="space-y-5">
           <div>
             <label className="block font-medium text-crm-muted mb-1.5 text-[13px]">Full Name</label>
-            <input name="name" type="text" required placeholder="John Doe" className="w-full bg-crm-surface border border-crm-border shadow-sm rounded-lg p-3 text-crm-text focus:ring-2 focus:ring-crm-primary focus:border-transparent outline-none" />
+            <input name="name" type="text" required placeholder="John Doe" autoComplete="name" className="w-full bg-crm-surface border border-crm-border shadow-sm rounded-lg p-3 text-crm-text focus:ring-2 focus:ring-crm-primary focus:border-transparent outline-none" />
           </div>
           <div>
             <label className="block font-medium text-crm-muted mb-1.5 text-[13px]">Email Address</label>
-            <input name="email" type="email" required placeholder="you@example.com" className="w-full bg-crm-surface border border-crm-border shadow-sm rounded-lg p-3 text-crm-text focus:ring-2 focus:ring-crm-primary focus:border-transparent outline-none" />
+            <input name="email" type="email" required placeholder="you@example.com" autoComplete="email" className="w-full bg-crm-surface border border-crm-border shadow-sm rounded-lg p-3 text-crm-text focus:ring-2 focus:ring-crm-primary focus:border-transparent outline-none" />
           </div>
           <div>
             <label className="block font-medium text-crm-muted mb-1.5 text-[13px]">Password</label>
-            <input name="password" type="password" required minLength={8} placeholder="••••••••" className="w-full bg-crm-surface border border-crm-border shadow-sm rounded-lg p-3 text-crm-text focus:ring-2 focus:ring-crm-primary focus:border-transparent outline-none" />
+            <input name="password" type="password" required minLength={8} placeholder="••••••••" autoComplete="new-password" className="w-full bg-crm-surface border border-crm-border shadow-sm rounded-lg p-3 text-crm-text focus:ring-2 focus:ring-crm-primary focus:border-transparent outline-none" />
+            <p className="text-[11px] text-crm-muted mt-1">Must be at least 8 characters</p>
           </div>
           <button type="submit" className="w-full bg-crm-primary text-white font-bold py-3 rounded-lg hover:bg-crm-surface hover:text-crm-primary border border-transparent hover:border-crm-primary/30 transition-colors mt-2">Sign Up</button>
         </form>
