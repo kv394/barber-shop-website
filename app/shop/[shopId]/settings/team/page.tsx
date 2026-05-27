@@ -364,15 +364,15 @@ export default async function TeamDashboardPage({ params, searchParams }: { para
       <div className="mb-8 bg-crm-surface rounded-2xl border border-crm-border shadow-sm shadow-xl overflow-hidden">
         <div className="h-1 bg-gradient-to-r from-crm-primary via-crm-primary/60 to-transparent" />
         <div className="p-6">
-          <div className="flex items-center gap-3 mb-5">
-            <div className="w-10 h-10 rounded-xl bg-crm-primary/10 flex items-center justify-center text-xl hover:opacity-90">✉️</div>
+          <div className="flex items-start gap-3 mb-5">
+            <div className="w-10 h-10 shrink-0 mt-0.5 rounded-xl bg-crm-primary/10 flex items-center justify-center text-xl hover:opacity-90">✉️</div>
             <div>
               <h3 className="font-bold text-crm-text text-lg">Invite Team Member</h3>
               <p className="text-crm-muted text-[13px]">Invite a new user, or add an existing user to this location</p>
             </div>
           </div>
 
-          <form action={inviteUser} className="grid grid-cols-1 md:grid-cols-12 gap-3 items-end">
+          <form action={inviteUser} className="grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-3 items-end">
             <input type="hidden" name="shopId" value={shop.id} />
             <div className="md:col-span-6">
               <label className="block text-crm-muted mb-1 font-semibold uppercase tracking-wider text-[13px]">📧 Email</label>
@@ -393,8 +393,8 @@ export default async function TeamDashboardPage({ params, searchParams }: { para
                 )}
               </select>
             </div>
-            <div className="md:col-span-3">
-              <label className="block text-crm-muted mb-1 font-semibold uppercase tracking-wider text-[13px] invisible select-none">Action</label>
+            <div className="md:col-span-3 mt-2 md:mt-0">
+              <label className="hidden md:block text-crm-muted mb-1 font-semibold uppercase tracking-wider text-[13px] invisible select-none">Action</label>
               <button type="submit" disabled={userRole === 'SITE_ADMIN' && !canAddShopAdmin}
                 className="w-full bg-crm-primary text-white font-bold py-2.5 px-6 rounded-xl hover:bg-crm-primary/90 hover:scale-[1.02] active:scale-95 transition-all duration-200 shadow-md text-[13px] disabled:opacity-50 disabled:cursor-not-allowed">
                 Invite Member
