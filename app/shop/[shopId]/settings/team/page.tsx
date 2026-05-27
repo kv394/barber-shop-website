@@ -364,25 +364,25 @@ export default async function TeamDashboardPage({ params, searchParams }: { para
       <div className="mb-8 bg-crm-surface rounded-2xl border border-crm-border shadow-sm shadow-xl overflow-hidden">
         <div className="h-1 bg-gradient-to-r from-crm-primary via-crm-primary/60 to-transparent" />
         <div className="p-6">
-          <div className="flex items-start gap-3 mb-5">
-            <div className="w-10 h-10 shrink-0 mt-0.5 rounded-xl bg-crm-primary/10 flex items-center justify-center text-xl hover:opacity-90">✉️</div>
+          <div className="flex items-start gap-4 mb-6">
+            <div className="w-12 h-12 shrink-0 mt-0.5 rounded-2xl bg-crm-primary/10 flex items-center justify-center text-2xl">✉️</div>
             <div>
               <h3 className="font-bold text-crm-text text-lg">Invite Team Member</h3>
               <p className="text-crm-muted text-[13px]">Invite a new user, or add an existing user to this location</p>
             </div>
           </div>
 
-          <form action={inviteUser} className="grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-3 items-end">
+          <form action={inviteUser} className="flex flex-col md:flex-row gap-4 items-end">
             <input type="hidden" name="shopId" value={shop.id} />
-            <div className="md:col-span-6">
-              <label className="block text-crm-muted mb-1 font-semibold uppercase tracking-wider text-[13px]">📧 Email</label>
+            <div className="flex-1 w-full">
+              <label className="block text-crm-muted mb-1.5 font-semibold uppercase tracking-wider text-[12px]">📧 Email</label>
               <input type="email" name="email" required placeholder="team@example.com"
-                className="w-full p-2.5 rounded-lg border border-crm-border shadow-sm bg-crm-surface text-crm-text text-[13px] placeholder-gray-400 focus:ring-2 focus:ring-crm-primary focus:outline-none transition-all" />
+                className="w-full h-11 px-4 rounded-xl border border-crm-border shadow-sm bg-crm-surface text-crm-text text-[13px] placeholder-gray-400 focus:ring-2 focus:ring-crm-primary focus:outline-none transition-all" />
             </div>
-            <div className="md:col-span-3">
-              <label className="block text-crm-muted mb-1 font-semibold uppercase tracking-wider text-[13px]">👤 Role</label>
+            <div className="w-full md:w-56">
+              <label className="block text-crm-muted mb-1.5 font-semibold uppercase tracking-wider text-[12px]">👤 Role</label>
               <select name="role" defaultValue={userRole === 'SITE_ADMIN' ? 'SHOP_ADMIN' : 'STAFF'}
-                className="w-full p-2.5 rounded-lg border border-crm-border shadow-sm bg-crm-surface text-crm-text text-[13px] focus:ring-2 focus:ring-crm-primary focus:outline-none transition-all">
+                className="w-full h-11 px-4 rounded-xl border border-crm-border shadow-sm bg-crm-surface text-crm-text text-[13px] focus:ring-2 focus:ring-crm-primary focus:outline-none transition-all">
                 {userRole === 'SHOP_ADMIN' && <option value="STAFF">Staff</option>}
                 {userRole === 'SHOP_ADMIN' && <option value="BOOTH_RENTER">Booth Renter</option>}
                 {userRole === 'SITE_ADMIN' && (
@@ -393,10 +393,9 @@ export default async function TeamDashboardPage({ params, searchParams }: { para
                 )}
               </select>
             </div>
-            <div className="md:col-span-3 mt-2 md:mt-0">
-              <label className="hidden md:block text-crm-muted mb-1 font-semibold uppercase tracking-wider text-[13px] invisible select-none">Action</label>
+            <div className="w-full md:w-auto mt-2 md:mt-0">
               <button type="submit" disabled={userRole === 'SITE_ADMIN' && !canAddShopAdmin}
-                className="w-full bg-crm-primary text-white font-bold py-2.5 px-6 rounded-xl hover:bg-crm-primary/90 hover:scale-[1.02] active:scale-95 transition-all duration-200 shadow-md text-[13px] disabled:opacity-50 disabled:cursor-not-allowed">
+                className="w-full h-11 bg-crm-primary text-white font-bold px-8 rounded-xl hover:bg-crm-primary/90 hover:scale-[1.02] active:scale-95 transition-all duration-200 shadow-md text-[13px] disabled:opacity-50 disabled:cursor-not-allowed">
                 Invite Member
               </button>
             </div>
