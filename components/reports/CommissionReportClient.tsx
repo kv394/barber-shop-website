@@ -92,8 +92,7 @@ export default function CommissionReportClient({
           <label className="block text-crm-muted mb-1 text-[13px]">End Date</label>
           <input type="date" value={endDate} onChange={e => setEndDate(e.target.value)} className="h-[40px] bg-crm-surface border border-crm-border shadow-sm rounded px-3 text-crm-text text-[13px] focus:outline-none focus:border-brand-gold w-full sm:w-auto" />
         </div>
-        <div className="w-full sm:w-auto">
-          <label className="hidden sm:block text-crm-muted mb-1 text-[13px] invisible">Export</label>
+        <div className="w-full sm:w-auto mt-2 sm:mt-0">
           <button onClick={exportCSV} className="h-[40px] flex items-center justify-center bg-crm-surface hover:bg-crm-surface/80 text-crm-text px-4 rounded text-[13px] transition-colors border border-crm-border shadow-sm w-full sm:w-auto">
             📥 Export CSV
           </button>

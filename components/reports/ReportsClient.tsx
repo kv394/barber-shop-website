@@ -173,15 +173,13 @@ export default function ReportsClient({
           <input type="date" value={dateTo} onChange={e => setDateTo(e.target.value)} className="h-[40px] bg-crm-surface border border-crm-border shadow-sm rounded px-3 text-crm-text text-[13px] focus:outline-none focus:border-brand-gold w-full sm:w-auto" />
         </div>
         {isFiltered && (
-          <div className="w-full sm:w-auto">
-            <label className="hidden sm:block text-crm-muted uppercase tracking-wider mb-1 text-[13px] invisible">Clear</label>
+          <div className="w-full sm:w-auto mt-2 sm:mt-0">
             <button onClick={() => { setDateFrom(''); setDateTo(''); }} className="h-[40px] text-[11px] text-crm-muted hover:text-crm-text px-4 border border-crm-border shadow-sm rounded flex items-center justify-center w-full sm:w-auto">
               Clear Filters
             </button>
           </div>
         )}
-        <div className="w-full sm:w-auto">
-          <label className="hidden sm:block text-crm-muted uppercase tracking-wider mb-1 text-[13px] invisible">Export</label>
+        <div className="w-full sm:w-auto mt-2 sm:mt-0">
           <button onClick={exportCSV} className="h-[40px] text-[13px] bg-crm-surface border border-crm-border shadow-sm hover:bg-crm-primary hover:text-white text-crm-text font-medium px-4 rounded transition-all flex items-center justify-center gap-2 w-full sm:w-auto">
             <span className="text-[14px]">📥</span> Export CSV
           </button>
