@@ -293,87 +293,19 @@ export function ShopProfileForm({
  </div>
  </div>
 
- {/* ── Payment Gateway ── */}
+ {/* ── Payments Powered by KutzApp ── */}
  <div className="pt-2 border-t border-crm-border/50">
- <h3 className="font-bold text-crm-text mb-4 text-[15px] flex items-center gap-2">
- <span>💳</span> Payment Gateway
- </h3>
- <p className="text-crm-muted mb-4 text-[13px]">
- Choose how your shop processes online payments for bookings, deposits, and gift cards.
- </p>
- <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
- {PAYMENT_GATEWAYS.filter(gw => gw.countries.includes(formData.country)).map((gw) => (
- <button
- key={gw.value}
- type="button"
- onClick={() => handleChange('paymentGateway', gw.value)}
- className={`p-4 rounded-lg border-2 text-left transition-all ${
- formData.paymentGateway === gw.value
- ? 'border-crm-primary bg-crm-primary/10 shadow-sm'
- : 'border-crm-border bg-crm-bg hover:border-crm-primary/40'
- }`}
- >
- <div className="flex items-center gap-2 mb-1">
- <span className="text-lg">{gw.icon}</span>
- <span className="font-bold text-crm-text text-[14px]">{gw.label}</span>
- </div>
- <p className="text-crm-muted text-[11px]">{gw.description}</p>
- </button>
- ))}
- </div>
-
- {/* Credential fields based on selected gateway */}
- {formData.paymentGateway === 'STRIPE' && (
- <div className="mt-4 p-4 bg-crm-bg rounded-lg border border-crm-border space-y-3">
- <h4 className="font-bold text-crm-text text-[13px] flex items-center gap-2">
- <span>⚡</span> Stripe Configuration
- </h4>
- <div>
- <label className={labelClass}>Stripe Connect Account ID</label>
- <input
- type="text"
- value={formData.stripeAccountId}
- onChange={(e) => handleChange('stripeAccountId', e.target.value)}
- placeholder="acct_1234567890"
- className={inputClass}
- />
- <p className="text-crm-muted text-[11px] mt-1">
- Your Stripe Connect account ID. Payments will be routed to this account.
- </p>
- </div>
- </div>
- )}
-
- {formData.paymentGateway === 'RAZORPAY' && (
- <div className="mt-4 p-4 bg-crm-bg rounded-lg border border-crm-border space-y-3">
- <h4 className="font-bold text-crm-text text-[13px] flex items-center gap-2">
- <span>⚡</span> Razorpay Configuration
- </h4>
- <div>
- <label className={labelClass}>Razorpay Key ID</label>
- <input
- type="text"
- value={formData.razorpayKeyId}
- onChange={(e) => handleChange('razorpayKeyId', e.target.value)}
- placeholder="rzp_live_..."
- className={inputClass}
- />
- </div>
- <div>
- <label className={labelClass}>Razorpay Key Secret</label>
- <input
- type="password"
- value={formData.razorpayKeySecret}
- onChange={(e) => handleChange('razorpayKeySecret', e.target.value)}
- placeholder="••••••••••••"
- className={inputClass}
- />
- <p className="text-crm-muted text-[11px] mt-1">
- Find these in your <a href="https://dashboard.razorpay.com/app/keys" target="_blank" rel="noopener noreferrer" className="text-crm-primary underline">Razorpay Dashboard → Settings → API Keys</a>.
- </p>
- </div>
- </div>
- )}
+   <h3 className="font-bold text-crm-text mb-4 text-[15px] flex items-center gap-2">
+     <span>💳</span> Payment Processing
+   </h3>
+   <div className="p-4 bg-crm-primary/5 rounded-lg border border-crm-primary/20 space-y-2">
+     <h4 className="font-bold text-crm-text text-[13px] flex items-center gap-2">
+       <span className="text-crm-primary">✓</span> Payments Powered by KutzApp
+     </h4>
+     <p className="text-crm-muted text-[12px]">
+       KutzApp securely handles all credit card, Apple Pay, and Google Pay transactions. Payouts are routed directly to your linked bank account.
+     </p>
+   </div>
  </div>
 
  {/* ── Booking Deposit ── */}
