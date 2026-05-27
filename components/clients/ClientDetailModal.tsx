@@ -129,9 +129,9 @@ export default function ClientDetailModal({ shopId, clientId, clientName, onClos
     ]).then(([clientData, loyaltyRes]) => {
       setClient(clientData);
       setFormData({
-        clientNotes: clientData.clientNotes || '',
-        preferences: clientData.preferences || '',
-        allergies: clientData.allergies || '',
+        clientNotes: clientData.shopClients?.[0]?.clientNotes || '',
+        preferences: clientData.shopClients?.[0]?.preferences || '',
+        allergies: clientData.shopClients?.[0]?.allergies || '',
         marketingConsent: clientData.marketingConsent || false,
         smsConsent: clientData.smsConsent || false,
       });

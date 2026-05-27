@@ -40,8 +40,8 @@ export async function GET(
     const client = await prisma.user.findFirst({
       where: clientCondition,
       select: {
-        id: true, name: true, email: true, phone: true, 
-        clientNotes: true, preferences: true, allergies: true,
+        id: true, name: true, email: true,
+        shopClients: { where: { shopId: shopId }, select: { phone: true, clientNotes: true, preferences: true, allergies: true, birthday: true } },
         marketingConsent: true, smsConsent: true,
         barcode: true, createdAt: true,
         clientAppointments: {
@@ -124,15 +124,28 @@ export async function PATCH(
     if (body.clientNotes !== undefined) updateData.clientNotes = typeof body.clientNotes === 'string' ? body.clientNotes.replace(/<[^>]*>/g, '').slice(0, 5000) : null;
     if (body.preferences !== undefined) updateData.preferences = typeof body.preferences === 'string' ? body.preferences.replace(/<[^>]*>/g, '').slice(0, 2000) : null;
     if (body.allergies !== undefined) updateData.allergies = typeof body.allergies === 'string' ? body.allergies.replace(/<[^>]*>/g, '').slice(0, 2000) : null;
-    if (body.marketingConsent !== undefined) updateData.marketingConsent = Boolean(body.marketingConsent);
-    if (body.smsConsent !== undefined) updateData.smsConsent = Boolean(body.smsConsent);
+    const userUpdateData: any = {};
+    if (body.marketingConsent !== undefined) userUpdateData.marketingConsent = Boolean(body.marketingConsent);
+    if (body.smsConsent !== undefined) userUpdateData.smsConsent = Boolean(body.smsConsent);
+
+    if (Object.keys(updateData).length > 0) {
+      await prisma.shopClient.upsert({
+        where: { userId_shopId: { userId: clientId, shopId } },
+        create: {
+          userId: clientId,
+          shopId,
+          ...updateData
+        },
+        update: updateData
+      });
+    }
 
     const updated = await prisma.user.update({
       where: { id: clientId },
-      data: updateData,
+      data: userUpdateData,
       select: {
-        id: true, name: true, email: true, phone: true,
-        clientNotes: true, preferences: true, allergies: true,
+        id: true, name: true, email: true,
+        shopClients: { where: { shopId }, select: { phone: true, clientNotes: true, preferences: true, allergies: true, birthday: true } },
         marketingConsent: true, smsConsent: true,
       },
     });

@@ -38,7 +38,7 @@ async function getPageData(shopId: string, userId: string) {
     },
     include: {
       service: { select: { name: true, price: true, duration: true } },
-      user: { select: { name: true, email: true, clientNotes: true, allergies: true, preferences: true } },
+      user: { select: { name: true, email: true, shopClients: { where: { shopId }, select: { clientNotes: true, allergies: true, preferences: true } } } },
       staff: { select: { name: true } },
     },
     orderBy: { startTime: 'asc' },
@@ -189,9 +189,9 @@ export default async function BookingsPage({ params }: { params: Promise<{ shopI
                               shopId={shop.id} 
                               appointmentId={apt.id} 
                               initialNotes={apt.notes}
-                              clientNotes={apt.user?.clientNotes}
-                              preferences={apt.user?.preferences}
-                              allergies={apt.user?.allergies}
+                              clientNotes={apt.user?.shopClients?.[0]?.clientNotes}
+                              preferences={apt.user?.shopClients?.[0]?.preferences}
+                              allergies={apt.user?.shopClients?.[0]?.allergies}
                             />
                           </div>
                         </div>

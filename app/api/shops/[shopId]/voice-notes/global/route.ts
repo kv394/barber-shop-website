@@ -86,6 +86,7 @@ Return strictly a JSON object with these keys. If a key is not mentioned, omit i
             role: 'CLIENT',
             ...(OR_conditions.length > 0 ? { OR: OR_conditions } : {})
         },
+        include: { shopClients: { where: { shopId } } },
         take: 5
     });
 
@@ -117,11 +118,21 @@ Return strictly a JSON object with these keys. If a key is not mentioned, omit i
     if (parsed.preferences) newNoteBlock += `Preferences: ${parsed.preferences}\n`;
     newNoteBlock += `Transcript: "${parsed.rawTranscript || '...'}"\n\n`;
 
-    const updatedClient = await prisma.user.update({
-        where: { id: targetClient.id },
-        data: {
-            clientNotes: newNoteBlock + (targetClient.clientNotes || ''),
-            preferences: parsed.preferences && !targetClient.preferences ? parsed.preferences : targetClient.preferences
+    const targetShopClient = targetClient.shopClients?.[0] || {};
+    const newClientNotes = newNoteBlock + (targetShopClient.clientNotes || '');
+    const newPreferences = parsed.preferences && !targetShopClient.preferences ? parsed.preferences : targetShopClient.preferences;
+
+    await prisma.shopClient.upsert({
+        where: { userId_shopId: { userId: targetClient.id, shopId } },
+        create: {
+            userId: targetClient.id,
+            shopId,
+            clientNotes: newClientNotes,
+            preferences: newPreferences
+        },
+        update: {
+            clientNotes: newClientNotes,
+            preferences: newPreferences
         }
     });
 

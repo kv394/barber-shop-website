@@ -258,7 +258,7 @@ export default function CustomPageContent({ content, shop, themeColor, className
                    )}
                    <h3 className={styles.title} style={templateType === 'corporate' || templateType === 'sporty' || templateType === 'classic' || templateType === 'modern' ? { color: themeColor } : {}}>{member.name}</h3>
                    <p className="text-gray-500 text-[12px] font-bold uppercase tracking-wider mb-4">{member.role === 'SHOP_ADMIN' ? 'Master Barber' : 'Barber'}</p>
-                   {member.clientNotes && <p className={styles.desc}>{member.clientNotes}</p>}
+                   {member.shopClients?.[0]?.clientNotes && <p className={styles.desc}>{member.shopClients[0].clientNotes}</p>}
                    <div className="mt-auto pt-4 w-full">
                      <button onClick={() => onBookClick && onBookClick(null)} className={styles.btn} style={styles.btnStyle}>{ctaText}</button>
                    </div>

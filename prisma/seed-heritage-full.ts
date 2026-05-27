@@ -129,7 +129,7 @@ async function main() {
 
   console.log('  📱  Staff Contact Details:');
   for (const sc of staffContacts) {
-    await prisma.user.update({ where: { id: sc.id }, data: { phone: sc.phone } });
+    await prisma.shopClient.upsert({ where: { userId_shopId: { userId: sc.id, shopId: SHOP_ID } }, create: { userId: sc.id, shopId: SHOP_ID, phone: sc.phone, clientNotes: sc.bio }, update: { phone: sc.phone, clientNotes: sc.bio } });
     console.log(`      ✅  ${sc.id}  — ${sc.phone}`);
   }
   console.log('');
@@ -148,7 +148,7 @@ async function main() {
 
   console.log('  📱  Client Contact Details:');
   for (const cc of clientContacts) {
-    await prisma.user.update({ where: { id: cc.id }, data: { phone: cc.phone } });
+    await prisma.shopClient.upsert({ where: { userId_shopId: { userId: cc.id, shopId: SHOP_ID } }, create: { userId: cc.id, shopId: SHOP_ID, phone: cc.phone }, update: { phone: cc.phone } });
     console.log(`      ✅  ${cc.id}  — ${cc.phone}`);
   }
   console.log('');
@@ -214,12 +214,13 @@ async function main() {
     await prisma.user.update({
       where: { id: cp.id },
       data: {
-        birthday: cp.birthday,
-        clientNotes: cp.notes,
-        preferences: cp.preferences,
-        allergies: cp.allergies,
         referralCode: `HERITAGE-${cp.id.toUpperCase().slice(-6)}`,
       },
+    });
+    await prisma.shopClient.upsert({
+      where: { userId_shopId: { userId: cp.id, shopId: SHOP_ID } },
+      create: { userId: cp.id, shopId: SHOP_ID, birthday: cp.birthday, clientNotes: cp.notes, preferences: cp.preferences, allergies: cp.allergies },
+      update: { birthday: cp.birthday, clientNotes: cp.notes, preferences: cp.preferences, allergies: cp.allergies }
     });
     console.log(`      ✅  Updated profile for ${cp.id}`);
   }

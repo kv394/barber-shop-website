@@ -9,101 +9,101 @@ datasource db {
 }
 
 model PlatformSettings {
-  id                    String   @id @default("global")
-  platformName          String   @default("KutzApp")
-  supportEmail          String?
-  platformFeePercent    Float    @default(0)
-  
+  id                 String  @id @default("global")
+  platformName       String  @default("KutzApp")
+  supportEmail       String?
+  platformFeePercent Float   @default(0)
+
   // Feature Toggles
-  enableSms             Boolean  @default(false)
-  enableAi              Boolean  @default(true)
-  
+  enableSms Boolean @default(false)
+  enableAi  Boolean @default(true)
+
   // Operational Controls
-  maintenanceMode       Boolean  @default(false)
-  allowNewRegistrations Boolean  @default(true)
-  defaultTimezone       String   @default("America/New_York")
-  defaultCurrency       String   @default("USD")
+  maintenanceMode       Boolean @default(false)
+  allowNewRegistrations Boolean @default(true)
+  defaultTimezone       String  @default("America/New_York")
+  defaultCurrency       String  @default("USD")
 
   // API Keys (Encrypted/Plain depending on implementation)
-  stripeSecretKey       String?
-  stripeWebhookSecret   String?
-  twilioAccountSid      String?
-  twilioAuthToken       String?
-  twilioFromNumber      String?
-  openAiKey             String?
-  resendApiKey          String?
-  
+  stripeSecretKey     String?
+  stripeWebhookSecret String?
+  twilioAccountSid    String?
+  twilioAuthToken     String?
+  twilioFromNumber    String?
+  openAiKey           String?
+  resendApiKey        String?
+
   // Branding & SEO
-  logoUrl               String?
-  primaryColor          String?  @default("#f59e0b")
-  analyticsId           String?
-  
-  updatedAt             DateTime @updatedAt
+  logoUrl      String?
+  primaryColor String? @default("#f59e0b")
+  analyticsId  String?
+
+  updatedAt DateTime @updatedAt
 }
 
-
 model Shop {
-  id                  String               @id @default(cuid())
-  name                String
-  description         String?
-  template            String               @default("modern")
-  customization       Json?
-  createdAt           DateTime             @default(now())
-  updatedAt           DateTime             @updatedAt
-  shopType            ShopType             @default(PHYSICAL)
-  travelFee           Float                @default(0)
-  maxTravelRadius     Int?
-  baseLocation        String?
-  timezone            String               @default("America/New_York")
-  country            Country              @default(US)
-  currency           String               @default("USD")
-  locale             String               @default("en-US")
-  paymentGateway     String               @default("STRIPE")
-  depositAmount       Float                @default(0)
-  depositRequired     Boolean              @default(false)
-  stripeAccountId     String?
-  razorpayKeyId       String?
-  razorpayKeySecret   String?
-  customDomain        String?              @unique
-  subdomain           String?              @unique
-  companyName         String?
-  googleMapsUrl       String?
-  aiTokens            Int                  @default(0)
-  slogan              String?
-  inventoryForecast           Json?
-  inventoryForecastUpdatedAt  DateTime?
-  appointments        Appointment[]
-  campaigns           Campaign[]
-  clientFormulas      ClientFormula[]
-  clientHistoryImages ClientHistoryImage[]
-  commissionRules     CommissionRule[]
-  dynamicTemplates    DynamicTemplate[]
-  expenses            Expense[]
-  formTemplates       FormTemplate[]
-  giftCards           GiftCard[]
-  leaves              Leave[]
-  loyaltyAccounts     LoyaltyAccount[]
-  loyaltyProgram      LoyaltyProgram?
-  membershipTiers     MembershipTier[]
-  messages            Message[]
-  notifications       Notification[]
-  portfolioImages     PortfolioImage[]
-  products            Product[]
-  referrals           Referral[]
-  resources           Resource[]
-  reviews             Review[]
-  services            Service[]
-  serviceAddons       ServiceAddon[]
-  shopAccesses        ShopAccess[]
-  blackoutDates       ShopBlackoutDate[]
-  usageReports        ShopUsageReport[]
-  timeLogs            TimeLog[]
-  users               User[]
-  userMemberships     UserMembership[]
-  waitlist            Waitlist[]
-  purchaseOrders      PurchaseOrder[]
-  boothRentPayments   BoothRentPayment[]
-  renterServices      RenterService[]
+  id                         String               @id @default(cuid())
+  name                       String
+  description                String?
+  template                   String               @default("modern")
+  customization              Json?
+  createdAt                  DateTime             @default(now())
+  updatedAt                  DateTime             @updatedAt
+  shopType                   ShopType             @default(PHYSICAL)
+  travelFee                  Float                @default(0)
+  maxTravelRadius            Int?
+  baseLocation               String?
+  timezone                   String               @default("America/New_York")
+  country                    Country              @default(US)
+  currency                   String               @default("USD")
+  locale                     String               @default("en-US")
+  paymentGateway             String               @default("STRIPE")
+  depositAmount              Float                @default(0)
+  depositRequired            Boolean              @default(false)
+  stripeAccountId            String?
+  razorpayKeyId              String?
+  razorpayKeySecret          String?
+  customDomain               String?              @unique
+  subdomain                  String?              @unique
+  companyName                String?
+  googleMapsUrl              String?
+  aiTokens                   Int                  @default(0)
+  slogan                     String?
+  inventoryForecast          Json?
+  inventoryForecastUpdatedAt DateTime?
+  appointments               Appointment[]
+  campaigns                  Campaign[]
+  clientFormulas             ClientFormula[]
+  clientHistoryImages        ClientHistoryImage[]
+  commissionRules            CommissionRule[]
+  dynamicTemplates           DynamicTemplate[]
+  expenses                   Expense[]
+  formTemplates              FormTemplate[]
+  giftCards                  GiftCard[]
+  leaves                     Leave[]
+  loyaltyAccounts            LoyaltyAccount[]
+  loyaltyProgram             LoyaltyProgram?
+  membershipTiers            MembershipTier[]
+  messages                   Message[]
+  notifications              Notification[]
+  portfolioImages            PortfolioImage[]
+  products                   Product[]
+  referrals                  Referral[]
+  resources                  Resource[]
+  reviews                    Review[]
+  services                   Service[]
+  serviceAddons              ServiceAddon[]
+  shopAccesses               ShopAccess[]
+  blackoutDates              ShopBlackoutDate[]
+  usageReports               ShopUsageReport[]
+  timeLogs                   TimeLog[]
+  users                      User[]
+  userMemberships            UserMembership[]
+  waitlist                   Waitlist[]
+  shopClients                ShopClient[]
+  purchaseOrders             PurchaseOrder[]
+  boothRentPayments          BoothRentPayment[]
+  renterServices             RenterService[]
 
   @@index([createdAt])
 }
@@ -119,23 +119,16 @@ model User {
   createdAt               DateTime                @default(now())
   updatedAt               DateTime                @updatedAt
   workingHours            Json?
-  clientNotes             String?
-  allergies               String?
   commissionRateProduct   Float?
   commissionRateService   Float?
   marketingConsent        Boolean                 @default(false)
-  phone                   String?
-  preferences             String?
   smsConsent              Boolean                 @default(false)
-  birthday                DateTime?
   winBackSentAt           DateTime?
   referralCode            String?                 @unique
   googleCalendarId        String?
   googleRefreshToken      String?
   imageUrl                String?
   recoveryTotpSecret      String?
-  stripeCustomerId        String?
-  stripePaymentMethodId   String?
   stripeConnectAccountId  String?
   stripeConnectOnboarded  Boolean                 @default(false)
   employmentType          EmploymentType?         @default(W2)
@@ -163,32 +156,53 @@ model User {
   memberships             UserMembership[]
   boothRentPayments       BoothRentPayment[]
   renterServices          RenterService[]
+  shopClients             ShopClient[]
 
   @@index([shopId, role])
   @@index([email])
 }
 
+model ShopClient {
+  id                    String    @id @default(cuid())
+  userId                String
+  shopId                String
+  clientNotes           String?
+  allergies             String?
+  preferences           String?
+  phone                 String?
+  birthday              DateTime?
+  stripeCustomerId      String?
+  stripePaymentMethodId String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+  shop                  Shop      @relation(fields: [shopId], references: [id])
+  user                  User      @relation(fields: [userId], references: [id])
+
+  @@unique([userId, shopId])
+  @@index([shopId])
+}
+
 model Product {
-  id                 String              @id @default(cuid())
+  id                 String                @id @default(cuid())
   name               String
   description        String?
   sku                String?
-  barcode            String?             @unique
+  barcode            String?               @unique
   price              Float
   cost               Float?
-  taxRate            Float               @default(0)
-  trackInventory     Boolean             @default(false)
-  inventoryCount     Int                 @default(0)
-  reorderPoint       Int                 @default(0)
-  type               ProductType         @default(RETAIL)
+  taxRate            Float                 @default(0)
+  trackInventory     Boolean               @default(false)
+  inventoryCount     Int                   @default(0)
+  reorderPoint       Int                   @default(0)
+  type               ProductType           @default(RETAIL)
   supplier           String?
   shopId             String
-  createdAt          DateTime            @default(now())
-  updatedAt          DateTime            @updatedAt
-  isSellable         Boolean             @default(true)
+  createdAt          DateTime              @default(now())
+  updatedAt          DateTime              @updatedAt
+  isSellable         Boolean               @default(true)
   imageUrl           String?
   appointmentItems   AppointmentItem[]
-  shop               Shop                @relation(fields: [shopId], references: [id])
+  shop               Shop                  @relation(fields: [shopId], references: [id])
   purchaseOrderItems PurchaseOrderItem[]
   productUsages      ServiceProductUsage[]
 
@@ -283,6 +297,7 @@ model Appointment {
   @@index([shopId, startTime])
   @@index([shopId, status])
   @@index([staffId, startTime, endTime])
+  @@index([staffId])
   @@index([userId])
   @@index([addons], type: Gin)
 }
@@ -298,6 +313,9 @@ model AppointmentItem {
   appointment   Appointment @relation(fields: [appointmentId], references: [id], onDelete: Cascade)
   product       Product?    @relation(fields: [productId], references: [id])
   service       Service?    @relation(fields: [serviceId], references: [id])
+
+  @@index([appointmentId])
+  @@index([productId])
 }
 
 model Payment {
@@ -310,6 +328,8 @@ model Payment {
   receiptUrl    String?
   createdAt     DateTime      @default(now())
   appointment   Appointment   @relation(fields: [appointmentId], references: [id], onDelete: Cascade)
+
+  @@index([appointmentId])
 }
 
 model CommissionRule {
@@ -922,16 +942,16 @@ model BoothRentPayment {
 }
 
 model ServiceProductUsage {
-  id                 String   @id @default(cuid())
-  serviceId          String
-  productId          String
-  servicesPerProduct Int      @default(1)
-  currentServiceCount Int     @default(0)
-  createdAt          DateTime @default(now())
-  updatedAt          DateTime @updatedAt
+  id                  String   @id @default(cuid())
+  serviceId           String
+  productId           String
+  servicesPerProduct  Int      @default(1)
+  currentServiceCount Int      @default(0)
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
 
-  service            Service  @relation(fields: [serviceId], references: [id], onDelete: Cascade)
-  product            Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  service Service @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
 
   @@unique([serviceId, productId])
   @@index([serviceId])
@@ -945,7 +965,7 @@ model RenterService {
   name        String
   description String?
   price       Float
-  duration    Int      // minutes
+  duration    Int // minutes
   isActive    Boolean  @default(true)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt

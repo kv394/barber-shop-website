@@ -147,7 +147,7 @@ export async function POST(req: Request) {
 
         if (customerId && paymentMethodId) {
           // Update the user's saved payment method
-          await prisma.user.updateMany({
+          await prisma.shopClient.updateMany({
             where: { stripeCustomerId: customerId },
             data: { stripePaymentMethodId: paymentMethodId }
           });

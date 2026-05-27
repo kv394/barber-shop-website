@@ -35,7 +35,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ shop
     if (!shop) {
       const firstWord = shopId.split('-').find(w => w.length > 2) || shopId.split('-')[0];
       const candidates = await prisma.shop.findMany({
-        where: { name: { contains: firstWord, mode: 'insensitive' } },
+        where: { name: { startsWith: firstWord, mode: 'insensitive' } },
         take: 50,
         select: {
           id: true,

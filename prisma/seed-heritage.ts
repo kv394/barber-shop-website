@@ -253,10 +253,14 @@ async function main() {
         name: c.name,
         role: 'CLIENT',
         shopId: SHOP_ID,
-        phone: c.phone,
         barcode: barcode(c.email),
         marketingConsent: true,
       },
+    });
+    await prisma.shopClient.upsert({
+      where: { userId_shopId: { userId: user.id, shopId: SHOP_ID } },
+      create: { userId: user.id, shopId: SHOP_ID, phone: c.phone },
+      update: { phone: c.phone }
     });
     console.log(`      ✅  ${user.name} (${user.email})`);
   }

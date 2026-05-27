@@ -95,7 +95,7 @@ export async function PATCH(
     // Fetch current appointment for deposit handling
     const currentAppointment = await prisma.appointment.findUnique({
       where: { id: appointmentId, shopId },
-      include: { user: true, service: true, shop: { select: { stripeAccountId: true, paymentGateway: true } } },
+      include: { user: { include: { shopClients: { where: { shopId } } } }, service: true, shop: { select: { stripeAccountId: true, paymentGateway: true } } },
     });
 
     if (!currentAppointment) {
@@ -109,14 +109,14 @@ export async function PATCH(
           if (currentAppointment.depositPaymentIntentId) {
             const { captureDeposit } = await import('@/lib/stripe');
             await captureDeposit(currentAppointment.depositPaymentIntentId, currentAppointment.shop.stripeAccountId);
-          } else if (currentAppointment.user?.stripeCustomerId && currentAppointment.user?.stripePaymentMethodId && currentAppointment.service) {
+          } else if (currentAppointment.user?.shopClients[0]?.stripeCustomerId && currentAppointment.user?.shopClients[0]?.stripePaymentMethodId && currentAppointment.service) {
             // Charge 50% cancellation fee
             const { chargeNoShowFee } = await import('@/lib/stripe');
             const feeAmount = currentAppointment.service.price * 0.50;
             if (feeAmount > 0) {
               await chargeNoShowFee(
-                currentAppointment.user.stripeCustomerId,
-                currentAppointment.user.stripePaymentMethodId,
+                currentAppointment.user.shopClients[0].stripeCustomerId,
+                currentAppointment.user.shopClients[0].stripePaymentMethodId,
                 feeAmount,
                 { appointmentId: currentAppointment.id, shopId: currentAppointment.shopId },
                 currentAppointment.shop.stripeAccountId

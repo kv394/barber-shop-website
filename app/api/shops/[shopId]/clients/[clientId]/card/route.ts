@@ -32,7 +32,8 @@ export async function POST(
     }
 
     const clientUser = await prisma.user.findUnique({
-      where: { id: clientId }
+      where: { id: clientId },
+      include: { shopClients: { where: { shopId } } }
     });
 
     if (!clientUser) return new Response('Client not found', { status: 404 });
@@ -52,7 +53,7 @@ export async function POST(
     });
     const stripeOptions = shop.stripeAccountId ? { stripeAccount: shop.stripeAccountId } : undefined;
 
-    let customerId = clientUser.stripeCustomerId;
+    let customerId = clientUser.shopClients[0]?.stripeCustomerId;
 
     if (!customerId) {
       // Create a new Stripe customer on the shop's own account
@@ -66,9 +67,10 @@ export async function POST(
       }, stripeOptions);
       customerId = customer.id;
       
-      await prisma.user.update({
-        where: { id: clientUser.id },
-        data: { stripeCustomerId: customerId }
+      await prisma.shopClient.upsert({
+        where: { userId_shopId: { userId: clientUser.id, shopId } },
+        create: { userId: clientUser.id, shopId, stripeCustomerId: customerId },
+        update: { stripeCustomerId: customerId }
       });
     }
 

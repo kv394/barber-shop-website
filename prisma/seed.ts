@@ -154,12 +154,15 @@ async function main() {
       name: 'Sam Customer',
       role: 'CLIENT',
       shopId: shop.id,
-      phone: '+1-555-0100',
       barcode: barcode('client@demo.kutzapp.com'),
       marketingConsent: true,
       smsConsent: true,
-      birthday: new Date('1990-06-15'),
     },
+  });
+  await prisma.shopClient.upsert({
+    where: { userId_shopId: { userId: client.id, shopId: shop.id } },
+    create: { userId: client.id, shopId: shop.id, phone: '+1-555-0100', birthday: new Date('1990-06-15') },
+    update: { phone: '+1-555-0100', birthday: new Date('1990-06-15') }
   });
   console.log(`  ✅  CLIENT      : ${client.email}  → ${shop.name}`);
 
