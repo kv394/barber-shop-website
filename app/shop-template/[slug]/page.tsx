@@ -2,6 +2,15 @@ import { prisma } from '@/lib/prisma';
 import { Metadata } from 'next';
 import Script from 'next/script';
 import AIWidget from '@/components/booking/AIWidget';
+import DOMPurify from 'isomorphic-dompurify';
+
+function sanitizeCss(css: string): string {
+    return css
+        .replace(/expression\s*\(/gi, '')
+        .replace(/url\s*\(\s*['"]?\s*javascript:/gi, 'url(')
+        .replace(/behavior\s*:/gi, '')
+        .replace(/@import\b/gi, '');
+}
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 60;
@@ -164,9 +173,9 @@ export default async function PublicShopPage({
       return (
         <main>
           {dynamicTemplate.cssCode && (
-            <style dangerouslySetInnerHTML={{ __html: dynamicTemplate.cssCode }} />
+            <style dangerouslySetInnerHTML={{ __html: sanitizeCss(dynamicTemplate.cssCode) }} />
           )}
-          <div dangerouslySetInnerHTML={{ __html: html }} />
+          <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(html) }} />
           <Script src="https://cdn.tailwindcss.com?plugins=forms,container-queries" strategy="afterInteractive" />
           <AIWidget shopId={shop.id} />
         </main>
@@ -224,7 +233,7 @@ export default async function PublicShopPage({
           opacity: ${heroOverlayOpacity / 100};
         }
 
-        ${customCss}
+        ${sanitizeCss(customCss)}
       `}} />
   
 
@@ -272,7 +281,7 @@ export default async function PublicShopPage({
           opacity: ${heroOverlayOpacity / 100};
         }
 
-        ${customCss}
+        ${sanitizeCss(customCss)}
       `}} />
   
         <style dangerouslySetInnerHTML={{__html: `
@@ -317,7 +326,7 @@ export default async function PublicShopPage({
                 </span>
                 <h1 
                   className="font-headline leading-[1.1] mb-8 tracking-tight text-crm-mutedrm-textxl font-bold"
-                  dangerouslySetInnerHTML={{ __html: editorial.heroTitle || `Your Sanctuary of <br/> <span class="italic" style="color: ${primaryColor}">Sophisticated Care</span>` }}
+                  dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(editorial.heroTitle || `Your Sanctuary of <br/> <span class="italic" style="color: ${primaryColor}">Sophisticated Care</span>`) }}
                 />
                 <p className="text-crm-muted font-body max-w-md mb-10 leading-relaxed text-[13px]">
                   {editorial.heroSubtitle || 'Experience beauty as an art form. Our atelier provides a curated space for those who appreciate the finer details of self-ceremony.'}
@@ -419,7 +428,7 @@ export default async function PublicShopPage({
                   <div className="md:col-span-4">
                     <h2 
                       className="font-headline mb-6 leading-tight text-xl font-bold"
-                      dangerouslySetInnerHTML={{ __html: editorial.testimonialsTitle || `Reflections <br/>from Our <br/><span class="italic" style="color: ${primaryColor}">Atelier Guests</span>` }}
+                      dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(editorial.testimonialsTitle || `Reflections <br/>from Our <br/><span class="italic" style="color: ${primaryColor}">Atelier Guests</span>`) }}
                     />
                   </div>
                   <div className="md:col-span-8 flex gap-8">
@@ -554,7 +563,7 @@ export default async function PublicShopPage({
           opacity: ${heroOverlayOpacity / 100};
         }
 
-        ${customCss}
+        ${sanitizeCss(customCss)}
       `}} />
   
 
@@ -602,7 +611,7 @@ export default async function PublicShopPage({
           opacity: ${heroOverlayOpacity / 100};
         }
 
-        ${customCss}
+        ${sanitizeCss(customCss)}
       `}} />
   
         <header className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 border-b border-crm-border flex flex-col md:flex-row justify-between items-end md:items-center">
@@ -699,7 +708,7 @@ export default async function PublicShopPage({
           opacity: ${heroOverlayOpacity / 100};
         }
 
-        ${customCss}
+        ${sanitizeCss(customCss)}
       `}} />
   
 
@@ -747,7 +756,7 @@ export default async function PublicShopPage({
           opacity: ${heroOverlayOpacity / 100};
         }
 
-        ${customCss}
+        ${sanitizeCss(customCss)}
       `}} />
   
         <header className="border-b-4 border-[#2c1e16] py-16 text-crm-mutedrm-textenter bg-[url('https://www.transparenttextures.com/patterns/aged-paper.png')]">
@@ -840,7 +849,7 @@ export default async function PublicShopPage({
           opacity: ${heroOverlayOpacity / 100};
         }
 
-        ${customCss}
+        ${sanitizeCss(customCss)}
       `}} />
   
 
@@ -888,7 +897,7 @@ export default async function PublicShopPage({
           opacity: ${heroOverlayOpacity / 100};
         }
 
-        ${customCss}
+        ${sanitizeCss(customCss)}
       `}} />
   
       {/* Hero Section */}

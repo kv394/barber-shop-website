@@ -1,10 +1,8 @@
 'use client';
 
-import { useState, useEffect, FormEvent } from 'react';
+import { useState, useEffect } from 'react';
 import SupabaseAuthButton from '@/components/auth/SupabaseAuthButton';
 import Link from 'next/link';
-import DeleteShopButton from '@/components/shop-admin/DeleteShopButton';
-import BarcodeScannerWrapper from '@/components/checkout/BarcodeScannerWrapper';
 import { useRouter } from 'next/navigation';
 import dynamic from 'next/dynamic';
 
@@ -26,34 +24,10 @@ type UserProfile = {
   shop?: { name: string, id: string, slug?: string };
 } | null;
 
-type ActiveLog = {
-    id: string;
-    clockIn: string;
-    user: {
-        name: string | null;
-        email: string;
-    }
-}
-
-type WaitlistEntry = {
-    id: string;
-    clientName: string;
-    status: string;
-    position: number;
-    createdAt: string;
-}
-
-
-
 export default function Home() {
   const [userProfile, setUserProfile] = useState<UserProfile>(null);
   const [shops, setShops] = useState<Shop[]>([]);
-  const [newShopName, setNewShopName] = useState('');
-  const [newShopAdminEmail, setNewShopAdminEmail] = useState('');
-  const [kioskEmail, setKioskEmail] = useState('');
-  const [country, setCountry] = useState<'US'|'IN'>('US');
   const [isLoading, setIsLoading] = useState(true);
-  const [createError, setCreateError] = useState<string | null>(null);
   const router = useRouter();
 
   const fetchShops = async () => {
@@ -68,19 +42,15 @@ export default function Home() {
   };
 
   useEffect(() => {
-    // Fetch user data from our own API using Supabase
     const fetchUserData = async () => {
       try {
           let res = await fetch(`/api/users/me`);
           
           if (res.ok) {
               const profile = await res.json();
-              
-              // Construct a slug for redirecting CLIENTs if they have a shop
               if (profile.shopId && profile.shop) {
                   profile.shop.slug = profile.shop.name.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '');
               }
-              
               setUserProfile(profile);
           } else {
               setUserProfile(null); 
@@ -100,7 +70,6 @@ export default function Home() {
     }
   }, [userProfile]);
 
-  // AUTOMATIC REDIRECTS FOR ROLES
   useEffect(() => {
     if (!isLoading && userProfile) {
       if (userProfile.role === 'SITE_ADMIN') {
@@ -110,57 +79,25 @@ export default function Home() {
           router.push(`/shop/${userProfile.shopId}`);
         }
       } else if (userProfile.role === 'CLIENT' && userProfile.shop?.slug) {
-        // Automatically redirect clients to their specific shop portal
         router.push(`/shops/${userProfile.shop.slug}`);
       }
     }
   }, [isLoading, userProfile, router]);
 
-  const handleCreateShop = async (e: FormEvent) => {
-    e.preventDefault();
-    if (!newShopName.trim() || !kioskEmail.trim()) {
-        setCreateError("Shop Name and Kiosk Email are required.");
-        return;
-    };
-    setCreateError(null);
-
-    try {
-      const response = await fetch('/api/shops', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
-            name: newShopName,
-            kioskEmail: kioskEmail,
-            adminEmail: newShopAdminEmail.trim() || null,
-            country: country
-        }),
-      });
-
-      if (!response.ok) {
-          const errorData = await response.json();
-          throw new Error(errorData.error || 'Failed to create shop');
-      }
-
-      setNewShopName('');
-      setNewShopAdminEmail('');
-      setKioskEmail('');
-      fetchShops();
-    } catch (error: any) {
-      console.error('Failed to create shop:', error);
-      setCreateError(error.message || 'An unexpected error occurred');
-    }
-  };
-
-  const handleShopDeleted = () => {
-    fetchShops();
-  };
-
   if (isLoading) {
     return (
-      <div className="min-h-screen overflow-x-hidden flex flex-col flex items-center justify-center bg-crm-bg">
-        <div className="flex flex-col items-center gap-4">
-          <div className="w-12 h-12 border-4 border-brand-gold border-t-transparent rounded-full animate-spin"></div>
-          <p className="text-crm-muted animate-pulse font-medium tracking-wide uppercase text-[13px]">Initializing Platform...</p>
+      <div className="min-h-screen flex flex-col bg-crm-bg px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+        <div className="w-full max-w-5xl mx-auto space-y-12">
+          {/* Header Skeleton */}
+          <div className="flex justify-between items-center w-full mb-12 sm:mb-20">
+            <div className="h-8 bg-crm-surface/50 rounded w-32 animate-pulse border border-crm-border/30"></div>
+            <div className="h-10 bg-crm-surface/50 rounded w-24 animate-pulse border border-crm-border/30"></div>
+          </div>
+          {/* Body Skeleton */}
+          <div className="space-y-6 max-w-4xl mx-auto mt-20 text-center flex flex-col items-center">
+            <div className="h-12 bg-crm-surface/60 rounded-lg w-[80%] animate-pulse border border-crm-border/30"></div>
+            <div className="h-4 bg-crm-surface/40 rounded w-[40%] animate-pulse border border-crm-border/30"></div>
+          </div>
         </div>
       </div>
     );
@@ -170,14 +107,18 @@ export default function Home() {
       return <KioskMode userProfile={userProfile} />;
   }
 
-  // If they are a shop user and have a shop, they will be redirected by the useEffect above
-  // We can return a loading state while the redirect happens
   if (userProfile?.shopId && userProfile.role !== 'SITE_ADMIN') {
     return (
-      <div className="min-h-screen overflow-x-hidden flex flex-col flex items-center justify-center bg-crm-bg">
-        <div className="flex flex-col items-center gap-4">
-          <div className="w-12 h-12 border-4 border-brand-gold border-t-transparent rounded-full animate-spin"></div>
-          <p className="text-crm-accent animate-pulse font-medium tracking-wide uppercase text-[13px]">Entering Shop Portal...</p>
+      <div className="min-h-screen flex flex-col bg-crm-bg px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+        <div className="w-full max-w-5xl mx-auto space-y-12">
+          <div className="flex justify-between items-center w-full mb-12 sm:mb-20">
+            <div className="h-8 bg-crm-surface/50 rounded w-32 animate-pulse border border-crm-border/30"></div>
+            <div className="h-10 bg-crm-surface/50 rounded w-24 animate-pulse border border-crm-border/30"></div>
+          </div>
+          <div className="space-y-6 max-w-4xl mx-auto mt-20 text-center flex flex-col items-center">
+            <div className="h-12 bg-crm-surface/60 rounded-lg w-[80%] animate-pulse border border-crm-border/30"></div>
+            <p className="text-crm-accent animate-pulse font-medium tracking-wide uppercase text-[13px]">Entering Shop Portal...</p>
+          </div>
         </div>
       </div>
     );
@@ -186,7 +127,7 @@ export default function Home() {
   const isSignedIn = !!userProfile;
 
   return (
-    <main className="min-h-screen overflow-x-hidden flex flex-col bg-crm-bg flex flex-col">
+    <main className="min-h-screen overflow-x-hidden flex flex-col bg-crm-bg">
       <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 flex-grow">
         
         <header className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-12 sm:mb-20">
@@ -208,9 +149,8 @@ export default function Home() {
         </div>
 
         <div>
-          {/* Landing Page Content */}
           {!isSignedIn && (
-            <div className="bg-crm-surface p-8 rounded-lg text-center border border-crm-border shadow-sm max-w-2xl mx-auto mt-12">
+            <div className="bg-crm-surface p-8 rounded-lg text-center border border-crm-border shadow-sm max-w-2xl mx-auto mt-12 transition-all duration-500 ease-in-out transform hover:-translate-y-1 hover:shadow-md">
               <h3 className="text-xl font-bold font-serif mb-4 text-crm-text">Ready to transform your business?</h3>
               <p className="text-crm-muted mb-8 text-[14px]">Join thousands of barbershops using KutzApp to streamline their operations, increase bookings, and grow their revenue.</p>
               <div className="flex gap-4 justify-center">
@@ -222,49 +162,6 @@ export default function Home() {
                 </Link>
               </div>
             </div>
-          )}
-          {/* Create Shop Form */}
-          {!isSignedIn && (
-            <form className="max-w-md mx-auto mt-8 space-y-4" onSubmit={handleCreateShop}>
-              <input
-                type="text"
-                placeholder="Shop Name"
-                value={newShopName}
-                onChange={e => setNewShopName(e.target.value)}
-                className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-crm-primary"
-                required
-              />
-              <input
-                type="email"
-                placeholder="Kiosk Email"
-                value={kioskEmail}
-                onChange={e => setKioskEmail(e.target.value)}
-                className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-crm-primary"
-                required
-              />
-              <input
-                type="email"
-                placeholder="Admin Email (optional)"
-                value={newShopAdminEmail}
-                onChange={e => setNewShopAdminEmail(e.target.value)}
-                className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-crm-primary"
-              />
-              <select
-                value={country}
-                onChange={e => setCountry(e.target.value as 'US'|'IN')}
-                className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-crm-primary"
-              >
-                <option value="US">United States</option>
-                <option value="IN">India</option>
-              </select>
-              {createError && <p className="text-red-500 text-sm">{createError}</p>}
-              <button
-                type="submit"
-                className="w-full bg-crm-primary text-white py-2 rounded-md hover:bg-crm-primary/90"
-              >
-                Create Shop
-              </button>
-            </form>
           )}
         </div>
 

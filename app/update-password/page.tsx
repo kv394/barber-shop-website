@@ -26,6 +26,10 @@ export default async function UpdatePasswordPage({
 
     const password = formData.get('password') as string;
 
+    if (!password || password.length < 8) {
+      return redirect('/update-password?error=' + encodeURIComponent('Password must be at least 8 characters.'));
+    }
+
     const supabase = await createClient();
     const { error: updateError } = await supabase.auth.updateUser({
       password: password,
@@ -52,7 +56,7 @@ export default async function UpdatePasswordPage({
         <form action={updatePasswordAction} className="space-y-5">
           <div>
             <label className="block font-medium text-crm-muted mb-1.5 text-[13px]">New Password</label>
-            <input name="password" type="password" required placeholder="••••••••" minLength={6} className="w-full bg-crm-surface border border-crm-border shadow-sm rounded-lg p-3 text-crm-text focus:ring-2 focus:ring-crm-primary focus:border-transparent outline-none" />
+            <input name="password" type="password" required placeholder="••••••••" minLength={8} className="w-full bg-crm-surface border border-crm-border shadow-sm rounded-lg p-3 text-crm-text focus:ring-2 focus:ring-crm-primary focus:border-transparent outline-none" />
           </div>
           <button type="submit" className="w-full bg-crm-primary text-white font-bold py-3 rounded-lg hover:bg-crm-surface hover:text-crm-primary border border-transparent hover:border-crm-primary/30 transition-colors mt-2">Update Password</button>
         </form>

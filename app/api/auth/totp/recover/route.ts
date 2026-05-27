@@ -2,10 +2,19 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js'; // We need the admin client
 import { authenticator } from '@otplib/preset-default';
 import { prisma } from '@/lib/prisma';
+import { rateLimit } from '@/lib/rate-limiter';
 
 export async function POST(req: NextRequest) {
   try {
     const { email, token, newPassword } = await req.json();
+
+    // Rate limit TOTP recovery attempts per email (5 per 15 minutes, fail closed)
+    if (email) {
+      const rateLimitResult = await rateLimit('totp-recover:' + email.toLowerCase(), 5, 15 * 60, true);
+      if (!rateLimitResult.success) {
+        return NextResponse.json({ error: 'Too many recovery attempts. Please try again later.' }, { status: 429 });
+      }
+    }
 
     if (!email || !token || !newPassword) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });

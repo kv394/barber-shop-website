@@ -230,7 +230,7 @@ ONLY use tools if the user role is SHOP_ADMIN or SITE_ADMIN.`;
               id: 'system_ai_assistant',
               email: 'ai-assistant@system.local',
               name: 'AI Assistant',
-              role: 'SITE_ADMIN',
+              role: 'CLIENT',
             }
           });
 

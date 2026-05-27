@@ -36,7 +36,7 @@ export default async function SignInPage({
     // Rate Limiting
     const headersList = await headers();
     const ip = headersList.get('x-forwarded-for') || 'unknown';
-    const rateLimitResult = await rateLimit(`login:${ip}`, 5, 60 * 5); // 5 attempts per 5 minutes
+    const rateLimitResult = await rateLimit(`login:${ip}`, 5, 60 * 5, true); // 5 attempts per 5 minutes, fail closed
     
     if (!rateLimitResult.success) {
       return redirect(`/sign-in?error=${encodeURIComponent('Too many login attempts. Please try again later.')}&redirect_url=${encodeURIComponent(redirectUrl)}`);
@@ -45,7 +45,7 @@ export default async function SignInPage({
     const email = (formData.get('email') as string).trim().toLowerCase();
     const password = formData.get('password') as string;
     
-    console.log(`[LOGIN ATTEMPT] Email: ${email}`);
+
 
     // Aggressively clear legacy cookies to prevent 4KB domain cookie limits from blocking Supabase cookies
     const cookieStore = await cookies();
@@ -63,11 +63,11 @@ export default async function SignInPage({
     });
 
     if (authError) {
-      console.error(`[LOGIN FAILED] ${authError.message}`);
-      return redirect(`/sign-in?error=${encodeURIComponent(authError.message)}&redirect_url=${encodeURIComponent(redirectUrl)}`);
+      console.error('[LOGIN FAILED]', authError.code);
+      return redirect(`/sign-in?error=${encodeURIComponent('Invalid email or password. Please try again.')}&redirect_url=${encodeURIComponent(redirectUrl)}`);
     }
 
-    console.log(`[LOGIN SUCCESS] ID: ${authData?.user?.id}`);
+
     revalidatePath('/');
 
     let finalRedirectUrl = redirectUrl;

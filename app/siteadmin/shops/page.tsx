@@ -60,7 +60,7 @@ export default function SiteAdminShopsPage() {
           <p className="text-crm-muted text-[13px]">{shops.length} shop{shops.length !== 1 ? 's' : ''} on the platform</p>
         </div>
         <Link
-          href="/"
+          href="/siteadmin/shops/new"
           className="bg-crm-primary text-white px-6 py-2.5 rounded-lg font-semibold hover:bg-crm-surface hover:text-crm-primary border border-transparent hover:border-crm-primary/30 transition-colors text-[13px]"
         >
           + Create New Shop

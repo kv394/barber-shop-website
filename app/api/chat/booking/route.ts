@@ -236,8 +236,7 @@ export async function POST(req: Request) {
     const slug = shop.name.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '');
     const isSaaSSlugPath = refererHeader && refererHeader.includes(`/shops/${slug}`);
 
-    // Allow all cross-origin requests loosely for testing/widget execution across domains
-    let isOriginAllowed = true;
+    let isOriginAllowed = !origin || allowedOrigins.some(ao => origin.startsWith(ao)) || isSaaSSubPath || isSaaSIdPath || isSaaSSlugPath;
 
     // Block unauthorized embeds strictly
     if (!isOriginAllowed) {
@@ -550,8 +549,8 @@ If the user wants to check, cancel, or reschedule their appointments, or asks fo
                     if (!appointmentId || !clientEmail) {
                         result = { error: "Missing appointmentId or clientEmail." };
                     } else {
-                        const apt = await prisma.appointment.findUnique({
-                            where: { id: appointmentId },
+                        const apt = await prisma.appointment.findFirst({
+                            where: { id: appointmentId, shopId: realShopId },
                             include: { service: true, shop: true }
                         });
                         
@@ -600,8 +599,10 @@ If the user wants to check, cancel, or reschedule their appointments, or asks fo
                     if (!appointmentId) {
                         result = { error: "Missing appointmentId." };
                     } else {
+                        const cancelTarget = await prisma.appointment.findFirst({ where: { id: appointmentId, shopId: realShopId } });
+                        if (!cancelTarget) { result = { error: "Appointment not found." }; continue; }
                         await prisma.appointment.update({
-                            where: { id: appointmentId },
+                            where: { id: cancelTarget.id },
                             data: { status: 'CANCELLED' }
                         });
                         result = { success: true, message: "Appointment cancelled." };
@@ -612,7 +613,7 @@ If the user wants to check, cancel, or reschedule their appointments, or asks fo
                     if (!appointmentId || !date || !time) {
                         result = { error: "Missing required arguments." };
                     } else {
-                        const apt = await prisma.appointment.findUnique({ where: { id: appointmentId }});
+                        const apt = await prisma.appointment.findFirst({ where: { id: appointmentId, shopId: realShopId }});
                         if (!apt) {
                             result = { error: "Appointment not found." };
                         } else {
@@ -680,6 +681,9 @@ If the user wants to check, cancel, or reschedule their appointments, or asks fo
         
         functionCalls = response.functionCalls;
     }
+
+    // Sanitize LLM output to prevent reflected XSS
+    finalResponseText = finalResponseText.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '');
 
     const payload: any = { text: finalResponseText, history: formattedContents };
     if (lastUiType === 'date_picker') {

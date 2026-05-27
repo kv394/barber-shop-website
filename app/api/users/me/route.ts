@@ -13,7 +13,16 @@ export async function GET() {
 
     const dbUser = await prisma.user.findFirst({
       where: { OR: [{ id: user.id }, { email: user.email }] },
-      include: {
+      select: {
+        id: true,
+        email: true,
+        name: true,
+        role: true,
+        shopId: true,
+        phone: true,
+        image: true,
+        barcode: true,
+        createdAt: true,
         shop: {
           select: {
             id: true,

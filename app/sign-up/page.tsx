@@ -19,7 +19,7 @@ export default async function SignUpPage({
     // Rate Limiting
     const headersList = await headers();
     const ip = headersList.get('x-forwarded-for') || 'unknown';
-    const rateLimitResult = await rateLimit(`signup:${ip}`, 5, 60 * 60); // 5 signups per hour per IP
+    const rateLimitResult = await rateLimit(`signup:${ip}`, 5, 60 * 60, true); // 5 signups per hour per IP, fail closed
     
     if (!rateLimitResult.success) {
       return redirect(`/sign-up?error=${encodeURIComponent('Too many signup attempts. Please try again later.')}`);
@@ -28,6 +28,10 @@ export default async function SignUpPage({
     const name = formData.get('name') as string;
     const email = formData.get('email') as string;
     const password = formData.get('password') as string;
+
+    if (!password || password.length < 8) {
+      return redirect('/sign-up?error=' + encodeURIComponent('Password must be at least 8 characters.'));
+    }
 
     const supabase = await createClient();
     
@@ -99,7 +103,7 @@ export default async function SignUpPage({
     // but with an empty identities array to prevent email enumeration. 
     // We can use this to show the correct duplicate account message!
     if (authData.user && authData.user.identities && authData.user.identities.length === 0) {
-      return redirect(`/sign-up?error=${encodeURIComponent('An account with this email already exists. Please sign in instead.')}`);
+      return redirect(`/sign-up?error=${encodeURIComponent('If this email is available, a confirmation link has been sent. If you already have an account, try signing in.')}`);
     }
 
     if (authData.user) {

@@ -22,6 +22,12 @@ export async function POST(
     }
 
     const buffer = Buffer.from(await audioFile.arrayBuffer());
+
+    const MAX_VOICE_NOTE_SIZE = 5 * 1024 * 1024; // 5MB
+    if (buffer.byteLength > MAX_VOICE_NOTE_SIZE) {
+      return NextResponse.json({ error: 'Voice note size exceeds 5MB limit' }, { status: 413 });
+    }
+
     const base64Audio = buffer.toString('base64');
     const mimeType = audioFile.type || 'audio/webm';
 

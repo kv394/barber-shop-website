@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
-
+import { createClient } from '@/utils/supabase/server';
 const htmlCode = `
 <div class="bg-surface text-on-surface selection:bg-primary/30">
 <!-- TopNavBar -->
@@ -224,6 +224,23 @@ const cssCode = `
 
 export async function GET() {
   try {
+    // Auth check: require SITE_ADMIN role
+    const supabase = await createClient();
+    const { data: { user: authUser } } = await supabase.auth.getUser();
+
+    if (!authUser || !authUser.email) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    const dbUser = await prisma.user.findUnique({
+      where: { email: authUser.email },
+      select: { role: true },
+    });
+
+    if (!dbUser || dbUser.role !== 'SITE_ADMIN') {
+      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+    }
+
     const shop = await prisma.shop.findFirst({
       where: {
         name: {
@@ -262,3 +279,4 @@ export async function GET() {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
+

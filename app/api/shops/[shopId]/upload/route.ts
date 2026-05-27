@@ -34,6 +34,11 @@ export async function POST(
     }
 
     const buffer = Buffer.from(await file.arrayBuffer());
+
+    const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
+    if (buffer.byteLength > MAX_FILE_SIZE) {
+      return NextResponse.json({ error: 'File size exceeds 10MB limit' }, { status: 413 });
+    }
     
     // Validate it's an image
     const ext = file.name.split('.').pop()?.toLowerCase() || '';

@@ -24,8 +24,6 @@ const publicRoutes = [
   '^/api/users/me$',
   '^/api/inngest(?:/.*)?$',
   '^/api/webhooks(?:/.*)?$',
-  '^/api/apply-heritage$',
-  '^/api/debug-kiosk-login$',
   '^/api/chat/booking(?:/.*)?$',
   '^/api/assets(?:/.*)?$'
 ];
@@ -43,7 +41,7 @@ const generateCsp = () => {
     connect-src 'self' https://*.supabase.co wss://*.supabase.co https://*.stripe.com;
     img-src 'self' data: https://images.unsplash.com https://cdn.pixabay.com;
     style-src 'self' 'unsafe-inline';
-    frame-src *;
+    frame-src 'self' https://*.stripe.com https://*.supabase.co;
     font-src 'self' data:;
   `.replace(/\s{2,}/g, ' ').trim();
   
@@ -154,10 +152,7 @@ export async function middleware(req: NextRequest) {
     }
   }
 
-  if (req.nextUrl.pathname === '/api/users/me') {
-    console.log('[MIDDLEWARE] /api/users/me -> user:', user?.email || 'null');
-    console.log('[MIDDLEWARE] cookies received:', req.cookies.getAll().map(c => c.name));
-  }
+
 
   if (!isPublicRoute(req.nextUrl.pathname) && !user) {
     const signInUrl = req.nextUrl.clone();
@@ -175,13 +170,13 @@ export async function middleware(req: NextRequest) {
   }
   
   // Prevent clickjacking for non-embed routes
-  if (!req.nextUrl.pathname.startsWith('/embed/') && !req.nextUrl.pathname.startsWith('/my-appointments') && !req.nextUrl.pathname.startsWith('/update-password')) {
+  if (!req.nextUrl.pathname.startsWith('/embed/') && !req.nextUrl.pathname.startsWith('/my-appointments')) {
     response.headers.set('X-Frame-Options', 'DENY');
   }
   // Prevent MIME type sniffing
   response.headers.set('X-Content-Type-Options', 'nosniff');
   // Strict Transport Security (HSTS)
-  response.headers.set('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
+  response.headers.set('Strict-Transport-Security', 'max-age=31536000; includeSubDomains; preload');
   // XSS Protection
   response.headers.set('X-XSS-Protection', '1; mode=block');
   // Referrer Policy

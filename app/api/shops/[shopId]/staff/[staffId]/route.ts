@@ -20,7 +20,23 @@ export async function GET(
 
     const staffMember = await prisma.user.findUnique({
       where: { id: staffId, shopId: shopId },
-      include: { leaves: { where: { date: { gte: new Date() } }, orderBy: { date: 'asc' } } },
+      select: {
+        id: true,
+        email: true,
+        name: true,
+        role: true,
+        phone: true,
+        image: true,
+        shopId: true,
+        barcode: true,
+        commissionRate: true,
+        isAvailable: true,
+        workingDays: true,
+        workingHoursStart: true,
+        workingHoursEnd: true,
+        createdAt: true,
+        leaves: { where: { date: { gte: new Date() } }, orderBy: { date: 'asc' } },
+      },
     });
     if (!staffMember) return NextResponse.json({ error: 'Staff member not found' }, { status: 404 });
 
@@ -67,7 +83,8 @@ export async function PATCH(
     if (body.stripeConnectAccountId !== undefined) allowedFields.stripeConnectAccountId = body.stripeConnectAccountId;
 
     const updated = await prisma.user.update({ where: { id: staffId }, data: allowedFields });
-    return NextResponse.json(JSON.parse(JSON.stringify(updated)));
+    const { googleRefreshToken, recoveryTotpSecret, ...safeUser } = updated as any;
+    return NextResponse.json(JSON.parse(JSON.stringify(safeUser)));
   } catch (error) {
     logger.error('Error updating staff member:', error);
     return NextResponse.json({ error: 'Failed to update' }, { status: 500 });

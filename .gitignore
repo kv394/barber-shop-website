@@ -52,3 +52,7 @@ test-prisma.js
 /playwright/.cache/
 /playwright/.auth/
 tsconfig.tsbuildinfo
+
+# Security - sensitive data files
+staging_auth_users.csv
+test_auth_dump.sql

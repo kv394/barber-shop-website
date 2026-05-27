@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@/utils/supabase/server';
 import { prisma } from '@/lib/prisma';
+import crypto from 'crypto';
 
 export const dynamic = 'force-dynamic';
 
@@ -22,12 +23,16 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: 'Stripe Connect not configured' }, { status: 500 });
   }
 
+  // HMAC-sign the user ID to prevent state forgery in OAuth flow
+  const hmac = crypto.createHmac('sha256', process.env.OAUTH_STATE_SECRET || 'fallback-secret').update(dbUser.id).digest('hex');
+  const stateToken = `${hmac}:${dbUser.id}`;
+
   const params = new URLSearchParams({
     response_type: 'code',
     client_id: clientId,
     scope: 'read_write',
     redirect_uri: `${appUrl}/api/stripe/connect/callback`,
-    state: dbUser.id, // pass our user ID through the OAuth flow
+    state: stateToken,
     'stripe_user[email]': dbUser.email,
     ...(dbUser.name ? { 'stripe_user[first_name]': dbUser.name.split(' ')[0] } : {}),
   });

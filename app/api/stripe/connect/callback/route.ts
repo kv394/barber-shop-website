@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import stripe from '@/lib/stripe';
 import { logger } from '@/lib/logger';
+import crypto from 'crypto';
 
 export const dynamic = 'force-dynamic';
 
@@ -9,14 +10,27 @@ export const dynamic = 'force-dynamic';
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const code = searchParams.get('code');
-  const userId = searchParams.get('state');
+  const stateParam = searchParams.get('state');
   const error = searchParams.get('error');
 
   const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
 
-  if (error || !code || !userId) {
-    logger.warn('Stripe Connect OAuth cancelled or failed', { error, userId });
+  if (error || !code || !stateParam) {
+    logger.warn('Stripe Connect OAuth cancelled or failed', { error, state: stateParam });
     return NextResponse.redirect(`${appUrl}?stripe_connect=cancelled`);
+  }
+
+  // Verify HMAC-signed state to prevent forgery
+  const parts = stateParam.split(':');
+  if (parts.length !== 2) {
+    logger.warn('Stripe Connect OAuth: invalid state format', { state: stateParam });
+    return NextResponse.redirect(`${appUrl}?stripe_connect=error`);
+  }
+  const [receivedHmac, userId] = parts;
+  const expectedHmac = crypto.createHmac('sha256', process.env.OAUTH_STATE_SECRET || 'fallback-secret').update(userId).digest('hex');
+  if (!crypto.timingSafeEqual(Buffer.from(receivedHmac, 'hex'), Buffer.from(expectedHmac, 'hex'))) {
+    logger.warn('Stripe Connect OAuth: state HMAC verification failed', { userId });
+    return NextResponse.redirect(`${appUrl}?stripe_connect=error`);
   }
 
   try {

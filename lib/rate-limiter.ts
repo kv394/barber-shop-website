@@ -33,12 +33,16 @@ export function getRedisClient() {
 export async function rateLimit(
   identifier: string,
   limit: number = 5,
-  windowSeconds: number = 60
+  windowSeconds: number = 60,
+  failClosed: boolean = false
 ): Promise<{ success: boolean; remaining: number }> {
   const redis = getRedisClient();
   
   if (!redis) {
-    return { success: true, remaining: limit };
+    // When failClosed is true (auth-critical paths), deny requests if Redis is unavailable
+    return failClosed
+      ? { success: false, remaining: 0 }
+      : { success: true, remaining: limit };
   }
 
   try {
@@ -69,6 +73,9 @@ export async function rateLimit(
     };
   } catch (error) {
     console.error('Rate Limiter Error:', error);
-    return { success: true, remaining: 1 };
+    // When failClosed is true (auth-critical paths), deny requests on Redis errors
+    return failClosed
+      ? { success: false, remaining: 0 }
+      : { success: true, remaining: 1 };
   }
 }

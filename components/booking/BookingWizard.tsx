@@ -342,7 +342,7 @@ export default function BookingWizard({ shopId, themeColor, secondaryColor, temp
       setSuccess(true);
       setTimeout(() => {
           if (typeof window !== 'undefined' && window.parent) {
-            window.parent.postMessage({ type: 'CLOSE_MODAL' }, '*');
+            window.parent.postMessage({ type: 'CLOSE_MODAL' }, window.location.origin);
           }
       }, 5000); // Extended to 5s so user can tap "Add to Calendar"
     } catch (err: any) {

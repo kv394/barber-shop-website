@@ -6,7 +6,7 @@ export default function IframeAuthHandler({ redirectUrl }: { redirectUrl: string
   useEffect(() => {
     // If we are inside an iframe, tell the parent to close the modal
     if (window !== window.parent) {
-      window.parent.postMessage({ type: 'CLOSE_MODAL' }, '*');
+      window.parent.postMessage({ type: 'CLOSE_MODAL' }, window.location.origin);
     } else {
       // If not in an iframe, just perform a standard redirect
       window.location.href = redirectUrl;
