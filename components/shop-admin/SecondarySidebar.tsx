@@ -7,6 +7,8 @@ export default function SecondarySidebar({ shopId, userRole, shopType }: { shopI
  const isAll = shopId === 'all';
  const isShopAdmin = userRole === 'SHOP_ADMIN';
 
+ if (!pathname) return null;
+
  // If user is not an admin, they don't have sub-menus (they only have Staff, Clients, Profile)
  if (!isShopAdmin || isAll) return null;
 

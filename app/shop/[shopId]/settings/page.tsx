@@ -29,23 +29,7 @@ export default async function ShopSettingsPage({
  }
 
  const shopDetails = await prisma.shop.findUnique({
- where: { id: shopId },
- select: {
- depositRequired: true,
- depositAmount: true,
- country: true,
- currency: true,
- locale: true,
- paymentGateway: true,
- stripeAccountId: true,
- razorpayKeyId: true,
- razorpayKeySecret: true,
- shopType: true,
- travelFee: true,
- maxTravelRadius: true,
- baseLocation: true,
- stripeConnectOnboarded: true,
- },
+ where: { id: shopId }
  });
 
 
