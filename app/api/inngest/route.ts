@@ -5,14 +5,14 @@ import { simulateLiveShop } from '@/inngest/simulate';
 
 // Create an API that serves zero-downtime background jobs and crons
 export const { GET, POST, PUT } = serve({
-  client: inngest,
-  functions: [
-    processDailyTasks,
-    processHourlyNotifications,
-    generateHourlyUsageReports,
-    queueAppointmentReminders,
-    processWinBackCampaigns,
-    simulateLiveShop,
-    runDemoAutomation,
-  ],
+ client: inngest,
+ functions: [
+ processDailyTasks,
+ processHourlyNotifications,
+ generateHourlyUsageReports,
+ queueAppointmentReminders,
+ processWinBackCampaigns,
+ simulateLiveShop,
+ runDemoAutomation,
+ ],
 });

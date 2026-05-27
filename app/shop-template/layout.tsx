@@ -1,13 +1,13 @@
 export const metadata = {
-  title: 'Shop Template',
-  description: 'Browse our services and book your appointment',
+ title: 'Shop Template',
+ description: 'Browse our services and book your appointment',
 };
 
 export default function ShopTemplateLayout({
-  children,
+ children,
 }: {
-  children: React.ReactNode;
+ children: React.ReactNode;
 }) {
-  return <>{children}</>;
+ return <>{children}</>;
 }
 

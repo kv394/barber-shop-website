@@ -12,444 +12,444 @@ import { cacheService } from '@/lib/cache';
 export const dynamic = 'force-dynamic';
 
 async function getPageData(shopId: string, userId: string, date: string) {
-  const data = await getShopLayoutData(userId, shopId);
-  if (!data) return null;
+ const data = await getShopLayoutData(userId, shopId);
+ if (!data) return null;
 
-  const shop = data.shop;
-  const targetDate = new Date(date);
-  
-  // Site Admins manage SHOP_ADMINs and ATTENDANCE_KIOSKs. 
-  // Shop Admins manage STAFF and BOOTH_RENTERs.
-  const rolesToFetch: any[] = data.isSiteAdmin ? ['SHOP_ADMIN', 'ATTENDANCE_KIOSK'] : ['SHOP_ADMIN', 'STAFF', 'BOOTH_RENTER'];
-  
-  const [allStaff, kioskUser] = await Promise.all([
-    prisma.user.findMany({
-      where: {
-        OR: [
-          { shopId: shopId, role: { in: rolesToFetch } },
-          { shopAccesses: { some: { shopId: shopId, role: { in: rolesToFetch } } } }
-        ]
-      },
-      include: {
-        staffAppointments: { where: { startTime: { gte: targetDate, lt: new Date(targetDate.getTime() + 24 * 60 * 60 * 1000) } } },
-        leaves: { where: { date: targetDate } },
-        timeLogs: { where: { clockIn: { gte: targetDate, lt: new Date(targetDate.getTime() + 24 * 60 * 60 * 1000) } }, orderBy: { clockIn: 'desc' }, take: 1 },
-        shopAccesses: { where: { shopId } }
-      },
-    }),
-    prisma.user.findFirst({
-      where: { shopId, role: 'ATTENDANCE_KIOSK' }
-    })
-  ]);
+ const shop = data.shop;
+ const targetDate = new Date(date);
+ 
+ // Site Admins manage SHOP_ADMINs and ATTENDANCE_KIOSKs. 
+ // Shop Admins manage STAFF and BOOTH_RENTERs.
+ const rolesToFetch: any[] = data.isSiteAdmin ? ['SHOP_ADMIN', 'ATTENDANCE_KIOSK'] : ['SHOP_ADMIN', 'STAFF', 'BOOTH_RENTER'];
+ 
+ const [allStaff, kioskUser] = await Promise.all([
+ prisma.user.findMany({
+ where: {
+ OR: [
+ { shopId: shopId, role: { in: rolesToFetch } },
+ { shopAccesses: { some: { shopId: shopId, role: { in: rolesToFetch } } } }
+ ]
+ },
+ include: {
+ staffAppointments: { where: { startTime: { gte: targetDate, lt: new Date(targetDate.getTime() + 24 * 60 * 60 * 1000) } } },
+ leaves: { where: { date: targetDate } },
+ timeLogs: { where: { clockIn: { gte: targetDate, lt: new Date(targetDate.getTime() + 24 * 60 * 60 * 1000) } }, orderBy: { clockIn: 'desc' }, take: 1 },
+ shopAccesses: { where: { shopId } }
+ },
+ }),
+ prisma.user.findFirst({
+ where: { shopId, role: 'ATTENDANCE_KIOSK' }
+ })
+ ]);
 
-  const dayOfWeek = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'][targetDate.getUTCDay()];
+ const dayOfWeek = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'][targetDate.getUTCDay()];
 
-  const staffWithSchedule = allStaff.map((staff: any) => {
-    // Skip schedule calculation for Kiosks
-    if (staff.role === 'ATTENDANCE_KIOSK') {
-       return { ...staff, schedule: [], isOnLeave: false, using: 'not-working' };
-    }
+ const staffWithSchedule = allStaff.map((staff: any) => {
+ // Skip schedule calculation for Kiosks
+ if (staff.role === 'ATTENDANCE_KIOSK') {
+ return { ...staff, schedule: [], isOnLeave: false, using: 'not-working' };
+ }
 
-    const individualHours = (staff.workingHours as any) || {};
-    let hoursForDay = individualHours[dayOfWeek];
-    const isExplicitlyOff = hoursForDay === null;
-    
-    // Check if clocked in today (has a log, but no clockOut time)
-    const latestLog = staff.timeLogs?.[0];
-    const isClockedIn = latestLog && !latestLog.clockOut;
+ const individualHours = (staff.workingHours as any) || {};
+ let hoursForDay = individualHours[dayOfWeek];
+ const isExplicitlyOff = hoursForDay === null;
+ 
+ // Check if clocked in today (has a log, but no clockOut time)
+ const latestLog = staff.timeLogs?.[0];
+ const isClockedIn = latestLog && !latestLog.clockOut;
 
-    if (isExplicitlyOff) return { ...staff, schedule: [], isOnLeave: false, using: 'not-working', dayOfWeek, openTime: null, closeTime: null, isWorking: false, workingHours: individualHours, isClockedIn };
-    if (!hoursForDay) hoursForDay = (shop.customization as any)?.businessHours?.[dayOfWeek];
-    if (!hoursForDay) return { ...staff, schedule: [], isOnLeave: false, using: 'not-set', dayOfWeek, openTime: '09:00', closeTime: '17:00', isWorking: false, workingHours: individualHours, isClockedIn };
-    
-    const schedule = [];
-    const [openHour, openMin] = hoursForDay.open.split(':').map(Number);
-    const [closeHour, closeMin] = hoursForDay.close.split(':').map(Number);
-    let currentSlotTime = new Date(targetDate);
-    currentSlotTime.setUTCHours(openHour, openMin, 0, 0);
-    const closingTime = new Date(targetDate);
-    closingTime.setUTCHours(closeHour, closeMin, 0, 0);
-    while (currentSlotTime < closingTime) {
-      const slotEndTime = new Date(currentSlotTime.getTime() + 30 * 60000);
-      const booking = staff.staffAppointments.find((apt: any) => new Date(apt.startTime) < slotEndTime && new Date(apt.endTime) > currentSlotTime);
-      const onLeave = staff.leaves.find((l: any) => new Date(l.startTime) < slotEndTime && new Date(l.endTime) > currentSlotTime);
-      schedule.push({
-        time: currentSlotTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true, timeZone: 'UTC' }),
-        isBooked: !!booking,
-        isOnLeave: !!onLeave,
-      });
-      currentSlotTime.setMinutes(currentSlotTime.getMinutes() + 30);
-    }
-    return { ...staff, schedule, isOnLeave: staff.leaves.length > 0, dayOfWeek, openTime: hoursForDay.open, closeTime: hoursForDay.close, isWorking: true, workingHours: individualHours, isClockedIn };
-  });
+ if (isExplicitlyOff) return { ...staff, schedule: [], isOnLeave: false, using: 'not-working', dayOfWeek, openTime: null, closeTime: null, isWorking: false, workingHours: individualHours, isClockedIn };
+ if (!hoursForDay) hoursForDay = (shop.customization as any)?.businessHours?.[dayOfWeek];
+ if (!hoursForDay) return { ...staff, schedule: [], isOnLeave: false, using: 'not-set', dayOfWeek, openTime: '09:00', closeTime: '17:00', isWorking: false, workingHours: individualHours, isClockedIn };
+ 
+ const schedule = [];
+ const [openHour, openMin] = hoursForDay.open.split(':').map(Number);
+ const [closeHour, closeMin] = hoursForDay.close.split(':').map(Number);
+ let currentSlotTime = new Date(targetDate);
+ currentSlotTime.setUTCHours(openHour, openMin, 0, 0);
+ const closingTime = new Date(targetDate);
+ closingTime.setUTCHours(closeHour, closeMin, 0, 0);
+ while (currentSlotTime < closingTime) {
+ const slotEndTime = new Date(currentSlotTime.getTime() + 30 * 60000);
+ const booking = staff.staffAppointments.find((apt: any) => new Date(apt.startTime) < slotEndTime && new Date(apt.endTime) > currentSlotTime);
+ const onLeave = staff.leaves.find((l: any) => new Date(l.startTime) < slotEndTime && new Date(l.endTime) > currentSlotTime);
+ schedule.push({
+ time: currentSlotTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true, timeZone: 'UTC' }),
+ isBooked: !!booking,
+ isOnLeave: !!onLeave,
+ });
+ currentSlotTime.setMinutes(currentSlotTime.getMinutes() + 30);
+ }
+ return { ...staff, schedule, isOnLeave: staff.leaves.length > 0, dayOfWeek, openTime: hoursForDay.open, closeTime: hoursForDay.close, isWorking: true, workingHours: individualHours, isClockedIn };
+ });
 
-  return { 
-    shop: JSON.parse(JSON.stringify(shop)), 
-    shopSlug: data.shopSlug,
-    userRole: data.userRole,
-    staff: JSON.parse(JSON.stringify(staffWithSchedule)),
-    kioskUser: kioskUser ? JSON.parse(JSON.stringify(kioskUser)) : null
-  };
+ return { 
+ shop: JSON.parse(JSON.stringify(shop)), 
+ shopSlug: data.shopSlug,
+ userRole: data.userRole,
+ staff: JSON.parse(JSON.stringify(staffWithSchedule)),
+ kioskUser: kioskUser ? JSON.parse(JSON.stringify(kioskUser)) : null
+ };
 }
 
 async function inviteUser(formData: FormData) {
-  'use server';
-  const email = formData.get('email') as string;
-  const role = formData.get('role') as 'SHOP_ADMIN' | 'STAFF' | 'BOOTH_RENTER' | 'ATTENDANCE_KIOSK';
-  const shopId = formData.get('shopId') as string;
-  if (!email || !role || !shopId) return;
+ 'use server';
+ const email = formData.get('email') as string;
+ const role = formData.get('role') as 'SHOP_ADMIN' | 'STAFF' | 'BOOTH_RENTER' | 'ATTENDANCE_KIOSK';
+ const shopId = formData.get('shopId') as string;
+ if (!email || !role || !shopId) return;
 
-  // SECURITY: Verify the caller is authorized to invite users to this shop
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
-  
-  const userId = user?.id;
-  if (!userId) return;
-  const caller = await prisma.user.findFirst({ where: { OR: [{ id: userId }, { email: user?.email || '' }] } });
-  if (!caller) return;
-  
-  let callerHasAccess = false;
-  if (caller.role === 'SITE_ADMIN') {
-    callerHasAccess = true;
-  } else if (caller.role === 'SHOP_ADMIN') {
-    if (caller.shopId === shopId) {
-      callerHasAccess = true;
-    } else {
-      const access = await prisma.shopAccess.findFirst({ where: { userId: caller.id, shopId, role: 'SHOP_ADMIN' } });
-      if (access) callerHasAccess = true;
-    }
-  }
+ // SECURITY: Verify the caller is authorized to invite users to this shop
+ const supabase = await createClient();
+ const { data: { user } } = await supabase.auth.getUser();
+ 
+ const userId = user?.id;
+ if (!userId) return;
+ const caller = await prisma.user.findFirst({ where: { OR: [{ id: userId }, { email: user?.email || '' }] } });
+ if (!caller) return;
+ 
+ let callerHasAccess = false;
+ if (caller.role === 'SITE_ADMIN') {
+ callerHasAccess = true;
+ } else if (caller.role === 'SHOP_ADMIN') {
+ if (caller.shopId === shopId) {
+ callerHasAccess = true;
+ } else {
+ const access = await prisma.shopAccess.findFirst({ where: { userId: caller.id, shopId, role: 'SHOP_ADMIN' } });
+ if (access) callerHasAccess = true;
+ }
+ }
 
-  if (!callerHasAccess) return;
-  // Only SITE_ADMIN can assign SHOP_ADMIN or ATTENDANCE_KIOSK roles
-  if ((role === 'SHOP_ADMIN' || role === 'ATTENDANCE_KIOSK') && caller.role !== 'SITE_ADMIN') return;
-  // BOOTH_RENTER can be assigned by SHOP_ADMIN or SITE_ADMIN
-  if (role !== 'STAFF' && role !== 'BOOTH_RENTER' && role !== 'SHOP_ADMIN' && role !== 'ATTENDANCE_KIOSK') return;
+ if (!callerHasAccess) return;
+ // Only SITE_ADMIN can assign SHOP_ADMIN or ATTENDANCE_KIOSK roles
+ if ((role === 'SHOP_ADMIN' || role === 'ATTENDANCE_KIOSK') && caller.role !== 'SITE_ADMIN') return;
+ // BOOTH_RENTER can be assigned by SHOP_ADMIN or SITE_ADMIN
+ if (role !== 'STAFF' && role !== 'BOOTH_RENTER' && role !== 'SHOP_ADMIN' && role !== 'ATTENDANCE_KIOSK') return;
 
-  const existingUser = await prisma.user.findUnique({ where: { email } });
-  if (existingUser) {
-    if (existingUser.shopId === shopId) {
-      await prisma.user.update({ where: { email }, data: { role } });
-    } else if (existingUser.shopId === null || existingUser.role === 'CLIENT') {
-      // User has no primary shop or is just a client. Set this as primary.
-      await prisma.user.update({ where: { email }, data: { role, shopId } });
-    } else {
-      // User belongs to another shop. Add a shopAccess record.
-      await prisma.shopAccess.upsert({
-        where: { userId_shopId: { userId: existingUser.id, shopId } },
-        update: { role },
-        create: { userId: existingUser.id, shopId, role }
-      });
-    }
-    await cacheService.invalidatePattern(`shop_layout:${existingUser.email}:*`);
-  } else {
-    const userBarcode = crypto.createHash('sha256').update(`${email}-${process.env.JWT_SECRET || 'secret'}`).digest('hex').substring(0, 12).toUpperCase();
-    await prisma.user.create({
-      data: {
-        id: `invited_${crypto.randomBytes(8).toString('hex')}`,
-        email,
-        role,
-        shopId,
-        barcode: userBarcode,
-      }
-    });
-  }
-  revalidatePath(`/shop/${shopId}/settings/team`);
+ const existingUser = await prisma.user.findUnique({ where: { email } });
+ if (existingUser) {
+ if (existingUser.shopId === shopId) {
+ await prisma.user.update({ where: { email }, data: { role } });
+ } else if (existingUser.shopId === null || existingUser.role === 'CLIENT') {
+ // User has no primary shop or is just a client. Set this as primary.
+ await prisma.user.update({ where: { email }, data: { role, shopId } });
+ } else {
+ // User belongs to another shop. Add a shopAccess record.
+ await prisma.shopAccess.upsert({
+ where: { userId_shopId: { userId: existingUser.id, shopId } },
+ update: { role },
+ create: { userId: existingUser.id, shopId, role }
+ });
+ }
+ await cacheService.invalidatePattern(`shop_layout:${existingUser.email}:*`);
+ } else {
+ const userBarcode = crypto.createHash('sha256').update(`${email}-${process.env.JWT_SECRET || 'secret'}`).digest('hex').substring(0, 12).toUpperCase();
+ await prisma.user.create({
+ data: {
+ id: `invited_${crypto.randomBytes(8).toString('hex')}`,
+ email,
+ role,
+ shopId,
+ barcode: userBarcode,
+ }
+ });
+ }
+ revalidatePath(`/shop/${shopId}/settings/team`);
 }
 
 async function removeUser(formData: FormData) {
-  'use server';
-  const targetUserId = formData.get('userId') as string;
-  const shopId = formData.get('shopId') as string;
-  if (!targetUserId || !shopId) return;
+ 'use server';
+ const targetUserId = formData.get('userId') as string;
+ const shopId = formData.get('shopId') as string;
+ if (!targetUserId || !shopId) return;
 
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
-  
-  const userId = user?.id;
-  if (!userId) return;
-  const caller = await prisma.user.findFirst({ where: { OR: [{ id: userId }, { email: user?.email || '' }] } });
-  if (!caller) return;
-  
-  let callerHasAccess = false;
-  if (caller.role === 'SITE_ADMIN') {
-    callerHasAccess = true;
-  } else if (caller.role === 'SHOP_ADMIN') {
-    if (caller.shopId === shopId) {
-      callerHasAccess = true;
-    } else {
-      const access = await prisma.shopAccess.findFirst({ where: { userId: caller.id, shopId, role: 'SHOP_ADMIN' } });
-      if (access) callerHasAccess = true;
-    }
-  }
+ const supabase = await createClient();
+ const { data: { user } } = await supabase.auth.getUser();
+ 
+ const userId = user?.id;
+ if (!userId) return;
+ const caller = await prisma.user.findFirst({ where: { OR: [{ id: userId }, { email: user?.email || '' }] } });
+ if (!caller) return;
+ 
+ let callerHasAccess = false;
+ if (caller.role === 'SITE_ADMIN') {
+ callerHasAccess = true;
+ } else if (caller.role === 'SHOP_ADMIN') {
+ if (caller.shopId === shopId) {
+ callerHasAccess = true;
+ } else {
+ const access = await prisma.shopAccess.findFirst({ where: { userId: caller.id, shopId, role: 'SHOP_ADMIN' } });
+ if (access) callerHasAccess = true;
+ }
+ }
 
-  if (!callerHasAccess) return;
+ if (!callerHasAccess) return;
 
-  const targetUser = await prisma.user.findUnique({ where: { id: targetUserId } });
-  if (targetUser?.shopId === shopId) {
-    await prisma.user.update({
-      where: { id: targetUserId },
-      data: { shopId: null, role: 'CLIENT' }
-    });
-  }
+ const targetUser = await prisma.user.findUnique({ where: { id: targetUserId } });
+ if (targetUser?.shopId === shopId) {
+ await prisma.user.update({
+ where: { id: targetUserId },
+ data: { shopId: null, role: 'CLIENT' }
+ });
+ }
 
-  await prisma.shopAccess.deleteMany({
-    where: { userId: targetUserId, shopId }
-  });
+ await prisma.shopAccess.deleteMany({
+ where: { userId: targetUserId, shopId }
+ });
 
-  if (targetUser) {
-    await cacheService.invalidatePattern(`shop_layout:${targetUser.email || targetUser.id}:*`);
-  }
+ if (targetUser) {
+ await cacheService.invalidatePattern(`shop_layout:${targetUser.email || targetUser.id}:*`);
+ }
 
-  revalidatePath(`/shop/${shopId}/settings/team`);
+ revalidatePath(`/shop/${shopId}/settings/team`);
 }
 
 async function addLeave(formData: FormData) {
-    'use server';
-    const staffId = formData.get('staffId') as string;
-    const date = formData.get('date') as string;
-    const startTime = formData.get('startTime') as string;
-    const endTime = formData.get('endTime') as string;
-    const shopId = formData.get('shopId') as string;
-    if (!staffId || !date || !startTime || !endTime || !shopId) return;
+ 'use server';
+ const staffId = formData.get('staffId') as string;
+ const date = formData.get('date') as string;
+ const startTime = formData.get('startTime') as string;
+ const endTime = formData.get('endTime') as string;
+ const shopId = formData.get('shopId') as string;
+ if (!staffId || !date || !startTime || !endTime || !shopId) return;
 
-    // SECURITY: Verify caller is authorized
-    const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
-  
-  const userId = user?.id;
-    if (!userId) return;
-    const data = await getShopLayoutData(userId, shopId);
-    if (!data) return;
-    // SECURITY: Verify target staff belongs to this shop
-    const targetStaff = await prisma.user.findUnique({ where: { id: staffId }, include: { shopAccesses: { where: { shopId } } } });
-    if (!targetStaff || (targetStaff.shopId !== shopId && targetStaff.shopAccesses.length === 0)) return;
+ // SECURITY: Verify caller is authorized
+ const supabase = await createClient();
+ const { data: { user } } = await supabase.auth.getUser();
+ 
+ const userId = user?.id;
+ if (!userId) return;
+ const data = await getShopLayoutData(userId, shopId);
+ if (!data) return;
+ // SECURITY: Verify target staff belongs to this shop
+ const targetStaff = await prisma.user.findUnique({ where: { id: staffId }, include: { shopAccesses: { where: { shopId } } } });
+ if (!targetStaff || (targetStaff.shopId !== shopId && targetStaff.shopAccesses.length === 0)) return;
 
-    const [startHour, startMinute] = startTime.split(':').map(Number);
-    const startDate = new Date(date);
-    startDate.setUTCHours(startHour, startMinute, 0, 0);
+ const [startHour, startMinute] = startTime.split(':').map(Number);
+ const startDate = new Date(date);
+ startDate.setUTCHours(startHour, startMinute, 0, 0);
 
-    const [endHour, endMinute] = endTime.split(':').map(Number);
-    const endDate = new Date(date);
-    endDate.setUTCHours(endHour, endMinute, 0, 0);
+ const [endHour, endMinute] = endTime.split(':').map(Number);
+ const endDate = new Date(date);
+ endDate.setUTCHours(endHour, endMinute, 0, 0);
 
-    await prisma.leave.create({
-        data: {
-            userId: staffId,
-            shopId,
-            date: new Date(date),
-            startTime: startDate,
-            endTime: endDate,
-        },
-    });
-    revalidatePath(`/shop/${shopId}/settings/team?date=${date}`);
+ await prisma.leave.create({
+ data: {
+ userId: staffId,
+ shopId,
+ date: new Date(date),
+ startTime: startDate,
+ endTime: endDate,
+ },
+ });
+ revalidatePath(`/shop/${shopId}/settings/team?date=${date}`);
 }
 
 async function removeLeave(formData: FormData) {
-    'use server';
-    const staffId = formData.get('staffId') as string;
-    const date = formData.get('date') as string;
-    const startTime = formData.get('startTime') as string;
-    const endTime = formData.get('endTime') as string;
-    const shopId = formData.get('shopId') as string;
-    if (!staffId || !date || !startTime || !endTime || !shopId) return;
+ 'use server';
+ const staffId = formData.get('staffId') as string;
+ const date = formData.get('date') as string;
+ const startTime = formData.get('startTime') as string;
+ const endTime = formData.get('endTime') as string;
+ const shopId = formData.get('shopId') as string;
+ if (!staffId || !date || !startTime || !endTime || !shopId) return;
 
-    // SECURITY: Verify caller is authorized
-    const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
-  
-  const userId = user?.id;
-    if (!userId) return;
-    const data = await getShopLayoutData(userId, shopId);
-    if (!data) return;
-    // SECURITY: Verify target staff belongs to this shop
-    const targetStaff = await prisma.user.findUnique({ where: { id: staffId }, include: { shopAccesses: { where: { shopId } } } });
-    if (!targetStaff || (targetStaff.shopId !== shopId && targetStaff.shopAccesses.length === 0)) return;
+ // SECURITY: Verify caller is authorized
+ const supabase = await createClient();
+ const { data: { user } } = await supabase.auth.getUser();
+ 
+ const userId = user?.id;
+ if (!userId) return;
+ const data = await getShopLayoutData(userId, shopId);
+ if (!data) return;
+ // SECURITY: Verify target staff belongs to this shop
+ const targetStaff = await prisma.user.findUnique({ where: { id: staffId }, include: { shopAccesses: { where: { shopId } } } });
+ if (!targetStaff || (targetStaff.shopId !== shopId && targetStaff.shopAccesses.length === 0)) return;
 
-    const [startHour, startMinute] = startTime.split(':').map(Number);
-    const startDate = new Date(date);
-    startDate.setUTCHours(startHour, startMinute, 0, 0);
+ const [startHour, startMinute] = startTime.split(':').map(Number);
+ const startDate = new Date(date);
+ startDate.setUTCHours(startHour, startMinute, 0, 0);
 
-    const [endHour, endMinute] = endTime.split(':').map(Number);
-    const endDate = new Date(date);
-    endDate.setUTCHours(endHour, endMinute, 0, 0);
+ const [endHour, endMinute] = endTime.split(':').map(Number);
+ const endDate = new Date(date);
+ endDate.setUTCHours(endHour, endMinute, 0, 0);
 
-    // Delete all leaves for this staff member on this date that overlap the selected range
-    await prisma.leave.deleteMany({
-        where: {
-            userId: staffId,
-            shopId: shopId,
-            date: new Date(date),
-            startTime: { lt: endDate },
-            endTime: { gt: startDate },
-        },
-    });
-    revalidatePath(`/shop/${shopId}/settings/team?date=${date}`);
+ // Delete all leaves for this staff member on this date that overlap the selected range
+ await prisma.leave.deleteMany({
+ where: {
+ userId: staffId,
+ shopId: shopId,
+ date: new Date(date),
+ startTime: { lt: endDate },
+ endTime: { gt: startDate },
+ },
+ });
+ revalidatePath(`/shop/${shopId}/settings/team?date=${date}`);
 }
 
 async function updateDayHours(formData: FormData) {
-    'use server';
-    const staffId = formData.get('staffId') as string;
-    const shopId = formData.get('shopId') as string;
-    const dayOfWeek = formData.get('dayOfWeek') as string;
-    const isWorking = formData.get('isWorking') === 'true';
-    const openTime = formData.get('openTime') as string;
-    const closeTime = formData.get('closeTime') as string;
-    const date = formData.get('date') as string;
-    if (!staffId || !shopId || !dayOfWeek) return;
+ 'use server';
+ const staffId = formData.get('staffId') as string;
+ const shopId = formData.get('shopId') as string;
+ const dayOfWeek = formData.get('dayOfWeek') as string;
+ const isWorking = formData.get('isWorking') === 'true';
+ const openTime = formData.get('openTime') as string;
+ const closeTime = formData.get('closeTime') as string;
+ const date = formData.get('date') as string;
+ if (!staffId || !shopId || !dayOfWeek) return;
 
-    // SECURITY: Verify caller is authorized (admin of this shop)
-    const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
-  
-  const userId = user?.id;
-    if (!userId) return;
-    const data = await getShopLayoutData(userId, shopId);
-    if (!data || data.isStaff) return; // Only admins can change staff hours
+ // SECURITY: Verify caller is authorized (admin of this shop)
+ const supabase = await createClient();
+ const { data: { user } } = await supabase.auth.getUser();
+ 
+ const userId = user?.id;
+ if (!userId) return;
+ const data = await getShopLayoutData(userId, shopId);
+ if (!data || data.isStaff) return; // Only admins can change staff hours
 
-    // SECURITY: Verify target staff belongs to this shop
-    const staff = await prisma.user.findUnique({ where: { id: staffId }, select: { workingHours: true, shopId: true, shopAccesses: { where: { shopId } } } });
-    if (!staff || (staff.shopId !== shopId && staff.shopAccesses.length === 0)) return;
-    const currentHours = (staff?.workingHours as any) || {};
+ // SECURITY: Verify target staff belongs to this shop
+ const staff = await prisma.user.findUnique({ where: { id: staffId }, select: { workingHours: true, shopId: true, shopAccesses: { where: { shopId } } } });
+ if (!staff || (staff.shopId !== shopId && staff.shopAccesses.length === 0)) return;
+ const currentHours = (staff?.workingHours as any) || {};
 
-    if (isWorking && openTime && closeTime) {
-        currentHours[dayOfWeek] = { open: openTime, close: closeTime };
-    } else {
-        currentHours[dayOfWeek] = null;
-    }
+ if (isWorking && openTime && closeTime) {
+ currentHours[dayOfWeek] = { open: openTime, close: closeTime };
+ } else {
+ currentHours[dayOfWeek] = null;
+ }
 
-    await prisma.user.update({
-        where: { id: staffId },
-        data: { workingHours: currentHours },
-    });
-    revalidatePath(`/shop/${shopId}/settings/team?date=${date}`);
+ await prisma.user.update({
+ where: { id: staffId },
+ data: { workingHours: currentHours },
+ });
+ revalidatePath(`/shop/${shopId}/settings/team?date=${date}`);
 }
 
 export default async function TeamDashboardPage({ params, searchParams }: { params: Promise<{ shopId: string }>, searchParams: Promise<{ date?: string }>}) {
-  const { shopId } = await params;
-  const resolvedSearchParams = await searchParams;
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
-  
-  const userId = user?.id;
-  if (!userId) redirect('/sign-in');
+ const { shopId } = await params;
+ const resolvedSearchParams = await searchParams;
+ const supabase = await createClient();
+ const { data: { user } } = await supabase.auth.getUser();
+ 
+ const userId = user?.id;
+ if (!userId) redirect('/sign-in');
 
-  const selectedDate = resolvedSearchParams.date || new Date().toISOString().split('T')[0];
-  const pageData = await getPageData(shopId, userId, selectedDate);
+ const selectedDate = resolvedSearchParams.date || new Date().toISOString().split('T')[0];
+ const pageData = await getPageData(shopId, userId, selectedDate);
 
-  if (!pageData) return <div className="p-8 text-crm-text">Access Denied.</div>;
+ if (!pageData) return <div className="p-8 text-crm-text">Access Denied.</div>;
 
-  const { shop, shopSlug, userRole, staff, kioskUser } = pageData;
+ const { shop, shopSlug, userRole, staff, kioskUser } = pageData;
 
-  const canAddShopAdmin = userRole === 'SITE_ADMIN' && !staff.some((s: any) => s.role === 'SHOP_ADMIN');
+ const canAddShopAdmin = userRole === 'SITE_ADMIN' && !staff.some((s: any) => s.role === 'SHOP_ADMIN');
 
-  const teamTabs = [
-    { id: 'team', label: 'Team & Availability', href: `/shop/${shopId}/settings/team` },
-    { id: 'portfolio', label: 'Portfolio', href: `/shop/${shopId}/portfolio` }
-  ];
+ const teamTabs = [
+ { id: 'team', label: 'Team & Availability', href: `/shop/${shopId}/settings/team` },
+ { id: 'portfolio', label: 'Portfolio', href: `/shop/${shopId}/portfolio` }
+ ];
 
-  return (
-    <ShopAdminLayout shopName={shop.name} shopSlug={shopSlug} pageTitle={userRole === 'SITE_ADMIN' ? 'Assign Shop Admin & Kiosk' : undefined} shopId={shopId} userRole={userRole}>
+ return (
+ <ShopAdminLayout shopName={shop.name} shopSlug={shopSlug} pageTitle={userRole === 'SITE_ADMIN' ? 'Assign Shop Admin & Kiosk' : undefined} shopId={shopId} userRole={userRole}>
 
-      {kioskUser && (
-         <div className="bg-blue-50 border border-blue-200 p-5 rounded-2xl shadow-lg mb-8">
-             <h3 className="text-blue-800 font-bold mb-2 flex items-center gap-2 text-lg"><span>📱</span> Tablet Kiosk Setup</h3>
-             <p className="text-crm-muted mb-4 text-[13px]">To set up the front desk attendance tablet, sign up for a new account on that device using this exact email:</p>
-             <div className="bg-crm-surface p-3 rounded-lg text-center mb-3 border border-crm-border shadow-sm"><code className="text-crm-primary font-mono font-bold tracking-wider">{kioskUser.email}</code></div>
-             <p className="text-blue-700 text-[13px]">Once an account is created with this email, that account will instantly inherit kiosk privileges for this shop.</p>
-         </div>
-      )}
+ {kioskUser && (
+ <div className="bg-crm-primary/10 border border-crm-primary/30 p-5 rounded-2xl shadow-lg mb-8">
+ <h3 className="text-crm-primary font-bold mb-2 flex items-center gap-2 text-lg"><span>📱</span> Tablet Kiosk Setup</h3>
+ <p className="text-crm-muted mb-4 text-[13px]">To set up the front desk attendance tablet, sign up for a new account on that device using this exact email:</p>
+ <div className="bg-crm-surface p-3 rounded-lg text-center mb-3 border border-crm-border shadow-sm"><code className="text-crm-primary font-mono font-bold tracking-wider">{kioskUser.email}</code></div>
+ <p className="text-blue-700 text-[13px]">Once an account is created with this email, that account will instantly inherit kiosk privileges for this shop.</p>
+ </div>
+ )}
 
-      {/* ═══ Invite Section ═══ */}
-      <div className="mb-8 bg-crm-surface rounded-2xl border border-crm-border shadow-sm shadow-xl overflow-hidden">
-        <div className="h-1 bg-gradient-to-r from-crm-primary via-crm-primary/60 to-transparent" />
-        <div className="p-6">
-          <div className="flex items-start gap-4 mb-6">
-            <div className="w-12 h-12 shrink-0 mt-0.5 rounded-2xl bg-crm-primary/10 flex items-center justify-center text-2xl">✉️</div>
-            <div>
-              <h3 className="font-bold text-crm-text text-lg">Invite Team Member</h3>
-              <p className="text-crm-muted text-[13px]">Invite a new user, or add an existing user to this location</p>
-            </div>
-          </div>
+ {/* ═══ Invite Section ═══ */}
+ <div className="mb-8 bg-crm-surface rounded-2xl border border-crm-border shadow-xl overflow-hidden">
+ <div className="h-1 bg-gradient-to-r from-crm-primary via-crm-primary/60 to-transparent" />
+ <div className="p-6">
+ <div className="flex items-start gap-4 mb-6">
+ <div className="w-12 h-12 shrink-0 mt-0.5 rounded-2xl bg-crm-primary/10 flex items-center justify-center text-2xl">✉️</div>
+ <div>
+ <h3 className="font-bold text-crm-text text-lg">Invite Team Member</h3>
+ <p className="text-crm-muted text-[13px]">Invite a new user, or add an existing user to this location</p>
+ </div>
+ </div>
 
-          <form action={inviteUser} className="flex flex-col md:flex-row gap-4 items-end">
-            <input type="hidden" name="shopId" value={shop.id} />
-            <div className="flex-1 w-full">
-              <label className="block text-crm-muted mb-1.5 font-semibold uppercase tracking-wider text-[12px]">📧 Email</label>
-              <input type="email" name="email" required placeholder="team@example.com"
-                className="w-full h-11 px-4 rounded-xl border border-crm-border shadow-sm bg-crm-surface text-crm-text text-[13px] placeholder-gray-400 focus:ring-2 focus:ring-crm-primary focus:outline-none transition-all" />
-            </div>
-            <div className="w-full md:w-56">
-              <label className="block text-crm-muted mb-1.5 font-semibold uppercase tracking-wider text-[12px]">👤 Role</label>
-              <select name="role" defaultValue={userRole === 'SITE_ADMIN' ? 'SHOP_ADMIN' : 'STAFF'}
-                className="w-full h-11 px-4 rounded-xl border border-crm-border shadow-sm bg-crm-surface text-crm-text text-[13px] focus:ring-2 focus:ring-crm-primary focus:outline-none transition-all">
-                {userRole === 'SHOP_ADMIN' && <option value="STAFF">Staff</option>}
-                {userRole === 'SHOP_ADMIN' && <option value="BOOTH_RENTER">Booth Renter</option>}
-                {userRole === 'SITE_ADMIN' && (
-                  <>
-                    <option value="SHOP_ADMIN">Shop Admin</option>
-                    <option value="ATTENDANCE_KIOSK">Attendance Kiosk</option>
-                  </>
-                )}
-              </select>
-            </div>
-            <div className="w-full md:w-auto mt-2 md:mt-0">
-              <button type="submit" disabled={userRole === 'SITE_ADMIN' && !canAddShopAdmin}
-                className="w-full h-11 bg-crm-primary text-white font-bold px-8 rounded-xl hover:bg-crm-primary/90 hover:scale-[1.02] active:scale-95 transition-all duration-200 shadow-md text-[13px] disabled:opacity-50 disabled:cursor-not-allowed">
-                Invite Member
-              </button>
-            </div>
-          </form>
+ <form action={inviteUser} className="flex flex-col md:flex-row gap-4 items-end">
+ <input type="hidden" name="shopId" value={shop.id} />
+ <div className="flex-1 w-full">
+ <label className="block text-crm-muted mb-1.5 font-semibold uppercase tracking-wider text-[12px]">📧 Email</label>
+ <input type="email" name="email" required placeholder="team@example.com"
+ className="w-full h-11 px-4 rounded-xl border border-crm-border shadow-sm bg-crm-surface text-crm-text text-[13px] placeholder-gray-400 focus:ring-2 focus:ring-crm-primary focus:outline-none transition-all" />
+ </div>
+ <div className="w-full md:w-56">
+ <label className="block text-crm-muted mb-1.5 font-semibold uppercase tracking-wider text-[12px]">👤 Role</label>
+ <select name="role" defaultValue={userRole === 'SITE_ADMIN' ? 'SHOP_ADMIN' : 'STAFF'}
+ className="w-full h-11 px-4 rounded-xl border border-crm-border shadow-sm bg-crm-surface text-crm-text text-[13px] focus:ring-2 focus:ring-crm-primary focus:outline-none transition-all">
+ {userRole === 'SHOP_ADMIN' && <option value="STAFF">Staff</option>}
+ {userRole === 'SHOP_ADMIN' && <option value="BOOTH_RENTER">Booth Renter</option>}
+ {userRole === 'SITE_ADMIN' && (
+ <>
+ <option value="SHOP_ADMIN">Shop Admin</option>
+ <option value="ATTENDANCE_KIOSK">Attendance Kiosk</option>
+ </>
+ )}
+ </select>
+ </div>
+ <div className="w-full md:w-auto mt-2 md:mt-0">
+ <button type="submit" disabled={userRole === 'SITE_ADMIN' && !canAddShopAdmin}
+ className="w-full h-11 bg-crm-primary text-white font-bold px-8 rounded-xl hover:bg-crm-primary/90 hover:scale-[1.02] active:scale-95 transition-all duration-200 shadow-md text-[13px] disabled:opacity-50 disabled:cursor-not-allowed">
+ Invite Member
+ </button>
+ </div>
+ </form>
 
-          {!canAddShopAdmin && userRole === 'SITE_ADMIN' && (
-            <div className="mt-3 flex items-center gap-2 text-[11px] text-amber-700 bg-amber-50 px-3 py-2 rounded-lg border border-amber-200">
-              <span>⚠️</span>
-              <span>A Shop Admin already exists. Remove them to assign a new one.</span>
-            </div>
-          )}
-        </div>
-      </div>
+ {!canAddShopAdmin && userRole === 'SITE_ADMIN' && (
+ <div className="mt-3 flex items-center gap-2 text-[11px] text-amber-700 bg-amber-50 px-3 py-2 rounded-lg border border-amber-200">
+ <span>⚠️</span>
+ <span>A Shop Admin already exists. Remove them to assign a new one.</span>
+ </div>
+ )}
+ </div>
+ </div>
 
-      {userRole === 'SITE_ADMIN' ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {staff.map((staffMember: any) => (
-            <div key={staffMember.id} className="bg-crm-surface border border-crm-border shadow-sm rounded-2xl p-5 flex flex-col shadow-lg">
-              <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-start mb-4">
-                <div>
-                  <h2 className="font-bold text-crm-text mb-1 flex items-center gap-2 text-xl">
-                    {staffMember.name || staffMember.email.split('@')[0]}
-                    <span className={`text-[11px] px-1.5 py-0.5 rounded uppercase tracking-wider font-bold ${staffMember.role === 'SHOP_ADMIN' ? 'bg-crm-primary/10 text-crm-primary border border-crm-primary/20' : 'bg-blue-50 text-blue-700 border border-blue-200'} hover:opacity-90`}>
-                      {staffMember.role.replace('_', ' ')}
-                    </span>
-                  </h2>
-                  <p className="text-crm-muted text-[13px]">{staffMember.email}</p>
-                </div>
-              </div>
-              <form action={removeUser} className="mt-auto" onSubmit={(e) => { if (!confirm('Are you sure you want to remove this team member from the shop? This cannot be undone.')) e.preventDefault(); }}>
-                <input type="hidden" name="userId" value={staffMember.id} />
-                <input type="hidden" name="shopId" value={shop.id} />
-                <button type="submit" className="w-full text-[11px] text-red-700 bg-red-50 hover:bg-red-100 hover:text-red-800 py-2 rounded-lg transition-colors border border-red-200">
-                  Remove from Shop
-                </button>
-              </form>
-            </div>
-          ))}
-          {staff.length === 0 && (
-            <p className="text-crm-muted italic text-[13px]">No assigned admins or kiosks.</p>
-          )}
-        </div>
-      ) : (
-        /* ═══ Date Picker + Staff Cards (client-side refresh) ═══ */
-        <TeamDashboardClient
-          shopId={shopId}
-          initialDate={selectedDate}
-          initialStaff={staff}
-          addLeaveAction={addLeave}
-          removeLeaveAction={removeLeave}
-          updateDayHoursAction={updateDayHours}
-          removeUserAction={removeUser}
-        />
-      )}
-    </ShopAdminLayout>
-  );
+ {userRole === 'SITE_ADMIN' ? (
+ <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+ {staff.map((staffMember: any) => (
+ <div key={staffMember.id} className="bg-crm-surface border border-crm-border shadow-sm rounded-2xl p-5 flex flex-col shadow-lg">
+ <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-start mb-4">
+ <div>
+ <h2 className="font-bold text-crm-text mb-1 flex items-center gap-2 text-xl">
+ {staffMember.name || staffMember.email.split('@')[0]}
+ <span className={`text-[11px] px-1.5 py-0.5 rounded uppercase tracking-wider font-bold ${staffMember.role === 'SHOP_ADMIN' ? 'bg-crm-primary/10 text-crm-primary border border-crm-primary/20' : 'bg-crm-primary/10 text-blue-700 border border-crm-primary/30'} hover:opacity-90`}>
+ {staffMember.role.replace('_', ' ')}
+ </span>
+ </h2>
+ <p className="text-crm-muted text-[13px]">{staffMember.email}</p>
+ </div>
+ </div>
+ <form action={removeUser} className="mt-auto" onSubmit={(e) => { if (!confirm('Are you sure you want to remove this team member from the shop? This cannot be undone.')) e.preventDefault(); }}>
+ <input type="hidden" name="userId" value={staffMember.id} />
+ <input type="hidden" name="shopId" value={shop.id} />
+ <button type="submit" className="w-full text-[11px] text-red-700 bg-red-50 hover:bg-red-100 hover:text-red-800 py-2 rounded-lg transition-colors border border-red-200">
+ Remove from Shop
+ </button>
+ </form>
+ </div>
+ ))}
+ {staff.length === 0 && (
+ <p className="text-crm-muted italic text-[13px]">No assigned admins or kiosks.</p>
+ )}
+ </div>
+ ) : (
+ /* ═══ Date Picker + Staff Cards (client-side refresh) ═══ */
+ <TeamDashboardClient
+ shopId={shopId}
+ initialDate={selectedDate}
+ initialStaff={staff}
+ addLeaveAction={addLeave}
+ removeLeaveAction={removeLeave}
+ updateDayHoursAction={updateDayHours}
+ removeUserAction={removeUser}
+ />
+ )}
+ </ShopAdminLayout>
+ );
 }

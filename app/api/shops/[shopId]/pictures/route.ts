@@ -6,30 +6,30 @@ import { listFilesInPath } from '@/lib/google-drive';
 export const dynamic = 'force-dynamic';
 
 export async function GET(
-  request: NextRequest,
-  { params }: { params: Promise<{ shopId: string }> }
+ request: NextRequest,
+ { params }: { params: Promise<{ shopId: string }> }
 ) {
-  try {
-    const { shopId } = await params;
-    const supabase = await createClient();
-    const { data: { user: authUserSession } } = await supabase.auth.getUser();
-    let userId = authUserSession?.id;
-    const authUserEmail = authUserSession?.email;
-    
-    if (!userId) return new NextResponse("Unauthorized", { status: 401 });
+ try {
+ const { shopId } = await params;
+ const supabase = await createClient();
+ const { data: { user: authUserSession } } = await supabase.auth.getUser();
+ let userId = authUserSession?.id;
+ const authUserEmail = authUserSession?.email;
+ 
+ if (!userId) return new NextResponse("Unauthorized", { status: 401 });
 
-    const user = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
-    
-    if (!user || (user.role !== 'SITE_ADMIN' && (user.shopId !== shopId && !(await prisma.shopAccess.findFirst({ where: { userId: user.id, shopId } }))))) {
-       return new NextResponse("Forbidden", { status: 403 });
-    }
+ const user = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
+ 
+ if (!user || (user.role !== 'SITE_ADMIN' && (user.shopId !== shopId && !(await prisma.shopAccess.findFirst({ where: { userId: user.id, shopId } }))))) {
+ return new NextResponse("Forbidden", { status: 403 });
+ }
 
-    const FOLDER_PATH = `/kutzapp/${shopId}/pictures`;
-    const files = await listFilesInPath(FOLDER_PATH);
+ const FOLDER_PATH = `/kutzapp/${shopId}/pictures`;
+ const files = await listFilesInPath(FOLDER_PATH);
 
-    return NextResponse.json({ files });
-  } catch (error: any) {
-    console.error('List files error:', error);
-    return NextResponse.json({ error: error.message || 'Failed to list files' }, { status: 500 });
-  }
+ return NextResponse.json({ files });
+ } catch (error: any) {
+ console.error('List files error:', error);
+ return NextResponse.json({ error: error.message || 'Failed to list files' }, { status: 500 });
+ }
 }

@@ -5,125 +5,125 @@ import { createClient } from '@/utils/supabase/server';
 import { revalidatePath } from 'next/cache';
 
 export async function GET(
-  request: Request,
-  { params }: { params: Promise<{ shopId: string }> }
+ request: Request,
+ { params }: { params: Promise<{ shopId: string }> }
 ) {
-  try {
-    const { shopId } = await params;
-    const supabase = await createClient();
-  const { data: { user: authUserSession } } = await supabase.auth.getUser();
-  let userId = authUserSession?.id;
-  const authUserEmail = authUserSession?.email;
-    if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+ try {
+ const { shopId } = await params;
+ const supabase = await createClient();
+ const { data: { user: authUserSession } } = await supabase.auth.getUser();
+ let userId = authUserSession?.id;
+ const authUserEmail = authUserSession?.email;
+ if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
-    const user = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
-    const canView = user?.role === 'SITE_ADMIN' ||
-      (user?.role === 'SHOP_ADMIN' && user?.shopId === shopId);
-    if (!canView) return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+ const user = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
+ const canView = user?.role === 'SITE_ADMIN' ||
+ (user?.role === 'SHOP_ADMIN' && user?.shopId === shopId);
+ if (!canView) return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
 
-    const { searchParams } = new URL(request.url);
-    const month = searchParams.get('month'); // YYYY-MM format
+ const { searchParams } = new URL(request.url);
+ const month = searchParams.get('month'); // YYYY-MM format
 
-    let dateFilter = {};
-    if (month) {
-      const [y, m] = month.split('-').map(Number);
-      const start = new Date(y, m - 1, 1);
-      const end = new Date(y, m, 1);
-      dateFilter = { date: { gte: start, lt: end } };
-    }
+ let dateFilter = {};
+ if (month) {
+ const [y, m] = month.split('-').map(Number);
+ const start = new Date(y, m - 1, 1);
+ const end = new Date(y, m, 1);
+ dateFilter = { date: { gte: start, lt: end } };
+ }
 
-    const expenses = await prisma.expense.findMany({
-      where: { shopId: shopId, ...dateFilter },
-      orderBy: { date: 'desc' },
-    });
+ const expenses = await prisma.expense.findMany({
+ where: { shopId: shopId, ...dateFilter },
+ orderBy: { date: 'desc' },
+ });
 
-    return NextResponse.json(expenses);
-  } catch (error) {
-    logger.error('Error fetching expenses:', error);
-    return NextResponse.json({ error: 'Failed to fetch expenses' }, { status: 500 });
-  }
+ return NextResponse.json(expenses);
+ } catch (error) {
+ logger.error('Error fetching expenses:', error);
+ return NextResponse.json({ error: 'Failed to fetch expenses' }, { status: 500 });
+ }
 }
 
 export async function POST(
-  request: Request,
-  { params }: { params: Promise<{ shopId: string }> }
+ request: Request,
+ { params }: { params: Promise<{ shopId: string }> }
 ) {
-  try {
-    const { shopId } = await params;
-    const supabase = await createClient();
-  const { data: { user: authUserSession } } = await supabase.auth.getUser();
-  let userId = authUserSession?.id;
-  const authUserEmail = authUserSession?.email;
-    if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+ try {
+ const { shopId } = await params;
+ const supabase = await createClient();
+ const { data: { user: authUserSession } } = await supabase.auth.getUser();
+ let userId = authUserSession?.id;
+ const authUserEmail = authUserSession?.email;
+ if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
-    const user = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
-    const canCreate = user?.role === 'SITE_ADMIN' ||
-      (user?.role === 'SHOP_ADMIN' && user?.shopId === shopId);
-    if (!canCreate) return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+ const user = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
+ const canCreate = user?.role === 'SITE_ADMIN' ||
+ (user?.role === 'SHOP_ADMIN' && user?.shopId === shopId);
+ if (!canCreate) return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
 
-    const body = await request.json();
-    const { amount, category, description, date } = body;
+ const body = await request.json();
+ const { amount, category, description, date } = body;
 
-    if (!amount || !category) {
-      return NextResponse.json({ error: 'Amount and category are required' }, { status: 400 });
-    }
+ if (!amount || !category) {
+ return NextResponse.json({ error: 'Amount and category are required' }, { status: 400 });
+ }
 
-    const parsedAmount = parseFloat(amount);
-    if (isNaN(parsedAmount) || parsedAmount <= 0) {
-      return NextResponse.json({ error: 'Amount must be a positive number' }, { status: 400 });
-    }
+ const parsedAmount = parseFloat(amount);
+ if (isNaN(parsedAmount) || parsedAmount <= 0) {
+ return NextResponse.json({ error: 'Amount must be a positive number' }, { status: 400 });
+ }
 
-    const expense = await prisma.expense.create({
-      data: {
-        amount: parsedAmount,
-        category: String(category).replace(/<[^>]*>/g, '').slice(0, 100),
-        description: description ? String(description).replace(/<[^>]*>/g, '').slice(0, 1000) : null,
-        date: date ? new Date(date) : new Date(),
-        shopId: shopId,
-      },
-    });
+ const expense = await prisma.expense.create({
+ data: {
+ amount: parsedAmount,
+ category: String(category).replace(/<[^>]*>/g, '').slice(0, 100),
+ description: description ? String(description).replace(/<[^>]*>/g, '').slice(0, 1000) : null,
+ date: date ? new Date(date) : new Date(),
+ shopId: shopId,
+ },
+ });
 
-    revalidatePath(`/shop/${shopId}/expenses`);
-    return NextResponse.json(expense, { status: 201 });
-  } catch (error) {
-    logger.error('Error creating expense:', error);
-    return NextResponse.json({ error: 'Failed to create expense' }, { status: 500 });
-  }
+ revalidatePath(`/shop/${shopId}/expenses`);
+ return NextResponse.json(expense, { status: 201 });
+ } catch (error) {
+ logger.error('Error creating expense:', error);
+ return NextResponse.json({ error: 'Failed to create expense' }, { status: 500 });
+ }
 }
 
 export async function DELETE(
-  request: Request,
-  { params }: { params: Promise<{ shopId: string }> }
+ request: Request,
+ { params }: { params: Promise<{ shopId: string }> }
 ) {
-  try {
-    const { shopId } = await params;
-    const supabase = await createClient();
-  const { data: { user: authUserSession } } = await supabase.auth.getUser();
-  let userId = authUserSession?.id;
-  const authUserEmail = authUserSession?.email;
-    if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+ try {
+ const { shopId } = await params;
+ const supabase = await createClient();
+ const { data: { user: authUserSession } } = await supabase.auth.getUser();
+ let userId = authUserSession?.id;
+ const authUserEmail = authUserSession?.email;
+ if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
-    const user = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
-    const canDelete = user?.role === 'SITE_ADMIN' ||
-      (user?.role === 'SHOP_ADMIN' && user?.shopId === shopId);
-    if (!canDelete) return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+ const user = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
+ const canDelete = user?.role === 'SITE_ADMIN' ||
+ (user?.role === 'SHOP_ADMIN' && user?.shopId === shopId);
+ if (!canDelete) return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
 
-    const { searchParams } = new URL(request.url);
-    const expenseId = searchParams.get('id');
-    if (!expenseId) return NextResponse.json({ error: 'Expense ID required' }, { status: 400 });
+ const { searchParams } = new URL(request.url);
+ const expenseId = searchParams.get('id');
+ if (!expenseId) return NextResponse.json({ error: 'Expense ID required' }, { status: 400 });
 
-    // Verify expense belongs to this shop (prevent cross-shop deletion)
-    const expense = await prisma.expense.findUnique({ where: { id: expenseId } });
-    if (!expense || (expense.shopId !== shopId && !(await prisma.shopAccess.findFirst({ where: { userId: expense.id, shopId } })))) {
-      return NextResponse.json({ error: 'Expense not found' }, { status: 404 });
-    }
+ // Verify expense belongs to this shop (prevent cross-shop deletion)
+ const expense = await prisma.expense.findUnique({ where: { id: expenseId } });
+ if (!expense || (expense.shopId !== shopId && !(await prisma.shopAccess.findFirst({ where: { userId: expense.id, shopId } })))) {
+ return NextResponse.json({ error: 'Expense not found' }, { status: 404 });
+ }
 
-    await prisma.expense.delete({ where: { id: expenseId } });
-    revalidatePath(`/shop/${shopId}/expenses`);
-    return NextResponse.json({ success: true });
-  } catch (error) {
-    logger.error('Error deleting expense:', error);
-    return NextResponse.json({ error: 'Failed to delete expense' }, { status: 500 });
-  }
+ await prisma.expense.delete({ where: { id: expenseId } });
+ revalidatePath(`/shop/${shopId}/expenses`);
+ return NextResponse.json({ success: true });
+ } catch (error) {
+ logger.error('Error deleting expense:', error);
+ return NextResponse.json({ error: 'Failed to delete expense' }, { status: 500 });
+ }
 }
 

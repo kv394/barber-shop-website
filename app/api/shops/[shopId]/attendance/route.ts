@@ -7,203 +7,203 @@ import { requireShopRole, isAuthError } from '@/lib/auth';
 export const dynamic = 'force-dynamic';
 
 export async function GET(
-  request: Request,
-  { params }: { params: Promise<{ shopId: string }> }
+ request: Request,
+ { params }: { params: Promise<{ shopId: string }> }
 ) {
-    try {
-    const { shopId } = await params;
-        // Require at least STAFF role to view active attendance logs
-        const authResult = await requireShopRole(shopId, ['SITE_ADMIN', 'SHOP_ADMIN', 'STAFF', 'ATTENDANCE_KIOSK']);
-        if (isAuthError(authResult)) return authResult;
+ try {
+ const { shopId } = await params;
+ // Require at least STAFF role to view active attendance logs
+ const authResult = await requireShopRole(shopId, ['SITE_ADMIN', 'SHOP_ADMIN', 'STAFF', 'ATTENDANCE_KIOSK']);
+ if (isAuthError(authResult)) return authResult;
 
-        // Find all active time logs for the given shop
-        const today = new Date();
-        today.setHours(0, 0, 0, 0);
+ // Find all active time logs for the given shop
+ const today = new Date();
+ today.setHours(0, 0, 0, 0);
 
-        const activeLogs = await prisma.timeLog.findMany({
-            where: {
-                shopId: shopId,
-                clockIn: {
-                    gte: today, // Only show logs from today
-                },
-                clockOut: null, // Only show users who are currently clocked IN
-            },
-            include: {
-                user: {
-                    select: {
-                        name: true,
-                        email: true,
-                    }
-                }
-            },
-            orderBy: {
-                clockIn: 'asc'
-            }
-        });
+ const activeLogs = await prisma.timeLog.findMany({
+ where: {
+ shopId: shopId,
+ clockIn: {
+ gte: today, // Only show logs from today
+ },
+ clockOut: null, // Only show users who are currently clocked IN
+ },
+ include: {
+ user: {
+ select: {
+ name: true,
+ email: true,
+ }
+ }
+ },
+ orderBy: {
+ clockIn: 'asc'
+ }
+ });
 
-        return NextResponse.json(activeLogs);
+ return NextResponse.json(activeLogs);
 
-    } catch (error: any) {
-        logger.error('Error fetching active logs:', error);
-        return NextResponse.json({ error: 'Failed to fetch active logs' }, { status: 500 });
-    }
+ } catch (error: any) {
+ logger.error('Error fetching active logs:', error);
+ return NextResponse.json({ error: 'Failed to fetch active logs' }, { status: 500 });
+ }
 }
 
 
 export async function POST(
-  request: Request,
-  { params }: { params: Promise<{ shopId: string }> }
+ request: Request,
+ { params }: { params: Promise<{ shopId: string }> }
 ) {
-  try {
-    const { shopId } = await params;
-    const supabase = await createClient();
-  const { data: { user: authUserSession } } = await supabase.auth.getUser();
-  let userId = authUserSession?.id;
-  const authUserEmail = authUserSession?.email;
+ try {
+ const { shopId } = await params;
+ const supabase = await createClient();
+ const { data: { user: authUserSession } } = await supabase.auth.getUser();
+ let userId = authUserSession?.id;
+ const authUserEmail = authUserSession?.email;
 
-    // Verify the scanner device is logged in. 
-    // It can be a Shop Admin, Staff, or a dedicated KIOSK user.
-    if (!userId) {
-       return NextResponse.json({ error: 'Scanner device is unauthorized' }, { status: 401 });
-    }
+ // Verify the scanner device is logged in. 
+ // It can be a Shop Admin, Staff, or a dedicated KIOSK user.
+ if (!userId) {
+ return NextResponse.json({ error: 'Scanner device is unauthorized' }, { status: 401 });
+ }
 
-    const scannerUser = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
+ const scannerUser = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
 
-    if (!scannerUser || 
-        (scannerUser.role !== 'SITE_ADMIN' && 
-         scannerUser.role !== 'SHOP_ADMIN' && 
-         scannerUser.role !== 'STAFF' &&
-         scannerUser.role !== 'ATTENDANCE_KIOSK')) {
-      return NextResponse.json({ error: 'This device does not have permission to scan.' }, { status: 403 });
-    }
+ if (!scannerUser || 
+ (scannerUser.role !== 'SITE_ADMIN' && 
+ scannerUser.role !== 'SHOP_ADMIN' && 
+ scannerUser.role !== 'STAFF' &&
+ scannerUser.role !== 'ATTENDANCE_KIOSK')) {
+ return NextResponse.json({ error: 'This device does not have permission to scan.' }, { status: 403 });
+ }
 
-    // Ensure the scanner is assigned to this shop (unless Site Admin)
-    if (scannerUser.role !== 'SITE_ADMIN' && (scannerUser.shopId !== shopId && !(await prisma.shopAccess.findFirst({ where: { userId: scannerUser.id, shopId } })))) {
-       return NextResponse.json({ error: 'This device is not assigned to this shop.' }, { status: 403 });
-    }
+ // Ensure the scanner is assigned to this shop (unless Site Admin)
+ if (scannerUser.role !== 'SITE_ADMIN' && (scannerUser.shopId !== shopId && !(await prisma.shopAccess.findFirst({ where: { userId: scannerUser.id, shopId } })))) {
+ return NextResponse.json({ error: 'This device is not assigned to this shop.' }, { status: 403 });
+ }
 
-    const body = await request.json();
-    const { barcode, direct } = body;
+ const body = await request.json();
+ const { barcode, direct } = body;
 
-    let user;
+ let user;
 
-    if (direct) {
-      // Direct clock in/out by the logged in user
-      user = scannerUser;
-    } else {
-      if (!barcode) {
-        return NextResponse.json({ error: 'Barcode is required' }, { status: 400 });
-      }
+ if (direct) {
+ // Direct clock in/out by the logged in user
+ user = scannerUser;
+ } else {
+ if (!barcode) {
+ return NextResponse.json({ error: 'Barcode is required' }, { status: 400 });
+ }
 
-      // Find the user by their barcode AND ensure they belong to this shop
-      user = await prisma.user.findFirst({
-        where: {
-          barcode: barcode,
-          shopId: shopId,
-        },
-      });
+ // Find the user by their barcode AND ensure they belong to this shop
+ user = await prisma.user.findFirst({
+ where: {
+ barcode: barcode,
+ shopId: shopId,
+ },
+ });
 
-      if (!user) {
-        return NextResponse.json({ error: 'ID Card not recognized for this shop.' }, { status: 404 });
-      }
-    }
+ if (!user) {
+ return NextResponse.json({ error: 'ID Card not recognized for this shop.' }, { status: 404 });
+ }
+ }
 
-    // If the scanned user is a CLIENT, they are checking in to the waitlist, not clocking in for a shift
-    if (user.role === 'CLIENT') {
-      const today = new Date();
-      today.setHours(0, 0, 0, 0);
+ // If the scanned user is a CLIENT, they are checking in to the waitlist, not clocking in for a shift
+ if (user.role === 'CLIENT') {
+ const today = new Date();
+ today.setHours(0, 0, 0, 0);
 
-      // Check if they are already on the waitlist today
-      const existingEntry = await prisma.waitlist.findFirst({
-        where: {
-          shopId: shopId,
-          clientName: user.name || user.email,
-          createdAt: { gte: today },
-          status: { in: ['WAITING', 'SERVING'] }
-        }
-      });
+ // Check if they are already on the waitlist today
+ const existingEntry = await prisma.waitlist.findFirst({
+ where: {
+ shopId: shopId,
+ clientName: user.name || user.email,
+ createdAt: { gte: today },
+ status: { in: ['WAITING', 'SERVING'] }
+ }
+ });
 
-      if (existingEntry) {
-        return NextResponse.json({ 
-          message: 'You are already on the waitlist!', 
-          user: { name: user.name || user.email }, 
-          role: user.role,
-          action: 'IN',
-          time: existingEntry.createdAt
-        }, { status: 200 });
-      }
+ if (existingEntry) {
+ return NextResponse.json({ 
+ message: 'You are already on the waitlist!', 
+ user: { name: user.name || user.email }, 
+ role: user.role,
+ action: 'IN',
+ time: existingEntry.createdAt
+ }, { status: 200 });
+ }
 
-      // Add to waitlist
-      const newEntry = await prisma.$transaction(async (tx: any) => {
-        const lastEntry = await tx.waitlist.findFirst({
-          where: { shopId: shopId, createdAt: { gte: today } },
-          orderBy: { position: 'desc' },
-        });
+ // Add to waitlist
+ const newEntry = await prisma.$transaction(async (tx: any) => {
+ const lastEntry = await tx.waitlist.findFirst({
+ where: { shopId: shopId, createdAt: { gte: today } },
+ orderBy: { position: 'desc' },
+ });
 
-        return tx.waitlist.create({
-          data: {
-            clientName: (user.name || user.email).slice(0, 200),
-            position: (lastEntry?.position || 0) + 1,
-            shopId: shopId,
-            status: 'WAITING'
-          },
-        });
-      }, { isolationLevel: 'Serializable' });
+ return tx.waitlist.create({
+ data: {
+ clientName: (user.name || user.email).slice(0, 200),
+ position: (lastEntry?.position || 0) + 1,
+ shopId: shopId,
+ status: 'WAITING'
+ },
+ });
+ }, { isolationLevel: 'Serializable' });
 
-      return NextResponse.json({ 
-        message: 'Added to the waitlist successfully!',
-        user: { name: user.name || user.email },
-        role: user.role,
-        action: 'IN',
-        time: newEntry.createdAt
-      }, { status: 200 });
-    }
+ return NextResponse.json({ 
+ message: 'Added to the waitlist successfully!',
+ user: { name: user.name || user.email },
+ role: user.role,
+ action: 'IN',
+ time: newEntry.createdAt
+ }, { status: 200 });
+ }
 
-    // Staff / Admin logic: Check if they are already clocked in (have a TimeLog with no clockOut)
-    const activeLog = await prisma.timeLog.findFirst({
-      where: {
-        userId: user.id,
-        shopId: shopId,
-        clockOut: null,
-      },
-    });
+ // Staff / Admin logic: Check if they are already clocked in (have a TimeLog with no clockOut)
+ const activeLog = await prisma.timeLog.findFirst({
+ where: {
+ userId: user.id,
+ shopId: shopId,
+ clockOut: null,
+ },
+ });
 
-    if (activeLog) {
-      // They are checked in, so check them OUT
-      const updatedLog = await prisma.timeLog.update({
-        where: { id: activeLog.id },
-        data: { clockOut: new Date() },
-      });
-      return NextResponse.json({ 
-        message: 'Checked OUT successfully', 
-        user: { name: user.name || user.email }, 
-        role: user.role,
-        action: 'OUT',
-        time: updatedLog.clockOut
-      }, { status: 200 });
-    } else {
-      // They are not checked in, so check them IN
-      const newLog = await prisma.timeLog.create({
-        data: {
-          userId: user.id,
-          shopId: shopId,
-          // clockIn is automatically set to now()
-        },
-      });
-      return NextResponse.json({ 
-        message: 'Checked IN successfully',
-        user: { name: user.name || user.email },
-        role: user.role,
-        action: 'IN',
-        time: newLog.clockIn
-      }, { status: 200 });
-    }
+ if (activeLog) {
+ // They are checked in, so check them OUT
+ const updatedLog = await prisma.timeLog.update({
+ where: { id: activeLog.id },
+ data: { clockOut: new Date() },
+ });
+ return NextResponse.json({ 
+ message: 'Checked OUT successfully', 
+ user: { name: user.name || user.email }, 
+ role: user.role,
+ action: 'OUT',
+ time: updatedLog.clockOut
+ }, { status: 200 });
+ } else {
+ // They are not checked in, so check them IN
+ const newLog = await prisma.timeLog.create({
+ data: {
+ userId: user.id,
+ shopId: shopId,
+ // clockIn is automatically set to now()
+ },
+ });
+ return NextResponse.json({ 
+ message: 'Checked IN successfully',
+ user: { name: user.name || user.email },
+ role: user.role,
+ action: 'IN',
+ time: newLog.clockIn
+ }, { status: 200 });
+ }
 
-  } catch (error: any) {
-    logger.error('Error processing attendance:', error);
-    return NextResponse.json(
-      { error: 'Failed to process attendance' },
-      { status: 500 }
-    );
-  }
+ } catch (error: any) {
+ logger.error('Error processing attendance:', error);
+ return NextResponse.json(
+ { error: 'Failed to process attendance' },
+ { status: 500 }
+ );
+ }
 }

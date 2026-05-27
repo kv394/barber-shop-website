@@ -5,96 +5,96 @@ import { createClient } from '@/utils/supabase/server';
 import { cacheService } from '@/lib/cache';
 
 export async function GET(
-  request: Request,
-  { params }: { params: Promise<{ shopId: string }> }
+ request: Request,
+ { params }: { params: Promise<{ shopId: string }> }
 ) {
-  try {
-    const { shopId } = await params;
-    const supabase = await createClient();
-    const { data: { user: authUserSession } } = await supabase.auth.getUser();
-    let userId = authUserSession?.id;
-    const authUserEmail = authUserSession?.email;
-    if (!userId) return new Response("Unauthorized", { status: 401 });
+ try {
+ const { shopId } = await params;
+ const supabase = await createClient();
+ const { data: { user: authUserSession } } = await supabase.auth.getUser();
+ let userId = authUserSession?.id;
+ const authUserEmail = authUserSession?.email;
+ if (!userId) return new Response("Unauthorized", { status: 401 });
 
-    const user = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
-    if (!user || (user.role !== 'SITE_ADMIN' && (user.shopId !== shopId && !(await prisma.shopAccess.findFirst({ where: { userId: user.id, shopId } }))))) {
-      return new Response("Forbidden", { status: 403 });
-    }
+ const user = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
+ if (!user || (user.role !== 'SITE_ADMIN' && (user.shopId !== shopId && !(await prisma.shopAccess.findFirst({ where: { userId: user.id, shopId } }))))) {
+ return new Response("Forbidden", { status: 403 });
+ }
 
-    const { searchParams } = new URL(request.url);
-    const staffId = searchParams.get('staffId') || user.id;
+ const { searchParams } = new URL(request.url);
+ const staffId = searchParams.get('staffId') || user.id;
 
-    // SHOP_ADMINs can view anyone's portfolio in the shop.
-    // STAFF can only view their own in this context (unless we want to let them see others, but editing is own).
-    if (user.role === 'STAFF' && staffId !== user.id) {
-       return new Response("Forbidden", { status: 403 });
-    }
+ // SHOP_ADMINs can view anyone's portfolio in the shop.
+ // STAFF can only view their own in this context (unless we want to let them see others, but editing is own).
+ if (user.role === 'STAFF' && staffId !== user.id) {
+ return new Response("Forbidden", { status: 403 });
+ }
 
-    const cacheKey = `portfolio:${shopId}:${staffId}`;
-    const images = await cacheService.getOrSet(
-      cacheKey,
-      async () => {
-        return await prisma.portfolioImage.findMany({
-          where: { shopId, staffId },
-          orderBy: { displayOrder: 'asc' }
-        });
-      },
-      60 * 60 // cache for 1 hour
-    );
+ const cacheKey = `portfolio:${shopId}:${staffId}`;
+ const images = await cacheService.getOrSet(
+ cacheKey,
+ async () => {
+ return await prisma.portfolioImage.findMany({
+ where: { shopId, staffId },
+ orderBy: { displayOrder: 'asc' }
+ });
+ },
+ 60 * 60 // cache for 1 hour
+ );
 
-    return NextResponse.json(images, { status: 200 });
-  } catch (error: any) {
-    logger.error("Error fetching portfolio:", error);
-    return NextResponse.json({ error: 'Failed to fetch portfolio' }, { status: 500 });
-  }
+ return NextResponse.json(images, { status: 200 });
+ } catch (error: any) {
+ logger.error("Error fetching portfolio:", error);
+ return NextResponse.json({ error: 'Failed to fetch portfolio' }, { status: 500 });
+ }
 }
 
 export async function POST(
-  request: Request,
-  { params }: { params: Promise<{ shopId: string }> }
+ request: Request,
+ { params }: { params: Promise<{ shopId: string }> }
 ) {
-  try {
-    const { shopId } = await params;
-    const supabase = await createClient();
-    const { data: { user: authUserSession } } = await supabase.auth.getUser();
-    let userId = authUserSession?.id;
-    const authUserEmail = authUserSession?.email;
-    if (!userId) return new Response("Unauthorized", { status: 401 });
+ try {
+ const { shopId } = await params;
+ const supabase = await createClient();
+ const { data: { user: authUserSession } } = await supabase.auth.getUser();
+ let userId = authUserSession?.id;
+ const authUserEmail = authUserSession?.email;
+ if (!userId) return new Response("Unauthorized", { status: 401 });
 
-    const user = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
-    
-    if (!user || (user.role !== 'SITE_ADMIN' && user.role !== 'SHOP_ADMIN' && user.role !== 'STAFF')) {
-       return new Response("Forbidden", { status: 403 });
-    }
+ const user = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
+ 
+ if (!user || (user.role !== 'SITE_ADMIN' && user.role !== 'SHOP_ADMIN' && user.role !== 'STAFF')) {
+ return new Response("Forbidden", { status: 403 });
+ }
 
-    const body = await request.json();
-    const { imageUrl, caption } = body;
-    const staffId = body.staffId || user.id;
+ const body = await request.json();
+ const { imageUrl, caption } = body;
+ const staffId = body.staffId || user.id;
 
-    // Verify permission to post to this portfolio
-    if (user.role === 'STAFF' && staffId !== user.id) {
-       return new Response("Forbidden", { status: 403 });
-    }
+ // Verify permission to post to this portfolio
+ if (user.role === 'STAFF' && staffId !== user.id) {
+ return new Response("Forbidden", { status: 403 });
+ }
 
-    if (!imageUrl) {
-        return NextResponse.json({ error: 'Missing image URL' }, { status: 400 });
-    }
+ if (!imageUrl) {
+ return NextResponse.json({ error: 'Missing image URL' }, { status: 400 });
+ }
 
-    const newImage = await prisma.portfolioImage.create({
-      data: {
-        imageUrl: String(imageUrl).trim(),
-        caption: caption ? String(caption).trim().slice(0, 500) : null,
-        staffId: String(staffId),
-        shopId: String(shopId)
-      }
-    });
+ const newImage = await prisma.portfolioImage.create({
+ data: {
+ imageUrl: String(imageUrl).trim(),
+ caption: caption ? String(caption).trim().slice(0, 500) : null,
+ staffId: String(staffId),
+ shopId: String(shopId)
+ }
+ });
 
-    await cacheService.invalidate(`portfolio:${shopId}:${staffId}`);
-    await cacheService.invalidatePattern(`shop_portfolio_public:${shopId}*`);
+ await cacheService.invalidate(`portfolio:${shopId}:${staffId}`);
+ await cacheService.invalidatePattern(`shop_portfolio_public:${shopId}*`);
 
-    return NextResponse.json(newImage, { status: 201 });
-  } catch (error: any) {
-    logger.error("Error creating portfolio image:", error);
-    return NextResponse.json({ error: 'Failed to create image' }, { status: 500 });
-  }
+ return NextResponse.json(newImage, { status: 201 });
+ } catch (error: any) {
+ logger.error("Error creating portfolio image:", error);
+ return NextResponse.json({ error: 'Failed to create image' }, { status: 500 });
+ }
 }

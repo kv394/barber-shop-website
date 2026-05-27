@@ -5,125 +5,125 @@ import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 
 export default function SecurityProfilePage() {
-  const [setupState, setSetupState] = useState<'idle' | 'scanning' | 'linked'>('idle');
-  const [qrCode, setQrCode] = useState('');
-  const [secret, setSecret] = useState('');
-  const [verificationCode, setVerificationCode] = useState('');
-  const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false);
-  const router = useRouter();
+ const [setupState, setSetupState] = useState<'idle' | 'scanning' | 'linked'>('idle');
+ const [qrCode, setQrCode] = useState('');
+ const [secret, setSecret] = useState('');
+ const [verificationCode, setVerificationCode] = useState('');
+ const [error, setError] = useState('');
+ const [loading, setLoading] = useState(false);
+ const router = useRouter();
 
-  const handleBeginSetup = async () => {
-    setLoading(true);
-    setError('');
-    try {
-      const res = await fetch('/api/auth/totp/setup', { method: 'POST' });
-      const data = await res.json();
-      
-      if (!res.ok) throw new Error(data.error || 'Failed to initialize setup');
-      
-      setQrCode(data.qrCodeDataUrl);
-      setSecret(data.secret);
-      setSetupState('scanning');
-    } catch (err: any) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
-  };
+ const handleBeginSetup = async () => {
+ setLoading(true);
+ setError('');
+ try {
+ const res = await fetch('/api/auth/totp/setup', { method: 'POST' });
+ const data = await res.json();
+ 
+ if (!res.ok) throw new Error(data.error || 'Failed to initialize setup');
+ 
+ setQrCode(data.qrCodeDataUrl);
+ setSecret(data.secret);
+ setSetupState('scanning');
+ } catch (err: any) {
+ setError(err.message);
+ } finally {
+ setLoading(false);
+ }
+ };
 
-  const handleVerify = async () => {
-    setLoading(true);
-    setError('');
-    try {
-      const res = await fetch('/api/auth/totp/verify', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ secret, token: verificationCode })
-      });
-      
-      const data = await res.json();
-      
-      if (!res.ok) throw new Error(data.error || 'Invalid verification code');
-      
-      setSetupState('linked');
-    } catch (err: any) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
-  };
+ const handleVerify = async () => {
+ setLoading(true);
+ setError('');
+ try {
+ const res = await fetch('/api/auth/totp/verify', {
+ method: 'POST',
+ headers: { 'Content-Type': 'application/json' },
+ body: JSON.stringify({ secret, token: verificationCode })
+ });
+ 
+ const data = await res.json();
+ 
+ if (!res.ok) throw new Error(data.error || 'Invalid verification code');
+ 
+ setSetupState('linked');
+ } catch (err: any) {
+ setError(err.message);
+ } finally {
+ setLoading(false);
+ }
+ };
 
-  return (
-    <div className="max-w-2xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
-      <h1 className="font-bold text-crm-text mb-6 text-2xl font-bold">Security & Recovery</h1>
-      
-      <div className="bg-crm-surface border border-crm-border shadow-sm rounded-xl p-6">
-        <h2 className="font-semibold text-crm-text mb-2 text-xl font-bold">Authenticator App Recovery</h2>
-        <p className="text-crm-muted mb-6 text-[13px]">
-          Set up an Authenticator App (like Google Authenticator or Authy) to securely recover your password without relying on email links.
-        </p>
+ return (
+ <div className="max-w-2xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+ <h1 className="font-bold text-crm-text mb-6 text-2xl font-bold">Security & Recovery</h1>
+ 
+ <div className="bg-crm-surface border border-crm-border shadow-sm rounded-xl p-6">
+ <h2 className="font-semibold text-crm-text mb-2 text-xl font-bold">Authenticator App Recovery</h2>
+ <p className="text-crm-muted mb-6 text-[13px]">
+ Set up an Authenticator App (like Google Authenticator or Authy) to securely recover your password without relying on email links.
+ </p>
 
-        {error && (
-          <div className="bg-status-cancelled/10 border border-status-cancelled/20 text-status-cancelled p-4 rounded-lg mb-6 text-[13px]">
-            {error}
-          </div>
-        )}
+ {error && (
+ <div className="bg-status-cancelled/10 border border-status-cancelled/20 text-status-cancelled p-4 rounded-lg mb-6 text-[13px]">
+ {error}
+ </div>
+ )}
 
-        {setupState === 'idle' && (
-          <button
-            onClick={handleBeginSetup}
-            disabled={loading}
-            className="bg-crm-primary text-white font-semibold py-2 px-6 rounded-lg hover:bg-crm-surface hover:text-crm-primary border border-transparent hover:border-crm-primary/30 transition-colors disabled:opacity-50"
-          >
-            {loading ? 'Initializing...' : 'Set Up Authenticator'}
-          </button>
-        )}
+ {setupState === 'idle' && (
+ <button
+ onClick={handleBeginSetup}
+ disabled={loading}
+ className="bg-crm-primary text-white font-semibold py-2 px-6 rounded-lg hover:bg-crm-surface hover:text-crm-primary border border-transparent hover:border-crm-primary/30 transition-colors disabled:opacity-50"
+ >
+ {loading ? 'Initializing...' : 'Set Up Authenticator'}
+ </button>
+ )}
 
-        {setupState === 'scanning' && (
-          <div className="space-y-6">
-            <div className="bg-crm-surface p-4 inline-block rounded-xl">
-              <Image src={qrCode} alt="QR Code" width={200} height={200} />
-            </div>
-            
-            <div>
-              <p className="text-crm-text mb-2 text-[13px]">
-                1. Scan the QR code with your Authenticator App.
-              </p>
-              <p className="text-crm-text mb-4 text-[13px]">
-                2. Enter the 6-digit code generated by the app to verify setup.
-              </p>
-              
-              <div className="flex gap-4">
-                <input
-                  type="text"
-                  maxLength={6}
-                  placeholder="000000"
-                  value={verificationCode}
-                  onChange={(e) => setVerificationCode(e.target.value.replace(/\D/g, ''))}
-                  className="bg-crm-surface border border-slate-600 rounded-lg px-4 py-2 text-crm-text w-32 tracking-widest text-center"
-                />
-                <button
-                  onClick={handleVerify}
-                  disabled={loading || verificationCode.length !== 6}
-                  className="bg-crm-primary text-white font-semibold py-2 px-6 rounded-lg hover:bg-crm-surface hover:text-crm-primary border border-transparent hover:border-crm-primary/30 transition-colors disabled:opacity-50"
-                >
-                  {loading ? 'Verifying...' : 'Verify & Save'}
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
+ {setupState === 'scanning' && (
+ <div className="space-y-6">
+ <div className="bg-crm-surface p-4 inline-block rounded-xl">
+ <Image src={qrCode} alt="QR Code" width={200} height={200} />
+ </div>
+ 
+ <div>
+ <p className="text-crm-text mb-2 text-[13px]">
+ 1. Scan the QR code with your Authenticator App.
+ </p>
+ <p className="text-crm-text mb-4 text-[13px]">
+ 2. Enter the 6-digit code generated by the app to verify setup.
+ </p>
+ 
+ <div className="flex gap-4">
+ <input
+ type="text"
+ maxLength={6}
+ placeholder="000000"
+ value={verificationCode}
+ onChange={(e) => setVerificationCode(e.target.value.replace(/\D/g, ''))}
+ className="bg-crm-surface border border-slate-600 rounded-lg px-4 py-2 text-crm-text w-32 tracking-widest text-center"
+ />
+ <button
+ onClick={handleVerify}
+ disabled={loading || verificationCode.length !== 6}
+ className="bg-crm-primary text-white font-semibold py-2 px-6 rounded-lg hover:bg-crm-surface hover:text-crm-primary border border-transparent hover:border-crm-primary/30 transition-colors disabled:opacity-50"
+ >
+ {loading ? 'Verifying...' : 'Verify & Save'}
+ </button>
+ </div>
+ </div>
+ </div>
+ )}
 
-        {setupState === 'linked' && (
-          <div className="bg-status-confirmed/10 border border-status-confirmed/20 text-status-confirmed p-4 rounded-lg flex items-center gap-3">
-            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-            </svg>
-            <span>Authenticator app successfully linked! You can now use it to recover your password.</span>
-          </div>
-        )}
-      </div>
-    </div>
-  );
+ {setupState === 'linked' && (
+ <div className="bg-status-confirmed/10 border border-status-confirmed/20 text-status-confirmed p-4 rounded-lg flex items-center gap-3">
+ <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+ <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+ </svg>
+ <span>Authenticator app successfully linked! You can now use it to recover your password.</span>
+ </div>
+ )}
+ </div>
+ </div>
+ );
 }

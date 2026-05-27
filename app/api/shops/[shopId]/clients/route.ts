@@ -4,56 +4,56 @@ import { NextResponse } from 'next/server';
 import { createClient } from '@/utils/supabase/server';
 
 export async function GET(
-  request: Request,
-  { params }: { params: Promise<{ shopId: string }> }
+ request: Request,
+ { params }: { params: Promise<{ shopId: string }> }
 ) {
-  try {
-    const { shopId } = await params;
-    const supabase = await createClient();
-  const { data: { user: authUserSession } } = await supabase.auth.getUser();
-  let userId = authUserSession?.id;
-  const authUserEmail = authUserSession?.email;
+ try {
+ const { shopId } = await params;
+ const supabase = await createClient();
+ const { data: { user: authUserSession } } = await supabase.auth.getUser();
+ let userId = authUserSession?.id;
+ const authUserEmail = authUserSession?.email;
 
-    if (!userId) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
+ if (!userId) {
+ return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+ }
 
-    const currentUser = await prisma.user.findUnique({
-      where: { id: userId },
-    });
+ const currentUser = await prisma.user.findUnique({
+ where: { id: userId },
+ });
 
-    if (!currentUser || 
-        (currentUser.role !== 'SITE_ADMIN' && 
-         (currentUser.role !== 'SHOP_ADMIN' || (currentUser.shopId !== shopId && !(await prisma.shopAccess.findFirst({ where: { userId: currentUser.id, shopId } })))) &&
-         (currentUser.role !== 'STAFF' || (currentUser.shopId !== shopId && !(await prisma.shopAccess.findFirst({ where: { userId: currentUser.id, shopId } })))))) {
-      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
-    }
+ if (!currentUser || 
+ (currentUser.role !== 'SITE_ADMIN' && 
+ (currentUser.role !== 'SHOP_ADMIN' || (currentUser.shopId !== shopId && !(await prisma.shopAccess.findFirst({ where: { userId: currentUser.id, shopId } })))) &&
+ (currentUser.role !== 'STAFF' || (currentUser.shopId !== shopId && !(await prisma.shopAccess.findFirst({ where: { userId: currentUser.id, shopId } })))))) {
+ return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+ }
 
-    // Get all clients associated with this shop directly OR who have made an appointment here
-    const clients = await prisma.user.findMany({
-      where: {
-        role: 'CLIENT',
-        OR: [
-            { shopId: shopId },
-            { clientAppointments: { some: { shopId: shopId } } }
-        ]
-      },
-      include: {
-          _count: {
-              select: {
-                  clientAppointments: {
-                      where: { shopId: shopId }
-                  }
-              }
-          }
-      },
-      orderBy: { createdAt: 'desc' },
-      distinct: ['id']
-    });
+ // Get all clients associated with this shop directly OR who have made an appointment here
+ const clients = await prisma.user.findMany({
+ where: {
+ role: 'CLIENT',
+ OR: [
+ { shopId: shopId },
+ { clientAppointments: { some: { shopId: shopId } } }
+ ]
+ },
+ include: {
+ _count: {
+ select: {
+ clientAppointments: {
+ where: { shopId: shopId }
+ }
+ }
+ }
+ },
+ orderBy: { createdAt: 'desc' },
+ distinct: ['id']
+ });
 
-    return NextResponse.json(clients, { status: 200 });
-  } catch (error) {
-    logger.error('Error fetching clients:', error);
-    return NextResponse.json({ error: 'Failed to fetch clients' }, { status: 500 });
-  }
+ return NextResponse.json(clients, { status: 200 });
+ } catch (error) {
+ logger.error('Error fetching clients:', error);
+ return NextResponse.json({ error: 'Failed to fetch clients' }, { status: 500 });
+ }
 }

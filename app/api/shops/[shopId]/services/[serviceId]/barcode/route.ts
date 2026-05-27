@@ -6,54 +6,54 @@ import { revalidatePath } from 'next/cache';
 
 
 export async function PATCH(
-  request: Request,
-  { params }: { params: Promise<{ shopId: string, serviceId: string }> }
+ request: Request,
+ { params }: { params: Promise<{ shopId: string, serviceId: string }> }
 ) {
-  try {
-    const { shopId, serviceId } = await params;
-    const supabase = await createClient();
-  const { data: { user: authUserSession } } = await supabase.auth.getUser();
-  let userId = authUserSession?.id;
-  const authUserEmail = authUserSession?.email;
-    if (!userId) return new Response("Unauthorized", { status: 401 });
+ try {
+ const { shopId, serviceId } = await params;
+ const supabase = await createClient();
+ const { data: { user: authUserSession } } = await supabase.auth.getUser();
+ let userId = authUserSession?.id;
+ const authUserEmail = authUserSession?.email;
+ if (!userId) return new Response("Unauthorized", { status: 401 });
 
-    const user = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
-    
-    // Authorization: Site Admin, or Shop Admin
-    const isSiteAdmin = user?.role === 'SITE_ADMIN';
-    const isShopAdmin = user?.role === 'SHOP_ADMIN' && user?.shopId === shopId;
+ const user = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
+ 
+ // Authorization: Site Admin, or Shop Admin
+ const isSiteAdmin = user?.role === 'SITE_ADMIN';
+ const isShopAdmin = user?.role === 'SHOP_ADMIN' && user?.shopId === shopId;
 
-    if (!isSiteAdmin && !isShopAdmin) {
-       return new Response("Forbidden: You do not have permission to modify barcodes", { status: 403 });
-    }
+ if (!isSiteAdmin && !isShopAdmin) {
+ return new Response("Forbidden: You do not have permission to modify barcodes", { status: 403 });
+ }
 
-    const body = await request.json();
-    const { barcode } = body;
+ const body = await request.json();
+ const { barcode } = body;
 
-    if (!barcode) {
-        return NextResponse.json({ error: 'Barcode is required' }, { status: 400 });
-    }
+ if (!barcode) {
+ return NextResponse.json({ error: 'Barcode is required' }, { status: 400 });
+ }
 
-    // Check if barcode is already used
-    const existingBarcode = await prisma.service.findUnique({
-        where: { barcode }
-    });
+ // Check if barcode is already used
+ const existingBarcode = await prisma.service.findUnique({
+ where: { barcode }
+ });
 
-    if (existingBarcode && existingBarcode.id !== serviceId) {
-        return NextResponse.json({ error: 'This barcode is already assigned to another item.' }, { status: 400 });
-    }
+ if (existingBarcode && existingBarcode.id !== serviceId) {
+ return NextResponse.json({ error: 'This barcode is already assigned to another item.' }, { status: 400 });
+ }
 
-    const updatedService = await prisma.service.update({
-        where: { id: serviceId, shopId: shopId },
-        data: { barcode }
-    });
+ const updatedService = await prisma.service.update({
+ where: { id: serviceId, shopId: shopId },
+ data: { barcode }
+ });
 
-    // Clear the cache
-    revalidatePath(`/shop/${shopId}`);
+ // Clear the cache
+ revalidatePath(`/shop/${shopId}`);
 
-    return NextResponse.json(updatedService, { status: 200 });
-  } catch (error: any) {
-    logger.error("Error updating barcode:", error);
-    return NextResponse.json({ error: 'Failed to update barcode' }, { status: 500 });
-  }
+ return NextResponse.json(updatedService, { status: 200 });
+ } catch (error: any) {
+ logger.error("Error updating barcode:", error);
+ return NextResponse.json({ error: 'Failed to update barcode' }, { status: 500 });
+ }
 }

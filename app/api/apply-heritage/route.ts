@@ -12,9 +12,9 @@ const htmlCode = `
 <a class="text-[#d1c5b4] hover:text-[#e9c176] transition-all duration-300" href="#barbers">Barbers</a>
 <a class="text-[#d1c5b4] hover:text-[#e9c176] transition-all duration-300" href="#booking">Booking</a>
 </div>
-<button class="gold-gradient text-on-primary font-label font-bold px-6 py-2 rounded-md transition-transform active:scale-95 shadow-lg">
-        Book Now
-    </button>
+<button class="gold-gradient text-on-primary font-label font-bold px-6 py-2 rounded-lg transition-transform active:scale-95 shadow-lg">
+ Book Now
+ </button>
 </nav>
 
 <!-- Hero Section -->
@@ -25,14 +25,14 @@ const htmlCode = `
 </div>
 <div class="relative z-10 text-center px-4 max-w-4xl">
 <h1 class="font-serif text-5xl md:text-7xl lg:text-8xl font-bold text-on-surface mb-6 tracking-tight leading-tight">
-            The Art of <span class="text-primary italic">Precision</span> Grooming
-        </h1>
+ The Art of <span class="text-primary italic">Precision</span> Grooming
+ </h1>
 <p class="font-body text-sm font-semibold text-on-surface-variant max-w-2xl mx-auto mb-10 leading-relaxed">
-            {{shop.description}}
-        </p>
+ {{shop.description}}
+ </p>
 <div class="flex flex-col sm:flex-row gap-4 justify-center">
-<a class="gold-gradient text-on-primary font-bold px-8 py-4 rounded-md text-lg transition-transform hover:-translate-y-1" href="#services">View Our Services</a>
-<a class="bg-surface-container-highest text-on-surface font-bold px-8 py-4 rounded-md text-lg border border-outline-variant/15 transition-transform hover:-translate-y-1" href="#barbers">Meet The Team</a>
+<a class="gold-gradient text-on-primary font-bold px-8 py-4 rounded-lg text-lg transition-transform hover:-translate-y-1" href="#services">View Our Services</a>
+<a class="bg-surface-container-highest text-on-surface font-bold px-8 py-4 rounded-lg text-lg border border-outline-variant/15 transition-transform hover:-translate-y-1" href="#barbers">Meet The Team</a>
 </div>
 </div>
 </section>
@@ -65,8 +65,8 @@ const htmlCode = `
 <div class="md:col-span-5 p-4 md:pl-12">
 <h3 class="font-serif text-3xl font-bold mb-6 italic">The Ritual</h3>
 <p class="text-on-surface-variant text-lg leading-relaxed mb-8">
-                    Every visit is more than just a cut; it is a dedicated time for the self. We use only the finest apothecary products, selected for their efficacy and timeless scents.
-                </p>
+ Every visit is more than just a cut; it is a dedicated time for the self. We use only the finest apothecary products, selected for their efficacy and timeless scents.
+ </p>
 <div class="flex items-center gap-4 text-primary">
 <span class="material-symbols-outlined">brush</span>
 <span class="font-label uppercase tracking-widest text-[11px]">Traditional Methods / Modern Precision</span>
@@ -131,15 +131,15 @@ const htmlCode = `
 </div>
 <div class="max-w-4xl mx-auto text-center relative z-10">
 <h2 class="font-serif text-5xl md:text-6xl font-bold text-on-surface mb-8 leading-tight">
-            Ready for a <span class="italic text-primary">Transformation</span>?
-        </h2>
+ Ready for a <span class="italic text-primary">Transformation</span>?
+ </h2>
 <p class="text-on-surface-variant text-xl mb-12 max-w-2xl mx-auto leading-relaxed">
-            Experience the pinnacle of grooming. Secure your chair today and step into the legacy of {{shop.name}}.
-        </p>
+ Experience the pinnacle of grooming. Secure your chair today and step into the legacy of {{shop.name}}.
+ </p>
 <div class="inline-flex flex-col sm:flex-row gap-6">
-<button class="gold-gradient text-on-primary font-bold px-12 py-5 rounded-md text-xl shadow-2xl transition-all hover:scale-105 active:scale-95">
-                Book Your Appointment
-            </button>
+<button class="gold-gradient text-on-primary font-bold px-12 py-5 rounded-lg text-xl shadow-2xl transition-all hover:scale-105 active:scale-95">
+ Book Your Appointment
+ </button>
 </div>
 <div class="mt-16 flex flex-wrap justify-center gap-12 grayscale opacity-40">
 <div class="flex items-center gap-2">
@@ -168,8 +168,8 @@ const htmlCode = `
 <a class="hover:text-[#c5a059] transition-colors" href="#">Contact Us</a>
 </div>
 <div class="font-['Manrope'] text-[11px] uppercase tracking-widest text-[#353534]">
-        © 2024 {{shop.name}}. The Modern Apothecary.
-    </div>
+ © 2024 {{shop.name}}. The Modern Apothecary.
+ </div>
 </footer>
 <script src="/booking-widget.js" data-shop-id="{{shop.id}}" data-position="bottom-right" data-color="#c5a059"></script>
 </div>
@@ -206,7 +206,7 @@ const cssCode = `
 .h-\\[400px\\] { height: 400px; }
 .h-\\[600px\\] { height: 600px; }
 @media (min-width: 768px) {
-  .md\\:h-\\[750px\\] { height: 750px; }
+ .md\\:h-\\[750px\\] { height: 750px; }
 }
 .text-\\[400px\\] { font-size: 400px; }
 .bg-\\[\\#131313\\]\\/80 { background-color: rgb(19 19 19 / 0.8); }
@@ -223,60 +223,60 @@ const cssCode = `
 `;
 
 export async function GET() {
-  try {
-    // Auth check: require SITE_ADMIN role
-    const supabase = await createClient();
-    const { data: { user: authUser } } = await supabase.auth.getUser();
+ try {
+ // Auth check: require SITE_ADMIN role
+ const supabase = await createClient();
+ const { data: { user: authUser } } = await supabase.auth.getUser();
 
-    if (!authUser || !authUser.email) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
+ if (!authUser || !authUser.email) {
+ return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+ }
 
-    const dbUser = await prisma.user.findUnique({
-      where: { email: authUser.email },
-      select: { role: true },
-    });
+ const dbUser = await prisma.user.findUnique({
+ where: { email: authUser.email },
+ select: { role: true },
+ });
 
-    if (!dbUser || dbUser.role !== 'SITE_ADMIN') {
-      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
-    }
+ if (!dbUser || dbUser.role !== 'SITE_ADMIN') {
+ return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+ }
 
-    const shop = await prisma.shop.findFirst({
-      where: {
-        name: {
-          contains: "Heritage Haircuts"
-        }
-      }
-    });
+ const shop = await prisma.shop.findFirst({
+ where: {
+ name: {
+ contains: "Heritage Haircuts"
+ }
+ }
+ });
 
-    let template = await prisma.dynamicTemplate.findUnique({ where: { name: 'heritage-haircuts-template' } });
-    if (!template) {
-      template = await prisma.dynamicTemplate.create({
-        data: {
-          name: 'heritage-haircuts-template',
-          description: "Heritage Haircuts Modern Apothecary Template",
-          htmlCode,
-          cssCode,
-        }
-      });
-    } else {
-      template = await prisma.dynamicTemplate.update({
-        where: { name: 'heritage-haircuts-template' },
-        data: { htmlCode, cssCode }
-      });
-    }
+ let template = await prisma.dynamicTemplate.findUnique({ where: { name: 'heritage-haircuts-template' } });
+ if (!template) {
+ template = await prisma.dynamicTemplate.create({
+ data: {
+ name: 'heritage-haircuts-template',
+ description: "Heritage Haircuts Modern Apothecary Template",
+ htmlCode,
+ cssCode,
+ }
+ });
+ } else {
+ template = await prisma.dynamicTemplate.update({
+ where: { name: 'heritage-haircuts-template' },
+ data: { htmlCode, cssCode }
+ });
+ }
 
-    if (shop) {
-      await prisma.shop.update({
-        where: { id: shop.id },
-        data: { template: 'heritage-haircuts-template' }
-      });
-      return NextResponse.json({ message: `Successfully updated shop ${shop.name} to use the heritage-haircuts-template!` });
-    }
+ if (shop) {
+ await prisma.shop.update({
+ where: { id: shop.id },
+ data: { template: 'heritage-haircuts-template' }
+ });
+ return NextResponse.json({ message: `Successfully updated shop ${shop.name} to use the heritage-haircuts-template!` });
+ }
 
-    return NextResponse.json({ message: 'Template created but shop not found.' });
-  } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
-  }
+ return NextResponse.json({ message: 'Template created but shop not found.' });
+ } catch (error: any) {
+ return NextResponse.json({ error: error.message }, { status: 500 });
+ }
 }
 

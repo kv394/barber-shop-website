@@ -8,23 +8,23 @@ import { prisma } from '@/lib/prisma';
 export const dynamic = 'force-dynamic';
 
 export default async function StaffPortfolioPage({ params }: { params: Promise<{ shopId: string }> }) {
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
+ const supabase = await createClient();
+ const { data: { user } } = await supabase.auth.getUser();
 
-  const userId = user?.id;
-  if (!userId) redirect('/');
-  const { shopId } = await params;
-  const data = await getShopLayoutData(userId, shopId);
-  if (!data || (!data.isSiteAdmin && !data.isShopAdmin && !data.isStaff)) notFound();
-  
-  const teamTabs = [
-    { id: 'team', label: 'Team & Availability', href: `/shop/${shopId}/settings/team` },
-    { id: 'portfolio', label: 'Portfolio', href: `/shop/${shopId}/portfolio` }
-  ];
+ const userId = user?.id;
+ if (!userId) redirect('/');
+ const { shopId } = await params;
+ const data = await getShopLayoutData(userId, shopId);
+ if (!data || (!data.isSiteAdmin && !data.isShopAdmin && !data.isStaff)) notFound();
+ 
+ const teamTabs = [
+ { id: 'team', label: 'Team & Availability', href: `/shop/${shopId}/settings/team` },
+ { id: 'portfolio', label: 'Portfolio', href: `/shop/${shopId}/portfolio` }
+ ];
 
-  return (
-    <ShopAdminLayout shopName={data.shop.name} shopSlug={data.shopSlug} pageTitle={data.isSiteAdmin ? 'Staff Portfolio' : undefined} shopId={shopId} userRole={data.userRole}>
-      <PortfolioManager shopId={shopId} currentUserId={data.user.id} userRole={data.userRole as string} />
-    </ShopAdminLayout>
-  );
+ return (
+ <ShopAdminLayout shopName={data.shop.name} shopSlug={data.shopSlug} pageTitle={data.isSiteAdmin ? 'Staff Portfolio' : undefined} shopId={shopId} userRole={data.userRole}>
+ <PortfolioManager shopId={shopId} currentUserId={data.user.id} userRole={data.userRole as string} />
+ </ShopAdminLayout>
+ );
 }

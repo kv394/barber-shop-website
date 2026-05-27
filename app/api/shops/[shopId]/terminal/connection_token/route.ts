@@ -5,46 +5,46 @@ import { createTerminalConnectionToken } from '@/lib/stripe';
 import { logger } from '@/lib/logger';
 
 export async function POST(
-  request: Request,
-  { params }: { params: Promise<{ shopId: string }> }
+ request: Request,
+ { params }: { params: Promise<{ shopId: string }> }
 ) {
-  try {
-    const { shopId } = await params;
-    const supabase = await createClient();
-    const { data: { user: authUserSession } } = await supabase.auth.getUser();
-    
-    if (!authUserSession?.id) {
-      return new Response('Unauthorized', { status: 401 });
-    }
+ try {
+ const { shopId } = await params;
+ const supabase = await createClient();
+ const { data: { user: authUserSession } } = await supabase.auth.getUser();
+ 
+ if (!authUserSession?.id) {
+ return new Response('Unauthorized', { status: 401 });
+ }
 
-    const user = await prisma.user.findFirst({ 
-      where: { OR: [{ id: authUserSession.id }, { email: authUserSession.email || '' }] } 
-    });
-    
-    const canManage = user?.role === 'SITE_ADMIN' || 
-                     (user?.role === 'SHOP_ADMIN' && user?.shopId === shopId) ||
-                     (user?.role === 'STAFF' && user?.shopId === shopId);
+ const user = await prisma.user.findFirst({ 
+ where: { OR: [{ id: authUserSession.id }, { email: authUserSession.email || '' }] } 
+ });
+ 
+ const canManage = user?.role === 'SITE_ADMIN' || 
+ (user?.role === 'SHOP_ADMIN' && user?.shopId === shopId) ||
+ (user?.role === 'STAFF' && user?.shopId === shopId);
 
-    if (!canManage) {
-      return new Response('Forbidden', { status: 403 });
-    }
+ if (!canManage) {
+ return new Response('Forbidden', { status: 403 });
+ }
 
-    // Fetch shop's payment config
-    const shop = await prisma.shop.findUnique({
-      where: { id: shopId },
-      select: { stripeAccountId: true, paymentGateway: true },
-    });
+ // Fetch shop's payment config
+ const shop = await prisma.shop.findUnique({
+ where: { id: shopId },
+ select: { stripeAccountId: true, paymentGateway: true },
+ });
 
-    if (!shop || shop.paymentGateway !== 'STRIPE') {
-      return NextResponse.json({ error: 'Stripe is not configured for this shop' }, { status: 400 });
-    }
+ if (!shop || shop.paymentGateway !== 'STRIPE') {
+ return NextResponse.json({ error: 'Stripe is not configured for this shop' }, { status: 400 });
+ }
 
-    // Call Stripe to create a terminal connection token using the shop's own account
-    const token = await createTerminalConnectionToken(shop.stripeAccountId);
-    
-    return NextResponse.json({ secret: token });
-  } catch (error) {
-    logger.error('Failed to create terminal connection token', error);
-    return NextResponse.json({ error: 'Failed to create connection token' }, { status: 500 });
-  }
+ // Call Stripe to create a terminal connection token using the shop's own account
+ const token = await createTerminalConnectionToken(shop.stripeAccountId);
+ 
+ return NextResponse.json({ secret: token });
+ } catch (error) {
+ logger.error('Failed to create terminal connection token', error);
+ return NextResponse.json({ error: 'Failed to create connection token' }, { status: 500 });
+ }
 }

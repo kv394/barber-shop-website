@@ -5,26 +5,26 @@ import { logger } from '@/lib/logger';
 
 // GET - List all loyalty accounts (leaderboard) for a shop
 export async function GET(
-  request: Request,
-  { params }: { params: Promise<{ shopId: string }> }
+ request: Request,
+ { params }: { params: Promise<{ shopId: string }> }
 ) {
-  try {
-    const { shopId } = await params;
-    const authResult = await requireShopRole(shopId, ['SITE_ADMIN', 'SHOP_ADMIN', 'STAFF']);
-    if (isAuthError(authResult)) return authResult;
+ try {
+ const { shopId } = await params;
+ const authResult = await requireShopRole(shopId, ['SITE_ADMIN', 'SHOP_ADMIN', 'STAFF']);
+ if (isAuthError(authResult)) return authResult;
 
-    const accounts = await prisma.loyaltyAccount.findMany({
-      where: { shopId },
-      include: {
-        user: { select: { id: true, name: true, email: true, phone: true } },
-      },
-      orderBy: { pointsBalance: 'desc' },
-      take: 100,
-    });
+ const accounts = await prisma.loyaltyAccount.findMany({
+ where: { shopId },
+ include: {
+ user: { select: { id: true, name: true, email: true, phone: true } },
+ },
+ orderBy: { pointsBalance: 'desc' },
+ take: 100,
+ });
 
-    return NextResponse.json(accounts);
-  } catch (error) {
-    logger.error('Error fetching loyalty accounts:', error);
-    return NextResponse.json({ error: 'Failed to fetch accounts' }, { status: 500 });
-  }
+ return NextResponse.json(accounts);
+ } catch (error) {
+ logger.error('Error fetching loyalty accounts:', error);
+ return NextResponse.json({ error: 'Failed to fetch accounts' }, { status: 500 });
+ }
 }

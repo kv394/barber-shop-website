@@ -7,43 +7,43 @@ import GiftCardManager from '@/components/marketing/GiftCardManager';
 export const dynamic = 'force-dynamic';
 
 export default async function GiftCardsPage({ params }: { params: Promise<{ shopId: string }> }) {
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
-  
-  const userId = user?.id;
-  if (!userId) return redirect('/');
+ const supabase = await createClient();
+ const { data: { user } } = await supabase.auth.getUser();
+ 
+ const userId = user?.id;
+ if (!userId) return redirect('/');
 
-  const { shopId } = await params;
-  const data = await getShopLayoutData(userId, shopId);
+ const { shopId } = await params;
+ const data = await getShopLayoutData(userId, shopId);
 
-  if (!data || (!data.isSiteAdmin && !data.isShopAdmin)) {
-    return (
-      <div className="h-[100dvh] overflow-y-auto overflow-x-hidden">
-        <div className="text-center">
-          <h1 className="font-bold text-status-cancelled mb-4 text-2xl font-bold">Access Denied</h1>
-        </div>
-      </div>
-    );
-  }
+ if (!data || (!data.isSiteAdmin && !data.isShopAdmin)) {
+ return (
+ <div className="h-[100dvh] overflow-y-auto overflow-x-hidden">
+ <div className="text-center">
+ <h1 className="font-bold text-status-cancelled mb-4 text-2xl font-bold">Access Denied</h1>
+ </div>
+ </div>
+ );
+ }
 
-  const engagementTabs = [
-    { id: 'engagement', label: 'Analytics', href: `/shop/${shopId}/engagement` },
-    { id: 'loyalty', label: 'Loyalty', href: `/shop/${shopId}/loyalty` },
-    { id: 'referrals', label: 'Referrals', href: `/shop/${shopId}/referrals` },
-    { id: 'campaigns', label: 'Campaigns', href: `/shop/${shopId}/campaigns` },
-    { id: 'gift-cards', label: 'Gift Cards', href: `/shop/${shopId}/gift-cards` },
-    { id: 'reviews', label: 'Reviews', href: `/shop/${shopId}/reviews` }
-  ];
+ const engagementTabs = [
+ { id: 'engagement', label: 'Analytics', href: `/shop/${shopId}/engagement` },
+ { id: 'loyalty', label: 'Loyalty', href: `/shop/${shopId}/loyalty` },
+ { id: 'referrals', label: 'Referrals', href: `/shop/${shopId}/referrals` },
+ { id: 'campaigns', label: 'Campaigns', href: `/shop/${shopId}/campaigns` },
+ { id: 'gift-cards', label: 'Gift Cards', href: `/shop/${shopId}/gift-cards` },
+ { id: 'reviews', label: 'Reviews', href: `/shop/${shopId}/reviews` }
+ ];
 
-  return (
-    <ShopAdminLayout
-      shopName={data.shop.name}
-      shopSlug={data.shopSlug}
-      pageTitle={undefined}
-      shopId={shopId}
-      userRole={data.userRole}
-    >
-      <GiftCardManager shopId={shopId} currency={data.shop.currency} />
-    </ShopAdminLayout>
-  );
+ return (
+ <ShopAdminLayout
+ shopName={data.shop.name}
+ shopSlug={data.shopSlug}
+ pageTitle={undefined}
+ shopId={shopId}
+ userRole={data.userRole}
+ >
+ <GiftCardManager shopId={shopId} currency={data.shop.currency} />
+ </ShopAdminLayout>
+ );
 }

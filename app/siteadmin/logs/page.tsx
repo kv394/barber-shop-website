@@ -6,22 +6,22 @@ import SystemLogsViewer from './SystemLogsViewer';
 export const dynamic = 'force-dynamic';
 
 export default async function SiteAdminLogsPage() {
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
+ const supabase = await createClient();
+ const { data: { user } } = await supabase.auth.getUser();
 
-  if (!user) redirect('/sign-in');
+ if (!user) redirect('/sign-in');
 
-  const dbUser = await prisma.user.findUnique({
-    where: { email: user.email! }
-  });
+ const dbUser = await prisma.user.findUnique({
+ where: { email: user.email! }
+ });
 
-  if (dbUser?.role !== 'SITE_ADMIN') {
-    redirect('/');
-  }
+ if (dbUser?.role !== 'SITE_ADMIN') {
+ redirect('/');
+ }
 
-  return (
-    <div>
-      <SystemLogsViewer />
-    </div>
-  );
+ return (
+ <div>
+ <SystemLogsViewer />
+ </div>
+ );
 }

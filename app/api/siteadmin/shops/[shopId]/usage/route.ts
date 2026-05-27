@@ -7,110 +7,110 @@ import { calculateUsageCostStrategy, getSaaSTiers } from '@/lib/cost-calculator'
 export const dynamic = 'force-dynamic';
 
 export async function GET(
-  request: Request,
-  { params }: { params: Promise<{ shopId: string }> }
+ request: Request,
+ { params }: { params: Promise<{ shopId: string }> }
 ) {
-  try {
-    const { shopId } = await params;
-    const supabase = await createClient();
-    const { data: { user: authUserSession } } = await supabase.auth.getUser();
-    let userId = authUserSession?.id;
-    const authUserEmail = authUserSession?.email;
-    if (!userId) return new Response("Unauthorized", { status: 401 });
+ try {
+ const { shopId } = await params;
+ const supabase = await createClient();
+ const { data: { user: authUserSession } } = await supabase.auth.getUser();
+ let userId = authUserSession?.id;
+ const authUserEmail = authUserSession?.email;
+ if (!userId) return new Response("Unauthorized", { status: 401 });
 
-    const user = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
-    if (!user || user.role !== 'SITE_ADMIN') {
-      return new Response("Forbidden", { status: 403 });
-    }
+ const user = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
+ if (!user || user.role !== 'SITE_ADMIN') {
+ return new Response("Forbidden", { status: 403 });
+ }
 
-    const shop = await prisma.shop.findUnique({
-      where: { id: shopId },
-      select: { name: true }
-    });
+ const shop = await prisma.shop.findUnique({
+ where: { id: shopId },
+ select: { name: true }
+ });
 
-    if (!shop) {
-      return NextResponse.json({ error: 'Shop not found' }, { status: 404 });
-    }
+ if (!shop) {
+ return NextResponse.json({ error: 'Shop not found' }, { status: 404 });
+ }
 
-    // Check for the latest hourly usage report
-    const latestReport = await prisma.shopUsageReport.findFirst({
-      where: { shopId },
-      orderBy: { period: 'desc' }
-    });
+ // Check for the latest hourly usage report
+ const latestReport = await prisma.shopUsageReport.findFirst({
+ where: { shopId },
+ orderBy: { period: 'desc' }
+ });
 
-    const shopData = await prisma.shop.findUnique({ where: { id: shopId }, select: { aiTokens: true } });
+ const shopData = await prisma.shop.findUnique({ where: { id: shopId }, select: { aiTokens: true } });
 
-    let metrics;
-    let analysis;
+ let metrics;
+ let analysis;
 
-    if (latestReport) {
-      metrics = {
-        userCount: latestReport.userCount,
-        appointmentCount: latestReport.appointmentCount,
-        productCount: latestReport.productCount,
-        serviceCount: latestReport.serviceCount,
-        formSubmissionCount: latestReport.formSubmissionCount,
-        portfolioImageCount: latestReport.portfolioImageCount,
-        clientHistoryImageCount: latestReport.clientHistoryImageCount,
-        clientFormulaCount: latestReport.clientFormulaCount,
-        reviewCount: latestReport.reviewCount,
-        aiTokenCount: shopData?.aiTokens || 0
-      };
-      analysis = {
-        estimatedStorageMB: latestReport.estimatedStorageMB,
-        suggestedMonthlyFeeUSD: latestReport.suggestedMonthlyFeeUSD,
-        pricingTierName: latestReport.pricingTierName,
-        strategyReasoning: `[Data aggregated hourly] Based on a usage volume of ${metrics.appointmentCount} appointments and ${metrics.userCount} users, the '${latestReport.pricingTierName}' tier is recommended. Storage is efficiently utilized at ${latestReport.estimatedStorageMB} MB, keeping infrastructure overhead balanced and minimizing extra costs.`
-      };
-    } else {
-      // 1. Gather all resource usage metrics dynamically if no report exists yet
-      const [
-        userCount,
-        appointmentCount,
-        productCount,
-        serviceCount,
-        formSubmissionCount,
-        portfolioImageCount,
-        clientHistoryImageCount,
-        clientFormulaCount,
-        reviewCount
-      ] = await Promise.all([
-        prisma.user.count({ where: { shopId } }),
-        prisma.appointment.count({ where: { shopId } }),
-        prisma.product.count({ where: { shopId } }),
-        prisma.service.count({ where: { shopId } }),
-        prisma.formSubmission.count({ where: { appointment: { shopId } } }),
-        prisma.portfolioImage.count({ where: { shopId } }),
-        prisma.clientHistoryImage.count({ where: { shopId } }),
-        prisma.clientFormula.count({ where: { shopId } }),
-        prisma.review.count({ where: { shopId } })
-      ]);
+ if (latestReport) {
+ metrics = {
+ userCount: latestReport.userCount,
+ appointmentCount: latestReport.appointmentCount,
+ productCount: latestReport.productCount,
+ serviceCount: latestReport.serviceCount,
+ formSubmissionCount: latestReport.formSubmissionCount,
+ portfolioImageCount: latestReport.portfolioImageCount,
+ clientHistoryImageCount: latestReport.clientHistoryImageCount,
+ clientFormulaCount: latestReport.clientFormulaCount,
+ reviewCount: latestReport.reviewCount,
+ aiTokenCount: shopData?.aiTokens || 0
+ };
+ analysis = {
+ estimatedStorageMB: latestReport.estimatedStorageMB,
+ suggestedMonthlyFeeUSD: latestReport.suggestedMonthlyFeeUSD,
+ pricingTierName: latestReport.pricingTierName,
+ strategyReasoning: `[Data aggregated hourly] Based on a usage volume of ${metrics.appointmentCount} appointments and ${metrics.userCount} users, the '${latestReport.pricingTierName}' tier is recommended. Storage is efficiently utilized at ${latestReport.estimatedStorageMB} MB, keeping infrastructure overhead balanced and minimizing extra costs.`
+ };
+ } else {
+ // 1. Gather all resource usage metrics dynamically if no report exists yet
+ const [
+ userCount,
+ appointmentCount,
+ productCount,
+ serviceCount,
+ formSubmissionCount,
+ portfolioImageCount,
+ clientHistoryImageCount,
+ clientFormulaCount,
+ reviewCount
+ ] = await Promise.all([
+ prisma.user.count({ where: { shopId } }),
+ prisma.appointment.count({ where: { shopId } }),
+ prisma.product.count({ where: { shopId } }),
+ prisma.service.count({ where: { shopId } }),
+ prisma.formSubmission.count({ where: { appointment: { shopId } } }),
+ prisma.portfolioImage.count({ where: { shopId } }),
+ prisma.clientHistoryImage.count({ where: { shopId } }),
+ prisma.clientFormula.count({ where: { shopId } }),
+ prisma.review.count({ where: { shopId } })
+ ]);
 
-      metrics = {
-        userCount,
-        appointmentCount,
-        productCount,
-        serviceCount,
-        formSubmissionCount,
-        portfolioImageCount,
-        clientHistoryImageCount,
-        clientFormulaCount,
-        reviewCount,
-        aiTokenCount: shopData?.aiTokens || 0
-      };
+ metrics = {
+ userCount,
+ appointmentCount,
+ productCount,
+ serviceCount,
+ formSubmissionCount,
+ portfolioImageCount,
+ clientHistoryImageCount,
+ clientFormulaCount,
+ reviewCount,
+ aiTokenCount: shopData?.aiTokens || 0
+ };
 
-      // 2. Use Deterministic Strategy (No Gemini API call)
-      const tiers = await getSaaSTiers();
-      analysis = calculateUsageCostStrategy(metrics, tiers);
-    }
+ // 2. Use Deterministic Strategy (No Gemini API call)
+ const tiers = await getSaaSTiers();
+ analysis = calculateUsageCostStrategy(metrics, tiers);
+ }
 
-    return NextResponse.json({
-      metrics,
-      analysis
-    });
+ return NextResponse.json({
+ metrics,
+ analysis
+ });
 
-  } catch (error: any) {
-    logger.error('Usage analysis error:', error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
-  }
+ } catch (error: any) {
+ logger.error('Usage analysis error:', error);
+ return NextResponse.json({ error: error.message }, { status: 500 });
+ }
 }
