@@ -1,6 +1,7 @@
 import { logger } from "@/lib/logger";
 import { prisma } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
+import { requireShopRole, isAuthError } from '@/lib/auth';
 
 export const dynamic = 'force-dynamic';
 
@@ -28,6 +29,10 @@ export async function GET(
     };
 
     if (!dateStr) {
+      // SECURITY: Require authentication to fetch sensitive staff details
+      const authResult = await requireShopRole(shopId, ['SITE_ADMIN', 'SHOP_ADMIN']);
+      if (isAuthError(authResult)) return authResult;
+
       // Return all staff if no date is provided (for admin/settings use cases)
       const allStaff = await prisma.user.findMany({
         where: {
