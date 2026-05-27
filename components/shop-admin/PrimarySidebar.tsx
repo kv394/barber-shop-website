@@ -32,26 +32,27 @@ export default function PrimarySidebar({
  };
 
  const navLink = (href: string, label: string, iconPath: React.ReactNode, isActiveCheck: () => boolean) => {
- const active = isActiveCheck();
- return (
- <Link 
- href={href} 
- title={label}
- className={`flex items-center justify-center w-10 h-10 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95 ${
- active 
- ? 'bg-crm-primary text-white shadow-md' 
- : 'text-crm-muted hover:text-crm-primary hover:bg-[#FFF5F2]'
- }`}
- >
- <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={active ? "2.5" : "2"} strokeLinecap="round" strokeLinejoin="round">
- {iconPath}
- </svg>
- </Link>
- );
- };
+  const active = isActiveCheck();
+  return (
+  <Link 
+  href={href} 
+  title={label}
+  className={`flex flex-col items-center justify-center w-16 h-14 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95 gap-1 ${
+  active 
+  ? 'bg-crm-primary text-white shadow-md' 
+  : 'text-crm-muted hover:text-crm-primary hover:bg-[#FFF5F2]'
+  }`}
+  >
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={active ? "2.5" : "2"} strokeLinecap="round" strokeLinejoin="round">
+  {iconPath}
+  </svg>
+  <span className="text-[10px] font-medium leading-none">{label}</span>
+  </Link>
+  );
+  };
 
  return (
- <aside className="hidden md:flex flex-col w-16 bg-white/40 backdrop-blur-xl border-r border-white/40 flex-shrink-0 z-20">
+ <aside className="hidden md:flex flex-col w-20 bg-white/40 backdrop-blur-xl border-r border-white/40 flex-shrink-0 z-20">
  <div className="h-16 flex items-center justify-center border-b border-white/40 relative z-50">
  <ShopSwitcher 
  currentShopId={shopId} 

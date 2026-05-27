@@ -4,6 +4,7 @@ import { prisma } from '@/lib/prisma';
 import { getShopLayoutData } from '@/lib/shop-data';
 import ClientGrid from '@/components/clients/ClientGrid';
 import ShopAdminLayout from '@/components/shop-admin/ShopAdminLayout';
+import CopyBookingLinkCTA from '@/components/shop-admin/CopyBookingLinkCTA';
 
 export const dynamic = 'force-dynamic';
 
@@ -115,9 +116,13 @@ export default async function ClientsPage({ params, searchParams }: { params: Pr
  <div className="flex flex-col items-center justify-center py-16 text-center bg-white/5 rounded-2xl border border-dashed border-white/20">
  <span className="text-4xl mb-4 opacity-50 drop-shadow-md">📇</span>
  <h2 className="text-xl font-bold text-crm-text mb-2">No clients registered</h2>
- <p className="text-crm-muted text-[14px] max-w-[250px] mx-auto font-medium">
+ <p className="text-crm-muted text-[14px] max-w-[250px] mx-auto font-medium mb-6">
  You don't have any clients in your directory yet.
  </p>
+ <CopyBookingLinkCTA 
+    url={`https://${shop.subdomain || shop.customDomain || shopSlug + '.kutzapp.com'}`} 
+    text="Copy Booking Link" 
+  />
  </div>
  ) : (
  <>

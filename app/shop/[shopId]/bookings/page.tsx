@@ -15,6 +15,7 @@ import AcceptAppointmentButton from '@/components/appointments/AcceptAppointment
 import CompleteWorkButton from '@/components/appointments/CompleteWorkButton';
 import ClientNameClickable from '@/components/clients/ClientNameClickable';
 import AddBookingWrapper from '@/components/appointments/AddBookingWrapper';
+import CopyBookingLinkCTA from '@/components/shop-admin/CopyBookingLinkCTA';
 
 export const dynamic = 'force-dynamic';
 
@@ -105,9 +106,13 @@ export default async function BookingsPage({ params }: { params: Promise<{ shopI
  <div className="flex flex-col items-center justify-center py-16 text-center bg-white/5 rounded-2xl border border-dashed border-white/20">
  <span className="text-4xl mb-4 opacity-50 drop-shadow-md">📅</span>
  <h2 className="text-xl font-bold text-crm-text mb-2">No upcoming bookings</h2>
- <p className="text-crm-muted text-[14px] max-w-[250px] mx-auto font-medium">
+ <p className="text-crm-muted text-[14px] max-w-[250px] mx-auto font-medium mb-6">
  You don't have any appointments scheduled for this period.
  </p>
+ <CopyBookingLinkCTA 
+    url={`https://${(shop as any).subdomain || (shop as any).customDomain || shopSlug + '.kutzapp.com'}`} 
+    text="Share Booking Link" 
+  />
  </div>
  ) : (
  <div className="space-y-6 sm:space-y-10">

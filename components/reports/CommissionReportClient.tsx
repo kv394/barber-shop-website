@@ -142,7 +142,7 @@ export default function CommissionReportClient({
  ) : (
  <>
  {/* Staff Summary Table */}
- <div className="overflow-x-auto bg-crm-bg rounded-lg border border-crm-border shadow-sm mb-4">
+ <div className="w-full overflow-x-auto hide-scrollbar border border-crm-border rounded-xl mb-4">
  <table className="w-full text-[13px] border-collapse whitespace-nowrap">
  <thead className="bg-crm-surface/50">
  <tr className="border-b border-crm-border text-crm-muted text-[11px] uppercase tracking-wider">
@@ -175,7 +175,7 @@ export default function CommissionReportClient({
  </button>
 
  {showDetails && (
- <div className="overflow-x-auto bg-crm-bg rounded-lg border border-crm-border shadow-sm">
+ <div className="w-full overflow-x-auto hide-scrollbar border border-crm-border rounded-xl">
  <table className="w-full text-[11px] border-collapse whitespace-nowrap">
  <thead className="bg-crm-surface/50">
  <tr className="border-b border-crm-border text-crm-muted uppercase tracking-wider">
