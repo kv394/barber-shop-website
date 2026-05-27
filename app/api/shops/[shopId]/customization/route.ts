@@ -4,6 +4,7 @@ import { NextResponse } from 'next/server';
 import { createClient } from '@/utils/supabase/server';
 import { revalidatePath } from 'next/cache';
 import { cacheService } from '@/lib/cache';
+import { requireShopRole, isAuthError } from '@/lib/auth';
 
 export async function POST(
   request: Request,
@@ -11,6 +12,11 @@ export async function POST(
 ) {
   try {
     const { shopId } = await params;
+    
+    // SECURITY: Authenticate before allowing customization updates
+    const authResult = await requireShopRole(shopId, ['SITE_ADMIN', 'SHOP_ADMIN']);
+    if (isAuthError(authResult)) return authResult;
+
     const body = await request.json();
     const { customization } = body;
 
