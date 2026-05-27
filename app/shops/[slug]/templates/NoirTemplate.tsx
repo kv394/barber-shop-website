@@ -72,7 +72,7 @@ export default function NoirTemplate({ ctx }: { ctx: any }) {
 
             <div className="absolute top-6 left-8 z-50">
                 {pages.filter((p: any) => p.isVisible).length > 0 && (
-                    <nav className="flex gap-6 font-sans text-[11px] uppercase tracking-[0.2em]">
+                    <nav className="flex flex-wrap gap-4 md:gap-6 font-sans text-[11px] uppercase tracking-[0.2em]">
                         <a href="#" className="transition-colors text-crm-muted hover:text-crm-text">Home</a>
                         {pages.filter((p: any) => p.isVisible).map((p: any) => (
                             <a key={p.id} href={`#${p.id}`} className="transition-colors text-crm-muted hover:text-crm-text">{p.title}</a>

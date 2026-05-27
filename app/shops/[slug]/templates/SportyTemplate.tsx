@@ -71,7 +71,7 @@ export default function SportyTemplate({ ctx }: { ctx: any }) {
 
 
                 {/* Top Bar - Contact Info & Auth */}
-                <div className="bg-crm-surface text-crm-text text-[11px] py-2 px-4 flex justify-end items-center space-x-4">
+                <div className="bg-crm-surface text-crm-text text-[11px] py-2 px-4 flex flex-wrap justify-center sm:justify-end items-center gap-4">
                     {shopPhone && <span>{shopPhone}</span>}
                     {shopEmail && <span>{shopEmail}</span>}
                     <div className="relative">

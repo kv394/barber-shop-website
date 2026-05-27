@@ -153,11 +153,11 @@ export default function Home() {
             <div className="bg-crm-surface p-8 rounded-lg text-center border border-crm-border shadow-sm max-w-2xl mx-auto mt-12 transition-all duration-500 ease-in-out transform hover:-translate-y-1 hover:shadow-md">
               <h3 className="text-xl font-bold font-serif mb-4 text-crm-text">Ready to transform your business?</h3>
               <p className="text-crm-muted mb-8 text-[14px]">Join barbershops already growing with KutzApp to streamline their operations, increase bookings, and grow their revenue.</p>
-              <div className="flex gap-4 justify-center">
-                <Link href="/sign-up" className="inline-block bg-crm-primary text-white px-8 py-3 rounded-md font-semibold hover:bg-crm-surface hover:text-crm-primary border border-transparent hover:border-crm-primary/30 transition-colors">
+              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center w-full">
+                <Link href="/sign-up" className="w-full sm:w-auto text-center inline-block bg-crm-primary text-white px-8 py-3 rounded-md font-semibold hover:bg-crm-surface hover:text-crm-primary border border-transparent hover:border-crm-primary/30 transition-colors">
                   Start Free Trial
                 </Link>
-                <Link href="/shops" className="inline-block bg-crm-surface text-crm-text px-8 py-3 rounded-md font-semibold hover:bg-crm-surface transition-colors border border-crm-border">
+                <Link href="/shops" className="w-full sm:w-auto text-center inline-block bg-crm-surface text-crm-text px-8 py-3 rounded-md font-semibold hover:bg-crm-surface transition-colors border border-crm-border">
                   Browse Shops
                 </Link>
               </div>

@@ -119,7 +119,7 @@ export default function EditorialTemplate({ ctx }: { ctx: any }) {
                     <p className="text-crm-muted font-body max-w-md mb-10 leading-relaxed text-[13px]">
                       {editorial.heroSubtitle || 'Experience beauty as an art form. Our atelier provides a curated space for those who appreciate the finer details of self-ceremony.'}
                     </p>
-                    <div className="flex items-center gap-4">
+                    <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4">
                       <button 
                         onClick={() => {
                             const servicesSection = document.getElementById('services');
@@ -127,12 +127,12 @@ export default function EditorialTemplate({ ctx }: { ctx: any }) {
                                 servicesSection.scrollIntoView({ behavior: 'smooth' });
                             }
                         }}
-                        className="px-8 py-4 rounded-lg hover:shadow-lg transition-all font-semibold text-crm-text"
+                        className="w-full sm:w-auto px-8 py-4 rounded-lg hover:shadow-lg transition-all font-semibold text-crm-text text-center"
                         style={{ background: `linear-gradient(to bottom right, ${primaryColor}, ${secondaryColor})` }}
                       >
                         Book Now
                       </button>
-                      <a href="#services" className="font-semibold flex items-center gap-2 group px-4 py-4" style={{ color: secondaryColor }}>
+                      <a href="#services" className="w-full sm:w-auto justify-center sm:justify-start font-semibold flex items-center gap-2 group px-4 py-4" style={{ color: secondaryColor }}>
                         Explore Services
                         <span className="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>
                       </a>
@@ -208,7 +208,7 @@ export default function EditorialTemplate({ ctx }: { ctx: any }) {
                           dangerouslySetInnerHTML={{ __html: editorial.testimonialsTitle || `Reflections <br/>from Our <br/><span class="italic" style="color: ${primaryColor}">Atelier Guests</span>` }}
                         />
                       </div>
-                      <div className="md:col-span-8 flex gap-8">
+                      <div className="md:col-span-8 flex flex-col sm:flex-row gap-8">
                         {editorial.testimonials.slice(0,2).map((t: any, i: number) => (
                           <div key={i} className={`bg-[#0d0f0d] p-10 rounded-3xl shadow-sm max-w-sm ${i === 1 ? 'hidden md:block opacity-60' : ''}`}>
                             <span className="material-symbols-outlined text-4xl mb-6" style={{ color: secondaryColor }}>format_quote</span>
@@ -235,14 +235,14 @@ export default function EditorialTemplate({ ctx }: { ctx: any }) {
                     <div>
                       <h2 className="font-headline mb-12 text-xl font-bold">{editorial.visitUsTitle || 'Visit the Atelier'}</h2>
                       <div className="space-y-12">
-                        <div className="flex gap-6">
+                        <div className="flex items-start gap-6">
                           <span className="material-symbols-outlined" style={{ color: primaryColor }}>location_on</span>
                           <div>
                             <h4 className="font-bold mb-2 text-base font-semibold">Our Location</h4>
                             <p className="text-crm-muted text-[13px]">{shopAddress || 'Address not provided'}</p>
                           </div>
                         </div>
-                        <div className="flex gap-6">
+                        <div className="flex items-start gap-6">
                           <span className="material-symbols-outlined" style={{ color: primaryColor }}>call</span>
                           <div>
                             <h4 className="font-bold mb-2 text-base font-semibold">Contact Details</h4>
@@ -280,7 +280,7 @@ export default function EditorialTemplate({ ctx }: { ctx: any }) {
                   <p className="text-stone-400 font-body leading-relaxed text-[13px]">{shop.description}</p>
                 </div>
                 <div className="flex flex-col items-start md:items-end space-y-6 md:col-start-3">
-                  <div className="flex gap-6">
+                  <div className="flex items-center gap-6">
                     <a className="hover:opacity-70 transition-all" style={{ color: primaryColor }} href="#"><span className="material-symbols-outlined">public</span></a>
                     <a className="hover:opacity-70 transition-all" style={{ color: primaryColor }} href="#"><span className="material-symbols-outlined">photo_camera</span></a>
                   </div>

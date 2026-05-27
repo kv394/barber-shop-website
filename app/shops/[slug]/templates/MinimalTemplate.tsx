@@ -73,7 +73,7 @@ export default function MinimalTemplate({ ctx }: { ctx: any }) {
             {/* Header / Nav */}
             <header className="absolute w-full top-0 left-0 px-8 py-6 flex flex-wrap justify-between items-center z-50">
                 {pages.filter((p: any) => p.isVisible).length > 0 && (
-                    <nav className="flex gap-8 font-medium text-[13px] tracking-widest uppercase">
+                    <nav className="flex flex-wrap gap-4 md:gap-8 font-medium text-[13px] tracking-widest uppercase">
                         <a href="#" className="transition-opacity hover:opacity-60 text-gray-500">Home</a>
                         {pages.filter((p: any) => p.isVisible).map((p: any) => (
                             <a key={p.id} href={`#${p.id}`} className="transition-opacity hover:opacity-60 text-gray-500">{p.title}</a>
