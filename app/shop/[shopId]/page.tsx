@@ -11,6 +11,7 @@ import ClientNameClickable from '@/components/clients/ClientNameClickable';
 import { calculateUsageCostStrategy, getSaaSTiers } from '@/lib/cost-calculator';
 import InventoryForecast from '@/components/shop-admin/InventoryForecast';
 import PremiumGlassCard from '@/components/ui/PremiumGlassCard';
+import AIFinderFeeStats from '@/components/shop-admin/AIFinderFeeStats';
 
 export const dynamic = 'force-dynamic';
 
@@ -300,6 +301,10 @@ export default async function ShopDashboardPage({ params }: { params: Promise<{ 
  
  {showInventoryControls && (
  <InventoryForecast shopId={shopId} />
+ )}
+
+ {isShopAdmin && (
+ <AIFinderFeeStats shopId={shopId} />
  )}
  
  {isShopAdmin && (

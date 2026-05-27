@@ -277,6 +277,7 @@ model Appointment {
   depositAmount          Float                @default(0)
   depositPaymentIntentId String?
   isRecurringParent      Boolean              @default(false)
+  aiGenerated            Boolean              @default(false)
   recurrenceRule         String?
   recurringGroupId       String?
   refundAmount           Float                @default(0)
