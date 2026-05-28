@@ -17,7 +17,33 @@ export default function CustomTemplate({ ctx }: { ctx: any }) {
  shopWebsite, shopAddress, shopFB, shopIG, shopTW, logoUrl, heroImageUrl, authButton 
  } = ctx;
  
- const htmlToRender = c.customHtml || '<div style="padding: 100px; text-align: center;">No custom HTML provided yet.</div>';
+  const baseHtml = c.customHtml || '<div style="padding: 100px; text-align: center;">No custom HTML provided yet.</div>';
+  const injectorScript = `
+<script>
+  (function() {
+    try {
+      var origin = window.parent && window.parent.location.origin !== "null" ? window.parent.location.origin : window.location.origin;
+      if (!origin || origin === 'null' || origin === 'about://' || origin.includes('about:')) origin = 'https://barber-shop-website-ashy.vercel.app';
+      
+      if (typeof window.KutzApp === 'undefined') {
+        var s1 = document.createElement('script');
+        s1.src = origin + '/kutzapp-sdk.js';
+        document.head.appendChild(s1);
+      }
+      if (typeof window.BarberBooking === 'undefined') {
+        var s2 = document.createElement('script');
+        s2.src = origin + '/booking-modal.js';
+        s2.setAttribute('data-shop-id', '${shop.id}');
+        if ('${primaryColor}') s2.setAttribute('data-theme-color', '${primaryColor}');
+        document.head.appendChild(s2);
+      }
+    } catch(e) { console.error('SDK injection failed', e); }
+  })();
+</script>
+`;
+  const htmlToRender = baseHtml.includes('</head>') 
+    ? baseHtml.replace(/<\/head>/i, `${injectorScript}</head>`) 
+    : injectorScript + baseHtml;
 
  return (
  <div style={{ width: '100vw', height: '100dvh', position: 'relative' }}>
