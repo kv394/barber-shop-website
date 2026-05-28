@@ -18,8 +18,9 @@ export default function CustomTemplate({ ctx }: { ctx: any }) {
  } = ctx;
  
   let baseHtml = c.customHtml || '<div style="padding: 100px; text-align: center;">No custom HTML provided yet.</div>';
-  // Replace the hardcoded demo shop ID often found in templates with the actual shop ID
+  // Replace the hardcoded demo shop IDs often found in templates with the actual shop ID
   baseHtml = baseHtml.replace(/cmn9kj24n0000lqzc7kcsmpst/g, shop.id);
+  baseHtml = baseHtml.replace(/cmpnbqh1r0000iu54k0qnj2sl/g, shop.id);
   const injectorScript = `
 <script>
   (function() {

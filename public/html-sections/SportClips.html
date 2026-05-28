@@ -1,1134 +1,1380 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Sport Clips - Haircuts for Men</title>
-    <link
-      href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,700;0,900;1,400&family=Dancing+Script:wght@400;700&display=swap"
-      rel="stylesheet"
-    />
-    <style>
-      :root {
-        --primary: {{#if primaryColor}}{{primaryColor}}{{else}}#999999{{/if}}; /* Dynamic primary color injected via SSR */
-        --black: #000000;
-        --dark-gray: #222222;
-        --light-gray: #f4f4f4;
-        --white: #ffffff;
-        --text-main: #333333;
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sport Clips - Haircuts for Men</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,700;0,900;1,400&family=Dancing+Script:wght@400;700&display=swap"
+    rel="stylesheet" />
+  <style>
+    :root {
+      --primary: {{#if primaryColor}}{{primaryColor}}{{else}}#999999{{/if}}; /* Dynamic primary color injected via SSR */
+      --black: #000000;
+      --dark-gray: #222222;
+      --light-gray: #f4f4f4;
+      --white: #ffffff;
+      --text-main: #333333;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: "Roboto", sans-serif;
+      background-color: var(--white);
+      color: var(--text-main);
+      margin: 0;
+      padding: 0;
+      line-height: 1.6;
+    }
+
+    h1,
+    h2,
+    h3,
+    .sport-title {
+      font-family: "Roboto", sans-serif;
+      font-weight: 900;
+      text-transform: uppercase;
+      text-align: center;
+      letter-spacing: 1px;
+    }
+
+    /* Navbar - Aligned with user profile (top: 24px) */
+    .navbar {
+      background: var(--white);
+      color: var(--black);
+      padding: 21px 0;
+      /* Adjusted for profile alignment */
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      border-bottom: 2px solid var(--primary);
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      min-height: 82px;
+      box-sizing: border-box;
+    }
+
+    .nav-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 20px;
+      flex-wrap: wrap;
+    }
+
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+
+    .nav-logo {
+      width: 60px;
+      height: 60px;
+      color: var(--primary);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 15px;
+      align-items: center;
+      flex-wrap: wrap;
+      justify-content: center;
+      padding-right: 90px;
+      /* Room for the auth button */
+    }
+
+    .navbar a {
+      color: var(--black);
+      text-decoration: none;
+      font-size: 0.9rem;
+      /* Reduced font size */
+      font-weight: 700;
+      text-transform: uppercase;
+      transition: color 0.3s;
+      padding: 5px 8px;
+    }
+
+    .navbar a:hover,
+    .navbar a.active {
+      color: var(--primary);
+    }
+
+    .nav-cta {
+      background: var(--primary);
+      color: var(--white) !important;
+      padding: 8px 16px !important;
+      border-radius: 4px;
+      border: 2px solid var(--primary);
+    }
+
+    .nav-cta:hover {
+      background: var(--white);
+      color: var(--primary) !important;
+    }
+
+    /* Hero / About */
+    .hero-section {
+      text-align: center;
+      padding: 80px 20px;
+      background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), var(--hero-img, url("https://images.unsplash.com/photo-1599351431202-1e0f0137899a?auto=format&fit=crop&w=2000&q=80"));
+      background-position: center;
+      background-size: cover;
+      background-repeat: no-repeat;
+      color: var(--white);
+    }
+
+    .hero-section h1 {
+      font-size: clamp(2rem, 6vw, 4rem);
+      /* Reduced font size */
+      margin: 0 0 10px 0;
+      color: var(--white);
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    }
+
+    .hero-section p {
+      font-size: 1.2rem;
+      /* Reduced font size */
+      max-width: 800px;
+      margin: 0 auto 30px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    /* Containers */
+    .container {
+      max-width: 1200px;
+      margin: 50px auto;
+      padding: 0 20px;
+    }
+
+    .section-header {
+      font-size: 2.2rem;
+      /* Reduced font size */
+      color: var(--black);
+      margin-bottom: 20px;
+      position: relative;
+      display: inline-block;
+      text-transform: uppercase;
+      font-weight: 900;
+    }
+
+    .section-header::after {
+      content: "";
+      position: absolute;
+      bottom: -8px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 50px;
+      height: 4px;
+      background: var(--primary);
+    }
+
+    .section-header-wrap {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    /* Grid Layout */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+    }
+
+    /* Cards - Uniform Sizing */
+    .card {
+      background: var(--light-gray);
+      border-top: 4px solid var(--primary);
+      padding: 20px;
+      text-align: center;
+      transition:
+        transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+        box-shadow 0.4s ease;
+      width: 100%;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      min-height: 250px;
+      /* Uniform height constraint */
+      height: 100%;
+    }
+
+    .card:hover {
+      transform: translateY(-12px) scale(1.02);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+      z-index: 2;
+      position: relative;
+    }
+
+    .card-img-container {
+      width: 100%;
+      aspect-ratio: 1;
+      overflow: hidden;
+      border-radius: 4px;
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .card-img-container img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .card-title {
+      font-size: 1.05rem;
+      /* Reduced font size */
+      color: var(--black);
+      margin: 0 0 10px 0;
+      text-transform: uppercase;
+      font-weight: 900;
+    }
+
+    .card-price {
+      font-size: 1.1rem;
+      font-weight: 900;
+      color: var(--primary);
+      margin-bottom: 12px;
+    }
+
+    /* Description truncation */
+    .card-desc {
+      font-size: 0.85rem;
+      margin-bottom: 15px;
+      color: var(--text-main);
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      /* Limit to 2 lines */
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      min-height: 2.8em;
+    }
+
+    .card-actions {
+      display: flex;
+      gap: 10px;
+      width: 100%;
+      margin-top: auto;
+      justify-content: center;
+    }
+
+    .card-actions .btn {
+      flex: 1;
+      padding: 12px 0;
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-block;
+      background: var(--primary);
+      color: var(--white);
+      border: 2px solid var(--primary);
+      padding: 14px 0;
+      font-family: "Roboto", sans-serif;
+      font-size: 0.95rem;
+      /* Reduced font size */
+      font-weight: 800;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.3s;
+      border-radius: 6px;
+      width: 100%;
+      box-sizing: border-box;
+      margin-top: auto;
+    }
+
+    .b-book.btn {
+      border-radius: 20px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      background: var(--primary);
+      border: none;
+      color: #fff;
+    }
+
+    .b-book.btn:hover {
+      background: var(--primary);
+      opacity: 0.9;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
+      transform: translateY(-2px);
+    }
+
+    .btn:hover {
+      background: var(--black);
+      border-color: var(--black);
+      color: var(--white);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--black);
+      border-color: var(--black);
+    }
+
+    .btn-outline:hover {
+      background: var(--black);
+      color: var(--white);
+    }
+
+    /* Testimonials & Team */
+    .split-section {
+      display: flex;
+      gap: 40px;
+      flex-wrap: wrap;
+    }
+
+    .reviews-container,
+    .team-container {
+      flex: 1;
+      min-width: 300px;
+    }
+
+    .reviews-scroller {
+      height: 400px;
+      overflow: hidden;
+      position: relative;
+      background: var(--light-gray);
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      padding: 20px;
+    }
+
+    .reviews-scroller-inner {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      animation: scrollUp 40s linear infinite;
+      /* Slower scroll */
+    }
+
+    .reviews-scroller:hover .reviews-scroller-inner {
+      animation-play-state: paused;
+    }
+
+    @keyframes scrollUp {
+      0% {
+        transform: translateY(10%);
       }
 
-      html {
-        scroll-behavior: smooth;
+      100% {
+        transform: translateY(-100%);
       }
+    }
 
-      body {
-        font-family: "Roboto", sans-serif;
-        background-color: var(--white);
-        color: var(--text-main);
-        margin: 0;
-        padding: 0;
-        line-height: 1.6;
-      }
+    .testimonial-item {
+      background: var(--white);
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+      position: relative;
+      transition: transform 0.3s, box-shadow 0.3s;
+      cursor: pointer;
+    }
 
-      h1,
-      h2,
-      h3,
-      .sport-title {
-        font-family: "Roboto", sans-serif;
-        font-weight: 900;
-        text-transform: uppercase;
-        text-align: center;
-        letter-spacing: 1px;
-      }
+    .testimonial-item::before {
+      content: '"';
+      position: absolute;
+      top: -5px;
+      left: 15px;
+      font-size: 4rem;
+      color: rgba(0, 0, 0, 0.05);
+      font-family: Georgia, serif;
+      line-height: 1;
+      z-index: 0;
+    }
 
-      /* Navbar - Aligned with user profile (top: 24px) */
-      .navbar {
-        background: var(--white);
-        color: var(--black);
-        padding: 21px 0; /* Adjusted for profile alignment */
-        position: sticky;
-        top: 0;
-        z-index: 1000;
-        border-bottom: 2px solid var(--primary);
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        min-height: 82px;
-        box-sizing: border-box;
-      }
-      .nav-container {
-        max-width: 1200px;
-        margin: 0 auto;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 0 20px;
-        flex-wrap: wrap;
-      }
-      .nav-brand {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        text-decoration: none;
-      }
-      .nav-logo {
-        width: 60px;
-        height: 60px;
-        color: var(--primary);
-      }
-      .nav-links {
-        display: flex;
-        gap: 15px;
-        align-items: center;
-        flex-wrap: wrap;
-        justify-content: center;
-        padding-right: 90px; /* Room for the auth button */
-      }
-      .navbar a {
-        color: var(--black);
-        text-decoration: none;
-        font-size: 0.9rem; /* Reduced font size */
-        font-weight: 700;
-        text-transform: uppercase;
-        transition: color 0.3s;
-        padding: 5px 8px;
-      }
-      .navbar a:hover,
-      .navbar a.active {
-        color: var(--primary);
-      }
-      .nav-cta {
-        background: var(--primary);
-        color: var(--white) !important;
-        padding: 8px 16px !important;
-        border-radius: 4px;
-        border: 2px solid var(--primary);
-      }
-      .nav-cta:hover {
-        background: var(--white);
-        color: var(--primary) !important;
-      }
+    .testimonial-item:hover {
+      transform: scale(1.05) translateY(-5px);
+      z-index: 10;
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+    }
 
-      /* Hero / About */
-      .hero-section {
-        text-align: center;
-        padding: 80px 20px;
-        background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), var(--hero-img, url("https://images.unsplash.com/photo-1599351431202-1e0f0137899a?auto=format&fit=crop&w=2000&q=80"));
-        background-position: center;
-        background-size: cover;
-        background-repeat: no-repeat;
-        color: var(--white);
-      }
-      .hero-section h1 {
-        font-size: clamp(2rem, 6vw, 4rem); /* Reduced font size */
-        margin: 0 0 10px 0;
-        color: var(--white);
-        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-      }
-      .hero-section p {
-        font-size: 1.2rem; /* Reduced font size */
-        max-width: 800px;
-        margin: 0 auto 30px;
-        font-weight: 700;
-        text-transform: uppercase;
-      }
+    .testimonial-stars {
+      color: var(--primary);
+      font-size: 1.2rem;
+      margin-bottom: 10px;
+      position: relative;
+      z-index: 1;
+    }
 
-      /* Containers */
-      .container {
-        max-width: 1200px;
-        margin: 50px auto;
-        padding: 0 20px;
-      }
-      .section-header {
-        font-size: 2.2rem; /* Reduced font size */
-        color: var(--black);
-        margin-bottom: 20px;
-        position: relative;
-        display: inline-block;
-        text-transform: uppercase;
-        font-weight: 900;
-      }
-      .section-header::after {
-        content: "";
-        position: absolute;
-        bottom: -8px;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 50px;
-        height: 4px;
-        background: var(--primary);
-      }
-      .section-header-wrap {
-        text-align: center;
-        margin-bottom: 40px;
-      }
+    .testimonial-quote {
+      font-size: 0.95rem;
+      font-style: italic;
+      margin: 0;
+      position: relative;
+      z-index: 1;
+    }
 
-      /* Grid Layout */
-      .grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-        gap: 20px;
-      }
+    .photo-frame {
+      width: 100%;
+      max-width: 300px;
+      aspect-ratio: 3/4;
+      margin: 0 auto;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2), 0 15px 30px rgba(0, 0, 0, 0.15);
+      background: #ffffff;
+      /* Pure white for polaroid look */
+      position: relative;
+      border-radius: 2px;
+      padding: 12px 12px 75px 12px;
+      /* Thick bottom border for the name */
+      box-sizing: border-box;
+      display: flex !important;
+      flex-direction: column;
+      transform: rotate(2deg);
+      /* Casual polaroid tilt */
+      transition: transform 0.3s ease;
+    }
 
-      /* Cards - Uniform Sizing */
-      .card {
-        background: var(--light-gray);
-        border-top: 4px solid var(--primary);
-        padding: 20px;
-        text-align: center;
-        transition:
-          transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275),
-          box-shadow 0.4s ease;
-        width: 100%;
-        box-sizing: border-box;
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-start;
-        min-height: 250px; /* Uniform height constraint */
-        height: 100%;
-      }
-      .card:hover {
-        transform: translateY(-12px) scale(1.02);
-        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
-        z-index: 2;
-        position: relative;
-      }
-      .card-img-container {
-        width: 100%;
-        aspect-ratio: 1;
-        overflow: hidden;
-        border-radius: 4px;
-        margin-bottom: 15px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-      .card-img-container img {
-        width: 100%;
-        height: 100%;
-        object-fit: contain;
-      }
-      .card-title {
-        font-size: 1.05rem; /* Reduced font size */
-        color: var(--black);
-        margin: 0 0 10px 0;
-        text-transform: uppercase;
-        font-weight: 900;
-      }
-      .card-price {
-        font-size: 1.1rem;
-        font-weight: 900;
-        color: var(--primary);
-        margin-bottom: 12px;
-      }
-      /* Description truncation */
-      .card-desc {
-        font-size: 0.85rem;
-        margin-bottom: 15px;
-        color: var(--text-main);
-        display: -webkit-box;
-        -webkit-line-clamp: 2; /* Limit to 2 lines */
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-        min-height: 2.8em;
-      }
+    .photo-frame:hover {
+      transform: rotate(0deg) scale(1.03);
+      /* Straightens on hover */
+    }
 
-      .card-actions {
-        display: flex;
-        gap: 10px;
-        width: 100%;
-        margin-top: auto;
-        justify-content: center;
-      }
+    .photo-frame-inner {
+      width: 100%;
+      flex: 1;
+      /* Takes up remaining height */
+      position: relative;
+      background: #000;
+      overflow: hidden;
+      /* Hide overflowing images */
+    }
 
-      .card-actions .btn {
-        flex: 1;
-        padding: 12px 0;
-      }
+    .team-slide,
+    .team-slide-info {
+      position: absolute;
+      opacity: 0;
+      transition: opacity 2s ease-in-out;
+    }
 
-      /* Buttons */
-      .btn {
-        display: inline-block;
-        background: var(--primary);
-        color: var(--white);
-        border: 2px solid var(--primary);
-        padding: 14px 0;
-        font-family: "Roboto", sans-serif;
-        font-size: 0.95rem; /* Reduced font size */
-        font-weight: 800;
-        text-transform: uppercase;
-        cursor: pointer;
-        transition: all 0.3s;
-        border-radius: 6px;
-        width: 100%;
-        box-sizing: border-box;
-        margin-top: auto;
-      }
-      .b-book.btn {
-        border-radius: 20px;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-        background: var(--primary);
-        border: none;
-        color: #fff;
-      }
-      .b-book.btn:hover {
-        background: var(--primary);
-        opacity: 0.9;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
-        transform: translateY(-2px);
-      }
-      .btn:hover {
-        background: var(--black);
-        border-color: var(--black);
-        color: var(--white);
-      }
-      .btn-outline {
-        background: transparent;
-        color: var(--black);
-        border-color: var(--black);
-      }
-      .btn-outline:hover {
-        background: var(--black);
-        color: var(--white);
-      }
+    .team-slide {
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
 
-      /* Testimonials & Team */
-      .split-section {
-        display: flex;
-        gap: 40px;
-        flex-wrap: wrap;
-      }
-      .reviews-container, .team-container {
-        flex: 1;
-        min-width: 300px;
-      }
-      .reviews-scroller {
-        height: 400px;
-        overflow: hidden;
-        position: relative;
-        background: var(--light-gray);
-        border: 1px solid #e0e0e0;
-        border-radius: 8px;
-        padding: 20px;
-      }
-      .reviews-scroller-inner {
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
-        animation: scrollUp 40s linear infinite; /* Slower scroll */
-      }
-      .reviews-scroller:hover .reviews-scroller-inner {
-        animation-play-state: paused;
-      }
-      @keyframes scrollUp {
-        0% { transform: translateY(10%); }
-        100% { transform: translateY(-100%); }
-      }
-      .testimonial-item {
-        background: var(--white);
-        padding: 20px;
-        border-radius: 8px;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-        position: relative;
-        transition: transform 0.3s, box-shadow 0.3s;
-        cursor: pointer;
-      }
-      .testimonial-item::before {
-        content: '"';
-        position: absolute;
-        top: -5px;
-        left: 15px;
-        font-size: 4rem;
-        color: rgba(0,0,0,0.05);
-        font-family: Georgia, serif;
-        line-height: 1;
-        z-index: 0;
-      }
-      .testimonial-item:hover {
-        transform: scale(1.05) translateY(-5px);
-        z-index: 10;
-        box-shadow: 0 15px 30px rgba(0,0,0,0.2);
-      }
-      .testimonial-stars {
-        color: var(--primary);
-        font-size: 1.2rem;
-        margin-bottom: 10px;
-        position: relative;
-        z-index: 1;
-      }
-      .testimonial-quote {
-        font-size: 0.95rem;
-        font-style: italic;
-        margin: 0;
-        position: relative;
-        z-index: 1;
-      }
-      
-      .photo-frame {
-        width: 100%;
-        max-width: 300px;
-        aspect-ratio: 3/4;
-        margin: 0 auto;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.2), 0 15px 30px rgba(0,0,0,0.15);
-        background: #ffffff; /* Pure white for polaroid look */
-        position: relative;
-        border-radius: 2px;
-        padding: 12px 12px 75px 12px; /* Thick bottom border for the name */
-        box-sizing: border-box;
-        display: flex !important;
-        flex-direction: column;
-        transform: rotate(2deg); /* Casual polaroid tilt */
-        transition: transform 0.3s ease;
-      }
-      .photo-frame:hover {
-        transform: rotate(0deg) scale(1.03); /* Straightens on hover */
-      }
-      .photo-frame-inner {
-        width: 100%;
-        flex: 1; /* Takes up remaining height */
-        position: relative;
-        background: #000;
-        overflow: hidden; /* Hide overflowing images */
-      }
-      .team-slide, .team-slide-info {
-        position: absolute;
-        opacity: 0;
-        transition: opacity 2s ease-in-out;
-      }
-      .team-slide {
-        top: 0; left: 0; width: 100%; height: 100%; 
-        display: flex;
-        flex-direction: column;
-      }
-      .team-slide.active, .team-slide-info.active {
-        opacity: 1;
-        z-index: 2;
-      }
-      .team-img {
-        width: 100%;
-        height: 100%; 
-        object-fit: cover;
-      }
-      .team-info {
-        bottom: 10px; 
-        left: 0;
-        right: 0;
-        height: 55px;
-        display: flex;
-        align-items: center;
-        justify-content: center; /* Center the text horizontally in the strip */
-        z-index: 10;
-        overflow: visible; 
-      }
-      .team-name {
-        font-family: "Roboto", sans-serif;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-        margin: 0;
-        color: var(--text-main);
-        display: inline-block;
-        text-shadow: none;
-        white-space: nowrap; 
-      }
+    .team-slide.active,
+    .team-slide-info.active {
+      opacity: 1;
+      z-index: 2;
+    }
 
-      /* Carousel */
-      .carousel-wrapper {
-        position: relative;
-        width: 100%;
-        display: flex;
-        align-items: center;
-      }
-      .carousel-wrapper::before,
-      .carousel-wrapper::after {
-        content: '';
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        width: 40px;
-        z-index: 5;
-        pointer-events: none;
-        opacity: 0;
-        transition: opacity 0.3s;
-      }
-      .carousel-wrapper.show-left::before {
-        left: 0;
-        background: linear-gradient(to right, var(--light-gray) 0%, transparent 100%);
-        opacity: 1;
-      }
-      .carousel-wrapper.show-right::after {
-        right: 0;
-        background: linear-gradient(to left, var(--light-gray) 0%, transparent 100%);
-        opacity: 1;
-      }
-      .carousel-track {
-        display: flex;
-        gap: 20px;
-        overflow-x: auto;
-        scroll-behavior: smooth;
-        -ms-overflow-style: none;
-        scrollbar-width: none;
-        width: 100%;
-        padding: 10px 0;
-      }
-      .carousel-track::-webkit-scrollbar {
-        display: none;
-      }
-      .carousel-track .card, .carousel-track .bento-card {
-        min-width: 260px;
-        max-width: 260px;
-        height: auto;
-        min-height: 450px;
-        flex: 0 0 auto;
-      }
-      .carousel-track .bento-card {
-        min-height: 250px; /* Services cards are shorter than product cards */
-      }
-      .carousel-arrow {
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
-        background: var(--white);
-        color: var(--primary);
-        border: 2px solid var(--primary);
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        font-size: 18px;
-        display: none; /* JS will toggle */
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        z-index: 10;
-        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        transition: all 0.3s;
-      }
-      .carousel-arrow:hover {
-        background: var(--primary);
-        color: var(--white);
-      }
+    .team-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .team-info {
+      bottom: 10px;
+      left: 0;
+      right: 0;
+      height: 55px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      /* Center the text horizontally in the strip */
+      z-index: 10;
+      overflow: visible;
+    }
+
+    .team-name {
+      font-family: "Roboto", sans-serif;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin: 0;
+      color: var(--text-main);
+      display: inline-block;
+      text-shadow: none;
+      white-space: nowrap;
+    }
+
+    /* Carousel */
+    .carousel-wrapper {
+      position: relative;
+      width: 100%;
+      display: flex;
+      align-items: center;
+    }
+
+    .carousel-wrapper::before,
+    .carousel-wrapper::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 40px;
+      z-index: 5;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .carousel-wrapper.show-left::before {
+      left: 0;
+      background: linear-gradient(to right, var(--light-gray) 0%, transparent 100%);
+      opacity: 1;
+    }
+
+    .carousel-wrapper.show-right::after {
+      right: 0;
+      background: linear-gradient(to left, var(--light-gray) 0%, transparent 100%);
+      opacity: 1;
+    }
+
+    .carousel-track {
+      display: flex;
+      gap: 20px;
+      overflow-x: auto;
+      scroll-behavior: smooth;
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+      width: 100%;
+      padding: 10px 0;
+    }
+
+    .carousel-track::-webkit-scrollbar {
+      display: none;
+    }
+
+    .carousel-track .card,
+    .carousel-track .bento-card {
+      min-width: 260px;
+      max-width: 260px;
+      height: auto;
+      min-height: 450px;
+      flex: 0 0 auto;
+    }
+
+    .carousel-track .bento-card {
+      min-height: 250px;
+      /* Services cards are shorter than product cards */
+    }
+
+    .carousel-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: var(--white);
+      color: var(--primary);
+      border: 2px solid var(--primary);
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      font-size: 18px;
+      display: none;
+      /* JS will toggle */
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 10;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s;
+    }
+
+    .carousel-arrow:hover {
+      background: var(--primary);
+      color: var(--white);
+    }
+
+    .carousel-arrow.left {
+      left: -20px;
+    }
+
+    .carousel-arrow.right {
+      right: -20px;
+    }
+
+    @media (max-width: 768px) {
       .carousel-arrow.left {
-        left: -20px;
+        left: 0px;
       }
+
       .carousel-arrow.right {
-        right: -20px;
+        right: 0px;
       }
-      @media (max-width: 768px) {
-        .carousel-arrow.left { left: 0px; }
-        .carousel-arrow.right { right: 0px; }
-      }
+    }
 
-      /* Bento Grid for Services */
+    /* Bento Grid for Services */
+    .bento-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      grid-auto-flow: dense;
+    }
+
+    .bento-card {
+      background-color: #fafafa;
+      background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23e0e0e0' fill-opacity='0.6' fill-rule='evenodd'%3E%3Cpath d='M2 0h4v2H2zM0 6h2v4H0zM12 4h4v2h-4zM6 10h2v4H6zM16 12h4v2h-4zM10 16h4v2h-4zM0 18h2v2H0z'/%3E%3C/g%3E%3C/svg%3E");
+      border-radius: 12px;
+      overflow: hidden;
+      position: relative;
+      text-align: left;
+      transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 20px;
+      border-top: 4px solid var(--primary);
+      min-height: 250px;
+    }
+
+    .bento-card:hover {
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+      z-index: 2;
+    }
+
+    /* Collage Layout Logic */
+    @media (min-width: 768px) {
       .bento-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-        gap: 20px;
-        grid-auto-flow: dense;
-      }
-      .bento-card {
-        background-color: #fafafa;
-        background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23e0e0e0' fill-opacity='0.6' fill-rule='evenodd'%3E%3Cpath d='M2 0h4v2H2zM0 6h2v4H0zM12 4h4v2h-4zM6 10h2v4H6zM16 12h4v2h-4zM10 16h4v2h-4zM0 18h2v2H0z'/%3E%3C/g%3E%3C/svg%3E");
-        border-radius: 12px;
-        overflow: hidden;
-        position: relative;
-        text-align: left;
-        transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease;
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-end;
-        padding: 20px;
-        border-top: 4px solid var(--primary);
-        min-height: 250px;
-      }
-      .bento-card:hover {
-        transform: translateY(-8px) scale(1.02);
-        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
-        z-index: 2;
-      }
-      
-      /* Collage Layout Logic */
-      @media (min-width: 768px) {
-        .bento-grid {
-          grid-template-columns: repeat(4, 1fr);
-        }
-        /* Hero feature (1st) */
-        .bento-grid > .bento-card:nth-child(1) {
-          grid-column: span 2;
-          grid-row: span 2;
-          padding: 30px;
-        }
-        .bento-grid > .bento-card:nth-child(1) .bento-title {
-          font-size: 1.6rem;
-        }
-        
-        /* Tall feature (2nd) */
-        .bento-grid > .bento-card:nth-child(2) {
-          grid-column: span 1;
-          grid-row: span 2;
-        }
-        
-        /* Wide feature (4th) */
-        .bento-grid > .bento-card:nth-child(4) {
-          grid-column: span 2;
-          grid-row: span 1;
-        }
-        
-        /* Wide feature (5th) */
-        .bento-grid > .bento-card:nth-child(5) {
-          grid-column: span 2;
-          grid-row: span 1;
-        }
-        
-        /* Tall feature (6th) */
-        .bento-grid > .bento-card:nth-child(6) {
-          grid-column: span 1;
-          grid-row: span 2;
-        }
-
-        /* Repeating Pattern */
-        .bento-grid > .bento-card:nth-child(7n+1) {
-          grid-column: span 2;
-          grid-row: span 2;
-        }
-        .bento-grid > .bento-card:nth-child(7n+2) {
-          grid-column: span 1;
-          grid-row: span 2;
-        }
-        .bento-grid > .bento-card:nth-child(7n+4) {
-          grid-column: span 2;
-          grid-row: span 1;
-        }
-        
-        /* Standard small boxes default to span 1/span 1 */
-      }
-      .bento-content {
-        position: relative;
-        z-index: 2;
-        color: var(--text-main);
-        display: flex;
-        flex-direction: column;
-        height: 100%;
-        justify-content: flex-end;
-      }
-      .bento-title {
-        font-size: 1.1rem;
-        font-weight: 900;
-        text-transform: uppercase;
-        margin: 0 0 5px 0;
-        color: var(--black);
-      }
-      .bento-price {
-        font-size: 0.95rem;
-        font-weight: 900;
-        color: var(--primary);
-        margin-bottom: 8px;
-      }
-      .bento-desc {
-        font-size: 0.8rem;
-        margin-bottom: 12px;
-        color: var(--text-main);
-      }
-      .bento-btn {
-        align-self: flex-start;
-        padding: 6px 16px;
-        font-size: 0.8rem;
-      }
-      
-      .loading {
-        text-align: center;
-        font-size: 1.2rem;
-        padding: 40px 0;
-        font-weight: 900;
-        text-transform: uppercase;
-        color: var(--primary);
-        animation: pulse 1s infinite alternate;
-      }
-      @keyframes pulse {
-        0% { opacity: 0.5; }
-        100% { opacity: 1; }
+        grid-template-columns: repeat(4, 1fr);
       }
 
-      /* Services Side Scroller */
-      .services-wrapper {
-        position: relative;
-        width: 100%;
-        display: flex;
-        align-items: center;
+      /* Hero feature (1st) */
+      .bento-grid>.bento-card:nth-child(1) {
+        grid-column: span 2;
+        grid-row: span 2;
+        padding: 30px;
       }
+
+      .bento-grid>.bento-card:nth-child(1) .bento-title {
+        font-size: 1.6rem;
+      }
+
+      /* Tall feature (2nd) */
+      .bento-grid>.bento-card:nth-child(2) {
+        grid-column: span 1;
+        grid-row: span 2;
+      }
+
+      /* Wide feature (4th) */
+      .bento-grid>.bento-card:nth-child(4) {
+        grid-column: span 2;
+        grid-row: span 1;
+      }
+
+      /* Wide feature (5th) */
+      .bento-grid>.bento-card:nth-child(5) {
+        grid-column: span 2;
+        grid-row: span 1;
+      }
+
+      /* Tall feature (6th) */
+      .bento-grid>.bento-card:nth-child(6) {
+        grid-column: span 1;
+        grid-row: span 2;
+      }
+
+      /* Repeating Pattern */
+      .bento-grid>.bento-card:nth-child(7n+1) {
+        grid-column: span 2;
+        grid-row: span 2;
+      }
+
+      .bento-grid>.bento-card:nth-child(7n+2) {
+        grid-column: span 1;
+        grid-row: span 2;
+      }
+
+      .bento-grid>.bento-card:nth-child(7n+4) {
+        grid-column: span 2;
+        grid-row: span 1;
+      }
+
+      /* Standard small boxes default to span 1/span 1 */
+    }
+
+    .bento-content {
+      position: relative;
+      z-index: 2;
+      color: var(--text-main);
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      justify-content: flex-end;
+    }
+
+    .bento-title {
+      font-size: 1.1rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      margin: 0 0 5px 0;
+      color: var(--black);
+    }
+
+    .bento-price {
+      font-size: 0.95rem;
+      font-weight: 900;
+      color: var(--primary);
+      margin-bottom: 8px;
+    }
+
+    .bento-desc {
+      font-size: 0.8rem;
+      margin-bottom: 12px;
+      color: var(--text-main);
+    }
+
+    .bento-btn {
+      align-self: flex-start;
+      padding: 6px 16px;
+      font-size: 0.8rem;
+    }
+
+    .loading {
+      text-align: center;
+      font-size: 1.2rem;
+      padding: 40px 0;
+      font-weight: 900;
+      text-transform: uppercase;
+      color: var(--primary);
+      animation: pulse 1s infinite alternate;
+    }
+
+    @keyframes pulse {
+      0% {
+        opacity: 0.5;
+      }
+
+      100% {
+        opacity: 1;
+      }
+    }
+
+    /* Services Side Scroller */
+    .services-wrapper {
+      position: relative;
+      width: 100%;
+      display: flex;
+      align-items: center;
+    }
+
+    .services-wrapper::before,
+    .services-wrapper::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 40px;
+      z-index: 5;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .services-wrapper.show-left::before {
+      left: 0;
+      background: linear-gradient(to right, var(--light-gray) 0%, transparent 100%);
+      opacity: 1;
+    }
+
+    .services-wrapper.show-right::after {
+      right: 0;
+      background: linear-gradient(to left, var(--light-gray) 0%, transparent 100%);
+      opacity: 1;
+    }
+
+    .services-scroller {
+      display: flex;
+      gap: 20px;
+      overflow-x: auto;
+      scroll-behavior: smooth;
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+      width: 100%;
+      padding: 10px 0 20px;
+      /* Extra bottom padding for shadow */
+    }
+
+    .services-scroller::-webkit-scrollbar {
+      display: none;
+    }
+
+    .services-scroller .bento-card {
+      min-width: 280px;
+      max-width: 280px;
+      flex: 0 0 auto;
+      height: auto;
+      min-height: 250px;
+    }
+
+    .services-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: var(--white);
+      color: var(--primary);
+      border: 2px solid var(--primary);
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      font-size: 18px;
+      display: none;
+      /* JS will toggle */
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 10;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s;
+    }
+
+    .services-arrow:hover {
+      background: var(--primary);
+      color: var(--white);
+    }
+
+    .services-arrow.left {
+      left: -20px;
+    }
+
+    .services-arrow.right {
+      right: -20px;
+    }
+
+    @media (max-width: 768px) {
+      .services-arrow.left {
+        left: 0px;
+      }
+
+      .services-arrow.right {
+        right: 0px;
+      }
+
       .services-wrapper::before,
       .services-wrapper::after {
-        content: '';
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        width: 40px;
-        z-index: 5;
-        pointer-events: none;
-        opacity: 0;
-        transition: opacity 0.3s;
-      }
-      .services-wrapper.show-left::before {
-        left: 0;
-        background: linear-gradient(to right, var(--light-gray) 0%, transparent 100%);
-        opacity: 1;
-      }
-      .services-wrapper.show-right::after {
-        right: 0;
-        background: linear-gradient(to left, var(--light-gray) 0%, transparent 100%);
-        opacity: 1;
-      }
-      .services-scroller {
-        display: flex;
-        gap: 20px;
-        overflow-x: auto;
-        scroll-behavior: smooth;
-        -ms-overflow-style: none;
-        scrollbar-width: none;
-        width: 100%;
-        padding: 10px 0 20px; /* Extra bottom padding for shadow */
-      }
-      .services-scroller::-webkit-scrollbar {
         display: none;
       }
-      .services-scroller .bento-card {
-        min-width: 280px;
-        max-width: 280px;
-        flex: 0 0 auto;
-        height: auto;
-        min-height: 250px;
+
+      .services-scroller {
+        padding: 10px 20px 20px;
+        scroll-padding-left: 20px;
+        scroll-snap-type: x mandatory;
       }
+
+      .services-scroller .bento-card {
+        min-width: 80vw;
+        max-width: 80vw;
+        scroll-snap-align: start;
+      }
+
       .services-arrow {
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
+        display: none !important;
+      }
+    }
+
+    /* Mobile App Native Experience Redesign */
+    @media (max-width: 768px) {
+      body {
+        padding-bottom: 80px;
+        /* Space for bottom nav */
+        background-color: #f8f9fa;
+        /* App-like off-white background */
+      }
+
+      .navbar {
+        padding: 15px;
+        min-height: auto;
+        position: sticky;
+        top: 0;
+        border-bottom: none;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+      }
+
+      .nav-container {
+        flex-direction: row;
+        justify-content: space-between;
+        padding: 0 15px;
+        position: relative;
+      }
+
+      .nav-brand {
+        width: calc(100% - 60px);
+        max-width: calc(100% - 60px);
+        justify-content: flex-start;
+        padding: 0;
+        box-sizing: border-box;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: flex;
+      }
+
+      .nav-logo {
+        width: 44px;
+        height: 44px;
+        flex-shrink: 0;
+      }
+
+      #dyn-shop-name-nav {
+        font-size: 1.1rem !important;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: inline-block;
+        max-width: calc(100% - 35px);
+        /* leave room for logo */
+      }
+
+      /* Bottom Navigation Bar */
+      .nav-links {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
         background: var(--white);
-        color: var(--primary);
-        border: 2px solid var(--primary);
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        font-size: 18px;
-        display: none; /* JS will toggle */
+        box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.08);
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        align-items: center;
+        padding: 10px 0;
+        padding-bottom: env(safe-area-inset-bottom, 10px);
+        /* iOS safe area */
+        z-index: 2000;
+        border-top: 1px solid #eee;
+        margin: 0;
+        height: auto;
+      }
+
+      .navbar a.nav-link:not(.nav-cta) {
+        font-size: 0.7rem;
+        font-weight: 700;
+        display: flex;
+        flex-direction: column;
         align-items: center;
         justify-content: center;
-        cursor: pointer;
-        z-index: 10;
-        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        transition: all 0.3s;
-      }
-      .services-arrow:hover {
-        background: var(--primary);
-        color: var(--white);
-      }
-      .services-arrow.left {
-        left: -20px;
-      }
-      .services-arrow.right {
-        right: -20px;
-      }
-      @media (max-width: 768px) {
-        .services-arrow.left { left: 0px; }
-        .services-arrow.right { right: 0px; }
-        .services-wrapper::before, .services-wrapper::after { display: none; }
-        .services-scroller {
-          padding: 10px 20px 20px;
-          scroll-padding-left: 20px;
-          scroll-snap-type: x mandatory;
-        }
-        .services-scroller .bento-card {
-          min-width: 80vw;
-          max-width: 80vw;
-          scroll-snap-align: start;
-        }
-        .services-arrow { display: none !important; }
+        padding: 8px 5px;
+        min-height: 48px;
+        color: #888;
+        text-transform: capitalize;
+        gap: 4px;
       }
 
-      /* Mobile App Native Experience Redesign */
-      @media (max-width: 768px) {
-        body {
-          padding-bottom: 80px; /* Space for bottom nav */
-          background-color: #f8f9fa; /* App-like off-white background */
-        }
-        
-        .navbar {
-          padding: 15px;
-          min-height: auto;
-          position: sticky;
-          top: 0;
-          border-bottom: none;
-          box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-        }
-        .nav-container {
-          flex-direction: row;
-          justify-content: space-between;
-          padding: 0 15px;
-          position: relative;
-        }
-        .nav-brand {
-          width: calc(100% - 60px);
-          max-width: calc(100% - 60px);
-          justify-content: flex-start;
-          padding: 0;
-          box-sizing: border-box;
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          display: flex;
-        }
-        .nav-logo {
-          width: 44px;
-          height: 44px;
-          flex-shrink: 0;
-        }
-        #dyn-shop-name-nav {
-          font-size: 1.1rem !important;
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          display: inline-block;
-          max-width: calc(100% - 35px); /* leave room for logo */
-        }
-        
-        /* Bottom Navigation Bar */
-        .nav-links {
-          position: fixed;
-          bottom: 0;
-          left: 0;
-          width: 100%;
-          background: var(--white);
-          box-shadow: 0 -4px 20px rgba(0,0,0,0.08);
-          display: flex;
-          flex-direction: row;
-          justify-content: space-around;
-          align-items: center;
-          padding: 10px 0;
-          padding-bottom: env(safe-area-inset-bottom, 10px); /* iOS safe area */
-          z-index: 2000;
-          border-top: 1px solid #eee;
-          margin: 0;
-          height: auto;
-        }
-        .navbar a.nav-link:not(.nav-cta) {
-          font-size: 0.7rem;
-          font-weight: 700;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          justify-content: center;
-          padding: 8px 5px;
-          min-height: 48px;
-          color: #888;
-          text-transform: capitalize;
-          gap: 4px;
-        }
-        .navbar a.nav-link.active {
-          color: var(--primary);
-        }
-        .navbar a.nav-link:not(.nav-cta)::before {
-          content: '';
-          display: block;
-          width: 24px;
-          height: 24px;
-          background-color: currentColor;
-          -webkit-mask-size: contain;
-          -webkit-mask-repeat: no-repeat;
-          -webkit-mask-position: center;
-        }
-        a[href="#about"]::before { -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z'/%3E%3C/svg%3E"); }
-        a[href="#services"]::before { -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M7 4c-1.1 0-2 .9-2 2v14h14V6c0-1.1-.9-2-2-2H7zm0 2h10v12H7V6zm2 2v2h6V8H9zm0 4v2h6v-2H9z'/%3E%3C/svg%3E"); }
-        a[href="#shop"]::before { -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49A1.003 1.003 0 0 0 20 4H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z'/%3E%3C/svg%3E"); }
-        a[href="#reviews-team"]::before { -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z'/%3E%3C/svg%3E"); }
-        
-        /* Floating Action Button for Booking */
-        .nav-cta {
-          position: fixed !important;
-          bottom: calc(80px + env(safe-area-inset-bottom, 15px)) !important;
-          right: 20px;
-          border-radius: 30px !important;
-          padding: 14px 24px !important;
-          box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
-          font-size: 1rem !important;
-          font-weight: 900 !important;
-          z-index: 2000;
-          background: var(--primary) !important;
-          border: none !important;
-          display: flex;
-          align-items: center;
-          gap: 8px;
-        }
-        .nav-cta::before {
-          content: '';
-          display: block;
-          width: 20px;
-          height: 20px;
-          background-color: var(--white);
-          -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M19 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10h-4v4h-2v-4H7v-2h4V7h2v4h4v2z'/%3E%3C/svg%3E");
-          -webkit-mask-size: contain;
-          -webkit-mask-repeat: no-repeat;
-        }
-
-        /* Hero Section */
-        .hero-section {
-          padding: 50px 20px;
-          border-radius: 0 0 24px 24px;
-          box-shadow: 0 10px 20px rgba(0,0,0,0.05);
-          margin-bottom: 20px;
-          min-height: 350px;
-          height: 45vh;
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          background-attachment: scroll;
-        }
-        .hero-section h1 {
-          font-size: 2.2rem;
-          line-height: 1.1;
-        }
-        .hero-section p {
-          font-size: 1.1rem;
-          opacity: 0.9;
-        }
-
-        /* Native App-like Containers & Headers */
-        .container {
-          padding: 0;
-          margin: 30px 0;
-        }
-        .section-header-wrap {
-          padding: 0 20px;
-          text-align: left;
-          margin-bottom: 15px;
-        }
-        .section-header {
-          font-size: 1.4rem;
-          letter-spacing: 0;
-        }
-        .section-header::after {
-          display: none;
-        }
-
-        /* Bento Grid (Mobile adjustments) */
-        .bento-grid {
-          padding: 0 15px;
-        }
-
-        /* Shop Carousel */
-        .carousel-wrapper::before, .carousel-wrapper::after {
-          display: none;
-        }
-        .carousel-track {
-          padding: 10px 20px 20px;
-          scroll-padding-left: 20px;
-          gap: 15px;
-          scroll-snap-type: x mandatory;
-        }
-        .carousel-track .card, .carousel-track .bento-card {
-          min-width: 80vw;
-          max-width: 80vw;
-          border-radius: 20px;
-          box-shadow: 0 4px 15px rgba(0,0,0,0.06);
-          border-top: none;
-          scroll-snap-align: start;
-        }
-        .carousel-track .bento-card {
-          min-height: auto;
-        }
-        .carousel-arrow {
-          display: none !important;
-        }
-
-        /* Reviews & Team */
-        .split-section {
-          gap: 30px;
-          padding: 0 15px;
-          flex-direction: column;
-        }
-        .reviews-container, .team-container {
-          min-width: 100%;
-        }
-        .reviews-scroller {
-          border-radius: 20px;
-          border: none;
-          background: var(--white);
-          box-shadow: 0 4px 15px rgba(0,0,0,0.04);
-          height: 350px;
-          overflow-y: auto;
-          scroll-snap-type: y mandatory;
-          -webkit-overflow-scrolling: touch;
-        }
-        .reviews-scroller-inner {
-          animation: none;
-        }
-        .testimonial-item {
-          box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-          border: 1px solid #f0f0f0;
-          scroll-snap-align: start;
-        }
-        
-        .photo-frame {
-          max-width: 100%;
-          border-radius: 12px;
-          padding: 10px 10px 60px 10px;
-          box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-          transform: none; /* Remove polaroid tilt on mobile */
-        }
-        .photo-frame:hover {
-          transform: none;
-        }
+      .navbar a.nav-link.active {
+        color: var(--primary);
       }
-    </style>
-  </head>
-  <body>
-    <nav class="navbar">
-      <div class="nav-container">
-        <div class="nav-brand">
-          {{#if shop.logoUrl}}
-          <img src="{{shop.logoUrl}}" alt="{{shop.name}} Logo" class="nav-logo" style="object-fit: contain;">
-          {{else}}
-          <object
-            data="logo.svg"
-            type="image/svg+xml"
-            class="nav-logo"
-            style="pointer-events: none"
-          ></object>
-          {{/if}}
-          <span
-            id="dyn-shop-name-nav"
-            style="
+
+      .navbar a.nav-link:not(.nav-cta)::before {
+        content: '';
+        display: block;
+        width: 24px;
+        height: 24px;
+        background-color: currentColor;
+        -webkit-mask-size: contain;
+        -webkit-mask-repeat: no-repeat;
+        -webkit-mask-position: center;
+      }
+
+      a[href="#about"]::before {
+        -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z'/%3E%3C/svg%3E");
+      }
+
+      a[href="#services"]::before {
+        -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M7 4c-1.1 0-2 .9-2 2v14h14V6c0-1.1-.9-2-2-2H7zm0 2h10v12H7V6zm2 2v2h6V8H9zm0 4v2h6v-2H9z'/%3E%3C/svg%3E");
+      }
+
+      a[href="#shop"]::before {
+        -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49A1.003 1.003 0 0 0 20 4H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z'/%3E%3C/svg%3E");
+      }
+
+      a[href="#reviews-team"]::before {
+        -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z'/%3E%3C/svg%3E");
+      }
+
+      /* Floating Action Button for Booking */
+      .nav-cta {
+        position: fixed !important;
+        bottom: calc(80px + env(safe-area-inset-bottom, 15px)) !important;
+        right: 20px;
+        border-radius: 30px !important;
+        padding: 14px 24px !important;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        font-size: 1rem !important;
+        font-weight: 900 !important;
+        z-index: 2000;
+        background: var(--primary) !important;
+        border: none !important;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .nav-cta::before {
+        content: '';
+        display: block;
+        width: 20px;
+        height: 20px;
+        background-color: var(--white);
+        -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M19 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10h-4v4h-2v-4H7v-2h4V7h2v4h4v2z'/%3E%3C/svg%3E");
+        -webkit-mask-size: contain;
+        -webkit-mask-repeat: no-repeat;
+      }
+
+      /* Hero Section */
+      .hero-section {
+        padding: 50px 20px;
+        border-radius: 0 0 24px 24px;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+        margin-bottom: 20px;
+        min-height: 350px;
+        height: 45vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        background-attachment: scroll;
+      }
+
+      .hero-section h1 {
+        font-size: 2.2rem;
+        line-height: 1.1;
+      }
+
+      .hero-section p {
+        font-size: 1.1rem;
+        opacity: 0.9;
+      }
+
+      /* Native App-like Containers & Headers */
+      .container {
+        padding: 0;
+        margin: 30px 0;
+      }
+
+      .section-header-wrap {
+        padding: 0 20px;
+        text-align: left;
+        margin-bottom: 15px;
+      }
+
+      .section-header {
+        font-size: 1.4rem;
+        letter-spacing: 0;
+      }
+
+      .section-header::after {
+        display: none;
+      }
+
+      /* Bento Grid (Mobile adjustments) */
+      .bento-grid {
+        padding: 0 15px;
+      }
+
+      /* Shop Carousel */
+      .carousel-wrapper::before,
+      .carousel-wrapper::after {
+        display: none;
+      }
+
+      .carousel-track {
+        padding: 10px 20px 20px;
+        scroll-padding-left: 20px;
+        gap: 15px;
+        scroll-snap-type: x mandatory;
+      }
+
+      .carousel-track .card,
+      .carousel-track .bento-card {
+        min-width: 80vw;
+        max-width: 80vw;
+        border-radius: 20px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+        border-top: none;
+        scroll-snap-align: start;
+      }
+
+      .carousel-track .bento-card {
+        min-height: auto;
+      }
+
+      .carousel-arrow {
+        display: none !important;
+      }
+
+      /* Reviews & Team */
+      .split-section {
+        gap: 30px;
+        padding: 0 15px;
+        flex-direction: column;
+      }
+
+      .reviews-container,
+      .team-container {
+        min-width: 100%;
+      }
+
+      .reviews-scroller {
+        border-radius: 20px;
+        border: none;
+        background: var(--white);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
+        height: 350px;
+        overflow-y: auto;
+        scroll-snap-type: y mandatory;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      .reviews-scroller-inner {
+        animation: none;
+      }
+
+      .testimonial-item {
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        border: 1px solid #f0f0f0;
+        scroll-snap-align: start;
+      }
+
+      .photo-frame {
+        max-width: 100%;
+        border-radius: 12px;
+        padding: 10px 10px 60px 10px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        transform: none;
+        /* Remove polaroid tilt on mobile */
+      }
+
+      .photo-frame:hover {
+        transform: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="nav-brand">
+        {{#if shop.logoUrl}}
+        <img src="{{shop.logoUrl}}" alt="{{shop.name}} Logo" class="nav-logo" style="object-fit: contain;">
+        {{else}}
+        <object data="logo.svg" type="image/svg+xml" class="nav-logo" style="pointer-events: none"></object>
+        {{/if}}
+        <span id="dyn-shop-name-nav" style="
               font-family: &quot;Roboto&quot;, sans-serif;
               font-weight: 900;
               font-size: 1.2rem;
               text-transform: uppercase;
               letter-spacing: -1px;
               color: var(--primary);
-            "
-            >{{#if shop.name}}{{shop.name}}{{else}}SPORT CLIPS{{/if}}</span
-          >
-        </div>
-        <div class="nav-links">
-          <a href="#about" class="nav-link active">The MVP</a>
-          <a href="#services" class="nav-link">Haircuts</a>
-          <a href="#shop" class="nav-link">Products</a>
-          <a href="#reviews-team" class="nav-link">Reviews</a>
-          <a
-            href="#"
-            onclick="
+            ">{{#if shop.name}}{{shop.name}}{{else}}SPORT CLIPS{{/if}}</span>
+      </div>
+      <div class="nav-links">
+        <a href="#about" class="nav-link active">The MVP</a>
+        <a href="#services" class="nav-link">Haircuts</a>
+        <a href="#shop" class="nav-link">Products</a>
+        <a href="#reviews-team" class="nav-link">Reviews</a>
+        <a href="#" onclick="
               event.preventDefault();
               if (window.BarberBooking) window.BarberBooking.open();
-            "
-            class="nav-link nav-cta"
-            >Check In Now</a
-          >
-        </div>
-        <div id="auth-container" style="display: flex; align-items: center; justify-content: center; margin-left: 1rem; z-index: 2001;">
-          <a href="#" id="auth-btn" onclick="event.preventDefault(); if (window.BarberSignIn) window.BarberSignIn.open();" class="btn" style="padding: 8px 16px; border: 2px solid var(--primary); border-radius: 4px; color: var(--primary); background: transparent; font-size: 0.85rem; line-height: 1; max-width: max-content; margin-top: 0; text-decoration: none; font-weight: bold; font-family: 'Roboto', sans-serif; cursor: pointer;">Sign In</a>
-        </div>
+            " class="nav-link nav-cta">Check In Now</a>
       </div>
-    </nav>
-
-    <article id="about">
-      <div id="about-content">
-        <section class="hero-section" style="--hero-img: url('{{#if shop.heroImageUrl}}{{shop.heroImageUrl}}{{else}}https://images.unsplash.com/photo-1599351431202-1e0f0137899a?auto=format&fit=crop&w=2000&q=80{{/if}}');">
-          <h1 id="dyn-shop-name">{{#if shop.name}}{{shop.name}}{{else}}Sport Clips Haircuts{{/if}}</h1>
-          <p id="dyn-shop-desc">{{#if shop.description}}{{shop.description}}{{else}}CLASSIC BARBERSHOP EXPERIENCE WITH A MODERN TWIST. SERVING THE COMMUNITY SINCE 2018.{{/if}}</p>
-        </section>
+      <div id="auth-container"
+        style="display: flex; align-items: center; justify-content: center; margin-left: 1rem; z-index: 2001;">
+        <a href="#" id="auth-btn" onclick="event.preventDefault(); if (window.BarberSignIn) window.BarberSignIn.open();"
+          class="btn"
+          style="padding: 8px 16px; border: 2px solid var(--primary); border-radius: 4px; color: var(--primary); background: transparent; font-size: 0.85rem; line-height: 1; max-width: max-content; margin-top: 0; text-decoration: none; font-weight: bold; font-family: 'Roboto', sans-serif; cursor: pointer;">Sign
+          In</a>
       </div>
-    </article>
+    </div>
+  </nav>
 
-    <article id="services" class="container">
-      <div id="services-loading" class="loading" style="display: none;">Loading Playbook...</div>
-      <div id="services-content" style="display: block">
-        <div class="section-header-wrap">
-          <h2 class="section-header">Haircuts & Services</h2>
-        </div>
-        <div class="carousel-wrapper">
-          <button id="services-prev" class="carousel-arrow left" aria-label="Previous">&#10094;</button>
-          <div class="carousel-track" id="services-list" style="padding-bottom: 20px;">
-            <!-- Dynamic Services Grid (Hardcoded Mockup) -->
-            <div class="bento-card">
-              <div class="bento-content">
-                <h3 class="bento-title">FACIAL</h3>
-                <div class="bento-price">$80.00 / 90 MIN</div>
-                <p class="bento-desc">The MVP Experience.</p>
-                <button class="bento-btn b-book" data-id="mock-facial">Book Now</button>
-              </div>
-            </div>
-            <div class="bento-card">
-              <div class="bento-content">
-                <h3 class="bento-title">BEARD TRIM & SHAPE</h3>
-                <div class="bento-price">$50.00 / 45 MIN</div>
-                <p class="bento-desc">Precision beard grooming with hot towel finish.</p>
-                <button class="bento-btn b-book" data-id="mock-beard">Book Now</button>
-              </div>
-            </div>
-            <div class="bento-card" style="background-color: var(--primary); border: none;">
-              <div class="bento-content" style="color: white;">
-                <div class="bento-desc" style="color: white; font-weight: bold; font-size: 1.2rem; margin-bottom: 15px;">20% off on all haircuts this week !!!</div>
-                <button class="bento-btn b-book" data-id="special-offer" style="background-color: white; color: var(--primary);">CHECK IN NOW</button>
-              </div>
+  <article id="about">
+    <div id="about-content">
+      <section class="hero-section"
+        style="--hero-img: url('{{#if shop.heroImageUrl}}{{shop.heroImageUrl}}{{else}}https://images.unsplash.com/photo-1599351431202-1e0f0137899a?auto=format&fit=crop&w=2000&q=80{{/if}}');">
+        <h1 id="dyn-shop-name">{{#if shop.name}}{{shop.name}}{{else}}Sport Clips Haircuts{{/if}}</h1>
+        <p id="dyn-shop-desc">{{#if shop.description}}{{shop.description}}{{else}}CLASSIC BARBERSHOP EXPERIENCE WITH A
+          MODERN TWIST. SERVING THE COMMUNITY SINCE 2018.{{/if}}</p>
+      </section>
+    </div>
+  </article>
+
+  <article id="services" class="container">
+    <div id="services-loading" class="loading" style="display: none;">Loading Playbook...</div>
+    <div id="services-content" style="display: block">
+      <div class="section-header-wrap">
+        <h2 class="section-header">Haircuts & Services</h2>
+      </div>
+      <div class="carousel-wrapper">
+        <button id="services-prev" class="carousel-arrow left" aria-label="Previous">&#10094;</button>
+        <div class="carousel-track" id="services-list" style="padding-bottom: 20px;">
+          <!-- Dynamic Services Grid (Hardcoded Mockup) -->
+          <div class="bento-card">
+            <div class="bento-content">
+              <h3 class="bento-title">FACIAL</h3>
+              <div class="bento-price">$80.00 / 90 MIN</div>
+              <p class="bento-desc">The MVP Experience.</p>
+              <button class="bento-btn b-book" data-id="mock-facial">Book Now</button>
             </div>
           </div>
-          <button id="services-next" class="carousel-arrow right" aria-label="Next">&#10095;</button>
+          <div class="bento-card">
+            <div class="bento-content">
+              <h3 class="bento-title">BEARD TRIM & SHAPE</h3>
+              <div class="bento-price">$50.00 / 45 MIN</div>
+              <p class="bento-desc">Precision beard grooming with hot towel finish.</p>
+              <button class="bento-btn b-book" data-id="mock-beard">Book Now</button>
+            </div>
+          </div>
+          <div class="bento-card" style="background-color: var(--primary); border: none;">
+            <div class="bento-content" style="color: white;">
+              <div class="bento-desc" style="color: white; font-weight: bold; font-size: 1.2rem; margin-bottom: 15px;">
+                20% off on all haircuts this week !!!</div>
+              <button class="bento-btn b-book" data-id="special-offer"
+                style="background-color: white; color: var(--primary);">CHECK IN NOW</button>
+            </div>
+          </div>
         </div>
+        <button id="services-next" class="carousel-arrow right" aria-label="Next">&#10095;</button>
       </div>
-    </article>
+    </div>
+  </article>
 
-    <article
-      id="shop"
-      class="container"
-      style="
+  <article id="shop" class="container" style="
         background-color: var(--light-gray);
         padding-top: 50px;
         padding-bottom: 50px;
         max-width: 100%;
-      "
-    >
-      <div style="max-width: 1200px; margin: 0 auto">
-        <div id="products-loading" class="loading">Loading Gear...</div>
-        <div id="products-content" style="display: none">
-          <div class="section-header-wrap">
-            <h2 class="section-header">Pro Gear</h2>
-          </div>
-          <div class="carousel-wrapper">
-            <button id="products-prev" class="carousel-arrow left" aria-label="Previous">&#10094;</button>
-            <div class="carousel-track" id="products-list"></div>
-            <button id="products-next" class="carousel-arrow right" aria-label="Next">&#10095;</button>
+      ">
+    <div style="max-width: 1200px; margin: 0 auto">
+      <div id="products-loading" class="loading">Loading Gear...</div>
+      <div id="products-content" style="display: none">
+        <div class="section-header-wrap">
+          <h2 class="section-header">Pro Gear</h2>
+        </div>
+        <div class="carousel-wrapper">
+          <button id="products-prev" class="carousel-arrow left" aria-label="Previous">&#10094;</button>
+          <div class="carousel-track" id="products-list"></div>
+          <button id="products-next" class="carousel-arrow right" aria-label="Next">&#10095;</button>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <article id="reviews-team" class="container" style="margin-bottom: 80px">
+    <div class="section-header-wrap">
+      <h2 class="section-header">Fan Highlights & The Team</h2>
+    </div>
+
+    <div class="split-section">
+      <!-- Left: Reviews -->
+      <div class="reviews-container">
+        <div id="reviews-loading" class="loading">Loading Highlights...</div>
+        <div id="reviews-content" style="display: none">
+          <div class="reviews-scroller" id="reviews-scroller"></div>
+          <div style="text-align: center; margin-top: 20px">
+            <button class="btn btn-outline" id="add-review-btn" style="max-width: 260px">
+              Submit Highlight
+            </button>
           </div>
         </div>
       </div>
-    </article>
 
-    <article id="reviews-team" class="container" style="margin-bottom: 80px">
-      <div class="section-header-wrap">
-        <h2 class="section-header">Fan Highlights & The Team</h2>
+      <!-- Right: Team -->
+      <div class="team-container">
+        <div id="team-loading" class="loading">Loading Team...</div>
+        <div id="team-content" style="display: none;" class="photo-frame"></div>
       </div>
-      
-      <div class="split-section">
-        <!-- Left: Reviews -->
-        <div class="reviews-container">
-          <div id="reviews-loading" class="loading">Loading Highlights...</div>
-          <div id="reviews-content" style="display: none">
-             <div class="reviews-scroller" id="reviews-scroller"></div>
-             <div style="text-align: center; margin-top: 20px">
-              <button class="btn btn-outline" id="add-review-btn" style="max-width: 260px">
-                Submit Highlight
-              </button>
-             </div>
-          </div>
-        </div>
+    </div>
+  </article>
 
-        <!-- Right: Team -->
-        <div class="team-container">
-          <div id="team-loading" class="loading">Loading Team...</div>
-          <div id="team-content" style="display: none;" class="photo-frame"></div>
-        </div>
-      </div>
-    </article>
+  <!-- Core SDK Setup -->
+  <script>
+    (function () {
+      let domain = window.location.origin;
+      let isFileProtocol = window.location.protocol === "file:";
+      if (
+        domain === "null" ||
+        domain === "about://" ||
+        window.location.protocol === "about:" ||
+        isFileProtocol
+      ) {
+        try {
+          domain = window.parent.location.origin;
+        } catch (e) { }
+      }
+      if (domain === "null" || domain === "about://" || !domain) {
+        domain = "https://barber-shop-website-ashy.vercel.app";
+      }
 
-    <!-- Core SDK Setup -->
-    <script>
-      (function () {
+      let scriptBaseUrl = domain;
+      if (isFileProtocol) {
+        // If opened from a local desktop file, fetch scripts from the live staging server
+        scriptBaseUrl = "https://barber-shop-website-ashy.vercel.app";
+      } else if (window.location.pathname.includes('/html-sections/')) {
+        // If developing locally inside the public/html-sections folder
+        scriptBaseUrl = "..";
+      }
+
+      const sdkScript = document.createElement("script");
+      sdkScript.src = scriptBaseUrl + "/kutzapp-sdk.js?v=" + new Date().getTime();
+      document.head.appendChild(sdkScript);
+    })();
+  </script>
+
+  <script>
+    // Smooth scrolling nav
+    document.querySelectorAll(".nav-link:not(.nav-cta)").forEach((link) => {
+      link.addEventListener("click", function (e) {
+        e.preventDefault();
+        document
+          .querySelectorAll(".nav-link")
+          .forEach((a) => a.classList.remove("active"));
+        this.classList.add("active");
+
+        const targetId = this.getAttribute("href");
+        const targetElement = document.querySelector(targetId);
+        if (targetElement) {
+          const headerOffset = document.querySelector(".navbar").offsetHeight;
+          const elementPosition = targetElement.getBoundingClientRect().top;
+          window.scrollTo({
+            top: elementPosition + window.scrollY - headerOffset,
+            behavior: "smooth",
+          });
+        }
+      });
+    });
+
+    window.addEventListener("load", function () {
+      function initializeShop() {
+        if (typeof KutzApp === "undefined") return;
+
+        const urlParams = new URLSearchParams(window.location.search);
+        let shopId = urlParams.get("shopId");
+        if (!shopId) {
+          try {
+            const parentParams = new URLSearchParams(
+              window.parent.location.search,
+            );
+            shopId = parentParams.get("shopId");
+          } catch (e) { }
+        }
+        if (!shopId) {
+          try {
+            const paths = window.parent.location.pathname.split("/");
+            shopId = paths[paths.length - 1];
+            if (shopId && shopId.endsWith(".html")) { shopId = null; }
+          } catch (e) { }
+        }
+        shopId = shopId || "cmpnbqh1r0000iu54k0qnj2sl";
+
         let domain = window.location.origin;
         let isFileProtocol = window.location.protocol === "file:";
+
         if (
           domain === "null" ||
           domain === "about://" ||
@@ -1137,292 +1383,214 @@
         ) {
           try {
             domain = window.parent.location.origin;
-          } catch (e) {}
+          } catch (e) { }
         }
-        if (domain === "null" || domain === "about://" || !domain) {
+        if (
+          domain === "null" ||
+          domain === "about://" ||
+          domain === "file://" ||
+          !domain
+        ) {
           domain = "https://barber-shop-website-ashy.vercel.app";
         }
 
-        let scriptBaseUrl = domain;
-        if (isFileProtocol) {
-           // If opened from a local desktop file, fetch scripts from the live staging server
-           scriptBaseUrl = "https://barber-shop-website-ashy.vercel.app";
-        } else if (window.location.pathname.includes('/html-sections/')) {
-           // If developing locally inside the public/html-sections folder
-           scriptBaseUrl = "..";
-        }
+        const apiUrlToUse = domain;
 
-        const sdkScript = document.createElement("script");
-        sdkScript.src = scriptBaseUrl + "/kutzapp-sdk.js?v=" + new Date().getTime();
-        document.head.appendChild(sdkScript);
-      })();
-    </script>
+        // --- AUTHENTICATION LOGIC (Decoupled from SDK Data) ---
+        window.BarberAppointments = (function () {
+          const overlay = document.createElement('div');
+          overlay.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:999998;display:none;align-items:center;justify-content:center;';
 
-    <script>
-      // Smooth scrolling nav
-      document.querySelectorAll(".nav-link:not(.nav-cta)").forEach((link) => {
-        link.addEventListener("click", function (e) {
-          e.preventDefault();
-          document
-            .querySelectorAll(".nav-link")
-            .forEach((a) => a.classList.remove("active"));
-          this.classList.add("active");
+          const content = document.createElement('div');
+          content.style.cssText = 'width:100%;max-width:900px;height:90vh;max-height:800px;background:white;border-radius:12px;overflow:hidden;box-shadow:0 10px 25px rgba(0,0,0,0.2);z-index:999999;position:relative;';
 
-          const targetId = this.getAttribute("href");
-          const targetElement = document.querySelector(targetId);
-          if (targetElement) {
-            const headerOffset = document.querySelector(".navbar").offsetHeight;
-            const elementPosition = targetElement.getBoundingClientRect().top;
-            window.scrollTo({
-              top: elementPosition + window.scrollY - headerOffset,
-              behavior: "smooth",
-            });
+          const closeBtn = document.createElement('button');
+          closeBtn.innerHTML = '&times;';
+          closeBtn.style.cssText = 'position:absolute;top:10px;right:15px;background:transparent;border:none;font-size:24px;cursor:pointer;color:#333;z-index:1000000;';
+          closeBtn.onclick = () => overlay.style.display = 'none';
+
+          const iframe = document.createElement('iframe');
+          iframe.style.cssText = 'width:100%;height:100%;border:none;';
+
+          content.appendChild(closeBtn);
+          content.appendChild(iframe);
+          overlay.appendChild(content);
+          document.body.appendChild(overlay);
+
+          overlay.addEventListener('click', (e) => {
+            if (e.target === overlay) overlay.style.display = 'none';
+          });
+
+          const style = document.createElement('style');
+          style.innerHTML = '@media(max-width:600px){.barber-appointments-modal-content{height:100vh!important;max-height:100vh!important;border-radius:0!important;top:auto!important;bottom:0!important;position:absolute!important;}}';
+          document.head.appendChild(style);
+          content.className = 'barber-appointments-modal-content';
+
+          return {
+            open: function () {
+              console.log("BarberAppointments.open() called. Domain:", domain);
+              iframe.src = domain + '/my-appointments';
+              overlay.style.display = 'flex';
+              // Bring to front explicitly
+              overlay.style.zIndex = '2147483647';
+            },
+            close: function () {
+              overlay.style.display = 'none';
+            }
+          };
+        })();
+
+        window.BarberSignIn = (function () {
+          const overlay = document.createElement('div');
+          overlay.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:999998;display:none;align-items:center;justify-content:center;';
+
+          const content = document.createElement('div');
+          content.style.cssText = 'width:100%;max-width:500px;height:90vh;max-height:800px;background:white;border-radius:12px;overflow:hidden;box-shadow:0 10px 25px rgba(0,0,0,0.2);z-index:999999;position:relative;';
+
+          const closeBtn = document.createElement('button');
+          closeBtn.innerHTML = '&times;';
+          closeBtn.style.cssText = 'position:absolute;top:10px;right:15px;background:transparent;border:none;font-size:24px;cursor:pointer;color:#333;z-index:1000000;';
+          closeBtn.onclick = () => overlay.style.display = 'none';
+
+          const iframe = document.createElement('iframe');
+          iframe.style.cssText = 'width:100%;height:100%;border:none;';
+
+          content.appendChild(closeBtn);
+          content.appendChild(iframe);
+          overlay.appendChild(content);
+          document.body.appendChild(overlay);
+
+          overlay.addEventListener('click', (e) => {
+            if (e.target === overlay) overlay.style.display = 'none';
+          });
+
+          // Mobile responsiveness
+          const style = document.createElement('style');
+          style.innerHTML = '@media(max-width:600px){.barber-signin-modal-content{height:100vh!important;max-height:100vh!important;border-radius:0!important;top:auto!important;bottom:0!important;position:absolute!important;}}';
+          document.head.appendChild(style);
+          content.className = 'barber-signin-modal-content';
+
+          return {
+            open: function () {
+              iframe.src = domain + '/sign-in';
+              overlay.style.display = 'flex';
+            },
+            close: function () {
+              overlay.style.display = 'none';
+            }
+          };
+        })();
+
+        window.addEventListener('message', (e) => {
+          if (e.data && e.data.type === 'CLOSE_MODAL') {
+            if (window.BarberSignIn) window.BarberSignIn.close();
+            checkAuthState();
           }
         });
-      });
 
-      window.addEventListener("load", function () {
-        function initializeShop() {
-          if (typeof KutzApp === "undefined") return;
+        function checkAuthState() {
+          fetch(apiUrlToUse + '/api/users/me', { credentials: 'include' })
+            .then(res => res.json())
+            .then(user => {
+              const authContainer = document.getElementById('auth-container');
+              if (user && !user.error && authContainer) {
+                authContainer.innerHTML = '';
 
-          const urlParams = new URLSearchParams(window.location.search);
-          let shopId = urlParams.get("shopId");
-          if (!shopId) {
-            try {
-              const parentParams = new URLSearchParams(
-                window.parent.location.search,
-              );
-              shopId = parentParams.get("shopId");
-            } catch (e) {}
-          }
-          if (!shopId) {
-            try {
-              const paths = window.parent.location.pathname.split("/");
-              shopId = paths[paths.length - 1];
-              if (shopId && shopId.endsWith(".html")) { shopId = null; }
-            } catch (e) {}
-          }
-          shopId = shopId || "cmn9kj24n0000lqzc7kcsmpst";
+                const userEmail = user.email || 'User';
+                const initial = userEmail.charAt(0).toUpperCase();
 
-          let domain = window.location.origin;
-          let isFileProtocol = window.location.protocol === "file:";
+                const menuWrapper = document.createElement('div');
+                menuWrapper.style.cssText = 'position:relative; display:inline-block;';
 
-          if (
-            domain === "null" ||
-            domain === "about://" ||
-            window.location.protocol === "about:" ||
-            isFileProtocol
-          ) {
-            try {
-              domain = window.parent.location.origin;
-            } catch (e) {}
-          }
-          if (
-            domain === "null" ||
-            domain === "about://" ||
-            domain === "file://" ||
-            !domain
-          ) {
-            domain = "https://barber-shop-website-ashy.vercel.app";
-          }
+                const avatarBtn = document.createElement('button');
+                avatarBtn.style.cssText = 'background:var(--white); border:2px solid var(--primary); width:40px; height:40px; border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer; color:var(--primary); font-weight:bold; font-size:16px; box-shadow:0 2px 4px rgba(0,0,0,0.1);';
+                avatarBtn.innerHTML = initial;
 
-          const apiUrlToUse = domain;
+                const dropdown = document.createElement('div');
+                dropdown.style.cssText = 'position:absolute; top:100%; right:0; margin-top:8px; background:var(--white); border:1px solid #ddd; border-radius:8px; box-shadow:0 4px 12px rgba(0,0,0,0.15); width:200px; display:none; flex-direction:column; z-index:10000; overflow:hidden;';
 
-          // --- AUTHENTICATION LOGIC (Decoupled from SDK Data) ---
-          window.BarberAppointments = (function() {
-            const overlay = document.createElement('div');
-            overlay.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:999998;display:none;align-items:center;justify-content:center;';
+                const emailHeader = document.createElement('div');
+                emailHeader.style.cssText = 'padding:12px 16px; background:#f9f9f9; color:var(--text-main); font-size:12px; border-bottom:1px solid #eee; text-align:center; font-weight:bold; word-break:break-all;';
+                emailHeader.textContent = userEmail;
 
-            const content = document.createElement('div');
-            content.style.cssText = 'width:100%;max-width:900px;height:90vh;max-height:800px;background:white;border-radius:12px;overflow:hidden;box-shadow:0 10px 25px rgba(0,0,0,0.2);z-index:999999;position:relative;';
+                const appointmentsLink = document.createElement('a');
+                appointmentsLink.href = '#';
+                appointmentsLink.style.cssText = 'padding:12px 16px; color:var(--black); text-decoration:none; font-size:13px; font-weight:bold; text-align:left; border-bottom:1px solid #eee; transition: background 0.2s; cursor:pointer;';
+                appointmentsLink.textContent = 'My Appointments';
+                appointmentsLink.onclick = (e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  console.log("My Appointments clicked. window.BarberAppointments:", !!window.BarberAppointments);
+                  if (window.BarberAppointments) window.BarberAppointments.open();
+                  dropdown.style.display = 'none';
+                };
+                appointmentsLink.onmouseover = () => appointmentsLink.style.backgroundColor = '#f9f9f9';
+                appointmentsLink.onmouseout = () => appointmentsLink.style.backgroundColor = 'transparent';
 
-            const closeBtn = document.createElement('button');
-            closeBtn.innerHTML = '&times;';
-            closeBtn.style.cssText = 'position:absolute;top:10px;right:15px;background:transparent;border:none;font-size:24px;cursor:pointer;color:#333;z-index:1000000;';
-            closeBtn.onclick = () => overlay.style.display = 'none';
+                const logoutLink = document.createElement('a');
+                logoutLink.href = '/logout';
+                logoutLink.style.cssText = 'padding:12px 16px; color:#E31837; text-decoration:none; font-size:13px; font-weight:bold; text-align:left; transition: background 0.2s;';
+                logoutLink.textContent = 'Sign Out';
+                logoutLink.onmouseover = () => logoutLink.style.backgroundColor = '#fef0f0';
+                logoutLink.onmouseout = () => logoutLink.style.backgroundColor = 'transparent';
 
-            const iframe = document.createElement('iframe');
-            iframe.style.cssText = 'width:100%;height:100%;border:none;';
+                dropdown.appendChild(emailHeader);
+                dropdown.appendChild(appointmentsLink);
+                dropdown.appendChild(logoutLink);
 
-            content.appendChild(closeBtn);
-            content.appendChild(iframe);
-            overlay.appendChild(content);
-            document.body.appendChild(overlay);
+                menuWrapper.appendChild(avatarBtn);
+                menuWrapper.appendChild(dropdown);
 
-            overlay.addEventListener('click', (e) => {
-              if (e.target === overlay) overlay.style.display = 'none';
-            });
+                avatarBtn.onclick = (e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  dropdown.style.display = dropdown.style.display === 'none' ? 'flex' : 'none';
+                };
 
-            const style = document.createElement('style');
-            style.innerHTML = '@media(max-width:600px){.barber-appointments-modal-content{height:100vh!important;max-height:100vh!important;border-radius:0!important;top:auto!important;bottom:0!important;position:absolute!important;}}';
-            document.head.appendChild(style);
-            content.className = 'barber-appointments-modal-content';
+                document.addEventListener('click', (e) => {
+                  if (!menuWrapper.contains(e.target)) {
+                    dropdown.style.display = 'none';
+                  }
+                });
 
-            return {
-              open: function() {
-                console.log("BarberAppointments.open() called. Domain:", domain);
-                iframe.src = domain + '/my-appointments';
-                overlay.style.display = 'flex';
-                // Bring to front explicitly
-                overlay.style.zIndex = '2147483647';
-              },
-              close: function() {
-                overlay.style.display = 'none';
+                authContainer.appendChild(menuWrapper);
               }
-            };
-          })();
+            })
+            .catch(err => console.log('Not signed in', err));
+        }
+        checkAuthState();
+        // --- END AUTH LOGIC ---
 
-          window.BarberSignIn = (function() {
-            const overlay = document.createElement('div');
-            overlay.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:999998;display:none;align-items:center;justify-content:center;';
-            
-            const content = document.createElement('div');
-            content.style.cssText = 'width:100%;max-width:500px;height:90vh;max-height:800px;background:white;border-radius:12px;overflow:hidden;box-shadow:0 10px 25px rgba(0,0,0,0.2);z-index:999999;position:relative;';
-            
-            const closeBtn = document.createElement('button');
-            closeBtn.innerHTML = '&times;';
-            closeBtn.style.cssText = 'position:absolute;top:10px;right:15px;background:transparent;border:none;font-size:24px;cursor:pointer;color:#333;z-index:1000000;';
-            closeBtn.onclick = () => overlay.style.display = 'none';
+        // Initialize SDK
+        KutzApp.init(shopId, {
+          position: "bottom-right",
+          apiUrl: apiUrlToUse,
+        });
 
-            const iframe = document.createElement('iframe');
-            iframe.style.cssText = 'width:100%;height:100%;border:none;';
+        // Use the specific SDK helper methods
+        Promise.all([
+          KutzApp.getShopDetails(),
+          KutzApp.getBookableServices(),
+          KutzApp.getSellableProducts(),
+          KutzApp.getReviews(),
+          KutzApp.getPublicStaff()
+        ])
+          .then(([shop, rawServices, rawProducts, reviews, staff]) => {
+            // --- SHOP DETAILS & BRANDING ---
+            try {
+              // 1. Extract dynamic theme colors
+              const primaryColor = shop.primaryColor || "#E31837";
+              const secondaryColor = shop.secondaryColor || "#000000";
 
-            content.appendChild(closeBtn);
-            content.appendChild(iframe);
-            overlay.appendChild(content);
-            document.body.appendChild(overlay);
+              window.KutzApp.primaryColor = primaryColor;
+              window.KutzApp.secondaryColor = secondaryColor;
 
-            overlay.addEventListener('click', (e) => {
-              if (e.target === overlay) overlay.style.display = 'none';
-            });
+              // 2. Apply Theme colors to root
+              document.documentElement.style.setProperty("--primary", primaryColor, "important");
 
-            // Mobile responsiveness
-            const style = document.createElement('style');
-            style.innerHTML = '@media(max-width:600px){.barber-signin-modal-content{height:100vh!important;max-height:100vh!important;border-radius:0!important;top:auto!important;bottom:0!important;position:absolute!important;}}';
-            document.head.appendChild(style);
-            content.className = 'barber-signin-modal-content';
-
-            return {
-              open: function() {
-                iframe.src = domain + '/sign-in';
-                overlay.style.display = 'flex';
-              },
-              close: function() {
-                overlay.style.display = 'none';
-              }
-            };
-          })();
-          
-          window.addEventListener('message', (e) => {
-            if (e.data && e.data.type === 'CLOSE_MODAL') {
-              if (window.BarberSignIn) window.BarberSignIn.close();
-              checkAuthState();
-            }
-          });
-
-          function checkAuthState() {
-            fetch(apiUrlToUse + '/api/users/me', { credentials: 'include' })
-              .then(res => res.json())
-              .then(user => {
-                const authContainer = document.getElementById('auth-container');
-                if (user && !user.error && authContainer) {
-                   authContainer.innerHTML = '';
-                   
-                   const userEmail = user.email || 'User';
-                   const initial = userEmail.charAt(0).toUpperCase();
-                   
-                   const menuWrapper = document.createElement('div');
-                   menuWrapper.style.cssText = 'position:relative; display:inline-block;';
-                   
-                   const avatarBtn = document.createElement('button');
-                   avatarBtn.style.cssText = 'background:var(--white); border:2px solid var(--primary); width:40px; height:40px; border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer; color:var(--primary); font-weight:bold; font-size:16px; box-shadow:0 2px 4px rgba(0,0,0,0.1);';
-                   avatarBtn.innerHTML = initial;
-                   
-                   const dropdown = document.createElement('div');
-                   dropdown.style.cssText = 'position:absolute; top:100%; right:0; margin-top:8px; background:var(--white); border:1px solid #ddd; border-radius:8px; box-shadow:0 4px 12px rgba(0,0,0,0.15); width:200px; display:none; flex-direction:column; z-index:10000; overflow:hidden;';
-                   
-                   const emailHeader = document.createElement('div');
-                   emailHeader.style.cssText = 'padding:12px 16px; background:#f9f9f9; color:var(--text-main); font-size:12px; border-bottom:1px solid #eee; text-align:center; font-weight:bold; word-break:break-all;';
-                   emailHeader.textContent = userEmail;
-
-                   const appointmentsLink = document.createElement('a');
-                   appointmentsLink.href = '#';
-                   appointmentsLink.style.cssText = 'padding:12px 16px; color:var(--black); text-decoration:none; font-size:13px; font-weight:bold; text-align:left; border-bottom:1px solid #eee; transition: background 0.2s; cursor:pointer;';
-                   appointmentsLink.textContent = 'My Appointments';
-                   appointmentsLink.onclick = (e) => {
-                     e.preventDefault();
-                     e.stopPropagation();
-                     console.log("My Appointments clicked. window.BarberAppointments:", !!window.BarberAppointments);
-                     if (window.BarberAppointments) window.BarberAppointments.open();
-                     dropdown.style.display = 'none';
-                   };
-                   appointmentsLink.onmouseover = () => appointmentsLink.style.backgroundColor = '#f9f9f9';
-                   appointmentsLink.onmouseout = () => appointmentsLink.style.backgroundColor = 'transparent';
-
-                   const logoutLink = document.createElement('a');
-                   logoutLink.href = '/logout';
-                   logoutLink.style.cssText = 'padding:12px 16px; color:#E31837; text-decoration:none; font-size:13px; font-weight:bold; text-align:left; transition: background 0.2s;';
-                   logoutLink.textContent = 'Sign Out';
-                   logoutLink.onmouseover = () => logoutLink.style.backgroundColor = '#fef0f0';
-                   logoutLink.onmouseout = () => logoutLink.style.backgroundColor = 'transparent';
-
-                   dropdown.appendChild(emailHeader);
-                   dropdown.appendChild(appointmentsLink);
-                   dropdown.appendChild(logoutLink);
-                   
-                   menuWrapper.appendChild(avatarBtn);
-                   menuWrapper.appendChild(dropdown);
-
-                   avatarBtn.onclick = (e) => {
-                     e.preventDefault();
-                     e.stopPropagation();
-                     dropdown.style.display = dropdown.style.display === 'none' ? 'flex' : 'none';
-                   };
-
-                   document.addEventListener('click', (e) => {
-                     if (!menuWrapper.contains(e.target)) {
-                       dropdown.style.display = 'none';
-                     }
-                   });
-
-                   authContainer.appendChild(menuWrapper);
-                }
-              })
-              .catch(err => console.log('Not signed in', err));
-          }
-          checkAuthState();
-          // --- END AUTH LOGIC ---
-
-          // Initialize SDK
-          KutzApp.init(shopId, {
-            position: "bottom-right",
-            apiUrl: apiUrlToUse,
-          });
-
-          // Use the specific SDK helper methods
-          Promise.all([
-            KutzApp.getShopDetails(),
-            KutzApp.getBookableServices(),
-            KutzApp.getSellableProducts(),
-            KutzApp.getReviews(),
-            KutzApp.getPublicStaff()
-          ])
-            .then(([shop, rawServices, rawProducts, reviews, staff]) => {
-              // --- SHOP DETAILS & BRANDING ---
-              try {
-                // 1. Extract dynamic theme colors
-                const primaryColor = shop.primaryColor || "#E31837";
-                const secondaryColor = shop.secondaryColor || "#000000";
-
-                window.KutzApp.primaryColor = primaryColor;
-                window.KutzApp.secondaryColor = secondaryColor;
-
-                // 2. Apply Theme colors to root
-                document.documentElement.style.setProperty("--primary", primaryColor, "important");
-
-                // 3. Inject CSS overrides for the external user profile (which loads outside the iframe) and Chatbot
-                const styleEl = document.createElement("style");
-                styleEl.innerHTML = `
+              // 3. Inject CSS overrides for the external user profile (which loads outside the iframe) and Chatbot
+              const styleEl = document.createElement("style");
+              styleEl.innerHTML = `
               :root {
                 --primary: \${primaryColor} !important;
                 --brand-color: \${primaryColor} !important;
@@ -1444,75 +1612,75 @@
                 }
               }
             `;
-                document.body.appendChild(styleEl);
+              document.body.appendChild(styleEl);
 
-                // 4. Safely Inject Chatbot, Booking widgets, and Custom Shop Scripts
-                setTimeout(() => {
-                  const cacheBuster = "?v=" + new Date().getTime();
-                  let widgetUrlPrefix = domain;
-                  if (isFileProtocol) {
-                     widgetUrlPrefix = "https://barber-shop-website-ashy.vercel.app";
-                  } else if (window.location.pathname.includes('/html-sections/')) {
-                     widgetUrlPrefix = "..";
-                  }
-
-                  const scriptsToInject = ["booking-modal.js", "booking-widget.js", "review-widget.js"];
-                  scriptsToInject.forEach(scriptName => {
-                    const scriptEl = document.createElement("script");
-                    scriptEl.src = widgetUrlPrefix + "/" + scriptName + cacheBuster;
-                    scriptEl.setAttribute("data-shop-id", shopId);
-                    scriptEl.setAttribute("data-theme-color", primaryColor);
-                    document.body.appendChild(scriptEl);
-                  });
-
-                  // Fetch and inject shop-specific custom script from Google Drive
-                  const customScriptUrl = apiUrlToUse + "/api/shops/" + shopId + "/scripts/landing.js";
-                  const customScriptEl = document.createElement("script");
-                  customScriptEl.src = customScriptUrl + cacheBuster;
-                  customScriptEl.setAttribute("data-shop-id", shopId);
-                  customScriptEl.onerror = () => console.log("No custom landing script found for this shop.");
-                  document.body.appendChild(customScriptEl);
-
-                  // Fix mobile chat widget positioning in Shadow DOM
-                  let widgetFixAttempts = 0;
-                  const widgetFixInterval = setInterval(() => {
-                    widgetFixAttempts++;
-                    const container = document.getElementById('kutzapp-booking-widget-container');
-                    if (container && container.shadowRoot) {
-                       const btn = container.shadowRoot.getElementById('widget-button');
-                       if (btn) {
-                          if (window.innerWidth <= 768) {
-                             btn.style.setProperty('bottom', 'calc(100px + env(safe-area-inset-bottom, 15px))', 'important');
-                             btn.style.setProperty('margin-bottom', '20px', 'important');
-                          }
-                          clearInterval(widgetFixInterval);
-                       }
-                    }
-                    if (widgetFixAttempts > 40) clearInterval(widgetFixInterval);
-                  }, 250);
-                }, 50);
-              } catch (e) {
-                console.error("Theme Error:", e);
-              }
-
-              // --- SERVICES ---
-              try {
-                const bookableServices = (rawServices || []).filter(s => s.duration > 0 && s.isBookable !== false);
-                const servicesMap = new Map();
-                bookableServices.forEach(s => {
-                  if (!servicesMap.has(s.name)) servicesMap.set(s.name, s);
-                });
-                const services = Array.from(servicesMap.values());
-
-                if (services.length === 0) {
-                  // If no services from API, we'll still inject the Ad Card and mock data
-                  services.push(
-                    { id: "mock-facial", name: "FACIAL", price: 80, duration: 90, description: "The MVP Experience." },
-                    { id: "mock-beard", name: "BEARD TRIM & SHAPE", price: 50, duration: 45, description: "Precision beard grooming with hot towel finish." }
-                  );
+              // 4. Safely Inject Chatbot, Booking widgets, and Custom Shop Scripts
+              setTimeout(() => {
+                const cacheBuster = "?v=" + new Date().getTime();
+                let widgetUrlPrefix = domain;
+                if (isFileProtocol) {
+                  widgetUrlPrefix = "https://barber-shop-website-ashy.vercel.app";
+                } else if (window.location.pathname.includes('/html-sections/')) {
+                  widgetUrlPrefix = "..";
                 }
 
-                let cardsHtml = services.map((s) => `
+                const scriptsToInject = ["booking-modal.js", "booking-widget.js", "review-widget.js"];
+                scriptsToInject.forEach(scriptName => {
+                  const scriptEl = document.createElement("script");
+                  scriptEl.src = widgetUrlPrefix + "/" + scriptName + cacheBuster;
+                  scriptEl.setAttribute("data-shop-id", shopId);
+                  scriptEl.setAttribute("data-theme-color", primaryColor);
+                  document.body.appendChild(scriptEl);
+                });
+
+                // Fetch and inject shop-specific custom script from Google Drive
+                const customScriptUrl = apiUrlToUse + "/api/shops/" + shopId + "/scripts/landing.js";
+                const customScriptEl = document.createElement("script");
+                customScriptEl.src = customScriptUrl + cacheBuster;
+                customScriptEl.setAttribute("data-shop-id", shopId);
+                customScriptEl.onerror = () => console.log("No custom landing script found for this shop.");
+                document.body.appendChild(customScriptEl);
+
+                // Fix mobile chat widget positioning in Shadow DOM
+                let widgetFixAttempts = 0;
+                const widgetFixInterval = setInterval(() => {
+                  widgetFixAttempts++;
+                  const container = document.getElementById('kutzapp-booking-widget-container');
+                  if (container && container.shadowRoot) {
+                    const btn = container.shadowRoot.getElementById('widget-button');
+                    if (btn) {
+                      if (window.innerWidth <= 768) {
+                        btn.style.setProperty('bottom', 'calc(100px + env(safe-area-inset-bottom, 15px))', 'important');
+                        btn.style.setProperty('margin-bottom', '20px', 'important');
+                      }
+                      clearInterval(widgetFixInterval);
+                    }
+                  }
+                  if (widgetFixAttempts > 40) clearInterval(widgetFixInterval);
+                }, 250);
+              }, 50);
+            } catch (e) {
+              console.error("Theme Error:", e);
+            }
+
+            // --- SERVICES ---
+            try {
+              const bookableServices = (rawServices || []).filter(s => s.duration > 0 && s.isBookable !== false);
+              const servicesMap = new Map();
+              bookableServices.forEach(s => {
+                if (!servicesMap.has(s.name)) servicesMap.set(s.name, s);
+              });
+              const services = Array.from(servicesMap.values());
+
+              if (services.length === 0) {
+                // If no services from API, we'll still inject the Ad Card and mock data
+                services.push(
+                  { id: "mock-facial", name: "FACIAL", price: 80, duration: 90, description: "The MVP Experience." },
+                  { id: "mock-beard", name: "BEARD TRIM & SHAPE", price: 50, duration: 45, description: "Precision beard grooming with hot towel finish." }
+                );
+              }
+
+              let cardsHtml = services.map((s) => `
                 <div class="bento-card">
                   <div class="bento-content">
                     <h3 class="bento-title">${s.name}</h3>
@@ -1523,8 +1691,8 @@
                 </div>
               `);
 
-                // Append the Promotional Card directly into the grid
-                cardsHtml.push(`
+              // Append the Promotional Card directly into the grid
+              cardsHtml.push(`
                 <div class="bento-card" style="background-color: var(--primary); border: none;">
                   <div class="bento-content" style="color: white;">
                     <div class="bento-desc" style="color: white; font-weight: bold; font-size: 1.2rem; margin-bottom: 15px;">20% off on all haircuts this week !!!</div>
@@ -1533,83 +1701,83 @@
                 </div>
                 `);
 
-                document.getElementById("services-list").innerHTML = cardsHtml.join("");
-                
-                document.querySelectorAll(".b-book").forEach((b) =>
-                  b.addEventListener("click", (e) => {
-                    if (window.BarberBooking) window.BarberBooking.open(e.target.dataset.id);
-                  })
-                );
-                
-                // Setup services carousel logic
-                const servicesTrack = document.getElementById("services-list");
-                const servicesPrevBtn = document.getElementById("services-prev");
-                const servicesNextBtn = document.getElementById("services-next");
-                const servicesWrapper = servicesTrack ? servicesTrack.parentElement : null;
+              document.getElementById("services-list").innerHTML = cardsHtml.join("");
 
-                if (servicesTrack && servicesPrevBtn && servicesNextBtn && servicesWrapper) {
-                   const updateServicesArrows = () => {
-                     const hasLeft = servicesTrack.scrollLeft > 0;
-                     const hasRight = Math.ceil(servicesTrack.scrollLeft + servicesTrack.clientWidth) < servicesTrack.scrollWidth;
-                     
-                     servicesPrevBtn.style.display = hasLeft ? 'flex' : 'none';
-                     servicesNextBtn.style.display = hasRight ? 'flex' : 'none';
-                     servicesWrapper.classList.toggle('show-left', hasLeft);
-                     servicesWrapper.classList.toggle('show-right', hasRight);
-                   };
+              document.querySelectorAll(".b-book").forEach((b) =>
+                b.addEventListener("click", (e) => {
+                  if (window.BarberBooking) window.BarberBooking.open(e.target.dataset.id);
+                })
+              );
 
-                   setTimeout(updateServicesArrows, 100);
-                   servicesTrack.addEventListener('scroll', updateServicesArrows);
-                   window.addEventListener('resize', updateServicesArrows);
+              // Setup services carousel logic
+              const servicesTrack = document.getElementById("services-list");
+              const servicesPrevBtn = document.getElementById("services-prev");
+              const servicesNextBtn = document.getElementById("services-next");
+              const servicesWrapper = servicesTrack ? servicesTrack.parentElement : null;
 
-                   servicesPrevBtn.onclick = () => servicesTrack.scrollBy({ left: -300, behavior: 'smooth' });
-                   servicesNextBtn.onclick = () => servicesTrack.scrollBy({ left: 300, behavior: 'smooth' });
-                }
-                
-                // Retrieve dynamic announcement configured by the shop admin
-                const announcement = shop.customization?.announcement;
-                let adContent = "20% off on all haircuts this week !!!"; // Default site admin advertisement
-                
-                if (announcement && announcement.isActive && announcement.text) {
-                    try {
-                        const lastShown = sessionStorage.getItem('lastShownAd');
-                        if (lastShown === 'shop') {
-                            adContent = "20% off on all haircuts this week !!!"; // Site ad
-                            sessionStorage.setItem('lastShownAd', 'site');
-                        } else {
-                            adContent = announcement.text; // Shop ad
-                            sessionStorage.setItem('lastShownAd', 'shop');
-                        }
-                    } catch (e) {
-                        adContent = announcement.text;
-                    }
-                }
-                
-                const toastTextEl = document.getElementById("dyn-announcement-text");
-                if (toastTextEl) {
-                    toastTextEl.textContent = adContent;
-                    document.getElementById('toast-notification').style.display = 'flex';
-                }
+              if (servicesTrack && servicesPrevBtn && servicesNextBtn && servicesWrapper) {
+                const updateServicesArrows = () => {
+                  const hasLeft = servicesTrack.scrollLeft > 0;
+                  const hasRight = Math.ceil(servicesTrack.scrollLeft + servicesTrack.clientWidth) < servicesTrack.scrollWidth;
 
-                document.getElementById("services-loading").style.display = "none";
-                document.getElementById("services-content").style.display = "block";
-              } catch (e) {
-                 console.error("Services Error:", e);
+                  servicesPrevBtn.style.display = hasLeft ? 'flex' : 'none';
+                  servicesNextBtn.style.display = hasRight ? 'flex' : 'none';
+                  servicesWrapper.classList.toggle('show-left', hasLeft);
+                  servicesWrapper.classList.toggle('show-right', hasRight);
+                };
+
+                setTimeout(updateServicesArrows, 100);
+                servicesTrack.addEventListener('scroll', updateServicesArrows);
+                window.addEventListener('resize', updateServicesArrows);
+
+                servicesPrevBtn.onclick = () => servicesTrack.scrollBy({ left: -300, behavior: 'smooth' });
+                servicesNextBtn.onclick = () => servicesTrack.scrollBy({ left: 300, behavior: 'smooth' });
               }
 
-              // --- PRODUCTS ---
-              try {
-                const productsMap = new Map();
-                (rawProducts || []).forEach(p => {
-                  if (!productsMap.has(p.name)) productsMap.set(p.name, p);
-                });
-                const products = Array.from(productsMap.values());
+              // Retrieve dynamic announcement configured by the shop admin
+              const announcement = shop.customization?.announcement;
+              let adContent = "20% off on all haircuts this week !!!"; // Default site admin advertisement
 
-                if (products.length > 0) {
-                  document.getElementById("products-list").innerHTML = products
-                    .map((p) => {
-                      const fallbackImg = "https://images.unsplash.com/photo-1556228453-efd6c1ff04f6?auto=format&fit=crop&w=600&q=80";
-                      return `
+              if (announcement && announcement.isActive && announcement.text) {
+                try {
+                  const lastShown = sessionStorage.getItem('lastShownAd');
+                  if (lastShown === 'shop') {
+                    adContent = "20% off on all haircuts this week !!!"; // Site ad
+                    sessionStorage.setItem('lastShownAd', 'site');
+                  } else {
+                    adContent = announcement.text; // Shop ad
+                    sessionStorage.setItem('lastShownAd', 'shop');
+                  }
+                } catch (e) {
+                  adContent = announcement.text;
+                }
+              }
+
+              const toastTextEl = document.getElementById("dyn-announcement-text");
+              if (toastTextEl) {
+                toastTextEl.textContent = adContent;
+                document.getElementById('toast-notification').style.display = 'flex';
+              }
+
+              document.getElementById("services-loading").style.display = "none";
+              document.getElementById("services-content").style.display = "block";
+            } catch (e) {
+              console.error("Services Error:", e);
+            }
+
+            // --- PRODUCTS ---
+            try {
+              const productsMap = new Map();
+              (rawProducts || []).forEach(p => {
+                if (!productsMap.has(p.name)) productsMap.set(p.name, p);
+              });
+              const products = Array.from(productsMap.values());
+
+              if (products.length > 0) {
+                document.getElementById("products-list").innerHTML = products
+                  .map((p) => {
+                    const fallbackImg = "https://images.unsplash.com/photo-1556228453-efd6c1ff04f6?auto=format&fit=crop&w=600&q=80";
+                    return `
                 <div class="card" style="background: var(--white);">
                   <div class="card-img-container">
                     <img src="${p.imageUrl || fallbackImg}" alt="${p.name}">
@@ -1623,236 +1791,237 @@
                   </div>
                 </div>
               `;
-                    }).join("");
-                  
-                  document.querySelectorAll(".b-buy").forEach((btn) =>
-                    btn.addEventListener("click", (e) => {
-                      KutzApp.getProductDetails(e.target.dataset.id).then(p => alert("Added to cart: 1x " + p.name));
-                    })
-                  );
-                  
-                  // Product details modal logic (kept as is for brevity, though could be optimized)
-                  document.querySelectorAll(".b-view").forEach((btn) =>
-                    btn.addEventListener("click", (e) => {
-                      KutzApp.getProductDetails(e.target.dataset.id).then(
-                        (p) => {
-                          let modal = document.getElementById("product-modal");
-                          if (!modal) {
-                            modal = document.createElement("div");
-                            modal.id = "product-modal";
-                            modal.style.cssText = "display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);z-index:10001;align-items:center;justify-content:center;";
+                  }).join("");
 
-                            const modalContent = document.createElement("div");
-                            modalContent.style.cssText = "background:white;padding:30px;border-radius:8px;max-width:800px;width:90%;position:relative;box-shadow:0 10px 25px rgba(0,0,0,0.2);display:flex;gap:30px;flex-wrap:wrap;";
+                document.querySelectorAll(".b-buy").forEach((btn) =>
+                  btn.addEventListener("click", (e) => {
+                    KutzApp.getProductDetails(e.target.dataset.id).then(p => alert("Added to cart: 1x " + p.name));
+                  })
+                );
 
-                            const closeBtn = document.createElement("button");
-                            closeBtn.innerHTML = "&times;";
-                            closeBtn.style.cssText = "position:absolute;top:15px;right:15px;background:none;border:none;font-size:24px;cursor:pointer;color:#333;z-index:2;";
-                            closeBtn.onclick = () => (modal.style.display = "none");
+                // Product details modal logic (kept as is for brevity, though could be optimized)
+                document.querySelectorAll(".b-view").forEach((btn) =>
+                  btn.addEventListener("click", (e) => {
+                    KutzApp.getProductDetails(e.target.dataset.id).then(
+                      (p) => {
+                        let modal = document.getElementById("product-modal");
+                        if (!modal) {
+                          modal = document.createElement("div");
+                          modal.id = "product-modal";
+                          modal.style.cssText = "display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);z-index:10001;align-items:center;justify-content:center;";
 
-                            const imageContainer = document.createElement("div");
-                            imageContainer.style.cssText = "flex: 1; min-width: 250px; display: flex; align-items: center; justify-content: center; background: var(--light-gray); border-radius: 4px; overflow: hidden;";
-                            
-                            const img = document.createElement("img");
-                            img.id = "product-modal-img";
-                            img.style.cssText = "width: 100%; height: auto; object-fit: contain; max-height: 400px;";
-                            imageContainer.appendChild(img);
+                          const modalContent = document.createElement("div");
+                          modalContent.style.cssText = "background:white;padding:30px;border-radius:8px;max-width:800px;width:90%;position:relative;box-shadow:0 10px 25px rgba(0,0,0,0.2);display:flex;gap:30px;flex-wrap:wrap;";
 
-                            const textContainer = document.createElement("div");
-                            textContainer.style.cssText = "flex: 1.5; min-width: 250px; display: flex; flex-direction: column;";
+                          const closeBtn = document.createElement("button");
+                          closeBtn.innerHTML = "&times;";
+                          closeBtn.style.cssText = "position:absolute;top:15px;right:15px;background:none;border:none;font-size:24px;cursor:pointer;color:#333;z-index:2;";
+                          closeBtn.onclick = () => (modal.style.display = "none");
 
-                            const title = document.createElement("h2");
-                            title.id = "product-modal-title";
-                            title.style.cssText = "color:var(--primary,#E31837);margin-top:0;margin-bottom:10px;text-transform:uppercase;font-weight:900;border-bottom:2px solid var(--primary,#E31837);padding-bottom:10px;";
+                          const imageContainer = document.createElement("div");
+                          imageContainer.style.cssText = "flex: 1; min-width: 250px; display: flex; align-items: center; justify-content: center; background: var(--light-gray); border-radius: 4px; overflow: hidden;";
 
-                            const price = document.createElement("div");
-                            price.id = "product-modal-price";
-                            price.style.cssText = "font-size:1.2rem;font-weight:900;margin-bottom:20px;";
+                          const img = document.createElement("img");
+                          img.id = "product-modal-img";
+                          img.style.cssText = "width: 100%; height: auto; object-fit: contain; max-height: 400px;";
+                          imageContainer.appendChild(img);
 
-                            const desc = document.createElement("p");
-                            desc.id = "product-modal-desc";
-                            desc.style.cssText = "color:#555;line-height:1.6;white-space:pre-wrap;";
+                          const textContainer = document.createElement("div");
+                          textContainer.style.cssText = "flex: 1.5; min-width: 250px; display: flex; flex-direction: column;";
 
-                            const buyBtn = document.createElement("button");
-                            buyBtn.id = "product-modal-buy";
-                            buyBtn.className = "btn b-buy";
-                            buyBtn.textContent = "Buy Now";
-                            buyBtn.style.cssText = "margin-top: auto; max-width: 200px;";
+                          const title = document.createElement("h2");
+                          title.id = "product-modal-title";
+                          title.style.cssText = "color:var(--primary,#E31837);margin-top:0;margin-bottom:10px;text-transform:uppercase;font-weight:900;border-bottom:2px solid var(--primary,#E31837);padding-bottom:10px;";
 
-                            textContainer.appendChild(title);
-                            textContainer.appendChild(price);
-                            textContainer.appendChild(desc);
-                            textContainer.appendChild(buyBtn);
+                          const price = document.createElement("div");
+                          price.id = "product-modal-price";
+                          price.style.cssText = "font-size:1.2rem;font-weight:900;margin-bottom:20px;";
 
-                            modalContent.appendChild(closeBtn);
-                            modalContent.appendChild(imageContainer);
-                            modalContent.appendChild(textContainer);
-                            modal.appendChild(modalContent);
-                            document.body.appendChild(modal);
+                          const desc = document.createElement("p");
+                          desc.id = "product-modal-desc";
+                          desc.style.cssText = "color:#555;line-height:1.6;white-space:pre-wrap;";
 
-                            modal.addEventListener("click", (e) => {
-                              if (e.target === modal) modal.style.display = "none";
-                            });
-                          }
+                          const buyBtn = document.createElement("button");
+                          buyBtn.id = "product-modal-buy";
+                          buyBtn.className = "btn b-buy";
+                          buyBtn.textContent = "Buy Now";
+                          buyBtn.style.cssText = "margin-top: auto; max-width: 200px;";
 
-                          document.getElementById("product-modal-title").textContent = p.name;
-                          document.getElementById("product-modal-price").textContent = "$" + Number(p.price).toFixed(2);
-                          document.getElementById("product-modal-desc").textContent = p.description || "No description available.";
-                          document.getElementById("product-modal-img").src = p.imageUrl || "https://images.unsplash.com/photo-1556228453-efd6c1ff04f6?auto=format&fit=crop&w=600&q=80";
-                          document.getElementById("product-modal-img").alt = p.name;
-                          document.getElementById("product-modal-buy").onclick = () => {
-                            alert("Added to cart: 1x " + p.name);
-                            modal.style.display = "none";
-                          };
-                          modal.style.display = "flex";
+                          textContainer.appendChild(title);
+                          textContainer.appendChild(price);
+                          textContainer.appendChild(desc);
+                          textContainer.appendChild(buyBtn);
+
+                          modalContent.appendChild(closeBtn);
+                          modalContent.appendChild(imageContainer);
+                          modalContent.appendChild(textContainer);
+                          modal.appendChild(modalContent);
+                          document.body.appendChild(modal);
+
+                          modal.addEventListener("click", (e) => {
+                            if (e.target === modal) modal.style.display = "none";
+                          });
                         }
-                      );
-                    })
-                  );
-                }
-                document.getElementById("products-loading").style.display = "none";
-                document.getElementById("products-content").style.display = "block";
 
-                // Initialize Carousel Logic
-                const track = document.getElementById("products-list");
-                const prevBtn = document.getElementById("products-prev");
-                const nextBtn = document.getElementById("products-next");
-                const wrapper = track ? track.parentElement : null;
-
-                const updateArrows = () => {
-                  if (!track || !prevBtn || !nextBtn || !wrapper) return;
-                  const hasLeft = track.scrollLeft > 0;
-                  const hasRight = Math.ceil(track.scrollLeft + track.clientWidth) < track.scrollWidth;
-                  
-                  prevBtn.style.display = hasLeft ? 'flex' : 'none';
-                  nextBtn.style.display = hasRight ? 'flex' : 'none';
-                  wrapper.classList.toggle('show-left', hasLeft);
-                  wrapper.classList.toggle('show-right', hasRight);
-                };
-
-                setTimeout(updateArrows, 100);
-                track.addEventListener('scroll', updateArrows);
-                window.addEventListener('resize', updateArrows);
-
-                prevBtn.onclick = () => track.scrollBy({ left: -280, behavior: 'smooth' });
-                nextBtn.onclick = () => track.scrollBy({ left: 280, behavior: 'smooth' });
-
-              } catch (e) {
-                 console.error("Products Error:", e);
+                        document.getElementById("product-modal-title").textContent = p.name;
+                        document.getElementById("product-modal-price").textContent = "$" + Number(p.price).toFixed(2);
+                        document.getElementById("product-modal-desc").textContent = p.description || "No description available.";
+                        document.getElementById("product-modal-img").src = p.imageUrl || "https://images.unsplash.com/photo-1556228453-efd6c1ff04f6?auto=format&fit=crop&w=600&q=80";
+                        document.getElementById("product-modal-img").alt = p.name;
+                        document.getElementById("product-modal-buy").onclick = () => {
+                          alert("Added to cart: 1x " + p.name);
+                          modal.style.display = "none";
+                        };
+                        modal.style.display = "flex";
+                      }
+                    );
+                  })
+                );
               }
+              document.getElementById("products-loading").style.display = "none";
+              document.getElementById("products-content").style.display = "block";
 
-              // --- REVIEWS ---
-              try {
-                if (reviews && reviews.length > 0) {
-                  const scrollerInner = document.createElement('div');
-                  scrollerInner.className = 'reviews-scroller-inner';
-                  // Duplicate reviews to make continuous scrolling smoother if there are few
-                  const displayReviews = [...reviews, ...reviews, ...reviews, ...reviews].slice(0, 15);
-                  scrollerInner.innerHTML = displayReviews
-                    .map((r) => `
+              // Initialize Carousel Logic
+              const track = document.getElementById("products-list");
+              const prevBtn = document.getElementById("products-prev");
+              const nextBtn = document.getElementById("products-next");
+              const wrapper = track ? track.parentElement : null;
+
+              const updateArrows = () => {
+                if (!track || !prevBtn || !nextBtn || !wrapper) return;
+                const hasLeft = track.scrollLeft > 0;
+                const hasRight = Math.ceil(track.scrollLeft + track.clientWidth) < track.scrollWidth;
+
+                prevBtn.style.display = hasLeft ? 'flex' : 'none';
+                nextBtn.style.display = hasRight ? 'flex' : 'none';
+                wrapper.classList.toggle('show-left', hasLeft);
+                wrapper.classList.toggle('show-right', hasRight);
+              };
+
+              setTimeout(updateArrows, 100);
+              track.addEventListener('scroll', updateArrows);
+              window.addEventListener('resize', updateArrows);
+
+              prevBtn.onclick = () => track.scrollBy({ left: -280, behavior: 'smooth' });
+              nextBtn.onclick = () => track.scrollBy({ left: 280, behavior: 'smooth' });
+
+            } catch (e) {
+              console.error("Products Error:", e);
+            }
+
+            // --- REVIEWS ---
+            try {
+              if (reviews && reviews.length > 0) {
+                const scrollerInner = document.createElement('div');
+                scrollerInner.className = 'reviews-scroller-inner';
+                // Duplicate reviews to make continuous scrolling smoother if there are few
+                const displayReviews = [...reviews, ...reviews, ...reviews, ...reviews].slice(0, 15);
+                scrollerInner.innerHTML = displayReviews
+                  .map((r) => `
                 <div class="testimonial-item">
                   <div class="testimonial-stars">${"★".repeat(r.rating || 5)}</div>
                   <p class="testimonial-quote">${r.comment || "Great experience, highly recommend!"}</p>
                   <div style="font-size: 0.8rem; color: #777; margin-top: 10px;">- ${r.authorName || r.user?.name || "Valued Client"}</div>
                 </div>
               `).join("");
-                  document.getElementById("reviews-scroller").appendChild(scrollerInner);
-                } else {
-                  document.getElementById("reviews-scroller").innerHTML = "<p style='padding:20px;text-align:center;'>No highlights yet.</p>";
-                }
-
-                document.getElementById("add-review-btn").addEventListener("click", () => {
-                  if (window.BarberReviews) {
-                    window.BarberReviews.open(true);
-                  } else {
-                    const aptId = prompt("Enter Check-In ID:");
-                    const rating = prompt("Rating (1-5):", "5");
-                    const comment = prompt("Comments:");
-                    if (aptId && rating && comment) {
-                      KutzApp.submitReview({ appointmentId: aptId, rating: parseInt(rating), comment })
-                        .then(() => alert("Highlight submitted!"))
-                        .catch((e) => alert("Error: " + e.message));
-                    }
-                  }
-                });
-                document.getElementById("reviews-loading").style.display = "none";
-                document.getElementById("reviews-content").style.display = "block";
-              } catch (e) {
-                 console.error("Reviews Error:", e);
+                document.getElementById("reviews-scroller").appendChild(scrollerInner);
+              } else {
+                document.getElementById("reviews-scroller").innerHTML = "<p style='padding:20px;text-align:center;'>No highlights yet.</p>";
               }
 
-              // --- STAFF ---
-              try {
-                const teamContent = document.getElementById("team-content");
-                if (staff && staff.length > 0) {
-                  teamContent.innerHTML = `
+              document.getElementById("add-review-btn").addEventListener("click", () => {
+                if (window.BarberReviews) {
+                  window.BarberReviews.open(true);
+                } else {
+                  const aptId = prompt("Enter Check-In ID:");
+                  const rating = prompt("Rating (1-5):", "5");
+                  const comment = prompt("Comments:");
+                  if (aptId && rating && comment) {
+                    KutzApp.submitReview({ appointmentId: aptId, rating: parseInt(rating), comment })
+                      .then(() => alert("Highlight submitted!"))
+                      .catch((e) => alert("Error: " + e.message));
+                  }
+                }
+              });
+              document.getElementById("reviews-loading").style.display = "none";
+              document.getElementById("reviews-content").style.display = "block";
+            } catch (e) {
+              console.error("Reviews Error:", e);
+            }
+
+            // --- STAFF ---
+            try {
+              const teamContent = document.getElementById("team-content");
+              if (staff && staff.length > 0) {
+                teamContent.innerHTML = `
                     <div class="photo-frame-inner">
                       ${staff.map((s, index) => {
-                        const fallbackImg = "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=600&q=80";
-                        return `
+                  const fallbackImg = "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=600&q=80";
+                  return `
                           <div class="team-slide ${index === 0 ? 'active' : ''}">
                             <img src="${s.imageUrl || s.avatarUrl || s.profileUrl || fallbackImg}" alt="${s.name}" class="team-img">
                           </div>
                         `;
-                      }).join("")}
+                }).join("")}
                     </div>
                     ${staff.map((s, index) => {
-                        // Calculate a dynamic font size based on name length so longer names fit
-                        const nameLength = (s.name || '').length;
-                        let fontSize = '1.2rem';
-                        if (nameLength > 12) fontSize = '1.1rem';
-                        if (nameLength > 18) fontSize = '0.95rem';
-                        
-                        return `
+                  // Calculate a dynamic font size based on name length so longer names fit
+                  const nameLength = (s.name || '').length;
+                  let fontSize = '1.2rem';
+                  if (nameLength > 12) fontSize = '1.1rem';
+                  if (nameLength > 18) fontSize = '0.95rem';
+
+                  return `
                           <div class="team-info team-slide-info ${index === 0 ? 'active' : ''}">
                             <h3 class="team-name" style="font-size: ${fontSize}">${s.name}</h3>
                           </div>
                         `;
-                    }).join("")}
+                }).join("")}
                   `;
-                  
-                  // Setup fading transition
-                  let currentSlide = 0;
-                  const slides = teamContent.querySelectorAll('.team-slide');
-                  const infos = teamContent.querySelectorAll('.team-slide-info');
-                  if (slides.length > 1) {
-                    setInterval(() => {
-                      slides[currentSlide].classList.remove('active');
-                      if (infos[currentSlide]) infos[currentSlide].classList.remove('active');
-                      
-                      currentSlide = (currentSlide + 1) % slides.length;
-                      
-                      slides[currentSlide].classList.add('active');
-                      if (infos[currentSlide]) infos[currentSlide].classList.add('active');
-                    }, 6500); // Increased interval to accommodate slower fade
-                  }
-                } else {
-                  teamContent.innerHTML = "<div style='display:flex;align-items:center;justify-content:center;height:100%;background:#eee;'><p>Team coming soon!</p></div>";
-                }
-                document.getElementById("team-loading").style.display = "none";
-                teamContent.style.display = "flex"; // Ensure it shows as a flex container
-              } catch (e) {
-                console.error("Team Error:", e);
-              }
-            })
-            .catch((err) => {
-              console.error("SDK Data Loading Error: ", err);
-              document.getElementById("services-loading").textContent = "Failed to load data. Please refresh.";
-            });
-        }
 
-        if (typeof KutzApp !== "undefined") initializeShop();
-        else {
-          let attempts = 0;
-          let intv = setInterval(() => {
-            attempts++;
-            if (typeof KutzApp !== "undefined" || attempts >= 50) {
-              clearInterval(intv);
-              initializeShop();
+                // Setup fading transition
+                let currentSlide = 0;
+                const slides = teamContent.querySelectorAll('.team-slide');
+                const infos = teamContent.querySelectorAll('.team-slide-info');
+                if (slides.length > 1) {
+                  setInterval(() => {
+                    slides[currentSlide].classList.remove('active');
+                    if (infos[currentSlide]) infos[currentSlide].classList.remove('active');
+
+                    currentSlide = (currentSlide + 1) % slides.length;
+
+                    slides[currentSlide].classList.add('active');
+                    if (infos[currentSlide]) infos[currentSlide].classList.add('active');
+                  }, 6500); // Increased interval to accommodate slower fade
+                }
+              } else {
+                teamContent.innerHTML = "<div style='display:flex;align-items:center;justify-content:center;height:100%;background:#eee;'><p>Team coming soon!</p></div>";
+              }
+              document.getElementById("team-loading").style.display = "none";
+              teamContent.style.display = "flex"; // Ensure it shows as a flex container
+            } catch (e) {
+              console.error("Team Error:", e);
             }
-          }, 100);
-        }
-      });
-    </script>
-  </body>
+          })
+          .catch((err) => {
+            console.error("SDK Data Loading Error: ", err);
+            document.getElementById("services-loading").textContent = "Failed to load data. Please refresh.";
+          });
+      }
+
+      if (typeof KutzApp !== "undefined") initializeShop();
+      else {
+        let attempts = 0;
+        let intv = setInterval(() => {
+          attempts++;
+          if (typeof KutzApp !== "undefined" || attempts >= 50) {
+            clearInterval(intv);
+            initializeShop();
+          }
+        }, 100);
+      }
+    });
+  </script>
+</body>
+
 </html>
