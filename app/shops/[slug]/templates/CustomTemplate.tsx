@@ -17,7 +17,9 @@ export default function CustomTemplate({ ctx }: { ctx: any }) {
  shopWebsite, shopAddress, shopFB, shopIG, shopTW, logoUrl, heroImageUrl, authButton 
  } = ctx;
  
-  const baseHtml = c.customHtml || '<div style="padding: 100px; text-align: center;">No custom HTML provided yet.</div>';
+  let baseHtml = c.customHtml || '<div style="padding: 100px; text-align: center;">No custom HTML provided yet.</div>';
+  // Replace the hardcoded demo shop ID often found in templates with the actual shop ID
+  baseHtml = baseHtml.replace(/cmn9kj24n0000lqzc7kcsmpst/g, shop.id);
   const injectorScript = `
 <script>
   (function() {
