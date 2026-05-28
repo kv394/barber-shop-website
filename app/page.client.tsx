@@ -157,9 +157,6 @@ export default function Home() {
  <Link href="/sign-up" className="w-full sm:w-auto text-center inline-block bg-crm-primary text-white px-8 py-3 rounded-lg font-semibold hover:bg-crm-surface hover:text-crm-primary border border-transparent hover:border-crm-primary/30 transition-colors">
  Start Free Trial
  </Link>
- <Link href="/shops" className="w-full sm:w-auto text-center inline-block bg-crm-surface text-crm-text px-8 py-3 rounded-lg font-semibold hover:bg-crm-surface transition-colors border border-crm-border">
- Browse Shops
- </Link>
  </div>
  </div>
  )}
