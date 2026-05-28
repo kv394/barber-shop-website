@@ -223,6 +223,34 @@ export function CustomizationForm({
  </div>
  </div>
 
+ <div>
+ <h3 className="font-bold text-crm-text mb-4 text-lg font-bold">Advanced Settings (Custom Code)</h3>
+ <div className="space-y-4 mb-6">
+ <div>
+ <label className="block font-medium text-crm-muted mb-2 text-[13px]">Custom Landing Page HTML</label>
+ <textarea
+ rows={6}
+ value={formData.customHtml || ''}
+ onChange={(e) => handleInputChange('customHtml', e.target.value)}
+ placeholder="<!-- Paste your full custom landing page HTML here -->"
+ className="w-full bg-crm-bg border border-crm-border shadow-sm rounded px-4 py-2 text-crm-text font-mono text-[12px] placeholder-gray-500"
+ />
+ <p className="text-[11px] text-crm-muted mt-1">Leave blank to use the standard template. If provided, this will completely replace the shop's landing page content.</p>
+ </div>
+ <div>
+ <label className="block font-medium text-crm-muted mb-2 text-[13px]">Custom CSS</label>
+ <textarea
+ rows={4}
+ value={formData.customCss || ''}
+ onChange={(e) => handleInputChange('customCss', e.target.value)}
+ placeholder="/* Paste your custom CSS styles here */"
+ className="w-full bg-crm-bg border border-crm-border shadow-sm rounded px-4 py-2 text-crm-text font-mono text-[12px] placeholder-gray-500"
+ />
+ <p className="text-[11px] text-crm-muted mt-1">Add custom styles that will be applied to your shop's booking page and landing page.</p>
+ </div>
+ </div>
+ </div>
+
  {activeVariables.length > 0 && (
  <div className="mb-8 p-6 bg-crm-surface border border-crm-border rounded-xl shadow-sm">
  <h3 className="font-bold text-crm-text mb-4 text-lg font-bold">Template Custom Variables</h3>
