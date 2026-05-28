@@ -116,11 +116,8 @@ export async function middleware(req: NextRequest) {
       cookies: {
         getAll() { return req.cookies.getAll(); },
         setAll(cookiesToSet: { name: string; value: string; options: CookieOptions }[]) {
-          cookiesToSet.forEach(({ name, value }) => {
-            req.cookies.set(name, value);
-          });
-          response = NextResponse.next({ request: { headers: new Headers(req.headers) } });
           cookiesToSet.forEach(({ name, value, options }) => {
+            req.cookies.set(name, value);
             const safeOptions = { ...options };
             if (process.env.NODE_ENV !== 'production') {
               safeOptions.secure = false;
@@ -132,32 +129,27 @@ export async function middleware(req: NextRequest) {
     }
   );
 
-  const { data: { user } } = await supabase.auth.getUser();
+  // Only call getUser() for non-public routes to avoid unnecessary network round-trips
+  const isPublic = isPublicRoute(req.nextUrl.pathname);
 
-  // Cross-Shop Isolation Logic
-  if (user && isApi && req.nextUrl.pathname.includes('/api/shops/')) {
-    const match = req.nextUrl.pathname.match(/\/api\/shops\/([^/]+)/);
-    if (match && match[1]) {
-      const targetShopId = match[1];
-      
-      // We need to decode the session to verify shop access, but we don't have prisma here easily.
-      // However, we can enforce that the cookie domain matches or pass a specialized header.
-      // Wait, a better approach for true RLS/isolation without full DB hits in middleware:
-      // Since Prisma connects directly to the DB, the middleware can just set a header that Prisma extensions read,
-      // OR we can enforce that cross-shop API calls are blocked if the origin/referer doesn't match the shop.
-      // The most robust way is checking the JWT claims if we have custom claims, but we don't.
-      
-      // Let's pass the currently authenticated user's ID as a header so the API routes can strictly enforce it.
-      response.headers.set('x-user-id', user.id);
+  if (!isPublic) {
+    const { data: { user } } = await supabase.auth.getUser();
+
+    // Redirect unauthenticated users to sign-in on protected routes
+    if (!user) {
+      const signInUrl = req.nextUrl.clone();
+      signInUrl.pathname = '/sign-in';
+      return NextResponse.redirect(signInUrl);
     }
-  }
 
-
-
-  if (!isPublicRoute(req.nextUrl.pathname) && !user) {
-    const signInUrl = req.nextUrl.clone();
-    signInUrl.pathname = '/sign-in';
-    return NextResponse.redirect(signInUrl);
+    // Cross-Shop Isolation Logic
+    if (isApi && req.nextUrl.pathname.includes('/api/shops/')) {
+      const match = req.nextUrl.pathname.match(/\/api\/shops\/([^/]+)/);
+      if (match && match[1]) {
+        // Pass the authenticated user's ID as a header so API routes can enforce shop-level access control
+        response.headers.set('x-user-id', user.id);
+      }
+    }
   }
 
   // Inject pathname into request headers so server components can read the current URL

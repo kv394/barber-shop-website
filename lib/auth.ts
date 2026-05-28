@@ -46,6 +46,7 @@ export async function requireShopRole(
   }
 
   // All other roles must belong to the requested shop or have a ShopAccess record
+  let effectiveRole = user.role;
   if (user.shopId !== shopId) {
     const access = await prisma.shopAccess.findUnique({
       where: { userId_shopId: { userId, shopId } },
@@ -53,16 +54,16 @@ export async function requireShopRole(
     if (!access) {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
-    // Update user role to the access role for this specific request context
-    user.role = access.role;
+    // Use the ShopAccess role for authorization in this request context
+    effectiveRole = access.role;
   }
 
   // Check role AFTER evaluating ShopAccess role
-  if (!allowedRoles.includes(user.role as Role)) {
+  if (!allowedRoles.includes(effectiveRole as Role)) {
     return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
   }
 
-  return { user, userId };
+  return { user: { ...user, role: effectiveRole }, userId };
 }
 
 /**

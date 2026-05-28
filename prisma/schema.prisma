@@ -152,7 +152,7 @@ model User {
   reviews                 Review[]
   shopAccesses            ShopAccess[]
   timeLogs                TimeLog[]
-  shop                    Shop?                   @relation(fields: [shopId], references: [id])
+  shop                    Shop?                   @relation(fields: [shopId], references: [id], onDelete: SetNull)
   memberships             UserMembership[]
   boothRentPayments       BoothRentPayment[]
   renterServices          RenterService[]
@@ -175,7 +175,7 @@ model ShopClient {
   stripePaymentMethodId String?
   createdAt             DateTime  @default(now())
   updatedAt             DateTime  @updatedAt
-  shop                  Shop      @relation(fields: [shopId], references: [id])
+  shop                  Shop      @relation(fields: [shopId], references: [id], onDelete: Cascade)
   user                  User      @relation(fields: [userId], references: [id])
 
   @@unique([userId, shopId])
@@ -202,7 +202,7 @@ model Product {
   isSellable         Boolean               @default(true)
   imageUrl           String?
   appointmentItems   AppointmentItem[]
-  shop               Shop                  @relation(fields: [shopId], references: [id])
+  shop               Shop                  @relation(fields: [shopId], references: [id], onDelete: Cascade)
   purchaseOrderItems PurchaseOrderItem[]
   productUsages      ServiceProductUsage[]
 
@@ -232,7 +232,7 @@ model Service {
   appointmentItems     AppointmentItem[]
   commissionRules      CommissionRule[]
   resourceRequirements ServiceResourceRequirement[]
-  shop                 Shop                         @relation(fields: [shopId], references: [id])
+  shop                 Shop                         @relation(fields: [shopId], references: [id], onDelete: Cascade)
   addons               ServiceAddon[]               @relation("ServiceToAddons")
   productUsages        ServiceProductUsage[]
 
@@ -286,7 +286,7 @@ model Appointment {
   addons                 Json?
   resource               Resource?            @relation(fields: [resourceId], references: [id])
   service                Service?             @relation(fields: [serviceId], references: [id])
-  shop                   Shop                 @relation(fields: [shopId], references: [id])
+  shop                   Shop                 @relation(fields: [shopId], references: [id], onDelete: Cascade)
   staff                  User                 @relation("StaffAppointments", fields: [staffId], references: [id])
   user                   User                 @relation("ClientAppointments", fields: [userId], references: [id])
   items                  AppointmentItem[]
@@ -343,7 +343,7 @@ model CommissionRule {
   createdAt DateTime       @default(now())
   updatedAt DateTime       @updatedAt
   service   Service?       @relation(fields: [serviceId], references: [id])
-  shop      Shop           @relation(fields: [shopId], references: [id])
+  shop      Shop           @relation(fields: [shopId], references: [id], onDelete: Cascade)
   staff     User?          @relation("StaffCommissionRules", fields: [staffId], references: [id])
 }
 
@@ -355,7 +355,7 @@ model Expense {
   date        DateTime @default(now())
   shopId      String
   createdAt   DateTime @default(now())
-  shop        Shop     @relation(fields: [shopId], references: [id])
+  shop        Shop     @relation(fields: [shopId], references: [id], onDelete: Cascade)
 
   @@index([shopId, date])
 }
@@ -371,7 +371,7 @@ model Review {
   ownerResponse String?
   respondedAt   DateTime?
   appointment   Appointment? @relation(fields: [appointmentId], references: [id])
-  shop          Shop         @relation(fields: [shopId], references: [id])
+  shop          Shop         @relation(fields: [shopId], references: [id], onDelete: Cascade)
   user          User         @relation(fields: [userId], references: [id])
 
   @@index([shopId, createdAt])
@@ -383,7 +383,7 @@ model ShopBlackoutDate {
   date      DateTime
   reason    String?
   createdAt DateTime @default(now())
-  shop      Shop     @relation(fields: [shopId], references: [id])
+  shop      Shop     @relation(fields: [shopId], references: [id], onDelete: Cascade)
 
   @@unique([shopId, date])
   @@index([shopId])
@@ -395,13 +395,13 @@ model Waitlist {
   clientPhone String?
   partySize   Int      @default(1)
   serviceId   String?
-  status      String   @default("WAITING")
+  status      WaitlistStatus @default(WAITING)
   position    Int
   shopId      String
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   staffId     String?
-  shop        Shop     @relation(fields: [shopId], references: [id])
+  shop        Shop     @relation(fields: [shopId], references: [id], onDelete: Cascade)
 
   @@index([shopId, createdAt])
 }
@@ -415,7 +415,7 @@ model Leave {
   createdAt DateTime @default(now())
   endTime   DateTime
   startTime DateTime
-  shop      Shop     @relation(fields: [shopId], references: [id])
+  shop      Shop     @relation(fields: [shopId], references: [id], onDelete: Cascade)
   user      User     @relation(fields: [userId], references: [id])
 
   @@index([shopId, date])
@@ -428,7 +428,7 @@ model TimeLog {
   clockOut DateTime?
   userId   String
   shopId   String
-  shop     Shop      @relation(fields: [shopId], references: [id])
+  shop     Shop      @relation(fields: [shopId], references: [id], onDelete: Cascade)
   user     User      @relation(fields: [userId], references: [id])
 
   @@index([shopId])
@@ -465,7 +465,7 @@ model LoyaltyProgram {
   updatedAt       DateTime @updatedAt
   pointExpiryDays Int      @default(0)
   tiers           Json?
-  shop            Shop     @relation(fields: [shopId], references: [id])
+  shop            Shop     @relation(fields: [shopId], references: [id], onDelete: Cascade)
 }
 
 model LoyaltyAccount {
@@ -479,7 +479,7 @@ model LoyaltyAccount {
   updatedAt      DateTime             @updatedAt
   currentTier    String               @default("Bronze")
   lifetimePoints Int                  @default(0)
-  shop           Shop                 @relation(fields: [shopId], references: [id])
+  shop           Shop                 @relation(fields: [shopId], references: [id], onDelete: Cascade)
   user           User                 @relation(fields: [userId], references: [id])
   transactions   LoyaltyTransaction[]
 
@@ -514,7 +514,7 @@ model Referral {
   updatedAt            DateTime @updatedAt
   referee              User     @relation("RefereeReferrals", fields: [refereeId], references: [id])
   referrer             User     @relation("ReferrerReferrals", fields: [referrerId], references: [id])
-  shop                 Shop     @relation(fields: [shopId], references: [id])
+  shop                 Shop     @relation(fields: [shopId], references: [id], onDelete: Cascade)
 
   @@unique([shopId, refereeId])
   @@index([shopId])
@@ -526,16 +526,16 @@ model Campaign {
   shopId         String
   name           String
   message        String
-  type           String    @default("PROMO")
-  channel        String    @default("EMAIL")
-  status         String    @default("DRAFT")
+  type           CampaignType    @default(EMAIL)
+  channel        CampaignChannel @default(EMAIL)
+  status         CampaignStatus  @default(DRAFT)
   targetSegment  String    @default("ALL")
   scheduledAt    DateTime?
   sentAt         DateTime?
   recipientCount Int       @default(0)
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @updatedAt
-  shop           Shop      @relation(fields: [shopId], references: [id])
+  shop           Shop      @relation(fields: [shopId], references: [id], onDelete: Cascade)
 
   @@index([shopId])
   @@index([status])
@@ -555,7 +555,7 @@ model Notification {
   createdAt   DateTime  @default(now())
   maxRetries  Int       @default(3)
   retryCount  Int       @default(0)
-  shop        Shop      @relation(fields: [shopId], references: [id])
+  shop        Shop      @relation(fields: [shopId], references: [id], onDelete: Cascade)
   user        User      @relation(fields: [userId], references: [id])
 
   @@index([shopId])
@@ -591,7 +591,7 @@ model GiftCard {
   status         GiftCardStatus @default(ACTIVE)
   createdAt      DateTime       @default(now())
   updatedAt      DateTime       @updatedAt
-  shop           Shop           @relation(fields: [shopId], references: [id])
+  shop           Shop           @relation(fields: [shopId], references: [id], onDelete: Cascade)
 
   @@index([shopId])
   @@index([code])
@@ -608,7 +608,7 @@ model DynamicTemplate {
   updatedAt   DateTime @updatedAt
   shopId      String?
   variables   Json?
-  shop        Shop?    @relation(fields: [shopId], references: [id])
+  shop        Shop?    @relation(fields: [shopId], references: [id], onDelete: Cascade)
 }
 
 model Resource {
@@ -619,7 +619,7 @@ model Resource {
   createdAt    DateTime      @default(now())
   updatedAt    DateTime      @updatedAt
   appointments Appointment[]
-  shop         Shop          @relation(fields: [shopId], references: [id])
+  shop         Shop          @relation(fields: [shopId], references: [id], onDelete: Cascade)
 
   @@index([shopId])
 }
@@ -633,7 +633,7 @@ model FormTemplate {
   createdAt   DateTime         @default(now())
   updatedAt   DateTime         @updatedAt
   submissions FormSubmission[]
-  shop        Shop             @relation(fields: [shopId], references: [id])
+  shop        Shop             @relation(fields: [shopId], references: [id], onDelete: Cascade)
 
   @@index([shopId])
 }
@@ -665,7 +665,7 @@ model ClientFormula {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   client    User     @relation("ClientFormulas", fields: [clientId], references: [id])
-  shop      Shop     @relation(fields: [shopId], references: [id])
+  shop      Shop     @relation(fields: [shopId], references: [id], onDelete: Cascade)
   staff     User     @relation("StaffFormulas", fields: [staffId], references: [id])
 
   @@index([clientId])
@@ -683,7 +683,7 @@ model ClientHistoryImage {
   createdAt     DateTime     @default(now())
   appointment   Appointment? @relation(fields: [appointmentId], references: [id])
   client        User         @relation("ClientHistoryImages", fields: [clientId], references: [id])
-  shop          Shop         @relation(fields: [shopId], references: [id])
+  shop          Shop         @relation(fields: [shopId], references: [id], onDelete: Cascade)
 
   @@index([clientId])
   @@index([appointmentId])
@@ -700,7 +700,7 @@ model MembershipTier {
   shopId          String
   createdAt       DateTime         @default(now())
   updatedAt       DateTime         @updatedAt
-  shop            Shop             @relation(fields: [shopId], references: [id])
+  shop            Shop             @relation(fields: [shopId], references: [id], onDelete: Cascade)
   members         UserMembership[]
 
   @@index([shopId])
@@ -717,7 +717,7 @@ model UserMembership {
   createdAt            DateTime       @default(now())
   updatedAt            DateTime       @updatedAt
   membershipTier       MembershipTier @relation(fields: [membershipTierId], references: [id])
-  shop                 Shop           @relation(fields: [shopId], references: [id])
+  shop                 Shop           @relation(fields: [shopId], references: [id], onDelete: Cascade)
   user                 User           @relation(fields: [userId], references: [id])
 
   @@index([userId])
@@ -733,7 +733,7 @@ model PortfolioImage {
   shopId       String
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
-  shop         Shop     @relation(fields: [shopId], references: [id])
+  shop         Shop     @relation(fields: [shopId], references: [id], onDelete: Cascade)
   staff        User     @relation("StaffPortfolio", fields: [staffId], references: [id])
 
   @@index([staffId])
@@ -757,7 +757,7 @@ model ShopUsageReport {
   suggestedMonthlyFeeUSD  Float
   pricingTierName         String
   createdAt               DateTime @default(now())
-  shop                    Shop     @relation(fields: [shopId], references: [id])
+  shop                    Shop     @relation(fields: [shopId], references: [id], onDelete: Cascade)
 
   @@index([shopId, period])
 }
@@ -902,7 +902,7 @@ model PurchaseOrder {
   notes                String?
   createdAt            DateTime            @default(now())
   updatedAt            DateTime            @updatedAt
-  shop                 Shop                @relation(fields: [shopId], references: [id])
+  shop                 Shop                @relation(fields: [shopId], references: [id], onDelete: Cascade)
   items                PurchaseOrderItem[]
 
   @@index([shopId, status])
@@ -935,7 +935,7 @@ model BoothRentPayment {
   stripeTransferId String?
   createdAt        DateTime      @default(now())
   updatedAt        DateTime      @updatedAt
-  shop             Shop          @relation(fields: [shopId], references: [id])
+  shop             Shop          @relation(fields: [shopId], references: [id], onDelete: Cascade)
   user             User          @relation(fields: [userId], references: [id])
 
   @@index([shopId])
@@ -981,4 +981,34 @@ enum ShopType {
   PHYSICAL
   MOBILE
   HYBRID
+}
+
+enum WaitlistStatus {
+  WAITING
+  SERVING
+  COMPLETED
+  CANCELLED
+  NO_SHOW
+}
+
+enum CampaignStatus {
+  DRAFT
+  SCHEDULED
+  ACTIVE
+  COMPLETED
+  CANCELLED
+}
+
+enum CampaignType {
+  EMAIL
+  SMS
+  WHATSAPP
+  MULTI_CHANNEL
+}
+
+enum CampaignChannel {
+  EMAIL
+  SMS
+  WHATSAPP
+  BOTH
 }

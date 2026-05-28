@@ -1,0 +1,3 @@
+-- This migration baselines the schema drift that was applied directly to the database.
+-- It brings the migration history in sync with the actual database state.
+-- No SQL needed - this migration is marked as already applied.

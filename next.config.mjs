@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  reactStrictMode: false,
+  reactStrictMode: true,
   compress: true,
   poweredByHeader: false,
   serverExternalPackages: ['@prisma/client', '@prisma/adapter-pg', 'pg', 'handlebars'],

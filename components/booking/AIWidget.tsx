@@ -13,8 +13,8 @@ export default function AIWidget({ shopId, themeColor, secondaryColor, chatbotPo
 
  const script = document.createElement('script');
  script.id = 'booking-widget-script';
- // Use Date.now() to forcefully break the browser cache and ensure the newest script loads
- script.src = `/booking-widget.js?v=${Date.now()}`;
+ // Use a static version string for cache busting — bump when deploying new widget code
+ script.src = `/booking-widget.js?v=1.0.0`;
  script.setAttribute('data-shop-id', shopId);
  script.setAttribute('data-api-url', '/api/chat/booking');
  if (themeColor) {

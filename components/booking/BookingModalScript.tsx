@@ -11,7 +11,7 @@ export default function BookingModalScript({ shopId, themeColor, templateType }:
 
  const script = document.createElement('script');
  script.id = 'booking-modal-script-injector';
- script.src = `/booking-modal.js?v=${Date.now()}`;
+ script.src = `/booking-modal.js?v=1.0.0`;
  script.setAttribute('data-shop-id', shopId);
  if (themeColor) script.setAttribute('data-theme-color', themeColor);
  if (templateType) script.setAttribute('data-template-type', templateType);

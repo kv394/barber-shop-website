@@ -48,28 +48,17 @@ export async function rateLimit(
   try {
     const key = `ratelimit:${identifier}`;
     
-    // Upstash provides a pipeline (multi/exec)
-    const current = await redis.get<number>(key);
+    // Atomic: INCR creates the key if it doesn't exist and returns the new count
+    const count = await redis.incr(key);
     
-    if (current && current >= limit) {
-      return { success: false, remaining: 0 };
+    // Only set expiry on the first request in the window (count === 1 means new key)
+    if (count === 1) {
+      await redis.expire(key, windowSeconds);
     }
-
-    const p = redis.pipeline();
-    p.incr(key);
-    
-    if (!current) {
-      p.expire(key, windowSeconds);
-    }
-    
-    const results = await p.exec();
-    
-    // results[0] is the result of the first command (incr)
-    const newValue = results ? (results[0] as number) : 1;
 
     return { 
-      success: newValue <= limit, 
-      remaining: Math.max(0, limit - newValue) 
+      success: count <= limit, 
+      remaining: Math.max(0, limit - count) 
     };
   } catch (error) {
     console.error('Rate Limiter Error:', error);

@@ -302,21 +302,23 @@ export class NotificationService {
 
     const clients = await prisma.user.findMany({
       where: {
-        shopId,
         role: 'CLIENT',
         clientAppointments: {
+          some: { shopId },
           every: { startTime: { lt: cutoff } },
-          some: {},
         },
       },
       select: {
-        id: true, name: true, email: true, phone: true,
-        clientAppointments: { orderBy: { startTime: 'desc' }, take: 1, select: { startTime: true } },
+        id: true, name: true, email: true,
+        shopClients: { where: { shopId }, select: { phone: true } },
+        clientAppointments: { where: { shopId }, orderBy: { startTime: 'desc' }, take: 1, select: { startTime: true } },
       },
     });
 
     return clients.map((c: any) => ({
       ...c,
+      phone: c.shopClients[0]?.phone || null,
+      shopClients: undefined,
       lastVisit: c.clientAppointments[0]?.startTime || null,
       daysSinceVisit: c.clientAppointments[0]
         ? Math.floor((Date.now() - c.clientAppointments[0].startTime.getTime()) / (1000 * 60 * 60 * 24))
@@ -329,11 +331,21 @@ export class NotificationService {
    */
   static async getBirthdayClients(shopId: string) {
     const month = new Date().getMonth() + 1;
-    const clients = await prisma.user.findMany({
-      where: { shopId, role: 'CLIENT', birthday: { not: null } },
-      select: { id: true, name: true, email: true, phone: true, birthday: true },
+    const shopClients = await prisma.shopClient.findMany({
+      where: { shopId, birthday: { not: null } },
+      include: {
+        user: { select: { id: true, name: true, email: true } },
+      },
     });
-    return clients.filter((c: any) => c.birthday && (c.birthday.getMonth() + 1) === month);
+    return shopClients
+      .filter((sc: any) => sc.birthday && (sc.birthday.getMonth() + 1) === month)
+      .map((sc: any) => ({
+        id: sc.user.id,
+        name: sc.user.name,
+        email: sc.user.email,
+        phone: sc.phone,
+        birthday: sc.birthday,
+      }));
   }
 
   // ─── Private Dispatch Engine ─────────────────────────────────
@@ -346,11 +358,22 @@ export class NotificationService {
     userId: string
   ) {
     try {
+      // Fetch the notification to get the shopId for ShopClient lookup
+      const notification = await prisma.notification.findUnique({
+        where: { id: notificationId },
+        select: { shopId: true },
+      });
       const user = await prisma.user.findUnique({
         where: { id: userId },
-        select: { email: true, phone: true, name: true },
+        select: {
+          email: true, name: true,
+          shopClients: notification?.shopId
+            ? { where: { shopId: notification.shopId }, select: { phone: true } }
+            : undefined,
+        },
       });
       if (!user) return;
+      const phone = (user as any).shopClients?.[0]?.phone || null;
 
       const results: { channel: string; success: boolean; error?: string }[] = [];
 
@@ -361,17 +384,17 @@ export class NotificationService {
       }
 
       if (channel === 'SMS' || channel === 'BOTH') {
-        if (user.phone) {
+        if (phone) {
           const provider = getSMSProvider();
-          const result = await provider.send(user.phone, message);
+          const result = await provider.send(phone, message);
           results.push({ channel: 'SMS', ...result });
         }
       }
 
       if (channel === 'WHATSAPP' || channel === 'BOTH') {
-        if (user.phone) {
+        if (phone) {
           const provider = getWhatsAppProvider();
-          const result = await provider.send(user.phone, message);
+          const result = await provider.send(phone, message);
           results.push({ channel: 'WHATSAPP', ...result });
         }
       }

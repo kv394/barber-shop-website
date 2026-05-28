@@ -87,20 +87,66 @@ if (process.env.NODE_ENV !== 'production') {
   global.prismaGlobal = prisma;
 }
 
-// Set of models that belong to a specific shop (tenant)
+/**
+ * Models that have a `shopId` field and must be tenant-scoped.
+ *
+ * ⚠️  KEEP THIS SET IN SYNC WITH prisma/schema.prisma  ⚠️
+ *
+ * Every model listed here MUST have a required `shopId String` field.
+ * Models with optional shopId (User, DynamicTemplate, SystemLog) are
+ * intentionally excluded — they aren't strictly tenant-scoped.
+ * Models without a direct shopId (AppointmentItem, Payment,
+ * LoyaltyTransaction, FormSubmission, PurchaseOrderItem,
+ * ServiceResourceRequirement, ServiceProductUsage, NotificationPreference)
+ * are scoped indirectly through their parent relation and are also excluded.
+ *
+ * Last verified against schema: 2026-05-28
+ */
 const TENANT_MODELS = new Set([
-  'Appointment',
+  // Core business
   'Service',
-  'Staff',
-  'BusinessHour',
+  'ServiceAddon',
+  'Appointment',
+  'Product',
+  'ShopClient',
+
+  // Financial
+  'CommissionRule',
+  'Expense',
+  'GiftCard',
+  'BoothRentPayment',
+  'PurchaseOrder',
+
+  // Staff & scheduling
+  'Leave',
+  'TimeLog',
+  'Waitlist',
+  'ShopBlackoutDate',
+  'Resource',
+  'RenterService',
+
+  // Client engagement
   'Review',
   'LoyaltyProgram',
-  'LoyaltyPoint',
-  'Payment',
-  'Customer',
-  'Booking',
-  'Break',
-  'TimeOff'
+  'LoyaltyAccount',
+  'Referral',
+  'Campaign',
+  'MembershipTier',
+  'UserMembership',
+
+  // Communication
+  'Notification',
+  'Message',
+
+  // Forms & records
+  'FormTemplate',
+  'ClientFormula',
+  'ClientHistoryImage',
+  'PortfolioImage',
+
+  // Access & reporting
+  'ShopAccess',
+  'ShopUsageReport',
 ]);
 
 /**
