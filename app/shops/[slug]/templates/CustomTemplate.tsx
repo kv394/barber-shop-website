@@ -44,9 +44,12 @@ export default function CustomTemplate({ ctx }: { ctx: any }) {
   })();
 </script>
 `;
+  const cssInjection = c.customCss ? `<style>${c.customCss}</style>` : '';
+  const headInjections = injectorScript + cssInjection;
+  
   const htmlToRender = baseHtml.includes('</head>') 
-    ? baseHtml.replace(/<\/head>/i, `${injectorScript}</head>`) 
-    : injectorScript + baseHtml;
+    ? baseHtml.replace(/<\/head>/i, `${headInjections}</head>`) 
+    : headInjections + baseHtml;
 
  return (
  <div style={{ width: '100vw', height: '100dvh', position: 'relative' }}>
