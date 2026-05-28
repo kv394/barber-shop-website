@@ -62,7 +62,7 @@ export async function GET(
  prisma.loyaltyAccount.count({ where: { shopId } }),
  prisma.referral.count({ where: { shopId } }),
  prisma.referral.count({ where: { shopId, status: { in: ['COMPLETED', 'REWARDED'] } } }),
- prisma.campaign.count({ where: { shopId, status: 'SENT' } }),
+ prisma.campaign.count({ where: { shopId, status: { in: ['SENT', 'COMPLETED', 'ACTIVE'] } } }),
  prisma.review.aggregate({ where: { shopId }, _avg: { rating: true } }),
  ]);
 

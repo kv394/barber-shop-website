@@ -43,8 +43,8 @@ export async function POST(
  }
 
  // SECURITY: Validate enum values and sanitize text fields
- const validTypes = ['PROMO', 'REACTIVATION', 'BIRTHDAY', 'ANNOUNCEMENT'];
- const validChannels = ['EMAIL', 'SMS', 'BOTH'];
+ const validTypes = ['EMAIL', 'SMS', 'WHATSAPP', 'MULTI_CHANNEL', 'PROMO', 'REACTIVATION', 'BIRTHDAY', 'ANNOUNCEMENT', 'WINBACK', 'CUSTOM'];
+ const validChannels = ['EMAIL', 'SMS', 'WHATSAPP', 'BOTH'];
  const validSegments = ['ALL', 'INACTIVE_30', 'INACTIVE_60', 'INACTIVE_90', 'BIRTHDAY_THIS_MONTH'];
 
  const campaign = await prisma.campaign.create({

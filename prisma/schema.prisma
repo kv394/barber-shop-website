@@ -995,6 +995,7 @@ enum CampaignStatus {
   DRAFT
   SCHEDULED
   ACTIVE
+  SENT
   COMPLETED
   CANCELLED
 }
@@ -1004,6 +1005,12 @@ enum CampaignType {
   SMS
   WHATSAPP
   MULTI_CHANNEL
+  PROMO
+  REACTIVATION
+  BIRTHDAY
+  ANNOUNCEMENT
+  WINBACK
+  CUSTOM
 }
 
 enum CampaignChannel {
