@@ -24,10 +24,18 @@ export default function CustomTemplate({ ctx }: { ctx: any }) {
   const injectorScript = `
 <script>
   (function() {
+    var origin = 'https://barber-shop-website-ashy.vercel.app';
     try {
-      var origin = window.parent && window.parent.location.origin !== "null" ? window.parent.location.origin : window.location.origin;
-      if (!origin || origin === 'null' || origin === 'about://' || origin.includes('about:')) origin = 'https://barber-shop-website-ashy.vercel.app';
-      
+      if (window.parent && window.parent.location && window.parent.location.origin && window.parent.location.origin !== 'null') {
+        origin = window.parent.location.origin;
+      } else if (window.location.origin && window.location.origin !== 'null' && window.location.origin !== 'about://') {
+        origin = window.location.origin;
+      }
+    } catch(e) {
+      // Ignore SecurityError, fallback to default
+    }
+    
+    try {
       if (typeof window.KutzApp === 'undefined') {
         var s1 = document.createElement('script');
         s1.src = origin + '/kutzapp-sdk.js';
