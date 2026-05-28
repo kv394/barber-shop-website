@@ -39,10 +39,10 @@ const generateCsp = () => {
     default-src 'self';
     script-src 'self' 'unsafe-inline' 'unsafe-eval' https://*.stripe.com;
     connect-src 'self' https://*.supabase.co wss://*.supabase.co https://*.stripe.com;
-    img-src 'self' data: https://images.unsplash.com https://cdn.pixabay.com;
-    style-src 'self' 'unsafe-inline';
-    frame-src 'self' https://*.stripe.com https://*.supabase.co;
-    font-src 'self' data:;
+    img-src 'self' data: https://images.unsplash.com https://cdn.pixabay.com https://*.googleusercontent.com;
+    style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+    frame-src 'self' https://*.stripe.com https://*.supabase.co https://www.google.com;
+    font-src 'self' data: https://fonts.gstatic.com;
   `.replace(/\s{2,}/g, ' ').trim();
   
   return isDev ? '' : csp;
