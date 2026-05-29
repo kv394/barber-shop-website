@@ -25,7 +25,7 @@ export default async function ClientKioskPage({ params }: { params: Promise<{ sh
 
  const shop = await prisma.shop.findUnique({
  where: { id: shopId },
- select: { name: true, logoUrl: true }
+ select: { name: true }
  });
 
  if (!shop) notFound();
