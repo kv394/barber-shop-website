@@ -102,7 +102,7 @@ export default function CustomerProfileOverlay({
  {/* Tabs */}
  <div className="flex items-center px-4 border-b border-crm-border">
  {['Activity', 'Notes', 'Deals', 'Docs'].map(tab => (
- <div 
+ <button 
  key={tab} 
  className={`flex-1 text-center py-3 text-[13px] font-medium cursor-pointer relative ${
  tab === 'Notes' ? 'text-orange-500' : 'text-crm-muted hover:text-crm-text'
@@ -112,7 +112,7 @@ export default function CustomerProfileOverlay({
  {tab === 'Notes' && (
  <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-orange-500 rounded-t-full"></div>
  )}
- </div>
+ </button>
  ))}
  </div>
 

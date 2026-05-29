@@ -31,7 +31,8 @@ export async function POST(
  try {
  const { renterId } = await params;
  const supabase = await createClient();
- const { data: { user } } = await supabase.auth.getUser();
+ const { data: { session } } = await supabase.auth.getSession();
+  const user = session?.user;
  if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
  const dbUser = await prisma.user.findUnique({ where: { email: user.email! } });
@@ -70,7 +71,8 @@ export async function PATCH(
  try {
  const { renterId } = await params;
  const supabase = await createClient();
- const { data: { user } } = await supabase.auth.getUser();
+ const { data: { session } } = await supabase.auth.getSession();
+  const user = session?.user;
  if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
  const dbUser = await prisma.user.findUnique({ where: { email: user.email! } });
@@ -107,7 +109,8 @@ export async function DELETE(
  try {
  const { renterId } = await params;
  const supabase = await createClient();
- const { data: { user } } = await supabase.auth.getUser();
+ const { data: { session } } = await supabase.auth.getSession();
+  const user = session?.user;
  if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
  const dbUser = await prisma.user.findUnique({ where: { email: user.email! } });

@@ -17,7 +17,8 @@ export async function GET(
  try {
  const { shopId } = await params;
  const supabase = await createClient();
- const { data: { user: authUserSession } } = await supabase.auth.getUser();
+ const { data: { session } } = await supabase.auth.getSession();
+  const authUserSession = session?.user;
  let userId = authUserSession?.id;
  const authUserEmail = authUserSession?.email;
  if (!userId) return new Response('Unauthorized', { status: 401 });
@@ -65,7 +66,8 @@ export async function POST(
  try {
  const { shopId } = await params;
  const supabase = await createClient();
- const { data: { user: authUserSession } } = await supabase.auth.getUser();
+ const { data: { session } } = await supabase.auth.getSession();
+  const authUserSession = session?.user;
  let userId = authUserSession?.id;
  const authUserEmail = authUserSession?.email;
  if (!userId) return new Response('Unauthorized', { status: 401 });

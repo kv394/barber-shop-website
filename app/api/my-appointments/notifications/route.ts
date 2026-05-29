@@ -4,7 +4,8 @@ import { createClient } from '@/utils/supabase/server';
 
 export async function GET() {
  const supabase = await createClient();
- const { data: { user: authUserSession } } = await supabase.auth.getUser();
+ const { data: { session } } = await supabase.auth.getSession();
+  const authUserSession = session?.user;
  let userId = authUserSession?.id;
  const authUserEmail = authUserSession?.email;
  if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -18,7 +19,8 @@ export async function GET() {
 
 export async function PUT(request: Request) {
  const supabase = await createClient();
- const { data: { user: authUserSession } } = await supabase.auth.getUser();
+ const { data: { session } } = await supabase.auth.getSession();
+  const authUserSession = session?.user;
  let userId = authUserSession?.id;
  const authUserEmail = authUserSession?.email;
  if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });

@@ -4,6 +4,7 @@ import { NextResponse } from 'next/server';
 import { createClient } from '@/utils/supabase/server';
 import { revalidatePath } from 'next/cache';
 import { cacheService } from '@/lib/cache';
+import { z } from 'zod';
 
 const serviceInclude = {
  addons: true,
@@ -166,7 +167,8 @@ export async function POST(
  const shopId = resolvedShop.id;
 
  const supabase = await createClient();
- const { data: { user: authUserSession } } = await supabase.auth.getUser();
+ const { data: { session } } = await supabase.auth.getSession();
+  const authUserSession = session?.user;
  let userId = authUserSession?.id;
  const authUserEmail = authUserSession?.email;
  if (!userId) return new Response("Unauthorized", { status: 401 });
@@ -177,37 +179,31 @@ export async function POST(
  return new Response("Forbidden", { status: 403 });
  }
 
+ const serviceSchema = z.object({
+   name: z.string().min(1).max(200),
+   description: z.string().max(2000).nullable().optional(),
+   price: z.number().min(0),
+   duration: z.number().min(1).max(480),
+   processingTime: z.number().min(0).optional().default(0),
+   finishingTime: z.number().min(0).optional().default(0),
+   type: z.enum(['CUSTOMER', 'INTERNAL']).optional().default('CUSTOMER'),
+   itemType: z.string().max(100).nullable().optional(),
+   brand: z.string().max(100).nullable().optional(),
+   bufferMinutes: z.number().min(0).max(120).optional().default(0),
+   imageUrl: z.string().url().max(500).nullable().optional().or(z.literal('')),
+   addonIds: z.array(z.string()).optional(),
+   isBookable: z.boolean().optional().default(true),
+   resourceRequirements: z.array(z.any()).optional(),
+   productUsages: z.array(z.any()).optional(),
+ });
+
  const body = await request.json();
- const { name, description, price, duration, processingTime, finishingTime, type, itemType, brand, bufferMinutes, imageUrl, addonIds, isBookable, resourceRequirements, productUsages } = body;
-
- if (!name || price === undefined || duration === undefined) {
- return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
+ const validation = serviceSchema.safeParse(body);
+ if (!validation.success) {
+   return NextResponse.json({ error: 'Invalid input', details: validation.error.format() }, { status: 400 });
  }
-
- // ... Validation logic ...
- const parsedPrice = Number(price);
- const parsedDuration = Number(duration);
- const parsedProcessingTime = processingTime ? Number(processingTime) : 0;
- const parsedFinishingTime = finishingTime ? Number(finishingTime) : 0;
- const parsedBuffer = bufferMinutes ? Number(bufferMinutes) : 0;
- if (isNaN(parsedPrice) || parsedPrice < 0) {
- return NextResponse.json({ error: 'Price must be non-negative' }, { status: 400 });
- }
- if (isNaN(parsedDuration) || parsedDuration < 1 || parsedDuration > 480) {
- return NextResponse.json({ error: 'Duration must be between 1 and 480 minutes' }, { status: 400 });
- }
-
- // SECURITY: Validate imageUrl if provided (must be a valid URL)
- if (imageUrl && typeof imageUrl === 'string') {
- try {
- const parsed = new URL(imageUrl);
- if (!['http:', 'https:'].includes(parsed.protocol)) {
- return NextResponse.json({ error: 'Invalid image URL' }, { status: 400 });
- }
- } catch {
- return NextResponse.json({ error: 'Invalid image URL' }, { status: 400 });
- }
- }
+ const validatedData = validation.data;
+ const { name, description, price: parsedPrice, duration: parsedDuration, processingTime: parsedProcessingTime, finishingTime: parsedFinishingTime, type, itemType, brand, bufferMinutes: parsedBuffer, imageUrl, addonIds, isBookable, resourceRequirements, productUsages } = validatedData;
 
  const dataToCreate: any = {
  name: String(name).slice(0, 200),

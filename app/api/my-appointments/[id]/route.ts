@@ -12,7 +12,8 @@ export async function PATCH(
  { params }: { params: Promise<{ id: string }> }
 ) {
  const supabase = await createClient();
- const { data: { user: authUserSession } } = await supabase.auth.getUser();
+ const { data: { session } } = await supabase.auth.getSession();
+  const authUserSession = session?.user;
  let userId = authUserSession?.id;
  const authUserEmail = authUserSession?.email;
  if (!userId) {

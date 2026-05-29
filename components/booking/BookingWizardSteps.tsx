@@ -31,17 +31,17 @@ export function ServiceStep({
         />
       </div>
       {services.filter((s: any) => s.name.toLowerCase().includes(serviceSearchQuery.toLowerCase())).map((s: any) => (
-        <div 
+        <button 
           key={s.id} 
           onClick={() => { setSelectedService(s); handleNext(); }}
-          className={`p-4 cursor-pointer transition-all ${selectedService?.id === s.id ? tStyles.cardActive : tStyles.cardInactive}`} style={selectedService?.id === s.id ? { borderColor: themeColor || '#111827', backgroundColor: activeBg } : {}}
+          className={`w-full text-left p-4 cursor-pointer transition-all ${selectedService?.id === s.id ? tStyles.cardActive : tStyles.cardInactive}`} style={selectedService?.id === s.id ? { borderColor: themeColor || '#111827', backgroundColor: activeBg } : {}}
         >
           <div className="flex justify-between items-center">
             <span className="font-medium text-crm-text">{s.name}</span>
             <span className="font-semibold text-crm-text">{fmtPrice(s.price, currency)}</span>
           </div>
           <div className="text-sm text-crm-muted mt-1">{s.duration} mins</div>
-        </div>
+        </button>
       ))}
       {services.length === 0 && <p className="text-crm-muted text-center py-4">No services available.</p>}
       {services.length > 0 && services.filter((s: any) => s.name.toLowerCase().includes(serviceSearchQuery.toLowerCase())).length === 0 && (
@@ -66,21 +66,21 @@ export function StaffStep({
 }: any) {
   return (
     <div className="space-y-3">
-      <div 
+      <button 
         onClick={() => { setSelectedStaff(null); handleNext(); }}
-        className={`p-4 cursor-pointer transition-all ${selectedStaff === null ? tStyles.cardActive : tStyles.cardInactive}`} style={selectedStaff === null ? { borderColor: themeColor || '#111827', backgroundColor: activeBg } : {}}
+        className={`w-full text-left p-4 cursor-pointer transition-all ${selectedStaff === null ? tStyles.cardActive : tStyles.cardInactive}`} style={selectedStaff === null ? { borderColor: themeColor || '#111827', backgroundColor: activeBg } : {}}
       >
         <div className="font-medium text-crm-text">No Preference</div>
         <div className="text-sm text-crm-muted">First available professional</div>
-      </div>
+      </button>
       {staff.map((st: any) => (
-        <div 
+        <button 
           key={st.id} 
           onClick={() => { setSelectedStaff(st); handleNext(); }}
-          className={`p-4 cursor-pointer transition-all ${selectedStaff?.id === st.id ? tStyles.cardActive : tStyles.cardInactive}`} style={selectedStaff?.id === st.id ? { borderColor: themeColor || '#111827', backgroundColor: activeBg } : {}}
+          className={`w-full text-left p-4 cursor-pointer transition-all ${selectedStaff?.id === st.id ? tStyles.cardActive : tStyles.cardInactive}`} style={selectedStaff?.id === st.id ? { borderColor: themeColor || '#111827', backgroundColor: activeBg } : {}}
         >
           <div className="font-medium text-crm-text">{st.name}</div>
-        </div>
+        </button>
       ))}
     </div>
   );
@@ -140,15 +140,15 @@ export function DateTimeStep({
             />
           </div>
         ) : (
-          <div 
-            className="flex justify-between items-center p-4 border rounded-xl bg-crm-bg border-crm-border cursor-pointer hover:border-gray-800 transition-colors"
+          <button 
+            className="w-full flex justify-between items-center p-4 border rounded-xl bg-crm-bg border-crm-border cursor-pointer hover:border-gray-800 transition-colors"
             onClick={() => setSelectedDate('')}
           >
             <span className="font-medium text-crm-text">
               {format(new Date(selectedDate + 'T00:00:00'), 'MMMM d, yyyy')}
             </span>
             <span className="text-sm text-crm-muted">Change</span>
-          </div>
+          </button>
         )}
       </div>
       {selectedDate && (

@@ -12,7 +12,8 @@ export async function POST(
  try {
  const { shopId, clientId } = await params;
  const supabase = await createClient();
- const { data: { user: authUserSession } } = await supabase.auth.getUser();
+ const { data: { session } } = await supabase.auth.getSession();
+  const authUserSession = session?.user;
  
  if (!authUserSession?.id) {
  return new Response('Unauthorized', { status: 401 });

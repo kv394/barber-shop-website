@@ -11,7 +11,6 @@ import AIWidget from '@/components/booking/AIWidget';
 import BookingModalScript from '@/components/booking/BookingModalScript';
 
 // Use this to ensure the page caches effectively unless revalidated
-export const revalidate = 60;
 
 const serviceInclude = {
  services: {
