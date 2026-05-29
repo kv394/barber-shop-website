@@ -46,6 +46,7 @@ export default function BookingWizard({ shopId, themeColor, secondaryColor, temp
  const [error, setError] = useState<string | null>(null);
  const [success, setSuccess] = useState(false);
  const [bookedAppointmentId, setBookedAppointmentId] = useState<string | null>(null);
+ const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
 
  // Auth state
  const [authUser, setAuthUser] = useState<any>(null);
@@ -253,6 +254,7 @@ export default function BookingWizard({ shopId, themeColor, secondaryColor, temp
  clientEmail: email,
  clientPhone: phone,
  serviceLocation: isHouseCall ? serviceLocation : undefined,
+ turnstileToken: turnstileToken,
  })
  });
  if (!res.ok) {
@@ -402,6 +404,9 @@ export default function BookingWizard({ shopId, themeColor, secondaryColor, temp
             tStyles={tStyles}
             themeColor={themeColor}
             formatTime={formatTime}
+            turnstileToken={turnstileToken}
+            setTurnstileToken={setTurnstileToken}
+            templateType={templateType}
           />
         )}
  </div>
@@ -419,7 +424,7 @@ export default function BookingWizard({ shopId, themeColor, secondaryColor, temp
  </button>
  ) : (
  <button
- disabled={!name || !email || isBooking || (isHouseCall && !serviceLocation)}
+ disabled={!name || !email || isBooking || (isHouseCall && !serviceLocation) || !turnstileToken}
  onClick={handleBook}
  className={`${tStyles.btnPrimary} flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed`} style={{ backgroundColor: themeColor || '#111827', color: secondaryColor || undefined }}
  >

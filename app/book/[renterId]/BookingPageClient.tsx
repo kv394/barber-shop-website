@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { Turnstile } from '@marsidev/react-turnstile';
 
 interface RenterService {
  id: string;
@@ -62,6 +63,7 @@ export default function BookingPageClient({
  const [clientPhone, setClientPhone] = useState('');
  const [paying, setPaying] = useState(false);
  const [error, setError] = useState('');
+ const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
 
  const days = getNext14Days();
 
@@ -75,7 +77,7 @@ export default function BookingPageClient({
  }, [selectedDate, selectedService, renter.id]);
 
  const handlePay = async () => {
- if (!selectedService || !selectedDate || !selectedTime || !clientName || !clientEmail) return;
+ if (!selectedService || !selectedDate || !selectedTime || !clientName || !clientEmail || !turnstileToken) return;
  setError('');
  setPaying(true);
  try {
@@ -89,6 +91,7 @@ export default function BookingPageClient({
  clientName,
  clientEmail,
  clientPhone,
+ turnstileToken,
  }),
  });
  const data = await res.json();
@@ -315,9 +318,17 @@ export default function BookingPageClient({
  </div>
  )}
 
+ <div className="flex justify-center mt-4 mb-2">
+    <Turnstile 
+      siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || ''} 
+      onSuccess={(token) => setTurnstileToken(token)}
+      options={{ theme: 'dark' }}
+    />
+  </div>
+
  <button
  onClick={handlePay}
- disabled={paying || !clientName || !clientEmail}
+ disabled={paying || !clientName || !clientEmail || !turnstileToken}
  className="w-full py-4 bg-amber-500 hover:bg-amber-400 text-crm-text font-black rounded-2xl transition-all disabled:opacity-40 disabled:cursor-not-allowed text-[15px] flex items-center justify-center gap-2 shadow-lg shadow-amber-500/30"
  >
  {paying ? (

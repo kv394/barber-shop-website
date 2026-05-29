@@ -14,11 +14,25 @@ export async function POST(
  try {
  const { renterId } = await params;
  const body = await request.json();
- const { serviceId, date, time, clientName, clientEmail, clientPhone } = body;
+  const { serviceId, date, time, clientName, clientEmail, clientPhone, turnstileToken } = body;
 
- if (!serviceId || !date || !time || !clientName || !clientEmail) {
- return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
- }
+  if (!serviceId || !date || !time || !clientName || !clientEmail || !turnstileToken) {
+    return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
+  }
+
+  // Turnstile Verification
+  const turnstileSecret = process.env.TURNSTILE_SECRET_KEY;
+  if (turnstileSecret) {
+    const tsRes = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: `secret=${turnstileSecret}&response=${turnstileToken}`
+    });
+    const tsData = await tsRes.json();
+    if (!tsData.success) {
+      return NextResponse.json({ error: 'CAPTCHA verification failed' }, { status: 403 });
+    }
+  }
 
  // Rate Limiting
  const { rateLimit } = await import('@/lib/rate-limiter');

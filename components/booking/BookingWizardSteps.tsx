@@ -4,6 +4,7 @@ import 'react-day-picker/dist/style.css';
 import { format } from 'date-fns';
 import { fmtPrice } from '@/lib/formatters';
 import StyleDiscovery from '@/components/booking/StyleDiscovery';
+import { Turnstile } from '@marsidev/react-turnstile';
 
 export function ServiceStep({
   services,
@@ -212,7 +213,10 @@ export function DetailsStep({
   setNotes,
   tStyles,
   themeColor,
-  formatTime
+  formatTime,
+  turnstileToken,
+  setTurnstileToken,
+  templateType
 }: any) {
   return (
     <div className="space-y-4">
@@ -304,6 +308,14 @@ export function DetailsStep({
           className="w-full border p-3 rounded-xl bg-crm-bg focus:outline-none focus:ring-2 focus:ring-gray-900 border-transparent transition-all min-h-[80px]"
           value={notes}
           onChange={e => setNotes(e.target.value)}
+        />
+      </div>
+
+      <div className="flex justify-center mt-6">
+        <Turnstile 
+          siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || ''} 
+          onSuccess={(token) => setTurnstileToken(token)}
+          options={{ theme: templateType === 'editorial' ? 'light' : 'dark' }}
         />
       </div>
     </div>

@@ -20,6 +20,7 @@ const bookingSchema = z.object({
  clientPhone: z.string().max(20).optional().or(z.literal('')),
  existingClientId: z.string().optional(),
  addonIds: z.array(z.string()).optional(),
+ turnstileToken: z.string().optional(),
 });
 
 export async function GET(
@@ -103,12 +104,31 @@ export async function POST(
  return NextResponse.json({ error: 'Invalid input data', details: validationResult.error.format() }, { status: 400 });
  }
 
- const { serviceId, startTime, staffId, clientName, clientEmail, clientPhone, isWalkIn, notes, existingClientId, addonIds } = validationResult.data;
+  const { serviceId, startTime, staffId, clientName, clientEmail, clientPhone, isWalkIn, notes, existingClientId, addonIds, turnstileToken } = validationResult.data;
 
- // SECURITY: Ensure user is authenticated OR it is a public walk-in booking
- if (!userId && !isWalkIn) {
- return new Response('Unauthorized - Please sign in to book.', { status: 401 });
- }
+  // SECURITY: Ensure user is authenticated OR it is a public walk-in booking
+  if (!userId && !isWalkIn) {
+    return new Response('Unauthorized - Please sign in to book.', { status: 401 });
+  }
+
+  // Turnstile Verification for Unauthenticated Bookings
+  if (!userId) {
+    if (!turnstileToken) {
+      return NextResponse.json({ error: 'CAPTCHA token missing' }, { status: 400 });
+    }
+    const turnstileSecret = process.env.TURNSTILE_SECRET_KEY;
+    if (turnstileSecret) {
+      const tsRes = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: `secret=${turnstileSecret}&response=${turnstileToken}`
+      });
+      const tsData = await tsRes.json();
+      if (!tsData.success) {
+        return NextResponse.json({ error: 'CAPTCHA verification failed' }, { status: 403 });
+      }
+    }
+  }
 
  // SECURITY: Rate Limiting
  // Limit to 5 booking attempts per user/IP per minute to prevent bot spam
