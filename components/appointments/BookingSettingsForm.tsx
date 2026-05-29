@@ -102,7 +102,7 @@ export default function BookingSettingsForm({ shopId }: { shopId: string }) {
  <div className="border-t border-white/10 pt-8 mt-8">
  <h4 className="font-bold text-crm-text text-lg mb-6 flex items-center gap-3">
  ⚡ Dynamic / Surge Pricing
- <span className="bg-brand-gold/20 border border-brand-gold/40 text-brand-gold text-[10px] px-2 py-0.5 rounded-full uppercase font-black tracking-wider">Pro</span>
+ <span className="bg-brand-indigo/20 border border-brand-indigo/40 text-brand-indigo text-[10px] px-2 py-0.5 rounded-full uppercase font-black tracking-wider">Pro</span>
  </h4>
  <label className="flex items-center justify-between p-4 bg-white/5 border border-white/10 rounded-xl cursor-pointer group hover:bg-white/10 transition-colors mb-6">
  <div>
@@ -141,7 +141,7 @@ export default function BookingSettingsForm({ shopId }: { shopId: string }) {
  <div className="border-t border-white/10 pt-8 mt-8 mb-8">
  <h4 className="font-bold text-crm-text text-lg mb-6 flex items-center gap-3">
  🤖 AI Virtual Receptionist
- <span className="bg-brand-gold/20 border border-brand-gold/40 text-brand-gold text-[10px] px-2 py-0.5 rounded-full uppercase font-black tracking-wider">Pro</span>
+ <span className="bg-brand-indigo/20 border border-brand-indigo/40 text-brand-indigo text-[10px] px-2 py-0.5 rounded-full uppercase font-black tracking-wider">Pro</span>
  </h4>
  <label className="flex items-center justify-between p-4 bg-white/5 border border-white/10 rounded-xl cursor-pointer group hover:bg-white/10 transition-colors mb-6">
  <div>

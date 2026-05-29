@@ -132,7 +132,7 @@ export default function ReviewPage({ params }: { params: Promise<{ appointmentId
  ) : (
  <div className="bg-crm-surface border border-crm-border shadow-sm rounded-xl overflow-hidden">
  {/* Appointment Summary */}
- <div className="p-6 bg-gradient-to-r from-purple-600/10 to-brand-gold/10 border-b border-crm-border">
+ <div className="p-6 bg-gradient-to-r from-purple-600/10 to-brand-indigo/10 border-b border-crm-border">
  <h2 className="font-bold text-crm-text text-xl">{appointment.shop.name}</h2>
  <div className="mt-2 space-y-1">
  <p className="text-crm-muted text-[13px]">
@@ -185,7 +185,7 @@ export default function ReviewPage({ params }: { params: Promise<{ appointmentId
  placeholder="Tell us about your experience…"
  rows={4}
  maxLength={1000}
- className="w-full bg-crm-surface border border-crm-border shadow-sm rounded-lg p-3 text-crm-text placeholder-gray-600 focus:outline-none focus:border-brand-gold resize-none"
+ className="w-full bg-crm-surface border border-crm-border shadow-sm rounded-lg p-3 text-crm-text placeholder-gray-600 focus:outline-none focus:border-brand-indigo resize-none"
  />
  <p className="text-crm-muted text-right mt-1 text-[13px]">{comment.length}/1000</p>
  </div>

@@ -51,7 +51,7 @@ export default async function SiteAdminDashboard() {
 
  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
  {/* User Breakdown */}
- <div className="bg-white/60 backdrop-blur-xl rounded-xl border border-white/40 shadow-sm shadow-brand-gold/5 p-6">
+ <div className="bg-white/60 backdrop-blur-xl rounded-xl border border-white/40 shadow-sm shadow-brand-indigo/5 p-6">
  <h2 className="font-bold text-crm-text mb-4 text-xl font-bold">👥 Users by Role</h2>
  <div className="space-y-3">
  {(['SITE_ADMIN', 'SHOP_ADMIN', 'STAFF', 'CLIENT', 'ATTENDANCE_KIOSK'] as const).map(role => (
@@ -66,7 +66,7 @@ export default async function SiteAdminDashboard() {
  </div>
 
  {/* Recent Shops */}
- <div className="bg-white/60 backdrop-blur-xl rounded-xl border border-white/40 shadow-sm shadow-brand-gold/5 p-6">
+ <div className="bg-white/60 backdrop-blur-xl rounded-xl border border-white/40 shadow-sm shadow-brand-indigo/5 p-6">
  <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-4">
  <h2 className="font-bold text-crm-text text-xl font-bold">🏪 Recent Shops & Locations</h2>
  <Link href="/siteadmin/shops" className="text-crm-accent text-[13px] hover:underline">
@@ -113,12 +113,12 @@ export default async function SiteAdminDashboard() {
 
 function KpiCard({ label, value, color }: { label: string; value: string | number; color: string }) {
  const colorMap: Record<string, string> = {
- blue: 'bg-white/60 border-white/40 shadow-brand-gold/5 text-status-info',
- purple: 'bg-white/60 border-white/40 shadow-brand-gold/5 text-crm-accent',
- green: 'bg-white/60 border-white/40 shadow-brand-gold/5 text-status-confirmed',
- amber: 'bg-white/60 border-white/40 shadow-brand-gold/5 text-status-pending',
- cyan: 'bg-white/60 border-white/40 shadow-brand-gold/5 text-cyan-600',
- red: 'bg-white/60 border-white/40 shadow-brand-gold/5 text-status-cancelled',
+ blue: 'bg-white/60 border-white/40 shadow-brand-indigo/5 text-status-info',
+ purple: 'bg-white/60 border-white/40 shadow-brand-indigo/5 text-crm-accent',
+ green: 'bg-white/60 border-white/40 shadow-brand-indigo/5 text-status-confirmed',
+ amber: 'bg-white/60 border-white/40 shadow-brand-indigo/5 text-status-pending',
+ cyan: 'bg-white/60 border-white/40 shadow-brand-indigo/5 text-cyan-600',
+ red: 'bg-white/60 border-white/40 shadow-brand-indigo/5 text-status-cancelled',
  };
  const classes = colorMap[color] || colorMap.blue;
  const textColor = classes.split(' ').pop() || 'text-crm-text';

@@ -166,7 +166,7 @@ export default function RescheduleModal({
  onChange={(e) => { setSelectedDate(e.target.value); setSelectedTime(''); }}
  min={new Date().toISOString().split('T')[0]}
  
- className="w-full bg-crm-surface border border-crm-border shadow-sm rounded p-3 text-crm-text focus:outline-none focus:border-brand-gold"
+ className="w-full bg-crm-surface border border-crm-border shadow-sm rounded p-3 text-crm-text focus:outline-none focus:border-brand-indigo"
  />
  </div>
 
@@ -180,7 +180,7 @@ export default function RescheduleModal({
  value={selectedStaff}
  onChange={(e) => { setSelectedStaff(e.target.value); setSelectedTime(''); }}
  
- className="w-full bg-crm-surface border border-crm-border shadow-sm rounded p-3 text-crm-text focus:outline-none focus:border-brand-gold"
+ className="w-full bg-crm-surface border border-crm-border shadow-sm rounded p-3 text-crm-text focus:outline-none focus:border-brand-indigo"
  >
  <option value="">— Select staff —</option>
  {allStaff.map(s => (
@@ -199,7 +199,7 @@ export default function RescheduleModal({
  value={selectedTime}
  onChange={(e) => setSelectedTime(e.target.value)}
  
- className="w-full bg-crm-surface border border-crm-border shadow-sm rounded p-3 text-crm-text focus:outline-none focus:border-brand-gold"
+ className="w-full bg-crm-surface border border-crm-border shadow-sm rounded p-3 text-crm-text focus:outline-none focus:border-brand-indigo"
  >
  <option value="">— Choose a time —</option>
  {availableSlots.map(t => (

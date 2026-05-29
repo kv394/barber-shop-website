@@ -82,19 +82,19 @@ export default function GiftCardManager({ shopId, currency }: { shopId: string, 
  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
  <div>
  <label className="block text-crm-muted mb-1 text-[13px]">Amount ($) *</label>
- <input type="number" min="5" step="5" value={amount} onChange={e => setAmount(e.target.value)} className="w-full bg-crm-surface border border-crm-border shadow-sm rounded p-2 text-crm-text text-[13px] focus:outline-none focus:border-brand-gold" />
+ <input type="number" min="5" step="5" value={amount} onChange={e => setAmount(e.target.value)} className="w-full bg-crm-surface border border-crm-border shadow-sm rounded p-2 text-crm-text text-[13px] focus:outline-none focus:border-brand-indigo" />
  </div>
  <div>
  <label className="block text-crm-muted mb-1 text-[13px]">Recipient Name</label>
- <input type="text" value={recipientName} onChange={e => setRecipientName(e.target.value)} placeholder="John Doe" className="w-full bg-crm-surface border border-crm-border shadow-sm rounded p-2 text-crm-text text-[13px] placeholder-gray-600 focus:outline-none focus:border-brand-gold" />
+ <input type="text" value={recipientName} onChange={e => setRecipientName(e.target.value)} placeholder="John Doe" className="w-full bg-crm-surface border border-crm-border shadow-sm rounded p-2 text-crm-text text-[13px] placeholder-gray-600 focus:outline-none focus:border-brand-indigo" />
  </div>
  <div>
  <label className="block text-crm-muted mb-1 text-[13px]">Recipient Email (sends card)</label>
- <input type="email" value={recipientEmail} onChange={e => setRecipientEmail(e.target.value)} placeholder="recipient@email.com" className="w-full bg-crm-surface border border-crm-border shadow-sm rounded p-2 text-crm-text text-[13px] placeholder-gray-600 focus:outline-none focus:border-brand-gold" />
+ <input type="email" value={recipientEmail} onChange={e => setRecipientEmail(e.target.value)} placeholder="recipient@email.com" className="w-full bg-crm-surface border border-crm-border shadow-sm rounded p-2 text-crm-text text-[13px] placeholder-gray-600 focus:outline-none focus:border-brand-indigo" />
  </div>
  <div>
  <label className="block text-crm-muted mb-1 text-[13px]">Purchaser Email</label>
- <input type="email" value={purchaserEmail} onChange={e => setPurchaserEmail(e.target.value)} placeholder="buyer@email.com" className="w-full bg-crm-surface border border-crm-border shadow-sm rounded p-2 text-crm-text text-[13px] placeholder-gray-600 focus:outline-none focus:border-brand-gold" />
+ <input type="email" value={purchaserEmail} onChange={e => setPurchaserEmail(e.target.value)} placeholder="buyer@email.com" className="w-full bg-crm-surface border border-crm-border shadow-sm rounded p-2 text-crm-text text-[13px] placeholder-gray-600 focus:outline-none focus:border-brand-indigo" />
  </div>
  </div>
  <button onClick={handleCreate} disabled={creating || !amount} className="bg-crm-primary text-white font-bold px-6 py-2 rounded-lg text-[13px] hover:bg-crm-surface hover:text-crm-primary border border-transparent hover:border-crm-primary/30 transition-colors disabled:opacity-50">

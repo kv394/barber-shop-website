@@ -49,7 +49,7 @@ export default function TeamDashboardClient({
  const defaultClose = staffMember.closeTime || "17:00";
 
  return (
- <PremiumGlassCard key={staffMember.id} className={`flex flex-col shadow-lg transition-all duration-200 hover:shadow-xl ${isOnLeave ? 'ring-2 ring-status-cancelled/50' : ''}`} accentColor={staffMember.role === 'SHOP_ADMIN' ? 'crm-primary' : 'brand-gold'}>
+ <PremiumGlassCard key={staffMember.id} className={`flex flex-col shadow-lg transition-all duration-200 hover:shadow-xl ${isOnLeave ? 'ring-2 ring-status-cancelled/50' : ''}`} accentColor={staffMember.role === 'SHOP_ADMIN' ? 'crm-primary' : 'brand-indigo'}>
  
  <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-start mb-4">
  <StaffProfileModalWrapper staff={staffMember} shopId={shopId}>
@@ -65,7 +65,7 @@ export default function TeamDashboardClient({
  <h2 className="font-bold text-crm-text mb-0.5 flex items-center gap-2 text-xl">
  {staffMember.name || staffMember.email.split('@')[0]}
  {staffMember.role === 'SHOP_ADMIN' && <span className="text-[10px] bg-crm-primary/20 text-crm-primary px-1.5 py-0.5 rounded-full uppercase tracking-wider font-black hover:opacity-90">Admin</span>}
- {staffMember.role === 'BOOTH_RENTER' && <span className="text-[10px] bg-brand-gold/20 text-brand-gold px-1.5 py-0.5 rounded-full uppercase tracking-wider font-black hover:opacity-90">Booth Renter</span>}
+ {staffMember.role === 'BOOTH_RENTER' && <span className="text-[10px] bg-brand-indigo/20 text-brand-indigo px-1.5 py-0.5 rounded-full uppercase tracking-wider font-black hover:opacity-90">Booth Renter</span>}
  </h2>
  <p className="text-crm-muted text-[13px]">{staffMember.email}</p>
  </div>

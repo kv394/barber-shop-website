@@ -166,11 +166,11 @@ export default function ReportsClient({
  <div className="flex flex-col sm:flex-row flex-wrap gap-4 sm:items-end mb-6 p-4 bg-crm-surface rounded-lg border border-crm-border shadow-sm">
  <div className="flex-1 sm:flex-none">
  <label className="block text-crm-muted uppercase tracking-wider mb-1 text-[13px]">Start Date</label>
- <input type="date" value={dateFrom} onChange={e => setDateFrom(e.target.value)} className="h-[40px] bg-crm-surface border border-crm-border shadow-sm rounded px-3 text-crm-text text-[13px] focus:outline-none focus:border-brand-gold w-full sm:w-auto" />
+ <input type="date" value={dateFrom} onChange={e => setDateFrom(e.target.value)} className="h-[40px] bg-crm-surface border border-crm-border shadow-sm rounded px-3 text-crm-text text-[13px] focus:outline-none focus:border-brand-indigo w-full sm:w-auto" />
  </div>
  <div className="flex-1 sm:flex-none">
  <label className="block text-crm-muted uppercase tracking-wider mb-1 text-[13px]">End Date</label>
- <input type="date" value={dateTo} onChange={e => setDateTo(e.target.value)} className="h-[40px] bg-crm-surface border border-crm-border shadow-sm rounded px-3 text-crm-text text-[13px] focus:outline-none focus:border-brand-gold w-full sm:w-auto" />
+ <input type="date" value={dateTo} onChange={e => setDateTo(e.target.value)} className="h-[40px] bg-crm-surface border border-crm-border shadow-sm rounded px-3 text-crm-text text-[13px] focus:outline-none focus:border-brand-indigo w-full sm:w-auto" />
  </div>
  {isFiltered && (
  <div className="w-full sm:w-auto mt-2 sm:mt-0">
@@ -192,7 +192,7 @@ export default function ReportsClient({
  <button
  key={view}
  onClick={() => setActiveView(view)}
- className={`px-4 py-2 text-[13px] rounded-t transition-colors ${activeView === view ? 'text-crm-accent border-b-2 border-brand-gold font-semibold' : 'text-crm-muted hover:text-crm-text'}`}
+ className={`px-4 py-2 text-[13px] rounded-t transition-colors ${activeView === view ? 'text-crm-accent border-b-2 border-brand-indigo font-semibold' : 'text-crm-muted hover:text-crm-text'}`}
  >
  {view === 'transactions' ? '📋 Transactions' : view === 'byStaff' ? '✂️ By Staff' : '💇 By Service'}
  </button>

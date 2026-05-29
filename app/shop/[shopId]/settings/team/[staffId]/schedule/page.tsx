@@ -131,7 +131,7 @@ export default function SchedulePage() {
  </div>
  <div className="flex items-end">
  <div className="flex items-center h-[46px] w-full bg-crm-surface px-4 rounded-lg border border-crm-border shadow-sm">
- <input type="checkbox" id="inventory" name="canManageInventory" value="true" defaultChecked={staffMember.canManageInventory} className="w-4 h-4 accent-brand-gold mr-3" />
+ <input type="checkbox" id="inventory" name="canManageInventory" value="true" defaultChecked={staffMember.canManageInventory} className="w-4 h-4 accent-brand-indigo mr-3" />
  <label htmlFor="inventory" className="font-semibold text-crm-text cursor-pointer select-none text-[13px]">Can Manage Inventory?</label>
  </div>
  </div>
@@ -164,7 +164,7 @@ export default function SchedulePage() {
  name={`${day}-enabled`} 
  checked={isEnabled} 
  onChange={e => handleCheckboxChange(day, e.target.checked)} 
- className="w-5 h-5 accent-brand-gold" 
+ className="w-5 h-5 accent-brand-indigo" 
  />
  <label htmlFor={`${day}-enabled`} className="ml-3 font-semibold capitalize text-crm-text text-[13px]">{day}</label>
  </div>

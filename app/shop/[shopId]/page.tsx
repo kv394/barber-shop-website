@@ -261,7 +261,7 @@ export default async function ShopDashboardPage({ params }: { params: Promise<{ 
 
  {/* Low Stock Alert (shop admin only) */}
  {isShopAdmin && lowStockItems.length > 0 && (
- <PremiumGlassCard className="!p-0 overflow-hidden" accentColor="brand-gold">
+ <PremiumGlassCard className="!p-0 overflow-hidden" accentColor="brand-indigo">
  <div className="p-5 bg-status-pending/5">
  <p className="text-status-pending font-black mb-4 text-[13px] uppercase tracking-widest">⚠️ {lowStockItems.length} Low-Stock Item{lowStockItems.length > 1 ? 's' : ''}</p>
  <div className="space-y-3">

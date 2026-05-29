@@ -82,10 +82,10 @@ export default function WaitlistClient({ shopId, services, staff }: { shopId: st
  <p className="font-black text-crm-text break-words leading-tight text-4xl">{serving.length}</p>
  </div>
  <div className="flex-1 p-6 relative overflow-hidden group hover:bg-white/5 transition-all duration-300 min-w-0">
- <div className="absolute top-0 left-0 w-full h-1 bg-brand-gold shadow-[0_0_10px_rgba(212,175,55,0.8)]"></div>
+ <div className="absolute top-0 left-0 w-full h-1 bg-brand-indigo shadow-[0_0_10px_rgba(212,175,55,0.8)]"></div>
  <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-3">
  <h3 className="text-crm-muted uppercase tracking-widest font-black text-[11px]">Est. Wait</h3>
- <span className="text-brand-gold text-xl drop-shadow-md">⏱️</span>
+ <span className="text-brand-indigo text-xl drop-shadow-md">⏱️</span>
  </div>
  <p className="font-black text-crm-text break-words leading-tight text-4xl">{waiting.length > 0 ? `~${waiting.length * 15}m` : '0m'}</p>
  </div>

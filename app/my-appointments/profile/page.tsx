@@ -81,7 +81,7 @@ function ProfileContent() {
  <div className="bg-crm-surface border border-crm-border shadow-sm rounded-xl p-6 space-y-5 print:hidden">
  <div>
  <label className="block text-crm-muted mb-1 text-[13px]">Name</label>
- <input type="text" value={profile?.name || ''} onChange={(e) => setProfile({ ...profile, name: e.target.value })} className="w-full bg-crm-surface border border-crm-border shadow-sm rounded p-3 text-crm-text focus:outline-none focus:border-brand-gold" />
+ <input type="text" value={profile?.name || ''} onChange={(e) => setProfile({ ...profile, name: e.target.value })} className="w-full bg-crm-surface border border-crm-border shadow-sm rounded p-3 text-crm-text focus:outline-none focus:border-brand-indigo" />
  </div>
  <div>
  <label className="block text-crm-muted mb-1 text-[13px]">Email</label>
@@ -89,28 +89,28 @@ function ProfileContent() {
  </div>
  <div>
  <label className="block text-crm-muted mb-1 text-[13px]">Phone</label>
- <input type="tel" value={profile?.phone || ''} onChange={(e) => setProfile({ ...profile, phone: e.target.value })} placeholder="+1 555-123-4567" className="w-full bg-crm-surface border border-crm-border shadow-sm rounded p-3 text-crm-text placeholder-gray-600 focus:outline-none focus:border-brand-gold" />
+ <input type="tel" value={profile?.phone || ''} onChange={(e) => setProfile({ ...profile, phone: e.target.value })} placeholder="+1 555-123-4567" className="w-full bg-crm-surface border border-crm-border shadow-sm rounded p-3 text-crm-text placeholder-gray-600 focus:outline-none focus:border-brand-indigo" />
  </div>
  <div>
  <label className="block text-crm-muted mb-1 text-[13px]">Birthday</label>
- <input type="date" value={profile?.birthday ? new Date(profile.birthday).toISOString().split('T')[0] : ''} onChange={(e) => setProfile({ ...profile, birthday: e.target.value || null })} className="w-full bg-crm-surface border border-crm-border shadow-sm rounded p-3 text-crm-text focus:outline-none focus:border-brand-gold" />
+ <input type="date" value={profile?.birthday ? new Date(profile.birthday).toISOString().split('T')[0] : ''} onChange={(e) => setProfile({ ...profile, birthday: e.target.value || null })} className="w-full bg-crm-surface border border-crm-border shadow-sm rounded p-3 text-crm-text focus:outline-none focus:border-brand-indigo" />
  </div>
  <div>
  <label className="block text-crm-muted mb-1 text-[13px]">Preferences (e.g., skin fade, longer on top)</label>
- <textarea value={profile?.preferences || ''} onChange={(e) => setProfile({ ...profile, preferences: e.target.value })} rows={2} className="w-full bg-crm-surface border border-crm-border shadow-sm rounded p-3 text-crm-text placeholder-gray-600 focus:outline-none focus:border-brand-gold resize-none" />
+ <textarea value={profile?.preferences || ''} onChange={(e) => setProfile({ ...profile, preferences: e.target.value })} rows={2} className="w-full bg-crm-surface border border-crm-border shadow-sm rounded p-3 text-crm-text placeholder-gray-600 focus:outline-none focus:border-brand-indigo resize-none" />
  </div>
  <div>
  <label className="block text-crm-muted mb-1 text-[13px]">Allergies / Sensitivities</label>
- <textarea value={profile?.allergies || ''} onChange={(e) => setProfile({ ...profile, allergies: e.target.value })} rows={2} className="w-full bg-crm-surface border border-crm-border shadow-sm rounded p-3 text-crm-text placeholder-gray-600 focus:outline-none focus:border-brand-gold resize-none" />
+ <textarea value={profile?.allergies || ''} onChange={(e) => setProfile({ ...profile, allergies: e.target.value })} rows={2} className="w-full bg-crm-surface border border-crm-border shadow-sm rounded p-3 text-crm-text placeholder-gray-600 focus:outline-none focus:border-brand-indigo resize-none" />
  </div>
 
  <div className="pt-4 border-t border-crm-border space-y-3">
  <label className="flex items-center gap-3 cursor-pointer text-[13px]">
- <input type="checkbox" checked={profile?.marketingConsent || false} onChange={(e) => setProfile({ ...profile, marketingConsent: e.target.checked })} className="w-4 h-4 accent-brand-gold" />
+ <input type="checkbox" checked={profile?.marketingConsent || false} onChange={(e) => setProfile({ ...profile, marketingConsent: e.target.checked })} className="w-4 h-4 accent-brand-indigo" />
  <span className="text-[13px] text-crm-muted">I agree to receive marketing emails and promotions</span>
  </label>
  <label className="flex items-center gap-3 cursor-pointer text-[13px]">
- <input type="checkbox" checked={profile?.smsConsent || false} onChange={(e) => setProfile({ ...profile, smsConsent: e.target.checked })} className="w-4 h-4 accent-brand-gold" />
+ <input type="checkbox" checked={profile?.smsConsent || false} onChange={(e) => setProfile({ ...profile, smsConsent: e.target.checked })} className="w-4 h-4 accent-brand-indigo" />
  <span className="text-[13px] text-crm-muted">I agree to receive SMS appointment reminders</span>
  </label>
  </div>

@@ -94,7 +94,7 @@ export default function LoyaltyDashboard({ shopId, currency }: { shopId: string,
 
  if (loading) return <p className="text-crm-muted text-center py-12 text-[13px]">Loading loyalty program...</p>;
 
- const inputClass = "w-full bg-crm-surface border border-crm-border shadow-sm rounded-lg p-2.5 text-[13px] text-crm-text focus:outline-none focus:border-brand-gold";
+ const inputClass = "w-full bg-crm-surface border border-crm-border shadow-sm rounded-lg p-2.5 text-[13px] text-crm-text focus:outline-none focus:border-brand-indigo";
 
  return (
  <div className="space-y-8">
@@ -148,7 +148,7 @@ export default function LoyaltyDashboard({ shopId, currency }: { shopId: string,
  </div>
  </div>
 
- <div className="mt-4 p-3 bg-crm-primary/5 border border-brand-gold/20 rounded-lg text-[13px] text-crm-muted hover:opacity-90">
+ <div className="mt-4 p-3 bg-crm-primary/5 border border-brand-indigo/20 rounded-lg text-[13px] text-crm-muted hover:opacity-90">
  <strong className="text-crm-accent">How it works:</strong> Clients earn <strong>{form.pointsPerVisit} pts</strong> per visit + <strong>{form.pointsPerDollar} pts</strong> per {fmtPrice(1, currency)} spent (base rate, multiplied by tier).
  Redeem at <strong>{form.redeemThreshold} pts</strong> for <strong>{fmtPrice(form.redeemValue, currency)}</strong> off.
  {form.pointExpiryDays > 0 && <> Points expire after <strong>{form.pointExpiryDays} days</strong>.</>}

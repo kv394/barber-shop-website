@@ -173,7 +173,7 @@ export function AddonManagement({ shopId, currency }: AddonManagementProps) {
  ) : (
  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
  {addons.map((addon) => (
- <PremiumGlassCard key={addon.id} className="!p-4 flex flex-col justify-between" accentColor="brand-gold">
+ <PremiumGlassCard key={addon.id} className="!p-4 flex flex-col justify-between" accentColor="brand-indigo">
  <div className="mb-4">
  <h4 className="font-semibold text-crm-text text-base">{addon.name}</h4>
  <p className="text-crm-muted text-[13px]">

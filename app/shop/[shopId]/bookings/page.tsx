@@ -143,23 +143,23 @@ export default async function BookingsPage({ params }: { params: Promise<{ shopI
  ) : null;
 
  return (
- <div key={apt.id} className={`group flex flex-col sm:flex-row gap-4 sm:gap-6 bg-white/40 p-5 sm:p-6 rounded-2xl border relative z-10 transition-all hover:bg-white/60 ${isNow ? 'border-brand-gold shadow-[0_0_20px_rgba(212,175,55,0.15)] ring-1 ring-brand-gold/50' : 'border-white/20'}`}>
+ <div key={apt.id} className={`group flex flex-col sm:flex-row gap-4 sm:gap-6 bg-white/40 p-5 sm:p-6 rounded-2xl border relative z-10 transition-all hover:bg-white/60 ${isNow ? 'border-brand-indigo shadow-[0_0_20px_rgba(212,175,55,0.15)] ring-1 ring-brand-indigo/50' : 'border-white/20'}`}>
  
  {/* Time Column */}
  <div className="w-full sm:w-20 flex-shrink-0 flex flex-row sm:flex-col justify-between sm:justify-start items-center sm:items-end border-b sm:border-b-0 border-white/20 pb-4 sm:pb-0 text-right">
- <p className={`font-mono font-black text-xl leading-none tracking-tight ${isNow ? 'text-brand-gold drop-shadow-md' : 'text-crm-text'}`}>
+ <p className={`font-mono font-black text-xl leading-none tracking-tight ${isNow ? 'text-brand-indigo drop-shadow-md' : 'text-crm-text'}`}>
  {formatInShopTz(apt.startTime, shop.timezone || 'America/New_York')}
  </p>
  <p className="text-crm-muted text-[12px] font-bold uppercase tracking-widest mt-2">{apt.service.duration} min</p>
  {isNow && (
- <div className="mt-0 sm:mt-4 text-[10px] text-brand-gold font-black tracking-widest flex items-center gap-1.5 bg-brand-gold/10 px-2.5 py-1 rounded-full border border-brand-gold/20 shadow-inner">
- <span className="w-1.5 h-1.5 rounded-full bg-brand-gold animate-pulse shadow-[0_0_5px_rgba(212,175,55,1)]"></span> NOW
+ <div className="mt-0 sm:mt-4 text-[10px] text-brand-indigo font-black tracking-widest flex items-center gap-1.5 bg-brand-indigo/10 px-2.5 py-1 rounded-full border border-brand-indigo/20 shadow-inner">
+ <span className="w-1.5 h-1.5 rounded-full bg-brand-indigo animate-pulse shadow-[0_0_5px_rgba(212,175,55,1)]"></span> NOW
  </div>
  )}
  </div>
 
  {/* Timeline Node (Desktop only) */}
- <div className={`hidden sm:flex absolute left-[108px] top-1/2 -translate-y-1/2 -translate-x-1/2 w-4 h-4 rounded-full border-[3px] transition-colors z-20 ${isNow ? 'bg-brand-gold border-brand-gold shadow-[0_0_10px_rgba(212,175,55,0.8)]' : 'bg-crm-surface border-white/50 group-hover:border-crm-primary'}`}></div>
+ <div className={`hidden sm:flex absolute left-[108px] top-1/2 -translate-y-1/2 -translate-x-1/2 w-4 h-4 rounded-full border-[3px] transition-colors z-20 ${isNow ? 'bg-brand-indigo border-brand-indigo shadow-[0_0_10px_rgba(212,175,55,0.8)]' : 'bg-crm-surface border-white/50 group-hover:border-crm-primary'}`}></div>
 
  {/* Details Column */}
  <div className="flex-1 flex flex-col min-w-0 sm:pl-6">
@@ -184,7 +184,7 @@ export default async function BookingsPage({ params }: { params: Promise<{ shopI
  <span className="font-bold text-crm-text text-[13px] bg-white/50 px-3 py-1.5 rounded-lg border border-white/20 shadow-inner">
  {apt.service.name}
  </span>
- <span className="text-brand-gold text-[14px] font-black tracking-wide">
+ <span className="text-brand-indigo text-[14px] font-black tracking-wide">
  {fmtPrice(apt.service.price, shop.currency)}
  </span>
  </div>

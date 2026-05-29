@@ -203,7 +203,7 @@ export default function CampaignBuilder({ shopId }: { shopId: string }) {
  <select
  value={form.type}
  onChange={(e) => setForm(f => ({ ...f, type: e.target.value }))}
- className="w-full bg-crm-surface border border-crm-border shadow-sm rounded-lg p-2.5 text-[13px] text-crm-text focus:outline-none focus:border-brand-gold"
+ className="w-full bg-crm-surface border border-crm-border shadow-sm rounded-lg p-2.5 text-[13px] text-crm-text focus:outline-none focus:border-brand-indigo"
  >
  <option value="PROMO">Promotion</option>
  <option value="RE_ENGAGEMENT">Re-engagement</option>
@@ -217,7 +217,7 @@ export default function CampaignBuilder({ shopId }: { shopId: string }) {
  <select
  value={form.channel}
  onChange={(e) => setForm(f => ({ ...f, channel: e.target.value }))}
- className="w-full bg-crm-surface border border-crm-border shadow-sm rounded-lg p-2.5 text-[13px] text-crm-text focus:outline-none focus:border-brand-gold"
+ className="w-full bg-crm-surface border border-crm-border shadow-sm rounded-lg p-2.5 text-[13px] text-crm-text focus:outline-none focus:border-brand-indigo"
  >
  <option value="EMAIL">Email</option>
  <option value="SMS">SMS</option>
@@ -230,7 +230,7 @@ export default function CampaignBuilder({ shopId }: { shopId: string }) {
  <select
  value={form.targetSegment}
  onChange={(e) => setForm(f => ({ ...f, targetSegment: e.target.value }))}
- className="w-full bg-crm-surface border border-crm-border shadow-sm rounded-lg p-2.5 text-[13px] text-crm-text focus:outline-none focus:border-brand-gold"
+ className="w-full bg-crm-surface border border-crm-border shadow-sm rounded-lg p-2.5 text-[13px] text-crm-text focus:outline-none focus:border-brand-indigo"
  >
  {Object.entries(segmentLabels).map(([key, label]) => (
  <option key={key} value={key}>{label}</option>
@@ -270,7 +270,7 @@ export default function CampaignBuilder({ shopId }: { shopId: string }) {
  onClick={() => setSelectedGoal(selectedGoal === goal.id ? null : goal.id)}
  className={`flex flex-col items-center gap-1 p-3 rounded-lg border text-center transition-all duration-150 text-[12px]
  ${selectedGoal === goal.id
- ? 'border-brand-gold bg-brand-gold/10 shadow-sm ring-1 ring-brand-gold/30'
+ ? 'border-brand-indigo bg-brand-indigo/10 shadow-sm ring-1 ring-brand-indigo/30'
  : 'border-crm-border hover:border-crm-muted hover:bg-crm-surface/80'
  }`}
  >
@@ -294,7 +294,7 @@ export default function CampaignBuilder({ shopId }: { shopId: string }) {
  onChange={(e) => setCustomPrompt(e.target.value.slice(0, 500))}
  placeholder="e.g. We just hired a new female hairstylist who specializes in balayage and color treatments..."
  rows={2}
- className="w-full bg-crm-surface border border-crm-border shadow-sm rounded-lg p-2.5 text-[13px] text-crm-text focus:outline-none focus:border-brand-gold resize-y"
+ className="w-full bg-crm-surface border border-crm-border shadow-sm rounded-lg p-2.5 text-[13px] text-crm-text focus:outline-none focus:border-brand-indigo resize-y"
  />
  </div>
  )}
@@ -360,7 +360,7 @@ export default function CampaignBuilder({ shopId }: { shopId: string }) {
  onClick={() => selectVariation(i)}
  className={`text-left border rounded-xl p-4 transition-all duration-200 group
  ${selectedVariation === i
- ? 'border-brand-gold bg-brand-gold/5 ring-2 ring-brand-gold/20 shadow-md'
+ ? 'border-brand-indigo bg-brand-indigo/5 ring-2 ring-brand-indigo/20 shadow-md'
  : 'border-crm-border hover:border-crm-muted hover:shadow-sm'
  }`}
  >
@@ -371,7 +371,7 @@ export default function CampaignBuilder({ shopId }: { shopId: string }) {
  {TONE_ICONS[v.tone] || '✦'} {v.toneLabel}
  </span>
  {selectedVariation === i && (
- <span className="text-brand-gold text-[13px]">✓</span>
+ <span className="text-brand-indigo text-[13px]">✓</span>
  )}
  </div>
 
@@ -412,7 +412,7 @@ export default function CampaignBuilder({ shopId }: { shopId: string }) {
  value={form.name}
  onChange={(e) => setForm(f => ({ ...f, name: e.target.value }))}
  placeholder="e.g. Summer Sale 20% Off"
- className="w-full bg-crm-surface border border-crm-border shadow-sm rounded-lg p-2.5 text-[13px] text-crm-text focus:outline-none focus:border-brand-gold"
+ className="w-full bg-crm-surface border border-crm-border shadow-sm rounded-lg p-2.5 text-[13px] text-crm-text focus:outline-none focus:border-brand-indigo"
  />
  </div>
 
@@ -431,7 +431,7 @@ export default function CampaignBuilder({ shopId }: { shopId: string }) {
  onChange={(e) => setForm(f => ({ ...f, message: e.target.value }))}
  placeholder="Write your promotional message here..."
  rows={4}
- className="w-full bg-crm-surface border border-crm-border shadow-sm rounded-lg p-2.5 text-[13px] text-crm-text focus:outline-none focus:border-brand-gold resize-y"
+ className="w-full bg-crm-surface border border-crm-border shadow-sm rounded-lg p-2.5 text-[13px] text-crm-text focus:outline-none focus:border-brand-indigo resize-y"
  />
  </div>
 

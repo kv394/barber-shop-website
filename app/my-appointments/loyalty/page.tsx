@@ -53,7 +53,7 @@ export default function LoyaltyPage() {
  ) : (
  accounts.map((acct, i) => (
  <div key={i} className="bg-crm-surface border border-crm-border shadow-sm rounded-xl overflow-hidden">
- <div className="p-6 bg-gradient-to-r from-brand-gold/10 to-purple-600/10 border-b border-crm-border">
+ <div className="p-6 bg-gradient-to-r from-brand-indigo/10 to-purple-600/10 border-b border-crm-border">
  <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center">
  <div>
  <h2 className="font-bold text-crm-text text-xl">{acct.shopName}</h2>

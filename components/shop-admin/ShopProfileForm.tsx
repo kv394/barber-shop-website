@@ -340,7 +340,7 @@ export function ShopProfileForm({
  type="checkbox"
  checked={formData.depositRequired}
  onChange={(e) => handleChange('depositRequired', e.target.checked)}
- className="w-4 h-4 accent-brand-gold"
+ className="w-4 h-4 accent-brand-indigo"
  />
  <span className="text-crm-muted">Require deposit for online bookings</span>
  </label>

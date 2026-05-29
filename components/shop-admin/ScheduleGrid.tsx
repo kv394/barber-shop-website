@@ -21,7 +21,7 @@ const ScheduleGrid: React.FC<ScheduleGridProps> = ({ staff, selectedDate }) => {
  return (
  <div key={staffMember.id} className="bg-crm-bg/70 border border-crm-border shadow-sm rounded-lg p-3 sm:p-4 flex flex-col relative overflow-hidden">
  {/* Subtle decorative top border */}
- <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-crm-primary/40 to-brand-gold/40"></div>
+ <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-crm-primary/40 to-brand-indigo/40"></div>
  
  <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-start mb-3 mt-1">
  <StaffProfileModalWrapper staff={staffMember}>

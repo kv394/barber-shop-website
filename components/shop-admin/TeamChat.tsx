@@ -249,7 +249,7 @@ export default function TeamChat({ shopId, currentUserId }: { shopId: string, cu
  setSending(false);
  }
  }} 
- className="w-48 bg-crm-surface border border-crm-border shadow-sm rounded px-2 py-1 text-crm-text text-[11px] focus:outline-none focus:border-brand-gold file:mr-2 file:py-1 file:px-2 file:rounded file:border-0 file:text-[11px] file:bg-crm-primary/20 file:text-crm-primary hover:file:bg-crm-primary/30 hover:opacity-90" 
+ className="w-48 bg-crm-surface border border-crm-border shadow-sm rounded px-2 py-1 text-crm-text text-[11px] focus:outline-none focus:border-brand-indigo file:mr-2 file:py-1 file:px-2 file:rounded file:border-0 file:text-[11px] file:bg-crm-primary/20 file:text-crm-primary hover:file:bg-crm-primary/30 hover:opacity-90" 
  />
  <button
  type="button"
@@ -275,7 +275,7 @@ export default function TeamChat({ shopId, currentUserId }: { shopId: string, cu
  value={newMessage}
  onChange={handleInputChange}
  placeholder='Message... (use @help for AI assistant)'
- className="flex-1 bg-crm-border/30 border border-crm-border shadow-sm rounded-full px-4 py-2.5 text-[13px] text-crm-text placeholder-gray-500 focus:outline-none focus:border-brand-gold focus:ring-1 focus:ring-crm-primary transition-shadow"
+ className="flex-1 bg-crm-border/30 border border-crm-border shadow-sm rounded-full px-4 py-2.5 text-[13px] text-crm-text placeholder-gray-500 focus:outline-none focus:border-brand-indigo focus:ring-1 focus:ring-crm-primary transition-shadow"
  />
  <button 
  type="submit" 

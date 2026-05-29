@@ -86,7 +86,7 @@ export default function KioskSetupClient({ shopId, shopName, kioskEmail: initial
  <span className="text-[13px] text-crm-muted w-16">Email:</span>
  {editingEmail ? (
  <div className="flex gap-2 items-center flex-1">
- <input type="email" value={newEmail} onChange={e => setNewEmail(e.target.value)} className="w-64 bg-crm-surface border border-crm-border shadow-sm rounded-lg px-3 py-1.5 text-crm-text text-[13px] focus:outline-none focus:border-brand-gold" />
+ <input type="email" value={newEmail} onChange={e => setNewEmail(e.target.value)} className="w-64 bg-crm-surface border border-crm-border shadow-sm rounded-lg px-3 py-1.5 text-crm-text text-[13px] focus:outline-none focus:border-brand-indigo" />
  <button onClick={saveEmail} disabled={saving} className="px-3 py-1.5 bg-crm-primary text-white rounded-lg text-[11px] font-bold disabled:opacity-50">Save</button>
  <button onClick={() => setEditingEmail(false)} disabled={saving} className="px-3 py-1.5 bg-crm-bg text-crm-text rounded-lg text-[11px] font-bold">Cancel</button>
  </div>
@@ -114,7 +114,7 @@ export default function KioskSetupClient({ shopId, shopName, kioskEmail: initial
  <p className="text-crm-muted text-[13px]">Protect the kiosk with an 8+ character password or PIN.</p>
  <div className="flex gap-3">
  <input type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="Enter new password (min 8 chars)" minLength={8}
- className="w-64 bg-crm-surface border border-crm-border shadow-sm rounded-lg px-3 py-2.5 text-crm-text text-[13px] focus:outline-none focus:border-brand-gold" />
+ className="w-64 bg-crm-surface border border-crm-border shadow-sm rounded-lg px-3 py-2.5 text-crm-text text-[13px] focus:outline-none focus:border-brand-indigo" />
  <button onClick={savePassword} disabled={saving || password.trim().length < 8}
  className="px-4 py-2 bg-crm-primary text-white rounded-lg text-[13px] font-bold disabled:opacity-50 hover:bg-crm-surface hover:text-crm-primary border border-transparent hover:border-crm-primary/30 transition-colors">
  {saving ? 'Saving…' : 'Set Password'}

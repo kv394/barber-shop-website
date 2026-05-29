@@ -350,7 +350,7 @@ export default function CheckoutButton({
  {t === 0 ? 'No Tip' : fmtPrice(t, currency)}
  </button>
  ))}
- <div className={`flex items-center gap-1 rounded-lg px-3 py-1.5 border transition-colors ${customTip ? 'bg-crm-primary/10 border-brand-gold/40' : 'bg-crm-surface border-transparent'} hover:opacity-90 text-white`}>
+ <div className={`flex items-center gap-1 rounded-lg px-3 py-1.5 border transition-colors ${customTip ? 'bg-crm-primary/10 border-brand-indigo/40' : 'bg-crm-surface border-transparent'} hover:opacity-90 text-white`}>
  <span className="text-crm-muted text-[13px]">{getCurrencySymbol(currency)}</span>
  <input
  type="number" min={0} step={0.5}
@@ -370,7 +370,7 @@ export default function CheckoutButton({
  <section>
  <h3 className="font-semibold text-crm-muted uppercase tracking-wider mb-2 text-lg font-bold">Discount</h3>
  <div className="flex flex-wrap gap-2">
- <div className="flex items-center gap-1 bg-crm-surface rounded-lg px-3 py-2 w-36 border border-transparent focus-within:border-brand-gold/40 transition-colors shadow-sm">
+ <div className="flex items-center gap-1 bg-crm-surface rounded-lg px-3 py-2 w-36 border border-transparent focus-within:border-brand-indigo/40 transition-colors shadow-sm">
  <span className="text-crm-muted text-[13px]">{getCurrencySymbol(currency)}</span>
  <input
  type="number" min={0} step={0.5} max={subtotal}
@@ -449,7 +449,7 @@ export default function CheckoutButton({
  {isScanningDiscount && (
  <div className="fixed inset-0 bg-black/90 z-[110] flex flex-col items-center justify-center pointer-events-auto backdrop-blur-sm p-4">
  <div className="w-full max-w-sm relative flex flex-col items-center">
- <div className="w-16 h-16 border-4 border-brand-gold border-t-transparent rounded-full animate-spin mb-6"></div>
+ <div className="w-16 h-16 border-4 border-brand-indigo border-t-transparent rounded-full animate-spin mb-6"></div>
  <h2 className="text-white text-center font-bold text-2xl mb-2 tracking-wide">Waiting for Kiosk</h2>
  <p className="text-gray-300 text-center text-[15px] mb-12">Please ask the client to scan their discount code at the kiosk.</p>
  <button

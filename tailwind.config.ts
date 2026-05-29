@@ -37,7 +37,7 @@ const config: Config = {
         brand: {
           dark: '#0F172A',     // Slate 900
           light: '#F8FAFC',    // Slate 50
-          gold: '#4F46E5',     // Indigo 600 (legacy name — actually indigo, not gold)
+          indigo: '#4F46E5',   // Indigo 600
           gray: '#E2E8F0'      // Slate 200
         }
       },

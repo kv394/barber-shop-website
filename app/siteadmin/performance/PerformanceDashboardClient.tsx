@@ -61,7 +61,7 @@ export default function PerformanceDashboardClient() {
  <p className="text-4xl font-black text-crm-text">{kpis?.totalAppointments.toLocaleString()}</p>
  </PremiumGlassCard>
  
- <PremiumGlassCard accentColor="brand-gold" className="!p-6 text-center">
+ <PremiumGlassCard accentColor="brand-indigo" className="!p-6 text-center">
  <p className="text-[10px] uppercase tracking-widest font-black text-crm-muted mb-2">MRR Potential</p>
  <p className="text-4xl font-black text-crm-text">${kpis?.totalSuggestedRevenue.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
  <p className="text-[10px] text-crm-muted font-bold mt-1 uppercase tracking-widest">Suggested</p>

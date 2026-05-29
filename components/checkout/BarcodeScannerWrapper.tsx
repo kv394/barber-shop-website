@@ -173,7 +173,7 @@ export default function BarcodeScannerWrapper({ shopId, services = [] }: { shopI
  {/* Results overlay */}
  {showOverlay && typeof document !== 'undefined' && createPortal(
  <div className="fixed bottom-0 left-0 right-0 p-4 z-[60] flex justify-center pointer-events-none">
- <div className="bg-crm-surface border border-brand-gold rounded-xl p-5 shadow-2xl max-w-sm w-full pointer-events-auto relative">
+ <div className="bg-crm-surface border border-brand-indigo rounded-xl p-5 shadow-2xl max-w-sm w-full pointer-events-auto relative">
  <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-start mb-4">
  <h3 className="font-bold text-crm-primary text-lg">Scan Result</h3>
  <button onClick={resetAll} className="absolute top-3 right-4 text-crm-primary bg-crm-surface hover:bg-gray-100 shadow-sm z-10 w-7 h-7 rounded-full flex items-center justify-center transition-colors font-bold text-[13px]">✕</button>
@@ -181,7 +181,7 @@ export default function BarcodeScannerWrapper({ shopId, services = [] }: { shopI
 
  {isUpdating && (
  <div className="flex items-center gap-2 text-crm-accent mb-4 text-[13px] animate-pulse">
- <div className="w-4 h-4 border-2 border-brand-gold border-t-transparent rounded-full animate-spin" />
+ <div className="w-4 h-4 border-2 border-brand-indigo border-t-transparent rounded-full animate-spin" />
  Processing…
  </div>
  )}

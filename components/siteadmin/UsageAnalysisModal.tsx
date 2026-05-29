@@ -41,7 +41,7 @@ export default function UsageAnalysisModal({ shopId, shopName, onClose }: UsageA
 
  {loading ? (
  <div className="py-12 flex flex-col items-center justify-center">
- <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-brand-gold mb-4"></div>
+ <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-brand-indigo mb-4"></div>
  <p className="text-crm-muted animate-pulse text-[13px]">Aggregating metrics and calculating SaaS costs...</p>
  </div>
  ) : error ? (
@@ -65,7 +65,7 @@ export default function UsageAnalysisModal({ shopId, shopName, onClose }: UsageA
  ))}
  </div>
 
- <div className="bg-gradient-to-br from-brand-gold/10 to-amber-900/10 border border-brand-gold/20 p-5 rounded-xl">
+ <div className="bg-gradient-to-br from-brand-indigo/10 to-amber-900/10 border border-brand-indigo/20 p-5 rounded-xl">
  <div className="flex flex-col md:flex-row items-center justify-between gap-4 mb-4">
  <div>
  <p className="text-crm-accent uppercase font-bold tracking-widest mb-1 text-[13px]">Recommended Tier</p>
@@ -83,7 +83,7 @@ export default function UsageAnalysisModal({ shopId, shopName, onClose }: UsageA
  </p>
  </div>
 
- <div className="mt-4 pt-4 border-t border-brand-gold/10 flex flex-wrap justify-between gap-x-2 gap-y-2 items-center text-[11px]">
+ <div className="mt-4 pt-4 border-t border-brand-indigo/10 flex flex-wrap justify-between gap-x-2 gap-y-2 items-center text-[11px]">
  <span className="text-crm-muted">Estimated Database Storage:</span>
  <span className="font-mono text-crm-text bg-crm-surface px-2 py-1 rounded">~{data.analysis.estimatedStorageMB} MB</span>
  </div>

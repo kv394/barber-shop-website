@@ -58,7 +58,7 @@ export default function ShopAdminLayout({
  )}
 
  {/* Main Content Area */}
- <div className={`flex-1 shadow-2xl shadow-brand-gold/5 border border-white/40 bg-white/60 backdrop-blur-xl p-4 md:p-8 ${tabs && tabs.length > 0 && tabs[0].id === activeTab ? 'rounded-xl sm:rounded-2xl sm:rounded-tl-none' : 'rounded-xl sm:rounded-2xl'} relative z-0 animate-page-in`}>
+ <div className={`flex-1 shadow-2xl shadow-brand-indigo/5 border border-white/40 bg-white/60 backdrop-blur-xl p-4 md:p-8 ${tabs && tabs.length > 0 && tabs[0].id === activeTab ? 'rounded-xl sm:rounded-2xl sm:rounded-tl-none' : 'rounded-xl sm:rounded-2xl'} relative z-0 animate-page-in`}>
  {pageTitle && (
  <h1 className="text-2xl font-black text-crm-text mb-6 tracking-tight flex items-center gap-2">
  {pageTitle}

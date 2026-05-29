@@ -181,7 +181,7 @@ export default function ProductManager({ shopId, products, currency }: { shopId:
  {isAdding && (
  <div className="animate-in fade-in slide-in-from-top-4 duration-300 ease-out mb-8">
  <form onSubmit={handleSubmit} className="bg-white/5 backdrop-blur-xl p-8 rounded-2xl border border-white/10 shadow-[0_8px_30px_rgb(0,0,0,0.12)] space-y-6 relative overflow-hidden">
- <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-crm-primary to-brand-gold"></div>
+ <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-crm-primary to-brand-indigo"></div>
  <h3 className="font-bold text-crm-text text-xl flex items-center gap-3">
  {editingProduct ? '✏️ Edit Product' : '📦 Add New Product'}
  </h3>

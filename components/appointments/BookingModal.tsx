@@ -3,6 +3,9 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
 // Using Supabase Auth
 import { useRouter } from 'next/navigation';
+import { getThemeStyles, hexToRgba } from './ThemeStyles';
+import { BookingSuccessScreen } from './BookingSuccessScreen';
+import { BookingReviewScreen } from './BookingReviewScreen';
 
 interface ServiceAddon {
  id: string;
@@ -75,80 +78,7 @@ export default function BookingModal({ shopId, service, onClose, shopHours, them
  const [authUser, setAuthUser] = useState<any>(null);
  const [isLoaded, setIsLoaded] = useState(false);
 
- const getThemeStyles = () => {
- switch (templateType) {
- case 'sporty':
- return {
- cardActive: 'border-2 border-black shadow-sm rounded-none',
- cardInactive: 'border-2 border-crm-border hover:border-black rounded-none',
- btnPrimary: 'w-full bg-black text-white font-black py-4 uppercase tracking-widest rounded-none hover:opacity-90',
- input: 'w-full border-2 border-crm-border p-4 rounded-none focus:outline-none focus:border-black font-bold'
- };
- case 'corporate':
- return {
- cardActive: 'border border-blue-600 shadow-md rounded-lg',
- cardInactive: 'border border-crm-border hover:border-blue-600 rounded-lg',
- btnPrimary: 'w-full bg-blue-600 text-white font-medium py-3 rounded-lg hover:bg-blue-700 shadow-sm',
- input: 'w-full border border-crm-border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent'
- };
- case 'noir':
- return {
- cardActive: 'border border-black bg-black text-white rounded-none',
- cardInactive: 'border border-crm-border hover:border-black rounded-none',
- btnPrimary: 'w-full bg-black text-white font-bold uppercase tracking-[0.2em] py-4 rounded-none hover:bg-gray-900',
- input: 'w-full border-b-2 border-crm-border p-3 rounded-none focus:outline-none focus:border-black bg-transparent'
- };
- case 'sunset':
- return {
- cardActive: 'border-2 border-orange-500 shadow-lg rounded-2xl',
- cardInactive: 'border-2 border-transparent bg-crm-bg hover:bg-gray-100 rounded-2xl',
- btnPrimary: 'w-full bg-gradient-to-r from-orange-500 to-pink-500 text-white font-bold py-4 rounded-full shadow-lg hover:shadow-orange-500/30 hover:opacity-90',
- input: 'w-full bg-crm-bg border-2 border-transparent p-4 rounded-2xl focus:outline-none focus:border-orange-500'
- };
- case 'editorial':
- return {
- cardActive: 'border border-[#d4af37] bg-[#fdfbf7] rounded-none',
- cardInactive: 'border border-crm-border hover:border-[#d4af37] rounded-none',
- btnPrimary: 'w-full bg-[#d4af37] text-[#121412] font-semibold uppercase tracking-widest py-4 rounded-none hover:opacity-90',
- input: 'w-full border-b border-crm-border p-3 rounded-none focus:outline-none focus:border-[#d4af37] bg-transparent font-serif'
- };
- case 'classic':
- return {
- cardActive: 'border border-[#2c1e16] bg-[#fdfbf7] rounded-sm',
- cardInactive: 'border border-[#e6d9c6] hover:border-[#2c1e16] bg-crm-surface rounded-sm',
- btnPrimary: 'w-full bg-[#2c1e16] text-[#fdfbf7] font-medium uppercase tracking-wider py-3 rounded-sm hover:bg-[#1a120d]',
- input: 'w-full border border-[#e6d9c6] p-3 rounded-sm focus:outline-none focus:border-[#2c1e16] bg-crm-surface'
- };
- case 'minimal':
- return {
- cardActive: 'border-b-2 border-black rounded-none pb-4',
- cardInactive: 'border-b border-crm-border hover:border-black rounded-none pb-4',
- btnPrimary: 'w-full bg-black text-white font-medium py-3 rounded-none hover:bg-gray-800',
- input: 'w-full border-b border-crm-border p-3 rounded-none focus:outline-none focus:border-black bg-transparent'
- };
- case 'modern':
- default:
- return {
- cardActive: 'border-2 border-gray-800 shadow-sm rounded-xl',
- cardInactive: 'border-2 border-transparent bg-crm-bg hover:border-crm-border rounded-xl',
- btnPrimary: 'w-full bg-gray-900 text-white font-bold py-4 rounded-xl shadow-md hover:bg-black',
- input: 'w-full border border-crm-border p-4 rounded-xl focus:outline-none focus:ring-2 focus:ring-gray-900 bg-crm-bg'
- };
- }
- };
-
- const tStyles = getThemeStyles();
- const hexToRgba = (hex: string) => {
- const cleanHex = hex.replace('#', '');
- if (cleanHex.length === 3 || cleanHex.length === 6) {
- const isShort = cleanHex.length === 3;
- const r = parseInt(isShort ? cleanHex[0] + cleanHex[0] : cleanHex.substring(0, 2), 16);
- const g = parseInt(isShort ? cleanHex[1] + cleanHex[1] : cleanHex.substring(2, 4), 16);
- const b = parseInt(isShort ? cleanHex[2] + cleanHex[2] : cleanHex.substring(4, 6), 16);
- return `rgba(${r}, ${g}, ${b}, 0.1)`;
- }
- return '';
- }
+ const tStyles = getThemeStyles(templateType as any);
  const activeBg = themeColor ? hexToRgba(themeColor) : '#f9fafb';
 
  const isSignedIn = !!authUser;
@@ -435,14 +365,6 @@ export default function BookingModal({ shopId, service, onClose, shopHours, them
  // eslint-disable-next-line react-hooks/exhaustive-deps
  }, [selectedDate, selectedTime, selectedStaff, isWalkIn, clientName, clientEmail, clientPhone, bookingNotes, selectedExistingClient, shopId, service.id, staffAtSelectedTime, selectedAddonIds]);
 
- const handleDone = () => {
- if (userRole && userShopId) {
- router.push(`/shop/${userShopId}/bookings`);
- } else {
- onClose();
- }
- };
-
  const handleAddToCalendar = () => {
  if (!confirmedStartTime) return;
  const ics = generateICSContent(service.name, confirmedStartTime, service.duration, confirmedStaffName);
@@ -473,126 +395,49 @@ export default function BookingModal({ shopId, service, onClose, shopHours, them
  setClientPhone('');
  };
 
- const currentPath = typeof window !== 'undefined' ? window.location.pathname : '';
-
  const formattedDate = selectedDate ? new Date(selectedDate + 'T00:00:00').toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' }) : '';
 
  // ────────────── SUCCESS SCREEN ──────────────
  if (success) {
- return (
- <div className="fixed inset-0 bg-black/60 z-[100] flex items-center justify-center p-4 backdrop-blur-sm" role="dialog" aria-modal="true">
- <div className="bg-crm-surface rounded-xl p-8 max-w-md w-full border border-status-confirmed shadow-2xl text-center relative">
- <button onClick={onClose} aria-label="Close" className="absolute top-3 right-4 bg-crm-surface hover:bg-gray-100 shadow-sm z-10 w-10 h-10 rounded-full flex items-center justify-center transition-colors font-bold text-[13px]" style={{ color: themeColor || "#111827" }}>✕</button>
- <div className="text-6xl mb-4">🎉</div>
- <h3 className="font-bold text-crm-primary mb-2 text-lg">Booking Confirmed!</h3>
- <p className="text-crm-muted mb-2 text-[13px]">The appointment for <span className="text-crm-accent font-semibold">{service.name}</span> has been scheduled.</p>
- {confirmedStartTime && (
- <div className="bg-crm-surface rounded-lg p-4 mb-6 border border-crm-border shadow-sm text-[13px] text-left space-y-1">
- <p className="text-crm-muted text-[13px]">📅 <span className="text-crm-text">{formattedDate}</span></p>
- <p className="text-crm-muted text-[13px]">🕐 <span className="text-crm-text">{selectedTime}</span></p>
- <p className="text-crm-muted text-[13px]">💈 <span className="text-crm-text">{confirmedStaffName}</span></p>
- <p className="text-crm-muted text-[13px]">⏱️ <span className="text-crm-text">{totalDuration} mins</span></p>
- <p className="text-crm-muted text-[13px]">💰 <span className="text-crm-text">${totalPrice.toFixed(2)}</span></p>
- {selectedAddons.length > 0 && (
- <div className="mt-2 pt-2 border-t border-crm-border">
- <p className="text-crm-muted text-[12px] mb-1">Add-ons:</p>
- <ul className="pl-4 list-disc text-crm-text text-[12px]">
- {selectedAddons.map(a => <li key={a.id}>{a.name}</li>)}
- </ul>
- </div>
- )}
- </div>
- )}
- <div className="flex flex-col sm:flex-row gap-3 justify-center">
- <button onClick={handleAddToCalendar} className="border border-crm-border shadow-sm text-crm-text px-5 py-2 rounded-lg hover:bg-crm-surface transition-colors text-[13px] font-semibold flex items-center justify-center gap-2">
- 📅 Add to Calendar
- </button>
- </div>
- </div>
- </div>
- )
+    return (
+      <BookingSuccessScreen
+        themeColor={themeColor}
+        serviceName={service.name}
+        formattedDate={formattedDate}
+        selectedTime={selectedTime}
+        confirmedStaffName={confirmedStaffName}
+        totalDuration={totalDuration}
+        totalPrice={totalPrice}
+        selectedAddons={selectedAddons}
+        onClose={onClose}
+        onAddToCalendar={handleAddToCalendar}
+      />
+    );
  }
 
  // ────────────── SUMMARY / REVIEW SCREEN ──────────────
  if (showSummary) {
- return (
- <div className="fixed inset-0 bg-black/60 z-[100] flex items-center justify-center p-4 backdrop-blur-sm" role="dialog" aria-modal="true">
- <div className="bg-crm-surface rounded-xl p-6 w-full max-w-md border border-crm-border shadow-2xl relative text-left">
- <button onClick={() => setShowSummary(false)} className="absolute top-4 left-4 text-crm-muted hover:text-crm-text bg-crm-surface rounded-full w-8 h-8 flex items-center justify-center z-10">←</button>
- <button onClick={onClose} aria-label="Close" className="absolute top-3 right-4 bg-crm-surface hover:bg-gray-100 shadow-sm z-10 w-10 h-10 rounded-full flex items-center justify-center transition-colors font-bold text-[13px]" style={{ color: themeColor || "#111827" }}>✕</button>
- <h3 className="font-bold text-crm-primary mb-1 text-lg text-center mt-2">Review Your Booking</h3>
- <p className="text-crm-muted mb-5 text-[13px] text-center">Please confirm the details below.</p>
-
- {error && <p className="text-status-cancelled bg-status-cancelled/20 p-3 rounded mb-4 text-[13px]">{error}</p>}
-
- <div className="bg-crm-surface rounded-lg border border-crm-border shadow-sm divide-y divide-white/10 mb-6">
- <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center p-4">
- <span className="text-crm-muted text-[13px]">Service</span>
- <span className="text-crm-text font-semibold">{service.name}</span>
- </div>
- <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center p-4">
- <span className="text-crm-muted text-[13px]">Date</span>
- <span className="text-crm-text">{formattedDate}</span>
- </div>
- <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center p-4">
- <span className="text-crm-muted text-[13px]">Time</span>
- <span className="text-crm-text">{selectedTime}</span>
- </div>
- <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center p-4">
- <span className="text-crm-muted text-[13px]">Staff</span>
- <span className="text-crm-text">{getStaffNameById(selectedStaff)}</span>
- </div>
- <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center p-4">
- <span className="text-crm-muted text-[13px]">Duration</span>
- <span className="text-crm-text">{totalDuration} mins</span>
- </div>
- <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center p-4">
- <span className="text-crm-muted text-[13px]">Price</span>
- <span className="text-crm-accent font-bold text-lg">${totalPrice.toFixed(2)}</span>
- </div>
- {selectedAddons.length > 0 && (
- <div className="p-4 bg-crm-bg border-y border-crm-border">
- <span className="text-crm-muted text-[13px] block mb-2">Selected Add-Ons</span>
- <ul className="space-y-1">
- {selectedAddons.map(a => (
- <li key={a.id} className="text-crm-text text-[13px] flex justify-between">
- <span>+ {a.name}</span>
- <span>${a.price.toFixed(2)}</span>
- </li>
- ))}
- </ul>
- </div>
- )}
- {isWalkIn && (clientName || selectedExistingClient) && (
- <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center p-4">
- <span className="text-crm-muted text-[13px]">Client</span>
- <span className="text-crm-text">{selectedExistingClient?.name || clientName}</span>
- </div>
- )}
- {bookingNotes && (
- <div className="p-4">
- <span className="text-crm-muted text-[13px] block mb-1">Notes</span>
- <span className="text-crm-text text-[13px]">{bookingNotes}</span>
- </div>
- )}
- </div>
-
- <div className="flex gap-3">
- <button onClick={() => setShowSummary(false)} className="flex-1 border border-crm-border shadow-sm text-crm-text font-semibold py-3 rounded-lg hover:bg-crm-surface transition-colors">
- Edit
- </button>
- <button onClick={handleBook} disabled={isBooking} className="flex-1 bg-crm-primary text-white font-bold py-3 rounded-lg hover:bg-crm-surface hover:text-crm-primary border border-transparent hover:border-crm-primary/30 transition-colors disabled:opacity-50">
- {isBooking ? (
- <span className="flex items-center justify-center gap-2">
- <span className="w-4 h-4 border-2 border-brand-dark border-t-transparent rounded-full animate-spin"></span>
- Booking...
- </span>
- ) : 'Confirm & Book'}
- </button>
- </div>
- </div>
- </div>
- );
+    return (
+      <BookingReviewScreen
+        themeColor={themeColor}
+        serviceName={service.name}
+        formattedDate={formattedDate}
+        selectedTime={selectedTime}
+        confirmedStaffName={confirmedStaffName}
+        totalDuration={totalDuration}
+        totalPrice={totalPrice}
+        selectedAddons={selectedAddons}
+        isWalkIn={isWalkIn}
+        clientName={clientName}
+        selectedExistingClient={selectedExistingClient}
+        bookingNotes={bookingNotes}
+        error={error}
+        isBooking={isBooking}
+        onClose={onClose}
+        onEdit={() => setShowSummary(false)}
+        onBook={handleBook}
+      />
+    );
  }
 
  // ────────────── MAIN BOOKING FORM ──────────────

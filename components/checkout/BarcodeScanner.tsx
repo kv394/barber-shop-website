@@ -291,7 +291,7 @@ export default function BarcodeScanner({ onScan, onClose }: BarcodeScannerProps)
 
  {isStarting && !error && !needsUserGesture && (
  <div className="absolute inset-0 flex flex-col items-center justify-center bg-crm-surface text-crm-text gap-3">
- <div className="w-8 h-8 border-2 border-brand-gold border-t-transparent rounded-full animate-spin" />
+ <div className="w-8 h-8 border-2 border-brand-indigo border-t-transparent rounded-full animate-spin" />
  <p className="text-crm-muted text-[13px]">Starting camera…</p>
  </div>
  )}
@@ -312,7 +312,7 @@ export default function BarcodeScanner({ onScan, onClose }: BarcodeScannerProps)
  });
  }
  }}
- className="bg-brand-gold text-crm-bg px-6 py-3 rounded-full font-bold text-base shadow-[0_0_20px_rgba(212,175,55,0.4)] animate-pulse hover:scale-105 active:scale-95 transition-all"
+ className="bg-brand-indigo text-crm-bg px-6 py-3 rounded-full font-bold text-base shadow-[0_0_20px_rgba(212,175,55,0.4)] animate-pulse hover:scale-105 active:scale-95 transition-all"
  >
  Tap to Start Camera
  </button>
@@ -322,10 +322,10 @@ export default function BarcodeScanner({ onScan, onClose }: BarcodeScannerProps)
  {!isStarting && !error && !needsUserGesture && (
  <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
  <div className="relative w-[260px] h-[260px]">
- <span className="absolute top-0 left-0 w-8 h-8 border-t-4 border-l-4 border-brand-gold rounded-tl" />
- <span className="absolute top-0 right-0 w-8 h-8 border-t-4 border-r-4 border-brand-gold rounded-tr" />
- <span className="absolute bottom-0 left-0 w-8 h-8 border-b-4 border-l-4 border-brand-gold rounded-bl" />
- <span className="absolute bottom-0 right-0 w-8 h-8 border-b-4 border-r-4 border-brand-gold rounded-br" />
+ <span className="absolute top-0 left-0 w-8 h-8 border-t-4 border-l-4 border-brand-indigo rounded-tl" />
+ <span className="absolute top-0 right-0 w-8 h-8 border-t-4 border-r-4 border-brand-indigo rounded-tr" />
+ <span className="absolute bottom-0 left-0 w-8 h-8 border-b-4 border-l-4 border-brand-indigo rounded-bl" />
+ <span className="absolute bottom-0 right-0 w-8 h-8 border-b-4 border-r-4 border-brand-indigo rounded-br" />
  <div className="absolute inset-x-0 top-0 h-0.5 bg-crm-primary/70 animate-[scan_2s_linear_infinite] hover:opacity-90 text-white" />
  </div>
  </div>

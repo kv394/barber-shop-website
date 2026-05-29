@@ -130,7 +130,7 @@ export default function ReviewsClient({ shopId }: { shopId: string }) {
 
  {/* Owner response */}
  {r.ownerResponse && responding !== r.id && (
- <div className="mt-3 pl-4 border-l-2 border-brand-gold/40">
+ <div className="mt-3 pl-4 border-l-2 border-brand-indigo/40">
  <p className="text-crm-accent font-semibold mb-1 text-[13px]">Owner Response</p>
  <p className="text-crm-muted text-[13px]">{r.ownerResponse}</p>
  <div className="flex gap-2 mt-2">
@@ -148,7 +148,7 @@ export default function ReviewsClient({ shopId }: { shopId: string }) {
  onChange={e => setResponseText(e.target.value)}
  placeholder="Write your response…"
  rows={3}
- className="w-full bg-crm-surface border border-crm-border shadow-sm rounded-lg p-3 text-[13px] text-crm-text placeholder-gray-500 focus:outline-none focus:border-brand-gold resize-none"
+ className="w-full bg-crm-surface border border-crm-border shadow-sm rounded-lg p-3 text-[13px] text-crm-text placeholder-gray-500 focus:outline-none focus:border-brand-indigo resize-none"
  />
  <div className="flex gap-2">
  <button onClick={() => submitResponse(r.id)} disabled={saving || !responseText.trim()} className="px-4 py-2 bg-crm-primary text-crm-text rounded-lg text-[13px] font-semibold disabled:opacity-50 hover:opacity-90">

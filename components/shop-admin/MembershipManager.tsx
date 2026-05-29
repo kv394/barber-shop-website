@@ -118,12 +118,12 @@ export default function MembershipManager({ shopId }: { shopId: string }) {
  ) : (
  <div className="grid grid-cols-1 gap-4">
  {tiers.map(t => (
- <PremiumGlassCard key={t.id} className="!p-5" accentColor="brand-gold">
+ <PremiumGlassCard key={t.id} className="!p-5" accentColor="brand-indigo">
  <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-4">
  <div>
  <div className="flex items-center gap-3 mb-2">
  <h5 className="text-crm-text font-bold text-lg">{t.name}</h5>
- <span className="text-[11px] bg-brand-gold/20 border border-brand-gold/30 text-brand-gold px-2.5 py-1 rounded-full font-black tracking-wider uppercase shadow-inner">
+ <span className="text-[11px] bg-brand-indigo/20 border border-brand-indigo/30 text-brand-indigo px-2.5 py-1 rounded-full font-black tracking-wider uppercase shadow-inner">
  ${t.price} / {t.interval.toLowerCase().replace('ly', '')}
  </span>
  </div>

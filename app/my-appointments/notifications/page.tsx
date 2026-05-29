@@ -70,7 +70,7 @@ export default function NotificationsPage() {
  type="checkbox"
  checked={prefs?.[item.key] ?? true}
  onChange={() => togglePref(item.key)}
- className="w-5 h-5 accent-brand-gold"
+ className="w-5 h-5 accent-brand-indigo"
  />
  </label>
  ))}
@@ -81,7 +81,7 @@ export default function NotificationsPage() {
  value={prefs?.preferredChannel || 'EMAIL'}
  onChange={(e) => setPrefs({ ...prefs, preferredChannel: e.target.value })}
  
- className="w-full bg-crm-surface border border-crm-border shadow-sm rounded p-3 text-crm-text focus:outline-none focus:border-brand-gold"
+ className="w-full bg-crm-surface border border-crm-border shadow-sm rounded p-3 text-crm-text focus:outline-none focus:border-brand-indigo"
  >
  <option value="EMAIL">Email Only</option>
  <option value="SMS">SMS Only</option>

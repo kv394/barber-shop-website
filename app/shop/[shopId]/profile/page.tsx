@@ -40,13 +40,13 @@ export default async function ProfilePage({ params }: { params: Promise<{ shopId
  
  {/* Profile Header */}
  <div className="bg-crm-bg/80 backdrop-blur-xl border border-crm-border shadow-sm rounded-2xl p-6 flex items-center gap-6 shadow-lg">
- <div className="w-20 h-20 rounded-full bg-crm-primary/20 flex items-center justify-center text-4xl border-2 border-brand-gold/50 shadow-inner overflow-hidden shrink-0 hover:opacity-90">
+ <div className="w-20 h-20 rounded-full bg-crm-primary/20 flex items-center justify-center text-4xl border-2 border-brand-indigo/50 shadow-inner overflow-hidden shrink-0 hover:opacity-90">
  {dbUser.name ? dbUser.name.charAt(0).toUpperCase() : '👤'}
  </div>
  <div>
  <h2 className="font-bold text-crm-text mb-1 text-xl font-bold">{dbUser.name || 'Unnamed Staff'}</h2>
  <p className="text-crm-muted mb-2 text-[13px]">{dbUser.email}</p>
- <span className="inline-block px-3 py-1 bg-crm-primary/10 border border-brand-gold/30 text-crm-accent text-[11px] font-bold rounded-full uppercase tracking-wider hover:opacity-90">
+ <span className="inline-block px-3 py-1 bg-crm-primary/10 border border-brand-indigo/30 text-crm-accent text-[11px] font-bold rounded-full uppercase tracking-wider hover:opacity-90">
  {dbUser.role === 'STAFF' ? 'Staff Member' : dbUser.role}
  </span>
  </div>

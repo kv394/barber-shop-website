@@ -46,7 +46,7 @@ export default async function SiteAdminLayout({ children }: { children: React.Re
 
  {/* Main Scrolling Area */}
  <main className="flex-1 overflow-y-auto bg-crm-bg relative p-4 md:p-8 pt-8 pb-24 md:pb-8">
- <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-brand-gold/10 via-crm-bg/20 to-crm-bg pointer-events-none"></div>
+ <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-brand-indigo/10 via-crm-bg/20 to-crm-bg pointer-events-none"></div>
  <div className="mx-auto max-w-7xl relative z-10">
  {children}
  </div>

@@ -3,14 +3,14 @@ import React from 'react';
 export default function PremiumGlassCard({ 
  children, 
  className = "", 
- accentColor = "brand-gold" 
+ accentColor = "brand-indigo" 
 }: { 
  children: React.ReactNode; 
  className?: string;
- accentColor?: "brand-gold" | "crm-primary" | "emerald-500" | "red-500" | "cyan-500";
+ accentColor?: "brand-indigo" | "crm-primary" | "emerald-500" | "red-500" | "cyan-500";
 }) {
  const gradientMap = {
- "brand-gold": "from-brand-gold to-brand-gold/50",
+ "brand-indigo": "from-brand-indigo to-brand-indigo/50",
  "crm-primary": "from-crm-primary to-crm-primary/80",
  "emerald-500": "from-emerald-500 to-emerald-400",
  "red-500": "from-red-500 to-red-400",

@@ -105,7 +105,7 @@ export default function LeaveManager({ shopId, userId }: { shopId: string, userI
  required 
  value={date} 
  onChange={e => setDate(e.target.value)}
- className="w-full bg-crm-surface border border-crm-border shadow-sm rounded-lg px-3 py-2 text-crm-text focus:border-brand-gold outline-none"
+ className="w-full bg-crm-surface border border-crm-border shadow-sm rounded-lg px-3 py-2 text-crm-text focus:border-brand-indigo outline-none"
  />
  </div>
  <div>
@@ -115,7 +115,7 @@ export default function LeaveManager({ shopId, userId }: { shopId: string, userI
  required 
  value={startTime} 
  onChange={e => setStartTime(e.target.value)}
- className="w-full bg-crm-surface border border-crm-border shadow-sm rounded-lg px-3 py-2 text-crm-text focus:border-brand-gold outline-none"
+ className="w-full bg-crm-surface border border-crm-border shadow-sm rounded-lg px-3 py-2 text-crm-text focus:border-brand-indigo outline-none"
  />
  </div>
  <div>
@@ -125,7 +125,7 @@ export default function LeaveManager({ shopId, userId }: { shopId: string, userI
  required 
  value={endTime} 
  onChange={e => setEndTime(e.target.value)}
- className="w-full bg-crm-surface border border-crm-border shadow-sm rounded-lg px-3 py-2 text-crm-text focus:border-brand-gold outline-none"
+ className="w-full bg-crm-surface border border-crm-border shadow-sm rounded-lg px-3 py-2 text-crm-text focus:border-brand-indigo outline-none"
  />
  </div>
  </div>
@@ -136,7 +136,7 @@ export default function LeaveManager({ shopId, userId }: { shopId: string, userI
  value={reason} 
  onChange={e => setReason(e.target.value)}
  placeholder="e.g. Doctor appointment, Sick, Vacation"
- className="w-full bg-crm-surface border border-crm-border shadow-sm rounded-lg px-3 py-2 text-crm-text focus:border-brand-gold outline-none"
+ className="w-full bg-crm-surface border border-crm-border shadow-sm rounded-lg px-3 py-2 text-crm-text focus:border-brand-indigo outline-none"
  />
  </div>
  <button 

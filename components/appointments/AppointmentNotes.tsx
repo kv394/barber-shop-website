@@ -67,7 +67,7 @@ export default function AppointmentNotes({ shopId, appointmentId, initialNotes, 
  value={notes}
  onChange={(e) => setNotes(e.target.value)}
  placeholder="Haircut style, specific product used today..."
- className="w-full bg-crm-surface border border-crm-border shadow-sm rounded p-2 text-[11px] text-crm-text placeholder-gray-500 focus:outline-none focus:border-brand-gold resize-none"
+ className="w-full bg-crm-surface border border-crm-border shadow-sm rounded p-2 text-[11px] text-crm-text placeholder-gray-500 focus:outline-none focus:border-brand-indigo resize-none"
  rows={2}
  />
  <div className="flex gap-2 mt-1">

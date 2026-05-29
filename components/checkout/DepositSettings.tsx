@@ -38,7 +38,7 @@ export default function DepositSettings({
 
  <div className="space-y-4">
  <label className="flex items-center gap-3 cursor-pointer text-[13px]">
- <input type="checkbox" checked={depositRequired} onChange={e => setDepositRequired(e.target.checked)} className="w-4 h-4 accent-brand-gold" />
+ <input type="checkbox" checked={depositRequired} onChange={e => setDepositRequired(e.target.checked)} className="w-4 h-4 accent-brand-indigo" />
  <span className="text-[13px] text-crm-muted">Require deposit for online bookings</span>
  </label>
 
@@ -49,7 +49,7 @@ export default function DepositSettings({
  type="number" min="0" step="0.50"
  value={depositAmount}
  onChange={e => setDepositAmount(e.target.value)}
- className="w-48 bg-crm-surface border border-crm-border shadow-sm rounded p-2 text-crm-text text-[13px] focus:outline-none focus:border-brand-gold"
+ className="w-48 bg-crm-surface border border-crm-border shadow-sm rounded p-2 text-crm-text text-[13px] focus:outline-none focus:border-brand-indigo"
  />
  </div>
  )}

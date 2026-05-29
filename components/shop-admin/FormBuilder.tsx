@@ -56,7 +56,7 @@ export default function FormBuilder({ shopId }: { shopId: string }) {
  value={name} 
  onChange={e => setName(e.target.value)} 
  placeholder="e.g. Laser Hair Removal Waiver" 
- className="w-full bg-crm-surface border border-crm-border shadow-sm rounded px-3 py-2 text-crm-text text-[13px] focus:outline-none focus:border-brand-gold" 
+ className="w-full bg-crm-surface border border-crm-border shadow-sm rounded px-3 py-2 text-crm-text text-[13px] focus:outline-none focus:border-brand-indigo" 
  required 
  />
  </div>
@@ -67,7 +67,7 @@ export default function FormBuilder({ shopId }: { shopId: string }) {
  onChange={e => setContent(e.target.value)} 
  placeholder="Enter your form terms, or list questions separated by newlines." 
  rows={4}
- className="w-full bg-crm-surface border border-crm-border shadow-sm rounded px-3 py-2 text-crm-text text-[13px] focus:outline-none focus:border-brand-gold" 
+ className="w-full bg-crm-surface border border-crm-border shadow-sm rounded px-3 py-2 text-crm-text text-[13px] focus:outline-none focus:border-brand-indigo" 
  required 
  />
  </div>
@@ -77,7 +77,7 @@ export default function FormBuilder({ shopId }: { shopId: string }) {
  id="isRequired" 
  checked={isRequired} 
  onChange={e => setIsRequired(e.target.checked)} 
- className="accent-brand-gold w-4 h-4"
+ className="accent-brand-indigo w-4 h-4"
  />
  <label htmlFor="isRequired" className="text-crm-text text-[13px]">Require digital signature before appointment</label>
  </div>

@@ -88,7 +88,7 @@ export default function PortfolioManager({ shopId, currentUserId, userRole }: { 
  <select 
  value={selectedStaffId}
  onChange={(e) => setSelectedStaffId(e.target.value)}
- className="w-full bg-crm-surface border border-crm-border shadow-sm rounded px-3 py-2 text-crm-text text-[13px] focus:outline-none focus:border-brand-gold"
+ className="w-full bg-crm-surface border border-crm-border shadow-sm rounded px-3 py-2 text-crm-text text-[13px] focus:outline-none focus:border-brand-indigo"
  >
  {staffList.map(s => (
  <option key={s.id} value={s.id}>{s.name} ({s.email})</option>
@@ -110,7 +110,7 @@ export default function PortfolioManager({ shopId, currentUserId, userRole }: { 
  value={imageUrl}
  onChange={e => setImageUrl(e.target.value)}
  placeholder="e.g. https://..."
- className="flex-1 w-full bg-crm-surface border border-crm-border shadow-sm rounded px-3 py-2 text-crm-text text-[13px] focus:outline-none focus:border-brand-gold min-w-0"
+ className="flex-1 w-full bg-crm-surface border border-crm-border shadow-sm rounded px-3 py-2 text-crm-text text-[13px] focus:outline-none focus:border-brand-indigo min-w-0"
  />
  <span className="text-crm-muted py-1 sm:py-2 text-[13px] text-center">OR</span>
  <input
@@ -139,7 +139,7 @@ export default function PortfolioManager({ shopId, currentUserId, userRole }: { 
  }
  }}
  ref={fileInputRef}
- className="flex-1 w-full bg-crm-surface border border-crm-border shadow-sm rounded px-3 py-2 text-crm-text text-[13px] focus:outline-none focus:border-brand-gold file:mr-4 file:py-1 file:px-4 file:rounded file:border-0 file:text-[13px] file:bg-crm-primary/20 file:text-crm-primary hover:file:bg-crm-primary/30 hover:opacity-90 min-w-0"
+ className="flex-1 w-full bg-crm-surface border border-crm-border shadow-sm rounded px-3 py-2 text-crm-text text-[13px] focus:outline-none focus:border-brand-indigo file:mr-4 file:py-1 file:px-4 file:rounded file:border-0 file:text-[13px] file:bg-crm-primary/20 file:text-crm-primary hover:file:bg-crm-primary/30 hover:opacity-90 min-w-0"
  />
  </div>
  </div>
@@ -150,7 +150,7 @@ export default function PortfolioManager({ shopId, currentUserId, userRole }: { 
  value={caption}
  onChange={e => setCaption(e.target.value)}
  placeholder="e.g. Balayage & Cut"
- className="w-full bg-crm-surface border border-crm-border shadow-sm rounded px-3 py-2 text-crm-text text-[13px] focus:outline-none focus:border-brand-gold min-w-0"
+ className="w-full bg-crm-surface border border-crm-border shadow-sm rounded px-3 py-2 text-crm-text text-[13px] focus:outline-none focus:border-brand-indigo min-w-0"
  />
  </div>
  </div>

@@ -150,7 +150,7 @@ export default function SiteAdminUsersPage() {
  {filteredUsers.map(user => {
  const roleColors: Record<string, string> = {
  SITE_ADMIN: 'bg-status-cancelled/20 text-status-cancelled border-status-cancelled/30',
- SHOP_ADMIN: 'bg-crm-primary/20 text-crm-accent border-brand-gold/30',
+ SHOP_ADMIN: 'bg-crm-primary/20 text-crm-accent border-brand-indigo/30',
  STAFF: 'bg-crm-accent/20 text-crm-accent border-crm-accent/30',
  CLIENT: 'bg-status-info/20 text-status-info border-status-info/30',
  ATTENDANCE_KIOSK: 'bg-cyan-500/20 text-cyan-400 border-cyan-500/30',

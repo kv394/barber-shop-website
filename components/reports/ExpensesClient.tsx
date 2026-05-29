@@ -68,7 +68,7 @@ export default function ExpensesClient({ shopId, currency }: { shopId: string, c
  <div className="flex-1">
  <label className="block text-crm-muted uppercase tracking-wider mb-1 text-[13px]">Month</label>
  <input type="month" value={month} onChange={e => setMonth(e.target.value)} style={inputStyle}
- className="w-full border border-crm-border shadow-sm rounded p-2.5 text-[13px] focus:outline-none focus:border-brand-gold " />
+ className="w-full border border-crm-border shadow-sm rounded p-2.5 text-[13px] focus:outline-none focus:border-brand-indigo " />
  </div>
  <div className="bg-crm-surface backdrop-blur-xl shadow-2xl rounded-2xl border border-crm-border shadow-sm flex-1 relative overflow-hidden group hover:bg-crm-surface transition-all duration-300 z-20">
  <div className="absolute top-0 left-0 w-full h-1 bg-status-cancelled/80"></div>
@@ -100,15 +100,15 @@ export default function ExpensesClient({ shopId, currency }: { shopId: string, c
  <h3 className="font-bold text-crm-text mb-2 text-lg font-bold">+ Add Expense</h3>
  <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
  <input type="number" step="0.01" min="0" value={amount} onChange={e => setAmount(e.target.value)} placeholder="Amount" required style={inputStyle}
- className="border border-crm-border shadow-sm rounded p-2 text-[13px] focus:outline-none focus:border-brand-gold" />
+ className="border border-crm-border shadow-sm rounded p-2 text-[13px] focus:outline-none focus:border-brand-indigo" />
  <select value={category} onChange={e => setCategory(e.target.value)} style={inputStyle}
- className="border border-crm-border shadow-sm rounded p-2 text-[13px] focus:outline-none focus:border-brand-gold">
+ className="border border-crm-border shadow-sm rounded p-2 text-[13px] focus:outline-none focus:border-brand-indigo">
  {CATEGORIES.map(c => <option key={c} value={c}>{catEmojis[c]} {c}</option>)}
  </select>
  <input type="text" value={description} onChange={e => setDescription(e.target.value)} placeholder="Description (optional)" style={inputStyle}
- className="border border-crm-border shadow-sm rounded p-2 text-[13px] focus:outline-none focus:border-brand-gold" />
+ className="border border-crm-border shadow-sm rounded p-2 text-[13px] focus:outline-none focus:border-brand-indigo" />
  <input type="date" value={date} onChange={e => setDate(e.target.value)} style={inputStyle}
- className="border border-crm-border shadow-sm rounded p-2 text-[13px] focus:outline-none focus:border-brand-gold " />
+ className="border border-crm-border shadow-sm rounded p-2 text-[13px] focus:outline-none focus:border-brand-indigo " />
  </div>
  <button type="submit" disabled={adding} className="bg-status-cancelled hover:bg-status-cancelled text-crm-text font-bold py-2 px-6 rounded text-[13px] disabled:opacity-50 transition-colors">
  {adding ? 'Adding...' : 'Add Expense'}

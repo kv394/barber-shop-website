@@ -150,7 +150,7 @@ export default function SystemLogsViewer() {
  <td className="p-4 text-right">
  <button 
  onClick={() => setSelectedLog(log)}
- className="text-[11px] font-bold uppercase tracking-wider text-crm-primary hover:text-brand-gold transition-colors"
+ className="text-[11px] font-bold uppercase tracking-wider text-crm-primary hover:text-brand-indigo transition-colors"
  >
  View
  </button>

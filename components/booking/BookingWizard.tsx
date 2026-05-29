@@ -4,7 +4,8 @@ import { DayPicker } from 'react-day-picker';
 import 'react-day-picker/dist/style.css';
 import { format } from 'date-fns';
 import { scoreAndSortSlots, type ScoredSlot } from '@/lib/schedule-optimizer';
-import StyleDiscovery from '@/components/booking/StyleDiscovery';
+import { getWizardThemeStyles } from './WizardThemeStyles';
+import { ServiceStep, StaffStep, DateTimeStep, DetailsStep } from './BookingWizardSteps';
 import { fmtPrice } from '@/lib/formatters';
 
 // Steps: 1: Service, 2: Staff, 3: DateTime, 4: Details
@@ -110,86 +111,7 @@ export default function BookingWizard({ shopId, themeColor, secondaryColor, temp
  }, [selectedDate, shopId]);
 
  
- const getThemeStyles = () => {
- switch (templateType) {
- case 'sporty':
- return {
- cardActive: 'border-2 shadow-sm rounded-none font-bold',
- cardInactive: 'border-2 border-crm-border hover:border-gray-800 rounded-none',
- btnPrimary: 'w-full text-white font-black py-4 uppercase tracking-widest rounded-none hover:opacity-90 transition-opacity',
- btnSecondary: 'w-full bg-gray-200 text-crm-text font-black py-4 uppercase tracking-widest rounded-none hover:bg-gray-300 transition-colors',
- input: 'w-full border-2 border-crm-border p-4 rounded-none focus:outline-none focus:border-black font-bold',
- title: 'text-xl font-black uppercase italic'
- };
- case 'corporate':
- return {
- cardActive: 'border shadow-md rounded-lg',
- cardInactive: 'border border-crm-border hover:border-crm-border hover:shadow-sm rounded-lg',
- btnPrimary: 'w-full text-white font-medium py-3 rounded-lg shadow-sm hover:opacity-90 transition-opacity',
- btnSecondary: 'w-full bg-gray-100 text-crm-muted font-medium py-3 rounded-lg hover:bg-gray-200 transition-colors',
- input: 'w-full border border-crm-border p-3 rounded-lg focus:outline-none focus:ring-2 focus:border-transparent',
- title: 'text-lg font-bold text-crm-text'
- };
- case 'noir':
- return {
- cardActive: 'border border-black bg-black text-white rounded-none',
- cardInactive: 'border border-crm-border hover:border-black rounded-none',
- btnPrimary: 'w-full bg-black text-white font-bold uppercase tracking-[0.2em] py-4 rounded-none hover:bg-gray-900 transition-colors',
- btnSecondary: 'w-full border border-black text-crm-text font-bold uppercase tracking-[0.2em] py-4 rounded-none hover:bg-gray-100 transition-colors',
- input: 'w-full border-b-2 border-crm-border p-3 rounded-none focus:outline-none focus:border-black bg-transparent',
- title: 'text-lg font-bold uppercase tracking-widest'
- };
- case 'sunset':
- case 'vibrant':
- return {
- cardActive: 'border-2 shadow-lg rounded-2xl',
- cardInactive: 'border-2 border-transparent bg-crm-bg hover:bg-gray-100 rounded-2xl',
- btnPrimary: 'w-full text-white font-bold py-4 rounded-2xl shadow-lg hover:opacity-90 transition-opacity',
- btnSecondary: 'w-full bg-gray-100 text-crm-text font-bold py-4 rounded-2xl hover:bg-gray-200 transition-colors',
- input: 'w-full bg-crm-bg border-2 border-transparent p-4 rounded-2xl focus:outline-none',
- title: 'text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-orange-500 to-pink-500'
- };
- case 'editorial':
- return {
- cardActive: 'border border-[#d4af37] bg-[#fdfbf7] rounded-none',
- cardInactive: 'border border-crm-border hover:border-[#d4af37] rounded-none',
- btnPrimary: 'w-full text-[#121412] font-semibold uppercase tracking-widest py-4 rounded-none hover:opacity-90 transition-opacity',
- btnSecondary: 'w-full border border-crm-border text-crm-muted font-semibold uppercase tracking-widest py-4 rounded-none hover:bg-crm-bg transition-colors',
- input: 'w-full border-b border-crm-border p-3 rounded-none focus:outline-none focus:border-[#d4af37] bg-transparent font-serif',
- title: 'text-xl font-serif italic text-crm-text'
- };
- case 'classic':
- return {
- cardActive: 'border border-[#2c1e16] bg-[#fdfbf7] rounded-sm',
- cardInactive: 'border border-[#e6d9c6] hover:border-[#2c1e16] bg-crm-surface rounded-sm',
- btnPrimary: 'w-full text-[#fdfbf7] font-medium uppercase tracking-wider py-3 rounded-sm hover:opacity-90 transition-opacity',
- btnSecondary: 'w-full border border-[#e6d9c6] text-[#5a4634] font-medium uppercase tracking-wider py-3 rounded-sm hover:bg-[#fdfbf7] transition-colors',
- input: 'w-full border border-[#e6d9c6] p-3 rounded-sm focus:outline-none focus:border-[#2c1e16] bg-crm-surface',
- title: 'text-lg font-serif font-bold text-[#2c1e16]'
- };
- case 'minimal':
- return {
- cardActive: 'border-b-2 border-black rounded-none pb-4',
- cardInactive: 'border-b border-crm-border hover:border-black rounded-none pb-4',
- btnPrimary: 'w-full bg-black text-white font-medium py-3 rounded-none hover:bg-gray-800 transition-colors',
- btnSecondary: 'w-full border border-crm-border text-crm-muted font-medium py-3 rounded-none hover:bg-crm-bg transition-colors',
- input: 'w-full border-b border-crm-border p-3 rounded-none focus:outline-none focus:border-black bg-transparent',
- title: 'text-lg font-light tracking-tight text-crm-text'
- };
- case 'modern':
- default:
- return {
- cardActive: 'border-2 shadow-sm rounded-xl',
- cardInactive: 'border-2 border-transparent bg-crm-bg hover:border-crm-border rounded-xl',
- btnPrimary: 'w-full text-white font-bold py-4 rounded-xl shadow-md hover:opacity-90 transition-opacity',
- btnSecondary: 'w-full bg-gray-100 text-crm-muted font-bold py-4 rounded-xl hover:bg-gray-200 transition-colors',
- input: 'w-full border border-crm-border p-4 rounded-xl focus:outline-none focus:ring-2 bg-crm-bg',
- title: 'text-lg font-bold text-crm-text'
- };
- }
- };
-
- const tStyles = getThemeStyles();
+ const tStyles = getWizardThemeStyles(templateType);
  const hexToRgba = (hex: string) => {
  const cleanHex = hex.replace('#', '');
  if (cleanHex.length === 3 || cleanHex.length === 6) {
@@ -407,242 +329,81 @@ export default function BookingWizard({ shopId, themeColor, secondaryColor, temp
  
  {/* Scrollable Content */}
  <div className="flex-1 overflow-y-auto p-4 custom-scrollbar">
- {step === 1 && (
- <div className="space-y-3">
- <div className="mb-2">
- <input
- type="search"
- placeholder="Search services..."
- className={tStyles.input} style={{ '--tw-ring-color': themeColor } as any}
- value={serviceSearchQuery}
- onChange={(e) => setServiceSearchQuery(e.target.value)}
- />
- </div>
- {services.filter(s => s.name.toLowerCase().includes(serviceSearchQuery.toLowerCase())).map(s => (
- <div 
- key={s.id} 
- onClick={() => { setSelectedService(s); handleNext(); }}
- className={`p-4 cursor-pointer transition-all ${selectedService?.id === s.id ? tStyles.cardActive : tStyles.cardInactive}`} style={selectedService?.id === s.id ? { borderColor: themeColor || '#111827', backgroundColor: activeBg } : {}}
- >
- <div className="flex justify-between items-center">
- <span className="font-medium text-crm-text">{s.name}</span>
- <span className="font-semibold text-crm-text">{fmtPrice(s.price, currency)}</span>
- </div>
- <div className="text-sm text-crm-muted mt-1">{s.duration} mins</div>
- </div>
- ))}
- {services.length === 0 && <p className="text-crm-muted text-center py-4">No services available.</p>}
- {services.length > 0 && services.filter(s => s.name.toLowerCase().includes(serviceSearchQuery.toLowerCase())).length === 0 && (
- <p className="text-crm-muted text-center py-4">No services match your search.</p>
- )}
- {/* Style Discovery AI */}
- <div className="mt-4 pt-4 border-t border-crm-border">
- <StyleDiscovery shopId={shopId} themeColor={themeColor} />
- </div>
- </div>
- )}
+        {step === 1 && (
+          <ServiceStep
+            services={services}
+            serviceSearchQuery={serviceSearchQuery}
+            setServiceSearchQuery={setServiceSearchQuery}
+            selectedService={selectedService}
+            setSelectedService={setSelectedService}
+            handleNext={handleNext}
+            tStyles={tStyles}
+            themeColor={themeColor}
+            activeBg={activeBg}
+            currency={currency}
+            shopId={shopId}
+          />
+        )}
 
- {step === 2 && (
- <div className="space-y-3">
- <div 
- onClick={() => { setSelectedStaff(null); handleNext(); }}
- className={`p-4 cursor-pointer transition-all ${selectedStaff === null ? tStyles.cardActive : tStyles.cardInactive}`} style={selectedStaff === null ? { borderColor: themeColor || '#111827', backgroundColor: activeBg } : {}}
- >
- <div className="font-medium text-crm-text">No Preference</div>
- <div className="text-sm text-crm-muted">First available professional</div>
- </div>
- {staff.map(st => (
- <div 
- key={st.id} 
- onClick={() => { setSelectedStaff(st); handleNext(); }}
- className={`p-4 cursor-pointer transition-all ${selectedStaff?.id === st.id ? tStyles.cardActive : tStyles.cardInactive}`} style={selectedStaff?.id === st.id ? { borderColor: themeColor || '#111827', backgroundColor: activeBg } : {}}
- >
- <div className="font-medium text-crm-text">{st.name}</div>
- </div>
- ))}
- </div>
- )}
+        {step === 2 && (
+          <StaffStep
+            staff={staff}
+            selectedStaff={selectedStaff}
+            setSelectedStaff={setSelectedStaff}
+            handleNext={handleNext}
+            tStyles={tStyles}
+            themeColor={themeColor}
+            activeBg={activeBg}
+          />
+        )}
 
- {step === 3 && (
- <div className="space-y-6">
- <div>
- <label className="block text-sm font-medium text-crm-muted mb-2">Select Date</label>
- {!selectedDate ? (
- <div className="flex justify-center bg-crm-bg p-4 rounded-xl border border-crm-border">
- <DayPicker
- mode="single"
- selected={tempPickerDate}
- onSelect={(date) => {
- setTempPickerDate(date);
- if (date) {
- setTempDate(format(date, 'yyyy-MM-dd'));
- setSelectedTime('');
- }
- }}
- disabled={{ before: new Date(new Date().setHours(0,0,0,0)) }}
- footer={
- tempPickerDate ? (
- <div className="mt-4 pt-4 border-t border-crm-border">
- <button
- onClick={() => {
- if (tempPickerDate) {
- setSelectedDate(format(tempPickerDate, 'yyyy-MM-dd'));
- }
- }}
- className={tStyles.btnPrimary} style={{ backgroundColor: themeColor || '#111827', color: secondaryColor || undefined }}
- >
- OK
- </button>
- </div>
- ) : null
- }
- />
- </div>
- ) : (
- <div 
- className="flex justify-between items-center p-4 border rounded-xl bg-crm-bg border-crm-border cursor-pointer hover:border-gray-800 transition-colors"
- onClick={() => setSelectedDate('')}
- >
- <span className="font-medium text-crm-text">
- {format(new Date(selectedDate + 'T00:00:00'), 'MMMM d, yyyy')}
- </span>
- <span className="text-sm text-crm-muted">Change</span>
- </div>
- )}
- </div>
- {selectedDate && (
- <div className="pt-4">
- <div className="flex items-center justify-between mb-2">
- <label className="block text-sm font-medium text-crm-muted">Select Time</label>
- {availableTimeSlots.some(s => s.isRecommended) && (
- <button
- type="button"
- onClick={() => setSortByFit(v => !v)}
- className="text-xs text-crm-muted hover:text-crm-text transition-colors flex items-center gap-1"
- >
- {sortByFit ? '🕐 Sort by time' : '⭐ Sort by best fit'}
- </button>
- )}
- </div>
- {loadingSlots ? (
- <div className="py-8 flex justify-center"><div className="animate-spin rounded-full h-6 w-6 border-b-2 border-gray-900"></div></div>
- ) : availableTimeSlots.length > 0 ? (
- <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
- {availableTimeSlots.map(slot => (
- <button
- key={slot.time}
- onClick={() => setSelectedTime(slot.time)}
- className={`p-4 text-base sm:p-3 sm:text-sm transition-all font-medium relative focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-gray-900 ${selectedTime === slot.time ? tStyles.cardActive : tStyles.cardInactive}`} style={selectedTime === slot.time ? { borderColor: themeColor || '#111827', backgroundColor: themeColor || '#111827', color: templateType === 'editorial' ? '#121412' : '#ffffff' } : {}}
- >
- {formatTime(slot.time)}
- {slot.isRecommended && selectedTime !== slot.time && (
- <span className="absolute -top-1.5 -right-1.5 bg-amber-400 text-[9px] font-bold text-amber-900 px-1.5 py-0.5 rounded-full leading-none shadow-sm">⭐</span>
- )}
- </button>
- ))}
- </div>
- ) : (
- <p className="text-crm-muted text-center py-4 bg-crm-bg rounded-xl">No available times on this date.</p>
- )}
- </div>
- )}
- </div>
- )}
+        {step === 3 && (
+          <DateTimeStep
+            selectedDate={selectedDate}
+            setSelectedDate={setSelectedDate}
+            tempPickerDate={tempPickerDate}
+            setTempPickerDate={setTempPickerDate}
+            setTempDate={setTempDate}
+            setSelectedTime={setSelectedTime}
+            availableTimeSlots={availableTimeSlots}
+            sortByFit={sortByFit}
+            setSortByFit={setSortByFit}
+            loadingSlots={loadingSlots}
+            selectedTime={selectedTime}
+            tStyles={tStyles}
+            themeColor={themeColor}
+            secondaryColor={secondaryColor}
+            templateType={templateType}
+            formatTime={formatTime}
+          />
+        )}
 
- {step === 4 && (
- <div className="space-y-4">
- {error && <div className="p-3 bg-red-50 text-red-700 text-sm rounded-xl border border-red-100">{error}</div>}
- 
- <div className="p-4 bg-crm-bg rounded-xl border border-crm-border">
- <h3 className="font-medium text-crm-text mb-3">Booking Summary</h3>
- <div className="text-sm text-crm-muted space-y-2">
- <div className="flex justify-between items-center pb-2 border-b border-crm-border">
- <span>{selectedService?.name}</span>
- <span className="font-medium text-crm-text">{fmtPrice(selectedService?.price || 0, currency)}</span>
- </div>
- <div className="flex justify-between items-center pb-2 border-b border-crm-border">
- <span>Professional</span>
- <span className="font-medium text-crm-text">{selectedStaff ? selectedStaff.name : 'No Preference'}</span>
- </div>
- <div className="flex justify-between items-center">
- <span>Time</span>
- <span className="font-medium text-crm-text">
- {selectedDate && new Date(selectedDate + 'T00:00:00').toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })} at {selectedTime ? formatTime(selectedTime) : ''}
- </span>
- </div>
- </div>
- </div>
-
- <div>
- <label className="block text-sm font-medium text-crm-muted mb-1">Name</label>
- <input 
- type="text" 
- placeholder="John Doe"
- autoComplete="name"
- className={tStyles.input} style={{ '--tw-ring-color': themeColor } as any}
- value={name}
- onChange={e => setName(e.target.value)}
- />
- </div>
- <div>
- <label className="block text-sm font-medium text-crm-muted mb-1">Email</label>
- <input 
- type="email" 
- placeholder="john@example.com"
- autoComplete="email"
- className={tStyles.input} style={{ '--tw-ring-color': themeColor } as any}
- value={email}
- onChange={e => setEmail(e.target.value)}
- />
- </div>
- <div>
- <label className="block text-sm font-medium text-crm-muted mb-1">Phone (Optional)</label>
- <input 
- type="tel" 
- placeholder="(555) 000-0000"
- autoComplete="tel"
- className={tStyles.input} style={{ '--tw-ring-color': themeColor } as any}
- value={phone}
- onChange={e => setPhone(e.target.value)}
- />
- </div>
-
- {shopType === 'HYBRID' && (
- <div className="mb-4 bg-crm-bg p-3 rounded-xl border border-crm-border flex items-center justify-between">
- <div>
- <div className="font-medium text-crm-text text-sm">Service Location</div>
- <div className="text-xs text-crm-muted">{isHouseCall ? 'House Call' : 'In-Shop'}</div>
- </div>
- <div className="flex bg-gray-200 rounded-lg p-1">
- <button type="button" onClick={() => setIsHouseCall(false)} className={`px-3 py-1 text-xs font-medium rounded-lg transition-colors ${!isHouseCall ? 'bg-crm-surface shadow-sm text-crm-text' : 'text-crm-muted'}`}>In-Shop</button>
- <button type="button" onClick={() => setIsHouseCall(true)} className={`px-3 py-1 text-xs font-medium rounded-lg transition-colors ${isHouseCall ? 'bg-crm-surface shadow-sm text-crm-text' : 'text-crm-muted'}`}>House Call</button>
- </div>
- </div>
- )}
- 
- {isHouseCall && (
- <div>
- <label className="block text-sm font-medium text-crm-muted mb-1">Service Address</label>
- <input 
- type="text" 
- placeholder="123 Main St, City, Zip"
- className={tStyles.input} style={{ '--tw-ring-color': themeColor } as any}
- value={serviceLocation}
- onChange={e => setServiceLocation(e.target.value)}
- />
- </div>
- )}
- <div>
- <label className="block text-sm font-medium text-crm-muted mb-1">Notes (Optional)</label>
- <textarea 
- placeholder="Any special requests?"
- className="w-full border p-3 rounded-xl bg-crm-bg focus:outline-none focus:ring-2 focus:ring-gray-900 border-transparent transition-all min-h-[80px]"
- value={notes}
- onChange={e => setNotes(e.target.value)}
- />
- </div>
- </div>
- )}
+        {step === 4 && (
+          <DetailsStep
+            error={error}
+            selectedService={selectedService}
+            currency={currency}
+            selectedStaff={selectedStaff}
+            selectedDate={selectedDate}
+            selectedTime={selectedTime}
+            name={name}
+            setName={setName}
+            email={email}
+            setEmail={setEmail}
+            phone={phone}
+            setPhone={setPhone}
+            shopType={shopType}
+            isHouseCall={isHouseCall}
+            setIsHouseCall={setIsHouseCall}
+            serviceLocation={serviceLocation}
+            setServiceLocation={setServiceLocation}
+            notes={notes}
+            setNotes={setNotes}
+            tStyles={tStyles}
+            themeColor={themeColor}
+            formatTime={formatTime}
+          />
+        )}
  </div>
 
  {/* Footer */}

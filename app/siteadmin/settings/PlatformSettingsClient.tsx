@@ -149,7 +149,7 @@ export default function PlatformSettingsClient() {
  {/* --- OPERATIONS TAB --- */}
  {activeTab === 'operations' && (
  <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-300">
- <PremiumGlassCard accentColor="brand-gold" className="!p-0 overflow-hidden">
+ <PremiumGlassCard accentColor="brand-indigo" className="!p-0 overflow-hidden">
  <div className="px-6 py-5 border-b border-white/20 bg-white/40">
  <h2 className="text-lg font-bold text-crm-text">Platform Controls</h2>
  </div>

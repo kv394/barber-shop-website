@@ -154,12 +154,12 @@ export default function StaffWorkingReport({ staffMembers, currency }: StaffWork
  <div className="flex-1">
  <label className="block text-crm-muted uppercase tracking-wider mb-1 text-[13px]">From Date</label>
  <input type="date" value={dateFrom} onChange={e => setDateFrom(e.target.value)} style={inputStyle}
- className="w-full border border-crm-border shadow-sm rounded p-2 text-[13px] focus:outline-none focus:border-brand-gold " />
+ className="w-full border border-crm-border shadow-sm rounded p-2 text-[13px] focus:outline-none focus:border-brand-indigo " />
  </div>
  <div className="flex-1">
  <label className="block text-crm-muted uppercase tracking-wider mb-1 text-[13px]">To Date</label>
  <input type="date" value={dateTo} onChange={e => setDateTo(e.target.value)} style={inputStyle}
- className="w-full border border-crm-border shadow-sm rounded p-2 text-[13px] focus:outline-none focus:border-brand-gold " />
+ className="w-full border border-crm-border shadow-sm rounded p-2 text-[13px] focus:outline-none focus:border-brand-indigo " />
  </div>
  {isFiltered && <div className="w-full sm:w-auto mt-2 sm:mt-0">
  <button onClick={() => { setDateFrom(''); setDateTo(''); }} className="h-[40px] text-[11px] text-crm-muted hover:text-crm-text px-4 border border-crm-border shadow-sm rounded flex items-center justify-center w-full sm:w-auto">

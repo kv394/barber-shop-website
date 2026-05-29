@@ -86,11 +86,11 @@ export default function CommissionReportClient({
  <div className="flex flex-col sm:flex-row flex-wrap gap-4 sm:items-end">
  <div className="flex-1 sm:flex-none">
  <label className="block text-crm-muted mb-1 text-[13px]">Start Date</label>
- <input type="date" value={startDate} onChange={e => setStartDate(e.target.value)} className="h-[40px] bg-crm-surface border border-crm-border shadow-sm rounded px-3 text-crm-text text-[13px] focus:outline-none focus:border-brand-gold w-full sm:w-auto" />
+ <input type="date" value={startDate} onChange={e => setStartDate(e.target.value)} className="h-[40px] bg-crm-surface border border-crm-border shadow-sm rounded px-3 text-crm-text text-[13px] focus:outline-none focus:border-brand-indigo w-full sm:w-auto" />
  </div>
  <div className="flex-1 sm:flex-none">
  <label className="block text-crm-muted mb-1 text-[13px]">End Date</label>
- <input type="date" value={endDate} onChange={e => setEndDate(e.target.value)} className="h-[40px] bg-crm-surface border border-crm-border shadow-sm rounded px-3 text-crm-text text-[13px] focus:outline-none focus:border-brand-gold w-full sm:w-auto" />
+ <input type="date" value={endDate} onChange={e => setEndDate(e.target.value)} className="h-[40px] bg-crm-surface border border-crm-border shadow-sm rounded px-3 text-crm-text text-[13px] focus:outline-none focus:border-brand-indigo w-full sm:w-auto" />
  </div>
  <div className="w-full sm:w-auto mt-2 sm:mt-0">
  <button onClick={exportCSV} className="h-[40px] flex items-center justify-center bg-crm-surface hover:bg-crm-surface/80 text-crm-text px-4 rounded text-[13px] transition-colors border border-crm-border shadow-sm w-full sm:w-auto">

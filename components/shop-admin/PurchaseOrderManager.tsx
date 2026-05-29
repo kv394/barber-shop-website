@@ -109,7 +109,7 @@ export default function PurchaseOrderManager({ shopId, products, currency }: { s
  {isCreating && (
  <div className="animate-in fade-in slide-in-from-top-4 duration-300 ease-out mb-8">
  <form onSubmit={handleCreate} className="bg-white/5 backdrop-blur-xl p-8 border border-white/10 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] space-y-6 relative overflow-hidden">
- <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-crm-primary to-brand-gold"></div>
+ <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-crm-primary to-brand-indigo"></div>
  <h3 className="font-bold text-crm-text text-lg">📝 New Purchase Order</h3>
  
  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

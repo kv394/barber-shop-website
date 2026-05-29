@@ -60,7 +60,7 @@ export default function AddBookingWrapper({ shopId, buttonClass }: { shopId: str
  <button 
  key={s.id} 
  onClick={() => setSelectedService(s)}
- className="w-full text-left bg-crm-bg border border-crm-border hover:border-brand-gold hover:shadow-md transition-all rounded-lg p-4 flex justify-between items-center group"
+ className="w-full text-left bg-crm-bg border border-crm-border hover:border-brand-indigo hover:shadow-md transition-all rounded-lg p-4 flex justify-between items-center group"
  >
  <div>
  <h4 className="font-bold text-crm-text text-base group-hover:text-crm-accent transition-colors">{s.name}</h4>

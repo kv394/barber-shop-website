@@ -51,13 +51,13 @@ export default function ResourceManagement({ shopId }: { shopId: string }) {
  value={name} 
  onChange={e => setName(e.target.value)} 
  placeholder="Resource Name (e.g. Chair 1, Room A)" 
- className="flex-1 bg-crm-surface border border-crm-border shadow-sm rounded px-3 py-2 text-crm-text text-[13px] focus:outline-none focus:border-brand-gold" 
+ className="flex-1 bg-crm-surface border border-crm-border shadow-sm rounded px-3 py-2 text-crm-text text-[13px] focus:outline-none focus:border-brand-indigo" 
  required 
  />
  <select 
  value={type} 
  onChange={e => setType(e.target.value)} 
- className="w-40 bg-crm-surface border border-crm-border shadow-sm rounded px-3 py-2 text-crm-text text-[13px] focus:outline-none focus:border-brand-gold"
+ className="w-40 bg-crm-surface border border-crm-border shadow-sm rounded px-3 py-2 text-crm-text text-[13px] focus:outline-none focus:border-brand-indigo"
  >
  <option value="CHAIR">Chair / Station</option>
  <option value="ROOM">Room</option>

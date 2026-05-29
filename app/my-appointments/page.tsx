@@ -116,7 +116,7 @@ export default function MyAppointmentsPage() {
  return (
  <div className="py-20 flex items-center justify-center">
  <div className="flex flex-col items-center gap-4">
- <div className="w-12 h-12 border-4 border-brand-gold border-t-transparent rounded-full animate-spin"></div>
+ <div className="w-12 h-12 border-4 border-brand-indigo border-t-transparent rounded-full animate-spin"></div>
  <p className="text-crm-accent animate-pulse font-medium tracking-wide uppercase text-[13px]">
  Loading Appointments...
  </p>
@@ -345,7 +345,7 @@ function AppointmentCard({
  {showRebook && apt.service && shopSlug && (
  <Link
  href={`/shops/${shopSlug}?service=${apt.service.id}`}
- className="px-4 py-2 text-[13px] font-semibold bg-crm-primary/20 text-crm-accent border border-brand-gold/30 rounded-lg hover:bg-crm-primary/40 transition-all text-center"
+ className="px-4 py-2 text-[13px] font-semibold bg-crm-primary/20 text-crm-accent border border-brand-indigo/30 rounded-lg hover:bg-crm-primary/40 transition-all text-center"
  >
  Rebook
  </Link>

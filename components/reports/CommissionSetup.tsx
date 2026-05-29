@@ -67,7 +67,7 @@ export default function CommissionSetup({ shopId }: { shopId: string }) {
  <div className="flex items-center gap-1">
  <input type="number" min={0} max={100} value={rules[s.id]?.svc ?? 50}
  onChange={e => setRules(r => ({ ...r, [s.id]: { ...r[s.id], svc: +e.target.value } }))}
- className="w-16 bg-crm-surface border border-crm-border shadow-sm rounded px-2 py-1.5 text-crm-text text-[13px] focus:outline-none focus:border-brand-gold" />
+ className="w-16 bg-crm-surface border border-crm-border shadow-sm rounded px-2 py-1.5 text-crm-text text-[13px] focus:outline-none focus:border-brand-indigo" />
  <span className="text-crm-muted text-[13px]">%</span>
  </div>
  </div>
@@ -76,7 +76,7 @@ export default function CommissionSetup({ shopId }: { shopId: string }) {
  <div className="flex items-center gap-1">
  <input type="number" min={0} max={100} value={rules[s.id]?.product ?? 10}
  onChange={e => setRules(r => ({ ...r, [s.id]: { ...r[s.id], product: +e.target.value } }))}
- className="w-16 bg-crm-surface border border-crm-border shadow-sm rounded px-2 py-1.5 text-crm-text text-[13px] focus:outline-none focus:border-brand-gold" />
+ className="w-16 bg-crm-surface border border-crm-border shadow-sm rounded px-2 py-1.5 text-crm-text text-[13px] focus:outline-none focus:border-brand-indigo" />
  <span className="text-crm-muted text-[13px]">%</span>
  </div>
  </div>

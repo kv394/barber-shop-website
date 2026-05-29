@@ -71,7 +71,7 @@ export default function ReferralsPage() {
 
  <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8 space-y-8">
  {/* Referral Code Card */}
- <div className="bg-gradient-to-r from-purple-600/20 to-brand-gold/20 border border-brand-gold/30 rounded-xl p-6 sm:p-8">
+ <div className="bg-gradient-to-r from-purple-600/20 to-brand-indigo/20 border border-brand-indigo/30 rounded-xl p-6 sm:p-8">
  <div className="text-center">
  <p className="text-crm-muted mb-2 text-[13px]">Your Referral Code</p>
  <div className="text-4xl sm:text-5xl font-black text-crm-accent tracking-widest mb-4">
@@ -96,7 +96,7 @@ export default function ReferralsPage() {
  </div>
  <button
  onClick={() => handleCopy(link)}
- className="shrink-0 bg-crm-primary/20 text-crm-accent border border-brand-gold/30 px-4 py-2 rounded-lg text-[13px] font-semibold hover:bg-crm-primary/40 transition-all"
+ className="shrink-0 bg-crm-primary/20 text-crm-accent border border-brand-indigo/30 px-4 py-2 rounded-lg text-[13px] font-semibold hover:bg-crm-primary/40 transition-all"
  >
  {copied ? '✅ Copied!' : '📋 Copy'}
  </button>

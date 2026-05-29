@@ -35,7 +35,7 @@ export default function NotificationSettingsForm({ shopId }: { shopId: string })
  const Toggle = ({ label, desc, k }: { label: string; desc: string; k: string }) => (
  <label className="flex items-center justify-between p-4 bg-crm-surface rounded-lg cursor-pointer hover:bg-crm-surface transition text-[13px]">
  <div><p className="font-medium text-crm-text text-[13px]">{label}</p><p className="text-crm-muted text-[13px]">{desc}</p></div>
- <input type="checkbox" checked={!!settings[k]} onChange={e => updateSetting(k, e.target.checked)} className="w-5 h-5 accent-brand-gold" />
+ <input type="checkbox" checked={!!settings[k]} onChange={e => updateSetting(k, e.target.checked)} className="w-5 h-5 accent-brand-indigo" />
  </label>
  );
 
@@ -50,10 +50,10 @@ export default function NotificationSettingsForm({ shopId }: { shopId: string })
  {settings.appointmentReminders && (
  <div className="ml-4 flex gap-3 flex-wrap">
  <label className="flex items-center gap-2 text-crm-muted cursor-pointer text-[13px]">
- <input type="checkbox" checked={!!settings.reminder24h} onChange={e => updateSetting('reminder24h', e.target.checked)} className="accent-brand-gold" /> 24 hours before
+ <input type="checkbox" checked={!!settings.reminder24h} onChange={e => updateSetting('reminder24h', e.target.checked)} className="accent-brand-indigo" /> 24 hours before
  </label>
  <label className="flex items-center gap-2 text-crm-muted cursor-pointer text-[13px]">
- <input type="checkbox" checked={!!settings.reminder1h} onChange={e => updateSetting('reminder1h', e.target.checked)} className="accent-brand-gold" /> 1 hour before
+ <input type="checkbox" checked={!!settings.reminder1h} onChange={e => updateSetting('reminder1h', e.target.checked)} className="accent-brand-indigo" /> 1 hour before
  </label>
  </div>
  )}
@@ -92,12 +92,12 @@ export default function NotificationSettingsForm({ shopId }: { shopId: string })
  <div>
  <label className="text-crm-muted block mb-1 text-[13px]">Admin Alert Email</label>
  <input type="email" value={settings.adminEmail} onChange={e => updateSetting('adminEmail', e.target.value)} placeholder="admin@yourshop.com"
- className="w-full bg-crm-surface border border-crm-border shadow-sm rounded px-3 py-2 text-crm-text text-[13px] placeholder-gray-600 focus:outline-none focus:border-brand-gold" />
+ className="w-full bg-crm-surface border border-crm-border shadow-sm rounded px-3 py-2 text-crm-text text-[13px] placeholder-gray-600 focus:outline-none focus:border-brand-indigo" />
  </div>
  <div>
  <label className="text-crm-muted block mb-1 text-[13px]">Admin Alert Phone (SMS)</label>
  <input type="tel" value={settings.adminPhone} onChange={e => updateSetting('adminPhone', e.target.value)} placeholder="+1 (404) 555-0100"
- className="w-full bg-crm-surface border border-crm-border shadow-sm rounded px-3 py-2 text-crm-text text-[13px] placeholder-gray-600 focus:outline-none focus:border-brand-gold" />
+ className="w-full bg-crm-surface border border-crm-border shadow-sm rounded px-3 py-2 text-crm-text text-[13px] placeholder-gray-600 focus:outline-none focus:border-brand-indigo" />
  </div>
  </div>
  </div>

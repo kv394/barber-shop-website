@@ -105,12 +105,12 @@ export default function InventoryForecast({ shopId }: { shopId: string }) {
  }
 
  return (
- <PremiumGlassCard className="mb-6 !p-5" accentColor="brand-gold">
+ <PremiumGlassCard className="mb-6 !p-5" accentColor="brand-indigo">
  {/* Header */}
  <div className="flex items-center gap-2 mb-5">
  <span className="text-base">🔮</span>
  <span className="font-bold text-crm-text text-[14px]">AI Inventory Forecast</span>
- <span className="text-[9px] font-black uppercase tracking-wider text-brand-gold bg-brand-gold/10 px-2 py-0.5 rounded-full border border-brand-gold/20 shadow-inner">
+ <span className="text-[9px] font-black uppercase tracking-wider text-brand-indigo bg-brand-indigo/10 px-2 py-0.5 rounded-full border border-brand-indigo/20 shadow-inner">
  Gemini
  </span>
  <div className="ml-auto flex items-center gap-2">

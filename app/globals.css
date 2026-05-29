@@ -67,7 +67,7 @@ input[type="date"] {
 input[type="time"]:focus,
 input[type="date"]:focus {
   outline: none;
-  border-color: #4F46E5 !important; /* brand-gold / Indigo */
+  border-color: #4F46E5 !important; /* brand-indigo / Indigo */
   box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.2);
 }
 
