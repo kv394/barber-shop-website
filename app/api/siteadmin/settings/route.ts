@@ -17,11 +17,19 @@ export async function GET() {
  return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
  }
 
- const settings = await prisma.platformSettings.findUnique({
- where: { id: 'global' }
- });
+  const settings = await prisma.platformSettings.findUnique({
+    where: { id: 'global' }
+  });
 
- return NextResponse.json(settings || {});
+  if (settings) {
+    const { decrypt } = await import('@/lib/encryption');
+    if (settings.stripeSecretKey) settings.stripeSecretKey = decrypt(settings.stripeSecretKey);
+    if (settings.stripeWebhookSecret) settings.stripeWebhookSecret = decrypt(settings.stripeWebhookSecret);
+    if (settings.twilioAuthToken) settings.twilioAuthToken = decrypt(settings.twilioAuthToken);
+    if (settings.openAiKey) settings.openAiKey = decrypt(settings.openAiKey);
+  }
+
+  return NextResponse.json(settings || {});
  } catch (error) {
  logger.error('Error fetching platform settings:', error);
  return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
@@ -50,6 +58,8 @@ export async function PATCH(request: Request) {
  'twilioFromNumber', 'openAiKey', 'resendApiKey'
  ];
  
+ const { encrypt } = await import('@/lib/encryption');
+
  const updateData: any = {};
  for (const field of allowedFields) {
  if (body[field] !== undefined) {
@@ -57,6 +67,12 @@ export async function PATCH(request: Request) {
  updateData[field] = parseFloat(body[field]) || 0;
  } else if (field === 'enableSms' || field === 'enableAi' || field === 'maintenanceMode' || field === 'allowNewRegistrations') {
  updateData[field] = Boolean(body[field]);
+ } else if (['stripeSecretKey', 'stripeWebhookSecret', 'twilioAuthToken', 'openAiKey'].includes(field)) {
+ if (body[field]) {
+ updateData[field] = encrypt(body[field]);
+ } else {
+ updateData[field] = null;
+ }
  } else {
  updateData[field] = body[field];
  }

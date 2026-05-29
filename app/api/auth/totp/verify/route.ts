@@ -25,11 +25,12 @@ export async function POST(req: NextRequest) {
  return NextResponse.json({ error: 'Invalid authenticator code' }, { status: 400 });
  }
 
- // Save the secret securely in the database
- await prisma.user.update({
- where: { id: user.id },
- data: { recoveryTotpSecret: secret }
- });
+  // Save the secret securely in the database
+  const { encrypt } = await import('@/lib/encryption');
+  await prisma.user.update({
+    where: { id: user.id },
+    data: { recoveryTotpSecret: encrypt(secret) }
+  });
 
  return NextResponse.json({ success: true, message: 'Authenticator app linked successfully.' });
  } catch (error: any) {

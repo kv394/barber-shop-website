@@ -36,7 +36,9 @@ export async function POST(req: NextRequest) {
  }
 
  // 2. Validate the 6-digit code
- const isValid = authenticator.verify({ token, secret: userRecord.recoveryTotpSecret });
+ const { decrypt } = await import('@/lib/encryption');
+ const decryptedSecret = decrypt(userRecord.recoveryTotpSecret);
+ const isValid = authenticator.verify({ token, secret: decryptedSecret });
 
  if (!isValid) {
  return NextResponse.json({ error: 'Invalid authenticator code' }, { status: 400 });

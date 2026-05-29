@@ -20,24 +20,25 @@ export async function POST(
 
  try {
  const { shopId } = await params;
- const shop = await prisma.shop.findUnique({
- where: { id: shopId },
- select: { depositRequired: true, depositAmount: true, name: true, stripeAccountId: true, paymentGateway: true },
- });
+  const shop = await prisma.shop.findUnique({
+    where: { id: shopId },
+    select: { depositRequired: true, depositAmount: true, name: true, stripeAccountId: true, paymentGateway: true, currency: true },
+  });
 
- if (!shop || !shop.depositRequired || shop.depositAmount <= 0) {
- return NextResponse.json({ error: 'Deposits not required for this shop' }, { status: 400 });
- }
+  if (!shop || !shop.depositRequired || shop.depositAmount <= 0) {
+    return NextResponse.json({ error: 'Deposits not required for this shop' }, { status: 400 });
+  }
 
- if (shop.paymentGateway !== 'STRIPE') {
- return NextResponse.json({ error: 'Online deposits are only supported with Stripe. This shop uses ' + shop.paymentGateway + '.' }, { status: 400 });
- }
+  if (shop.paymentGateway !== 'STRIPE') {
+    return NextResponse.json({ error: 'Online deposits are only supported with Stripe. This shop uses ' + shop.paymentGateway + '.' }, { status: 400 });
+  }
 
- const { clientSecret, paymentIntentId } = await createDepositPaymentIntent(
- shop.depositAmount,
- { shopId, userId, shopName: shop.name, type: 'no_show_deposit' },
- shop.stripeAccountId
- );
+  const { clientSecret, paymentIntentId } = await createDepositPaymentIntent(
+    shop.depositAmount,
+    { shopId, userId, shopName: shop.name, type: 'no_show_deposit' },
+    shop.stripeAccountId,
+    shop.currency
+  );
 
  return NextResponse.json({ clientSecret, paymentIntentId, amount: shop.depositAmount });
  } catch (error: any) {

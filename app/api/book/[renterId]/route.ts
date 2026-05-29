@@ -20,6 +20,15 @@ export async function POST(
  return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
  }
 
+ // Rate Limiting
+ const { rateLimit } = await import('@/lib/rate-limiter');
+ const ip = request.headers.get('x-forwarded-for') || 'unknown';
+ const rateLimitResult = await rateLimit(`booking-ip:${ip}`, 5, 60);
+ if (!rateLimitResult.success) {
+ logger.warn(`Rate limit exceeded for booth renter booking IP ${ip}`);
+ return NextResponse.json({ error: 'Too many booking attempts. Please try again later.' }, { status: 429 });
+ }
+
  // Load the renter
  const renter = await prisma.user.findUnique({
  where: { id: renterId },

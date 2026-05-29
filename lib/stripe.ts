@@ -13,11 +13,12 @@ export async function createDepositPaymentIntent(
   amount: number,
   metadata: Record<string, string>,
   stripeAccountId?: string | null,
+  currency: string = 'usd'
 ) {
   const options = stripeAccountId ? { stripeAccount: stripeAccountId } : undefined;
   const paymentIntent = await stripe.paymentIntents.create({
     amount: Math.round(amount * 100), // cents
-    currency: 'usd',
+    currency: currency.toLowerCase(),
     capture_method: 'manual', // authorize only, capture on no-show
     metadata,
   }, options);
@@ -68,11 +69,12 @@ export async function createGiftCardPaymentIntent(
   amount: number,
   metadata: Record<string, string>,
   stripeAccountId?: string | null,
+  currency: string = 'usd'
 ) {
   const options = stripeAccountId ? { stripeAccount: stripeAccountId } : undefined;
   const paymentIntent = await stripe.paymentIntents.create({
     amount: Math.round(amount * 100),
-    currency: 'usd',
+    currency: currency.toLowerCase(),
     metadata,
     automatic_payment_methods: { enabled: true },
   }, options);
@@ -101,11 +103,11 @@ export async function createSetupIntent(customerId: string, metadata: Record<str
 /**
  * Charge a saved card on file for a No-Show fee.
  */
-export async function chargeNoShowFee(customerId: string, paymentMethodId: string, amount: number, metadata: Record<string, string>, stripeAccountId?: string | null) {
+export async function chargeNoShowFee(customerId: string, paymentMethodId: string, amount: number, metadata: Record<string, string>, stripeAccountId?: string | null, currency: string = 'usd') {
   const options = stripeAccountId ? { stripeAccount: stripeAccountId } : undefined;
   const paymentIntent = await stripe.paymentIntents.create({
     amount: Math.round(amount * 100),
-    currency: 'usd',
+    currency: currency.toLowerCase(),
     customer: customerId,
     payment_method: paymentMethodId,
     off_session: true,

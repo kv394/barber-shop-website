@@ -24,6 +24,14 @@ export const getPlatformSettings = unstable_cache(
       };
     }
 
+    const { decrypt } = await import('@/lib/encryption');
+
+    // Decrypt sensitive fields before returning
+    if (settings.stripeSecretKey) settings.stripeSecretKey = decrypt(settings.stripeSecretKey);
+    if (settings.stripeWebhookSecret) settings.stripeWebhookSecret = decrypt(settings.stripeWebhookSecret);
+    if (settings.twilioAuthToken) settings.twilioAuthToken = decrypt(settings.twilioAuthToken);
+    if (settings.openAiKey) settings.openAiKey = decrypt(settings.openAiKey);
+
     return settings;
   },
   ['platform-settings'],
