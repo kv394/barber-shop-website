@@ -71,6 +71,7 @@ export default function SecondarySidebar({ shopId, userRole, shopType }: { shopI
  {navLink(`/shop/${shopId}/loyalty`, 'Loyalty Program')}
  {navLink(`/shop/${shopId}/referrals`, 'Referrals')}
  {navLink(`/shop/${shopId}/campaigns`, 'Campaigns')}
+ {navLink(`/shop/${shopId}/engagement/social`, 'AI Social Media')}
  {navLink(`/shop/${shopId}/gift-cards`, 'Gift Cards')}
  {navLink(`/shop/${shopId}/reviews`, 'Reviews')}
  </div>
@@ -113,7 +114,8 @@ export default function SecondarySidebar({ shopId, userRole, shopType }: { shopI
  <div className="space-y-1 mb-6 border-l-2 border-crm-border ml-2 pl-2">
  {navLink(`/shop/${shopId}/settings/commissions`, 'Commissions')}
  {navLink(`/shop/${shopId}/settings/notifications`, 'Alerts')}
- {shopType !== 'MOBILE' && navLink(`/shop/${shopId}/settings/kiosk`, 'Kiosk')}
+ {shopType !== 'MOBILE' && navLink(`/shop/${shopId}/settings/kiosk`, 'Staff Kiosk')}
+ {shopType !== 'MOBILE' && navLink(`/shop/${shopId}/kiosk`, 'Front Desk Kiosk')}
  {navLink(`/shop/${shopId}/settings/billing`, 'Billing')}
  </div>
  
