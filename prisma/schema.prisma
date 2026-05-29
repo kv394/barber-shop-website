@@ -228,6 +228,7 @@ model Service {
   finishingTime        Int                          @default(0)
   processingTime       Int                          @default(0)
   isBookable           Boolean                      @default(true)
+  requiresVirtualConsultation Boolean                      @default(false)
   appointments         Appointment[]
   appointmentItems     AppointmentItem[]
   commissionRules      CommissionRule[]

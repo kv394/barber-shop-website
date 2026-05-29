@@ -163,7 +163,7 @@ export async function POST(
 
  // Process Addons
  let addonsJson: any = null;
- let totalDuration = service.duration;
+ let totalDuration = service.requiresVirtualConsultation ? 15 : service.duration;
  let totalPrice = service.price;
 
  if (addonIds && addonIds.length > 0) {
@@ -279,7 +279,7 @@ export async function POST(
  // Immediate booking confirmation (C8)
  NotificationService.sendBookingConfirmation({
  shopId, userId: targetUserId, shopName: shop.name,
- serviceName: service.name + (addonsJson?.length ? ` + ${addonsJson.length} Add-on(s)` : ''), staffName: staffUser?.name || 'Staff',
+ serviceName: (service.requiresVirtualConsultation ? "Virtual Consultation: " : "") + service.name + (addonsJson?.length ? ` + ${addonsJson.length} Add-on(s)` : ''), staffName: staffUser?.name || 'Staff',
  dateTime: start, duration: totalDuration, price: totalPrice,
  timezone: shop.timezone || 'America/New_York',
  appointmentId: appointment.id,
@@ -297,7 +297,7 @@ export async function POST(
  createCalendarEvent(staffId, {
  startTime: start,
  endTime: end,
- serviceName: service.name + (addonsJson?.length ? ` + ${addonsJson.length} Add-on(s)` : ''),
+ serviceName: (service.requiresVirtualConsultation ? "Virtual Consultation: " : "") + service.name + (addonsJson?.length ? ` + ${addonsJson.length} Add-on(s)` : ''),
  staffName: staffUser?.name || 'Staff',
  shopName: shop.name
  }).catch(() => {});
