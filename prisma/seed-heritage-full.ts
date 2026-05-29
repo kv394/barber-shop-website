@@ -442,9 +442,9 @@ async function main() {
   if (waitCount === 0) {
     await prisma.waitlist.createMany({
       data: [
-        { clientName: 'Jordan Lee',    clientPhone: '+1-555-0301', serviceId: 'hh-svc-fade',     staffId: STAFF.marcus,  position: 1, status: 'WAITING', shopId: SHOP_ID },
-        { clientName: 'Sam Ortega',    clientPhone: '+1-555-0302', serviceId: 'hh-svc-mens-cut', staffId: null,          position: 2, status: 'WAITING', shopId: SHOP_ID },
-        { clientName: 'Kevin Jackson', clientPhone: '+1-555-0303', serviceId: 'hh-svc-lineup',   staffId: STAFF.deshawn, position: 3, status: 'WAITING', shopId: SHOP_ID },
+        { clientName: 'Jordan Lee',    clientPhone: '+1-555-0301', serviceId: 'hh-svc-fade',     staffId: STAFF.marcus,  position: 1, status: 'WAITING' as any, shopId: SHOP_ID },
+        { clientName: 'Sam Ortega',    clientPhone: '+1-555-0302', serviceId: 'hh-svc-mens-cut', staffId: null,          position: 2, status: 'WAITING' as any, shopId: SHOP_ID },
+        { clientName: 'Kevin Jackson', clientPhone: '+1-555-0303', serviceId: 'hh-svc-lineup',   staffId: STAFF.deshawn, position: 3, status: 'WAITING' as any, shopId: SHOP_ID },
       ],
     });
     console.log(`      ✅  3 waitlist entries created`);
@@ -492,7 +492,7 @@ async function main() {
       await prisma.campaign.create({
         data: {
           id: c.id, shopId: SHOP_ID, name: c.name, message: c.message,
-          type: c.type, channel: c.channel, status: c.status,
+          type: c.type as any, channel: c.channel as any, status: c.status as any,
           targetSegment: c.targetSegment, recipientCount: c.recipientCount,
           sentAt: c.sentAt, scheduledAt: c.scheduledAt,
         },

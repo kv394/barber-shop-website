@@ -264,7 +264,7 @@ async function main() {
       serviceId:   w.serviceId,
       staffId:     w.staffId,
       position:    w.position,
-      status:      w.status,
+      status:      w.status as any,
       shopId:      SHOP_ID,
     })),
   });
