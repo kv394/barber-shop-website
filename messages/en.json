@@ -1,0 +1,23 @@
+{
+  "Booking": {
+    "title": "Book Appointment",
+    "selectService": "Select Service",
+    "selectAddons": "Optional Add-ons",
+    "selectProfessional": "Select Professional",
+    "selectDate": "Select Date & Time",
+    "yourDetails": "Your Details",
+    "name": "Full Name",
+    "email": "Email Address",
+    "phone": "Phone Number",
+    "notes": "Appointment Notes (Optional)",
+    "back": "Back",
+    "next": "Next",
+    "confirm": "Confirm Booking",
+    "bookingSuccess": "Appointment Confirmed!",
+    "duration": "Duration",
+    "price": "Price",
+    "total": "Total",
+    "noProfessionals": "No professionals available.",
+    "noTimeSlots": "No time slots available."
+  }
+}

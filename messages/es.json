@@ -1,0 +1,23 @@
+{
+  "Booking": {
+    "title": "Reservar Cita",
+    "selectService": "Seleccionar Servicio",
+    "selectAddons": "Adiciones Opcionales",
+    "selectProfessional": "Seleccionar Profesional",
+    "selectDate": "Seleccionar Fecha y Hora",
+    "yourDetails": "Tus Detalles",
+    "name": "Nombre Completo",
+    "email": "Correo Electrónico",
+    "phone": "Número de Teléfono",
+    "notes": "Notas de la Cita (Opcional)",
+    "back": "Atrás",
+    "next": "Siguiente",
+    "confirm": "Confirmar Reserva",
+    "bookingSuccess": "¡Cita Confirmada!",
+    "duration": "Duración",
+    "price": "Precio",
+    "total": "Total",
+    "noProfessionals": "No hay profesionales disponibles.",
+    "noTimeSlots": "No hay horarios disponibles."
+  }
+}

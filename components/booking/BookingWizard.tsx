@@ -3,6 +3,7 @@ import { useState, useEffect, useCallback, useMemo } from 'react';
 import { DayPicker } from 'react-day-picker';
 import 'react-day-picker/dist/style.css';
 import { format } from 'date-fns';
+import { useTranslations } from 'next-intl';
 import { scoreAndSortSlots, type ScoredSlot } from '@/lib/schedule-optimizer';
 import { getWizardThemeStyles } from './WizardThemeStyles';
 import { ServiceStep, StaffStep, DateTimeStep, DetailsStep } from './BookingWizardSteps';
@@ -15,6 +16,7 @@ interface Staff { id: string; name: string; workingHours: any; }
 interface BookedSlot { startTime: string; endTime: string; staffId: string; }
 
 export default function BookingWizard({ shopId, themeColor, secondaryColor, templateType, currency, shopType = 'PHYSICAL' }: { shopId: string, themeColor?: string, secondaryColor?: string, templateType?: string, currency: string, shopType?: string }) {
+ const t = useTranslations('Booking');
  const [step, setStep] = useState(1);
  const [loading, setLoading] = useState(true);
  const [services, setServices] = useState<Service[]>([]);
@@ -312,14 +314,14 @@ export default function BookingWizard({ shopId, themeColor, secondaryColor, temp
  <div className="flex items-center space-x-2">
  {step > 1 && (
  <button onClick={handleBack} className="text-crm-muted hover:text-crm-text">
- &larr; Back
+ &larr; {t('back')}
  </button>
  )}
  <h2 className={tStyles.title}>
- {step === 1 && 'Select Service'}
- {step === 2 && 'Select Professional'}
- {step === 3 && 'Choose Date & Time'}
- {step === 4 && 'Your Details'}
+ {step === 1 && t('selectService')}
+ {step === 2 && t('selectProfessional')}
+ {step === 3 && t('selectDate')}
+ {step === 4 && t('yourDetails')}
  </h2>
  </div>
  <div className="flex items-center gap-1 mr-4">
@@ -420,7 +422,7 @@ export default function BookingWizard({ shopId, themeColor, secondaryColor, temp
  onClick={handleNext}
  className={`${tStyles.btnPrimary} disabled:opacity-50 disabled:cursor-not-allowed`} style={{ backgroundColor: themeColor || '#111827', color: secondaryColor || undefined }}
  >
- Continue to Details
+ {t('next')}
  </button>
  ) : (
  <button
@@ -430,9 +432,9 @@ export default function BookingWizard({ shopId, themeColor, secondaryColor, temp
  >
  {isBooking ? ( <>
  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
- Confirming...
+ {t('confirm')}...
  </>
- ) : 'Confirm Booking'}
+ ) : t('confirm')}
  </button>
  )}
  </div>

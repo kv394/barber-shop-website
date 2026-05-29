@@ -71,18 +71,14 @@ export default function Home() {
  }, [userProfile]);
 
  useEffect(() => {
- if (!isLoading && userProfile) {
- if (userProfile.role === 'SITE_ADMIN') {
- router.push('/siteadmin');
- } else if (userProfile.role === 'SHOP_ADMIN' || userProfile.role === 'STAFF') {
- if (userProfile.shopId) {
- router.push(`/shop/${userProfile.shopId}`);
- }
- } else if (userProfile.role === 'CLIENT' && userProfile.shop?.slug) {
- router.push(`/shops/${userProfile.shop.slug}`);
- }
- }
- }, [isLoading, userProfile, router]);
+    if (!isLoading && userProfile) {
+      if (userProfile.role === 'SITE_ADMIN') {
+        router.push('/siteadmin');
+      }
+      // Note: CLIENT, SHOP_ADMIN, and STAFF roles are redirected on the server in app/page.tsx
+      // ATTENDANCE_KIOSK is rendered below via <KioskMode />
+    }
+  }, [isLoading, userProfile, router]);
 
  if (isLoading) {
  return (

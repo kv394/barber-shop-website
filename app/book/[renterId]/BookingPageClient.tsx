@@ -318,10 +318,10 @@ export default function BookingPageClient({
  </div>
  )}
 
- <div className="flex justify-center mt-4 mb-2">
+ <div className="flex justify-center mt-4">
     <Turnstile 
       siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || ''} 
-      onSuccess={(token) => setTurnstileToken(token)}
+      onSuccess={(token: string) => setTurnstileToken(token)}
       options={{ theme: 'dark' }}
     />
   </div>

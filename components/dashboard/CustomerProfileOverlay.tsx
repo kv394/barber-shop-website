@@ -1,120 +1,22 @@
 "use client";
 import React, { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
-
-// Icons
-const GripVertical = () => (
- <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-crm-muted">
- <circle cx="9" cy="12" r="1"></circle>
- <circle cx="9" cy="5" r="1"></circle>
- <circle cx="9" cy="19" r="1"></circle>
- <circle cx="15" cy="12" r="1"></circle>
- <circle cx="15" cy="5" r="1"></circle>
- <circle cx="15" cy="19" r="1"></circle>
- </svg>
-);
-
-const ExternalLink = () => (
- <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-crm-muted hover:text-crm-muted cursor-pointer">
- <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
- <polyline points="15 3 21 3 21 9"></polyline>
- <line x1="10" y1="14" x2="21" y2="3"></line>
- </svg>
-);
-
-const XIcon = ({ onClick }: { onClick?: () => void }) => (
- <svg onClick={onClick} width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-crm-muted hover:text-crm-muted cursor-pointer">
- <line x1="18" y1="6" x2="6" y2="18"></line>
- <line x1="6" y1="6" x2="18" y2="18"></line>
- </svg>
-);
-
-const BuildingIcon = () => (
- <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-crm-muted">
- <rect x="4" y="2" width="16" height="20" rx="2" ry="2"></rect>
- <path d="M9 22v-4h6v4"></path>
- <path d="M8 6h.01"></path>
- <path d="M16 6h.01"></path>
- <path d="M12 6h.01"></path>
- <path d="M12 10h.01"></path>
- <path d="M12 14h.01"></path>
- <path d="M16 10h.01"></path>
- <path d="M16 14h.01"></path>
- <path d="M8 10h.01"></path>
- <path d="M8 14h.01"></path>
- </svg>
-);
-
-const MailIcon = () => (
- <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-crm-muted">
- <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
- <polyline points="22,6 12,13 2,6"></polyline>
- </svg>
-);
-
-const PhoneIcon = () => (
- <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-crm-muted">
- <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
- </svg>
-);
-
-const CalendarIcon = () => (
- <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
- <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
- <line x1="16" y1="2" x2="16" y2="6"></line>
- <line x1="8" y1="2" x2="8" y2="6"></line>
- <line x1="3" y1="10" x2="21" y2="10"></line>
- </svg>
-);
-
-const Edit2Icon = () => (
- <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
- <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path>
- </svg>
-);
-
-const PaperclipIcon = () => (
- <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-crm-muted">
- <path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"></path>
- </svg>
-);
-
-const MicIcon = () => (
- <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-crm-muted">
- <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
- <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
- <line x1="12" y1="19" x2="12" y2="23"></line>
- <line x1="8" y1="23" x2="16" y2="23"></line>
- </svg>
-);
-
-const AtIcon = () => (
- <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-crm-muted">
- <circle cx="12" cy="12" r="4"></circle>
- <path d="M16 8v5a3 3 0 0 0 6 0v-1a10 10 0 1 0-3.92 7.94"></path>
- </svg>
-);
-
-const SlidersIcon = () => (
- <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-crm-muted">
- <line x1="4" y1="21" x2="4" y2="14"></line>
- <line x1="4" y1="10" x2="4" y2="3"></line>
- <line x1="12" y1="21" x2="12" y2="12"></line>
- <line x1="12" y1="8" x2="12" y2="3"></line>
- <line x1="20" y1="21" x2="20" y2="16"></line>
- <line x1="20" y1="12" x2="20" y2="3"></line>
- <line x1="1" y1="14" x2="7" y2="14"></line>
- <line x1="9" y1="8" x2="15" y2="8"></line>
- <line x1="17" y1="16" x2="23" y2="16"></line>
- </svg>
-);
-
-const SendIcon = () => (
- <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-white">
- <line x1="22" y1="2" x2="11" y2="13"></line>
- <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
- </svg>
-);
+import { 
+  GripVertical, 
+  ExternalLink, 
+  X, 
+  Building, 
+  Mail, 
+  Phone, 
+  Calendar, 
+  Edit2, 
+  Paperclip, 
+  Mic, 
+  AtSign, 
+  Sliders, 
+  Send,
+  MoreHorizontal
+} from 'lucide-react';
 
 interface CustomerProfileOverlayProps {
  isOpen: boolean;
@@ -126,8 +28,8 @@ interface CustomerProfileOverlayProps {
 export default function CustomerProfileOverlay({ 
  isOpen, 
  onClose,
- customerName = "Emma Johansson",
- customerEmail = "emma@nordicsoft.io"
+ customerName,
+ customerEmail
 }: CustomerProfileOverlayProps) {
  const [mounted, setMounted] = useState(false);
  const [isRendered, setIsRendered] = useState(false);
@@ -155,43 +57,43 @@ export default function CustomerProfileOverlay({
  {/* Header */}
  <div className="flex items-center justify-between px-4 py-3 border-b border-crm-border">
  <div className="flex items-center gap-2 text-crm-muted">
- <GripVertical />
+ <GripVertical size={14} />
  <span className="text-[13px] font-semibold text-crm-text">Customer Profile</span>
  </div>
  <div className="flex items-center gap-3">
- <ExternalLink />
- <XIcon onClick={onClose} />
+ <ExternalLink size={14} className="text-crm-muted hover:text-crm-text cursor-pointer" />
+ <X size={14} className="text-crm-muted hover:text-crm-text cursor-pointer" onClick={onClose} />
  </div>
  </div>
 
  <div className="flex-1 overflow-y-auto scrollbar-hide flex flex-col">
  {/* Profile Info */}
  <div className="flex flex-col items-center pt-6 px-6 pb-4">
- <img src="https://i.pravatar.cc/150?u=emma" alt={customerName} className="w-16 h-16 rounded-full border-2 border-white shadow-sm mb-3" />
- <h2 className="text-lg font-bold text-crm-text leading-tight mb-3">{customerName}</h2>
+ <img src={`https://api.dicebear.com/7.x/initials/svg?seed=${customerName || 'Client'}`} alt={customerName || 'Client'} className="w-16 h-16 rounded-full border-2 border-white shadow-sm mb-3" />
+ <h2 className="text-lg font-bold text-crm-text leading-tight mb-3">{customerName || 'Unknown Client'}</h2>
  
  <div className="flex flex-col gap-2 w-full ml-10">
  <div className="flex items-center gap-2 text-[13px] text-crm-muted">
- <BuildingIcon />
- <span>Nordic Soft AB</span>
+ <Building size={12} className="text-crm-muted" />
+ <span>Client</span>
  </div>
  <div className="flex items-center gap-2 text-[13px] text-crm-muted">
- <MailIcon />
- <span className="truncate">{customerEmail}</span>
+ <Mail size={12} className="text-crm-muted" />
+ <span className="truncate">{customerEmail || 'No email provided'}</span>
  </div>
  <div className="flex items-center gap-2 text-[13px] text-crm-muted">
- <PhoneIcon />
- <span>+1 (202) 555-0198</span>
+ <Phone size={12} className="text-crm-muted" />
+ <span>No phone provided</span>
  </div>
  </div>
 
  <div className="flex items-center gap-3 w-full mt-5">
  <button className="flex-1 bg-orange-500 hover:bg-orange-600 text-white py-2 rounded-lg text-[13px] font-medium transition-colors shadow-sm flex items-center justify-center gap-2">
- <CalendarIcon />
+ <Calendar size={14} />
  Schedule a Call
  </button>
  <button className="flex-1 bg-crm-bg hover:bg-crm-surface text-crm-text border border-crm-border py-2 rounded-lg text-[13px] font-medium transition-colors flex items-center justify-center gap-2">
- <Edit2Icon />
+ <Edit2 size={14} />
  Edit Profile
  </button>
  </div>
@@ -234,7 +136,7 @@ export default function CustomerProfileOverlay({
  </div>
  </div>
  <div className="ml-auto text-gray-300">
- <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="1"></circle><circle cx="19" cy="12" r="1"></circle><circle cx="5" cy="12" r="1"></circle></svg>
+ <MoreHorizontal size={14} />
  </div>
  </div>
 
@@ -256,7 +158,7 @@ export default function CustomerProfileOverlay({
  </div>
  </div>
  <div className="ml-auto text-gray-300">
- <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="1"></circle><circle cx="19" cy="12" r="1"></circle><circle cx="5" cy="12" r="1"></circle></svg>
+ <MoreHorizontal size={14} />
  </div>
  </div>
  </div>
@@ -272,13 +174,13 @@ export default function CustomerProfileOverlay({
  />
  <div className="flex items-center justify-between mt-2">
  <div className="flex items-center gap-2.5 px-1">
- <PaperclipIcon />
- <MicIcon />
- <AtIcon />
- <SlidersIcon />
+ <Paperclip size={14} className="text-crm-muted" />
+ <Mic size={14} className="text-crm-muted" />
+ <AtSign size={14} className="text-crm-muted" />
+ <Sliders size={14} className="text-crm-muted" />
  </div>
  <button className="bg-orange-500 hover:bg-orange-600 w-7 h-7 rounded-lg flex items-center justify-center transition-colors">
- <SendIcon />
+ <Send size={14} className="text-white" />
  </button>
  </div>
  </div>

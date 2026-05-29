@@ -314,7 +314,7 @@ export function DetailsStep({
       <div className="flex justify-center mt-6">
         <Turnstile 
           siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || ''} 
-          onSuccess={(token) => setTurnstileToken(token)}
+          onSuccess={(token: string) => setTurnstileToken(token)}
           options={{ theme: templateType === 'editorial' ? 'light' : 'dark' }}
         />
       </div>
