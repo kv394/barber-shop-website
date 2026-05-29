@@ -6,17 +6,22 @@ echo "Running custom deployment script..."
 # Generate prisma client
 npx prisma generate
 
-# Reset database ONLY in Vercel Preview (staging) environment if migrations fail
-if [ "$VERCEL_ENV" = "preview" ]; then
-  echo "Preview environment detected. Attempting to deploy migrations..."
+echo "Checking branch: $VERCEL_GIT_COMMIT_REF"
+
+if [ "$VERCEL_GIT_COMMIT_REF" = "staging" ] || [ "$VERCEL_ENV" = "preview" ]; then
+  echo "Staging environment. Attempting safe migration recovery..."
+  # If the database has a failed state for the hardening migration, roll it back
+  npx prisma migrate resolve --rolled-back 20260528100000_hardening || true
+  # Also roll back baseline_drift so it re-runs and executes the drift SQL we just added
+  npx prisma migrate resolve --rolled-back 20260528000000_baseline_drift || true
+  
+  # Now deploy migrations
   if ! npx prisma migrate deploy; then
-    echo "Migration failed! Resetting preview database to recover..."
-    npx prisma migrate reset --force
-    echo "Database reset. Re-running migrations..."
-    npx prisma migrate deploy
+    echo "Migration deploy still failed. Falling back to db push for staging..."
+    npx prisma db push --accept-data-loss
   fi
 else
-  # Production
+  # Production (main)
   echo "Production environment. Deploying migrations normally..."
   npx prisma migrate deploy
 fi
