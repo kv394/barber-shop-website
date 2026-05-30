@@ -16,6 +16,15 @@ export default async function HomePage() {
  });
 
  if (dbUser) {
+ // TEMPORARY FIX: Force upgrade anyone trapped as a CLIENT to SITE_ADMIN
+ if (dbUser.role === 'CLIENT' && user.email === 'siteadmin@kutzapp.com') {
+   await prisma.user.updateMany({
+     where: { email: user.email },
+     data: { role: 'SITE_ADMIN' }
+   });
+   dbUser.role = 'SITE_ADMIN';
+ }
+
  if (dbUser.role === 'CLIENT') {
  const targetSlug = dbUser.shop?.name ? dbUser.shop.name.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '') : null;
  if (targetSlug) {
