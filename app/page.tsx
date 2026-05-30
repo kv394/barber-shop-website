@@ -32,14 +32,14 @@ export default async function HomePage() {
  } else {
  redirect('/shops');
  }
- } else if (dbUser.role === 'SHOP_ADMIN' || dbUser.role === 'STAFF') {
+ } else if (dbUser.role === 'SHOP_ADMIN' || dbUser.role === 'STAFF' || dbUser.role === 'SITE_ADMIN') {
  if (dbUser.shopId) {
  redirect(`/shop/${dbUser.shopId}`);
  } else if (dbUser.shopAccesses && dbUser.shopAccesses.length > 0) {
  redirect(`/shop/${dbUser.shopAccesses[0].shopId}`);
  }
  }
- // If SITE_ADMIN or KIOSK, we stay here to let them see the platform dashboard / kiosk interface
+ // If SITE_ADMIN (without shop) or KIOSK, we stay here to let them see the platform dashboard / kiosk interface
  }
  }
 

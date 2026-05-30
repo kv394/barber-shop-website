@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation';
 export default function SecondarySidebar({ shopId, userRole, shopType }: { shopId: string, userRole: string, shopType?: string }) {
  const pathname = usePathname();
  const isAll = shopId === 'all';
- const isShopAdmin = userRole === 'SHOP_ADMIN';
+ const isShopAdmin = userRole === 'SHOP_ADMIN' || userRole === 'SITE_ADMIN';
 
  if (!pathname) return null;
 

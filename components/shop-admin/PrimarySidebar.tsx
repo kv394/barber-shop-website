@@ -14,7 +14,7 @@ export default function PrimarySidebar({
 }: any) {
  const pathname = usePathname();
  const isSiteAdmin = userRole === 'SITE_ADMIN';
- const isShopAdmin = userRole === 'SHOP_ADMIN';
+ const isShopAdmin = userRole === 'SHOP_ADMIN' || userRole === 'SITE_ADMIN';
  const isBoothRenter = userRole === 'BOOTH_RENTER';
 
  // Common Icons reused
@@ -84,6 +84,12 @@ export default function PrimarySidebar({
  {isBoothRenter && navLink(`/shop/${shopId}/my-booking-link`, 'My Booking Link', icons.idCard, () => pathname.startsWith(`/shop/${shopId}/my-booking-link`))}
  {navLink(`/shop/${shopId}/profile`, 'Profile', icons.user, () => pathname.startsWith(`/shop/${shopId}/profile`))}
  </>
+ )}
+ 
+ {isSiteAdmin && (
+ <div className="mt-auto w-full pt-4 border-t border-white/20">
+ {navLink(`/siteadmin`, 'Platform', icons.chart, () => false)}
+ </div>
  )}
  </nav>
 
