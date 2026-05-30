@@ -5,6 +5,7 @@ import Link from 'next/link';
 import DeleteShopButton from '@/components/shop-admin/DeleteShopButton';
 import UsageAnalysisModal from '@/components/siteadmin/UsageAnalysisModal';
 import AssignTemplateModal from '@/components/siteadmin/AssignTemplateModal';
+import PremiumFeaturesModal from '@/components/siteadmin/PremiumFeaturesModal';
 
 type ShopData = {
  id: string;
@@ -22,6 +23,7 @@ export default function SiteAdminShopsPage() {
  const [loading, setLoading] = useState(true);
  const [analyzingShop, setAnalyzingShop] = useState<{ id: string, name: string } | null>(null);
  const [assigningTemplateShop, setAssigningTemplateShop] = useState<{ id: string, name: string, template: string } | null>(null);
+ const [managingFeaturesShop, setManagingFeaturesShop] = useState<{ id: string, name: string } | null>(null);
 
  const fetchShops = async () => {
  try {
@@ -141,6 +143,12 @@ export default function SiteAdminShopsPage() {
  >
  📊 Usage
  </button>
+ <button
+ onClick={() => setManagingFeaturesShop({ id: shop.id, name: shop.name })}
+ className="bg-amber-500/10 text-amber-500 border border-amber-500/20 px-3 py-1.5 rounded-lg text-[11px] font-bold hover:bg-amber-500/20 transition-colors"
+ >
+ 💎 Features
+ </button>
  <Link
  href={`/shop/${shop.id}/settings/team`}
  className="bg-crm-primary text-white px-3 py-1.5 rounded-lg text-[11px] font-bold hover:bg-crm-surface hover:text-crm-primary border border-transparent hover:border-crm-primary/30 transition-colors"
@@ -187,6 +195,18 @@ export default function SiteAdminShopsPage() {
  onClose={() => setAssigningTemplateShop(null)}
  onSuccess={() => {
  setAssigningTemplateShop(null);
+ fetchShops();
+ }}
+ />
+ )}
+
+ {managingFeaturesShop && (
+ <PremiumFeaturesModal
+ shopId={managingFeaturesShop.id}
+ shopName={managingFeaturesShop.name}
+ onClose={() => setManagingFeaturesShop(null)}
+ onSuccess={() => {
+ setManagingFeaturesShop(null);
  fetchShops();
  }}
  />

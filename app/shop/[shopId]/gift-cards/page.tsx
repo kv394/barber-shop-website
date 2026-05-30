@@ -3,6 +3,7 @@ import { createClient } from '@/utils/supabase/server';
 import { getShopLayoutData } from '@/lib/shop-data';
 import ShopAdminLayout from '@/components/shop-admin/ShopAdminLayout';
 import GiftCardManager from '@/components/marketing/GiftCardManager';
+import PremiumFeatureGate from '@/components/ui/PremiumFeatureGate';
 
 export const dynamic = 'force-dynamic';
 
@@ -43,7 +44,15 @@ export default async function GiftCardsPage({ params }: { params: Promise<{ shop
  shopId={shopId}
  userRole={data.userRole}
  >
- <GiftCardManager shopId={shopId} currency={data.shop.currency} />
+   <PremiumFeatureGate
+     shopId={shopId}
+     featureId="giftCards"
+     title="Gift Cards"
+     description="Sell digital gift cards online to instantly generate cash flow and attract new clients."
+     price="$10/mo"
+   >
+     <GiftCardManager shopId={shopId} currency={data.shop.currency} />
+   </PremiumFeatureGate>
  </ShopAdminLayout>
  );
 }

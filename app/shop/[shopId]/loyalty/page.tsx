@@ -3,6 +3,7 @@ import { createClient } from '@/utils/supabase/server';
 import { getShopLayoutData } from '@/lib/shop-data';
 import ShopAdminLayout from '@/components/shop-admin/ShopAdminLayout';
 import LoyaltyDashboard from '@/components/marketing/LoyaltyDashboard';
+import PremiumFeatureGate from '@/components/ui/PremiumFeatureGate';
 
 export const dynamic = "force-dynamic";
 
@@ -34,8 +35,15 @@ export default async function LoyaltyPage({ params }: { params: Promise<{ shopId
  shopId={shopId}
  userRole={data.userRole}
  >
- <LoyaltyDashboard shopId={shopId} currency={data.shop.currency} />
+ <PremiumFeatureGate
+   shopId={shopId}
+   featureId="loyalty"
+   title="Loyalty Program"
+   description="Reward your repeat clients with an automated point-based loyalty system and increase retention."
+   price="$15/mo"
+ >
+   <LoyaltyDashboard shopId={shopId} currency={data.shop.currency} />
+ </PremiumFeatureGate>
  </ShopAdminLayout>
  );
 }
-

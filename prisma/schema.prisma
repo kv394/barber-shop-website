@@ -47,6 +47,7 @@ model Shop {
   description                String?
   template                   String               @default("modern")
   customization              Json?
+  premiumFeatures            Json?                @default("{}")
   createdAt                  DateTime             @default(now())
   updatedAt                  DateTime             @updatedAt
   shopType                   ShopType             @default(PHYSICAL)

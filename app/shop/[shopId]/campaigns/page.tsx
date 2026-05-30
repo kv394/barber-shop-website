@@ -3,6 +3,7 @@ import { createClient } from '@/utils/supabase/server';
 import { getShopLayoutData } from '@/lib/shop-data';
 import ShopAdminLayout from '@/components/shop-admin/ShopAdminLayout';
 import CampaignBuilder from '@/components/marketing/CampaignBuilder';
+import PremiumFeatureGate from '@/components/ui/PremiumFeatureGate';
 
 export const dynamic = "force-dynamic";
 
@@ -34,8 +35,15 @@ export default async function CampaignsPage({ params }: { params: Promise<{ shop
  shopId={shopId}
  userRole={data.userRole}
  >
- <CampaignBuilder shopId={shopId} />
+   <PremiumFeatureGate
+     shopId={shopId}
+     featureId="campaigns"
+     title="Marketing Campaigns"
+     description="Send targeted email and SMS campaigns to re-engage past clients and increase bookings."
+     price="$20/mo"
+   >
+     <CampaignBuilder shopId={shopId} />
+   </PremiumFeatureGate>
  </ShopAdminLayout>
  );
 }
-

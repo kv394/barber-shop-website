@@ -29,6 +29,7 @@ export async function GET() {
  template: true,
  createdAt: true,
  aiTokens: true,
+ premiumFeatures: true,
  _count: {
  select: {
  users: true,

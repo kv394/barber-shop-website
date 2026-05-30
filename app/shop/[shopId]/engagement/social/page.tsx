@@ -3,6 +3,7 @@ import { createClient } from '@/utils/supabase/server';
 import { getShopLayoutData } from '@/lib/shop-data';
 import { prisma } from '@/lib/prisma';
 import ShopAdminLayout from '@/components/shop-admin/ShopAdminLayout';
+import PremiumFeatureGate from '@/components/ui/PremiumFeatureGate';
 import SocialMediaClient from './SocialMediaClient';
 
 export const dynamic = 'force-dynamic';
@@ -30,13 +31,21 @@ export default async function AISocialMediaPage({ params }: { params: Promise<{ 
 
   return (
     <ShopAdminLayout shopName={data.shop.name} shopSlug={data.shopSlug} pageTitle="AI Social Media Manager" shopId={shopId} userRole={data.userRole}>
-      <SocialMediaClient 
-        shopId={shopId} 
-        shopName={shopDetails?.name || ''}
-        shopLocation={shopDetails?.baseLocation || ''}
-        initialImages={portfolioImages} 
-        initialTokens={shopDetails?.aiTokens || 0}
-      />
+      <PremiumFeatureGate
+        shopId={shopId}
+        featureId="aiSocial"
+        title="AI Social Media Manager"
+        description="Auto-generate engaging, hashtag-rich Instagram and TikTok posts directly from your portfolio images using AI."
+        price="$25/mo"
+      >
+        <SocialMediaClient 
+          shopId={shopId} 
+          shopName={shopDetails?.name || ''}
+          shopLocation={shopDetails?.baseLocation || ''}
+          initialImages={portfolioImages} 
+          initialTokens={shopDetails?.aiTokens || 0}
+        />
+      </PremiumFeatureGate>
     </ShopAdminLayout>
   );
 }

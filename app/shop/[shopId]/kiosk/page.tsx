@@ -2,6 +2,7 @@ import { redirect, notFound } from 'next/navigation';
 import { createClient } from '@/utils/supabase/server';
 import { getShopLayoutData } from '@/lib/shop-data';
 import ShopAdminLayout from '@/components/shop-admin/ShopAdminLayout';
+import PremiumFeatureGate from '@/components/ui/PremiumFeatureGate';
 
 export const dynamic = 'force-dynamic';
 
@@ -17,8 +18,15 @@ export default async function FrontDeskKioskPage({ params }: { params: Promise<{
 
   return (
     <ShopAdminLayout shopName={data.shop.name} shopSlug={data.shopSlug} pageTitle="Front Desk Kiosk" shopId={shopId} userRole={data.userRole}>
-      <div className="max-w-3xl mx-auto space-y-6">
-        <div className="bg-crm-surface border border-crm-border shadow-sm rounded-xl p-8 text-center space-y-6">
+      <PremiumFeatureGate 
+        shopId={shopId} 
+        featureId="kiosk" 
+        title="Front Desk Kiosk" 
+        description="Provide a seamless self-service check-in and waitlist experience for your walk-in clients." 
+        price="$15/mo"
+      >
+        <div className="max-w-3xl mx-auto space-y-6">
+          <div className="bg-crm-surface border border-crm-border shadow-sm rounded-xl p-8 text-center space-y-6">
           <div className="w-20 h-20 bg-brand-indigo/10 rounded-full flex items-center justify-center mx-auto text-4xl">
             🖥️
           </div>
@@ -53,6 +61,7 @@ export default async function FrontDeskKioskPage({ params }: { params: Promise<{
           </div>
         </div>
       </div>
+      </PremiumFeatureGate>
     </ShopAdminLayout>
   );
 }
