@@ -425,7 +425,7 @@ export default async function TeamDashboardPage({ params, searchParams }: { para
  <p className="text-crm-muted text-[13px]">{staffMember.email}</p>
  </div>
  </div>
- <form action={removeUser} className="mt-auto" onSubmit={(e) => { if (!confirm('Are you sure you want to remove this team member from the shop? This cannot be undone.')) e.preventDefault(); }}>
+ <form action={removeUser} className="mt-auto">
  <input type="hidden" name="userId" value={staffMember.id} />
  <input type="hidden" name="shopId" value={shop.id} />
  <button type="submit" className="w-full text-[11px] text-red-700 bg-red-50 hover:bg-red-100 hover:text-red-800 py-2 rounded-lg transition-colors border border-red-200">
