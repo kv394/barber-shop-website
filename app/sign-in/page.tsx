@@ -63,8 +63,11 @@ export default async function SignInPage({
  });
 
  if (authError) {
- console.error('[LOGIN FAILED]', authError.code);
- return redirect(`/sign-in?error=${encodeURIComponent('Invalid email or password. Please try again.')}&redirect_url=${encodeURIComponent(redirectUrl)}`);
+ console.error('[LOGIN FAILED]', authError.code, authError.message);
+ const errorMessage = authError.message.includes('Email not confirmed') 
+   ? 'Please check your inbox and confirm your email address before signing in.'
+   : 'Invalid email or password. Please try again.';
+ return redirect(`/sign-in?error=${encodeURIComponent(errorMessage)}&redirect_url=${encodeURIComponent(redirectUrl)}`);
  }
 
 
