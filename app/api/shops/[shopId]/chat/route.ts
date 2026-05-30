@@ -17,11 +17,10 @@ export async function GET(
  try {
  const { shopId } = await params;
  const supabase = await createClient();
- const { data: { session } } = await supabase.auth.getSession();
-  const authUserSession = session?.user;
- let userId = authUserSession?.id;
- const authUserEmail = authUserSession?.email;
- if (!userId) return new Response('Unauthorized', { status: 401 });
+ const { data: { user: authUser } } = await supabase.auth.getUser();
+ if (!authUser) return new Response('Unauthorized', { status: 401 });
+ const userId = authUser.id;
+ const authUserEmail = authUser.email;
 
  const user = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
  if (!user || (user.shopId !== shopId && !(await prisma.shopAccess.findFirst({ where: { userId: user.id, shopId } })))) {
@@ -66,11 +65,10 @@ export async function POST(
  try {
  const { shopId } = await params;
  const supabase = await createClient();
- const { data: { session } } = await supabase.auth.getSession();
-  const authUserSession = session?.user;
- let userId = authUserSession?.id;
- const authUserEmail = authUserSession?.email;
- if (!userId) return new Response('Unauthorized', { status: 401 });
+ const { data: { user: authUser } } = await supabase.auth.getUser();
+ if (!authUser) return new Response('Unauthorized', { status: 401 });
+ const userId = authUser.id;
+ const authUserEmail = authUser.email;
 
  const user = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
  if (!user || (user.shopId !== shopId && !(await prisma.shopAccess.findFirst({ where: { userId: user.id, shopId } })))) {
@@ -221,7 +219,7 @@ ONLY use tools if the user role is SHOP_ADMIN or SITE_ADMIN.`;
  if (totalTokensUsed > 0) {
  await prisma.shop.update({
  where: { id: shopId },
- data: { aiTokens: { increment: totalTokensUsed } }
+ data: { aiTokens: { decrement: totalTokensUsed } }
  });
  }
  

@@ -16,15 +16,6 @@ export default async function HomePage() {
  });
 
  if (dbUser) {
- // TEMPORARY FIX: Force upgrade anyone trapped as a CLIENT to SITE_ADMIN
- if (dbUser.role === 'CLIENT' && user.email === 'siteadmin@kutzapp.com') {
-   await prisma.user.updateMany({
-     where: { email: user.email },
-     data: { role: 'SITE_ADMIN' }
-   });
-   dbUser.role = 'SITE_ADMIN';
- }
-
  if (dbUser.role === 'CLIENT') {
  const targetSlug = dbUser.shop?.name ? dbUser.shop.name.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '') : null;
  if (targetSlug) {
@@ -34,14 +25,14 @@ export default async function HomePage() {
  }
  } else if (dbUser.role === 'SITE_ADMIN') {
  redirect('/siteadmin');
- } else if (dbUser.role === 'SHOP_ADMIN' || dbUser.role === 'STAFF') {
+ } else if (dbUser.role === 'SHOP_ADMIN' || dbUser.role === 'STAFF' || dbUser.role === 'BOOTH_RENTER') {
  if (dbUser.shopId) {
  redirect(`/shop/${dbUser.shopId}`);
  } else if (dbUser.shopAccesses && dbUser.shopAccesses.length > 0) {
  redirect(`/shop/${dbUser.shopAccesses[0].shopId}`);
  }
  }
- // If SITE_ADMIN (without shop) or KIOSK, we stay here to let them see the platform dashboard / kiosk interface
+ // If ATTENDANCE_KIOSK or unassigned, we stay here to let them see the platform dashboard / kiosk interface
  }
  }
 

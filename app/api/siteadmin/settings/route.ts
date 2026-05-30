@@ -9,8 +9,7 @@ export const dynamic = 'force-dynamic';
 export async function GET() {
  try {
  const supabase = await createClient();
- const { data: { session } } = await supabase.auth.getSession();
-  const user = session?.user;
+ const { data: { user } } = await supabase.auth.getUser();
  if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
  const dbUser = await prisma.user.findUnique({ where: { email: user.email! } });
@@ -40,8 +39,7 @@ export async function GET() {
 export async function PATCH(request: Request) {
  try {
  const supabase = await createClient();
- const { data: { session } } = await supabase.auth.getSession();
-  const user = session?.user;
+ const { data: { user } } = await supabase.auth.getUser();
  if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
  const dbUser = await prisma.user.findUnique({ where: { email: user.email! } });

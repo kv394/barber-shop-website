@@ -143,6 +143,6 @@ Return strictly a JSON object with these keys. If a key is not mentioned, omit i
  });
  } catch (err: any) {
  logger.error('Global Voice Note Error:', err);
- return NextResponse.json({ error: err.message }, { status: 500 });
+ return NextResponse.json({ error: 'Failed to process voice note. Please try again.' }, { status: 500 });
  }
 }

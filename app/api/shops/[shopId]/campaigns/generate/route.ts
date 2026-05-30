@@ -148,7 +148,7 @@ Only include smsBody for SMS/BOTH channels. Only include emailSubject/emailBody 
  } catch (err: any) {
  logger.error('Campaign AI Generation Error:', err);
  return NextResponse.json(
- { error: err.message || 'Failed to generate campaign copy' },
+ { error: 'Failed to generate campaign copy. Please try again.' },
  { status: 500 }
  );
  }

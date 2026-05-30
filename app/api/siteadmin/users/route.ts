@@ -11,11 +11,10 @@ const VALID_ROLES = ['SITE_ADMIN', 'SHOP_ADMIN', 'STAFF', 'CLIENT', 'ATTENDANCE_
  */
 async function requireSiteAdmin() {
  const supabase = await createClient();
- const { data: { session } } = await supabase.auth.getSession();
-  const authUserSession = session?.user;
- let userId = authUserSession?.id;
- const authUserEmail = authUserSession?.email;
- if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+ const { data: { user: authUser } } = await supabase.auth.getUser();
+ if (!authUser) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+ const userId = authUser.id;
+ const authUserEmail = authUser.email;
 
  const user = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] }, select: { id: true, role: true } });
  if (!user || user.role !== 'SITE_ADMIN') {
