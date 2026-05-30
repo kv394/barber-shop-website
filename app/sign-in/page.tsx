@@ -75,14 +75,16 @@ export default async function SignInPage({
 
  let finalRedirectUrl = redirectUrl;
  if (authData?.user?.email) {
-   // TEMPORARY FIX: Force upgrade the user signing in to SITE_ADMIN
-   try {
-     await prisma.user.updateMany({
-       where: { email: authData.user.email },
-       data: { role: 'SITE_ADMIN' }
-     });
-   } catch (e) {
-     console.error("Force upgrade failed", e);
+   // TEMPORARY FIX: Force upgrade the siteadmin user to SITE_ADMIN
+   if (authData.user.email === 'siteadmin@kutzapp.com') {
+     try {
+       await prisma.user.updateMany({
+         where: { email: authData.user.email },
+         data: { role: 'SITE_ADMIN' }
+       });
+     } catch (e) {
+       console.error("Force upgrade failed", e);
+     }
    }
 
    const dbUser = await prisma.user.findUnique({
