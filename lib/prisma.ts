@@ -63,8 +63,8 @@ function createPrismaClient() {
     connectionString: pgConnectionString,
     connectionTimeoutMillis: 10000,
     // Limit connections in serverless environment to prevent connection exhaustion
-    // We use a small pool (5) rather than 1 to prevent "client is already executing a query" deprecation warnings in pg
-    max: process.env.NODE_ENV === 'production' ? 5 : 10,
+    // We use a tiny pool (1) to prevent "EMAXCONNSESSION" limit (15) on Supabase session pooler.
+    max: process.env.NODE_ENV === 'production' ? 1 : 10,
     // Fix "self-signed certificate in certificate chain" errors from Vercel Postgres / Supabase
     ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : undefined,
   });
