@@ -307,14 +307,6 @@ export default async function ShopDashboardPage({ params }: { params: Promise<{ 
  <AIFinderFeeStats shopId={shopId} />
  )}
  
- {isShopAdmin && (
- <PremiumGlassCard className="flex items-center justify-between" accentColor="cyan-500">
- <div>
- <p className="text-crm-muted text-[10px] uppercase tracking-widest font-black mb-1">System Identifier</p>
- <p className="text-crm-text font-mono text-[12px] font-bold select-all bg-black/30 px-3 py-1.5 rounded-lg border border-white/5 inline-block">Shop ID: {shopId}</p>
- </div>
- </PremiumGlassCard>
- )}
  </div>
 
  </div>
