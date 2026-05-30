@@ -155,11 +155,6 @@ export default async function ShopDashboardPage({ params }: { params: Promise<{ 
  const { shopId } = await params;
  const { shop, userRole, canManageInventory, shopSlug, lowStockItems, todayStats, billingAlert, isClockedIn } = await getShopData(shopId, userId);
 
- // SITE_ADMIN is a site admin — redirect to team assignment page (they don't access shop operations)
- if (userRole === 'SITE_ADMIN') {
- return redirect(`/shop/${shopId}/settings/team`);
- }
-
  if (!shop) {
  return (
  <div className="h-[100dvh] overflow-y-auto overflow-x-hidden">
@@ -172,7 +167,7 @@ export default async function ShopDashboardPage({ params }: { params: Promise<{ 
  }
 
  const isSiteAdmin = userRole === 'SITE_ADMIN';
- const isShopAdmin = userRole === 'SHOP_ADMIN';
+ const isShopAdmin = userRole === 'SHOP_ADMIN' || userRole === 'SITE_ADMIN';
  const isStaff = userRole === 'STAFF';
  const isBoothRenter = userRole === 'BOOTH_RENTER';
  const isStaffLike = isStaff || isBoothRenter;
