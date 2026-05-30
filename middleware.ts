@@ -94,7 +94,7 @@ export async function middleware(req: NextRequest) {
   ];
   
   // Allow Vercel preview URLs (which have dynamic hashes) to act as the root domain automatically
-  const isVercelPreview = hostname.endsWith('.vercel.app') && (hostname.includes('barber-shop-website') || hostname.includes('kutz'));
+  const isVercelPreview = hostname.endsWith('.vercel.app') && (hostname.includes('barber-shop-website') || hostname.includes('kutz') || hostname.includes('barbersaas'));
   
   const shouldRewrite = !isApi && !isAdmin && !isStatic && !rootDomains.includes(hostname) && !isVercelPreview && !url.pathname.startsWith('/sites');
 
