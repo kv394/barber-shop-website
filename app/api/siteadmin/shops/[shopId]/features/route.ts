@@ -1,16 +1,15 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
-import { requireRole } from '@/lib/auth';
+import { requireShopRole } from '@/lib/auth';
 
 export async function PATCH(
   request: Request,
   { params }: { params: Promise<{ shopId: string }> }
 ) {
   try {
-    const authResult = await requireRole(['SITE_ADMIN']);
-    if (authResult instanceof NextResponse) return authResult;
-
     const { shopId } = await params;
+    const authResult = await requireShopRole(shopId, ['SITE_ADMIN']);
+    if (authResult instanceof NextResponse) return authResult;
     const { features } = await request.json();
 
     if (!features || typeof features !== 'object') {
