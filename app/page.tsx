@@ -32,7 +32,9 @@ export default async function HomePage() {
  } else {
  redirect('/shops');
  }
- } else if (dbUser.role === 'SHOP_ADMIN' || dbUser.role === 'STAFF' || dbUser.role === 'SITE_ADMIN') {
+ } else if (dbUser.role === 'SITE_ADMIN') {
+ redirect('/siteadmin');
+ } else if (dbUser.role === 'SHOP_ADMIN' || dbUser.role === 'STAFF') {
  if (dbUser.shopId) {
  redirect(`/shop/${dbUser.shopId}`);
  } else if (dbUser.shopAccesses && dbUser.shopAccesses.length > 0) {
