@@ -38,7 +38,7 @@ export default async function ShopRedirectPage() {
 
  if (dbUser?.role === 'SITE_ADMIN') {
  // If they are a Site Admin but not assigned to a shop, redirect to the main admin page.
- return redirect('/');
+ return redirect('/siteadmin');
  }
 
  // Fallback for users who are logged in but not associated with any shop.

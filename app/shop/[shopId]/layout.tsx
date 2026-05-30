@@ -70,20 +70,10 @@ export default async function ShopLayout({
  const isSiteAdmin = data.isSiteAdmin;
  const isStaff = data.userRole === 'STAFF' || data.userRole === 'BOOTH_RENTER';
 
- // SITE_ADMIN is a site admin — only allowed on the team assignment page
- if (isSiteAdmin) {
- const headersList = await headers();
- const pathname = headersList.get('x-pathname') || headersList.get('x-invoke-path') || '';
- if (pathname && !pathname.includes('/settings/team')) {
- return redirect(`/shop/${shopId}/settings/team`);
- }
- }
-
  return (
  <div className="flex h-[100dvh] overflow-hidden bg-crm-bg text-crm-text">
  {/* Persistent Left Sidebar */}
  {/* Persistent Left Sidebar (Dual Sidebar Layout) */}
- {!isSiteAdmin && (
  <div className="hidden md:flex h-full shadow-sm">
  <PrimarySidebar 
  shopId={shopId} 
@@ -99,7 +89,6 @@ export default async function ShopLayout({
  shopType={(data.shop as any).shopType}
  />
  </div>
- )}
 
  {/* Main Content Area */}
  <div className="flex-1 flex flex-col min-w-0 overflow-hidden relative">
@@ -116,7 +105,6 @@ export default async function ShopLayout({
  </main>
  </div>
 
- {!isSiteAdmin && (
  <ShopMobileBottomNav 
  shopId={shopId} 
  userRole={data.userRole} 
@@ -124,7 +112,6 @@ export default async function ShopLayout({
  accessibleShops={(data as any).accessibleShops}
  fallbackRedirect={fallbackRedirect}
  />
- )}
  
  <GlobalChatWidget shopId={shopId} currentUserId={userId} userRole={data.userRole} />
  </div>
