@@ -25,7 +25,8 @@ export async function GET(request: Request) {
  let isSiteAdmin = false;
  try {
  const supabase = await createClient();
- const { data: { session } } = await supabase.auth.getSession();
+ const { data: { user: _authUser } } = await supabase.auth.getUser();
+  const session = _authUser ? { user: _authUser } : null;
   const authUserSession = session?.user;
  let userId = authUserSession?.id;
  const authUserEmail = authUserSession?.email;
@@ -73,7 +74,8 @@ export async function POST(request: Request) {
 
  // HARDENING: Site Admins and Shop Admins can create shops.
  const supabase = await createClient();
- const { data: { session } } = await supabase.auth.getSession();
+ const { data: { user: _authUser } } = await supabase.auth.getUser();
+  const session = _authUser ? { user: _authUser } : null;
   const authUserSession = session?.user;
  let userId = authUserSession?.id;
  const authUserEmail = authUserSession?.email;

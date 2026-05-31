@@ -13,7 +13,8 @@ export async function POST(
  const { shopId, clientId } = await params;
     const tenantClient = await getTenantClient(shopId);
  const supabase = await createClient();
- const { data: { session } } = await supabase.auth.getSession();
+ const { data: { user: _authUser } } = await supabase.auth.getUser();
+  const session = _authUser ? { user: _authUser } : null;
   const authUserSession = session?.user;
  
  if (!authUserSession?.id) {

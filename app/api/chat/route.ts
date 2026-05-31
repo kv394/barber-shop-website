@@ -11,7 +11,8 @@ export async function POST(req: Request) {
 
  // Get session via Supabase server client
  const supabase = await createClient();
- const { data: { session } } = await supabase.auth.getSession();
+ const { data: { user: _authUser } } = await supabase.auth.getUser();
+  const session = _authUser ? { user: _authUser } : null;
  const userRole = role || session?.user?.app_metadata?.role || 'SHOP_STAFF';
 
  const result = await processMessage({ message, shopId, userRole });

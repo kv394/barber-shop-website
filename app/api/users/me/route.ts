@@ -5,7 +5,8 @@ import { prisma } from '@/lib/prisma';
 export async function GET() {
  try {
  const supabase = await createClient();
- const { data: { session } } = await supabase.auth.getSession();
+ const { data: { user: _authUser } } = await supabase.auth.getUser();
+  const session = _authUser ? { user: _authUser } : null;
   const user = session?.user;
 
  if (!user || !user.email) {

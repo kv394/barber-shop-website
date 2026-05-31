@@ -10,7 +10,8 @@ export const dynamic = 'force-dynamic';
  */
 export async function GET(request: Request) {
  const supabase = await createClient();
- const { data: { session } } = await supabase.auth.getSession();
+ const { data: { user: _authUser } } = await supabase.auth.getUser();
+  const session = _authUser ? { user: _authUser } : null;
   const authUserSession = session?.user;
  let userId = authUserSession?.id;
  const authUserEmail = authUserSession?.email;
