@@ -92,6 +92,17 @@ export default async function ShopLayout({
 
  {/* Main Content Area */}
  <div className="flex-1 flex flex-col min-w-0 overflow-hidden relative">
+        {/* Shop Admin Header */}
+        <header className="flex-none border-b border-white/5 bg-crm-card/50 backdrop-blur-sm flex items-center justify-between px-4 md:px-8 py-3 z-20">
+          <div className="flex items-center gap-2 text-sm text-crm-text/70">
+            <span>Shop ID:</span>
+            <code className="bg-white/5 px-2 py-1 rounded font-mono text-brand-indigo font-medium select-all">{shopId}</code>
+          </div>
+          <div className="flex items-center gap-4">
+            <SupabaseAuthButton />
+          </div>
+        </header>
+
  {/* Main Scrolling Area */}
  <main className="flex-1 overflow-y-auto bg-crm-bg relative p-4 md:p-8 pt-4 md:pt-8 pb-24 md:pb-8">
  <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-brand-indigo/5 via-crm-bg/20 to-crm-bg pointer-events-none"></div>
