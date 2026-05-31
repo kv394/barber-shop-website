@@ -48,7 +48,7 @@ BEGIN
           AND table_name NOT IN ('User', 'Shop', 'DynamicTemplate', 'SystemLog')
     LOOP
         EXECUTE format('
-            CREATE POLICY "tenant_isolation_policy" ON "%I"
+            CREATE POLICY "tenant_isolation_policy" ON %I
             FOR ALL
             USING (
                 "shopId" = current_setting(''app.current_shop_id'', true)
