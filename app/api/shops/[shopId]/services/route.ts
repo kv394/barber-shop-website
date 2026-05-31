@@ -193,6 +193,7 @@ export async function POST(
    imageUrl: z.string().url().max(500).nullable().optional().or(z.literal('')),
    addonIds: z.array(z.string()).optional(),
    isBookable: z.boolean().optional().default(true),
+   requiresVirtualConsultation: z.boolean().optional().default(false),
    resourceRequirements: z.array(z.any()).optional(),
    productUsages: z.array(z.any()).optional(),
  });
@@ -203,7 +204,7 @@ export async function POST(
    return NextResponse.json({ error: 'Invalid input', details: validation.error.format() }, { status: 400 });
  }
  const validatedData = validation.data;
- const { name, description, price: parsedPrice, duration: parsedDuration, processingTime: parsedProcessingTime, finishingTime: parsedFinishingTime, type, itemType, brand, bufferMinutes: parsedBuffer, imageUrl, addonIds, isBookable, resourceRequirements, productUsages } = validatedData;
+ const { name, description, price: parsedPrice, duration: parsedDuration, processingTime: parsedProcessingTime, finishingTime: parsedFinishingTime, type, itemType, brand, bufferMinutes: parsedBuffer, imageUrl, addonIds, isBookable, requiresVirtualConsultation, resourceRequirements, productUsages } = validatedData;
 
  const dataToCreate: any = {
  name: String(name).slice(0, 200),
@@ -213,6 +214,7 @@ export async function POST(
  processingTime: parsedProcessingTime,
  finishingTime: parsedFinishingTime,
  isBookable: isBookable ?? true,
+ requiresVirtualConsultation: requiresVirtualConsultation ?? false,
  type: type === 'INTERNAL' ? 'INTERNAL' : 'CUSTOMER',
  itemType: itemType ? String(itemType).slice(0, 100) : null,
  brand: brand ? String(brand).slice(0, 100) : null,

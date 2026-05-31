@@ -11,7 +11,7 @@ import { fmtPrice } from '@/lib/formatters';
 
 // Steps: 1: Service, 2: Staff, 3: DateTime, 4: Details
 
-interface Service { id: string; name: string; price: number; duration: number; }
+interface Service { id: string; name: string; price: number; duration: number; requiresVirtualConsultation?: boolean; }
 interface Staff { id: string; name: string; workingHours: any; }
 interface BookedSlot { startTime: string; endTime: string; staffId: string; }
 
@@ -146,7 +146,7 @@ export default function BookingWizard({ shopId, themeColor, secondaryColor, temp
  return { open: '09:00', close: '17:00' };
  }, [selectedDate, shopHours]);
 
- const totalDuration = selectedService?.duration || 30;
+ const totalDuration = selectedService?.requiresVirtualConsultation ? 15 : (selectedService?.duration || 30);
 
  const isStaffFreeAt = useCallback((staffId: string, timeStr: string) => {
  const [h, m] = timeStr.split(':').map(Number);
@@ -292,7 +292,7 @@ export default function BookingWizard({ shopId, themeColor, secondaryColor, temp
  <div className="flex flex-col items-center justify-center h-full w-full p-12 bg-crm-surface text-center">
  <div className="text-6xl mb-4">🎉</div>
  <h2 className="text-2xl font-bold text-crm-text mb-2">Booking Confirmed!</h2>
- <p className="text-crm-muted mb-6">Your appointment for {selectedService?.name} has been scheduled.</p>
+ <p className="text-crm-muted mb-6">Your appointment for {(selectedService?.requiresVirtualConsultation ? "Virtual Consultation: " + selectedService?.name : selectedService?.name)} has been scheduled.</p>
  {calendarUrl && (
  <a
  href={calendarUrl}

@@ -22,6 +22,7 @@ interface Service {
  duration: number;
  type: 'CUSTOMER' | 'INTERNAL';
  isBookable: boolean;
+ requiresVirtualConsultation: boolean;
  imageUrl: string | null;
  addons?: ServiceAddon[];
  resourceRequirements?: { id: string, resourceType: string, quantity: number }[];
@@ -50,6 +51,7 @@ export function ServiceManagement({ shopId, currency }: ServiceManagementProps) 
  type: 'CUSTOMER' as 'CUSTOMER' | 'INTERNAL',
  addonIds: [] as string[],
  isBookable: true,
+ requiresVirtualConsultation: false,
  imageUrl: '',
  resourceRequirements: [] as { resourceType: string, quantity: number }[],
  productUsages: [] as { productId: string, servicesPerProduct: number }[],
@@ -112,7 +114,7 @@ export function ServiceManagement({ shopId, currency }: ServiceManagementProps) 
  }, [shopId]);
 
  const resetForm = () => {
- setNewService({ name: '', description: '', price: '', duration: '', type: 'CUSTOMER', addonIds: [], isBookable: true, imageUrl: '', resourceRequirements: [], productUsages: [] });
+ setNewService({ name: '', description: '', price: '', duration: '', type: 'CUSTOMER', addonIds: [], isBookable: true, requiresVirtualConsultation: false, imageUrl: '', resourceRequirements: [], productUsages: [] });
  setEditingServiceId(null);
  };
 
@@ -126,6 +128,7 @@ export function ServiceManagement({ shopId, currency }: ServiceManagementProps) 
  type: service.type,
  addonIds: service.addons?.map(a => a.id) || [],
  isBookable: service.isBookable,
+ requiresVirtualConsultation: service.requiresVirtualConsultation || false,
  imageUrl: service.imageUrl || '',
  resourceRequirements: service.resourceRequirements?.map(r => ({ resourceType: r.resourceType, quantity: r.quantity })) || [],
  productUsages: service.productUsages?.map(p => ({ productId: p.productId, servicesPerProduct: p.servicesPerProduct })) || [],
@@ -167,6 +170,7 @@ export function ServiceManagement({ shopId, currency }: ServiceManagementProps) 
  duration: parseInt(newService.duration),
  type: newService.type,
  isBookable: newService.isBookable,
+ requiresVirtualConsultation: newService.requiresVirtualConsultation,
  imageUrl: newService.imageUrl,
  addonIds: newService.addonIds,
  resourceRequirements: newService.resourceRequirements,

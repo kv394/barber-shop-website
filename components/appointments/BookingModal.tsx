@@ -23,6 +23,7 @@ interface Service {
  name: string;
  price: number;
  duration: number;
+ requiresVirtualConsultation?: boolean;
  addons?: ServiceAddon[];
 }
 
@@ -139,9 +140,13 @@ export default function BookingModal({ shopId, service, onClose, shopHours, them
  return service.addons.filter(a => selectedAddonIds.includes(a.id));
  }, [service.addons, selectedAddonIds]);
 
+ const isVirtualConsultation = service.requiresVirtualConsultation;
+ const effectiveServiceName = isVirtualConsultation ? "Virtual Consultation: " + service.name : service.name;
+ const effectiveDuration = isVirtualConsultation ? 15 : service.duration;
+
  const totalDuration = useMemo(() => {
- return service.duration + selectedAddons.reduce((sum, a) => sum + a.durationMin, 0);
- }, [service.duration, selectedAddons]);
+ return effectiveDuration + selectedAddons.reduce((sum, a) => sum + a.durationMin, 0);
+ }, [effectiveDuration, selectedAddons]);
 
  const totalPrice = useMemo(() => {
  return service.price + selectedAddons.reduce((sum, a) => sum + a.price, 0);
@@ -371,7 +376,7 @@ export default function BookingModal({ shopId, service, onClose, shopHours, them
 
  const handleAddToCalendar = () => {
  if (!confirmedStartTime) return;
- const ics = generateICSContent(service.name, confirmedStartTime, service.duration, confirmedStaffName);
+ const ics = generateICSContent(effectiveServiceName, confirmedStartTime, effectiveDuration, confirmedStaffName);
  const blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' });
  const url = URL.createObjectURL(blob);
  const link = document.createElement('a');
@@ -406,7 +411,7 @@ export default function BookingModal({ shopId, service, onClose, shopHours, them
     return (
       <BookingSuccessScreen
         themeColor={themeColor}
-        serviceName={service.name}
+        serviceName={effectiveServiceName}
         formattedDate={formattedDate}
         selectedTime={selectedTime}
         confirmedStaffName={confirmedStaffName}
@@ -424,7 +429,7 @@ export default function BookingModal({ shopId, service, onClose, shopHours, them
     return (
       <BookingReviewScreen
         themeColor={themeColor}
-        serviceName={service.name}
+        serviceName={effectiveServiceName}
         formattedDate={formattedDate}
         selectedTime={selectedTime}
         confirmedStaffName={confirmedStaffName}
@@ -450,7 +455,8 @@ export default function BookingModal({ shopId, service, onClose, shopHours, them
  <div className="bg-crm-surface rounded-xl p-6 w-full max-w-md border border-crm-border shadow-2xl relative text-left max-h-[90vh] overflow-y-auto scrollbar-hide">
  <button onClick={onClose} aria-label="Close" className="absolute top-3 right-4 bg-crm-surface hover:bg-gray-100 shadow-sm z-10 w-10 h-10 rounded-full flex items-center justify-center transition-colors font-bold text-[13px]" style={{ color: themeColor || "#111827" }}>✕</button>
  <h3 className="font-bold text-crm-primary mb-1 text-lg">Book Appointment</h3>
- <p className="text-crm-accent font-semibold mb-2 text-[13px]">{service.name} <span className="text-crm-muted font-normal ml-2">({totalDuration} mins • ${totalPrice.toFixed(2)})</span></p>
+ <div className="text-crm-accent font-semibold mb-2 text-[13px]">{effectiveServiceName} <span className="text-crm-muted font-normal ml-2">({totalDuration} mins • ${totalPrice.toFixed(2)})</span></div>
+ {isVirtualConsultation && <div className="text-status-info text-[12px] mt-1 mb-2 p-2 bg-status-info/10 rounded border border-status-info/20">This service requires a 15-minute virtual consultation before booking the full service.</div>}
 
  {service.addons && service.addons.length > 0 && (
  <BookingAddons service={service} selectedAddonIds={selectedAddonIds} onAddonChange={setSelectedAddonIds} />
