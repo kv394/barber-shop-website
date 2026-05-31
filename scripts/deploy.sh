@@ -21,6 +21,8 @@ if [ "$VERCEL_GIT_COMMIT_REF" = "staging" ] || [ "$VERCEL_ENV" = "preview" ]; th
 else
   # Production (main)
   echo "Production environment. Deploying migrations normally..."
+  # Recover from any failed migrations before deploying
+  npx prisma migrate resolve --rolled-back 20260531000000_enable_rls || true
   node scripts/safe-migrate.js
 fi
 
