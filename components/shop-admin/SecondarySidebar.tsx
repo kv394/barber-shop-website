@@ -16,7 +16,7 @@ export default function SecondarySidebar({ shopId, userRole, shopType }: { shopI
  const getSection = () => {
  if (pathname.startsWith(`/shop/${shopId}/settings/team`) || pathname.startsWith(`/shop/${shopId}/portfolio`)) return 'team';
  
- const settingsAndConfigPaths = ['/config/services', '/config/products', '/settings/booking', '/settings/resources', '/settings/forms', '/settings/memberships', '/settings', '/settings/notifications', '/settings/kiosk', '/settings/billing', '/settings/commissions', '/hardware', '/marketplace'];
+ const settingsAndConfigPaths = ['/config/services', '/config/products', '/settings/booking', '/settings/dynamic-pricing', '/settings/resources', '/settings/forms', '/settings/memberships', '/settings', '/settings/notifications', '/settings/kiosk', '/settings/billing', '/settings/commissions', '/hardware', '/marketplace'];
  if (pathname === `/shop/${shopId}/settings` || settingsAndConfigPaths.some(p => p !== '/settings' && pathname.startsWith(`/shop/${shopId}${p}`))) return 'settings';
 
  const engagementPaths = ['/engagement', '/loyalty', '/referrals', '/campaigns', '/gift-cards', '/reviews'];
@@ -98,6 +98,8 @@ export default function SecondarySidebar({ shopId, userRole, shopType }: { shopI
  {navLink(`/shop/${shopId}/config/services`, 'Services')}
  {navLink(`/shop/${shopId}/config/products`, 'Products')}
  {navLink(`/shop/${shopId}/settings/booking`, 'Booking & Hours')}
+ {navLink(`/shop/${shopId}/settings/dynamic-pricing`, 'Dynamic Pricing')}
+
  {navLink(`/shop/${shopId}/settings/resources`, 'Resources')}
  {navLink(`/shop/${shopId}/hardware`, 'Hardware Store')}
  {navLink(`/shop/${shopId}/marketplace`, 'Wholesale Marketplace')}

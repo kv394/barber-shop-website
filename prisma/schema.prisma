@@ -104,6 +104,8 @@ model Shop {
   shopClients                ShopClient[]
   purchaseOrders             PurchaseOrder[]
   boothRentPayments          BoothRentPayment[]
+  dynamicPricingRules        DynamicPricingRule[]
+
   renterServices             RenterService[]
 
   @@index([createdAt])
@@ -1019,4 +1021,32 @@ enum CampaignChannel {
   SMS
   WHATSAPP
   BOTH
+}
+
+model DynamicPricingRule {
+  id              String   @id @default(cuid())
+  shopId          String
+  name            String
+  type            PricingRuleType
+  adjustmentType  PricingAdjustmentType
+  adjustmentValue Float
+  daysOfWeek      String?  // JSON array of integers 0-6
+  startTime       String?  // "HH:mm" format
+  endTime         String?  // "HH:mm" format
+  isActive        Boolean  @default(true)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  shop            Shop     @relation(fields: [shopId], references: [id], onDelete: Cascade)
+
+  @@index([shopId])
+}
+
+enum PricingRuleType {
+  SURGE
+  DISCOUNT
+}
+
+enum PricingAdjustmentType {
+  PERCENTAGE
+  FLAT
 }
