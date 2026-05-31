@@ -93,8 +93,12 @@ export async function middleware(req: NextRequest) {
     ...rootDomainStr.split(',').filter(Boolean),
   ];
   
-  // Allow ALL Vercel preview URLs to act as the root domain automatically for staging
-  const isVercelPreview = hostname.endsWith('.vercel.app');
+  // Securely identify our Vercel preview environments
+  // This prevents tenants using their own .vercel.app domains from bypassing the tenant routing logic.
+  const vercelEnv = req.headers.get('x-vercel-env') || process.env.VERCEL_ENV;
+  const vercelDeploymentUrl = req.headers.get('x-vercel-deployment-url') || process.env.VERCEL_URL;
+  
+  const isVercelPreview = hostname.endsWith('.vercel.app') && (vercelEnv === 'preview' || hostname === vercelDeploymentUrl);
   
   const shouldRewrite = !isApi && !isAdmin && !isStatic && !rootDomains.includes(hostname) && !isVercelPreview && !url.pathname.startsWith('/sites');
 
