@@ -19,5 +19,92 @@
     "total": "Total",
     "noProfessionals": "No hay profesionales disponibles.",
     "noTimeSlots": "No hay horarios disponibles."
+  },
+  "Common": {
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "delete": "Eliminar",
+    "edit": "Editar",
+    "back": "Atrás",
+    "loading": "Cargando",
+    "error": "Error",
+    "success": "Éxito",
+    "confirm": "Confirmar",
+    "search": "Buscar",
+    "filter": "Filtrar",
+    "export": "Exportar",
+    "close": "Cerrar",
+    "submit": "Enviar",
+    "next": "Siguiente",
+    "previous": "Anterior",
+    "yes": "Sí",
+    "no": "No",
+    "ok": "Aceptar"
+  },
+  "Auth": {
+    "signIn": "Iniciar Sesión",
+    "signUp": "Registrarse",
+    "email": "Correo Electrónico",
+    "password": "Contraseña",
+    "forgotPassword": "Olvidé mi Contraseña",
+    "resetPassword": "Restablecer Contraseña",
+    "createAccount": "Crear Cuenta",
+    "logOut": "Cerrar Sesión",
+    "rememberMe": "Recordarme",
+    "twoFactorAuth": "Autenticación en Dos Pasos"
+  },
+  "Dashboard": {
+    "dashboard": "Panel de Control",
+    "overview": "Resumen",
+    "recentActivity": "Actividad Reciente",
+    "totalRevenue": "Ingresos Totales",
+    "totalAppointments": "Total de Citas",
+    "totalClients": "Total de Clientes",
+    "todaysSchedule": "Agenda de Hoy",
+    "quickActions": "Acciones Rápidas"
+  },
+  "Appointments": {
+    "appointments": "Citas",
+    "bookNow": "Reservar Ahora",
+    "reschedule": "Reprogramar",
+    "cancelAppointment": "Cancelar Cita",
+    "noShow": "No se Presentó",
+    "completed": "Completada",
+    "scheduled": "Programada",
+    "selectDate": "Seleccionar Fecha",
+    "selectTime": "Seleccionar Hora",
+    "selectService": "Seleccionar Servicio",
+    "selectStaff": "Seleccionar Personal",
+    "notes": "Notas",
+    "depositRequired": "Depósito Requerido"
+  },
+  "Clients": {
+    "clients": "Clientes",
+    "addClient": "Agregar Cliente",
+    "clientDetails": "Detalles del Cliente",
+    "appointmentHistory": "Historial de Citas",
+    "loyaltyPoints": "Puntos de Fidelidad",
+    "membership": "Membresía",
+    "contactInfo": "Información de Contacto",
+    "allergies": "Alergias",
+    "preferences": "Preferencias"
+  },
+  "Services": {
+    "services": "Servicios",
+    "addService": "Agregar Servicio",
+    "serviceName": "Nombre del Servicio",
+    "duration": "Duración",
+    "price": "Precio",
+    "description": "Descripción",
+    "category": "Categoría",
+    "addOns": "Adiciones"
+  },
+  "Notifications": {
+    "notifications": "Notificaciones",
+    "markAsRead": "Marcar como Leída",
+    "noNotifications": "Sin Notificaciones",
+    "appointmentReminder": "Recordatorio de Cita",
+    "bookingConfirmed": "Reserva Confirmada",
+    "reviewRequest": "Solicitud de Reseña"
   }
 }
