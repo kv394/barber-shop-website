@@ -212,10 +212,11 @@ export function getTenantClient(shopId: string) {
             ) {
               args.where = { ...args.where, shopId };
             }
+          } // <--- Added missing brace here
           // Enforce Row-Level Security (RLS) by injecting the shopId into the Postgres session context
           // This requires executing the query within an interactive transaction.
           try {
-            return await prisma.$transaction(async (tx) => {
+            return await prisma.$transaction(async (tx: any) => {
               await tx.$executeRawUnsafe(`SET LOCAL "app.current_shop_id" = '${shopId}';`);
               return await query(args);
             });
