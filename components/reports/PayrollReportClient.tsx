@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
-import { formatCurrency } from '@/lib/utils';
+import { formatCurrency } from '@/lib/formatters';
 
 export interface PayrollReportClientProps {
   shopId: string;

@@ -97,7 +97,7 @@ function createPrismaClient() {
 }
 
 // Force Next.js hot reload to pick up latest Prisma client changes (Gen 2)
-export const prisma = global.prismaGlobal || createPrismaClient();
+export const prisma: PrismaClient = global.prismaGlobal || createPrismaClient() as PrismaClient;
 
 if (process.env.NODE_ENV !== 'production') {
   global.prismaGlobal = prisma;
@@ -173,7 +173,7 @@ const TENANT_MODELS = new Set([
 /** Regex to validate CUID-format shopId (alphanumeric, 20-30 chars). */
 const SHOP_ID_FORMAT = /^[a-z0-9]{20,30}$/;
 
-export function getTenantClient(shopId: string) {
+export function getTenantClient(shopId: string): PrismaClient {
   if (!shopId) throw new Error('shopId is required for tenant client');
 
   // Defense-in-depth: reject shopIds that don't match expected CUID format
@@ -224,10 +224,11 @@ export function getTenantClient(shopId: string) {
           // Enforce Row-Level Security (RLS) by injecting the shopId into the Postgres session context
           // This requires executing the query within an interactive transaction.
           try {
-            return await prisma.$transaction(async (tx: any) => {
-              await tx.$executeRaw`SET LOCAL "app.current_shop_id" = ${shopId}`;
-              return await query(args);
-            });
+            const [, result] = await prisma.$transaction([
+              prisma.$executeRaw`SELECT set_config('app.current_shop_id', ${shopId}, true)`,
+              query(args)
+            ]);
+            return result;
           } catch (e: any) {
             // Fallback for nested transactions where interactive transactions are forbidden
             if (e.message?.includes('Transaction is already closed') || e.message?.includes('nested')) {
@@ -238,5 +239,5 @@ export function getTenantClient(shopId: string) {
         },
       },
     },
-  });
+  }) as unknown as PrismaClient;
 }

@@ -1,13 +1,22 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 
-// Mock Stripe before importing the module
-const mockCreatePaymentIntent = vi.fn();
-const mockCapturePaymentIntent = vi.fn();
-const mockCancelPaymentIntent = vi.fn();
-const mockCreateRefund = vi.fn();
-const mockCreateSetupIntent = vi.fn();
-const mockCreateConnectionToken = vi.fn();
-const mockCreateCheckoutSession = vi.fn();
+const {
+  mockCreatePaymentIntent,
+  mockCapturePaymentIntent,
+  mockCancelPaymentIntent,
+  mockCreateRefund,
+  mockCreateSetupIntent,
+  mockCreateConnectionToken,
+  mockCreateCheckoutSession,
+} = vi.hoisted(() => ({
+  mockCreatePaymentIntent: vi.fn(),
+  mockCapturePaymentIntent: vi.fn(),
+  mockCancelPaymentIntent: vi.fn(),
+  mockCreateRefund: vi.fn(),
+  mockCreateSetupIntent: vi.fn(),
+  mockCreateConnectionToken: vi.fn(),
+  mockCreateCheckoutSession: vi.fn(),
+}));
 
 vi.mock('stripe', () => {
   const StripeMock = vi.fn();

@@ -144,7 +144,7 @@ export async function GET(
     return NextResponse.json({
       summary: summaryArray,
       expenses,
-      totalExpenses: expenses.reduce((sum, e) => sum + e.amount, 0),
+      totalExpenses: expenses.reduce((sum: number, e: any) => sum + e.amount, 0),
       raw: {
         commissions: commissionResults,
         timeLogs,

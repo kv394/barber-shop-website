@@ -1,19 +1,22 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import crypto from 'crypto';
 
-const mockCreateOrder = vi.fn();
-const mockRefundPayment = vi.fn();
+const { mockCreateOrder, mockRefundPayment } = vi.hoisted(() => ({
+  mockCreateOrder: vi.fn(),
+  mockRefundPayment: vi.fn(),
+}));
 
 vi.mock('razorpay', () => {
+  const RazorpayMock = vi.fn().mockImplementation(function(this: any) {
+    this.orders = {
+      create: mockCreateOrder,
+    };
+    this.payments = {
+      refund: mockRefundPayment,
+    };
+  });
   return {
-    default: vi.fn().mockImplementation(() => ({
-      orders: {
-        create: mockCreateOrder,
-      },
-      payments: {
-        refund: mockRefundPayment,
-      },
-    })),
+    default: RazorpayMock,
   };
 });
 
