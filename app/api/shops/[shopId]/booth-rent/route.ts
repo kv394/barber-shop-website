@@ -4,6 +4,7 @@ import { NextResponse } from 'next/server';
 import { requireShopRole, isAuthError } from '@/lib/auth';
 
 import { resolveShopId } from '@/lib/shop-resolution';
+import { boothRentSchema } from '@/lib/validations';
 
 export const dynamic = 'force-dynamic';
 
@@ -48,18 +49,19 @@ export async function POST(
  const authResult = await requireShopRole(shopId, ['SITE_ADMIN', 'SHOP_ADMIN']);
  if (isAuthError(authResult)) return authResult;
 
- const body = await request.json();
- const { userId, amount, periodStart, periodEnd } = body;
+  const body = await request.json();
+  const validationResult = boothRentSchema.safeParse(body);
+  if (!validationResult.success) {
+    return NextResponse.json({ error: 'Invalid input data', details: validationResult.error.format() }, { status: 400 });
+  }
 
- if (!userId || !amount || !periodStart || !periodEnd) {
- return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
- }
+  const { renterId, amount, periodStart, periodEnd } = validationResult.data;
 
- const payment = await prisma.boothRentPayment.create({
- data: {
- shopId,
- userId,
- amount,
+  const payment = await prisma.boothRentPayment.create({
+    data: {
+      shopId,
+      userId: renterId,
+      amount,
  periodStart: new Date(periodStart),
  periodEnd: new Date(periodEnd),
  status: 'PENDING'

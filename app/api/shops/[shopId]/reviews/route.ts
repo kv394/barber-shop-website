@@ -2,7 +2,7 @@ import { logger } from "@/lib/logger";
 import { prisma } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
 import { createClient } from '@/utils/supabase/server';
-
+import { reviewSchema } from '@/lib/validations';
 export const dynamic = 'force-dynamic';
 
 export async function OPTIONS(request: Request) {
@@ -144,12 +144,13 @@ export async function POST(
  userId = anonUser.id;
  }
 
- const body = await request.json();
- const { appointmentId, rating, comment } = body;
+  const body = await request.json();
+  const validationResult = reviewSchema.safeParse(body);
+  if (!validationResult.success) {
+    return NextResponse.json({ error: 'Invalid input data', details: validationResult.error.format() }, { status: 400, headers: corsHeaders });
+  }
 
- if (!rating || rating < 1 || rating > 5) {
- return NextResponse.json({ error: 'Valid rating (1-5) required' }, { status: 400, headers: corsHeaders });
- }
+  const { appointmentId, rating, comment } = validationResult.data;
 
  if (appointmentId) {
  // Verify the appointment belongs to this user and shop
@@ -174,7 +175,7 @@ export async function POST(
 
  const review = await prisma.review.create({
  data: {
- rating: Math.min(5, Math.max(1, Math.floor(parseInt(rating)))),
+    rating: Math.min(5, Math.max(1, Math.floor(rating))),
  // SECURITY: Strip HTML tags and limit length to prevent stored XSS
  comment: comment ? String(comment).replace(/<[^>]*>/g, '').slice(0, 2000) : null,
  appointmentId: appointmentId || null,

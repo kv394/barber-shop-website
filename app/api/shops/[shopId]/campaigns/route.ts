@@ -2,7 +2,7 @@ import { prisma } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
 import { requireShopRole, isAuthError } from '@/lib/auth';
 import { logger } from '@/lib/logger';
-
+import { campaignSchema } from '@/lib/validations';
 // GET - List campaigns for a shop
 export async function GET(
  request: Request,
@@ -35,30 +35,26 @@ export async function POST(
  const authResult = await requireShopRole(shopId, ['SITE_ADMIN', 'SHOP_ADMIN']);
  if (isAuthError(authResult)) return authResult;
 
- const body = await request.json();
- const { name, message, type, channel, targetSegment, scheduledAt } = body;
+  const body = await request.json();
+  const validationResult = campaignSchema.safeParse(body);
+  if (!validationResult.success) {
+    return NextResponse.json({ error: 'Invalid input data', details: validationResult.error.format() }, { status: 400 });
+  }
 
- if (!name || !message) {
- return NextResponse.json({ error: 'Name and message are required' }, { status: 400 });
- }
+  const { name, message, type, channel, targetSegment, scheduledFor } = validationResult.data;
 
- // SECURITY: Validate enum values and sanitize text fields
- const validTypes = ['EMAIL', 'SMS', 'WHATSAPP', 'MULTI_CHANNEL', 'PROMO', 'REACTIVATION', 'BIRTHDAY', 'ANNOUNCEMENT', 'WINBACK', 'CUSTOM'];
- const validChannels = ['EMAIL', 'SMS', 'WHATSAPP', 'BOTH'];
- const validSegments = ['ALL', 'INACTIVE_30', 'INACTIVE_60', 'INACTIVE_90', 'BIRTHDAY_THIS_MONTH'];
-
- const campaign = await prisma.campaign.create({
- data: {
- shopId,
- name: String(name).slice(0, 200),
- message: String(message).slice(0, 5000),
- type: validTypes.includes(type) ? type : 'PROMO',
- channel: validChannels.includes(channel) ? channel : 'EMAIL',
- targetSegment: validSegments.includes(targetSegment) ? targetSegment : 'ALL',
- scheduledAt: scheduledAt ? new Date(scheduledAt) : null,
- status: 'DRAFT',
- },
- });
+  const campaign = await prisma.campaign.create({
+    data: {
+      shopId,
+      name,
+      message,
+      type,
+      channel,
+      targetSegment: targetSegment || 'ALL',
+      scheduledAt: scheduledFor ? new Date(scheduledFor) : null,
+      status: 'DRAFT',
+    },
+  });
 
  return NextResponse.json(campaign, { status: 201 });
  } catch (error) {

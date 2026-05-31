@@ -3,7 +3,7 @@ import { prisma } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
 import { createClient } from '@/utils/supabase/server';
 import crypto from 'crypto';
-
+import { userSchema } from '@/lib/validations';
 export async function POST(
  request: Request,
  { params }: { params: Promise<{ shopId: string }> }
@@ -43,22 +43,13 @@ export async function POST(
  );
  }
 
- const body = await request.json();
- const { email, role, canManageInventory } = body;
+  const body = await request.json();
+  const validationResult = userSchema.safeParse(body);
+  if (!validationResult.success) {
+    return NextResponse.json({ error: 'Invalid input data', details: validationResult.error.format() }, { status: 400 });
+  }
 
- if (!email || !role) {
- return NextResponse.json(
- { error: 'Email and role are required' },
- { status: 400 }
- );
- }
-
- if (!['SHOP_ADMIN', 'STAFF', 'CLIENT', 'ATTENDANCE_KIOSK'].includes(role)) {
- return NextResponse.json(
- { error: 'Invalid role' },
- { status: 400 }
- );
- }
+  const { email, role, canManageInventory } = validationResult.data;
 
  // SECURITY: Only SITE_ADMIN can assign the SHOP_ADMIN role — prevent privilege escalation
  if (role === 'SHOP_ADMIN' && currentUser.role !== 'SITE_ADMIN') {

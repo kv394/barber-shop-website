@@ -2,7 +2,7 @@ import { logger } from "@/lib/logger";
 import { prisma } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
 import { createClient } from '@/utils/supabase/server';
-
+import { clientPatchSchema } from '@/lib/validations';
 export async function GET(
  request: Request,
  { params }: { params: Promise<{ shopId: string; clientId: string }> }
@@ -119,16 +119,23 @@ export async function PATCH(
  });
  if (!client) return NextResponse.json({ error: 'Client not found in this shop' }, { status: 404 });
 
- const body = await request.json();
- const updateData: any = {};
+  const body = await request.json();
+  const validationResult = clientPatchSchema.safeParse(body);
+  if (!validationResult.success) {
+    return NextResponse.json({ error: 'Invalid input data', details: validationResult.error.format() }, { status: 400 });
+  }
 
- // SECURITY: Sanitize text fields — strip HTML tags and limit length (stored XSS prevention)
- if (body.clientNotes !== undefined) updateData.clientNotes = typeof body.clientNotes === 'string' ? body.clientNotes.replace(/<[^>]*>/g, '').slice(0, 5000) : null;
- if (body.preferences !== undefined) updateData.preferences = typeof body.preferences === 'string' ? body.preferences.replace(/<[^>]*>/g, '').slice(0, 2000) : null;
- if (body.allergies !== undefined) updateData.allergies = typeof body.allergies === 'string' ? body.allergies.replace(/<[^>]*>/g, '').slice(0, 2000) : null;
- const userUpdateData: any = {};
- if (body.marketingConsent !== undefined) userUpdateData.marketingConsent = Boolean(body.marketingConsent);
- if (body.smsConsent !== undefined) userUpdateData.smsConsent = Boolean(body.smsConsent);
+  const validatedData = validationResult.data;
+  const updateData: any = {};
+
+  // SECURITY: Sanitize text fields — strip HTML tags and limit length (stored XSS prevention)
+  if (validatedData.clientNotes !== undefined) updateData.clientNotes = typeof validatedData.clientNotes === 'string' ? validatedData.clientNotes.replace(/<[^>]*>/g, '') : null;
+  if (validatedData.preferences !== undefined) updateData.preferences = typeof validatedData.preferences === 'string' ? validatedData.preferences.replace(/<[^>]*>/g, '') : null;
+  if (validatedData.allergies !== undefined) updateData.allergies = typeof validatedData.allergies === 'string' ? validatedData.allergies.replace(/<[^>]*>/g, '') : null;
+  
+  const userUpdateData: any = {};
+  if (validatedData.marketingConsent !== undefined) userUpdateData.marketingConsent = validatedData.marketingConsent;
+  if (validatedData.smsConsent !== undefined) userUpdateData.smsConsent = validatedData.smsConsent;
 
  if (Object.keys(updateData).length > 0) {
  await prisma.shopClient.upsert({

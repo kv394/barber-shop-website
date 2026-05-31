@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 import { createClient } from '@/utils/supabase/server';
 import { logger } from '@/lib/logger';
 import crypto from 'crypto';
-
+import { giftCardSchema } from '@/lib/validations';
 function generateGiftCardCode(): string {
  return crypto.randomBytes(6).toString('hex').toUpperCase().match(/.{4}/g)!.join('-');
 }
@@ -90,26 +90,18 @@ export async function POST(
  (user?.role === 'SHOP_ADMIN' && user?.shopId === shopId);
  if (!canManage) return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
 
- const body = await request.json();
- const { amount, recipientEmail, recipientName, purchaserEmail, expiresInDays } = body;
+  const body = await request.json();
+  const validationResult = giftCardSchema.safeParse(body);
+  if (!validationResult.success) {
+    return NextResponse.json({ error: 'Invalid input data', details: validationResult.error.format() }, { status: 400 });
+  }
 
- const parsedAmount = parseFloat(amount);
- if (!amount || isNaN(parsedAmount) || parsedAmount <= 0 || parsedAmount > 10000) {
- return NextResponse.json({ error: 'Amount must be between $0.01 and $10,000' }, { status: 400 });
- }
-
- // Validate expiresInDays if provided
- if (expiresInDays !== undefined && expiresInDays !== null) {
- const days = parseInt(expiresInDays);
- if (isNaN(days) || days < 1 || days > 3650) {
- return NextResponse.json({ error: 'Expiry must be between 1 and 3650 days' }, { status: 400 });
- }
- }
+  const { amount: parsedAmount, recipientEmail, recipientName, purchaserEmail, expiresInDays } = validationResult.data;
 
  const code = generateGiftCardCode();
- const expiresAt = expiresInDays
- ? new Date(Date.now() + parseInt(expiresInDays) * 24 * 60 * 60 * 1000)
- : null;
+  const expiresAt = expiresInDays
+  ? new Date(Date.now() + expiresInDays * 24 * 60 * 60 * 1000)
+  : null;
 
  const giftCard = await prisma.giftCard.create({
  data: {

@@ -3,7 +3,7 @@ import { prisma } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
 import { createClient } from '@/utils/supabase/server';
 import { revalidatePath } from 'next/cache';
-
+import { expenseSchema } from '@/lib/validations';
 export async function GET(
  request: Request,
  { params }: { params: Promise<{ shopId: string }> }
@@ -63,24 +63,20 @@ export async function POST(
  (user?.role === 'SHOP_ADMIN' && user?.shopId === shopId);
  if (!canCreate) return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
 
- const body = await request.json();
- const { amount, category, description, date } = body;
+  const body = await request.json();
+  const validationResult = expenseSchema.safeParse(body);
+  if (!validationResult.success) {
+    return NextResponse.json({ error: 'Invalid input data', details: validationResult.error.format() }, { status: 400 });
+  }
 
- if (!amount || !category) {
- return NextResponse.json({ error: 'Amount and category are required' }, { status: 400 });
- }
+  const { amount: parsedAmount, category, description, date } = validationResult.data;
 
- const parsedAmount = parseFloat(amount);
- if (isNaN(parsedAmount) || parsedAmount <= 0) {
- return NextResponse.json({ error: 'Amount must be a positive number' }, { status: 400 });
- }
-
- const expense = await prisma.expense.create({
- data: {
- amount: parsedAmount,
- category: String(category).replace(/<[^>]*>/g, '').slice(0, 100),
- description: description ? String(description).replace(/<[^>]*>/g, '').slice(0, 1000) : null,
- date: date ? new Date(date) : new Date(),
+  const expense = await prisma.expense.create({
+    data: {
+      amount: parsedAmount,
+      category: String(category).replace(/<[^>]*>/g, '').slice(0, 100),
+      description: description ? String(description).replace(/<[^>]*>/g, '').slice(0, 1000) : null,
+      date: date ? new Date(date) : new Date(),
  shopId: shopId,
  },
  });

@@ -4,6 +4,7 @@ import { prisma } from '@/lib/prisma';
 import { requireShopRole, isAuthError } from '@/lib/auth';
 
 import { resolveShopId } from '@/lib/shop-resolution';
+import { productSchema } from '@/lib/validations';
 
 export async function POST(req: Request, { params }: { params: Promise<{ shopId: string }> }) {
  try {
@@ -14,49 +15,33 @@ export async function POST(req: Request, { params }: { params: Promise<{ shopId:
  const authResult = await requireShopRole(shopId, ['SITE_ADMIN', 'SHOP_ADMIN', 'STAFF']);
  if (isAuthError(authResult)) return authResult;
 
- const { name, description, sku, barcode, price, cost, taxRate, trackInventory, inventoryCount, reorderPoint, type, supplier, isSellable, imageUrl } = await req.json();
+  const body = await req.json();
+  const validationResult = productSchema.safeParse(body);
+  if (!validationResult.success) {
+    return NextResponse.json({ error: 'Invalid input data', details: validationResult.error.format() }, { status: 400 });
+  }
 
- if (!name || price === undefined) {
- return NextResponse.json({ error: 'Name and price are required' }, { status: 400 });
- }
+  const { name, description, sku, barcode, price, cost, taxRate, trackInventory, inventoryCount, reorderPoint, type, supplier, isSellable, imageUrl } = validationResult.data;
 
- // SECURITY: Validate numeric fields — prevent negative prices, costs, or inventory
- const parsedPrice = parseFloat(price);
- const parsedCost = cost ? parseFloat(cost) : null;
- const parsedTaxRate = taxRate ? parseFloat(taxRate) : 0;
- const parsedInventory = inventoryCount ? parseInt(inventoryCount, 10) : 0;
-
- if (isNaN(parsedPrice) || parsedPrice < 0) {
- return NextResponse.json({ error: 'Price must be a non-negative number' }, { status: 400 });
- }
- if (parsedCost !== null && (isNaN(parsedCost) || parsedCost < 0)) {
- return NextResponse.json({ error: 'Cost must be a non-negative number' }, { status: 400 });
- }
- if (isNaN(parsedTaxRate) || parsedTaxRate < 0 || parsedTaxRate > 1) {
- return NextResponse.json({ error: 'Tax rate must be between 0 and 1' }, { status: 400 });
- }
-
- const validTypes = ['RETAIL', 'PROFESSIONAL', 'CONSUMABLE', 'BACKBAR'];
-
- const product = await prisma.product.create({
- data: {
- shopId: shopId,
- name: String(name).slice(0, 200),
- description: description ? String(description).slice(0, 2000) : null,
- sku: sku ? String(sku).slice(0, 50) : null,
- barcode: barcode ? String(barcode).slice(0, 50) : null,
- price: parsedPrice,
- cost: parsedCost,
- taxRate: parsedTaxRate,
- trackInventory: !!trackInventory,
- isSellable: isSellable ?? true,
- imageUrl: imageUrl ? String(imageUrl).slice(0, 500) : null,
- inventoryCount: Math.max(0, parsedInventory),
- reorderPoint: reorderPoint ? Math.max(0, parseInt(reorderPoint, 10) || 0) : 0,
- type: validTypes.includes(type) ? type : 'RETAIL',
- supplier: supplier ? String(supplier).slice(0, 200) : null,
- },
- });
+  const product = await prisma.product.create({
+    data: {
+      shopId: shopId,
+      name,
+      description,
+      sku,
+      barcode,
+      price,
+      cost,
+      taxRate,
+      trackInventory,
+      isSellable,
+      imageUrl: imageUrl || null,
+      inventoryCount,
+      reorderPoint,
+      type,
+      supplier,
+    },
+  });
 
  return NextResponse.json(product);
  } catch (error) {
