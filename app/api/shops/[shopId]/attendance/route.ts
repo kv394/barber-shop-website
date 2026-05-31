@@ -1,5 +1,5 @@
 import { logger } from "@/lib/logger";
-import { prisma } from '@/lib/prisma';
+import { prisma, getTenantClient } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
 import { createClient } from '@/utils/supabase/server';
 import { requireShopRole, isAuthError } from '@/lib/auth';
@@ -12,6 +12,7 @@ export async function GET(
 ) {
  try {
  const { shopId } = await params;
+    const tenantClient = await getTenantClient(shopId);
  // Require at least STAFF role to view active attendance logs
  const authResult = await requireShopRole(shopId, ['SITE_ADMIN', 'SHOP_ADMIN', 'STAFF', 'ATTENDANCE_KIOSK']);
  if (isAuthError(authResult)) return authResult;
@@ -20,7 +21,7 @@ export async function GET(
  const today = new Date();
  today.setHours(0, 0, 0, 0);
 
- const activeLogs = await prisma.timeLog.findMany({
+ const activeLogs = await tenantClient.timeLog.findMany({
  where: {
  shopId: shopId,
  clockIn: {
@@ -56,6 +57,7 @@ export async function POST(
 ) {
  try {
  const { shopId } = await params;
+    const tenantClient = await getTenantClient(shopId);
  const supabase = await createClient();
  const { data: { session } } = await supabase.auth.getSession();
   const authUserSession = session?.user;
@@ -68,7 +70,7 @@ export async function POST(
  return NextResponse.json({ error: 'Scanner device is unauthorized' }, { status: 401 });
  }
 
- const scannerUser = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
+ const scannerUser = await tenantClient.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
 
  if (!scannerUser || 
  (scannerUser.role !== 'SITE_ADMIN' && 
@@ -79,7 +81,7 @@ export async function POST(
  }
 
  // Ensure the scanner is assigned to this shop (unless Site Admin)
- if (scannerUser.role !== 'SITE_ADMIN' && (scannerUser.shopId !== shopId && !(await prisma.shopAccess.findFirst({ where: { userId: scannerUser.id, shopId } })))) {
+ if (scannerUser.role !== 'SITE_ADMIN' && (scannerUser.shopId !== shopId && !(await tenantClient.shopAccess.findFirst({ where: { userId: scannerUser.id, shopId } })))) {
  return NextResponse.json({ error: 'This device is not assigned to this shop.' }, { status: 403 });
  }
 
@@ -97,7 +99,7 @@ export async function POST(
  }
 
  // Find the user by their barcode AND ensure they belong to this shop
- user = await prisma.user.findFirst({
+ user = await tenantClient.user.findFirst({
  where: {
  barcode: barcode,
  shopId: shopId,
@@ -115,7 +117,7 @@ export async function POST(
  today.setHours(0, 0, 0, 0);
 
  // Check if they are already on the waitlist today
- const existingEntry = await prisma.waitlist.findFirst({
+ const existingEntry = await tenantClient.waitlist.findFirst({
  where: {
  shopId: shopId,
  clientName: user.name || user.email,
@@ -135,7 +137,7 @@ export async function POST(
  }
 
  // Add to waitlist
- const newEntry = await prisma.$transaction(async (tx: any) => {
+ const newEntry = await tenantClient.$transaction(async (tx: any) => {
  const lastEntry = await tx.waitlist.findFirst({
  where: { shopId: shopId, createdAt: { gte: today } },
  orderBy: { position: 'desc' },
@@ -161,7 +163,7 @@ export async function POST(
  }
 
  // Staff / Admin logic: Check if they are already clocked in (have a TimeLog with no clockOut)
- const activeLog = await prisma.timeLog.findFirst({
+ const activeLog = await tenantClient.timeLog.findFirst({
  where: {
  userId: user.id,
  shopId: shopId,
@@ -171,7 +173,7 @@ export async function POST(
 
  if (activeLog) {
  // They are checked in, so check them OUT
- const updatedLog = await prisma.timeLog.update({
+ const updatedLog = await tenantClient.timeLog.update({
  where: { id: activeLog.id },
  data: { clockOut: new Date() },
  });
@@ -184,7 +186,7 @@ export async function POST(
  }, { status: 200 });
  } else {
  // They are not checked in, so check them IN
- const newLog = await prisma.timeLog.create({
+ const newLog = await tenantClient.timeLog.create({
  data: {
  userId: user.id,
  shopId: shopId,

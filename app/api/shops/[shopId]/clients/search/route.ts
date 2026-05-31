@@ -1,4 +1,4 @@
-import { prisma } from '@/lib/prisma';
+import { prisma, getTenantClient } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
 import { createClient } from '@/utils/supabase/server';
 
@@ -8,6 +8,7 @@ export async function GET(
 ) {
  try {
  const { shopId } = await params;
+    const tenantClient = await getTenantClient(shopId);
  const supabase = await createClient();
  const { data: { session } } = await supabase.auth.getSession();
   const authUserSession = session?.user;
@@ -16,11 +17,11 @@ export async function GET(
  if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
  // Verify the requesting user is staff/admin of this shop
- const requestingUser = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
+ const requestingUser = await tenantClient.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
  if (!requestingUser || !['SITE_ADMIN', 'SHOP_ADMIN', 'STAFF'].includes(requestingUser.role)) {
  return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });
  }
- if (requestingUser.role !== 'SITE_ADMIN' && (requestingUser.shopId !== shopId && !(await prisma.shopAccess.findFirst({ where: { userId: requestingUser.id, shopId } })))) {
+ if (requestingUser.role !== 'SITE_ADMIN' && (requestingUser.shopId !== shopId && !(await tenantClient.shopAccess.findFirst({ where: { userId: requestingUser.id, shopId } })))) {
  return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });
  }
 
@@ -32,7 +33,7 @@ export async function GET(
  }
 
  // Search clients by name, email, or phone (case-insensitive)
- const clients = await prisma.user.findMany({
+ const clients = await tenantClient.user.findMany({
  where: {
  shopId: shopId,
  role: 'CLIENT',

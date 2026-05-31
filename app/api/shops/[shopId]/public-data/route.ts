@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
+import { prisma, getTenantClient } from '@/lib/prisma';
 import { logger } from '@/lib/logger';
 
 export const dynamic = 'force-dynamic';
@@ -8,9 +8,10 @@ export const dynamic = 'force-dynamic';
 export async function GET(request: Request, { params }: { params: Promise<{ shopId: string }> }) {
  try {
  const { shopId } = await params;
+    const tenantClient = await getTenantClient(shopId);
 
  // 0. Fetch Shop Details First for Security Validation
- let shop = await prisma.shop.findFirst({
+ let shop = await tenantClient.shop.findFirst({
  where: {
  OR: [
  { id: shopId },
@@ -34,7 +35,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ shop
 
  if (!shop) {
  const firstWord = shopId.split('-').find(w => w.length > 2) || shopId.split('-')[0];
- const candidates = await prisma.shop.findMany({
+ const candidates = await tenantClient.shop.findMany({
  where: { name: { startsWith: firstWord, mode: 'insensitive' } },
  take: 50,
  select: {
@@ -59,7 +60,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ shop
  if (!shop) {
  // Fallback: If still not found, check if this is the demo shop
  if (shopId === 'missouri-city' || shopId === 'sugarland') {
- shop = await prisma.shop.findFirst({
+ shop = await tenantClient.shop.findFirst({
  where: { id: 'cmn9kj24n0000lqzc7kcsmpst' },
  select: {
  id: true,
@@ -145,7 +146,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ shop
  // Run remaining public data queries in parallel using the actual resolved shop.id
  const [products, services, staff, reviews] = await Promise.all([
  // 1. Sellable Products
- prisma.product.findMany({
+ tenantClient.product.findMany({
  where: { shopId: shop.id, isSellable: true },
  select: {
  id: true,
@@ -160,7 +161,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ shop
  orderBy: { name: 'asc' }
  }),
  // 2. Bookable Services
- prisma.service.findMany({
+ tenantClient.service.findMany({
  where: { shopId: shop.id },
  select: {
  id: true,
@@ -173,7 +174,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ shop
  orderBy: { name: 'asc' }
  }),
  // 3. Public Staff 
- prisma.user.findMany({
+ tenantClient.user.findMany({
  where: {
  OR: [
  { shopId: shop.id, role: 'STAFF' },
@@ -188,7 +189,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ shop
  }
  }),
  // 4. Reviews
- prisma.review.findMany({
+ tenantClient.review.findMany({
  where: { shopId: shop.id },
  select: {
  id: true,

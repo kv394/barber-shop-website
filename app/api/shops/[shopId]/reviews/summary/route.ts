@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { requireShopRole, isAuthError } from '@/lib/auth';
 import { logger } from '@/lib/logger';
 import { GoogleGenAI } from '@google/genai';
-import { prisma } from '@/lib/prisma';
+import { prisma, getTenantClient } from '@/lib/prisma';
 
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
@@ -11,8 +11,7 @@ export async function GET(
  { params }: { params: Promise<{ shopId: string }> }
 ) {
  try {
- const { shopId: paramShopId } = await params;
- const resolvedShop = await prisma.shop.findFirst({
+ const { shopId: paramShopId } = await params; const resolvedShop = await prisma.shop.findFirst({
  where: {
  OR: [
  { id: paramShopId },
@@ -27,11 +26,13 @@ export async function GET(
  if (!resolvedShop) return NextResponse.json({ error: 'Shop not found' }, { status: 404 });
  const shopId = resolvedShop.id;
 
+ const tenantClient = await getTenantClient(shopId);
+
  const authResult = await requireShopRole(shopId, ['SITE_ADMIN', 'SHOP_ADMIN']);
  if (isAuthError(authResult)) return authResult;
 
  // Fetch reviews (last 100, sorted newest first)
- const reviews = await prisma.review.findMany({
+ const reviews = await tenantClient.review.findMany({
  where: { shopId },
  orderBy: { createdAt: 'desc' },
  take: 100,

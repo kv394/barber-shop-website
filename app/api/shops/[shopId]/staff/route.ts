@@ -1,5 +1,5 @@
 import { logger } from "@/lib/logger";
-import { prisma } from '@/lib/prisma';
+import { prisma, getTenantClient } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
 import { requireShopRole, isAuthError } from '@/lib/auth';
 
@@ -20,6 +20,7 @@ export async function GET(
 ) {
  try {
  const { shopId } = await params;
+    const tenantClient = await getTenantClient(shopId);
  const { searchParams } = new URL(request.url);
  const dateStr = searchParams.get('date');
 
@@ -34,7 +35,7 @@ export async function GET(
  if (isAuthError(authResult)) return authResult;
 
  // Return all staff if no date is provided (for admin/settings use cases)
- const allStaff = await prisma.user.findMany({
+ const allStaff = await tenantClient.user.findMany({
  where: {
  OR: [
  { shopId: shopId, role: 'STAFF' },
@@ -61,7 +62,7 @@ export async function GET(
  return NextResponse.json({ error: 'Invalid date format' }, { status: 400, headers });
  }
 
- const staffWithLeave = await prisma.user.findMany({
+ const staffWithLeave = await tenantClient.user.findMany({
  where: {
  OR: [
  { shopId: shopId, role: 'STAFF' },

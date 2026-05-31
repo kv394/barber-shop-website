@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
+import { prisma, getTenantClient } from '@/lib/prisma';
 import { requireShopRole, isAuthError } from '@/lib/auth';
 import crypto from 'crypto';
 
@@ -9,6 +9,7 @@ export async function PUT(
 ) {
  try {
  const { shopId } = await params;
+    const tenantClient = await getTenantClient(shopId);
  const authResult = await requireShopRole(shopId, ['SITE_ADMIN', 'SHOP_ADMIN']);
  if (isAuthError(authResult)) return authResult;
 
@@ -20,9 +21,9 @@ export async function PUT(
  const sanitizedEmail = email.trim().toLowerCase();
 
  // Check if another user already uses this email (other than the kiosk user)
- const existing = await prisma.user.findUnique({ where: { email: sanitizedEmail } });
+ const existing = await tenantClient.user.findUnique({ where: { email: sanitizedEmail } });
  
- const kioskUser = await prisma.user.findFirst({
+ const kioskUser = await tenantClient.user.findFirst({
  where: { shopId, role: 'ATTENDANCE_KIOSK' }
  });
 
@@ -31,14 +32,14 @@ export async function PUT(
  }
 
  if (kioskUser) {
- await prisma.user.update({
+ await tenantClient.user.update({
  where: { id: kioskUser.id },
  data: { email: sanitizedEmail }
  });
  } else {
  // If there was no kiosk user, create one
  const kioskBarcode = crypto.randomBytes(6).toString('hex').toUpperCase();
- await prisma.user.create({
+ await tenantClient.user.create({
  data: {
  id: `kiosk_init_${shopId}_${crypto.randomBytes(4).toString('hex')}`,
  email: sanitizedEmail,

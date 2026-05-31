@@ -1,15 +1,16 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
+import { prisma, getTenantClient } from '@/lib/prisma';
 import { requireShopRole, isAuthError } from '@/lib/auth';
 import { cacheService } from '@/lib/cache';
 export const dynamic = 'force-dynamic';
 
 export async function GET(_: NextRequest, { params }: { params: Promise<{ shopId: string }> }) {
  const { shopId } = await params;
+    const tenantClient = await getTenantClient(shopId);
  const authResult = await requireShopRole(shopId, ['SITE_ADMIN', 'SHOP_ADMIN', 'STAFF']);
  if (isAuthError(authResult)) return authResult;
 
- const shop = await prisma.shop.findUnique({ where: { id: shopId }, select: { customization: true } });
+ const shop = await tenantClient.shop.findUnique({ where: { id: shopId }, select: { customization: true } });
  const c = (shop?.customization as any) || {};
  const defaultHours = {
  monday: { open: '09:00', close: '18:00' },
@@ -25,6 +26,7 @@ export async function GET(_: NextRequest, { params }: { params: Promise<{ shopId
 
 export async function PUT(req: NextRequest, { params }: { params: Promise<{ shopId: string }> }) {
  const { shopId } = await params;
+    const tenantClient = await getTenantClient(shopId);
  const authResult = await requireShopRole(shopId, ['SITE_ADMIN', 'SHOP_ADMIN']);
  if (isAuthError(authResult)) return authResult;
 
@@ -48,9 +50,9 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ shop
  }
  }
 
- const shop = await prisma.shop.findUnique({ where: { id: shopId }, select: { customization: true, name: true } });
+ const shop = await tenantClient.shop.findUnique({ where: { id: shopId }, select: { customization: true, name: true } });
  const c = (shop?.customization as any) || {};
- await prisma.shop.update({
+ await tenantClient.shop.update({
  where: { id: shopId },
  data: { customization: { ...c, businessHours } },
  });

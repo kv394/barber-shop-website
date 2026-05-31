@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { requireShopRole, isAuthError } from '@/lib/auth';
 import { logger } from '@/lib/logger';
 import { GoogleGenAI } from '@google/genai';
-import { prisma } from '@/lib/prisma';
+import { prisma, getTenantClient } from '@/lib/prisma';
 
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
@@ -12,13 +12,14 @@ export async function GET(
 ) {
  try {
  const { shopId } = await params;
+    const tenantClient = await getTenantClient(shopId);
  const authResult = await requireShopRole(shopId, ['SITE_ADMIN', 'SHOP_ADMIN', 'STAFF']);
  if (isAuthError(authResult)) return authResult;
  const { searchParams } = new URL(request.url);
  const forceRefresh = searchParams.get('force') === 'true';
 
  // 0. Check database cache first (24-hour expiration)
- const shop = await prisma.shop.findUnique({
+ const shop = await tenantClient.shop.findUnique({
  where: { id: shopId },
  select: { inventoryForecast: true, inventoryForecastUpdatedAt: true }
  });
@@ -34,7 +35,7 @@ export async function GET(
  }
 
  // 1. Fetch all tracked products
- const products = await prisma.product.findMany({
+ const products = await tenantClient.product.findMany({
  where: { shopId, trackInventory: true },
  select: {
  id: true,
@@ -68,14 +69,14 @@ export async function GET(
  const sixtyDaysAgo = new Date(now.getTime() - 60 * 24 * 60 * 60 * 1000);
 
  const [last30DaysCount, prior30DaysCount] = await Promise.all([
- prisma.appointment.count({
+ tenantClient.appointment.count({
  where: {
  shopId,
  status: 'COMPLETED',
  startTime: { gte: thirtyDaysAgo },
  },
  }),
- prisma.appointment.count({
+ tenantClient.appointment.count({
  where: {
  shopId,
  status: 'COMPLETED',
@@ -85,7 +86,7 @@ export async function GET(
  ]);
 
  // Also get per-service appointment counts for the last 30 days
- const serviceAppointments = await prisma.appointment.groupBy({
+ const serviceAppointments = await tenantClient.appointment.groupBy({
  by: ['serviceId'],
  where: {
  shopId,
@@ -272,7 +273,7 @@ Rules:
  };
 
  // 5. Save the generated forecast to the database cache
- await prisma.shop.update({
+ await tenantClient.shop.update({
  where: { id: shopId },
  data: {
  inventoryForecast: payload,

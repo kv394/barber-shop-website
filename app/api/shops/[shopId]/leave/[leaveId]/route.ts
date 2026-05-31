@@ -1,5 +1,5 @@
 import { logger } from "@/lib/logger";
-import { prisma } from '@/lib/prisma';
+import { prisma, getTenantClient } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
 import { createClient } from '@/utils/supabase/server';
 
@@ -9,6 +9,7 @@ export async function DELETE(
 ) {
  try {
  const { shopId, leaveId } = await params;
+    const tenantClient = await getTenantClient(shopId);
  const supabase = await createClient();
  const { data: { session } } = await supabase.auth.getSession();
   const authUserSession = session?.user;
@@ -16,16 +17,16 @@ export async function DELETE(
  const authUserEmail = authUserSession?.email;
  if (!userId) return new Response('Unauthorized', { status: 401 });
 
- const user = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
- if (!user || (user.shopId !== shopId && !(await prisma.shopAccess.findFirst({ where: { userId: user.id, shopId } })))) {
+ const user = await tenantClient.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
+ if (!user || (user.shopId !== shopId && !(await tenantClient.shopAccess.findFirst({ where: { userId: user.id, shopId } })))) {
  return new Response('Forbidden', { status: 403 });
  }
 
- const leave = await prisma.leave.findUnique({
+ const leave = await tenantClient.leave.findUnique({
  where: { id: leaveId }
  });
 
- if (!leave || (leave.shopId !== shopId && !(await prisma.shopAccess.findFirst({ where: { userId: leave.id, shopId } })))) {
+ if (!leave || (leave.shopId !== shopId && !(await tenantClient.shopAccess.findFirst({ where: { userId: leave.id, shopId } })))) {
  return new Response('Not Found', { status: 404 });
  }
 
@@ -34,7 +35,7 @@ export async function DELETE(
  return new Response('Forbidden', { status: 403 });
  }
 
- await prisma.leave.delete({
+ await tenantClient.leave.delete({
  where: { id: leaveId }
  });
 

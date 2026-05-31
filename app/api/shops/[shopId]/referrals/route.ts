@@ -1,4 +1,4 @@
-import { prisma } from '@/lib/prisma';
+import { prisma, getTenantClient } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
 import { createClient } from '@/utils/supabase/server';
 import { logger } from '@/lib/logger';
@@ -20,8 +20,7 @@ export async function GET(
  { params }: { params: Promise<{ shopId: string }> }
 ) {
  try {
- const { shopId: paramShopId } = await params;
- const resolvedShop = await prisma.shop.findFirst({
+ const { shopId: paramShopId } = await params; const resolvedShop = await prisma.shop.findFirst({
  where: {
  OR: [
  { id: paramShopId },
@@ -36,6 +35,8 @@ export async function GET(
  if (!resolvedShop) return NextResponse.json({ error: 'Shop not found' }, { status: 404 });
  const shopId = resolvedShop.id;
 
+ const tenantClient = await getTenantClient(shopId);
+
  const supabase = await createClient();
  const { data: { session } } = await supabase.auth.getSession();
   const authUserSession = session?.user;
@@ -43,17 +44,17 @@ export async function GET(
  const authUserEmail = authUserSession?.email;
  if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
- const user = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
+ const user = await tenantClient.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
  if (!user) return NextResponse.json({ error: 'User not found' }, { status: 404 });
 
  // SECURITY: Verify user has a relationship with this shop
  if (user.role !== 'SITE_ADMIN') {
- if (['SHOP_ADMIN', 'STAFF'].includes(user.role) && (user.shopId !== shopId && !(await prisma.shopAccess.findFirst({ where: { userId: user.id, shopId } })))) {
+ if (['SHOP_ADMIN', 'STAFF'].includes(user.role) && (user.shopId !== shopId && !(await tenantClient.shopAccess.findFirst({ where: { userId: user.id, shopId } })))) {
  return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
  }
  // For clients, verify they have at least one appointment at this shop or are assigned to it
- if (user.role === 'CLIENT' && (user.shopId !== shopId && !(await prisma.shopAccess.findFirst({ where: { userId: user.id, shopId } })))) {
- const hasAppointment = await prisma.appointment.findFirst({
+ if (user.role === 'CLIENT' && (user.shopId !== shopId && !(await tenantClient.shopAccess.findFirst({ where: { userId: user.id, shopId } })))) {
+ const hasAppointment = await tenantClient.appointment.findFirst({
  where: { userId: user.id, shopId },
  select: { id: true },
  });
@@ -66,7 +67,7 @@ export async function GET(
  // Ensure user has a referral code
  if (!user.referralCode) {
  const code = generateReferralCode();
- await prisma.user.update({
+ await tenantClient.user.update({
  where: { id: userId },
  data: { referralCode: code },
  });
@@ -76,10 +77,10 @@ export async function GET(
  // Admin sees all referrals for the shop
  if (['SITE_ADMIN', 'SHOP_ADMIN'].includes(user.role)) {
  // Tenant isolation: SHOP_ADMIN must belong to this shop
- if (user.role === 'SHOP_ADMIN' && (user.shopId !== shopId && !(await prisma.shopAccess.findFirst({ where: { userId: user.id, shopId } })))) {
+ if (user.role === 'SHOP_ADMIN' && (user.shopId !== shopId && !(await tenantClient.shopAccess.findFirst({ where: { userId: user.id, shopId } })))) {
  return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
  }
- const referrals = await prisma.referral.findMany({
+ const referrals = await tenantClient.referral.findMany({
  where: { shopId },
  include: {
  referredBy: { select: { id: true, name: true, email: true } },
@@ -99,7 +100,7 @@ export async function GET(
  }
 
  // Client sees their own referrals
- const referrals = await prisma.referral.findMany({
+ const referrals = await tenantClient.referral.findMany({
  where: { shopId, referrerId: userId },
  include: {
  referredClient: { select: { name: true } },
@@ -120,8 +121,7 @@ export async function POST(
  { params }: { params: Promise<{ shopId: string }> }
 ) {
  try {
- const { shopId: paramShopId } = await params;
- const resolvedShop = await prisma.shop.findFirst({
+ const { shopId: paramShopId } = await params; const resolvedShop = await prisma.shop.findFirst({
  where: {
  OR: [
  { id: paramShopId },
@@ -135,6 +135,8 @@ export async function POST(
 
  if (!resolvedShop) return NextResponse.json({ error: 'Shop not found' }, { status: 404 });
  const shopId = resolvedShop.id;
+
+ const tenantClient = await getTenantClient(shopId);
 
  const supabase = await createClient();
  const { data: { session } } = await supabase.auth.getSession();
@@ -151,7 +153,7 @@ export async function POST(
  }
 
  // Find referrer by code
- const referrer = await prisma.user.findUnique({
+ const referrer = await tenantClient.user.findUnique({
  where: { referralCode },
  });
 
@@ -164,7 +166,7 @@ export async function POST(
  }
 
  // Check if referee already has a referral for this shop
- const existing = await prisma.referral.findUnique({
+ const existing = await tenantClient.referral.findUnique({
  where: { shopId_refereeId: { shopId, refereeId: userId } },
  });
 
@@ -172,7 +174,7 @@ export async function POST(
  return NextResponse.json({ error: 'Already referred to this shop' }, { status: 400 });
  }
 
- const referral = await prisma.referral.create({
+ const referral = await tenantClient.referral.create({
  data: {
  shopId,
  referrerId: referrer.id,

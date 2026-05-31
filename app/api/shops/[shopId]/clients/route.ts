@@ -1,5 +1,5 @@
 import { logger } from "@/lib/logger";
-import { prisma } from '@/lib/prisma';
+import { prisma, getTenantClient } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
 import { createClient } from '@/utils/supabase/server';
 
@@ -9,6 +9,7 @@ export async function GET(
 ) {
  try {
  const { shopId } = await params;
+    const tenantClient = await getTenantClient(shopId);
  const supabase = await createClient();
  const { data: { session } } = await supabase.auth.getSession();
   const authUserSession = session?.user;
@@ -19,19 +20,19 @@ export async function GET(
  return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
  }
 
- const currentUser = await prisma.user.findUnique({
+ const currentUser = await tenantClient.user.findUnique({
  where: { id: userId },
  });
 
  if (!currentUser || 
  (currentUser.role !== 'SITE_ADMIN' && 
- (currentUser.role !== 'SHOP_ADMIN' || (currentUser.shopId !== shopId && !(await prisma.shopAccess.findFirst({ where: { userId: currentUser.id, shopId } })))) &&
- (currentUser.role !== 'STAFF' || (currentUser.shopId !== shopId && !(await prisma.shopAccess.findFirst({ where: { userId: currentUser.id, shopId } })))))) {
+ (currentUser.role !== 'SHOP_ADMIN' || (currentUser.shopId !== shopId && !(await tenantClient.shopAccess.findFirst({ where: { userId: currentUser.id, shopId } })))) &&
+ (currentUser.role !== 'STAFF' || (currentUser.shopId !== shopId && !(await tenantClient.shopAccess.findFirst({ where: { userId: currentUser.id, shopId } })))))) {
  return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
  }
 
  // Get all clients associated with this shop directly OR who have made an appointment here
- const clients = await prisma.user.findMany({
+ const clients = await tenantClient.user.findMany({
  where: {
  role: 'CLIENT',
  OR: [

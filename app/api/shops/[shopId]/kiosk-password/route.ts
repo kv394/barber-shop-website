@@ -1,5 +1,5 @@
 import { logger } from "@/lib/logger";
-import { prisma } from '@/lib/prisma';
+import { prisma, getTenantClient } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
 import { createClient } from '@/utils/supabase/server';
 
@@ -9,6 +9,7 @@ export async function POST(
 ) {
  try {
  const { shopId } = await params;
+    const tenantClient = await getTenantClient(shopId);
  const supabase = await createClient();
  const { data: { session } } = await supabase.auth.getSession();
   const authUserSession = session?.user;
@@ -19,8 +20,8 @@ export async function POST(
  }
 
  // Verify user is SHOP_ADMIN or SITE_ADMIN for this shop
- const currentUser = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
- if (!currentUser || (currentUser.role !== 'SITE_ADMIN' && (currentUser.role !== 'SHOP_ADMIN' || (currentUser.shopId !== shopId && !(await prisma.shopAccess.findFirst({ where: { userId: currentUser.id, shopId } })))))) {
+ const currentUser = await tenantClient.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
+ if (!currentUser || (currentUser.role !== 'SITE_ADMIN' && (currentUser.role !== 'SHOP_ADMIN' || (currentUser.shopId !== shopId && !(await tenantClient.shopAccess.findFirst({ where: { userId: currentUser.id, shopId } })))))) {
  return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
  }
 
@@ -38,8 +39,8 @@ export async function POST(
 
  // SECURITY: Verify the target email belongs to a kiosk user of THIS shop
  // Prevents a SHOP_ADMIN from changing passwords for users in other shops
- const targetUser = await prisma.user.findUnique({ where: { email: String(email).trim().toLowerCase() } });
- if (!targetUser || (targetUser.shopId !== shopId && !(await prisma.shopAccess.findFirst({ where: { userId: targetUser.id, shopId } }))) || targetUser.role !== 'ATTENDANCE_KIOSK') {
+ const targetUser = await tenantClient.user.findUnique({ where: { email: String(email).trim().toLowerCase() } });
+ if (!targetUser || (targetUser.shopId !== shopId && !(await tenantClient.shopAccess.findFirst({ where: { userId: targetUser.id, shopId } }))) || targetUser.role !== 'ATTENDANCE_KIOSK') {
  return NextResponse.json({ error: 'Target user must be a kiosk account for this shop' }, { status: 403 });
  }
 
@@ -79,19 +80,19 @@ export async function POST(
  if (updateError) throw updateError;
  
  // Ensure our local DB is synced with the correct Supabase ID
- await prisma.user.update({
+ await tenantClient.user.update({
  where: { email: email },
  data: { id: targetSupabaseId }
  });
  } else {
  // User does not exist, create them
- const existingPrismaUser = await prisma.user.findUnique({ where: { email: email }});
+ const existingPrismaUser = await tenantClient.user.findUnique({ where: { email: email }});
  
  let tempEmail = '';
  if (existingPrismaUser) {
  // Temporarily rename the email to bypass the Supabase trigger unique constraint
  tempEmail = `temp_${Date.now()}_${email}`;
- await prisma.user.update({
+ await tenantClient.user.update({
  where: { email: email },
  data: { email: tempEmail },
  });
@@ -107,7 +108,7 @@ export async function POST(
  if (createError) {
  // If it failed, try to restore the original user's email
  if (existingPrismaUser) {
- await prisma.user.update({ where: { id: existingPrismaUser.id }, data: { email: email }});
+ await tenantClient.user.update({ where: { id: existingPrismaUser.id }, data: { email: email }});
  }
  throw createError;
  }
@@ -117,9 +118,9 @@ export async function POST(
  if (existingPrismaUser) {
  // The DB trigger might have created a new row for the new Supabase ID.
  // Delete the new row (if it exists) and update the original row to link it to the new Supabase ID.
- await prisma.user.delete({ where: { id: targetSupabaseId! } }).catch(() => {});
+ await tenantClient.user.delete({ where: { id: targetSupabaseId! } }).catch(() => {});
 
- await prisma.user.update({
+ await tenantClient.user.update({
  where: { id: existingPrismaUser.id },
  data: {
  id: targetSupabaseId!,

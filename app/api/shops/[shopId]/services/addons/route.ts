@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
+import { prisma, getTenantClient } from '@/lib/prisma';
 import { requireShopRole, isAuthError } from '@/lib/auth';
 
 import { resolveShopId } from '@/lib/shop-resolution';
@@ -9,13 +9,14 @@ export async function GET(
  { params }: { params: Promise<{ shopId: string }> }
 ) {
  try {
- const { shopId: paramShopId } = await params;
- const shopId = await resolveShopId(paramShopId);
+ const { shopId: paramShopId } = await params; const shopId = await resolveShopId(paramShopId);
  if (!shopId) return NextResponse.json({ error: 'Shop not found' }, { status: 404 });
+
+    const tenantClient = await getTenantClient(shopId);
  const authResult = await requireShopRole(shopId, ['SITE_ADMIN', 'SHOP_ADMIN', 'STAFF']);
  if (isAuthError(authResult)) return authResult;
 
- const addons = await prisma.serviceAddon.findMany({
+ const addons = await tenantClient.serviceAddon.findMany({
  where: { shopId },
  orderBy: { name: 'asc' },
  include: {
@@ -36,11 +37,12 @@ export async function POST(
 ) {
  try {
  const { shopId } = await params;
+    const tenantClient = await getTenantClient(shopId);
  const authResult = await requireShopRole(shopId, ['SITE_ADMIN', 'SHOP_ADMIN']);
  if (isAuthError(authResult)) return authResult;
 
  const body = await request.json();
- const addon = await prisma.serviceAddon.create({
+ const addon = await tenantClient.serviceAddon.create({
  data: {
  shopId,
  name: body.name,

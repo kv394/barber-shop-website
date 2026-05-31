@@ -1,5 +1,5 @@
 import { logger } from "@/lib/logger";
-import { prisma } from '@/lib/prisma';
+import { prisma, getTenantClient } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
 import { createClient } from '@/utils/supabase/server';
 import { revalidatePath } from 'next/cache';
@@ -12,6 +12,7 @@ export async function GET(
 ) {
  try {
  const { shopId } = await params;
+    const tenantClient = await getTenantClient(shopId);
  const supabase = await createClient();
  const { data: { session } } = await supabase.auth.getSession();
   const authUserSession = session?.user;
@@ -19,7 +20,7 @@ export async function GET(
  const authUserEmail = authUserSession?.email;
  if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
- const user = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
+ const user = await tenantClient.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
  const canView = user?.role === 'SITE_ADMIN' ||
  (user?.role === 'SHOP_ADMIN' && user?.shopId === shopId) ||
  (user?.role === 'STAFF' && user?.shopId === shopId) ||
@@ -29,7 +30,7 @@ export async function GET(
  const today = new Date();
  today.setHours(0, 0, 0, 0);
 
- const waitlist = await prisma.waitlist.findMany({
+ const waitlist = await tenantClient.waitlist.findMany({
  where: {
  shopId: shopId,
  createdAt: { gte: today },
@@ -51,6 +52,7 @@ export async function POST(
 ) {
  try {
  const { shopId } = await params;
+    const tenantClient = await getTenantClient(shopId);
  const supabase = await createClient();
  const { data: { session } } = await supabase.auth.getSession();
   const authUserSession = session?.user;
@@ -58,7 +60,7 @@ export async function POST(
  const authUserEmail = authUserSession?.email;
  if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
- const user = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
+ const user = await tenantClient.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
  const canAdd = user?.role === 'SITE_ADMIN' ||
  (user?.role === 'SHOP_ADMIN' && user?.shopId === shopId) ||
  (user?.role === 'STAFF' && user?.shopId === shopId);
@@ -72,7 +74,7 @@ export async function POST(
  }
 
  // SECURITY: Atomic position calculation + create to prevent duplicate positions
- const entry = await prisma.$transaction(async (tx: any) => {
+ const entry = await tenantClient.$transaction(async (tx: any) => {
  const today = new Date();
  today.setHours(0, 0, 0, 0);
  const lastEntry = await tx.waitlist.findFirst({
@@ -107,6 +109,7 @@ export async function PATCH(
 ) {
  try {
  const { shopId } = await params;
+    const tenantClient = await getTenantClient(shopId);
  const supabase = await createClient();
  const { data: { session } } = await supabase.auth.getSession();
   const authUserSession = session?.user;
@@ -114,7 +117,7 @@ export async function PATCH(
  const authUserEmail = authUserSession?.email;
  if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
- const user = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
+ const user = await tenantClient.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
  const canUpdate = user?.role === 'SITE_ADMIN' ||
  (user?.role === 'SHOP_ADMIN' && user?.shopId === shopId) ||
  (user?.role === 'STAFF' && user?.shopId === shopId);
@@ -134,7 +137,7 @@ export async function PATCH(
  if (status) dataToUpdate.status = status;
  if (staffId !== undefined) dataToUpdate.staffId = staffId;
 
- const updated = await prisma.waitlist.update({
+ const updated = await tenantClient.waitlist.update({
  where: { id, shopId },
  data: dataToUpdate,
  });

@@ -1,4 +1,4 @@
-import { prisma } from '@/lib/prisma';
+import { prisma, getTenantClient } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
 import { createClient } from '@/utils/supabase/server';
 import { logger } from '@/lib/logger';
@@ -11,6 +11,7 @@ export async function GET(
 ) {
  try {
  const { shopId } = await params;
+    const tenantClient = await getTenantClient(shopId);
  const supabase = await createClient();
  const { data: { session } } = await supabase.auth.getSession();
   const authUserSession = session?.user;
@@ -19,13 +20,13 @@ export async function GET(
  if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
  // SECURITY: Verify user belongs to this shop
- const user = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
+ const user = await tenantClient.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
  if (!user) return NextResponse.json({ error: 'User not found' }, { status: 404 });
- if (user.role !== 'SITE_ADMIN' && (user.shopId !== shopId && !(await prisma.shopAccess.findFirst({ where: { userId: user.id, shopId } })))) {
+ if (user.role !== 'SITE_ADMIN' && (user.shopId !== shopId && !(await tenantClient.shopAccess.findFirst({ where: { userId: user.id, shopId } })))) {
  return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
  }
 
- const program = await prisma.loyaltyProgram.findUnique({
+ const program = await tenantClient.loyaltyProgram.findUnique({
  where: { shopId },
  });
 
@@ -34,7 +35,7 @@ export async function GET(
  // Also get the user's loyalty account if they're a client
  let account = null;
  if (user.role === 'CLIENT') {
- account = await prisma.loyaltyAccount.findUnique({
+ account = await tenantClient.loyaltyAccount.findUnique({
  where: { userId_shopId: { userId, shopId } },
  include: {
  transactions: { orderBy: { createdAt: 'desc' }, take: 20 },
@@ -56,6 +57,7 @@ export async function POST(
 ) {
  try {
  const { shopId } = await params;
+    const tenantClient = await getTenantClient(shopId);
  const supabase = await createClient();
  const { data: { session } } = await supabase.auth.getSession();
   const authUserSession = session?.user;
@@ -63,18 +65,18 @@ export async function POST(
  const authUserEmail = authUserSession?.email;
  if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
- const user = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
+ const user = await tenantClient.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
  if (!user || !['SITE_ADMIN', 'SHOP_ADMIN'].includes(user.role)) {
  return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
  }
- if (user.role === 'SHOP_ADMIN' && (user.shopId !== shopId && !(await prisma.shopAccess.findFirst({ where: { userId: user.id, shopId } })))) {
+ if (user.role === 'SHOP_ADMIN' && (user.shopId !== shopId && !(await tenantClient.shopAccess.findFirst({ where: { userId: user.id, shopId } })))) {
  return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
  }
 
  const body = await request.json();
  const { pointsPerDollar, pointsPerVisit, redeemThreshold, redeemValue, isActive, tiers, pointExpiryDays } = body;
 
- const program = await prisma.loyaltyProgram.upsert({
+ const program = await tenantClient.loyaltyProgram.upsert({
  where: { shopId },
  update: {
  pointsPerDollar: pointsPerDollar ?? undefined,

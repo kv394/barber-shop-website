@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
+import { prisma, getTenantClient } from '@/lib/prisma';
 import { requireShopRole, isAuthError } from '@/lib/auth';
 
 export async function DELETE(
@@ -8,11 +8,12 @@ export async function DELETE(
 ) {
  try {
  const { shopId, addonId } = await params;
+    const tenantClient = await getTenantClient(shopId);
  const authResult = await requireShopRole(shopId, ['SITE_ADMIN', 'SHOP_ADMIN']);
  if (isAuthError(authResult)) return authResult;
 
  // Verify ownership
- const addon = await prisma.serviceAddon.findUnique({
+ const addon = await tenantClient.serviceAddon.findUnique({
  where: { id: addonId },
  select: { shopId: true }
  });
@@ -21,7 +22,7 @@ export async function DELETE(
  return NextResponse.json({ error: 'Not found' }, { status: 404 });
  }
 
- await prisma.serviceAddon.delete({
+ await tenantClient.serviceAddon.delete({
  where: { id: addonId }
  });
 

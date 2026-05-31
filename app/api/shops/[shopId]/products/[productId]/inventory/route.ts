@@ -1,5 +1,5 @@
 import { logger } from "@/lib/logger";
-import { prisma } from '@/lib/prisma';
+import { prisma, getTenantClient } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
 import { createClient } from '@/utils/supabase/server';
 import { revalidatePath } from 'next/cache';
@@ -10,6 +10,7 @@ export async function PATCH(
 ) {
  try {
  const { shopId, productId } = await params;
+    const tenantClient = await getTenantClient(shopId);
  const supabase = await createClient();
  const { data: { session } } = await supabase.auth.getSession();
   const authUserSession = session?.user;
@@ -17,7 +18,7 @@ export async function PATCH(
  const authUserEmail = authUserSession?.email;
  if (!userId) return new Response("Unauthorized", { status: 401 });
 
- const user = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
+ const user = await tenantClient.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
  
  // Authorization Logic:
  // 1. Site Admins can always do it.
@@ -38,11 +39,11 @@ export async function PATCH(
  return NextResponse.json({ error: 'Valid inventory count is required' }, { status: 400 });
  }
 
- const product = await prisma.product.findUnique({
+ const product = await tenantClient.product.findUnique({
  where: { id: productId }
  });
 
- if(!product || (product.shopId !== shopId && !(await prisma.shopAccess.findFirst({ where: { userId: product.id, shopId } })))) {
+ if(!product || (product.shopId !== shopId && !(await tenantClient.shopAccess.findFirst({ where: { userId: product.id, shopId } })))) {
  return NextResponse.json({ error: 'Product not found' }, { status: 404 });
  }
 
@@ -50,7 +51,7 @@ export async function PATCH(
  return NextResponse.json({ error: 'Inventory tracking is disabled for this product' }, { status: 400 });
  }
 
- const updatedProduct = await prisma.product.update({
+ const updatedProduct = await tenantClient.product.update({
  where: { id: productId },
  data: { inventoryCount: count }
  });

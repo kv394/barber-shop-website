@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/utils/supabase/server';
-import { prisma } from '@/lib/prisma';
+import { prisma, getTenantClient } from '@/lib/prisma';
 export const dynamic = 'force-dynamic';
 
 // ─── Constants Table ───────────────────────────────────────────────
@@ -35,19 +35,20 @@ export async function PATCH(
  const authUserEmail = authUserSession?.email;
  if (!userId) return NextResponse.json({ error: CONFIG.ERRORS.UNAUTHORIZED }, { status: CONFIG.HTTP_STATUS.UNAUTHORIZED });
  const { shopId, reviewId } = await params;
+    const tenantClient = await getTenantClient(shopId);
 
  // Verify caller is admin of this shop
- const caller = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
- if (!caller || (caller.role !== CONFIG.ROLES.SITE_ADMIN && (caller.role !== CONFIG.ROLES.SHOP_ADMIN || (caller.shopId !== shopId && !(await prisma.shopAccess.findFirst({ where: { userId: caller.id, shopId } }))))))
+ const caller = await tenantClient.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
+ if (!caller || (caller.role !== CONFIG.ROLES.SITE_ADMIN && (caller.role !== CONFIG.ROLES.SHOP_ADMIN || (caller.shopId !== shopId && !(await tenantClient.shopAccess.findFirst({ where: { userId: caller.id, shopId } }))))))
  return NextResponse.json({ error: CONFIG.ERRORS.FORBIDDEN }, { status: CONFIG.HTTP_STATUS.FORBIDDEN });
 
  // SECURITY: Verify review belongs to this shop
- const existing = await prisma.review.findUnique({ where: { id: reviewId } });
- if (!existing || (existing.shopId !== shopId && !(await prisma.shopAccess.findFirst({ where: { userId: existing.id, shopId } }))))
+ const existing = await tenantClient.review.findUnique({ where: { id: reviewId } });
+ if (!existing || (existing.shopId !== shopId && !(await tenantClient.shopAccess.findFirst({ where: { userId: existing.id, shopId } }))))
  return NextResponse.json({ error: CONFIG.ERRORS.REVIEW_NOT_FOUND }, { status: CONFIG.HTTP_STATUS.NOT_FOUND });
 
  const { ownerResponse } = await request.json();
- const review = await prisma.review.update({
+ const review = await tenantClient.review.update({
  where: { id: reviewId },
  data: {
  ownerResponse: ownerResponse
@@ -71,16 +72,17 @@ export async function DELETE(
  const authUserEmail = authUserSession?.email;
  if (!userId) return NextResponse.json({ error: CONFIG.ERRORS.UNAUTHORIZED }, { status: CONFIG.HTTP_STATUS.UNAUTHORIZED });
  const { shopId, reviewId } = await params;
- const caller = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
- if (!caller || (caller.role !== CONFIG.ROLES.SITE_ADMIN && (caller.role !== CONFIG.ROLES.SHOP_ADMIN || (caller.shopId !== shopId && !(await prisma.shopAccess.findFirst({ where: { userId: caller.id, shopId } }))))))
+    const tenantClient = await getTenantClient(shopId);
+ const caller = await tenantClient.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
+ if (!caller || (caller.role !== CONFIG.ROLES.SITE_ADMIN && (caller.role !== CONFIG.ROLES.SHOP_ADMIN || (caller.shopId !== shopId && !(await tenantClient.shopAccess.findFirst({ where: { userId: caller.id, shopId } }))))))
  return NextResponse.json({ error: CONFIG.ERRORS.FORBIDDEN }, { status: CONFIG.HTTP_STATUS.FORBIDDEN });
 
  // SECURITY: Verify review belongs to this shop
- const existing = await prisma.review.findUnique({ where: { id: reviewId } });
- if (!existing || (existing.shopId !== shopId && !(await prisma.shopAccess.findFirst({ where: { userId: existing.id, shopId } }))))
+ const existing = await tenantClient.review.findUnique({ where: { id: reviewId } });
+ if (!existing || (existing.shopId !== shopId && !(await tenantClient.shopAccess.findFirst({ where: { userId: existing.id, shopId } }))))
  return NextResponse.json({ error: CONFIG.ERRORS.REVIEW_NOT_FOUND }, { status: CONFIG.HTTP_STATUS.NOT_FOUND });
 
- await prisma.review.update({ where: { id: reviewId }, data: { ownerResponse: null, respondedAt: null } });
+ await tenantClient.review.update({ where: { id: reviewId }, data: { ownerResponse: null, respondedAt: null } });
  return NextResponse.json({ ok: true });
 }
 

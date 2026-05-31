@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { requireShopRole, isAuthError } from '@/lib/auth';
 import { logger } from '@/lib/logger';
 import { GoogleGenAI } from '@google/genai';
-import { prisma } from '@/lib/prisma';
+import { prisma, getTenantClient } from '@/lib/prisma';
 
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
@@ -20,6 +20,7 @@ export async function POST(
 ) {
  try {
  const { shopId } = await params;
+    const tenantClient = await getTenantClient(shopId);
  const authResult = await requireShopRole(shopId, ['SITE_ADMIN', 'SHOP_ADMIN']);
  if (isAuthError(authResult)) return authResult;
 
@@ -31,7 +32,7 @@ export async function POST(
  }
 
  // Fetch shop context
- const shop = await prisma.shop.findUnique({
+ const shop = await tenantClient.shop.findUnique({
  where: { id: shopId },
  select: { name: true, slogan: true },
  });
@@ -40,7 +41,7 @@ export async function POST(
  return NextResponse.json({ error: 'Shop not found' }, { status: 404 });
  }
 
- const services = await prisma.service.findMany({
+ const services = await tenantClient.service.findMany({
  where: { shopId, type: 'CUSTOMER' },
  select: { name: true, price: true, description: true },
  take: 20,

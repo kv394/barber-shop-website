@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { requireShopRole, isAuthError } from '@/lib/auth';
 import { logger } from '@/lib/logger';
 import { GoogleGenAI } from '@google/genai';
-import { prisma } from '@/lib/prisma';
+import { prisma, getTenantClient } from '@/lib/prisma';
 
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
@@ -12,6 +12,7 @@ export async function POST(
 ) {
  try {
  const { shopId } = await params;
+    const tenantClient = await getTenantClient(shopId);
  const authResult = await requireShopRole(shopId, ['SITE_ADMIN', 'SHOP_ADMIN', 'STAFF']);
  if (isAuthError(authResult)) return authResult;
 
@@ -80,7 +81,7 @@ Return strictly a JSON object with these keys. If a key is not mentioned, omit i
  name: { contains: term, mode: 'insensitive' as any }
  }));
 
- const possibleClients = await prisma.user.findMany({
+ const possibleClients = await tenantClient.user.findMany({
  where: { 
  shopId, 
  role: 'CLIENT',
@@ -122,7 +123,7 @@ Return strictly a JSON object with these keys. If a key is not mentioned, omit i
  const newClientNotes = newNoteBlock + (targetShopClient.clientNotes || '');
  const newPreferences = parsed.preferences && !targetShopClient.preferences ? parsed.preferences : targetShopClient.preferences;
 
- await prisma.shopClient.upsert({
+ await tenantClient.shopClient.upsert({
  where: { userId_shopId: { userId: targetClient.id, shopId } },
  create: {
  userId: targetClient.id,

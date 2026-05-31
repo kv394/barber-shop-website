@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
+import { prisma, getTenantClient } from '@/lib/prisma';
 import { requireShopRole } from '@/lib/auth';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 
@@ -11,6 +11,7 @@ export async function POST(
 ) {
   try {
     const { shopId } = await params;
+    const tenantClient = await getTenantClient(shopId);
     const authResult = await requireShopRole(shopId, ['SHOP_ADMIN', 'SITE_ADMIN']);
     if (authResult instanceof NextResponse) return authResult;
 
@@ -21,7 +22,7 @@ export async function POST(
     }
 
     // Validate shop has enough tokens
-    const shop = await prisma.shop.findUnique({ where: { id: shopId } });
+    const shop = await tenantClient.shop.findUnique({ where: { id: shopId } });
     if (!shop) return NextResponse.json({ error: 'Shop not found' }, { status: 404 });
     
     if (shop.aiTokens < 1) {
@@ -72,7 +73,7 @@ Make it punchy and designed to attract new clients to book an appointment.`;
     const generatedCaption = result.response.text();
 
     // Deduct 1 AI Token
-    const updatedShop = await prisma.shop.update({
+    const updatedShop = await tenantClient.shop.update({
       where: { id: shopId },
       data: { aiTokens: { decrement: 1 } }
     });

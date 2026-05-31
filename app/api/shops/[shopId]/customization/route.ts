@@ -1,5 +1,5 @@
 import { logger } from "@/lib/logger";
-import { prisma } from '@/lib/prisma';
+import { prisma, getTenantClient } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
 import { createClient } from '@/utils/supabase/server';
 import { revalidatePath } from 'next/cache';
@@ -12,6 +12,7 @@ export async function POST(
 ) {
  try {
  const { shopId } = await params;
+    const tenantClient = await getTenantClient(shopId);
  
  // SECURITY: Authenticate before allowing customization updates
  const authResult = await requireShopRole(shopId, ['SITE_ADMIN', 'SHOP_ADMIN']);
@@ -38,13 +39,13 @@ export async function POST(
 
  // Merge with existing customization to preserve bookingSettings/notifSettings
  // set by other dedicated routes
- const existingShop = await prisma.shop.findUnique({
+ const existingShop = await tenantClient.shop.findUnique({
  where: { id: shopId },
  select: { customization: true },
  });
  const existing = (existingShop?.customization as any) || {};
 
- const updatedShop = await prisma.shop.update({
+ const updatedShop = await tenantClient.shop.update({
  where: { id: shopId },
  data: {
  customization: { ...existing, ...customization },

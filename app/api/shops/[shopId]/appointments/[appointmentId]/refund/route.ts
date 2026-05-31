@@ -1,4 +1,4 @@
-import { prisma } from '@/lib/prisma';
+import { prisma, getTenantClient } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
 import { createClient } from '@/utils/supabase/server';
 import { logger } from '@/lib/logger';
@@ -21,7 +21,8 @@ export async function POST(
 
  try {
  const { shopId, appointmentId } = await params;
- const user = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
+    const tenantClient = await getTenantClient(shopId);
+ const user = await tenantClient.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
  const canManage = user?.role === 'SITE_ADMIN' ||
  (user?.role === 'SHOP_ADMIN' && user?.shopId === shopId);
 
@@ -38,7 +39,7 @@ export async function POST(
  }
 
  // SECURITY: All status/refund checks INSIDE the transaction to prevent double-refund race
- const result = await prisma.$transaction(async (tx: any) => {
+ const result = await tenantClient.$transaction(async (tx: any) => {
  const freshAppointment = await tx.appointment.findUnique({
  where: { id: appointmentId, shopId },
  include: { payments: true },

@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
+import { prisma, getTenantClient } from '@/lib/prisma';
 import { requireShopRole } from '@/lib/auth';
 import { revalidatePath } from 'next/cache';
 import { logger } from '@/lib/logger';
@@ -12,6 +12,7 @@ export async function POST(
 ) {
  try {
  const { shopId } = await params;
+    const tenantClient = await getTenantClient(shopId);
  const authResult = await requireShopRole(shopId, ['ATTENDANCE_KIOSK', 'SHOP_ADMIN', 'SITE_ADMIN']);
  if (authResult instanceof NextResponse) return authResult;
 
@@ -23,7 +24,7 @@ export async function POST(
  }
 
  // Atomic position calculation + create to prevent duplicate positions
- const entry = await prisma.$transaction(async (tx: any) => {
+ const entry = await tenantClient.$transaction(async (tx: any) => {
  const today = new Date();
  today.setHours(0, 0, 0, 0);
  const lastEntry = await tx.waitlist.findFirst({

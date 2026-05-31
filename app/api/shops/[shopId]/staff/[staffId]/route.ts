@@ -1,5 +1,5 @@
 import { logger } from "@/lib/logger";
-import { prisma } from '@/lib/prisma';
+import { prisma, getTenantClient } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
 import { requireShopRole, isAuthError } from '@/lib/auth';
 
@@ -11,14 +11,15 @@ export async function GET(
 ) {
  try {
  const { shopId, staffId } = await params;
+    const tenantClient = await getTenantClient(shopId);
 
  const authResult = await requireShopRole(shopId, ['SITE_ADMIN', 'SHOP_ADMIN', 'STAFF']);
  if (isAuthError(authResult)) return authResult;
 
- const shop = await prisma.shop.findUnique({ where: { id: shopId } });
+ const shop = await tenantClient.shop.findUnique({ where: { id: shopId } });
  if (!shop) return NextResponse.json({ error: 'Shop not found' }, { status: 404 });
 
- const staffMember = await prisma.user.findUnique({
+ const staffMember = await tenantClient.user.findUnique({
  where: { id: staffId, shopId: shopId },
  select: {
  id: true,
@@ -57,14 +58,15 @@ export async function PATCH(
 ) {
  try {
  const { shopId, staffId } = await params;
+    const tenantClient = await getTenantClient(shopId);
 
  // Only SHOP_ADMIN or SITE_ADMIN can modify staff profiles
  const authResult = await requireShopRole(shopId, ['SITE_ADMIN', 'SHOP_ADMIN']);
  if (isAuthError(authResult)) return authResult;
 
  // Verify the target staff member belongs to this shop
- const target = await prisma.user.findUnique({ where: { id: staffId } });
- if (!target || (target.shopId !== shopId && !(await prisma.shopAccess.findFirst({ where: { userId: target.id, shopId } })))) {
+ const target = await tenantClient.user.findUnique({ where: { id: staffId } });
+ if (!target || (target.shopId !== shopId && !(await tenantClient.shopAccess.findFirst({ where: { userId: target.id, shopId } })))) {
  return NextResponse.json({ error: 'Staff member not found in this shop' }, { status: 404 });
  }
 
@@ -82,7 +84,7 @@ export async function PATCH(
  if (body.boothRentInterval !== undefined) allowedFields.boothRentInterval = body.boothRentInterval;
  if (body.stripeConnectAccountId !== undefined) allowedFields.stripeConnectAccountId = body.stripeConnectAccountId;
 
- const updated = await prisma.user.update({ where: { id: staffId }, data: allowedFields });
+ const updated = await tenantClient.user.update({ where: { id: staffId }, data: allowedFields });
  const { googleRefreshToken, recoveryTotpSecret, ...safeUser } = updated as any;
  return NextResponse.json(JSON.parse(JSON.stringify(safeUser)));
  } catch (error) {

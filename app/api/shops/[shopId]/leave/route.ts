@@ -1,5 +1,5 @@
 import { logger } from "@/lib/logger";
-import { prisma } from '@/lib/prisma';
+import { prisma, getTenantClient } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
 import { createClient } from '@/utils/supabase/server';
 
@@ -9,6 +9,7 @@ export async function GET(
 ) {
  try {
  const { shopId } = await params;
+    const tenantClient = await getTenantClient(shopId);
  const supabase = await createClient();
  const { data: { session } } = await supabase.auth.getSession();
   const authUserSession = session?.user;
@@ -16,9 +17,9 @@ export async function GET(
  const authUserEmail = authUserSession?.email;
  if (!userId) return new Response('Unauthorized', { status: 401 });
 
- const user = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
+ const user = await tenantClient.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
  
- if (!user || (user.shopId !== shopId && !(await prisma.shopAccess.findFirst({ where: { userId: user.id, shopId } })))) {
+ if (!user || (user.shopId !== shopId && !(await tenantClient.shopAccess.findFirst({ where: { userId: user.id, shopId } })))) {
  return new Response('Forbidden', { status: 403 });
  }
 
@@ -30,7 +31,7 @@ export async function GET(
  return new Response('Forbidden', { status: 403 });
  }
 
- const leaves = await prisma.leave.findMany({
+ const leaves = await tenantClient.leave.findMany({
  where: { shopId, userId: filterUserId },
  orderBy: { date: 'desc' }
  });
@@ -48,6 +49,7 @@ export async function POST(
 ) {
  try {
  const { shopId } = await params;
+    const tenantClient = await getTenantClient(shopId);
  const supabase = await createClient();
  const { data: { session } } = await supabase.auth.getSession();
   const authUserSession = session?.user;
@@ -55,8 +57,8 @@ export async function POST(
  const authUserEmail = authUserSession?.email;
  if (!userId) return new Response('Unauthorized', { status: 401 });
 
- const user = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
- if (!user || (user.shopId !== shopId && !(await prisma.shopAccess.findFirst({ where: { userId: user.id, shopId } })))) {
+ const user = await tenantClient.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
+ if (!user || (user.shopId !== shopId && !(await tenantClient.shopAccess.findFirst({ where: { userId: user.id, shopId } })))) {
  return new Response('Forbidden', { status: 403 });
  }
 
@@ -75,7 +77,7 @@ export async function POST(
  const startTime = new Date(body.startTime);
  const endTime = new Date(body.endTime);
 
- const leave = await prisma.leave.create({
+ const leave = await tenantClient.leave.create({
  data: {
  shopId,
  userId: targetUserId,

@@ -1,4 +1,4 @@
-import { prisma } from '@/lib/prisma';
+import { prisma, getTenantClient } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
 import { requireShopRole, isAuthError } from '@/lib/auth';
 import { logger } from '@/lib/logger';
@@ -10,6 +10,7 @@ export async function GET(
 ) {
  try {
  const { shopId } = await params;
+    const tenantClient = await getTenantClient(shopId);
  const authResult = await requireShopRole(shopId, ['SITE_ADMIN', 'SHOP_ADMIN']);
  if (isAuthError(authResult)) return authResult;
 
@@ -31,14 +32,14 @@ export async function GET(
  averageRating,
  ] = await Promise.all([
  // Total unique clients who have visited
- prisma.user.count({
+ tenantClient.user.count({
  where: {
  role: 'CLIENT',
  clientAppointments: { some: { shopId, status: 'COMPLETED' } },
  },
  }),
  // Active in last 30 days
- prisma.user.count({
+ tenantClient.user.count({
  where: {
  role: 'CLIENT',
  clientAppointments: {
@@ -47,7 +48,7 @@ export async function GET(
  },
  }),
  // New clients (first visit in last 30 days)
- prisma.user.count({
+ tenantClient.user.count({
  where: {
  role: 'CLIENT',
  createdAt: { gte: thirtyDaysAgo },
@@ -55,19 +56,19 @@ export async function GET(
  },
  }),
  // Completed appointments this month
- prisma.appointment.count({
+ tenantClient.appointment.count({
  where: { shopId, status: 'COMPLETED', startTime: { gte: thirtyDaysAgo } },
  }),
- prisma.loyaltyProgram.findUnique({ where: { shopId } }),
- prisma.loyaltyAccount.count({ where: { shopId } }),
- prisma.referral.count({ where: { shopId } }),
- prisma.referral.count({ where: { shopId, status: { in: ['COMPLETED', 'REWARDED'] } } }),
- prisma.campaign.count({ where: { shopId, status: { in: ['SENT', 'COMPLETED', 'ACTIVE'] } } }),
- prisma.review.aggregate({ where: { shopId }, _avg: { rating: true } }),
+ tenantClient.loyaltyProgram.findUnique({ where: { shopId } }),
+ tenantClient.loyaltyAccount.count({ where: { shopId } }),
+ tenantClient.referral.count({ where: { shopId } }),
+ tenantClient.referral.count({ where: { shopId, status: { in: ['COMPLETED', 'REWARDED'] } } }),
+ tenantClient.campaign.count({ where: { shopId, status: { in: ['SENT', 'COMPLETED', 'ACTIVE'] } } }),
+ tenantClient.review.aggregate({ where: { shopId }, _avg: { rating: true } }),
  ]);
 
  // Retention: clients who visited both 60-30 days ago AND in last 30 days
- const retainedClients = await prisma.user.count({
+ const retainedClients = await tenantClient.user.count({
  where: {
  role: 'CLIENT',
  clientAppointments: {
@@ -82,7 +83,7 @@ export async function GET(
  });
 
  // At-risk clients (visited 60-90 days ago but not in last 60 days)
- const visitedBefore = await prisma.user.count({
+ const visitedBefore = await tenantClient.user.count({
  where: {
  role: 'CLIENT',
  clientAppointments: {
@@ -94,7 +95,7 @@ export async function GET(
  const retentionRate = visitedBefore > 0 ? Math.round((retainedClients / visitedBefore) * 100) : 0;
 
  // Top clients by spend (last 90 days)
- const topClients = await prisma.user.findMany({
+ const topClients = await tenantClient.user.findMany({
  where: {
  role: 'CLIENT',
  clientAppointments: { some: { shopId, status: 'COMPLETED', startTime: { gte: ninetyDaysAgo } } },

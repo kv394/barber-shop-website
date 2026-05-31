@@ -1,5 +1,5 @@
 import { logger } from "@/lib/logger";
-import { prisma } from '@/lib/prisma';
+import { prisma, getTenantClient } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
 import { requireShopRole, isAuthError } from '@/lib/auth';
 
@@ -13,9 +13,10 @@ export async function GET(
  { params }: { params: Promise<{ shopId: string }> }
 ) {
  try {
- const { shopId: paramShopId } = await params;
- const shopId = await resolveShopId(paramShopId);
+ const { shopId: paramShopId } = await params; const shopId = await resolveShopId(paramShopId);
  if (!shopId) return NextResponse.json({ error: 'Shop not found' }, { status: 404 });
+
+    const tenantClient = await getTenantClient(shopId);
  const authResult = await requireShopRole(shopId, ['SITE_ADMIN', 'SHOP_ADMIN', 'BOOTH_RENTER']);
  if (isAuthError(authResult)) return authResult;
 
@@ -25,7 +26,7 @@ export async function GET(
  ? { shopId, userId: authResult.user.id }
  : { shopId };
 
- const payments = await prisma.boothRentPayment.findMany({
+ const payments = await tenantClient.boothRentPayment.findMany({
  where: whereClause,
  include: { user: { select: { id: true, name: true, email: true } } },
  orderBy: { periodStart: 'desc' }
@@ -43,9 +44,10 @@ export async function POST(
  { params }: { params: Promise<{ shopId: string }> }
 ) {
  try {
- const { shopId: paramShopId } = await params;
- const shopId = await resolveShopId(paramShopId);
+ const { shopId: paramShopId } = await params; const shopId = await resolveShopId(paramShopId);
  if (!shopId) return NextResponse.json({ error: 'Shop not found' }, { status: 404 });
+
+    const tenantClient = await getTenantClient(shopId);
  const authResult = await requireShopRole(shopId, ['SITE_ADMIN', 'SHOP_ADMIN']);
  if (isAuthError(authResult)) return authResult;
 
@@ -57,7 +59,7 @@ export async function POST(
 
   const { renterId, amount, periodStart, periodEnd } = validationResult.data;
 
-  const payment = await prisma.boothRentPayment.create({
+  const payment = await tenantClient.boothRentPayment.create({
     data: {
       shopId,
       userId: renterId,
@@ -80,9 +82,10 @@ export async function PATCH(
  { params }: { params: Promise<{ shopId: string }> }
 ) {
  try {
- const { shopId: paramShopId } = await params;
- const shopId = await resolveShopId(paramShopId);
+ const { shopId: paramShopId } = await params; const shopId = await resolveShopId(paramShopId);
  if (!shopId) return NextResponse.json({ error: 'Shop not found' }, { status: 404 });
+
+    const tenantClient = await getTenantClient(shopId);
  const authResult = await requireShopRole(shopId, ['SITE_ADMIN', 'SHOP_ADMIN']);
  if (isAuthError(authResult)) return authResult;
 
@@ -93,7 +96,7 @@ export async function PATCH(
  return NextResponse.json({ error: 'paymentId is required' }, { status: 400 });
  }
 
- const updated = await prisma.boothRentPayment.update({
+ const updated = await tenantClient.boothRentPayment.update({
  where: { id: paymentId },
  data: {
  status: status || 'COMPLETED',

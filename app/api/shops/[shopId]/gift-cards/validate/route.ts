@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
+import { prisma, getTenantClient } from '@/lib/prisma';
 import { requireShopRole, isAuthError } from '@/lib/auth';
 
 export const dynamic = 'force-dynamic';
@@ -10,6 +10,7 @@ export async function POST(
 ) {
  try {
  const { shopId } = await params;
+    const tenantClient = await getTenantClient(shopId);
  
  const authResult = await requireShopRole(shopId, ['SITE_ADMIN', 'SHOP_ADMIN', 'STAFF', 'ATTENDANCE_KIOSK']);
  if (isAuthError(authResult)) return authResult;
@@ -21,11 +22,11 @@ export async function POST(
  return NextResponse.json({ error: 'Code is required.' }, { status: 400 });
  }
 
- const giftCard = await prisma.giftCard.findUnique({
+ const giftCard = await tenantClient.giftCard.findUnique({
  where: { code: String(code).trim() }
  });
 
- if (!giftCard || (giftCard.shopId !== shopId && !(await prisma.shopAccess.findFirst({ where: { userId: giftCard.id, shopId } })))) {
+ if (!giftCard || (giftCard.shopId !== shopId && !(await tenantClient.shopAccess.findFirst({ where: { userId: giftCard.id, shopId } })))) {
  return NextResponse.json({ error: 'Invalid discount or gift card code.' }, { status: 404 });
  }
 
