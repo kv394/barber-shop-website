@@ -19,5 +19,92 @@
     "total": "Total",
     "noProfessionals": "No professionals available.",
     "noTimeSlots": "No time slots available."
+  },
+  "Common": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "back": "Back",
+    "loading": "Loading",
+    "error": "Error",
+    "success": "Success",
+    "confirm": "Confirm",
+    "search": "Search",
+    "filter": "Filter",
+    "export": "Export",
+    "close": "Close",
+    "submit": "Submit",
+    "next": "Next",
+    "previous": "Previous",
+    "yes": "Yes",
+    "no": "No",
+    "ok": "OK"
+  },
+  "Auth": {
+    "signIn": "Sign In",
+    "signUp": "Sign Up",
+    "email": "Email",
+    "password": "Password",
+    "forgotPassword": "Forgot Password",
+    "resetPassword": "Reset Password",
+    "createAccount": "Create Account",
+    "logOut": "Log Out",
+    "rememberMe": "Remember Me",
+    "twoFactorAuth": "Two-Factor Authentication"
+  },
+  "Dashboard": {
+    "dashboard": "Dashboard",
+    "overview": "Overview",
+    "recentActivity": "Recent Activity",
+    "totalRevenue": "Total Revenue",
+    "totalAppointments": "Total Appointments",
+    "totalClients": "Total Clients",
+    "todaysSchedule": "Today's Schedule",
+    "quickActions": "Quick Actions"
+  },
+  "Appointments": {
+    "appointments": "Appointments",
+    "bookNow": "Book Now",
+    "reschedule": "Reschedule",
+    "cancelAppointment": "Cancel Appointment",
+    "noShow": "No Show",
+    "completed": "Completed",
+    "scheduled": "Scheduled",
+    "selectDate": "Select Date",
+    "selectTime": "Select Time",
+    "selectService": "Select Service",
+    "selectStaff": "Select Staff",
+    "notes": "Notes",
+    "depositRequired": "Deposit Required"
+  },
+  "Clients": {
+    "clients": "Clients",
+    "addClient": "Add Client",
+    "clientDetails": "Client Details",
+    "appointmentHistory": "Appointment History",
+    "loyaltyPoints": "Loyalty Points",
+    "membership": "Membership",
+    "contactInfo": "Contact Info",
+    "allergies": "Allergies",
+    "preferences": "Preferences"
+  },
+  "Services": {
+    "services": "Services",
+    "addService": "Add Service",
+    "serviceName": "Service Name",
+    "duration": "Duration",
+    "price": "Price",
+    "description": "Description",
+    "category": "Category",
+    "addOns": "Add-ons"
+  },
+  "Notifications": {
+    "notifications": "Notifications",
+    "markAsRead": "Mark as Read",
+    "noNotifications": "No Notifications",
+    "appointmentReminder": "Appointment Reminder",
+    "bookingConfirmed": "Booking Confirmed",
+    "reviewRequest": "Review Request"
   }
 }
