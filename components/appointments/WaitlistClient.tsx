@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { createClient } from '@/utils/supabase/client';
 import PremiumGlassCard from '@/components/ui/PremiumGlassCard';
 import PremiumInput from '@/components/ui/PremiumInput';
 import PremiumButton from '@/components/ui/PremiumButton';
@@ -21,8 +22,21 @@ export default function WaitlistClient({ shopId, services, staff }: { shopId: st
  setLoading(false);
  };
 
- useEffect(() => { fetchWaitlist(); }, []);
- useEffect(() => { const i = setInterval(fetchWaitlist, 30000); return () => clearInterval(i); }, []);
+  useEffect(() => {
+    fetchWaitlist();
+    const supabase = createClient();
+    const channel = supabase.channel('waitlist_updates')
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'Waitlist', filter: `shopId=eq.${shopId}` },
+        () => { fetchWaitlist(); }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [shopId]);
 
  const handleAdd = async (e: React.FormEvent) => {
  e.preventDefault();

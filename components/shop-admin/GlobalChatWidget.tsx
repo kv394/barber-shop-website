@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
+import { createClient } from '@/utils/supabase/client';
 import TeamChat from './TeamChat';
 
 export default function GlobalChatWidget({ shopId, currentUserId, userRole }: { shopId: string, currentUserId: string, userRole: string }) {
@@ -35,41 +36,52 @@ export default function GlobalChatWidget({ shopId, currentUserId, userRole }: { 
  return () => window.removeEventListener('keydown', handleEsc);
  }, [isOpen]);
 
- // Poll for messages to check unread count
- useEffect(() => {
- let isMounted = true;
- 
- const checkUnread = async () => {
- // Don't accumulate unread count if we're actively looking at the chat
- if (isOpen) return;
+  // Use Supabase Realtime to check unread count
+  useEffect(() => {
+    let isMounted = true;
+    
+    const checkUnread = async () => {
+      // Don't accumulate unread count if we're actively looking at the chat
+      if (isOpen) return;
 
- try {
- const res = await fetch(`/api/shops/${shopId}/chat`);
- if (res.ok && isMounted) {
- const messages = await res.json();
- if (messages.length > 0) {
- const lastViewed = lastViewedRef.current;
- if (!lastViewed) {
- setUnreadCount(messages.length);
- } else {
- const lastViewedDate = new Date(lastViewed);
- const unread = messages.filter((m: any) => new Date(m.createdAt) > lastViewedDate && m.sender.id !== currentUserId);
- setUnreadCount(unread.length);
- }
- }
- }
- } catch (err) {
- // Silent fail on polling
- }
- };
+      try {
+        const res = await fetch(`/api/shops/${shopId}/chat`);
+        if (res.ok && isMounted) {
+          const messages = await res.json();
+          if (messages.length > 0) {
+            const lastViewed = lastViewedRef.current;
+            if (!lastViewed) {
+              setUnreadCount(messages.length);
+            } else {
+              const lastViewedDate = new Date(lastViewed);
+              const unread = messages.filter((m: any) => new Date(m.createdAt) > lastViewedDate && m.sender.id !== currentUserId);
+              setUnreadCount(unread.length);
+            }
+          }
+        }
+      } catch (err) {
+        // Silent fail on fetch
+      }
+    };
 
- checkUnread();
- const intervalId = setInterval(checkUnread, 5000);
- return () => {
- isMounted = false;
- clearInterval(intervalId);
- };
- }, [shopId, isOpen, currentUserId]);
+    checkUnread();
+    
+    const supabase = createClient();
+    const channel = supabase.channel('global_chat_updates')
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'Message', filter: `shopId=eq.${shopId}` },
+        () => {
+          checkUnread();
+        }
+      )
+      .subscribe();
+
+    return () => {
+      isMounted = false;
+      supabase.removeChannel(channel);
+    };
+  }, [shopId, isOpen, currentUserId]);
 
  // Only allow STAFF, SHOP_ADMIN, SITE_ADMIN to see the chat
  if (userRole !== 'STAFF' && userRole !== 'SHOP_ADMIN' && userRole !== 'SITE_ADMIN') {

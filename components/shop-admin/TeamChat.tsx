@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
+import { createClient } from '@/utils/supabase/client';
 
 interface Sender {
  id: string;
@@ -44,8 +45,6 @@ export default function TeamChat({ shopId, currentUserId }: { shopId: string, cu
 
  useEffect(() => {
  fetchMessages();
- // Poll for new messages every 5 seconds
- const intervalId = setInterval(fetchMessages, 5000);
  
  // Fetch users for mentions
  fetch(`/api/shops/${shopId}/staff`)
@@ -57,7 +56,18 @@ export default function TeamChat({ shopId, currentUserId }: { shopId: string, cu
  })
  .catch(console.error);
  
- return () => clearInterval(intervalId);
+ const supabase = createClient();
+ const channel = supabase.channel('chat_updates')
+ .on(
+ 'postgres_changes',
+ { event: '*', schema: 'public', table: 'Message', filter: `shopId=eq.${shopId}` },
+ () => { fetchMessages(); }
+ )
+ .subscribe();
+ 
+ return () => {
+ supabase.removeChannel(channel);
+ };
  }, [shopId]);
 
  useEffect(() => {

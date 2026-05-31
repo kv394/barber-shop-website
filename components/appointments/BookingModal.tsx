@@ -6,6 +6,10 @@ import { useRouter } from 'next/navigation';
 import { getThemeStyles, hexToRgba } from './ThemeStyles';
 import { BookingSuccessScreen } from './BookingSuccessScreen';
 import { BookingReviewScreen } from './BookingReviewScreen';
+import BookingAddons from './BookingAddons';
+import BookingWalkInForm from './BookingWalkInForm';
+import BookingTimeSelection from './BookingTimeSelection';
+import BookingStaffSelection from './BookingStaffSelection';
 
 interface ServiceAddon {
  id: string;
@@ -449,33 +453,7 @@ export default function BookingModal({ shopId, service, onClose, shopHours, them
  <p className="text-crm-accent font-semibold mb-2 text-[13px]">{service.name} <span className="text-crm-muted font-normal ml-2">({totalDuration} mins • ${totalPrice.toFixed(2)})</span></p>
 
  {service.addons && service.addons.length > 0 && (
- <div className="mb-6 p-3 bg-crm-bg rounded-lg border border-crm-border shadow-sm">
- <p className="text-crm-text text-[12px] font-semibold mb-2">Enhance your service:</p>
- <div className="space-y-2">
- {service.addons.map(addon => {
- const isSelected = selectedAddonIds.includes(addon.id);
- return (
- <label key={addon.id} className={`flex items-center justify-between p-2 rounded border cursor-pointer transition-colors ${isSelected ? 'bg-crm-primary/10 border-crm-primary/50' : 'bg-crm-surface border-crm-border hover:border-crm-primary/30'}`}>
- <div className="flex items-center gap-3">
- <input 
- type="checkbox" 
- checked={isSelected}
- onChange={(e) => {
- if (e.target.checked) setSelectedAddonIds([...selectedAddonIds, addon.id]);
- else setSelectedAddonIds(selectedAddonIds.filter(id => id !== addon.id));
- }}
- className="w-4 h-4 accent-crm-primary rounded border-crm-border"
- />
- <span className="text-crm-text text-[13px]">{addon.name}</span>
- </div>
- <span className="text-crm-muted text-[12px] whitespace-nowrap">
- +${addon.price.toFixed(2)} {addon.durationMin > 0 ? ` (+${addon.durationMin}m)` : ''}
- </span>
- </label>
- );
- })}
- </div>
- </div>
+ <BookingAddons service={service} selectedAddonIds={selectedAddonIds} onAddonChange={setSelectedAddonIds} />
  )}
 
  {!isLoaded ? (
@@ -484,50 +462,27 @@ export default function BookingModal({ shopId, service, onClose, shopHours, them
  <>
  {error && <p className="text-status-cancelled bg-status-cancelled/20 p-3 rounded mb-4 text-[13px]">{error}</p>}
 
- {/* Walk-in Toggle (staff only) */}
- {userRole && (
- <div className="mb-5 flex items-center gap-3">
- <label className="flex items-center gap-2 cursor-pointer text-[13px]">
- <input type="checkbox" checked={isWalkIn} onChange={(e) => { setIsWalkIn(e.target.checked); setSelectedExistingClient(null); setClientName(''); setClientEmail(''); setClientPhone(''); }} className="w-4 h-4 accent-crm-primary" />
- <span className="text-crm-text font-semibold">Walk-in Booking</span>
- </label>
- </div>
- )}
-
- {/* Walk-in Client Details */}
- {isWalkIn && (
- <div className="mb-5 space-y-3 bg-crm-bg rounded-lg border border-crm-border p-4">
- <p className="text-crm-text text-[12px] font-semibold mb-2">Client Details</p>
- {selectedExistingClient ? (
- <div className="flex items-center justify-between bg-crm-surface p-3 rounded border border-crm-border">
- <div>
- <p className="text-crm-text font-semibold text-[13px]">{selectedExistingClient.name}</p>
- <p className="text-crm-muted text-[12px]">{selectedExistingClient.email}</p>
- </div>
- <button onClick={handleClearSelectedClient} className="text-crm-muted hover:text-crm-text text-[12px]">✕ Clear</button>
- </div>
- ) : (
- <>
- <div className="relative">
- <input type="text" placeholder="Search existing client..." value={clientSearchQuery} onChange={(e) => setClientSearchQuery(e.target.value)} className={`${tStyles.input} text-[13px]`} />
- {isSearchingClients && <span className="absolute right-3 top-1/2 -translate-y-1/2 text-crm-muted text-[11px]">Searching...</span>}
- {clientSearchResults.length > 0 && (
- <div className="absolute z-50 w-full mt-1 bg-crm-surface border border-crm-border rounded-lg shadow-lg max-h-40 overflow-y-auto">
- {clientSearchResults.map(c => (
- <button key={c.id} onClick={() => handleSelectExistingClient(c)} className="w-full text-left px-3 py-2 hover:bg-crm-bg text-[13px] text-crm-text border-b border-crm-border last:border-0">
- {c.name || c.email} <span className="text-crm-muted text-[11px]">({c.email})</span>
- </button>
- ))}
- </div>
- )}
- </div>
- <input type="text" placeholder="Client Name *" value={clientName} onChange={(e) => setClientName(e.target.value)} className={`${tStyles.input} text-[13px]`} />
- <input type="email" placeholder="Client Email" value={clientEmail} onChange={(e) => setClientEmail(e.target.value)} className={`${tStyles.input} text-[13px]`} />
- <input type="tel" placeholder="Client Phone" value={clientPhone} onChange={(e) => setClientPhone(e.target.value)} className={`${tStyles.input} text-[13px]`} />
- </>
- )}
- </div>
- )}
+ {/* Walk-in Toggle and Client Details */}
+ <BookingWalkInForm
+ userRole={userRole}
+ isWalkIn={isWalkIn}
+ setIsWalkIn={setIsWalkIn}
+ selectedExistingClient={selectedExistingClient}
+ setSelectedExistingClient={setSelectedExistingClient}
+ clientName={clientName}
+ setClientName={setClientName}
+ clientEmail={clientEmail}
+ setClientEmail={setClientEmail}
+ clientPhone={clientPhone}
+ setClientPhone={setClientPhone}
+ clientSearchQuery={clientSearchQuery}
+ setClientSearchQuery={setClientSearchQuery}
+ isSearchingClients={isSearchingClients}
+ clientSearchResults={clientSearchResults}
+ handleSelectExistingClient={handleSelectExistingClient}
+ handleClearSelectedClient={handleClearSelectedClient}
+ tStyles={tStyles}
+ />
 
  {/* Date Picker */}
  <div className="mb-5">
@@ -536,41 +491,28 @@ export default function BookingModal({ shopId, service, onClose, shopHours, them
  </div>
 
  {/* Time Slots */}
- {selectedDate && (
- <div className="mb-5">
- <label className="block text-crm-text text-[12px] font-semibold mb-2">Select Time</label>
- {isLoading ? (
- <p className="text-crm-muted text-center py-4 text-[13px]">Loading availability...</p>
- ) : availableTimeSlots.length > 0 ? (
- <div className="grid grid-cols-3 gap-2 max-h-48 overflow-y-auto">
- {availableTimeSlots.map(time => (
- <button key={time} onClick={() => { setSelectedTime(time); setSelectedStaff(''); }} className={`p-2 text-[13px] rounded-lg border transition-colors ${selectedTime === time ? tStyles.cardActive : tStyles.cardInactive}`} style={selectedTime === time ? { borderColor: themeColor || '#111827', backgroundColor: activeBg } : {}}>
- {time}
- </button>
- ))}
- </div>
- ) : (
- <p className="text-crm-muted text-center py-4 text-[13px] bg-crm-bg rounded-lg">No available times on this date.</p>
- )}
- </div>
- )}
+ <BookingTimeSelection
+ selectedDate={selectedDate}
+ selectedTime={selectedTime}
+ setSelectedTime={setSelectedTime}
+ setSelectedStaff={setSelectedStaff}
+ isLoading={isLoading}
+ availableTimeSlots={availableTimeSlots}
+ tStyles={tStyles}
+ themeColor={themeColor}
+ activeBg={activeBg}
+ />
 
  {/* Staff Selection */}
- {selectedTime && (
- <div className="mb-5">
- <label className="block text-crm-text text-[12px] font-semibold mb-2">Select Staff</label>
- <div className="space-y-2">
- <button onClick={() => setSelectedStaff(ANY_STAFF_VALUE)} className={`w-full p-3 text-left text-[13px] rounded-lg border transition-colors ${selectedStaff === ANY_STAFF_VALUE ? tStyles.cardActive : tStyles.cardInactive}`} style={selectedStaff === ANY_STAFF_VALUE ? { borderColor: themeColor || '#111827', backgroundColor: activeBg } : {}}>
- Any Available
- </button>
- {staffAtSelectedTime.map(s => (
- <button key={s.id} onClick={() => setSelectedStaff(s.id)} className={`w-full p-3 text-left text-[13px] rounded-lg border transition-colors ${selectedStaff === s.id ? tStyles.cardActive : tStyles.cardInactive}`} style={selectedStaff === s.id ? { borderColor: themeColor || '#111827', backgroundColor: activeBg } : {}}>
- {s.name}
- </button>
- ))}
- </div>
- </div>
- )}
+ <BookingStaffSelection
+ selectedTime={selectedTime}
+ selectedStaff={selectedStaff}
+ setSelectedStaff={setSelectedStaff}
+ staffAtSelectedTime={staffAtSelectedTime}
+ tStyles={tStyles}
+ themeColor={themeColor}
+ activeBg={activeBg}
+ />
 
  {/* Notes */}
  {selectedStaff && (
