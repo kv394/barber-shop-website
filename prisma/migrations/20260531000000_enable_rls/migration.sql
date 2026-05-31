@@ -31,11 +31,7 @@ ALTER TABLE "PortfolioImage" ENABLE ROW LEVEL SECURITY;
 ALTER TABLE "ShopAccess" ENABLE ROW LEVEL SECURITY;
 ALTER TABLE "ShopUsageReport" ENABLE ROW LEVEL SECURITY;
 
--- Create policy definition
--- This policy ensures that the row's shopId exactly matches the app.current_shop_id 
--- injected by Prisma's SET LOCAL, OR allows full access if bypass is enabled (e.g. for SITE_ADMIN).
--- The current_setting('app.current_shop_id', true) returns NULL if not set, preventing accidental access.
-
+-- Create tenant isolation policies (idempotent: drops existing policy first)
 DO $$ 
 DECLARE
     tbl text;
@@ -47,6 +43,9 @@ BEGIN
           AND table_schema = 'public' 
           AND table_name NOT IN ('User', 'Shop', 'DynamicTemplate', 'SystemLog')
     LOOP
+        -- Drop existing policy if it exists (makes this migration idempotent)
+        EXECUTE format('DROP POLICY IF EXISTS "tenant_isolation_policy" ON %I;', tbl);
+        -- Create the policy
         EXECUTE format('
             CREATE POLICY "tenant_isolation_policy" ON %I
             FOR ALL
