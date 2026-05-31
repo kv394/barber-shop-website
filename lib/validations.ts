@@ -11,7 +11,7 @@ export const productSchema = z.object({
   trackInventory: z.coerce.boolean().optional().default(false),
   inventoryCount: z.coerce.number().int().min(0).optional().default(0),
   reorderPoint: z.coerce.number().int().min(0).optional().default(0),
-  type: z.enum(['RETAIL', 'PROFESSIONAL', 'CONSUMABLE', 'BACKBAR']).default('RETAIL'),
+  type: z.enum(['RETAIL', 'BACKBAR']).default('RETAIL'),
   supplier: z.string().max(200).optional().nullable(),
   isSellable: z.coerce.boolean().optional().default(true),
   imageUrl: z.string().url().max(500).optional().nullable().or(z.literal('')),

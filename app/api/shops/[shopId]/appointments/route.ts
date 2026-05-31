@@ -244,10 +244,6 @@ export async function POST(
  return NextResponse.json({ error: 'Selected client not found in this shop' }, { status: 404 });
  }
  targetUserId = existingClient.id;
- // Update phone if provided and not already set
- if (clientPhone && !existingClient.phone) {
- await tenantClient.user.update({ where: { id: existingClient.id }, data: { phone: clientPhone } });
- }
  } else {
  if (!clientName) {
  return NextResponse.json({ error: 'Client name is required for walk-in bookings' }, { status: 400 });
@@ -257,12 +253,11 @@ export async function POST(
 
  const guestUser = await tenantClient.user.upsert({
  where: { email: emailToUse },
- update: { phone: clientPhone || undefined },
+ update: {},
  create: {
  id: `guest_${crypto.randomBytes(8).toString('hex')}`,
  email: emailToUse,
  name: clientName,
- phone: clientPhone || null,
  role: 'CLIENT',
  shopId: shopId,
  barcode: userBarcode,

@@ -46,7 +46,6 @@ export async function POST(req: Request) {
  name: clientName,
  role: 'CLIENT',
  shopId,
- phone: clientPhone || null,
  marketingConsent: false,
  },
  });

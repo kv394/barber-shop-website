@@ -32,7 +32,7 @@ export async function GET(
  return NextResponse.json([]);
  }
 
- // Search clients by name, email, or phone (case-insensitive)
+ // Search clients by name or email (case-insensitive)
  const clients = await tenantClient.user.findMany({
  where: {
  shopId: shopId,
@@ -40,14 +40,12 @@ export async function GET(
  OR: [
  { name: { contains: query, mode: 'insensitive' } },
  { email: { contains: query, mode: 'insensitive' } },
- { phone: { contains: query, mode: 'insensitive' } },
  ],
  },
  select: {
  id: true,
  name: true,
  email: true,
- phone: true,
  },
  take: 10,
  orderBy: { name: 'asc' },

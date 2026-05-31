@@ -47,7 +47,6 @@ export async function GET(
  name: true,
  role: true,
  email: true,
- phone: true,
  commissionRateService: true,
  commissionRateProduct: true,
  workingHours: true,

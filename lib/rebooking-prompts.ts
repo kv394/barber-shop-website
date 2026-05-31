@@ -72,7 +72,6 @@ export class RebookingService {
         id: true,
         name: true,
         email: true,
-        phone: true,
         clientAppointments: {
           where: { status: 'COMPLETED' },
           orderBy: { startTime: 'desc' },

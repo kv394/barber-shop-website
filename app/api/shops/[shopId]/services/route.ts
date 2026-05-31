@@ -23,7 +23,7 @@ const isMissingTableError = (err: any, tableName: string) => {
 
 async function fetchShopServices(shopId: string, isAdmin: boolean) {
  const baseArgs = {
- where: isAdmin ? { shopId } : { shopId, type: 'CUSTOMER' }
+ where: isAdmin ? { shopId } : { shopId, type: 'CUSTOMER' as any }
  };
 
  const includeFull = {

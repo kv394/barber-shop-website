@@ -16,7 +16,7 @@ export async function sendSMS(args: { to: string; message: string }, shopId: str
 
 /** List stored notification templates */
 export async function listTemplates(_args: {}, shopId: string) {
-  const db = getTenantClient(shopId);
-  const templates = await db.notificationTemplate.findMany();
+  const db = await getTenantClient(shopId);
+  const templates = await db.notification.findMany({ where: { shopId } });
   return templates;
 }

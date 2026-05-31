@@ -83,8 +83,8 @@ export async function GET(
  const referrals = await tenantClient.referral.findMany({
  where: { shopId },
  include: {
- referredBy: { select: { id: true, name: true, email: true } },
- referredClient: { select: { id: true, name: true, email: true } },
+ referrer: { select: { id: true, name: true, email: true } },
+ referee: { select: { id: true, name: true, email: true } },
  },
  orderBy: { createdAt: 'desc' },
  take: 100,
@@ -103,7 +103,7 @@ export async function GET(
  const referrals = await tenantClient.referral.findMany({
  where: { shopId, referrerId: userId },
  include: {
- referredClient: { select: { name: true } },
+ referee: { select: { name: true } },
  },
  orderBy: { createdAt: 'desc' },
  });

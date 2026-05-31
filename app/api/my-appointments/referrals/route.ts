@@ -41,7 +41,7 @@ export async function GET() {
  const referralsMade = await prisma.referral.findMany({
  where: { referrerId: userId },
  include: {
- referredClient: { select: { name: true, email: true } },
+ referee: { select: { name: true, email: true } },
  shop: { select: { name: true } },
  },
  orderBy: { createdAt: 'desc' },

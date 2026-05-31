@@ -55,7 +55,7 @@ export async function requireShopRole(
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
     // Use the ShopAccess role for authorization in this request context
-    effectiveRole = access.role;
+    effectiveRole = access.role as any;
   }
 
   // Check role AFTER evaluating ShopAccess role

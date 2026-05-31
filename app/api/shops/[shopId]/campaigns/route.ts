@@ -49,7 +49,7 @@ export async function POST(
     data: {
       shopId,
       name,
-      message,
+      message: message || '',
       type,
       channel,
       targetSegment: targetSegment || 'ALL',
@@ -161,7 +161,7 @@ async function getTargetClients(shopId: string, segment: string) {
  some: { shopId },
  },
  },
- select: { id: true, name: true, email: true, phone: true },
+ select: { id: true, name: true, email: true },
  });
  }
  case 'INACTIVE_60': {
@@ -174,7 +174,7 @@ async function getTargetClients(shopId: string, segment: string) {
  some: { shopId },
  },
  },
- select: { id: true, name: true, email: true, phone: true },
+ select: { id: true, name: true, email: true },
  });
  }
  case 'INACTIVE_90': {
@@ -187,21 +187,24 @@ async function getTargetClients(shopId: string, segment: string) {
  some: { shopId },
  },
  },
- select: { id: true, name: true, email: true, phone: true },
+ select: { id: true, name: true, email: true },
  });
  }
  case 'BIRTHDAY_THIS_MONTH': {
- const clients = await prisma.user.findMany({
- where: { ...baseWhere, birthday: { not: null } },
- select: { id: true, name: true, email: true, phone: true, birthday: true },
+ const shopClients = await prisma.shopClient.findMany({
+ where: { shopId, birthday: { not: null } },
+ include: { user: { select: { id: true, name: true, email: true } } },
  });
  const month = now.getMonth();
- return clients.filter((c: any) => c.birthday && c.birthday.getMonth() === month);
+ return shopClients
+ .filter((c: any) => c.birthday && c.birthday.getMonth() === month)
+ .map((c: any) => c.user)
+ .filter(Boolean);
  }
  default: // ALL
  return prisma.user.findMany({
  where: baseWhere,
- select: { id: true, name: true, email: true, phone: true },
+ select: { id: true, name: true, email: true },
  });
  }
 }

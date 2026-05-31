@@ -107,7 +107,6 @@ export const adminToolDeclarations = [
         userId: { type: Type.STRING, description: 'Required for update or delete' },
         name: { type: Type.STRING, description: 'Name of the staff member' },
         email: { type: Type.STRING, description: 'Email of the staff member (required for create)' },
-        phone: { type: Type.STRING, description: 'Phone number' },
         role: { type: Type.STRING, description: 'Role (e.g., STAFF, SHOP_ADMIN)' }
       },
       required: ['action']
@@ -275,7 +274,7 @@ export async function executeAdminTool(call: any, shopId: string, user: any) {
         if (args.action === 'create') {
           if (!args.email || !args.name) return { error: "Missing required fields: email, name" };
           const u = await prisma.user.create({
-            data: { shopId, email: args.email, name: args.name, role: args.role || 'STAFF', phone: args.phone }
+            data: { shopId, email: args.email, name: args.name, role: args.role || 'STAFF' }
           });
           return { success: true, message: `Staff member '${u.name}' created` };
         } else if (args.action === 'update') {
@@ -283,7 +282,6 @@ export async function executeAdminTool(call: any, shopId: string, user: any) {
           const dataToUpdate: any = {};
           if (args.name !== undefined) dataToUpdate.name = args.name;
           if (args.email !== undefined) dataToUpdate.email = args.email;
-          if (args.phone !== undefined) dataToUpdate.phone = args.phone;
           if (args.role !== undefined) dataToUpdate.role = args.role;
           const u = await prisma.user.update({ where: { id: args.userId }, data: dataToUpdate });
           return { success: true, message: `Staff member '${u.name}' updated` };

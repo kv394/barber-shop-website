@@ -141,7 +141,7 @@ const newShop = await prisma.shop.create({
  companyName: sanitizedCompanyName,
  description: sanitizedDesc,
  customization: customization as any,
- country: selectedCountry,
+ country: selectedCountry as any,
  currency,
  locale,
  paymentGateway,

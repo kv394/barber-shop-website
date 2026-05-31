@@ -1,13 +1,14 @@
 import { getTenantClient } from '@/lib/prisma';
 
 /** Create a new invoice */
-export async function createInvoice(args: { clientId: string; amount: number; description: string }, shopId: string) {
-  const db = getTenantClient(shopId);
-  const invoice = await db.invoice.create({
+export async function createInvoice(args: { appointmentId: string; amount: number; description: string }, shopId: string) {
+  const db = await getTenantClient(shopId);
+  const invoice = await db.payment.create({
     data: {
-      clientId: args.clientId,
+      appointmentId: args.appointmentId,
       amount: args.amount,
-      description: args.description,
+      method: 'OTHER',
+      status: 'PENDING',
     },
   });
   return invoice;
@@ -15,8 +16,7 @@ export async function createInvoice(args: { clientId: string; amount: number; de
 
 /** Refund a payment */
 export async function refundPayment(args: { transactionId: string }, shopId: string) {
-  const db = getTenantClient(shopId);
-  // Assuming a payment model with status field
+  const db = await getTenantClient(shopId);
   const payment = await db.payment.update({
     where: { id: args.transactionId },
     data: { status: 'REFUNDED' },
@@ -26,7 +26,7 @@ export async function refundPayment(args: { transactionId: string }, shopId: str
 
 /** List transactions */
 export async function listTransactions(args: { startDate?: string; endDate?: string }, shopId: string) {
-  const db = getTenantClient(shopId);
+  const db = await getTenantClient(shopId);
   const where: any = {};
   if (args.startDate) where.createdAt = { gte: new Date(args.startDate) };
   if (args.endDate) {

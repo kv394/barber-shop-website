@@ -425,13 +425,13 @@ If the user wants to check, cancel, or reschedule their appointments, or asks fo
  }
  } else if (call.name === 'book_appointment') {
  const args = call.args as any;
- const { serviceId, staffId, date, time, clientName, clientPhone, clientEmail, serviceLocation } = args;
+ const { serviceId, staffId, date, time, clientName, clientEmail, serviceLocation } = args;
 
  // Create dummy client user
  const emailToUse = clientEmail || `guest-${Date.now()}@example.com`;
 
  let user = await prisma.user.findFirst({
- where: { shopId: realShopId, OR: [{ email: emailToUse }, { phone: clientPhone }] }
+ where: { shopId: realShopId, email: emailToUse }
  });
 
  let isNewUser = false;
@@ -441,7 +441,6 @@ If the user wants to check, cancel, or reschedule their appointments, or asks fo
  data: {
  email: emailToUse,
  name: clientName,
- phone: clientPhone,
  role: 'CLIENT',
  shopId: realShopId,
  barcode: `C-${Date.now()}`
@@ -493,19 +492,18 @@ If the user wants to check, cancel, or reschedule their appointments, or asks fo
  }
  } else if (call.name === 'check_appointments') {
  const args = call.args as any;
- const { clientName, clientPhone, clientEmail } = args;
+ const { clientName, clientEmail } = args;
  
- if (!clientName && !clientPhone && !clientEmail) {
- result = { error: "Please provide either a name, phone number, or an email address." };
+ if (!clientName && !clientEmail) {
+ result = { error: "Please provide either a name or an email address." };
  } else {
- const userConditions = [];
+ const userConditions: any[] = [];
  if (clientName) userConditions.push({ name: { contains: clientName, mode: 'insensitive' } });
- if (clientPhone) userConditions.push({ phone: clientPhone });
  if (clientEmail) userConditions.push({ email: clientEmail });
  
  const users = await prisma.user.findMany({
- where: { shopId: realShopId, OR: userConditions },
- select: { id: true, name: true, phone: true, email: true }
+ where: { shopId: realShopId, OR: userConditions.length > 0 ? userConditions : undefined },
+ select: { id: true, name: true, email: true }
  });
  
  if (users.length === 0) {
@@ -530,7 +528,6 @@ If the user wants to check, cancel, or reschedule their appointments, or asks fo
  result = { 
  userDetails: {
  name: user.name,
- phone: user.phone,
  email: user.email
  },
  appointments: appointments.length > 0 ? appointments.map((apt: any) => ({

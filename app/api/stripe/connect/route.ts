@@ -42,7 +42,7 @@ export async function GET(request: Request) {
       return NextResponse.json({ error: 'Shop not found' }, { status: 404 });
     }
 
-    let accountId = shop.stripeConnectAccountId;
+    let accountId = shop.stripeAccountId;
 
     if (!accountId) {
       const account = await stripe.accounts.create({
@@ -54,7 +54,7 @@ export async function GET(request: Request) {
 
       await prisma.shop.update({
         where: { id: shopId },
-        data: { stripeConnectAccountId: accountId }
+        data: { stripeAccountId: accountId }
       });
     }
 

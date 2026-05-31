@@ -64,7 +64,7 @@ export default async function ShopSettingsPage({
  initialTravelFee={shopDetails?.travelFee || 0}
  initialMaxTravelRadius={shopDetails?.maxTravelRadius || null}
  initialBaseLocation={shopDetails?.baseLocation || ''}
- initialStripeConnectOnboarded={shopDetails?.stripeConnectOnboarded || false}
+ initialStripeConnectOnboarded={!!shopDetails?.stripeAccountId}
  />
 
  {/* Section 2: Appearance & Branding (template + customization save buttons) */}

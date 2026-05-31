@@ -130,11 +130,11 @@ export class DemoAutomationService {
           const endTime = new Date(now);
           endTime.setMinutes(endTime.getMinutes() + duration);
 
-          // Mark as SERVED and assigned to staff
+          // Mark as COMPLETED and assigned to staff
           await prisma.waitlist.update({
             where: { id: wl.id },
             data: { 
-              status: 'SERVED', 
+              status: 'COMPLETED', 
               staffId: rStaff.id,
               updatedAt: new Date() 
             }

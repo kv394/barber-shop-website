@@ -21,7 +21,7 @@ export const getShopLayoutData = cache(async (userId: string, shopId: string) =>
       const [user, allAccesses] = await Promise.all([
         prisma.user.findFirst({
           where: authUser?.email ? { email: authUser.email } : { id: userId },
-          select: { id: true, role: true, shopId: true, name: true, email: true, canManageInventory: true, shopAccesses: shopId !== 'all' ? { where: { shopId } } : { select: { shopId: true, role: true } } },
+          select: { id: true, role: true, shopId: true, name: true, email: true, canManageInventory: true, stripeConnectAccountId: true, stripeConnectOnboarded: true, shopAccesses: shopId !== 'all' ? { where: { shopId } } : { select: { shopId: true, role: true } } },
         }),
         prisma.user.findFirst({
           where: authUser?.email ? { email: authUser.email } : { id: userId },

@@ -17,7 +17,7 @@ export async function GET(
  const accounts = await tenantClient.loyaltyAccount.findMany({
  where: { shopId },
  include: {
- user: { select: { id: true, name: true, email: true, phone: true } },
+ user: { select: { id: true, name: true, email: true } },
  },
  orderBy: { pointsBalance: 'desc' },
  take: 100,

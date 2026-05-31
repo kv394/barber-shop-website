@@ -16,10 +16,10 @@ export async function generateSalesReport(args: { startDate: string; endDate: st
 
 /** Generate a staff performance report for a date range */
 export async function generateStaffReport(args: { startDate: string; endDate: string }, shopId: string) {
-  const db = getTenantClient(shopId);
-  const staffActivities = await db.booking.groupBy({
+  const db = await getTenantClient(shopId);
+  const staffActivities = await db.appointment.groupBy({
     by: ['staffId'],
-    where: { startTime: { gte: new Date(args.startDate), lte: new Date(args.endDate) } },
+    where: { startTime: { gte: new Date(args.startDate), lte: new Date(args.endDate) }, shopId },
     _count: { _all: true },
   });
   return staffActivities;

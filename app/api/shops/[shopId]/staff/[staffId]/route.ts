@@ -26,15 +26,12 @@ export async function GET(
  email: true,
  name: true,
  role: true,
- phone: true,
- image: true,
+ imageUrl: true,
  shopId: true,
  barcode: true,
- commissionRate: true,
- isAvailable: true,
- workingDays: true,
- workingHoursStart: true,
- workingHoursEnd: true,
+ commissionRateProduct: true,
+ commissionRateService: true,
+ workingHours: true,
  createdAt: true,
  leaves: { where: { date: { gte: new Date() } }, orderBy: { date: 'asc' } },
  },
@@ -76,7 +73,6 @@ export async function PATCH(
  if (body.commissionRateProduct !== undefined) allowedFields.commissionRateProduct = body.commissionRateProduct;
  if (body.workingHours !== undefined) allowedFields.workingHours = body.workingHours;
  if (body.name !== undefined) allowedFields.name = body.name;
- if (body.phone !== undefined) allowedFields.phone = body.phone;
  if (body.canManageInventory !== undefined) allowedFields.canManageInventory = body.canManageInventory;
  if (body.imageUrl !== undefined) allowedFields.imageUrl = body.imageUrl;
  if (body.employmentType !== undefined) allowedFields.employmentType = body.employmentType;

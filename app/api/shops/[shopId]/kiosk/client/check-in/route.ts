@@ -19,14 +19,16 @@ export async function POST(
  const { phone } = await request.json();
  if (!phone) return NextResponse.json({ error: 'Phone number required' }, { status: 400 });
 
- // Find the user by phone number
- const user = await tenantClient.user.findFirst({
- where: { phone: { contains: phone.trim() }, shopId }
+ // Find the user by phone number using ShopClient
+ const shopClient = await tenantClient.shopClient.findFirst({
+ where: { phone: { contains: phone.trim() }, shopId },
+ include: { user: true }
  });
 
- if (!user) {
+ if (!shopClient || !shopClient.user) {
  return NextResponse.json({ error: 'No appointment found for this phone number today' }, { status: 404 });
  }
+ const user = shopClient.user;
 
  // Find their appointment for today
  const today = new Date();
@@ -48,10 +50,10 @@ export async function POST(
  return NextResponse.json({ error: 'No upcoming appointment found for today' }, { status: 404 });
  }
 
- // Update status to ARRIVED
+ // Update status to ACCEPTED (as ARRIVED is not in schema)
  await tenantClient.appointment.update({
  where: { id: appointment.id },
- data: { status: 'ARRIVED' }
+ data: { status: 'ACCEPTED' }
  });
 
  // Notify the staff member

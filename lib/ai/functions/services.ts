@@ -6,12 +6,13 @@ import { Prisma } from '@prisma/client';
  * args: { name: string, price: number, durationMinutes: number }
  */
 export async function createService(args: { name: string; price: number; durationMinutes: number }, shopId: string) {
-  const db = getTenantClient(shopId);
+  const db = await getTenantClient(shopId);
   const service = await db.service.create({
     data: {
       name: args.name,
       price: args.price,
-      durationMinutes: args.durationMinutes,
+      duration: args.durationMinutes,
+      shopId: shopId,
     },
   });
   return service;
@@ -19,18 +20,20 @@ export async function createService(args: { name: string; price: number; duratio
 
 /** List all services for the shop */
 export async function listServices(_args: {}, shopId: string) {
-  const db = getTenantClient(shopId);
-  const services = await db.service.findMany();
+  const db = await getTenantClient(shopId);
+  const services = await db.service.findMany({ where: { shopId } });
   return services;
 }
 
 /** Create a staff member */
 export async function createStaff(args: { name: string; role: string }, shopId: string) {
-  const db = getTenantClient(shopId);
-  const staff = await db.staff.create({
+  const db = await getTenantClient(shopId);
+  const staff = await db.user.create({
     data: {
       name: args.name,
-      role: args.role,
+      role: 'STAFF',
+      email: `staff-${Date.now()}@example.com`,
+      shopId: shopId,
     },
   });
   return staff;
@@ -38,7 +41,7 @@ export async function createStaff(args: { name: string; role: string }, shopId: 
 
 /** List staff for the shop */
 export async function listStaff(_args: {}, shopId: string) {
-  const db = getTenantClient(shopId);
-  const staff = await db.staff.findMany();
+  const db = await getTenantClient(shopId);
+  const staff = await db.user.findMany({ where: { shopId, role: 'STAFF' } });
   return staff;
 }

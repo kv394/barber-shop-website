@@ -16,7 +16,7 @@ export async function DELETE(
  where: { managementToken: token },
  include: {
  shop: { select: { id: true, name: true } },
- staff: { select: { id: true, name: true, phone: true } },
+ staff: { select: { id: true, name: true } },
  user: { select: { id: true, name: true } }
  }
  });

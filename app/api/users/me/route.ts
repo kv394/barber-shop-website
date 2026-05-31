@@ -20,8 +20,7 @@ export async function GET() {
  name: true,
  role: true,
  shopId: true,
- phone: true,
- image: true,
+ imageUrl: true,
  barcode: true,
  createdAt: true,
  shop: {
