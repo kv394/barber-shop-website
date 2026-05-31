@@ -122,12 +122,24 @@ export default function KioskMode({ userProfile }: { userProfile: UserProfile })
  }
  };
 
- useEffect(() => {
- fetchKioskData();
- // Refresh the list every 30 seconds
- const interval = setInterval(fetchKioskData, 30000);
- return () => clearInterval(interval);
- }, [userProfile?.shopId]);
+  useEffect(() => {
+    fetchKioskData();
+    
+    if (!userProfile?.shopId) return;
+    
+    // Instead of polling, use Supabase Realtime to listen for waitlist changes
+    const channel = supabase.channel(`waitlist-kiosk-${userProfile.shopId}`)
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'Waitlist', filter: `shopId=eq.${userProfile.shopId}` },
+        () => { fetchKioskData(); }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [userProfile?.shopId, supabase]);
 
  return (
  <main className="h-[100dvh] overflow-y-auto overflow-x-hidden bg-crm-bg">
