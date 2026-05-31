@@ -1,5 +1,5 @@
 import { logger } from "@/lib/logger";
-import { prisma } from '@/lib/prisma';
+import { prisma, getTenantClient } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
 import { createClient } from '@/utils/supabase/server';
 import crypto from 'crypto';
@@ -29,19 +29,20 @@ export async function GET(
 ) {
  try {
  const { shopId } = await params;
+    const tenantClient = await getTenantClient(shopId);
  const { searchParams } = new URL(request.url);
  const dateStr = searchParams.get('date');
  if (!dateStr) return NextResponse.json({ error: 'Date is required' }, { status: 400 });
 
  // Fetch shop timezone to compute correct day boundaries
- const shop = await prisma.shop.findUnique({
+ const shop = await tenantClient.shop.findUnique({
  where: { id: shopId },
  select: { timezone: true },
  });
  const tz = shop?.timezone || 'America/New_York';
  const { startOfDay, endOfDay } = toShopTzDayBounds(dateStr, tz);
 
- const appointments = await prisma.appointment.findMany({
+ const appointments = await tenantClient.appointment.findMany({
  where: {
  shopId: shopId,
  startTime: { gte: startOfDay, lt: endOfDay },
@@ -50,7 +51,7 @@ export async function GET(
  });
 
  // Fetch staff in this shop to check for Google Calendar sync
- const staffMembers = await prisma.user.findMany({
+ const staffMembers = await tenantClient.user.findMany({
  where: {
  OR: [
  { shopId: shopId, role: 'STAFF' },
@@ -90,6 +91,7 @@ export async function POST(
 ) {
  try {
  const { shopId } = await params;
+    const tenantClient = await getTenantClient(shopId);
  const supabase = await createClient();
  const { data: { session } } = await supabase.auth.getSession();
   const authUserSession = session?.user;
@@ -143,8 +145,8 @@ export async function POST(
 
  // Run user + service lookups in parallel
  const [bookingUser, service] = await Promise.all([
- userId ? prisma.user.findFirst({ where: { OR: [{ id: userId }, { email: authUserEmail || '' }] } }) : null,
- prisma.service.findUnique({ where: { id: serviceId } }),
+ userId ? tenantClient.user.findFirst({ where: { OR: [{ id: userId }, { email: authUserEmail || '' }] } }) : null,
+ tenantClient.service.findUnique({ where: { id: serviceId } }),
  ]);
 
  if (userId && !bookingUser) {
@@ -156,7 +158,7 @@ export async function POST(
  if (!service) return NextResponse.json({ error: 'Service not found' }, { status: 404 });
 
  // SECURITY: Verify service belongs to this shop (prevent cross-shop booking/IDOR)
- if ((service.shopId !== shopId && !(await prisma.shopAccess.findFirst({ where: { userId: service.id, shopId } })))) {
+ if ((service.shopId !== shopId && !(await tenantClient.shopAccess.findFirst({ where: { userId: service.id, shopId } })))) {
  logger.warn(`IDOR attempt: User ${userId} tried to book service ${serviceId} for shop ${shopId} (Service belongs to ${service.shopId})`);
  return NextResponse.json({ error: 'Service not found in this shop' }, { status: 404 });
  }
@@ -167,7 +169,7 @@ export async function POST(
  let totalPrice = service.price;
 
  if (addonIds && addonIds.length > 0) {
- const dbAddons = await prisma.serviceAddon.findMany({
+ const dbAddons = await tenantClient.serviceAddon.findMany({
  where: { id: { in: addonIds }, shopId }
  });
  addonsJson = dbAddons.map((a: any) => ({ id: a.id, name: a.name, price: a.price, durationMin: a.durationMin }));
@@ -176,8 +178,8 @@ export async function POST(
  }
 
  // SECURITY: Verify staff belongs to this shop (prevent cross-shop staff assignment)
- const staffMember = await prisma.user.findUnique({ where: { id: staffId } });
- if (!staffMember || (staffMember.shopId !== shopId && !(await prisma.shopAccess.findFirst({ where: { userId: staffMember.id, shopId } })))) {
+ const staffMember = await tenantClient.user.findUnique({ where: { id: staffId } });
+ if (!staffMember || (staffMember.shopId !== shopId && !(await tenantClient.shopAccess.findFirst({ where: { userId: staffMember.id, shopId } })))) {
  return NextResponse.json({ error: 'Staff member not found in this shop' }, { status: 404 });
  }
 
@@ -229,7 +231,7 @@ export async function POST(
  // If an existing client was selected, use them directly
  if (existingClientId) {
  // SECURITY: Verify client belongs to this shop or has appointments here
- const existingClient = await prisma.user.findFirst({
+ const existingClient = await tenantClient.user.findFirst({
  where: {
  id: existingClientId,
  OR: [
@@ -244,7 +246,7 @@ export async function POST(
  targetUserId = existingClient.id;
  // Update phone if provided and not already set
  if (clientPhone && !existingClient.phone) {
- await prisma.user.update({ where: { id: existingClient.id }, data: { phone: clientPhone } });
+ await tenantClient.user.update({ where: { id: existingClient.id }, data: { phone: clientPhone } });
  }
  } else {
  if (!clientName) {
@@ -253,7 +255,7 @@ export async function POST(
  const emailToUse = clientEmail?.trim().toLowerCase() || `walkin-${crypto.randomBytes(4).toString('hex')}@shophub.local`;
  const userBarcode = crypto.randomBytes(6).toString('hex').toUpperCase();
 
- const guestUser = await prisma.user.upsert({
+ const guestUser = await tenantClient.user.upsert({
  where: { email: emailToUse },
  update: { phone: clientPhone || undefined },
  create: {
@@ -272,7 +274,7 @@ export async function POST(
 
  // SECURITY: Atomic conflict-check + create inside a serializable transaction
  // to prevent double-booking race conditions (TOCTOU).
- const appointment = await prisma.$transaction(async (tx: any) => {
+ const appointment = await tenantClient.$transaction(async (tx: any) => {
  const conflict = await tx.appointment.findFirst({
  where: {
  shopId: shopId,
@@ -311,8 +313,8 @@ export async function POST(
  try {
  const { NotificationService } = await import('@/lib/notifications');
  const { createCalendarEvent } = await import('@/lib/google-calendar');
- const shop = await prisma.shop.findUnique({ where: { id: shopId }, select: { name: true, timezone: true } });
- const staffUser = await prisma.user.findUnique({ where: { id: staffId }, select: { name: true } });
+ const shop = await tenantClient.shop.findUnique({ where: { id: shopId }, select: { name: true, timezone: true } });
+ const staffUser = await tenantClient.user.findUnique({ where: { id: staffId }, select: { name: true } });
  if (shop) {
  // Immediate booking confirmation (C8)
  NotificationService.sendBookingConfirmation({

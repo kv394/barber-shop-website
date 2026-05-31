@@ -1,5 +1,5 @@
 import { logger } from "@/lib/logger";
-import { prisma } from '@/lib/prisma';
+import { prisma, getTenantClient } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
 import { createClient } from '@/utils/supabase/server';
 import { revalidatePath } from 'next/cache';
@@ -11,6 +11,7 @@ export async function POST(
 ) {
  try {
  const { shopId, appointmentId } = await params;
+    const tenantClient = await getTenantClient(shopId);
  const supabase = await createClient();
  const { data: { session } } = await supabase.auth.getSession();
   const authUserSession = session?.user;
@@ -18,7 +19,7 @@ export async function POST(
  const authUserEmail = authUserSession?.email;
  if (!userId) return new Response('Unauthorized', { status: 401 });
 
- const user = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
+ const user = await tenantClient.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
  
  // Only Shop Admin, Staff, or Site Admin can mark an appointment as paid
  const canManage = user?.role === 'SITE_ADMIN' || 
@@ -30,11 +31,11 @@ export async function POST(
  }
 
  // Verify appointment exists and belongs to the specified shop
- const appointment = await prisma.appointment.findUnique({
+ const appointment = await tenantClient.appointment.findUnique({
  where: { id: appointmentId }
  });
 
- if (!appointment || (appointment.shopId !== shopId && !(await prisma.shopAccess.findFirst({ where: { userId: appointment.id, shopId } })))) {
+ if (!appointment || (appointment.shopId !== shopId && !(await tenantClient.shopAccess.findFirst({ where: { userId: appointment.id, shopId } })))) {
  return NextResponse.json({ error: 'Appointment not found.' }, { status: 404 });
  }
 
@@ -86,14 +87,14 @@ export async function POST(
 
  // Build the transaction — SECURITY: all checks INSIDE the transaction to prevent
  // double-checkout race conditions and inventory underflow
- await prisma.$transaction(async (tx: any) => {
+ await tenantClient.$transaction(async (tx: any) => {
  // Re-check status inside the transaction to prevent double-checkout
  const freshAppointment = await tx.appointment.findUnique({
  where: { id: appointmentId },
  select: { status: true, shopId: true },
  });
 
- if (!freshAppointment || (freshAppointment.shopId !== shopId && !(await prisma.shopAccess.findFirst({ where: { userId: freshAppointment.id, shopId } })))) {
+ if (!freshAppointment || (freshAppointment.shopId !== shopId && !(await tenantClient.shopAccess.findFirst({ where: { userId: freshAppointment.id, shopId } })))) {
  throw new Error('NOT_FOUND');
  }
  if (freshAppointment.status === 'COMPLETED') {
@@ -106,7 +107,7 @@ export async function POST(
  where: { code: discountCode }
  });
 
- if (!giftCard || (giftCard.shopId !== shopId && !(await prisma.shopAccess.findFirst({ where: { userId: giftCard.id, shopId } })))) {
+ if (!giftCard || (giftCard.shopId !== shopId && !(await tenantClient.shopAccess.findFirst({ where: { userId: giftCard.id, shopId } })))) {
  throw new Error('INVALID_DISCOUNT');
  }
  if (giftCard.status !== 'ACTIVE' || (giftCard.expiresAt && giftCard.expiresAt < new Date()) || giftCard.currentBalance < discount) {
@@ -159,7 +160,7 @@ export async function POST(
  where: { id: item.productId },
  select: { inventoryCount: true, shopId: true },
  });
- if (!product || (product.shopId !== shopId && !(await prisma.shopAccess.findFirst({ where: { userId: product.id, shopId } })))) {
+ if (!product || (product.shopId !== shopId && !(await tenantClient.shopAccess.findFirst({ where: { userId: product.id, shopId } })))) {
  throw new Error('INVALID_PRODUCT');
  }
  if (product.inventoryCount < item.quantity) {
@@ -227,11 +228,11 @@ export async function POST(
  );
 
  // Complete any pending referral for this client
- const pendingReferral = await prisma.referral.findFirst({
+ const pendingReferral = await tenantClient.referral.findFirst({
  where: { shopId, refereeId: appointment.userId, status: 'PENDING' },
  });
  if (pendingReferral) {
- await prisma.referral.update({
+ await tenantClient.referral.update({
  where: { id: pendingReferral.id },
  data: { status: 'COMPLETED' },
  });
@@ -242,7 +243,7 @@ export async function POST(
  await LoyaltyService.awardReferralBonus(
  pendingReferral.refereeId, shopId, pendingReferral.refereeRewardPoints
  );
- await prisma.referral.update({
+ await tenantClient.referral.update({
  where: { id: pendingReferral.id },
  data: { status: 'REWARDED' },
  });
@@ -250,7 +251,7 @@ export async function POST(
 
  // Send review request notification
  const { NotificationService } = await import('@/lib/notifications');
- const shop = await prisma.shop.findUnique({ where: { id: shopId }, select: { name: true } });
+ const shop = await tenantClient.shop.findUnique({ where: { id: shopId }, select: { name: true } });
  if (shop) {
  await NotificationService.sendReviewRequest(shopId, appointment.userId, shop.name, appointmentId);
  }

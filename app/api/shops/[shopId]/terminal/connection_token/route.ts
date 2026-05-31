@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@/utils/supabase/server';
-import { prisma } from '@/lib/prisma';
+import { prisma, getTenantClient } from '@/lib/prisma';
 import { createTerminalConnectionToken } from '@/lib/stripe';
 import { logger } from '@/lib/logger';
 
@@ -10,6 +10,7 @@ export async function POST(
 ) {
  try {
  const { shopId } = await params;
+    const tenantClient = await getTenantClient(shopId);
  const supabase = await createClient();
  const { data: { session } } = await supabase.auth.getSession();
   const authUserSession = session?.user;
@@ -18,7 +19,7 @@ export async function POST(
  return new Response('Unauthorized', { status: 401 });
  }
 
- const user = await prisma.user.findFirst({ 
+ const user = await tenantClient.user.findFirst({ 
  where: { OR: [{ id: authUserSession.id }, { email: authUserSession.email || '' }] } 
  });
  
@@ -31,7 +32,7 @@ export async function POST(
  }
 
  // Fetch shop's payment config
- const shop = await prisma.shop.findUnique({
+ const shop = await tenantClient.shop.findUnique({
  where: { id: shopId },
  select: { stripeAccountId: true, paymentGateway: true },
  });

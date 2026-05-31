@@ -1,4 +1,4 @@
-import { prisma } from '@/lib/prisma';
+import { prisma, getTenantClient } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
 import { createClient } from '@/utils/supabase/server';
 import { createDepositPaymentIntent } from '@/lib/stripe';
@@ -21,7 +21,8 @@ export async function POST(
 
  try {
  const { shopId } = await params;
-  const shop = await prisma.shop.findUnique({
+    const tenantClient = await getTenantClient(shopId);
+  const shop = await tenantClient.shop.findUnique({
     where: { id: shopId },
     select: { depositRequired: true, depositAmount: true, name: true, stripeAccountId: true, paymentGateway: true, currency: true },
   });

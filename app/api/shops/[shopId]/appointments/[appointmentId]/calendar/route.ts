@@ -1,4 +1,4 @@
-import { prisma } from '@/lib/prisma';
+import { prisma, getTenantClient } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
 
 export const dynamic = 'force-dynamic';
@@ -13,8 +13,9 @@ export async function GET(
  { params }: { params: Promise<{ shopId: string; appointmentId: string }> }
 ) {
  const { shopId, appointmentId } = await params;
+    const tenantClient = await getTenantClient(shopId);
 
- const appointment = await prisma.appointment.findUnique({
+ const appointment = await tenantClient.appointment.findUnique({
  where: { id: appointmentId },
  include: {
  service: { select: { name: true, duration: true } },

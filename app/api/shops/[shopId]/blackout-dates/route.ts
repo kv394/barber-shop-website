@@ -1,14 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
+import { prisma, getTenantClient } from '@/lib/prisma';
 import { requireShopRole, isAuthError } from '@/lib/auth';
 export const dynamic = 'force-dynamic';
 
 export async function GET(_: NextRequest, { params }: { params: Promise<{ shopId: string }> }) {
  const { shopId } = await params;
+    const tenantClient = await getTenantClient(shopId);
  const authResult = await requireShopRole(shopId, ['SITE_ADMIN', 'SHOP_ADMIN']);
  if (isAuthError(authResult)) return authResult;
 
- const dates = await prisma.shopBlackoutDate.findMany({
+ const dates = await tenantClient.shopBlackoutDate.findMany({
  where: { shopId },
  orderBy: { date: 'asc' },
  });
@@ -17,12 +18,13 @@ export async function GET(_: NextRequest, { params }: { params: Promise<{ shopId
 
 export async function POST(req: NextRequest, { params }: { params: Promise<{ shopId: string }> }) {
  const { shopId } = await params;
+    const tenantClient = await getTenantClient(shopId);
  const authResult = await requireShopRole(shopId, ['SITE_ADMIN', 'SHOP_ADMIN']);
  if (isAuthError(authResult)) return authResult;
 
  const { date, reason } = await req.json();
  const d = new Date(date); d.setHours(0, 0, 0, 0);
- const entry = await prisma.shopBlackoutDate.upsert({
+ const entry = await tenantClient.shopBlackoutDate.upsert({
  where: { shopId_date: { shopId, date: d } },
  update: { reason: reason || null },
  create: { shopId, date: d, reason: reason || null },
@@ -32,6 +34,7 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ sho
 
 export async function DELETE(req: NextRequest, { params }: { params: Promise<{ shopId: string }> }) {
  const { shopId } = await params;
+    const tenantClient = await getTenantClient(shopId);
  const authResult = await requireShopRole(shopId, ['SITE_ADMIN', 'SHOP_ADMIN']);
  if (isAuthError(authResult)) return authResult;
 
@@ -40,12 +43,12 @@ export async function DELETE(req: NextRequest, { params }: { params: Promise<{ s
  if (!id) return NextResponse.json({ error: 'id required' }, { status: 400 });
 
  // Verify blackout date belongs to this shop (prevent cross-shop deletion)
- const entry = await prisma.shopBlackoutDate.findUnique({ where: { id } });
- if (!entry || (entry.shopId !== shopId && !(await prisma.shopAccess.findFirst({ where: { userId: entry.id, shopId } })))) {
+ const entry = await tenantClient.shopBlackoutDate.findUnique({ where: { id } });
+ if (!entry || (entry.shopId !== shopId && !(await tenantClient.shopAccess.findFirst({ where: { userId: entry.id, shopId } })))) {
  return NextResponse.json({ error: 'Not found' }, { status: 404 });
  }
 
- await prisma.shopBlackoutDate.delete({ where: { id } });
+ await tenantClient.shopBlackoutDate.delete({ where: { id } });
  return NextResponse.json({ ok: true });
 }
 

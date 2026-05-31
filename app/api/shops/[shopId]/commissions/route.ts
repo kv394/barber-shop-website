@@ -1,4 +1,4 @@
-import { prisma } from '@/lib/prisma';
+import { prisma, getTenantClient } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
 import { createClient } from '@/utils/supabase/server';
 import { calculateCommissionsForAppointments } from '@/lib/commissions';
@@ -21,13 +21,14 @@ export async function GET(
  if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
  const { shopId } = await params;
+    const tenantClient = await getTenantClient(shopId);
 
- const user = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
+ const user = await tenantClient.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
  const isStaff = user?.role === 'STAFF' && user?.shopId === shopId;
  if (!user || (user.role !== 'SITE_ADMIN' && user.role !== 'SHOP_ADMIN' && !isStaff)) {
  return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
  }
- if (user.role === 'SHOP_ADMIN' && (user.shopId !== shopId && !(await prisma.shopAccess.findFirst({ where: { userId: user.id, shopId } })))) {
+ if (user.role === 'SHOP_ADMIN' && (user.shopId !== shopId && !(await tenantClient.shopAccess.findFirst({ where: { userId: user.id, shopId } })))) {
  return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
  }
 
@@ -42,7 +43,7 @@ export async function GET(
  if (endDate) where.updatedAt = { ...where.updatedAt, lte: new Date(endDate + 'T23:59:59') };
  if (staffIdFilter) where.staffId = staffIdFilter;
 
- const appointments = await prisma.appointment.findMany({
+ const appointments = await tenantClient.appointment.findMany({
  where,
  include: {
  service: { select: { price: true, name: true } },
@@ -83,7 +84,7 @@ export async function GET(
  s.totalPayout += r.commission + r.tipAmount;
  }
 
- const rules = await prisma.commissionRule.findMany({
+ const rules = await tenantClient.commissionRule.findMany({
  where: { shopId }
  });
 
@@ -117,8 +118,9 @@ export async function POST(
  if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
  const { shopId } = await params;
- const user = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
- if (!user || (user.role !== 'SITE_ADMIN' && (user.role !== 'SHOP_ADMIN' || (user.shopId !== shopId && !(await prisma.shopAccess.findFirst({ where: { userId: user.id, shopId } })))))) {
+    const tenantClient = await getTenantClient(shopId);
+ const user = await tenantClient.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
+ if (!user || (user.role !== 'SITE_ADMIN' && (user.role !== 'SHOP_ADMIN' || (user.shopId !== shopId && !(await tenantClient.shopAccess.findFirst({ where: { userId: user.id, shopId } })))))) {
  return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
  }
 
@@ -140,21 +142,21 @@ export async function POST(
 
  // SECURITY: Verify staffId belongs to this shop (prevent cross-shop commission assignment)
  if (staffId) {
- const targetStaff = await prisma.user.findUnique({ where: { id: staffId }, select: { id: true, shopId: true } });
- if (!targetStaff || (targetStaff.shopId !== shopId && !(await prisma.shopAccess.findFirst({ where: { userId: targetStaff.id, shopId } })))) {
+ const targetStaff = await tenantClient.user.findUnique({ where: { id: staffId }, select: { id: true, shopId: true } });
+ if (!targetStaff || (targetStaff.shopId !== shopId && !(await tenantClient.shopAccess.findFirst({ where: { userId: targetStaff.id, shopId } })))) {
  return NextResponse.json({ error: 'Staff member not found in this shop' }, { status: 404 });
  }
  }
 
  // SECURITY: Verify serviceId belongs to this shop (prevent cross-shop service reference)
  if (serviceId) {
- const targetService = await prisma.service.findUnique({ where: { id: serviceId }, select: { id: true, shopId: true } });
+ const targetService = await tenantClient.service.findUnique({ where: { id: serviceId }, select: { id: true, shopId: true } });
  if (!targetService || targetService.shopId !== shopId) {
  return NextResponse.json({ error: 'Service not found in this shop' }, { status: 404 });
  }
  }
 
- const rule = await prisma.commissionRule.create({
+ const rule = await tenantClient.commissionRule.create({
  data: {
  shopId,
  staffId: staffId || null,

@@ -1,5 +1,5 @@
 import { logger } from "@/lib/logger";
-import { prisma } from '@/lib/prisma';
+import { prisma, getTenantClient } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
 import { createClient } from '@/utils/supabase/server';
 import { revalidatePath } from 'next/cache';
@@ -12,6 +12,7 @@ export async function POST(
 ) {
  try {
  const { shopId } = await params;
+    const tenantClient = await getTenantClient(shopId);
  const supabase = await createClient();
  const { data: { session } } = await supabase.auth.getSession();
   const authUserSession = session?.user;
@@ -26,11 +27,11 @@ export async function POST(
  }
 
  // Verify user is admin for this shop or a SITE_ADMIN
- const user = await prisma.user.findFirst({
+ const user = await tenantClient.user.findFirst({
  where: { OR: [{ id: userId }, { email: authUserEmail || '' }] },
  });
 
- if (!user || (user.role !== 'SITE_ADMIN' && (user.role !== 'SHOP_ADMIN' || (user.shopId !== shopId && !(await prisma.shopAccess.findFirst({ where: { userId: user.id, shopId } })))))) {
+ if (!user || (user.role !== 'SITE_ADMIN' && (user.role !== 'SHOP_ADMIN' || (user.shopId !== shopId && !(await tenantClient.shopAccess.findFirst({ where: { userId: user.id, shopId } })))))) {
  return NextResponse.json(
  { error: 'Forbidden: You do not have permission to update this shop' },
  { status: 403 }
@@ -53,7 +54,7 @@ export async function POST(
 
  if (!isValid) {
  console.log('Searching for dynamic template:', template);
- const dynamicTemplate = await prisma.dynamicTemplate.findUnique({
+ const dynamicTemplate = await tenantClient.dynamicTemplate.findUnique({
  where: { name: template }
  });
  console.log('Found dynamic template:', dynamicTemplate?.name);
@@ -72,7 +73,7 @@ export async function POST(
  let updateData: any = { template };
  
  if (template === 'custom') {
- const shop = await prisma.shop.findUnique({ where: { id: shopId } });
+ const shop = await tenantClient.shop.findUnique({ where: { id: shopId } });
  const currentCustomization = (shop?.customization as any) || {};
  updateData.customization = { 
  ...currentCustomization, 
@@ -82,7 +83,7 @@ export async function POST(
  };
  }
 
- const updatedShop = await prisma.shop.update({
+ const updatedShop = await tenantClient.shop.update({
  where: { id: shopId },
  data: updateData,
  });

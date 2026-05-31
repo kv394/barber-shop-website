@@ -1,5 +1,5 @@
 import { logger } from "@/lib/logger";
-import { prisma } from '@/lib/prisma';
+import { prisma, getTenantClient } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
 import { createClient } from '@/utils/supabase/server';
 import crypto from 'crypto';
@@ -10,6 +10,7 @@ export async function POST(
 ) {
  try {
  const { shopId } = await params;
+    const tenantClient = await getTenantClient(shopId);
  const supabase = await createClient();
  const { data: { session } } = await supabase.auth.getSession();
   const authUserSession = session?.user;
@@ -24,7 +25,7 @@ export async function POST(
  }
 
  // Verify user is SHOP_ADMIN or SITE_ADMIN for this shop
- const currentUser = await prisma.user.findUnique({
+ const currentUser = await tenantClient.user.findUnique({
  where: { id: userId },
  });
 
@@ -36,7 +37,7 @@ export async function POST(
  }
 
  if (currentUser.role !== 'SITE_ADMIN' && 
- (currentUser.role !== 'SHOP_ADMIN' || (currentUser.shopId !== shopId && !(await prisma.shopAccess.findFirst({ where: { userId: currentUser.id, shopId } }))))) {
+ (currentUser.role !== 'SHOP_ADMIN' || (currentUser.shopId !== shopId && !(await tenantClient.shopAccess.findFirst({ where: { userId: currentUser.id, shopId } }))))) {
  return NextResponse.json(
  { error: 'Forbidden: You do not have permission to manage this shop' },
  { status: 403 }
@@ -60,7 +61,7 @@ export async function POST(
  }
 
  // Check if shop exists
- const shop = await prisma.shop.findUnique({
+ const shop = await tenantClient.shop.findUnique({
  where: { id: shopId },
  });
 
@@ -74,12 +75,12 @@ export async function POST(
  // Generate a unique barcode for the user based on their email and a secret
  const userBarcode = crypto.randomBytes(6).toString('hex').toUpperCase();
 
- const existingUser = await prisma.user.findUnique({ where: { email } });
+ const existingUser = await tenantClient.user.findUnique({ where: { email } });
  let user;
 
  if (existingUser) {
  if (existingUser.shopId === shopId) {
- user = await prisma.user.update({
+ user = await tenantClient.user.update({
  where: { email },
  data: {
  role: role,
@@ -87,7 +88,7 @@ export async function POST(
  }
  });
  } else if (existingUser.shopId === null || existingUser.role === 'CLIENT') {
- user = await prisma.user.update({
+ user = await tenantClient.user.update({
  where: { email },
  data: {
  role: role,
@@ -96,7 +97,7 @@ export async function POST(
  }
  });
  } else {
- await prisma.shopAccess.upsert({
+ await tenantClient.shopAccess.upsert({
  where: { userId_shopId: { userId: existingUser.id, shopId } },
  update: { role },
  create: { userId: existingUser.id, shopId, role }
@@ -104,7 +105,7 @@ export async function POST(
  user = existingUser;
  }
  } else {
- user = await prisma.user.create({
+ user = await tenantClient.user.create({
  data: {
  id: `invited_${crypto.randomBytes(8).toString('hex')}`, // More robust temporary ID
  email: email,
@@ -118,7 +119,7 @@ export async function POST(
  
  // Safety check: if an existing user had no barcode, we must add it now
  if (!user.barcode) {
- await prisma.user.update({
+ await tenantClient.user.update({
  where: { email: email },
  data: { barcode: userBarcode }
  });
@@ -150,6 +151,7 @@ export async function GET(
 ) {
  try {
  const { shopId } = await params;
+    const tenantClient = await getTenantClient(shopId);
  const supabase = await createClient();
  const { data: { session } } = await supabase.auth.getSession();
   const authUserSession = session?.user;
@@ -164,14 +166,14 @@ export async function GET(
  }
 
  // Verify user has access to this shop
- const currentUser = await prisma.user.findUnique({
+ const currentUser = await tenantClient.user.findUnique({
  where: { id: userId },
  });
 
  if (!currentUser || 
  (currentUser.role !== 'SITE_ADMIN' && 
- (currentUser.role !== 'SHOP_ADMIN' || (currentUser.shopId !== shopId && !(await prisma.shopAccess.findFirst({ where: { userId: currentUser.id, shopId } })))) &&
- (currentUser.role !== 'STAFF' || (currentUser.shopId !== shopId && !(await prisma.shopAccess.findFirst({ where: { userId: currentUser.id, shopId } })))))) {
+ (currentUser.role !== 'SHOP_ADMIN' || (currentUser.shopId !== shopId && !(await tenantClient.shopAccess.findFirst({ where: { userId: currentUser.id, shopId } })))) &&
+ (currentUser.role !== 'STAFF' || (currentUser.shopId !== shopId && !(await tenantClient.shopAccess.findFirst({ where: { userId: currentUser.id, shopId } })))))) {
  return NextResponse.json(
  { error: 'Forbidden' },
  { status: 403 }
@@ -185,7 +187,7 @@ export async function GET(
  whereClause.role = { in: ['SHOP_ADMIN', 'ATTENDANCE_KIOSK'] };
  }
 
- const users = await prisma.user.findMany({
+ const users = await tenantClient.user.findMany({
  where: whereClause,
  select: {
  id: true,
@@ -214,6 +216,7 @@ export async function DELETE(
 ) {
  try {
  const { shopId } = await params;
+    const tenantClient = await getTenantClient(shopId);
  const supabase = await createClient();
  const { data: { session } } = await supabase.auth.getSession();
   const authUserSession = session?.user;
@@ -228,13 +231,13 @@ export async function DELETE(
  }
 
  // Verify user is SHOP_ADMIN or SITE_ADMIN
- const currentUser = await prisma.user.findUnique({
+ const currentUser = await tenantClient.user.findUnique({
  where: { id: userId },
  });
 
  if (!currentUser || 
  (currentUser.role !== 'SITE_ADMIN' && 
- (currentUser.role !== 'SHOP_ADMIN' || (currentUser.shopId !== shopId && !(await prisma.shopAccess.findFirst({ where: { userId: currentUser.id, shopId } })))))) {
+ (currentUser.role !== 'SHOP_ADMIN' || (currentUser.shopId !== shopId && !(await tenantClient.shopAccess.findFirst({ where: { userId: currentUser.id, shopId } })))))) {
  return NextResponse.json(
  { error: 'Forbidden' },
  { status: 403 }
@@ -259,11 +262,11 @@ export async function DELETE(
  );
  }
 
- const user = await prisma.user.findUnique({
+ const user = await tenantClient.user.findUnique({
  where: { id: targetUserId },
  });
 
- if (!user || (user.shopId !== shopId && !(await prisma.shopAccess.findFirst({ where: { userId: user.id, shopId } })))) {
+ if (!user || (user.shopId !== shopId && !(await tenantClient.shopAccess.findFirst({ where: { userId: user.id, shopId } })))) {
  return NextResponse.json(
  { error: 'User not found in this shop' },
  { status: 404 }
@@ -280,7 +283,7 @@ export async function DELETE(
 
  // Remove user from shop
  if (user.shopId === shopId) {
- await prisma.user.update({
+ await tenantClient.user.update({
  where: { id: targetUserId },
  data: {
  shopId: null,
@@ -290,7 +293,7 @@ export async function DELETE(
  });
  }
 
- await prisma.shopAccess.deleteMany({
+ await tenantClient.shopAccess.deleteMany({
  where: { userId: targetUserId, shopId }
  });
 

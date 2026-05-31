@@ -1,5 +1,5 @@
 import { logger } from "@/lib/logger";
-import { prisma } from '@/lib/prisma';
+import { prisma, getTenantClient } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
 import { createClient } from '@/utils/supabase/server';
 import { revalidatePath } from 'next/cache';
@@ -91,8 +91,7 @@ export async function GET(
  { params }: { params: Promise<{ shopId: string }> }
 ) {
  try {
- const { shopId: paramShopId } = await params;
- const url = new URL(request.url);
+ const { shopId: paramShopId } = await params; const url = new URL(request.url);
  const isAdmin = url.searchParams.get('admin') === 'true';
 
  const resolvedShop = await prisma.shop.findFirst({
@@ -111,6 +110,8 @@ export async function GET(
  return NextResponse.json({ error: 'Shop not found' }, { status: 404 });
  }
  const shopId = resolvedShop.id;
+
+ const tenantClient = await getTenantClient(shopId);
 
  // Fetch from Redis Cache if available
  const cacheKey = isAdmin ? `shop_services_admin:${shopId}` : `shop_services_public:${shopId}`;
@@ -147,8 +148,7 @@ export async function POST(
  { params }: { params: Promise<{ shopId: string }> }
 ) {
  try {
- const { shopId: paramShopId } = await params;
- 
+ const { shopId: paramShopId } = await params; 
  const resolvedShop = await prisma.shop.findFirst({
  where: {
  OR: [
@@ -166,6 +166,8 @@ export async function POST(
  }
  const shopId = resolvedShop.id;
 
+ const tenantClient = await getTenantClient(shopId);
+
  const supabase = await createClient();
  const { data: { session } } = await supabase.auth.getSession();
   const authUserSession = session?.user;
@@ -173,9 +175,9 @@ export async function POST(
  const authUserEmail = authUserSession?.email;
  if (!userId) return new Response("Unauthorized", { status: 401 });
 
- const user = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
+ const user = await tenantClient.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
  
- if (!user || (user.role !== 'SITE_ADMIN' && (user.role !== 'SHOP_ADMIN' || (user.shopId !== shopId && !(await prisma.shopAccess.findFirst({ where: { userId: user.id, shopId } })))))) {
+ if (!user || (user.role !== 'SITE_ADMIN' && (user.role !== 'SHOP_ADMIN' || (user.shopId !== shopId && !(await tenantClient.shopAccess.findFirst({ where: { userId: user.id, shopId } })))))) {
  return new Response("Forbidden", { status: 403 });
  }
 
@@ -252,7 +254,7 @@ export async function POST(
  let newService;
 
  try {
- newService = await prisma.service.create({
+ newService = await tenantClient.service.create({
  data: dataToCreate,
  include: includeFull
  });
@@ -280,7 +282,7 @@ export async function POST(
  delete dataToCreate.productUsages;
  }
 
- newService = await prisma.service.create({
+ newService = await tenantClient.service.create({
  data: dataToCreate,
  include: fallbackInclude
  });

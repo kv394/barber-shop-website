@@ -1,5 +1,5 @@
 import { createClient } from '@/utils/supabase/server';
-import { prisma } from '@/lib/prisma';
+import { prisma, getTenantClient } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
 
 export const dynamic = 'force-dynamic';
@@ -9,6 +9,7 @@ export async function GET(
  { params }: { params: Promise<{ shopId: string }> }
 ) {
  const { shopId } = await params;
+    const tenantClient = await getTenantClient(shopId);
  const supabase = await createClient();
  const { data: { session } } = await supabase.auth.getSession();
   const authUserSession = session?.user;
@@ -24,18 +25,18 @@ export async function GET(
  const [filterFromHour, filterFromMin] = fromParam.split(':').map(Number);
  const [filterToHour, filterToMin] = toParam.split(':').map(Number);
 
- const user = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
+ const user = await tenantClient.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
  if (!user || (user.role !== 'SITE_ADMIN' &&
- ((user.shopId !== shopId && !(await prisma.shopAccess.findFirst({ where: { userId: user.id, shopId } }))) || !['SHOP_ADMIN', 'STAFF'].includes(user.role)))) {
+ ((user.shopId !== shopId && !(await tenantClient.shopAccess.findFirst({ where: { userId: user.id, shopId } }))) || !['SHOP_ADMIN', 'STAFF'].includes(user.role)))) {
  return NextResponse.json({ error: 'Access denied' }, { status: 403 });
  }
 
- const shop = await prisma.shop.findUnique({ where: { id: shopId } });
+ const shop = await tenantClient.shop.findUnique({ where: { id: shopId } });
  if (!shop) return NextResponse.json({ error: 'Shop not found' }, { status: 404 });
 
  const targetDate = new Date(date);
  const rolesToFetch: ('SHOP_ADMIN' | 'STAFF')[] = user.role === 'SITE_ADMIN' ? ['SHOP_ADMIN'] : ['SHOP_ADMIN', 'STAFF'];
- const allStaff = await prisma.user.findMany({
+ const allStaff = await tenantClient.user.findMany({
  where: { shopId: shopId, role: { in: rolesToFetch } },
  include: {
  staffAppointments: {

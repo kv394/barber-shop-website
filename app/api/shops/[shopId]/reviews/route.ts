@@ -1,5 +1,5 @@
 import { logger } from "@/lib/logger";
-import { prisma } from '@/lib/prisma';
+import { prisma, getTenantClient } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
 import { createClient } from '@/utils/supabase/server';
 import { reviewSchema } from '@/lib/validations';
@@ -30,8 +30,9 @@ export async function GET(
 
  try {
  const { shopId } = await params;
+    const tenantClient = await getTenantClient(shopId);
  
- const resolvedShop = await prisma.shop.findFirst({
+ const resolvedShop = await tenantClient.shop.findFirst({
  where: {
  OR: [
  { id: shopId },
@@ -78,7 +79,7 @@ export async function GET(
  }
  }
 
- const reviews = await prisma.review.findMany({
+ const reviews = await tenantClient.review.findMany({
  where: { shopId: realShopId },
  include: {
  user: { select: { name: true } },
@@ -107,8 +108,9 @@ export async function POST(
 
  try {
  const { shopId } = await params;
+    const tenantClient = await getTenantClient(shopId);
  
- const resolvedShop = await prisma.shop.findFirst({
+ const resolvedShop = await tenantClient.shop.findFirst({
  where: {
  OR: [
  { id: shopId },
@@ -133,7 +135,7 @@ export async function POST(
 
  if (!userId) {
  const emailToUse = `anon-review-${crypto.randomUUID().slice(0, 8)}@shophub.local`;
- const anonUser = await prisma.user.create({
+ const anonUser = await tenantClient.user.create({
  data: {
  email: emailToUse,
  name: 'Anonymous Client',
@@ -154,11 +156,11 @@ export async function POST(
 
  if (appointmentId) {
  // Verify the appointment belongs to this user and shop
- const appointment = await prisma.appointment.findUnique({
+ const appointment = await tenantClient.appointment.findUnique({
  where: { id: appointmentId },
  });
 
- if (!appointment || (appointment.shopId !== realShopId && !(await prisma.shopAccess.findFirst({ where: { userId: appointment.id, shopId: realShopId } }))) || appointment.userId !== userId) {
+ if (!appointment || (appointment.shopId !== realShopId && !(await tenantClient.shopAccess.findFirst({ where: { userId: appointment.id, shopId: realShopId } }))) || appointment.userId !== userId) {
  return NextResponse.json({ error: 'Appointment not found or not yours' }, { status: 404, headers: corsHeaders });
  }
 
@@ -167,13 +169,13 @@ export async function POST(
  }
 
  // Check for existing review
- const existing = await prisma.review.findUnique({ where: { appointmentId } });
+ const existing = await tenantClient.review.findUnique({ where: { appointmentId } });
  if (existing) {
  return NextResponse.json({ error: 'Already reviewed this appointment' }, { status: 400, headers: corsHeaders });
  }
  }
 
- const review = await prisma.review.create({
+ const review = await tenantClient.review.create({
  data: {
     rating: Math.min(5, Math.max(1, Math.floor(rating))),
  // SECURITY: Strip HTML tags and limit length to prevent stored XSS

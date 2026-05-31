@@ -1,5 +1,5 @@
 import { logger } from "@/lib/logger";
-import { prisma } from '@/lib/prisma';
+import { prisma, getTenantClient } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
 import { createClient } from '@/utils/supabase/server';
 import { revalidatePath } from 'next/cache';
@@ -10,6 +10,7 @@ export async function DELETE(
 ) {
  try {
  const { shopId, appointmentId } = await params;
+    const tenantClient = await getTenantClient(shopId);
  const supabase = await createClient();
  const { data: { session } } = await supabase.auth.getSession();
   const authUserSession = session?.user;
@@ -17,7 +18,7 @@ export async function DELETE(
  const authUserEmail = authUserSession?.email;
  if (!userId) return new Response('Unauthorized', { status: 401 });
 
- const user = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
+ const user = await tenantClient.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
  
  // Check if Shop Admin, Staff, or Site Admin
  const canManage = user?.role === 'SITE_ADMIN' || 
@@ -27,7 +28,7 @@ export async function DELETE(
  // Also check if the user is a CLIENT trying to cancel their OWN appointment
  let isClientCancelingOwn = false;
  if (user?.role === 'CLIENT') {
- const appointmentToCancel = await prisma.appointment.findUnique({
+ const appointmentToCancel = await tenantClient.appointment.findUnique({
  where: { id: appointmentId }
  });
  if (appointmentToCancel && appointmentToCancel.userId === userId) {
@@ -40,15 +41,15 @@ export async function DELETE(
  }
 
  // Verify appointment exists and belongs to the specified shop to prevent cross-shop deletion attacks
- const appointment = await prisma.appointment.findUnique({
+ const appointment = await tenantClient.appointment.findUnique({
  where: { id: appointmentId }
  });
 
- if (!appointment || (appointment.shopId !== shopId && !(await prisma.shopAccess.findFirst({ where: { userId: appointment.id, shopId } })))) {
+ if (!appointment || (appointment.shopId !== shopId && !(await tenantClient.shopAccess.findFirst({ where: { userId: appointment.id, shopId } })))) {
  return NextResponse.json({ error: 'Appointment not found or does not belong to this shop.' }, { status: 404 });
  }
 
- await prisma.appointment.delete({
+ await tenantClient.appointment.delete({
  where: { 
  id: appointmentId,
  shopId: shopId
@@ -70,6 +71,7 @@ export async function PATCH(
 ) {
  try {
  const { shopId, appointmentId } = await params;
+    const tenantClient = await getTenantClient(shopId);
  const supabase = await createClient();
  const { data: { session } } = await supabase.auth.getSession();
   const authUserSession = session?.user;
@@ -77,7 +79,7 @@ export async function PATCH(
  const authUserEmail = authUserSession?.email;
  if (!userId) return new Response('Unauthorized', { status: 401 });
 
- const user = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
+ const user = await tenantClient.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
  const canManage = user?.role === 'SITE_ADMIN' ||
  (user?.role === 'SHOP_ADMIN' && user?.shopId === shopId) ||
  (user?.role === 'STAFF' && user?.shopId === shopId);
@@ -95,7 +97,7 @@ export async function PATCH(
  }
 
  // Fetch current appointment for deposit handling
- const currentAppointment = await prisma.appointment.findUnique({
+ const currentAppointment = await tenantClient.appointment.findUnique({
  where: { id: appointmentId, shopId },
  include: { user: { include: { shopClients: { where: { shopId } } } }, service: true, shop: { select: { stripeAccountId: true, paymentGateway: true } } },
  });
@@ -134,7 +136,7 @@ export async function PATCH(
  }
  }
 
- const appointment = await prisma.appointment.update({
+ const appointment = await tenantClient.appointment.update({
  where: { id: appointmentId, shopId: shopId },
  data: updateData,
  });

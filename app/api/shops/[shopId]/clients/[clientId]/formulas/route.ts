@@ -1,5 +1,5 @@
 import { logger } from "@/lib/logger";
-import { prisma } from '@/lib/prisma';
+import { prisma, getTenantClient } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
 import { createClient } from '@/utils/supabase/server';
 
@@ -9,6 +9,7 @@ export async function POST(
 ) {
  try {
  const { shopId, clientId } = await params;
+    const tenantClient = await getTenantClient(shopId);
  const supabase = await createClient();
  const { data: { session } } = await supabase.auth.getSession();
   const authUserSession = session?.user;
@@ -16,7 +17,7 @@ export async function POST(
  const authUserEmail = authUserSession?.email;
  if (!userId) return new Response("Unauthorized", { status: 401 });
 
- const user = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
+ const user = await tenantClient.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
  if (!user || (user.role !== 'SITE_ADMIN' && user.role !== 'SHOP_ADMIN' && user.role !== 'STAFF')) {
  return new Response("Forbidden", { status: 403 });
  }
@@ -28,7 +29,7 @@ export async function POST(
  return NextResponse.json({ error: 'Missing formula text' }, { status: 400 });
  }
 
- const newFormula = await prisma.clientFormula.create({
+ const newFormula = await tenantClient.clientFormula.create({
  data: {
  formula: String(formula).trim(),
  notes: notes ? String(notes).trim() : null,

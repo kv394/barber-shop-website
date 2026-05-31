@@ -1,5 +1,5 @@
 import { logger } from "@/lib/logger";
-import { prisma } from '@/lib/prisma';
+import { prisma, getTenantClient } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
 import { createClient } from '@/utils/supabase/server';
 import { revalidatePath } from 'next/cache';
@@ -10,6 +10,7 @@ export async function PATCH(
 ) {
  try {
  const { shopId } = await params;
+    const tenantClient = await getTenantClient(shopId);
  const supabase = await createClient();
  const { data: { session } } = await supabase.auth.getSession();
   const authUserSession = session?.user;
@@ -17,8 +18,8 @@ export async function PATCH(
  const authUserEmail = authUserSession?.email;
  if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
- const user = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
- if (!user || (user.role !== 'SITE_ADMIN' && (user.role !== 'SHOP_ADMIN' || (user.shopId !== shopId && !(await prisma.shopAccess.findFirst({ where: { userId: user.id, shopId, role: 'SHOP_ADMIN' } })))))) {
+ const user = await tenantClient.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
+ if (!user || (user.role !== 'SITE_ADMIN' && (user.role !== 'SHOP_ADMIN' || (user.shopId !== shopId && !(await tenantClient.shopAccess.findFirst({ where: { userId: user.id, shopId, role: 'SHOP_ADMIN' } })))))) {
  return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
  }
 
@@ -83,7 +84,7 @@ export async function PATCH(
  return NextResponse.json({ error: 'No valid fields to update' }, { status: 400 });
  }
 
- const updated = await prisma.shop.update({
+ const updated = await tenantClient.shop.update({
  where: { id: shopId },
  data: updateData,
  });
@@ -101,6 +102,7 @@ export async function DELETE(
 ) {
  try {
  const { shopId } = await params;
+    const tenantClient = await getTenantClient(shopId);
  const supabase = await createClient();
  const { data: { session } } = await supabase.auth.getSession();
   const authUserSession = session?.user;
@@ -109,7 +111,7 @@ export async function DELETE(
  if (!userId) return new Response("Unauthorized", { status: 401 });
 
  // Verify user is SITE_ADMIN or SHOP_ADMIN with access
- const user = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
+ const user = await tenantClient.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
  if (!user) {
  return new Response("Unauthorized", { status: 401 });
  }
@@ -121,7 +123,7 @@ export async function DELETE(
  if (user.shopId === shopId) {
  hasAccess = true;
  } else {
- const access = await prisma.shopAccess.findFirst({ where: { userId: user.id, shopId, role: 'SHOP_ADMIN' } });
+ const access = await tenantClient.shopAccess.findFirst({ where: { userId: user.id, shopId, role: 'SHOP_ADMIN' } });
  if (access) hasAccess = true;
  }
  }
@@ -131,10 +133,10 @@ export async function DELETE(
  }
 
  // Delete blackout dates separately (Prisma adapter type limitation)
- await prisma.shopBlackoutDate.deleteMany({ where: { shopId } });
+ await tenantClient.shopBlackoutDate.deleteMany({ where: { shopId } });
 
  // SECURITY: Wrap entire cascade in a transaction for atomicity
- await prisma.$transaction(async (tx: any) => {
+ await tenantClient.$transaction(async (tx: any) => {
  await tx.shopAccess.deleteMany({ where: { shopId } });
  // Delete notifications, reviews, campaigns, referrals first (leaf nodes)
  await tx.notification.deleteMany({ where: { shopId } });

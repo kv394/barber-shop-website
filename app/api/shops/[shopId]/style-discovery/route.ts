@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { logger } from '@/lib/logger';
 import { GoogleGenAI } from '@google/genai';
-import { prisma } from '@/lib/prisma';
+import { prisma, getTenantClient } from '@/lib/prisma';
 import { rateLimit } from '@/lib/rate-limiter';
 
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
@@ -12,6 +12,7 @@ export async function POST(
 ) {
  try {
  const { shopId } = await params;
+    const tenantClient = await getTenantClient(shopId);
 
  // Rate limit: 5 requests per IP per minute (client-facing, no auth required)
  const ip = request.headers.get('x-forwarded-for') || 'unknown';
@@ -42,7 +43,7 @@ export async function POST(
  }
 
  // Verify shop exists
- const shop = await prisma.shop.findUnique({
+ const shop = await tenantClient.shop.findUnique({
  where: { id: shopId },
  select: { id: true, name: true },
  });
@@ -52,7 +53,7 @@ export async function POST(
  }
 
  // Fetch portfolio images with captions for matching
- const portfolioImages = await prisma.portfolioImage.findMany({
+ const portfolioImages = await tenantClient.portfolioImage.findMany({
  where: { shopId },
  select: {
  id: true,

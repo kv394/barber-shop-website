@@ -1,6 +1,6 @@
 import { logger } from "@/lib/logger";
 import { NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
+import { prisma, getTenantClient } from '@/lib/prisma';
 import { requireShopRole, isAuthError } from '@/lib/auth';
 
 import { resolveShopId } from '@/lib/shop-resolution';
@@ -8,9 +8,10 @@ import { productSchema } from '@/lib/validations';
 
 export async function POST(req: Request, { params }: { params: Promise<{ shopId: string }> }) {
  try {
- const { shopId: paramShopId } = await params;
- const shopId = await resolveShopId(paramShopId);
+ const { shopId: paramShopId } = await params; const shopId = await resolveShopId(paramShopId);
  if (!shopId) return NextResponse.json({ error: 'Shop not found' }, { status: 404 });
+
+    const tenantClient = await getTenantClient(shopId);
 
  const authResult = await requireShopRole(shopId, ['SITE_ADMIN', 'SHOP_ADMIN', 'STAFF']);
  if (isAuthError(authResult)) return authResult;
@@ -23,7 +24,7 @@ export async function POST(req: Request, { params }: { params: Promise<{ shopId:
 
   const { name, description, sku, barcode, price, cost, taxRate, trackInventory, inventoryCount, reorderPoint, type, supplier, isSellable, imageUrl } = validationResult.data;
 
-  const product = await prisma.product.create({
+  const product = await tenantClient.product.create({
     data: {
       shopId: shopId,
       name,
@@ -52,15 +53,16 @@ export async function POST(req: Request, { params }: { params: Promise<{ shopId:
 
 export async function GET(req: Request, { params }: { params: Promise<{ shopId: string }> }) {
  try {
- const { shopId: paramShopId } = await params;
- const shopId = await resolveShopId(paramShopId);
+ const { shopId: paramShopId } = await params; const shopId = await resolveShopId(paramShopId);
  if (!shopId) return NextResponse.json({ error: 'Shop not found' }, { status: 404 });
+
+    const tenantClient = await getTenantClient(shopId);
 
  // SECURITY: Products include cost/supplier data — require shop membership
  const authResult = await requireShopRole(shopId, ['SITE_ADMIN', 'SHOP_ADMIN', 'STAFF']);
  if (isAuthError(authResult)) return authResult;
 
- const products = await prisma.product.findMany({
+ const products = await tenantClient.product.findMany({
  where: { shopId: shopId },
  orderBy: { name: 'asc' },
  });

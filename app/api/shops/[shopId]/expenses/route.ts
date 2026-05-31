@@ -1,5 +1,5 @@
 import { logger } from "@/lib/logger";
-import { prisma } from '@/lib/prisma';
+import { prisma, getTenantClient } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
 import { createClient } from '@/utils/supabase/server';
 import { revalidatePath } from 'next/cache';
@@ -10,6 +10,7 @@ export async function GET(
 ) {
  try {
  const { shopId } = await params;
+    const tenantClient = await getTenantClient(shopId);
  const supabase = await createClient();
  const { data: { session } } = await supabase.auth.getSession();
   const authUserSession = session?.user;
@@ -17,7 +18,7 @@ export async function GET(
  const authUserEmail = authUserSession?.email;
  if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
- const user = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
+ const user = await tenantClient.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
  const canView = user?.role === 'SITE_ADMIN' ||
  (user?.role === 'SHOP_ADMIN' && user?.shopId === shopId);
  if (!canView) return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
@@ -33,7 +34,7 @@ export async function GET(
  dateFilter = { date: { gte: start, lt: end } };
  }
 
- const expenses = await prisma.expense.findMany({
+ const expenses = await tenantClient.expense.findMany({
  where: { shopId: shopId, ...dateFilter },
  orderBy: { date: 'desc' },
  });
@@ -51,6 +52,7 @@ export async function POST(
 ) {
  try {
  const { shopId } = await params;
+    const tenantClient = await getTenantClient(shopId);
  const supabase = await createClient();
  const { data: { session } } = await supabase.auth.getSession();
   const authUserSession = session?.user;
@@ -58,7 +60,7 @@ export async function POST(
  const authUserEmail = authUserSession?.email;
  if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
- const user = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
+ const user = await tenantClient.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
  const canCreate = user?.role === 'SITE_ADMIN' ||
  (user?.role === 'SHOP_ADMIN' && user?.shopId === shopId);
  if (!canCreate) return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
@@ -71,7 +73,7 @@ export async function POST(
 
   const { amount: parsedAmount, category, description, date } = validationResult.data;
 
-  const expense = await prisma.expense.create({
+  const expense = await tenantClient.expense.create({
     data: {
       amount: parsedAmount,
       category: String(category).replace(/<[^>]*>/g, '').slice(0, 100),
@@ -95,6 +97,7 @@ export async function DELETE(
 ) {
  try {
  const { shopId } = await params;
+    const tenantClient = await getTenantClient(shopId);
  const supabase = await createClient();
  const { data: { session } } = await supabase.auth.getSession();
   const authUserSession = session?.user;
@@ -102,7 +105,7 @@ export async function DELETE(
  const authUserEmail = authUserSession?.email;
  if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
- const user = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
+ const user = await tenantClient.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
  const canDelete = user?.role === 'SITE_ADMIN' ||
  (user?.role === 'SHOP_ADMIN' && user?.shopId === shopId);
  if (!canDelete) return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
@@ -112,12 +115,12 @@ export async function DELETE(
  if (!expenseId) return NextResponse.json({ error: 'Expense ID required' }, { status: 400 });
 
  // Verify expense belongs to this shop (prevent cross-shop deletion)
- const expense = await prisma.expense.findUnique({ where: { id: expenseId } });
- if (!expense || (expense.shopId !== shopId && !(await prisma.shopAccess.findFirst({ where: { userId: expense.id, shopId } })))) {
+ const expense = await tenantClient.expense.findUnique({ where: { id: expenseId } });
+ if (!expense || (expense.shopId !== shopId && !(await tenantClient.shopAccess.findFirst({ where: { userId: expense.id, shopId } })))) {
  return NextResponse.json({ error: 'Expense not found' }, { status: 404 });
  }
 
- await prisma.expense.delete({ where: { id: expenseId } });
+ await tenantClient.expense.delete({ where: { id: expenseId } });
  revalidatePath(`/shop/${shopId}/expenses`);
  return NextResponse.json({ success: true });
  } catch (error) {

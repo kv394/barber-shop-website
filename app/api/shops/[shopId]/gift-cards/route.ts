@@ -1,4 +1,4 @@
-import { prisma } from '@/lib/prisma';
+import { prisma, getTenantClient } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
 import { createClient } from '@/utils/supabase/server';
 import { logger } from '@/lib/logger';
@@ -23,8 +23,7 @@ export async function GET(
  const authUserEmail = authUserSession?.email;
  if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
- const { shopId: paramShopId } = await params;
- const resolvedShop = await prisma.shop.findFirst({
+ const { shopId: paramShopId } = await params; const resolvedShop = await prisma.shop.findFirst({
  where: {
  OR: [
  { id: paramShopId },
@@ -39,12 +38,14 @@ export async function GET(
  if (!resolvedShop) return NextResponse.json({ error: 'Shop not found' }, { status: 404 });
  const shopId = resolvedShop.id;
 
- const user = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
+ const tenantClient = await getTenantClient(shopId);
+
+ const user = await tenantClient.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
  const canManage = user?.role === 'SITE_ADMIN' ||
  (user?.role === 'SHOP_ADMIN' && user?.shopId === shopId);
  if (!canManage) return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
 
- const cards = await prisma.giftCard.findMany({
+ const cards = await tenantClient.giftCard.findMany({
  where: { shopId },
  orderBy: { createdAt: 'desc' },
  take: 200,
@@ -69,8 +70,7 @@ export async function POST(
  if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
  try {
- const { shopId: paramShopId } = await params;
- const resolvedShop = await prisma.shop.findFirst({
+ const { shopId: paramShopId } = await params; const resolvedShop = await prisma.shop.findFirst({
  where: {
  OR: [
  { id: paramShopId },
@@ -85,7 +85,9 @@ export async function POST(
  if (!resolvedShop) return NextResponse.json({ error: 'Shop not found' }, { status: 404 });
  const shopId = resolvedShop.id;
 
- const user = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
+ const tenantClient = await getTenantClient(shopId);
+
+ const user = await tenantClient.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
  const canManage = user?.role === 'SITE_ADMIN' ||
  (user?.role === 'SHOP_ADMIN' && user?.shopId === shopId);
  if (!canManage) return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
@@ -103,7 +105,7 @@ export async function POST(
   ? new Date(Date.now() + expiresInDays * 24 * 60 * 60 * 1000)
   : null;
 
- const giftCard = await prisma.giftCard.create({
+ const giftCard = await tenantClient.giftCard.create({
  data: {
  shopId,
  code,
@@ -131,7 +133,7 @@ export async function POST(
  code: giftCard.code,
  });
  // Use notification system to deliver
- const recipientUser = await prisma.user.findFirst({
+ const recipientUser = await tenantClient.user.findFirst({
  where: { email: recipientEmail.trim().toLowerCase() },
  });
  if (recipientUser) {

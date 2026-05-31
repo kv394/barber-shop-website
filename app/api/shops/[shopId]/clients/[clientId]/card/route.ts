@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@/utils/supabase/server';
-import { prisma } from '@/lib/prisma';
+import { prisma, getTenantClient } from '@/lib/prisma';
 import { createSetupIntent } from '@/lib/stripe';
 import { logger } from '@/lib/logger';
 import Stripe from 'stripe';
@@ -11,6 +11,7 @@ export async function POST(
 ) {
  try {
  const { shopId, clientId } = await params;
+    const tenantClient = await getTenantClient(shopId);
  const supabase = await createClient();
  const { data: { session } } = await supabase.auth.getSession();
   const authUserSession = session?.user;
@@ -19,7 +20,7 @@ export async function POST(
  return new Response('Unauthorized', { status: 401 });
  }
 
- const user = await prisma.user.findFirst({ 
+ const user = await tenantClient.user.findFirst({ 
  where: { OR: [{ id: authUserSession.id }, { email: authUserSession.email || '' }] } 
  });
  
@@ -32,7 +33,7 @@ export async function POST(
  return new Response('Forbidden', { status: 403 });
  }
 
- const clientUser = await prisma.user.findUnique({
+ const clientUser = await tenantClient.user.findUnique({
  where: { id: clientId },
  include: { shopClients: { where: { shopId } } }
  });
@@ -40,7 +41,7 @@ export async function POST(
  if (!clientUser) return new Response('Client not found', { status: 404 });
 
  // Fetch shop's payment config
- const shop = await prisma.shop.findUnique({
+ const shop = await tenantClient.shop.findUnique({
  where: { id: shopId },
  select: { stripeAccountId: true, paymentGateway: true },
  });
@@ -68,7 +69,7 @@ export async function POST(
  }, stripeOptions);
  customerId = customer.id;
  
- await prisma.shopClient.upsert({
+ await tenantClient.shopClient.upsert({
  where: { userId_shopId: { userId: clientUser.id, shopId } },
  create: { userId: clientUser.id, shopId, stripeCustomerId: customerId },
  update: { stripeCustomerId: customerId }

@@ -1,6 +1,6 @@
 import { logger } from "@/lib/logger";
 import { NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
+import { prisma, getTenantClient } from '@/lib/prisma';
 import { requireShopRole, isAuthError } from '@/lib/auth';
 
 export async function DELETE(
@@ -9,11 +9,12 @@ export async function DELETE(
 ) {
  try {
  const { shopId, productId } = await params;
+    const tenantClient = await getTenantClient(shopId);
 
  const authResult = await requireShopRole(shopId, ['SITE_ADMIN', 'SHOP_ADMIN']);
  if (isAuthError(authResult)) return authResult;
 
- const deletedProduct = await prisma.product.delete({
+ const deletedProduct = await tenantClient.product.delete({
  where: {
  id: productId,
  shopId: shopId,
@@ -33,12 +34,13 @@ export async function PATCH(
 ) {
  try {
  const { shopId, productId } = await params;
+    const tenantClient = await getTenantClient(shopId);
  const body = await req.json();
 
  const authResult = await requireShopRole(shopId, ['SITE_ADMIN', 'SHOP_ADMIN']);
  if (isAuthError(authResult)) return authResult;
 
- const updatedProduct = await prisma.product.update({
+ const updatedProduct = await tenantClient.product.update({
  where: {
  id: productId,
  shopId: shopId,

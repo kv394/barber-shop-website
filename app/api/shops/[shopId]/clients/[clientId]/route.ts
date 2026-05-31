@@ -1,5 +1,5 @@
 import { logger } from "@/lib/logger";
-import { prisma } from '@/lib/prisma';
+import { prisma, getTenantClient } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
 import { createClient } from '@/utils/supabase/server';
 import { clientPatchSchema } from '@/lib/validations';
@@ -9,6 +9,7 @@ export async function GET(
 ) {
  try {
  const { shopId, clientId } = await params;
+    const tenantClient = await getTenantClient(shopId);
  const supabase = await createClient();
  const { data: { session } } = await supabase.auth.getSession();
   const authUserSession = session?.user;
@@ -16,7 +17,7 @@ export async function GET(
  const authUserEmail = authUserSession?.email;
  if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
- const currentUser = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
+ const currentUser = await tenantClient.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
  const canView = currentUser?.role === 'SITE_ADMIN' ||
  (currentUser?.role === 'SHOP_ADMIN' && currentUser?.shopId === shopId) ||
  (currentUser?.role === 'STAFF' && currentUser?.shopId === shopId);
@@ -38,7 +39,7 @@ export async function GET(
  };
  }
 
- const client = await prisma.user.findFirst({
+ const client = await tenantClient.user.findFirst({
  where: clientCondition,
  select: {
  id: true, name: true, email: true,
@@ -84,6 +85,7 @@ export async function PATCH(
 ) {
  try {
  const { shopId, clientId } = await params;
+    const tenantClient = await getTenantClient(shopId);
  const supabase = await createClient();
  const { data: { session } } = await supabase.auth.getSession();
   const authUserSession = session?.user;
@@ -91,7 +93,7 @@ export async function PATCH(
  const authUserEmail = authUserSession?.email;
  if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
- const currentUser = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
+ const currentUser = await tenantClient.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
  const canEdit = currentUser?.role === 'SITE_ADMIN' ||
  (currentUser?.role === 'SHOP_ADMIN' && currentUser?.shopId === shopId) ||
  (currentUser?.role === 'STAFF' && currentUser?.shopId === shopId);
@@ -114,7 +116,7 @@ export async function PATCH(
  }
 
  // Verify the client has a relationship with this shop (or with this staff member)
- const client = await prisma.user.findFirst({
+ const client = await tenantClient.user.findFirst({
  where: verifyClientCondition,
  });
  if (!client) return NextResponse.json({ error: 'Client not found in this shop' }, { status: 404 });
@@ -138,7 +140,7 @@ export async function PATCH(
   if (validatedData.smsConsent !== undefined) userUpdateData.smsConsent = validatedData.smsConsent;
 
  if (Object.keys(updateData).length > 0) {
- await prisma.shopClient.upsert({
+ await tenantClient.shopClient.upsert({
  where: { userId_shopId: { userId: clientId, shopId } },
  create: {
  userId: clientId,
@@ -149,7 +151,7 @@ export async function PATCH(
  });
  }
 
- const updated = await prisma.user.update({
+ const updated = await tenantClient.user.update({
  where: { id: clientId },
  data: userUpdateData,
  select: {

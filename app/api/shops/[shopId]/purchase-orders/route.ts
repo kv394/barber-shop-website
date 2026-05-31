@@ -1,5 +1,5 @@
 import { logger } from "@/lib/logger";
-import { prisma } from '@/lib/prisma';
+import { prisma, getTenantClient } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
 import { requireShopRole, isAuthError } from '@/lib/auth';
 
@@ -11,10 +11,11 @@ export async function GET(
 ) {
  try {
  const { shopId } = await params;
+    const tenantClient = await getTenantClient(shopId);
  const authResult = await requireShopRole(shopId, ['SITE_ADMIN', 'SHOP_ADMIN']);
  if (isAuthError(authResult)) return authResult;
 
- const purchaseOrders = await prisma.purchaseOrder.findMany({
+ const purchaseOrders = await tenantClient.purchaseOrder.findMany({
  where: { shopId },
  include: {
  items: {
@@ -37,6 +38,7 @@ export async function POST(
 ) {
  try {
  const { shopId } = await params;
+    const tenantClient = await getTenantClient(shopId);
  const authResult = await requireShopRole(shopId, ['SITE_ADMIN', 'SHOP_ADMIN']);
  if (isAuthError(authResult)) return authResult;
 
@@ -47,7 +49,7 @@ export async function POST(
  return NextResponse.json({ error: 'Supplier and items are required' }, { status: 400 });
  }
 
- const purchaseOrder = await prisma.purchaseOrder.create({
+ const purchaseOrder = await tenantClient.purchaseOrder.create({
  data: {
  shopId,
  supplier,

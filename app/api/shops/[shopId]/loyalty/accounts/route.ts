@@ -1,4 +1,4 @@
-import { prisma } from '@/lib/prisma';
+import { prisma, getTenantClient } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
 import { requireShopRole, isAuthError } from '@/lib/auth';
 import { logger } from '@/lib/logger';
@@ -10,10 +10,11 @@ export async function GET(
 ) {
  try {
  const { shopId } = await params;
+    const tenantClient = await getTenantClient(shopId);
  const authResult = await requireShopRole(shopId, ['SITE_ADMIN', 'SHOP_ADMIN', 'STAFF']);
  if (isAuthError(authResult)) return authResult;
 
- const accounts = await prisma.loyaltyAccount.findMany({
+ const accounts = await tenantClient.loyaltyAccount.findMany({
  where: { shopId },
  include: {
  user: { select: { id: true, name: true, email: true, phone: true } },

@@ -1,10 +1,11 @@
-import { prisma } from '@/lib/prisma';
+import { prisma, getTenantClient } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
 
 export async function GET(request: Request, { params }: { params: Promise<{ shopId: string, staffId: string }> }) {
  const { shopId, staffId } = await params;
+    const tenantClient = await getTenantClient(shopId);
  
- const staff = await prisma.user.findFirst({
+ const staff = await tenantClient.user.findFirst({
  where: { id: staffId, shopId: shopId },
  select: { name: true }
  });
@@ -18,7 +19,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ shop
  const maxDate = new Date();
  maxDate.setDate(now.getDate() + 60);
  
- const appointments = await prisma.appointment.findMany({
+ const appointments = await tenantClient.appointment.findMany({
  where: {
  staffId: staffId,
  shopId: shopId,

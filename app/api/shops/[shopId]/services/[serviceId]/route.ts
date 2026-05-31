@@ -1,5 +1,5 @@
 import { logger } from "@/lib/logger";
-import { prisma } from '@/lib/prisma';
+import { prisma, getTenantClient } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
 import { requireShopRole, isAuthError } from '@/lib/auth';
 import { revalidatePath } from 'next/cache';
@@ -11,12 +11,13 @@ export async function PUT(
 ) {
  try {
  const { shopId, serviceId } = await params;
+    const tenantClient = await getTenantClient(shopId);
  const authResult = await requireShopRole(shopId, ['SITE_ADMIN', 'SHOP_ADMIN']);
  if (isAuthError(authResult)) return authResult;
 
  // Verify ownership
- const service = await prisma.service.findUnique({ where: { id: serviceId } });
- if (!service || (service.shopId !== shopId && !(await prisma.shopAccess.findFirst({ where: { userId: service.id, shopId } })))) {
+ const service = await tenantClient.service.findUnique({ where: { id: serviceId } });
+ if (!service || (service.shopId !== shopId && !(await tenantClient.shopAccess.findFirst({ where: { userId: service.id, shopId } })))) {
  return NextResponse.json({ error: 'Service not found' }, { status: 404 });
  }
 
@@ -46,7 +47,7 @@ export async function PUT(
  if (Array.isArray(resourceRequirements)) {
  try {
  // First delete existing, then create new ones
- await prisma.serviceResourceRequirement.deleteMany({
+ await tenantClient.serviceResourceRequirement.deleteMany({
  where: { serviceId }
  });
  dataToUpdate.resourceRequirements = {
@@ -67,7 +68,7 @@ export async function PUT(
 
  if (Array.isArray(productUsages)) {
  try {
- await prisma.serviceProductUsage.deleteMany({
+ await tenantClient.serviceProductUsage.deleteMany({
  where: { serviceId }
  });
  dataToUpdate.productUsages = {
@@ -97,7 +98,7 @@ export async function PUT(
 
  let updatedService;
  try {
- updatedService = await prisma.service.update({
+ updatedService = await tenantClient.service.update({
  where: { id: serviceId },
  data: dataToUpdate,
  include: includeFull
@@ -119,7 +120,7 @@ export async function PUT(
  delete dataToUpdate.productUsages;
  }
  
- updatedService = await prisma.service.update({
+ updatedService = await tenantClient.service.update({
  where: { id: serviceId },
  data: dataToUpdate,
  include: fallbackInclude
@@ -147,20 +148,21 @@ export async function DELETE(
 ) {
  try {
  const { shopId, serviceId } = await params;
+    const tenantClient = await getTenantClient(shopId);
 
  const authResult = await requireShopRole(shopId, ['SITE_ADMIN', 'SHOP_ADMIN']);
  if (isAuthError(authResult)) return authResult;
 
  // Verify the service belongs to the shop before deleting
- const service = await prisma.service.findUnique({
+ const service = await tenantClient.service.findUnique({
  where: { id: serviceId }
  });
 
- if(!service || (service.shopId !== shopId && !(await prisma.shopAccess.findFirst({ where: { userId: service.id, shopId } })))) {
+ if(!service || (service.shopId !== shopId && !(await tenantClient.shopAccess.findFirst({ where: { userId: service.id, shopId } })))) {
  return NextResponse.json({ error: 'Service not found or does not belong to this shop' }, { status: 404 });
  }
 
- await prisma.service.delete({
+ await tenantClient.service.delete({
  where: { id: serviceId }
  });
 

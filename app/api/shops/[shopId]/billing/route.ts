@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
+import { prisma, getTenantClient } from '@/lib/prisma';
 import { createClient } from '@/utils/supabase/server';
 import { logger } from '@/lib/logger';
 import { calculateUsageCostStrategy, getSaaSTiers } from '@/lib/cost-calculator';
@@ -12,6 +12,7 @@ export async function GET(
 ) {
  try {
  const { shopId } = await params;
+    const tenantClient = await getTenantClient(shopId);
  const supabase = await createClient();
  const { data: { session } } = await supabase.auth.getSession();
   const authUserSession = session?.user;
@@ -19,17 +20,17 @@ export async function GET(
  const authUserEmail = authUserSession?.email;
  if (!userId) return new Response("Unauthorized", { status: 401 });
 
- const user = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
+ const user = await tenantClient.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
  if (!user || (user.role !== 'SITE_ADMIN' && user.role !== 'SHOP_ADMIN')) {
  return new Response("Forbidden", { status: 403 });
  }
 
  // If SHOP_ADMIN, ensure they belong to this shop
- if (user.role === 'SHOP_ADMIN' && (user.shopId !== shopId && !(await prisma.shopAccess.findFirst({ where: { userId: user.id, shopId } })))) {
+ if (user.role === 'SHOP_ADMIN' && (user.shopId !== shopId && !(await tenantClient.shopAccess.findFirst({ where: { userId: user.id, shopId } })))) {
  return new Response("Forbidden", { status: 403 });
  }
 
- const shop = await prisma.shop.findUnique({
+ const shop = await tenantClient.shop.findUnique({
  where: { id: shopId },
  select: { name: true, aiTokens: true }
  });
@@ -39,7 +40,7 @@ export async function GET(
  }
 
  // Check for the latest hourly usage report
- const latestReport = await prisma.shopUsageReport.findFirst({
+ const latestReport = await tenantClient.shopUsageReport.findFirst({
  where: { shopId },
  orderBy: { period: 'desc' }
  });
@@ -79,15 +80,15 @@ export async function GET(
  clientFormulaCount,
  reviewCount
  ] = await Promise.all([
- prisma.user.count({ where: { shopId } }),
- prisma.appointment.count({ where: { shopId } }),
- prisma.product.count({ where: { shopId } }),
- prisma.service.count({ where: { shopId } }),
- prisma.formSubmission.count({ where: { appointment: { shopId } } }),
- prisma.portfolioImage.count({ where: { shopId } }),
- prisma.clientHistoryImage.count({ where: { shopId } }),
- prisma.clientFormula.count({ where: { shopId } }),
- prisma.review.count({ where: { shopId } })
+ tenantClient.user.count({ where: { shopId } }),
+ tenantClient.appointment.count({ where: { shopId } }),
+ tenantClient.product.count({ where: { shopId } }),
+ tenantClient.service.count({ where: { shopId } }),
+ tenantClient.formSubmission.count({ where: { appointment: { shopId } } }),
+ tenantClient.portfolioImage.count({ where: { shopId } }),
+ tenantClient.clientHistoryImage.count({ where: { shopId } }),
+ tenantClient.clientFormula.count({ where: { shopId } }),
+ tenantClient.review.count({ where: { shopId } })
  ]);
 
  metrics = {

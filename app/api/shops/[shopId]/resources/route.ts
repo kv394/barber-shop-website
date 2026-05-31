@@ -1,5 +1,5 @@
 import { logger } from "@/lib/logger";
-import { prisma } from '@/lib/prisma';
+import { prisma, getTenantClient } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
 import { createClient } from '@/utils/supabase/server';
 
@@ -10,9 +10,10 @@ export async function GET(
  { params }: { params: Promise<{ shopId: string }> }
 ) {
  try {
- const { shopId: paramShopId } = await params;
- const shopId = await resolveShopId(paramShopId);
+ const { shopId: paramShopId } = await params; const shopId = await resolveShopId(paramShopId);
  if (!shopId) return new Response("Shop not found", { status: 404 });
+
+    const tenantClient = await getTenantClient(shopId);
  const supabase = await createClient();
  const { data: { session } } = await supabase.auth.getSession();
   const authUserSession = session?.user;
@@ -20,12 +21,12 @@ export async function GET(
  const authUserEmail = authUserSession?.email;
  if (!userId) return new Response("Unauthorized", { status: 401 });
 
- const user = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
- if (!user || (user.role !== 'SITE_ADMIN' && (user.shopId !== shopId && !(await prisma.shopAccess.findFirst({ where: { userId: user.id, shopId } }))))) {
+ const user = await tenantClient.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
+ if (!user || (user.role !== 'SITE_ADMIN' && (user.shopId !== shopId && !(await tenantClient.shopAccess.findFirst({ where: { userId: user.id, shopId } }))))) {
  return new Response("Forbidden", { status: 403 });
  }
 
- const resources = await prisma.resource.findMany({
+ const resources = await tenantClient.resource.findMany({
  where: { shopId },
  orderBy: { name: 'asc' }
  });
@@ -43,6 +44,7 @@ export async function POST(
 ) {
  try {
  const { shopId } = await params;
+    const tenantClient = await getTenantClient(shopId);
  const supabase = await createClient();
  const { data: { session } } = await supabase.auth.getSession();
   const authUserSession = session?.user;
@@ -50,9 +52,9 @@ export async function POST(
  const authUserEmail = authUserSession?.email;
  if (!userId) return new Response("Unauthorized", { status: 401 });
 
- const user = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
+ const user = await tenantClient.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
  
- if (!user || (user.role !== 'SITE_ADMIN' && (user.role !== 'SHOP_ADMIN' || (user.shopId !== shopId && !(await prisma.shopAccess.findFirst({ where: { userId: user.id, shopId } })))))) {
+ if (!user || (user.role !== 'SITE_ADMIN' && (user.role !== 'SHOP_ADMIN' || (user.shopId !== shopId && !(await tenantClient.shopAccess.findFirst({ where: { userId: user.id, shopId } })))))) {
  return new Response("Forbidden", { status: 403 });
  }
 
@@ -63,7 +65,7 @@ export async function POST(
  return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
  }
 
- const newResource = await prisma.resource.create({
+ const newResource = await tenantClient.resource.create({
  data: {
  name: String(name).trim().slice(0, 100),
  type: String(type).trim().slice(0, 50),

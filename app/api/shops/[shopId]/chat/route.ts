@@ -1,5 +1,5 @@
 import { logger } from "@/lib/logger";
-import { prisma } from '@/lib/prisma';
+import { prisma, getTenantClient } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
 import { createClient } from '@/utils/supabase/server';
 import { adminToolDeclarations, executeAdminTool } from '@/lib/ai-admin-tools';
@@ -16,14 +16,15 @@ export async function GET(
 ) {
  try {
  const { shopId } = await params;
+    const tenantClient = await getTenantClient(shopId);
  const supabase = await createClient();
  const { data: { user: authUser } } = await supabase.auth.getUser();
  if (!authUser) return new Response('Unauthorized', { status: 401 });
  const userId = authUser.id;
  const authUserEmail = authUser.email;
 
- const user = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
- if (!user || (user.shopId !== shopId && !(await prisma.shopAccess.findFirst({ where: { userId: user.id, shopId } })))) {
+ const user = await tenantClient.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
+ if (!user || (user.shopId !== shopId && !(await tenantClient.shopAccess.findFirst({ where: { userId: user.id, shopId } })))) {
  return new Response('Forbidden', { status: 403 });
  }
 
@@ -32,7 +33,7 @@ export async function GET(
  return new Response('Forbidden', { status: 403 });
  }
 
- const messages = await prisma.message.findMany({
+ const messages = await tenantClient.message.findMany({
  where: { shopId },
  include: {
  sender: {
@@ -64,14 +65,15 @@ export async function POST(
 ) {
  try {
  const { shopId } = await params;
+    const tenantClient = await getTenantClient(shopId);
  const supabase = await createClient();
  const { data: { user: authUser } } = await supabase.auth.getUser();
  if (!authUser) return new Response('Unauthorized', { status: 401 });
  const userId = authUser.id;
  const authUserEmail = authUser.email;
 
- const user = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
- if (!user || (user.shopId !== shopId && !(await prisma.shopAccess.findFirst({ where: { userId: user.id, shopId } })))) {
+ const user = await tenantClient.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
+ if (!user || (user.shopId !== shopId && !(await tenantClient.shopAccess.findFirst({ where: { userId: user.id, shopId } })))) {
  return new Response('Forbidden', { status: 403 });
  }
 
@@ -85,7 +87,7 @@ export async function POST(
  return NextResponse.json({ error: 'Message cannot be empty' }, { status: 400 });
  }
 
- const message = await prisma.message.create({
+ const message = await tenantClient.message.create({
  data: {
  shopId,
  senderId: user.id,
@@ -110,7 +112,7 @@ export async function POST(
  
  if (mentions.length > 0) {
  // Find users in the shop whose first name matches the mentions
- const shopUsers = await prisma.user.findMany({
+ const shopUsers = await tenantClient.user.findMany({
  where: { 
  shopId,
  role: { in: ['STAFF', 'SHOP_ADMIN', 'SITE_ADMIN'] } 
@@ -134,7 +136,7 @@ export async function POST(
  }));
 
  if (notifications.length > 0) {
- await prisma.notification.createMany({ data: notifications });
+ await tenantClient.notification.createMany({ data: notifications });
  }
  }
  
@@ -217,13 +219,13 @@ ONLY use tools if the user role is SHOP_ADMIN or SITE_ADMIN.`;
  }
 
  if (totalTokensUsed > 0) {
- await prisma.shop.update({
+ await tenantClient.shop.update({
  where: { id: shopId },
  data: { aiTokens: { decrement: totalTokensUsed } }
  });
  }
  
- const aiUser = await prisma.user.upsert({
+ const aiUser = await tenantClient.user.upsert({
  where: { email: 'ai-assistant@system.local' },
  update: {},
  create: {
@@ -234,7 +236,7 @@ ONLY use tools if the user role is SHOP_ADMIN or SITE_ADMIN.`;
  }
  });
 
- await prisma.message.create({
+ await tenantClient.message.create({
  data: {
  shopId,
  senderId: aiUser.id,

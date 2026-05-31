@@ -1,5 +1,5 @@
 import { logger } from "@/lib/logger";
-import { prisma } from '@/lib/prisma';
+import { prisma, getTenantClient } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
 import { requireShopRole, isAuthError } from '@/lib/auth';
 
@@ -11,13 +11,14 @@ export async function PATCH(
 ) {
  try {
  const { shopId, poId } = await params;
+    const tenantClient = await getTenantClient(shopId);
  const authResult = await requireShopRole(shopId, ['SITE_ADMIN', 'SHOP_ADMIN']);
  if (isAuthError(authResult)) return authResult;
 
  const body = await request.json();
  const { status, receivedItems } = body;
 
- const currentPo = await prisma.purchaseOrder.findUnique({
+ const currentPo = await tenantClient.purchaseOrder.findUnique({
  where: { id: poId, shopId },
  include: { items: true }
  });
@@ -30,7 +31,7 @@ export async function PATCH(
  if (status === 'RECEIVED' && currentPo.status !== 'RECEIVED') {
  updateData.receivedAt = new Date();
  // Need a transaction to update inventory counts
- await prisma.$transaction(async (tx: any) => {
+ await tenantClient.$transaction(async (tx: any) => {
  // Update PO
  await tx.purchaseOrder.update({
  where: { id: poId },
@@ -55,13 +56,13 @@ export async function PATCH(
  }
  });
  
- const updatedPo = await prisma.purchaseOrder.findUnique({
+ const updatedPo = await tenantClient.purchaseOrder.findUnique({
  where: { id: poId },
  include: { items: true }
  });
  return NextResponse.json(JSON.parse(JSON.stringify(updatedPo)));
  } else {
- const updatedPo = await prisma.purchaseOrder.update({
+ const updatedPo = await tenantClient.purchaseOrder.update({
  where: { id: poId },
  data: updateData,
  include: { items: true }

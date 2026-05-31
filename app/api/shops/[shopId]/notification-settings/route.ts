@@ -1,14 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
+import { prisma, getTenantClient } from '@/lib/prisma';
 import { requireShopRole, isAuthError } from '@/lib/auth';
 export const dynamic = 'force-dynamic';
 
 export async function GET(_: NextRequest, { params }: { params: Promise<{ shopId: string }> }) {
  const { shopId } = await params;
+    const tenantClient = await getTenantClient(shopId);
  const authResult = await requireShopRole(shopId, ['SITE_ADMIN', 'SHOP_ADMIN']);
  if (isAuthError(authResult)) return authResult;
 
- const shop = await prisma.shop.findUnique({ where: { id: shopId }, select: { customization: true } });
+ const shop = await tenantClient.shop.findUnique({ where: { id: shopId }, select: { customization: true } });
  const c = (shop?.customization as any) || {};
  return NextResponse.json({
  appointmentReminders: c.notifSettings?.appointmentReminders ?? true,
@@ -29,6 +30,7 @@ export async function GET(_: NextRequest, { params }: { params: Promise<{ shopId
 
 export async function PUT(req: NextRequest, { params }: { params: Promise<{ shopId: string }> }) {
  const { shopId } = await params;
+    const tenantClient = await getTenantClient(shopId);
  const authResult = await requireShopRole(shopId, ['SITE_ADMIN', 'SHOP_ADMIN']);
  if (isAuthError(authResult)) return authResult;
 
@@ -56,9 +58,9 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ shop
  sanitized.adminPhone = typeof body.adminPhone === 'string' ? body.adminPhone.trim().slice(0, 30) : '';
  }
 
- const shop = await prisma.shop.findUnique({ where: { id: shopId }, select: { customization: true } });
+ const shop = await tenantClient.shop.findUnique({ where: { id: shopId }, select: { customization: true } });
  const c = (shop?.customization as any) || {};
- await prisma.shop.update({
+ await tenantClient.shop.update({
  where: { id: shopId },
  data: { customization: { ...c, notifSettings: { ...c.notifSettings, ...sanitized } } },
  });

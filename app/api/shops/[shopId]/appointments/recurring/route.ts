@@ -1,4 +1,4 @@
-import { prisma } from '@/lib/prisma';
+import { prisma, getTenantClient } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
 import { createClient } from '@/utils/supabase/server';
 import { logger } from '@/lib/logger';
@@ -23,7 +23,8 @@ export async function POST(
 
  try {
  const { shopId } = await params;
- const user = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
+    const tenantClient = await getTenantClient(shopId);
+ const user = await tenantClient.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
  const canManage = user?.role === 'SITE_ADMIN' ||
  (user?.role === 'SHOP_ADMIN' && user?.shopId === shopId) ||
  (user?.role === 'STAFF' && user?.shopId === shopId);
@@ -43,22 +44,22 @@ export async function POST(
  return NextResponse.json({ error: 'Count must be between 2 and 52' }, { status: 400 });
  }
 
- const service = await prisma.service.findUnique({ where: { id: serviceId } });
+ const service = await tenantClient.service.findUnique({ where: { id: serviceId } });
  if (!service) return NextResponse.json({ error: 'Service not found' }, { status: 404 });
 
  // SECURITY: Verify service belongs to this shop (prevent cross-shop booking)
- if ((service.shopId !== shopId && !(await prisma.shopAccess.findFirst({ where: { userId: service.id, shopId } })))) {
+ if ((service.shopId !== shopId && !(await tenantClient.shopAccess.findFirst({ where: { userId: service.id, shopId } })))) {
  return NextResponse.json({ error: 'Service not found in this shop' }, { status: 404 });
  }
 
  // SECURITY: Verify staff belongs to this shop
- const staffMember = await prisma.user.findUnique({ where: { id: staffId } });
- if (!staffMember || (staffMember.shopId !== shopId && !(await prisma.shopAccess.findFirst({ where: { userId: staffMember.id, shopId } })))) {
+ const staffMember = await tenantClient.user.findUnique({ where: { id: staffId } });
+ if (!staffMember || (staffMember.shopId !== shopId && !(await tenantClient.shopAccess.findFirst({ where: { userId: staffMember.id, shopId } })))) {
  return NextResponse.json({ error: 'Staff not found in this shop' }, { status: 404 });
  }
 
  // SECURITY: Verify client has a relationship with this shop
- const client = await prisma.user.findFirst({
+ const client = await tenantClient.user.findFirst({
  where: {
  id: clientId,
  OR: [
@@ -79,7 +80,7 @@ export async function POST(
 
  // SECURITY: Atomic conflict-check + create in a serializable transaction
  // to prevent double-booking race conditions (TOCTOU).
- const appointments = await prisma.$transaction(async (tx: any) => {
+ const appointments = await tenantClient.$transaction(async (tx: any) => {
  // Check for conflicts on all dates inside the transaction
  const conflicts: string[] = [];
  for (const date of dates) {

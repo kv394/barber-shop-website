@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
+import { prisma, getTenantClient } from '@/lib/prisma';
 import { requireShopRole } from '@/lib/auth';
 import { NotificationService } from '@/lib/notifications';
 import { logger } from '@/lib/logger';
@@ -12,6 +12,7 @@ export async function POST(
 ) {
  try {
  const { shopId } = await params;
+    const tenantClient = await getTenantClient(shopId);
  const authResult = await requireShopRole(shopId, ['ATTENDANCE_KIOSK', 'SHOP_ADMIN', 'SITE_ADMIN']);
  if (authResult instanceof NextResponse) return authResult;
 
@@ -19,7 +20,7 @@ export async function POST(
  if (!phone) return NextResponse.json({ error: 'Phone number required' }, { status: 400 });
 
  // Find the user by phone number
- const user = await prisma.user.findFirst({
+ const user = await tenantClient.user.findFirst({
  where: { phone: { contains: phone.trim() }, shopId }
  });
 
@@ -33,7 +34,7 @@ export async function POST(
  const tomorrow = new Date(today);
  tomorrow.setDate(tomorrow.getDate() + 1);
 
- const appointment = await prisma.appointment.findFirst({
+ const appointment = await tenantClient.appointment.findFirst({
  where: {
  userId: user.id,
  shopId,
@@ -48,7 +49,7 @@ export async function POST(
  }
 
  // Update status to ARRIVED
- await prisma.appointment.update({
+ await tenantClient.appointment.update({
  where: { id: appointment.id },
  data: { status: 'ARRIVED' }
  });

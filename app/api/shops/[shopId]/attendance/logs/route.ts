@@ -1,5 +1,5 @@
 import { logger } from "@/lib/logger";
-import { prisma } from '@/lib/prisma';
+import { prisma, getTenantClient } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
 import { createClient } from '@/utils/supabase/server';
 
@@ -9,6 +9,7 @@ export async function GET(
 ) {
  try {
  const { shopId } = await params;
+    const tenantClient = await getTenantClient(shopId);
  const supabase = await createClient();
  const { data: { session } } = await supabase.auth.getSession();
   const authUserSession = session?.user;
@@ -19,8 +20,8 @@ export async function GET(
  }
 
  // Verify user has permission to view logs for this shop
- const currentUser = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
- if (!currentUser || (currentUser.role !== 'SITE_ADMIN' && (currentUser.role !== 'SHOP_ADMIN' || (currentUser.shopId !== shopId && !(await prisma.shopAccess.findFirst({ where: { userId: currentUser.id, shopId } })))))) {
+ const currentUser = await tenantClient.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
+ if (!currentUser || (currentUser.role !== 'SITE_ADMIN' && (currentUser.role !== 'SHOP_ADMIN' || (currentUser.shopId !== shopId && !(await tenantClient.shopAccess.findFirst({ where: { userId: currentUser.id, shopId } })))))) {
  return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
  }
 
@@ -30,7 +31,7 @@ export async function GET(
  const tomorrow = new Date(today);
  tomorrow.setDate(tomorrow.getDate() + 1);
 
- const logs = await prisma.timeLog.findMany({
+ const logs = await tenantClient.timeLog.findMany({
  where: {
  shopId: shopId,
  clockIn: {

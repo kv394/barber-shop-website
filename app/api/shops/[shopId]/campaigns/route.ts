@@ -1,4 +1,4 @@
-import { prisma } from '@/lib/prisma';
+import { prisma, getTenantClient } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
 import { requireShopRole, isAuthError } from '@/lib/auth';
 import { logger } from '@/lib/logger';
@@ -10,10 +10,11 @@ export async function GET(
 ) {
  try {
  const { shopId } = await params;
+    const tenantClient = await getTenantClient(shopId);
  const authResult = await requireShopRole(shopId, ['SITE_ADMIN', 'SHOP_ADMIN']);
  if (isAuthError(authResult)) return authResult;
 
- const campaigns = await prisma.campaign.findMany({
+ const campaigns = await tenantClient.campaign.findMany({
  where: { shopId },
  orderBy: { createdAt: 'desc' },
  });
@@ -32,6 +33,7 @@ export async function POST(
 ) {
  try {
  const { shopId } = await params;
+    const tenantClient = await getTenantClient(shopId);
  const authResult = await requireShopRole(shopId, ['SITE_ADMIN', 'SHOP_ADMIN']);
  if (isAuthError(authResult)) return authResult;
 
@@ -43,7 +45,7 @@ export async function POST(
 
   const { name, message, type, channel, targetSegment, scheduledFor } = validationResult.data;
 
-  const campaign = await prisma.campaign.create({
+  const campaign = await tenantClient.campaign.create({
     data: {
       shopId,
       name,
@@ -70,6 +72,7 @@ export async function PATCH(
 ) {
  try {
  const { shopId } = await params;
+    const tenantClient = await getTenantClient(shopId);
  const authResult = await requireShopRole(shopId, ['SITE_ADMIN', 'SHOP_ADMIN']);
  if (isAuthError(authResult)) return authResult;
 
@@ -80,8 +83,8 @@ export async function PATCH(
  return NextResponse.json({ error: 'Campaign ID required' }, { status: 400 });
  }
 
- const campaign = await prisma.campaign.findUnique({ where: { id: campaignId } });
- if (!campaign || (campaign.shopId !== shopId && !(await prisma.shopAccess.findFirst({ where: { userId: campaign.id, shopId } })))) {
+ const campaign = await tenantClient.campaign.findUnique({ where: { id: campaignId } });
+ if (!campaign || (campaign.shopId !== shopId && !(await tenantClient.shopAccess.findFirst({ where: { userId: campaign.id, shopId } })))) {
  return NextResponse.json({ error: 'Campaign not found' }, { status: 404 });
  }
 
@@ -109,7 +112,7 @@ export async function PATCH(
  }
  }
 
- await prisma.campaign.update({
+ await tenantClient.campaign.update({
  where: { id: campaignId },
  data: {
  status: 'SENT',
@@ -122,7 +125,7 @@ export async function PATCH(
  }
 
  if (action === 'cancel') {
- await prisma.campaign.update({
+ await tenantClient.campaign.update({
  where: { id: campaignId },
  data: { status: 'CANCELLED' },
  });
