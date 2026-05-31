@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, Prisma } from '@prisma/client';
 import { Pool } from 'pg';
 import { PrismaPg } from '@prisma/adapter-pg';
 
@@ -170,8 +170,16 @@ const TENANT_MODELS = new Set([
  * to the specified shopId for models that support it.
  * This ensures data isolation between tenants.
  */
+/** Regex to validate CUID-format shopId (alphanumeric, 20-30 chars). */
+const SHOP_ID_FORMAT = /^[a-z0-9]{20,30}$/;
+
 export function getTenantClient(shopId: string) {
   if (!shopId) throw new Error('shopId is required for tenant client');
+
+  // Defense-in-depth: reject shopIds that don't match expected CUID format
+  if (!SHOP_ID_FORMAT.test(shopId)) {
+    throw new Error('Invalid shopId format');
+  }
   
   return prisma.$extends({
     name: 'tenant-isolation',
@@ -217,7 +225,7 @@ export function getTenantClient(shopId: string) {
           // This requires executing the query within an interactive transaction.
           try {
             return await prisma.$transaction(async (tx: any) => {
-              await tx.$executeRawUnsafe(`SET LOCAL "app.current_shop_id" = '${shopId}';`);
+              await tx.$executeRaw`SET LOCAL "app.current_shop_id" = ${shopId}`;
               return await query(args);
             });
           } catch (e: any) {
