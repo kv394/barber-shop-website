@@ -190,7 +190,7 @@ export async function POST(req: Request) {
  : 'No services available currently.';
  
  const staffText = staff.length > 0
- ? staff.map((s: { id: string; name: string }) => `- ${s.name} [ID: ${s.id}]`).join('\n')
+ ? staff.map(s => `- ${s.name || 'Staff Member'} [ID: ${s.id}]`).join('\n')
  : 'No specific staff available.';
 
  // 4. Origin Validation (CORS Hardening)
