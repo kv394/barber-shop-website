@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "dev:https": "next dev --experimental-https",
-    "build": "prisma generate && next build",
+    "build": "node scripts/safe-migrate.js && prisma generate && next build",
     "start": "next start",
     "lint": "next lint",
     "test": "vitest run",
