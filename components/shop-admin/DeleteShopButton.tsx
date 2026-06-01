@@ -3,14 +3,20 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
-export default function DeleteShopButton({ shopId, shopName, onSuccess }: { shopId: string, shopName: string, onSuccess: () => void }) {
+export default function DeleteShopButton({ shopId, shopName, onSuccess, isActive = true }: { shopId: string, shopName: string, onSuccess: () => void, isActive?: boolean }) {
  const [isDeleting, setIsDeleting] = useState(false);
  const router = useRouter();
 
  const handleDelete = async (e: React.MouseEvent) => {
  e.preventDefault(); 
  
- const confirmId = window.prompt(`This is a destructive action. This will permanently delete the shop, all its services, and all appointments.\n\nTo proceed, please type the ID of the shop: "${shopId}"`);
+ const isHardDelete = !isActive;
+ const actionText = isHardDelete ? 'permanently delete' : 'deactivate';
+ const confirmMessage = isHardDelete 
+ ? `This is a destructive action. This will PERMANENTLY DELETE the shop, all its services, and all appointments.\n\nTo proceed, please type the ID of the shop: "${shopId}"`
+ : `This will deactivate the shop and freeze all activity. Data will be preserved.\n\nTo proceed, please type the ID of the shop: "${shopId}"`;
+ 
+ const confirmId = window.prompt(confirmMessage);
  
  if (confirmId !== shopId) {
  if(confirmId !== null) {
@@ -51,9 +57,12 @@ export default function DeleteShopButton({ shopId, shopName, onSuccess }: { shop
  <button 
  onClick={handleDelete} 
  disabled={isDeleting}
- className="bg-status-cancelled/20 text-status-cancelled hover:bg-status-cancelled hover:text-crm-text px-4 py-2 rounded-lg text-[13px] transition-colors disabled:opacity-50"
+ className={isHardDelete 
+ ? "bg-status-cancelled/20 text-status-cancelled hover:bg-status-cancelled hover:text-white px-4 py-2 rounded-lg text-[13px] font-bold transition-colors disabled:opacity-50"
+ : "bg-status-pending/20 text-status-pending hover:bg-status-pending hover:text-white px-4 py-2 rounded-lg text-[13px] font-bold transition-colors disabled:opacity-50"
+ }
  >
- {isDeleting ? 'Deleting...' : 'Delete Shop'}
+ {isDeleting ? (isHardDelete ? 'Deleting...' : 'Deactivating...') : (isHardDelete ? 'Delete Permanently' : 'Deactivate Shop')}
  </button>
  );
 }

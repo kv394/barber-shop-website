@@ -27,6 +27,8 @@ export async function GET() {
  companyName: true,
  template: true,
  createdAt: true,
+ isActive: true,
+ deletedAt: true,
  aiTokens: true,
  premiumFeatures: true,
  _count: {

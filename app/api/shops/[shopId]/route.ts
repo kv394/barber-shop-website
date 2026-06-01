@@ -127,9 +127,18 @@ export async function DELETE(
  }
 
  if (!hasAccess) {
- return new Response("Forbidden: Only Site Admins can delete entire shops. Shop Admins can only delete branches/locations.", { status: 403 });
- }
+ // Fetch shop to check current status
+ const shop = await tenantClient.shop.findUnique({ where: { id: shopId } });
+ if (!shop) return NextResponse.json({ error: 'Shop not found' }, { status: 404 });
 
+ if (shop.isActive) {
+ // Step 1: Soft Delete (Deactivate)
+ await tenantClient.shop.update({
+ where: { id: shopId },
+ data: { isActive: false, deletedAt: new Date() }
+ });
+ } else {
+ // Step 2: Hard Delete (only if already inactive and requester is SITE_ADMIN)
  // SECURITY: Wrap user cleanup and shop deletion in a transaction
  await tenantClient.$transaction(async (tx: any) => {
  // Handle Users: permanently delete the auto-generated Kiosk user
@@ -150,6 +159,7 @@ export async function DELETE(
  // wipe them automatically without needing manual Prisma round-trips.
  await tx.shop.delete({ where: { id: shopId } });
  }, { maxWait: 15000, timeout: 30000 });
+ }
 
  // Revalidate directory
  revalidatePath('/shops');

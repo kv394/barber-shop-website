@@ -13,6 +13,8 @@ type ShopData = {
  companyName: string | null;
  template: string;
  createdAt: string;
+ isActive: boolean;
+ deletedAt: string | null;
  aiTokens: number;
  users: { id: string; role: string; name: string | null; email: string }[];
  _count: { users: number; services: number; reviews: number };
@@ -106,8 +108,13 @@ export default function SiteAdminShopsPage() {
  ? 'bg-status-confirmed/20 text-status-confirmed border border-status-confirmed/30'
  : 'bg-status-pending/20 text-status-pending border border-status-pending/30'
  }`}>
- {hasAdmin ? 'Active' : 'Needs Admin'}
+ {hasAdmin ? 'Active Admin' : 'Needs Admin'}
  </span>
+ {!shop.isActive && (
+ <span className="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-status-cancelled/20 text-status-cancelled border border-status-cancelled/30 animate-pulse">
+ Inactive
+ </span>
+ )}
  </div>
  <p className="text-crm-muted font-mono mb-3 text-[12px]">ID: {shop.id}</p>
 
@@ -160,7 +167,7 @@ export default function SiteAdminShopsPage() {
  >
  Assign Team
  </button>
- <DeleteShopButton shopId={shop.id} shopName={shop.name} onSuccess={fetchShops} />
+ <DeleteShopButton shopId={shop.id} shopName={shop.name} onSuccess={fetchShops} isActive={shop.isActive} />
  </div>
  </div>
  </div>
