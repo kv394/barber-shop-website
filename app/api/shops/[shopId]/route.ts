@@ -124,17 +124,10 @@ export async function DELETE(
  let hasAccess = false;
  if (user.role === 'SITE_ADMIN') {
  hasAccess = true;
- } else if (user.role === 'SHOP_ADMIN') {
- if (user.shopId === shopId) {
- hasAccess = true;
- } else {
- const access = await tenantClient.shopAccess.findFirst({ where: { userId: user.id, shopId, role: 'SHOP_ADMIN' } });
- if (access) hasAccess = true;
- }
  }
 
  if (!hasAccess) {
- return new Response("Forbidden: Only Admins can delete shops", { status: 403 });
+ return new Response("Forbidden: Only Site Admins can delete entire shops. Shop Admins can only delete branches/locations.", { status: 403 });
  }
 
  // Delete blackout dates separately (Prisma adapter type limitation)
