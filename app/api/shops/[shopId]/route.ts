@@ -20,7 +20,10 @@ export async function PATCH(
  if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
  const user = await tenantClient.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
- if (!user || ((user.role !== 'SHOP_ADMIN' || (user.shopId !== shopId && !(await tenantClient.shopAccess.findFirst({ where: { userId: user.id, shopId, role: 'SHOP_ADMIN' } })))))) {
+ const isSiteAdmin = user?.role === 'SITE_ADMIN';
+ const isShopAdmin = user?.role === 'SHOP_ADMIN' && (user.shopId === shopId || !!(await tenantClient.shopAccess.findFirst({ where: { userId: user.id, shopId, role: 'SHOP_ADMIN' } })));
+
+ if (!user || (!isSiteAdmin && !isShopAdmin)) {
  return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
  }
 
@@ -119,7 +122,9 @@ export async function DELETE(
  }
 
  let hasAccess = false;
- if (user.role === 'SHOP_ADMIN') {
+ if (user.role === 'SITE_ADMIN') {
+ hasAccess = true;
+ } else if (user.role === 'SHOP_ADMIN') {
  if (user.shopId === shopId) {
  hasAccess = true;
  } else {
