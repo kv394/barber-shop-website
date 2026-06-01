@@ -93,7 +93,7 @@ export default async function SiteAdminPerformancePage() {
         {/* Charts & Breakdown */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Appointment Breakdown Chart */}
-          <PremiumGlassCard accentColor="purple-500" className="!p-6">
+          <PremiumGlassCard accentColor="brand-indigo" className="!p-6">
             <h2 className="text-sm uppercase tracking-widest font-black text-crm-muted mb-6">Appointments by Status</h2>
             <div className="space-y-4">
               {appointmentStatuses.sort((a,b) => b.count - a.count).map(stat => {
