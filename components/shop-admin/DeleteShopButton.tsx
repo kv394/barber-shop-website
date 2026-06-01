@@ -7,10 +7,11 @@ export default function DeleteShopButton({ shopId, shopName, onSuccess, isActive
  const [isDeleting, setIsDeleting] = useState(false);
  const router = useRouter();
 
+ const isHardDelete = !isActive;
+ 
  const handleDelete = async (e: React.MouseEvent) => {
  e.preventDefault(); 
  
- const isHardDelete = !isActive;
  const actionText = isHardDelete ? 'permanently delete' : 'deactivate';
  const confirmMessage = isHardDelete 
  ? `This is a destructive action. This will PERMANENTLY DELETE the shop, all its services, and all appointments.\n\nTo proceed, please type the ID of the shop: "${shopId}"`
