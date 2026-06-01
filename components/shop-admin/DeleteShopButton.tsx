@@ -10,11 +10,11 @@ export default function DeleteShopButton({ shopId, shopName, onSuccess }: { shop
  const handleDelete = async (e: React.MouseEvent) => {
  e.preventDefault(); 
  
- const confirmName = window.prompt(`This is a destructive action. This will permanently delete the shop, all its services, and all appointments.\n\nTo proceed, please type the name of the shop: "${shopName}"`);
+ const confirmId = window.prompt(`This is a destructive action. This will permanently delete the shop, all its services, and all appointments.\n\nTo proceed, please type the ID of the shop: "${shopId}"`);
  
- if (confirmName !== shopName) {
- if(confirmName !== null) {
- alert("Shop name did not match. Deletion cancelled.");
+ if (confirmId !== shopId) {
+ if(confirmId !== null) {
+ alert("Shop ID did not match. Deletion cancelled.");
  }
  return;
  }
