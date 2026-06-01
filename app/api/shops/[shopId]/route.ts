@@ -130,49 +130,24 @@ export async function DELETE(
  return new Response("Forbidden: Only Site Admins can delete entire shops. Shop Admins can only delete branches/locations.", { status: 403 });
  }
 
- // Delete blackout dates separately (Prisma adapter type limitation)
- await tenantClient.shopBlackoutDate.deleteMany({ where: { shopId } });
-
- // SECURITY: Wrap entire cascade in a transaction for atomicity
+ // SECURITY: Wrap user cleanup and shop deletion in a transaction
  await tenantClient.$transaction(async (tx: any) => {
- await tx.shopAccess.deleteMany({ where: { shopId } });
- // Delete notifications, reviews, campaigns, referrals first (leaf nodes)
- await tx.notification.deleteMany({ where: { shopId } });
- await tx.review.deleteMany({ where: { shopId } });
- await tx.campaign.deleteMany({ where: { shopId } });
- await tx.referral.deleteMany({ where: { shopId } });
-
- // Delete financial/engagement data
- await tx.expense.deleteMany({ where: { shopId } });
- await tx.commissionRule.deleteMany({ where: { shopId } });
- await tx.loyaltyAccount.deleteMany({ where: { shopId } });
- await tx.loyaltyProgram.deleteMany({ where: { shopId } });
- await tx.giftCard.deleteMany({ where: { shopId } });
-
- // Delete waitlist, leave, timelogs
- await tx.waitlist.deleteMany({ where: { shopId } });
- await tx.leave.deleteMany({ where: { shopId } });
- await tx.timeLog.deleteMany({ where: { shopId } });
-
- // Delete appointments (must come before services due to FK)
- await tx.appointment.deleteMany({ where: { shopId } });
-
- // Delete services and products
- await tx.service.deleteMany({ where: { shopId } });
- await tx.product.deleteMany({ where: { shopId } });
-
  // Handle Users: permanently delete the auto-generated Kiosk user
  await tx.user.deleteMany({
  where: { shopId: shopId, role: 'ATTENDANCE_KIOSK' }
  });
 
- // Downgrade remaining users to CLIENT
+ // Downgrade remaining users to CLIENT (do this BEFORE shop deletion, 
+ // otherwise the foreign key SetNull cascade will lose their shopId reference)
  await tx.user.updateMany({
  where: { shopId: shopId },
- data: { shopId: null, role: 'CLIENT', canManageInventory: false }
+ data: { role: 'CLIENT', canManageInventory: false }
  });
 
- // Finally, delete the shop itself
+ // Finally, delete the shop itself.
+ // Note: All 20+ child tables (Appointments, Services, Reviews, etc.) have 
+ // `onDelete: Cascade` defined in schema.prisma, so PostgreSQL will instantly 
+ // wipe them automatically without needing manual Prisma round-trips.
  await tx.shop.delete({ where: { id: shopId } });
  }, { maxWait: 15000, timeout: 30000 });
 
