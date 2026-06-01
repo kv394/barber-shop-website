@@ -41,6 +41,10 @@ export async function requireShopRole(
   const userId = user.id;
 
 
+  // SITE_ADMIN bypasses all shop and role checks completely
+  if (user.role === 'SITE_ADMIN') {
+    return { user: { ...user, role: user.role }, userId };
+  }
 
   // All other roles must belong to the requested shop or have a ShopAccess record
   let effectiveRole = user.role;
