@@ -52,7 +52,13 @@ export async function POST(
 
   const { email, role, canManageInventory } = validationResult.data;
 
-
+  // SECURITY: Only SITE_ADMIN can assign the SHOP_ADMIN role — prevent privilege escalation
+  if (role === 'SHOP_ADMIN') {
+    return NextResponse.json(
+      { error: 'Only Site Admins can assign the Shop Admin role' },
+      { status: 403 }
+    );
+  }
 
  // Check if shop exists
  const shop = await tenantClient.shop.findUnique({
@@ -264,7 +270,13 @@ export async function DELETE(
  );
  }
 
-
+ // SECURITY: SHOP_ADMIN cannot remove other SHOP_ADMINs — only SITE_ADMIN can
+ if (user.role === 'SHOP_ADMIN') {
+ return NextResponse.json(
+ { error: 'Only Site Admins can remove Shop Admins' },
+ { status: 403 }
+ );
+ }
 
  // Remove user from shop
  if (user.shopId === shopId) {

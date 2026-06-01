@@ -80,7 +80,7 @@ export async function POST(
   return NextResponse.json({ error: 'This device does not have permission to scan.' }, { status: 403 });
   }
 
-  // Ensure the scanner is assigned to this shop
+  // Ensure the scanner is assigned to this shop (unless Site Admin)
   if (scannerUser.shopId !== shopId && !(await tenantClient.shopAccess.findFirst({ where: { userId: scannerUser.id, shopId } }))) {
   return NextResponse.json({ error: 'This device is not assigned to this shop.' }, { status: 403 });
   }

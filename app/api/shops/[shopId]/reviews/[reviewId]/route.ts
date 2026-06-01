@@ -44,7 +44,7 @@ export async function PATCH(
 
  // SECURITY: Verify review belongs to this shop
  const existing = await tenantClient.review.findUnique({ where: { id: reviewId } });
- if (!existing || (existing.shopId !== shopId && !(await tenantClient.shopAccess.findFirst({ where: { userId: existing.id, shopId } }))))
+ if (!existing || (existing.shopId !== shopId))
  return NextResponse.json({ error: CONFIG.ERRORS.REVIEW_NOT_FOUND }, { status: CONFIG.HTTP_STATUS.NOT_FOUND });
 
  const { ownerResponse } = await request.json();
