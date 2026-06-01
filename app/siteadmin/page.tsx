@@ -107,8 +107,47 @@ export default async function SiteAdminDashboard() {
  </div>
  </div>
  </div>
+
+ {/* Infrastructure Details */}
+ <div className="bg-white/60 backdrop-blur-xl rounded-xl border border-white/40 shadow-sm shadow-brand-indigo/5 p-6 mb-8">
+ <h2 className="font-bold text-crm-text mb-4 text-xl font-bold">⚙️ Infrastructure Details</h2>
+ <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+ <InfraCard title="Database (Primary)" name="DATABASE_URL" value={process.env.DATABASE_URL} isUrl />
+ <InfraCard title="Database (Pooled)" name="POSTGRES_URL" value={process.env.POSTGRES_URL} isUrl />
+ <InfraCard title="Vercel Environment" name="VERCEL_ENV" value={process.env.VERCEL_ENV || 'local (or unconfigured)'} />
+ <InfraCard title="Vercel Deployment URL" name="VERCEL_URL" value={process.env.VERCEL_URL || process.env.NEXT_PUBLIC_VERCEL_URL} />
+ <InfraCard title="Vercel Region" name="VERCEL_REGION" value={process.env.VERCEL_REGION || 'local (or unconfigured)'} />
+ <InfraCard title="Upstash Redis URL" name="UPSTASH_REDIS_REST_URL" value={process.env.UPSTASH_REDIS_REST_URL || process.env.KV_REST_API_URL} isUrl />
+ </div>
+ </div>
  </div>
  );
+}
+
+function InfraCard({ title, name, value, isUrl = false }: { title: string; name: string; value?: string; isUrl?: boolean }) {
+  let displayValue = value;
+  let isNotConfigured = !value;
+  
+  if (value && isUrl) {
+    try {
+      const url = new URL(value);
+      if (url.password) {
+        displayValue = `${url.protocol}//${url.username}:***@${url.host}${url.pathname}`;
+      }
+    } catch (e) {
+      // Keep displayValue as is if it's not a valid URL
+    }
+  }
+
+  return (
+    <div className="border border-crm-border rounded-lg p-4 bg-crm-surface/50">
+      <div className="text-[11px] font-mono text-crm-muted mb-1">{name}</div>
+      <div className="font-medium text-[14px] text-crm-text mb-2">{title}</div>
+      <div className={`text-[12px] font-mono break-all ${isNotConfigured ? 'text-status-pending' : 'text-crm-text/80'}`}>
+        {isNotConfigured ? 'Not Configured' : displayValue}
+      </div>
+    </div>
+  );
 }
 
 function KpiCard({ label, value, color }: { label: string; value: string | number; color: string }) {
