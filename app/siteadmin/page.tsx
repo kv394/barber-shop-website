@@ -131,8 +131,14 @@ function InfraCard({ title, name, value, isUrl = false }: { title: string; name:
   if (value && isUrl) {
     try {
       const url = new URL(value);
+      let maskedPath = url.pathname;
+      if (maskedPath && maskedPath !== '/') {
+        maskedPath = '/***';
+      }
       if (url.password) {
-        displayValue = `${url.protocol}//${url.username}:***@${url.host}${url.pathname}`;
+        displayValue = `${url.protocol}//${url.username}:***@${url.host}${maskedPath}${url.search}`;
+      } else if (maskedPath === '/***') {
+        displayValue = `${url.protocol}//${url.host}${maskedPath}${url.search}`;
       }
     } catch (e) {
       // Keep displayValue as is if it's not a valid URL
