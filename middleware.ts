@@ -100,7 +100,11 @@ export async function middleware(req: NextRequest) {
   
   const isVercelPreview = hostname.endsWith('.vercel.app') && (vercelEnv === 'preview' || hostname === vercelDeploymentUrl);
   
-  const shouldRewrite = !isApi && !isAdmin && !isStatic && !rootDomains.includes(hostname) && !isVercelPreview && !url.pathname.startsWith('/sites');
+  // Any standard Vercel project domain (e.g., project-name.vercel.app) has exactly 2 dots
+  // This prevents it from being treated as a tenant custom domain.
+  const isVercelBaseDomain = hostname.endsWith('.vercel.app') && hostname.split('.').length === 3;
+  
+  const shouldRewrite = !isApi && !isAdmin && !isStatic && !rootDomains.includes(hostname) && !isVercelPreview && !isVercelBaseDomain && !url.pathname.startsWith('/sites');
 
   let response: NextResponse;
   if (shouldRewrite) {
