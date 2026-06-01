@@ -174,7 +174,7 @@ export async function DELETE(
 
  // Finally, delete the shop itself
  await tx.shop.delete({ where: { id: shopId } });
- });
+ }, { maxWait: 15000, timeout: 30000 });
 
  // Revalidate directory
  revalidatePath('/shops');
