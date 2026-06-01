@@ -61,7 +61,6 @@ A standout feature of the Site Admin is the ability to generate fully custom, si
 *   **Process:** The admin provides a prompt, base assets (images, zip files), and a target shop.
 *   **AI Prompting:** The system constructs a complex prompt for Groq/Gemini, injecting real shop data (services, staff, reviews) as context. It forces the AI to output standard Tailwind CSS and Handlebars templates (`{{shop.name}}`, `{{#each shop.services}}`).
 *   **Asset Management:** Uploaded assets (HTML, CSS, images) are parsed and uploaded to a structured folder in Google Drive (`/kutzapp/[shopId]/[name]`). Local asset paths in the generated code are automatically replaced with their respective Google Drive URLs.
-*   **Assignment:** The `AssignTemplateModal` allows the admin to switch a shop's active template between built-in options (Modern, Classic, Elegant) and the newly generated `DynamicTemplate`.
 
 ### D. System Health Monitoring
 Site Admins monitor `SystemLog` entries to identify and resolve unhandled exceptions or critical platform errors across all tenant instances.

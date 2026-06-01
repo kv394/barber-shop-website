@@ -26,7 +26,7 @@ export async function GET(
 
  const user = await tenantClient.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
  const isStaff = user?.role === 'STAFF' && user?.shopId === shopId;
- if (!user || (user.role !== 'SITE_ADMIN' && user.role !== 'SHOP_ADMIN' && !isStaff)) {
+ if (!user || (user.role !== 'SHOP_ADMIN' && !isStaff)) {
  return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
  }
  if (user.role === 'SHOP_ADMIN' && (user.shopId !== shopId && !(await tenantClient.shopAccess.findFirst({ where: { userId: user.id, shopId } })))) {
@@ -122,7 +122,7 @@ export async function POST(
  const { shopId } = await params;
     const tenantClient = await getTenantClient(shopId);
  const user = await tenantClient.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
- if (!user || (user.role !== 'SITE_ADMIN' && (user.role !== 'SHOP_ADMIN' || (user.shopId !== shopId && !(await tenantClient.shopAccess.findFirst({ where: { userId: user.id, shopId } })))))) {
+ if (!user || ((user.role !== 'SHOP_ADMIN' || (user.shopId !== shopId && !(await tenantClient.shopAccess.findFirst({ where: { userId: user.id, shopId } })))))) {
  return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
  }
 

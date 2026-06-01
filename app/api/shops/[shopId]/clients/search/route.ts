@@ -19,10 +19,10 @@ export async function GET(
 
  // Verify the requesting user is staff/admin of this shop
  const requestingUser = await tenantClient.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
- if (!requestingUser || !['SITE_ADMIN', 'SHOP_ADMIN', 'STAFF'].includes(requestingUser.role)) {
+ if (!requestingUser || !['SHOP_ADMIN', 'STAFF'].includes(requestingUser.role)) {
  return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });
  }
- if (requestingUser.role !== 'SITE_ADMIN' && (requestingUser.shopId !== shopId && !(await tenantClient.shopAccess.findFirst({ where: { userId: requestingUser.id, shopId } })))) {
+ if (requestingUser.shopId !== shopId && !(await tenantClient.shopAccess.findFirst({ where: { userId: requestingUser.id, shopId } }))) {
  return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });
  }
 

@@ -12,7 +12,7 @@ export async function POST(
 ) {
  try {
  const { shopId, clientId } = await params;
- const authResult = await requireShopRole(shopId, ['SITE_ADMIN', 'SHOP_ADMIN', 'STAFF']);
+ const authResult = await requireShopRole(shopId, ['SHOP_ADMIN', 'STAFF']);
  if (isAuthError(authResult)) return authResult;
 
  const formData = await request.formData();

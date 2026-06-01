@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import DeleteShopButton from '@/components/shop-admin/DeleteShopButton';
 import UsageAnalysisModal from '@/components/siteadmin/UsageAnalysisModal';
-import AssignTemplateModal from '@/components/siteadmin/AssignTemplateModal';
+import AssignShopAdminModal from '@/components/siteadmin/AssignShopAdminModal';
 import PremiumFeaturesModal from '@/components/siteadmin/PremiumFeaturesModal';
 
 type ShopData = {
@@ -22,7 +22,7 @@ export default function SiteAdminShopsPage() {
  const [shops, setShops] = useState<ShopData[]>([]);
  const [loading, setLoading] = useState(true);
  const [analyzingShop, setAnalyzingShop] = useState<{ id: string, name: string } | null>(null);
- const [assigningTemplateShop, setAssigningTemplateShop] = useState<{ id: string, name: string, template: string } | null>(null);
+ const [assigningAdminShop, setAssigningAdminShop] = useState<{ id: string, name: string } | null>(null);
  const [managingFeaturesShop, setManagingFeaturesShop] = useState<{ id: string, name: string } | null>(null);
 
  const fetchShops = async () => {
@@ -149,17 +149,11 @@ export default function SiteAdminShopsPage() {
  >
  💎 Features
  </button>
- <Link
- href={`/shop/${shop.id}/settings/team`}
+ <button
+ onClick={() => setAssigningAdminShop({ id: shop.id, name: shop.name })}
  className="bg-crm-primary text-white px-3 py-1.5 rounded-lg text-[11px] font-bold hover:bg-crm-surface hover:text-crm-primary border border-transparent hover:border-crm-primary/30 transition-colors"
  >
  Assign Team
- </Link>
- <button
- onClick={() => setAssigningTemplateShop({ id: shop.id, name: shop.name, template: shop.template || 'modern' })}
- className="bg-crm-surface text-crm-text border border-crm-border px-3 py-1.5 rounded-lg text-[11px] font-bold hover:bg-crm-bg transition-colors"
- >
- 🎨 Template
  </button>
  <DeleteShopButton shopId={shop.id} shopName={shop.name} onSuccess={fetchShops} />
  </div>
@@ -187,19 +181,6 @@ export default function SiteAdminShopsPage() {
  />
  )}
 
- {assigningTemplateShop && (
- <AssignTemplateModal
- shopId={assigningTemplateShop.id}
- shopName={assigningTemplateShop.name}
- currentTemplate={assigningTemplateShop.template}
- onClose={() => setAssigningTemplateShop(null)}
- onSuccess={() => {
- setAssigningTemplateShop(null);
- fetchShops();
- }}
- />
- )}
-
  {managingFeaturesShop && (
  <PremiumFeaturesModal
  shopId={managingFeaturesShop.id}
@@ -207,6 +188,18 @@ export default function SiteAdminShopsPage() {
  onClose={() => setManagingFeaturesShop(null)}
  onSuccess={() => {
  setManagingFeaturesShop(null);
+ fetchShops();
+ }}
+ />
+ )}
+
+ {assigningAdminShop && (
+ <AssignShopAdminModal
+ shopId={assigningAdminShop.id}
+ shopName={assigningAdminShop.name}
+ onClose={() => setAssigningAdminShop(null)}
+ onSuccess={() => {
+ setAssigningAdminShop(null);
  fetchShops();
  }}
  />

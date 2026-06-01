@@ -32,7 +32,7 @@ export async function POST(
  where: { OR: [{ id: userId }, { email: authUserEmail || '' }] },
  });
 
- if (!user || (user.role !== 'SITE_ADMIN' && (user.role !== 'SHOP_ADMIN' || (user.shopId !== shopId && !(await tenantClient.shopAccess.findFirst({ where: { userId: user.id, shopId } })))))) {
+ if (!user || ((user.role !== 'SHOP_ADMIN' || (user.shopId !== shopId && !(await tenantClient.shopAccess.findFirst({ where: { userId: user.id, shopId } })))))) {
  return NextResponse.json(
  { error: 'Forbidden: You do not have permission to update this shop' },
  { status: 403 }

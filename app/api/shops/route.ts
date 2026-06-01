@@ -84,7 +84,7 @@ export async function POST(request: Request) {
  }
  
  const requestUser = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
- if (!requestUser || !['SITE_ADMIN', 'SHOP_ADMIN'].includes(requestUser.role)) {
+ if (!requestUser || !['SHOP_ADMIN'].includes(requestUser.role)) {
  return NextResponse.json({ error: 'Forbidden. Only Admins can provision shops.' }, { status: 403 });
  }
 

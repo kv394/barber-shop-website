@@ -17,7 +17,7 @@ export default async function CapitalPage({ params }: { params: Promise<{ shopId
   if (!data) return redirect('/');
 
   const { userRole, shop, shopSlug } = data;
-  const isAdmin = userRole === 'SHOP_ADMIN' || userRole === 'SITE_ADMIN';
+  const isAdmin = userRole === 'SHOP_ADMIN';
 
   if (!isAdmin) return redirect(`/shop/${shopId}`);
 

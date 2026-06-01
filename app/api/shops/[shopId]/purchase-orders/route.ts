@@ -12,7 +12,7 @@ export async function GET(
  try {
  const { shopId } = await params;
     const tenantClient = await getTenantClient(shopId);
- const authResult = await requireShopRole(shopId, ['SITE_ADMIN', 'SHOP_ADMIN']);
+ const authResult = await requireShopRole(shopId, ['SHOP_ADMIN']);
  if (isAuthError(authResult)) return authResult;
 
  const purchaseOrders = await tenantClient.purchaseOrder.findMany({
@@ -39,7 +39,7 @@ export async function POST(
  try {
  const { shopId } = await params;
     const tenantClient = await getTenantClient(shopId);
- const authResult = await requireShopRole(shopId, ['SITE_ADMIN', 'SHOP_ADMIN']);
+ const authResult = await requireShopRole(shopId, ['SHOP_ADMIN']);
  if (isAuthError(authResult)) return authResult;
 
  const body = await request.json();

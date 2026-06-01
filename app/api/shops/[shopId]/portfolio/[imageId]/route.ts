@@ -20,7 +20,7 @@ export async function DELETE(
  if (!userId) return new Response("Unauthorized", { status: 401 });
 
  const user = await tenantClient.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
- if (!user || (user.role !== 'SITE_ADMIN' && user.role !== 'SHOP_ADMIN' && user.role !== 'STAFF')) {
+ if (!user || (user.role !== 'SHOP_ADMIN' && user.role !== 'STAFF')) {
  return new Response("Forbidden", { status: 403 });
  }
 

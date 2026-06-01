@@ -167,7 +167,7 @@ export default async function ShopDashboardPage({ params }: { params: Promise<{ 
  }
 
  const isSiteAdmin = userRole === 'SITE_ADMIN';
- const isShopAdmin = userRole === 'SHOP_ADMIN' || userRole === 'SITE_ADMIN';
+ const isShopAdmin = userRole === 'SHOP_ADMIN';
  const isStaff = userRole === 'STAFF';
  const isBoothRenter = userRole === 'BOOTH_RENTER';
  const isStaffLike = isStaff || isBoothRenter;

@@ -15,11 +15,11 @@ export default async function ClientKioskPage({ params }: { params: Promise<{ sh
  const dbUser = await prisma.user.findUnique({ where: { email: user.email! } });
  
  // Allow ATTENDANCE_KIOSK, SHOP_ADMIN, or SITE_ADMIN to open this page
- if (!dbUser || !['ATTENDANCE_KIOSK', 'SHOP_ADMIN', 'SITE_ADMIN'].includes(dbUser.role)) {
+ if (!dbUser || !['ATTENDANCE_KIOSK', 'SHOP_ADMIN'].includes(dbUser.role)) {
  return redirect(`/shop/${shopId}`);
  }
  
- if (dbUser.role !== 'SITE_ADMIN' && dbUser.shopId !== shopId) {
+ if (dbUser.shopId !== shopId) {
  return redirect('/');
  }
 

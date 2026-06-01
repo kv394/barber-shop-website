@@ -24,7 +24,7 @@ export async function POST(
  }
 
  // Only allow STAFF or SHOP_ADMIN/SITE_ADMIN to block time
- if (user.role !== 'STAFF' && user.role !== 'SHOP_ADMIN' && user.role !== 'SITE_ADMIN') {
+ if (user.role !== 'STAFF' && user.role !== 'SHOP_ADMIN') {
  return new Response('Forbidden', { status: 403 });
  }
 

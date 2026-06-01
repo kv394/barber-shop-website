@@ -23,7 +23,7 @@ export async function GET(
  // SECURITY: Verify user belongs to this shop
  const user = await tenantClient.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
  if (!user) return NextResponse.json({ error: 'User not found' }, { status: 404 });
- if (user.role !== 'SITE_ADMIN' && (user.shopId !== shopId && !(await tenantClient.shopAccess.findFirst({ where: { userId: user.id, shopId } })))) {
+ if ((user.shopId !== shopId && !(await tenantClient.shopAccess.findFirst({ where: { userId: user.id, shopId } })))) {
  return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
  }
 
@@ -68,7 +68,7 @@ export async function POST(
  if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
  const user = await tenantClient.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
- if (!user || !['SITE_ADMIN', 'SHOP_ADMIN'].includes(user.role)) {
+ if (!user || !['SHOP_ADMIN'].includes(user.role)) {
  return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
  }
  if (user.role === 'SHOP_ADMIN' && (user.shopId !== shopId && !(await tenantClient.shopAccess.findFirst({ where: { userId: user.id, shopId } })))) {

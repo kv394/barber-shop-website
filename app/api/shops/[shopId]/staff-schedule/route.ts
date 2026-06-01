@@ -27,8 +27,7 @@ export async function GET(
  const [filterToHour, filterToMin] = toParam.split(':').map(Number);
 
  const user = await tenantClient.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
- if (!user || (user.role !== 'SITE_ADMIN' &&
- ((user.shopId !== shopId && !(await tenantClient.shopAccess.findFirst({ where: { userId: user.id, shopId } }))) || !['SHOP_ADMIN', 'STAFF'].includes(user.role)))) {
+ if (!user || (((user.shopId !== shopId && !(await tenantClient.shopAccess.findFirst({ where: { userId: user.id, shopId } }))) || !['SHOP_ADMIN', 'STAFF'].includes(user.role)))) {
  return NextResponse.json({ error: 'Access denied' }, { status: 403 });
  }
 

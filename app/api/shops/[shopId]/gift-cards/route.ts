@@ -42,8 +42,7 @@ export async function GET(
  const tenantClient = await getTenantClient(shopId);
 
  const user = await tenantClient.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
- const canManage = user?.role === 'SITE_ADMIN' ||
- (user?.role === 'SHOP_ADMIN' && user?.shopId === shopId);
+ const canManage = (user?.role === 'SHOP_ADMIN' && user?.shopId === shopId);
  if (!canManage) return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
 
  const cards = await tenantClient.giftCard.findMany({
@@ -90,8 +89,7 @@ export async function POST(
  const tenantClient = await getTenantClient(shopId);
 
  const user = await tenantClient.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
- const canManage = user?.role === 'SITE_ADMIN' ||
- (user?.role === 'SHOP_ADMIN' && user?.shopId === shopId);
+ const canManage = (user?.role === 'SHOP_ADMIN' && user?.shopId === shopId);
  if (!canManage) return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
 
   const body = await request.json();

@@ -29,7 +29,7 @@ export async function GET(
  }
 
  // Only SHOP_ADMIN, STAFF and SITE_ADMIN can view team chat
- if (user.role !== 'SHOP_ADMIN' && user.role !== 'STAFF' && user.role !== 'SITE_ADMIN') {
+ if (user.role !== 'SHOP_ADMIN' && user.role !== 'STAFF') {
  return new Response('Forbidden', { status: 403 });
  }
 
@@ -77,7 +77,7 @@ export async function POST(
  return new Response('Forbidden', { status: 403 });
  }
 
- if (user.role !== 'SHOP_ADMIN' && user.role !== 'STAFF' && user.role !== 'SITE_ADMIN') {
+ if (user.role !== 'SHOP_ADMIN' && user.role !== 'STAFF') {
  return new Response('Forbidden', { status: 403 });
  }
 
@@ -115,7 +115,7 @@ export async function POST(
  const shopUsers = await tenantClient.user.findMany({
  where: { 
  shopId,
- role: { in: ['STAFF', 'SHOP_ADMIN', 'SITE_ADMIN'] } 
+ role: { in: ['STAFF', 'SHOP_ADMIN'] } 
  }
  });
 

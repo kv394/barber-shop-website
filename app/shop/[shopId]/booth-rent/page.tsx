@@ -18,7 +18,7 @@ export default async function BoothRentPage({ params }: { params: Promise<{ shop
  if (!data) return redirect('/');
 
  const { userRole, shop, shopSlug } = data;
- const isAdmin = userRole === 'SHOP_ADMIN' || userRole === 'SITE_ADMIN';
+ const isAdmin = userRole === 'SHOP_ADMIN';
  const isBoothRenter = userRole === 'BOOTH_RENTER';
 
  if (!isAdmin && !isBoothRenter) return redirect(`/shop/${shopId}`);

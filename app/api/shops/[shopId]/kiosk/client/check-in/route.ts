@@ -13,7 +13,7 @@ export async function POST(
  try {
  const { shopId } = await params;
     const tenantClient = await getTenantClient(shopId);
- const authResult = await requireShopRole(shopId, ['ATTENDANCE_KIOSK', 'SHOP_ADMIN', 'SITE_ADMIN']);
+ const authResult = await requireShopRole(shopId, ['ATTENDANCE_KIOSK', 'SHOP_ADMIN']);
  if (authResult instanceof NextResponse) return authResult;
 
  const { phone } = await request.json();

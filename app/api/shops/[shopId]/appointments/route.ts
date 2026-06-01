@@ -228,7 +228,7 @@ export async function POST(
  let targetUserId = bookingUser?.id || '';
 
  // Handle walk-in bookings made by an admin/staff, OR by unauthenticated users from the widget/SDK
- if (isWalkIn && (!bookingUser || bookingUser.role === 'SHOP_ADMIN' || bookingUser.role === 'STAFF' || bookingUser.role === 'SITE_ADMIN')) {
+ if (isWalkIn && (!bookingUser || bookingUser.role === 'SHOP_ADMIN' || bookingUser.role === 'STAFF')) {
  // If an existing client was selected, use them directly
  if (existingClientId) {
  // SECURITY: Verify client belongs to this shop or has appointments here

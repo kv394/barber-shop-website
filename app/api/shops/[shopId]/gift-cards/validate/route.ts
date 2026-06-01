@@ -12,7 +12,7 @@ export async function POST(
  const { shopId } = await params;
     const tenantClient = await getTenantClient(shopId);
  
- const authResult = await requireShopRole(shopId, ['SITE_ADMIN', 'SHOP_ADMIN', 'STAFF', 'ATTENDANCE_KIOSK']);
+ const authResult = await requireShopRole(shopId, ['SHOP_ADMIN', 'STAFF', 'ATTENDANCE_KIOSK']);
  if (isAuthError(authResult)) return authResult;
 
  const body = await request.json();

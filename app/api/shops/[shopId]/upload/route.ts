@@ -24,7 +24,7 @@ export async function POST(
  const user = await tenantClient.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
  
  // Only SITE_ADMIN, SHOP_ADMIN, or STAFF can upload files to a shop
- if (!user || (user.role !== 'SITE_ADMIN' && (user.shopId !== shopId && !(await tenantClient.shopAccess.findFirst({ where: { userId: user.id, shopId } }))))) {
+ if (!user || ((user.shopId !== shopId && !(await tenantClient.shopAccess.findFirst({ where: { userId: user.id, shopId } }))))) {
  return new NextResponse("Forbidden", { status: 403 });
  }
 

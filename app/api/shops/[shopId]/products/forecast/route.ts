@@ -13,7 +13,7 @@ export async function GET(
  try {
  const { shopId } = await params;
     const tenantClient = await getTenantClient(shopId);
- const authResult = await requireShopRole(shopId, ['SITE_ADMIN', 'SHOP_ADMIN', 'STAFF']);
+ const authResult = await requireShopRole(shopId, ['SHOP_ADMIN', 'STAFF']);
  if (isAuthError(authResult)) return authResult;
  const { searchParams } = new URL(request.url);
  const forceRefresh = searchParams.get('force') === 'true';
