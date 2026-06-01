@@ -23,7 +23,7 @@ export async function PATCH(
  const user = await tenantClient.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
  
  // Authorization: Site Admin, or Shop Admin
- const isSiteAdmin = user?.role === 'SITE_ADMIN';
+ const isSiteAdmin = false;
  const isShopAdmin = user?.role === 'SHOP_ADMIN' && user?.shopId === shopId;
 
  if (!isSiteAdmin && !isShopAdmin) {

@@ -112,16 +112,14 @@ export async function DELETE(
  const authUserEmail = authUserSession?.email;
  if (!userId) return new Response("Unauthorized", { status: 401 });
 
- // Verify user is SITE_ADMIN or SHOP_ADMIN with access
+ // Verify user is SHOP_ADMIN with access
  const user = await tenantClient.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
  if (!user) {
  return new Response("Unauthorized", { status: 401 });
  }
 
  let hasAccess = false;
- if (user.role === 'SITE_ADMIN') {
- hasAccess = true;
- } else if (user.role === 'SHOP_ADMIN') {
+ if (user.role === 'SHOP_ADMIN') {
  if (user.shopId === shopId) {
  hasAccess = true;
  } else {

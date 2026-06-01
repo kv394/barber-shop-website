@@ -35,7 +35,7 @@ export async function GET(
  if (!shop) return NextResponse.json({ error: 'Shop not found' }, { status: 404 });
 
  const targetDate = new Date(date);
- const rolesToFetch: ('SHOP_ADMIN' | 'STAFF')[] = user.role === 'SITE_ADMIN' ? ['SHOP_ADMIN'] : ['SHOP_ADMIN', 'STAFF'];
+ const rolesToFetch: ('SHOP_ADMIN' | 'STAFF')[] = ['SHOP_ADMIN', 'STAFF'];
  const allStaff = await tenantClient.user.findMany({
  where: { shopId: shopId, role: { in: rolesToFetch } },
  include: {
