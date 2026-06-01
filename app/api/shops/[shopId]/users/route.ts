@@ -37,8 +37,7 @@ export async function POST(
  );
  }
 
- if (currentUser.role !== 'SITE_ADMIN' && 
- (currentUser.role !== 'SHOP_ADMIN' || (currentUser.shopId !== shopId && !(await tenantClient.shopAccess.findFirst({ where: { userId: currentUser.id, shopId } }))))) {
+ if ((currentUser.role !== 'SHOP_ADMIN' || (currentUser.shopId !== shopId && !(await tenantClient.shopAccess.findFirst({ where: { userId: currentUser.id, shopId } }))))) {
  return NextResponse.json(
  { error: 'Forbidden: You do not have permission to manage this shop' },
  { status: 403 }
@@ -53,13 +52,7 @@ export async function POST(
 
   const { email, role, canManageInventory } = validationResult.data;
 
- // SECURITY: Only SITE_ADMIN can assign the SHOP_ADMIN role — prevent privilege escalation
- if (role === 'SHOP_ADMIN' && currentUser.role !== 'SITE_ADMIN') {
- return NextResponse.json(
- { error: 'Only Site Admins can assign the Shop Admin role' },
- { status: 403 }
- );
- }
+
 
  // Check if shop exists
  const shop = await tenantClient.shop.findUnique({
@@ -173,8 +166,7 @@ export async function GET(
  });
 
  if (!currentUser || 
- (currentUser.role !== 'SITE_ADMIN' && 
- (currentUser.role !== 'SHOP_ADMIN' || (currentUser.shopId !== shopId && !(await tenantClient.shopAccess.findFirst({ where: { userId: currentUser.id, shopId } })))) &&
+ ((currentUser.role !== 'SHOP_ADMIN' || (currentUser.shopId !== shopId && !(await tenantClient.shopAccess.findFirst({ where: { userId: currentUser.id, shopId } })))) &&
  (currentUser.role !== 'STAFF' || (currentUser.shopId !== shopId && !(await tenantClient.shopAccess.findFirst({ where: { userId: currentUser.id, shopId } })))))) {
  return NextResponse.json(
  { error: 'Forbidden' },
@@ -184,10 +176,7 @@ export async function GET(
 
  // Restrict what users are visible based on role
  const whereClause: any = { shopId: shopId };
- if (currentUser.role === 'SITE_ADMIN') {
- // Site admins only manage shop admins and see the kiosk
- whereClause.role = { in: ['SHOP_ADMIN', 'ATTENDANCE_KIOSK'] };
- }
+
 
  const users = await tenantClient.user.findMany({
  where: whereClause,
@@ -239,8 +228,7 @@ export async function DELETE(
  });
 
  if (!currentUser || 
- (currentUser.role !== 'SITE_ADMIN' && 
- (currentUser.role !== 'SHOP_ADMIN' || (currentUser.shopId !== shopId && !(await tenantClient.shopAccess.findFirst({ where: { userId: currentUser.id, shopId } })))))) {
+ ((currentUser.role !== 'SHOP_ADMIN' || (currentUser.shopId !== shopId && !(await tenantClient.shopAccess.findFirst({ where: { userId: currentUser.id, shopId } })))))) {
  return NextResponse.json(
  { error: 'Forbidden' },
  { status: 403 }
@@ -276,13 +264,7 @@ export async function DELETE(
  );
  }
 
- // SECURITY: SHOP_ADMIN cannot remove other SHOP_ADMINs — only SITE_ADMIN can
- if (user.role === 'SHOP_ADMIN' && currentUser.role !== 'SITE_ADMIN') {
- return NextResponse.json(
- { error: 'Only Site Admins can remove Shop Admins' },
- { status: 403 }
- );
- }
+
 
  // Remove user from shop
  if (user.shopId === shopId) {

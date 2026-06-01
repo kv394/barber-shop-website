@@ -12,7 +12,7 @@ export async function PUT(
  try {
  const { shopId, serviceId } = await params;
     const tenantClient = await getTenantClient(shopId);
- const authResult = await requireShopRole(shopId, ['SITE_ADMIN', 'SHOP_ADMIN']);
+ const authResult = await requireShopRole(shopId, ['SHOP_ADMIN']);
  if (isAuthError(authResult)) return authResult;
 
  // Verify ownership
@@ -150,7 +150,7 @@ export async function DELETE(
  const { shopId, serviceId } = await params;
     const tenantClient = await getTenantClient(shopId);
 
- const authResult = await requireShopRole(shopId, ['SITE_ADMIN', 'SHOP_ADMIN']);
+ const authResult = await requireShopRole(shopId, ['SHOP_ADMIN']);
  if (isAuthError(authResult)) return authResult;
 
  // Verify the service belongs to the shop before deleting

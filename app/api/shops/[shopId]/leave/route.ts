@@ -28,7 +28,7 @@ export async function GET(
  const filterUserId = searchParams.get('userId') || user.id;
 
  // Only SHOP_ADMIN/SITE_ADMIN can see other people's leaves
- if (filterUserId !== user.id && user.role !== 'SHOP_ADMIN' && user.role !== 'SITE_ADMIN') {
+ if (filterUserId !== user.id && user.role !== 'SHOP_ADMIN') {
  return new Response('Forbidden', { status: 403 });
  }
 
@@ -67,7 +67,7 @@ export async function POST(
  const body = await request.json();
  
  const targetUserId = body.userId || user.id;
- if (targetUserId !== user.id && user.role !== 'SHOP_ADMIN' && user.role !== 'SITE_ADMIN') {
+ if (targetUserId !== user.id && user.role !== 'SHOP_ADMIN') {
  return new Response('Forbidden', { status: 403 });
  }
 

@@ -6,7 +6,7 @@ export const dynamic = 'force-dynamic';
 export async function GET(_: NextRequest, { params }: { params: Promise<{ shopId: string }> }) {
  const { shopId } = await params;
     const tenantClient = await getTenantClient(shopId);
- const authResult = await requireShopRole(shopId, ['SITE_ADMIN', 'SHOP_ADMIN']);
+ const authResult = await requireShopRole(shopId, ['SHOP_ADMIN']);
  if (isAuthError(authResult)) return authResult;
 
  const shop = await tenantClient.shop.findUnique({ where: { id: shopId }, select: { customization: true } });
@@ -31,7 +31,7 @@ export async function GET(_: NextRequest, { params }: { params: Promise<{ shopId
 export async function PUT(req: NextRequest, { params }: { params: Promise<{ shopId: string }> }) {
  const { shopId } = await params;
     const tenantClient = await getTenantClient(shopId);
- const authResult = await requireShopRole(shopId, ['SITE_ADMIN', 'SHOP_ADMIN']);
+ const authResult = await requireShopRole(shopId, ['SHOP_ADMIN']);
  if (isAuthError(authResult)) return authResult;
 
  const body = await req.json();

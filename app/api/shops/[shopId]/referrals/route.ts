@@ -49,7 +49,6 @@ export async function GET(
  if (!user) return NextResponse.json({ error: 'User not found' }, { status: 404 });
 
  // SECURITY: Verify user has a relationship with this shop
- if (user.role !== 'SITE_ADMIN') {
  if (['SHOP_ADMIN', 'STAFF'].includes(user.role) && (user.shopId !== shopId && !(await tenantClient.shopAccess.findFirst({ where: { userId: user.id, shopId } })))) {
  return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
  }
@@ -61,7 +60,6 @@ export async function GET(
  });
  if (!hasAppointment) {
  return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
- }
  }
  }
 
@@ -76,7 +74,7 @@ export async function GET(
  }
 
  // Admin sees all referrals for the shop
- if (['SITE_ADMIN', 'SHOP_ADMIN'].includes(user.role)) {
+ if (['SHOP_ADMIN'].includes(user.role)) {
  // Tenant isolation: SHOP_ADMIN must belong to this shop
  if (user.role === 'SHOP_ADMIN' && (user.shopId !== shopId && !(await tenantClient.shopAccess.findFirst({ where: { userId: user.id, shopId } })))) {
  return NextResponse.json({ error: 'Forbidden' }, { status: 403 });

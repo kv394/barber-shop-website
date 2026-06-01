@@ -17,7 +17,7 @@ export async function GET(
  if (!shopId) return NextResponse.json({ error: 'Shop not found' }, { status: 404 });
 
     const tenantClient = await getTenantClient(shopId);
- const authResult = await requireShopRole(shopId, ['SITE_ADMIN', 'SHOP_ADMIN', 'BOOTH_RENTER']);
+ const authResult = await requireShopRole(shopId, ['SHOP_ADMIN', 'BOOTH_RENTER']);
  if (isAuthError(authResult)) return authResult;
 
  // If booth renter, only return their own payments
@@ -48,7 +48,7 @@ export async function POST(
  if (!shopId) return NextResponse.json({ error: 'Shop not found' }, { status: 404 });
 
     const tenantClient = await getTenantClient(shopId);
- const authResult = await requireShopRole(shopId, ['SITE_ADMIN', 'SHOP_ADMIN']);
+ const authResult = await requireShopRole(shopId, ['SHOP_ADMIN']);
  if (isAuthError(authResult)) return authResult;
 
   const body = await request.json();
@@ -86,7 +86,7 @@ export async function PATCH(
  if (!shopId) return NextResponse.json({ error: 'Shop not found' }, { status: 404 });
 
     const tenantClient = await getTenantClient(shopId);
- const authResult = await requireShopRole(shopId, ['SITE_ADMIN', 'SHOP_ADMIN']);
+ const authResult = await requireShopRole(shopId, ['SHOP_ADMIN']);
  if (isAuthError(authResult)) return authResult;
 
  const body = await request.json();

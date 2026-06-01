@@ -32,7 +32,7 @@ export async function DELETE(
  }
 
  // Only allow deletion if the user is the owner of the leave OR is a SHOP_ADMIN/SITE_ADMIN
- if (leave.userId !== user.id && user.role !== 'SHOP_ADMIN' && user.role !== 'SITE_ADMIN') {
+ if (leave.userId !== user.id && user.role !== 'SHOP_ADMIN') {
  return new Response('Forbidden', { status: 403 });
  }
 

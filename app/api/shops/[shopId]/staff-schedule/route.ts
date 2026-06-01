@@ -27,8 +27,7 @@ export async function GET(
  const [filterToHour, filterToMin] = toParam.split(':').map(Number);
 
  const user = await tenantClient.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
- if (!user || (user.role !== 'SITE_ADMIN' &&
- ((user.shopId !== shopId && !(await tenantClient.shopAccess.findFirst({ where: { userId: user.id, shopId } }))) || !['SHOP_ADMIN', 'STAFF'].includes(user.role)))) {
+ if (!user || (((user.shopId !== shopId && !(await tenantClient.shopAccess.findFirst({ where: { userId: user.id, shopId } }))) || !['SHOP_ADMIN', 'STAFF'].includes(user.role)))) {
  return NextResponse.json({ error: 'Access denied' }, { status: 403 });
  }
 
@@ -36,7 +35,7 @@ export async function GET(
  if (!shop) return NextResponse.json({ error: 'Shop not found' }, { status: 404 });
 
  const targetDate = new Date(date);
- const rolesToFetch: ('SHOP_ADMIN' | 'STAFF')[] = user.role === 'SITE_ADMIN' ? ['SHOP_ADMIN'] : ['SHOP_ADMIN', 'STAFF'];
+ const rolesToFetch: ('SHOP_ADMIN' | 'STAFF')[] = ['SHOP_ADMIN', 'STAFF'];
  const allStaff = await tenantClient.user.findMany({
  where: { shopId: shopId, role: { in: rolesToFetch } },
  include: {

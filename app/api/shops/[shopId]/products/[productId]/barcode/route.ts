@@ -21,7 +21,7 @@ export async function PATCH(
 
  const user = await tenantClient.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
  
- const isSiteAdmin = user?.role === 'SITE_ADMIN';
+ const isSiteAdmin = false;
  const isShopAdmin = user?.role === 'SHOP_ADMIN' && user?.shopId === shopId;
  const isStaff = user?.role === 'STAFF' && user?.shopId === shopId;
 

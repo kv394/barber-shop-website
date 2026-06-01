@@ -14,7 +14,7 @@ export async function GET(
  const { shopId } = await params;
     const tenantClient = await getTenantClient(shopId);
  // Require at least STAFF role to view active attendance logs
- const authResult = await requireShopRole(shopId, ['SITE_ADMIN', 'SHOP_ADMIN', 'STAFF', 'ATTENDANCE_KIOSK']);
+ const authResult = await requireShopRole(shopId, ['SHOP_ADMIN', 'STAFF', 'ATTENDANCE_KIOSK']);
  if (isAuthError(authResult)) return authResult;
 
  // Find all active time logs for the given shop
@@ -74,15 +74,14 @@ export async function POST(
  const scannerUser = await tenantClient.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
 
  if (!scannerUser || 
- (scannerUser.role !== 'SITE_ADMIN' && 
- scannerUser.role !== 'SHOP_ADMIN' && 
+ (scannerUser.role !== 'SHOP_ADMIN' && 
  scannerUser.role !== 'STAFF' &&
  scannerUser.role !== 'ATTENDANCE_KIOSK')) {
  return NextResponse.json({ error: 'This device does not have permission to scan.' }, { status: 403 });
  }
 
  // Ensure the scanner is assigned to this shop (unless Site Admin)
- if (scannerUser.role !== 'SITE_ADMIN' && (scannerUser.shopId !== shopId && !(await tenantClient.shopAccess.findFirst({ where: { userId: scannerUser.id, shopId } })))) {
+ if ((scannerUser.shopId !== shopId && !(await tenantClient.shopAccess.findFirst({ where: { userId: scannerUser.id, shopId } })))) {
  return NextResponse.json({ error: 'This device is not assigned to this shop.' }, { status: 403 });
  }
 

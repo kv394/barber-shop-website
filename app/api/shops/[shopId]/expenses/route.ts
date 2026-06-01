@@ -20,8 +20,7 @@ export async function GET(
  if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
  const user = await tenantClient.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
- const canView = user?.role === 'SITE_ADMIN' ||
- (user?.role === 'SHOP_ADMIN' && user?.shopId === shopId);
+ const canView = (user?.role === 'SHOP_ADMIN' && user?.shopId === shopId);
  if (!canView) return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
 
  const { searchParams } = new URL(request.url);
@@ -63,8 +62,7 @@ export async function POST(
  if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
  const user = await tenantClient.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
- const canCreate = user?.role === 'SITE_ADMIN' ||
- (user?.role === 'SHOP_ADMIN' && user?.shopId === shopId);
+ const canCreate = (user?.role === 'SHOP_ADMIN' && user?.shopId === shopId);
  if (!canCreate) return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
 
   const body = await request.json();
@@ -109,8 +107,7 @@ export async function DELETE(
  if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
  const user = await tenantClient.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
- const canDelete = user?.role === 'SITE_ADMIN' ||
- (user?.role === 'SHOP_ADMIN' && user?.shopId === shopId);
+ const canDelete = (user?.role === 'SHOP_ADMIN' && user?.shopId === shopId);
  if (!canDelete) return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
 
  const { searchParams } = new URL(request.url);

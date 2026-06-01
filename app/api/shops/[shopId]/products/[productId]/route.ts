@@ -11,7 +11,7 @@ export async function DELETE(
  const { shopId, productId } = await params;
     const tenantClient = await getTenantClient(shopId);
 
- const authResult = await requireShopRole(shopId, ['SITE_ADMIN', 'SHOP_ADMIN']);
+ const authResult = await requireShopRole(shopId, ['SHOP_ADMIN']);
  if (isAuthError(authResult)) return authResult;
 
  const deletedProduct = await tenantClient.product.delete({
@@ -37,7 +37,7 @@ export async function PATCH(
     const tenantClient = await getTenantClient(shopId);
  const body = await req.json();
 
- const authResult = await requireShopRole(shopId, ['SITE_ADMIN', 'SHOP_ADMIN']);
+ const authResult = await requireShopRole(shopId, ['SHOP_ADMIN']);
  if (isAuthError(authResult)) return authResult;
 
  const updatedProduct = await tenantClient.product.update({

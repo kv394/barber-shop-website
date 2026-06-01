@@ -24,8 +24,7 @@ export async function POST(
  where: { OR: [{ id: authUserSession.id }, { email: authUserSession.email || '' }] } 
  });
  
- const canManage = user?.role === 'SITE_ADMIN' || 
- (user?.role === 'SHOP_ADMIN' && user?.shopId === shopId) ||
+ const canManage = (user?.role === 'SHOP_ADMIN' && user?.shopId === shopId) ||
  (user?.role === 'STAFF' && user?.shopId === shopId);
 
  if (!canManage) {

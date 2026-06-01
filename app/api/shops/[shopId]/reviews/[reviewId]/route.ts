@@ -8,7 +8,6 @@ const CONFIG = {
  MAX_OWNER_RESPONSE_LENGTH: 2000,
  HTML_STRIP_REGEX: /<[^>]*>/g,
  ROLES: {
- SITE_ADMIN: 'SITE_ADMIN',
  SHOP_ADMIN: 'SHOP_ADMIN',
  },
  HTTP_STATUS: {
@@ -40,7 +39,7 @@ export async function PATCH(
 
  // Verify caller is admin of this shop
  const caller = await tenantClient.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
- if (!caller || (caller.role !== CONFIG.ROLES.SITE_ADMIN && (caller.role !== CONFIG.ROLES.SHOP_ADMIN || (caller.shopId !== shopId && !(await tenantClient.shopAccess.findFirst({ where: { userId: caller.id, shopId } }))))))
+ if (!caller || (caller.role !== CONFIG.ROLES.SHOP_ADMIN || (caller.shopId !== shopId && !(await tenantClient.shopAccess.findFirst({ where: { userId: caller.id, shopId } }))))))
  return NextResponse.json({ error: CONFIG.ERRORS.FORBIDDEN }, { status: CONFIG.HTTP_STATUS.FORBIDDEN });
 
  // SECURITY: Verify review belongs to this shop
@@ -76,7 +75,7 @@ export async function DELETE(
  const { shopId, reviewId } = await params;
     const tenantClient = await getTenantClient(shopId);
  const caller = await tenantClient.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
- if (!caller || (caller.role !== CONFIG.ROLES.SITE_ADMIN && (caller.role !== CONFIG.ROLES.SHOP_ADMIN || (caller.shopId !== shopId && !(await tenantClient.shopAccess.findFirst({ where: { userId: caller.id, shopId } }))))))
+ if (!caller || (caller.role !== CONFIG.ROLES.SHOP_ADMIN || (caller.shopId !== shopId && !(await tenantClient.shopAccess.findFirst({ where: { userId: caller.id, shopId } }))))))
  return NextResponse.json({ error: CONFIG.ERRORS.FORBIDDEN }, { status: CONFIG.HTTP_STATUS.FORBIDDEN });
 
  // SECURITY: Verify review belongs to this shop

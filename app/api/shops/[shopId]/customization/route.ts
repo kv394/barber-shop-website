@@ -15,7 +15,7 @@ export async function POST(
     const tenantClient = await getTenantClient(shopId);
  
  // SECURITY: Authenticate before allowing customization updates
- const authResult = await requireShopRole(shopId, ['SITE_ADMIN', 'SHOP_ADMIN']);
+ const authResult = await requireShopRole(shopId, ['SHOP_ADMIN']);
  if (isAuthError(authResult)) return authResult;
 
  const body = await request.json();

@@ -19,8 +19,7 @@ export async function GET(
  if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
  const currentUser = await tenantClient.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
- const canView = currentUser?.role === 'SITE_ADMIN' ||
- (currentUser?.role === 'SHOP_ADMIN' && currentUser?.shopId === shopId) ||
+ const canView = (currentUser?.role === 'SHOP_ADMIN' && currentUser?.shopId === shopId) ||
  (currentUser?.role === 'STAFF' && currentUser?.shopId === shopId);
 
  if (!canView) return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
@@ -96,8 +95,7 @@ export async function PATCH(
  if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
  const currentUser = await tenantClient.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
- const canEdit = currentUser?.role === 'SITE_ADMIN' ||
- (currentUser?.role === 'SHOP_ADMIN' && currentUser?.shopId === shopId) ||
+ const canEdit = (currentUser?.role === 'SHOP_ADMIN' && currentUser?.shopId === shopId) ||
  (currentUser?.role === 'STAFF' && currentUser?.shopId === shopId);
 
  if (!canEdit) return NextResponse.json({ error: 'Forbidden' }, { status: 403 });

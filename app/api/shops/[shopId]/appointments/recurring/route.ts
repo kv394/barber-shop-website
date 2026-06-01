@@ -26,8 +26,7 @@ export async function POST(
  const { shopId } = await params;
     const tenantClient = await getTenantClient(shopId);
  const user = await tenantClient.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
- const canManage = user?.role === 'SITE_ADMIN' ||
- (user?.role === 'SHOP_ADMIN' && user?.shopId === shopId) ||
+ const canManage = (user?.role === 'SHOP_ADMIN' && user?.shopId === shopId) ||
  (user?.role === 'STAFF' && user?.shopId === shopId);
 
  if (!canManage) {

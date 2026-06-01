@@ -13,7 +13,7 @@ export async function POST(req: Request, { params }: { params: Promise<{ shopId:
 
     const tenantClient = await getTenantClient(shopId);
 
- const authResult = await requireShopRole(shopId, ['SITE_ADMIN', 'SHOP_ADMIN', 'STAFF']);
+ const authResult = await requireShopRole(shopId, ['SHOP_ADMIN', 'STAFF']);
  if (isAuthError(authResult)) return authResult;
 
   const body = await req.json();
@@ -59,7 +59,7 @@ export async function GET(req: Request, { params }: { params: Promise<{ shopId: 
     const tenantClient = await getTenantClient(shopId);
 
  // SECURITY: Products include cost/supplier data — require shop membership
- const authResult = await requireShopRole(shopId, ['SITE_ADMIN', 'SHOP_ADMIN', 'STAFF']);
+ const authResult = await requireShopRole(shopId, ['SHOP_ADMIN', 'STAFF']);
  if (isAuthError(authResult)) return authResult;
 
  const products = await tenantClient.product.findMany({
