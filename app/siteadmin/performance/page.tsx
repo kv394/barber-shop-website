@@ -120,7 +120,7 @@ export default async function SiteAdminPerformancePage() {
           </PremiumGlassCard>
 
           {/* Volume stats */}
-          <PremiumGlassCard accentColor="amber-500" className="!p-6 flex flex-col justify-center">
+          <PremiumGlassCard accentColor="crm-primary" className="!p-6 flex flex-col justify-center">
             <h2 className="text-sm uppercase tracking-widest font-black text-crm-muted mb-6">Platform Volume</h2>
             
             <div className="space-y-6">
