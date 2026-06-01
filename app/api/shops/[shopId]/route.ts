@@ -127,6 +127,9 @@ export async function DELETE(
  }
 
  if (!hasAccess) {
+ return new Response("Forbidden: Only Site Admins can delete entire shops. Shop Admins can only delete branches/locations.", { status: 403 });
+ }
+
  // Fetch shop to check current status
  const shop = await tenantClient.shop.findUnique({ where: { id: shopId } });
  if (!shop) return NextResponse.json({ error: 'Shop not found' }, { status: 404 });
