@@ -134,35 +134,33 @@ export async function DELETE(
  const shop = await tenantClient.shop.findUnique({ where: { id: shopId } });
  if (!shop) return NextResponse.json({ error: 'Shop not found' }, { status: 404 });
 
- if (shop.isActive) {
- // Step 1: Soft Delete (Deactivate)
- await tenantClient.shop.update({
- where: { id: shopId },
- data: { isActive: false, deletedAt: new Date() }
- });
- } else {
- // Step 2: Hard Delete (only if already inactive and requester is SITE_ADMIN)
- // SECURITY: Wrap user cleanup and shop deletion in a transaction
- await tenantClient.$transaction(async (tx: any) => {
- // Handle Users: permanently delete the auto-generated Kiosk user
- await tx.user.deleteMany({
- where: { shopId: shopId, role: 'ATTENDANCE_KIOSK' }
- });
+  if (shop.isActive) {
+  // Step 1: Soft Delete (Deactivate)
+  await prisma.shop.update({
+  where: { id: shopId },
+  data: { isActive: false, deletedAt: new Date() }
+  });
+  } else {
+  // Step 2: Hard Delete (only if already inactive and requester is SITE_ADMIN)
+  // SECURITY: Wrap user cleanup and shop deletion in a transaction using GLOBAL prisma client
+  // to avoid nested transactions in getTenantClient that cause P2028 timeout with max connection pool = 1.
+  await prisma.$transaction(async (tx: any) => {
+  // Handle Users: permanently delete the auto-generated Kiosk user
+  await tx.user.deleteMany({
+  where: { shopId: shopId, role: 'ATTENDANCE_KIOSK' }
+  });
 
- // Downgrade remaining users to CLIENT (do this BEFORE shop deletion, 
- // otherwise the foreign key SetNull cascade will lose their shopId reference)
- await tx.user.updateMany({
- where: { shopId: shopId },
- data: { role: 'CLIENT', canManageInventory: false }
- });
+  // Downgrade remaining users to CLIENT (do this BEFORE shop deletion, 
+  // otherwise the foreign key SetNull cascade will lose their shopId reference)
+  await tx.user.updateMany({
+  where: { shopId: shopId },
+  data: { role: 'CLIENT', canManageInventory: false }
+  });
 
- // Finally, delete the shop itself.
- // Note: All 20+ child tables (Appointments, Services, Reviews, etc.) have 
- // `onDelete: Cascade` defined in schema.prisma, so PostgreSQL will instantly 
- // wipe them automatically without needing manual Prisma round-trips.
- await tx.shop.delete({ where: { id: shopId } });
- }, { maxWait: 15000, timeout: 30000 });
- }
+  // Finally, delete the shop itself.
+  await tx.shop.delete({ where: { id: shopId } });
+  }, { maxWait: 15000, timeout: 30000 });
+  }
 
  // Revalidate directory
  revalidatePath('/shops');
