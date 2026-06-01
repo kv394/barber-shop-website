@@ -4,12 +4,25 @@ import Link from 'next/link';
 export const dynamic = 'force-dynamic';
 
 export default async function SiteAdminDashboard() {
+ // Dates for querying
+ const startOfDay = new Date();
+ startOfDay.setHours(0, 0, 0, 0);
+
+ const endOfDay = new Date(startOfDay);
+ endOfDay.setDate(endOfDay.getDate() + 1);
+
+ const thirtyDaysAgo = new Date();
+ thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+
  // Fetch all platform-wide KPIs in parallel
  const [
  shopCount,
  userCounts,
  recentShops,
  unresolvedLogs,
+ appointmentsToday,
+ recentActiveShopsData,
+ latestUsageReports
  ] = await Promise.all([
  prisma.shop.count(),
  prisma.user.groupBy({
@@ -28,7 +41,40 @@ export default async function SiteAdminDashboard() {
  },
  }),
  prisma.systemLog.count({ where: { isResolved: false } }),
+ prisma.appointment.count({
+ where: {
+ startTime: {
+ gte: startOfDay,
+ lt: endOfDay,
+ },
+ },
+ }),
+ prisma.appointment.groupBy({
+ by: ['shopId'],
+ where: {
+ startTime: {
+ gte: thirtyDaysAgo,
+ },
+ },
+ }),
+ prisma.shopUsageReport.findMany({
+ orderBy: { period: 'desc' },
+ select: { shopId: true, suggestedMonthlyFeeUSD: true },
+ })
  ]);
+
+ const activeShopsCount = recentActiveShopsData.length;
+ const churnedShopsCount = Math.max(0, shopCount - activeShopsCount);
+ 
+ // Calculate Est. MRR from the latest usage report per shop
+ const shopMRRMap = new Map<string, number>();
+ for (const report of latestUsageReports) {
+ if (!shopMRRMap.has(report.shopId)) {
+ shopMRRMap.set(report.shopId, report.suggestedMonthlyFeeUSD);
+ }
+ }
+ const estMRR = Array.from(shopMRRMap.values()).reduce((sum, val) => sum + val, 0);
+ const formattedMRR = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(estMRR);
 
  // Derive user counts
  const totalUsers = userCounts.reduce((acc: number, g: any) => acc + g._count.id, 0);
@@ -43,10 +89,13 @@ export default async function SiteAdminDashboard() {
  </div>
 
  {/* KPI Cards */}
- <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4 mb-8">
- <KpiCard label="Total Shops" value={shopCount} color="blue" />
- <KpiCard label="Total Users" value={totalUsers} color="purple" />
- <KpiCard label="Unresolved Errors" value={unresolvedLogs} color={unresolvedLogs > 0 ? 'red' : 'green'} />
+ <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 sm:gap-5 mb-8">
+ <KpiCard label="Total Shops" value={shopCount} color="blue" subtitle={`${shopCount} total registered`} />
+ <KpiCard label="Active Shops" value={activeShopsCount} color="green" subtitle={`${churnedShopsCount} inactive (30d)`} />
+ <KpiCard label="Total Users" value={totalUsers} color="purple" subtitle={`Across all roles`} />
+ <KpiCard label="Appts Today" value={appointmentsToday} color="cyan" subtitle={`Platform-wide`} />
+ <KpiCard label="Est. MRR" value={formattedMRR} color="amber" subtitle={`From usage reports`} />
+ <KpiCard label="Unresolved Errors" value={unresolvedLogs} color={unresolvedLogs > 0 ? 'red' : 'green'} subtitle={unresolvedLogs > 0 ? 'Action required' : 'All clear'} />
  </div>
 
  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
@@ -145,18 +194,22 @@ function InfraCard({ title, name, value, isUrl = false }: { title: string; name:
     }
   }
 
-  return (
-    <div className="border border-crm-border rounded-lg p-4 bg-crm-surface/50">
-      <div className="text-[11px] font-mono text-crm-muted mb-1">{name}</div>
-      <div className="font-medium text-[14px] text-crm-text mb-2">{title}</div>
-      <div className={`text-[12px] font-mono break-all ${isNotConfigured ? 'text-status-pending' : 'text-crm-text/80'}`}>
+ return (
+    <div className="border border-crm-border rounded-xl p-5 bg-white/40 backdrop-blur-md shadow-sm hover:shadow-md transition-shadow relative overflow-hidden group">
+      <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-brand-indigo to-crm-accent opacity-50 group-hover:opacity-100 transition-opacity"></div>
+      <div className="text-[11px] font-mono text-crm-muted mb-1 flex items-center justify-between">
+        <span>{name}</span>
+        <span className={`w-2 h-2 rounded-full ${isNotConfigured ? 'bg-status-pending' : 'bg-status-confirmed'} animate-pulse`}></span>
+      </div>
+      <div className="font-bold text-[15px] text-crm-text mb-2">{title}</div>
+      <div className={`text-[12px] font-mono break-all ${isNotConfigured ? 'text-status-pending italic' : 'text-crm-text/80'} bg-crm-bg/50 p-2 rounded-md border border-crm-border/50`}>
         {isNotConfigured ? 'Not Configured' : displayValue}
       </div>
     </div>
   );
 }
 
-function KpiCard({ label, value, color }: { label: string; value: string | number; color: string }) {
+function KpiCard({ label, value, color, subtitle }: { label: string; value: string | number; color: string; subtitle?: React.ReactNode }) {
  const colorMap: Record<string, string> = {
  blue: 'bg-white/60 border-white/40 shadow-brand-indigo/5 text-status-info',
  purple: 'bg-white/60 border-white/40 shadow-brand-indigo/5 text-crm-accent',
@@ -169,9 +222,11 @@ function KpiCard({ label, value, color }: { label: string; value: string | numbe
  const textColor = classes.split(' ').pop() || 'text-crm-text';
 
  return (
- <div className={`backdrop-blur-xl ${classes} border shadow-sm p-4 rounded-xl text-center transition-transform hover:scale-105`}>
- <p className={`font-black ${textColor} text-3xl sm:text-4xl`}>{value}</p>
- <p className="text-[11px] text-crm-muted uppercase tracking-wider mt-1">{label}</p>
+ <div className={`backdrop-blur-xl ${classes} border shadow-sm p-4 rounded-xl text-center transition-all duration-300 hover:scale-105 hover:shadow-md relative overflow-hidden group`}>
+ <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
+ <p className={`font-black ${textColor} text-3xl sm:text-4xl relative z-10`}>{value}</p>
+ <p className="text-[11px] text-crm-muted uppercase tracking-wider mt-1 relative z-10">{label}</p>
+ {subtitle && <div className="text-[10px] text-crm-muted/80 mt-2 relative z-10 border-t border-crm-border/50 pt-1">{subtitle}</div>}
  </div>
  );
 }

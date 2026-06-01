@@ -135,8 +135,13 @@ export default function SiteAdminShopsPage() {
  </p>
  </div>
 
- {/* Actions */}
- <div className="flex items-center gap-2 shrink-0 flex-wrap lg:justify-end">
+ <div className="flex items-center gap-2 shrink-0 flex-wrap lg:justify-end mt-4 lg:mt-0">
+ <Link
+ href={`/siteadmin/shops/${shop.id}`}
+ className="bg-white/5 text-white border border-white/10 px-3 py-1.5 rounded-lg text-[11px] font-bold hover:bg-white/10 transition-colors flex items-center gap-1"
+ >
+ <span>👁️</span> Details
+ </Link>
  <button
  onClick={() => setAnalyzingShop({ id: shop.id, name: shop.name })}
  className="bg-indigo-600/10 text-indigo-500 border border-indigo-500/20 px-3 py-1.5 rounded-lg text-[11px] font-bold hover:bg-indigo-600/20 transition-colors"

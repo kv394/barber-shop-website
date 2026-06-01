@@ -5,90 +5,130 @@ import { createClient } from '@/utils/supabase/server';
 export const dynamic = 'force-dynamic';
 
 export async function GET(request: Request) {
- try {
- const supabase = await createClient();
- const { data: { user: _authUser } } = await supabase.auth.getUser();
-  const session = _authUser ? { user: _authUser } : null;
-  const user = session?.user;
- if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  try {
+    const supabase = await createClient();
+    const { data: { user: _authUser } } = await supabase.auth.getUser();
+    const session = _authUser ? { user: _authUser } : null;
+    const user = session?.user;
+    if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
- const dbUser = await prisma.user.findUnique({ where: { email: user.email! } });
- if (dbUser?.role !== 'SITE_ADMIN') {
- return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
- }
+    const dbUser = await prisma.user.findUnique({ where: { email: user.email! } });
+    if (dbUser?.role !== 'SITE_ADMIN') {
+      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+    }
 
- const { searchParams } = new URL(request.url);
- const page = parseInt(searchParams.get('page') || '1');
- const limit = parseInt(searchParams.get('limit') || '50');
- const level = searchParams.get('level');
- const path = searchParams.get('path');
- 
- const skip = (page - 1) * limit;
+    const { searchParams } = new URL(request.url);
+    const page = parseInt(searchParams.get('page') || '1');
+    const limit = parseInt(searchParams.get('limit') || '50');
+    const level = searchParams.get('level');
+    const search = searchParams.get('search');
+    const status = searchParams.get('status');
+    
+    const skip = (page - 1) * limit;
 
- const where: any = {};
- if (level) where.level = level;
- if (path) where.path = path;
+    const where: any = {};
+    if (level) where.level = level;
+    if (status === 'resolved') where.isResolved = true;
+    if (status === 'unresolved') where.isResolved = false;
+    
+    if (search) {
+      where.OR = [
+        { message: { contains: search, mode: 'insensitive' } },
+        { path: { contains: search, mode: 'insensitive' } }
+      ];
+    }
 
- const [logs, total] = await Promise.all([
- prisma.systemLog.findMany({
- where,
- orderBy: { createdAt: 'desc' },
- skip,
- take: limit,
- }),
- prisma.systemLog.count({ where })
- ]);
+    const [logs, total] = await Promise.all([
+      prisma.systemLog.findMany({
+        where,
+        orderBy: { createdAt: 'desc' },
+        skip,
+        take: limit,
+      }),
+      prisma.systemLog.count({ where })
+    ]);
 
- return NextResponse.json({
- logs,
- pagination: {
- total,
- pages: Math.ceil(total / limit),
- page,
- limit
- }
- });
- } catch (error) {
- console.error('Error fetching logs:', error);
- return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
- }
+    return NextResponse.json({
+      logs,
+      pagination: {
+        total,
+        pages: Math.ceil(total / limit),
+        page,
+        limit
+      }
+    });
+  } catch (error) {
+    console.error('Error fetching logs:', error);
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+  }
+}
+
+export async function PATCH(request: Request) {
+  try {
+    const supabase = await createClient();
+    const { data: { user: _authUser } } = await supabase.auth.getUser();
+    const session = _authUser ? { user: _authUser } : null;
+    const user = session?.user;
+    if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+
+    const dbUser = await prisma.user.findUnique({ where: { email: user.email! } });
+    if (dbUser?.role !== 'SITE_ADMIN') {
+      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+    }
+
+    const { id, isResolved } = await request.json();
+    
+    if (!id) {
+      return NextResponse.json({ error: 'Log ID is required' }, { status: 400 });
+    }
+
+    const updatedLog = await prisma.systemLog.update({
+      where: { id },
+      data: { isResolved }
+    });
+
+    return NextResponse.json({ success: true, log: updatedLog });
+  } catch (error) {
+    console.error('Error updating log:', error);
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+  }
 }
 
 export async function DELETE(request: Request) {
- try {
- const supabase = await createClient();
- const { data: { user: _authUser } } = await supabase.auth.getUser();
-  const session = _authUser ? { user: _authUser } : null;
-  const user = session?.user;
- if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  try {
+    const supabase = await createClient();
+    const { data: { user: _authUser } } = await supabase.auth.getUser();
+    const session = _authUser ? { user: _authUser } : null;
+    const user = session?.user;
+    if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
- const dbUser = await prisma.user.findUnique({ where: { email: user.email! } });
- if (dbUser?.role !== 'SITE_ADMIN') {
- return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
- }
+    const dbUser = await prisma.user.findUnique({ where: { email: user.email! } });
+    if (dbUser?.role !== 'SITE_ADMIN') {
+      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+    }
 
- const { searchParams } = new URL(request.url);
- const id = searchParams.get('id');
+    const { searchParams } = new URL(request.url);
+    const id = searchParams.get('id');
 
- if (id) {
- await prisma.systemLog.delete({ where: { id } });
- } else {
- // Clear all logs older than 30 days
- const thirtyDaysAgo = new Date();
- thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
- 
- await prisma.systemLog.deleteMany({
- where: {
- createdAt: {
- lt: thirtyDaysAgo
- }
- }
- });
- }
+    if (id) {
+      await prisma.systemLog.delete({ where: { id } });
+    } else {
+      // Clear all logs older than 30 days
+      const thirtyDaysAgo = new Date();
+      thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+      
+      await prisma.systemLog.deleteMany({
+        where: {
+          createdAt: {
+            lt: thirtyDaysAgo
+          }
+        }
+      });
+    }
 
- return NextResponse.json({ success: true });
- } catch (error) {
- console.error('Error deleting logs:', error);
- return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
- }
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    console.error('Error deleting logs:', error);
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+  }
 }
