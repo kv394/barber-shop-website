@@ -137,3 +137,14 @@ export const runDemoAutomation = inngest.createFunction(
     return { processed };
   }
 );
+
+export const analyzeSystemHealth = inngest.createFunction(
+  { id: 'analyze-system-health', triggers: [{ cron: '*/30 * * * *' }] },
+  async ({ step }) => {
+    const analysis = await step.run('run-ai-sre-analysis', async () => {
+      const { AISreService } = await import('@/lib/ai-sre');
+      return await AISreService.analyzeLogsAndAlert();
+    });
+    return { analysis };
+  }
+);

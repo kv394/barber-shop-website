@@ -98,6 +98,7 @@ export default function SystemLogsViewer() {
 
   const getLevelColor = (level: string) => {
     switch (level.toUpperCase()) {
+      case 'AI_ALERT': return 'text-purple-400 bg-purple-400/20 border-purple-400/50 shadow-[0_0_15px_rgba(168,85,247,0.5)] animate-pulse';
       case 'ERROR':
       case 'CRITICAL': return 'text-red-400 bg-red-400/10 border-red-400/20';
       case 'WARNING':
@@ -140,6 +141,7 @@ export default function SystemLogsViewer() {
               className="bg-black/40 backdrop-blur-md border border-white/10 rounded-xl pl-9 pr-8 py-2 text-white outline-none text-[13px] font-bold shadow-inner focus:border-white/30 transition-colors appearance-none"
             >
               <option value="">All Severities</option>
+              <option value="AI_ALERT">AI Alert</option>
               <option value="ERROR">Error</option>
               <option value="WARNING">Warning</option>
               <option value="INFO">Info</option>
