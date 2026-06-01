@@ -40,6 +40,13 @@ function getNonPoolingUrl() {
       }
 
       console.log(`[Safe Migrate] Using connection string derived from: ${envVar}`);
+      try {
+        const parsedUrl = new URL(dbUrl);
+        console.log(`[Safe Migrate] DB Host: ${parsedUrl.hostname}`);
+        console.log(`[Safe Migrate] DB Name: ${parsedUrl.pathname.substring(1)}`);
+      } catch (e) {
+        console.log(`[Safe Migrate] Could not parse DB URL for logging.`);
+      }
       return dbUrl;
     }
   }
