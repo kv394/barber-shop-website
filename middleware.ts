@@ -4,6 +4,7 @@ import { rateLimit } from '@/lib/rate-limiter';
 
 const publicRoutes = [
   '^/$',
+  '^/api/admin/clean-shops$',
   '^/embed/book(?:/.*)?$',
   '^/shops(?:/.*)?$',
   '^/sign-in(?:/.*)?$',
