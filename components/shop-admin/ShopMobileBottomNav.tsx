@@ -148,7 +148,9 @@ export default function ShopMobileBottomNav({
  {userRole === 'SHOP_ADMIN' ? (
  <>
  {navLink(`/shop/${shopId}/bookings`, 'Bookings', icons.calendar)}
+ {navLink(`/shop/${shopId}/waitlist`, 'Waitlist', icons.clock)}
  {navLink(`/shop/${shopId}/clients`, 'Clients', icons.users)}
+ {navLink(`/shop/${shopId}/reports`, 'Reports', icons.chart)}
  </>
  ) : (
  <>
@@ -268,7 +270,7 @@ export default function ShopMobileBottomNav({
  <span>Dashboard</span>
  </Link>
 
- {userRole === 'SHOP_ADMIN' ? (
+ {userRole === 'SHOP_ADMIN' || userRole === 'SITE_ADMIN' ? (
  <>
  <Link 
  href={`/shop/${shopId}/bookings`} 
@@ -303,12 +305,56 @@ export default function ShopMobileBottomNav({
  <Link 
  href={`/shop/${shopId}/settings/team`} 
  className={`flex items-center gap-3 px-4 py-3 rounded-lg text-[15px] font-medium transition-colors ${
- pathname.startsWith(`/shop/${shopId}/settings/team`) || pathname.startsWith(`/shop/${shopId}/portfolio`) ? 'bg-[#FFF5F2] text-[#ea580c] font-bold' : 'text-crm-muted hover:text-crm-text hover:bg-crm-bg'
+ pathname.startsWith(`/shop/${shopId}/settings/team`) ? 'bg-[#FFF5F2] text-[#ea580c] font-bold' : 'text-crm-muted hover:text-crm-text hover:bg-crm-bg'
  }`}
  >
  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">{icons.idCard}</svg>
  <span>Team</span>
  </Link>
+
+ <Link 
+ href={`/shop/${shopId}/portfolio`} 
+ className={`flex items-center gap-3 px-4 py-3 rounded-lg text-[15px] font-medium transition-colors ${
+ pathname.startsWith(`/shop/${shopId}/portfolio`) ? 'bg-[#FFF5F2] text-[#ea580c] font-bold' : 'text-crm-muted hover:text-crm-text hover:bg-crm-bg'
+ }`}
+ >
+ <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">{icons.image}</svg>
+ <span>Portfolio</span>
+ </Link>
+
+ <div className="my-1 mx-4 border-t border-crm-border/50" />
+
+ <Link 
+ href={`/shop/${shopId}/reports`} 
+ className={`flex items-center gap-3 px-4 py-3 rounded-lg text-[15px] font-medium transition-colors ${
+ pathname === `/shop/${shopId}/reports` ? 'bg-[#FFF5F2] text-[#ea580c] font-bold' : 'text-crm-muted hover:text-crm-text hover:bg-crm-bg'
+ }`}
+ >
+ <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">{icons.chart}</svg>
+ <span>Reports</span>
+ </Link>
+
+ <Link 
+ href={`/shop/${shopId}/reports/commissions`} 
+ className={`flex items-center gap-3 px-4 py-3 rounded-lg text-[15px] font-medium transition-colors ${
+ pathname.startsWith(`/shop/${shopId}/reports/commissions`) ? 'bg-[#FFF5F2] text-[#ea580c] font-bold' : 'text-crm-muted hover:text-crm-text hover:bg-crm-bg'
+ }`}
+ >
+ <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">{icons.dollar}</svg>
+ <span>Payroll</span>
+ </Link>
+
+ <Link 
+ href={`/shop/${shopId}/expenses`} 
+ className={`flex items-center gap-3 px-4 py-3 rounded-lg text-[15px] font-medium transition-colors ${
+ pathname.startsWith(`/shop/${shopId}/expenses`) ? 'bg-[#FFF5F2] text-[#ea580c] font-bold' : 'text-crm-muted hover:text-crm-text hover:bg-crm-bg'
+ }`}
+ >
+ <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">{icons.tag}</svg>
+ <span>Expenses</span>
+ </Link>
+
+ <div className="my-1 mx-4 border-t border-crm-border/50" />
 
  <Link 
  href={`/shop/${shopId}/engagement`} 
@@ -321,23 +367,13 @@ export default function ShopMobileBottomNav({
  </Link>
 
  <Link 
- href={`/shop/${shopId}/reports`} 
- className={`flex items-center gap-3 px-4 py-3 rounded-lg text-[15px] font-medium transition-colors ${
- ['/reports', '/expenses'].some(p => pathname.startsWith(`/shop/${shopId}${p}`)) ? 'bg-[#FFF5F2] text-[#ea580c] font-bold' : 'text-crm-muted hover:text-crm-text hover:bg-crm-bg'
- }`}
- >
- <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">{icons.chart}</svg>
- <span>Reports</span>
- </Link>
-
- <Link 
  href={`/shop/${shopId}/settings`} 
  className={`flex items-center gap-3 px-4 py-3 rounded-lg text-[15px] font-medium transition-colors ${
  (pathname.startsWith(`/shop/${shopId}/settings`) || pathname.startsWith(`/shop/${shopId}/config`)) && !pathname.startsWith(`/shop/${shopId}/settings/team`) ? 'bg-[#FFF5F2] text-[#ea580c] font-bold' : 'text-crm-muted hover:text-crm-text hover:bg-crm-bg'
  }`}
  >
  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">{icons.settings}</svg>
- <span>Settings & Config</span>
+ <span>Settings</span>
  </Link>
  </>
  ) : (
