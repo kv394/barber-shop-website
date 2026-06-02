@@ -126,9 +126,9 @@ export default function SystemLogsViewer() {
           </p>
         </div>
         
-        <div className="flex flex-wrap items-center gap-3 w-full xl:w-auto">
+        <div className="flex flex-wrap items-center gap-2 w-full xl:w-auto">
           <div className="relative flex-grow xl:flex-grow-0">
-            <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+            <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" />
             <input 
               type="text"
               placeholder="Search message or path..."
@@ -139,12 +139,12 @@ export default function SystemLogsViewer() {
                 setCurrentCursor(null);
                 setCursorStack([]);
               }}
-              className="w-full xl:w-64 bg-black/40 backdrop-blur-md border border-white/10 rounded-xl pl-9 pr-4 py-2 text-white outline-none text-[13px] font-mono shadow-inner focus:border-white/30 transition-colors placeholder:text-gray-600"
+              className="w-full xl:w-56 h-9 bg-black/40 backdrop-blur-md border border-white/10 rounded-lg pl-9 pr-3 text-white outline-none text-[12px] font-mono shadow-inner focus:border-white/30 transition-colors placeholder:text-gray-600"
             />
           </div>
 
           <div className="relative">
-            <Filter className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+            <Filter className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" />
             <select 
               value={levelFilter}
               onChange={(e) => { 
@@ -153,7 +153,7 @@ export default function SystemLogsViewer() {
                 setCurrentCursor(null);
                 setCursorStack([]);
               }}
-              className="bg-black/40 backdrop-blur-md border border-white/10 rounded-xl pl-9 pr-8 py-2 text-white outline-none text-[13px] font-bold shadow-inner focus:border-white/30 transition-colors appearance-none"
+              className="h-9 bg-black/40 backdrop-blur-md border border-white/10 rounded-lg pl-9 pr-8 text-white outline-none text-[12px] font-semibold shadow-inner focus:border-white/30 transition-colors appearance-none"
             >
               <option value="">All Severities</option>
               <option value="AI_ALERT">AI Alert</option>
@@ -171,7 +171,7 @@ export default function SystemLogsViewer() {
               setCurrentCursor(null);
               setCursorStack([]);
             }}
-            className="bg-black/40 backdrop-blur-md border border-white/10 rounded-xl px-4 py-2 text-white outline-none text-[13px] font-bold shadow-inner focus:border-white/30 transition-colors"
+            className="h-9 bg-black/40 backdrop-blur-md border border-white/10 rounded-lg px-3 text-white outline-none text-[12px] font-semibold shadow-inner focus:border-white/30 transition-colors"
           >
             <option value="">All Statuses</option>
             <option value="unresolved">Unresolved</option>
@@ -180,9 +180,9 @@ export default function SystemLogsViewer() {
 
           <button
             onClick={handleDeleteOldLogs}
-            className="bg-red-500/10 text-red-400 hover:text-red-300 border border-red-500/20 hover:border-red-500/40 hover:bg-red-500/20 px-4 py-2 rounded-xl text-[12px] font-black uppercase tracking-widest transition-all shadow-inner flex items-center gap-2 ml-auto xl:ml-0"
+            className="h-9 bg-red-500/10 text-red-400 hover:text-red-300 border border-red-500/20 hover:border-red-500/40 hover:bg-red-500/20 px-3 rounded-lg text-[11px] font-bold uppercase tracking-wider transition-all shadow-inner flex items-center gap-1.5 ml-auto xl:ml-0"
           >
-            <Trash2 className="w-4 h-4" />
+            <Trash2 className="w-3.5 h-3.5" />
             Clear Old
           </button>
         </div>
@@ -190,24 +190,32 @@ export default function SystemLogsViewer() {
 
       <PremiumGlassCard accentColor="crm-primary" className="!p-0 overflow-hidden bg-black/60 border-white/10">
         <div className="overflow-x-auto">
-          <table className="w-full text-left border-collapse">
+          <table className="w-full text-left border-collapse" style={{ tableLayout: 'fixed' }}>
+            <colgroup>
+              <col style={{ width: 160 }} />
+              <col style={{ width: 100 }} />
+              <col style={{ width: 180 }} />
+              <col />
+              <col style={{ width: 70 }} />
+              <col style={{ width: 70 }} />
+            </colgroup>
             <thead>
               <tr className="border-b border-white/10 bg-black/40">
-                <th className="p-4 text-[10px] uppercase tracking-widest font-black text-gray-500 whitespace-nowrap">Timestamp</th>
-                <th className="p-4 text-[10px] uppercase tracking-widest font-black text-gray-500">Level</th>
-                <th className="p-4 text-[10px] uppercase tracking-widest font-black text-gray-500">Path / Context</th>
-                <th className="p-4 text-[10px] uppercase tracking-widest font-black text-gray-500 w-1/2">Message</th>
-                <th className="p-4 text-[10px] uppercase tracking-widest font-black text-gray-500 text-center">Status</th>
-                <th className="p-4 text-[10px] uppercase tracking-widest font-black text-gray-500 text-right">Action</th>
+                <th className="px-4 py-3 text-[10px] uppercase tracking-widest font-bold text-gray-500">Timestamp</th>
+                <th className="px-4 py-3 text-[10px] uppercase tracking-widest font-bold text-gray-500">Level</th>
+                <th className="px-4 py-3 text-[10px] uppercase tracking-widest font-bold text-gray-500">Path</th>
+                <th className="px-4 py-3 text-[10px] uppercase tracking-widest font-bold text-gray-500">Message</th>
+                <th className="px-4 py-3 text-[10px] uppercase tracking-widest font-bold text-gray-500 text-center">Status</th>
+                <th className="px-4 py-3 text-[10px] uppercase tracking-widest font-bold text-gray-500 text-right">Action</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-white/5 text-[13px]">
+            <tbody className="divide-y divide-white/5">
               {loading && logs.length === 0 ? (
                 <tr>
-                  <td colSpan={6} className="p-12 text-center text-gray-500 font-mono flex-col items-center justify-center">
+                  <td colSpan={6} className="p-12 text-center text-gray-500 font-mono">
                     <div className="animate-pulse flex flex-col items-center gap-2">
                       <div className="w-6 h-6 border-2 border-gray-500 border-t-transparent rounded-full animate-spin"></div>
-                      <p>Querying logs...</p>
+                      <p className="text-[12px]">Querying logs...</p>
                     </div>
                   </td>
                 </tr>
@@ -216,7 +224,7 @@ export default function SystemLogsViewer() {
                   <td colSpan={6} className="p-12 text-center text-gray-500 font-mono">
                     <div className="flex flex-col items-center gap-2">
                       <CheckCircle className="w-8 h-8 text-gray-600" />
-                      <p>No logs found matching your criteria.</p>
+                      <p className="text-[12px]">No logs found matching your criteria.</p>
                     </div>
                   </td>
                 </tr>
@@ -227,35 +235,35 @@ export default function SystemLogsViewer() {
                     onClick={() => setSelectedLog(log)}
                     className="hover:bg-white/5 transition-colors cursor-pointer group"
                   >
-                    <td className="p-4 font-mono text-[12px] text-gray-400 whitespace-nowrap">
+                    <td className="px-4 py-3 font-mono text-[11px] text-gray-400 whitespace-nowrap overflow-hidden text-ellipsis">
                       {new Date(log.createdAt).toLocaleString([], { dateStyle: 'short', timeStyle: 'medium' })}
                     </td>
-                    <td className="p-4">
-                      <span className={`px-2 py-1 rounded text-[10px] font-black tracking-widest border shadow-inner ${getLevelColor(log.level)}`}>
+                    <td className="px-4 py-3">
+                      <span className={`inline-block px-2 py-0.5 rounded text-[10px] font-bold tracking-wider border shadow-inner ${getLevelColor(log.level)}`}>
                         {log.level}
                       </span>
                     </td>
-                    <td className="p-4 font-mono text-[11px] text-gray-300 truncate max-w-[200px]">
+                    <td className="px-4 py-3 font-mono text-[11px] text-gray-300 overflow-hidden text-ellipsis whitespace-nowrap">
                       {log.path || '-'}
                     </td>
-                    <td className="p-4 text-gray-200 truncate max-w-[400px] font-mono text-[12px]">
+                    <td className="px-4 py-3 text-gray-200 font-mono text-[11px] overflow-hidden text-ellipsis whitespace-nowrap">
                       {log.message}
                     </td>
-                    <td className="p-4 text-center">
+                    <td className="px-4 py-3 text-center">
                       <button 
                         onClick={(e) => toggleResolved(log.id, log.isResolved, e)}
-                        className={`inline-flex items-center justify-center p-1.5 rounded-full transition-all ${
+                        className={`inline-flex items-center justify-center w-7 h-7 rounded-full transition-all ${
                           log.isResolved 
                             ? 'text-green-400 bg-green-400/10 hover:bg-green-400/20' 
                             : 'text-gray-500 bg-white/5 hover:bg-white/10 hover:text-white'
                         }`}
                         title={log.isResolved ? "Mark as Unresolved" : "Mark as Resolved"}
                       >
-                        {log.isResolved ? <CheckCircle className="w-5 h-5" /> : <XCircle className="w-5 h-5" />}
+                        {log.isResolved ? <CheckCircle className="w-4 h-4" /> : <XCircle className="w-4 h-4" />}
                       </button>
                     </td>
-                    <td className="p-4 text-right">
-                      <span className="text-[11px] font-bold uppercase tracking-wider text-gray-500 group-hover:text-white transition-colors">
+                    <td className="px-4 py-3 text-right">
+                      <span className="text-[10px] font-bold uppercase tracking-wider text-gray-500 group-hover:text-white transition-colors">
                         View
                       </span>
                     </td>
