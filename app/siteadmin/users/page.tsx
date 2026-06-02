@@ -340,116 +340,154 @@ export default function AdminSecurityPage() {
       )}
 
       {/* Users List */}
-      <div className="bg-white rounded-xl shadow-sm border border-crm-border overflow-hidden">
+      <div className="bg-white rounded-2xl shadow-sm border border-crm-border overflow-hidden">
+        {/* Table Header Bar */}
+        <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
+          <p className="text-sm font-medium text-gray-500">
+            {loading ? 'Loading...' : `${users.length} user${users.length !== 1 ? 's' : ''}`}
+          </p>
+        </div>
+
         {loading ? (
-          <div className="flex flex-col items-center justify-center py-20">
-            <div className="w-8 h-8 border-4 border-crm-primary/30 border-t-crm-primary rounded-full animate-spin mb-4"></div>
-            <p className="text-crm-muted text-sm">Loading security records...</p>
+          <div className="flex flex-col items-center justify-center py-24">
+            <div className="w-10 h-10 border-4 border-crm-primary/20 border-t-crm-primary rounded-full animate-spin mb-4"></div>
+            <p className="text-crm-muted text-sm font-medium">Loading security records...</p>
           </div>
         ) : users.length === 0 ? (
-          <div className="text-center py-20 px-4">
-            <ShieldCheck className="w-12 h-12 text-gray-300 mx-auto mb-3" />
-            <h3 className="text-lg font-medium text-gray-900 mb-1">No users found</h3>
-            <p className="text-gray-500 text-sm">
+          <div className="text-center py-24 px-4">
+            <div className="w-16 h-16 rounded-2xl bg-gray-100 flex items-center justify-center mx-auto mb-4">
+              <ShieldCheck className="w-8 h-8 text-gray-300" />
+            </div>
+            <h3 className="text-base font-semibold text-gray-900 mb-1">No users found</h3>
+            <p className="text-gray-500 text-sm max-w-sm mx-auto">
               {activeTab === 'ADMINS' 
-                ? "There are currently no users with SITE_ADMIN privileges." 
+                ? "There are currently no users with Site Admin privileges." 
                 : "No users match your current search and filter criteria."}
             </p>
           </div>
         ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full text-left border-collapse">
-              <thead>
-                <tr className="bg-gray-50 border-b border-crm-border text-xs uppercase tracking-wider text-gray-500 font-semibold">
-                  <th className="px-6 py-4">User</th>
-                  <th className="px-6 py-4">Role</th>
-                  <th className="px-6 py-4">Website</th>
-                  <th className="px-6 py-4">Joined</th>
-                  <th className="px-6 py-4 text-right">Actions</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-100">
-                {users.map(user => (
-                  <tr key={user.id} className="hover:bg-gray-50/50 transition-colors group">
-                    <td className="px-6 py-4">
-                      <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-full bg-crm-primary/10 flex items-center justify-center text-crm-primary font-bold text-sm">
-                          {(user.name || user.email).charAt(0).toUpperCase()}
-                        </div>
-                        <div>
-                          <p className="text-sm font-medium text-gray-900 flex items-center gap-2">
-                            {user.name || 'Unknown User'}
-                            {user.isBlocked && <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-red-100 text-red-700">BLOCKED</span>}
-                          </p>
-                          <p className="text-xs text-gray-500">{user.email}</p>
-                        </div>
-                      </div>
-                    </td>
-                    <td className="px-6 py-4">
-                      <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold border ${getRoleBadgeColor(user.role)}`}>
+          <div className="divide-y divide-gray-100">
+            {users.map(user => (
+              <div key={user.id} className="px-6 py-4 hover:bg-gray-50/80 transition-all duration-150 group">
+                <div className="flex items-center gap-4">
+                  {/* Avatar */}
+                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-crm-primary/20 to-crm-primary/5 flex items-center justify-center text-crm-primary font-bold text-sm flex-shrink-0 border border-crm-primary/10">
+                    {(user.name || user.email).charAt(0).toUpperCase()}
+                  </div>
+
+                  {/* User Info - Name, Email, Shop */}
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <p className="text-sm font-semibold text-gray-900 truncate">
+                        {user.name || 'Unknown User'}
+                      </p>
+                      <span className={`inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wide border ${getRoleBadgeColor(user.role)}`}>
                         {user.role.replace(/_/g, ' ')}
                       </span>
+                      {user.isBlocked && (
+                        <span className="px-2 py-0.5 rounded-md text-[10px] font-bold bg-red-100 text-red-700 border border-red-200">
+                          BLOCKED
+                        </span>
+                      )}
+                    </div>
+                    <div className="flex items-center gap-3 mt-0.5">
+                      <p className="text-xs text-gray-500 truncate">{user.email}</p>
                       {user.shopName && user.role !== 'SITE_ADMIN' && (
-                        <p className="text-xs text-gray-500 mt-1 truncate max-w-[150px]" title={user.shopName}>
-                          @ {user.shopName}
-                        </p>
+                        <span className="text-xs text-gray-400 truncate max-w-[180px] hidden sm:inline" title={user.shopName}>
+                          • {user.shopName}
+                        </span>
                       )}
-                    </td>
-                    <td className="px-6 py-4">
-                      {user.website ? (
-                        <a href={user.website} target="_blank" rel="noopener noreferrer" className="text-sm text-crm-primary hover:text-crm-accent hover:underline truncate block max-w-[200px]" title={user.website}>
-                          {user.website.replace(/^https?:\/\//, '')}
-                        </a>
-                      ) : (
-                        <span className="text-sm text-gray-400">—</span>
-                      )}
-                    </td>
-                    <td className="px-6 py-4">
-                      <p className="text-sm text-gray-600">
-                        {new Date(user.createdAt).toLocaleDateString(undefined, { 
-                          year: 'numeric', month: 'short', day: 'numeric' 
-                        })}
-                      </p>
-                    </td>
-                    <td className="px-6 py-4 text-right">
-                      <div className="flex items-center justify-end gap-3 mb-2">
-                        <button onClick={() => openEditModal(user)} className="text-xs font-medium text-crm-primary hover:text-crm-accent">
-                          Edit
-                        </button>
-                        <button onClick={() => handlePasswordReset(user.id)} className="text-xs font-medium text-gray-600 hover:text-gray-900">
-                          Reset PW
-                        </button>
-                        <button onClick={() => handleToggleBlock(user.id, !!user.isBlocked)} className={`text-xs font-medium ${user.isBlocked ? 'text-green-600 hover:text-green-700' : 'text-red-600 hover:text-red-700'}`}>
-                          {user.isBlocked ? 'Unblock' : 'Block'}
-                        </button>
-                      </div>
-                      {activeTab === 'ADMINS' ? (
-                        <button
-                          onClick={() => {
-                            if (confirm(`Are you sure you want to revoke SITE_ADMIN privileges from ${user.email}?`)) {
-                              handleRoleChange(user.id, 'CLIENT');
-                            }
-                          }}
-                          className="text-xs font-medium text-red-600 hover:text-red-700 bg-red-50 hover:bg-red-100 px-3 py-1.5 rounded-md transition-colors w-full"
-                        >
-                          Revoke Admin
-                        </button>
-                      ) : (
-                        <select
-                          value={user.role}
-                          onChange={(e) => handleRoleChange(user.id, e.target.value)}
-                          className="text-sm border border-gray-200 rounded-md py-1.5 pl-2 pr-6 bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-crm-primary/20 hover:border-gray-300 transition-colors w-full"
-                        >
-                          {ROLES.filter(r => r !== 'ALL').map(r => (
-                            <option key={r} value={r}>{r.replace(/_/g, ' ')}</option>
-                          ))}
-                        </select>
-                      )}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+                    </div>
+                  </div>
+
+                  {/* Website */}
+                  <div className="hidden md:flex items-center min-w-[160px]">
+                    {user.website ? (
+                      <a 
+                        href={user.website} 
+                        target="_blank" 
+                        rel="noopener noreferrer" 
+                        className="inline-flex items-center gap-1.5 text-xs text-crm-primary hover:text-crm-accent transition-colors group/link max-w-[160px]"
+                        title={user.website}
+                      >
+                        <svg className="w-3.5 h-3.5 flex-shrink-0 opacity-60 group-hover/link:opacity-100" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+                        </svg>
+                        <span className="truncate group-hover/link:underline">
+                          {user.website.replace(/^https?:\/\//, '').replace(/\/$/, '')}
+                        </span>
+                      </a>
+                    ) : (
+                      <span className="text-xs text-gray-300">—</span>
+                    )}
+                  </div>
+
+                  {/* Joined Date */}
+                  <div className="hidden lg:block text-xs text-gray-500 min-w-[90px] text-right tabular-nums">
+                    {new Date(user.createdAt).toLocaleDateString(undefined, { 
+                      year: 'numeric', month: 'short', day: 'numeric' 
+                    })}
+                  </div>
+
+                  {/* Actions */}
+                  <div className="flex items-center gap-1 flex-shrink-0">
+                    <button 
+                      onClick={() => openEditModal(user)} 
+                      className="p-2 rounded-lg text-gray-400 hover:text-crm-primary hover:bg-crm-primary/5 transition-colors" 
+                      title="Edit user"
+                    >
+                      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                      </svg>
+                    </button>
+                    <button 
+                      onClick={() => handlePasswordReset(user.id)} 
+                      className="p-2 rounded-lg text-gray-400 hover:text-amber-600 hover:bg-amber-50 transition-colors" 
+                      title="Reset password"
+                    >
+                      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
+                      </svg>
+                    </button>
+                    <button 
+                      onClick={() => handleToggleBlock(user.id, !!user.isBlocked)} 
+                      className={`p-2 rounded-lg transition-colors ${user.isBlocked ? 'text-green-500 hover:text-green-700 hover:bg-green-50' : 'text-gray-400 hover:text-red-600 hover:bg-red-50'}`}
+                      title={user.isBlocked ? 'Unblock user' : 'Block user'}
+                    >
+                      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                        {user.isBlocked ? (
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M8 11V7a4 4 0 118 0m-4 8v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2z" />
+                        ) : (
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                        )}
+                      </svg>
+                    </button>
+                    {activeTab === 'ADMINS' ? (
+                      <button
+                        onClick={() => {
+                          if (confirm(`Are you sure you want to revoke SITE_ADMIN privileges from ${user.email}?`)) {
+                            handleRoleChange(user.id, 'CLIENT');
+                          }
+                        }}
+                        className="ml-1 text-[11px] font-semibold text-red-600 hover:text-white bg-red-50 hover:bg-red-600 px-3 py-1.5 rounded-lg transition-all duration-150"
+                      >
+                        Revoke
+                      </button>
+                    ) : (
+                      <select
+                        value={user.role}
+                        onChange={(e) => handleRoleChange(user.id, e.target.value)}
+                        className="ml-1 text-[11px] font-medium border border-gray-200 rounded-lg py-1.5 pl-2 pr-5 bg-gray-50 text-gray-700 focus:outline-none focus:ring-2 focus:ring-crm-primary/20 hover:border-gray-300 transition-colors cursor-pointer"
+                      >
+                        {ROLES.filter(r => r !== 'ALL').map(r => (
+                          <option key={r} value={r}>{r.replace(/_/g, ' ')}</option>
+                        ))}
+                      </select>
+                    )}
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
         )}
       </div>
