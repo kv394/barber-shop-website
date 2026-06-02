@@ -29,15 +29,22 @@ export default function SiteAdminShopsPage() {
  const [assigningAdminShop, setAssigningAdminShop] = useState<{ id: string, name: string } | null>(null);
  const [managingFeaturesShop, setManagingFeaturesShop] = useState<{ id: string, name: string } | null>(null);
 
+ const [error, setError] = useState<string | null>(null);
+
  const fetchShops = async () => {
  try {
  const res = await fetch('/api/siteadmin/shops');
  if (res.ok) {
  const data = await res.json();
  setShops(data.shops || []);
+ setError(null);
+ } else {
+ const errorData = await res.json().catch(() => ({}));
+ setError(`API Error ${res.status}: ${errorData.error || res.statusText}`);
  }
- } catch {
- console.error('Failed to fetch shops');
+ } catch (err: any) {
+ console.error('Failed to fetch shops', err);
+ setError(`Network Error: ${err.message}`);
  } finally {
  setLoading(false);
  }
@@ -60,6 +67,12 @@ export default function SiteAdminShopsPage() {
 
  return (
  <div>
+ {error && (
+   <div className="mb-6 p-4 bg-red-50 border border-red-200 text-red-700 rounded-xl">
+     <h3 className="font-bold">Failed to load shops</h3>
+     <p className="text-sm mt-1">{error}</p>
+   </div>
+ )}
  <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center mb-6">
  <div>
  <h1 className="font-serif font-bold text-crm-accent mb-2 text-2xl">Shop Management</h1>
