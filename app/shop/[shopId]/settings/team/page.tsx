@@ -2,6 +2,7 @@ import { redirect } from 'next/navigation';
 import { createClient } from '@/utils/supabase/server';
 import { createClient as createSupabaseClient } from '@supabase/supabase-js';
 import { prisma } from '@/lib/prisma';
+import { emailService } from '@/lib/email';
 import { getShopLayoutData } from '@/lib/shop-data';
 import ShopAdminLayout from '@/components/shop-admin/ShopAdminLayout';
 import TeamDashboardClient from '@/components/shop-admin/TeamDashboardClient';
@@ -183,7 +184,17 @@ async function inviteUser(formData: FormData) {
   });
   }
  }
- revalidatePath(`/shop/${shopId}/settings/team`);
+
+  // Send invite email to the new or existing user
+  const shop = await prisma.shop.findUnique({ where: { id: shopId }, select: { name: true } });
+  emailService.sendInvite({
+  to: email,
+  shopName: shop?.name || 'a shop',
+  role,
+  invitedBy: caller.name || caller.email || undefined,
+  }).catch(err => console.error('[INVITE EMAIL]', err));
+
+  revalidatePath(`/shop/${shopId}/settings/team`);
 }
 
 async function removeUser(formData: FormData) {
