@@ -1,3 +1,4 @@
+import { cacheService } from './cache';
 import { prisma } from './prisma';
 
 export type UsageMetrics = {
@@ -34,74 +35,80 @@ export type SaaSTierInput = {
 };
 
 export async function getSaaSTiers(): Promise<SaaSTierInput[]> {
-  let tiers = await prisma.saaSTier.findMany({
-    orderBy: { baseFeeUSD: 'asc' }
-  });
+  return await cacheService.getOrSet(
+    'saas-tiers',
+    async () => {
+      let tiers = await prisma.saaSTier.findMany({
+        orderBy: { baseFeeUSD: 'asc' }
+      });
 
-  if (tiers.length === 0) {
-    const defaultTiers = [
-      {
-        name: 'Free Trial',
-        baseFeeUSD: 0,
-        maxAppointments: 50,
-        maxUsers: 2,
-        maxFormSubmissions: 20,
-        storageLimitMB: 100,
-        overageFeePer100MB: 2,
-        description: 'For small shops just getting started.'
-      },
-      {
-        name: 'Starter',
-        baseFeeUSD: 29,
-        maxAppointments: 200,
-        maxUsers: 5,
-        maxFormSubmissions: 50,
-        storageLimitMB: 500,
-        overageFeePer100MB: 1,
-        description: 'For growing independent barbers and small parlors.'
-      },
-      {
-        name: 'Growth',
-        baseFeeUSD: 79,
-        maxAppointments: 1000,
-        maxUsers: 10,
-        maxFormSubmissions: 200,
-        storageLimitMB: 1000,
-        overageFeePer100MB: 1,
-        description: 'For busy shops with a full team.'
-      },
-      {
-        name: 'Enterprise Spa',
-        baseFeeUSD: 199,
-        maxAppointments: 5000,
-        maxUsers: 25,
-        maxFormSubmissions: 1000,
-        storageLimitMB: 5000,
-        overageFeePer100MB: 1,
-        description: 'For large spas and multi-chair operations.'
-      },
-      {
-        name: 'Unlimited Platform',
-        baseFeeUSD: 399,
-        maxAppointments: 999999,
-        maxUsers: 999,
-        maxFormSubmissions: 999999,
-        storageLimitMB: 20000,
-        overageFeePer100MB: 1,
-        description: 'For franchise-level volume with unlimited core usage.'
+      if (tiers.length === 0) {
+        const defaultTiers = [
+          {
+            name: 'Free Trial',
+            baseFeeUSD: 0,
+            maxAppointments: 50,
+            maxUsers: 2,
+            maxFormSubmissions: 20,
+            storageLimitMB: 100,
+            overageFeePer100MB: 2,
+            description: 'For small shops just getting started.'
+          },
+          {
+            name: 'Starter',
+            baseFeeUSD: 29,
+            maxAppointments: 200,
+            maxUsers: 5,
+            maxFormSubmissions: 50,
+            storageLimitMB: 500,
+            overageFeePer100MB: 1,
+            description: 'For growing independent barbers and small parlors.'
+          },
+          {
+            name: 'Growth',
+            baseFeeUSD: 79,
+            maxAppointments: 1000,
+            maxUsers: 10,
+            maxFormSubmissions: 200,
+            storageLimitMB: 1000,
+            overageFeePer100MB: 1,
+            description: 'For busy shops with a full team.'
+          },
+          {
+            name: 'Enterprise Spa',
+            baseFeeUSD: 199,
+            maxAppointments: 5000,
+            maxUsers: 25,
+            maxFormSubmissions: 1000,
+            storageLimitMB: 5000,
+            overageFeePer100MB: 1,
+            description: 'For large spas and multi-chair operations.'
+          },
+          {
+            name: 'Unlimited Platform',
+            baseFeeUSD: 399,
+            maxAppointments: 999999,
+            maxUsers: 999,
+            maxFormSubmissions: 999999,
+            storageLimitMB: 20000,
+            overageFeePer100MB: 1,
+            description: 'For franchise-level volume with unlimited core usage.'
+          }
+        ];
+
+        for (const t of defaultTiers) {
+          await prisma.saaSTier.create({ data: t });
+        }
+
+        tiers = await prisma.saaSTier.findMany({
+          orderBy: { baseFeeUSD: 'asc' }
+        });
       }
-    ];
 
-    for (const t of defaultTiers) {
-      await prisma.saaSTier.create({ data: t });
-    }
-
-    tiers = await prisma.saaSTier.findMany({
-      orderBy: { baseFeeUSD: 'asc' }
-    });
-  }
-
-  return tiers;
+      return tiers;
+    },
+    900 // 15 minutes
+  );
 }
 
 /**

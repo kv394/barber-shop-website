@@ -115,7 +115,7 @@ const getShopBySlug = cache(async (slug: string) => {
  reviews: JSON.parse(JSON.stringify(reviews)),
  };
  },
- 60 * 60 // 1 hour cache
+ 900 // 15 minutes cache
  );
 });
 

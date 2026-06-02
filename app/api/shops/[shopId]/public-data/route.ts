@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { prisma, getTenantClient } from '@/lib/prisma';
 import { logger } from '@/lib/logger';
+import { cacheService } from '@/lib/cache';
 
 export const dynamic = 'force-dynamic';
 // Cache bust 1
@@ -8,7 +9,26 @@ export const dynamic = 'force-dynamic';
 export async function GET(request: Request, { params }: { params: Promise<{ shopId: string }> }) {
  try {
  const { shopId } = await params;
-    const tenantClient = await getTenantClient(shopId);
+    // --- MOVED SECURITY INIT OUTSIDE CACHE ---
+    const origin = request.headers.get('origin');
+    const referer = request.headers.get('referer');
+    const requestHost = request.headers.get('host') || 'localhost:3000';
+    const protocol = requestHost.includes('localhost') ? 'http' : 'https';
+    const baseUrl = `${protocol}://${requestHost}`;
+
+    let requestDomain = null;
+    try {
+        if (origin && origin !== 'null') {
+            requestDomain = new URL(origin).hostname;
+        } else if (referer && referer !== 'null') {
+            requestDomain = new URL(referer).hostname;
+        }
+    } catch (e) {
+        requestDomain = null;
+    }
+
+    const cachedData = await cacheService.getOrSet(`api_public_data:${shopId}`, async () => {
+        const tenantClient = await getTenantClient(shopId);
 
  // 0. Fetch Shop Details First for Security Validation
  let shop = await tenantClient.shop.findFirst({
@@ -79,24 +99,10 @@ export async function GET(request: Request, { params }: { params: Promise<{ shop
  }
 
  if (!shop) {
- return NextResponse.json({ error: 'Shop not found' }, { status: 404 });
+ return null;
  }
 
- // --- SECURITY: Domain Validation (Anti-Scraping / Hacker Safe) ---
- const origin = request.headers.get('origin');
- const referer = request.headers.get('referer');
- 
- let requestDomain = null;
- try {
- if (origin && origin !== 'null') {
- requestDomain = new URL(origin).hostname;
- } else if (referer && referer !== 'null') {
- requestDomain = new URL(referer).hostname;
- }
- } catch (e) {
- // Ignore URL parsing errors
- requestDomain = null;
- }
+ // --- SECURITY AND DOMAIN MOVED OUTSIDE ---
 
  const customization = (shop.customization as any) || {};
  const allowedDomains: string[] = customization.allowedDomains || [];
@@ -108,40 +114,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ shop
  allowedDomains.push('localhost'); // Allow local development
  allowedDomains.push('127.0.0.1'); // Allow local IP development
 
- // If the request comes from a browser (has origin/referer), validate it
- // We strictly block requests from unknown origins to prevent data theft and unauthorized widget embedding
- if (requestDomain) {
- const isAllowed = allowedDomains.some(domain =>
- requestDomain === domain || requestDomain.endsWith(`.${domain}`)
- );
-
- if (!isAllowed) {
- // TEMPORARY: Allow all domains for demo/local testing purposes.
- // We log a warning instead of blocking to ensure the demo works seamlessly.
- logger.warn(`Allowing unauthorized access to shop data from domain for demo: ${requestDomain}`);
- }
- }
-
- // CORS Headers for allowed requests
- const corsHeaders: Record<string, string> = {
- 'Access-Control-Allow-Origin': (!origin || origin === 'null') ? '*' : origin,
- 'Access-Control-Allow-Methods': 'GET, OPTIONS',
- 'Access-Control-Allow-Headers': 'Content-Type, Authorization',
- };
-
- // Set dynamic CORS origin if valid
- if (origin) {
- try {
- const originHost = new URL(origin).hostname;
- const isOriginAllowed = allowedDomains.some(domain => originHost === domain || originHost.endsWith(`.${domain}`));
- if (isOriginAllowed) {
- corsHeaders['Access-Control-Allow-Origin'] = origin;
- } else {
- // For demo purposes, we will allow it, but in production we'd restrict it
- corsHeaders['Access-Control-Allow-Origin'] = origin;
- }
- } catch(e) {}
- }
+ // CORS and origin logic moved outside cache
 
  // Run remaining public data queries in parallel using the actual resolved shop.id
  const [products, services, staff, reviews] = await Promise.all([
@@ -203,9 +176,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ shop
  })
  ]);
 
- const requestHost = request.headers.get('host') || 'localhost:3000';
- const protocol = requestHost.includes('localhost') ? 'http' : 'https';
- const baseUrl = `${protocol}://${requestHost}`;
+
 
  const formatImageUrl = (url: string | null) => {
  if (!url) return null;
@@ -260,13 +231,54 @@ export async function GET(request: Request, { params }: { params: Promise<{ shop
  customization: publicCustomization
  };
 
- return NextResponse.json({
+ return {
  shop: cleanShop,
  products: formattedProducts,
  services: formattedServices,
  staff: formattedStaff,
- reviews
- }, { headers: corsHeaders });
+ reviews,
+ allowedDomains
+ };
+    }, 900); // 15 minutes cache
+
+    if (!cachedData) {
+        return NextResponse.json({ error: 'Shop not found' }, { status: 404 });
+    }
+
+    const { allowedDomains: cachedAllowedDomains, ...responseData } = cachedData;
+
+    // Validate domain
+    if (requestDomain && cachedAllowedDomains) {
+        const isAllowed = cachedAllowedDomains.some((domain: string) =>
+            requestDomain === domain || requestDomain.endsWith(`.${domain}`)
+        );
+
+        if (!isAllowed) {
+            logger.warn(`Allowing unauthorized access to shop data from domain for demo: ${requestDomain}`);
+        }
+    }
+
+    // CORS Headers for allowed requests
+    const corsHeaders: Record<string, string> = {
+        'Access-Control-Allow-Origin': (!origin || origin === 'null') ? '*' : origin,
+        'Access-Control-Allow-Methods': 'GET, OPTIONS',
+        'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+    };
+
+    // Set dynamic CORS origin if valid
+    if (origin && cachedAllowedDomains) {
+        try {
+            const originHost = new URL(origin).hostname;
+            const isOriginAllowed = cachedAllowedDomains.some((domain: string) => originHost === domain || originHost.endsWith(`.${domain}`));
+            if (isOriginAllowed) {
+                corsHeaders['Access-Control-Allow-Origin'] = origin;
+            } else {
+                corsHeaders['Access-Control-Allow-Origin'] = origin;
+            }
+        } catch(e) {}
+    }
+
+    return NextResponse.json(responseData, { headers: corsHeaders });
 
  } catch (error: any) {
  logger.error('Error fetching public shop data:', error);
