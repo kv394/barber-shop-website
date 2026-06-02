@@ -23,8 +23,9 @@ export async function POST(req: Request) {
       }
     );
 
-    const { data: { user }, error: authError } = await supabase.auth.getUser();
-    if (authError || !user) {
+    const { data: { session } } = await supabase.auth.getSession();
+    const user = session?.user;
+    if (!user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
@@ -39,9 +40,17 @@ export async function POST(req: Request) {
     const { shopId } = await req.json();
 
     if (shopId) {
-      // Check if shop exists
+      // Check if shop exists and has granted support access
       const shop = await prisma.shop.findUnique({ where: { id: shopId } });
       if (!shop) return NextResponse.json({ error: 'Shop not found' }, { status: 404 });
+      
+      if (!shop.supportAccessEnabled) {
+        return NextResponse.json({ error: 'Support access not granted by shop owner.' }, { status: 403 });
+      }
+
+      if (shop.supportAccessExpiresAt && shop.supportAccessExpiresAt < new Date()) {
+        return NextResponse.json({ error: 'Support access has expired.' }, { status: 403 });
+      }
 
       cookieStore.set('kutz_impersonate_shop', shopId, {
         httpOnly: true,

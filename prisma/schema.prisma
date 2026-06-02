@@ -51,6 +51,8 @@ model Shop {
   createdAt                  DateTime             @default(now())
   updatedAt                  DateTime             @updatedAt
   isActive                   Boolean              @default(true)
+  supportAccessEnabled       Boolean              @default(false)
+  supportAccessExpiresAt     DateTime?
   deletedAt                  DateTime?
   shopType                   ShopType             @default(PHYSICAL)
   travelFee                  Float                @default(0)
@@ -108,7 +110,7 @@ model Shop {
   boothRentPayments          BoothRentPayment[]
   dynamicPricingRules        DynamicPricingRule[]
 
-  renterServices             RenterService[]
+  renterServices RenterService[]
 
   @@index([createdAt])
   @@index([isActive])
@@ -220,32 +222,32 @@ model Product {
 }
 
 model Service {
-  id                   String                       @id @default(cuid())
-  name                 String
-  description          String?
-  price                Float
-  duration             Int
-  type                 ServiceType                  @default(CUSTOMER)
-  itemType             String?
-  brand                String?
-  barcode              String?                      @unique
-  shopId               String
-  createdAt            DateTime                     @default(now())
-  updatedAt            DateTime                     @updatedAt
-  taxRate              Float                        @default(0)
-  bufferMinutes        Int                          @default(0)
-  imageUrl             String?
-  finishingTime        Int                          @default(0)
-  processingTime       Int                          @default(0)
-  isBookable           Boolean                      @default(true)
+  id                          String                       @id @default(cuid())
+  name                        String
+  description                 String?
+  price                       Float
+  duration                    Int
+  type                        ServiceType                  @default(CUSTOMER)
+  itemType                    String?
+  brand                       String?
+  barcode                     String?                      @unique
+  shopId                      String
+  createdAt                   DateTime                     @default(now())
+  updatedAt                   DateTime                     @updatedAt
+  taxRate                     Float                        @default(0)
+  bufferMinutes               Int                          @default(0)
+  imageUrl                    String?
+  finishingTime               Int                          @default(0)
+  processingTime              Int                          @default(0)
+  isBookable                  Boolean                      @default(true)
   requiresVirtualConsultation Boolean                      @default(false)
-  appointments         Appointment[]
-  appointmentItems     AppointmentItem[]
-  commissionRules      CommissionRule[]
-  resourceRequirements ServiceResourceRequirement[]
-  shop                 Shop                         @relation(fields: [shopId], references: [id], onDelete: Cascade)
-  addons               ServiceAddon[]               @relation("ServiceToAddons")
-  productUsages        ServiceProductUsage[]
+  appointments                Appointment[]
+  appointmentItems            AppointmentItem[]
+  commissionRules             CommissionRule[]
+  resourceRequirements        ServiceResourceRequirement[]
+  shop                        Shop                         @relation(fields: [shopId], references: [id], onDelete: Cascade)
+  addons                      ServiceAddon[]               @relation("ServiceToAddons")
+  productUsages               ServiceProductUsage[]
 
   @@index([shopId, type])
   @@index([isBookable])
@@ -404,18 +406,18 @@ model ShopBlackoutDate {
 }
 
 model Waitlist {
-  id          String   @id @default(cuid())
+  id          String         @id @default(cuid())
   clientName  String
   clientPhone String?
-  partySize   Int      @default(1)
+  partySize   Int            @default(1)
   serviceId   String?
   status      WaitlistStatus @default(WAITING)
   position    Int
   shopId      String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
   staffId     String?
-  shop        Shop     @relation(fields: [shopId], references: [id], onDelete: Cascade)
+  shop        Shop           @relation(fields: [shopId], references: [id], onDelete: Cascade)
 
   @@index([shopId, createdAt])
   @@index([status])
@@ -542,20 +544,20 @@ model Referral {
 }
 
 model Campaign {
-  id             String    @id @default(cuid())
+  id             String          @id @default(cuid())
   shopId         String
   name           String
   message        String
   type           CampaignType    @default(EMAIL)
   channel        CampaignChannel @default(EMAIL)
   status         CampaignStatus  @default(DRAFT)
-  targetSegment  String    @default("ALL")
+  targetSegment  String          @default("ALL")
   scheduledAt    DateTime?
   sentAt         DateTime?
-  recipientCount Int       @default(0)
-  createdAt      DateTime  @default(now())
-  updatedAt      DateTime  @updatedAt
-  shop           Shop      @relation(fields: [shopId], references: [id], onDelete: Cascade)
+  recipientCount Int             @default(0)
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  shop           Shop            @relation(fields: [shopId], references: [id], onDelete: Cascade)
 
   @@index([shopId])
   @@index([status])
@@ -1048,19 +1050,19 @@ enum CampaignChannel {
 }
 
 model DynamicPricingRule {
-  id              String   @id @default(cuid())
+  id              String                @id @default(cuid())
   shopId          String
   name            String
   type            PricingRuleType
   adjustmentType  PricingAdjustmentType
   adjustmentValue Float
-  daysOfWeek      String?  // JSON array of integers 0-6
-  startTime       String?  // "HH:mm" format
-  endTime         String?  // "HH:mm" format
-  isActive        Boolean  @default(true)
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
-  shop            Shop     @relation(fields: [shopId], references: [id], onDelete: Cascade)
+  daysOfWeek      String? // JSON array of integers 0-6
+  startTime       String? // "HH:mm" format
+  endTime         String? // "HH:mm" format
+  isActive        Boolean               @default(true)
+  createdAt       DateTime              @default(now())
+  updatedAt       DateTime              @updatedAt
+  shop            Shop                  @relation(fields: [shopId], references: [id], onDelete: Cascade)
 
   @@index([shopId])
   @@index([isActive])

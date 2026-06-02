@@ -30,6 +30,8 @@ export async function GET() {
  template: true,
  createdAt: true,
  isActive: true,
+ supportAccessEnabled: true,
+ supportAccessExpiresAt: true,
  deletedAt: true,
  aiTokens: true,
  premiumFeatures: true,

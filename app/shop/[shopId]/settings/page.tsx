@@ -7,6 +7,7 @@ import { prisma } from '@/lib/prisma';
 import DeleteLocationButton from '@/components/shop-admin/DeleteLocationButton';
 import { ShopProfileForm } from '@/components/shop-admin/ShopProfileForm';
 import { SettingsFormManager } from '@/components/shop-admin/SettingsFormManager';
+import SupportAccessToggle from '@/components/shop-admin/SupportAccessToggle';
 
 export const dynamic = "force-dynamic";
 
@@ -77,6 +78,11 @@ export default async function ShopSettingsPage({
  />
 
  <div className="mt-12 pt-8 border-t border-crm-border">
+ <SupportAccessToggle 
+   shopId={shopId} 
+   initialEnabled={shopDetails?.supportAccessEnabled || false} 
+   expiresAt={shopDetails?.supportAccessExpiresAt || null} 
+ />
  <h3 className="font-bold text-red-600 mb-2 text-lg">Danger Zone</h3>
  <p className="text-crm-muted text-[13px] mb-4">Permanently delete this location and all its associated data. This action cannot be undone.</p>
  <DeleteLocationButton shopId={shopId} shopName={data.shop.name} />

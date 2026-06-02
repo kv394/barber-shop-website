@@ -14,6 +14,8 @@ type ShopData = {
  template: string;
  createdAt: string;
  isActive: boolean;
+ supportAccessEnabled: boolean;
+ supportAccessExpiresAt: string | null;
  deletedAt: string | null;
  aiTokens: number;
  users: { id: string; role: string; name: string | null; email: string }[];
@@ -161,28 +163,45 @@ export default function SiteAdminShopsPage() {
  >
  💎 Features
  </button>
- <button
- onClick={async () => {
- try {
- const res = await fetch('/api/siteadmin/impersonate', {
- method: 'POST',
- headers: { 'Content-Type': 'application/json' },
- body: JSON.stringify({ shopId: shop.id })
- });
- if (res.ok) {
- window.location.href = `/shop/${shop.id}`;
- } else {
- alert('Failed to impersonate shop');
- }
- } catch (err) {
- console.error(err);
- alert('Error impersonating shop');
- }
- }}
- className="bg-emerald-500/10 text-emerald-500 border border-emerald-500/20 px-3 py-1.5 rounded-lg text-[11px] font-bold hover:bg-emerald-500/20 transition-colors"
- >
- 🎭 Impersonate
- </button>
+  {(() => {
+    const isExpired = shop.supportAccessExpiresAt ? new Date(shop.supportAccessExpiresAt) < new Date() : false;
+    const canImpersonate = shop.supportAccessEnabled && !isExpired;
+
+    return (
+      <button
+        onClick={async () => {
+          if (!canImpersonate) {
+            alert('This shop has not granted Support Access. Please ask the shop owner to enable it in their settings.');
+            return;
+          }
+          try {
+            const res = await fetch('/api/siteadmin/impersonate', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ shopId: shop.id })
+            });
+            if (res.ok) {
+              window.location.href = `/shop/${shop.id}`;
+            } else {
+              alert('Failed to impersonate shop. ' + (await res.json()).error);
+            }
+          } catch (err) {
+            console.error(err);
+            alert('Error impersonating shop');
+          }
+        }}
+        disabled={!canImpersonate}
+        title={canImpersonate ? 'Impersonate Shop' : 'Shop owner must enable Support Access in their settings first.'}
+        className={`px-3 py-1.5 rounded-lg text-[11px] font-bold border transition-colors ${
+          canImpersonate 
+            ? 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20 hover:bg-emerald-500/20' 
+            : 'bg-gray-500/10 text-gray-500 border-gray-500/20 cursor-not-allowed opacity-60'
+        }`}
+      >
+        {canImpersonate ? '🎭 Impersonate' : '🔒 No Access'}
+      </button>
+    );
+  })()}
  <button
  onClick={async () => {
  try {
