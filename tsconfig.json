@@ -39,6 +39,7 @@
     "node_modules",
     "scripts",
     "seed-*.js",
-    "seed-*.ts"
+    "seed-*.ts",
+    "cloudflare-email-worker"
   ]
 }
