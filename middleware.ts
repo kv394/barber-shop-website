@@ -146,18 +146,20 @@ export async function middleware(req: NextRequest) {
     }
   );
 
-  // Only call getUser() for non-public routes to avoid unnecessary network round-trips
+  // Only call getSession() for non-public routes to avoid unnecessary network round-trips
   const isPublic = isPublicRoute(req.nextUrl.pathname);
 
   if (!isPublic) {
-    const { data: { user } } = await supabase.auth.getUser();
+    const { data: { session } } = await supabase.auth.getSession();
 
     // Redirect unauthenticated users to sign-in on protected routes
-    if (!user) {
+    if (!session) {
       const signInUrl = req.nextUrl.clone();
       signInUrl.pathname = '/sign-in';
       return NextResponse.redirect(signInUrl);
     }
+    
+    const user = session.user;
 
     // Cross-Shop Isolation Logic
     if (isApi && req.nextUrl.pathname.includes('/api/shops/')) {
