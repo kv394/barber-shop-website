@@ -21,6 +21,10 @@ export async function GET(request: Request) {
       deleted.push(shop.id);
     }
     
+    const { revalidatePath } = await import('next/cache');
+    revalidatePath('/siteadmin/shops', 'page');
+    revalidatePath('/siteadmin', 'layout');
+    
     return NextResponse.json({ success: true, allShops: shops.map(s => s.id), deleted });
   } catch (e: any) {
     return NextResponse.json({ success: false, error: e.message, stack: e.stack });
