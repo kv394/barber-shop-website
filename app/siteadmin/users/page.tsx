@@ -21,6 +21,7 @@ type UserRecord = {
   role: string;
   shopId: string | null;
   shopName: string | null;
+  website: string | null;
   createdAt: string;
   phone: string | null;
   isBlocked?: boolean;
@@ -362,7 +363,7 @@ export default function AdminSecurityPage() {
                 <tr className="bg-gray-50 border-b border-crm-border text-xs uppercase tracking-wider text-gray-500 font-semibold">
                   <th className="px-6 py-4">User</th>
                   <th className="px-6 py-4">Role</th>
-                  <th className="px-6 py-4">Contact</th>
+                  <th className="px-6 py-4">Website</th>
                   <th className="px-6 py-4">Joined</th>
                   <th className="px-6 py-4 text-right">Actions</th>
                 </tr>
@@ -395,7 +396,13 @@ export default function AdminSecurityPage() {
                       )}
                     </td>
                     <td className="px-6 py-4">
-                      <p className="text-sm text-gray-600 font-mono">{user.phone || '—'}</p>
+                      {user.website ? (
+                        <a href={user.website} target="_blank" rel="noopener noreferrer" className="text-sm text-crm-primary hover:text-crm-accent hover:underline truncate block max-w-[200px]" title={user.website}>
+                          {user.website.replace(/^https?:\/\//, '')}
+                        </a>
+                      ) : (
+                        <span className="text-sm text-gray-400">—</span>
+                      )}
                     </td>
                     <td className="px-6 py-4">
                       <p className="text-sm text-gray-600">

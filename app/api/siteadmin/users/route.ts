@@ -45,7 +45,7 @@ export async function GET(request: NextRequest) {
  name: true,
  role: true,
  shopId: true,
- shop: { select: { name: true, companyName: true } },
+ shop: { select: { name: true, companyName: true, customDomain: true, subdomain: true } },
  createdAt: true,
  },
  orderBy: { createdAt: 'desc' },
@@ -65,16 +65,30 @@ export async function GET(request: NextRequest) {
  );
 
  return NextResponse.json({
- users: users.map((u: any) => ({
+ users: users.map((u: any) => {
+ let website: string | null = null;
+ if (u.shop) {
+ if (u.shop.customDomain) {
+ website = u.shop.customDomain.startsWith('http') ? u.shop.customDomain : `https://${u.shop.customDomain}`;
+ } else if (u.shop.subdomain) {
+ website = `https://${u.shop.subdomain}.kutzapp.com`;
+ } else {
+ const slug = u.shop.name.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '');
+ website = `https://kutzapp.com/shops/${slug}`;
+ }
+ }
+ return {
  id: u.id,
  email: u.email,
  name: u.name,
  role: u.role,
  shopId: u.shopId,
  shopName: u.shop ? (u.shop.companyName ? `${u.shop.companyName} (${u.shop.name})` : u.shop.name) : null,
+ website,
  createdAt: u.createdAt.toISOString(),
  isBlocked: blockedEmails.has(u.email),
- })),
+  };
+ }),
  total,
  });
 }
