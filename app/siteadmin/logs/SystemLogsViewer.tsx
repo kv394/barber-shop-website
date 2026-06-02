@@ -27,6 +27,9 @@ export default function SystemLogsViewer() {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [totalLogs, setTotalLogs] = useState(0);
+  const [cursorStack, setCursorStack] = useState<string[]>([]);
+  const [currentCursor, setCurrentCursor] = useState<string | null>(null);
+  const [nextCursor, setNextCursor] = useState<string | null>(null);
   
   // Filters
   const [levelFilter, setLevelFilter] = useState('');
@@ -39,6 +42,7 @@ export default function SystemLogsViewer() {
   const fetchLogs = useCallback(async () => {
     setLoading(true);
     const params = new URLSearchParams({ page: page.toString(), limit: '20' });
+    if (currentCursor) params.append('cursor', currentCursor);
     if (levelFilter) params.append('level', levelFilter);
     if (searchQuery) params.append('search', searchQuery);
     if (statusFilter) params.append('status', statusFilter);
@@ -49,12 +53,13 @@ export default function SystemLogsViewer() {
       setLogs(data.logs || []);
       setTotalPages(data.pagination?.pages || 1);
       setTotalLogs(data.pagination?.total || 0);
+      setNextCursor(data.pagination?.nextCursor || null);
     } catch (e) {
       console.error('Error fetching logs', e);
     } finally {
       setLoading(false);
     }
-  }, [page, levelFilter, searchQuery, statusFilter]);
+  }, [page, currentCursor, levelFilter, searchQuery, statusFilter]);
 
   useEffect(() => {
     fetchLogs();
@@ -128,7 +133,12 @@ export default function SystemLogsViewer() {
               type="text"
               placeholder="Search message or path..."
               value={searchQuery}
-              onChange={(e) => { setSearchQuery(e.target.value); setPage(1); }}
+              onChange={(e) => { 
+                setSearchQuery(e.target.value); 
+                setPage(1); 
+                setCurrentCursor(null);
+                setCursorStack([]);
+              }}
               className="w-full xl:w-64 bg-black/40 backdrop-blur-md border border-white/10 rounded-xl pl-9 pr-4 py-2 text-white outline-none text-[13px] font-mono shadow-inner focus:border-white/30 transition-colors placeholder:text-gray-600"
             />
           </div>
@@ -137,7 +147,12 @@ export default function SystemLogsViewer() {
             <Filter className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
             <select 
               value={levelFilter}
-              onChange={(e) => { setLevelFilter(e.target.value); setPage(1); }}
+              onChange={(e) => { 
+                setLevelFilter(e.target.value); 
+                setPage(1);
+                setCurrentCursor(null);
+                setCursorStack([]);
+              }}
               className="bg-black/40 backdrop-blur-md border border-white/10 rounded-xl pl-9 pr-8 py-2 text-white outline-none text-[13px] font-bold shadow-inner focus:border-white/30 transition-colors appearance-none"
             >
               <option value="">All Severities</option>
@@ -150,7 +165,12 @@ export default function SystemLogsViewer() {
 
           <select 
             value={statusFilter}
-            onChange={(e) => { setStatusFilter(e.target.value); setPage(1); }}
+            onChange={(e) => { 
+              setStatusFilter(e.target.value); 
+              setPage(1);
+              setCurrentCursor(null);
+              setCursorStack([]);
+            }}
             className="bg-black/40 backdrop-blur-md border border-white/10 rounded-xl px-4 py-2 text-white outline-none text-[13px] font-bold shadow-inner focus:border-white/30 transition-colors"
           >
             <option value="">All Statuses</option>
@@ -250,7 +270,18 @@ export default function SystemLogsViewer() {
         {totalPages > 1 && (
           <div className="p-4 border-t border-white/10 bg-black/40 flex justify-between items-center">
             <button 
-              onClick={() => setPage(p => Math.max(1, p - 1))}
+              onClick={() => {
+                if (cursorStack.length > 0) {
+                  const newStack = [...cursorStack];
+                  const prevCursor = newStack.pop() || null;
+                  setCursorStack(newStack);
+                  setCurrentCursor(prevCursor);
+                  setPage(p => p - 1);
+                } else {
+                  setCurrentCursor(null);
+                  setPage(1);
+                }
+              }}
               disabled={page === 1}
               className="px-4 py-2 bg-white/5 hover:bg-white/10 rounded-lg text-[12px] font-bold text-white disabled:opacity-30 disabled:hover:bg-white/5 shadow-inner border border-white/10 transition-colors"
             >
@@ -260,8 +291,14 @@ export default function SystemLogsViewer() {
               Page <span className="text-white">{page}</span> of <span className="text-white">{totalPages}</span>
             </span>
             <button 
-              onClick={() => setPage(p => Math.min(totalPages, p + 1))}
-              disabled={page === totalPages}
+              onClick={() => {
+                if (nextCursor) {
+                  setCursorStack([...cursorStack, currentCursor || '']);
+                  setCurrentCursor(nextCursor);
+                  setPage(p => p + 1);
+                }
+              }}
+              disabled={!nextCursor}
               className="px-4 py-2 bg-white/5 hover:bg-white/10 rounded-lg text-[12px] font-bold text-white disabled:opacity-30 disabled:hover:bg-white/5 shadow-inner border border-white/10 transition-colors"
             >
               Next

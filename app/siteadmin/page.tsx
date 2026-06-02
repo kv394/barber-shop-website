@@ -21,8 +21,8 @@ export default async function SiteAdminDashboard() {
  recentShops,
  unresolvedLogs,
  appointmentsToday,
- recentActiveShopsData,
- latestUsageReports
+ activeShopsData,
+ estMRRData
  ] = await Promise.all([
  prisma.shop.count(),
  prisma.user.groupBy({
@@ -49,31 +49,27 @@ export default async function SiteAdminDashboard() {
  },
  },
  }),
- prisma.appointment.groupBy({
- by: ['shopId'],
- where: {
- startTime: {
- gte: thirtyDaysAgo,
- },
- },
- }),
- prisma.shopUsageReport.findMany({
- orderBy: { period: 'desc' },
- select: { shopId: true, suggestedMonthlyFeeUSD: true },
- })
+ prisma.$queryRaw<Array<{ count: bigint }>>`
+      SELECT COUNT(DISTINCT "shopId") as count 
+      FROM "Appointment" 
+      WHERE "startTime" >= ${thirtyDaysAgo}
+    `,
+ prisma.$queryRaw<Array<{ estMRR: number }>>`
+      WITH RankedReports AS (
+        SELECT "shopId", "suggestedMonthlyFeeUSD",
+               ROW_NUMBER() OVER (PARTITION BY "shopId" ORDER BY "period" DESC) as rn
+        FROM "ShopUsageReport"
+      )
+      SELECT COALESCE(SUM("suggestedMonthlyFeeUSD"), 0) as "estMRR"
+      FROM RankedReports
+      WHERE rn = 1
+    `
  ]);
 
- const activeShopsCount = recentActiveShopsData.length;
+ const activeShopsCount = Number(activeShopsData[0]?.count || 0);
  const churnedShopsCount = Math.max(0, shopCount - activeShopsCount);
  
- // Calculate Est. MRR from the latest usage report per shop
- const shopMRRMap = new Map<string, number>();
- for (const report of latestUsageReports) {
- if (!shopMRRMap.has(report.shopId)) {
- shopMRRMap.set(report.shopId, report.suggestedMonthlyFeeUSD);
- }
- }
- const estMRR = Array.from(shopMRRMap.values()).reduce((sum, val) => sum + val, 0);
+ const estMRR = Number(estMRRData[0]?.estMRR || 0);
  const formattedMRR = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(estMRR);
 
  // Derive user counts

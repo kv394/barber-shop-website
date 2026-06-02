@@ -20,11 +20,10 @@ export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
     const page = parseInt(searchParams.get('page') || '1');
     const limit = parseInt(searchParams.get('limit') || '50');
+    const cursor = searchParams.get('cursor');
     const level = searchParams.get('level');
     const search = searchParams.get('search');
     const status = searchParams.get('status');
-    
-    const skip = (page - 1) * limit;
 
     const where: any = {};
     if (level) where.level = level;
@@ -38,23 +37,30 @@ export async function GET(request: Request) {
       ];
     }
 
-    const [logs, total] = await Promise.all([
+    const [logsData, total] = await Promise.all([
       prisma.systemLog.findMany({
         where,
         orderBy: { createdAt: 'desc' },
-        skip,
-        take: limit,
+        take: limit + 1,
+        ...(cursor ? { cursor: { id: cursor }, skip: 1 } : {}),
       }),
       prisma.systemLog.count({ where })
     ]);
 
+    let nextCursor = null;
+    if (logsData.length > limit) {
+      const nextItem = logsData.pop();
+      nextCursor = nextItem!.id;
+    }
+
     return NextResponse.json({
-      logs,
+      logs: logsData,
       pagination: {
         total,
         pages: Math.ceil(total / limit),
         page,
-        limit
+        limit,
+        nextCursor
       }
     });
   } catch (error) {

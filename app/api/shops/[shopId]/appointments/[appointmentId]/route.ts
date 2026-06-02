@@ -97,10 +97,27 @@ export async function PATCH(
  }
 
  // Fetch current appointment for deposit handling
- const currentAppointment = await tenantClient.appointment.findUnique({
- where: { id: appointmentId, shopId },
- include: { user: { include: { shopClients: { where: { shopId } } } }, service: true, shop: { select: { stripeAccountId: true, paymentGateway: true } } },
- });
+  const currentAppointment = await tenantClient.appointment.findUnique({
+  where: { id: appointmentId, shopId },
+  select: {
+    id: true,
+    shopId: true,
+    depositPaymentIntentId: true,
+    service: { select: { price: true } },
+    shop: { select: { stripeAccountId: true, paymentGateway: true } },
+    user: {
+      select: {
+        shopClients: {
+          where: { shopId },
+          select: {
+            stripeCustomerId: true,
+            stripePaymentMethodId: true
+          }
+        }
+      }
+    }
+  }
+  });
 
  if (!currentAppointment) {
  return NextResponse.json({ error: 'Appointment not found' }, { status: 404 });

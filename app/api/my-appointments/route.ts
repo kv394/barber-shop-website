@@ -22,8 +22,8 @@ export async function GET(request: Request) {
  try {
  const { searchParams } = new URL(request.url);
  const limit = parseInt(searchParams.get('limit') || '15', 10);
- const page = parseInt(searchParams.get('page') || '1', 10);
- const skip = (page - 1) * limit;
+ const upcomingCursor = searchParams.get('upcomingCursor');
+ const pastCursor = searchParams.get('pastCursor');
 
  const now = new Date();
 
@@ -42,15 +42,23 @@ export async function GET(request: Request) {
  status: 'SCHEDULED',
  startTime: { gte: now },
  },
- include: {
+ select: {
+ id: true,
+ startTime: true,
+ endTime: true,
+ status: true,
+ totalAmount: true,
+ tipAmount: true,
+ notes: true,
+ staffId: true,
  service: { select: { id: true, name: true, price: true, duration: true } },
  staff: { select: { name: true } },
- shop: { select: { id: true, name: true, timezone: true } },
+ shop: { select: { id: true, name: true, timezone: true, currency: true } },
  review: { select: { id: true } },
  },
  orderBy: { startTime: 'asc' },
- take: limit,
- skip: skip,
+ take: limit + 1,
+ ...(upcomingCursor ? { cursor: { id: upcomingCursor }, skip: 1 } : {}),
  }),
  prisma.appointment.findMany({
  where: {
@@ -67,21 +75,43 @@ export async function GET(request: Request) {
  }
  ]
  },
- include: {
+ select: {
+ id: true,
+ startTime: true,
+ endTime: true,
+ status: true,
+ totalAmount: true,
+ tipAmount: true,
+ notes: true,
+ staffId: true,
  service: { select: { id: true, name: true, price: true, duration: true } },
  staff: { select: { name: true } },
- shop: { select: { id: true, name: true, timezone: true } },
+ shop: { select: { id: true, name: true, timezone: true, currency: true } },
  review: { select: { id: true } },
  },
  orderBy: { startTime: 'desc' },
- take: limit,
- skip: skip,
+ take: limit + 1,
+ ...(pastCursor ? { cursor: { id: pastCursor }, skip: 1 } : {}),
  }),
  ]);
+
+ let nextUpcomingCursor = null;
+ if (upcoming.length > limit) {
+   const nextItem = upcoming.pop();
+   nextUpcomingCursor = nextItem!.id;
+ }
+
+ let nextPastCursor = null;
+ if (past.length > limit) {
+   const nextItem = past.pop();
+   nextPastCursor = nextItem!.id;
+ }
 
  return NextResponse.json({
  upcoming: JSON.parse(JSON.stringify(upcoming)),
  past: JSON.parse(JSON.stringify(past)),
+ nextUpcomingCursor,
+ nextPastCursor,
  user: user,
  });
  } catch (error: any) {
