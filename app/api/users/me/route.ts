@@ -29,6 +29,15 @@ export async function GET() {
  id: true,
  name: true,
  }
+ },
+ shopAccesses: {
+ select: {
+ shopId: true,
+ role: true,
+ shop: {
+ select: { id: true, name: true }
+ }
+ }
  }
  }
  });

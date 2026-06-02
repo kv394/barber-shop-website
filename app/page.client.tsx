@@ -22,6 +22,7 @@ type UserProfile = {
  email: string;
  shopId?: string;
  shop?: { name: string, id: string, slug?: string };
+ shopAccesses?: { shopId: string, role: string, shop: { id: string, name: string } }[];
 } | null;
 
 export default function Home() {
@@ -77,6 +78,8 @@ export default function Home() {
       } else if (userProfile.role === 'SHOP_ADMIN' || userProfile.role === 'STAFF' || userProfile.role === 'BOOTH_RENTER') {
         if (userProfile.shopId) {
           router.push(`/shop/${userProfile.shopId}`);
+        } else if (userProfile.shopAccesses && userProfile.shopAccesses.length > 0) {
+          router.push(`/shop/${userProfile.shopAccesses[0].shopId}`);
         }
       } else if (userProfile.role === 'CLIENT' && userProfile.shop?.slug) {
         // Automatically redirect clients to their specific shop portal
@@ -129,10 +132,10 @@ export default function Home() {
  // Handle authenticated users who don't have a valid role or shop assignment
  // (e.g., SITE_ADMIN role was removed, or user exists but has no matching dashboard)
  // Note: SITE_ADMIN and ATTENDANCE_KIOSK are already handled by early returns above
- const hasValidDashboard = userProfile && (
-   (userProfile.role === 'CLIENT' && userProfile.shop?.slug) ||
-   ((userProfile.role === 'SHOP_ADMIN' || userProfile.role === 'STAFF' || userProfile.role === 'BOOTH_RENTER') && userProfile.shopId)
- );
+  const hasValidDashboard = userProfile && (
+    (userProfile.role === 'CLIENT' && userProfile.shop?.slug) ||
+    ((userProfile.role === 'SHOP_ADMIN' || userProfile.role === 'STAFF' || userProfile.role === 'BOOTH_RENTER') && (userProfile.shopId || (userProfile.shopAccesses && userProfile.shopAccesses.length > 0)))
+  );
 
  if (userProfile && !hasValidDashboard) {
    const handleSignOut = async () => {
