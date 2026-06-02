@@ -1,6 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { requireSiteAdmin } from '@/lib/auth';
+import { createClient } from '@supabase/supabase-js';
+
+const supabaseAdmin = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.SUPABASE_SERVICE_ROLE_KEY!,
+  { auth: { autoRefreshToken: false, persistSession: false } }
+);
 
 export const dynamic = 'force-dynamic';
 
@@ -51,6 +58,11 @@ export async function GET(request: NextRequest) {
  prisma.user.count({ where }),
  ]);
 
+ const { data: authData } = await supabaseAdmin.auth.admin.listUsers({ perPage: 1000 });
+ const blockedEmails = new Set(
+   authData?.users?.filter((u) => u.banned_until != null).map((u) => u.email) || []
+ );
+
  return NextResponse.json({
  users: users.map((u: any) => ({
  id: u.id,
@@ -60,6 +72,7 @@ export async function GET(request: NextRequest) {
  shopId: u.shopId,
  shopName: u.shop ? (u.shop.companyName ? `${u.shop.companyName} (${u.shop.name})` : u.shop.name) : null,
  createdAt: u.createdAt.toISOString(),
+ isBlocked: blockedEmails.has(u.email),
  })),
  total,
  });

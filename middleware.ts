@@ -107,14 +107,20 @@ export async function middleware(req: NextRequest) {
   
   const shouldRewrite = !isApi && !isAdmin && !isStatic && !rootDomains.includes(hostname) && !isVercelPreview && !isVercelBaseDomain && !url.pathname.startsWith('/sites');
 
+  const requestHeaders = new Headers(req.headers);
+  const impersonateShopId = req.cookies.get('kutz_impersonate_shop')?.value;
+  if (impersonateShopId) {
+    requestHeaders.set('x-impersonated-shop-id', impersonateShopId);
+  }
+
   let response: NextResponse;
   if (shouldRewrite) {
     response = NextResponse.rewrite(new URL(`/sites/${hostname}${url.pathname}`, req.url), {
-      request: { headers: new Headers(req.headers) },
+      request: { headers: requestHeaders },
     });
   } else {
     response = NextResponse.next({
-      request: { headers: new Headers(req.headers) },
+      request: { headers: requestHeaders },
     });
   }
 

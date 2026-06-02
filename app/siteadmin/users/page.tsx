@@ -23,6 +23,7 @@ type UserRecord = {
   shopName: string | null;
   createdAt: string;
   phone: string | null;
+  isBlocked?: boolean;
 };
 
 const ROLES = ['ALL', 'SITE_ADMIN', 'SHOP_ADMIN', 'STAFF', 'CLIENT', 'ATTENDANCE_KIOSK'] as const;
@@ -45,6 +46,12 @@ export default function AdminSecurityPage() {
   const [searchEmail, setSearchEmail] = useState('');
   const [searchedUser, setSearchedUser] = useState<UserRecord | null>(null);
   const [isSearchingUser, setIsSearchingUser] = useState(false);
+
+  // Edit Modal State
+  const [editingUser, setEditingUser] = useState<UserRecord | null>(null);
+  const [editName, setEditName] = useState('');
+  const [editEmail, setEditEmail] = useState('');
+  const [isEditing, setIsEditing] = useState(false);
 
   const fetchUsers = async () => {
     setLoading(true);
@@ -113,6 +120,78 @@ export default function AdminSecurityPage() {
       }
     } catch {
       setActionError('Network error occurred while updating user');
+    }
+  };
+
+  const openEditModal = (user: UserRecord) => {
+    setEditingUser(user);
+    setEditName(user.name || '');
+    setEditEmail(user.email);
+  };
+
+  const handleEditUserSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!editingUser) return;
+    setIsEditing(true);
+    setActionError(null);
+    try {
+      const res = await fetch(`/api/siteadmin/users/${editingUser.id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: editName, email: editEmail }),
+      });
+      if (res.ok) {
+        setActionSuccess(`User profile updated successfully`);
+        setEditingUser(null);
+        fetchUsers();
+      } else {
+        const data = await res.json();
+        setActionError(data.error || 'Failed to update user');
+      }
+    } catch {
+      setActionError('Network error occurred while updating user');
+    } finally {
+      setIsEditing(false);
+    }
+  };
+
+  const handlePasswordReset = async (userId: string) => {
+    if (!confirm('Send a password reset email to this user?')) return;
+    try {
+      const res = await fetch(`/api/siteadmin/users/${userId}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'reset-password' }),
+      });
+      if (res.ok) {
+        setActionSuccess('Password reset email sent');
+      } else {
+        const data = await res.json();
+        setActionError(data.error || 'Failed to send reset email');
+      }
+    } catch {
+      setActionError('Network error');
+    }
+  };
+
+  const handleToggleBlock = async (userId: string, currentStatus: boolean) => {
+    const action = currentStatus ? 'unblock' : 'block';
+    if (!confirm(`Are you sure you want to ${action} this user?`)) return;
+    try {
+      const res = await fetch(`/api/siteadmin/users/${userId}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action }),
+      });
+      if (res.ok) {
+        setActionSuccess(`User ${action}ed successfully`);
+        fetchUsers();
+      } else {
+        const data = await res.json();
+        setActionError(data.error || `Failed to ${action} user`);
+      }
+    } catch {
+      setActionError('Network error');
     }
   };
 
@@ -297,7 +376,10 @@ export default function AdminSecurityPage() {
                           {(user.name || user.email).charAt(0).toUpperCase()}
                         </div>
                         <div>
-                          <p className="text-sm font-medium text-gray-900">{user.name || 'Unknown User'}</p>
+                          <p className="text-sm font-medium text-gray-900 flex items-center gap-2">
+                            {user.name || 'Unknown User'}
+                            {user.isBlocked && <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-red-100 text-red-700">BLOCKED</span>}
+                          </p>
                           <p className="text-xs text-gray-500">{user.email}</p>
                         </div>
                       </div>
@@ -323,6 +405,17 @@ export default function AdminSecurityPage() {
                       </p>
                     </td>
                     <td className="px-6 py-4 text-right">
+                      <div className="flex items-center justify-end gap-3 mb-2">
+                        <button onClick={() => openEditModal(user)} className="text-xs font-medium text-crm-primary hover:text-crm-accent">
+                          Edit
+                        </button>
+                        <button onClick={() => handlePasswordReset(user.id)} className="text-xs font-medium text-gray-600 hover:text-gray-900">
+                          Reset PW
+                        </button>
+                        <button onClick={() => handleToggleBlock(user.id, !!user.isBlocked)} className={`text-xs font-medium ${user.isBlocked ? 'text-green-600 hover:text-green-700' : 'text-red-600 hover:text-red-700'}`}>
+                          {user.isBlocked ? 'Unblock' : 'Block'}
+                        </button>
+                      </div>
                       {activeTab === 'ADMINS' ? (
                         <button
                           onClick={() => {
@@ -330,7 +423,7 @@ export default function AdminSecurityPage() {
                               handleRoleChange(user.id, 'CLIENT');
                             }
                           }}
-                          className="text-xs font-medium text-red-600 hover:text-red-700 bg-red-50 hover:bg-red-100 px-3 py-1.5 rounded-md transition-colors"
+                          className="text-xs font-medium text-red-600 hover:text-red-700 bg-red-50 hover:bg-red-100 px-3 py-1.5 rounded-md transition-colors w-full"
                         >
                           Revoke Admin
                         </button>
@@ -338,7 +431,7 @@ export default function AdminSecurityPage() {
                         <select
                           value={user.role}
                           onChange={(e) => handleRoleChange(user.id, e.target.value)}
-                          className="text-sm border border-gray-200 rounded-md py-1.5 pl-2 pr-6 bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-crm-primary/20 hover:border-gray-300 transition-colors"
+                          className="text-sm border border-gray-200 rounded-md py-1.5 pl-2 pr-6 bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-crm-primary/20 hover:border-gray-300 transition-colors w-full"
                         >
                           {ROLES.filter(r => r !== 'ALL').map(r => (
                             <option key={r} value={r}>{r.replace(/_/g, ' ')}</option>
@@ -434,6 +527,77 @@ export default function AdminSecurityPage() {
                 </div>
               )}
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* Edit Profile Modal */}
+      {editingUser && (
+        <div className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl shadow-xl w-full max-w-md overflow-hidden animate-in zoom-in-95 duration-200">
+            <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
+              <h2 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
+                <Users className="w-5 h-5 text-crm-primary" />
+                Edit User Profile
+              </h2>
+              <button 
+                onClick={() => {
+                  setEditingUser(null);
+                  setActionError(null);
+                }}
+                className="text-gray-400 hover:text-gray-600 transition-colors"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+            
+            <form onSubmit={handleEditUserSubmit} className="p-6">
+              {actionError && editingUser && (
+                <div className="mb-4 p-3 bg-red-50 text-red-700 text-sm rounded-lg flex items-start gap-2">
+                  <AlertCircle className="w-4 h-4 mt-0.5 flex-shrink-0" />
+                  {actionError}
+                </div>
+              )}
+              
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Name</label>
+                  <input
+                    type="text"
+                    value={editName}
+                    onChange={e => setEditName(e.target.value)}
+                    className="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-crm-primary/20 focus:border-crm-primary transition-all"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                  <input
+                    type="email"
+                    required
+                    value={editEmail}
+                    onChange={e => setEditEmail(e.target.value)}
+                    className="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-crm-primary/20 focus:border-crm-primary transition-all"
+                  />
+                </div>
+              </div>
+
+              <div className="mt-6 flex justify-end gap-2">
+                <button
+                  type="button"
+                  onClick={() => setEditingUser(null)}
+                  className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={isEditing}
+                  className="bg-crm-primary hover:bg-crm-accent text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors disabled:opacity-50"
+                >
+                  {isEditing ? 'Saving...' : 'Save Changes'}
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       )}

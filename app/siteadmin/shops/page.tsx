@@ -71,12 +71,12 @@ export default function SiteAdminShopsPage() {
  </Link>
  </div>
 
- <div className="mb-8 p-4 bg-indigo-900/20 border border-indigo-500/30 rounded-xl flex gap-4 items-start">
+ <div className="mb-8 p-4 bg-indigo-50 border border-indigo-200 rounded-xl flex gap-4 items-start">
  <div className="text-2xl mt-1">🧠</div>
  <div>
- <h3 className="text-indigo-300 font-bold mb-1 text-lg">AI-Powered Usage & Billing Analysis</h3>
- <p className="text-indigo-200/70 leading-relaxed text-[13px]">
- Click the <strong className="text-indigo-300">AI Usage Report</strong> button on any shop below to instantly generate a custom SaaS pricing recommendation. 
+ <h3 className="text-indigo-900 font-bold mb-1 text-lg">AI-Powered Usage & Billing Analysis</h3>
+ <p className="text-indigo-800/80 leading-relaxed text-[13px]">
+ Click the <strong className="text-indigo-900">AI Usage Report</strong> button on any shop below to instantly generate a custom SaaS pricing recommendation. 
  The system securely feeds the shop's entire lifetime resource consumption (users, bookings, intake forms, gallery photos) into Gemini AI to calculate estimated storage costs and suggest a personalized monthly subscription tier.
  </p>
  </div>
@@ -160,6 +160,54 @@ export default function SiteAdminShopsPage() {
  className="bg-amber-500/10 text-amber-500 border border-amber-500/20 px-3 py-1.5 rounded-lg text-[11px] font-bold hover:bg-amber-500/20 transition-colors"
  >
  💎 Features
+ </button>
+ <button
+ onClick={async () => {
+ try {
+ const res = await fetch('/api/siteadmin/impersonate', {
+ method: 'POST',
+ headers: { 'Content-Type': 'application/json' },
+ body: JSON.stringify({ shopId: shop.id })
+ });
+ if (res.ok) {
+ window.location.href = `/shop/${shop.id}`;
+ } else {
+ alert('Failed to impersonate shop');
+ }
+ } catch (err) {
+ console.error(err);
+ alert('Error impersonating shop');
+ }
+ }}
+ className="bg-emerald-500/10 text-emerald-500 border border-emerald-500/20 px-3 py-1.5 rounded-lg text-[11px] font-bold hover:bg-emerald-500/20 transition-colors"
+ >
+ 🎭 Impersonate
+ </button>
+ <button
+ onClick={async () => {
+ try {
+ const res = await fetch(`/api/siteadmin/shops/${shop.id}/suspend`, {
+ method: 'PATCH',
+ headers: { 'Content-Type': 'application/json' },
+ body: JSON.stringify({ isActive: !shop.isActive })
+ });
+ if (res.ok) {
+ fetchShops();
+ } else {
+ alert('Failed to update shop status');
+ }
+ } catch (err) {
+ console.error(err);
+ alert('Error updating shop status');
+ }
+ }}
+ className={`px-3 py-1.5 rounded-lg text-[11px] font-bold border transition-colors ${
+ shop.isActive 
+ ? 'bg-red-500/10 text-red-500 border-red-500/20 hover:bg-red-500/20'
+ : 'bg-green-500/10 text-green-500 border-green-500/20 hover:bg-green-500/20'
+ }`}
+ >
+ {shop.isActive ? '⏸️ Suspend' : '▶️ Reactivate'}
  </button>
  <button
  onClick={() => setAssigningAdminShop({ id: shop.id, name: shop.name })}
