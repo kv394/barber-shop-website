@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "Shop" ADD COLUMN "deletedAt" TIMESTAMP(3);
+ALTER TABLE "Shop" ADD COLUMN "isActive" BOOLEAN NOT NULL DEFAULT true;
