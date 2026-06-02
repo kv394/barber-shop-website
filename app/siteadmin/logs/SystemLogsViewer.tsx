@@ -114,7 +114,7 @@ export default function SystemLogsViewer() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 bg-[#0c0c0f] -m-4 md:-m-8 p-4 md:p-8 min-h-full rounded-2xl">
       <div className="flex flex-col xl:flex-row justify-between items-start xl:items-center gap-4">
         <div>
           <h2 className="text-2xl font-black text-white tracking-tight flex items-center gap-2">
@@ -188,7 +188,7 @@ export default function SystemLogsViewer() {
         </div>
       </div>
 
-      <PremiumGlassCard accentColor="crm-primary" className="!p-0 overflow-hidden bg-black/60 border-white/10">
+      <PremiumGlassCard accentColor="crm-primary" className="!p-0 overflow-hidden !bg-[#111114] border-white/10">
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
