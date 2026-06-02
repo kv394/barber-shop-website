@@ -34,7 +34,6 @@ export async function GET() {
  _count: {
  select: {
  users: true,
- appointments: true,
  services: true,
  reviews: true,
  },
