@@ -1,5 +1,6 @@
 import { redirect } from 'next/navigation';
 import { createClient } from '@/utils/supabase/server';
+import { createClient as createSupabaseClient } from '@supabase/supabase-js';
 import { prisma } from '@/lib/prisma';
 import { getShopLayoutData } from '@/lib/shop-data';
 import ShopAdminLayout from '@/components/shop-admin/ShopAdminLayout';
@@ -143,16 +144,44 @@ async function inviteUser(formData: FormData) {
  }
  await cacheService.invalidatePattern(`shop_layout:${existingUser.email}:*`);
  } else {
- const userBarcode = crypto.createHash('sha256').update(`${email}-${process.env.JWT_SECRET || 'secret'}`).digest('hex').substring(0, 12).toUpperCase();
- await prisma.user.create({
- data: {
- id: `invited_${crypto.randomBytes(8).toString('hex')}`,
- email,
- role,
- shopId,
- barcode: userBarcode,
- }
- });
+  // Create Supabase auth account using service role so the user can log in
+  const supabaseAdmin = createSupabaseClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.SUPABASE_SERVICE_ROLE_KEY!,
+  { auth: { autoRefreshToken: false, persistSession: false } }
+  );
+
+  const tempPassword = crypto.randomBytes(16).toString('hex');
+  const { data: authData, error: authError } = await supabaseAdmin.auth.admin.createUser({
+  email,
+  password: tempPassword,
+  email_confirm: true,
+  });
+
+  const newUserId = authData?.user?.id || `invited_${crypto.randomBytes(8).toString('hex')}`;
+
+  if (authError) {
+  console.error('[INVITE] Failed to create Supabase auth user:', authError.message);
+  }
+
+  const userBarcode = crypto.createHash('sha256').update(`${email}-${process.env.JWT_SECRET || 'secret'}`).digest('hex').substring(0, 12).toUpperCase();
+  await prisma.user.create({
+  data: {
+  id: newUserId,
+  email,
+  role,
+  shopId,
+  barcode: userBarcode,
+  }
+  });
+
+  // Send password reset email so user can set their own password
+  if (!authError) {
+  await supabaseAdmin.auth.admin.generateLink({
+   type: 'recovery',
+   email,
+  });
+  }
  }
  revalidatePath(`/shop/${shopId}/settings/team`);
 }
