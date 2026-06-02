@@ -54,8 +54,15 @@ function createPrismaClient() {
     }
     
     // Force transaction mode for Supabase pooler (Supavisor) to avoid the 15 connection session mode limit
-    if (pgConnectionString.includes('pooler.supabase.com') && !pgConnectionString.includes('pool_mode=')) {
-      pgConnectionString += (pgConnectionString.includes('?') ? '&' : '?') + 'pool_mode=transaction';
+    if (pgConnectionString.includes('pooler.supabase.com')) {
+      // Vercel's Supabase integration sometimes provides port 5432 (Session mode). 
+      // We must force port 6543 (Transaction mode) for serverless environments.
+      if (pgConnectionString.includes(':5432')) {
+        pgConnectionString = pgConnectionString.replace(':5432', ':6543');
+      }
+      if (!pgConnectionString.includes('pool_mode=')) {
+        pgConnectionString += (pgConnectionString.includes('?') ? '&' : '?') + 'pool_mode=transaction';
+      }
     }
   }
   
