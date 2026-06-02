@@ -2,32 +2,14 @@ import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import crypto from 'crypto';
 
-// Minimal middleware check for SITE_ADMIN
-async function requireSiteAdmin(request: Request) {
-  // We can just reuse requireSiteAdmin from another siteadmin route, but wait, usually they just check Supabase
-  // For safety, I'll copy the standard site admin check from `app/api/siteadmin/shops/route.ts`
-  const { createClient } = await import('@/utils/supabase/server');
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
-
-  if (!user || !user.email) return null;
-
-  const dbUser = await prisma.user.findUnique({
-    where: { email: user.email },
-  });
-
-  if (!dbUser || dbUser.role !== 'SITE_ADMIN') {
-    return null;
-  }
-  return dbUser;
-}
+import { requireSiteAdmin } from '@/lib/auth';
 
 export async function POST(
   request: Request,
   { params }: { params: Promise<{ shopId: string }> }
 ) {
-  const adminCheck = await requireSiteAdmin(request);
-  if (!adminCheck) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  const adminCheck = await requireSiteAdmin();
+  if (adminCheck instanceof NextResponse) return adminCheck;
 
   try {
     const { shopId } = await params;

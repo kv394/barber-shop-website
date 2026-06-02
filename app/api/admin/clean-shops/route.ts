@@ -1,7 +1,11 @@
 import { prisma } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
+import { requireSiteAdmin } from '@/lib/auth';
 
 export async function GET(request: Request) {
+  const adminCheck = await requireSiteAdmin();
+  if (adminCheck instanceof NextResponse) return adminCheck;
+
   try {
     const shops = await prisma.shop.findMany();
     const invalidShops = shops.filter(s => !/^[a-z0-9]{20,30}$/.test(s.id));

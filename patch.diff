@@ -1,0 +1,15 @@
+--- app/siteadmin/settings/PlatformSettingsClient.tsx
++++ app/siteadmin/settings/PlatformSettingsClient.tsx
+@@ -102,6 +102,12 @@
+         value={settings?.supportEmail || ''}
+         onChange={e => setSettings({...settings, supportEmail: e.target.value})}
+       />
++      <PremiumInput
++        label="Logo URL"
++        placeholder="https://example.com/logo.png"
++        value={settings?.logoUrl || ''}
++        onChange={e => setSettings({...settings, logoUrl: e.target.value})}
++      />
+       <div>
+         <label className="block text-[10px] uppercase tracking-wider font-bold text-crm-muted mb-2 px-1">Primary Color (Hex)</label>
+         <input 

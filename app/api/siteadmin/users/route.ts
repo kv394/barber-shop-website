@@ -1,27 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@/utils/supabase/server';
 import { prisma } from '@/lib/prisma';
+import { requireSiteAdmin } from '@/lib/auth';
 
 export const dynamic = 'force-dynamic';
 
 const VALID_ROLES = ['SITE_ADMIN', 'SHOP_ADMIN', 'STAFF', 'CLIENT', 'ATTENDANCE_KIOSK'] as const;
-
-/**
- * Verify caller is SITE_ADMIN. Returns user or error response.
- */
-async function requireSiteAdmin() {
- const supabase = await createClient();
- const { data: { user: authUser } } = await supabase.auth.getUser();
- if (!authUser) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
- const userId = authUser.id;
- const authUserEmail = authUser.email;
-
- const user = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] }, select: { id: true, role: true } });
- if (!user || user.role !== 'SITE_ADMIN') {
- return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
- }
- return user;
-}
 
 /**
  * GET /api/siteadmin/users — List all users with optional filters
