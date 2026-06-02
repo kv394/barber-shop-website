@@ -153,8 +153,9 @@ export default function ShopMobileBottomNav({
  ) : (
  <>
  {navLink(`/shop/${shopId}/staff`, 'Schedule', icons.calendar)}
+ {navLink(`/shop/${shopId}/waitlist`, 'Waitlist', icons.clock)}
  {navLink(`/shop/${shopId}/clients`, 'Clients', icons.users)}
- {navLink(`/shop/${shopId}/profile`, 'Profile', icons.user)}
+ {navLink(`/shop/${shopId}/reports/commissions`, 'Earnings', icons.dollar)}
  </>
  )}
  </div>
@@ -352,6 +353,16 @@ export default function ShopMobileBottomNav({
  </Link>
 
  <Link 
+ href={`/shop/${shopId}/waitlist`} 
+ className={`flex items-center gap-3 px-4 py-3 rounded-lg text-[15px] font-medium transition-colors ${
+ pathname.startsWith(`/shop/${shopId}/waitlist`) ? 'bg-[#FFF5F2] text-[#ea580c] font-bold' : 'text-crm-muted hover:text-crm-text hover:bg-crm-bg'
+ }`}
+ >
+ <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">{icons.clock}</svg>
+ <span>Waitlist</span>
+ </Link>
+
+ <Link 
  href={`/shop/${shopId}/clients`} 
  className={`flex items-center gap-3 px-4 py-3 rounded-lg text-[15px] font-medium transition-colors ${
  pathname.startsWith(`/shop/${shopId}/clients`) ? 'bg-[#FFF5F2] text-[#ea580c] font-bold' : 'text-crm-muted hover:text-crm-text hover:bg-crm-bg'
@@ -359,6 +370,36 @@ export default function ShopMobileBottomNav({
  >
  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">{icons.users}</svg>
  <span>Clients</span>
+ </Link>
+
+ <Link 
+ href={`/shop/${shopId}/reports/commissions`} 
+ className={`flex items-center gap-3 px-4 py-3 rounded-lg text-[15px] font-medium transition-colors ${
+ pathname.startsWith(`/shop/${shopId}/reports/commissions`) ? 'bg-[#FFF5F2] text-[#ea580c] font-bold' : 'text-crm-muted hover:text-crm-text hover:bg-crm-bg'
+ }`}
+ >
+ <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">{icons.dollar}</svg>
+ <span>My Earnings</span>
+ </Link>
+
+ <Link 
+ href={`/shop/${shopId}/portfolio`} 
+ className={`flex items-center gap-3 px-4 py-3 rounded-lg text-[15px] font-medium transition-colors ${
+ pathname.startsWith(`/shop/${shopId}/portfolio`) ? 'bg-[#FFF5F2] text-[#ea580c] font-bold' : 'text-crm-muted hover:text-crm-text hover:bg-crm-bg'
+ }`}
+ >
+ <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">{icons.image}</svg>
+ <span>My Portfolio</span>
+ </Link>
+
+ <Link 
+ href={`/shop/${shopId}/leave`} 
+ className={`flex items-center gap-3 px-4 py-3 rounded-lg text-[15px] font-medium transition-colors ${
+ pathname.startsWith(`/shop/${shopId}/leave`) ? 'bg-[#FFF5F2] text-[#ea580c] font-bold' : 'text-crm-muted hover:text-crm-text hover:bg-crm-bg'
+ }`}
+ >
+ <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">{icons.calendar}</svg>
+ <span>Time Off</span>
  </Link>
 
  <Link 

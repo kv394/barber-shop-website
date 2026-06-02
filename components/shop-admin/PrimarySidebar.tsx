@@ -28,7 +28,9 @@ export default function PrimarySidebar({
  chart: <><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></>,
  clock: <><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></>,
  badge: <><path d="M3 7v4a1 1 0 0 0 1 1h3"></path><path d="M7 7v10"></path><path d="M10 9L12 7l2 2"></path><path d="M12 7v10"></path><path d="M15 11l2-2 2 2"></path><path d="M17 9v8"></path></>,
- idCard: <><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><circle cx="9" cy="11" r="3"></circle><line x1="14" y1="11" x2="18" y2="11"></line><line x1="14" y1="15" x2="18" y2="15"></line></>
+ idCard: <><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><circle cx="9" cy="11" r="3"></circle><line x1="14" y1="11" x2="18" y2="11"></line><line x1="14" y1="15" x2="18" y2="15"></line></>,
+ dollar: <><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></>,
+ image: <><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></>,
  };
 
  const navLink = (href: string, label: string, iconPath: React.ReactNode, isActiveCheck: () => boolean) => {
@@ -78,11 +80,14 @@ export default function PrimarySidebar({
  </>
  ) : (
  <>
- {navLink(`/shop/${shopId}/staff`, 'My Schedule', icons.calendar, () => pathname.startsWith(`/shop/${shopId}/staff`))}
+ {navLink(`/shop/${shopId}/staff`, 'Schedule', icons.calendar, () => pathname.startsWith(`/shop/${shopId}/staff`))}
+ {navLink(`/shop/${shopId}/waitlist`, 'Waitlist', icons.clock, () => pathname.startsWith(`/shop/${shopId}/waitlist`))}
  {navLink(`/shop/${shopId}/clients`, 'Clients', icons.users, () => pathname.startsWith(`/shop/${shopId}/clients`))}
+ {navLink(`/shop/${shopId}/reports/commissions`, 'Earnings', icons.dollar, () => pathname.startsWith(`/shop/${shopId}/reports/commissions`))}
+ {navLink(`/shop/${shopId}/portfolio`, 'Portfolio', icons.image, () => pathname.startsWith(`/shop/${shopId}/portfolio`))}
  {isBoothRenter && navLink(`/shop/${shopId}/booth-rent`, 'My Rent', icons.badge, () => pathname.startsWith(`/shop/${shopId}/booth-rent`))}
- {isBoothRenter && navLink(`/shop/${shopId}/my-booking-link`, 'My Booking Link', icons.idCard, () => pathname.startsWith(`/shop/${shopId}/my-booking-link`))}
- {navLink(`/shop/${shopId}/profile`, 'Profile', icons.user, () => pathname.startsWith(`/shop/${shopId}/profile`))}
+ {isBoothRenter && navLink(`/shop/${shopId}/my-booking-link`, 'Booking', icons.idCard, () => pathname.startsWith(`/shop/${shopId}/my-booking-link`))}
+ {navLink(`/shop/${shopId}/profile`, 'Profile', icons.user, () => pathname.startsWith(`/shop/${shopId}/profile`) || pathname.startsWith(`/shop/${shopId}/leave`))}
  </>
  )}
  
