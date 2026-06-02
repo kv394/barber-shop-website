@@ -5,7 +5,7 @@ import { cookies } from 'next/headers';
 
 export async function PATCH(
   req: Request,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ shopId: string }> }
 ) {
   try {
     const cookieStore = await cookies();
@@ -22,7 +22,8 @@ export async function PATCH(
       }
     );
 
-    const { data: { user } } = await supabase.auth.getUser();
+    const { data: { session } } = await supabase.auth.getSession();
+    const user = session?.user;
     if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
     const dbUser = await prisma.user.findUnique({ where: { id: user.id } });
@@ -33,7 +34,7 @@ export async function PATCH(
     const { isActive } = await req.json();
 
     const shop = await prisma.shop.update({
-      where: { id: (await params).id },
+      where: { id: (await params).shopId },
       data: { isActive },
     });
 
