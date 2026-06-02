@@ -66,45 +66,12 @@ export default async function ProfilePage({ params }: { params: Promise<{ shopId
 
  {/* Menu Links */}
  <div className="bg-crm-bg/80 backdrop-blur-xl border border-crm-border shadow-sm rounded-2xl shadow-lg overflow-hidden divide-y divide-white/5">
- <Link href={`/shop/${shopId}/waitlist`} className="flex items-center justify-between p-5 hover:bg-crm-surface transition-colors active:bg-crm-border">
- <div className="flex items-center gap-4">
- <span className="text-xl bg-status-info/20 text-status-info w-10 h-10 rounded-full flex items-center justify-center">📋</span>
- <div>
- <h3 className="text-crm-text font-semibold text-lg font-bold">Walk-in Waitlist</h3>
- <p className="text-crm-muted text-[13px]">Manage walk-ins and wait times</p>
- </div>
- </div>
- <span className="text-crm-muted">→</span>
- </Link>
- 
  <Link href={`/shop/${shopId}/leave`} className="flex items-center justify-between p-5 hover:bg-crm-surface transition-colors active:bg-crm-border">
  <div className="flex items-center gap-4">
  <span className="text-xl bg-status-pending/20 text-status-pending w-10 h-10 rounded-full flex items-center justify-center">🏖️</span>
  <div>
- <h3 className="text-crm-text font-semibold text-lg font-bold">Time Off & Leave</h3>
+ <h3 className="text-crm-text font-semibold text-lg">Time Off & Leave</h3>
  <p className="text-crm-muted text-[13px]">Request vacations and manage absences</p>
- </div>
- </div>
- <span className="text-crm-muted">→</span>
- </Link>
- 
- <Link href={`/shop/${shopId}/reports/commissions`} className="flex items-center justify-between p-5 hover:bg-crm-surface transition-colors active:bg-crm-border">
- <div className="flex items-center gap-4">
- <span className="text-xl bg-status-confirmed/20 text-status-confirmed w-10 h-10 rounded-full flex items-center justify-center">💰</span>
- <div>
- <h3 className="text-crm-text font-semibold text-lg font-bold">My Earnings</h3>
- <p className="text-crm-muted text-[13px]">Track your commissions and tips</p>
- </div>
- </div>
- <span className="text-crm-muted">→</span>
- </Link>
-
- <Link href={`/shop/${shopId}/portfolio`} className="flex items-center justify-between p-5 hover:bg-crm-surface transition-colors active:bg-crm-border">
- <div className="flex items-center gap-4">
- <span className="text-xl bg-crm-accent/20 text-crm-accent w-10 h-10 rounded-full flex items-center justify-center">📸</span>
- <div>
- <h3 className="text-crm-text font-semibold text-lg font-bold">My Portfolio</h3>
- <p className="text-crm-muted text-[13px]">Manage your gallery of haircuts</p>
  </div>
  </div>
  <span className="text-crm-muted">→</span>
@@ -114,7 +81,7 @@ export default async function ProfilePage({ params }: { params: Promise<{ shopId
  <div className="flex items-center gap-4">
  <span className="text-xl bg-crm-border text-crm-muted w-10 h-10 rounded-full flex items-center justify-center">⚙️</span>
  <div>
- <h3 className="text-crm-text font-semibold text-lg font-bold">Account Settings</h3>
+ <h3 className="text-crm-text font-semibold text-lg">Account Settings</h3>
  <p className="text-crm-muted text-[13px]">Update password and global details</p>
  </div>
  </div>
@@ -123,7 +90,7 @@ export default async function ProfilePage({ params }: { params: Promise<{ shopId
  </div>
  
  <div className="pt-4 pb-8">
- <Link href="/logout" className="w-full flex items-center justify-center gap-2 py-4 bg-status-cancelled/20 hover:bg-status-cancelled/20 text-status-cancelled font-bold rounded-xl border border-status-cancelled/20 transition-colors">
+ <Link href="/logout" className="w-full flex items-center justify-center gap-2 py-4 bg-status-cancelled/20 hover:bg-status-cancelled/30 text-status-cancelled font-bold rounded-xl border border-status-cancelled/20 transition-colors">
  <span>🚪</span> Sign Out
  </Link>
  </div>
