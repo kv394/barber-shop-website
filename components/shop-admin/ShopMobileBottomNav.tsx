@@ -429,6 +429,31 @@ export default function ShopMobileBottomNav({
  <span>My Portfolio</span>
  </Link>
 
+ {userRole === 'BOOTH_RENTER' && (
+  <>
+  <div className="my-1 mx-4 border-t border-crm-border/50" />
+  <Link 
+  href={`/shop/${shopId}/booth-rent`} 
+  className={`flex items-center gap-3 px-4 py-3 rounded-lg text-[15px] font-medium transition-colors ${
+  pathname.startsWith(`/shop/${shopId}/booth-rent`) ? 'bg-[#FFF5F2] text-[#ea580c] font-bold' : 'text-crm-muted hover:text-crm-text hover:bg-crm-bg'
+  }`}
+  >
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">{icons.creditCard}</svg>
+  <span>My Rent</span>
+  </Link>
+
+  <Link 
+  href={`/shop/${shopId}/my-booking-link`} 
+  className={`flex items-center gap-3 px-4 py-3 rounded-lg text-[15px] font-medium transition-colors ${
+  pathname.startsWith(`/shop/${shopId}/my-booking-link`) ? 'bg-[#FFF5F2] text-[#ea580c] font-bold' : 'text-crm-muted hover:text-crm-text hover:bg-crm-bg'
+  }`}
+  >
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">{icons.idCard}</svg>
+  <span>My Booking Link</span>
+  </Link>
+  </>
+  )}
+
  <Link 
  href={`/shop/${shopId}/leave`} 
  className={`flex items-center gap-3 px-4 py-3 rounded-lg text-[15px] font-medium transition-colors ${
