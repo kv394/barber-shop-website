@@ -3,12 +3,6 @@ import { prisma } from '@/lib/prisma';
 import { requireSiteAdmin } from '@/lib/auth';
 import { createClient } from '@supabase/supabase-js';
 
-const supabaseAdmin = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!,
-  { auth: { autoRefreshToken: false, persistSession: false } }
-);
-
 export async function PATCH(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const adminCheck = await requireSiteAdmin();
   if (adminCheck instanceof NextResponse) return adminCheck;
@@ -19,6 +13,12 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
   }
 
   try {
+    const supabaseAdmin = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.SUPABASE_SERVICE_ROLE_KEY!,
+      { auth: { autoRefreshToken: false, persistSession: false } }
+    );
+
     const body = await request.json();
     const { action, name, email, block } = body;
 
