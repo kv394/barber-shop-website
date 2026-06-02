@@ -104,12 +104,12 @@ export default function SiteAdminShopsPage() {
  <div className="flex items-center gap-3 mb-2">
  <h3 className="font-bold text-crm-text truncate text-[15px]">{shop.name}</h3>
  <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider ${
- hasAdmin
- ? 'bg-status-confirmed/20 text-status-confirmed border border-status-confirmed/30'
- : 'bg-status-pending/20 text-status-pending border border-status-pending/30'
- }`}>
- {hasAdmin ? 'Active Admin' : 'Needs Admin'}
- </span>
+  hasAdmin
+    ? 'bg-status-confirmed/20 text-status-confirmed border border-status-confirmed/30'
+    : 'bg-status-pending/20 text-status-pending border border-status-pending/30'
+}`} title={hasAdmin ? 'This shop has an active admin assigned.' : 'This shop currently has no active SHOP_ADMIN users. Click Assign Team to resolve this.'}>
+  {hasAdmin ? 'Active Admin' : 'Needs Admin'}
+</span>
  {!shop.isActive && (
  <span className="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-status-cancelled/20 text-status-cancelled border border-status-cancelled/30 animate-pulse">
  Inactive
@@ -163,7 +163,11 @@ export default function SiteAdminShopsPage() {
  </button>
  <button
  onClick={() => setAssigningAdminShop({ id: shop.id, name: shop.name })}
- className="bg-crm-primary text-white px-3 py-1.5 rounded-lg text-[11px] font-bold hover:bg-crm-surface hover:text-crm-primary border border-transparent hover:border-crm-primary/30 transition-colors"
+ className={`px-3 py-1.5 rounded-lg text-[11px] font-bold border transition-colors ${
+   !hasAdmin 
+     ? 'bg-status-pending text-black border-status-pending shadow-[0_0_10px_rgba(245,158,11,0.5)] animate-pulse hover:bg-amber-400' 
+     : 'bg-crm-primary text-white border-transparent hover:bg-crm-surface hover:text-crm-primary hover:border-crm-primary/30'
+ }`}
  >
  Assign Team
  </button>
