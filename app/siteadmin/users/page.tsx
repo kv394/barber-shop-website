@@ -376,9 +376,9 @@ export default function AdminSecurityPage() {
                   </div>
 
                   {/* User Info - Name, Email, Shop */}
-                  <div className="flex-1 min-w-0">
+                  <div className="min-w-0 w-[280px] lg:w-[340px] flex-shrink">
                     <div className="flex items-center gap-2 flex-wrap">
-                      <p className="text-sm font-semibold text-gray-900 truncate">
+                      <p className="text-sm font-semibold text-gray-900 truncate max-w-[160px]">
                         {user.name || 'Unknown User'}
                       </p>
                       <span className={`inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wide border ${getRoleBadgeColor(user.role)}`}>
@@ -393,7 +393,7 @@ export default function AdminSecurityPage() {
                     <div className="flex items-center gap-3 mt-0.5">
                       <p className="text-xs text-gray-500 truncate">{user.email}</p>
                       {user.shopName && user.role !== 'SITE_ADMIN' && (
-                        <span className="text-xs text-gray-400 truncate max-w-[180px] hidden sm:inline" title={user.shopName}>
+                        <span className="text-xs text-gray-400 truncate max-w-[140px] hidden sm:inline" title={user.shopName}>
                           • {user.shopName}
                         </span>
                       )}
@@ -401,13 +401,13 @@ export default function AdminSecurityPage() {
                   </div>
 
                   {/* Website */}
-                  <div className="hidden md:flex items-center min-w-[160px]">
+                  <div className="hidden md:flex items-center w-[200px] flex-shrink-0">
                     {user.website ? (
                       <a 
                         href={user.website} 
                         target="_blank" 
                         rel="noopener noreferrer" 
-                        className="inline-flex items-center gap-1.5 text-xs text-crm-primary hover:text-crm-accent transition-colors group/link max-w-[160px]"
+                        className="inline-flex items-center gap-1.5 text-xs text-crm-primary hover:text-crm-accent transition-colors group/link max-w-[200px]"
                         title={user.website}
                       >
                         <svg className="w-3.5 h-3.5 flex-shrink-0 opacity-60 group-hover/link:opacity-100" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -423,7 +423,7 @@ export default function AdminSecurityPage() {
                   </div>
 
                   {/* Joined Date */}
-                  <div className="hidden lg:block text-xs text-gray-500 min-w-[90px] text-right tabular-nums">
+                  <div className="hidden lg:block text-xs text-gray-500 w-[100px] flex-shrink-0 text-right tabular-nums">
                     {new Date(user.createdAt).toLocaleDateString(undefined, { 
                       year: 'numeric', month: 'short', day: 'numeric' 
                     })}
