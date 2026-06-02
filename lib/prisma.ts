@@ -170,8 +170,8 @@ const TENANT_MODELS = new Set([
  * to the specified shopId for models that support it.
  * This ensures data isolation between tenants.
  */
-/** Regex to validate CUID-format shopId (alphanumeric, 10-40 chars, allows hyphens for demo shops). */
-const SHOP_ID_FORMAT = /^[a-zA-Z0-9-]{10,40}$/;
+/** Regex to validate CUID-format shopId (alphanumeric, 20-30 chars). */
+const SHOP_ID_FORMAT = /^[a-z0-9]{20,30}$/;
 
 export function getTenantClient(shopId: string): PrismaClient {
   if (!shopId) throw new Error('shopId is required for tenant client');
