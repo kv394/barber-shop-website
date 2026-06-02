@@ -128,14 +128,10 @@ export default function Home() {
 
  // Handle authenticated users who don't have a valid role or shop assignment
  // (e.g., SITE_ADMIN role was removed, or user exists but has no matching dashboard)
- const knownRolesWithDashboard = ['SITE_ADMIN', 'SHOP_ADMIN', 'STAFF', 'BOOTH_RENTER', 'ATTENDANCE_KIOSK', 'CLIENT'];
+ // Note: SITE_ADMIN and ATTENDANCE_KIOSK are already handled by early returns above
  const hasValidDashboard = userProfile && (
-   knownRolesWithDashboard.includes(userProfile.role) && (
-     userProfile.role === 'SITE_ADMIN' ||
-     userProfile.role === 'ATTENDANCE_KIOSK' ||
-     (userProfile.role === 'CLIENT' && userProfile.shop?.slug) ||
-     ((userProfile.role === 'SHOP_ADMIN' || userProfile.role === 'STAFF' || userProfile.role === 'BOOTH_RENTER') && userProfile.shopId)
-   )
+   (userProfile.role === 'CLIENT' && userProfile.shop?.slug) ||
+   ((userProfile.role === 'SHOP_ADMIN' || userProfile.role === 'STAFF' || userProfile.role === 'BOOTH_RENTER') && userProfile.shopId)
  );
 
  if (userProfile && !hasValidDashboard) {
