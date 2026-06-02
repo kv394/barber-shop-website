@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { requireSiteAdmin } from '@/lib/auth';
 import { createClient } from '@supabase/supabase-js';
+import { cacheService } from '@/lib/cache';
 
 
 export const dynamic = 'force-dynamic';
@@ -132,6 +133,13 @@ export async function PATCH(request: NextRequest) {
  select: { id: true, email: true, name: true, role: true, shopId: true },
  });
 
+ // Invalidate cached shop layout data so the role change takes effect immediately
+ try {
+   await cacheService.invalidatePattern(`shop_layout:${updated.email}:*`);
+   await cacheService.invalidatePattern(`shop_layout:${targetUserId}:*`);
+ } catch (e) {
+   // Non-critical — cache will expire naturally
+ }
+
  return NextResponse.json(updated);
 }
-

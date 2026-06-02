@@ -35,11 +35,22 @@ export const getShopLayoutData = cache(async (userId: string, shopId: string) =>
       if (!user) return null;
 
       let effectiveRole = user.role;
+      // ShopAccess can provide shop-specific role, but should not escalate
+      // beyond User.role (which is the authoritative platform-level role set by site admin).
+      const roleHierarchy: Record<string, number> = {
+        'CLIENT': 0, 'ATTENDANCE_KIOSK': 1, 'BOOTH_RENTER': 2, 'STAFF': 3, 'SHOP_ADMIN': 4, 'SITE_ADMIN': 5
+      };
+      const userRoleLevel = roleHierarchy[user.role] ?? 0;
+
       if (shopId !== 'all' && user.shopId !== shopId && user.shopAccesses && user.shopAccesses.length > 0) {
-        effectiveRole = (user.shopAccesses[0] as any).role;
+        const accessRole = (user.shopAccesses[0] as any).role as string;
+        const accessRoleLevel = roleHierarchy[accessRole] ?? 0;
+        // Only use ShopAccess role if it doesn't exceed the user's platform role
+        effectiveRole = accessRoleLevel <= userRoleLevel ? accessRole : user.role;
       } else if (shopId === 'all' && user.shopAccesses && user.shopAccesses.length > 0 && user.role !== 'SITE_ADMIN') {
-        // Find highest role or just take the first access
-        effectiveRole = user.role === 'SHOP_ADMIN' ? 'SHOP_ADMIN' : ((user.shopAccesses[0] as any).role || user.role);
+        const accessRole = ((user.shopAccesses[0] as any).role || user.role) as string;
+        const accessRoleLevel = roleHierarchy[accessRole] ?? 0;
+        effectiveRole = accessRoleLevel <= userRoleLevel ? accessRole : user.role;
       }
 
       const isSiteAdmin = effectiveRole === 'SITE_ADMIN';
