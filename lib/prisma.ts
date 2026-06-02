@@ -7,12 +7,12 @@ declare global {
   var prismaGlobal: any;
 }
 
-// Force Node.js to use IPv6 first for Supabase database connections
+// Force Node.js to use IPv4 first for Supabase database connections
 if (typeof process !== 'undefined' && process.env.NODE_ENV !== 'development') {
   try {
     const dns = require('dns');
     if (dns && dns.setDefaultResultOrder) {
-      dns.setDefaultResultOrder('ipv6first');
+      dns.setDefaultResultOrder('ipv4first');
     }
   } catch (e) {
     // Ignore in edge environments where 'dns' might not exist
@@ -71,7 +71,7 @@ function createPrismaClient() {
     connectionTimeoutMillis: 10000,
     // Limit connections in serverless environment to prevent connection exhaustion
     // We use a tiny pool (1) to prevent "EMAXCONNSESSION" limit (15) on Supabase session pooler.
-    max: process.env.NODE_ENV === 'production' ? 1 : 10,
+    max: process.env.NODE_ENV === 'production' ? 5 : 10,
     // Fix "self-signed certificate in certificate chain" errors from Vercel Postgres / Supabase
     ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : undefined,
   });
