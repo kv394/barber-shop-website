@@ -62,6 +62,7 @@ function runMigration() {
     
     // Execute prisma migrate deploy with the non-pooling URL
     console.log('[Safe Migrate] Running: prisma migrate deploy');
+    try { execSync('npx prisma migrate resolve --rolled-back 20260602000000_optimize_indexes', { stdio: 'inherit', env: { ...process.env, DATABASE_URL: dbUrl }}); } catch (e) { console.log('Resolve skipped or failed', e.message); }
     execSync('npx prisma migrate deploy', {
       stdio: 'inherit',
       env: {

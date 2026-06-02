@@ -12,6 +12,7 @@ if [ "$VERCEL_GIT_COMMIT_REF" = "staging" ] || [ "$VERCEL_ENV" = "preview" ]; th
   echo "Staging environment. Deploying migrations..."
   
   # Now deploy migrations using the safe connection pool script
+  npx prisma migrate resolve --rolled-back 20260602000000_optimize_indexes || true
   node scripts/safe-migrate.js
 else
   # Production (main)
