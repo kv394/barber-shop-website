@@ -153,7 +153,7 @@ export default function SystemLogsViewer() {
                 setCurrentCursor(null);
                 setCursorStack([]);
               }}
-              className="h-9 bg-black/40 backdrop-blur-md border border-white/10 rounded-lg pl-9 pr-8 text-white outline-none text-[12px] font-semibold shadow-inner focus:border-white/30 transition-colors appearance-none"
+              className="h-9 min-h-[36px] py-2 bg-black/40 backdrop-blur-md border border-white/10 rounded-lg pl-9 pr-8 text-white outline-none text-[12px] font-semibold shadow-inner focus:border-white/30 transition-colors appearance-none"
             >
               <option value="">All Severities</option>
               <option value="AI_ALERT">AI Alert</option>
@@ -171,7 +171,7 @@ export default function SystemLogsViewer() {
               setCurrentCursor(null);
               setCursorStack([]);
             }}
-            className="h-9 bg-black/40 backdrop-blur-md border border-white/10 rounded-lg px-3 text-white outline-none text-[12px] font-semibold shadow-inner focus:border-white/30 transition-colors"
+            className="h-9 min-h-[36px] py-2 bg-black/40 backdrop-blur-md border border-white/10 rounded-lg px-3 text-white outline-none text-[12px] font-semibold shadow-inner focus:border-white/30 transition-colors"
           >
             <option value="">All Statuses</option>
             <option value="unresolved">Unresolved</option>
