@@ -17,7 +17,7 @@ type Shop = {
 
 type UserProfile = {
  id: string;
- role: 'SITE_ADMIN' | 'SHOP_ADMIN' | 'STAFF' | 'CLIENT' | 'ATTENDANCE_KIOSK';
+ role: 'SITE_ADMIN' | 'SHOP_ADMIN' | 'STAFF' | 'BOOTH_RENTER' | 'CLIENT' | 'ATTENDANCE_KIOSK';
  name: string | null;
  email: string;
  shopId?: string;
@@ -74,9 +74,15 @@ export default function Home() {
     if (!isLoading && userProfile) {
       if (userProfile.role === 'SITE_ADMIN') {
         router.push('/siteadmin');
+      } else if (userProfile.role === 'SHOP_ADMIN' || userProfile.role === 'STAFF' || userProfile.role === 'BOOTH_RENTER') {
+        if (userProfile.shopId) {
+          router.push(`/shop/${userProfile.shopId}`);
+        }
+      } else if (userProfile.role === 'CLIENT' && userProfile.shop?.slug) {
+        // Automatically redirect clients to their specific shop portal
+        router.push(`/shops/${userProfile.shop.slug}`);
       }
-      // Note: CLIENT, SHOP_ADMIN, and STAFF roles are redirected on the server in app/page.tsx
-      // ATTENDANCE_KIOSK is rendered below via <KioskMode />
+      // Note: ATTENDANCE_KIOSK is rendered below via <KioskMode />
     }
   }, [isLoading, userProfile, router]);
 
@@ -118,6 +124,59 @@ export default function Home() {
  </div>
  </div>
  );
+ }
+
+ // Handle authenticated users who don't have a valid role or shop assignment
+ // (e.g., SITE_ADMIN role was removed, or user exists but has no matching dashboard)
+ const knownRolesWithDashboard = ['SITE_ADMIN', 'SHOP_ADMIN', 'STAFF', 'BOOTH_RENTER', 'ATTENDANCE_KIOSK', 'CLIENT'];
+ const hasValidDashboard = userProfile && (
+   knownRolesWithDashboard.includes(userProfile.role) && (
+     userProfile.role === 'SITE_ADMIN' ||
+     userProfile.role === 'ATTENDANCE_KIOSK' ||
+     (userProfile.role === 'CLIENT' && userProfile.shop?.slug) ||
+     ((userProfile.role === 'SHOP_ADMIN' || userProfile.role === 'STAFF' || userProfile.role === 'BOOTH_RENTER') && userProfile.shopId)
+   )
+ );
+
+ if (userProfile && !hasValidDashboard) {
+   const handleSignOut = async () => {
+     try {
+       await fetch('/api/auth/callback?action=signout', { method: 'POST' }).catch(() => {});
+       window.location.href = '/logout';
+     } catch {
+       window.location.href = '/logout';
+     }
+   };
+
+   return (
+     <div className="min-h-screen overflow-x-hidden flex flex-col items-center justify-center bg-crm-bg p-4">
+       <div className="w-full max-w-md bg-crm-surface border border-crm-border rounded-2xl shadow-2xl p-8 text-center">
+         <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-amber-500/10 flex items-center justify-center">
+           <svg className="w-8 h-8 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+             <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4.5c-.77-.833-2.694-.833-3.464 0L3.34 16.5c-.77.833.192 2.5 1.732 2.5z" />
+           </svg>
+         </div>
+         <h2 className="font-serif font-bold text-crm-text text-xl mb-2">Account Not Configured</h2>
+         <p className="text-crm-muted text-[13px] mb-2">
+           Your account (<span className="font-medium text-crm-text">{userProfile.email}</span>) exists but is not currently assigned to a shop or role with dashboard access.
+         </p>
+         <p className="text-crm-muted text-[13px] mb-8">
+           Please contact your shop administrator to get assigned to a shop.
+         </p>
+         <div className="flex flex-col gap-3">
+           <Link href="/shops" className="w-full inline-block bg-crm-primary text-white font-bold py-3 rounded-lg hover:bg-crm-surface hover:text-crm-primary border border-transparent hover:border-crm-primary/30 transition-colors text-center text-[13px]">
+             Browse Shops
+           </Link>
+           <button
+             onClick={handleSignOut}
+             className="w-full bg-crm-surface text-crm-muted font-semibold py-3 rounded-lg border border-crm-border hover:bg-crm-bg hover:text-crm-text transition-colors text-[13px]"
+           >
+             Sign Out
+           </button>
+         </div>
+       </div>
+     </div>
+   );
  }
 
  const isSignedIn = !!userProfile;

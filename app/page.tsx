@@ -33,6 +33,7 @@ export default async function HomePage() {
  }
  }
  // If ATTENDANCE_KIOSK or unassigned, we stay here to let them see the platform dashboard / kiosk interface
+ // If user has a role but no shop assignment, ClientHomePage will show an "Account Not Configured" state
  }
  }
 
