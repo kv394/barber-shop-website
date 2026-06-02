@@ -58,6 +58,12 @@ export async function GET(request: NextRequest) {
  prisma.user.count({ where }),
  ]);
 
+ const supabaseAdmin = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.SUPABASE_SERVICE_ROLE_KEY!,
+  { auth: { autoRefreshToken: false, persistSession: false } }
+ );
+
  const { data: authData } = await supabaseAdmin.auth.admin.listUsers({ perPage: 1000 });
  const blockedEmails = new Set(
    authData?.users?.filter((u) => u.banned_until != null).map((u) => u.email) || []
