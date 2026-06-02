@@ -186,6 +186,19 @@ export default async function ShopDashboardPage({ params }: { params: Promise<{ 
  >
  <div className="space-y-8">
  
+ {/* ── Staff Quick Actions ── */}
+ {isStaffLike && (
+ <section className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
+ <DirectClockInButton shopId={shopId} initialIsClockedIn={isClockedIn} />
+ <div className="flex-1 text-[13px] text-crm-muted bg-white/5 border border-white/10 rounded-xl px-4 py-3">
+ {isClockedIn 
+ ? <span className="flex items-center gap-2"><span className="w-2 h-2 rounded-full bg-status-confirmed animate-pulse" /> You are currently clocked in</span>
+ : <span className="flex items-center gap-2"><span className="w-2 h-2 rounded-full bg-crm-muted" /> Clock in to start your shift</span>
+ }
+ </div>
+ </section>
+ )}
+ 
  {/* ── Today's Overview ── */}
  {todayStats && (
  <section>
@@ -300,6 +313,10 @@ export default async function ShopDashboardPage({ params }: { params: Promise<{ 
 
  {isShopAdmin && (
  <AIFinderFeeStats shopId={shopId} />
+ )}
+
+ {isStaffLike && (
+ <StaffInbox shopId={shopId} userId={userId} />
  )}
  
  </div>
