@@ -111,6 +111,7 @@ model Shop {
   renterServices             RenterService[]
 
   @@index([createdAt])
+  @@index([isActive])
 }
 
 model User {
@@ -165,6 +166,7 @@ model User {
 
   @@index([shopId, role])
   @@index([email])
+  @@index([role])
 }
 
 model ShopClient {
@@ -185,6 +187,8 @@ model ShopClient {
 
   @@unique([userId, shopId])
   @@index([shopId])
+  @@index([phone])
+  @@index([stripeCustomerId])
 }
 
 model Product {
@@ -212,6 +216,7 @@ model Product {
   productUsages      ServiceProductUsage[]
 
   @@index([shopId, type])
+  @@index([isSellable])
 }
 
 model Service {
@@ -243,6 +248,7 @@ model Service {
   productUsages        ServiceProductUsage[]
 
   @@index([shopId, type])
+  @@index([isBookable])
 }
 
 model ServiceAddon {
@@ -307,6 +313,7 @@ model Appointment {
   @@index([staffId])
   @@index([userId])
   @@index([addons], type: Gin)
+  @@index([status])
 }
 
 model AppointmentItem {
@@ -337,6 +344,7 @@ model Payment {
   appointment   Appointment   @relation(fields: [appointmentId], references: [id], onDelete: Cascade)
 
   @@index([appointmentId])
+  @@index([status])
 }
 
 model CommissionRule {
@@ -410,6 +418,8 @@ model Waitlist {
   shop        Shop     @relation(fields: [shopId], references: [id], onDelete: Cascade)
 
   @@index([shopId, createdAt])
+  @@index([status])
+  @@index([clientPhone])
 }
 
 model Leave {
@@ -457,6 +467,7 @@ model SystemLog {
   @@index([shopId])
   @@index([level])
   @@index([createdAt])
+  @@index([isResolved])
 }
 
 model LoyaltyProgram {
@@ -472,6 +483,8 @@ model LoyaltyProgram {
   pointExpiryDays Int      @default(0)
   tiers           Json?
   shop            Shop     @relation(fields: [shopId], references: [id], onDelete: Cascade)
+
+  @@index([isActive])
 }
 
 model LoyaltyAccount {
@@ -525,6 +538,7 @@ model Referral {
   @@unique([shopId, refereeId])
   @@index([shopId])
   @@index([referrerId])
+  @@index([status])
 }
 
 model Campaign {
@@ -568,6 +582,7 @@ model Notification {
   @@index([userId])
   @@index([status, scheduledAt])
   @@index([status, retryCount])
+  @@index([status])
 }
 
 model NotificationPreference {
@@ -601,6 +616,9 @@ model GiftCard {
 
   @@index([shopId])
   @@index([code])
+  @@index([status])
+  @@index([purchaserEmail])
+  @@index([recipientEmail])
 }
 
 model DynamicTemplate {
@@ -728,6 +746,7 @@ model UserMembership {
 
   @@index([userId])
   @@index([shopId])
+  @@index([status])
 }
 
 model PortfolioImage {
@@ -946,6 +965,7 @@ model BoothRentPayment {
 
   @@index([shopId])
   @@index([userId])
+  @@index([status])
 }
 
 model ServiceProductUsage {
@@ -981,6 +1001,7 @@ model RenterService {
 
   @@index([userId])
   @@index([shopId])
+  @@index([isActive])
 }
 
 enum ShopType {
@@ -1042,6 +1063,7 @@ model DynamicPricingRule {
   shop            Shop     @relation(fields: [shopId], references: [id], onDelete: Cascade)
 
   @@index([shopId])
+  @@index([isActive])
 }
 
 enum PricingRuleType {
