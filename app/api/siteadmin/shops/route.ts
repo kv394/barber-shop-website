@@ -20,6 +20,7 @@ export async function GET() {
  }
 
  const shops = await prisma.shop.findMany({
+ take: 100,
  orderBy: { createdAt: 'desc' },
  select: {
  id: true,
