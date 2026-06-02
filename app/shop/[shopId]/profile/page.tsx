@@ -4,6 +4,7 @@ import { prisma } from '@/lib/prisma';
 import { getShopLayoutData } from '@/lib/shop-data';
 import Link from 'next/link';
 import ShopAdminLayout from '@/components/shop-admin/ShopAdminLayout';
+import ProfileEditor from '@/components/shop-admin/ProfileEditor';
 
 export const dynamic = 'force-dynamic';
 
@@ -41,57 +42,36 @@ export default async function ProfilePage({ params }: { params: Promise<{ shopId
  {/* Profile Header */}
  <div className="bg-crm-bg/80 backdrop-blur-xl border border-crm-border shadow-sm rounded-2xl p-6 flex items-center gap-6 shadow-lg">
  <div className="w-20 h-20 rounded-full bg-crm-primary/20 flex items-center justify-center text-4xl border-2 border-brand-indigo/50 shadow-inner overflow-hidden shrink-0 hover:opacity-90">
- {dbUser.name ? dbUser.name.charAt(0).toUpperCase() : '👤'}
+  {dbUser.name ? dbUser.name.charAt(0).toUpperCase() : '👤'}
  </div>
  <div>
- <h2 className="font-bold text-crm-text mb-1 text-xl font-bold">{dbUser.name || 'Unnamed Staff'}</h2>
- <p className="text-crm-muted mb-2 text-[13px]">{dbUser.email}</p>
- <span className="inline-block px-3 py-1 bg-crm-primary/10 border border-brand-indigo/30 text-crm-accent text-[11px] font-bold rounded-full uppercase tracking-wider hover:opacity-90">
- {dbUser.role === 'STAFF' ? 'Staff Member' : dbUser.role}
- </span>
+  <h2 className="font-bold text-crm-text mb-1 text-xl">{dbUser.name || 'Unnamed Staff'}</h2>
+  <p className="text-crm-muted mb-2 text-[13px]">{dbUser.email}</p>
+  <span className="inline-block px-3 py-1 bg-crm-primary/10 border border-brand-indigo/30 text-crm-accent text-[11px] font-bold rounded-full uppercase tracking-wider hover:opacity-90">
+  {dbUser.role === 'STAFF' ? 'Staff Member' : dbUser.role === 'BOOTH_RENTER' ? 'Booth Renter' : dbUser.role}
+  </span>
  </div>
  </div>
 
  {/* Stats */}
  <div className="grid grid-cols-2 gap-4">
  <div className="bg-crm-bg/80 backdrop-blur-xl border border-crm-border shadow-sm rounded-2xl p-5 shadow-lg flex flex-col items-center justify-center">
- <span className="text-3xl font-black text-crm-text mb-1">{totalAppointments}</span>
- <span className="text-[11px] text-crm-muted uppercase tracking-widest font-semibold">Total Bookings</span>
+  <span className="text-3xl font-black text-crm-text mb-1">{totalAppointments}</span>
+  <span className="text-[11px] text-crm-muted uppercase tracking-widest font-semibold">Total Bookings</span>
  </div>
  <div className="bg-crm-bg/80 backdrop-blur-xl border border-crm-border shadow-sm rounded-2xl p-5 shadow-lg flex flex-col items-center justify-center">
- <span className="text-3xl font-black text-crm-accent mb-1">{completedAppointments}</span>
- <span className="text-[11px] text-crm-muted uppercase tracking-widest font-semibold">Completed</span>
+  <span className="text-3xl font-black text-crm-accent mb-1">{completedAppointments}</span>
+  <span className="text-[11px] text-crm-muted uppercase tracking-widest font-semibold">Completed</span>
  </div>
  </div>
 
- {/* Menu Links */}
- <div className="bg-crm-bg/80 backdrop-blur-xl border border-crm-border shadow-sm rounded-2xl shadow-lg overflow-hidden divide-y divide-white/5">
- <Link href={`/shop/${shopId}/leave`} className="flex items-center justify-between p-5 hover:bg-crm-surface transition-colors active:bg-crm-border">
- <div className="flex items-center gap-4">
- <span className="text-xl bg-status-pending/20 text-status-pending w-10 h-10 rounded-full flex items-center justify-center">🏖️</span>
- <div>
- <h3 className="text-crm-text font-semibold text-lg">Time Off & Leave</h3>
- <p className="text-crm-muted text-[13px]">Request vacations and manage absences</p>
- </div>
- </div>
- <span className="text-crm-muted">→</span>
- </Link>
-
- <Link href="/my-appointments/profile" className="flex items-center justify-between p-5 hover:bg-crm-surface transition-colors active:bg-crm-border">
- <div className="flex items-center gap-4">
- <span className="text-xl bg-crm-border text-crm-muted w-10 h-10 rounded-full flex items-center justify-center">⚙️</span>
- <div>
- <h3 className="text-crm-text font-semibold text-lg">Account Settings</h3>
- <p className="text-crm-muted text-[13px]">Update password and global details</p>
- </div>
- </div>
- <span className="text-crm-muted">→</span>
- </Link>
- </div>
+ {/* Inline Account Details & Security */}
+ <ProfileEditor />
  
- <div className="pt-4 pb-8">
+ {/* Sign Out */}
+ <div className="pt-2 pb-8">
  <Link href="/logout" className="w-full flex items-center justify-center gap-2 py-4 bg-status-cancelled/20 hover:bg-status-cancelled/30 text-status-cancelled font-bold rounded-xl border border-status-cancelled/20 transition-colors">
- <span>🚪</span> Sign Out
+  <span>🚪</span> Sign Out
  </Link>
  </div>
 
