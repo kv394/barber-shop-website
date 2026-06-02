@@ -46,11 +46,11 @@ export const getShopLayoutData = cache(async (userId: string, shopId: string) =>
         const accessRole = (user.shopAccesses[0] as any).role as string;
         const accessRoleLevel = roleHierarchy[accessRole] ?? 0;
         // Only use ShopAccess role if it doesn't exceed the user's platform role
-        effectiveRole = accessRoleLevel <= userRoleLevel ? accessRole : user.role;
+        effectiveRole = (accessRoleLevel <= userRoleLevel ? accessRole : user.role) as typeof user.role;
       } else if (shopId === 'all' && user.shopAccesses && user.shopAccesses.length > 0 && user.role !== 'SITE_ADMIN') {
         const accessRole = ((user.shopAccesses[0] as any).role || user.role) as string;
         const accessRoleLevel = roleHierarchy[accessRole] ?? 0;
-        effectiveRole = accessRoleLevel <= userRoleLevel ? accessRole : user.role;
+        effectiveRole = (accessRoleLevel <= userRoleLevel ? accessRole : user.role) as typeof user.role;
       }
 
       const isSiteAdmin = effectiveRole === 'SITE_ADMIN';
