@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { 
   ShieldCheck, 
   Users, 
@@ -53,6 +53,40 @@ export default function AdminSecurityPage() {
   const [editName, setEditName] = useState('');
   const [editEmail, setEditEmail] = useState('');
   const [isEditing, setIsEditing] = useState(false);
+
+  // Resizable columns
+  const [colWidths, setColWidths] = useState([320, 120, 200, 110, 180]);
+  const colLabels = ['User', 'Role', 'Website', 'Joined', 'Actions'];
+  const dragRef = useRef<{ colIndex: number; startX: number; startWidth: number } | null>(null);
+
+  const onResizeStart = useCallback((colIndex: number, e: React.MouseEvent) => {
+    e.preventDefault();
+    dragRef.current = { colIndex, startX: e.clientX, startWidth: colWidths[colIndex] };
+
+    const onMouseMove = (ev: MouseEvent) => {
+      if (!dragRef.current) return;
+      const diff = ev.clientX - dragRef.current.startX;
+      const newWidth = Math.max(60, dragRef.current.startWidth + diff);
+      setColWidths(prev => {
+        const next = [...prev];
+        next[dragRef.current!.colIndex] = newWidth;
+        return next;
+      });
+    };
+
+    const onMouseUp = () => {
+      dragRef.current = null;
+      document.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('mouseup', onMouseUp);
+      document.body.style.cursor = '';
+      document.body.style.userSelect = '';
+    };
+
+    document.addEventListener('mousemove', onMouseMove);
+    document.addEventListener('mouseup', onMouseUp);
+    document.body.style.cursor = 'col-resize';
+    document.body.style.userSelect = 'none';
+  }, [colWidths]);
 
   const fetchUsers = async () => {
     setLoading(true);
@@ -342,10 +376,11 @@ export default function AdminSecurityPage() {
       {/* Users List */}
       <div className="bg-white rounded-2xl shadow-sm border border-crm-border overflow-hidden">
         {/* Table Header Bar */}
-        <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
-          <p className="text-sm font-medium text-gray-500">
-            {loading ? 'Loading...' : `${users.length} user${users.length !== 1 ? 's' : ''}`}
+        <div className="px-6 py-3 border-b border-gray-100 flex items-center justify-between">
+          <p className="text-xs font-medium text-gray-400 uppercase tracking-wider">
+            {loading ? 'Loading...' : `${users.length} user${users.length !== 1 ? 's' : ''} found`}
           </p>
+          <p className="text-[10px] text-gray-300 hidden md:block">Drag column edges to resize</p>
         </div>
 
         {loading ? (
@@ -366,128 +401,114 @@ export default function AdminSecurityPage() {
             </p>
           </div>
         ) : (
-          <div className="divide-y divide-gray-100">
-            {users.map(user => (
-              <div key={user.id} className="px-6 py-4 hover:bg-gray-50/80 transition-all duration-150 group">
-                <div className="flex items-center gap-4">
-                  {/* Avatar */}
-                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-crm-primary/20 to-crm-primary/5 flex items-center justify-center text-crm-primary font-bold text-sm flex-shrink-0 border border-crm-primary/10">
-                    {(user.name || user.email).charAt(0).toUpperCase()}
-                  </div>
-
-                  {/* User Info - Name, Email, Shop */}
-                  <div className="min-w-0 w-[280px] lg:w-[340px] flex-shrink">
-                    <div className="flex items-center gap-2 flex-wrap">
-                      <p className="text-sm font-semibold text-gray-900 truncate max-w-[160px]">
-                        {user.name || 'Unknown User'}
-                      </p>
+          <div className="overflow-x-auto">
+            <table className="w-full" style={{ tableLayout: 'fixed', minWidth: colWidths.reduce((a, b) => a + b, 0) }}>
+              <colgroup>
+                {colWidths.map((w, i) => <col key={i} style={{ width: w }} />)}
+              </colgroup>
+              <thead>
+                <tr className="bg-gray-50/80 border-b border-gray-200">
+                  {colLabels.map((label, i) => (
+                    <th key={label} className="relative px-4 py-3 text-left text-[11px] font-semibold text-gray-400 uppercase tracking-wider select-none">
+                      {label}
+                      {i < colLabels.length - 1 && (
+                        <div
+                          onMouseDown={(e) => onResizeStart(i, e)}
+                          className="absolute right-0 top-0 bottom-0 w-[5px] cursor-col-resize hover:bg-crm-primary/20 active:bg-crm-primary/40 transition-colors z-10"
+                          style={{ touchAction: 'none' }}
+                        />
+                      )}
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-gray-100">
+                {users.map(user => (
+                  <tr key={user.id} className="hover:bg-gray-50/80 transition-colors group">
+                    {/* User */}
+                    <td className="px-4 py-3">
+                      <div className="flex items-center gap-3">
+                        <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-crm-primary/20 to-crm-primary/5 flex items-center justify-center text-crm-primary font-bold text-sm flex-shrink-0 border border-crm-primary/10">
+                          {(user.name || user.email).charAt(0).toUpperCase()}
+                        </div>
+                        <div className="min-w-0">
+                          <div className="flex items-center gap-1.5">
+                            <p className="text-sm font-semibold text-gray-900 truncate">{user.name || 'Unknown User'}</p>
+                            {user.isBlocked && <span className="px-1.5 py-0.5 rounded text-[9px] font-bold bg-red-100 text-red-700 border border-red-200 flex-shrink-0">BLOCKED</span>}
+                          </div>
+                          <div className="flex items-center gap-2 mt-0.5">
+                            <p className="text-xs text-gray-500 truncate">{user.email}</p>
+                            {user.shopName && user.role !== 'SITE_ADMIN' && (
+                              <span className="text-[10px] text-gray-400 truncate hidden lg:inline" title={user.shopName}>• {user.shopName}</span>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                    {/* Role */}
+                    <td className="px-4 py-3">
                       <span className={`inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wide border ${getRoleBadgeColor(user.role)}`}>
                         {user.role.replace(/_/g, ' ')}
                       </span>
-                      {user.isBlocked && (
-                        <span className="px-2 py-0.5 rounded-md text-[10px] font-bold bg-red-100 text-red-700 border border-red-200">
-                          BLOCKED
-                        </span>
+                    </td>
+                    {/* Website */}
+                    <td className="px-4 py-3">
+                      {user.website ? (
+                        <a href={user.website} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 text-xs text-crm-primary hover:text-crm-accent transition-colors group/link" title={user.website}>
+                          <svg className="w-3.5 h-3.5 flex-shrink-0 opacity-50 group-hover/link:opacity-100" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+                          </svg>
+                          <span className="truncate group-hover/link:underline">{user.website.replace(/^https?:\/\//, '').replace(/\/$/, '')}</span>
+                        </a>
+                      ) : (
+                        <span className="text-xs text-gray-300">—</span>
                       )}
-                    </div>
-                    <div className="flex items-center gap-3 mt-0.5">
-                      <p className="text-xs text-gray-500 truncate">{user.email}</p>
-                      {user.shopName && user.role !== 'SITE_ADMIN' && (
-                        <span className="text-xs text-gray-400 truncate max-w-[140px] hidden sm:inline" title={user.shopName}>
-                          • {user.shopName}
-                        </span>
-                      )}
-                    </div>
-                  </div>
-
-                  {/* Website */}
-                  <div className="hidden md:flex items-center w-[200px] flex-shrink-0">
-                    {user.website ? (
-                      <a 
-                        href={user.website} 
-                        target="_blank" 
-                        rel="noopener noreferrer" 
-                        className="inline-flex items-center gap-1.5 text-xs text-crm-primary hover:text-crm-accent transition-colors group/link max-w-[200px]"
-                        title={user.website}
-                      >
-                        <svg className="w-3.5 h-3.5 flex-shrink-0 opacity-60 group-hover/link:opacity-100" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
-                        </svg>
-                        <span className="truncate group-hover/link:underline">
-                          {user.website.replace(/^https?:\/\//, '').replace(/\/$/, '')}
-                        </span>
-                      </a>
-                    ) : (
-                      <span className="text-xs text-gray-300">—</span>
-                    )}
-                  </div>
-
-                  {/* Joined Date */}
-                  <div className="hidden lg:block text-xs text-gray-500 w-[100px] flex-shrink-0 text-right tabular-nums">
-                    {new Date(user.createdAt).toLocaleDateString(undefined, { 
-                      year: 'numeric', month: 'short', day: 'numeric' 
-                    })}
-                  </div>
-
-                  {/* Actions */}
-                  <div className="flex items-center gap-1 flex-shrink-0">
-                    <button 
-                      onClick={() => openEditModal(user)} 
-                      className="p-2 rounded-lg text-gray-400 hover:text-crm-primary hover:bg-crm-primary/5 transition-colors" 
-                      title="Edit user"
-                    >
-                      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                      </svg>
-                    </button>
-                    <button 
-                      onClick={() => handlePasswordReset(user.id)} 
-                      className="p-2 rounded-lg text-gray-400 hover:text-amber-600 hover:bg-amber-50 transition-colors" 
-                      title="Reset password"
-                    >
-                      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
-                      </svg>
-                    </button>
-                    <button 
-                      onClick={() => handleToggleBlock(user.id, !!user.isBlocked)} 
-                      className={`p-2 rounded-lg transition-colors ${user.isBlocked ? 'text-green-500 hover:text-green-700 hover:bg-green-50' : 'text-gray-400 hover:text-red-600 hover:bg-red-50'}`}
-                      title={user.isBlocked ? 'Unblock user' : 'Block user'}
-                    >
-                      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                        {user.isBlocked ? (
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M8 11V7a4 4 0 118 0m-4 8v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2z" />
+                    </td>
+                    {/* Joined */}
+                    <td className="px-4 py-3 text-xs text-gray-500 tabular-nums">
+                      {new Date(user.createdAt).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' })}
+                    </td>
+                    {/* Actions */}
+                    <td className="px-4 py-3">
+                      <div className="flex items-center gap-1">
+                        <button onClick={() => openEditModal(user)} className="p-1.5 rounded-lg text-gray-400 hover:text-crm-primary hover:bg-crm-primary/5 transition-colors" title="Edit user">
+                          <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>
+                        </button>
+                        <button onClick={() => handlePasswordReset(user.id)} className="p-1.5 rounded-lg text-gray-400 hover:text-amber-600 hover:bg-amber-50 transition-colors" title="Reset password">
+                          <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" /></svg>
+                        </button>
+                        <button onClick={() => handleToggleBlock(user.id, !!user.isBlocked)} className={`p-1.5 rounded-lg transition-colors ${user.isBlocked ? 'text-green-500 hover:text-green-700 hover:bg-green-50' : 'text-gray-400 hover:text-red-600 hover:bg-red-50'}`} title={user.isBlocked ? 'Unblock user' : 'Block user'}>
+                          <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                            {user.isBlocked
+                              ? <path strokeLinecap="round" strokeLinejoin="round" d="M8 11V7a4 4 0 118 0m-4 8v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2z" />
+                              : <path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                            }
+                          </svg>
+                        </button>
+                        {activeTab === 'ADMINS' ? (
+                          <button
+                            onClick={() => { if (confirm(`Revoke SITE_ADMIN from ${user.email}?`)) handleRoleChange(user.id, 'CLIENT'); }}
+                            className="ml-1 text-[11px] font-semibold text-red-600 hover:text-white bg-red-50 hover:bg-red-600 px-2.5 py-1 rounded-lg transition-all duration-150"
+                          >
+                            Revoke
+                          </button>
                         ) : (
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                          <select
+                            value={user.role}
+                            onChange={(e) => handleRoleChange(user.id, e.target.value)}
+                            className="ml-1 text-[10px] font-medium border border-gray-200 rounded-lg py-1 pl-1.5 pr-4 bg-gray-50 text-gray-700 focus:outline-none focus:ring-2 focus:ring-crm-primary/20 hover:border-gray-300 transition-colors cursor-pointer"
+                          >
+                            {ROLES.filter(r => r !== 'ALL').map(r => (
+                              <option key={r} value={r}>{r.replace(/_/g, ' ')}</option>
+                            ))}
+                          </select>
                         )}
-                      </svg>
-                    </button>
-                    {activeTab === 'ADMINS' ? (
-                      <button
-                        onClick={() => {
-                          if (confirm(`Are you sure you want to revoke SITE_ADMIN privileges from ${user.email}?`)) {
-                            handleRoleChange(user.id, 'CLIENT');
-                          }
-                        }}
-                        className="ml-1 text-[11px] font-semibold text-red-600 hover:text-white bg-red-50 hover:bg-red-600 px-3 py-1.5 rounded-lg transition-all duration-150"
-                      >
-                        Revoke
-                      </button>
-                    ) : (
-                      <select
-                        value={user.role}
-                        onChange={(e) => handleRoleChange(user.id, e.target.value)}
-                        className="ml-1 text-[11px] font-medium border border-gray-200 rounded-lg py-1.5 pl-2 pr-5 bg-gray-50 text-gray-700 focus:outline-none focus:ring-2 focus:ring-crm-primary/20 hover:border-gray-300 transition-colors cursor-pointer"
-                      >
-                        {ROLES.filter(r => r !== 'ALL').map(r => (
-                          <option key={r} value={r}>{r.replace(/_/g, ' ')}</option>
-                        ))}
-                      </select>
-                    )}
-                  </div>
-                </div>
-              </div>
-            ))}
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         )}
       </div>
