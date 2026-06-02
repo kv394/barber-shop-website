@@ -1,6 +1,5 @@
 import ShopAdminLayout from '@/components/shop-admin/ShopAdminLayout';
 import { createClient } from '@/utils/supabase/server';
-import { prisma } from '@/lib/prisma';
 import { redirect } from 'next/navigation';
 import LeaveManager from '@/components/shop-admin/LeaveManager';
 import { getShopLayoutData } from '@/lib/shop-data';
@@ -14,13 +13,10 @@ export default async function LeavePage({ params }: { params: Promise<{ shopId: 
  redirect('/sign-in');
  }
 
- const dbUser = await prisma.user.findFirst({ where: { OR: [{ id: user.id }, { email: user.email || '' }] } });
- if (!dbUser || dbUser.shopId !== shopId) {
+ const data = await getShopLayoutData(user.id, shopId);
+ if (!data) {
  redirect('/');
  }
-
- const data = await getShopLayoutData(user.id, shopId);
- if (!data) return null;
 
  return (
  <ShopAdminLayout
@@ -28,10 +24,10 @@ export default async function LeavePage({ params }: { params: Promise<{ shopId: 
  shopSlug={data.shopSlug}
  pageTitle="My Leave"
  shopId={shopId}
- userRole={dbUser.role}
+ userRole={data.userRole}
  activeTab="leave"
  >
- <LeaveManager shopId={shopId} userId={dbUser.id} />
+ <LeaveManager shopId={shopId} userId={data.user.id} />
  </ShopAdminLayout>
  );
 }
