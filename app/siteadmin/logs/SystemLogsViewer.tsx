@@ -190,15 +190,7 @@ export default function SystemLogsViewer() {
 
       <PremiumGlassCard accentColor="crm-primary" className="!p-0 overflow-hidden bg-black/60 border-white/10">
         <div className="overflow-x-auto">
-          <table className="w-full text-left border-collapse" style={{ tableLayout: 'fixed' }}>
-            <colgroup>
-              <col style={{ width: 160 }} />
-              <col style={{ width: 100 }} />
-              <col style={{ width: 180 }} />
-              <col />
-              <col style={{ width: 70 }} />
-              <col style={{ width: 70 }} />
-            </colgroup>
+          <table className="w-full text-left border-collapse">
             <thead>
               <tr className="border-b border-white/10 bg-black/40">
                 <th className="px-4 py-3 text-[10px] uppercase tracking-widest font-bold text-gray-500">Timestamp</th>
@@ -243,10 +235,10 @@ export default function SystemLogsViewer() {
                         {log.level}
                       </span>
                     </td>
-                    <td className="px-4 py-3 font-mono text-[11px] text-gray-300 overflow-hidden text-ellipsis whitespace-nowrap">
+                    <td className="px-4 py-3 font-mono text-[11px] text-gray-300 max-w-[220px] break-all">
                       {log.path || '-'}
                     </td>
-                    <td className="px-4 py-3 text-gray-200 font-mono text-[11px] overflow-hidden text-ellipsis whitespace-nowrap">
+                    <td className="px-4 py-3 text-gray-200 font-mono text-[11px] break-words">
                       {log.message}
                     </td>
                     <td className="px-4 py-3 text-center">
