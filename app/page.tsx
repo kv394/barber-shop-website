@@ -20,9 +20,8 @@ export default async function HomePage() {
  const targetSlug = dbUser.shop?.name ? dbUser.shop.name.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '') : null;
  if (targetSlug) {
  redirect(`/shops/${targetSlug}`);
- } else {
- redirect('/shops');
  }
+ // If CLIENT has no shop, fall through to ClientHomePage which shows "Account Not Configured"
  } else if (dbUser.role === 'SITE_ADMIN') {
  redirect('/siteadmin');
  } else if (dbUser.role === 'SHOP_ADMIN' || dbUser.role === 'STAFF' || dbUser.role === 'BOOTH_RENTER') {
