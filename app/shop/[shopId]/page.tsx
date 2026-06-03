@@ -235,10 +235,24 @@ export default async function ShopDashboardPage({ params }: { params: Promise<{ 
  
  {/* ── Left Column: Action Items ── */}
  <div className="space-y-6">
- <h3 className="text-lg font-bold text-crm-text flex items-center gap-3">
- <span className="w-2.5 h-2.5 rounded-full bg-crm-primary shadow-[0_0_10px_rgba(var(--crm-primary-rgb),0.8)] animate-pulse"></span>
- Needs Attention
- </h3>
+ {(() => {
+  const hasAttentionItems = !!todayStats?.nextAppointment || (isShopAdmin && lowStockItems.length > 0);
+  return (
+  <h3 className="text-lg font-bold text-crm-text flex items-center gap-3">
+  {hasAttentionItems ? (
+  <>
+  <span className="w-2.5 h-2.5 rounded-full bg-crm-primary shadow-[0_0_10px_rgba(var(--crm-primary-rgb),0.8)] animate-pulse"></span>
+  Needs Attention
+  </>
+  ) : (
+  <>
+  <span className="w-2.5 h-2.5 rounded-full bg-status-confirmed shadow-[0_0_10px_rgba(var(--status-confirmed-rgb),0.5)]"></span>
+  All Clear
+  </>
+  )}
+  </h3>
+  );
+  })()}
  
  {/* Up Next Appointment */}
  {todayStats?.nextAppointment && (
@@ -293,7 +307,6 @@ export default async function ShopDashboardPage({ params }: { params: Promise<{ 
  {(!todayStats?.nextAppointment && (!isShopAdmin || lowStockItems.length === 0)) && (
  <div className="flex flex-col items-center justify-center py-16 text-center bg-white/5 rounded-2xl border border-dashed border-white/20">
  <span className="text-4xl mb-4 opacity-50 drop-shadow-md">✨</span>
- <h2 className="text-xl font-bold text-crm-text mb-2">All Clear</h2>
  <p className="text-crm-muted text-[14px] max-w-[250px] mx-auto font-medium">
  You have no pending action items right now. Great job!
  </p>
