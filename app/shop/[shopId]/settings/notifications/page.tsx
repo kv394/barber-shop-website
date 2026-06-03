@@ -3,6 +3,7 @@ import { createClient } from '@/utils/supabase/server';
 import { getShopLayoutData } from '@/lib/shop-data';
 import ShopAdminLayout from '@/components/shop-admin/ShopAdminLayout';
 import NotificationSettingsForm from '@/components/marketing/NotificationSettingsForm';
+import SmtpSettingsForm from '@/components/shop-admin/SmtpSettingsForm';
 import Link from 'next/link';
 
 export const dynamic = 'force-dynamic';
@@ -29,7 +30,8 @@ export default async function NotificationsSettingsPage({ params }: { params: Pr
  return (
  <ShopAdminLayout shopName={data.shop.name} shopSlug={data.shopSlug} pageTitle="Notification Settings" shopId={shopId} userRole={data.userRole}>
  <NotificationSettingsForm shopId={shopId} />
+ <div className="mt-6" />
+ <SmtpSettingsForm shopId={shopId} />
  </ShopAdminLayout>
  );
 }
-

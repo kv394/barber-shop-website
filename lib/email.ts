@@ -1,10 +1,11 @@
 /**
- * Email Service — sends emails via Resend API
+ * Email Service — sends emails via Resend API or per-shop SMTP
  * 
  * Env vars needed:
  * - RESEND_API_KEY: Your Resend API key
  * - EMAIL_FROM: Sender address (default: notifications@kutzapp.com)
  */
+import { getEmailProviderForShop } from '@/lib/messaging-providers';
 
 const RESEND_API_KEY = process.env.RESEND_API_KEY || '';
 const FROM_EMAIL = process.env.EMAIL_FROM || 'KutzApp <onboarding@resend.dev>';
@@ -108,6 +109,7 @@ export const emailService = {
  shopName: string;
  role: string;
  invitedBy?: string;
+ shopId?: string;
  }) {
  const roleName = options.role.replace('_', ' ').toLowerCase();
  const signUpUrl = `${APP_URL}/sign-up`;
@@ -123,6 +125,16 @@ export const emailService = {
   </div>
   <p style="font-size:12px;color:#5a5a6e">Use this email address (<strong>${options.to}</strong>) when signing up.</p>
  `);
+
+ // Use per-shop SMTP if shopId is provided
+ if (options.shopId) {
+  try {
+   const provider = await getEmailProviderForShop(options.shopId);
+   return provider.send(options.to, `You're invited to ${options.shopName} on KutzApp`, '', html);
+  } catch (e) {
+   // Fall through to default sendEmail
+  }
+ }
 
  return sendEmail({
   to: options.to,

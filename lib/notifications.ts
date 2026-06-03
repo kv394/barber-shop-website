@@ -1,6 +1,6 @@
 import { prisma } from '@/lib/prisma';
 import { logger } from '@/lib/logger';
-import { getEmailProvider, getSMSProvider, getWhatsAppProvider } from '@/lib/messaging-providers';
+import { getEmailProvider, getEmailProviderForShop, getSMSProvider, getWhatsAppProvider } from '@/lib/messaging-providers';
 
 /**
  * Notification Service — Provider-agnostic delivery engine
@@ -378,7 +378,10 @@ export class NotificationService {
       const results: { channel: string; success: boolean; error?: string }[] = [];
 
       if (channel === 'EMAIL' || channel === 'BOTH') {
-        const provider = getEmailProvider();
+        // Use shop-specific email provider (custom SMTP if configured, else site-level)
+        const provider = notification?.shopId
+          ? await getEmailProviderForShop(notification.shopId)
+          : getEmailProvider();
         const result = await provider.send(user.email, title, message);
         results.push({ channel: 'EMAIL', ...result });
       }

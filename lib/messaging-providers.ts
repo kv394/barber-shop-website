@@ -196,6 +196,66 @@ class ConsoleSMSProvider implements SMSProvider {
   }
 }
 
+// ─── SMTP Email Provider (per-shop custom SMTP) ────────────────────
+
+class SmtpProvider implements EmailProvider {
+  name = 'smtp';
+  private host: string;
+  private port: number;
+  private secure: boolean;
+  private username: string;
+  private password: string;
+  private from: string;
+
+  constructor(config: { host: string; port: number; secure: boolean; username: string; password: string; fromEmail: string; fromName?: string }) {
+    this.host = config.host;
+    this.port = config.port;
+    this.secure = config.secure;
+    this.username = config.username;
+    this.password = config.password;
+    this.from = config.fromName ? `${config.fromName} <${config.fromEmail}>` : config.fromEmail;
+  }
+
+  async send(to: string, subject: string, body: string, html?: string, attachments?: EmailAttachment[]) {
+    try {
+      // Use nodemailer for SMTP transport
+      const nodemailer = await import('nodemailer');
+      const transporter = nodemailer.createTransport({
+        host: this.host,
+        port: this.port,
+        secure: this.secure,
+        auth: {
+          user: this.username,
+          pass: this.password,
+        },
+        connectionTimeout: 10000,
+        greetingTimeout: 5000,
+      });
+
+      const mailOptions: any = {
+        from: this.from,
+        to,
+        subject,
+        ...(html ? { html } : { text: body }),
+      };
+
+      if (attachments && attachments.length > 0) {
+        mailOptions.attachments = attachments.map(a => ({
+          filename: a.filename,
+          content: Buffer.from(a.content, 'base64'),
+          contentType: a.type,
+        }));
+      }
+
+      const info = await transporter.sendMail(mailOptions);
+      return { success: true, messageId: info.messageId };
+    } catch (error: any) {
+      logger.error(`[SMTP] Failed to send email to ${to}: ${error.message}`);
+      return { success: false, error: error.message };
+    }
+  }
+}
+
 // ─── Provider Factory ──────────────────────────────────────────────
 // Reads env vars to decide which provider to instantiate.
 // Priority: explicit EMAIL_PROVIDER/SMS_PROVIDER env → auto-detect from API keys → console fallback
@@ -211,6 +271,52 @@ export function getEmailProvider(): EmailProvider {
   if (process.env.SENDGRID_API_KEY) return new SendGridProvider();
 
   return new ConsoleEmailProvider();
+}
+
+/**
+ * Get the email provider for a specific shop.
+ * If the shop has a custom SMTP configured AND the 'customSmtp' premium feature is enabled,
+ * returns an SmtpProvider. Otherwise falls back to the site-level provider.
+ */
+export async function getEmailProviderForShop(shopId: string): Promise<EmailProvider> {
+  if (!shopId) return getEmailProvider();
+
+  try {
+    const { prisma } = await import('@/lib/prisma');
+    const shop = await prisma.shop.findUnique({
+      where: { id: shopId },
+      select: { customization: true, premiumFeatures: true },
+    });
+
+    if (!shop) return getEmailProvider();
+
+    const premiumFeatures = (shop.premiumFeatures as Record<string, boolean>) || {};
+    if (!premiumFeatures.customSmtp) return getEmailProvider();
+
+    const customization = (shop.customization as Record<string, any>) || {};
+    const smtpConfig = customization.smtp;
+
+    if (!smtpConfig?.host || !smtpConfig?.username || !smtpConfig?.password) {
+      return getEmailProvider();
+    }
+
+    // Decrypt the stored password
+    const { decryptSmtpPassword } = await import('@/lib/smtp-crypto');
+    const decryptedPassword = decryptSmtpPassword(smtpConfig.password);
+
+    return new SmtpProvider({
+      host: smtpConfig.host,
+      port: smtpConfig.port || 587,
+      secure: smtpConfig.secure || false,
+      username: smtpConfig.username,
+      password: decryptedPassword,
+      fromEmail: smtpConfig.fromEmail || smtpConfig.username,
+      fromName: smtpConfig.fromName,
+    });
+  } catch (error: any) {
+    logger.error(`[SMTP] Failed to load shop SMTP config for ${shopId}: ${error.message}`);
+    return getEmailProvider();
+  }
 }
 
 export function getSMSProvider(): SMSProvider {

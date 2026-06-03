@@ -199,6 +199,7 @@ async function inviteUser(_prevState: any, formData: FormData): Promise<{ succes
   shopName: shop?.name || 'a shop',
   role,
   invitedBy: caller.name || caller.email || undefined,
+  shopId,
   }).catch(err => console.error('[INVITE EMAIL]', err));
 
   revalidatePath(`/shop/${shopId}/settings/team`);

@@ -5,7 +5,7 @@ import { logger } from '@/lib/logger';
 import { toShopTzDayBounds } from '@/lib/timezone';
 import { getCalendarBusySlots } from '@/lib/google-calendar';
 import { rateLimit } from '@/lib/rate-limiter';
-import { getEmailProvider } from '@/lib/messaging-providers';
+import { getEmailProviderForShop } from '@/lib/messaging-providers';
 import { scoreAndSortSlots } from '@/lib/schedule-optimizer';
 import QRCode from 'qrcode';
 
@@ -573,7 +573,7 @@ If the user wants to check, cancel, or reschedule their appointments, or asks fo
  'END:VCALENDAR'
  ].join('\r\n');
  
- const emailProvider = getEmailProvider();
+ const emailProvider = await getEmailProviderForShop(realShopId);
  const emailRes = await emailProvider.send(
  clientEmail,
  `Calendar Invite: ${apt.service?.name || 'Appointment'} at ${apt.shop.name}`,
