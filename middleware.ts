@@ -72,10 +72,8 @@ export async function middleware(req: NextRequest) {
       limit = 100; // Stricter for bookings
     }
 
-    // temporarily disable rate limiting to debug hanging
-    // const { success } = await rateLimit(`mw:${ip}`, limit, 60);
-    const success = true;
-    
+    // Rate Limiting
+    const { success } = await rateLimit(`mw:${ip}`, limit, 60);
     if (!success) {
       return NextResponse.json(
         { error: 'Too many requests. Please try again later.' },
