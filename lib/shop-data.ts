@@ -106,9 +106,14 @@ export const getShopLayoutData = cache(async (userId: string, shopId: string) =>
           id: 'all',
           name: firstShop.companyName || 'All Locations',
           companyName: firstShop.companyName,
+          description: null,
+          slogan: null,
           template: 'modern',
           timezone: 'America/New_York',
           currency: 'USD',
+          shopType: 'STANDARD' as const,
+          subdomain: null,
+          customDomain: null,
           customization: {}
         };
       } else {
