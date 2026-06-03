@@ -148,3 +148,136 @@ export const analyzeSystemHealth = inngest.createFunction(
     return { analysis };
   }
 );
+
+/**
+ * Automated No-Show Protection
+ *
+ * Runs every 15 minutes. Finds all SCHEDULED appointments whose startTime is
+ * more than 15 minutes in the past and marks them as NO_SHOW. For appointments
+ * with a deposit, logs the deposit capture intent. Notifies the shop admin.
+ */
+export const markNoShowAppointments = inngest.createFunction(
+  { id: 'mark-no-show-appointments', triggers: [{ cron: '*/15 * * * *' }] },
+  async ({ step }) => {
+    const result = await step.run('find-and-mark-no-shows', async () => {
+      const { prisma } = await import('@/lib/prisma');
+      const { getTenantClient } = await import('@/lib/prisma');
+      const { NotificationService } = await import('@/lib/notifications');
+      const { logger } = await import('@/lib/logger');
+
+      const now = new Date();
+      const cutoff = new Date(now.getTime() - 15 * 60 * 1000); // 15 minutes ago
+
+      // Find all overdue SCHEDULED appointments across all shops
+      const overdueAppointments = await prisma.appointment.findMany({
+        where: {
+          status: 'SCHEDULED',
+          startTime: { lt: cutoff },
+        },
+        include: {
+          user: { select: { id: true, name: true, email: true } },
+          staff: { select: { id: true, name: true } },
+          service: { select: { name: true } },
+          shop: { select: { id: true, name: true } },
+        },
+      });
+
+      let markedCount = 0;
+      let depositFlaggedCount = 0;
+
+      for (const appt of overdueAppointments) {
+        // Use tenant-scoped client for the update
+        const tenantDb = getTenantClient(appt.shopId);
+
+        await tenantDb.appointment.update({
+          where: { id: appt.id },
+          data: { status: 'NO_SHOW' },
+        });
+
+        markedCount++;
+
+        // Log deposit capture intent if applicable
+        if (appt.depositPaymentIntentId && appt.depositAmount > 0) {
+          // TODO: Implement actual Stripe deposit capture via stripe.paymentIntents.capture()
+          // once the Stripe integration is wired up for no-show penalty collection.
+          logger.info(
+            `[NO_SHOW] Deposit should be captured for appointment ${appt.id}: ` +
+            `paymentIntentId=${appt.depositPaymentIntentId}, amount=${appt.depositAmount}`
+          );
+          depositFlaggedCount++;
+        }
+
+        // Notify shop admin about the no-show
+        const shopAdmin = await prisma.user.findFirst({
+          where: {
+            shopId: appt.shopId,
+            role: 'SHOP_ADMIN',
+          },
+          select: { id: true },
+        });
+
+        if (shopAdmin) {
+          const clientName = appt.user?.name || appt.user?.email || 'Unknown client';
+          const serviceName = appt.service?.name || 'appointment';
+          const staffName = appt.staff?.name || 'unassigned';
+          const startFormatted = appt.startTime.toLocaleString();
+
+          await NotificationService.send({
+            shopId: appt.shopId,
+            userId: shopAdmin.id,
+            type: 'NO_SHOW',
+            title: `No-Show: ${clientName}`,
+            message:
+              `${clientName} did not show up for their ${serviceName} ` +
+              `with ${staffName} scheduled at ${startFormatted}.` +
+              (appt.depositAmount > 0
+                ? ` A deposit of $${appt.depositAmount.toFixed(2)} is flagged for capture.`
+                : ''),
+          });
+        }
+      }
+
+      logger.info(
+        `[NO_SHOW CRON] Processed ${markedCount} no-show(s), ` +
+        `${depositFlaggedCount} deposit(s) flagged for capture.`
+      );
+
+      return { markedCount, depositFlaggedCount };
+    });
+
+    return result;
+  }
+);
+
+/**
+ * Webhook Cleanup Cron
+ *
+ * Runs daily at 3 AM UTC. Deletes all ProcessedWebhook records older than 30 days
+ * to keep the idempotency table lean.
+ */
+export const cleanupProcessedWebhooks = inngest.createFunction(
+  { id: 'cleanup-processed-webhooks', triggers: [{ cron: '0 3 * * *' }] },
+  async ({ step }) => {
+    const result = await step.run('delete-old-webhooks', async () => {
+      const { prisma } = await import('@/lib/prisma');
+      const { logger } = await import('@/lib/logger');
+
+      const cutoff = new Date();
+      cutoff.setDate(cutoff.getDate() - 30);
+
+      const deleted = await prisma.processedWebhook.deleteMany({
+        where: {
+          createdAt: { lt: cutoff },
+        },
+      });
+
+      logger.info(
+        `[WEBHOOK CLEANUP] Deleted ${deleted.count} processed webhook record(s) older than 30 days.`
+      );
+
+      return { deletedCount: deleted.count };
+    });
+
+    return result;
+  }
+);
