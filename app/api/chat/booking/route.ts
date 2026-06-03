@@ -38,7 +38,8 @@ const bookAppointmentDecl: FunctionDeclaration = {
  clientName: { type: Type.STRING },
  clientPhone: { type: Type.STRING },
  clientEmail: { type: Type.STRING, description: 'Optional client email' },
- serviceLocation: { type: Type.STRING, description: 'Optional physical address for mobile/house call services' }
+ serviceLocation: { type: Type.STRING, description: 'Optional physical address for mobile/house call services' },
+  recurrenceRule: { type: Type.STRING, description: 'Optional recurrence rule: WEEKLY, BIWEEKLY, EVERY_3_WEEKS, or MONTHLY' }
  },
  required: ['serviceId', 'staffId', 'date', 'time', 'clientName', 'clientPhone']
  }
@@ -425,7 +426,7 @@ If the user wants to check, cancel, or reschedule their appointments, or asks fo
  }
  } else if (call.name === 'book_appointment') {
  const args = call.args as any;
- const { serviceId, staffId, date, time, clientName, clientEmail, serviceLocation } = args;
+ const { serviceId, staffId, date, time, clientName, clientEmail, serviceLocation, recurrenceRule } = args;
 
   // Create dummy client user
   const emailToUse = (clientEmail || `guest-${Date.now()}@example.com`).trim().toLowerCase();
@@ -477,7 +478,10 @@ If the user wants to check, cancel, or reschedule their appointments, or asks fo
  startTime,
  endTime,
  status: 'SCHEDULED',
- serviceLocation: serviceLocation || null
+ serviceLocation: serviceLocation || null,
+  isRecurringParent: !!recurrenceRule,
+  recurrenceRule: recurrenceRule || null,
+  recurringGroupId: recurrenceRule ? crypto.randomUUID() : null,
  }
  }); 
  if (isNewUser) {
