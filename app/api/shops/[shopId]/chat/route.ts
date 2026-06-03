@@ -33,6 +33,10 @@ export async function GET(
  return new Response('Forbidden', { status: 403 });
  }
 
+ const { searchParams } = new URL(request.url);
+ const cursor = searchParams.get('cursor');
+ const limit = Math.min(parseInt(searchParams.get('limit') || '50', 10) || 50, 100);
+
  const messages = await tenantClient.message.findMany({
  where: { shopId },
   include: {
@@ -56,11 +60,21 @@ export async function GET(
   }
   }
   },
- orderBy: { createdAt: 'asc' },
- take: 100 // Get latest 100 messages
+ orderBy: { createdAt: 'desc' },
+ take: limit + 1,
+ ...(cursor ? { cursor: { id: cursor }, skip: 1 } : {}),
  });
 
- return NextResponse.json(messages);
+ let nextCursor: string | null = null;
+ if (messages.length > limit) {
+  messages.pop();
+  nextCursor = messages[messages.length - 1].id;
+ }
+
+ // Reverse so messages are in chronological order (oldest first)
+ messages.reverse();
+
+ return NextResponse.json({ messages, nextCursor });
  } catch (error: any) {
  const { shopId } = await params;
  logger.error("Error fetching messages:", error, { path: `/api/shops/${shopId}/chat`, shopId });
