@@ -3,6 +3,9 @@ set -e
 
 echo "Running custom deployment script..."
 
+# Increase Node memory to prevent EPIPE errors during large builds
+export NODE_OPTIONS="--max-old-space-size=4096"
+
 # Generate prisma client
 npx prisma generate
 
@@ -20,5 +23,5 @@ else
   node scripts/safe-migrate.js
 fi
 
-# Build Next.js
+# Build Next.js with increased memory
 npx next build
