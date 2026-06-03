@@ -7,6 +7,7 @@ import { redirect } from 'next/navigation';
 import { getOrCreateFolder, downloadFileFromFolder } from '@/lib/google-drive';
 import { cacheService } from '@/lib/cache';
 import AIWidget from '@/components/booking/AIWidget';
+import { serialize } from '@/lib/serialize';
 
 export const revalidate = 60;
 
@@ -76,7 +77,7 @@ const getShopBySite = cache(async (site: string) => {
  take: 20,
  });
 
- const serialized = JSON.parse(JSON.stringify(shop));
+ const serialized = serialize(shop);
  const rawCustom = serialized.customization || {};
  
  const rawAddress = rawCustom.address;
@@ -92,7 +93,7 @@ const getShopBySite = cache(async (site: string) => {
  ...serialized,
  customization: publicCustomization,
  template: serialized.template || 'modern',
- reviews: JSON.parse(JSON.stringify(reviews)),
+ reviews: serialize(reviews),
  };
 });
 

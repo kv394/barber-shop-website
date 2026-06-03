@@ -2,6 +2,7 @@ import { prisma } from '@/lib/prisma';
 import { notFound, redirect } from 'next/navigation';
 import { createClient } from '@/utils/supabase/server';
 import ClientKiosk from './ClientKiosk';
+import { serialize } from '@/lib/serialize';
 
 export const dynamic = 'force-dynamic';
 
@@ -37,7 +38,7 @@ export default async function ClientKioskPage({ params }: { params: Promise<{ sh
 
  return (
  <div className="fixed inset-0 bg-gradient-to-br from-[#0f0c09] via-[#1a1410] to-[#0a0806] text-white flex items-center justify-center p-4 sm:p-8 z-[9999] overflow-hidden">
- <ClientKiosk shopName={shop.name} shopId={shopId} services={JSON.parse(JSON.stringify(services))} />
+ <ClientKiosk shopName={shop.name} shopId={shopId} services={serialize(services)} />
  </div>
  );
 }

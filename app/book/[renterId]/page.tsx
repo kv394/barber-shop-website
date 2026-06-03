@@ -2,8 +2,9 @@ import { prisma } from '@/lib/prisma';
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 import BookingPageClient from './BookingPageClient';
+import { serialize } from '@/lib/serialize';
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 60;
 
 export async function generateMetadata({ params }: { params: Promise<{ renterId: string }> }): Promise<Metadata> {
  const { renterId } = await params;
@@ -40,8 +41,8 @@ export default async function BookPage({ params }: { params: Promise<{ renterId:
 
  return (
  <BookingPageClient
- renter={JSON.parse(JSON.stringify(renter))}
- services={JSON.parse(JSON.stringify(services))}
+ renter={serialize(renter)}
+ services={serialize(services)}
  />
  );
 }

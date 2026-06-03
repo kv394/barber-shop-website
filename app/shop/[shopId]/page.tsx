@@ -12,6 +12,7 @@ import { calculateUsageCostStrategy, getSaaSTiers } from '@/lib/cost-calculator'
 import InventoryForecast from '@/components/shop-admin/InventoryForecast';
 import PremiumGlassCard from '@/components/ui/PremiumGlassCard';
 import AIFinderFeeStats from '@/components/shop-admin/AIFinderFeeStats';
+import { serialize } from '@/lib/serialize';
 
 export const dynamic = 'force-dynamic';
 
@@ -127,11 +128,11 @@ async function getShopData(shopId: string, userId: string) {
  }
 
  return { 
- shop: JSON.parse(JSON.stringify(shopFromDb)), 
+ shop: serialize(shopFromDb), 
  userRole: data.userRole,
  canManageInventory: data.canManageInventory,
  shopSlug: data.shopSlug,
- lowStockItems: JSON.parse(JSON.stringify(lowStockItems)),
+ lowStockItems: serialize(lowStockItems),
  billingAlert,
  isClockedIn: activeLogs.length > 0,
  todayStats: {
@@ -140,7 +141,7 @@ async function getShopData(shopId: string, userId: string) {
  upcomingCount: upcoming.length,
  revenue: todayRevenue,
  tips: todayTips,
- nextAppointment: nextAppointment ? JSON.parse(JSON.stringify(nextAppointment)) : null,
+ nextAppointment: nextAppointment ? serialize(nextAppointment) : null,
  }
  };
 }

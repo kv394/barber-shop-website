@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { createClient } from '@/utils/supabase/server';
 import { logger } from '@/lib/logger';
+import { serialize } from '@/lib/serialize';
 
 export const dynamic = 'force-dynamic';
 
@@ -16,7 +17,7 @@ export async function GET(
  where: { userId: renterId, isActive: true },
  orderBy: { createdAt: 'asc' },
  });
- return NextResponse.json(JSON.parse(JSON.stringify(services)));
+ return NextResponse.json(serialize(services));
  } catch (error) {
  logger.error('Error fetching renter services:', error);
  return NextResponse.json({ error: 'Failed to fetch services' }, { status: 500 });
@@ -57,7 +58,7 @@ export async function POST(
  duration: parseInt(duration),
  },
  });
- return NextResponse.json(JSON.parse(JSON.stringify(service)), { status: 201 });
+ return NextResponse.json(serialize(service), { status: 201 });
  } catch (error) {
  logger.error('Error creating renter service:', error);
  return NextResponse.json({ error: 'Failed to create service' }, { status: 500 });
@@ -96,7 +97,7 @@ export async function PATCH(
  ...(isActive != null ? { isActive: Boolean(isActive) } : {}),
  },
  });
- return NextResponse.json(JSON.parse(JSON.stringify(updated)));
+ return NextResponse.json(serialize(updated));
  } catch (error) {
  logger.error('Error updating renter service:', error);
  return NextResponse.json({ error: 'Failed to update service' }, { status: 500 });

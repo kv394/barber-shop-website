@@ -5,6 +5,7 @@ import { requireShopRole, isAuthError } from '@/lib/auth';
 
 import { resolveShopId } from '@/lib/shop-resolution';
 import { boothRentSchema } from '@/lib/validations';
+import { serialize } from '@/lib/serialize';
 
 export const dynamic = 'force-dynamic';
 
@@ -32,7 +33,7 @@ export async function GET(
  orderBy: { periodStart: 'desc' }
  });
 
- return NextResponse.json(JSON.parse(JSON.stringify(payments)));
+ return NextResponse.json(serialize(payments));
  } catch (error) {
  logger.error('Error fetching booth rent payments:', error);
  return NextResponse.json({ error: 'Failed to fetch booth rent payments' }, { status: 500 });
@@ -70,7 +71,7 @@ export async function POST(
  }
  });
 
- return NextResponse.json(JSON.parse(JSON.stringify(payment)));
+ return NextResponse.json(serialize(payment));
  } catch (error) {
  logger.error('Error creating booth rent payment:', error);
  return NextResponse.json({ error: 'Failed to create booth rent payment' }, { status: 500 });
@@ -105,7 +106,7 @@ export async function PATCH(
  }
  });
 
- return NextResponse.json(JSON.parse(JSON.stringify(updated)));
+ return NextResponse.json(serialize(updated));
  } catch (error) {
  logger.error('Error updating booth rent payment:', error);
  return NextResponse.json({ error: 'Failed to update booth rent payment' }, { status: 500 });

@@ -2,6 +2,7 @@ import { cache } from 'react';
 import { prisma } from '@/lib/prisma';
 import { cacheService } from '@/lib/cache';
 import { createClient } from '@/utils/supabase/server';
+import { serialize } from '@/lib/serialize';
 
 /**
  * Cached per-request: fetches the current user + role.
@@ -121,7 +122,7 @@ export const getShopLayoutData = cache(async (userId: string, shopId: string) =>
 
       return {
         user: { ...user, role: effectiveRole },
-        shop: JSON.parse(JSON.stringify(shop)),
+        shop: serialize(shop),
         shopSlug,
         userRole: effectiveRole as string,
         isSiteAdmin,

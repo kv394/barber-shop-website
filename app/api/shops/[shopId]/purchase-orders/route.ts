@@ -2,6 +2,7 @@ import { logger } from "@/lib/logger";
 import { prisma, getTenantClient } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
 import { requireShopRole, isAuthError } from '@/lib/auth';
+import { serialize } from '@/lib/serialize';
 
 export const dynamic = 'force-dynamic';
 
@@ -25,7 +26,7 @@ export async function GET(
  orderBy: { createdAt: 'desc' }
  });
 
- return NextResponse.json(JSON.parse(JSON.stringify(purchaseOrders)));
+ return NextResponse.json(serialize(purchaseOrders));
  } catch (error) {
  logger.error('Error fetching purchase orders:', error);
  return NextResponse.json({ error: 'Failed to fetch purchase orders' }, { status: 500 });
@@ -68,7 +69,7 @@ export async function POST(
  include: { items: true }
  });
 
- return NextResponse.json(JSON.parse(JSON.stringify(purchaseOrder)));
+ return NextResponse.json(serialize(purchaseOrder));
  } catch (error: any) {
  logger.error('Error creating purchase order:', error);
  return NextResponse.json({ error: error.message || 'Failed to create purchase order' }, { status: 500 });

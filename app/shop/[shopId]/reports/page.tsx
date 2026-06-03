@@ -4,6 +4,7 @@ import { prisma } from '@/lib/prisma';
 import { getShopLayoutData } from '@/lib/shop-data';
 import ShopAdminLayout from '@/components/shop-admin/ShopAdminLayout';
 import ReportsClient from '@/components/reports/ReportsClient';
+import { serialize } from '@/lib/serialize';
 
 export const dynamic = "force-dynamic";
 
@@ -69,7 +70,7 @@ async function getPageData(shopId: string, userId: string) {
  shop: data.shop,
  shopSlug: data.shopSlug,
  userRole: data.userRole,
- recentCompletedAppointments: JSON.parse(JSON.stringify(recentCompletedAppointments)),
+ recentCompletedAppointments: serialize(recentCompletedAppointments),
  totalRevenue,
  totalTips,
  revenueByDay,

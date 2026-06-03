@@ -1,6 +1,7 @@
 import { prisma } from '@/lib/prisma';
 import { notFound } from 'next/navigation';
 import ManageBookingClient from './ManageBookingClient';
+import { serialize } from '@/lib/serialize';
 
 export const dynamic = 'force-dynamic';
 
@@ -33,7 +34,7 @@ export default async function ManageBookingPage({ params }: { params: Promise<{ 
  return (
  <div className="min-h-screen bg-gradient-to-br from-[#0f0c09] via-[#1a1410] to-[#0a0806] text-white flex justify-center py-12 px-4">
  <ManageBookingClient 
- appointment={JSON.parse(JSON.stringify({ ...appointment, serviceName, servicePrice, serviceDuration }))}
+ appointment={serialize({ ...appointment, serviceName, servicePrice, serviceDuration })}
  isPast={isPast}
  />
  </div>

@@ -4,6 +4,7 @@ import StaffAvailability from '@/components/shop-admin/StaffAvailability';
 import ShopAdminLayout from '@/components/shop-admin/ShopAdminLayout';
 import { createClient } from '@/utils/supabase/server';
 import { redirect } from 'next/navigation';
+import { serialize } from '@/lib/serialize';
 
 async function getShopData(shopId: string, userId: string, date: string, from: string, to: string) {
  const data = await getShopLayoutData(userId, shopId);
@@ -113,10 +114,10 @@ async function getShopData(shopId: string, userId: string, date: string, from: s
  });
 
  return {
- shop: JSON.parse(JSON.stringify(shop)),
+ shop: serialize(shop),
  shopSlug: data.shopSlug,
  userRole: data.userRole,
- staff: JSON.parse(JSON.stringify(staffWithSchedule)),
+ staff: serialize(staffWithSchedule),
  isClockedIn: !!activeLog,
  actualUserId,
  };

@@ -3,6 +3,7 @@ import { Metadata } from 'next';
 import Script from 'next/script';
 import AIWidget from '@/components/booking/AIWidget';
 import DOMPurify from 'isomorphic-dompurify';
+import { serialize } from '@/lib/serialize';
 
 function sanitizeCss(css: string): string {
  return css
@@ -12,7 +13,6 @@ function sanitizeCss(css: string): string {
  .replace(/@import\b/gi, '');
 }
 
-export const dynamic = 'force-dynamic';
 export const revalidate = 60;
 
 async function getShopBySlug(slug: string) {
@@ -46,7 +46,7 @@ async function getShopBySlug(slug: string) {
  }
 
  // Serialize to plain objects and ensure customization is included
- const serialized = JSON.parse(JSON.stringify(shop));
+ const serialized = serialize(shop);
  const rawCustom = serialized.customization || {};
  
  const rawAddress = rawCustom.address;

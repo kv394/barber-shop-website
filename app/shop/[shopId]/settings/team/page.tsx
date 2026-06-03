@@ -12,6 +12,7 @@ import { revalidatePath } from 'next/cache';
 
 import crypto from 'crypto';
 import { cacheService } from '@/lib/cache';
+import { serialize } from '@/lib/serialize';
 
 export const dynamic = 'force-dynamic';
 
@@ -88,11 +89,11 @@ async function getPageData(shopId: string, userId: string, date: string) {
  });
 
  return { 
- shop: JSON.parse(JSON.stringify(shop)), 
+ shop: serialize(shop), 
  shopSlug: data.shopSlug,
  userRole: data.userRole,
- staff: JSON.parse(JSON.stringify(staffWithSchedule)),
- kioskUser: kioskUser ? JSON.parse(JSON.stringify(kioskUser)) : null
+ staff: serialize(staffWithSchedule),
+ kioskUser: kioskUser ? serialize(kioskUser) : null
  };
 }
 

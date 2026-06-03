@@ -1,6 +1,7 @@
 import { prisma } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
 import { createClient } from '@/utils/supabase/server';
+import { serialize } from '@/lib/serialize';
 
 export const dynamic = 'force-dynamic';
 
@@ -108,8 +109,8 @@ export async function GET(request: Request) {
  }
 
  return NextResponse.json({
- upcoming: JSON.parse(JSON.stringify(upcoming)),
- past: JSON.parse(JSON.stringify(past)),
+ upcoming: serialize(upcoming),
+ past: serialize(past),
  nextUpcomingCursor,
  nextPastCursor,
  user: user,

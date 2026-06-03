@@ -2,6 +2,7 @@ import { logger } from "@/lib/logger";
 import { prisma, getTenantClient } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
 import { requireShopRole, isAuthError } from '@/lib/auth';
+import { serialize } from '@/lib/serialize';
 
 export const dynamic = 'force-dynamic';
 
@@ -60,14 +61,14 @@ export async function PATCH(
  where: { id: poId },
  include: { items: true }
  });
- return NextResponse.json(JSON.parse(JSON.stringify(updatedPo)));
+ return NextResponse.json(serialize(updatedPo));
  } else {
  const updatedPo = await tenantClient.purchaseOrder.update({
  where: { id: poId },
  data: updateData,
  include: { items: true }
  });
- return NextResponse.json(JSON.parse(JSON.stringify(updatedPo)));
+ return NextResponse.json(serialize(updatedPo));
  }
  } catch (error) {
  logger.error('Error updating purchase order:', error);

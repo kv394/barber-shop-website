@@ -3,6 +3,7 @@ import { createClient } from '@/utils/supabase/server';
 import { prisma } from '@/lib/prisma';
 import ShopAdminLayout from '@/components/shop-admin/ShopAdminLayout';
 import StaffWorkingReport from '@/components/reports/StaffWorkingReport';
+import { serialize } from '@/lib/serialize';
 
 export const dynamic = 'force-dynamic';
 
@@ -69,9 +70,9 @@ async function getPageData(shopId: string, userId: string, email?: string) {
  });
 
  return {
- shop: JSON.parse(JSON.stringify(shop)),
+ shop: serialize(shop),
  userRole: userFromDb?.role,
- staffMembers: JSON.parse(JSON.stringify(staffUsers)),
+ staffMembers: serialize(staffUsers),
  };
 }
 

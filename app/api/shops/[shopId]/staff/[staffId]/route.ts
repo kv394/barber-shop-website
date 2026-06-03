@@ -2,6 +2,7 @@ import { logger } from "@/lib/logger";
 import { prisma, getTenantClient } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
 import { requireShopRole, isAuthError } from '@/lib/auth';
+import { serialize } from '@/lib/serialize';
 
 export const dynamic = 'force-dynamic';
 
@@ -39,9 +40,9 @@ export async function GET(
  if (!staffMember) return NextResponse.json({ error: 'Staff member not found' }, { status: 404 });
 
  return NextResponse.json({
- shop: JSON.parse(JSON.stringify(shop)),
+ shop: serialize(shop),
  userRole: authResult.user.role,
- staffMember: JSON.parse(JSON.stringify(staffMember)),
+ staffMember: serialize(staffMember),
  });
  } catch (error) {
  logger.error('Error fetching staff member:', error);
@@ -82,7 +83,7 @@ export async function PATCH(
 
  const updated = await tenantClient.user.update({ where: { id: staffId }, data: allowedFields });
  const { googleRefreshToken, recoveryTotpSecret, ...safeUser } = updated as any;
- return NextResponse.json(JSON.parse(JSON.stringify(safeUser)));
+ return NextResponse.json(serialize(safeUser));
  } catch (error) {
  logger.error('Error updating staff member:', error);
  return NextResponse.json({ error: 'Failed to update' }, { status: 500 });

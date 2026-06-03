@@ -16,6 +16,7 @@ import CompleteWorkButton from '@/components/appointments/CompleteWorkButton';
 import ClientNameClickable from '@/components/clients/ClientNameClickable';
 import AddBookingWrapper from '@/components/appointments/AddBookingWrapper';
 import CopyBookingLinkCTA from '@/components/shop-admin/CopyBookingLinkCTA';
+import { serialize } from '@/lib/serialize';
 
 export const dynamic = 'force-dynamic';
 
@@ -50,7 +51,7 @@ async function getPageData(shopId: string, userId: string) {
  shop: data.shop, 
  userRole: data.userRole,
  shopSlug: data.shopSlug,
- appointments: JSON.parse(JSON.stringify(appointments))
+ appointments: serialize(appointments)
  };
 }
 

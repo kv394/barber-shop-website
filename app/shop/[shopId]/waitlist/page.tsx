@@ -4,6 +4,7 @@ import { prisma } from '@/lib/prisma';
 import { getShopLayoutData } from '@/lib/shop-data';
 import ShopAdminLayout from '@/components/shop-admin/ShopAdminLayout';
 import WaitlistClient from '@/components/appointments/WaitlistClient';
+import { serialize } from '@/lib/serialize';
 
 export const dynamic = 'force-dynamic';
 
@@ -41,8 +42,8 @@ export default async function WaitlistPage({ params }: { params: Promise<{ shopI
  >
  <WaitlistClient
  shopId={shopId}
- services={JSON.parse(JSON.stringify(shop.services))}
- staff={JSON.parse(JSON.stringify(shop.users))}
+ services={serialize(shop.services)}
+ staff={serialize(shop.users)}
  />
  </ShopAdminLayout>
  );

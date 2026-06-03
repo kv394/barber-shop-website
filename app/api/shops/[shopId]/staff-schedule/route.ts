@@ -1,6 +1,7 @@
 import { createClient } from '@/utils/supabase/server';
 import { prisma, getTenantClient } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
+import { serialize } from '@/lib/serialize';
 
 export const dynamic = 'force-dynamic';
 
@@ -110,7 +111,7 @@ export async function GET(
  });
 
  return NextResponse.json({
- staff: JSON.parse(JSON.stringify(staffWithSchedule)),
+ staff: serialize(staffWithSchedule),
  });
 }
 

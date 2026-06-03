@@ -5,6 +5,7 @@ import { getShopLayoutData } from '@/lib/shop-data';
 import ClientGrid from '@/components/clients/ClientGrid';
 import ShopAdminLayout from '@/components/shop-admin/ShopAdminLayout';
 import CopyBookingLinkCTA from '@/components/shop-admin/CopyBookingLinkCTA';
+import { serialize } from '@/lib/serialize';
 
 export const dynamic = 'force-dynamic';
 
@@ -69,7 +70,7 @@ async function getPageData(shopId: string, userId: string, pageStr: string) {
  shop: data.shop,
  shopSlug: data.shopSlug,
  userRole: data.userRole,
- clients: JSON.parse(JSON.stringify(clientsWithLastVisit)),
+ clients: serialize(clientsWithLastVisit),
  totalPages,
  currentPage: page
  };
