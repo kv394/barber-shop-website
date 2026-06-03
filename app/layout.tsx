@@ -22,6 +22,10 @@ export default async function RootLayout({
 
   return (
     <html lang="en">
+      <head>
+        <link rel="manifest" href="/manifest.json" />
+        <meta name="theme-color" content="#f59e0b" />
+      </head>
       <body className={`${inter.variable} ${cormorant.variable} antialiased text-crm-text bg-modern-gradient`}>
         <NextIntlClientProvider messages={messages}>
           {children}
