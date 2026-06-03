@@ -5,7 +5,7 @@
  *
  * Returns `any` because the output type differs from input (Date→string, etc).
  */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+// eslint-disable-next-line
 export function serialize(obj: any): any {
   if (obj === null || obj === undefined) return obj;
   if (obj instanceof Date) return obj.toISOString();

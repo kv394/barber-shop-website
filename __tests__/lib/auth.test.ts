@@ -15,6 +15,9 @@ vi.mock('@/lib/prisma', () => ({
     shopAccess: {
       findUnique: vi.fn(),
     },
+    shop: {
+      findUnique: vi.fn(),
+    },
   },
 }));
 
@@ -86,6 +89,7 @@ describe('auth.ts helpers', () => {
 
       const dbUser = { id: 'u1', role: 'SITE_ADMIN', shopId: null, email: 'admin@test.com', name: 'Admin' };
       vi.mocked(prisma.user.findUnique).mockResolvedValue(dbUser as any);
+      vi.mocked(prisma.shop.findUnique).mockResolvedValue({ supportAccessEnabled: true, supportAccessExpiresAt: null } as any);
 
       const result = await requireShopRole('shop_1', ['STAFF']); // Allowed despite requesting STAFF
       expect(isAuthError(result)).toBe(false);
