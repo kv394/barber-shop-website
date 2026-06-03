@@ -18,19 +18,21 @@ export const getShopLayoutData = cache(async (userId: string, shopId: string) =>
   return cacheService.getOrSet(
     cacheKey,
     async () => {
-      const [user, allAccesses] = await Promise.all([
-        prisma.user.findFirst({
-          where: authUser?.email ? { email: authUser.email } : { id: userId },
-          select: { id: true, role: true, shopId: true, name: true, email: true, canManageInventory: true, stripeConnectAccountId: true, stripeConnectOnboarded: true, shopAccesses: shopId !== 'all' ? { where: { shopId } } : { select: { shopId: true, role: true } } },
-        }),
-        prisma.user.findFirst({
-          where: authUser?.email ? { email: authUser.email } : { id: userId },
-          select: {
-            shop: { select: { id: true, name: true, companyName: true } },
-            shopAccesses: { select: { shop: { select: { id: true, name: true, companyName: true } }, role: true } }
-          }
-        })
-      ]);
+      // Single combined query — replaces two separate findFirst calls
+      const user = await prisma.user.findFirst({
+        where: authUser?.email ? { email: authUser.email } : { id: userId },
+        select: {
+          id: true, role: true, shopId: true, name: true, email: true,
+          canManageInventory: true, stripeConnectAccountId: true, stripeConnectOnboarded: true,
+          shop: { select: { id: true, name: true, companyName: true } },
+          shopAccesses: {
+            select: {
+              shopId: true, role: true,
+              shop: { select: { id: true, name: true, companyName: true } },
+            },
+          },
+        },
+      });
 
       if (!user) return null;
 
@@ -81,11 +83,12 @@ export const getShopLayoutData = cache(async (userId: string, shopId: string) =>
         accessibleShops = allShops;
       } else {
         const accessibleShopsMap = new Map<string, { id: string, name: string, companyName: string | null }>();
-        if (allAccesses?.shop?.id) {
-          accessibleShopsMap.set(allAccesses.shop.id, { id: allAccesses.shop.id, name: allAccesses.shop.name || '', companyName: allAccesses.shop.companyName });
+        if ((user as any).shop?.id) {
+          const s = (user as any).shop;
+          accessibleShopsMap.set(s.id, { id: s.id, name: s.name || '', companyName: s.companyName });
         }
-        if (Array.isArray(allAccesses?.shopAccesses)) {
-          allAccesses.shopAccesses.forEach((access: any) => {
+        if (Array.isArray(user.shopAccesses)) {
+          user.shopAccesses.forEach((access: any) => {
             if (access?.shop?.id) {
               accessibleShopsMap.set(access.shop.id, { id: access.shop.id, name: access.shop.name || '', companyName: access.shop.companyName });
             }

@@ -83,23 +83,9 @@ function createPrismaClient() {
   });
 
   // We don't apply the tenant extension globally because some routes (like webhooks or cron)
-  // need cross-shop access.
+  // need cross-shop access. Use getTenantClient(shopId) for tenant-scoped queries.
   
-  const rlsClient = baseClient.$extends({
-    query: {
-      $allModels: {
-        async $allOperations({ args, query }) {
-          // In a real RLS environment, we'd inject the JWT or context here.
-          // Due to Next.js App Router constraints with cookies() in Prisma extensions,
-          // we use the application-level shopId injection in getTenantClient for standard queries,
-          // but we provide an explicit secure transaction context wrapper.
-          return query(args);
-        }
-      }
-    }
-  });
-
-  return rlsClient;
+  return baseClient;
 
 }
 
@@ -207,11 +193,6 @@ export function getTenantClient(shopId: string): PrismaClient {
               operation === 'findUnique' ||
               operation === 'findUniqueOrThrow'
             ) {
-              // findUnique requires unique indexes. If shopId isn't part of the unique index,
-              // Prisma will complain. In those cases, we gracefully convert to findFirst
-              // if it's safe, but standard practice is to rely on compound unique indexes.
-              // For safety, we just inject it and let Prisma throw if the schema isn't setup for it,
-              // forcing developers to fix their schema.
               args.where = { ...args.where, shopId };
             } else if (
               operation === 'findMany' ||
@@ -227,22 +208,10 @@ export function getTenantClient(shopId: string): PrismaClient {
             ) {
               args.where = { ...args.where, shopId };
             }
-          } // <--- Added missing brace here
-          // Enforce Row-Level Security (RLS) by injecting the shopId into the Postgres session context
-          // This requires executing the query within an interactive transaction.
-          try {
-            const [, result] = await prisma.$transaction([
-              prisma.$executeRaw`SELECT set_config('app.current_shop_id', ${shopId}, true)`,
-              query(args)
-            ]);
-            return result;
-          } catch (e: any) {
-            // Fallback for nested transactions where interactive transactions are forbidden
-            if (e.message?.includes('Transaction is already closed') || e.message?.includes('nested')) {
-               return query(args);
-            }
-            throw e;
           }
+          // Application-level tenant isolation via WHERE clause injection is sufficient.
+          // No $transaction or set_config overhead needed.
+          return query(args);
         },
       },
     },

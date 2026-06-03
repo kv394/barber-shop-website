@@ -21,8 +21,8 @@ export async function requireSiteAdmin() {
   const userId = authUser.id;
   const authUserEmail = authUser.email;
 
-  const user = await prisma.user.findFirst({ 
-    where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] }, 
+  const user = await prisma.user.findUnique({ 
+    where: { email: authUserEmail || '' }, 
     select: { id: true, role: true } 
   });
   
@@ -67,8 +67,7 @@ export async function requireShopRole(
   // SITE_ADMIN: must have support access granted by the shop to access shop-level routes.
   // Platform-level siteadmin routes (/api/siteadmin/*) use requireSiteAdmin() instead, which is unaffected.
   if (user.role === 'SITE_ADMIN') {
-    const { prisma: prismaClient } = await import('@/lib/prisma');
-    const shop = await prismaClient.shop.findUnique({
+    const shop = await prisma.shop.findUnique({
       where: { id: shopId },
       select: { supportAccessEnabled: true, supportAccessExpiresAt: true },
     });

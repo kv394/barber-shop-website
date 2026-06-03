@@ -1,7 +1,7 @@
-import { google } from 'googleapis';
+import { drive_v3, auth as gauth } from '@googleapis/drive';
 import { Readable } from 'stream';
 
-export const getDriveService = () => {
+export const getDriveService = (): drive_v3.Drive | null => {
   const credentialsString = process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON;
   if (!credentialsString) return null;
 
@@ -14,22 +14,22 @@ export const getDriveService = () => {
       const clientAuth = credentials.installed || credentials.web || credentials;
       const { client_secret, client_id, redirect_uris } = clientAuth;
       
-      const oAuth2Client = new google.auth.OAuth2(
+      const oAuth2Client = new gauth.OAuth2(
         client_id,
         client_secret,
         redirect_uris ? redirect_uris[0] : 'urn:ietf:wg:oauth:2.0:oob'
       );
       
       oAuth2Client.setCredentials({ refresh_token: refreshToken });
-      return google.drive({ version: 'v3', auth: oAuth2Client });
+      return new drive_v3.Drive({ auth: oAuth2Client });
     }
 
     // Fallback to Service Account
-    const auth = new google.auth.GoogleAuth({
+    const authClient = new gauth.GoogleAuth({
       credentials,
       scopes: ['https://www.googleapis.com/auth/drive.file', 'https://www.googleapis.com/auth/drive.readonly', 'https://www.googleapis.com/auth/drive'],
     });
-    return google.drive({ version: 'v3', auth });
+    return new drive_v3.Drive({ auth: authClient });
   } catch (e) {
     console.error('Error initializing Google Drive service:', e);
     return null;
