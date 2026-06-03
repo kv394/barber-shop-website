@@ -252,10 +252,11 @@ export async function POST(
  const emailToUse = clientEmail?.trim().toLowerCase() || `walkin-${crypto.randomBytes(4).toString('hex')}@shophub.local`;
  const userBarcode = crypto.randomBytes(6).toString('hex').toUpperCase();
 
- const guestUser = await tenantClient.user.upsert({
- where: { email: emailToUse },
- update: {},
- create: {
+ // Search globally by email to avoid creating duplicates or cross-shop conflicts
+ let guestUser = await prisma.user.findUnique({ where: { email: emailToUse } });
+ if (!guestUser) {
+ guestUser = await tenantClient.user.create({
+ data: {
  id: `guest_${crypto.randomBytes(8).toString('hex')}`,
  email: emailToUse,
  name: clientName,
@@ -264,6 +265,7 @@ export async function POST(
  barcode: userBarcode,
  },
  });
+ }
  targetUserId = guestUser.id;
  }
  }

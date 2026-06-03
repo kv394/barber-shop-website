@@ -427,26 +427,25 @@ If the user wants to check, cancel, or reschedule their appointments, or asks fo
  const args = call.args as any;
  const { serviceId, staffId, date, time, clientName, clientEmail, serviceLocation } = args;
 
- // Create dummy client user
- const emailToUse = clientEmail || `guest-${Date.now()}@example.com`;
+  // Create dummy client user
+  const emailToUse = (clientEmail || `guest-${Date.now()}@example.com`).trim().toLowerCase();
 
- let user = await prisma.user.findFirst({
- where: { shopId: realShopId, email: emailToUse }
- });
+  // Search globally by email to avoid unique constraint violations
+  let user = await prisma.user.findUnique({ where: { email: emailToUse } });
 
- let isNewUser = false;
- if (!user) {
- isNewUser = true;
- user = await prisma.user.create({
- data: {
- email: emailToUse,
- name: clientName,
- role: 'CLIENT',
- shopId: realShopId,
- barcode: `C-${Date.now()}`
- }
- });
- }
+  let isNewUser = false;
+  if (!user) {
+  isNewUser = true;
+  user = await prisma.user.create({
+  data: {
+  email: emailToUse,
+  name: clientName,
+  role: 'CLIENT',
+  shopId: realShopId,
+  barcode: `C-${Date.now()}`
+  }
+  });
+  }
 
  const shopTz = shop.timezone || 'America/New_York';
  const { startOfDay } = toShopTzDayBounds(date, shopTz);

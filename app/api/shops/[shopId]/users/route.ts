@@ -50,7 +50,8 @@ export async function POST(
     return NextResponse.json({ error: 'Invalid input data', details: validationResult.error.format() }, { status: 400 });
   }
 
-  const { email, role, canManageInventory } = validationResult.data;
+  const { email: rawEmail, role, canManageInventory } = validationResult.data;
+  const email = rawEmail.trim().toLowerCase();
 
   // SECURITY: Only SITE_ADMIN can assign the SHOP_ADMIN role — prevent privilege escalation
   if (role === 'SHOP_ADMIN') {

@@ -14,7 +14,8 @@ export async function POST(
   try {
     const { shopId } = await params;
     const body = await request.json();
-    const { email, role } = body;
+    const { email: rawEmail, role } = body;
+    const email = rawEmail?.trim().toLowerCase();
 
     if (!email || !role) {
       return NextResponse.json({ error: 'Email and role are required' }, { status: 400 });
@@ -39,7 +40,7 @@ export async function POST(
           where: { email },
           data: { role: role }
         });
-      } else if (existingUser.shopId === null || existingUser.role === 'CLIENT') {
+      } else if (existingUser.shopId === null) {
         user = await prisma.user.update({
           where: { email },
           data: { role: role, shopId: shopId }
