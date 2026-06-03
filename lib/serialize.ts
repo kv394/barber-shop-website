@@ -2,22 +2,25 @@
  * Lightweight serialization for passing Prisma objects to Client Components.
  * Converts Date → ISO string, BigInt → string, Decimal → number.
  * Much faster than JSON.parse(JSON.stringify(...)) for typical payloads.
+ *
+ * Returns `any` because the output type differs from input (Date→string, etc).
  */
-export function serialize<T>(obj: T): T {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function serialize(obj: any): any {
   if (obj === null || obj === undefined) return obj;
-  if (obj instanceof Date) return obj.toISOString() as unknown as T;
-  if (typeof obj === 'bigint') return obj.toString() as unknown as T;
+  if (obj instanceof Date) return obj.toISOString();
+  if (typeof obj === 'bigint') return obj.toString();
   // Prisma Decimal type
-  if (typeof obj === 'object' && 'toNumber' in (obj as any)) {
-    return (obj as any).toNumber() as unknown as T;
+  if (typeof obj === 'object' && 'toNumber' in obj) {
+    return obj.toNumber();
   }
-  if (Array.isArray(obj)) return obj.map(serialize) as unknown as T;
+  if (Array.isArray(obj)) return obj.map(serialize);
   if (typeof obj === 'object') {
     const result: Record<string, unknown> = {};
-    for (const key of Object.keys(obj as Record<string, unknown>)) {
-      result[key] = serialize((obj as Record<string, unknown>)[key]);
+    for (const key of Object.keys(obj)) {
+      result[key] = serialize(obj[key]);
     }
-    return result as T;
+    return result;
   }
   return obj;
 }
