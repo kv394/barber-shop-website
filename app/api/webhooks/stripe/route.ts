@@ -28,6 +28,21 @@ export async function POST(req: Request) {
  return NextResponse.json({ error: 'Invalid signature' }, { status: 400 });
  }
 
+ // --- Idempotency Check ---
+ try {
+ const existingWebhook = await prisma.processedWebhook.findUnique({
+ where: { eventId: event.id }
+ });
+ if (existingWebhook) {
+ logger.info(`Webhook event ${event.id} already processed. Skipping.`);
+ return NextResponse.json({ received: true });
+ }
+ } catch (err: any) {
+ logger.error(`Failed to check idempotency for event ${event.id}: ${err.message}`);
+ // If DB is down, fail fast so Stripe retries later
+ return NextResponse.json({ error: 'Idempotency check failed' }, { status: 500 });
+ }
+
  try {
  switch (event.type) {
  case 'checkout.session.completed': {
@@ -157,6 +172,19 @@ export async function POST(req: Request) {
 
  default:
  logger.info(`Unhandled Stripe event type: ${event.type}`);
+ }
+
+ // --- Record Processed Webhook ---
+ try {
+ await prisma.processedWebhook.create({
+ data: {
+ eventId: event.id,
+ type: event.type,
+ provider: "STRIPE"
+ }
+ });
+ } catch (err: any) {
+ logger.error(`Failed to record processed webhook ${event.id}: ${err.message}`);
  }
 
  return NextResponse.json({ received: true });

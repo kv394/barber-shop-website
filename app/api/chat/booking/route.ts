@@ -702,6 +702,11 @@ If the user wants to check, cancel, or reschedule their appointments, or asks fo
  return NextResponse.json(payload, { headers: corsHeaders });
  } catch (error: any) {
  logger.error("Chat API error:", error);
- return NextResponse.json({ error: error.message }, { status: 500, headers: corsHeaders });
+ // Graceful fallback for Gemini API or internal failures
+ const fallbackPayload = { 
+ text: "I am currently experiencing high traffic and cannot process messages right now. Please use our [Standard Booking System](/book) to schedule your appointment.",
+ history: []
+ };
+ return NextResponse.json(fallbackPayload, { status: 200, headers: corsHeaders });
  }
 }
