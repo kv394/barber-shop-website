@@ -1,17 +1,13 @@
 /**
- * Email Service — sends emails via Cloudflare Email Workers
+ * Email Service — sends emails via Resend API
  * 
- * Architecture:
- * Next.js App → HTTP POST → Cloudflare Worker → env.EMAIL.send()
- * 
- * The Cloudflare Worker URL and auth secret are configured via env vars:
- * - CLOUDFLARE_EMAIL_WORKER_URL: The deployed Worker URL
- * - CLOUDFLARE_EMAIL_WORKER_SECRET: Shared secret for auth
+ * Env vars needed:
+ * - RESEND_API_KEY: Your Resend API key
+ * - EMAIL_FROM: Sender address (default: notifications@kutzapp.com)
  */
 
-const WORKER_URL = process.env.CLOUDFLARE_EMAIL_WORKER_URL || '';
-const WORKER_SECRET = process.env.CLOUDFLARE_EMAIL_WORKER_SECRET || '';
-const FROM_EMAIL = process.env.EMAIL_FROM || 'notifications@kutzapp.com';
+const RESEND_API_KEY = process.env.RESEND_API_KEY || '';
+const FROM_EMAIL = process.env.EMAIL_FROM || 'KutzApp <notifications@kutzapp.com>';
 const APP_URL = process.env.NEXT_PUBLIC_APP_URL || 'https://kutzapp.com';
 
 interface SendEmailOptions {
@@ -23,35 +19,36 @@ interface SendEmailOptions {
 }
 
 async function sendEmail(options: SendEmailOptions): Promise<{ success: boolean; messageId?: string; error?: string }> {
- if (!WORKER_URL) {
- console.warn('[EMAIL] CLOUDFLARE_EMAIL_WORKER_URL not configured, skipping email send');
+ if (!RESEND_API_KEY) {
+ console.warn('[EMAIL] RESEND_API_KEY not configured, skipping email send');
  return { success: false, error: 'Email service not configured' };
  }
 
  try {
- const res = await fetch(WORKER_URL, {
+ const res = await fetch('https://api.resend.com/emails', {
   method: 'POST',
   headers: {
   'Content-Type': 'application/json',
-  'Authorization': `Bearer ${WORKER_SECRET}`,
+  'Authorization': `Bearer ${RESEND_API_KEY}`,
   },
   body: JSON.stringify({
   from: options.from || FROM_EMAIL,
-  to: options.to,
+  to: [options.to],
   subject: options.subject,
   html: options.html,
   text: options.text || options.html.replace(/<[^>]*>/g, ''),
   }),
  });
 
+ const data = await res.json();
+
  if (!res.ok) {
-  const errorText = await res.text();
-  console.error('[EMAIL] Worker error:', res.status, errorText);
-  return { success: false, error: `Worker returned ${res.status}: ${errorText}` };
+  console.error('[EMAIL] Resend error:', res.status, JSON.stringify(data));
+  return { success: false, error: `Resend returned ${res.status}: ${data.message || JSON.stringify(data)}` };
  }
 
- const data = await res.json();
- return { success: true, messageId: data.messageId };
+ console.log('[EMAIL] Sent successfully to', options.to, 'id:', data.id);
+ return { success: true, messageId: data.id };
  } catch (error: any) {
  console.error('[EMAIL] Failed to send:', error.message);
  return { success: false, error: error.message };
