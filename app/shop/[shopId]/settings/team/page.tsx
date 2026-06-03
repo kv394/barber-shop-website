@@ -6,6 +6,7 @@ import { emailService } from '@/lib/email';
 import { getShopLayoutData } from '@/lib/shop-data';
 import ShopAdminLayout from '@/components/shop-admin/ShopAdminLayout';
 import TeamDashboardClient from '@/components/shop-admin/TeamDashboardClient';
+import InviteFormClient from '@/components/shop-admin/InviteFormClient';
 import Link from 'next/link';
 import { revalidatePath } from 'next/cache';
 import crypto from 'crypto';
@@ -94,21 +95,21 @@ async function getPageData(shopId: string, userId: string, date: string) {
  };
 }
 
-async function inviteUser(formData: FormData) {
+async function inviteUser(_prevState: any, formData: FormData): Promise<{ success: boolean; error?: string }> {
  'use server';
  const email = formData.get('email') as string;
  const role = formData.get('role') as 'SHOP_ADMIN' | 'STAFF' | 'BOOTH_RENTER' | 'ATTENDANCE_KIOSK';
  const shopId = formData.get('shopId') as string;
- if (!email || !role || !shopId) return;
+ if (!email || !role || !shopId) return { success: false, error: 'Missing required fields.' };
 
  // SECURITY: Verify the caller is authorized to invite users to this shop
  const supabase = await createClient();
  const { data: { user } } = await supabase.auth.getUser();
  
  const userId = user?.id;
- if (!userId) return;
+ if (!userId) return { success: false, error: 'Not authenticated.' };
  const caller = await prisma.user.findFirst({ where: { OR: [{ id: userId }, { email: user?.email || '' }] } });
- if (!caller) return;
+ if (!caller) return { success: false, error: 'Not authorized.' };
  
  let callerHasAccess = false;
  if (caller.role === 'SITE_ADMIN') {
@@ -122,26 +123,24 @@ async function inviteUser(formData: FormData) {
  }
  }
 
- if (!callerHasAccess) return;
+ if (!callerHasAccess) return { success: false, error: 'Not authorized.' };
  // Only SITE_ADMIN can assign SHOP_ADMIN or ATTENDANCE_KIOSK roles
- if ((role === 'SHOP_ADMIN' || role === 'ATTENDANCE_KIOSK') && caller.role !== 'SITE_ADMIN') return;
+ if ((role === 'SHOP_ADMIN' || role === 'ATTENDANCE_KIOSK') && caller.role !== 'SITE_ADMIN') return { success: false, error: 'Only Site Admins can assign this role.' };
  // BOOTH_RENTER can be assigned by SHOP_ADMIN or SITE_ADMIN
- if (role !== 'STAFF' && role !== 'BOOTH_RENTER' && role !== 'SHOP_ADMIN' && role !== 'ATTENDANCE_KIOSK') return;
+ if (role !== 'STAFF' && role !== 'BOOTH_RENTER' && role !== 'SHOP_ADMIN' && role !== 'ATTENDANCE_KIOSK') return { success: false, error: 'Invalid role.' };
 
- const existingUser = await prisma.user.findUnique({ where: { email } });
+ const existingUser = await prisma.user.findUnique({ where: { email }, include: { shop: { select: { name: true } } } });
  if (existingUser) {
  if (existingUser.shopId === shopId) {
+ // Already in this shop — just update role
  await prisma.user.update({ where: { email }, data: { role } });
  } else if (existingUser.shopId === null || existingUser.role === 'CLIENT') {
  // User has no primary shop or is just a client. Set this as primary.
  await prisma.user.update({ where: { email }, data: { role, shopId } });
  } else {
- // User belongs to another shop. Add a shopAccess record.
- await prisma.shopAccess.upsert({
- where: { userId_shopId: { userId: existingUser.id, shopId } },
- update: { role },
- create: { userId: existingUser.id, shopId, role }
- });
+ // User belongs to another shop — block the invite
+ const otherShopName = existingUser.shop?.name || 'another shop';
+ return { success: false, error: `This email is already associated with "${otherShopName}". The user must be removed from that shop first before they can be added here.` };
  }
  await cacheService.invalidatePattern(`shop_layout:${existingUser.email}:*`);
  } else {
@@ -195,6 +194,7 @@ async function inviteUser(formData: FormData) {
   }).catch(err => console.error('[INVITE EMAIL]', err));
 
   revalidatePath(`/shop/${shopId}/settings/team`);
+  return { success: true };
 }
 
 async function removeUser(formData: FormData) {
@@ -412,34 +412,12 @@ export default async function TeamDashboardPage({ params, searchParams }: { para
  </div>
  </div>
 
- <form action={inviteUser} className="flex flex-col md:flex-row gap-4 items-end">
- <input type="hidden" name="shopId" value={shop.id} />
- <div className="flex-1 w-full">
- <label className="block text-crm-muted mb-1.5 font-semibold uppercase tracking-wider text-[12px]">📧 Email</label>
- <input type="email" name="email" required placeholder="team@example.com"
- className="w-full h-11 px-4 rounded-xl border border-crm-border shadow-sm bg-crm-surface text-crm-text text-[13px] placeholder-gray-400 focus:ring-2 focus:ring-crm-primary focus:outline-none transition-all" />
- </div>
- <div className="w-full md:w-56">
- <label className="block text-crm-muted mb-1.5 font-semibold uppercase tracking-wider text-[12px]">👤 Role</label>
- <select name="role" defaultValue={userRole === 'SITE_ADMIN' ? 'SHOP_ADMIN' : 'STAFF'}
- className="w-full h-11 px-4 rounded-xl border border-crm-border shadow-sm bg-crm-surface text-crm-text text-[13px] focus:ring-2 focus:ring-crm-primary focus:outline-none transition-all">
- {userRole === 'SHOP_ADMIN' && <option value="STAFF">Staff</option>}
- {userRole === 'SHOP_ADMIN' && <option value="BOOTH_RENTER">Booth Renter</option>}
- {userRole === 'SITE_ADMIN' && (
- <>
- <option value="SHOP_ADMIN">Shop Admin</option>
- <option value="ATTENDANCE_KIOSK">Attendance Kiosk</option>
- </>
- )}
- </select>
- </div>
- <div className="w-full md:w-auto mt-2 md:mt-0">
- <button type="submit" disabled={userRole === 'SITE_ADMIN' && !canAddShopAdmin}
- className="w-full h-11 bg-crm-primary text-white font-bold px-8 rounded-xl hover:bg-crm-primary/90 hover:scale-[1.02] active:scale-95 transition-all duration-200 shadow-md text-[13px] disabled:opacity-50 disabled:cursor-not-allowed">
- Invite Member
- </button>
- </div>
- </form>
+ <InviteFormClient
+  inviteAction={inviteUser}
+  shopId={shop.id}
+  userRole={userRole}
+  canAddShopAdmin={canAddShopAdmin}
+ />
 
  {!canAddShopAdmin && userRole === 'SITE_ADMIN' && (
  <div className="mt-3 flex items-center gap-2 text-[11px] text-amber-700 bg-amber-50 px-3 py-2 rounded-lg border border-amber-200">
