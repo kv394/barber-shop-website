@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
-import { requireShopRole } from '@/lib/auth';
+import { requireSiteAdmin } from '@/lib/auth';
 
 /**
  * GET /api/siteadmin/shops/[shopId]/feature-requests
@@ -11,7 +11,7 @@ export async function GET(
   { params }: { params: Promise<{ shopId: string }> }
 ) {
   const { shopId } = await params;
-  const authResult = await requireShopRole(shopId, ['SITE_ADMIN']);
+  const authResult = await requireSiteAdmin();
   if (authResult instanceof NextResponse) return authResult;
 
   const shop = await prisma.shop.findUnique({
@@ -38,7 +38,7 @@ export async function PATCH(
   { params }: { params: Promise<{ shopId: string }> }
 ) {
   const { shopId } = await params;
-  const authResult = await requireShopRole(shopId, ['SITE_ADMIN']);
+  const authResult = await requireSiteAdmin();
   if (authResult instanceof NextResponse) return authResult;
 
   const { requestId, action } = await request.json();

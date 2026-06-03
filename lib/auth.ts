@@ -64,8 +64,30 @@ export async function requireShopRole(
   const userId = user.id;
 
 
-  // SITE_ADMIN bypasses all shop and role checks completely
+  // SITE_ADMIN: must have support access granted by the shop to access shop-level routes.
+  // Platform-level siteadmin routes (/api/siteadmin/*) use requireSiteAdmin() instead, which is unaffected.
   if (user.role === 'SITE_ADMIN') {
+    const { prisma: prismaClient } = await import('@/lib/prisma');
+    const shop = await prismaClient.shop.findUnique({
+      where: { id: shopId },
+      select: { supportAccessEnabled: true, supportAccessExpiresAt: true },
+    });
+
+    if (!shop) {
+      return NextResponse.json({ error: 'Shop not found' }, { status: 404 });
+    }
+
+    const isExpired = shop.supportAccessExpiresAt
+      ? new Date(shop.supportAccessExpiresAt) < new Date()
+      : false;
+
+    if (!shop.supportAccessEnabled || isExpired) {
+      return NextResponse.json(
+        { error: 'Support access not granted. The shop admin must enable Support Access in their settings.' },
+        { status: 403 }
+      );
+    }
+
     return { user: { ...user, role: user.role }, userId };
   }
 

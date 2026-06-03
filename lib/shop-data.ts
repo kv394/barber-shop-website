@@ -59,6 +59,20 @@ export const getShopLayoutData = cache(async (userId: string, shopId: string) =>
 
       if (!isSiteAdmin && !isShopAdmin && !isStaff) return null;
 
+      // SITE_ADMIN must have support access to view shop pages
+      if (isSiteAdmin && shopId !== 'all') {
+        const targetShop = await prisma.shop.findUnique({
+          where: { id: shopId },
+          select: { supportAccessEnabled: true, supportAccessExpiresAt: true },
+        });
+        const isExpired = targetShop?.supportAccessExpiresAt
+          ? new Date(targetShop.supportAccessExpiresAt) < new Date()
+          : false;
+        if (!targetShop?.supportAccessEnabled || isExpired) {
+          return null; // Will trigger redirect in layout
+        }
+      }
+
       // Combine primary shop and accessed shops
       let accessibleShops: { id: string, name: string, companyName: string | null }[] = [];
       
