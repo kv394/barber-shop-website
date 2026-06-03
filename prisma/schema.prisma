@@ -165,6 +165,7 @@ model User {
   boothRentPayments       BoothRentPayment[]
   renterServices          RenterService[]
   shopClients             ShopClient[]
+  messageReceipts         MessageReceipt[]
 
   @@index([shopId, role])
   @@index([email])
@@ -810,10 +811,28 @@ model Message {
   content   String
   createdAt DateTime @default(now())
   imageUrl  String?
+  parentId  String?
+  parent    Message?  @relation("MessageReplies", fields: [parentId], references: [id], onDelete: SetNull)
+  replies   Message[] @relation("MessageReplies")
+  receipts  MessageReceipt[]
+
   sender    User     @relation(fields: [senderId], references: [id], onDelete: Cascade)
   shop      Shop     @relation(fields: [shopId], references: [id], onDelete: Cascade)
 
   @@index([shopId, createdAt])
+}
+
+model MessageReceipt {
+  id        String   @id @default(cuid())
+  messageId String
+  userId    String
+  readAt    DateTime @default(now())
+  
+  message   Message  @relation(fields: [messageId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([messageId, userId])
+  @@index([messageId])
 }
 
 model ShopAccess {

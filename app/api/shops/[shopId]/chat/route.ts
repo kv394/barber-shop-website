@@ -35,15 +35,27 @@ export async function GET(
 
  const messages = await tenantClient.message.findMany({
  where: { shopId },
- include: {
- sender: {
- select: {
- id: true,
- name: true,
- role: true
- }
- }
- },
+  include: {
+  sender: {
+  select: {
+  id: true,
+  name: true,
+  role: true
+  }
+  },
+  parent: {
+  select: {
+  id: true,
+  content: true,
+  sender: { select: { name: true } }
+  }
+  },
+  receipts: {
+  include: {
+  user: { select: { name: true, id: true } }
+  }
+  }
+  },
  orderBy: { createdAt: 'asc' },
  take: 100 // Get latest 100 messages
  });
@@ -93,6 +105,7 @@ export async function POST(
  senderId: user.id,
  content: body.content ? body.content.trim() : '',
  imageUrl: body.imageUrl ? body.imageUrl.trim() : null,
+ parentId: body.parentId || null,
  },
  include: {
  sender: {
