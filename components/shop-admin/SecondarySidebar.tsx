@@ -114,6 +114,8 @@ export default function SecondarySidebar({ shopId, userRole, shopType }: { shopI
  {navLink(`/shop/${shopId}/settings/billing`, 'Billing')}
  </div>
 
+ <div className="w-10 border-t border-crm-border ml-2 my-1" />
+
  <div className="space-y-0.5">
  {navLink(`/shop/${shopId}/sdk`, 'SDK Docs')}
  </div>

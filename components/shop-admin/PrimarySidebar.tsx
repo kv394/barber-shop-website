@@ -76,13 +76,13 @@ export default function PrimarySidebar({
   {navLink(`/shop/${shopId}/settings/team`, 'Team', icons.idCard, () => pathname.startsWith(`/shop/${shopId}/settings/team`))}
   {navLink(`/shop/${shopId}/portfolio`, 'Portfolio', icons.image, () => pathname.startsWith(`/shop/${shopId}/portfolio`))}
 
-  <div className="w-8 border-t border-white/15 my-1" />
+  <div className="w-8 border-t border-white/15 my-2" />
 
   {navLink(`/shop/${shopId}/reports`, 'Reports', icons.chart, () => pathname === `/shop/${shopId}/reports`)}
   {navLink(`/shop/${shopId}/reports/commissions`, 'Payroll', icons.dollar, () => pathname.startsWith(`/shop/${shopId}/reports/commissions`))}
   {navLink(`/shop/${shopId}/expenses`, 'Expenses', icons.badge, () => pathname.startsWith(`/shop/${shopId}/expenses`))}
 
-  <div className="w-8 border-t border-white/15 my-1" />
+  <div className="w-8 border-t border-white/15 my-2" />
 
   {navLink(`/shop/${shopId}/engagement`, 'Engage', icons.heart, () => ['/engagement', '/loyalty', '/referrals', '/campaigns', '/gift-cards', '/reviews'].some(p => pathname.startsWith(`/shop/${shopId}${p}`)))}
   {navLink(`/shop/${shopId}/settings`, 'Settings', icons.settings, () => (pathname.startsWith(`/shop/${shopId}/settings`) || pathname.startsWith(`/shop/${shopId}/config`)) && !pathname.startsWith(`/shop/${shopId}/settings/team`))}
