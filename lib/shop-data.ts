@@ -108,12 +108,13 @@ export const getShopLayoutData = cache(async (userId: string, shopId: string) =>
           companyName: firstShop.companyName,
           template: 'modern',
           timezone: 'America/New_York',
+          currency: 'USD',
           customization: {}
         };
       } else {
         shop = await prisma.shop.findUnique({
           where: { id: shopId },
-          select: { id: true, name: true, companyName: true, description: true, slogan: true, customization: true, template: true, timezone: true, shopType: true, subdomain: true, customDomain: true },
+          select: { id: true, name: true, companyName: true, description: true, slogan: true, customization: true, template: true, timezone: true, shopType: true, subdomain: true, customDomain: true, currency: true },
         });
         if (!shop) return null;
       }
