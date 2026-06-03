@@ -88,7 +88,7 @@ export default function SecondarySidebar({ shopId, userRole, shopType }: { shopI
  return (
  <>
  <h3 className="px-3 text-[11px] font-bold text-crm-muted uppercase tracking-wider mb-1.5 mt-3">Setup</h3>
- <div className="space-y-0.5 mb-5 border-l-2 border-crm-border ml-2 pl-2">
+ <div className="space-y-0.5 mb-6 border-l-2 border-crm-border ml-2 pl-2">
  {navLink(`/shop/${shopId}/config/services`, 'Services')}
  {navLink(`/shop/${shopId}/config/products`, 'Products')}
  {navLink(`/shop/${shopId}/settings/booking`, 'Booking & Hours')}
@@ -99,14 +99,14 @@ export default function SecondarySidebar({ shopId, userRole, shopType }: { shopI
  </div>
 
  <h3 className="px-3 text-[11px] font-bold text-crm-muted uppercase tracking-wider mb-1.5">Experience</h3>
- <div className="space-y-0.5 mb-5 border-l-2 border-crm-border ml-2 pl-2">
+ <div className="space-y-0.5 mb-6 border-l-2 border-crm-border ml-2 pl-2">
  {navLink(`/shop/${shopId}/settings`, 'Appearance', true)}
  {navLink(`/shop/${shopId}/settings/memberships`, 'Memberships')}
  {navLink(`/shop/${shopId}/settings/forms`, 'Intake Forms')}
  </div>
 
  <h3 className="px-3 text-[11px] font-bold text-crm-muted uppercase tracking-wider mb-1.5">Operations</h3>
- <div className="space-y-0.5 mb-5 border-l-2 border-crm-border ml-2 pl-2">
+ <div className="space-y-0.5 mb-4 border-l-2 border-crm-border ml-2 pl-2">
  {navLink(`/shop/${shopId}/settings/commissions`, 'Commissions')}
  {navLink(`/shop/${shopId}/settings/notifications`, 'Alerts')}
  {shopType !== 'MOBILE' && navLink(`/shop/${shopId}/settings/kiosk`, 'Staff Kiosk')}
@@ -114,7 +114,7 @@ export default function SecondarySidebar({ shopId, userRole, shopType }: { shopI
  {navLink(`/shop/${shopId}/settings/billing`, 'Billing')}
  </div>
 
- <div className="w-10 border-t border-crm-border ml-2 my-1" />
+ <div className="w-10 border-t border-crm-border ml-2 my-3" />
 
  <div className="space-y-0.5">
  {navLink(`/shop/${shopId}/sdk`, 'SDK Docs')}
