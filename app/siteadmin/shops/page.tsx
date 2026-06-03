@@ -18,9 +18,15 @@ type ShopData = {
  supportAccessExpiresAt: string | null;
  deletedAt: string | null;
  aiTokens: number;
+ customization: any;
  users: { id: string; role: string; name: string | null; email: string }[];
  _count: { users: number; services: number; reviews: number };
 };
+
+function getPendingRequests(shop: ShopData) {
+ const requests = shop.customization?.featureRequests || [];
+ return requests.filter((r: any) => r.status === 'PENDING');
+}
 
 export default function SiteAdminShopsPage() {
  const [shops, setShops] = useState<ShopData[]>([]);
@@ -125,6 +131,11 @@ export default function SiteAdminShopsPage() {
 }`} title={hasAdmin ? 'This shop has an active admin assigned.' : 'This shop currently has no active SHOP_ADMIN users. Click Assign Team to resolve this.'}>
   {hasAdmin ? 'Active Admin' : 'Needs Admin'}
 </span>
+  {getPendingRequests(shop).length > 0 && (
+  <span className="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-amber-500/20 text-amber-600 border border-amber-500/30 animate-pulse">
+  🔔 {getPendingRequests(shop).length} Request{getPendingRequests(shop).length > 1 ? 's' : ''}
+  </span>
+  )}
  {!shop.isActive && (
  <span className="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-status-cancelled/20 text-status-cancelled border border-status-cancelled/30 animate-pulse">
  Inactive
@@ -253,6 +264,58 @@ export default function SiteAdminShopsPage() {
  </button>
  <DeleteShopButton shopId={shop.id} shopName={shop.name} onSuccess={fetchShops} isActive={shop.isActive} />
  </div>
+
+ {/* Inline Feature Requests */}
+ {getPendingRequests(shop).length > 0 && (
+ <div className="mt-4 pt-4 border-t border-crm-border">
+ <h4 className="text-[11px] font-bold text-amber-600 uppercase tracking-wider mb-2 flex items-center gap-1">
+ <span>🔔</span> Pending Feature Requests
+ </h4>
+ <div className="space-y-2">
+ {getPendingRequests(shop).map((req: any) => (
+ <div key={req.id} className="flex items-center justify-between py-2 px-3 rounded-lg bg-amber-500/5 border border-amber-500/20">
+ <div>
+ <span className="text-[13px] font-bold text-crm-text">{req.featureName}</span>
+ <span className="text-[11px] text-crm-muted ml-2">by {req.requestedBy} • {new Date(req.requestedAt).toLocaleDateString()}</span>
+ </div>
+ <div className="flex gap-1.5">
+ <button
+ onClick={async (e) => {
+ e.preventDefault();
+ const res = await fetch(`/api/siteadmin/shops/${shop.id}/feature-requests`, {
+ method: 'PATCH',
+ headers: { 'Content-Type': 'application/json' },
+ body: JSON.stringify({ requestId: req.id, action: 'approve' }),
+ });
+ if (res.ok) fetchShops();
+ else alert('Failed to approve');
+ }}
+ className="px-3 py-1 bg-status-confirmed text-white text-[10px] font-bold rounded-md hover:bg-status-confirmed/90 transition-colors"
+ >
+ ✓ Approve
+ </button>
+ <button
+ onClick={async (e) => {
+ e.preventDefault();
+ const res = await fetch(`/api/siteadmin/shops/${shop.id}/feature-requests`, {
+ method: 'PATCH',
+ headers: { 'Content-Type': 'application/json' },
+ body: JSON.stringify({ requestId: req.id, action: 'deny' }),
+ });
+ if (res.ok) fetchShops();
+ else alert('Failed to deny');
+ }}
+ className="px-3 py-1 bg-status-cancelled/80 text-white text-[10px] font-bold rounded-md hover:bg-status-cancelled transition-colors"
+ >
+ ✕ Deny
+ </button>
+ </div>
+ </div>
+ ))}
+ </div>
+ </div>
+ )}
+
  </div>
  </div>
  );

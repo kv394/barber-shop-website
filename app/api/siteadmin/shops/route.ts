@@ -36,6 +36,7 @@ export async function GET() {
         deletedAt: true,
         aiTokens: true,
         premiumFeatures: true,
+        customization: true,
         _count: {
           select: {
             users: true,
