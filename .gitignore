@@ -56,3 +56,13 @@ tsconfig.tsbuildinfo
 # Security - sensitive data files
 staging_auth_users.csv
 test_auth_dump.sql
+
+# OpenNext
+.open-next
+
+# wrangler files
+.wrangler
+.dev.vars*
+!.dev.vars.example
+
+!.env.example

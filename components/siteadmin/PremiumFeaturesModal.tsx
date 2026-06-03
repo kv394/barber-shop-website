@@ -18,7 +18,7 @@ const PREMIUM_FEATURES = [
   { id: 'payroll', name: 'Automated Payroll', price: '$20/mo' },
   { id: 'dynamicPricing', name: 'Dynamic Pricing', price: '$15/mo' },
   { id: 'consultations', name: 'Virtual Consultations', price: '$15/mo' },
-  { id: 'customSmtp', name: 'Custom Email (SMTP)', price: '$10/mo' },
+  { id: 'platformEmail', name: 'Platform Email (kutzapp.com)', price: '$10/mo' },
 ];
 
 export default function PremiumFeaturesModal({ shopId, shopName, onClose, onSuccess }: PremiumFeaturesModalProps) {

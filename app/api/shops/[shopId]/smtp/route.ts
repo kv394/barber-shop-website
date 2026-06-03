@@ -19,15 +19,10 @@ export async function GET(
   try {
     const shop = await prisma.shop.findUnique({
       where: { id: shopId },
-      select: { customization: true, premiumFeatures: true },
+      select: { customization: true },
     });
 
     if (!shop) return NextResponse.json({ error: 'Shop not found' }, { status: 404 });
-
-    const premiumFeatures = (shop.premiumFeatures as Record<string, boolean>) || {};
-    if (!premiumFeatures.customSmtp) {
-      return NextResponse.json({ error: 'Custom SMTP is not enabled for this shop. Contact your administrator to enable this premium feature.' }, { status: 403 });
-    }
 
     const customization = (shop.customization as Record<string, any>) || {};
     const smtp = customization.smtp;
@@ -70,15 +65,10 @@ export async function PUT(
   try {
     const shop = await prisma.shop.findUnique({
       where: { id: shopId },
-      select: { customization: true, premiumFeatures: true },
+      select: { customization: true },
     });
 
     if (!shop) return NextResponse.json({ error: 'Shop not found' }, { status: 404 });
-
-    const premiumFeatures = (shop.premiumFeatures as Record<string, boolean>) || {};
-    if (!premiumFeatures.customSmtp) {
-      return NextResponse.json({ error: 'Custom SMTP is not enabled for this shop.' }, { status: 403 });
-    }
 
     const body = await request.json();
     const { host, port, secure, username, password, fromEmail, fromName } = body;

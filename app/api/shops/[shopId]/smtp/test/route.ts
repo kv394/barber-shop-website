@@ -28,15 +28,10 @@ export async function POST(
 
     const shop = await prisma.shop.findUnique({
       where: { id: shopId },
-      select: { name: true, customization: true, premiumFeatures: true },
+      select: { name: true, customization: true },
     });
 
     if (!shop) return NextResponse.json({ error: 'Shop not found' }, { status: 404 });
-
-    const premiumFeatures = (shop.premiumFeatures as Record<string, boolean>) || {};
-    if (!premiumFeatures.customSmtp) {
-      return NextResponse.json({ error: 'Custom SMTP is not enabled for this shop.' }, { status: 403 });
-    }
 
     const customization = (shop.customization as Record<string, any>) || {};
     const smtpConfig = customization.smtp;

@@ -275,8 +275,11 @@ export function getEmailProvider(): EmailProvider {
 
 /**
  * Get the email provider for a specific shop.
- * If the shop has a custom SMTP configured AND the 'customSmtp' premium feature is enabled,
- * returns an SmtpProvider. Otherwise falls back to the site-level provider.
+ * 
+ * Priority:
+ * 1. Custom SMTP (free, always available) — if the shop has SMTP configured, use it
+ * 2. Platform email (premium) — if the shop has the 'platformEmail' feature, use Resend/SendGrid
+ * 3. Console fallback — log only, no email sent
  */
 export async function getEmailProviderForShop(shopId: string): Promise<EmailProvider> {
   if (!shopId) return getEmailProvider();
@@ -290,31 +293,36 @@ export async function getEmailProviderForShop(shopId: string): Promise<EmailProv
 
     if (!shop) return getEmailProvider();
 
-    const premiumFeatures = (shop.premiumFeatures as Record<string, boolean>) || {};
-    if (!premiumFeatures.customSmtp) return getEmailProvider();
-
+    // 1. Check for custom SMTP (free for all shops)
     const customization = (shop.customization as Record<string, any>) || {};
     const smtpConfig = customization.smtp;
 
-    if (!smtpConfig?.host || !smtpConfig?.username || !smtpConfig?.password) {
-      return getEmailProvider();
+    if (smtpConfig?.host && smtpConfig?.username && smtpConfig?.password) {
+      const { decryptSmtpPassword } = await import('@/lib/smtp-crypto');
+      const decryptedPassword = decryptSmtpPassword(smtpConfig.password);
+
+      return new SmtpProvider({
+        host: smtpConfig.host,
+        port: smtpConfig.port || 587,
+        secure: smtpConfig.secure || false,
+        username: smtpConfig.username,
+        password: decryptedPassword,
+        fromEmail: smtpConfig.fromEmail || smtpConfig.username,
+        fromName: smtpConfig.fromName,
+      });
     }
 
-    // Decrypt the stored password
-    const { decryptSmtpPassword } = await import('@/lib/smtp-crypto');
-    const decryptedPassword = decryptSmtpPassword(smtpConfig.password);
+    // 2. Check for platform email premium feature (uses kutzapp.com / Resend)
+    const premiumFeatures = (shop.premiumFeatures as Record<string, boolean>) || {};
+    if (premiumFeatures.platformEmail) {
+      return getEmailProvider(); // Resend / SendGrid / site-level
+    }
 
-    return new SmtpProvider({
-      host: smtpConfig.host,
-      port: smtpConfig.port || 587,
-      secure: smtpConfig.secure || false,
-      username: smtpConfig.username,
-      password: decryptedPassword,
-      fromEmail: smtpConfig.fromEmail || smtpConfig.username,
-      fromName: smtpConfig.fromName,
-    });
+    // 3. No email provider available — log only
+    logger.warn(`[EMAIL] Shop ${shopId} has no custom SMTP and no platformEmail premium. Email will be logged only.`);
+    return new ConsoleEmailProvider();
   } catch (error: any) {
-    logger.error(`[SMTP] Failed to load shop SMTP config for ${shopId}: ${error.message}`);
+    logger.error(`[SMTP] Failed to load shop email config for ${shopId}: ${error.message}`);
     return getEmailProvider();
   }
 }
