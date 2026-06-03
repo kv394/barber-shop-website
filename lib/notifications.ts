@@ -1,6 +1,7 @@
 import { prisma } from '@/lib/prisma';
 import { logger } from '@/lib/logger';
-import { getEmailProvider, getEmailProviderForShop, getSMSProvider, getWhatsAppProvider } from '@/lib/messaging-providers';
+import { getEmailProvider, getEmailProviderForShop, getWhatsAppProvider } from '@/lib/messaging-providers';
+import { sendSms } from '@/lib/sms-provider';
 
 /**
  * Notification Service — Provider-agnostic delivery engine
@@ -388,9 +389,10 @@ export class NotificationService {
 
       if (channel === 'SMS' || channel === 'BOTH') {
         if (phone) {
-          const provider = getSMSProvider();
-          const result = await provider.send(phone, message);
+          const result = await sendSms(phone, message, userId);
           results.push({ channel: 'SMS', ...result });
+        } else {
+          logger.warn(`[SMS] No phone number found for user ${userId} — skipping SMS delivery`);
         }
       }
 
