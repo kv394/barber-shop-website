@@ -1,6 +1,6 @@
 import React from 'react';
 import { prisma } from '@/lib/prisma';
-import Link from 'next/link';
+import PremiumFeatureRequestButton from './PremiumFeatureRequestButton';
 
 interface PremiumFeatureGateProps {
   shopId: string;
@@ -21,7 +21,7 @@ export default async function PremiumFeatureGate({
 }: PremiumFeatureGateProps) {
   const shop = await prisma.shop.findUnique({
     where: { id: shopId },
-    select: { premiumFeatures: true, name: true }
+    select: { premiumFeatures: true, customization: true, name: true }
   });
 
   if (!shop) return <>{children}</>;
@@ -32,6 +32,13 @@ export default async function PremiumFeatureGate({
   if (isEnabled) {
     return <>{children}</>;
   }
+
+  // Check if there's already a pending request for this feature
+  const customization = (shop.customization as Record<string, any>) || {};
+  const featureRequests: any[] = customization.featureRequests || [];
+  const pendingRequest = featureRequests.find(
+    (r: any) => r.featureId === featureId && r.status === 'PENDING'
+  );
 
   return (
     <div className="relative w-full h-full min-h-[60vh] flex items-center justify-center">
@@ -61,14 +68,15 @@ export default async function PremiumFeatureGate({
           <span className="text-2xl font-black text-brand-indigo">{price}</span>
         </div>
 
-        <Link 
-          href={`mailto:support@kutzapp.com?subject=Enable ${title} for ${shop.name}`}
-          className="block w-full py-4 bg-crm-primary text-white rounded-xl font-bold text-lg hover:bg-crm-primary/90 transition-all shadow-lg shadow-crm-primary/20"
-        >
-          Contact Admin to Enable
-        </Link>
+        <PremiumFeatureRequestButton
+          shopId={shopId}
+          featureId={featureId}
+          featureName={title}
+          hasPendingRequest={!!pendingRequest}
+        />
+
         <p className="text-[12px] text-crm-muted mt-4">
-          Or reach out to your account manager to upgrade your plan.
+          Your request will be reviewed by the platform administrator.
         </p>
       </div>
     </div>

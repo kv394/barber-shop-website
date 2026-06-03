@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation';
 import { prisma } from '@/lib/prisma';
 import Link from 'next/link';
+import FeatureRequestsPanel from '@/components/siteadmin/FeatureRequestsPanel';
 
 export const dynamic = 'force-dynamic';
 
@@ -60,6 +61,9 @@ export default async function SiteAdminShopDetailsPage({ params }: { params: Pro
           As a Site Administrator, you can bypass shop-level restrictions. Clicking <strong>Impersonate Shop</strong> navigates you directly to this shop's dashboard. Your SITE_ADMIN role automatically grants you full visibility into their operations without needing separate authentication or changing your user token.
         </p>
       </div>
+
+      {/* Feature Requests Panel */}
+      <FeatureRequestsPanel shopId={shop.id} />
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="bg-crm-surface border border-crm-border rounded-xl p-6 shadow-sm">

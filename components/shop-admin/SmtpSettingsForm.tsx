@@ -158,16 +158,7 @@ export default function SmtpSettingsForm({ shopId }: SmtpSettingsFormProps) {
 
   if (notEnabled) {
     return (
-      <div className="rounded-xl border border-crm-border bg-crm-surface p-8 text-center">
-        <div className="text-4xl mb-4">📧</div>
-        <h3 className="text-lg font-bold text-crm-text mb-2">Custom Email (SMTP)</h3>
-        <p className="text-crm-muted text-sm mb-4">
-          Send notifications from your own email address instead of the default KutzApp address.
-        </p>
-        <div className="inline-block px-4 py-2 bg-brand-amber/20 text-brand-amber rounded-lg text-sm font-bold">
-          💎 Premium Feature — Contact your administrator to enable
-        </div>
-      </div>
+      <SmtpNotEnabledCard shopId={shopId} />
     );
   }
 
@@ -373,6 +364,69 @@ export default function SmtpSettingsForm({ shopId }: SmtpSettingsFormProps) {
           )}
         </div>
       </form>
+    </div>
+  );
+}
+
+function SmtpNotEnabledCard({ shopId }: { shopId: string }) {
+  const [requesting, setRequesting] = useState(false);
+  const [requested, setRequested] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  async function handleRequest() {
+    setRequesting(true);
+    setError(null);
+    try {
+      const res = await fetch(`/api/shops/${shopId}/feature-requests`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ featureId: 'customSmtp', featureName: 'Custom Email (SMTP)' }),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setRequested(true);
+      } else {
+        if (data.error?.includes('already pending')) {
+          setRequested(true);
+        } else {
+          setError(data.error || 'Failed to submit request');
+        }
+      }
+    } catch (err: any) {
+      setError(err.message);
+    } finally {
+      setRequesting(false);
+    }
+  }
+
+  return (
+    <div className="rounded-xl border border-crm-border bg-crm-surface p-8 text-center">
+      <div className="text-4xl mb-4">📧</div>
+      <h3 className="text-lg font-bold text-crm-text mb-2">Custom Email (SMTP)</h3>
+      <p className="text-crm-muted text-sm mb-4">
+        Send notifications from your own email address instead of the default KutzApp address.
+      </p>
+      <div className="inline-block px-3 py-1 bg-brand-amber/10 text-brand-amber rounded-full text-[12px] font-bold mb-5">
+        💎 Premium Feature — $10/mo
+      </div>
+      {error && (
+        <div className="mb-4 p-2 bg-status-cancelled/20 text-status-cancelled rounded-lg text-sm font-medium">
+          {error}
+        </div>
+      )}
+      {requested ? (
+        <div className="py-3 px-6 bg-brand-amber/20 text-brand-amber rounded-xl font-bold text-sm flex items-center justify-center gap-2">
+          <span>⏳</span> Request Pending — Your administrator will review this soon
+        </div>
+      ) : (
+        <button
+          onClick={handleRequest}
+          disabled={requesting}
+          className="w-full max-w-xs mx-auto py-3 bg-crm-primary text-white rounded-xl font-bold text-sm hover:bg-crm-primary/90 transition-all shadow-lg shadow-crm-primary/20 disabled:opacity-50"
+        >
+          {requesting ? 'Submitting...' : '🚀 Request This Feature'}
+        </button>
+      )}
     </div>
   );
 }
