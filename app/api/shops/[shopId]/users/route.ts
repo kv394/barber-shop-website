@@ -97,12 +97,11 @@ export async function POST(
  }
  });
  } else {
- await tenantClient.shopAccess.upsert({
- where: { userId_shopId: { userId: existingUser.id, shopId } },
- update: { role },
- create: { userId: existingUser.id, shopId, role }
- });
- user = existingUser;
+  // User belongs to another shop as STAFF/ADMIN/BOOTH_RENTER — block this
+  return NextResponse.json(
+  { error: 'This email is already associated with another shop. The user must be removed from that shop first.' },
+  { status: 409 }
+  );
  }
  } else {
  user = await tenantClient.user.create({

@@ -9,6 +9,7 @@ import TeamDashboardClient from '@/components/shop-admin/TeamDashboardClient';
 import InviteFormClient from '@/components/shop-admin/InviteFormClient';
 import Link from 'next/link';
 import { revalidatePath } from 'next/cache';
+
 import crypto from 'crypto';
 import { cacheService } from '@/lib/cache';
 
@@ -138,9 +139,16 @@ async function inviteUser(_prevState: any, formData: FormData): Promise<{ succes
  // User has no primary shop or is just a client. Set this as primary.
  await prisma.user.update({ where: { email }, data: { role, shopId } });
  } else {
- // User belongs to another shop — block the invite
- const otherShopName = existingUser.shop?.name || 'another shop';
- return { success: false, error: `This email is already associated with "${otherShopName}". The user must be removed from that shop first before they can be added here.` };
+  // User belongs to another shop — block unless caller is SITE_ADMIN
+  if (caller.role !== 'SITE_ADMIN') {
+  const otherShopName = existingUser.shop?.name || 'another shop';
+  return { success: false, error: `This email is already associated with "${otherShopName}". The user must be removed from that shop first before they can be added here.` };
+  }
+  await prisma.shopAccess.upsert({
+  where: { userId_shopId: { userId: existingUser.id, shopId } },
+  update: { role },
+  create: { userId: existingUser.id, shopId, role }
+  });
  }
  await cacheService.invalidatePattern(`shop_layout:${existingUser.email}:*`);
  } else {
