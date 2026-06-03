@@ -132,24 +132,24 @@ async function inviteUser(_prevState: any, formData: FormData): Promise<{ succes
 
  const existingUser = await prisma.user.findUnique({ where: { email }, include: { shop: { select: { name: true } } } });
  if (existingUser) {
- if (existingUser.shopId === shopId) {
- // Already in this shop — just update role
- await prisma.user.update({ where: { email }, data: { role } });
- } else if (existingUser.shopId === null || existingUser.role === 'CLIENT') {
- // User has no primary shop or is just a client. Set this as primary.
- await prisma.user.update({ where: { email }, data: { role, shopId } });
- } else {
-  // User belongs to another shop — block unless caller is SITE_ADMIN
-  if (caller.role !== 'SITE_ADMIN') {
-  const otherShopName = existingUser.shop?.name || 'another shop';
-  return { success: false, error: `This email is already associated with "${otherShopName}". The user must be removed from that shop first before they can be added here.` };
+  if (existingUser.shopId === shopId) {
+  // Already in this shop — just update role
+  await prisma.user.update({ where: { email }, data: { role } });
+  } else if (existingUser.shopId === null) {
+  // User has no primary shop — set this as primary.
+  await prisma.user.update({ where: { email }, data: { role, shopId } });
+  } else {
+   // User belongs to another shop — block unless caller is SITE_ADMIN
+   if (caller.role !== 'SITE_ADMIN') {
+   const otherShopName = existingUser.shop?.name || 'another shop';
+   return { success: false, error: `This email is already associated with "${otherShopName}". The user must be removed from that shop first before they can be added here.` };
+   }
+   await prisma.shopAccess.upsert({
+   where: { userId_shopId: { userId: existingUser.id, shopId } },
+   update: { role },
+   create: { userId: existingUser.id, shopId, role }
+   });
   }
-  await prisma.shopAccess.upsert({
-  where: { userId_shopId: { userId: existingUser.id, shopId } },
-  update: { role },
-  create: { userId: existingUser.id, shopId, role }
-  });
- }
  await cacheService.invalidatePattern(`shop_layout:${existingUser.email}:*`);
  } else {
   // Create Supabase auth account using service role so the user can log in

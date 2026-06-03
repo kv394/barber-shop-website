@@ -87,7 +87,7 @@ export async function POST(
  canManageInventory: role === 'STAFF' ? Boolean(canManageInventory) : false,
  }
  });
- } else if (existingUser.shopId === null || existingUser.role === 'CLIENT') {
+ } else if (existingUser.shopId === null) {
  user = await tenantClient.user.update({
  where: { email },
  data: {
