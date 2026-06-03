@@ -56,17 +56,14 @@ export default function SecondarySidebar({ shopId, userRole, shopType }: { shopI
  switch (section) {
  case 'team':
  return (
- <>
- <div className="space-y-1 mt-2">
+ <div className="space-y-0.5 mt-3">
  {navLink(`/shop/${shopId}/settings/team`, 'Availability & Staff')}
  {navLink(`/shop/${shopId}/portfolio`, 'Portfolio')}
  </div>
- </>
  );
  case 'engagement':
  return (
- <>
- <div className="space-y-1 mt-2">
+ <div className="space-y-0.5 mt-3">
  {navLink(`/shop/${shopId}/engagement`, 'Dashboard', true)}
  {navLink(`/shop/${shopId}/loyalty`, 'Loyalty Program')}
  {navLink(`/shop/${shopId}/referrals`, 'Referrals')}
@@ -75,12 +72,10 @@ export default function SecondarySidebar({ shopId, userRole, shopType }: { shopI
  {navLink(`/shop/${shopId}/gift-cards`, 'Gift Cards')}
  {navLink(`/shop/${shopId}/reviews`, 'Reviews')}
  </div>
- </>
  );
  case 'reports':
  return (
- <>
- <div className="space-y-1 mt-2">
+ <div className="space-y-0.5 mt-3">
  {navLink(`/shop/${shopId}/reports`, 'Overview', true)}
  {navLink(`/shop/${shopId}/reports/commissions`, 'Commissions')}
  {navLink(`/shop/${shopId}/reports/staff-working`, 'Working Hours')}
@@ -88,40 +83,38 @@ export default function SecondarySidebar({ shopId, userRole, shopType }: { shopI
  {navLink(`/shop/${shopId}/booth-rent`, 'Booth Rent')}
  {navLink(`/shop/${shopId}/capital`, 'Capital & Financing')}
  </div>
- </>
  );
  case 'settings':
  return (
  <>
- <h3 className="px-3 text-[11px] font-bold text-crm-muted uppercase tracking-wider mb-2 mt-4">Setup</h3>
- <div className="space-y-1 mb-4 border-l-2 border-crm-border ml-2 pl-2">
+ <h3 className="px-3 text-[11px] font-bold text-crm-muted uppercase tracking-wider mb-1.5 mt-3">Setup</h3>
+ <div className="space-y-0.5 mb-5 border-l-2 border-crm-border ml-2 pl-2">
  {navLink(`/shop/${shopId}/config/services`, 'Services')}
  {navLink(`/shop/${shopId}/config/products`, 'Products')}
  {navLink(`/shop/${shopId}/settings/booking`, 'Booking & Hours')}
  {navLink(`/shop/${shopId}/settings/dynamic-pricing`, 'Dynamic Pricing')}
-
  {navLink(`/shop/${shopId}/settings/resources`, 'Resources')}
  {navLink(`/shop/${shopId}/hardware`, 'Hardware Store')}
  {navLink(`/shop/${shopId}/marketplace`, 'Wholesale Marketplace')}
  </div>
- 
- <h3 className="px-3 text-[11px] font-bold text-crm-muted uppercase tracking-wider mb-2">Experience</h3>
- <div className="space-y-1 mb-4 border-l-2 border-crm-border ml-2 pl-2">
+
+ <h3 className="px-3 text-[11px] font-bold text-crm-muted uppercase tracking-wider mb-1.5">Experience</h3>
+ <div className="space-y-0.5 mb-5 border-l-2 border-crm-border ml-2 pl-2">
  {navLink(`/shop/${shopId}/settings`, 'Appearance', true)}
  {navLink(`/shop/${shopId}/settings/memberships`, 'Memberships')}
  {navLink(`/shop/${shopId}/settings/forms`, 'Intake Forms')}
  </div>
- 
- <h3 className="px-3 text-[11px] font-bold text-crm-muted uppercase tracking-wider mb-2">Operations</h3>
- <div className="space-y-1 mb-6 border-l-2 border-crm-border ml-2 pl-2">
+
+ <h3 className="px-3 text-[11px] font-bold text-crm-muted uppercase tracking-wider mb-1.5">Operations</h3>
+ <div className="space-y-0.5 mb-5 border-l-2 border-crm-border ml-2 pl-2">
  {navLink(`/shop/${shopId}/settings/commissions`, 'Commissions')}
  {navLink(`/shop/${shopId}/settings/notifications`, 'Alerts')}
  {shopType !== 'MOBILE' && navLink(`/shop/${shopId}/settings/kiosk`, 'Staff Kiosk')}
  {shopType !== 'MOBILE' && navLink(`/shop/${shopId}/kiosk`, 'Front Desk Kiosk')}
  {navLink(`/shop/${shopId}/settings/billing`, 'Billing')}
  </div>
- 
- <div className="space-y-1">
+
+ <div className="space-y-0.5">
  {navLink(`/shop/${shopId}/sdk`, 'SDK Docs')}
  </div>
  </>
