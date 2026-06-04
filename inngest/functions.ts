@@ -281,3 +281,15 @@ export const cleanupProcessedWebhooks = inngest.createFunction(
     return result;
   }
 );
+
+export const monitorVercelLogs = inngest.createFunction(
+  { id: 'monitor-vercel-logs', triggers: [{ cron: '*/10 * * * *' }] },
+  async ({ step }) => {
+    const result = await step.run('fetch-vercel-logs', async () => {
+      const { VercelLogMonitor } = await import('@/lib/vercel-logs');
+      return await VercelLogMonitor.fetchAndIngestLogs();
+    });
+    return result;
+  }
+);
+
