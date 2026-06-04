@@ -289,6 +289,39 @@ export const monitorVercelLogs = inngest.createFunction(
       const { VercelLogMonitor } = await import('@/lib/vercel-logs');
       return await VercelLogMonitor.fetchAndIngestLogs();
     });
+
+    if (result && result.errorsFound > 0) {
+      await step.run('alert-site-admins', async () => {
+        const { prisma } = await import('@/lib/prisma');
+        const { NotificationService } = await import('@/lib/notifications');
+        const { logger } = await import('@/lib/logger');
+
+        const siteAdmins = await prisma.user.findMany({
+          where: { role: 'SITE_ADMIN' },
+          select: { id: true, email: true },
+        });
+
+        if (siteAdmins.length === 0) {
+          logger.warn('[Vercel Monitor Inngest] No SITE_ADMIN users found to alert.');
+          return;
+        }
+
+        const shop = await prisma.shop.findFirst({ select: { id: true } });
+        const shopId = shop?.id || 'demo-shop-001';
+
+        for (const admin of siteAdmins) {
+          logger.info(`[Vercel Monitor Inngest] Sending alert notification to SITE_ADMIN ${admin.email}`);
+          await NotificationService.send({
+            shopId,
+            userId: admin.id,
+            type: 'SYSTEM_ALERT',
+            title: '⚠️ Vercel Errors Detected',
+            message: `Vercel Log Monitor detected ${result.errorsFound} error(s) during the capture window. Please check the siteadmin dashboard for details.`,
+          });
+        }
+      });
+    }
+
     return result;
   }
 );
