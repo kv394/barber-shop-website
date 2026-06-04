@@ -70,7 +70,7 @@ export async function GET(request: Request) {
     }
 
     // Resolve shop names for each log
-    const shopIds = [...new Set(logsData.map(l => l.shopId).filter(Boolean))] as string[];
+    const shopIds = Array.from(new Set(logsData.map(l => l.shopId).filter(Boolean))) as string[];
     const shopMap = new Map<string, string>();
     if (shopIds.length > 0) {
       const shopRecords = await prisma.shop.findMany({
