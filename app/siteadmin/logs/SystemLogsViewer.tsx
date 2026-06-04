@@ -73,13 +73,17 @@ export default function SystemLogsViewer() {
     fetchLogs();
   }, [fetchLogs]);
 
+  // Clear settings
+  const [clearDays, setClearDays] = useState(30);
+
   const handleDeleteOldLogs = async () => {
-    if (!confirm('Are you sure you want to delete all logs older than 30 days?')) return;
+    if (!confirm(`Are you sure you want to delete all logs older than ${clearDays} day${clearDays === 1 ? '' : 's'}?`)) return;
     
     try {
-      const res = await fetch('/api/siteadmin/logs', { method: 'DELETE' });
+      const res = await fetch(`/api/siteadmin/logs?days=${clearDays}`, { method: 'DELETE' });
       if (res.ok) {
-        alert('Old logs deleted successfully');
+        const data = await res.json();
+        alert(`Deleted ${data.deleted ?? 0} log${data.deleted === 1 ? '' : 's'} older than ${clearDays} day${clearDays === 1 ? '' : 's'}.`);
         fetchLogs();
       }
     } catch (e) {
@@ -206,13 +210,27 @@ export default function SystemLogsViewer() {
             </div>
           )}
 
-          <button
-            onClick={handleDeleteOldLogs}
-            className="h-9 bg-red-500/10 text-red-400 hover:text-red-300 border border-red-500/20 hover:border-red-500/40 hover:bg-red-500/20 px-3 rounded-lg text-[11px] font-bold uppercase tracking-wider transition-all shadow-inner flex items-center gap-1.5 ml-auto xl:ml-0"
-          >
-            <Trash2 className="w-3.5 h-3.5" />
-            Clear Old
-          </button>
+          <div className="flex items-center gap-1 ml-auto xl:ml-0">
+            <select
+              value={clearDays}
+              onChange={(e) => setClearDays(parseInt(e.target.value))}
+              className="h-9 min-h-[36px] py-2 bg-red-500/5 border border-red-500/20 rounded-l-lg px-2 text-red-400 outline-none text-[11px] font-bold shadow-inner focus:border-red-500/40 transition-colors"
+            >
+              <option value="1">1 day</option>
+              <option value="7">7 days</option>
+              <option value="14">14 days</option>
+              <option value="30">30 days</option>
+              <option value="60">60 days</option>
+              <option value="90">90 days</option>
+            </select>
+            <button
+              onClick={handleDeleteOldLogs}
+              className="h-9 bg-red-500/10 text-red-400 hover:text-red-300 border border-red-500/20 hover:border-red-500/40 hover:bg-red-500/20 px-3 rounded-r-lg text-[11px] font-bold uppercase tracking-wider transition-all shadow-inner flex items-center gap-1.5"
+            >
+              <Trash2 className="w-3.5 h-3.5" />
+              Clear
+            </button>
+          </div>
         </div>
       </div>
 

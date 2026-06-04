@@ -152,17 +152,18 @@ export async function DELETE(request: Request) {
     if (id) {
       await prisma.systemLog.delete({ where: { id } });
     } else {
-      // Clear all logs older than 30 days
-      const thirtyDaysAgo = new Date();
-      thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+      const days = parseInt(searchParams.get('days') || '30');
+      const cutoff = new Date();
+      cutoff.setDate(cutoff.getDate() - days);
       
-      await prisma.systemLog.deleteMany({
+      const result = await prisma.systemLog.deleteMany({
         where: {
           createdAt: {
-            lt: thirtyDaysAgo
+            lt: cutoff
           }
         }
       });
+      return NextResponse.json({ success: true, deleted: result.count });
     }
 
     return NextResponse.json({ success: true });
