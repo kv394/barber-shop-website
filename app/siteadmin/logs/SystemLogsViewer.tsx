@@ -17,9 +17,13 @@ type SystemLog = {
   path: string | null;
   message: string;
   metadata: any;
+  shopId: string | null;
+  shopName: string | null;
   isResolved: boolean;
   createdAt: string;
 };
+
+type ShopOption = { id: string; name: string };
 
 export default function SystemLogsViewer() {
   const [logs, setLogs] = useState<SystemLog[]>([]);
@@ -35,6 +39,8 @@ export default function SystemLogsViewer() {
   const [levelFilter, setLevelFilter] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
+  const [shopFilter, setShopFilter] = useState('');
+  const [shops, setShops] = useState<ShopOption[]>([]);
   
   // Details Modal
   const [selectedLog, setSelectedLog] = useState<SystemLog | null>(null);
@@ -46,6 +52,7 @@ export default function SystemLogsViewer() {
     if (levelFilter) params.append('level', levelFilter);
     if (searchQuery) params.append('search', searchQuery);
     if (statusFilter) params.append('status', statusFilter);
+    if (shopFilter) params.append('shopId', shopFilter);
 
     try {
       const res = await fetch(`/api/siteadmin/logs?${params.toString()}`);
@@ -54,12 +61,13 @@ export default function SystemLogsViewer() {
       setTotalPages(data.pagination?.pages || 1);
       setTotalLogs(data.pagination?.total || 0);
       setNextCursor(data.pagination?.nextCursor || null);
+      if (data.shops) setShops(data.shops);
     } catch (e) {
       console.error('Error fetching logs', e);
     } finally {
       setLoading(false);
     }
-  }, [page, currentCursor, levelFilter, searchQuery, statusFilter]);
+  }, [page, currentCursor, levelFilter, searchQuery, statusFilter, shopFilter]);
 
   useEffect(() => {
     fetchLogs();
@@ -178,6 +186,26 @@ export default function SystemLogsViewer() {
             <option value="resolved">Resolved</option>
           </select>
 
+          {shops.length > 0 && (
+            <div className="relative">
+              <select 
+                value={shopFilter}
+                onChange={(e) => { 
+                  setShopFilter(e.target.value); 
+                  setPage(1);
+                  setCurrentCursor(null);
+                  setCursorStack([]);
+                }}
+                className="h-9 min-h-[36px] py-2 bg-black/40 backdrop-blur-md border border-white/10 rounded-lg px-3 text-white outline-none text-[12px] font-semibold shadow-inner focus:border-white/30 transition-colors appearance-none pr-8"
+              >
+                <option value="">All Shops</option>
+                {shops.map(s => (
+                  <option key={s.id} value={s.id}>{s.name}</option>
+                ))}
+              </select>
+            </div>
+          )}
+
           <button
             onClick={handleDeleteOldLogs}
             className="h-9 bg-red-500/10 text-red-400 hover:text-red-300 border border-red-500/20 hover:border-red-500/40 hover:bg-red-500/20 px-3 rounded-lg text-[11px] font-bold uppercase tracking-wider transition-all shadow-inner flex items-center gap-1.5 ml-auto xl:ml-0"
@@ -195,6 +223,7 @@ export default function SystemLogsViewer() {
               <tr className="border-b border-white/10 bg-black/40">
                 <th className="px-4 py-3 text-[10px] uppercase tracking-widest font-bold text-gray-500">Timestamp</th>
                 <th className="px-4 py-3 text-[10px] uppercase tracking-widest font-bold text-gray-500">Level</th>
+                <th className="px-4 py-3 text-[10px] uppercase tracking-widest font-bold text-gray-500">Shop</th>
                 <th className="px-4 py-3 text-[10px] uppercase tracking-widest font-bold text-gray-500">Path</th>
                 <th className="px-4 py-3 text-[10px] uppercase tracking-widest font-bold text-gray-500">Message</th>
                 <th className="px-4 py-3 text-[10px] uppercase tracking-widest font-bold text-gray-500 text-center">Status</th>
@@ -204,7 +233,7 @@ export default function SystemLogsViewer() {
             <tbody className="divide-y divide-white/5">
               {loading && logs.length === 0 ? (
                 <tr>
-                  <td colSpan={6} className="p-12 text-center text-gray-500 font-mono">
+                  <td colSpan={7} className="p-12 text-center text-gray-500 font-mono">
                     <div className="animate-pulse flex flex-col items-center gap-2">
                       <div className="w-6 h-6 border-2 border-gray-500 border-t-transparent rounded-full animate-spin"></div>
                       <p className="text-[12px]">Querying logs...</p>
@@ -213,7 +242,7 @@ export default function SystemLogsViewer() {
                 </tr>
               ) : logs.length === 0 ? (
                 <tr>
-                  <td colSpan={6} className="p-12 text-center text-gray-500 font-mono">
+                  <td colSpan={7} className="p-12 text-center text-gray-500 font-mono">
                     <div className="flex flex-col items-center gap-2">
                       <CheckCircle className="w-8 h-8 text-gray-600" />
                       <p className="text-[12px]">No logs found matching your criteria.</p>
@@ -234,6 +263,9 @@ export default function SystemLogsViewer() {
                       <span className={`inline-block px-2 py-0.5 rounded text-[10px] font-bold tracking-wider border shadow-inner ${getLevelColor(log.level)}`}>
                         {log.level}
                       </span>
+                    </td>
+                    <td className="px-4 py-3 text-[11px] text-gray-300 font-mono max-w-[150px] truncate">
+                      {log.shopName || <span className="text-gray-600">—</span>}
                     </td>
                     <td className="px-4 py-3 font-mono text-[11px] text-gray-300 max-w-[220px] break-all">
                       {log.path || '-'}

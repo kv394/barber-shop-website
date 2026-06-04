@@ -24,6 +24,7 @@ export async function GET(request: Request) {
     const level = searchParams.get('level');
     const search = searchParams.get('search');
     const status = searchParams.get('status');
+    const shopId = searchParams.get('shopId');
 
     const where: any = {};
     if (level) where.level = level;
@@ -36,15 +37,30 @@ export async function GET(request: Request) {
         { path: { contains: search, mode: 'insensitive' } }
       ];
     }
+    if (shopId) where.shopId = shopId;
 
-    const [logsData, total] = await Promise.all([
+    const [logsData, total, shops] = await Promise.all([
       prisma.systemLog.findMany({
         where,
         orderBy: { createdAt: 'desc' },
         take: limit + 1,
         ...(cursor ? { cursor: { id: cursor }, skip: 1 } : {}),
       }),
-      prisma.systemLog.count({ where })
+      prisma.systemLog.count({ where }),
+      // Get distinct shops that have logs for the filter dropdown
+      prisma.systemLog.findMany({
+        where: { shopId: { not: null } },
+        select: { shopId: true },
+        distinct: ['shopId'],
+      }).then(async (results) => {
+        const shopIds = results.map(r => r.shopId!).filter(Boolean);
+        if (shopIds.length === 0) return [];
+        const shopRecords = await prisma.shop.findMany({
+          where: { id: { in: shopIds } },
+          select: { id: true, name: true },
+        });
+        return shopRecords;
+      }),
     ]);
 
     let nextCursor = null;
@@ -53,8 +69,25 @@ export async function GET(request: Request) {
       nextCursor = nextItem!.id;
     }
 
+    // Resolve shop names for each log
+    const shopIds = [...new Set(logsData.map(l => l.shopId).filter(Boolean))] as string[];
+    const shopMap = new Map<string, string>();
+    if (shopIds.length > 0) {
+      const shopRecords = await prisma.shop.findMany({
+        where: { id: { in: shopIds } },
+        select: { id: true, name: true },
+      });
+      shopRecords.forEach(s => shopMap.set(s.id, s.name));
+    }
+
+    const logsWithShop = logsData.map(l => ({
+      ...l,
+      shopName: l.shopId ? (shopMap.get(l.shopId) || l.shopId) : null,
+    }));
+
     return NextResponse.json({
-      logs: logsData,
+      logs: logsWithShop,
+      shops,
       pagination: {
         total,
         pages: Math.ceil(total / limit),
