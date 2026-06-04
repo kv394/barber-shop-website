@@ -55,7 +55,7 @@ export default function AdminSecurityPage() {
   const [isEditing, setIsEditing] = useState(false);
 
   // Resizable columns
-  const [colWidths, setColWidths] = useState([320, 120, 200, 110, 180]);
+  const [colWidths, setColWidths] = useState([280, 110, 220, 120, 180]);
   const colLabels = ['User', 'Role', 'Website', 'Joined', 'Actions'];
   const dragRef = useRef<{ colIndex: number; startX: number; startWidth: number } | null>(null);
 
@@ -452,20 +452,20 @@ export default function AdminSecurityPage() {
                       </span>
                     </td>
                     {/* Website */}
-                    <td className="px-4 py-3">
+                    <td className="px-4 py-3 overflow-hidden">
                       {user.website ? (
-                        <a href={user.website} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 text-xs text-crm-primary hover:text-crm-accent transition-colors group/link" title={user.website}>
+                        <a href={user.website} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 text-xs text-crm-primary hover:text-crm-accent transition-colors group/link max-w-full" title={user.website}>
                           <svg className="w-3.5 h-3.5 flex-shrink-0 opacity-50 group-hover/link:opacity-100" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                             <path strokeLinecap="round" strokeLinejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
                           </svg>
-                          <span className="truncate group-hover/link:underline">{user.shopName || user.website.replace(/^https?:\/\//, '').replace(/\/$/, '')}</span>
+                          <span className="truncate block">{user.shopName || user.website.replace(/^https?:\/\//, '').replace(/\/$/, '')}</span>
                         </a>
                       ) : (
                         <span className="text-xs text-gray-300">—</span>
                       )}
                     </td>
                     {/* Joined */}
-                    <td className="px-4 py-3 text-xs text-gray-500 tabular-nums">
+                    <td className="px-4 py-3 text-xs text-gray-500 tabular-nums whitespace-nowrap">
                       {new Date(user.createdAt).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' })}
                     </td>
                     {/* Actions */}
