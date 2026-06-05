@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { Redis } from '@upstash/redis';
 import { getDriveService } from '@/lib/google-drive';
+import { createClient } from '@/utils/supabase/server';
 
 // Note: Ensure you have NEXT_PUBLIC_UPSTASH_REDIS_REST_URL and NEXT_PUBLIC_UPSTASH_REDIS_REST_TOKEN in your environment.
 let redis: Redis | null = null;
@@ -21,6 +22,11 @@ try {
 export async function GET(req: NextRequest, { params }: { params: Promise<{ fileId: string }> }) {
  const { fileId } = await params;
 
+ // Auth check
+ const supabase = await createClient();
+ const { data: { user } } = await supabase.auth.getUser();
+ if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+
  if (!fileId) {
  return new NextResponse('Missing fileId', { status: 400 });
  }
@@ -38,6 +44,7 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ file
  headers: {
  'Content-Type': 'image/jpeg', // Best effort; may want to cache content-type too
  'Cache-Control': 'public, max-age=31536000, immutable',
+ 'X-Content-Type-Options': 'nosniff',
  },
  });
  }
@@ -75,6 +82,7 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ file
  headers: {
  'Content-Type': response.headers['content-type'] || 'image/jpeg',
  'Cache-Control': 'public, max-age=31536000, immutable',
+ 'X-Content-Type-Options': 'nosniff',
  },
  });
  } catch (e: any) {

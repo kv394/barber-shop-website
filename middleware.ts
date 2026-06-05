@@ -60,6 +60,35 @@ export async function middleware(req: NextRequest) {
   
   const isApi = url.pathname.startsWith('/api');
 
+  // ── CSRF Protection ──
+  // Validate Origin header on state-changing requests to prevent cross-site request forgery.
+  // Exempt: webhooks (signature-verified), inngest (server-to-server), chat/booking (has own CORS check)
+  const mutationMethods = ['POST', 'PUT', 'PATCH', 'DELETE'];
+  if (mutationMethods.includes(req.method) && isApi
+    && !url.pathname.startsWith('/api/inngest')
+    && !url.pathname.startsWith('/api/webhooks')
+    && !url.pathname.startsWith('/api/chat/booking')
+    && !url.pathname.startsWith('/api/debug/log-error')
+  ) {
+    const origin = req.headers.get('origin');
+    if (origin) {
+      const rootDomainEnv = process.env.NEXT_PUBLIC_ROOT_DOMAIN || '';
+      const allowedOrigins = [
+        'localhost', '127.0.0.1',
+        'kutzapp.com', 'kutzapp.vercel.app',
+        ...rootDomainEnv.split(',').map(d => d.trim()).filter(Boolean),
+      ];
+      const isAllowedOrigin = allowedOrigins.some(domain => origin.includes(domain))
+        || origin.includes('vercel.app');
+      if (!isAllowedOrigin) {
+        return NextResponse.json(
+          { error: 'Forbidden: invalid origin' },
+          { status: 403 }
+        );
+      }
+    }
+  }
+
   // ── Global API Rate Limiting ──
   // Skip rate limiting for server-to-server webhooks (they have their own signature verification)
   if (isApi && !url.pathname.startsWith('/api/inngest') && !url.pathname.startsWith('/api/webhooks')) {

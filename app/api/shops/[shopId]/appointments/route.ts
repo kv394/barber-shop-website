@@ -132,7 +132,11 @@ export async function POST(
       return NextResponse.json({ error: 'CAPTCHA token missing' }, { status: 400 });
     }
     const turnstileSecret = process.env.TURNSTILE_SECRET_KEY;
-    if (turnstileSecret) {
+    if (!turnstileSecret) {
+      if (process.env.NODE_ENV === 'production') {
+        return NextResponse.json({ error: 'CAPTCHA not configured' }, { status: 500 });
+      }
+    } else {
       const tsRes = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },

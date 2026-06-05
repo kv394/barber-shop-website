@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { NotificationService } from '@/lib/notifications';
 import { logger } from '@/lib/logger';
+import { rateLimit } from '@/lib/rate-limiter';
 
 export const dynamic = 'force-dynamic';
 
@@ -10,6 +11,10 @@ export async function DELETE(
  { params }: { params: Promise<{ token: string }> }
 ) {
  try {
+ const ip = request.headers.get('x-forwarded-for') || 'unknown';
+ const { success } = await rateLimit(`manage-token:${ip}`, 10, 60);
+ if (!success) return NextResponse.json({ error: 'Too many requests' }, { status: 429 });
+
  const { token } = await params;
 
  const appointment = await prisma.appointment.findUnique({
@@ -58,6 +63,10 @@ export async function PATCH(
  { params }: { params: Promise<{ token: string }> }
 ) {
  try {
+ const ip = request.headers.get('x-forwarded-for') || 'unknown';
+ const { success } = await rateLimit(`manage-token:${ip}`, 10, 60);
+ if (!success) return NextResponse.json({ error: 'Too many requests' }, { status: 429 });
+
  const { token } = await params;
  const { newStartTime, newEndTime } = await request.json();
 

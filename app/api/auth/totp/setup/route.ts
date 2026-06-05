@@ -22,7 +22,6 @@ export async function POST(req: NextRequest) {
  const qrCodeDataUrl = await QRCode.toDataURL(otpauth);
 
  return NextResponse.json({
- secret,
  qrCodeDataUrl,
  otpauth
  });
