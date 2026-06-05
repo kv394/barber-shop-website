@@ -26,7 +26,8 @@ const publicRoutes = [
   '^/api/inngest(?:/.*)?$',
   '^/api/webhooks(?:/.*)?$',
   '^/api/chat/booking(?:/.*)?$',
-  '^/api/assets(?:/.*)?$'
+  '^/api/assets(?:/.*)?$',
+  '^/api/cache/invalidate$'
 ];
 
 const isPublicRoute = (path: string) => {
