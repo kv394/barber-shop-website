@@ -1363,6 +1363,19 @@
     .gold-line--left {
       margin: 0 0 24px 0;
     }
+
+    /* Loading placeholder for SDK-driven sections */
+    .loading-placeholder {
+      text-align: center;
+      padding: 60px 20px;
+      font-family: var(--font-serif);
+      font-size: 0.9rem;
+      color: var(--gold-primary);
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      opacity: 0.6;
+      animation: shimmer 2s ease-in-out infinite;
+    }
   </style>
 </head>
 <body>
@@ -1380,7 +1393,7 @@
         <li><a href="#gallery">Gallery</a></li>
         <li><a href="#story">About</a></li>
       </ul>
-      <a href="#book" class="navbar__cta">Book Now</a>
+      <a href="#" onclick="event.preventDefault(); if(window.BarberBooking) window.BarberBooking.open();" class="navbar__cta">Book Now</a>
       <button class="navbar__hamburger" id="hamburger" aria-label="Open menu">
         <span></span>
         <span></span>
@@ -1396,7 +1409,7 @@
     <a href="#team" onclick="closeMobileMenu()">Barbers</a>
     <a href="#gallery" onclick="closeMobileMenu()">Gallery</a>
     <a href="#story" onclick="closeMobileMenu()">About</a>
-    <a href="#book" class="navbar__cta" onclick="closeMobileMenu()">Book Now</a>
+    <a href="#" class="navbar__cta" onclick="event.preventDefault(); closeMobileMenu(); if(window.BarberBooking) window.BarberBooking.open();">Book Now</a>
   </div>
 
   <!-- ==========================================
@@ -1432,80 +1445,8 @@
         <div class="gold-line reveal reveal-delay-1"></div>
         <h2 class="section-heading reveal reveal-delay-2">Curated Services</h2>
       </div>
-      <div class="services__grid">
-        <!-- Service 1 -->
-        <div class="service-card reveal reveal-delay-1">
-          <div class="service-card__header">
-            <h3 class="service-card__name">Heritage Royale</h3>
-            <span class="service-card__price">$85+</span>
-          </div>
-          <p class="service-card__desc">The complete gentleman's experience: precision cut, hot towel shave, facial massage &amp; scalp treatment.</p>
-          <span class="service-card__duration">
-            <span class="material-symbols-outlined">schedule</span>
-            90 min
-          </span>
-        </div>
-        <!-- Service 2 -->
-        <div class="service-card reveal reveal-delay-2">
-          <div class="service-card__header">
-            <h3 class="service-card__name">Classic Fade</h3>
-            <span class="service-card__price">$45+</span>
-          </div>
-          <p class="service-card__desc">Skin fade with surgical precision. Includes hot towel &amp; styling.</p>
-          <span class="service-card__duration">
-            <span class="material-symbols-outlined">schedule</span>
-            45 min
-          </span>
-        </div>
-        <!-- Service 3 -->
-        <div class="service-card reveal reveal-delay-3">
-          <div class="service-card__header">
-            <h3 class="service-card__name">Beard Sculpture</h3>
-            <span class="service-card__price">$35+</span>
-          </div>
-          <p class="service-card__desc">Full beard grooming: trim, shape, line-up, hot oil treatment.</p>
-          <span class="service-card__duration">
-            <span class="material-symbols-outlined">schedule</span>
-            30 min
-          </span>
-        </div>
-        <!-- Service 4 -->
-        <div class="service-card reveal reveal-delay-4">
-          <div class="service-card__header">
-            <h3 class="service-card__name">Hot Towel Shave</h3>
-            <span class="service-card__price">$40+</span>
-          </div>
-          <p class="service-card__desc">Traditional straight-razor shave with pre-shave oil &amp; hot towel ritual.</p>
-          <span class="service-card__duration">
-            <span class="material-symbols-outlined">schedule</span>
-            40 min
-          </span>
-        </div>
-        <!-- Service 5 -->
-        <div class="service-card reveal reveal-delay-5">
-          <div class="service-card__header">
-            <h3 class="service-card__name">The Executive</h3>
-            <span class="service-card__price">$55+</span>
-          </div>
-          <p class="service-card__desc">Quick precision cut &amp; style for the busy professional.</p>
-          <span class="service-card__duration">
-            <span class="material-symbols-outlined">schedule</span>
-            35 min
-          </span>
-        </div>
-        <!-- Service 6 -->
-        <div class="service-card reveal reveal-delay-6">
-          <div class="service-card__header">
-            <h3 class="service-card__name">Scalp Revival</h3>
-            <span class="service-card__price">$30+</span>
-          </div>
-          <p class="service-card__desc">Deep cleanse, exfoliation &amp; therapeutic scalp massage.</p>
-          <span class="service-card__duration">
-            <span class="material-symbols-outlined">schedule</span>
-            25 min
-          </span>
-        </div>
-      </div>
+      <div id="services-loading" class="loading-placeholder">Loading Services...</div>
+      <div id="services-list" class="services__grid" style="display:none"></div>
     </div>
   </section>
 
@@ -1541,52 +1482,8 @@
         <div class="gold-line reveal reveal-delay-1"></div>
         <h2 class="section-heading reveal reveal-delay-2">Meet Our Barbers</h2>
       </div>
-      <div class="team__grid">
-        <!-- Barber 1 -->
-        <div class="barber-card reveal reveal-delay-1">
-          <div class="barber-card__image">
-            <img src="/templates/heritage/elena.jpg" alt="Elena — Master Stylist" />
-          </div>
-          <div class="barber-card__info">
-            <h3 class="barber-card__name">Elena</h3>
-            <div class="barber-card__role">Master Stylist</div>
-            <p class="barber-card__bio">Specialist in modern fades and textured finishes.</p>
-          </div>
-        </div>
-        <!-- Barber 2 -->
-        <div class="barber-card reveal reveal-delay-2">
-          <div class="barber-card__image">
-            <img src="/templates/heritage/jasmine.jpg" alt="Jasmine — Artisan Barber" />
-          </div>
-          <div class="barber-card__info">
-            <h3 class="barber-card__name">Jasmine</h3>
-            <div class="barber-card__role">Artisan Barber</div>
-            <p class="barber-card__bio">Expert in classic straight-razor shaves and beard sculpting.</p>
-          </div>
-        </div>
-        <!-- Barber 3 -->
-        <div class="barber-card reveal reveal-delay-3">
-          <div class="barber-card__image">
-            <img src="/templates/heritage/marcus.jpg" alt="Marcus — Senior Barber" />
-          </div>
-          <div class="barber-card__info">
-            <h3 class="barber-card__name">Marcus</h3>
-            <div class="barber-card__role">Senior Barber</div>
-            <p class="barber-card__bio">The authority on traditional heritage cuts and styling.</p>
-          </div>
-        </div>
-        <!-- Barber 4 -->
-        <div class="barber-card reveal reveal-delay-4">
-          <div class="barber-card__image">
-            <img src="/templates/heritage/nape.jpg" alt="Nape — Technical Lead" />
-          </div>
-          <div class="barber-card__info">
-            <h3 class="barber-card__name">Nape</h3>
-            <div class="barber-card__role">Technical Lead</div>
-            <p class="barber-card__bio">Master of precision line-ups and avant-garde designs.</p>
-          </div>
-        </div>
-      </div>
+      <div id="team-loading" class="loading-placeholder">Loading Barbers...</div>
+      <div id="team-list" class="team__grid" style="display:none"></div>
     </div>
   </section>
 
@@ -1629,65 +1526,8 @@
       <div class="testimonials__header">
         <h2 class="testimonials__heading reveal">Reflections from Our <span style="color:#e9c176" class="italic">Distinguished Guests</span></h2>
       </div>
-      <div class="testimonials__grid">
-        <!-- Testimonial 1 -->
-        <div class="testimonial-card reveal reveal-delay-1">
-          <span class="material-symbols-outlined testimonial-card__quote-icon" style="font-variation-settings:'FILL' 1;">format_quote</span>
-          <p class="testimonial-card__text">"The Heritage Royale is an experience like no other. Marcus takes his time with every detail. I leave feeling like a new man every time."</p>
-          <div class="testimonial-card__stars">
-            <span class="material-symbols-outlined">star</span>
-            <span class="material-symbols-outlined">star</span>
-            <span class="material-symbols-outlined">star</span>
-            <span class="material-symbols-outlined">star</span>
-            <span class="material-symbols-outlined">star</span>
-          </div>
-          <div class="testimonial-card__author">
-            <div class="testimonial-card__avatar">TB</div>
-            <div>
-              <div class="testimonial-card__name">Tyler Brooks</div>
-              <div class="testimonial-card__role">Business Executive</div>
-            </div>
-          </div>
-        </div>
-        <!-- Testimonial 2 -->
-        <div class="testimonial-card reveal reveal-delay-2">
-          <span class="material-symbols-outlined testimonial-card__quote-icon" style="font-variation-settings:'FILL' 1;">format_quote</span>
-          <p class="testimonial-card__text">"I've been coming here for 3 years. Elena's fades are unmatched anywhere in Atlanta. The atmosphere alone is worth the visit."</p>
-          <div class="testimonial-card__stars">
-            <span class="material-symbols-outlined">star</span>
-            <span class="material-symbols-outlined">star</span>
-            <span class="material-symbols-outlined">star</span>
-            <span class="material-symbols-outlined">star</span>
-            <span class="material-symbols-outlined">star</span>
-          </div>
-          <div class="testimonial-card__author">
-            <div class="testimonial-card__avatar">JC</div>
-            <div>
-              <div class="testimonial-card__name">James Chen</div>
-              <div class="testimonial-card__role">Creative Director</div>
-            </div>
-          </div>
-        </div>
-        <!-- Testimonial 3 -->
-        <div class="testimonial-card reveal reveal-delay-3">
-          <span class="material-symbols-outlined testimonial-card__quote-icon" style="font-variation-settings:'FILL' 1;">format_quote</span>
-          <p class="testimonial-card__text">"Jasmine's straight-razor shave is a meditation. This place understands that grooming is self-care."</p>
-          <div class="testimonial-card__stars">
-            <span class="material-symbols-outlined">star</span>
-            <span class="material-symbols-outlined">star</span>
-            <span class="material-symbols-outlined">star</span>
-            <span class="material-symbols-outlined">star</span>
-            <span class="material-symbols-outlined">star</span>
-          </div>
-          <div class="testimonial-card__author">
-            <div class="testimonial-card__avatar">DR</div>
-            <div>
-              <div class="testimonial-card__name">David Ross</div>
-              <div class="testimonial-card__role">Attorney</div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <div id="reviews-loading" class="loading-placeholder">Loading Reviews...</div>
+      <div id="reviews-list" class="testimonials__grid" style="display:none"></div>
     </div>
   </section>
 
@@ -1733,7 +1573,7 @@
       <div class="cta-section__content">
         <h2 class="cta-section__heading reveal">Ready for a <span class="italic" style="color:#e9c176">Transformation</span>?</h2>
         <p class="cta-section__subtitle reveal reveal-delay-1">Experience the pinnacle of grooming. Secure your chair today.</p>
-        <a href="#" class="btn-gold reveal reveal-delay-2">Book Your Appointment</a>
+        <a href="#" onclick="event.preventDefault(); if(window.BarberBooking) window.BarberBooking.open();" class="btn-gold reveal reveal-delay-2">Book Your Appointment</a>
         <div class="cta-section__badges reveal reveal-delay-3">
           <div class="badge">
             <span class="material-symbols-outlined">star</span>
@@ -1882,17 +1722,191 @@
     });
 
     function closeMobileMenu() {
-      const mobileMenu = document.getElementById('mobileMenu');
-      const hamburger = document.getElementById('hamburger');
+      var mobileMenu = document.getElementById('mobileMenu');
+      var hamburger = document.getElementById('hamburger');
       mobileMenu.classList.remove('active');
-      const spans = hamburger.querySelectorAll('span');
+      var spans = hamburger.querySelectorAll('span');
       spans[0].style.transform = 'none';
       spans[1].style.opacity = '1';
       spans[2].style.transform = 'none';
     }
   </script>
 
-  <!-- Booking Widget -->
-  <script src="/booking-widget.js" data-shop-id="heritage-demo" data-position="bottom-right" data-color="#c5a059"></script>
+  <!-- KutzApp SDK + Data Loading -->
+  <script>
+    // ---- SDK Loading ----
+    (function () {
+      var domain = window.location.origin;
+      var isFileProtocol = window.location.protocol === 'file:';
+      if (domain === 'null' || domain === 'about://' || window.location.protocol === 'about:' || isFileProtocol) {
+        try { domain = window.parent.location.origin; } catch (e) {}
+      }
+      if (domain === 'null' || domain === 'about://' || !domain) {
+        domain = 'https://barber-shop-website-ashy.vercel.app';
+      }
+      var scriptBaseUrl = domain;
+      if (isFileProtocol) {
+        scriptBaseUrl = 'https://barber-shop-website-ashy.vercel.app';
+      } else if (window.location.pathname.includes('/html-sections/')) {
+        scriptBaseUrl = '..';
+      }
+      var sdkScript = document.createElement('script');
+      sdkScript.src = scriptBaseUrl + '/kutzapp-sdk.js?v=' + new Date().getTime();
+      document.head.appendChild(sdkScript);
+    })();
+
+    // ---- SDK Data Loading ----
+    window.addEventListener('load', function () {
+      // Grab the observer so we can re-observe dynamically added .reveal elements
+      var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) { entry.target.classList.add('visible'); }
+        });
+      }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+      function initializeShop() {
+        if (typeof KutzApp === 'undefined') return;
+        var urlParams = new URLSearchParams(window.location.search);
+        var shopId = urlParams.get('shopId') || 'cmn9kj24n0000lqzc7kcsmpst';
+        var domain = window.location.origin;
+        var isFileProtocol = window.location.protocol === 'file:';
+        if (domain === 'null' || domain === 'about://' || domain === 'file://' || !domain) {
+          domain = 'https://barber-shop-website-ashy.vercel.app';
+        }
+        KutzApp.init(shopId, { position: 'bottom-right', apiUrl: domain });
+
+        KutzApp.getPublicData().then(function(data) {
+          var shop = data.shop || {};
+          var primaryColor = shop.primaryColor || '#c5a059';
+
+          // --- Load booking modal + widget ---
+          setTimeout(function() {
+            var cacheBuster = '?v=' + new Date().getTime();
+            var widgetUrlPrefix = domain;
+            if (isFileProtocol) {
+              widgetUrlPrefix = 'https://barber-shop-website-ashy.vercel.app';
+            } else if (window.location.pathname.includes('/html-sections/')) {
+              widgetUrlPrefix = '..';
+            }
+            ['booking-modal.js', 'booking-widget.js'].forEach(function(script) {
+              var s = document.createElement('script');
+              s.src = widgetUrlPrefix + '/' + script + cacheBuster;
+              s.setAttribute('data-shop-id', shopId);
+              s.setAttribute('data-theme-color', primaryColor);
+              document.body.appendChild(s);
+            });
+          }, 50);
+
+          // --- Update shop name/logo ---
+          try {
+            var shopName = shop.name || 'Heritage Haircuts';
+            if (shop.logoUrl) {
+              document.querySelector('.navbar__brand').innerHTML = '<img src="' + shop.logoUrl + '" alt="' + shopName + '" style="max-height:36px;">';
+            }
+          } catch(e) { console.error('Shop render error:', e); }
+
+          // --- SERVICES ---
+          try {
+            var services = (data.services || []).filter(function(s) { return s.duration > 0; });
+            if (services.length > 0) {
+              document.getElementById('services-list').innerHTML = services.map(function(s, i) {
+                var delay = Math.min(i + 1, 6);
+                return '<div class="service-card reveal reveal-delay-' + delay + '" onclick="event.preventDefault(); if(window.BarberBooking) window.BarberBooking.open(\'' + s.id + '\');" style="cursor:pointer;">' +
+                  '<div class="service-card__header">' +
+                    '<h3 class="service-card__name">' + s.name + '</h3>' +
+                    '<span class="service-card__price">$' + Number(s.price).toFixed(0) + '</span>' +
+                  '</div>' +
+                  '<p class="service-card__desc">' + (s.description || 'Expert grooming service.') + '</p>' +
+                  '<span class="service-card__duration">' +
+                    '<span class="material-symbols-outlined">schedule</span>' +
+                    s.duration + ' min' +
+                  '</span>' +
+                '</div>';
+              }).join('');
+              document.getElementById('services-loading').style.display = 'none';
+              document.getElementById('services-list').style.display = 'grid';
+              document.querySelectorAll('#services-list .reveal').forEach(function(el) { observer.observe(el); });
+            } else {
+              document.getElementById('services-loading').textContent = 'No services available.';
+            }
+          } catch(e) { console.error('Services render error:', e); }
+
+          // --- STAFF ---
+          try {
+            var staff = data.staff || [];
+            if (staff.length > 0) {
+              var fallbackImg = 'https://images.unsplash.com/photo-1595152772835-219674b2a8a6?auto=format&fit=crop&w=600&q=80';
+              document.getElementById('team-list').innerHTML = staff.map(function(st, i) {
+                var safeName = st.name || 'Team Member';
+                var delay = Math.min(i + 1, 4);
+                var imgSrc = st.imageUrl || fallbackImg;
+                return '<div class="barber-card reveal reveal-delay-' + delay + '">' +
+                  '<div class="barber-card__image">' +
+                    '<img src="' + imgSrc + '" alt="' + safeName + '" />' +
+                  '</div>' +
+                  '<div class="barber-card__info">' +
+                    '<h3 class="barber-card__name">' + safeName + '</h3>' +
+                    '<div class="barber-card__role">' + (st.role === 'SHOP_ADMIN' ? 'Master Barber' : 'Specialist') + '</div>' +
+                    '<p class="barber-card__bio"><a href="#" onclick="event.preventDefault(); event.stopPropagation(); if(window.BarberBooking) window.BarberBooking.open(null, \'' + st.id + '\');" class="btn-gold" style="padding:8px 20px;font-size:0.78rem;margin-top:8px;display:inline-block;">Book ' + safeName.split(' ')[0] + '</a></p>' +
+                  '</div>' +
+                '</div>';
+              }).join('');
+              document.getElementById('team-loading').style.display = 'none';
+              document.getElementById('team-list').style.display = 'grid';
+              document.querySelectorAll('#team-list .reveal').forEach(function(el) { observer.observe(el); });
+            } else {
+              document.getElementById('team').style.display = 'none';
+            }
+          } catch(e) { console.error('Staff render error:', e); }
+
+          // --- REVIEWS ---
+          try {
+            var reviews = data.reviews || [];
+            if (reviews.length > 0) {
+              document.getElementById('reviews-list').innerHTML = reviews.map(function(r, i) {
+                var name = (r.user && r.user.name) || 'Client';
+                var initials = name.split(' ').map(function(w) { return w[0]; }).join('').substring(0,2).toUpperCase();
+                var starsHtml = '';
+                for (var s = 0; s < (r.rating || 5); s++) {
+                  starsHtml += '<span class="material-symbols-outlined">star</span>';
+                }
+                var delay = Math.min(i + 1, 3);
+                return '<div class="testimonial-card reveal reveal-delay-' + delay + '">' +
+                  '<span class="material-symbols-outlined testimonial-card__quote-icon" style="font-variation-settings:\'FILL\' 1;">format_quote</span>' +
+                  '<p class="testimonial-card__text">"' + (r.comment || 'An exceptional standard of service.') + '"</p>' +
+                  '<div class="testimonial-card__stars">' + starsHtml + '</div>' +
+                  '<div class="testimonial-card__author">' +
+                    '<div class="testimonial-card__avatar">' + initials + '</div>' +
+                    '<div>' +
+                      '<div class="testimonial-card__name">' + name + '</div>' +
+                      '<div class="testimonial-card__role">Valued Client</div>' +
+                    '</div>' +
+                  '</div>' +
+                '</div>';
+              }).join('');
+              document.getElementById('reviews-loading').style.display = 'none';
+              document.getElementById('reviews-list').style.display = 'grid';
+              document.querySelectorAll('#reviews-list .reveal').forEach(function(el) { observer.observe(el); });
+            } else {
+              document.getElementById('testimonials').style.display = 'none';
+            }
+          } catch(e) { console.error('Reviews render error:', e); }
+
+        }).catch(function(err) { console.error('SDK error:', err); });
+      }
+
+      if (typeof KutzApp !== 'undefined') initializeShop();
+      else {
+        var attempts = 0;
+        var intv = setInterval(function() {
+          attempts++;
+          if (typeof KutzApp !== 'undefined' || attempts >= 50) {
+            clearInterval(intv);
+            initializeShop();
+          }
+        }, 100);
+      }
+    });
+  </script>
 </body>
 </html>
