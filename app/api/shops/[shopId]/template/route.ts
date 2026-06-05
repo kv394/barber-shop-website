@@ -89,13 +89,22 @@ export async function POST(
  data: updateData,
  });
  
- // Clear the cache so the new template is applied everywhere
- await cacheService.invalidate(`shop_public_page_data:${shopId}`);
- 
- revalidatePath(`/shop/${shopId}`);
- revalidatePath(`/shop/${shopId}/config`);
- revalidatePath(`/shops/${shopId}`);
- revalidatePath('/shops/[slug]', 'page'); // Bust public shop page cache
+  // Clear the cache so the new template is applied everywhere
+  // page.tsx caches by slug (name-based), so invalidate both the ID-based
+  // and slug-based cache keys to prevent stale data.
+  await cacheService.invalidate(`shop_public_page_data:${shopId}`);
+  const shopSlug = updatedShop.name?.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '') || '';
+  if (shopSlug) {
+   await cacheService.invalidate(`shop_public_page_data:${shopSlug}`);
+  }
+  // Also try wildcard invalidation as a safety net
+  await cacheService.invalidatePattern(`*shop_public_page_data*`);
+  
+  revalidatePath(`/shop/${shopId}`);
+  revalidatePath(`/shop/${shopId}/config`);
+  revalidatePath(`/shops/${shopId}`);
+  revalidatePath(`/shops/${shopSlug}`);
+  revalidatePath('/shops/[slug]', 'page'); // Bust public shop page cache
 
  return NextResponse.json(updatedShop, { status: 200 });
  } catch (error: any) {
