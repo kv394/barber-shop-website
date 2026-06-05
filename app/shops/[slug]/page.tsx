@@ -169,12 +169,65 @@ export default async function PublicShopPage({
  const resolvedSearchParams = await searchParams;
  const isPreview = resolvedSearchParams?.preview === 'true';
 
- // In preview mode, bust the cache so template changes are immediately visible
- if (isPreview) {
- await cacheService.invalidate(`shop_public_page_data:${slug}`);
- }
-
- const shop = await getShopBySlug(slug);
+  // In preview mode, bust the Redis cache AND bypass React's cache() dedup.
+  // generateMetadata runs BEFORE this component, so getShopBySlug's React
+  // cache() wrapper already memoized the stale data. We must fetch fresh.
+  let shop;
+  if (isPreview) {
+   await cacheService.invalidate(`shop_public_page_data:${slug}`);
+   // Bypass React cache() + Redis — fetch directly from DB
+   shop = await cacheService.getOrSet(
+    `shop_public_page_data:${slug}`,
+    async () => {
+     // Re-use the same fetcher logic as getShopBySlug
+     let s: any = await prisma.shop.findUnique({ where: { id: slug }, include: serviceInclude });
+     if (!s) {
+      const firstWord = slug.split('-').find((w: string) => w.length > 2) || slug.split('-')[0];
+      const candidates = await prisma.shop.findMany({
+       where: { name: { contains: firstWord, mode: 'insensitive' } },
+       include: serviceInclude,
+       take: 50,
+      });
+      s = candidates.find(
+       (c: any) => c.name.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '') === slug.toLowerCase()
+      ) || null;
+     }
+     if (!s) return null;
+     const reviews = await prisma.review.findMany({
+      where: { shopId: s.id },
+      include: { user: { select: { name: true } }, appointment: { include: { service: { select: { name: true } }, staff: { select: { name: true } } } } },
+      orderBy: { createdAt: 'desc' },
+      take: 20,
+     });
+     const serialized = serialize(s);
+     const rawCustom = serialized.customization || {};
+     const rawAddress = rawCustom.address;
+     const formattedAddress = typeof rawAddress === 'object' && rawAddress !== null
+      ? [rawAddress.street, rawAddress.suite, rawAddress.city, rawAddress.state, rawAddress.zip, rawAddress.country].filter(Boolean).join(', ')
+      : rawAddress;
+     return {
+      ...serialized,
+      customization: {
+       primaryColor: rawCustom.primaryColor, secondaryColor: rawCustom.secondaryColor,
+       logoUrl: rawCustom.logoUrl, bannerUrl: rawCustom.bannerUrl, heroImageUrl: rawCustom.heroImageUrl,
+       tagline: rawCustom.tagline, address: formattedAddress, phone: rawCustom.phone,
+       aboutText: rawCustom.aboutText, socialLinks: rawCustom.socialLinks,
+       businessHours: rawCustom.businessHours, pages: rawCustom.pages,
+       editorialCustomization: rawCustom.editorialCustomization, fontFamily: rawCustom.fontFamily,
+       ctaText: rawCustom.ctaText, heroVideoUrl: rawCustom.heroVideoUrl,
+       announcement: rawCustom.announcement, seo: rawCustom.seo,
+       customHtml: rawCustom.customHtml, authPosition: rawCustom.authPosition,
+       chatbotPosition: rawCustom.chatbotPosition,
+      },
+      template: serialized.template || 'modern',
+      reviews: serialize(reviews),
+     };
+    },
+    60 // Short TTL for preview
+   );
+  } else {
+   shop = await getShopBySlug(slug);
+  }
 
  if (!shop) {
  return (
