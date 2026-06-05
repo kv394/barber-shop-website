@@ -2,10 +2,19 @@
 @tailwind components;
 @tailwind utilities;
 
+html {
+  overscroll-behavior: none;
+  -webkit-overflow-scrolling: touch;
+}
+
 body {
   font-family: var(--font-sans), sans-serif;
   color-scheme: light;
   background-color: #F9FAFB;
+  overscroll-behavior: none;
+  /* Prevent iOS pull-to-refresh and bounce */
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 /* Slightly increase base font size on mobile for better legibility */
