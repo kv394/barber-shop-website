@@ -13,7 +13,9 @@ import { PrismaPg } from '@prisma/adapter-pg';
 
 import crypto from 'crypto';
 import { config } from 'dotenv';
-import { resolve } from 'path';
+import { resolve, dirname } from 'path';
+import { fileURLToPath } from 'url';
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 // Auto-load .env then .env.local from the project root
 config({ path: resolve(__dirname, '../.env') });

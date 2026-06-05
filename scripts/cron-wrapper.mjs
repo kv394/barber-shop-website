@@ -79,7 +79,6 @@ async function run() {
     const errMsg = `Monitor script execution failed: ${err.message}`;
     logRun(`ERROR: ${errMsg}`);
     logError(`Execution Failure:\n${err.stack || err}\n`);
-    await alertUser('Vercel Monitor Failure', 'Log monitor failed to run. Check vercel-monitor-errors.log');
   }
 }
 

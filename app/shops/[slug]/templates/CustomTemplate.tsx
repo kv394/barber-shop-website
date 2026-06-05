@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import React from 'react';
 import dynamic from 'next/dynamic';
 import ReviewsSection from '../components/ReviewsSection';

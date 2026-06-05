@@ -1,4 +1,5 @@
-'use client';
+'use client';;
+import Image from 'next/image';
 
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { createClient } from '@/utils/supabase/client';
@@ -243,7 +244,6 @@ export default function TeamChat({ shopId, currentUserId }: { shopId: string, cu
         </h3>
         <p className="text-white/80 mt-0.5 text-[13px]">Moderated by Shop Admin</p>
       </div>
-
       {/* Messages Area */}
       <div ref={messagesContainerRef} className="flex-1 overflow-y-auto p-4 space-y-4 scroll-smooth bg-crm-bg relative">
         {/* Load Older Messages Button */}
@@ -297,7 +297,6 @@ export default function TeamChat({ shopId, currentUserId }: { shopId: string, cu
                     {isAdmin && <span className="bg-crm-primary text-white text-[11px] font-bold px-1.5 py-0.5 rounded uppercase hover:opacity-90">Admin</span>}
                   </span>
                 )}
-                
                 <div className={`flex items-end gap-2 ${isMe ? 'flex-row-reverse' : 'flex-row'}`}>
                   <div className={`max-w-[85%] sm:max-w-[80%] p-2 rounded-2xl ${isMe ? 'bg-crm-primary text-white rounded-br-sm' : 'bg-crm-surface border border-crm-border shadow-sm text-crm-text rounded-bl-sm'} shadow-sm flex flex-col gap-2 overflow-hidden relative`}>
                     
@@ -310,7 +309,7 @@ export default function TeamChat({ shopId, currentUserId }: { shopId: string, cu
                     
                     {msg.imageUrl && (
                       // eslint-disable-next-line @next/next/no-img-element
-                      <img src={msg.imageUrl} alt="Shared image" className="max-w-full rounded-xl object-contain max-h-60" loading="lazy" />
+                      (<Image src={msg.imageUrl} alt="Shared image" />)
                     )}
                     {msg.content && renderContent(msg.content, isMe)}
                   </div>
@@ -327,7 +326,6 @@ export default function TeamChat({ shopId, currentUserId }: { shopId: string, cu
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 17 4 12 9 7"></polyline><path d="M20 18v-2a4 4 0 0 0-4-4H4"></path></svg>
                   </button>
                 </div>
-                
                 <div className={`flex flex-col ${isMe ? 'items-end' : 'items-start'} mt-1`}>
                   <span className={`text-[11px] text-crm-muted ${isMe ? 'mr-1' : 'ml-1'}`}>
                     {new Date(msg.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
@@ -347,7 +345,6 @@ export default function TeamChat({ shopId, currentUserId }: { shopId: string, cu
         )}
         <div ref={messagesEndRef} />
       </div>
-
       {/* Mention Dropdown */}
       {mentionSearch !== null && filteredUsers.length > 0 && (
         <div className="absolute bottom-[72px] sm:bottom-[80px] left-4 right-4 bg-crm-surface border border-crm-border shadow-xl rounded-xl z-20 overflow-hidden max-h-48 overflow-y-auto">
@@ -372,7 +369,6 @@ export default function TeamChat({ shopId, currentUserId }: { shopId: string, cu
           ))}
         </div>
       )}
-
       {/* Input Area */}
       <div className="p-3 sm:p-4 bg-crm-surface border-t border-crm-border z-10 pb-safe flex flex-col gap-2">
         {/* Reply Preview */}

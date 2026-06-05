@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import { prisma } from '@/lib/prisma';
 import { notFound, redirect } from 'next/navigation';
 import { createClient } from '@/utils/supabase/server';

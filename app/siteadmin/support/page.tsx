@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import { prisma } from '@/lib/prisma';
 import BroadcastForm from './BroadcastForm';
 

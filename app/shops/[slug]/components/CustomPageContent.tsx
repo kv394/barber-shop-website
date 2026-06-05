@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import InteractiveReviewsSection from '@/components/reviews/InteractiveReviewsSection';
 import React, { useState } from "react";
 import ReviewsSection from "./ReviewsSection";
@@ -110,254 +111,253 @@ export default function CustomPageContent({ content, shop, themeColor, className
  const styles = getThemeStyles();
 
  return (
- <div className={className}>
- {parts.map((part, index) => {
- if (part.toLowerCase() === '\$\{products\}') {
- if (sellableProducts.length === 0) return null;
- return (
- <div key={index} className="not-prose w-full">
- <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 my-8">
- {sellableProducts.map((product: any) => (
- <div key={product.id} className={styles.card}>
- {product.imageUrl && (
- <img src={product.imageUrl} alt={product.name} className="w-full h-48 object-cover rounded-xl mb-4 shadow-sm cursor-pointer hover:opacity-90 transition-opacity" onClick={() => setSelectedProduct(product)} />
- )}
- <h3 className={styles.title} style={templateType === 'corporate' || templateType === 'sporty' || templateType === 'classic' || templateType === 'modern' ? { color: themeColor } : {}}>{product.name}</h3>
- <p className={styles.desc + " line-clamp-2 cursor-pointer text-sm"} onClick={() => setSelectedProduct(product)} title="Click to read more">{product.description}</p>
- <div className={styles.price} style={templateType === 'corporate' ? { color: themeColor } : {}}>
- \$\{typeof product.price === 'number' ? product.price.toFixed(2) : '0.00'}
- </div>
- <div className="mt-auto w-full pt-4 flex gap-3">
- <button
- onClick={() => setSelectedProduct(product)}
- className="flex-1 py-2 text-[13px] font-bold border-2 rounded-xl transition-colors border-crm-border text-crm-muted hover:bg-crm-bg"
- >
- Details
- </button>
- <button
- onClick={() => alert('Online product purchasing coming soon! Please pick this up in-store during your next visit.')}
- className={styles.btn + " !flex-1 !mt-0 !py-2 !text-[13px]"}
- style={styles.btnStyle}
- >
- {templateType === 'sporty' || templateType === 'editorial' ? 'Buy' : 'Buy'}
- </button>
- </div>
- </div>
- ))}
- </div>
+  <div className={className}>
+   {parts.map((part, index) => {
+   if (part.toLowerCase() === '\$\{products\}') {
+   if (sellableProducts.length === 0) return null;
+   return (
+    <div key={index} className="not-prose w-full">
+     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 my-8">
+     {sellableProducts.map((product: any) => (
+     <div key={product.id} className={styles.card}>
+     {product.imageUrl && (
+     <Image src={product.imageUrl} alt={product.name} />
+     )}
+     <h3 className={styles.title} style={templateType === 'corporate' || templateType === 'sporty' || templateType === 'classic' || templateType === 'modern' ? { color: themeColor } : {}}>{product.name}</h3>
+     <p className={styles.desc + " line-clamp-2 cursor-pointer text-sm"} onClick={() => setSelectedProduct(product)} title="Click to read more">{product.description}</p>
+     <div className={styles.price} style={templateType === 'corporate' ? { color: themeColor } : {}}>
+     \$\{typeof product.price === 'number' ? product.price.toFixed(2) : '0.00'}
+     </div>
+     <div className="mt-auto w-full pt-4 flex gap-3">
+     <button
+     onClick={() => setSelectedProduct(product)}
+     className="flex-1 py-2 text-[13px] font-bold border-2 rounded-xl transition-colors border-crm-border text-crm-muted hover:bg-crm-bg"
+     >
+     Details
+     </button>
+     <button
+     onClick={() => alert('Online product purchasing coming soon! Please pick this up in-store during your next visit.')}
+     className={styles.btn + " !flex-1 !mt-0 !py-2 !text-[13px]"}
+     style={styles.btnStyle}
+     >
+     {templateType === 'sporty' || templateType === 'editorial' ? 'Buy' : 'Buy'}
+     </button>
+     </div>
+     </div>
+     ))}
+     </div>
+     {selectedProduct && (
+     <div className="fixed inset-0 bg-black/60 z-[200] flex items-center justify-center p-4 backdrop-blur-sm" onClick={() => setSelectedProduct(null)}>
+     <div className="bg-crm-surface rounded-3xl w-full max-w-md shadow-2xl relative overflow-hidden flex flex-col max-h-[90vh]" onClick={(e) => e.stopPropagation()}>
+     <button onClick={() => setSelectedProduct(null)} className="absolute top-4 right-4 bg-black/50 text-white hover:bg-black/70 w-8 h-8 rounded-full flex items-center justify-center transition-colors z-10 font-bold text-[13px]">✕</button>
+     {selectedProduct.imageUrl && (
+     <div className="w-full h-64 shrink-0 bg-gray-100 relative">
+     <Image src={selectedProduct.imageUrl} alt={selectedProduct.name} />
+     </div>
+     )}
+     <div className="p-8 overflow-y-auto">
+     <h3 className="font-extrabold text-2xl mb-2 text-crm-text">{selectedProduct.name}</h3>
+     <div className="font-bold text-xl mb-6" style={{ color: themeColor || '#111827' }}>
+     \$\{typeof selectedProduct.price === 'number' ? selectedProduct.price.toFixed(2) : '0.00'}
+     </div>
+     <div className="prose prose-sm max-w-none text-crm-muted mb-8 leading-relaxed">
+     {selectedProduct.description?.split('\n').map((line: string, i: number) => (
+     <p key={i} className="mb-2">{line}</p>
+     ))}
+     </div>
+     <button
+     onClick={() => { setSelectedProduct(null); alert('Online product purchasing coming soon! Please pick this up in-store during your next visit.'); }}
+     className="w-full py-4 rounded-xl font-bold text-white shadow-lg transition-transform hover:scale-[1.02]"
+     style={{ backgroundColor: themeColor || '#111827' }}
+     >
+     Buy Now
+     </button>
+     </div>
+     </div>
+     </div>
+     )}
+    </div>
+   );
+   } else if (part.toLowerCase() === '\$\{services\}') {
+   if (services.length === 0) return null;
+   return (
+    <div key={index} className={`not-prose w-full grid gap-6 my-8 ${templateType === 'minimal' ? 'grid-cols-1' : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3'}`}>
+     {services.map((service: any) => (
+     <div key={service.id} className={styles.serviceCard}>
+     {service.imageUrl && templateType !== 'minimal' && (
+     <Image src={service.imageUrl} alt={service.name} />
+     )}
+     
+     {templateType === 'minimal' ? (
+     <div className="w-full flex flex-col md:flex-row md:items-center md:justify-between py-2">
+     <div className="flex-1 pr-6">
+     <h3 className={styles.title}>{service.name}</h3>
+     <p className={styles.desc}>{service.description}</p>
+     </div>
+     <div className="flex items-center gap-6 mt-4 md:mt-0 shrink-0">
+     <div className="text-right border-r border-crm-border pr-6">
+     <span className={styles.price}>\$\{service.price.toFixed(2)}</span>
+     <span className="block text-gray-400 text-[12px] uppercase tracking-widest mt-1">{service.duration} min</span>
+     </div>
+     <button onClick={() => onBookClick && onBookClick(service)} className="bg-black text-white px-6 py-3 rounded-full text-[13px] font-bold hover:bg-gray-800 transition-colors uppercase tracking-wider" style={styles.btnStyle}>{ctaText}</button>
+     </div>
+     </div>
+     ) : (
+     <div className="flex flex-col h-full">
+     <div className="flex flex-col mb-4">
+     <h3 className={styles.title} style={templateType === 'sporty' || templateType === 'editorial' ? {} : { color: templateType === 'classic' || templateType === 'corporate' || templateType === 'modern' ? themeColor : undefined }}>
+     {service.name}
+     </h3>
+     <div className={styles.price} style={templateType === 'modern' ? { backgroundColor: `${themeColor || '#111827'}15`, color: themeColor || '#111827' } : (templateType === 'corporate' ? { color: themeColor } : {})}>
+     \$\{service.price.toFixed(2)} {templateType === 'classic' && ` • ${service.duration} MINS`}
+     </div>
+     </div>
+     
+     {service.description && (
+     <p className={styles.desc}>{service.description}</p>
+     )}
+     
+     <div className="mt-auto pt-6 border-t border-crm-border flex items-center justify-between">
+     {templateType !== 'classic' && (
+     <div className={`text-[12px] opacity-70 font-semibold uppercase tracking-widest ${templateType === 'sporty' ? 'text-crm-muted' : 'text-crm-muted'}`}>
+     ⏱️ {service.duration} MIN
+     </div>
+     )}
+     <button
+     onClick={() => onBookClick && onBookClick(service)}
+     className={styles.btn + (templateType === 'modern' ? ' !w-auto px-8' : '')}
+     style={styles.btnStyle}
+     >
+     {templateType === 'sporty' || templateType === 'editorial' ? ctaText : ctaText}
+     </button>
+     </div>
+     </div>
+     )}
+     </div>
+     ))}
+    </div>
+   );
+   } else if (part.toLowerCase() === '\$\{reviews\}') {
+   return (
+   <div key={index} className="not-prose w-full my-8">
+   <InteractiveReviewsSection shopId={shop.id} initialReviews={reviews} themeColor={themeColor} />
+   </div>
+   );
+   } else if (part.toLowerCase() === '\$\{team\}') {
+   if (staffMembers.length === 0) return null;
+   return (
+    <div key={index} className="not-prose grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 my-8 w-full">
+     {staffMembers.map((member: any) => (
+     <div key={member.id} className={styles.card}>
+     {member.imageUrl ? (
+     <Image src={member.imageUrl} alt={member.name} />
+     ) : (
+     <div className="w-28 h-28 rounded-full mx-auto bg-gray-100 flex items-center justify-center text-gray-400 text-2xl mb-6 border-4 shadow-sm" style={{ borderColor: themeColor || '#e5e7eb' }}>
+     {member.name ? member.name.charAt(0).toUpperCase() : 'S'}
+     </div>
+     )}
+     <h3 className={styles.title} style={templateType === 'corporate' || templateType === 'sporty' || templateType === 'classic' || templateType === 'modern' ? { color: themeColor } : {}}>{member.name}</h3>
+     <p className="text-crm-muted text-[12px] font-bold uppercase tracking-wider mb-4">{member.role === 'SHOP_ADMIN' ? 'Master Barber' : 'Barber'}</p>
+     {member.shopClients?.[0]?.clientNotes && <p className={styles.desc}>{member.shopClients[0].clientNotes}</p>}
+     <div className="mt-auto pt-4 w-full">
+     <button onClick={() => onBookClick && onBookClick(null)} className={styles.btn} style={styles.btnStyle}>{ctaText}</button>
+     </div>
+     </div>
+     ))}
+    </div>
+   );
+   } else if (part.toLowerCase() === '\$\{gallery\}') {
+   if (galleryImages.length === 0) return null;
+   return (
+    <div key={index} className="not-prose columns-1 sm:columns-2 lg:columns-3 gap-6 space-y-6 my-8 w-full">
+     {galleryImages.map((img: any) => (
+     <div key={img.id} className="relative group overflow-hidden rounded-2xl break-inside-avoid shadow-sm hover:shadow-lg transition-shadow">
+     <Image src={img.imageUrl} alt={img.caption || 'Gallery Image'} />
+     {img.caption && (
+     <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-6 pt-12 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
+     <p className="text-white text-[14px] font-medium tracking-wide">{img.caption}</p>
+     </div>
+     )}
+     </div>
+     ))}
+    </div>
+   );
+   } else if (part.toLowerCase() === '\$\{contact\}') {
+   const address = shop.customization?.address;
+   const phone = shop.customization?.phone;
+   const email = shop.customization?.email;
+   const hours = shop.customization?.businessHours;
+   const days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
 
- {selectedProduct && (
- <div className="fixed inset-0 bg-black/60 z-[200] flex items-center justify-center p-4 backdrop-blur-sm" onClick={() => setSelectedProduct(null)}>
- <div className="bg-crm-surface rounded-3xl w-full max-w-md shadow-2xl relative overflow-hidden flex flex-col max-h-[90vh]" onClick={(e) => e.stopPropagation()}>
- <button onClick={() => setSelectedProduct(null)} className="absolute top-4 right-4 bg-black/50 text-white hover:bg-black/70 w-8 h-8 rounded-full flex items-center justify-center transition-colors z-10 font-bold text-[13px]">✕</button>
- {selectedProduct.imageUrl && (
- <div className="w-full h-64 shrink-0 bg-gray-100 relative">
- <img src={selectedProduct.imageUrl} alt={selectedProduct.name} className="w-full h-full object-cover" />
- </div>
- )}
- <div className="p-8 overflow-y-auto">
- <h3 className="font-extrabold text-2xl mb-2 text-crm-text">{selectedProduct.name}</h3>
- <div className="font-bold text-xl mb-6" style={{ color: themeColor || '#111827' }}>
- \$\{typeof selectedProduct.price === 'number' ? selectedProduct.price.toFixed(2) : '0.00'}
- </div>
- <div className="prose prose-sm max-w-none text-crm-muted mb-8 leading-relaxed">
- {selectedProduct.description?.split('\n').map((line: string, i: number) => (
- <p key={i} className="mb-2">{line}</p>
- ))}
- </div>
- <button
- onClick={() => { setSelectedProduct(null); alert('Online product purchasing coming soon! Please pick this up in-store during your next visit.'); }}
- className="w-full py-4 rounded-xl font-bold text-white shadow-lg transition-transform hover:scale-[1.02]"
- style={{ backgroundColor: themeColor || '#111827' }}
- >
- Buy Now
- </button>
- </div>
- </div>
- </div>
- )}
- </div>
- );
- } else if (part.toLowerCase() === '\$\{services\}') {
- if (services.length === 0) return null;
- return (
- <div key={index} className={`not-prose w-full grid gap-6 my-8 ${templateType === 'minimal' ? 'grid-cols-1' : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3'}`}>
- {services.map((service: any) => (
- <div key={service.id} className={styles.serviceCard}>
- {service.imageUrl && templateType !== 'minimal' && (
- <img src={service.imageUrl} alt={service.name} className="w-full h-48 object-cover rounded-xl mb-6 shadow-sm" />
- )}
- 
- {templateType === 'minimal' ? (
- <div className="w-full flex flex-col md:flex-row md:items-center md:justify-between py-2">
- <div className="flex-1 pr-6">
- <h3 className={styles.title}>{service.name}</h3>
- <p className={styles.desc}>{service.description}</p>
- </div>
- <div className="flex items-center gap-6 mt-4 md:mt-0 shrink-0">
- <div className="text-right border-r border-crm-border pr-6">
- <span className={styles.price}>\$\{service.price.toFixed(2)}</span>
- <span className="block text-gray-400 text-[12px] uppercase tracking-widest mt-1">{service.duration} min</span>
- </div>
- <button onClick={() => onBookClick && onBookClick(service)} className="bg-black text-white px-6 py-3 rounded-full text-[13px] font-bold hover:bg-gray-800 transition-colors uppercase tracking-wider" style={styles.btnStyle}>{ctaText}</button>
- </div>
- </div>
- ) : (
- <div className="flex flex-col h-full">
- <div className="flex flex-col mb-4">
- <h3 className={styles.title} style={templateType === 'sporty' || templateType === 'editorial' ? {} : { color: templateType === 'classic' || templateType === 'corporate' || templateType === 'modern' ? themeColor : undefined }}>
- {service.name}
- </h3>
- <div className={styles.price} style={templateType === 'modern' ? { backgroundColor: `${themeColor || '#111827'}15`, color: themeColor || '#111827' } : (templateType === 'corporate' ? { color: themeColor } : {})}>
- \$\{service.price.toFixed(2)} {templateType === 'classic' && ` • ${service.duration} MINS`}
- </div>
- </div>
- 
- {service.description && (
- <p className={styles.desc}>{service.description}</p>
- )}
- 
- <div className="mt-auto pt-6 border-t border-crm-border flex items-center justify-between">
- {templateType !== 'classic' && (
- <div className={`text-[12px] opacity-70 font-semibold uppercase tracking-widest ${templateType === 'sporty' ? 'text-crm-muted' : 'text-crm-muted'}`}>
- ⏱️ {service.duration} MIN
- </div>
- )}
- <button
- onClick={() => onBookClick && onBookClick(service)}
- className={styles.btn + (templateType === 'modern' ? ' !w-auto px-8' : '')}
- style={styles.btnStyle}
- >
- {templateType === 'sporty' || templateType === 'editorial' ? ctaText : ctaText}
- </button>
- </div>
- </div>
- )}
- </div>
- ))}
- </div>
- );
- } else if (part.toLowerCase() === '\$\{reviews\}') {
- return (
- <div key={index} className="not-prose w-full my-8">
- <InteractiveReviewsSection shopId={shop.id} initialReviews={reviews} themeColor={themeColor} />
- </div>
- );
- } else if (part.toLowerCase() === '\$\{team\}') {
- if (staffMembers.length === 0) return null;
- return (
- <div key={index} className="not-prose grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 my-8 w-full">
- {staffMembers.map((member: any) => (
- <div key={member.id} className={styles.card}>
- {member.imageUrl ? (
- <img src={member.imageUrl} alt={member.name} className="w-28 h-28 rounded-full mx-auto object-cover border-4 mb-6 shadow-sm" style={{ borderColor: themeColor || '#e5e7eb' }} />
- ) : (
- <div className="w-28 h-28 rounded-full mx-auto bg-gray-100 flex items-center justify-center text-gray-400 text-2xl mb-6 border-4 shadow-sm" style={{ borderColor: themeColor || '#e5e7eb' }}>
- {member.name ? member.name.charAt(0).toUpperCase() : 'S'}
- </div>
- )}
- <h3 className={styles.title} style={templateType === 'corporate' || templateType === 'sporty' || templateType === 'classic' || templateType === 'modern' ? { color: themeColor } : {}}>{member.name}</h3>
- <p className="text-crm-muted text-[12px] font-bold uppercase tracking-wider mb-4">{member.role === 'SHOP_ADMIN' ? 'Master Barber' : 'Barber'}</p>
- {member.shopClients?.[0]?.clientNotes && <p className={styles.desc}>{member.shopClients[0].clientNotes}</p>}
- <div className="mt-auto pt-4 w-full">
- <button onClick={() => onBookClick && onBookClick(null)} className={styles.btn} style={styles.btnStyle}>{ctaText}</button>
- </div>
- </div>
- ))}
- </div>
- );
- } else if (part.toLowerCase() === '\$\{gallery\}') {
- if (galleryImages.length === 0) return null;
- return (
- <div key={index} className="not-prose columns-1 sm:columns-2 lg:columns-3 gap-6 space-y-6 my-8 w-full">
- {galleryImages.map((img: any) => (
- <div key={img.id} className="relative group overflow-hidden rounded-2xl break-inside-avoid shadow-sm hover:shadow-lg transition-shadow">
- <img src={img.imageUrl} alt={img.caption || 'Gallery Image'} className="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-110" />
- {img.caption && (
- <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-6 pt-12 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
- <p className="text-white text-[14px] font-medium tracking-wide">{img.caption}</p>
- </div>
- )}
- </div>
- ))}
- </div>
- );
- } else if (part.toLowerCase() === '\$\{contact\}') {
- const address = shop.customization?.address;
- const phone = shop.customization?.phone;
- const email = shop.customization?.email;
- const hours = shop.customization?.businessHours;
- const days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
-
- return (
- <div key={index} className={`not-prose my-8 p-8 md:p-12 w-full ${styles.card}`}>
- <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-left w-full">
- <div>
- <h3 className={styles.title} style={templateType === 'corporate' || templateType === 'classic' || templateType === 'modern' ? { color: themeColor } : {}}>Contact Us</h3>
- <div className="space-y-6 mt-8">
- {address && (
- <div className="flex items-start gap-4 group">
- <span className="text-2xl mt-1" style={{ color: themeColor || 'inherit' }}>📍</span>
- <p className={styles.desc + " !mb-0 group-hover:text-crm-text transition-colors"}>{address}</p>
- </div>
- )}
- {phone && (
- <div className="flex items-center gap-4 group">
- <span className="text-2xl" style={{ color: themeColor || 'inherit' }}>📞</span>
- <a href={`tel:${phone}`} className={styles.desc + " !mb-0 group-hover:text-crm-text transition-colors"}>{phone}</a>
- </div>
- )}
- {email && (
- <div className="flex items-center gap-4 group">
- <span className="text-2xl" style={{ color: themeColor || 'inherit' }}>✉️</span>
- <a href={`mailto:${email}`} className={styles.desc + " !mb-0 group-hover:text-crm-text transition-colors"}>{email}</a>
- </div>
- )}
- </div>
- 
- <div className="mt-10 pt-10 border-t border-crm-border">
- <h4 className="font-bold mb-6 uppercase tracking-widest text-[13px] text-crm-muted">Business Hours</h4>
- <div className="space-y-3">
- {hours && days.map(day => {
- const h = hours[day];
- return (
- <div key={day} className="flex justify-between text-[14px]">
- <span className="capitalize text-crm-muted font-medium">{day}</span>
- <span className="font-bold text-crm-text">{h ? `${h.open} - ${h.close}` : 'Closed'}</span>
- </div>
- );
- })}
- </div>
- </div>
- </div>
- 
- {address && (
- <div className="rounded-2xl overflow-hidden shadow-sm h-64 md:h-full min-h-[350px] border border-crm-border relative">
- <iframe
- width="100%"
- height="100%"
- frameBorder="0"
- className="absolute inset-0"
- src={`https://www.google.com/maps?q=${encodeURIComponent(address)}&output=embed`}
- allowFullScreen
- ></iframe>
- </div>
- )}
- </div>
- </div>
- );
- } else {
- // If the text is raw HTML (e.g. from the custom page editor) 
- // we render it. But we ensure that if it's just raw text, it flows properly.
- // By default, prose handles paragraphs. If there are no tags, we wrap it in a <p> tag.
- let rawHtml = part.trim();
- if (rawHtml && !rawHtml.startsWith('<')) {
- rawHtml = `<p>${rawHtml.replace(/\n/g, '<br />')}</p>`;
- }
- return <div key={index} className="w-full" dangerouslySetInnerHTML={{ __html: rawHtml }} />;
- }
- })}
- </div>
+   return (
+   <div key={index} className={`not-prose my-8 p-8 md:p-12 w-full ${styles.card}`}>
+   <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-left w-full">
+   <div>
+   <h3 className={styles.title} style={templateType === 'corporate' || templateType === 'classic' || templateType === 'modern' ? { color: themeColor } : {}}>Contact Us</h3>
+   <div className="space-y-6 mt-8">
+   {address && (
+   <div className="flex items-start gap-4 group">
+   <span className="text-2xl mt-1" style={{ color: themeColor || 'inherit' }}>📍</span>
+   <p className={styles.desc + " !mb-0 group-hover:text-crm-text transition-colors"}>{address}</p>
+   </div>
+   )}
+   {phone && (
+   <div className="flex items-center gap-4 group">
+   <span className="text-2xl" style={{ color: themeColor || 'inherit' }}>📞</span>
+   <a href={`tel:${phone}`} className={styles.desc + " !mb-0 group-hover:text-crm-text transition-colors"}>{phone}</a>
+   </div>
+   )}
+   {email && (
+   <div className="flex items-center gap-4 group">
+   <span className="text-2xl" style={{ color: themeColor || 'inherit' }}>✉️</span>
+   <a href={`mailto:${email}`} className={styles.desc + " !mb-0 group-hover:text-crm-text transition-colors"}>{email}</a>
+   </div>
+   )}
+   </div>
+   
+   <div className="mt-10 pt-10 border-t border-crm-border">
+   <h4 className="font-bold mb-6 uppercase tracking-widest text-[13px] text-crm-muted">Business Hours</h4>
+   <div className="space-y-3">
+   {hours && days.map(day => {
+   const h = hours[day];
+   return (
+   <div key={day} className="flex justify-between text-[14px]">
+   <span className="capitalize text-crm-muted font-medium">{day}</span>
+   <span className="font-bold text-crm-text">{h ? `${h.open} - ${h.close}` : 'Closed'}</span>
+   </div>
+   );
+   })}
+   </div>
+   </div>
+   </div>
+   
+   {address && (
+   <div className="rounded-2xl overflow-hidden shadow-sm h-64 md:h-full min-h-[350px] border border-crm-border relative">
+   <iframe
+   width="100%"
+   height="100%"
+   frameBorder="0"
+   className="absolute inset-0"
+   src={`https://www.google.com/maps?q=${encodeURIComponent(address)}&output=embed`}
+   allowFullScreen
+   ></iframe>
+   </div>
+   )}
+   </div>
+   </div>
+   );
+   } else {
+   // If the text is raw HTML (e.g. from the custom page editor) 
+   // we render it. But we ensure that if it's just raw text, it flows properly.
+   // By default, prose handles paragraphs. If there are no tags, we wrap it in a <p> tag.
+   let rawHtml = part.trim();
+   if (rawHtml && !rawHtml.startsWith('<')) {
+   rawHtml = `<p>${rawHtml.replace(/\n/g, '<br />')}</p>`;
+   }
+   return <div key={index} className="w-full" dangerouslySetInnerHTML={{ __html: rawHtml }} />;
+   }
+   })}
+  </div>
  );
 }
 

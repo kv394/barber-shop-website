@@ -1,3 +1,4 @@
+import Image from 'next/image';
 export const metadata = {
  title: 'Shop Template',
  description: 'Browse our services and book your appointment',

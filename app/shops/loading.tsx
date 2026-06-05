@@ -1,3 +1,4 @@
+import Image from 'next/image';
 export default function Loading() {
  return (
  <main className="min-h-screen" style={{ background: '#f4f5f7' }}>

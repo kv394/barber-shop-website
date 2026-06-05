@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import React from 'react';
 
 export function ClientGalleryTab({
@@ -56,7 +57,7 @@ export function ClientGalleryTab({
           {client.clientHistoryImages.map((img: any) => (
             <div key={img.id} className="relative aspect-square rounded-lg overflow-hidden border border-crm-border shadow-sm group bg-crm-surface">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={img.imageUrl} alt="Client history" className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" />
+              <Image src={img.imageUrl} alt="Client history" />
               <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 p-2">
                 <p className="text-crm-text text-[13px] text-white">{new Date(img.date).toLocaleDateString()}</p>
               </div>

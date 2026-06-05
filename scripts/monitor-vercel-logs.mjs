@@ -238,6 +238,7 @@ async function monitorLogs() {
             const msgKey = `text:${line.slice(0, 100)}`;
             if (!seenMessages.has(msgKey)) {
               seenMessages.add(msgKey);
+              console.log(`   📋 [ERROR] ${line.slice(0, 120)}`);
               capturedErrors.push({
                 level: 'ERROR',
                 message: `[Vercel] ${line.slice(0, 500)}`,

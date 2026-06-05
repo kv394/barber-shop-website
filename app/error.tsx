@@ -1,4 +1,6 @@
-'use client'; // Error components must be Client Components
+// Error components must be Client Components
+'use client';;
+import Image from 'next/image';
 
 import { useEffect } from 'react';
 

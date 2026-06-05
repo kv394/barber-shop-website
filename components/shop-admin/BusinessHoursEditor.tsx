@@ -1,4 +1,5 @@
-'use client';
+'use client';;
+import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import PremiumGlassCard from '@/components/ui/PremiumGlassCard';
 import PremiumButton from '@/components/ui/PremiumButton';

@@ -1,4 +1,5 @@
-"use client";
+"use client";;
+import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { 
@@ -69,7 +70,9 @@ export default function CustomerProfileOverlay({
  <div className="flex-1 overflow-y-auto scrollbar-hide flex flex-col">
  {/* Profile Info */}
  <div className="flex flex-col items-center pt-6 px-6 pb-4">
- <img src={`https://api.dicebear.com/7.x/initials/svg?seed=${customerName || 'Client'}`} alt={customerName || 'Client'} className="w-16 h-16 rounded-full border-2 border-white shadow-sm mb-3" />
+ <Image
+  src={`https://api.dicebear.com/7.x/initials/svg?seed=${customerName || 'Client'}`}
+  alt={customerName || 'Client'} />
  <h2 className="text-lg font-bold text-crm-text leading-tight mb-3">{customerName || 'Unknown Client'}</h2>
  
  <div className="flex flex-col gap-2 w-full ml-10">
@@ -120,7 +123,7 @@ export default function CustomerProfileOverlay({
  <div className="flex-1 bg-crm-bg/50 p-5 flex flex-col gap-5 overflow-y-auto">
  {/* Note 1 */}
  <div className="flex gap-3">
- <img src="https://i.pravatar.cc/150?u=jacob" alt="Jacob Müller" className="w-6 h-6 rounded-full shrink-0" />
+ <Image src="https://i.pravatar.cc/150?u=jacob" alt="Jacob Müller" />
  <div className="flex flex-col">
  <div className="flex items-baseline gap-2 mb-1">
  <span className="text-[11px] font-bold text-crm-text">Jacob Müller</span>
@@ -142,7 +145,7 @@ export default function CustomerProfileOverlay({
 
  {/* Note 2 */}
  <div className="flex gap-3">
- <img src="https://i.pravatar.cc/150?u=aiden" alt="Aiden Hudson" className="w-6 h-6 rounded-full shrink-0" />
+ <Image src="https://i.pravatar.cc/150?u=aiden" alt="Aiden Hudson" />
  <div className="flex flex-col">
  <div className="flex items-baseline gap-2 mb-1">
  <span className="text-[11px] font-bold text-crm-text">Aiden Hudson</span>

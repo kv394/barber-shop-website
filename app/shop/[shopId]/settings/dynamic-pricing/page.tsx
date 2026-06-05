@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import { redirect, notFound } from 'next/navigation';
 import { createClient } from '@/utils/supabase/server';
 import { getShopLayoutData } from '@/lib/shop-data';

@@ -1,4 +1,5 @@
-"use client";
+"use client";;
+import Image from 'next/image';
 
 import { useEffect, useState, useCallback } from "react";
 import { useSearchParams } from "next/navigation";
@@ -243,7 +244,6 @@ function SelfServiceContent() {
           </div>
         </div>
       </div>
-
       <div className="max-w-2xl mx-auto px-4 py-6 sm:py-8 space-y-6">
         {error && (
           <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl text-[13px] flex items-center gap-2">
@@ -413,11 +413,7 @@ function SelfServiceContent() {
                           <div className="shrink-0">
                             {apt.staff.imageUrl ? (
                               // eslint-disable-next-line @next/next/no-img-element
-                              <img
-                                src={apt.staff.imageUrl}
-                                alt={apt.staff.name}
-                                className="w-12 h-12 rounded-full border-2 border-crm-border object-cover"
-                              />
+                              (<Image src={apt.staff.imageUrl} alt={apt.staff.name} />)
                             ) : (
                               <div className="w-12 h-12 rounded-full border-2 border-crm-border bg-crm-bg flex items-center justify-center text-lg font-bold text-crm-primary">
                                 {apt.staff.name[0]?.toUpperCase()}
@@ -552,7 +548,6 @@ function SelfServiceContent() {
           </>
         )}
       </div>
-
       {/* Cancel Confirmation Modal */}
       {cancelConfirmId && (
         <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50 p-4">

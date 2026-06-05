@@ -1,4 +1,5 @@
-'use client';
+'use client';;
+import Image from 'next/image';
 
 import { useState } from 'react';
 
@@ -62,13 +63,11 @@ export default function SocialMediaClient({ shopId, shopName, shopLocation, init
           <div className="text-3xl font-black text-brand-indigo">{tokens}</div>
         </div>
       </div>
-
       {error && (
         <div className="p-4 bg-status-cancelled/20 border border-status-cancelled/30 text-status-cancelled rounded-xl font-medium">
           {error}
         </div>
       )}
-
       {initialImages.length === 0 ? (
         <div className="text-center py-12 bg-crm-surface border border-crm-border rounded-xl">
           <div className="text-4xl mb-4">📸</div>
@@ -80,11 +79,7 @@ export default function SocialMediaClient({ shopId, shopName, shopLocation, init
           {initialImages.map((image: any) => (
             <div key={image.id} className="bg-crm-surface border border-crm-border rounded-xl overflow-hidden shadow-sm flex flex-col">
               <div className="aspect-[4/5] relative bg-black">
-                <img 
-                  src={image.imageUrl} 
-                  alt={image.caption || 'Portfolio Image'} 
-                  className="w-full h-full object-cover"
-                />
+                <Image src={image.imageUrl} alt={image.caption || 'Portfolio Image'} />
               </div>
               
               <div className="p-5 flex-1 flex flex-col">

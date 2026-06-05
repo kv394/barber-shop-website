@@ -1,3 +1,4 @@
+import Image from 'next/image';
 export interface BookingReviewScreenProps {
   themeColor?: string;
   error: string | null;

@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import ShopAdminLayout from '@/components/shop-admin/ShopAdminLayout';
 import { createClient } from '@/utils/supabase/server';
 import { redirect } from 'next/navigation';

@@ -1,8 +1,8 @@
 import { prisma } from './prisma';
 
-const VERCEL_TOKEN = process.env.VERCEL_API_TOKEN;
-const PROJECT_ID = process.env.VERCEL_PROJECT_ID || 'prj_KUmKRUP1RGviLrGQJ9SmSD8cO2nz';
-const CAPTURE_SECONDS = parseInt(process.env.VERCEL_CAPTURE_SECONDS || '30');
+const VERCEL_TOKEN = process.env.VERCEL_API_TOKEN?.replace(/['"]/g, '');
+const PROJECT_ID = (process.env.VERCEL_PROJECT_ID || 'prj_KUmKRUP1RGviLrGQJ9SmSD8cO2nz').replace(/['"]/g, '');
+const CAPTURE_SECONDS = parseInt(process.env.VERCEL_CAPTURE_SECONDS || process.env.CAPTURE_SECONDS || '45');
 
 export class VercelLogMonitor {
   /**

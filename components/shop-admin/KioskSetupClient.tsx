@@ -1,4 +1,5 @@
-'use client';
+'use client';;
+import Image from 'next/image';
 import { useEffect, useState } from 'react';
 
 export default function KioskSetupClient({ shopId, shopName, kioskEmail: initialKioskEmail }: { shopId: string; shopName: string; kioskEmail: string }) {

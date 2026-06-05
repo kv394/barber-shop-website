@@ -1,3 +1,4 @@
+import Image from 'next/image';
 export interface BookingSuccessScreenProps {
   themeColor?: string;
   serviceName: string;

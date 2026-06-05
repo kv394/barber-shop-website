@@ -1,4 +1,5 @@
-'use client';
+'use client';;
+import Image from 'next/image';
 
 import { useState, useEffect } from 'react';
 import { QRCodeSVG } from 'qrcode.react';
@@ -127,7 +128,7 @@ export default function StaffProfileModalWrapper({ staff, shopId, children }: { 
  <div className="flex-1 overflow-y-auto hide-scrollbar flex flex-col items-center pt-2 pb-4">
  <div className="w-24 h-24 rounded-full overflow-hidden bg-crm-surface border-2 border-brand-indigo mb-3 flex items-center justify-center shrink-0 relative group">
  {imageUrl ? (
- <img src={imageUrl} alt={staff.name} className="w-full h-full object-cover" />
+ <Image src={imageUrl} alt={staff.name} />
  ) : (
  <span className="text-4xl text-crm-muted">👤</span>
  )}

@@ -2,7 +2,8 @@ import { prisma } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
 import { createClient } from '@/utils/supabase/server';
 import { serialize } from '@/lib/serialize';
-
+import { validateParams } from '@/app/lib/validation';
+import { MyAppointmentsSchema } from '@/app/lib/schemas/myAppointments';
 export const dynamic = 'force-dynamic';
 
 /**
@@ -21,10 +22,9 @@ export async function GET(request: Request) {
  }
 
  try {
- const { searchParams } = new URL(request.url);
- const limit = parseInt(searchParams.get('limit') || '15', 10);
- const upcomingCursor = searchParams.get('upcomingCursor');
- const pastCursor = searchParams.get('pastCursor');
+  const { searchParams } = new URL(request.url);
+  const { limit, upcomingCursor, pastCursor } = validateParams(MyAppointmentsSchema, searchParams);
+
 
  const now = new Date();
 

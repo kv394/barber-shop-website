@@ -1,4 +1,5 @@
-'use client';
+'use client';;
+import Image from 'next/image';
 
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { 
@@ -293,7 +294,6 @@ export default function AdminSecurityPage() {
           </button>
         )}
       </div>
-
       {/* Global Alerts */}
       {actionError && !isAddAdminModalOpen && (
         <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl flex items-start gap-3 animate-in fade-in slide-in-from-top-2">
@@ -307,7 +307,6 @@ export default function AdminSecurityPage() {
           <p className="text-sm text-green-700 font-medium">{actionSuccess}</p>
         </div>
       )}
-
       {/* Tabs */}
       <div className="flex border-b border-crm-border mb-6">
         <button
@@ -333,7 +332,6 @@ export default function AdminSecurityPage() {
           All Platform Users
         </button>
       </div>
-
       {/* Tab Content: All Users Filter */}
       {activeTab === 'ALL' && (
         <div className="flex flex-col sm:flex-row gap-3 mb-6 bg-white p-4 rounded-xl shadow-sm border border-crm-border">
@@ -372,7 +370,6 @@ export default function AdminSecurityPage() {
           </div>
         </div>
       )}
-
       {/* Users List */}
       <div className="bg-white rounded-2xl shadow-sm border border-crm-border overflow-hidden">
         {/* Table Header Bar */}
@@ -512,7 +509,6 @@ export default function AdminSecurityPage() {
           </div>
         )}
       </div>
-
       {/* Add Admin Modal */}
       {isAddAdminModalOpen && (
         <div className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-4">
@@ -596,7 +592,6 @@ export default function AdminSecurityPage() {
           </div>
         </div>
       )}
-
       {/* Edit Profile Modal */}
       {editingUser && (
         <div className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-4">

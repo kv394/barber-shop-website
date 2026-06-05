@@ -1,4 +1,5 @@
-'use client';
+'use client';;
+import Image from 'next/image';
 import { useEffect, useState } from 'react';
 
 const STARS = [1, 2, 3, 4, 5];

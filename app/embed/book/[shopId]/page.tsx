@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import BookingWizard from '@/components/booking/BookingWizard';
 import { prisma } from '@/lib/prisma';
 
@@ -57,34 +58,34 @@ export default async function EmbedBookPage({ params, searchParams }: { params: 
  const actualSecondaryColor = secondaryColor || c.secondaryColor || '#6b7280';
 
  return (
- <div className="h-full w-full bg-crm-bg flex flex-col relative overflow-y-auto font-body">
- <style dangerouslySetInnerHTML={{__html: `
- @import url('https://fonts.googleapis.com/css2?family=${headingFont.replace(/ /g, '+')}:wght@400;600;700;900&family=${bodyFont.replace(/ /g, '+')}:wght@400;500;600&display=swap');
- 
- h1, h2, h3, h4, h5, h6, .font-heading { font-family: '${headingFont}', sans-serif !important; }
- body, p, span, a, div, .font-body { font-family: '${bodyFont}', sans-serif; }
- 
- ${isDark ? `
- .bg-crm-bg, .bg-white, .bg-crm-surface { background-color: ${themeBg} !important; border-color: ${themeBorder} !important; }
- .text-crm-text, .text-gray-900, .text-crm-text { color: ${themeText} !important; }
- .text-crm-muted, .text-gray-500, .text-crm-muted { color: ${themeMuted} !important; }
- .border-gray-100, .border-gray-200, .border-crm-border { border-color: ${themeBorder} !important; }
- ` : ''}
+  <div className="h-full w-full bg-crm-bg flex flex-col relative overflow-y-auto font-body">
+   <style dangerouslySetInnerHTML={{__html: `
+   @import url('https://fonts.googleapis.com/css2?family=${headingFont.replace(/ /g, '+')}:wght@400;600;700;900&family=${bodyFont.replace(/ /g, '+')}:wght@400;500;600&display=swap');
+   
+   h1, h2, h3, h4, h5, h6, .font-heading { font-family: '${headingFont}', sans-serif !important; }
+   body, p, span, a, div, .font-body { font-family: '${bodyFont}', sans-serif; }
+   
+   ${isDark ? `
+   .bg-crm-bg, .bg-white, .bg-crm-surface { background-color: ${themeBg} !important; border-color: ${themeBorder} !important; }
+   .text-crm-text, .text-gray-900, .text-crm-text { color: ${themeText} !important; }
+   .text-crm-muted, .text-gray-500, .text-crm-muted { color: ${themeMuted} !important; }
+   .border-gray-100, .border-gray-200, .border-crm-border { border-color: ${themeBorder} !important; }
+   ` : ''}
 
- ${buttonShape === 'sharp' ? '.btn, button { border-radius: 0 !important; }' : ''}
- ${buttonShape === 'pill' ? '.btn, button { border-radius: 9999px !important; }' : ''}
- 
- ${buttonVariant === 'outline' ? `
- .btn, button.bg-crm-primary, button[style*="background-color: ${primaryColor}"] { background-color: transparent !important; border: 2px solid ${primaryColor} !important; color: ${primaryColor} !important; }
- .btn:hover, button.bg-crm-primary:hover, button[style*="background-color: ${primaryColor}"]:hover { background-color: ${primaryColor}20 !important; }
- ` : ''}
- 
- ${buttonVariant === 'ghost' ? `
- .btn, button.bg-crm-primary, button[style*="background-color: ${primaryColor}"] { background-color: transparent !important; border: none !important; color: ${primaryColor} !important; }
- .btn:hover, button.bg-crm-primary:hover, button[style*="background-color: ${primaryColor}"]:hover { background-color: ${primaryColor}20 !important; }
- ` : ''}
- `}} />
- <BookingWizard shopId={actualShopId} themeColor={primaryColor} secondaryColor={actualSecondaryColor} templateType={templateType} currency={shop?.currency || 'INR'} shopType={(shop as any)?.shopType || 'PHYSICAL'} />
- </div>
+   ${buttonShape === 'sharp' ? '.btn, button { border-radius: 0 !important; }' : ''}
+   ${buttonShape === 'pill' ? '.btn, button { border-radius: 9999px !important; }' : ''}
+   
+   ${buttonVariant === 'outline' ? `
+   .btn, button.bg-crm-primary, button[style*="background-color: ${primaryColor}"] { background-color: transparent !important; border: 2px solid ${primaryColor} !important; color: ${primaryColor} !important; }
+   .btn:hover, button.bg-crm-primary:hover, button[style*="background-color: ${primaryColor}"]:hover { background-color: ${primaryColor}20 !important; }
+   ` : ''}
+   
+   ${buttonVariant === 'ghost' ? `
+   .btn, button.bg-crm-primary, button[style*="background-color: ${primaryColor}"] { background-color: transparent !important; border: none !important; color: ${primaryColor} !important; }
+   .btn:hover, button.bg-crm-primary:hover, button[style*="background-color: ${primaryColor}"]:hover { background-color: ${primaryColor}20 !important; }
+   ` : ''}
+   `}} />
+   <BookingWizard shopId={actualShopId} themeColor={primaryColor} secondaryColor={actualSecondaryColor} templateType={templateType} currency={shop?.currency || 'INR'} shopType={(shop as any)?.shopType || 'PHYSICAL'} />
+  </div>
  );
 }

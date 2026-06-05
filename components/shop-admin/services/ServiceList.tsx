@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import React from 'react';
 import { fmtPrice } from '@/lib/formatters';
 import PremiumGlassCard from '@/components/ui/PremiumGlassCard';
@@ -37,7 +38,7 @@ export function ServiceList({
             <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
               <div className="flex-1 min-w-0 flex gap-4">
                 {service.imageUrl && (
-                  <img src={service.imageUrl} alt={service.name} className="w-16 h-16 object-cover rounded-xl border border-white/10 hidden sm:block shadow-md" />
+                  <Image src={service.imageUrl} alt={service.name} />
                 )}
                 <div className="flex-1">
                   <div className="flex items-center flex-wrap gap-2 mb-1">

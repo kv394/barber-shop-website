@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { exchangeCodeForTokens } from '@/lib/google-calendar';
 import { verifyOAuthState } from '@/lib/oauth-state';
+import { validateParams } from '@/app/lib/validation';
+import { GoogleCallbackSchema } from '@/app/lib/schemas/googleCallback';
 import { logger } from '@/lib/logger';
 import { createClient } from '@/utils/supabase/server';
 
@@ -39,13 +41,11 @@ const AUTH_CODE_PATTERN = /^[A-Za-z0-9/_\-]+$/;
 
 export async function GET(request: Request) {
  const { searchParams } = new URL(request.url);
- const code = searchParams.get('code');
- const state = searchParams.get('state');
- const errorParam = searchParams.get('error'); // Google sends this on user-deny
+ const { code, state, error } = validateParams(GoogleCallbackSchema, searchParams);
 
  // --- 0. Google-side denial (user clicked "Cancel") ----------------------
- if (errorParam) {
- logger.info('Google OAuth denied by user', { error: errorParam });
+ if (error) {
+ logger.info('Google OAuth denied by user', { error: error });
  return safeRedirect('/my-appointments/profile?error=google_auth_denied');
  }
 

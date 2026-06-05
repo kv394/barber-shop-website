@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma, getTenantClient } from '@/lib/prisma';
+import { validateParams } from '@/app/lib/validation';
+import { BlackoutCreateSchema, BlackoutDeleteSchema } from '@/lib/schemas/blackoutDates';
 import { requireShopRole, isAuthError } from '@/lib/auth';
 export const dynamic = 'force-dynamic';
 
@@ -22,8 +24,10 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ sho
  const authResult = await requireShopRole(shopId, ['SHOP_ADMIN']);
  if (isAuthError(authResult)) return authResult;
 
- const { date, reason } = await req.json();
- const d = new Date(date); d.setHours(0, 0, 0, 0);
+  const body = await req.json();
+  const { date, reason } = BlackoutCreateSchema.parse(body);
+  const d = new Date(date);
+  d.setHours(0, 0, 0, 0);
  const entry = await tenantClient.shopBlackoutDate.upsert({
  where: { shopId_date: { shopId, date: d } },
  update: { reason: reason || null },
@@ -38,9 +42,9 @@ export async function DELETE(req: NextRequest, { params }: { params: Promise<{ s
  const authResult = await requireShopRole(shopId, ['SHOP_ADMIN']);
  if (isAuthError(authResult)) return authResult;
 
- const { searchParams } = new URL(req.url);
- const id = searchParams.get('id');
- if (!id) return NextResponse.json({ error: 'id required' }, { status: 400 });
+  const { searchParams } = new URL(req.url);
+  const { id } = BlackoutDeleteSchema.parse(Object.fromEntries(searchParams.entries()));
+  if (!id) return NextResponse.json({ error: 'id required' }, { status: 400 });
 
  // Verify blackout date belongs to this shop (prevent cross-shop deletion)
  const entry = await tenantClient.shopBlackoutDate.findUnique({ where: { id } });

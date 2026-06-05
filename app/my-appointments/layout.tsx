@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import MyAppointmentsLayoutClient from '@/components/MyAppointmentsLayoutClient';
 import { createClient } from '@/utils/supabase/server';
 import { redirect } from 'next/navigation';

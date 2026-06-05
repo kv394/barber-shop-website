@@ -1,4 +1,5 @@
-'use client';
+'use client';;
+import Image from 'next/image';
 
 import { useState, useMemo } from 'react';
 import { fmtPrice } from '@/lib/formatters';

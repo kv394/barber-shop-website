@@ -1,7 +1,8 @@
 generator client {
   provider        = "prisma-client-js"
-  engineType      = "library"
+  engineType      = "binary"
   previewFeatures = ["postgresqlExtensions"]
+  binaryTargets   = ["darwin-arm64"]
 }
 
 datasource db {

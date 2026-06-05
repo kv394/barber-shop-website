@@ -26,12 +26,18 @@ export async function GET(
  return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });
  }
 
- const { searchParams } = new URL(request.url);
- const query = searchParams.get('q')?.trim();
+  const { searchParams } = new URL(request.url);
+  const queryRaw = searchParams.get('q')?.trim();
 
- if (!query || query.length < 2) {
- return NextResponse.json([]);
- }
+  // Zod validation for the query parameter
+  const { z } = await import('zod');
+  const QuerySchema = z.string().min(2, { message: 'Query must be at least 2 characters' });
+  const parseResult = QuerySchema.safeParse(queryRaw);
+  if (!parseResult.success) {
+    return NextResponse.json({ error: parseResult.error.message }, { status: 400 });
+  }
+  const query = parseResult.data;
+
 
  // Search clients by name or email (case-insensitive)
  const clients = await tenantClient.user.findMany({

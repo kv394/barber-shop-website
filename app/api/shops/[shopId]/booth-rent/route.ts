@@ -4,7 +4,7 @@ import { NextResponse } from 'next/server';
 import { requireShopRole, isAuthError } from '@/lib/auth';
 
 import { resolveShopId } from '@/lib/shop-resolution';
-import { boothRentSchema } from '@/lib/validations';
+import { boothRentSchema } from '@/lib/schemas/boothRent';
 import { serialize } from '@/lib/serialize';
 
 export const dynamic = 'force-dynamic';

@@ -1,11 +1,10 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useState, useRef, useTransition } from 'react';
 import { sendBroadcast } from './actions';
-import { useFormStatus } from 'react-dom';
 
 function SubmitButton() {
-  const { pending } = useFormStatus();
+  const [pending] = useTransition();
   return (
     <button
       type="submit"
@@ -16,6 +15,8 @@ function SubmitButton() {
     </button>
   );
 }
+
+
 
 export default function BroadcastForm() {
   const formRef = useRef<HTMLFormElement>(null);
