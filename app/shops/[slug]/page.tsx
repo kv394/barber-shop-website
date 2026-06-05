@@ -55,6 +55,20 @@ const getShopBySlug = cache(async (slug: string) => {
  shop = candidates.find(
  (s: any) => s.name.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '') === slug.toLowerCase()
  ) || null;
+
+  // When multiple shops share the same slug (duplicate names), prefer
+  // the one that has a custom template with actual HTML content.
+  if (shop) {
+   const allMatches = candidates.filter(
+    (s: any) => s.name.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '') === slug.toLowerCase()
+   );
+   if (allMatches.length > 1) {
+    const customMatch = allMatches.find(
+     (s: any) => s.template === 'custom' && s.customization?.customHtml
+    );
+    if (customMatch) shop = customMatch;
+   }
+  }
  }
 
  if (!shop) return null;
@@ -182,10 +196,22 @@ export default async function PublicShopPage({
       include: serviceInclude,
       take: 50,
      });
-     s = candidates.find(
-      (c: any) => c.name.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '') === slug.toLowerCase()
-     ) || null;
-    }
+      s = candidates.find(
+       (c: any) => c.name.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '') === slug.toLowerCase()
+      ) || null;
+      // Prefer the shop with custom template when duplicates exist
+      if (s) {
+       const allMatches = candidates.filter(
+        (c: any) => c.name.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '') === slug.toLowerCase()
+       );
+       if (allMatches.length > 1) {
+        const customMatch = allMatches.find(
+         (c: any) => c.template === 'custom' && c.customization?.customHtml
+        );
+        if (customMatch) s = customMatch;
+       }
+      }
+     }
     if (s) {
      const reviews = await prisma.review.findMany({
       where: { shopId: s.id },
