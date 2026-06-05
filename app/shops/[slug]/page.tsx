@@ -168,6 +168,12 @@ export default async function PublicShopPage({
  const { slug } = await params;
  const resolvedSearchParams = await searchParams;
  const isPreview = resolvedSearchParams?.preview === 'true';
+
+ // In preview mode, bust the cache so template changes are immediately visible
+ if (isPreview) {
+ await cacheService.invalidate(`shop_public_page_data:${slug}`);
+ }
+
  const shop = await getShopBySlug(slug);
 
  if (!shop) {
