@@ -136,67 +136,87 @@ export default function DynamicTemplate({ ctx }: { ctx: any }) {
    injectedLinks.push(link);
   });
 
-  // Inject external <script src="..."> tags
-  const injectedScripts: HTMLScriptElement[] = [];
-  scriptSrcUrls.forEach(src => {
-   if (document.querySelector(`script[src="${src}"]`)) return;
-   const script = document.createElement('script');
-   script.src = src;
-   script.async = true;
-   document.body.appendChild(script);
-   injectedScripts.push(script);
-  });
+   // Inject external <script src="..."> tags and wait for them to load
+   // BEFORE executing inline scripts (which may depend on the SDK)
+   const injectedScripts: HTMLScriptElement[] = [];
 
-   // Execute inline scripts after a tick (so the DOM is ready)
-   // We patch window.addEventListener temporarily so that 'load' event
-   // listeners fire immediately (since the real load event has already
-   // fired by the time React hydrates and DynamicTemplate mounts).
-   const timers: ReturnType<typeof setTimeout>[] = [];
-   scripts.forEach((code, i) => {
-    const t = setTimeout(() => {
-     try {
-      // Wrap code to handle 'load'/'DOMContentLoaded' event listeners
-      // that missed the boat (both have already fired by React mount time)
-      const wrappedCode = `
-       (function() {
-        var _origWinAddEL = window.addEventListener;
-        var _origDocAddEL = document.addEventListener;
-        window.addEventListener = function(type, fn, opts) {
-         if ((type === 'load' || type === 'DOMContentLoaded') && document.readyState === 'complete') {
-          setTimeout(fn, 0);
-         } else {
-          _origWinAddEL.call(window, type, fn, opts);
+   const loadExternalScripts = () => {
+    return Promise.all(
+     scriptSrcUrls.map(src => {
+      return new Promise<void>((resolve) => {
+       if (document.querySelector(`script[src="${src}"]`)) {
+        resolve();
+        return;
+       }
+       const script = document.createElement('script');
+       script.src = src;
+       script.async = false; // Preserve execution order
+       script.onload = () => resolve();
+       script.onerror = () => {
+        console.warn(`[DynamicTemplate] Failed to load script: ${src}`);
+        resolve(); // Don't block other scripts
+       };
+       document.body.appendChild(script);
+       injectedScripts.push(script);
+      });
+     })
+    );
+   };
+
+    // Execute inline scripts only AFTER external scripts are loaded
+    const executeInlineScripts = () => {
+     scripts.forEach((code, i) => {
+      try {
+       // Wrap code to handle 'load'/'DOMContentLoaded' event listeners
+       // that missed the boat (both have already fired by React mount time)
+       const wrappedCode = `
+        (function() {
+         var _origWinAddEL = window.addEventListener;
+         var _origDocAddEL = document.addEventListener;
+         window.addEventListener = function(type, fn, opts) {
+          if ((type === 'load' || type === 'DOMContentLoaded') && document.readyState === 'complete') {
+           setTimeout(fn, 0);
+          } else {
+           _origWinAddEL.call(window, type, fn, opts);
+          }
+         };
+         document.addEventListener = function(type, fn, opts) {
+          if ((type === 'load' || type === 'DOMContentLoaded') && document.readyState === 'complete') {
+           setTimeout(fn, 0);
+          } else {
+           _origDocAddEL.call(document, type, fn, opts);
+          }
+         };
+         try {
+          ${code}
+         } finally {
+          window.addEventListener = _origWinAddEL;
+          document.addEventListener = _origDocAddEL;
          }
-        };
-        document.addEventListener = function(type, fn, opts) {
-         if ((type === 'load' || type === 'DOMContentLoaded') && document.readyState === 'complete') {
-          setTimeout(fn, 0);
-         } else {
-          _origDocAddEL.call(document, type, fn, opts);
-         }
-        };
-        try {
-         ${code}
-        } finally {
-         window.addEventListener = _origWinAddEL;
-         document.addEventListener = _origDocAddEL;
-        }
-       })();
-      `;
-      // eslint-disable-next-line no-new-func
-      new Function(wrappedCode)();
-     } catch (err) {
-      console.warn(`[DynamicTemplate] Script block ${i} error:`, err);
+        })();
+       `;
+       // eslint-disable-next-line no-new-func
+       new Function(wrappedCode)();
+      } catch (err) {
+       console.warn(`[DynamicTemplate] Script block ${i} error:`, err);
+      }
+     });
+    };
+
+    // Chain: load external scripts → then execute inline scripts
+    let cancelled = false;
+    loadExternalScripts().then(() => {
+     if (!cancelled) {
+      // Small delay to ensure external scripts have initialized globals
+      setTimeout(executeInlineScripts, 50);
      }
-    }, 100 * (i + 1)); // Stagger slightly so DOM is settled
-    timers.push(t);
-   });
+    });
 
-  return () => {
-   timers.forEach(clearTimeout);
-   injectedLinks.forEach(el => el.remove());
-   injectedScripts.forEach(el => el.remove());
-  };
+   return () => {
+    cancelled = true;
+    injectedLinks.forEach(el => el.remove());
+    injectedScripts.forEach(el => el.remove());
+   };
  }, [scripts, scriptSrcUrls, linkHrefs]);
 
   // Post-process sanitized HTML to add lazy loading to images
