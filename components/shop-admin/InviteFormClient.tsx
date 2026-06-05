@@ -1,6 +1,6 @@
 'use client';
 
-import { useActionState, useEffect, useRef } from 'react';
+import { useState, useTransition, useEffect, useRef } from 'react';
 
 export default function InviteFormClient({
  inviteAction,
@@ -8,12 +8,13 @@ export default function InviteFormClient({
  userRole,
  canAddShopAdmin,
 }: {
- inviteAction: (prevState: any, formData: FormData) => Promise<{ success: boolean; error?: string }>;
+ inviteAction: (formData: FormData) => Promise<{ success: boolean; error?: string }>;
  shopId: string;
  userRole: string;
  canAddShopAdmin: boolean;
 }) {
- const [state, formAction, isPending] = useActionState(inviteAction, { success: false });
+ const [state, setState] = useState<any>(null);
+  const [isPending, startTransition] = useTransition();
  const formRef = useRef<HTMLFormElement>(null);
 
  // Reset form on success
@@ -25,7 +26,14 @@ export default function InviteFormClient({
 
  return (
  <>
-  <form ref={formRef} action={formAction} className="flex flex-col md:flex-row gap-4 items-end">
+  <form ref={formRef} className="flex flex-col md:flex-row gap-4 items-end" onSubmit={(e) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    startTransition(async () => {
+      const result = await inviteAction(formData);
+      setState(result);
+    });
+  }}>
   <input type="hidden" name="shopId" value={shopId} />
   <div className="flex-1 w-full">
    <label className="block text-crm-muted mb-1.5 font-semibold uppercase tracking-wider text-[12px]">📧 Email</label>
