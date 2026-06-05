@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import { cache } from 'react';
 import { prisma } from '@/lib/prisma';
 import { UserRole } from '@prisma/client';
@@ -207,105 +208,98 @@ export default async function PublicShopPage({
  let dynamicTemplateCss = null;
 
  if (!['modern', 'classic', 'minimal', 'sporty', 'corporate', 'noir', 'sunset', 'editorial'].includes(templateType)) {
- const dynamicTemplate = await prisma.dynamicTemplate.findUnique({
- where: { name: templateType }
- });
 
- if (dynamicTemplate) {
- let htmlCode = dynamicTemplate.htmlCode;
- let cssCode = dynamicTemplate.cssCode;
+  // Helper to normalize Google Drive image URLs
+  const normalizeImageUrl = (url: string | null): string | null => {
+  if (!url) return null;
+  const fileMatch = url.match(/drive\.google\.com\/file\/d\/([^/]+)/);
+  if (fileMatch) return `https://lh3.googleusercontent.com/d/${fileMatch[1]}`;
+  const openMatch = url.match(/drive\.google\.com\/open\?id=([^&]+)/);
+  if (openMatch) return `https://lh3.googleusercontent.com/d/${openMatch[1]}`;
+  const ucMatch = url.match(/drive\.google\.com\/uc\?.*id=([^&]+)/);
+  if (ucMatch) return `https://lh3.googleusercontent.com/d/${ucMatch[1]}`;
+  return url;
+  };
 
- const cacheKey = `shop-template-content:${shop.id}:${templateType}`;
- 
- const cachedContent = await cacheService.getOrSet(cacheKey, async () => {
- let h = htmlCode;
- let c = cssCode;
- try {
- const kutzappFolderId = await getOrCreateFolder('kutzapp');
- if (kutzappFolderId) {
- const shopFolderId = await getOrCreateFolder(shop.id, kutzappFolderId);
- if (shopFolderId) {
- const templateFolderId = await getOrCreateFolder(templateType, shopFolderId);
- if (templateFolderId) {
- const driveHtml = await downloadFileFromFolder(templateFolderId, 'index.html');
- const driveCss = await downloadFileFromFolder(templateFolderId, 'styles.css');
- if (driveHtml) h = driveHtml;
- if (driveCss) c = driveCss;
- }
- }
- }
- } catch (e) {
- console.error('Failed to fetch template from Google Drive, falling back to DB:', e);
- }
- return { htmlCode: h, cssCode: c };
- }, 3600); // 1 hour cache TTL
+  const shopForTemplate = {
+  ...shop,
+  logoUrl: normalizeImageUrl(shop.customization?.logoUrl) || shop.logoUrl,
+  heroImageUrl: normalizeImageUrl(shop.customization?.heroImageUrl) || shop.heroImageUrl
+  };
 
- htmlCode = cachedContent.htmlCode;
- cssCode = cachedContent.cssCode;
+  // For 'custom' template type, use the shop's own customHtml (per-shop).
+  // Route it through dynamicTemplateHtml so it renders via DynamicTemplate
+  // component (which supports script execution for SDK) instead of the
+  // iframe-based CustomTemplate.
+  if (templateType === 'custom' && shop.customization?.customHtml) {
+  try {
+  const Handlebars = (await import('handlebars')).default;
+  const compiledTemplate = Handlebars.compile(shop.customization.customHtml);
+  dynamicTemplateHtml = compiledTemplate({
+  ...shop.customization,
+  shop: shopForTemplate,
+  primaryColor,
+  secondaryColor
+  });
+  } catch (e) {
+  // If Handlebars fails, use the raw HTML as-is
+  console.error('Handlebars error parsing customHtml:', e);
+  dynamicTemplateHtml = shop.customization.customHtml;
+  }
+  } else if (templateType !== 'custom') {
+  // For non-custom dynamic templates, look up in DynamicTemplate table
+  const dynamicTemplate = await prisma.dynamicTemplate.findUnique({
+  where: { name: templateType }
+  });
 
- try {
- const Handlebars = (await import('handlebars')).default;
- const compiledTemplate = Handlebars.compile(htmlCode);
+  if (dynamicTemplate) {
+  let htmlCode = dynamicTemplate.htmlCode;
+  let cssCode = dynamicTemplate.cssCode;
 
- const normalizeImageUrl = (url: string | null): string | null => {
- if (!url) return null;
- const fileMatch = url.match(/drive\.google\.com\/file\/d\/([^/]+)/);
- if (fileMatch) return `https://lh3.googleusercontent.com/d/${fileMatch[1]}`;
- const openMatch = url.match(/drive\.google\.com\/open\?id=([^&]+)/);
- if (openMatch) return `https://lh3.googleusercontent.com/d/${openMatch[1]}`;
- const ucMatch = url.match(/drive\.google\.com\/uc\?.*id=([^&]+)/);
- if (ucMatch) return `https://lh3.googleusercontent.com/d/${ucMatch[1]}`;
- return url;
- };
+  const cacheKey = `shop-template-content:${shop.id}:${templateType}`;
+  
+  const cachedContent = await cacheService.getOrSet(cacheKey, async () => {
+  let h = htmlCode;
+  let c = cssCode;
+  try {
+  const kutzappFolderId = await getOrCreateFolder('kutzapp');
+  if (kutzappFolderId) {
+  const shopFolderId = await getOrCreateFolder(shop.id, kutzappFolderId);
+  if (shopFolderId) {
+  const templateFolderId = await getOrCreateFolder(templateType, shopFolderId);
+  if (templateFolderId) {
+  const driveHtml = await downloadFileFromFolder(templateFolderId, 'index.html');
+  const driveCss = await downloadFileFromFolder(templateFolderId, 'styles.css');
+  if (driveHtml) h = driveHtml;
+  if (driveCss) c = driveCss;
+  }
+  }
+  }
+  } catch (e) {
+  console.error('Failed to fetch template from Google Drive, falling back to DB:', e);
+  }
+  return { htmlCode: h, cssCode: c };
+  }, 3600); // 1 hour cache TTL
 
- const shopForTemplate = {
- ...shop,
- logoUrl: normalizeImageUrl(shop.customization?.logoUrl) || shop.logoUrl,
- heroImageUrl: normalizeImageUrl(shop.customization?.heroImageUrl) || shop.heroImageUrl
- };
+  htmlCode = cachedContent.htmlCode;
+  cssCode = cachedContent.cssCode;
 
- dynamicTemplateHtml = compiledTemplate({
- ...shop.customization,
- shop: shopForTemplate,
- primaryColor,
- secondaryColor
- });
- dynamicTemplateCss = cssCode;
- } catch (e) {
- console.error('Handlebars error:', e);
- }
- } else if (templateType === 'custom' && shop.customization?.customHtml) {
- try {
- const Handlebars = (await import('handlebars')).default;
- const compiledTemplate = Handlebars.compile(shop.customization.customHtml);
+  try {
+  const Handlebars = (await import('handlebars')).default;
+  const compiledTemplate = Handlebars.compile(htmlCode);
 
- const normalizeImageUrl = (url: string | null): string | null => {
- if (!url) return null;
- const fileMatch = url.match(/drive\.google\.com\/file\/d\/([^/]+)/);
- if (fileMatch) return `https://lh3.googleusercontent.com/d/${fileMatch[1]}`;
- const openMatch = url.match(/drive\.google\.com\/open\?id=([^&]+)/);
- if (openMatch) return `https://lh3.googleusercontent.com/d/${openMatch[1]}`;
- const ucMatch = url.match(/drive\.google\.com\/uc\?.*id=([^&]+)/);
- if (ucMatch) return `https://lh3.googleusercontent.com/d/${ucMatch[1]}`;
- return url;
- };
-
- const shopForTemplate = {
- ...shop,
- logoUrl: normalizeImageUrl(shop.customization?.logoUrl) || shop.logoUrl,
- heroImageUrl: normalizeImageUrl(shop.customization?.heroImageUrl) || shop.heroImageUrl
- };
-
- shop.customization.customHtml = compiledTemplate({
- ...shop.customization,
- shop: shopForTemplate,
- primaryColor,
- secondaryColor
- });
- } catch (e) {
- console.error('Handlebars error parsing customHtml:', e);
- }
- }
+  dynamicTemplateHtml = compiledTemplate({
+  ...shop.customization,
+  shop: shopForTemplate,
+  primaryColor,
+  secondaryColor
+  });
+  dynamicTemplateCss = cssCode;
+  } catch (e) {
+  console.error('Handlebars error:', e);
+  }
+  }
+  }
  }
 
  // Pass everything to the Client Component
