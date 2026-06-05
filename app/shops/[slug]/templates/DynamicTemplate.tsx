@@ -100,11 +100,17 @@ export default function DynamicTemplate({ ctx }: { ctx: any }) {
  }, [dynamicTemplateHtml]);
 
  // Sanitize only the body HTML (scripts/styles already extracted)
+ // Templates are admin-controlled (not user-submitted), so we allow event
+ // handler attributes (onclick etc.) needed for SDK booking integration.
  const sanitizedHtml = useMemo(() => {
   if (!bodyHtml) return '';
   return DOMPurify.sanitize(bodyHtml, {
-   ADD_TAGS: ['style'],
-   ADD_ATTR: ['target', 'rel', 'data-service-id', 'data-shop-id'],
+   ADD_TAGS: ['style', 'iframe'],
+   ADD_ATTR: ['target', 'rel', 'data-service-id', 'data-shop-id',
+    'onclick', 'onsubmit', 'onchange', 'oninput',
+    'aria-label', 'role', 'tabindex', 'loading', 'decoding',
+    'crossorigin', 'data-theme-color', 'data-position'],
+   ALLOW_UNKNOWN_PROTOCOLS: true,
   });
  }, [bodyHtml]);
 
@@ -141,19 +147,50 @@ export default function DynamicTemplate({ ctx }: { ctx: any }) {
    injectedScripts.push(script);
   });
 
-  // Execute inline scripts after a tick (so the DOM is ready)
-  const timers: ReturnType<typeof setTimeout>[] = [];
-  scripts.forEach((code, i) => {
-   const t = setTimeout(() => {
-    try {
-     // eslint-disable-next-line no-new-func
-     new Function(code)();
-    } catch (err) {
-     console.warn(`[DynamicTemplate] Script block ${i} error:`, err);
-    }
-   }, 100 * (i + 1)); // Stagger slightly so DOM is settled
-   timers.push(t);
-  });
+   // Execute inline scripts after a tick (so the DOM is ready)
+   // We patch window.addEventListener temporarily so that 'load' event
+   // listeners fire immediately (since the real load event has already
+   // fired by the time React hydrates and DynamicTemplate mounts).
+   const timers: ReturnType<typeof setTimeout>[] = [];
+   scripts.forEach((code, i) => {
+    const t = setTimeout(() => {
+     try {
+      // Wrap code to handle 'load'/'DOMContentLoaded' event listeners
+      // that missed the boat (both have already fired by React mount time)
+      const wrappedCode = `
+       (function() {
+        var _origWinAddEL = window.addEventListener;
+        var _origDocAddEL = document.addEventListener;
+        window.addEventListener = function(type, fn, opts) {
+         if ((type === 'load' || type === 'DOMContentLoaded') && document.readyState === 'complete') {
+          setTimeout(fn, 0);
+         } else {
+          _origWinAddEL.call(window, type, fn, opts);
+         }
+        };
+        document.addEventListener = function(type, fn, opts) {
+         if ((type === 'load' || type === 'DOMContentLoaded') && document.readyState === 'complete') {
+          setTimeout(fn, 0);
+         } else {
+          _origDocAddEL.call(document, type, fn, opts);
+         }
+        };
+        try {
+         ${code}
+        } finally {
+         window.addEventListener = _origWinAddEL;
+         document.addEventListener = _origDocAddEL;
+        }
+       })();
+      `;
+      // eslint-disable-next-line no-new-func
+      new Function(wrappedCode)();
+     } catch (err) {
+      console.warn(`[DynamicTemplate] Script block ${i} error:`, err);
+     }
+    }, 100 * (i + 1)); // Stagger slightly so DOM is settled
+    timers.push(t);
+   });
 
   return () => {
    timers.forEach(clearTimeout);
