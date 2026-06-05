@@ -5,13 +5,18 @@ import { requireShopRole, isAuthError } from '@/lib/auth';
 
 export const dynamic = 'force-dynamic';
 
-export async function OPTIONS() {
- return new NextResponse(null, {
- headers: {
- 'Access-Control-Allow-Origin': '*',
- 'Access-Control-Allow-Methods': 'GET, OPTIONS',
- },
- });
+function getCorsHeaders(request: Request) {
+ const origin = request.headers.get('origin') || '';
+ const allowedDomains = (process.env.NEXT_PUBLIC_ROOT_DOMAIN || '').split(',').map(d => d.trim());
+ const isAllowed = allowedDomains.some(domain => origin.includes(domain)) || origin.includes('vercel.app');
+ return {
+  'Access-Control-Allow-Origin': isAllowed ? origin : '',
+  'Access-Control-Allow-Methods': 'GET, OPTIONS',
+ };
+}
+
+export async function OPTIONS(request: Request) {
+ return new NextResponse(null, { headers: getCorsHeaders(request) });
 }
 
 export async function GET(
@@ -24,10 +29,7 @@ export async function GET(
  const { searchParams } = new URL(request.url);
  const dateStr = searchParams.get('date');
 
- const headers = {
- 'Access-Control-Allow-Origin': '*',
- 'Access-Control-Allow-Methods': 'GET, OPTIONS',
- };
+ const headers = getCorsHeaders(request);
 
  if (!dateStr) {
  // SECURITY: Require authentication to fetch sensitive staff details
@@ -94,7 +96,7 @@ export async function GET(
  workingHours: s.workingHours
  }));
 
- return NextResponse.json(staffToReturn);
+ return NextResponse.json(staffToReturn, { headers });
  } catch (error) {
  logger.error("Error fetching staff availability:", error);
  return NextResponse.json({ error: 'Failed to fetch staff availability' }, { status: 500 });
