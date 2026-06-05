@@ -146,21 +146,22 @@ export async function GET(request: Request, { params }: { params: Promise<{ shop
  },
  orderBy: { name: 'asc' }
  }),
- // 3. Public Staff 
- tenantClient.user.findMany({
- where: {
- OR: [
- { shopId: shop.id, role: 'STAFF' },
- { shopAccesses: { some: { shopId: shop.id, role: 'STAFF' } } }
- ]
- },
- select: {
- id: true,
- name: true,
- imageUrl: true,
- workingHours: true
- }
- }),
+  // 3. Public Staff (all employed barbers/staff, including admins who also cut hair)
+  tenantClient.user.findMany({
+  where: {
+  OR: [
+  { shopId: shop.id, role: { in: ['STAFF', 'SHOP_ADMIN'] } },
+  { shopAccesses: { some: { shopId: shop.id, role: { in: ['STAFF', 'SHOP_ADMIN'] } } } }
+  ]
+  },
+  select: {
+  id: true,
+  name: true,
+  imageUrl: true,
+  role: true,
+  workingHours: true
+  }
+  }),
  // 4. Reviews
  tenantClient.review.findMany({
  where: { shopId: shop.id },

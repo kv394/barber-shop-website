@@ -1,13 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Heritage Haircuts — The Art of Precision Grooming</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,700;1,400;1,700&family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
-  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,700;1,400;1,700&family=Manrope:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0"
+    rel="stylesheet" />
   <style>
     /* ========================================
        CSS CUSTOM PROPERTIES
@@ -36,7 +40,9 @@
     /* ========================================
        RESET & BASE
     ======================================== */
-    *, *::before, *::after {
+    *,
+    *::before,
+    *::after {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
@@ -99,8 +105,13 @@
       margin-bottom: 20px;
     }
 
-    .gold-text { color: var(--gold-primary); }
-    .italic { font-style: italic; }
+    .gold-text {
+      color: var(--gold-primary);
+    }
+
+    .italic {
+      font-style: italic;
+    }
 
     /* ========================================
        SCROLL REVEAL ANIMATION
@@ -116,12 +127,29 @@
       transform: translateY(0);
     }
 
-    .reveal-delay-1 { transition-delay: 0.1s; }
-    .reveal-delay-2 { transition-delay: 0.2s; }
-    .reveal-delay-3 { transition-delay: 0.3s; }
-    .reveal-delay-4 { transition-delay: 0.4s; }
-    .reveal-delay-5 { transition-delay: 0.5s; }
-    .reveal-delay-6 { transition-delay: 0.6s; }
+    .reveal-delay-1 {
+      transition-delay: 0.1s;
+    }
+
+    .reveal-delay-2 {
+      transition-delay: 0.2s;
+    }
+
+    .reveal-delay-3 {
+      transition-delay: 0.3s;
+    }
+
+    .reveal-delay-4 {
+      transition-delay: 0.4s;
+    }
+
+    .reveal-delay-5 {
+      transition-delay: 0.5s;
+    }
+
+    .reveal-delay-6 {
+      transition-delay: 0.6s;
+    }
 
     /* ========================================
        1. STICKY NAV
@@ -266,7 +294,7 @@
       font-size: 1.05rem;
       font-weight: 500;
       color: var(--text-body);
-      border-bottom: 1px solid rgba(255,255,255,0.05);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
       transition: color var(--transition);
     }
 
@@ -282,9 +310,12 @@
     }
 
     @media (max-width: 768px) {
-      .navbar__links, .navbar > .navbar__inner > .navbar__cta {
+
+      .navbar__links,
+      .navbar>.navbar__inner>.navbar__cta {
         display: none;
       }
+
       .navbar__hamburger {
         display: flex;
       }
@@ -322,13 +353,11 @@
     .hero__overlay {
       position: absolute;
       inset: 0;
-      background: linear-gradient(
-        to right,
-        rgba(14, 14, 14, 0.95) 0%,
-        rgba(14, 14, 14, 0.8) 35%,
-        rgba(14, 14, 14, 0.5) 60%,
-        rgba(14, 14, 14, 0.3) 100%
-      );
+      background: linear-gradient(to right,
+          rgba(14, 14, 14, 0.95) 0%,
+          rgba(14, 14, 14, 0.8) 35%,
+          rgba(14, 14, 14, 0.5) 60%,
+          rgba(14, 14, 14, 0.3) 100%);
       z-index: 1;
     }
 
@@ -461,8 +490,15 @@
     }
 
     @keyframes scrollBounce {
-      0%, 100% { transform: translateX(-50%) translateY(0); }
-      50% { transform: translateX(-50%) translateY(8px); }
+
+      0%,
+      100% {
+        transform: translateX(-50%) translateY(0);
+      }
+
+      50% {
+        transform: translateX(-50%) translateY(8px);
+      }
     }
 
     /* ========================================
@@ -849,10 +885,12 @@
         grid-template-columns: repeat(2, 1fr);
         grid-auto-rows: 180px;
       }
+
       .gallery__item--large {
         grid-column: span 2;
         grid-row: span 2;
       }
+
       .gallery__item--tall {
         grid-row: span 2;
       }
@@ -863,6 +901,7 @@
         grid-template-columns: 1fr;
         grid-auto-rows: 220px;
       }
+
       .gallery__item--large,
       .gallery__item--tall {
         grid-column: span 1;
@@ -889,8 +928,13 @@
       background: linear-gradient(to right, transparent, rgba(233, 193, 118, 0.1), transparent);
     }
 
-    .testimonials::before { top: 0; }
-    .testimonials::after { bottom: 0; }
+    .testimonials::before {
+      top: 0;
+    }
+
+    .testimonials::after {
+      bottom: 0;
+    }
 
     .testimonials__header {
       text-align: center;
@@ -1083,6 +1127,7 @@
         gap: 40px;
         text-align: center;
       }
+
       .story__stats {
         grid-template-columns: repeat(3, 1fr);
         gap: 20px;
@@ -1316,6 +1361,7 @@
         grid-template-columns: 1fr;
         gap: 40px;
       }
+
       .footer__bottom {
         flex-direction: column;
         text-align: center;
@@ -1326,13 +1372,25 @@
        MICRO-ANIMATIONS
     ======================================== */
     @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(30px); }
-      to { opacity: 1; transform: translateY(0); }
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     @keyframes shimmer {
-      0% { background-position: -200% 0; }
-      100% { background-position: 200% 0; }
+      0% {
+        background-position: -200% 0;
+      }
+
+      100% {
+        background-position: 200% 0;
+      }
     }
 
     .hero__badge {
@@ -1378,6 +1436,7 @@
     }
   </style>
 </head>
+
 <body>
 
   <!-- ==========================================
@@ -1393,7 +1452,8 @@
         <li><a href="#gallery">Gallery</a></li>
         <li><a href="#story">About</a></li>
       </ul>
-      <a href="#" onclick="event.preventDefault(); if(window.BarberBooking) window.BarberBooking.open();" class="navbar__cta">Book Now</a>
+      <a href="#" onclick="event.preventDefault(); if(window.BarberBooking) window.BarberBooking.open();"
+        class="navbar__cta">Book Now</a>
       <button class="navbar__hamburger" id="hamburger" aria-label="Open menu">
         <span></span>
         <span></span>
@@ -1409,7 +1469,9 @@
     <a href="#team" onclick="closeMobileMenu()">Barbers</a>
     <a href="#gallery" onclick="closeMobileMenu()">Gallery</a>
     <a href="#story" onclick="closeMobileMenu()">About</a>
-    <a href="#" class="navbar__cta" onclick="event.preventDefault(); closeMobileMenu(); if(window.BarberBooking) window.BarberBooking.open();">Book Now</a>
+    <a href="#" class="navbar__cta"
+      onclick="event.preventDefault(); closeMobileMenu(); if(window.BarberBooking) window.BarberBooking.open();">Book
+      Now</a>
   </div>
 
   <!-- ==========================================
@@ -1423,7 +1485,8 @@
     <div class="hero__content">
       <div class="hero__badge">EST. 1924 &bull; ATLANTA, GA</div>
       <h1 class="hero__title">The Art of <span class="italic" style="color:#e9c176">Precision</span> Grooming</h1>
-      <p class="hero__subtitle">Where timeless tradition meets modern mastery. Experience the pinnacle of men's grooming at Atlanta's most distinguished barbershop.</p>
+      <p class="hero__subtitle">Where timeless tradition meets modern mastery. Experience the pinnacle of men's grooming
+        at Atlanta's most distinguished barbershop.</p>
       <div class="hero__actions">
         <a href="#services" class="btn-gold">View Our Services</a>
         <a href="#team" class="btn-glass">Meet The Team</a>
@@ -1462,7 +1525,9 @@
         <div class="editorial__content">
           <div class="section-label reveal">THE EXPERIENCE</div>
           <h2 class="editorial__heading reveal reveal-delay-1">The Ritual</h2>
-          <p class="editorial__text reveal reveal-delay-2">Every visit is more than just a cut; it is a dedicated time for the self. We use only the finest apothecary products, selected for their efficacy and timeless scents. From the hot towel wrap to the final styling, each step is performed with reverence for the craft.</p>
+          <p class="editorial__text reveal reveal-delay-2">Every visit is more than just a cut; it is a dedicated time
+            for the self. We use only the finest apothecary products, selected for their efficacy and timeless scents.
+            From the hot towel wrap to the final styling, each step is performed with reverence for the craft.</p>
           <div class="editorial__tag reveal reveal-delay-3">
             <span class="material-symbols-outlined">brush</span>
             Traditional Methods / Modern Precision
@@ -1524,7 +1589,8 @@
   <section class="testimonials" id="testimonials">
     <div class="container">
       <div class="testimonials__header">
-        <h2 class="testimonials__heading reveal">Reflections from Our <span style="color:#e9c176" class="italic">Distinguished Guests</span></h2>
+        <h2 class="testimonials__heading reveal">Reflections from Our <span style="color:#e9c176"
+            class="italic">Distinguished Guests</span></h2>
       </div>
       <div id="reviews-loading" class="loading-placeholder">Loading Reviews...</div>
       <div id="reviews-list" class="testimonials__grid" style="display:none"></div>
@@ -1543,8 +1609,12 @@
         </div>
         <div class="story__content">
           <div class="section-label reveal">OUR STORY</div>
-          <p class="reveal reveal-delay-1">Heritage Haircuts was founded on a simple belief: that every man deserves a sanctuary. For a century, we've perfected the art of grooming, blending time-honored techniques with modern precision.</p>
-          <p class="reveal reveal-delay-2">Our Atlanta atelier is more than a barbershop — it's a retreat. Step through our doors and into a world where craftsmanship is celebrated, conversation flows, and every detail matters.</p>
+          <p class="reveal reveal-delay-1">Heritage Haircuts was founded on a simple belief: that every man deserves a
+            sanctuary. For a century, we've perfected the art of grooming, blending time-honored techniques with modern
+            precision.</p>
+          <p class="reveal reveal-delay-2">Our Atlanta atelier is more than a barbershop — it's a retreat. Step through
+            our doors and into a world where craftsmanship is celebrated, conversation flows, and every detail matters.
+          </p>
         </div>
       </div>
       <div class="story__stats">
@@ -1571,9 +1641,12 @@
     <span class="material-symbols-outlined cta-section__icon">content_cut</span>
     <div class="container">
       <div class="cta-section__content">
-        <h2 class="cta-section__heading reveal">Ready for a <span class="italic" style="color:#e9c176">Transformation</span>?</h2>
-        <p class="cta-section__subtitle reveal reveal-delay-1">Experience the pinnacle of grooming. Secure your chair today.</p>
-        <a href="#" onclick="event.preventDefault(); if(window.BarberBooking) window.BarberBooking.open();" class="btn-gold reveal reveal-delay-2">Book Your Appointment</a>
+        <h2 class="cta-section__heading reveal">Ready for a <span class="italic"
+            style="color:#e9c176">Transformation</span>?</h2>
+        <p class="cta-section__subtitle reveal reveal-delay-1">Experience the pinnacle of grooming. Secure your chair
+          today.</p>
+        <a href="#" onclick="event.preventDefault(); if(window.BarberBooking) window.BarberBooking.open();"
+          class="btn-gold reveal reveal-delay-2">Book Your Appointment</a>
         <div class="cta-section__badges reveal reveal-delay-3">
           <div class="badge">
             <span class="material-symbols-outlined">star</span>
@@ -1601,7 +1674,8 @@
         <!-- Column 1 -->
         <div>
           <div class="footer__brand">Heritage Haircuts</div>
-          <p class="footer__desc">Atlanta's most distinguished barbershop, blending timeless tradition with modern mastery since 1924. Every visit is an experience.</p>
+          <p class="footer__desc">Atlanta's most distinguished barbershop, blending timeless tradition with modern
+            mastery since 1924. Every visit is an experience.</p>
         </div>
         <!-- Column 2 -->
         <div>
@@ -1636,13 +1710,22 @@
       <div class="footer__bottom">
         <div class="footer__socials">
           <a href="#" class="footer__social-link" aria-label="Instagram">
-            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
+            </svg>
           </a>
           <a href="#" class="footer__social-link" aria-label="Facebook">
-            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385h-3.047v-3.47h3.047v-2.642c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953h-1.514c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385c5.738-.9 10.126-5.864 10.126-11.854z"/></svg>
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385h-3.047v-3.47h3.047v-2.642c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953h-1.514c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385c5.738-.9 10.126-5.864 10.126-11.854z" />
+            </svg>
           </a>
           <a href="#" class="footer__social-link" aria-label="Twitter / X">
-            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+            </svg>
           </a>
         </div>
         <div class="footer__copy">&copy; 2024 Heritage Haircuts. All rights reserved.</div>
@@ -1739,7 +1822,7 @@
       var domain = window.location.origin;
       var isFileProtocol = window.location.protocol === 'file:';
       if (domain === 'null' || domain === 'about://' || window.location.protocol === 'about:' || isFileProtocol) {
-        try { domain = window.parent.location.origin; } catch (e) {}
+        try { domain = window.parent.location.origin; } catch (e) { }
       }
       if (domain === 'null' || domain === 'about://' || !domain) {
         domain = 'https://barber-shop-website-ashy.vercel.app';
@@ -1758,8 +1841,8 @@
     // ---- SDK Data Loading ----
     window.addEventListener('load', function () {
       // Grab the observer so we can re-observe dynamically added .reveal elements
-      var observer = new IntersectionObserver(function(entries) {
-        entries.forEach(function(entry) {
+      var observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
           if (entry.isIntersecting) { entry.target.classList.add('visible'); }
         });
       }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
@@ -1767,7 +1850,7 @@
       function initializeShop() {
         if (typeof KutzApp === 'undefined') return;
         var urlParams = new URLSearchParams(window.location.search);
-        var shopId = urlParams.get('shopId') || 'cmn9kj24n0000lqzc7kcsmpst';
+        var shopId = urlParams.get('shopId') || 'cmpnbqh1r0000iu54k0qnj2sl';
         var domain = window.location.origin;
         var isFileProtocol = window.location.protocol === 'file:';
         if (domain === 'null' || domain === 'about://' || domain === 'file://' || !domain) {
@@ -1775,12 +1858,12 @@
         }
         KutzApp.init(shopId, { position: 'bottom-right', apiUrl: domain });
 
-        KutzApp.getPublicData().then(function(data) {
+        KutzApp.getPublicData().then(function (data) {
           var shop = data.shop || {};
           var primaryColor = shop.primaryColor || '#c5a059';
 
           // --- Load booking modal + widget ---
-          setTimeout(function() {
+          setTimeout(function () {
             var cacheBuster = '?v=' + new Date().getTime();
             var widgetUrlPrefix = domain;
             if (isFileProtocol) {
@@ -1788,7 +1871,7 @@
             } else if (window.location.pathname.includes('/html-sections/')) {
               widgetUrlPrefix = '..';
             }
-            ['booking-modal.js', 'booking-widget.js'].forEach(function(script) {
+            ['booking-modal.js', 'booking-widget.js'].forEach(function (script) {
               var s = document.createElement('script');
               s.src = widgetUrlPrefix + '/' + script + cacheBuster;
               s.setAttribute('data-shop-id', shopId);
@@ -1803,69 +1886,69 @@
             if (shop.logoUrl) {
               document.querySelector('.navbar__brand').innerHTML = '<img src="' + shop.logoUrl + '" alt="' + shopName + '" style="max-height:36px;">';
             }
-          } catch(e) { console.error('Shop render error:', e); }
+          } catch (e) { console.error('Shop render error:', e); }
 
           // --- SERVICES ---
           try {
-            var services = (data.services || []).filter(function(s) { return s.duration > 0; });
+            var services = (data.services || []).filter(function (s) { return s.duration > 0; });
             if (services.length > 0) {
-              document.getElementById('services-list').innerHTML = services.map(function(s, i) {
+              document.getElementById('services-list').innerHTML = services.map(function (s, i) {
                 var delay = Math.min(i + 1, 6);
                 return '<div class="service-card reveal reveal-delay-' + delay + '" onclick="event.preventDefault(); if(window.BarberBooking) window.BarberBooking.open(\'' + s.id + '\');" style="cursor:pointer;">' +
                   '<div class="service-card__header">' +
-                    '<h3 class="service-card__name">' + s.name + '</h3>' +
-                    '<span class="service-card__price">$' + Number(s.price).toFixed(0) + '</span>' +
+                  '<h3 class="service-card__name">' + s.name + '</h3>' +
+                  '<span class="service-card__price">$' + Number(s.price).toFixed(0) + '</span>' +
                   '</div>' +
                   '<p class="service-card__desc">' + (s.description || 'Expert grooming service.') + '</p>' +
                   '<span class="service-card__duration">' +
-                    '<span class="material-symbols-outlined">schedule</span>' +
-                    s.duration + ' min' +
+                  '<span class="material-symbols-outlined">schedule</span>' +
+                  s.duration + ' min' +
                   '</span>' +
-                '</div>';
+                  '</div>';
               }).join('');
               document.getElementById('services-loading').style.display = 'none';
               document.getElementById('services-list').style.display = 'grid';
-              document.querySelectorAll('#services-list .reveal').forEach(function(el) { observer.observe(el); });
+              document.querySelectorAll('#services-list .reveal').forEach(function (el) { observer.observe(el); });
             } else {
               document.getElementById('services-loading').textContent = 'No services available.';
             }
-          } catch(e) { console.error('Services render error:', e); }
+          } catch (e) { console.error('Services render error:', e); }
 
           // --- STAFF ---
           try {
             var staff = data.staff || [];
             if (staff.length > 0) {
               var fallbackImg = 'https://images.unsplash.com/photo-1595152772835-219674b2a8a6?auto=format&fit=crop&w=600&q=80';
-              document.getElementById('team-list').innerHTML = staff.map(function(st, i) {
+              document.getElementById('team-list').innerHTML = staff.map(function (st, i) {
                 var safeName = st.name || 'Team Member';
                 var delay = Math.min(i + 1, 4);
                 var imgSrc = st.imageUrl || fallbackImg;
                 return '<div class="barber-card reveal reveal-delay-' + delay + '">' +
                   '<div class="barber-card__image">' +
-                    '<img src="' + imgSrc + '" alt="' + safeName + '" />' +
+                  '<img src="' + imgSrc + '" alt="' + safeName + '" />' +
                   '</div>' +
                   '<div class="barber-card__info">' +
-                    '<h3 class="barber-card__name">' + safeName + '</h3>' +
-                    '<div class="barber-card__role">' + (st.role === 'SHOP_ADMIN' ? 'Master Barber' : 'Specialist') + '</div>' +
-                    '<p class="barber-card__bio"><a href="#" onclick="event.preventDefault(); event.stopPropagation(); if(window.BarberBooking) window.BarberBooking.open(null, \'' + st.id + '\');" class="btn-gold" style="padding:8px 20px;font-size:0.78rem;margin-top:8px;display:inline-block;">Book ' + safeName.split(' ')[0] + '</a></p>' +
+                  '<h3 class="barber-card__name">' + safeName + '</h3>' +
+                  '<div class="barber-card__role">' + (st.role === 'SHOP_ADMIN' ? 'Master Barber' : 'Specialist') + '</div>' +
+                  '<p class="barber-card__bio"><a href="#" onclick="event.preventDefault(); event.stopPropagation(); if(window.BarberBooking) window.BarberBooking.open(null, \'' + st.id + '\');" class="btn-gold" style="padding:8px 20px;font-size:0.78rem;margin-top:8px;display:inline-block;">Book ' + safeName.split(' ')[0] + '</a></p>' +
                   '</div>' +
-                '</div>';
+                  '</div>';
               }).join('');
               document.getElementById('team-loading').style.display = 'none';
               document.getElementById('team-list').style.display = 'grid';
-              document.querySelectorAll('#team-list .reveal').forEach(function(el) { observer.observe(el); });
+              document.querySelectorAll('#team-list .reveal').forEach(function (el) { observer.observe(el); });
             } else {
               document.getElementById('team').style.display = 'none';
             }
-          } catch(e) { console.error('Staff render error:', e); }
+          } catch (e) { console.error('Staff render error:', e); }
 
           // --- REVIEWS ---
           try {
             var reviews = data.reviews || [];
             if (reviews.length > 0) {
-              document.getElementById('reviews-list').innerHTML = reviews.map(function(r, i) {
+              document.getElementById('reviews-list').innerHTML = reviews.map(function (r, i) {
                 var name = (r.user && r.user.name) || 'Client';
-                var initials = name.split(' ').map(function(w) { return w[0]; }).join('').substring(0,2).toUpperCase();
+                var initials = name.split(' ').map(function (w) { return w[0]; }).join('').substring(0, 2).toUpperCase();
                 var starsHtml = '';
                 for (var s = 0; s < (r.rating || 5); s++) {
                   starsHtml += '<span class="material-symbols-outlined">star</span>';
@@ -1876,29 +1959,29 @@
                   '<p class="testimonial-card__text">"' + (r.comment || 'An exceptional standard of service.') + '"</p>' +
                   '<div class="testimonial-card__stars">' + starsHtml + '</div>' +
                   '<div class="testimonial-card__author">' +
-                    '<div class="testimonial-card__avatar">' + initials + '</div>' +
-                    '<div>' +
-                      '<div class="testimonial-card__name">' + name + '</div>' +
-                      '<div class="testimonial-card__role">Valued Client</div>' +
-                    '</div>' +
+                  '<div class="testimonial-card__avatar">' + initials + '</div>' +
+                  '<div>' +
+                  '<div class="testimonial-card__name">' + name + '</div>' +
+                  '<div class="testimonial-card__role">Valued Client</div>' +
                   '</div>' +
-                '</div>';
+                  '</div>' +
+                  '</div>';
               }).join('');
               document.getElementById('reviews-loading').style.display = 'none';
               document.getElementById('reviews-list').style.display = 'grid';
-              document.querySelectorAll('#reviews-list .reveal').forEach(function(el) { observer.observe(el); });
+              document.querySelectorAll('#reviews-list .reveal').forEach(function (el) { observer.observe(el); });
             } else {
               document.getElementById('testimonials').style.display = 'none';
             }
-          } catch(e) { console.error('Reviews render error:', e); }
+          } catch (e) { console.error('Reviews render error:', e); }
 
-        }).catch(function(err) { console.error('SDK error:', err); });
+        }).catch(function (err) { console.error('SDK error:', err); });
       }
 
       if (typeof KutzApp !== 'undefined') initializeShop();
       else {
         var attempts = 0;
-        var intv = setInterval(function() {
+        var intv = setInterval(function () {
           attempts++;
           if (typeof KutzApp !== 'undefined' || attempts >= 50) {
             clearInterval(intv);
@@ -1909,4 +1992,5 @@
     });
   </script>
 </body>
+
 </html>
