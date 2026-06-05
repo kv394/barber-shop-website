@@ -248,22 +248,25 @@
     /**
      * Submits a review for the shop.
      * @param {Object} reviewDetails 
-     * @param {string} reviewDetails.appointmentId - The Appointment ID confirming the client's visit
      * @param {number} reviewDetails.rating - Rating from 1 to 5
      * @param {string} [reviewDetails.comment] - Optional text comment
+     * @param {string} [reviewDetails.appointmentId] - Optional Appointment ID
      */
     async submitReview(reviewDetails) {
       this._checkInit();
 
       const { appointmentId, rating, comment } = reviewDetails;
-      if (!appointmentId || !rating) {
-        throw new Error('appointmentId and rating are required to submit a review.');
+      if (!rating || rating < 1 || rating > 5) {
+        throw new Error('A rating between 1 and 5 is required to submit a review.');
       }
+
+      const payload = { rating, comment: comment || null };
+      if (appointmentId) payload.appointmentId = appointmentId;
 
       const res = await fetch(`${this.apiUrl}/api/shops/${this.shopId}/reviews`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ appointmentId, rating, comment })
+        body: JSON.stringify(payload)
       });
 
       if (!res.ok) {
