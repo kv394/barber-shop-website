@@ -126,6 +126,7 @@ export async function GET(
  headers: {
  'Access-Control-Allow-Origin': '*',
  'Access-Control-Allow-Methods': 'GET, OPTIONS',
+ 'Cache-Control': 'public, s-maxage=30, stale-while-revalidate=120',
  }
  });
  } catch (error: any) {

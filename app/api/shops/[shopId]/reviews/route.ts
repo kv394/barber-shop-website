@@ -88,7 +88,7 @@ export async function GET(
  orderBy: { createdAt: 'desc' },
  take: 100,
  });
- return NextResponse.json({ reviews, total: reviews.length }, { headers: corsHeaders });
+  return NextResponse.json({ reviews, total: reviews.length }, { headers: { ...corsHeaders, 'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=300' } });
  } catch (error) {
  logger.error('Error fetching reviews:', error);
  return NextResponse.json({ error: 'Failed to fetch reviews' }, { status: 500, headers: corsHeaders });

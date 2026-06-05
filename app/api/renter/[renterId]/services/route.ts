@@ -17,7 +17,9 @@ export async function GET(
  where: { userId: renterId, isActive: true },
  orderBy: { createdAt: 'asc' },
  });
- return NextResponse.json(serialize(services));
+ return NextResponse.json(serialize(services), {
+   headers: { 'Cache-Control': 'public, s-maxage=30, stale-while-revalidate=120' },
+  });
  } catch (error) {
  logger.error('Error fetching renter services:', error);
  return NextResponse.json({ error: 'Failed to fetch services' }, { status: 500 });

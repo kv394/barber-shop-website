@@ -278,7 +278,10 @@ export async function GET(request: Request, { params }: { params: Promise<{ shop
         } catch(e) {}
     }
 
-    return NextResponse.json(responseData, { headers: corsHeaders });
+    return NextResponse.json(responseData, { headers: {
+        ...corsHeaders,
+        'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=300',
+    } });
 
  } catch (error: any) {
  logger.error('Error fetching public shop data:', error);

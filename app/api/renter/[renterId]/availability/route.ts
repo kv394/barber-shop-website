@@ -1,6 +1,9 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { logger } from '@/lib/logger';
+import { validateParams } from '@/app/lib/validation';
+import { RenterAvailabilitySchema } from '@/app/lib/schemas/renterAvailability';
+
 
 export const dynamic = 'force-dynamic';
 
@@ -13,8 +16,7 @@ export async function GET(
  try {
  const { renterId } = await params;
  const { searchParams } = new URL(request.url);
- const date = searchParams.get('date'); // YYYY-MM-DD
- const duration = parseInt(searchParams.get('duration') || '30');
+ const { date, duration } = validateParams(RenterAvailabilitySchema, searchParams);
 
  if (!date) {
  return NextResponse.json({ error: 'date is required' }, { status: 400 });
@@ -71,7 +73,9 @@ export async function GET(
  slots.push({ time, available: !isBooked });
  }
 
- return NextResponse.json({ slots, dayHours });
+ return NextResponse.json({ slots, dayHours }, {
+  headers: { 'Cache-Control': 'public, s-maxage=15, stale-while-revalidate=60' },
+ });
  } catch (error) {
  logger.error('Error fetching renter availability:', error);
  return NextResponse.json({ error: 'Failed to fetch availability' }, { status: 500 });

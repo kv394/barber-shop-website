@@ -1,6 +1,8 @@
+import Image from 'next/image';
 import React, { useEffect, useRef, useMemo } from 'react';
 import dynamic from 'next/dynamic';
 import DOMPurify from 'isomorphic-dompurify';
+import parse, { type HTMLReactParserOptions, Element as ParserElement } from 'html-react-parser';
 import ReviewsSection from '../components/ReviewsSection';
 import CustomPageContent from '../components/CustomPageContent';
 
@@ -162,12 +164,42 @@ export default function DynamicTemplate({ ctx }: { ctx: any }) {
   };
  }, [scripts, scriptSrcUrls, linkHrefs]);
 
+  // Parse sanitized HTML into React elements, replacing <img> with next/image
+  const parsedContent = useMemo(() => {
+   if (!sanitizedHtml) return null;
+   const options: HTMLReactParserOptions = {
+    replace(domNode) {
+     if (domNode instanceof ParserElement && domNode.name === 'img') {
+      const { src, alt, class: className, 'data-alt': dataAlt, width, height, ...rest } = domNode.attribs;
+      if (!src) return undefined;
+      // Parse explicit dimensions or fall back to responsive defaults
+      const w = width ? parseInt(width, 10) : 800;
+      const h = height ? parseInt(height, 10) : 600;
+      return (
+       <Image
+        src={src}
+        alt={alt || dataAlt || ''}
+        width={w}
+        height={h}
+        className={className || undefined}
+        loading="lazy"
+        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 800px"
+        style={{ objectFit: 'cover', width: '100%', height: '100%' }}
+       />
+      );
+     }
+     return undefined;
+    },
+   };
+   return parse(sanitizedHtml, options);
+  }, [sanitizedHtml]);
+
  return (
  <main ref={containerRef} className="min-h-screen overflow-x-hidden flex flex-col relative" onClick={handleDynamicTemplateClick}>
 
   {authButton}
   {combinedCss && <style dangerouslySetInnerHTML={{ __html: combinedCss }} />}
-  <div dangerouslySetInnerHTML={{ __html: sanitizedHtml }} />
+  <div>{parsedContent}</div>
   
   {selectedService && (
   <BookingModal shopId={shop.id} service={selectedService} onClose={() => setSelectedService(null)} shopHours={c.businessHours || {}} themeColor={primaryColor} templateType={templateType} />
