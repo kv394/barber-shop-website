@@ -167,31 +167,81 @@ export default function DynamicTemplate({ ctx }: { ctx: any }) {
     const executeInlineScripts = () => {
      scripts.forEach((code, i) => {
       try {
-       // Wrap code to handle 'load'/'DOMContentLoaded' event listeners
-       // that missed the boat (both have already fired by React mount time)
+       // The inline scripts may:
+       // 1. Create <script> elements dynamically (e.g., SDK loading)
+       // 2. Register 'load'/'DOMContentLoaded' callbacks that depend on those scripts
+       //
+       // We track dynamically created scripts and queue load callbacks
+       // until those scripts have finished loading.
        const wrappedCode = `
         (function() {
          var _origWinAddEL = window.addEventListener;
          var _origDocAddEL = document.addEventListener;
+         var _origCreateElement = document.createElement.bind(document);
+         var _dynamicScripts = [];
+         var _queuedLoadCallbacks = [];
+
+         // Track dynamically created script elements
+         document.createElement = function(tag) {
+          var el = _origCreateElement(tag);
+          if (tag.toLowerCase() === 'script') {
+           _dynamicScripts.push(el);
+          }
+          return el;
+         };
+
+         // Queue load/DOMContentLoaded callbacks instead of firing immediately
          window.addEventListener = function(type, fn, opts) {
           if ((type === 'load' || type === 'DOMContentLoaded') && document.readyState === 'complete') {
-           setTimeout(fn, 0);
+           _queuedLoadCallbacks.push(fn);
           } else {
            _origWinAddEL.call(window, type, fn, opts);
           }
          };
          document.addEventListener = function(type, fn, opts) {
           if ((type === 'load' || type === 'DOMContentLoaded') && document.readyState === 'complete') {
-           setTimeout(fn, 0);
+           _queuedLoadCallbacks.push(fn);
           } else {
            _origDocAddEL.call(document, type, fn, opts);
           }
          };
+
          try {
           ${code}
          } finally {
+          document.createElement = _origCreateElement;
           window.addEventListener = _origWinAddEL;
           document.addEventListener = _origDocAddEL;
+         }
+
+         // Wait for dynamically created scripts to load, then fire queued callbacks
+         var _pendingSrcScripts = _dynamicScripts.filter(function(s) { return !!s.src; });
+         if (_pendingSrcScripts.length === 0 && _queuedLoadCallbacks.length > 0) {
+          // No dynamic scripts — fire callbacks immediately
+          _queuedLoadCallbacks.forEach(function(fn) { setTimeout(fn, 0); });
+         } else if (_queuedLoadCallbacks.length > 0) {
+          // Wait for all dynamic scripts to load
+          var _loaded = 0;
+          var _fireCallbacks = function() {
+           _loaded++;
+           if (_loaded >= _pendingSrcScripts.length) {
+            _queuedLoadCallbacks.forEach(function(fn) { setTimeout(fn, 50); });
+           }
+          };
+          _pendingSrcScripts.forEach(function(s) {
+           var _origOnload = s.onload;
+           s.onload = function() {
+            if (_origOnload) _origOnload.call(s);
+            _fireCallbacks();
+           };
+           var _origOnerror = s.onerror;
+           s.onerror = function() {
+            if (_origOnerror) _origOnerror.call(s);
+            _fireCallbacks();
+           };
+           // Safety timeout — fire callbacks even if script never loads
+           setTimeout(_fireCallbacks, 5000);
+          });
          }
         })();
        `;
