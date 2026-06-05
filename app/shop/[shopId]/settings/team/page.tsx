@@ -98,7 +98,7 @@ async function getPageData(shopId: string, userId: string, date: string) {
  };
 }
 
-async function inviteUser(_prevState: any, formData: FormData): Promise<{ success: boolean; error?: string }> {
+async function inviteUser(formData: FormData): Promise<{ success: boolean; error?: string }> {
  'use server';
  const email = (formData.get('email') as string)?.trim().toLowerCase();
  const role = formData.get('role') as 'SHOP_ADMIN' | 'STAFF' | 'BOOTH_RENTER' | 'ATTENDANCE_KIOSK';
@@ -422,7 +422,7 @@ export default async function TeamDashboardPage({ params, searchParams }: { para
    </div>
 
     <InviteFormClient
-      inviteAction={(formData) => inviteUser(undefined, formData)}
+      inviteAction={inviteUser}
       shopId={shop.id}
       userRole={userRole}
       canAddShopAdmin={canAddShopAdmin}
