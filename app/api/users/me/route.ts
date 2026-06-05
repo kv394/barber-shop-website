@@ -11,15 +11,9 @@ export async function GET() {
   const session = _authUser ? { user: _authUser } : null;
   const user = session?.user;
 
- if (!user || !user.email) {
- return NextResponse.json({
-  id: "demo",
-  email: "demo@example.com",
-  name: "Demo User",
-  role: "owner",
-  shopId: "heritage",
-});
- }
+  if (!user || !user.email) {
+  return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
 
  const dbUser = await prisma.user.findFirst({
  where: { OR: [{ id: user.id }, { email: user.email }] },

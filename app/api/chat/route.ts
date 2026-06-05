@@ -4,16 +4,18 @@ import { createClient } from '@/utils/supabase/server';
 
 export async function POST(req: Request) {
  try {
- const { message, shopId, role } = await req.json();
+ const { message, shopId } = await req.json();
  if (!message || !shopId) {
  return NextResponse.json({ reply: 'Missing required fields.' }, { status: 400 });
  }
 
  // Get session via Supabase server client
  const supabase = await createClient();
- const { data: { user: _authUser } } = await supabase.auth.getUser();
-  const session = _authUser ? { user: _authUser } : null;
- const userRole = role || session?.user?.app_metadata?.role || 'SHOP_STAFF';
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) {
+  return NextResponse.json({ reply: 'Unauthorized' }, { status: 401 });
+  }
+  const userRole = user.app_metadata?.role || 'SHOP_STAFF';
 
  const result = await processMessage({ message, shopId, userRole });
  return NextResponse.json(result);

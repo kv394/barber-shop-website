@@ -32,26 +32,33 @@ export async function GET(
  }
 
  // Get all clients associated with this shop directly OR who have made an appointment here
- const clients = await tenantClient.user.findMany({
- where: {
- role: 'CLIENT',
- OR: [
- { shopId: shopId },
- { clientAppointments: { some: { shopId: shopId } } }
- ]
- },
- include: {
- _count: {
- select: {
- clientAppointments: {
- where: { shopId: shopId }
- }
- }
- }
- },
- orderBy: { createdAt: 'desc' },
- distinct: ['id']
- });
+  const clients = await tenantClient.user.findMany({
+  where: {
+  role: 'CLIENT',
+  OR: [
+  { shopId: shopId },
+  { clientAppointments: { some: { shopId: shopId } } }
+  ]
+  },
+  select: {
+  id: true,
+  name: true,
+  email: true,
+  imageUrl: true,
+  role: true,
+  createdAt: true,
+  barcode: true,
+  _count: {
+  select: {
+  clientAppointments: {
+  where: { shopId: shopId }
+  }
+  }
+  }
+  },
+  orderBy: { createdAt: 'desc' },
+  distinct: ['id']
+  });
 
  return NextResponse.json(clients, { status: 200 });
  } catch (error) {

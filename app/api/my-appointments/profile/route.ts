@@ -4,9 +4,9 @@ import { createClient } from '@/utils/supabase/server';
 
 export async function GET() {
   const supabase = await createClient();
-  const { data: { session } } = await supabase.auth.getSession();
-  let userId = session?.user?.id;
-  const authUserEmail = session?.user?.email;
+  const { data: { user: authUser } } = await supabase.auth.getUser();
+  let userId = authUser?.id;
+  const authUserEmail = authUser?.email;
   if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
   const user = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] }, select: {
@@ -21,8 +21,8 @@ export async function GET() {
 
 export async function PATCH(request: Request) {
   const supabase = await createClient();
-  const { data: { session } } = await supabase.auth.getSession();
-  let userId = session?.user?.id;
+  const { data: { user: authUser } } = await supabase.auth.getUser();
+  let userId = authUser?.id;
   if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
   const body = await request.json();

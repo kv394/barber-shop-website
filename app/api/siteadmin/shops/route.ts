@@ -10,8 +10,7 @@ export const dynamic = 'force-dynamic';
 export async function GET() {
   try {
     const supabase = await createClient();
-    const { data: { session } } = await supabase.auth.getSession();
-    const authUser = session?.user;
+    const { data: { user: authUser } } = await supabase.auth.getUser();
     if (!authUser) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     const userId = authUser.id;
     const authUserEmail = authUser.email;

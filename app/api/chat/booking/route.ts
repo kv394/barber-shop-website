@@ -97,14 +97,19 @@ const rescheduleAppointmentDecl: FunctionDeclaration = {
  }
 };
 
-const corsHeaders = {
- 'Access-Control-Allow-Origin': '*', // For strict security, change to specific domains
- 'Access-Control-Allow-Methods': 'POST, OPTIONS',
- 'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-};
+function getCorsHeaders(req: Request) {
+ const origin = req.headers.get('origin') || '';
+ const allowedDomains = (process.env.NEXT_PUBLIC_ROOT_DOMAIN || '').split(',').map(d => d.trim());
+ const isAllowed = allowedDomains.some(domain => origin.includes(domain)) || origin.includes('vercel.app');
+ return {
+  'Access-Control-Allow-Origin': isAllowed ? origin : '',
+  'Access-Control-Allow-Methods': 'POST, OPTIONS',
+  'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+ };
+}
 
 export async function OPTIONS(req: Request) {
- return new NextResponse(null, { headers: corsHeaders });
+ return new NextResponse(null, { headers: getCorsHeaders(req) });
 }
 
 export async function POST(req: Request) {
@@ -115,7 +120,7 @@ export async function POST(req: Request) {
  const rl = await rateLimit(`chat-booking:${ip}`, 10, 60);
  if (!rl.success) {
  logger.warn(`Rate limit exceeded for IP: ${ip}`);
- return NextResponse.json({ error: 'Too many requests. Please try again later.' }, { status: 429, headers: corsHeaders });
+ return NextResponse.json({ error: 'Too many requests. Please try again later.' }, { status: 429, headers: getCorsHeaders(req) });
  }
 
  // 2. Parse Payload
@@ -123,11 +128,11 @@ export async function POST(req: Request) {
 
  // 3. Strict Input Validation (Prevent injection / huge payloads)
  if (!shopId || typeof shopId !== 'string' || shopId.length > 100) {
- return NextResponse.json({ error: 'Invalid shopId' }, { status: 400, headers: corsHeaders });
+ return NextResponse.json({ error: 'Invalid shopId' }, { status: 400, headers: getCorsHeaders(req) });
  }
 
  if (!messages || !Array.isArray(messages) || messages.length === 0) {
- return NextResponse.json({ error: 'Invalid messages payload' }, { status: 400, headers: corsHeaders });
+ return NextResponse.json({ error: 'Invalid messages payload' }, { status: 400, headers: getCorsHeaders(req) });
  }
 
  // Restrict history size to the last 20 messages to prevent prompt stuffing
@@ -167,7 +172,7 @@ export async function POST(req: Request) {
  }
 
  if (!shop) {
- return NextResponse.json({ error: 'Shop not found' }, { status: 404, headers: corsHeaders });
+ return NextResponse.json({ error: 'Shop not found' }, { status: 404, headers: getCorsHeaders(req) });
  }
  
  // IMPORTANT: Update shopId context variable so the API routes use the actual database ID going forward
@@ -242,7 +247,7 @@ export async function POST(req: Request) {
  // Block unauthorized embeds strictly
  if (!isOriginAllowed) {
  logger.warn(`Unauthorized origin attempt: ${origin} (referer: ${refererHeader}) for shop: ${shopId}`);
- return NextResponse.json({ error: 'Unauthorized origin' }, { status: 403, headers: corsHeaders });
+ return NextResponse.json({ error: 'Unauthorized origin' }, { status: 403, headers: getCorsHeaders(req) });
  }
 
  const shopTz = shop.timezone || 'America/New_York';
@@ -703,7 +708,7 @@ If the user wants to check, cancel, or reschedule their appointments, or asks fo
  };
  }
 
- return NextResponse.json(payload, { headers: corsHeaders });
+ return NextResponse.json(payload, { headers: getCorsHeaders(req) });
  } catch (error: any) {
  logger.error("Chat API error:", error);
  // Graceful fallback for Gemini API or internal failures
@@ -711,6 +716,6 @@ If the user wants to check, cancel, or reschedule their appointments, or asks fo
  text: "I am currently experiencing high traffic and cannot process messages right now. Please use our [Standard Booking System](/book) to schedule your appointment.",
  history: []
  };
- return NextResponse.json(fallbackPayload, { status: 200, headers: corsHeaders });
+ return NextResponse.json(fallbackPayload, { status: 200, headers: getCorsHeaders(req) });
  }
 }

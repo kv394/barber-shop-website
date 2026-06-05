@@ -6,6 +6,8 @@ import crypto from 'crypto';
 import { toShopTzDayBounds } from '@/lib/timezone';
 import { z } from 'zod';
 import { rateLimit } from '@/lib/rate-limiter';
+import { validateParams } from '@/app/lib/validation';
+import { ShopAppointmentsSchema } from '@/lib/schemas/shopAppointments';
 import { getCalendarBusySlots } from '@/lib/google-calendar';
 
 // Define the validation schema for booking an appointment
@@ -29,10 +31,19 @@ export async function GET(
 ) {
  try {
  const { shopId } = await params;
+
+    // Auth check — only authenticated users can view the schedule
+    const supabase = await createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
     const tenantClient = await getTenantClient(shopId);
- const { searchParams } = new URL(request.url);
- const dateStr = searchParams.get('date');
- if (!dateStr) return NextResponse.json({ error: 'Date is required' }, { status: 400 });
+  const { searchParams } = new URL(request.url);
+  const { date: dateStr } = validateParams(ShopAppointmentsSchema, searchParams);
+  // dateStr is guaranteed by schema; if missing or malformed, a ZodError will be thrown and caught by the outer try/catch.
+
 
  // Fetch shop timezone to compute correct day boundaries
  const shop = await tenantClient.shop.findUnique({

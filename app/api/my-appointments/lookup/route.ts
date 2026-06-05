@@ -44,7 +44,6 @@ export async function POST(request: Request) {
         startTime: true,
         endTime: true,
         status: true,
-        managementToken: true,
         notes: true,
         service: { select: { id: true, name: true, price: true, duration: true } },
         staff: { select: { name: true, imageUrl: true } },

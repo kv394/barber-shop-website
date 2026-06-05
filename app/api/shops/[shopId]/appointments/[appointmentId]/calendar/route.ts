@@ -6,14 +6,31 @@ export const dynamic = 'force-dynamic';
 /**
  * GET /api/shops/[shopId]/appointments/[appointmentId]/calendar
  * Returns a downloadable .ics (iCalendar) file for a specific appointment.
- * This allows clients to add their booking to Google Calendar, Apple Calendar, Outlook, etc.
+ * Requires a valid management token as a query parameter for security.
  */
 export async function GET(
  _request: Request,
  { params }: { params: Promise<{ shopId: string; appointmentId: string }> }
 ) {
  const { shopId, appointmentId } = await params;
+
+  // Require a valid management token to download the calendar file
+  const { searchParams } = new URL(_request.url);
+  const token = searchParams.get('token');
+  if (!token) {
+    return NextResponse.json({ error: 'Missing token' }, { status: 401 });
+  }
+
     const tenantClient = await getTenantClient(shopId);
+
+  // Verify the token matches the appointment's management token
+  const tokenCheck = await tenantClient.appointment.findUnique({
+    where: { id: appointmentId },
+    select: { managementToken: true },
+  });
+  if (!tokenCheck || tokenCheck.managementToken !== token) {
+    return NextResponse.json({ error: 'Invalid or expired token' }, { status: 403 });
+  }
 
  const appointment = await tenantClient.appointment.findUnique({
  where: { id: appointmentId },
