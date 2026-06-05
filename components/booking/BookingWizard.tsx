@@ -1,4 +1,5 @@
-"use client";
+"use client";;
+import Image from 'next/image';
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import { DayPicker } from 'react-day-picker';
 import 'react-day-picker/dist/style.css';
@@ -313,7 +314,7 @@ export default function BookingWizard({ shopId, themeColor, secondaryColor, temp
  <div className="flex items-center justify-between p-4 pr-10 border-b border-crm-border shrink-0">
  <div className="flex items-center space-x-2">
  {step > 1 && (
- <button onClick={handleBack} className="text-crm-muted hover:text-crm-text">
+ <button onClick={handleBack} className="text-crm-muted hover:text-crm-text min-h-[44px] min-w-[44px] p-2 flex items-center">
  &larr; {t('back')}
  </button>
  )}
