@@ -80,7 +80,7 @@ export async function POST(request: Request) {
     return NextResponse.json({
       success: true,
       message: `Replaced ${count} occurrences of wrong shopId with ${shopId}`,
-      replacedId: wrongIds?.length ? wrongIds : [oldShopId],
+      replacedId: oldShopId || 'auto-detected',
       html_length: html.length
     });
   } catch (error: any) {
