@@ -118,7 +118,7 @@ export async function POST(request: Request) {
       for (let b = 0; b < boxCount; b++) {
         newGalleryHtml += '        <div class="gallery-fade-box" data-box="' + b + '">\n';
         // Put all images in each box, stacked
-        images.forEach((img, i) => {
+        images.forEach((img: { src: string; alt: string }, i: number) => {
           const isActive = (i % boxCount === b && i < boxCount) ? ' active' : '';
           newGalleryHtml += '          <img src="' + img.src + '" alt="' + img.alt + '" class="gallery-fade-img' + isActive + '" />\n';
         });
