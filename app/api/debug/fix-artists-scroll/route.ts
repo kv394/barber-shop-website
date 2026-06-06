@@ -2,15 +2,10 @@ import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { cacheService } from '@/lib/cache';
 
-/**
- * POST /api/debug/fix-artists-scroll
- * Makes the artists grid horizontally scrollable
- */
 export async function POST(request: Request) {
   try {
     const body = await request.json();
     const { shopId } = body;
-
     if (!shopId) return NextResponse.json({ error: 'shopId required' }, { status: 400 });
 
     const shop = await prisma.shop.findUnique({
@@ -23,35 +18,11 @@ export async function POST(request: Request) {
     let html = customization.customHtml || '';
     const changes: string[] = [];
 
-    // Replace artists-grid CSS with horizontal scroll
-    const oldGrid = `.artists-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 36px;
-      position: relative;
-      z-index: 1;
-    }`;
-
-    const newGrid = `.artists-grid {
-      display: flex;
-      gap: 28px;
-      overflow-x: auto;
-      scroll-snap-type: x mandatory;
-      -webkit-overflow-scrolling: touch;
-      padding-bottom: 16px;
-      position: relative;
-      z-index: 1;
-      scrollbar-width: thin;
-      scrollbar-color: var(--rose-primary, #D4849C) transparent;
-    }
-    .artists-grid::-webkit-scrollbar { height: 6px; }
-    .artists-grid::-webkit-scrollbar-track { background: transparent; }
-    .artists-grid::-webkit-scrollbar-thumb { background: var(--rose-primary, #D4849C); border-radius: 3px; }
-    .artists-grid .artist-card { min-width: 280px; max-width: 320px; flex-shrink: 0; scroll-snap-align: start; }`;
-
-    if (html.includes(oldGrid)) {
-      html = html.replace(oldGrid, newGrid);
-      changes.push('Changed artists grid to horizontal scroll with snap');
+    // Fix: remove the media query that overrides flex with grid
+    const oldMedia = `.artists-grid { grid-template-columns: 1fr; max-width: 480px; margin: 0 auto; }`;
+    if (html.includes(oldMedia)) {
+      html = html.replace(oldMedia, `.artists-grid { max-width: 100%; }`);
+      changes.push('Removed grid override in mobile media query');
     }
 
     if (changes.length === 0) {
