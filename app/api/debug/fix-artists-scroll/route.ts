@@ -18,108 +18,19 @@ export async function POST(request: Request) {
     let html = customization.customHtml || '';
     const changes: string[] = [];
 
-    // 1. Add fade edges CSS + auto-scroll wrapper
-    if (!html.includes('artists-scroll-wrapper')) {
-      const fadeCss = `
-    /* Artists Scroll Fade + Auto-scroll */
-    .artists-scroll-wrapper {
-      position: relative;
-      overflow: hidden;
-    }
-    .artists-scroll-wrapper::before,
-    .artists-scroll-wrapper::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      bottom: 16px;
-      width: 80px;
-      z-index: 2;
-      pointer-events: none;
-    }
-    .artists-scroll-wrapper::before {
-      left: 0;
-      background: linear-gradient(to right, var(--bg-cream, #FAF5F3) 0%, transparent 100%);
-    }
-    .artists-scroll-wrapper::after {
-      right: 0;
-      background: linear-gradient(to left, var(--bg-cream, #FAF5F3) 0%, transparent 100%);
-    }
-    .artists-grid { scroll-behavior: smooth; }`;
-
-      const lastStyleClose = html.lastIndexOf('</style>');
-      if (lastStyleClose > -1) {
-        html = html.slice(0, lastStyleClose) + fadeCss + '\n' + html.slice(lastStyleClose);
-        changes.push('Added fade edge CSS for artists scroll');
-      }
+    // Hide scrollbar - change scrollbar-width from thin to none
+    if (html.includes('scrollbar-width: thin;')) {
+      html = html.replace('scrollbar-width: thin;', 'scrollbar-width: none;');
+      changes.push('Set scrollbar-width to none');
     }
 
-    // 2. Wrap the artists-grid in a scroll wrapper in the HTML
-    if (!html.includes('artists-scroll-wrapper') || !html.includes('<div class="artists-scroll-wrapper">')) {
-      // Find the team-list div and wrap it
-      const teamListHtml = '<div id="team-list" class="artists-grid"';
-      const teamListIdx = html.indexOf(teamListHtml);
-      if (teamListIdx > -1) {
-        // Find the loading div before it to wrap both
-        const loadingDiv = '<div id="team-loading"';
-        const loadingIdx = html.lastIndexOf(loadingDiv, teamListIdx);
-        
-        // Insert wrapper before team-loading or team-list
-        const wrapStart = loadingIdx > -1 ? loadingIdx : teamListIdx;
-        
-        // Find closing of team-list div
-        const teamListClose = html.indexOf('</div>', teamListIdx);
-        if (teamListClose > -1) {
-          const wrapEnd = teamListClose + '</div>'.length;
-          const wrappedContent = html.substring(wrapStart, wrapEnd);
-          html = html.slice(0, wrapStart) + 
-            '<div class="artists-scroll-wrapper">\n      ' + wrappedContent + '\n      </div>' + 
-            html.slice(wrapEnd);
-          changes.push('Wrapped artists grid in scroll wrapper');
-        }
-      }
-    }
-
-    // 3. Add auto-scroll JS
-    if (!html.includes('artistsAutoScroll')) {
-      const autoScrollJs = `
-
-          // ---- Artists Auto-Scroll ----
-          (function() {
-            var grid = document.getElementById('team-list');
-            if (!grid) return;
-            var scrollSpeed = 1;
-            var scrollDirection = 1;
-            var isPaused = false;
-            
-            function autoScroll() {
-              if (!isPaused && grid.scrollWidth > grid.clientWidth) {
-                grid.scrollLeft += scrollSpeed * scrollDirection;
-                if (grid.scrollLeft >= grid.scrollWidth - grid.clientWidth - 2) {
-                  scrollDirection = -1;
-                }
-                if (grid.scrollLeft <= 0) {
-                  scrollDirection = 1;
-                }
-              }
-              requestAnimationFrame(autoScroll);
-            }
-            
-            grid.addEventListener('mouseenter', function() { isPaused = true; });
-            grid.addEventListener('mouseleave', function() { isPaused = false; });
-            grid.addEventListener('touchstart', function() { isPaused = true; }, { passive: true });
-            grid.addEventListener('touchend', function() { 
-              setTimeout(function() { isPaused = false; }, 3000);
-            });
-            
-            // Start after a short delay
-            setTimeout(function() { requestAnimationFrame(autoScroll); }, 2000);
-          })();`;
-
-      const lastScript = html.lastIndexOf('</script>');
-      if (lastScript > -1) {
-        html = html.slice(0, lastScript) + autoScrollJs + '\n' + html.slice(lastScript);
-        changes.push('Added auto-scroll JS for artists');
-      }
+    // Hide webkit scrollbar
+    if (html.includes(".artists-grid::-webkit-scrollbar { height: 6px; }")) {
+      html = html.replace(
+        ".artists-grid::-webkit-scrollbar { height: 6px; }",
+        ".artists-grid::-webkit-scrollbar { display: none; }"
+      );
+      changes.push('Hidden webkit scrollbar');
     }
 
     if (changes.length === 0) {
