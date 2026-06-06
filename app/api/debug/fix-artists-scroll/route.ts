@@ -18,11 +18,13 @@ export async function POST(request: Request) {
     let html = customization.customHtml || '';
     const changes: string[] = [];
 
-    // Fix: remove the media query that overrides flex with grid
-    const oldMedia = `.artists-grid { grid-template-columns: 1fr; max-width: 480px; margin: 0 auto; }`;
-    if (html.includes(oldMedia)) {
-      html = html.replace(oldMedia, `.artists-grid { max-width: 100%; }`);
-      changes.push('Removed grid override in mobile media query');
+    // Fix: JS sets display:grid which overrides CSS display:flex
+    if (html.includes("team-list').style.display = 'grid'")) {
+      html = html.replace(
+        "team-list').style.display = 'grid'",
+        "team-list').style.display = 'flex'"
+      );
+      changes.push('Changed team-list inline display from grid to flex');
     }
 
     if (changes.length === 0) {
