@@ -107,7 +107,7 @@ export async function POST(request: Request) {
       const imgMatches = galleryChunk.match(/src="([^"]+)"/g) || [];
       const altMatches = galleryChunk.match(/alt="([^"]+)"/g) || [];
       
-      const images = imgMatches.map((m, i) => ({
+      const images = imgMatches.map((m: string, i: number) => ({
         src: m.replace('src="', '').replace('"', ''),
         alt: altMatches[i] ? altMatches[i].replace('alt="', '').replace('"', '') : `Gallery ${i+1}`
       }));
