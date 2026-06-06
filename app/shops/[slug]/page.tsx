@@ -28,7 +28,7 @@ const serviceInclude = {
  select: { id: true, imageUrl: true, caption: true },
  },
  users: {
- where: { role: { in: ['STAFF', 'SHOP_ADMIN'] as UserRole[] } },
+ where: { role: { in: ['STAFF', 'SHOP_ADMIN', 'BOOTH_RENTER'] as UserRole[] } },
  select: { id: true, name: true, imageUrl: true, role: true, shopClients: { select: { clientNotes: true } } }, // using clientNotes temporarily for bio if any, or just name/role
  },
 };

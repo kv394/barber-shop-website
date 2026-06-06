@@ -146,12 +146,12 @@ export async function GET(request: Request, { params }: { params: Promise<{ shop
  },
  orderBy: { name: 'asc' }
  }),
-  // 3. Public Staff (all employed barbers/staff, including admins who also cut hair)
+  // 3. Public Staff (all barbers: staff, admins, booth renters — excludes clients and kiosks)
   tenantClient.user.findMany({
   where: {
   OR: [
-  { shopId: shop.id, role: { in: ['STAFF', 'SHOP_ADMIN'] } },
-  { shopAccesses: { some: { shopId: shop.id, role: { in: ['STAFF', 'SHOP_ADMIN'] } } } }
+  { shopId: shop.id, role: { in: ['STAFF', 'SHOP_ADMIN', 'BOOTH_RENTER'] } },
+  { shopAccesses: { some: { shopId: shop.id, role: { in: ['STAFF', 'SHOP_ADMIN', 'BOOTH_RENTER'] } } } }
   ]
   },
   select: {
