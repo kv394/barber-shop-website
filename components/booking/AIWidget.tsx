@@ -3,7 +3,7 @@ import Image from 'next/image';
 
 import { useEffect } from 'react';
 
-export default function AIWidget({ shopId, themeColor, secondaryColor, chatbotPosition }: { shopId: string, themeColor?: string, secondaryColor?: string, chatbotPosition?: string }) {
+export default function AIWidget({ shopId, themeColor, secondaryColor, chatbotPosition, colorTheme, templateType }: { shopId: string, themeColor?: string, secondaryColor?: string, chatbotPosition?: string, colorTheme?: string, templateType?: string }) {
  // This component simply injects the lightweight vanilla JS widget onto the page.
  // The widget is completely self-contained in public/booking-widget.js
  
@@ -15,7 +15,7 @@ export default function AIWidget({ shopId, themeColor, secondaryColor, chatbotPo
  const script = document.createElement('script');
  script.id = 'booking-widget-script';
  // Use a static version string for cache busting — bump when deploying new widget code
- script.src = `/booking-widget.js?v=1.0.0`;
+ script.src = `/booking-widget.js?v=1.1.0`;
  script.setAttribute('data-shop-id', shopId);
  script.setAttribute('data-api-url', '/api/chat/booking');
  if (themeColor) {
@@ -27,6 +27,12 @@ export default function AIWidget({ shopId, themeColor, secondaryColor, chatbotPo
  if (chatbotPosition) {
  script.setAttribute('data-position', chatbotPosition);
  }
+ if (colorTheme) {
+ script.setAttribute('data-color-theme', colorTheme);
+ }
+ if (templateType) {
+ script.setAttribute('data-template-type', templateType);
+ }
  script.async = true;
  
  document.body.appendChild(script);
@@ -35,7 +41,7 @@ export default function AIWidget({ shopId, themeColor, secondaryColor, chatbotPo
  // Optional: Remove script on unmount if needed, 
  // but usually we want the widget to persist across the shop page.
  };
- }, [shopId, themeColor, secondaryColor, chatbotPosition]);
+ }, [shopId, themeColor, secondaryColor, chatbotPosition, colorTheme, templateType]);
 
  return null;
 }

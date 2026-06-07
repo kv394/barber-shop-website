@@ -123,6 +123,7 @@ const getShopBySlug = cache(async (slug: string) => {
  customHtml: rawCustom.customHtml,
  authPosition: rawCustom.authPosition,
  chatbotPosition: rawCustom.chatbotPosition,
+ colorTheme: rawCustom.colorTheme,
  };
  return {
  ...serialized,
@@ -238,6 +239,7 @@ export default async function PublicShopPage({
        announcement: rawCustom.announcement, seo: rawCustom.seo,
        customHtml: rawCustom.customHtml, authPosition: rawCustom.authPosition,
        chatbotPosition: rawCustom.chatbotPosition,
+       colorTheme: rawCustom.colorTheme,
       },
       template: serialized.template || 'modern',
       reviews: serialize(reviews),
@@ -396,7 +398,7 @@ export default async function PublicShopPage({
  dynamicTemplateHtml={dynamicTemplateHtml}
  dynamicTemplateCss={dynamicTemplateCss}
  />
- <AIWidget shopId={shop.id} themeColor={primaryColor} secondaryColor={secondaryColor} chatbotPosition={shop.customization?.chatbotPosition} />
+ <AIWidget shopId={shop.id} themeColor={primaryColor} secondaryColor={secondaryColor} chatbotPosition={shop.customization?.chatbotPosition} colorTheme={shop.customization?.colorTheme || 'light'} templateType={templateType} />
  {/* Inject the booking modal script for this shop reliably */}
  <BookingModalScript shopId={shop.id} themeColor={primaryColor} templateType={templateType} />
  </>

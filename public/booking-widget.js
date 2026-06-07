@@ -46,6 +46,35 @@
   const sideCSS = isLeft ? 'left: 24px;' : 'right: 24px;';
   const transformOrigin = isLeft ? 'bottom left' : 'bottom right';
 
+  // ── Theme detection ──
+  const colorTheme = (scriptTag && scriptTag.getAttribute('data-color-theme')) || (window.KutzApp && window.KutzApp.colorTheme) || '';
+  const templateType = (scriptTag && scriptTag.getAttribute('data-template-type')) || (window.KutzApp && window.KutzApp.templateType) || '';
+  
+  // Determine if the page is dark-themed
+  const darkTemplates = ['noir'];
+  let isDark = colorTheme === 'dark' || darkTemplates.includes(templateType);
+  
+  // Fallback: inspect computed body background color if no explicit theme was provided
+  if (!colorTheme && !darkTemplates.includes(templateType)) {
+    try {
+      const bodyBg = getComputedStyle(document.body).backgroundColor;
+      const match = bodyBg.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/);
+      if (match) {
+        const luminance = (parseInt(match[1]) * 299 + parseInt(match[2]) * 587 + parseInt(match[3]) * 114) / 1000;
+        if (luminance < 80) isDark = true;
+      }
+    } catch (e) {}
+  }
+
+  // ── Helper: hex to RGB ──
+  function hexToRgb(hex) {
+    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return result ? { r: parseInt(result[1], 16), g: parseInt(result[2], 16), b: parseInt(result[3], 16) } : { r: 128, g: 128, b: 128 };
+  }
+
+  const tc = hexToRgb(themeColor);
+  const sc = hexToRgb(secondaryColor);
+
   // Create a container for the shadow DOM
   const container = document.createElement('div');
   container.id = containerId;
@@ -73,13 +102,19 @@
     :host {
       --primary-color: ${themeColor};
       --secondary-color: ${secondaryColor};
-      --bg-color: #ffffff;
-      --text-color: #000000;
-      --border-color: ${secondaryColor};
-      --msg-user-bg: var(--secondary-color);
+      --bg-color: ${isDark ? '#1a1a1f' : '#ffffff'};
+      --surface-color: ${isDark ? '#222228' : '#f8f8fa'};
+      --text-color: ${isDark ? '#e8e8ec' : '#1f2937'};
+      --text-muted: ${isDark ? '#9898a0' : '#6b7280'};
+      --border-color: ${isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.08)'};
+      --msg-user-bg: ${secondaryColor};
       --msg-user-text: #ffffff;
-      --msg-bot-bg: #ffffff;
-      --msg-bot-text: #000000;
+      --msg-bot-bg: ${isDark ? `rgba(${tc.r},${tc.g},${tc.b},0.08)` : `rgba(${tc.r},${tc.g},${tc.b},0.06)`};
+      --msg-bot-text: ${isDark ? '#e8e8ec' : '#1f2937'};
+      --msg-bot-border: ${isDark ? `rgba(${tc.r},${tc.g},${tc.b},0.15)` : `rgba(${tc.r},${tc.g},${tc.b},0.12)`};
+      --input-bg: ${isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.03)'};
+      --shadow-color: ${isDark ? 'rgba(0,0,0,0.5)' : 'rgba(0,0,0,0.12)'};
+      --color-scheme: ${isDark ? 'dark' : 'light'};
       font-family: system-ui, -apple-system, sans-serif;
     }
     
@@ -87,23 +122,24 @@
       position: fixed;
       bottom: 24px;
       ${sideCSS}
-      width: 60px;
-      height: 60px;
-      border-radius: 30px;
-      background-color: var(--bg-color);
-      color: var(--text-color);
-      border: 2px solid var(--border-color);
+      width: 56px;
+      height: 56px;
+      border-radius: 28px;
+      background: linear-gradient(135deg, ${themeColor}, ${secondaryColor});
+      color: #ffffff;
+      border: none;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      box-shadow: 0 4px 16px ${isDark ? `rgba(${tc.r},${tc.g},${tc.b},0.35)` : `rgba(${tc.r},${tc.g},${tc.b},0.3)`}, 0 2px 4px rgba(0,0,0,0.1);
       z-index: 999999;
-      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease;
     }
     
     #widget-button:hover {
       transform: scale(1.08) translateY(-2px);
+      box-shadow: 0 6px 24px ${isDark ? `rgba(${tc.r},${tc.g},${tc.b},0.45)` : `rgba(${tc.r},${tc.g},${tc.b},0.4)`}, 0 4px 8px rgba(0,0,0,0.15);
     }
 
     #widget-button:active {
@@ -111,9 +147,10 @@
     }
     
     #widget-button svg {
-      width: 32px;
-      height: 32px;
+      width: 28px;
+      height: 28px;
       transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      filter: drop-shadow(0 1px 2px rgba(0,0,0,0.2));
     }
 
     #widget-button.open svg {
@@ -122,15 +159,16 @@
     
     #chat-window {
       position: fixed;
-      bottom: 140px;
+      bottom: 96px;
       ${sideCSS}
-      width: 360px;
-      height: 500px;
-      max-height: calc(100vh - 160px);
+      width: 380px;
+      height: 520px;
+      max-height: calc(100vh - 120px);
       background-color: var(--bg-color);
-      border: 2px solid var(--border-color);
-      border-radius: 12px;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+      ${isDark ? 'backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);' : ''}
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      box-shadow: 0 12px 40px var(--shadow-color), 0 0 0 1px var(--border-color);
       display: flex;
       flex-direction: column;
       z-index: 999999;
@@ -161,7 +199,7 @@
         border-radius: 20px 20px 0 0;
         border: none;
         border-top: 1px solid var(--border-color);
-        box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.15);
+        box-shadow: 0 -8px 32px var(--shadow-color);
         transform-origin: bottom center;
         z-index: 9999999;
         display: flex;
@@ -204,24 +242,35 @@
     }
     
     #chat-header {
-      background-color: var(--bg-color);
+      background: ${isDark
+        ? `linear-gradient(135deg, rgba(${tc.r},${tc.g},${tc.b},0.15), rgba(${sc.r},${sc.g},${sc.b},0.1))`
+        : `linear-gradient(135deg, rgba(${tc.r},${tc.g},${tc.b},0.08), rgba(${sc.r},${sc.g},${sc.b},0.04))`};
       color: var(--text-color);
-      border-bottom: 2px solid var(--border-color);
-      padding: 16px;
-      font-weight: bold;
-      font-size: 16px;
+      border-bottom: 1px solid var(--border-color);
+      padding: 16px 18px;
+      font-weight: 600;
+      font-size: 15px;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      letter-spacing: 0.01em;
     }
     
     #close-button {
       cursor: pointer;
       background: none;
       border: none;
-      color: var(--text-color);
-      font-size: 24px;
+      color: var(--text-muted);
+      font-size: 22px;
       line-height: 1;
+      padding: 4px;
+      border-radius: 8px;
+      transition: background-color 0.2s, color 0.2s;
+    }
+    
+    #close-button:hover {
+      background-color: ${isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.06)'};
+      color: var(--text-color);
     }
     
     #chat-messages {
@@ -230,15 +279,21 @@
       overflow-y: auto;
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 10px;
+      background-color: var(--bg-color);
     }
+    
+    /* Subtle scrollbar styling */
+    #chat-messages::-webkit-scrollbar { width: 5px; }
+    #chat-messages::-webkit-scrollbar-track { background: transparent; }
+    #chat-messages::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 3px; }
     
     .message {
       max-width: 85%;
       padding: 10px 14px;
       border-radius: 16px;
       font-size: 14px;
-      line-height: 1.4;
+      line-height: 1.5;
       white-space: pre-wrap;
       animation: fadeIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1) forwards;
     }
@@ -247,20 +302,22 @@
       align-self: flex-end;
       background-color: var(--msg-user-bg);
       color: var(--msg-user-text);
-      border: 1px solid var(--border-color);
+      border: none;
       border-bottom-right-radius: 4px;
+      box-shadow: 0 1px 4px ${isDark ? `rgba(${sc.r},${sc.g},${sc.b},0.2)` : `rgba(${sc.r},${sc.g},${sc.b},0.15)`};
     }
     
     .message.bot {
       align-self: flex-start;
       background-color: var(--msg-bot-bg);
       color: var(--msg-bot-text);
+      border: 1px solid var(--msg-bot-border);
       border-bottom-left-radius: 4px;
     }
     
     #chat-input-area {
-      padding: 12px;
-      border-top: 2px solid var(--border-color);
+      padding: 12px 14px;
+      border-top: 1px solid var(--border-color);
       display: flex;
       gap: 8px;
       align-items: center;
@@ -270,24 +327,30 @@
     
     #chat-input {
       flex: 1;
-      background-color: transparent;
-      border: 2px solid var(--border-color);
+      background-color: var(--input-bg);
+      border: 1px solid var(--border-color);
       color: var(--text-color);
       padding: 10px 14px;
       border-radius: 20px;
       outline: none;
       font-size: 16px;
-      color-scheme: light; /* Helps date picker match light theme */
+      color-scheme: var(--color-scheme);
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    
+    #chat-input::placeholder {
+      color: var(--text-muted);
     }
     
     #chat-input:focus {
-      border-color: var(--text-color);
+      border-color: ${themeColor};
+      box-shadow: 0 0 0 2px ${isDark ? `rgba(${tc.r},${tc.g},${tc.b},0.2)` : `rgba(${tc.r},${tc.g},${tc.b},0.15)`};
     }
     
     #date-toggle-btn {
       background: none;
       border: none;
-      color: var(--text-color);
+      color: var(--text-muted);
       cursor: pointer;
       display: flex;
       align-items: center;
@@ -299,13 +362,13 @@
     
     #date-toggle-btn:hover {
       opacity: 1;
-      color: var(--text-color);
+      color: ${themeColor};
     }
 
     #send-button {
-      background-color: var(--bg-color);
-      color: var(--text-color);
-      border: 2px solid var(--border-color);
+      background: linear-gradient(135deg, ${themeColor}, ${secondaryColor});
+      color: #ffffff;
+      border: none;
       width: 40px;
       height: 40px;
       border-radius: 20px;
@@ -313,10 +376,18 @@
       display: flex;
       align-items: center;
       justify-content: center;
-    }    
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      box-shadow: 0 2px 8px ${isDark ? `rgba(${tc.r},${tc.g},${tc.b},0.25)` : `rgba(${tc.r},${tc.g},${tc.b},0.2)`};
+    }
+
+    #send-button:hover {
+      transform: scale(1.05);
+    }
+    
     #send-button:disabled {
-      opacity: 0.5;
+      opacity: 0.4;
       cursor: not-allowed;
+      transform: none;
     }
 
     #picker-sheet {
@@ -326,10 +397,10 @@
       width: 100%;
       height: 75%;
       background-color: var(--bg-color);
-      border-top: 2px solid var(--border-color);
+      border-top: 1px solid var(--border-color);
       border-top-left-radius: 20px;
       border-top-right-radius: 20px;
-      box-shadow: 0 -8px 24px rgba(0,0,0,0.4);
+      box-shadow: 0 -8px 32px var(--shadow-color);
       display: flex;
       flex-direction: column;
       transform: translateY(100%);
@@ -362,7 +433,7 @@
       border-bottom-left-radius: 4px !important;
       align-self: flex-start !important;
       margin-bottom: 12px !important;
-      border: 1px solid var(--border-color) !important;
+      border: 1px solid var(--msg-bot-border) !important;
       min-width: 60px !important;
       min-height: 24px !important;
     }
@@ -370,10 +441,10 @@
     .typing-indicator span {
       width: 6px;
       height: 6px;
-      background-color: var(--text-color);
+      background-color: ${themeColor};
       border-radius: 50%;
       animation: bounce 1.4s infinite ease-in-out both;
-      opacity: 0.6;
+      opacity: 0.7;
     }
     
     .typing-indicator span:nth-child(1) { animation-delay: -0.32s; }
@@ -409,7 +480,7 @@
 
     .slot-btn {
       background-color: transparent;
-      border: 2px solid var(--border-color);
+      border: 1px solid var(--border-color);
       color: var(--text-color);
       padding: 6px 12px;
       border-radius: 14px;
@@ -419,8 +490,9 @@
     }
 
     .slot-btn:hover {
-      background-color: var(--text-color);
-      color: var(--bg-color);
+      background-color: ${isDark ? `rgba(${tc.r},${tc.g},${tc.b},0.15)` : `rgba(${tc.r},${tc.g},${tc.b},0.1)`};
+      border-color: ${themeColor};
+      color: ${isDark ? '#ffffff' : themeColor};
       transform: translateY(-1px);
     }
 
@@ -508,7 +580,7 @@
     const el = document.createElement('div');
     el.className = 'typing-indicator';
     el.id = 'typing-indicator';
-    el.innerHTML = '<span style="display:inline-block; margin-right:2px;"></span><span style="display:inline-block; margin-right:2px;"></span><span style="display:inline-block;"></span><div class="processing-text" style="margin-left: 8px; font-size: 13px; font-style: italic; opacity: 0.8; color: var(--text-color);">Processing...</div>';
+    el.innerHTML = '<span style="display:inline-block; margin-right:2px;"></span><span style="display:inline-block; margin-right:2px;"></span><span style="display:inline-block;"></span><div class="processing-text" style="margin-left: 8px; font-size: 13px; font-style: italic; opacity: 0.8; color: var(--text-muted);">Processing...</div>';
     messagesEl.appendChild(el);
     messagesEl.scrollTop = messagesEl.scrollHeight;
   }
@@ -666,8 +738,8 @@
               btn.style.justifyContent = 'center';
               btn.style.padding = '8px 16px';
               btn.style.borderRadius = '12px';
-              btn.style.border = isSelected ? '2px solid var(--text-color)' : '2px solid var(--border-color)';
-              btn.style.backgroundColor = isSelected ? 'rgba(0, 0, 0, 0.05)' : 'transparent';
+              btn.style.border = isSelected ? `2px solid ${themeColor}` : '1px solid var(--border-color)';
+              btn.style.backgroundColor = isSelected ? `rgba(${tc.r},${tc.g},${tc.b},0.1)` : 'transparent';
               btn.style.color = isSelected ? 'var(--text-color)' : 'var(--text-color)';
               btn.style.cursor = 'pointer';
               btn.style.transition = 'all 0.2s ease';
@@ -688,7 +760,7 @@
               btn.appendChild(dayNumber);
 
               if (!isSelected) {
-                  btn.addEventListener('mouseover', () => btn.style.backgroundColor = 'rgba(255,255,255,0.05)');
+                  btn.addEventListener('mouseover', () => btn.style.backgroundColor = isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.04)');
                   btn.addEventListener('mouseout', () => btn.style.backgroundColor = 'transparent');
               }
 
@@ -773,14 +845,14 @@
           const styleEl = document.createElement('style');
           styleEl.textContent = `
             .time-grid-container::-webkit-scrollbar {
-              width: 6px;
+              width: 5px;
             }
             .time-grid-container::-webkit-scrollbar-track {
-              background: rgba(255, 255, 255, 0.05);
+              background: transparent;
               border-radius: 3px;
             }
             .time-grid-container::-webkit-scrollbar-thumb {
-              background: var(--text-color);
+              background: var(--border-color);
               border-radius: 3px;
             }
           `;
