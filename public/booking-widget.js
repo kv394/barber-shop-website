@@ -724,7 +724,7 @@
             btn.addEventListener('click', () => {
               container.style.opacity = '0.5';
               container.style.pointerEvents = 'none';
-              sendChatRequest(opt.value, opt.label);
+              sendChatRequest(opt.label, opt.label);
             });
             container.appendChild(btn);
           });
@@ -972,12 +972,11 @@
              for (let i = 0; i <= selectedIndex; i++) {
                 if (data.ui.slots[i].available !== false) availableIndex++;
              }
-             const timeText = availableIndex.toString();
              
              const selectedTime = data.ui.slots[selectedIndex].time;
              container.style.opacity = '0.5';
              container.style.pointerEvents = 'none';
-             sendChatRequest(timeText, `${data.ui.date} at ${selectedTime}`);
+             sendChatRequest(`${data.ui.date} at ${selectedTime}`, `${data.ui.date} at ${selectedTime}`);
           });
 
           container.appendChild(timeGrid);

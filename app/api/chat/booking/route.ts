@@ -690,7 +690,27 @@ If the user wants to check, cancel, or reschedule their appointments, or asks fo
  // Sanitize LLM output to prevent reflected XSS
  finalResponseText = finalResponseText.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '');
 
- const payload: any = { text: finalResponseText, history: formattedContents };
+ // CRITICAL: Append the model's final response to the history.
+ // Without this, the history sent back to the client is missing ALL model
+ // responses, causing consecutive user messages and total context loss.
+ if (finalResponseText) {
+ formattedContents.push({
+  role: 'model',
+  parts: [{ text: finalResponseText }]
+ });
+ }
+
+ // Strip function call/response/thought parts — only keep text-based messages.
+ // This prevents bloated payloads and ensures clean role alternation.
+ const cleanHistory = formattedContents
+    .map((msg: any) => {
+      if (!msg.parts) return msg;
+      const textParts = msg.parts.filter((p: any) => typeof p.text === 'string' && !p.thought && !p.functionCall && !p.functionResponse);
+      if (textParts.length === 0) return null;
+      return { role: msg.role, parts: textParts };
+    })
+    .filter(Boolean);
+ const payload: any = { text: finalResponseText, history: cleanHistory };
  if (lastUiType === 'date_picker') {
  payload.ui = {
  type: 'date_picker'
