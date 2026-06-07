@@ -318,8 +318,14 @@ export async function getEmailProviderForShop(shopId: string): Promise<EmailProv
       return getEmailProvider(); // Resend / SendGrid / site-level
     }
 
-    // 3. No email provider available — log only
-    logger.warn(`[EMAIL] Shop ${shopId} has no custom SMTP and no platformEmail premium. Email will be logged only.`);
+    // 3. Fall back to platform-level email provider (Resend/SendGrid) if available
+    const platformProvider = getEmailProvider();
+    if (platformProvider.name !== 'console') {
+      return platformProvider;
+    }
+
+    // 4. No email provider available — log only
+    logger.warn(`[EMAIL] Shop ${shopId} has no custom SMTP and no platform email keys configured. Email will be logged only.`);
     return new ConsoleEmailProvider();
   } catch (error: any) {
     logger.error(`[SMTP] Failed to load shop email config for ${shopId}: ${error.message}`);
