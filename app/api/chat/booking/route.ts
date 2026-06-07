@@ -6,6 +6,7 @@ import { toShopTzDayBounds } from '@/lib/timezone';
 import { getCalendarBusySlots } from '@/lib/google-calendar';
 import { rateLimit } from '@/lib/rate-limiter';
 import { getEmailProviderForShop } from '@/lib/messaging-providers';
+import { emailService } from '@/lib/email';
 import { scoreAndSortSlots } from '@/lib/schedule-optimizer';
 import QRCode from 'qrcode';
 
@@ -489,12 +490,31 @@ If the user wants to check, cancel, or reschedule their appointments, or asks fo
   recurringGroupId: recurrenceRule ? crypto.randomUUID() : null,
  }
  }); 
- if (isNewUser) {
- lastQrCodeUrl = await QRCode.toDataURL(user.barcode || user.id);
- lastUiType = 'qr_code';
- }
- 
- result = { success: true, appointmentId: apt.id, isNewUser };
+  if (isNewUser) {
+  lastQrCodeUrl = await QRCode.toDataURL(user.barcode || user.id);
+  lastUiType = 'qr_code';
+  }
+
+  // Auto-send booking confirmation email (fire-and-forget, don't block response)
+  if (clientEmail && !clientEmail.includes('guest-')) {
+  const staffMember = await prisma.user.findUnique({ where: { id: finalStaffId }, select: { name: true } });
+  const formattedDate = new Intl.DateTimeFormat('en-US', {
+   timeZone: shopTz,
+   weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',
+   hour: 'numeric', minute: '2-digit', hour12: true
+  }).format(startTime);
+  emailService.sendBookingConfirmation({
+   to: clientEmail,
+   clientName: clientName,
+   shopName: shop.name,
+   serviceName: service.name,
+   staffName: staffMember?.name || 'Staff',
+   dateTime: formattedDate,
+   bookingId: apt.id,
+  }).catch(err => logger.error('Failed to send booking confirmation email:', err));
+  }
+  
+  result = { success: true, appointmentId: apt.id, isNewUser };
  } else {
  result = { success: false, error: "Service not found" };
  }
