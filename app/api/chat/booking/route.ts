@@ -489,12 +489,11 @@ If the user wants to check, cancel, or reschedule their appointments, or asks fo
   recurringGroupId: recurrenceRule ? crypto.randomUUID() : null,
  }
  }); 
-  if (isNewUser) {
+  // Always generate QR code for check-in (not just new users)
   lastQrCodeUrl = await QRCode.toDataURL(user.barcode || user.id);
   lastUiType = 'qr_code';
-  }
 
-  // Auto-send booking confirmation email (fire-and-forget, don't block response)
+  // Auto-send booking confirmation email with QR code (fire-and-forget)
   if (clientEmail && !clientEmail.includes('guest-')) {
   const staffMember = await prisma.user.findUnique({ where: { id: finalStaffId }, select: { name: true } });
   const formattedDate = new Intl.DateTimeFormat('en-US', {
@@ -509,6 +508,11 @@ If the user wants to check, cancel, or reschedule their appointments, or asks fo
    <strong>Service:</strong> ${service.name}<br/>
    <strong>Barber:</strong> ${staffMember?.name || 'Staff'}<br/>
    <strong>When:</strong> ${formattedDate}</p>
+   <div style="text-align:center;margin:24px 0">
+   <p><strong>Your Check-in QR Code:</strong></p>
+   <img src="${lastQrCodeUrl}" alt="Check-in QR Code" style="width:180px;height:180px;border-radius:12px;border:2px solid #ddd;padding:8px;background:#fff" />
+   <p style="font-size:12px;color:#888;margin-top:8px">Show this QR code when you arrive for fast check-in</p>
+   </div>
    <p>We look forward to seeing you!</p>`;
   getEmailProviderForShop(realShopId).then(provider =>
    provider.send(clientEmail, `Appointment Confirmed at ${shop.name}`, `Your appointment for ${service.name} is confirmed for ${formattedDate}.`, confirmHtml)
