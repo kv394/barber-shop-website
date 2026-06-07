@@ -6,7 +6,6 @@ import { toShopTzDayBounds } from '@/lib/timezone';
 import { getCalendarBusySlots } from '@/lib/google-calendar';
 import { rateLimit } from '@/lib/rate-limiter';
 import { getEmailProviderForShop } from '@/lib/messaging-providers';
-import { emailService } from '@/lib/email';
 import { scoreAndSortSlots } from '@/lib/schedule-optimizer';
 import QRCode from 'qrcode';
 
@@ -503,15 +502,17 @@ If the user wants to check, cancel, or reschedule their appointments, or asks fo
    weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',
    hour: 'numeric', minute: '2-digit', hour12: true
   }).format(startTime);
-  emailService.sendBookingConfirmation({
-   to: clientEmail,
-   clientName: clientName,
-   shopName: shop.name,
-   serviceName: service.name,
-   staffName: staffMember?.name || 'Staff',
-   dateTime: formattedDate,
-   bookingId: apt.id,
-  }).catch(err => logger.error('Failed to send booking confirmation email:', err));
+  const confirmHtml = `<h1>Booking Confirmed ✅</h1>
+   <p>Hi <strong>${clientName}</strong>,</p>
+   <p>Your appointment has been confirmed!</p>
+   <p><strong>Shop:</strong> ${shop.name}<br/>
+   <strong>Service:</strong> ${service.name}<br/>
+   <strong>Barber:</strong> ${staffMember?.name || 'Staff'}<br/>
+   <strong>When:</strong> ${formattedDate}</p>
+   <p>We look forward to seeing you!</p>`;
+  getEmailProviderForShop(realShopId).then(provider =>
+   provider.send(clientEmail, `Appointment Confirmed at ${shop.name}`, `Your appointment for ${service.name} is confirmed for ${formattedDate}.`, confirmHtml)
+  ).catch(err => logger.error('Failed to send booking confirmation email:', err));
   }
   
   result = { success: true, appointmentId: apt.id, isNewUser };
