@@ -40,11 +40,48 @@
   const defaultApiUrl = fallbackOrigin + '/api/chat/booking';
   const apiUrl = scriptApiUrl || sdkApiUrl || defaultApiUrl;
   
-  const themeColor = (window.KutzApp && window.KutzApp.primaryColor) || (scriptTag && scriptTag.getAttribute('data-theme-color')) || '#d4af37';
-  const secondaryColor = (window.KutzApp && window.KutzApp.secondaryColor) || (scriptTag && scriptTag.getAttribute('data-secondary-color')) || themeColor;
+  let themeColor = (window.KutzApp && window.KutzApp.primaryColor) || (scriptTag && scriptTag.getAttribute('data-theme-color')) || '#d4af37';
+  let secondaryColor = (window.KutzApp && window.KutzApp.secondaryColor) || (scriptTag && scriptTag.getAttribute('data-secondary-color')) || themeColor;
   const position = (window.KutzApp && window.KutzApp.chatbotPosition) || (scriptTag && scriptTag.getAttribute('data-position')) || 'bottom-right';  const isLeft = position === 'bottom-left';
   const sideCSS = isLeft ? 'left: 24px;' : 'right: 24px;';
   const transformOrigin = isLeft ? 'bottom left' : 'bottom right';
+
+  // ── Auto-detect page theme colors from CSS custom properties ──
+  // Dynamic templates define their own color systems via :root CSS vars.
+  // These are more accurate than the DB primaryColor for visual matching.
+  try {
+    const rootStyles = getComputedStyle(document.documentElement);
+    // Common primary color variable names used across templates
+    const primaryCandidates = [
+      '--gold-primary', '--rose-primary', '--primary-color', '--color-primary',
+      '--accent-color', '--brand-primary', '--theme-color', '--main-color',
+      '--gold-accent', '--rose-deep', '--primary', '--accent'
+    ];
+    const secondaryCandidates = [
+      '--gold-secondary', '--rose-hover', '--secondary-color', '--color-secondary',
+      '--brand-secondary', '--gold-dark', '--rose-light', '--secondary', '--accent-light'
+    ];
+    let detectedPrimary = '';
+    let detectedSecondary = '';
+    for (const varName of primaryCandidates) {
+      const val = rootStyles.getPropertyValue(varName).trim();
+      if (val && val.startsWith('#') && val.length >= 4) {
+        detectedPrimary = val;
+        break;
+      }
+    }
+    for (const varName of secondaryCandidates) {
+      const val = rootStyles.getPropertyValue(varName).trim();
+      if (val && val.startsWith('#') && val.length >= 4) {
+        detectedSecondary = val;
+        break;
+      }
+    }
+    if (detectedPrimary) {
+      themeColor = detectedPrimary;
+      secondaryColor = detectedSecondary || detectedPrimary;
+    }
+  } catch (e) {}
 
   // ── Theme detection ──
   const colorTheme = (scriptTag && scriptTag.getAttribute('data-color-theme')) || (window.KutzApp && window.KutzApp.colorTheme) || '';
