@@ -274,15 +274,23 @@ Shop Knowledge Base:
 - Phone: ${c.contact?.phone || c.phone || 'Not available'}
 - Email: ${c.contact?.email || c.email || 'Not available'}
 ${(() => {
- const bh = c.businessHours;
- if (!bh || typeof bh !== 'object') return '- Business Hours: Not configured';
+ const defaultHours = {
+  monday: { open: '09:00', close: '18:00' },
+  tuesday: { open: '09:00', close: '18:00' },
+  wednesday: { open: '09:00', close: '18:00' },
+  thursday: { open: '09:00', close: '18:00' },
+  friday: { open: '09:00', close: '18:00' },
+  saturday: { open: '09:00', close: '15:00' },
+  sunday: null,
+ };
+ const bh = (c.businessHours && typeof c.businessHours === 'object') ? c.businessHours : defaultHours;
  const days = ['monday','tuesday','wednesday','thursday','friday','saturday','sunday'];
  const lines = days.map(d => {
   const day = bh[d];
-  if (!day || day.closed) return `  ${d.charAt(0).toUpperCase() + d.slice(1)}: CLOSED`;
-  return `  ${d.charAt(0).toUpperCase() + d.slice(1)}: ${day.open || '9:00'} - ${day.close || '17:00'}`;
+  if (!day) return '  ' + d.charAt(0).toUpperCase() + d.slice(1) + ': CLOSED';
+  return '  ' + d.charAt(0).toUpperCase() + d.slice(1) + ': ' + (day.open || '9:00') + ' - ' + (day.close || '17:00');
  });
- return '- Business Hours:\\n' + lines.join('\\n');
+ return '- Business Hours:\n' + lines.join('\n');
 })()}
 - Tagline: ${c.tagline || ''}
 - About: ${c.aboutText || ''}
