@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { auth } from '@clerk/nextjs/server';
 import { prisma } from '@/lib/prisma';
 import { getEmailProviderForShop } from '@/lib/messaging-providers';
 import { logger } from '@/lib/logger';
+import { createClient } from '@/utils/supabase/server';
 
 export async function POST(
   request: NextRequest,
@@ -12,19 +12,22 @@ export async function POST(
     const { shopId, clientId } = await params;
 
     // ── Auth ────────────────────────────────────────────────────
-    const session = await auth();
-    if (!session?.userId) {
+    const supabase = await createClient();
+    const { data: { user: _authUser } } = await supabase.auth.getUser();
+    const session = _authUser ? { user: _authUser } : null;
+    const authUserSession = session?.user;
+    const userId = authUserSession?.id;
+    const authUserEmail = authUserSession?.email;
+    if (!userId) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     // Verify the caller is staff / admin of this shop
     const callerUser = await prisma.user.findFirst({
       where: {
-        clerkId: session.userId,
-        OR: [
-          { shopId, role: 'SHOP_ADMIN' },
-          { shopId, role: 'STAFF' },
-        ],
+        OR: [{ id: userId }, { email: authUserEmail || '' }],
+        shopId,
+        role: { in: ['SHOP_ADMIN', 'STAFF'] },
       },
       select: { id: true },
     });
