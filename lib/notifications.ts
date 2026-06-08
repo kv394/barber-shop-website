@@ -364,11 +364,14 @@ export class NotificationService {
         where: { id: notificationId },
         select: { shopId: true },
       });
-      // Fetch shop name for branded email sender
+      // Fetch shop name and contact email for branded email sender + reply-to
       let shopName: string | undefined;
+      let shopReplyTo: string | undefined;
       if (notification?.shopId) {
-        const shopRecord = await prisma.shop.findUnique({ where: { id: notification.shopId }, select: { name: true } });
+        const shopRecord = await prisma.shop.findUnique({ where: { id: notification.shopId }, select: { name: true, customization: true } });
         shopName = shopRecord?.name || undefined;
+        const shopCustom = (shopRecord?.customization as Record<string, any>) || {};
+        shopReplyTo = shopCustom.contact?.email || shopCustom.email || undefined;
       }
       const user = await prisma.user.findUnique({
         where: { id: userId },
@@ -389,7 +392,7 @@ export class NotificationService {
         const provider = notification?.shopId
           ? await getEmailProviderForShop(notification.shopId)
           : getEmailProvider();
-        const result = await provider.send(user.email, title, message, undefined, undefined, shopName);
+        const result = await provider.send(user.email, title, message, undefined, undefined, shopName, shopReplyTo);
         results.push({ channel: 'EMAIL', ...result });
       }
 

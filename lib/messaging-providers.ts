@@ -12,7 +12,7 @@ export interface EmailAttachment {
 
 export interface EmailProvider {
   name: string;
-  send(to: string, subject: string, body: string, html?: string, attachments?: EmailAttachment[], fromName?: string): Promise<{ success: boolean; messageId?: string; error?: string }>;
+  send(to: string, subject: string, body: string, html?: string, attachments?: EmailAttachment[], fromName?: string, replyTo?: string): Promise<{ success: boolean; messageId?: string; error?: string }>;
 }
 
 export interface SMSProvider {
@@ -32,7 +32,7 @@ class ResendProvider implements EmailProvider {
     this.from = process.env.EMAIL_FROM || 'Kutz <noreply@kutzapp.com>';
   }
 
-  async send(to: string, subject: string, body: string, html?: string, attachments?: EmailAttachment[], fromName?: string) {
+  async send(to: string, subject: string, body: string, html?: string, attachments?: EmailAttachment[], fromName?: string, replyTo?: string) {
     try {
       const from = fromName ? `${fromName} <${this.from.replace(/^.*</, '').replace(/>$/, '')}>` : this.from;
       const res = await fetch('https://api.resend.com/emails', {
@@ -45,6 +45,7 @@ class ResendProvider implements EmailProvider {
           from,
           to: [to],
           subject,
+          ...(replyTo ? { reply_to: replyTo } : {}),
           ...(html ? { html } : { text: body }),
           ...(attachments ? { attachments: attachments.map(a => ({ filename: a.filename, content: a.content })) } : {}),
         }),
@@ -70,7 +71,7 @@ class SendGridProvider implements EmailProvider {
     this.from = process.env.EMAIL_FROM || 'noreply@kutzapp.com';
   }
 
-  async send(to: string, subject: string, body: string, html?: string, attachments?: EmailAttachment[], fromName?: string) {
+  async send(to: string, subject: string, body: string, html?: string, attachments?: EmailAttachment[], fromName?: string, replyTo?: string) {
     try {
       const content = html
         ? [{ type: 'text/html', value: html }]
@@ -85,6 +86,7 @@ class SendGridProvider implements EmailProvider {
         body: JSON.stringify({
           personalizations: [{ to: [{ email: to }] }],
           from: { email: this.from, ...(fromName ? { name: fromName } : {}) },
+          ...(replyTo ? { reply_to: { email: replyTo } } : {}),
           subject,
           content,
           ...(attachments ? { attachments: attachments.map(a => ({ filename: a.filename, content: a.content, type: a.type || 'application/octet-stream', disposition: 'attachment' })) } : {}),
@@ -217,7 +219,7 @@ class SmtpProvider implements EmailProvider {
     this.from = config.fromName ? `${config.fromName} <${config.fromEmail}>` : config.fromEmail;
   }
 
-  async send(to: string, subject: string, body: string, html?: string, attachments?: EmailAttachment[]) {
+  async send(to: string, subject: string, body: string, html?: string, attachments?: EmailAttachment[], fromName?: string, replyTo?: string) {
     try {
       // Use nodemailer for SMTP transport
       const nodemailer = await import('nodemailer');
@@ -237,6 +239,7 @@ class SmtpProvider implements EmailProvider {
         from: this.from,
         to,
         subject,
+        ...(replyTo ? { replyTo } : {}),
         ...(html ? { html } : { text: body }),
       };
 

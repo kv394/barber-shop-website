@@ -633,6 +633,7 @@ If the user wants to check, cancel, or reschedule their appointments, or asks fo
    <li>📱 Check-in QR code — show when you arrive</li>
    </ul>
    <p>We look forward to seeing you!</p>`;
+  const shopReplyTo = c.contact?.email || c.email || '';
   getEmailProviderForShop(realShopId).then(provider =>
    provider.send(
     clientEmail,
@@ -643,7 +644,8 @@ If the user wants to check, cancel, or reschedule their appointments, or asks fo
      { filename: 'appointment.ics', content: Buffer.from(icsContent).toString('base64'), type: 'text/calendar' },
      { filename: 'checkin-qrcode.png', content: qrBase64, type: 'image/png' }
     ],
-    shop.name
+    shop.name,
+    shopReplyTo || undefined
    )
   ).catch(err => logger.error('Failed to send booking confirmation email:', err));
   }
@@ -743,7 +745,8 @@ If the user wants to check, cancel, or reschedule their appointments, or asks fo
  `Hi! Please find your calendar invite attached for your upcoming appointment.`,
  undefined,
  [{ filename: 'invite.ics', content: Buffer.from(icsContent).toString('base64'), type: 'text/calendar' }],
- apt.shop.name
+ apt.shop.name,
+ c.contact?.email || c.email || undefined
  );
  
  if (emailRes.success) {
