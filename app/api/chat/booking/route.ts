@@ -349,25 +349,26 @@ ${(() => {
  return '\nSHOP PAGES (FAQ, Policies, About):\n' + visible.map((p: any) => '- ' + p.title + ': ' + p.content.substring(0, 500)).join('\n');
 })()}
 
-Use this information to answer user questions about the shop's location, hours, policies, cancellation, parking, promotions, etc. If information is "Not available", say you'll need them to contact the shop directly for that detail.
+IMPORTANT: You have been given ALL available information about this shop. If something is NOT mentioned above (e.g., no loyalty program listed, no products listed), it means the shop does NOT currently offer it. Answer definitively: "We don't currently have a loyalty/rewards program" — do NOT say "I don't have information" or "please contact the shop" for things that are simply not offered.
+Only suggest contacting the shop for details marked "Not available" (like a missing phone number or address).
 ${c.bookingSettings?.aiReceptionistPrompt ? '\nCUSTOM SHOP PERSONALITY INSTRUCTIONS:\n' + c.bookingSettings.aiReceptionistPrompt : ''}
 
 AVAILABLE SERVICES:
 ${servicesText}
 ${addons.length > 0 ? `
 SERVICE ADD-ONS (customers can add these to any service):
-${addons.map((a: any) => `- ${a.name}: +$${a.price}${a.durationMin ? ' (+' + a.durationMin + ' mins)' : ''}`).join('\n')}` : ''}
+${addons.map((a: any) => `- ${a.name}: +$${a.price}${a.durationMin ? ' (+' + a.durationMin + ' mins)' : ''}`).join('\n')}` : '\nSERVICE ADD-ONS: None currently available.'}
 
 AVAILABLE STAFF:
 ${staffText}
 ${products.length > 0 ? `
 PRODUCTS FOR SALE:
-${products.map((p: any) => `- ${p.name}: $${p.price}${p.description ? ' — ' + p.description : ''}`).join('\n')}` : ''}
+${products.map((p: any) => `- ${p.name}: $${p.price}${p.description ? ' — ' + p.description : ''}`).join('\n')}` : '\nPRODUCTS FOR SALE: None currently available.'}
 ${loyaltyProgram ? `
-LOYALTY PROGRAM:
+LOYALTY / REWARDS PROGRAM:
 - Earn ${loyaltyProgram.pointsPerDollar} point(s) per dollar spent and ${loyaltyProgram.pointsPerVisit} points per visit
 - Redeem ${loyaltyProgram.redeemThreshold} points for $${loyaltyProgram.redeemValue} off
-- Tell customers about the loyalty program when they ask about rewards, points, or discounts!` : ''}
+- Proactively mention the loyalty program when customers ask about rewards, points, or discounts!` : '\nLOYALTY / REWARDS PROGRAM: No rewards program currently active.'}
 
 CRITICAL UX INSTRUCTIONS:
 - Whenever you present multiple options to the user (like services, staff members, or time slots), ALWAYS format them as a clean, numbered list starting each option on a new line with "1. ", "2. ", etc. 
