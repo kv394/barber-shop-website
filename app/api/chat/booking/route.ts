@@ -296,12 +296,12 @@ Shop Knowledge Base:
 - You MUST answer the user directly if they ask "what is today's date" or similar questions.
 
 CONTACT & LOCATION:
-- Address: ${c.address || 'Not available'}
+- Address: ${typeof c.address === 'object' && c.address !== null ? [c.address.street, c.address.suite, c.address.city, c.address.state, c.address.zip].filter(Boolean).join(', ') : (c.address || 'Not available')}
 - Phone: ${c.contact?.phone || c.phone || 'Not available'}
 - Email: ${c.contact?.email || c.email || 'Not available'}
 - Website: ${c.contact?.website || c.website || 'Not available'}
-- Google Maps: ${shop.googleMapsUrl || 'Not available'}${c.socialLinks || c.social?.instagram || c.social?.facebook ? `
-- Social Media: ${[c.social?.instagram || c.socialLinks?.instagram ? 'Instagram: ' + (c.social?.instagram || c.socialLinks?.instagram) : '', c.social?.facebook || c.socialLinks?.facebook ? 'Facebook: ' + (c.social?.facebook || c.socialLinks?.facebook) : '', c.social?.twitter || c.socialLinks?.twitter ? 'Twitter/X: ' + (c.social?.twitter || c.socialLinks?.twitter) : ''].filter(Boolean).join(', ')}` : ''}
+- Google Maps: ${shop.googleMapsUrl || 'Not available'}${c.socialLinks || c.contact?.instagram || c.contact?.facebook || c.social?.instagram || c.social?.facebook ? `
+- Social Media: ${[c.contact?.instagram || c.social?.instagram || c.socialLinks?.instagram ? 'Instagram: ' + (c.contact?.instagram || c.social?.instagram || c.socialLinks?.instagram) : '', c.contact?.facebook || c.social?.facebook || c.socialLinks?.facebook ? 'Facebook: ' + (c.contact?.facebook || c.social?.facebook || c.socialLinks?.facebook) : '', c.contact?.twitter || c.social?.twitter || c.socialLinks?.twitter ? 'Twitter/X: ' + (c.contact?.twitter || c.social?.twitter || c.socialLinks?.twitter) : '', c.contact?.yelp ? 'Yelp: ' + c.contact.yelp : ''].filter(Boolean).join(', ')}` : ''}
 
 BUSINESS HOURS:
 ${(() => {
@@ -329,8 +329,28 @@ BUSINESS TYPE & POLICIES:
 - Deposit Required: ${shop.depositRequired ? 'Yes, $' + shop.depositAmount + ' deposit required at booking' : 'No deposit required'}
 - Payment Gateway: ${shop.paymentGateway || 'Available at the shop'}
 ${reviewStats._count.id > 0 ? `- Customer Reviews: ${reviewStats._count.id} reviews, ${(reviewStats._avg.rating || 0).toFixed(1)}/5 average rating` : ''}
+${(() => {
+ const bs = c.bookingSettings || {};
+ const lines = [];
+ if (bs.cancellationPolicy) lines.push('- Cancellation Policy: ' + bs.cancellationPolicy);
+ else if (bs.cancellationWindowHours) lines.push('- Cancellation Window: Must cancel at least ' + bs.cancellationWindowHours + ' hours before the appointment');
+ if (bs.minAdvanceHours) lines.push('- Minimum Advance Booking: ' + bs.minAdvanceHours + ' hour(s) in advance');
+ if (bs.maxAdvanceDays) lines.push('- Maximum Advance Booking: Up to ' + bs.maxAdvanceDays + ' days ahead');
+ if (bs.autoConfirm === false) lines.push('- Appointments require staff confirmation before being finalized');
+ return lines.length > 0 ? lines.join('\n') : '';
+})()}
+${c.announcement && c.announcement.isActive && c.announcement.text ? `
+CURRENT PROMOTION/ANNOUNCEMENT:
+${c.announcement.text}` : ''}
+${(() => {
+ const pages = c.pages || [];
+ const visible = pages.filter((p: any) => p.isVisible !== false && p.content);
+ if (visible.length === 0) return '';
+ return '\nSHOP PAGES (FAQ, Policies, About):\n' + visible.map((p: any) => '- ' + p.title + ': ' + p.content.substring(0, 500)).join('\n');
+})()}
 
-Use this information to answer user questions about the shop's location, hours, policies, parking, etc. If information is "Not available", say you'll need them to contact the shop directly for that detail.
+Use this information to answer user questions about the shop's location, hours, policies, cancellation, parking, promotions, etc. If information is "Not available", say you'll need them to contact the shop directly for that detail.
+${c.bookingSettings?.aiReceptionistPrompt ? '\nCUSTOM SHOP PERSONALITY INSTRUCTIONS:\n' + c.bookingSettings.aiReceptionistPrompt : ''}
 
 AVAILABLE SERVICES:
 ${servicesText}
