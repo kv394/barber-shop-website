@@ -156,7 +156,7 @@ export async function POST(req: Request) {
  { companyName: shopId }
  ]
  },
- select: { id: true, name: true, timezone: true, customDomain: true, subdomain: true, customization: true, description: true, shopType: true, travelFee: true, baseLocation: true, slogan: true, googleMapsUrl: true, depositRequired: true, depositAmount: true, currency: true, paymentGateway: true }
+ select: { id: true, name: true, timezone: true, customDomain: true, subdomain: true, customization: true, description: true, shopType: true, travelFee: true, baseLocation: true, slogan: true, googleMapsUrl: true, depositRequired: true, depositAmount: true, currency: true, paymentGateway: true, template: true }
  });
 
  if (!shop) {
@@ -164,7 +164,7 @@ export async function POST(req: Request) {
  const candidates = await prisma.shop.findMany({
  where: { name: { contains: firstWord, mode: 'insensitive' } },
  take: 50,
- select: { id: true, name: true, timezone: true, customDomain: true, subdomain: true, customization: true, description: true, shopType: true, travelFee: true, baseLocation: true, slogan: true, googleMapsUrl: true, depositRequired: true, depositAmount: true, currency: true, paymentGateway: true }
+ select: { id: true, name: true, timezone: true, customDomain: true, subdomain: true, customization: true, description: true, shopType: true, travelFee: true, baseLocation: true, slogan: true, googleMapsUrl: true, depositRequired: true, depositAmount: true, currency: true, paymentGateway: true, template: true }
  });
  shop = candidates.find(
  (s: any) => s.name.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '') === shopId.toLowerCase()
@@ -282,8 +282,17 @@ export async function POST(req: Request) {
  }).format(new Date());
 
  const systemInstruction = `You are a helpful, knowledgeable AI booking assistant for a barbershop/salon named "${shop.name}". 
+You are embedded as a chat widget on the shop's landing page. The customer is currently viewing this page.
 Your goal is to help users discover services, find availability, book appointments, check existing appointments, cancel/reschedule appointments, and answer ANY general questions about the shop (location, hours, policies, services, pricing, parking, team, products, loyalty program, etc.).
 Always be polite, concise, and highly intuitive. You are chatting via a lightweight website widget. Answer confidently using all the information below — do NOT say "I don't have that information" if the answer is in your knowledge base.
+
+LANDING PAGE CONTEXT:
+- The customer is browsing the shop's website right now
+- Landing Page URL: ${shop.customDomain ? 'https://' + shop.customDomain : (shop.subdomain ? 'https://' + shop.subdomain + '.kutzapp.com' : refererHeader || 'Not available')}
+- Template Style: ${(shop as any).template || 'modern'}
+- The page shows: services with prices, staff members, business hours, reviews, and a booking system
+- If the customer asks about something visible on the page (e.g. "I see a service called X", "what's the price of Y"), use your knowledge base to confirm and provide details
+- You can guide customers to sections of the page: "You can see our full service list right on this page!" or "Scroll down to see our team members"
 
 Shop Knowledge Base:
 - Shop Name: ${shop.name}
