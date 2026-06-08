@@ -294,7 +294,7 @@ Follow this flow for booking:
 3. Do NOT call request_date_picker. Instead, immediately call check_availability for Today's Date (or a specific date if the user provided one). This will present a combined date and time picker to the user. Present slots as a numbered list.
 4. Once they pick a time, ask for their name, phone, and optionally email.
 5. Call book_appointment to finalize.
-6. After successfully booking, ask the user if they would like you to send them an email with a calendar invite. If they say yes, call send_calendar_invite.
+6. After successfully booking, a confirmation email with a calendar invite and QR code is AUTOMATICALLY sent to the user (if they provided an email). Simply confirm that the booking is done and let them know the email has been sent. Do NOT offer to send a separate calendar invite.
 
 If the user wants to check, cancel, or reschedule their appointments, or asks for client details:
 1. Ask for their name, phone number, or email if not already provided.
@@ -493,7 +493,7 @@ If the user wants to check, cancel, or reschedule their appointments, or asks fo
   lastQrCodeUrl = await QRCode.toDataURL(user.barcode || user.id);
   lastUiType = 'qr_code';
 
-  // Auto-send booking confirmation email with QR code attachment (fire-and-forget)
+  // Auto-send single confirmation email with QR code + calendar invite (fire-and-forget)
   if (clientEmail && !clientEmail.includes('guest-')) {
   const staffMember = await prisma.user.findUnique({ where: { id: finalStaffId }, select: { name: true } });
   const formattedDate = new Intl.DateTimeFormat('en-US', {
@@ -501,8 +501,25 @@ If the user wants to check, cancel, or reschedule their appointments, or asks fo
    weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',
    hour: 'numeric', minute: '2-digit', hour12: true
   }).format(startTime);
-  // Extract raw base64 from the data URI for the attachment
+  // QR code attachment
   const qrBase64 = lastQrCodeUrl!.replace(/^data:image\/png;base64,/, '');
+  // Build ICS calendar invite
+  const icsStartStr = startTime.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
+  const icsEndStr = endTime.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
+  const icsContent = [
+   'BEGIN:VCALENDAR',
+   'VERSION:2.0',
+   'PRODID:-//Kutz//EN',
+   'BEGIN:VEVENT',
+   `UID:${apt.id}@kutzapp.com`,
+   `DTSTAMP:${icsStartStr}`,
+   `DTSTART:${icsStartStr}`,
+   `DTEND:${icsEndStr}`,
+   `SUMMARY:${service.name} at ${shop.name}`,
+   `DESCRIPTION:Your appointment for ${service.name} with ${staffMember?.name || 'Staff'}`,
+   'END:VEVENT',
+   'END:VCALENDAR'
+  ].join('\r\n');
   const confirmHtml = `<h1>Booking Confirmed ✅</h1>
    <p>Hi <strong>${clientName}</strong>,</p>
    <p>Your appointment has been confirmed!</p>
@@ -510,15 +527,22 @@ If the user wants to check, cancel, or reschedule their appointments, or asks fo
    <strong>Service:</strong> ${service.name}<br/>
    <strong>Barber:</strong> ${staffMember?.name || 'Staff'}<br/>
    <strong>When:</strong> ${formattedDate}</p>
-   <p>📱 <strong>Your check-in QR code is attached to this email.</strong> Save it and show it when you arrive for fast check-in!</p>
+   <p>📎 <strong>Attached:</strong></p>
+   <ul>
+   <li>📅 Calendar invite (.ics) — add to your calendar</li>
+   <li>📱 Check-in QR code — show when you arrive</li>
+   </ul>
    <p>We look forward to seeing you!</p>`;
   getEmailProviderForShop(realShopId).then(provider =>
    provider.send(
     clientEmail,
     `Appointment Confirmed at ${shop.name}`,
-    `Your appointment for ${service.name} is confirmed for ${formattedDate}. Your check-in QR code is attached.`,
+    `Your appointment for ${service.name} is confirmed for ${formattedDate}.`,
     confirmHtml,
-    [{ filename: 'checkin-qrcode.png', content: qrBase64, type: 'image/png' }]
+    [
+     { filename: 'appointment.ics', content: Buffer.from(icsContent).toString('base64'), type: 'text/calendar' },
+     { filename: 'checkin-qrcode.png', content: qrBase64, type: 'image/png' }
+    ]
    )
   ).catch(err => logger.error('Failed to send booking confirmation email:', err));
   }
