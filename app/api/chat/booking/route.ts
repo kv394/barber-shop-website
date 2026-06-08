@@ -394,7 +394,7 @@ If the user wants to check, cancel, or reschedule their appointments, or asks fo
 4. For rescheduling: Call reschedule_appointment with the ID, new date, and new time (call check_appointments AGAIN to get the ID, and check_availability to find a new slot).`;
 
  let response = await ai.models.generateContent({
- model: 'gemini-3.1-pro',
+ model: 'gemini-2.5-pro',
  contents: formattedContents,
  config: {
  systemInstruction,
@@ -811,7 +811,7 @@ If the user wants to check, cancel, or reschedule their appointments, or asks fo
  );
 
  response = await ai.models.generateContent({
- model: 'gemini-3.1-pro',
+ model: 'gemini-2.5-pro',
  contents: formattedContents,
  config: {
  systemInstruction,
