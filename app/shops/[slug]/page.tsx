@@ -401,7 +401,7 @@ export default async function PublicShopPage({
   {/* Dynamic templates load their own booking-widget.js with template-specific colors via inline SDK.
      Only inject AIWidget for built-in React templates that don't have their own widget loading. */}
   {!dynamicTemplateHtml && (
-  <AIWidget shopId={shop.id} themeColor={primaryColor} secondaryColor={secondaryColor} chatbotPosition={shop.customization?.chatbotPosition} colorTheme={shop.customization?.colorTheme || 'light'} templateType={templateType} />
+  <AIWidget shopId={shop.id} shopName={shop.name} themeColor={primaryColor} secondaryColor={secondaryColor} chatbotPosition={shop.customization?.chatbotPosition} colorTheme={shop.customization?.colorTheme || 'light'} templateType={templateType} />
   )}
  {/* Inject the booking modal script for this shop reliably */}
  <BookingModalScript shopId={shop.id} themeColor={primaryColor} templateType={templateType} />

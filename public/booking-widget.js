@@ -42,6 +42,7 @@
   
   let themeColor = (window.KutzApp && window.KutzApp.primaryColor) || (scriptTag && scriptTag.getAttribute('data-theme-color')) || '#d4af37';
   let secondaryColor = (window.KutzApp && window.KutzApp.secondaryColor) || (scriptTag && scriptTag.getAttribute('data-secondary-color')) || themeColor;
+  const shopName = (scriptTag && scriptTag.getAttribute('data-shop-name')) || (window.KutzApp && window.KutzApp.shopName) || '';
   const position = (window.KutzApp && window.KutzApp.chatbotPosition) || (scriptTag && scriptTag.getAttribute('data-position')) || 'bottom-right';  const isLeft = position === 'bottom-left';
   const sideCSS = isLeft ? 'left: 24px;' : 'right: 24px;';
   const transformOrigin = isLeft ? 'bottom left' : 'bottom right';
@@ -172,6 +173,7 @@
       box-shadow: 0 4px 16px ${isDark ? `rgba(${tc.r},${tc.g},${tc.b},0.35)` : `rgba(${tc.r},${tc.g},${tc.b},0.3)`}, 0 2px 4px rgba(0,0,0,0.1);
       z-index: 999999;
       transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease;
+      animation: fabBounceIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards, fabPulse 2s ease-in-out 1s 3;
     }
     
     #widget-button:hover {
@@ -515,6 +517,19 @@
       100% { opacity: 1; transform: translateY(0) scale(1); }
     }
 
+    @keyframes fabPulse {
+      0% { box-shadow: 0 4px 16px ${isDark ? `rgba(${tc.r},${tc.g},${tc.b},0.35)` : `rgba(${tc.r},${tc.g},${tc.b},0.3)`}, 0 0 0 0 rgba(${tc.r},${tc.g},${tc.b},0.4); }
+      70% { box-shadow: 0 4px 16px ${isDark ? `rgba(${tc.r},${tc.g},${tc.b},0.35)` : `rgba(${tc.r},${tc.g},${tc.b},0.3)`}, 0 0 0 12px rgba(${tc.r},${tc.g},${tc.b},0); }
+      100% { box-shadow: 0 4px 16px ${isDark ? `rgba(${tc.r},${tc.g},${tc.b},0.35)` : `rgba(${tc.r},${tc.g},${tc.b},0.3)`}, 0 0 0 0 rgba(${tc.r},${tc.g},${tc.b},0); }
+    }
+
+    @keyframes fabBounceIn {
+      0% { transform: scale(0) rotate(-45deg); opacity: 0; }
+      50% { transform: scale(1.15) rotate(5deg); opacity: 1; }
+      70% { transform: scale(0.95) rotate(-2deg); }
+      100% { transform: scale(1) rotate(0); }
+    }
+
     .slot-btn {
       background-color: transparent;
       border: 1px solid var(--border-color);
@@ -535,6 +550,64 @@
 
     .slot-btn:active {
       transform: scale(0.97);
+    }
+
+    .quick-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 8px;
+    }
+
+    .quick-action-btn {
+      background-color: transparent;
+      border: 1px solid var(--border-color);
+      color: var(--text-color);
+      padding: 5px 10px;
+      border-radius: 14px;
+      cursor: pointer;
+      font-size: 12px;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .quick-action-btn:hover {
+      background-color: ${isDark ? `rgba(${tc.r},${tc.g},${tc.b},0.15)` : `rgba(${tc.r},${tc.g},${tc.b},0.1)`};
+      border-color: ${themeColor};
+      color: ${isDark ? '#ffffff' : themeColor};
+      transform: translateY(-1px);
+    }
+
+    .quick-action-btn:active {
+      transform: scale(0.97);
+    }
+
+    #unread-badge {
+      position: absolute; top: -2px; right: -2px;
+      width: 14px; height: 14px;
+      background: #ef4444; border-radius: 50%;
+      border: 2px solid var(--bg-color, #fff);
+      display: none; pointer-events: none;
+      animation: fadeIn 0.3s ease;
+    }
+
+    #welcome-bubble {
+      position: fixed; bottom: 88px; ${sideCSS}
+      background: var(--bg-color, #fff);
+      color: var(--text-color, #333);
+      border: 1px solid var(--border-color);
+      border-radius: 16px 16px ${isLeft ? '16px 4px' : '4px 16px'};
+      padding: 12px 16px; max-width: 220px;
+      font-size: 13px; line-height: 1.4;
+      box-shadow: 0 4px 16px var(--shadow-color);
+      opacity: 0; transform: translateY(10px) scale(0.9);
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      pointer-events: none; z-index: 999998;
+      cursor: pointer;
+    }
+
+    #welcome-bubble.show {
+      opacity: 1; transform: translateY(0) scale(1);
+      pointer-events: auto;
     }  `;
   shadow.appendChild(style);
 
@@ -545,15 +618,25 @@
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
       </svg>
+      <div id="unread-badge"></div>
     </div>
     
     <div id="chat-window">
       <div id="chat-header">
-        <span>AI Chat</span>
+        <div>
+          <div style="font-size:15px;font-weight:700">✂️ ${shopName || 'AI Assistant'}</div>
+          <div style="font-size:11px;color:var(--text-muted);font-weight:400;margin-top:2px">Powered by KutzApp</div>
+        </div>
         <button id="close-button">&times;</button>
       </div>
       <div id="chat-messages">
-        <div class="message bot">Hi! I'm the AI assistant. What service would you like to book today?</div>
+        <div class="message bot">${shopName ? '👋 Welcome to ' + shopName + '! How can I help you today?' : '👋 Hi there! How can I help you today?'}</div>
+        <div class="quick-actions" id="quick-actions">
+          <button class="quick-action-btn" data-msg="📅 Book Appointment">📅 Book Appointment</button>
+          <button class="quick-action-btn" data-msg="💈 View Services">💈 View Services</button>
+          <button class="quick-action-btn" data-msg="📋 My Appointments">📋 My Appointments</button>
+          <button class="quick-action-btn" data-msg="❓ Shop Info">❓ Shop Info</button>
+        </div>
       </div>
       <form id="chat-input-area">
         <input type="text" id="chat-input" placeholder="Type a message..." autocomplete="off" />
@@ -563,6 +646,7 @@
       </form>
       <div id="picker-sheet"></div>
     </div>
+    <div id="welcome-bubble">👋 Need help booking? Tap here!</div>
   `;
   shadow.appendChild(wrapper);
 
@@ -574,11 +658,70 @@
   const input = shadow.getElementById('chat-input');
   const messagesEl = shadow.getElementById('chat-messages');
   const sendBtn = shadow.getElementById('send-button');
+  const unreadBadge = shadow.getElementById('unread-badge');
+  const welcomeBubble = shadow.getElementById('welcome-bubble');
 
   let isOpen = false;
+  let hasUnread = false;
+  const greetingText = shopName ? '👋 Welcome to ' + shopName + '! How can I help you today?' : '👋 Hi there! How can I help you today?';
   let messages = [
-    { role: 'assistant', content: "Hi! I'm the AI assistant. What service would you like to book today?" }
+    { role: 'assistant', content: greetingText }
   ];
+
+  // ── Rich text formatting for bot messages ──
+  function formatBotText(text) {
+    // Sanitize: strip dangerous tags
+    let safe = text.replace(/<script[^>]*>[\s\S]*?<\/script>/gi, '');
+    safe = safe.replace(/<img[^>]*>/gi, '');
+    safe = safe.replace(/<iframe[^>]*>[\s\S]*?<\/iframe>/gi, '');
+    // Bold: **text**
+    safe = safe.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+    // Italic: *text* (but not **)
+    safe = safe.replace(/(?<!\*)\*(?!\*)(.+?)(?<!\*)\*(?!\*)/g, '<em>$1</em>');
+    // Newlines
+    safe = safe.replace(/\n/g, '<br>');
+    return safe;
+  }
+
+  // ── Session persistence: restore previous conversation ──
+  function restoreSession() {
+    try {
+      const saved = sessionStorage.getItem('kutzapp-chat-' + shopId);
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 1) {
+          messages = parsed;
+          messagesEl.innerHTML = '';
+          // Hide quick actions since session is restored
+          const qa = shadow.getElementById('quick-actions');
+          if (qa) qa.style.display = 'none';
+          messages.forEach(msg => {
+            if (msg.role === 'model' || msg.role === 'assistant') {
+              const text = msg.parts ? msg.parts.map(p => p.text || '').join('') : (msg.content || '');
+              if (text) addMessageToUI(text, false);
+            } else if (msg.role === 'user') {
+              const text = msg.parts ? msg.parts.map(p => p.text || '').join('') : (msg.content || '');
+              if (text) addMessageToUI(text, true);
+            }
+          });
+        }
+      }
+    } catch(e) {}
+  }
+
+  // ── Quick action buttons ──
+  const quickActionsEl = shadow.getElementById('quick-actions');
+  if (quickActionsEl) {
+    quickActionsEl.querySelectorAll('.quick-action-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const msg = btn.getAttribute('data-msg');
+        quickActionsEl.style.opacity = '0.5';
+        quickActionsEl.style.pointerEvents = 'none';
+        setTimeout(() => { quickActionsEl.style.display = 'none'; }, 300);
+        sendChatRequest(msg, msg);
+      });
+    });
+  }
 
   function toggleChat(forceOpen = false) {
     if (typeof forceOpen === 'boolean') {
@@ -591,6 +734,12 @@
       windowEl.classList.add('open');
       button.classList.add('open');
       input.focus();
+      // Hide unread badge
+      hasUnread = false;
+      if (unreadBadge) unreadBadge.style.display = 'none';
+      // Dismiss welcome bubble
+      if (welcomeBubble) welcomeBubble.classList.remove('show');
+      sessionStorage.setItem('kutzapp-bubble-dismissed', '1');
     } else {
       windowEl.classList.remove('open');
       button.classList.remove('open');
@@ -607,7 +756,16 @@
   function addMessageToUI(text, isUser) {
     const el = document.createElement('div');
     el.className = `message ${isUser ? 'user' : 'bot'}`;
-    el.textContent = text;
+    if (isUser) {
+      el.textContent = text;
+    } else {
+      el.innerHTML = formatBotText(text);
+      // Show unread badge if chat is closed
+      if (!isOpen && unreadBadge) {
+        hasUnread = true;
+        unreadBadge.style.display = 'block';
+      }
+    }
     messagesEl.appendChild(el);
     messagesEl.scrollTop = messagesEl.scrollHeight;
   }
@@ -710,6 +868,8 @@
         } else {
           messages.push({ role: 'assistant', content: data.text });
         }
+        // Persist session
+        try { sessionStorage.setItem('kutzapp-chat-' + shopId, JSON.stringify(messages)); } catch(e) {}
         
         if (options.length > 0 && (!data.ui || data.ui.type !== 'time_picker')) {
           const container = document.createElement('div');
@@ -1034,4 +1194,25 @@
     input.value = '';
     sendChatRequest(text, text);
   });
+
+  // ── Restore session ──
+  restoreSession();
+
+  // ── Welcome bubble logic ──
+  const bubbleDismissed = sessionStorage.getItem('kutzapp-bubble-dismissed');
+  if (!bubbleDismissed && welcomeBubble) {
+    setTimeout(() => {
+      if (!isOpen) welcomeBubble.classList.add('show');
+    }, 3000);
+    setTimeout(() => {
+      welcomeBubble.classList.remove('show');
+    }, 11000);
+  }
+  if (welcomeBubble) {
+    welcomeBubble.addEventListener('click', () => {
+      welcomeBubble.classList.remove('show');
+      sessionStorage.setItem('kutzapp-bubble-dismissed', '1');
+      toggleChat(true);
+    });
+  }
 })();
