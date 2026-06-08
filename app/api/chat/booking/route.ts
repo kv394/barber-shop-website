@@ -156,7 +156,7 @@ export async function POST(req: Request) {
  { companyName: shopId }
  ]
  },
- select: { id: true, name: true, timezone: true, customDomain: true, subdomain: true, customization: true, description: true, shopType: true, travelFee: true, baseLocation: true }
+ select: { id: true, name: true, timezone: true, customDomain: true, subdomain: true, customization: true, description: true, shopType: true, travelFee: true, baseLocation: true, slogan: true, googleMapsUrl: true, depositRequired: true, depositAmount: true, currency: true, paymentGateway: true }
  });
 
  if (!shop) {
@@ -164,7 +164,7 @@ export async function POST(req: Request) {
  const candidates = await prisma.shop.findMany({
  where: { name: { contains: firstWord, mode: 'insensitive' } },
  take: 50,
- select: { id: true, name: true, timezone: true, customDomain: true, subdomain: true, customization: true, description: true, shopType: true, travelFee: true, baseLocation: true }
+ select: { id: true, name: true, timezone: true, customDomain: true, subdomain: true, customization: true, description: true, shopType: true, travelFee: true, baseLocation: true, slogan: true, googleMapsUrl: true, depositRequired: true, depositAmount: true, currency: true, paymentGateway: true }
  });
  shop = candidates.find(
  (s: any) => s.name.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '') === shopId.toLowerCase()
@@ -183,20 +183,42 @@ export async function POST(req: Request) {
 
  // Fetch services and staff to inject into prompt for massive performance boost
  const services = await prisma.service.findMany({
- where: { shopId: realShopId, type: 'CUSTOMER' },
- select: { id: true, name: true, price: true, duration: true }
+ where: { shopId: realShopId, type: 'CUSTOMER', isBookable: true },
+ select: { id: true, name: true, description: true, price: true, duration: true }
  });
  const staff = await prisma.user.findMany({
- where: { shopId: realShopId, role: 'STAFF' },
- select: { id: true, name: true }
+ where: { shopId: realShopId, role: { in: ['STAFF', 'SHOP_ADMIN', 'BOOTH_RENTER'] } },
+ select: { id: true, name: true, role: true }
+ });
+ // Fetch add-ons, products, loyalty, and review stats for comprehensive knowledge
+ const addons = await prisma.serviceAddon.findMany({
+ where: { shopId: realShopId },
+ select: { name: true, price: true, durationMin: true }
+ });
+ const products = await prisma.product.findMany({
+ where: { shopId: realShopId, type: 'RETAIL', isSellable: true },
+ select: { name: true, description: true, price: true }
+ });
+ const loyaltyProgram = await prisma.loyaltyProgram.findFirst({
+ where: { shopId: realShopId, isActive: true },
+ select: { pointsPerDollar: true, pointsPerVisit: true, redeemThreshold: true, redeemValue: true }
+ });
+ const reviewStats = await prisma.review.aggregate({
+ where: { shopId: realShopId },
+ _avg: { rating: true },
+ _count: { id: true }
  });
 
  const servicesText = services.length > 0 
- ? services.map((s: { id: string; name: string; price: number; duration: number }) => `- ${s.name}: $${s.price} (${s.duration} mins) [ID: ${s.id}]`).join('\n')
+ ? services.map((s: any) => {
+  let line = `- ${s.name}: $${s.price} (${s.duration} mins) [ID: ${s.id}]`;
+  if (s.description) line += `\n  Description: ${s.description}`;
+  return line;
+ }).join('\n')
  : 'No services available currently.';
  
  const staffText = staff.length > 0
- ? staff.map(s => `- ${s.name || 'Staff Member'} [ID: ${s.id}]`).join('\n')
+ ? staff.map((s: any) => `- ${s.name || 'Staff Member'} (${s.role === 'BOOTH_RENTER' ? 'Specialist' : s.role === 'SHOP_ADMIN' ? 'Owner/Manager' : 'Stylist'}) [ID: ${s.id}]`).join('\n')
  : 'No specific staff available.';
 
  // 4. Origin Validation (CORS Hardening)
@@ -259,20 +281,29 @@ export async function POST(req: Request) {
  day: '2-digit' 
  }).format(new Date());
 
- const systemInstruction = `You are a helpful AI booking assistant for a barbershop named "${shop.name}". 
-Your goal is to help users discover services, find availability, book appointments, check existing appointments, cancel/reschedule appointments, and answer general questions about the shop (location, hours, policies). You are also allowed to answer general questions like "what is today's date?".
-Always be polite, concise, and highly intuitive. You are chatting via a lightweight website widget.
+ const systemInstruction = `You are a helpful, knowledgeable AI booking assistant for a barbershop/salon named "${shop.name}". 
+Your goal is to help users discover services, find availability, book appointments, check existing appointments, cancel/reschedule appointments, and answer ANY general questions about the shop (location, hours, policies, services, pricing, parking, team, products, loyalty program, etc.).
+Always be polite, concise, and highly intuitive. You are chatting via a lightweight website widget. Answer confidently using all the information below — do NOT say "I don't have that information" if the answer is in your knowledge base.
 
 Shop Knowledge Base:
+- Shop Name: ${shop.name}
+- Slogan: ${shop.slogan || c.tagline || ''}
+- Description: ${shop.description || 'A great barbershop.'}
+- About: ${c.aboutText || ''}
 - Shop Timezone: ${shop.timezone}
 - Today's Date: ${userDateStr} (This is the exact local date of the user right now).
 - Date Calculation: If the user uses relative dates like "tomorrow", "next week", or a day of the week, calculate the exact YYYY-MM-DD date based on Today's Date. 
 - You MUST answer the user directly if they ask "what is today's date" or similar questions.
-- Description: ${shop.description || 'A great barbershop.'}
-- Business Type: ${shop.shopType}. If MOBILE or HYBRID, you must ask the client for the address of the house call before booking. Travel fee is $${shop.travelFee || 0}. The shop's physical address or stylist's base location is: ${shop.baseLocation || 'Unknown'}.
+
+CONTACT & LOCATION:
 - Address: ${c.address || 'Not available'}
 - Phone: ${c.contact?.phone || c.phone || 'Not available'}
 - Email: ${c.contact?.email || c.email || 'Not available'}
+- Website: ${c.contact?.website || c.website || 'Not available'}
+- Google Maps: ${shop.googleMapsUrl || 'Not available'}${c.socialLinks || c.social?.instagram || c.social?.facebook ? `
+- Social Media: ${[c.social?.instagram || c.socialLinks?.instagram ? 'Instagram: ' + (c.social?.instagram || c.socialLinks?.instagram) : '', c.social?.facebook || c.socialLinks?.facebook ? 'Facebook: ' + (c.social?.facebook || c.socialLinks?.facebook) : '', c.social?.twitter || c.socialLinks?.twitter ? 'Twitter/X: ' + (c.social?.twitter || c.socialLinks?.twitter) : ''].filter(Boolean).join(', ')}` : ''}
+
+BUSINESS HOURS:
 ${(() => {
  const defaultHours = {
   monday: { open: '09:00', close: '18:00' },
@@ -285,22 +316,38 @@ ${(() => {
  };
  const bh = (c.businessHours && typeof c.businessHours === 'object') ? c.businessHours : defaultHours;
  const days = ['monday','tuesday','wednesday','thursday','friday','saturday','sunday'];
- const lines = days.map(d => {
+ return days.map(d => {
   const day = bh[d];
-  if (!day) return '  ' + d.charAt(0).toUpperCase() + d.slice(1) + ': CLOSED';
-  return '  ' + d.charAt(0).toUpperCase() + d.slice(1) + ': ' + (day.open || '9:00') + ' - ' + (day.close || '17:00');
- });
- return '- Business Hours:\n' + lines.join('\n');
+  if (!day) return d.charAt(0).toUpperCase() + d.slice(1) + ': CLOSED';
+  return d.charAt(0).toUpperCase() + d.slice(1) + ': ' + (day.open || '9:00') + ' - ' + (day.close || '17:00');
+ }).join('\n');
 })()}
-- Tagline: ${c.tagline || ''}
-- About: ${c.aboutText || ''}
-Use this information to answer user questions about the shop's location, hours, or policies.
+
+BUSINESS TYPE & POLICIES:
+- Type: ${shop.shopType}${shop.shopType !== 'PHYSICAL' ? `. Travel fee: $${shop.travelFee || 0}. Base location: ${shop.baseLocation || 'Unknown'}.` : ''}
+- Currency: ${shop.currency || 'USD'}
+- Deposit Required: ${shop.depositRequired ? 'Yes, $' + shop.depositAmount + ' deposit required at booking' : 'No deposit required'}
+- Payment Gateway: ${shop.paymentGateway || 'Available at the shop'}
+${reviewStats._count.id > 0 ? `- Customer Reviews: ${reviewStats._count.id} reviews, ${(reviewStats._avg.rating || 0).toFixed(1)}/5 average rating` : ''}
+
+Use this information to answer user questions about the shop's location, hours, policies, parking, etc. If information is "Not available", say you'll need them to contact the shop directly for that detail.
 
 AVAILABLE SERVICES:
 ${servicesText}
+${addons.length > 0 ? `
+SERVICE ADD-ONS (customers can add these to any service):
+${addons.map((a: any) => `- ${a.name}: +$${a.price}${a.durationMin ? ' (+' + a.durationMin + ' mins)' : ''}`).join('\n')}` : ''}
 
 AVAILABLE STAFF:
 ${staffText}
+${products.length > 0 ? `
+PRODUCTS FOR SALE:
+${products.map((p: any) => `- ${p.name}: $${p.price}${p.description ? ' — ' + p.description : ''}`).join('\n')}` : ''}
+${loyaltyProgram ? `
+LOYALTY PROGRAM:
+- Earn ${loyaltyProgram.pointsPerDollar} point(s) per dollar spent and ${loyaltyProgram.pointsPerVisit} points per visit
+- Redeem ${loyaltyProgram.redeemThreshold} points for $${loyaltyProgram.redeemValue} off
+- Tell customers about the loyalty program when they ask about rewards, points, or discounts!` : ''}
 
 CRITICAL UX INSTRUCTIONS:
 - Whenever you present multiple options to the user (like services, staff members, or time slots), ALWAYS format them as a clean, numbered list starting each option on a new line with "1. ", "2. ", etc. 
