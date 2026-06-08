@@ -34,37 +34,71 @@ Include these scripts right before your closing `</body>` tag:
 
 ### Fetching Data & Hydrating the UI
 
-You must initialize the SDK and fetch your shop data manually. We recommend doing this inside a `window.addEventListener("load")` block using `Promise.all` to fetch everything in parallel.
+You must initialize the SDK and fetch your shop data manually. We recommend doing this inside a `window.addEventListener("load")` block.
 
 ```javascript
 window.addEventListener("load", function () {
   // Initialize the SDK
   KutzApp.init("YOUR_SHOP_ID_HERE");
 
-  // Fetch Public Data
-  Promise.all([
-    KutzApp.getShopDetails(),
-    KutzApp.getBookableServices(),
-    KutzApp.getSellableProducts()
-  ])
-    .then(([shop, services, products]) => {
-        // shop contains your customization, pre-normalized images, and basic info
-        // services contains the active service menu
-        // products contains retail inventory
+  // Fetch all public data (services, products, staff, reviews, gallery, loyalty, memberships)
+  KutzApp.getPublicData().then(function(data) {
+    const { shop, services, products, staff, reviews, portfolioImages, loyaltyProgram, membershipTiers } = data;
 
-        // Example: Render Shop Details
-        document.getElementById("shop-name").textContent = shop.name;
-        document.getElementById("shop-logo").src = shop.logoUrl;
+    // Render Shop Details
+    document.getElementById("shop-name").textContent = shop.name;
 
-        // Example: Render Services
-        services.forEach(service => {
-            // ... construct your HTML ...
-            // Use window.BarberBooking.open(serviceId) to trigger the booking flow
-        });
-    })
-    .catch((err) => console.error("Failed to load shop data", err));
+    // Render Services — click to book
+    services.forEach(service => { /* ... BarberBooking.open(service.id) */ });
+
+    // Render Products — click to buy via Stripe Checkout
+    products.forEach(product => { /* ... KutzApp.buyProduct(product.id) */ });
+
+    // Render Staff — show team members
+    staff.forEach(member => { /* ... BarberBooking.open(null, member.id) */ });
+
+    // Render Reviews
+    reviews.forEach(review => { /* ... */ });
+
+    // Render Portfolio/Gallery images
+    portfolioImages.forEach(img => { /* img.imageUrl, img.caption */ });
+
+    // Show Loyalty Program banner if active
+    if (loyaltyProgram) { /* loyaltyProgram.pointsPerVisit, redeemThreshold, redeemValue */ }
+
+    // Render Membership Tiers
+    membershipTiers.forEach(tier => { /* tier.name, tier.price, tier.interval */ });
+  });
 });
 ```
+
+### Full SDK Method Reference
+
+| Method | Returns | Description |
+|---|---|---|
+| `KutzApp.init(shopId, options?)` | void | Initialize the SDK |
+| `KutzApp.getPublicData(forceRefresh?)` | Promise | All shop data (cached) |
+| `KutzApp.getShopDetails()` | Promise | Shop info & customization |
+| `KutzApp.getBookableServices()` | Promise | Active services |
+| `KutzApp.getSellableProducts()` | Promise | Retail products |
+| `KutzApp.getPublicStaff()` | Promise | Staff members |
+| `KutzApp.getReviews()` | Promise | Recent reviews |
+| `KutzApp.getPortfolioImages()` | Promise | Gallery/portfolio images |
+| `KutzApp.getLoyaltyProgram()` | Promise | Active loyalty program or null |
+| `KutzApp.getMembershipTiers()` | Promise | Membership tier plans |
+| `KutzApp.getBusinessHours()` | Promise | Business hours by day |
+| `KutzApp.getAvailableSlots(serviceId, date, staffId?)` | Promise | Available time slots |
+| `KutzApp.joinWaitlist({ clientName, clientPhone?, serviceId? })` | Promise | Join walk-in waitlist |
+| `KutzApp.bookService(bookingDetails)` | Promise | Book an appointment |
+| `KutzApp.submitReview({ rating, comment? })` | Promise | Submit a review |
+| `KutzApp.buyProduct(productId, quantity?)` | Promise | Stripe Checkout redirect |
+| `KutzApp.destroy()` | void | Clean up SDK instance |
+
+### TypeScript Support
+
+A type declaration file is available at `public/kutzapp-sdk.d.ts` with full type definitions for all SDK methods, parameters, and return types.
+
+
 ### The Starter Boilerplate
 
 We provide a fully functional Boilerplate `index.html` to get you started. It includes:

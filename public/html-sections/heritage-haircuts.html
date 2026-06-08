@@ -1039,6 +1039,297 @@
     }
 
     /* ========================================
+       PORTFOLIO GALLERY (SDK)
+    ======================================== */
+    .portfolio-gallery {
+      padding: 120px 0;
+      background: var(--bg-section);
+      position: relative;
+    }
+
+    .portfolio-gallery::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(to right, transparent, rgba(233, 193, 118, 0.15), transparent);
+    }
+
+    .portfolio-gallery__header {
+      text-align: center;
+      margin-bottom: 64px;
+    }
+
+    .portfolio-gallery__grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .portfolio-card {
+      position: relative;
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      background: var(--bg-card);
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .portfolio-card:hover {
+      transform: scale(1.03);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+    }
+
+    .portfolio-card img {
+      width: 100%;
+      aspect-ratio: 4/3;
+      object-fit: cover;
+      transition: transform 0.8s ease;
+    }
+
+    .portfolio-card:hover img {
+      transform: scale(1.08);
+    }
+
+    .portfolio-card__caption {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 20px;
+      background: linear-gradient(to top, rgba(14, 14, 14, 0.85) 0%, transparent 100%);
+      opacity: 0;
+      transition: opacity var(--transition);
+    }
+
+    .portfolio-card:hover .portfolio-card__caption {
+      opacity: 1;
+    }
+
+    .portfolio-card__caption span {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: 0.9rem;
+      color: var(--text-primary);
+    }
+
+    @media (max-width: 768px) {
+      .portfolio-gallery__grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 480px) {
+      .portfolio-gallery__grid {
+        grid-template-columns: 1fr;
+        max-width: 420px;
+        margin: 0 auto;
+      }
+    }
+
+    /* ========================================
+       MEMBERSHIP PLANS (SDK)
+    ======================================== */
+    .memberships {
+      padding: 120px 0;
+      background: var(--bg-section);
+      position: relative;
+    }
+
+    .memberships::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(to right, transparent, rgba(233, 193, 118, 0.15), transparent);
+    }
+
+    .memberships__header {
+      text-align: center;
+      margin-bottom: 64px;
+    }
+
+    .memberships__grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .membership-card {
+      background: var(--bg-card);
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      border-radius: var(--radius-md);
+      padding: 40px 32px;
+      text-align: center;
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .membership-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: var(--gold-gradient);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform var(--transition);
+    }
+
+    .membership-card:hover {
+      border-color: rgba(233, 193, 118, 0.15);
+      transform: translateY(-6px);
+      box-shadow: 0 24px 64px rgba(0, 0, 0, 0.35);
+    }
+
+    .membership-card:hover::before {
+      transform: scaleX(1);
+    }
+
+    .membership-card__icon {
+      font-size: 40px;
+      color: var(--gold-primary);
+      margin-bottom: 20px;
+      opacity: 0.7;
+    }
+
+    .membership-card__name {
+      font-family: var(--font-serif);
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 12px;
+    }
+
+    .membership-card__price {
+      font-family: var(--font-serif);
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--gold-primary);
+      margin-bottom: 4px;
+      line-height: 1.1;
+    }
+
+    .membership-card__interval {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+
+    .membership-card__desc {
+      font-size: 0.9rem;
+      color: var(--text-body);
+      line-height: 1.7;
+      margin-bottom: 28px;
+      flex-grow: 1;
+    }
+
+    .membership-card__cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 32px;
+      background: transparent;
+      color: var(--gold-primary);
+      font-family: var(--font-sans);
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      border-radius: 50px;
+      border: 1px solid rgba(233, 193, 118, 0.3);
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .membership-card__cta:hover {
+      background: var(--gold-gradient);
+      color: var(--bg-darkest);
+      border-color: transparent;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(233, 193, 118, 0.25);
+    }
+
+    @media (max-width: 1024px) {
+      .memberships__grid {
+        grid-template-columns: 1fr;
+        max-width: 480px;
+        margin: 0 auto;
+      }
+    }
+
+    /* ========================================
+       LOYALTY BANNER (SDK)
+    ======================================== */
+    .loyalty-banner {
+      display: none;
+      background: linear-gradient(135deg, rgba(233, 193, 118, 0.12) 0%, rgba(212, 175, 55, 0.08) 50%, rgba(197, 160, 89, 0.12) 100%);
+      border-top: 1px solid rgba(233, 193, 118, 0.15);
+      border-bottom: 1px solid rgba(233, 193, 118, 0.15);
+      padding: 20px 24px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .loyalty-banner::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 200%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(233, 193, 118, 0.05), transparent);
+      animation: loyaltyShimmer 4s ease-in-out infinite;
+    }
+
+    @keyframes loyaltyShimmer {
+      0% { transform: translateX(-50%); }
+      100% { transform: translateX(50%); }
+    }
+
+    .loyalty-banner__inner {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      position: relative;
+      z-index: 1;
+      flex-wrap: wrap;
+    }
+
+    .loyalty-banner__icon {
+      font-size: 22px;
+      color: var(--gold-primary);
+      font-variation-settings: 'FILL' 1;
+    }
+
+    .loyalty-banner__text {
+      font-family: var(--font-sans);
+      font-size: 0.88rem;
+      font-weight: 500;
+      color: var(--text-body);
+      letter-spacing: 0.02em;
+    }
+
+    .loyalty-banner__text strong {
+      color: var(--gold-primary);
+      font-weight: 700;
+    }
+
+    /* ========================================
        8. ABOUT / STORY
     ======================================== */
     .story {
@@ -1499,6 +1790,18 @@
   </section>
 
   <!-- ==========================================
+       LOYALTY PROGRAM BANNER (SDK)
+  ========================================== -->
+  <div class="loyalty-banner" id="loyalty-banner">
+    <div class="container">
+      <div class="loyalty-banner__inner">
+        <span class="material-symbols-outlined loyalty-banner__icon">loyalty</span>
+        <span class="loyalty-banner__text" id="loyalty-text"></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================
        3. SERVICES SECTION
   ========================================== -->
   <section class="services" id="services">
@@ -1553,6 +1856,21 @@
   </section>
 
   <!-- ==========================================
+       PORTFOLIO GALLERY (SDK)
+  ========================================== -->
+  <section class="portfolio-gallery" id="portfolio-gallery" style="display:none">
+    <div class="container">
+      <div class="portfolio-gallery__header">
+        <div class="section-label reveal">OUR CRAFT</div>
+        <div class="gold-line reveal reveal-delay-1"></div>
+        <h2 class="section-heading reveal reveal-delay-2">Portfolio Gallery</h2>
+      </div>
+      <div id="gallery-loading" class="loading-placeholder">Loading Portfolio...</div>
+      <div id="gallery-list" class="portfolio-gallery__grid" style="display:none"></div>
+    </div>
+  </section>
+
+  <!-- ==========================================
        6. GALLERY
   ========================================== -->
   <section class="gallery" id="gallery">
@@ -1594,6 +1912,21 @@
       </div>
       <div id="reviews-loading" class="loading-placeholder">Loading Reviews...</div>
       <div id="reviews-list" class="testimonials__grid" style="display:none"></div>
+    </div>
+  </section>
+
+  <!-- ==========================================
+       MEMBERSHIP PLANS (SDK)
+  ========================================== -->
+  <section class="memberships" id="memberships" style="display:none">
+    <div class="container">
+      <div class="memberships__header">
+        <div class="section-label reveal">EXCLUSIVE</div>
+        <div class="gold-line reveal reveal-delay-1"></div>
+        <h2 class="section-heading reveal reveal-delay-2">Membership Plans</h2>
+      </div>
+      <div id="memberships-loading" class="loading-placeholder">Loading Memberships...</div>
+      <div id="memberships-list" class="memberships__grid" style="display:none"></div>
     </div>
   </section>
 
@@ -1974,6 +2307,69 @@
               document.getElementById('testimonials').style.display = 'none';
             }
           } catch (e) { console.error('Reviews render error:', e); }
+
+          // --- PORTFOLIO GALLERY ---
+          try {
+            var portfolioImages = data.portfolioImages || [];
+            if (portfolioImages.length > 0) {
+              portfolioImages.sort(function (a, b) { return (a.displayOrder || 0) - (b.displayOrder || 0); });
+              document.getElementById('gallery-list').innerHTML = portfolioImages.map(function (img, i) {
+                var delay = Math.min(i + 1, 6);
+                var caption = img.caption || 'Our Work';
+                return '<div class="portfolio-card reveal reveal-delay-' + delay + '">' +
+                  '<img src="' + img.imageUrl + '" alt="' + caption + '" loading="lazy" />' +
+                  '<div class="portfolio-card__caption"><span>' + caption + '</span></div>' +
+                  '</div>';
+              }).join('');
+              document.getElementById('gallery-loading').style.display = 'none';
+              document.getElementById('gallery-list').style.display = 'grid';
+              document.getElementById('portfolio-gallery').style.display = 'block';
+              document.querySelectorAll('#portfolio-gallery .reveal').forEach(function (el) { observer.observe(el); });
+            }
+          } catch (e) { console.error('Portfolio gallery render error:', e); }
+
+          // --- MEMBERSHIP TIERS ---
+          try {
+            var membershipTiers = data.membershipTiers || [];
+            if (membershipTiers.length > 0) {
+              document.getElementById('memberships-list').innerHTML = membershipTiers.map(function (tier, i) {
+                var delay = Math.min(i + 1, 3);
+                var priceStr = '$' + Number(tier.price || 0).toFixed(0);
+                var intervalStr = (tier.interval || 'month').toLowerCase();
+                return '<div class="membership-card reveal reveal-delay-' + delay + '">' +
+                  '<span class="material-symbols-outlined membership-card__icon" style="font-variation-settings:\'FILL\' 1;">workspace_premium</span>' +
+                  '<h3 class="membership-card__name">' + (tier.name || 'Membership') + '</h3>' +
+                  '<div class="membership-card__price">' + priceStr + '</div>' +
+                  '<div class="membership-card__interval">per ' + intervalStr + '</div>' +
+                  '<p class="membership-card__desc">' + (tier.description || 'Exclusive membership benefits.') + '</p>' +
+                  '<button class="membership-card__cta" onclick="alert(\'Membership inquiry for ' + (tier.name || 'this plan').replace(/'/g, '') + '. Please contact us to sign up!\');">Join Now</button>' +
+                  '</div>';
+              }).join('');
+              document.getElementById('memberships-loading').style.display = 'none';
+              document.getElementById('memberships-list').style.display = 'grid';
+              document.getElementById('memberships').style.display = 'block';
+              document.querySelectorAll('#memberships .reveal').forEach(function (el) { observer.observe(el); });
+            }
+          } catch (e) { console.error('Memberships render error:', e); }
+
+          // --- LOYALTY PROGRAM BANNER ---
+          try {
+            var loyalty = data.loyaltyProgram;
+            if (loyalty && loyalty.id) {
+              var perVisit = loyalty.pointsPerVisit || 0;
+              var perDollar = loyalty.pointsPerDollar || 0;
+              var threshold = loyalty.redeemThreshold || 0;
+              var redeemValue = loyalty.redeemValue || 0;
+              var parts = [];
+              if (perVisit > 0) parts.push('Earn <strong>' + perVisit + ' points</strong> per visit');
+              if (perDollar > 0) parts.push('<strong>' + perDollar + ' point' + (perDollar > 1 ? 's' : '') + '</strong> per dollar spent');
+              if (threshold > 0 && redeemValue > 0) parts.push('redeem at <strong>' + threshold + ' points</strong> for <strong>$' + redeemValue + ' off</strong>');
+              if (parts.length > 0) {
+                document.getElementById('loyalty-text').innerHTML = parts.join(' &bull; ');
+                document.getElementById('loyalty-banner').style.display = 'block';
+              }
+            }
+          } catch (e) { console.error('Loyalty banner render error:', e); }
 
         }).catch(function (err) { console.error('SDK error:', err); });
       }

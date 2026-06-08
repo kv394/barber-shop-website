@@ -32,27 +32,37 @@ export default function CustomTemplate({ ctx }: { ctx: any }) {
       } else if (window.location.origin && window.location.origin !== 'null' && window.location.origin !== 'about://') {
         origin = window.location.origin;
       }
-    } catch(e) {
-      // Ignore SecurityError, fallback to default
-    }
+    } catch(e) {}
     
     try {
       if (typeof window.KutzApp === 'undefined') {
         var s1 = document.createElement('script');
         s1.src = origin + '/kutzapp-sdk.js';
+        s1.async = false;
+        s1.onload = function() {
+          if (typeof window.BarberBooking === 'undefined') {
+            var s2 = document.createElement('script');
+            s2.src = origin + '/booking-modal.js';
+            s2.setAttribute('data-shop-id', '${shop.id}');
+            if ('${primaryColor}') s2.setAttribute('data-theme-color', '${primaryColor}');
+            s2.async = false;
+            document.head.appendChild(s2);
+          }
+        };
         document.head.appendChild(s1);
-      }
-      if (typeof window.BarberBooking === 'undefined') {
+      } else if (typeof window.BarberBooking === 'undefined') {
         var s2 = document.createElement('script');
         s2.src = origin + '/booking-modal.js';
         s2.setAttribute('data-shop-id', '${shop.id}');
         if ('${primaryColor}') s2.setAttribute('data-theme-color', '${primaryColor}');
+        s2.async = false;
         document.head.appendChild(s2);
       }
     } catch(e) { console.error('SDK injection failed', e); }
   })();
 </script>
 `;
+
   const cssInjection = c.customCss ? `<style>${c.customCss}</style>` : '';
   const headInjections = injectorScript + cssInjection;
   

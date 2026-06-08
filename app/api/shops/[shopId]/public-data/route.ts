@@ -117,7 +117,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ shop
  // CORS and origin logic moved outside cache
 
  // Run remaining public data queries in parallel using the actual resolved shop.id
- const [products, services, staff, reviews] = await Promise.all([
+ const [products, services, staff, reviews, portfolioImages, loyaltyProgram, membershipTiers] = await Promise.all([
  // 1. Sellable Products
  tenantClient.product.findMany({
  where: { shopId: shop.id, isSellable: true },
@@ -174,6 +174,43 @@ export async function GET(request: Request, { params }: { params: Promise<{ shop
  },
  orderBy: { createdAt: 'desc' },
  take: 50
+ }),
+ // 5. Portfolio / Gallery Images
+ tenantClient.portfolioImage.findMany({
+ where: { shopId: shop.id },
+ select: {
+ id: true,
+ imageUrl: true,
+ caption: true,
+ displayOrder: true,
+ staffId: true
+ },
+ orderBy: { displayOrder: 'asc' },
+ take: 50
+ }),
+ // 6. Loyalty Program
+ tenantClient.loyaltyProgram.findFirst({
+ where: { shopId: shop.id, isActive: true },
+ select: {
+ id: true,
+ pointsPerDollar: true,
+ pointsPerVisit: true,
+ redeemThreshold: true,
+ redeemValue: true,
+ tiers: true
+ }
+ }),
+ // 7. Membership Tiers
+ tenantClient.membershipTier.findMany({
+ where: { shopId: shop.id },
+ select: {
+ id: true,
+ name: true,
+ description: true,
+ price: true,
+ interval: true
+ },
+ orderBy: { price: 'asc' }
  })
  ]);
 
@@ -197,6 +234,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ shop
  const formattedProducts = products.map((p: any) => ({ ...p, imageUrl: formatImageUrl(p.imageUrl) }));
  const formattedServices = services.map((s: any) => ({ ...s, imageUrl: formatImageUrl(s.imageUrl) }));
  const formattedStaff = staff.map((s: any) => ({ ...s, imageUrl: formatImageUrl(s.imageUrl) }));
+ const formattedPortfolio = portfolioImages.map((img: any) => ({ ...img, imageUrl: formatImageUrl(img.imageUrl) }));
 
  // Clean up customization to only include public-safe fields (branding, contact, hours)
  const publicCustomization = {
@@ -238,6 +276,9 @@ export async function GET(request: Request, { params }: { params: Promise<{ shop
  services: formattedServices,
  staff: formattedStaff,
  reviews,
+ portfolioImages: formattedPortfolio,
+ loyaltyProgram: loyaltyProgram || null,
+ membershipTiers: membershipTiers || [],
  allowedDomains
  };
     }, 900); // 15 minutes cache

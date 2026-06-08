@@ -209,6 +209,31 @@
     .barber-review-btn-secondary:hover {
       color: ${primaryColor};
     }
+    .barber-review-toast {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      right: 12px;
+      padding: 12px 16px;
+      border-radius: 8px;
+      color: #fff;
+      font-size: 14px;
+      font-weight: 600;
+      text-align: center;
+      z-index: 1000000;
+      animation: barberToastIn 0.3s ease-out;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    .barber-review-toast--success {
+      background: #16a34a;
+    }
+    .barber-review-toast--error {
+      background: #dc2626;
+    }
+    @keyframes barberToastIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
   `;
   document.head.appendChild(style);
 
@@ -398,7 +423,11 @@
         throw new Error(errData.error || 'Failed to submit review');
       }
       
-      alert('Review submitted successfully! Thank you.');
+      var successToast = document.createElement('div');
+      successToast.className = 'barber-review-toast barber-review-toast--success';
+      successToast.textContent = 'Review submitted successfully! Thank you.';
+      modalContent.appendChild(successToast);
+      setTimeout(function() { if (successToast.parentNode) successToast.parentNode.removeChild(successToast); }, 3000);
       commentInput.value = '';
       selectedRating = 5;
       updateStarsUI(5);
@@ -408,7 +437,11 @@
       loadReviews();
       
     } catch(err) {
-      alert('Error: ' + err.message);
+      var errorToast = document.createElement('div');
+      errorToast.className = 'barber-review-toast barber-review-toast--error';
+      errorToast.textContent = 'Error: ' + err.message;
+      modalContent.appendChild(errorToast);
+      setTimeout(function() { if (errorToast.parentNode) errorToast.parentNode.removeChild(errorToast); }, 4000);
     } finally {
       submitBtn.disabled = false;
       submitBtn.textContent = 'Submit Review';

@@ -35,23 +35,59 @@
         <p id="shop-desc" class="text-gray-500 text-xl max-w-2xl mx-auto"></p>
       </header>
       <main class="max-w-6xl mx-auto px-4 py-16 space-y-20">
+
+        <!-- Loyalty Banner (hidden by default) -->
+        <div id="loyalty-banner" class="hidden rounded-2xl p-6 text-center text-white" style="background: linear-gradient(135deg, var(--theme-color), #1a1a1a)">
+          <p class="text-lg font-bold" id="loyalty-text"></p>
+        </div>
+
+        <!-- Services -->
         <section>
           <h2 class="text-3xl font-bold mb-10 text-center" style="color: var(--theme-color)">Services</h2>
           <div id="services-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
         </section>
+
+        <!-- Products -->
         <section>
           <h2 class="text-3xl font-bold mb-10 text-center" style="color: var(--theme-color)">Products</h2>
           <div id="products-container" class="grid grid-cols-1 md:grid-cols-4 gap-8"></div>
         </section>
+
+        <!-- Team -->
+        <section>
+          <h2 class="text-3xl font-bold mb-10 text-center" style="color: var(--theme-color)">Our Team</h2>
+          <div id="staff-container" class="grid grid-cols-2 md:grid-cols-4 gap-6"></div>
+        </section>
+
+        <!-- Gallery -->
+        <section id="gallery-section" class="hidden">
+          <h2 class="text-3xl font-bold mb-10 text-center" style="color: var(--theme-color)">Gallery</h2>
+          <div id="gallery-container" class="grid grid-cols-2 md:grid-cols-3 gap-4"></div>
+        </section>
+
+        <!-- Reviews -->
+        <section>
+          <h2 class="text-3xl font-bold mb-10 text-center" style="color: var(--theme-color)">Reviews</h2>
+          <div id="reviews-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+        </section>
+
+        <!-- Memberships -->
+        <section id="memberships-section" class="hidden">
+          <h2 class="text-3xl font-bold mb-10 text-center" style="color: var(--theme-color)">Membership Plans</h2>
+          <div id="memberships-container" class="grid grid-cols-1 md:grid-cols-3 gap-8"></div>
+        </section>
+
       </main>
     </div>
+
+    <!-- Render Functions -->
     <script>
       window.renderServices = (services) => services.map(s => `
         <div class="bg-white rounded-3xl shadow-lg border border-gray-100 p-8 flex flex-col hover:-translate-y-1 transition-transform">
           <h3 class="text-2xl font-bold mb-3">${s.name}</h3>
           <p class="text-gray-500 mb-6 flex-1">${s.description || ''}</p>
           <div class="flex justify-between items-center mt-auto">
-            <span class="text-2xl font-bold" style="color: var(--theme-color)">${s.price.toFixed(2)}</span>
+            <span class="text-2xl font-bold" style="color: var(--theme-color)">$${s.price.toFixed(2)}</span>
             <button class="book-btn bg-[var(--theme-color)] text-white px-8 py-3 rounded-full font-bold hover:opacity-90" data-id="${s.id}">Book</button>
           </div>
         </div>
@@ -59,12 +95,53 @@
       
       window.renderProducts = (products) => products.map(p => `
         <div class="bg-white rounded-2xl shadow border border-gray-100 p-6 flex flex-col">
+          ${p.imageUrl ? `<img src="${p.imageUrl}" alt="${p.name}" class="w-full h-40 object-contain mb-4 rounded-lg">` : ''}
           <h3 class="text-lg font-bold mb-2">${p.name}</h3>
           <p class="text-gray-500 mb-4 flex-1 text-sm">${p.description || ''}</p>
           <div class="flex justify-between items-center mt-auto">
-            <span class="text-lg font-bold" style="color: var(--theme-color)">${p.price.toFixed(2)}</span>
-            <button class="buy-btn border border-[var(--theme-color)] text-[var(--theme-color)] px-4 py-1 rounded-full font-bold hover:bg-[var(--theme-color)] hover:text-white" data-id="${p.id}">Buy</button>
+            <span class="text-lg font-bold" style="color: var(--theme-color)">$${p.price.toFixed(2)}</span>
+            <button class="buy-btn border border-[var(--theme-color)] text-[var(--theme-color)] px-4 py-1 rounded-full font-bold hover:bg-[var(--theme-color)] hover:text-white transition-colors" data-id="${p.id}">Buy</button>
           </div>
+        </div>
+      `).join('');
+
+      window.renderStaff = (staff) => staff.map(st => `
+        <div class="text-center group cursor-pointer" onclick="if(window.BarberBooking) window.BarberBooking.open(null, '${st.id}');">
+          <div class="w-full aspect-square rounded-2xl overflow-hidden mb-4 bg-gray-100">
+            <img src="${st.imageUrl || 'https://images.unsplash.com/photo-1595152772835-219674b2a8a6?auto=format&fit=crop&w=400&q=80'}" alt="${st.name || 'Staff'}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+          </div>
+          <h3 class="font-bold text-lg">${st.name || 'Team Member'}</h3>
+          <p class="text-sm uppercase tracking-wider font-semibold" style="color: var(--theme-color)">${st.role === 'SHOP_ADMIN' ? 'Owner' : 'Specialist'}</p>
+        </div>
+      `).join('');
+
+      window.renderGallery = (images) => images.map(img => `
+        <div class="relative rounded-xl overflow-hidden group aspect-square">
+          <img src="${img.imageUrl}" alt="${img.caption || 'Gallery'}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+          ${img.caption ? `<div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-4"><span class="text-white font-semibold text-sm">${img.caption}</span></div>` : ''}
+        </div>
+      `).join('');
+
+      window.renderReviews = (reviews) => reviews.map(r => {
+        const name = (r.user && r.user.name) || 'Client';
+        const stars = '★'.repeat(r.rating || 5) + '☆'.repeat(5 - (r.rating || 5));
+        return `
+        <div class="bg-gray-50 rounded-2xl p-6 border border-gray-100">
+          <div class="text-lg mb-3" style="color: var(--theme-color); letter-spacing: 2px;">${stars}</div>
+          <p class="text-gray-700 italic mb-4">"${r.comment || 'Great experience!'}"</p>
+          <p class="font-bold text-sm text-gray-900">${name}</p>
+        </div>
+      `;}).join('');
+
+      window.renderMemberships = (tiers) => tiers.map(t => `
+        <div class="rounded-3xl border-2 border-gray-100 p-8 flex flex-col text-center hover:border-[var(--theme-color)] transition-colors">
+          <h3 class="text-2xl font-bold mb-2">${t.name}</h3>
+          <p class="text-gray-500 mb-6 flex-1 text-sm">${t.description || 'Exclusive membership benefits'}</p>
+          <div class="mb-6">
+            <span class="text-4xl font-extrabold" style="color: var(--theme-color)">$${Number(t.price).toFixed(0)}</span>
+            <span class="text-gray-400 text-sm">/${t.interval === 'MONTHLY' ? 'mo' : t.interval === 'YEARLY' ? 'yr' : t.interval.toLowerCase()}</span>
+          </div>
+          <button class="bg-[var(--theme-color)] text-white px-6 py-3 rounded-full font-bold hover:opacity-90 transition-opacity">Join Now</button>
         </div>
       `).join('');
     </script>
@@ -106,6 +183,10 @@
       const services = (data.services || []).filter(s => s.duration > 0);
       const products = data.products || [];
       const reviews = data.reviews || [];
+      const staff = data.staff || [];
+      const portfolioImages = data.portfolioImages || [];
+      const loyaltyProgram = data.loyaltyProgram || null;
+      const membershipTiers = data.membershipTiers || [];
       
       const themeColor = shop.customization?.primaryColor || '#c0a05b';
       document.documentElement.style.setProperty('--theme-color', themeColor);
@@ -116,23 +197,68 @@
       const descEl = document.getElementById('shop-desc');
       if (descEl) descEl.textContent = shop.description || 'Welcome';
 
+      // Services
       const servicesContainer = document.getElementById('services-container');
       if (servicesContainer && window.renderServices) {
         servicesContainer.innerHTML = window.renderServices(services);
       }
 
+      // Products
       const productsContainer = document.getElementById('products-container');
       if (productsContainer && window.renderProducts) {
         productsContainer.innerHTML = window.renderProducts(products);
       }
-      
+
+      // Staff
+      const staffContainer = document.getElementById('staff-container');
+      if (staffContainer && window.renderStaff && staff.length > 0) {
+        staffContainer.innerHTML = window.renderStaff(staff);
+      }
+
+      // Gallery
+      if (portfolioImages.length > 0) {
+        const gallerySection = document.getElementById('gallery-section');
+        const galleryContainer = document.getElementById('gallery-container');
+        if (gallerySection && galleryContainer && window.renderGallery) {
+          galleryContainer.innerHTML = window.renderGallery(portfolioImages);
+          gallerySection.classList.remove('hidden');
+        }
+      }
+
+      // Reviews
+      const reviewsContainer = document.getElementById('reviews-container');
+      if (reviewsContainer && window.renderReviews && reviews.length > 0) {
+        reviewsContainer.innerHTML = window.renderReviews(reviews);
+      }
+
+      // Memberships
+      if (membershipTiers.length > 0) {
+        const membershipsSection = document.getElementById('memberships-section');
+        const membershipsContainer = document.getElementById('memberships-container');
+        if (membershipsSection && membershipsContainer && window.renderMemberships) {
+          membershipsContainer.innerHTML = window.renderMemberships(membershipTiers);
+          membershipsSection.classList.remove('hidden');
+        }
+      }
+
+      // Loyalty Banner
+      if (loyaltyProgram) {
+        const banner = document.getElementById('loyalty-banner');
+        const text = document.getElementById('loyalty-text');
+        if (banner && text) {
+          text.textContent = `🎁 Earn ${loyaltyProgram.pointsPerVisit} points per visit! Redeem ${loyaltyProgram.redeemThreshold} points for $${Number(loyaltyProgram.redeemValue).toFixed(0)} off your next service.`;
+          banner.classList.remove('hidden');
+        }
+      }
+
+      // Remove loading, show content
       const loadingEl = document.getElementById('loading');
       if (loadingEl) loadingEl.remove();
       
       const appContent = document.getElementById('app-content');
       if (appContent) appContent.classList.remove('hidden');
       
-      // Wire up buttons
+      // Wire up booking buttons
       document.querySelectorAll('.book-btn').forEach(btn => {
         btn.onclick = (e) => {
           e.preventDefault();
@@ -142,17 +268,17 @@
         };
       });
 
+      // Wire up buy buttons — real Stripe Checkout now
       document.querySelectorAll('.buy-btn').forEach(btn => {
         btn.onclick = (e) => {
           e.preventDefault();
-          const originalAlert = window.alert;
-          window.alert = () => {};
-          KutzApp.buyProduct(btn.dataset.id, 1).then(res => {
-            window.alert = originalAlert;
-            alert('Added ' + res.quantity + 'x ' + res.product.name + ' to cart!');
-          }).catch(err => {
-            window.alert = originalAlert;
-            alert('Error: ' + err.message);
+          btn.disabled = true;
+          const originalText = btn.textContent;
+          btn.textContent = 'Processing...';
+          KutzApp.buyProduct(btn.dataset.id, 1).catch(err => {
+            btn.disabled = false;
+            btn.textContent = originalText;
+            console.error('Checkout error:', err);
           });
         };
       });

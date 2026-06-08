@@ -210,6 +210,98 @@
     }
 
     /**
+     * Retrieves all portfolio/gallery images for the shop.
+     * @returns {Promise<Array>} Array of { id, imageUrl, caption, displayOrder, staffId }
+     */
+    async getPortfolioImages() {
+      const data = await this.getPublicData();
+      return data.portfolioImages || [];
+    }
+
+    /**
+     * Retrieves the active loyalty program configuration.
+     * @returns {Promise<Object|null>} Loyalty program details or null if none active
+     */
+    async getLoyaltyProgram() {
+      const data = await this.getPublicData();
+      return data.loyaltyProgram || null;
+    }
+
+    /**
+     * Retrieves all membership tiers available at the shop.
+     * @returns {Promise<Array>} Array of { id, name, description, price, interval }
+     */
+    async getMembershipTiers() {
+      const data = await this.getPublicData();
+      return data.membershipTiers || [];
+    }
+
+    /**
+     * Retrieves the shop's business hours from customization.
+     * @returns {Promise<Object|null>} Business hours object keyed by day, or null
+     */
+    async getBusinessHours() {
+      const data = await this.getPublicData();
+      return (data.shop && data.shop.customization && data.shop.customization.businessHours) || null;
+    }
+
+    /**
+     * Fetches available time slots for a specific service and date.
+     * @param {string} serviceId - The ID of the service to check availability for
+     * @param {string} date - Date string in YYYY-MM-DD format
+     * @param {string} [staffId] - Optional staff member ID to filter slots
+     * @returns {Promise<Array>} Array of { time, staffId, staffName }
+     */
+    async getAvailableSlots(serviceId, date, staffId) {
+      this._checkInit();
+      if (!serviceId || !date) {
+        throw new Error('serviceId and date are required to check available slots.');
+      }
+
+      let url = `${this.apiUrl}/api/shops/${this.shopId}/available-slots?serviceId=${encodeURIComponent(serviceId)}&date=${encodeURIComponent(date)}`;
+      if (staffId) {
+        url += `&staffId=${encodeURIComponent(staffId)}`;
+      }
+
+      const res = await fetch(url);
+      if (!res.ok) {
+        const errorData = await res.json().catch(() => ({}));
+        throw new Error(errorData.error || 'Failed to fetch available slots.');
+      }
+      const data = await res.json();
+      return data.slots || [];
+    }
+
+    /**
+     * Joins the walk-in waitlist from a landing page (no auth required).
+     * @param {Object} details
+     * @param {string} details.clientName - Name of the client
+     * @param {string} [details.clientPhone] - Client's phone number
+     * @param {string} [details.serviceId] - Optional preferred service ID
+     * @param {number} [details.partySize] - Party size (default 1)
+     * @returns {Promise<Object>} The created waitlist entry
+     */
+    async joinWaitlist(details) {
+      this._checkInit();
+      if (!details || !details.clientName) {
+        throw new Error('clientName is required to join the waitlist.');
+      }
+
+      const res = await fetch(`${this.apiUrl}/api/shops/${this.shopId}/public-waitlist`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(details)
+      });
+
+      if (!res.ok) {
+        const errorData = await res.json().catch(() => ({}));
+        throw new Error(errorData.error || 'Failed to join waitlist.');
+      }
+
+      return await res.json();
+    }
+
+    /**
      * Books an appointment for a service.
      * @param {Object} bookingDetails 
      * @param {string} bookingDetails.serviceId - The ID of the service
@@ -278,23 +370,55 @@
     }
 
     /**
-     * Initiates the checkout flow to buy a product.
-     * Note: This is currently a placeholder representing the integration point for Stripe.
-     * @param {string} productId 
-     * @param {number} [quantity=1] 
+     * Initiates the checkout flow to buy a product via Stripe Checkout.
+     * Redirects the current page to Stripe's hosted checkout.
+     * @param {string} productId - The ID of the product to purchase
+     * @param {number} [quantity=1] - Number of items to buy
+     * @returns {Promise<Object>} The checkout session { url, sessionId }
      */
     async buyProduct(productId, quantity = 1) {
       this._checkInit();
-      const product = await this.getProductDetails(productId);
-      
-      console.log(`Initiating checkout for ${quantity}x ${product.name} ($${product.price} each).`);
-      
-      // In a full implementation, this would call a backend endpoint to generate a Stripe Checkout Session URL
-      // e.g. POST /api/shops/${this.shopId}/checkout/product
-      // and then redirect the user: window.location.href = sessionUrl;
-      
-      alert(`SDK Output: Proceeding to checkout for ${quantity}x ${product.name}.\\n(Stripe integration required to complete transaction)`);
-      return { status: 'pending_checkout', product, quantity };
+
+      const res = await fetch(`${this.apiUrl}/api/shops/${this.shopId}/checkout/product`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          productId,
+          quantity,
+          successUrl: window.location.href + (window.location.href.includes('?') ? '&' : '?') + 'checkout=success',
+          cancelUrl: window.location.href + (window.location.href.includes('?') ? '&' : '?') + 'checkout=cancelled'
+        })
+      });
+
+      if (!res.ok) {
+        const errorData = await res.json().catch(() => ({}));
+        throw new Error(errorData.error || 'Failed to create checkout session.');
+      }
+
+      const data = await res.json();
+      if (data.url) {
+        window.location.href = data.url;
+      }
+      return data;
+    }
+
+    /**
+     * Cleans up the SDK instance, clearing caches and resetting state.
+     */
+    destroy() {
+      this._publicDataCache = null;
+      this._publicDataPromise = null;
+      this.shopId = null;
+
+      // Remove injected CSS custom properties
+      if (typeof document !== 'undefined') {
+        const props = ['--primary', '--secondary', '--theme-color', '--brand-color'];
+        props.forEach(function(prop) {
+          document.documentElement.style.removeProperty(prop);
+          if (document.body) document.body.style.removeProperty(prop);
+        });
+      }
+      console.log('KutzApp SDK destroyed.');
     }
   }
 

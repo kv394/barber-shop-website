@@ -163,7 +163,7 @@
   });
 
   window.BarberProductDetails = {
-    open: function(productName, productPrice, productDesc) {
+    open: function(productName, productPrice, productDesc, productId) {
       titleEl.textContent = productName;
       priceEl.textContent = productPrice;
       
@@ -171,11 +171,33 @@
       // Since desc comes from our custom HTML it's relatively safe, but let's just use textContent for safety
       descEl.textContent = productDesc || 'A premium grooming product from Heritage Haircuts.';
       
+      buyBtn._productId = productId;
       modalOverlay.style.display = 'flex';
       
       buyBtn.onclick = function() {
-        alert('Shopping Cart feature coming soon!\\n\\nWe are integrating online product checkouts for: ' + productName + '.');
-        modalOverlay.style.display = 'none';
+        if (window.KutzApp && window.KutzApp.buyProduct) {
+          buyBtn.disabled = true;
+          buyBtn.textContent = 'Processing...';
+          window.KutzApp.buyProduct(buyBtn._productId, 1).then(function() {
+            buyBtn.disabled = false;
+            buyBtn.textContent = 'Add to Cart / Buy Now';
+          }).catch(function(err) {
+            buyBtn.disabled = false;
+            buyBtn.textContent = 'Add to Cart / Buy Now';
+            // Show error as inline text below button
+            var errEl = modalContent.querySelector('.barber-product-error');
+            if (!errEl) {
+              errEl = document.createElement('div');
+              errEl.className = 'barber-product-error';
+              errEl.style.cssText = 'color: #cc0000; font-size: 13px; margin-top: 10px; text-align: center;';
+              modalContent.appendChild(errEl);
+            }
+            errEl.textContent = 'Error: ' + err.message;
+            setTimeout(function() { if (errEl) errEl.textContent = ''; }, 4000);
+          });
+        } else {
+          alert('Checkout is not available at this time.');
+        }
       };
     }
   };
@@ -202,10 +224,33 @@
     buyButtons.forEach(function(btn) {
       btn.addEventListener('click', function(e) {
         e.preventDefault();
-        const card = btn.closest('.service-card');
+        var card = btn.closest('.service-card');
         if (card) {
-          const name = card.querySelector('.service-name')?.textContent?.trim();
-          alert('Shopping Cart feature coming soon!\\n\\nWe are integrating online product checkouts for: ' + name + '.');
+          var name = card.querySelector('.service-name')?.textContent?.trim();
+          var productId = card.dataset.productId || null;
+          if (window.KutzApp && window.KutzApp.buyProduct && productId) {
+            btn.disabled = true;
+            var origText = btn.textContent;
+            btn.textContent = 'Processing...';
+            window.KutzApp.buyProduct(productId, 1).then(function() {
+              btn.disabled = false;
+              btn.textContent = origText;
+            }).catch(function(err) {
+              btn.disabled = false;
+              btn.textContent = origText;
+              var errEl = card.querySelector('.barber-product-error');
+              if (!errEl) {
+                errEl = document.createElement('div');
+                errEl.className = 'barber-product-error';
+                errEl.style.cssText = 'color: #cc0000; font-size: 13px; margin-top: 10px; text-align: center;';
+                card.appendChild(errEl);
+              }
+              errEl.textContent = 'Error: ' + err.message;
+              setTimeout(function() { if (errEl) errEl.textContent = ''; }, 4000);
+            });
+          } else {
+            alert('Checkout is not available at this time.');
+          }
         }
       });
     });
