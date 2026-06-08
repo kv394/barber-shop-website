@@ -61,6 +61,14 @@ export default function ClientDetailModal({ shopId, clientId, clientName, onClos
  const [savingFormula, setSavingFormula] = useState(false);
  const [savingImage, setSavingImage] = useState(false);
 
+ // Email compose state
+ const [showEmailCompose, setShowEmailCompose] = useState(false);
+ const [emailSubject, setEmailSubject] = useState('');
+ const [emailMessage, setEmailMessage] = useState('');
+ const [sendingEmail, setSendingEmail] = useState(false);
+ const [emailSent, setEmailSent] = useState(false);
+ const [emailError, setEmailError] = useState('');
+
  // Voice recording state
  const [isRecording, setIsRecording] = useState(false);
  const [isProcessingVoice, setIsProcessingVoice] = useState(false);
@@ -233,6 +241,29 @@ export default function ClientDetailModal({ shopId, clientId, clientName, onClos
  }));
  };
 
+ const sendEmail = async () => {
+    if (!emailSubject.trim() || !emailMessage.trim()) return;
+    setSendingEmail(true);
+    setEmailError('');
+    try {
+      const res = await fetch(`/api/shops/${shopId}/clients/${clientId}/email`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ subject: emailSubject, message: emailMessage }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Failed to send email');
+      setEmailSent(true);
+      setEmailSubject('');
+      setEmailMessage('');
+      setTimeout(() => { setEmailSent(false); setShowEmailCompose(false); }, 2500);
+    } catch (err: any) {
+      setEmailError(err.message);
+    } finally {
+      setSendingEmail(false);
+    }
+  };
+
  const modalContent = (
  <div className="fixed inset-0 bg-black/60 z-[100] flex items-center justify-center p-4 backdrop-blur-sm" onClick={handleClose}>
  <div className={`bg-crm-surface rounded-xl p-6 w-full max-w-2xl border border-crm-border shadow-2xl h-[85vh] flex flex-col transition-all duration-300 transform ${isOpen ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`} onClick={e => e.stopPropagation()}>
@@ -248,12 +279,71 @@ export default function ClientDetailModal({ shopId, clientId, clientName, onClos
  </div>
  )}
  </div>
- <div className="shrink-0 flex items-start border-l border-crm-border pl-4 ml-2">
- <UserQRCode barcode={client?.barcode || clientId} userName={client?.name || clientName} showText={false} size={64} />
- </div>
+        <div className="shrink-0 flex items-start gap-3 border-l border-crm-border pl-4 ml-2">
+          {client && !client.email?.startsWith('walkin-') && (
+            <button
+              onClick={() => setShowEmailCompose(!showEmailCompose)}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[12px] font-bold bg-crm-primary/10 text-crm-primary hover:bg-crm-primary/20 border border-crm-primary/20 transition-colors"
+              title="Send email to client"
+            >
+              📧 Email
+            </button>
+          )}
+          <UserQRCode barcode={client?.barcode || clientId} userName={client?.name || clientName} showText={false} size={64} />
+        </div>
  </div>
  <button onClick={handleClose} className="absolute top-6 right-6 text-crm-primary bg-crm-surface hover:bg-gray-100 shadow-sm z-10 w-7 h-7 rounded-full flex items-center justify-center transition-colors font-bold text-[13px]">✕</button>
  </div>
+
+        {/* Email Compose Panel */}
+        {showEmailCompose && (
+          <div className="mb-4 bg-crm-bg/80 rounded-xl border border-crm-border p-4 shrink-0 animate-fadeIn">
+            <div className="flex items-center justify-between mb-3">
+              <h4 className="text-[13px] font-bold text-crm-text flex items-center gap-2">📧 Compose Email</h4>
+              <button onClick={() => setShowEmailCompose(false)} className="text-crm-muted hover:text-crm-text text-[13px]">✕</button>
+            </div>
+            {emailSent ? (
+              <div className="text-center py-4">
+                <span className="text-2xl">✅</span>
+                <p className="text-status-confirmed text-[13px] font-bold mt-2">Email sent successfully!</p>
+              </div>
+            ) : (
+              <>
+                {emailError && (
+                  <div className="mb-3 p-2 bg-status-cancelled/20 text-status-cancelled rounded-lg text-[12px]">{emailError}</div>
+                )}
+                <input
+                  type="text"
+                  placeholder="Subject"
+                  value={emailSubject}
+                  onChange={(e) => setEmailSubject(e.target.value)}
+                  className="w-full bg-crm-surface border border-crm-border rounded-lg px-3 py-2 text-crm-text text-[13px] placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-crm-primary/50 mb-2"
+                />
+                <textarea
+                  rows={4}
+                  placeholder="Type your message..."
+                  value={emailMessage}
+                  onChange={(e) => setEmailMessage(e.target.value)}
+                  className="w-full bg-crm-surface border border-crm-border rounded-lg px-3 py-2 text-crm-text text-[13px] placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-crm-primary/50 resize-none mb-3"
+                />
+                <div className="flex items-center justify-between">
+                  <p className="text-crm-muted text-[11px]">To: {client?.email}</p>
+                  <button
+                    onClick={sendEmail}
+                    disabled={sendingEmail || !emailSubject.trim() || !emailMessage.trim()}
+                    className={`px-4 py-1.5 rounded-lg text-[12px] font-bold transition-all ${
+                      sendingEmail || !emailSubject.trim() || !emailMessage.trim()
+                        ? 'bg-crm-surface text-crm-muted cursor-not-allowed'
+                        : 'bg-crm-primary text-white hover:bg-crm-primary/80 shadow-sm'
+                    }`}
+                  >
+                    {sendingEmail ? '⏳ Sending...' : '📤 Send Email'}
+                  </button>
+                </div>
+              </>
+            )}
+          </div>
+        )}
 
  {/* Content Area */}
  {loading ? (
