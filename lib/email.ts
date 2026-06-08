@@ -130,7 +130,7 @@ export const emailService = {
  if (options.shopId) {
   try {
    const provider = await getEmailProviderForShop(options.shopId);
-   return provider.send(options.to, `You're invited to ${options.shopName} on KutzApp`, '', html);
+    return provider.send(options.to, `You're invited to ${options.shopName} on KutzApp`, '', html, undefined, options.shopName);
   } catch (e) {
    // Fall through to default sendEmail
   }

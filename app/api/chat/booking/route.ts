@@ -642,7 +642,8 @@ If the user wants to check, cancel, or reschedule their appointments, or asks fo
     [
      { filename: 'appointment.ics', content: Buffer.from(icsContent).toString('base64'), type: 'text/calendar' },
      { filename: 'checkin-qrcode.png', content: qrBase64, type: 'image/png' }
-    ]
+    ],
+    shop.name
    )
   ).catch(err => logger.error('Failed to send booking confirmation email:', err));
   }
@@ -741,7 +742,8 @@ If the user wants to check, cancel, or reschedule their appointments, or asks fo
  `Calendar Invite: ${apt.service?.name || 'Appointment'} at ${apt.shop.name}`,
  `Hi! Please find your calendar invite attached for your upcoming appointment.`,
  undefined,
- [{ filename: 'invite.ics', content: Buffer.from(icsContent).toString('base64'), type: 'text/calendar' }]
+ [{ filename: 'invite.ics', content: Buffer.from(icsContent).toString('base64'), type: 'text/calendar' }],
+ apt.shop.name
  );
  
  if (emailRes.success) {

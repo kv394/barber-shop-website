@@ -12,7 +12,7 @@ export interface EmailAttachment {
 
 export interface EmailProvider {
   name: string;
-  send(to: string, subject: string, body: string, html?: string, attachments?: EmailAttachment[]): Promise<{ success: boolean; messageId?: string; error?: string }>;
+  send(to: string, subject: string, body: string, html?: string, attachments?: EmailAttachment[], fromName?: string): Promise<{ success: boolean; messageId?: string; error?: string }>;
 }
 
 export interface SMSProvider {
@@ -32,8 +32,9 @@ class ResendProvider implements EmailProvider {
     this.from = process.env.EMAIL_FROM || 'Kutz <noreply@kutzapp.com>';
   }
 
-  async send(to: string, subject: string, body: string, html?: string, attachments?: EmailAttachment[]) {
+  async send(to: string, subject: string, body: string, html?: string, attachments?: EmailAttachment[], fromName?: string) {
     try {
+      const from = fromName ? `${fromName} <${this.from.replace(/^.*</, '').replace(/>$/, '')}>` : this.from;
       const res = await fetch('https://api.resend.com/emails', {
         method: 'POST',
         headers: {
@@ -41,7 +42,7 @@ class ResendProvider implements EmailProvider {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          from: this.from,
+          from,
           to: [to],
           subject,
           ...(html ? { html } : { text: body }),
@@ -69,7 +70,7 @@ class SendGridProvider implements EmailProvider {
     this.from = process.env.EMAIL_FROM || 'noreply@kutzapp.com';
   }
 
-  async send(to: string, subject: string, body: string, html?: string, attachments?: EmailAttachment[]) {
+  async send(to: string, subject: string, body: string, html?: string, attachments?: EmailAttachment[], fromName?: string) {
     try {
       const content = html
         ? [{ type: 'text/html', value: html }]
@@ -83,7 +84,7 @@ class SendGridProvider implements EmailProvider {
         },
         body: JSON.stringify({
           personalizations: [{ to: [{ email: to }] }],
-          from: { email: this.from },
+          from: { email: this.from, ...(fromName ? { name: fromName } : {}) },
           subject,
           content,
           ...(attachments ? { attachments: attachments.map(a => ({ filename: a.filename, content: a.content, type: a.type || 'application/octet-stream', disposition: 'attachment' })) } : {}),
