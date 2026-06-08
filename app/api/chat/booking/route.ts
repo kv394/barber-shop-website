@@ -270,7 +270,22 @@ Shop Knowledge Base:
 - You MUST answer the user directly if they ask "what is today's date" or similar questions.
 - Description: ${shop.description || 'A great barbershop.'}
 - Business Type: ${shop.shopType}. If MOBILE or HYBRID, you must ask the client for the address of the house call before booking. Travel fee is $${shop.travelFee || 0}. The shop's physical address or stylist's base location is: ${shop.baseLocation || 'Unknown'}.
-- Details & Settings (JSON): ${JSON.stringify(c)}
+- Address: ${c.address || 'Not available'}
+- Phone: ${c.contact?.phone || c.phone || 'Not available'}
+- Email: ${c.contact?.email || c.email || 'Not available'}
+${(() => {
+ const bh = c.businessHours;
+ if (!bh || typeof bh !== 'object') return '- Business Hours: Not configured';
+ const days = ['monday','tuesday','wednesday','thursday','friday','saturday','sunday'];
+ const lines = days.map(d => {
+  const day = bh[d];
+  if (!day || day.closed) return `  ${d.charAt(0).toUpperCase() + d.slice(1)}: CLOSED`;
+  return `  ${d.charAt(0).toUpperCase() + d.slice(1)}: ${day.open || '9:00'} - ${day.close || '17:00'}`;
+ });
+ return '- Business Hours:\\n' + lines.join('\\n');
+})()}
+- Tagline: ${c.tagline || ''}
+- About: ${c.aboutText || ''}
 Use this information to answer user questions about the shop's location, hours, or policies.
 
 AVAILABLE SERVICES:
