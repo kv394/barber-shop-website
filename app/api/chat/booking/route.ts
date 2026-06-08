@@ -493,7 +493,7 @@ If the user wants to check, cancel, or reschedule their appointments, or asks fo
   lastQrCodeUrl = await QRCode.toDataURL(user.barcode || user.id);
   lastUiType = 'qr_code';
 
-  // Auto-send booking confirmation email with QR code (fire-and-forget)
+  // Auto-send booking confirmation email with QR code attachment (fire-and-forget)
   if (clientEmail && !clientEmail.includes('guest-')) {
   const staffMember = await prisma.user.findUnique({ where: { id: finalStaffId }, select: { name: true } });
   const formattedDate = new Intl.DateTimeFormat('en-US', {
@@ -501,6 +501,8 @@ If the user wants to check, cancel, or reschedule their appointments, or asks fo
    weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',
    hour: 'numeric', minute: '2-digit', hour12: true
   }).format(startTime);
+  // Extract raw base64 from the data URI for the attachment
+  const qrBase64 = lastQrCodeUrl!.replace(/^data:image\/png;base64,/, '');
   const confirmHtml = `<h1>Booking Confirmed ✅</h1>
    <p>Hi <strong>${clientName}</strong>,</p>
    <p>Your appointment has been confirmed!</p>
@@ -508,14 +510,16 @@ If the user wants to check, cancel, or reschedule their appointments, or asks fo
    <strong>Service:</strong> ${service.name}<br/>
    <strong>Barber:</strong> ${staffMember?.name || 'Staff'}<br/>
    <strong>When:</strong> ${formattedDate}</p>
-   <div style="text-align:center;margin:24px 0">
-   <p><strong>Your Check-in QR Code:</strong></p>
-   <img src="${lastQrCodeUrl}" alt="Check-in QR Code" style="width:180px;height:180px;border-radius:12px;border:2px solid #ddd;padding:8px;background:#fff" />
-   <p style="font-size:12px;color:#888;margin-top:8px">Show this QR code when you arrive for fast check-in</p>
-   </div>
+   <p>📱 <strong>Your check-in QR code is attached to this email.</strong> Save it and show it when you arrive for fast check-in!</p>
    <p>We look forward to seeing you!</p>`;
   getEmailProviderForShop(realShopId).then(provider =>
-   provider.send(clientEmail, `Appointment Confirmed at ${shop.name}`, `Your appointment for ${service.name} is confirmed for ${formattedDate}.`, confirmHtml)
+   provider.send(
+    clientEmail,
+    `Appointment Confirmed at ${shop.name}`,
+    `Your appointment for ${service.name} is confirmed for ${formattedDate}. Your check-in QR code is attached.`,
+    confirmHtml,
+    [{ filename: 'checkin-qrcode.png', content: qrBase64, type: 'image/png' }]
+   )
   ).catch(err => logger.error('Failed to send booking confirmation email:', err));
   }
   
