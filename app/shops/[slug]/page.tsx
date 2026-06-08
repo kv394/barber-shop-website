@@ -94,8 +94,8 @@ const getShopBySlug = cache(async (slug: string) => {
  // Internal settings like notifSettings, bookingSettings, businessHours are admin-only.
  const rawCustom = serialized.customization || {};
  
- // Format address if it's an object
- const rawAddress = rawCustom.address;
+ // Format address: check customization.address, then contact.address, then fallback to shop.baseLocation
+ const rawAddress = rawCustom.address || rawCustom.contact?.address || serialized.baseLocation;
  const formattedAddress = typeof rawAddress === 'object' && rawAddress !== null
  ? [rawAddress.street, rawAddress.suite, rawAddress.city, rawAddress.state, rawAddress.zip, rawAddress.country].filter(Boolean).join(', ')
  : rawAddress;
@@ -108,7 +108,9 @@ const getShopBySlug = cache(async (slug: string) => {
  heroImageUrl: rawCustom.heroImageUrl,
  tagline: rawCustom.tagline,
  address: formattedAddress,
- phone: rawCustom.phone,
+ phone: rawCustom.phone || rawCustom.contact?.phone || '',
+ email: rawCustom.email || rawCustom.contact?.email || '',
+ contact: rawCustom.contact,
  aboutText: rawCustom.aboutText,
  socialLinks: rawCustom.socialLinks,
  // Expose business hours for public schedule display
@@ -222,7 +224,7 @@ export default async function PublicShopPage({
      });
      const serialized = serialize(s);
      const rawCustom = serialized.customization || {};
-     const rawAddress = rawCustom.address;
+     const rawAddress = rawCustom.address || rawCustom.contact?.address || serialized.baseLocation;
      const formattedAddress = typeof rawAddress === 'object' && rawAddress !== null
       ? [rawAddress.street, rawAddress.suite, rawAddress.city, rawAddress.state, rawAddress.zip, rawAddress.country].filter(Boolean).join(', ')
       : rawAddress;
@@ -231,7 +233,8 @@ export default async function PublicShopPage({
       customization: {
        primaryColor: rawCustom.primaryColor, secondaryColor: rawCustom.secondaryColor,
        logoUrl: rawCustom.logoUrl, bannerUrl: rawCustom.bannerUrl, heroImageUrl: rawCustom.heroImageUrl,
-       tagline: rawCustom.tagline, address: formattedAddress, phone: rawCustom.phone,
+       tagline: rawCustom.tagline, address: formattedAddress, phone: rawCustom.phone || rawCustom.contact?.phone || '',
+       email: rawCustom.email || rawCustom.contact?.email || '', contact: rawCustom.contact,
        aboutText: rawCustom.aboutText, socialLinks: rawCustom.socialLinks,
        businessHours: rawCustom.businessHours, pages: rawCustom.pages,
        editorialCustomization: rawCustom.editorialCustomization, fontFamily: rawCustom.fontFamily,
