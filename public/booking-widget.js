@@ -311,6 +311,24 @@
       background-color: ${isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.06)'};
       color: var(--text-color);
     }
+
+    #new-chat-button {
+      cursor: pointer;
+      background: none;
+      border: 1px solid var(--border-color);
+      color: var(--text-muted);
+      font-size: 11px;
+      padding: 3px 8px;
+      border-radius: 10px;
+      transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+      margin-right: 4px;
+    }
+
+    #new-chat-button:hover {
+      background-color: ${isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.06)'};
+      color: var(--text-color);
+      border-color: var(--text-muted);
+    }
     
     #chat-messages {
       flex: 1;
@@ -627,7 +645,10 @@
           <div style="font-size:15px;font-weight:700">✂️ ${shopName || 'AI Assistant'}</div>
           <div style="font-size:11px;color:var(--text-muted);font-weight:400;margin-top:2px">Powered by KutzApp</div>
         </div>
-        <button id="close-button">&times;</button>
+        <div style="display:flex;align-items:center;gap:4px">
+          <button id="new-chat-button" title="Start new conversation">↻ New</button>
+          <button id="close-button">&times;</button>
+        </div>
       </div>
       <div id="chat-messages">
         <div class="message bot">${shopName ? '👋 Welcome to ' + shopName + '! How can I help you today?' : '👋 Hi there! How can I help you today?'}</div>
@@ -660,6 +681,33 @@
   const sendBtn = shadow.getElementById('send-button');
   const unreadBadge = shadow.getElementById('unread-badge');
   const welcomeBubble = shadow.getElementById('welcome-bubble');
+  const newChatBtn = shadow.getElementById('new-chat-button');
+
+  // New Chat button — clears session and resets UI
+  if (newChatBtn) {
+    newChatBtn.addEventListener('click', () => {
+      try { sessionStorage.removeItem('kutzapp-chat-' + shopId); } catch(e) {}
+      const greetingMsg = shopName ? '\ud83d\udc4b Welcome to ' + shopName + '! How can I help you today?' : '\ud83d\udc4b Hi there! How can I help you today?';
+      messages = [{ role: 'assistant', content: greetingMsg }];
+      messagesEl.innerHTML = '<div class="message bot">' + greetingMsg + '</div>' +
+        '<div class="quick-actions" id="quick-actions">' +
+        '<button class="quick-action-btn" data-msg="\ud83d\udcc5 Book Appointment">\ud83d\udcc5 Book Appointment</button>' +
+        '<button class="quick-action-btn" data-msg="\ud83d\udc88 View Services">\ud83d\udc88 View Services</button>' +
+        '<button class="quick-action-btn" data-msg="\ud83d\udccb My Appointments">\ud83d\udccb My Appointments</button>' +
+        '<button class="quick-action-btn" data-msg="\u2753 Shop Info">\u2753 Shop Info</button>' +
+        '</div>';
+      // Re-attach quick action handlers
+      shadow.querySelectorAll('.quick-action-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const msg = btn.getAttribute('data-msg');
+          const qa = shadow.getElementById('quick-actions');
+          if (qa) { qa.style.opacity = '0.5'; qa.style.pointerEvents = 'none'; }
+          sendChatRequest(msg, msg);
+        });
+      });
+      hidePickerSheet();
+    });
+  }
 
   let isOpen = false;
   let hasUnread = false;
