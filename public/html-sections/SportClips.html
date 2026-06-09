@@ -1625,11 +1625,17 @@
                 }
 
                 const scriptsToInject = ["booking-modal.js", "booking-widget.js", "review-widget.js"];
+                const shopDisplayName = shop.name || 'Sport Clips';
                 scriptsToInject.forEach(scriptName => {
                   const scriptEl = document.createElement("script");
                   scriptEl.src = widgetUrlPrefix + "/" + scriptName + cacheBuster;
                   scriptEl.setAttribute("data-shop-id", shopId);
                   scriptEl.setAttribute("data-theme-color", primaryColor);
+                  scriptEl.setAttribute("data-secondary-color", secondaryColor);
+                  scriptEl.setAttribute("data-template-type", "sporty");
+                  scriptEl.setAttribute("data-color-theme", "light");
+                  scriptEl.setAttribute("data-shop-name", shopDisplayName);
+                  scriptEl.setAttribute("data-body-font", "Roboto");
                   document.body.appendChild(scriptEl);
                 });
 

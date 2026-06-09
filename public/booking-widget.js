@@ -84,7 +84,64 @@
     }
   } catch (e) {}
 
-  // ── Theme detection ──
+  // ── Auto-detect page fonts & border-radius ──
+  let detectedHeadingFont = '';
+  let detectedBodyFont = '';
+  let detectedRadius = '';
+  try {
+    const rootStyles = getComputedStyle(document.documentElement);
+    // Detect heading font from CSS custom properties
+    const fontHeadingCandidates = ['--font-heading', '--heading-font', '--font-display', '--font-title'];
+    for (const varName of fontHeadingCandidates) {
+      const val = rootStyles.getPropertyValue(varName).trim();
+      if (val) { detectedHeadingFont = val.split(',')[0].replace(/["']/g, '').trim(); break; }
+    }
+    // Detect body font
+    const fontBodyCandidates = ['--font-body', '--body-font', '--font-sans', '--font-text'];
+    for (const varName of fontBodyCandidates) {
+      const val = rootStyles.getPropertyValue(varName).trim();
+      if (val) { detectedBodyFont = val.split(',')[0].replace(/["']/g, '').trim(); break; }
+    }
+    // Fallback: detect from computed body/h1 styles if no CSS vars
+    if (!detectedBodyFont) {
+      const bodyFont = rootStyles.fontFamily.split(',')[0].replace(/["']/g, '').trim();
+      if (bodyFont && bodyFont !== 'Times New Roman' && bodyFont !== 'serif') detectedBodyFont = bodyFont;
+    }
+    if (!detectedHeadingFont) {
+      const h1 = document.querySelector('h1, h2');
+      if (h1) {
+        const hFont = getComputedStyle(h1).fontFamily.split(',')[0].replace(/["']/g, '').trim();
+        if (hFont && hFont !== detectedBodyFont) detectedHeadingFont = hFont;
+      }
+    }
+    // Detect border-radius style from buttons on the page
+    const sampleBtn = document.querySelector('.btn, .btn-primary, button[class*="btn"], a[class*="btn"]');
+    if (sampleBtn) {
+      const btnRadius = parseInt(getComputedStyle(sampleBtn).borderRadius);
+      if (btnRadius >= 40) detectedRadius = 'pill';        // 40px+ → pill shaped
+      else if (btnRadius >= 16) detectedRadius = 'rounded'; // 16-39px → rounded
+      else if (btnRadius >= 8) detectedRadius = 'soft';     // 8-15px → softly rounded
+      else if (btnRadius <= 2) detectedRadius = 'sharp';    // 0-2px → sharp/angular
+    }
+  } catch (e) {}
+
+  // Accept explicit font overrides from data attributes
+  const widgetHeadingFont = (scriptTag && scriptTag.getAttribute('data-heading-font')) || detectedHeadingFont || '';
+  const widgetBodyFont = (scriptTag && scriptTag.getAttribute('data-body-font')) || detectedBodyFont || '';
+  const widgetRadius = (scriptTag && scriptTag.getAttribute('data-border-style')) || detectedRadius || '';
+
+  // Build font-family strings
+  const headingFontStack = widgetHeadingFont ? `'${widgetHeadingFont}', Georgia, serif` : 'system-ui, -apple-system, sans-serif';
+  const bodyFontStack = widgetBodyFont ? `'${widgetBodyFont}', system-ui, sans-serif` : 'system-ui, -apple-system, sans-serif';
+
+  // Map radius style to pixel values
+  const radiusMap = { pill: '24px', rounded: '16px', soft: '12px', sharp: '0px' };
+  const widgetBorderRadius = radiusMap[widgetRadius] || '20px'; // default modern
+  const widgetBtnRadius = widgetRadius === 'pill' ? '50px' : widgetRadius === 'sharp' ? '0px' : widgetBorderRadius;
+  const widgetMsgRadius = widgetRadius === 'pill' ? '20px' : widgetRadius === 'sharp' ? '0px' : widgetBorderRadius;
+  const widgetInputRadius = widgetRadius === 'pill' ? '50px' : widgetRadius === 'sharp' ? '0px' : widgetBorderRadius;
+
+  // ── Shop metadata from data attributes ──
   const colorTheme = (scriptTag && scriptTag.getAttribute('data-color-theme')) || (window.KutzApp && window.KutzApp.colorTheme) || '';
   const templateType = (scriptTag && scriptTag.getAttribute('data-template-type')) || (window.KutzApp && window.KutzApp.templateType) || '';
   
@@ -230,7 +287,7 @@
       --input-bg: ${isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.03)'};
       --shadow-color: ${isDark ? 'rgba(0,0,0,0.5)' : 'rgba(0,0,0,0.12)'};
       --color-scheme: ${isDark ? 'dark' : 'light'};
-      font-family: system-ui, -apple-system, sans-serif;
+      font-family: ${bodyFontStack};
     }
     
     #widget-button {
@@ -283,7 +340,7 @@
       background-color: var(--bg-color);
       ${isDark ? 'backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);' : ''}
       border: 1px solid var(--border-color);
-      border-radius: 20px;
+      border-radius: ${widgetBorderRadius};
       box-shadow: 0 12px 40px var(--shadow-color), 0 0 0 1px var(--border-color);
       display: flex;
       flex-direction: column;
@@ -366,6 +423,7 @@
       padding: 16px 18px;
       font-weight: 600;
       font-size: 15px;
+      font-family: ${headingFontStack};
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -425,7 +483,7 @@
     .message {
       max-width: 85%;
       padding: 10px 14px;
-      border-radius: 16px;
+      border-radius: ${widgetMsgRadius};
       font-size: 14px;
       line-height: 1.5;
       white-space: pre-wrap;
@@ -465,7 +523,7 @@
       border: 1px solid var(--border-color);
       color: var(--text-color);
       padding: 10px 14px;
-      border-radius: 20px;
+      border-radius: ${widgetInputRadius};
       outline: none;
       font-size: 16px;
       color-scheme: var(--color-scheme);
@@ -505,7 +563,7 @@
       border: none;
       width: 40px;
       height: 40px;
-      border-radius: 20px;
+      border-radius: ${widgetBtnRadius};
       cursor: pointer;
       display: flex;
       align-items: center;
@@ -630,7 +688,7 @@
       border: 1px solid var(--border-color);
       color: var(--text-color);
       padding: 6px 12px;
-      border-radius: 14px;
+      border-radius: ${widgetBtnRadius};
       cursor: pointer;
       font-size: 13px;
       transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
@@ -659,7 +717,7 @@
       border: 1px solid var(--border-color);
       color: var(--text-color);
       padding: 5px 10px;
-      border-radius: 14px;
+      border-radius: ${widgetBtnRadius};
       cursor: pointer;
       font-size: 12px;
       transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
@@ -813,16 +871,15 @@
       #picker-sheet { border-radius: 12px 12px 0 0; }
       .typing-indicator { border-radius: 10px !important; }
     ` : (templateType === 'sunset' || templateType === 'vibrant') ? `
-      :host { font-family: 'Inter', system-ui, sans-serif; }
-      #widget-button { border-radius: 20px; }
-      #chat-window { border-radius: 24px; }
-      @media (max-width: 480px) { #chat-window { border-radius: 24px 24px 0 0; } #chat-header { border-radius: 24px 24px 0 0; } }
-      #chat-header { border-radius: 24px 24px 0 0; }
+      #widget-button { border-radius: var(--widget-radius); }
+      #chat-window { border-radius: var(--widget-radius); }
+      @media (max-width: 480px) { #chat-window { border-radius: var(--widget-radius) var(--widget-radius) 0 0; } #chat-header { border-radius: var(--widget-radius) var(--widget-radius) 0 0; } }
+      #chat-header { border-radius: var(--widget-radius) var(--widget-radius) 0 0; }
       .message { border-radius: 20px; }
       .message.user { border-bottom-right-radius: 6px; }
       .message.bot { border-bottom-left-radius: 6px; }
-      #chat-input { border-radius: 24px; }
-      #send-button { border-radius: 24px; }
+      #chat-input { border-radius: var(--widget-radius); }
+      #send-button { border-radius: var(--widget-radius); }
       .quick-action-btn { border-radius: 20px; font-weight: 600; }
       .slot-btn { border-radius: 20px; }
       #welcome-bubble { border-radius: 20px; }

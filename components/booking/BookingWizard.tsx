@@ -310,7 +310,13 @@ export default function BookingWizard({ shopId, themeColor, secondaryColor, temp
 
  return (
  <div className="flex flex-col h-full bg-crm-surface relative w-full max-w-md mx-auto">
- {/* Header */}
+    {/* Dynamic theme color styles */}
+    <style dangerouslySetInnerHTML={{__html: `
+     .wizard-card-hover { transition: border-color 0.2s ease, box-shadow 0.2s ease; }
+     .wizard-card-hover:hover { border-color: ${themeColor || '#111827'} !important; }
+     .wizard-input-focus:focus { border-color: ${themeColor || '#111827'} !important; box-shadow: 0 1px 0 0 ${themeColor || '#111827'}; }
+    `}} />
+    {/* Header */}
  <div className="flex items-center justify-between p-4 pr-10 border-b border-crm-border shrink-0">
  <div className="flex items-center space-x-2">
  {step > 1 && (

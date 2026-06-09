@@ -31,6 +31,9 @@
   const themeColor = (window.KutzApp && window.KutzApp.primaryColor) || (scriptTag && scriptTag.getAttribute('data-theme-color')) || '';
   const secondaryColor = (window.KutzApp && window.KutzApp.secondaryColor) || (scriptTag && scriptTag.getAttribute('data-secondary-color')) || '';
   const templateType = (scriptTag && scriptTag.getAttribute('data-template-type')) || '';
+  const headingFont = (scriptTag && scriptTag.getAttribute('data-heading-font')) || '';
+  const bodyFont = (scriptTag && scriptTag.getAttribute('data-body-font')) || '';
+  const colorTheme = (scriptTag && scriptTag.getAttribute('data-color-theme')) || '';
   
   const scriptTagSrc = (scriptTag && scriptTag.src) || '';
   let fallbackOrigin = window.location.origin;
@@ -150,6 +153,15 @@
       }
       if (templateType) {
         params.push(`templateType=${encodeURIComponent(templateType)}`);
+      }
+      if (headingFont) {
+        params.push(`headingFont=${encodeURIComponent(headingFont)}`);
+      }
+      if (bodyFont) {
+        params.push(`bodyFont=${encodeURIComponent(bodyFont)}`);
+      }
+      if (colorTheme) {
+        params.push(`colorTheme=${encodeURIComponent(colorTheme)}`);
       }
       if (params.length > 0) {
         url += '?' + params.join('&');

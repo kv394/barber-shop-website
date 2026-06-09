@@ -8,6 +8,9 @@ export default async function EmbedBookPage({ params, searchParams }: { params: 
  const themeColor = typeof sp.themeColor === 'string' ? sp.themeColor : undefined;
  const secondaryColor = typeof sp.secondaryColor === 'string' ? sp.secondaryColor : undefined;
  const templateType = typeof sp.templateType === 'string' ? sp.templateType : undefined;
+ const qHeadingFont = typeof sp.headingFont === 'string' ? sp.headingFont : undefined;
+ const qBodyFont = typeof sp.bodyFont === 'string' ? sp.bodyFont : undefined;
+ const qColorTheme = typeof sp.colorTheme === 'string' ? sp.colorTheme : undefined;
 
  let shop = await prisma.shop.findFirst({
  where: {
@@ -44,11 +47,11 @@ export default async function EmbedBookPage({ params, searchParams }: { params: 
 
  const actualShopId = shop?.id || shopId;
  const c = (shop?.customization as any) || {};
- const headingFont = c.headingFont || c.fontFamily || 'Inter';
- const bodyFont = c.bodyFont || c.fontFamily || 'Inter';
+ const headingFont = qHeadingFont || c.headingFont || c.fontFamily || 'Inter';
+ const bodyFont = qBodyFont || c.bodyFont || c.fontFamily || 'Inter';
  const buttonShape = c.buttonShape || 'rounded';
  const buttonVariant = c.buttonVariant || 'solid';
- const colorTheme = c.colorTheme || 'light';
+ const colorTheme = qColorTheme || c.colorTheme || 'light';
  const isDark = colorTheme === 'dark';
  const themeBg = isDark ? '#121212' : '#ffffff';
  const themeText = isDark ? '#ffffff' : '#111827';
