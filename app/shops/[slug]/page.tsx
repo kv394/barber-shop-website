@@ -407,7 +407,7 @@ export default async function PublicShopPage({
   <AIWidget shopId={shop.id} shopName={shop.name} themeColor={primaryColor} secondaryColor={secondaryColor} chatbotPosition={shop.customization?.chatbotPosition} colorTheme={shop.customization?.colorTheme || 'light'} templateType={templateType} shopType={shop.shopType} slogan={shop.slogan || shop.customization?.tagline} />
   )}
  {/* Inject the booking modal script for this shop reliably */}
- <BookingModalScript shopId={shop.id} themeColor={primaryColor} templateType={templateType} />
+ <BookingModalScript shopId={shop.id} themeColor={primaryColor} secondaryColor={secondaryColor} templateType={templateType} headingFont={shop.customization?.fontFamily} bodyFont={shop.customization?.fontFamily} colorTheme={shop.customization?.colorTheme || 'light'} />
  </>
  );
 }
