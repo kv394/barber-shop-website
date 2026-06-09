@@ -1793,7 +1793,8 @@
 
         KutzApp.getPublicData().then(function(data) {
           var shop = data.shop || {};
-          var primaryColor = shop.primaryColor || '#D4849C';
+          var _t = window.__KUTZ_THEME__ || {};
+          var primaryColor = _t.primaryColor || shop.primaryColor || '#D4849C';
 
           // --- Load booking modal + widget ---
           setTimeout(function() {
@@ -1805,7 +1806,7 @@
               widgetUrlPrefix = '..';
             }
             var shopName = shop.name || 'Luxury Nails';
-            var secondaryColor = shop.secondaryColor || '#C9A96E';
+            var secondaryColor = _t.secondaryColor || shop.secondaryColor || '#C9A96E';
             var shopSlogan = shop.slogan || shop.tagline || '';
             ['booking-modal.js', 'booking-widget.js'].forEach(function(script) {
               var s = document.createElement('script');

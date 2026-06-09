@@ -321,12 +321,22 @@ export default async function PublicShopPage({
   try {
   const Handlebars = (await import('handlebars')).default;
   const compiledTemplate = Handlebars.compile(shop.customization.customHtml);
-  dynamicTemplateHtml = compiledTemplate({
+  let compiledHtml = compiledTemplate({
   ...shop.customization,
   shop: shopForTemplate,
   primaryColor,
   secondaryColor
   });
+  // Inject server-side theme colors so the template JS uses DB values
+  // instead of relying on the cached API response
+  const themeInjection = `<script>window.__KUTZ_THEME__={primaryColor:"${primaryColor}",secondaryColor:"${secondaryColor}"};</script>`;
+  // Insert before </head> or at the start of the HTML
+  if (compiledHtml.includes('</head>')) {
+  compiledHtml = compiledHtml.replace('</head>', themeInjection + '</head>');
+  } else {
+  compiledHtml = themeInjection + compiledHtml;
+  }
+  dynamicTemplateHtml = compiledHtml;
   } catch (e) {
   // If Handlebars fails, use the raw HTML as-is
   console.error('Handlebars error parsing customHtml:', e);
