@@ -87,6 +87,29 @@ export default async function EmbedBookPage({ params, searchParams }: { params: 
    .btn, button.bg-crm-primary, button[style*="background-color: ${primaryColor}"] { background-color: transparent !important; border: none !important; color: ${primaryColor} !important; }
    .btn:hover, button.bg-crm-primary:hover, button[style*="background-color: ${primaryColor}"]:hover { background-color: ${primaryColor}20 !important; }
    ` : ''}
+
+   /* ===== Theme Color Overrides ===== */
+   /* Warm background tint */
+   .bg-crm-surface, .bg-crm-bg { background-color: ${primaryColor}08 !important; }
+   
+   /* Header bar with theme accent */
+   .border-crm-border { border-color: ${primaryColor}30 !important; }
+   
+   /* All card borders get subtle theme tint */
+   button.border { border-color: ${primaryColor}35 !important; }
+   button.border:hover { border-color: ${primaryColor} !important; background-color: ${primaryColor}0A !important; }
+   
+   /* Progress indicator dots - more visible */
+   div[class*="h-1.5"][class*="rounded-full"] { opacity: 1 !important; }
+   
+   /* Input fields */
+   input:focus, textarea:focus { border-color: ${primaryColor} !important; box-shadow: 0 1px 0 0 ${primaryColor} !important; }
+   
+   /* Muted text with theme undertone */
+   .text-crm-muted { color: ${primaryColor}90 !important; }
+
+   /* Scroll area background */
+   .custom-scrollbar { background-color: transparent !important; }
    `}} />
    <BookingWizard shopId={actualShopId} themeColor={primaryColor} secondaryColor={actualSecondaryColor} templateType={templateType} currency={shop?.currency || 'INR'} shopType={(shop as any)?.shopType || 'PHYSICAL'} />
   </div>
