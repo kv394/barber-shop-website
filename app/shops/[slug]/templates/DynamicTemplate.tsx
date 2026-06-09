@@ -124,6 +124,10 @@ export default function DynamicTemplate({ ctx }: { ctx: any }) {
 
  // After mount, inject external stylesheets and execute template scripts
  useEffect(() => {
+  // Set theme colors BEFORE any template scripts execute so they use
+  // server-side DB values instead of potentially cached API values
+  (window as any).__KUTZ_THEME__ = { primaryColor, secondaryColor };
+
   // Inject <link rel="stylesheet"> for Google Fonts etc.
   const injectedLinks: HTMLLinkElement[] = [];
   linkHrefs.forEach(href => {
