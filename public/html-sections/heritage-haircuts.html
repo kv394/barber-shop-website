@@ -4,41 +4,59 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Heritage Haircuts — The Art of Precision Grooming</title>
+  <title>Luxury Nails & Spa — Where Beauty Becomes Art</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
-    href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,700;1,400;1,700&family=Manrope:wght@300;400;500;600;700;800&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Lato:wght@300;400;500;600;700&display=swap"
     rel="stylesheet" />
-  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0"
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,300,0,0"
     rel="stylesheet" />
   <style>
     /* ========================================
-       CSS CUSTOM PROPERTIES
+       CSS Custom Properties
     ======================================== */
     :root {
-      --bg-main: #131313;
-      --bg-section: #1c1b1b;
-      --bg-darkest: #0e0e0e;
-      --bg-card: #252525;
-      --gold-primary: #e9c176;
-      --gold-secondary: #c5a059;
-      --gold-accent: #d4af37;
-      --text-primary: #e5e2e1;
-      --text-body: #d1c5b4;
-      --text-muted: #8a8078;
-      --font-serif: 'Noto Serif', Georgia, serif;
-      --font-sans: 'Manrope', system-ui, sans-serif;
-      --gold-gradient: linear-gradient(135deg, var(--gold-primary), var(--gold-accent), var(--gold-secondary));
-      --gold-gradient-hover: linear-gradient(135deg, var(--gold-secondary), var(--gold-accent), var(--gold-primary));
-      --radius-sm: 6px;
-      --radius-md: 12px;
-      --radius-lg: 20px;
-      --transition: 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      /* Backgrounds */
+      --bg-main: #FFF9F7;
+      --bg-blush: #FFF0ED;
+      --bg-lightest: #FEFCFB;
+      --bg-cream: #FAF5F3;
+      --bg-deeper-blush: #F5ECEA;
+
+      /* Rose / Pink */
+      --rose-primary: #D4849C;
+      --rose-hover: #C27B8E;
+      --rose-light: #E8A0BF;
+      --rose-deep: #BA6B7F;
+
+      /* Gold */
+      --gold: #C9A96E;
+      --gold-dark: #B8935A;
+
+      /* Text */
+      --text-heading: #2D2428;
+      --text-body: #5A4A50;
+      --text-muted: #8B7580;
+      --text-light-muted: #A69298;
+
+      /* Fonts */
+      --font-heading: 'Playfair Display', Georgia, serif;
+      --font-body: 'Lato', 'Helvetica Neue', sans-serif;
+
+      /* Shadows */
+      --shadow-sm: 0 2px 8px rgba(45, 36, 40, 0.06);
+      --shadow-md: 0 8px 30px rgba(45, 36, 40, 0.08);
+      --shadow-lg: 0 16px 50px rgba(45, 36, 40, 0.10);
+      --shadow-xl: 0 24px 60px rgba(45, 36, 40, 0.12);
+
+      /* Transitions */
+      --transition-base: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      --transition-slow: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     /* ========================================
-       RESET & BASE
+       Reset & Base
     ======================================== */
     *,
     *::before,
@@ -55,10 +73,11 @@
     }
 
     body {
-      font-family: var(--font-sans);
-      background-color: var(--bg-main);
+      font-family: var(--font-body);
       color: var(--text-body);
+      background-color: var(--bg-main);
       line-height: 1.7;
+      font-size: 16px;
       overflow-x: hidden;
     }
 
@@ -70,59 +89,145 @@
     a {
       text-decoration: none;
       color: inherit;
+      transition: color var(--transition-base);
     }
 
-    .material-symbols-outlined {
-      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-      vertical-align: middle;
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      font-family: var(--font-heading);
+      color: var(--text-heading);
+      line-height: 1.25;
+      font-weight: 600;
     }
 
-    /* ========================================
-       UTILITY CLASSES
-    ======================================== */
     .container {
-      max-width: 1280px;
+      width: 100%;
+      max-width: 1240px;
       margin: 0 auto;
       padding: 0 24px;
     }
 
-    .section-label {
-      font-family: var(--font-sans);
-      font-size: 0.75rem;
-      font-weight: 700;
-      letter-spacing: 0.25em;
-      text-transform: uppercase;
-      color: var(--gold-primary);
-      margin-bottom: 12px;
-    }
-
-    .section-heading {
-      font-family: var(--font-serif);
-      font-size: clamp(2rem, 4vw, 3.25rem);
-      font-weight: 700;
-      color: var(--text-primary);
-      line-height: 1.2;
-      margin-bottom: 20px;
-    }
-
-    .gold-text {
-      color: var(--gold-primary);
-    }
-
-    .italic {
-      font-style: italic;
+    /* ========================================
+       Rose Gold Top Line
+    ======================================== */
+    .top-accent-line {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: linear-gradient(90deg, var(--rose-light), var(--rose-primary), var(--gold), var(--rose-primary), var(--rose-light));
+      z-index: 10001;
     }
 
     /* ========================================
-       SCROLL REVEAL ANIMATION
+       Buttons
+    ======================================== */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+      padding: 14px 32px;
+      border-radius: 50px;
+      border: none;
+      cursor: pointer;
+      transition: all var(--transition-base);
+      text-decoration: none;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--rose-primary), var(--rose-deep));
+      color: #fff;
+      box-shadow: 0 4px 20px rgba(212, 132, 156, 0.35);
+    }
+
+    .btn-primary:hover {
+      background: linear-gradient(135deg, var(--rose-hover), var(--rose-deep));
+      box-shadow: 0 8px 30px rgba(212, 132, 156, 0.45);
+      transform: translateY(-2px);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--rose-primary);
+      border: 2px solid var(--rose-primary);
+    }
+
+    .btn-outline:hover {
+      background: var(--rose-primary);
+      color: #fff;
+      transform: translateY(-2px);
+    }
+
+    .btn-sm {
+      padding: 10px 24px;
+      font-size: 0.82rem;
+    }
+
+    /* ========================================
+       Section Utilities
+    ======================================== */
+    .section-label {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      font-family: var(--font-body);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--rose-primary);
+      margin-bottom: 16px;
+    }
+
+    .section-label::before,
+    .section-label::after {
+      content: '';
+      width: 40px;
+      height: 1px;
+      background: var(--rose-primary);
+      opacity: 0.5;
+    }
+
+    .section-heading {
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      text-align: center;
+      margin-bottom: 16px;
+    }
+
+    .section-subtitle {
+      text-align: center;
+      max-width: 600px;
+      margin: 0 auto 48px;
+      color: var(--text-muted);
+      font-size: 1.05rem;
+      line-height: 1.8;
+    }
+
+    .section-padding {
+      padding: 100px 0;
+    }
+
+    /* ========================================
+       Scroll Reveal Animations
     ======================================== */
     .reveal {
       opacity: 0;
-      transform: translateY(40px);
-      transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+      transform: translateY(30px);
+      transition: opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1), transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-    .reveal.visible {
+    .reveal.revealed {
       opacity: 1;
       transform: translateY(0);
     }
@@ -147,8 +252,15 @@
       transition-delay: 0.5s;
     }
 
-    .reveal-delay-6 {
-      transition-delay: 0.6s;
+    /* ========================================
+       Decorative Blurred Circles
+    ======================================== */
+    .deco-circle {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      pointer-events: none;
+      z-index: 0;
     }
 
     /* ========================================
@@ -156,167 +268,169 @@
     ======================================== */
     .navbar {
       position: fixed;
-      top: 0;
+      top: 2px;
       left: 0;
       width: 100%;
-      z-index: 1000;
-      background: rgba(19, 19, 19, 0.8);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border-bottom: 1px solid rgba(233, 193, 118, 0.08);
-      transition: var(--transition);
+      z-index: 10000;
+      background: rgba(255, 249, 247, 0.92);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--bg-deeper-blush);
+      transition: all var(--transition-base);
     }
 
     .navbar.scrolled {
-      background: rgba(19, 19, 19, 0.95);
-      border-bottom-color: rgba(233, 193, 118, 0.15);
+      box-shadow: var(--shadow-sm);
     }
 
-    .navbar__inner {
+    .navbar-inner {
       display: flex;
       align-items: center;
       justify-content: space-between;
       height: 72px;
-      max-width: 1280px;
-      margin: 0 auto;
-      padding: 0 24px;
     }
 
-    .navbar__brand {
-      font-family: var(--font-serif);
-      font-style: italic;
-      font-size: 1.35rem;
+    .nav-logo {
+      font-family: var(--font-heading);
+      font-size: 1.45rem;
       font-weight: 700;
-      color: var(--gold-primary);
+      color: var(--text-heading);
+      display: flex;
+      align-items: center;
+      gap: 4px;
       white-space: nowrap;
-      letter-spacing: 0.01em;
     }
 
-    .navbar__links {
+    .nav-logo .sparkle {
+      color: var(--rose-primary);
+      font-size: 0.7em;
+      margin-left: 2px;
+    }
+
+    .nav-links {
       display: flex;
       align-items: center;
       gap: 36px;
       list-style: none;
     }
 
-    .navbar__links a {
-      font-size: 0.85rem;
+    .nav-links a {
+      font-size: 0.88rem;
       font-weight: 500;
-      letter-spacing: 0.04em;
-      color: var(--text-muted);
-      transition: color var(--transition);
+      color: var(--text-body);
       position: relative;
+      letter-spacing: 0.02em;
     }
 
-    .navbar__links a::after {
+    .nav-links a::after {
       content: '';
       position: absolute;
       bottom: -4px;
-      left: 0;
+      left: 50%;
+      transform: translateX(-50%);
       width: 0;
-      height: 1px;
-      background: var(--gold-primary);
-      transition: width var(--transition);
+      height: 2px;
+      background: var(--rose-primary);
+      border-radius: 2px;
+      transition: width var(--transition-base);
     }
 
-    .navbar__links a:hover {
-      color: var(--text-primary);
+    .nav-links a:hover {
+      color: var(--rose-primary);
     }
 
-    .navbar__links a:hover::after {
+    .nav-links a:hover::after {
       width: 100%;
     }
 
-    .navbar__cta {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 10px 28px;
-      background: var(--gold-gradient);
-      color: var(--bg-darkest);
-      font-family: var(--font-sans);
-      font-size: 0.82rem;
-      font-weight: 700;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      border-radius: 50px;
-      border: none;
-      cursor: pointer;
-      transition: transform var(--transition), box-shadow var(--transition);
+    .nav-book-btn {
+      padding: 10px 26px;
+      font-size: 0.85rem;
     }
 
-    .navbar__cta:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 30px rgba(233, 193, 118, 0.25);
-    }
-
-    .navbar__hamburger {
+    .hamburger {
       display: none;
       flex-direction: column;
       gap: 5px;
+      cursor: pointer;
       background: none;
       border: none;
-      cursor: pointer;
-      padding: 4px;
+      padding: 8px;
+      z-index: 10002;
     }
 
-    .navbar__hamburger span {
+    .hamburger span {
       display: block;
       width: 24px;
       height: 2px;
-      background: var(--text-primary);
+      background: var(--text-heading);
       border-radius: 2px;
-      transition: var(--transition);
+      transition: all var(--transition-base);
     }
 
-    /* Mobile menu */
-    .mobile-menu {
+    .hamburger.active span:nth-child(1) {
+      transform: rotate(45deg) translate(5px, 5px);
+    }
+
+    .hamburger.active span:nth-child(2) {
+      opacity: 0;
+    }
+
+    .hamburger.active span:nth-child(3) {
+      transform: rotate(-45deg) translate(5px, -5px);
+    }
+
+    /* Mobile nav overlay */
+    .mobile-nav {
       display: none;
       position: fixed;
-      top: 72px;
+      top: 0;
       left: 0;
       width: 100%;
-      background: rgba(19, 19, 19, 0.98);
+      height: 100vh;
+      background: rgba(255, 249, 247, 0.98);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
-      padding: 32px 24px;
-      border-bottom: 1px solid rgba(233, 193, 118, 0.1);
-      z-index: 999;
-    }
-
-    .mobile-menu.active {
-      display: block;
-    }
-
-    .mobile-menu a {
-      display: block;
-      padding: 14px 0;
-      font-size: 1.05rem;
-      font-weight: 500;
-      color: var(--text-body);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-      transition: color var(--transition);
-    }
-
-    .mobile-menu a:hover {
-      color: var(--gold-primary);
-    }
-
-    .mobile-menu .navbar__cta {
-      margin-top: 20px;
-      width: 100%;
+      z-index: 9999;
+      flex-direction: column;
+      align-items: center;
       justify-content: center;
-      padding: 14px 28px;
+      gap: 32px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity var(--transition-base);
+    }
+
+    .mobile-nav.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .mobile-nav a {
+      font-family: var(--font-heading);
+      font-size: 1.5rem;
+      color: var(--text-heading);
+      transition: color var(--transition-base);
+    }
+
+    .mobile-nav a:hover {
+      color: var(--rose-primary);
     }
 
     @media (max-width: 768px) {
-
-      .navbar__links,
-      .navbar>.navbar__inner>.navbar__cta {
+      .nav-links {
         display: none;
       }
 
-      .navbar__hamburger {
+      .nav-book-btn {
+        display: none !important;
+      }
+
+      .hamburger {
+        display: flex;
+      }
+
+      .mobile-nav {
         display: flex;
       }
     }
@@ -325,179 +439,159 @@
        2. HERO SECTION
     ======================================== */
     .hero {
-      position: relative;
-      min-height: 100vh;
+      min-height: 90vh;
+      background: var(--bg-cream);
       display: flex;
       align-items: center;
+      position: relative;
+      padding-top: 74px;
       overflow: hidden;
     }
 
-    .hero__bg {
-      position: absolute;
-      inset: 0;
-      z-index: 0;
+    .hero .deco-circle-1 {
+      width: 400px;
+      height: 400px;
+      background: rgba(232, 160, 191, 0.15);
+      top: 10%;
+      right: 5%;
     }
 
-    .hero__bg img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transform: scale(1.05);
-      transition: transform 12s ease-out;
+    .hero .deco-circle-2 {
+      width: 300px;
+      height: 300px;
+      background: rgba(201, 169, 110, 0.08);
+      bottom: 10%;
+      left: -5%;
     }
 
-    .hero.visible .hero__bg img {
-      transform: scale(1);
-    }
-
-    .hero__overlay {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(to right,
-          rgba(14, 14, 14, 0.95) 0%,
-          rgba(14, 14, 14, 0.8) 35%,
-          rgba(14, 14, 14, 0.5) 60%,
-          rgba(14, 14, 14, 0.3) 100%);
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 55% 45%;
+      align-items: center;
+      gap: 40px;
+      position: relative;
       z-index: 1;
     }
 
-    .hero__overlay::after {
+    .hero-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--rose-primary);
+      margin-bottom: 20px;
+    }
+
+    .hero-label::before {
       content: '';
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      height: 180px;
-      background: linear-gradient(to top, var(--bg-main), transparent);
+      width: 30px;
+      height: 1.5px;
+      background: var(--rose-primary);
     }
 
-    .hero__content {
-      position: relative;
-      z-index: 2;
-      max-width: 720px;
-      padding: 0 24px;
-      margin-left: clamp(24px, 8vw, 120px);
-    }
-
-    .hero__badge {
-      display: inline-block;
-      font-family: var(--font-sans);
-      font-size: 0.7rem;
+    .hero-title {
+      font-size: clamp(2.5rem, 5vw, 4.2rem);
       font-weight: 700;
-      letter-spacing: 0.3em;
-      text-transform: uppercase;
-      color: var(--gold-primary);
-      background: rgba(233, 193, 118, 0.08);
-      border: 1px solid rgba(233, 193, 118, 0.15);
-      padding: 8px 20px;
-      border-radius: 50px;
-      margin-bottom: 28px;
-    }
-
-    .hero__title {
-      font-family: var(--font-serif);
-      font-size: clamp(3rem, 6vw, 6rem);
-      font-weight: 700;
-      color: var(--text-primary);
-      line-height: 1.05;
+      color: var(--text-heading);
       margin-bottom: 24px;
-      letter-spacing: -0.02em;
+      line-height: 1.15;
     }
 
-    .hero__subtitle {
-      font-size: clamp(1rem, 1.5vw, 1.15rem);
-      color: var(--text-body);
-      max-width: 540px;
+    .hero-title em {
+      color: var(--rose-primary);
+      font-style: italic;
+    }
+
+    .hero-subtitle {
+      font-size: 1.08rem;
       line-height: 1.8;
-      margin-bottom: 40px;
-      font-weight: 300;
+      color: var(--text-muted);
+      margin-bottom: 36px;
+      max-width: 520px;
     }
 
-    .hero__actions {
+    .hero-ctas {
       display: flex;
-      flex-wrap: wrap;
       gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 36px;
     }
 
-    .btn-gold {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      padding: 16px 36px;
-      background: var(--gold-gradient);
-      color: var(--bg-darkest);
-      font-family: var(--font-sans);
-      font-size: 0.85rem;
-      font-weight: 700;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      border-radius: 50px;
-      border: none;
-      cursor: pointer;
-      transition: transform var(--transition), box-shadow var(--transition);
-    }
-
-    .btn-gold:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 12px 40px rgba(233, 193, 118, 0.3);
-    }
-
-    .btn-glass {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      padding: 16px 36px;
-      background: rgba(255, 255, 255, 0.04);
-      color: var(--text-primary);
-      font-family: var(--font-sans);
-      font-size: 0.85rem;
-      font-weight: 600;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      border-radius: 50px;
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      cursor: pointer;
-      backdrop-filter: blur(8px);
-      transition: var(--transition);
-    }
-
-    .btn-glass:hover {
-      background: rgba(255, 255, 255, 0.08);
-      border-color: rgba(233, 193, 118, 0.3);
-      transform: translateY(-2px);
-    }
-
-    .hero__scroll {
-      position: absolute;
-      bottom: 40px;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 2;
+    .hero-trust {
       display: flex;
-      flex-direction: column;
       align-items: center;
       gap: 8px;
-      color: var(--text-muted);
-      font-size: 0.7rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      animation: scrollBounce 2s infinite;
+      font-size: 0.82rem;
+      color: var(--text-light-muted);
     }
 
-    .hero__scroll .material-symbols-outlined {
-      font-size: 20px;
-      color: var(--gold-primary);
+    .hero-trust .star {
+      color: var(--gold);
     }
 
-    @keyframes scrollBounce {
+    .hero-image-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
 
-      0%,
-      100% {
-        transform: translateX(-50%) translateY(0);
+    .hero-image-wrapper .deco-blob {
+      position: absolute;
+      width: 85%;
+      height: 85%;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(232, 160, 191, 0.2), rgba(212, 132, 156, 0.08));
+      filter: blur(50px);
+      z-index: 0;
+    }
+
+    .hero-image-wrapper img {
+      position: relative;
+      z-index: 1;
+      border-radius: 24px;
+      box-shadow: var(--shadow-lg);
+      transform: rotate(-2deg);
+      width: 100%;
+      max-width: 480px;
+      height: auto;
+      object-fit: cover;
+      aspect-ratio: 3/4;
+    }
+
+    @media (max-width: 900px) {
+      .hero-grid {
+        grid-template-columns: 1fr;
+        text-align: center;
       }
 
-      50% {
-        transform: translateX(-50%) translateY(8px);
+      .hero-label {
+        justify-content: center;
+      }
+
+      .hero-subtitle {
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .hero-ctas {
+        justify-content: center;
+      }
+
+      .hero-trust {
+        justify-content: center;
+      }
+
+      .hero-image-wrapper {
+        order: -1;
+        margin-bottom: 20px;
+      }
+
+      .hero-image-wrapper img {
+        max-width: 340px;
       }
     }
 
@@ -505,38 +599,34 @@
        3. SERVICES SECTION
     ======================================== */
     .services {
-      padding: 120px 0;
-      background: var(--bg-section);
+      background: var(--bg-blush);
       position: relative;
+      overflow: hidden;
     }
 
-    .services::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 1px;
-      background: linear-gradient(to right, transparent, rgba(233, 193, 118, 0.15), transparent);
+    .services .deco-circle-1 {
+      width: 350px;
+      height: 350px;
+      background: rgba(232, 160, 191, 0.1);
+      top: -10%;
+      left: -5%;
     }
 
-    .services__header {
-      text-align: center;
-      margin-bottom: 64px;
-    }
-
-    .services__grid {
+    .services-grid {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 20px;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 28px;
+      position: relative;
+      z-index: 1;
     }
 
     .service-card {
-      background: var(--bg-card);
-      border: 1px solid rgba(255, 255, 255, 0.04);
-      border-radius: var(--radius-md);
-      padding: 32px;
-      transition: var(--transition);
+      background: #fff;
+      border-radius: 20px;
+      padding: 40px 28px 32px;
+      text-align: center;
+      box-shadow: var(--shadow-sm);
+      transition: all var(--transition-base);
       position: relative;
       overflow: hidden;
     }
@@ -545,269 +635,343 @@
       content: '';
       position: absolute;
       top: 0;
-      left: 0;
-      width: 100%;
-      height: 2px;
-      background: var(--gold-gradient);
-      transform: scaleX(0);
-      transform-origin: left;
-      transition: transform var(--transition);
+      left: 50%;
+      transform: translateX(-50%);
+      width: 50px;
+      height: 3px;
+      background: linear-gradient(90deg, var(--rose-primary), var(--gold));
+      border-radius: 0 0 4px 4px;
+      opacity: 0;
+      transition: opacity var(--transition-base);
     }
 
     .service-card:hover {
-      border-color: rgba(233, 193, 118, 0.12);
-      transform: translateY(-4px);
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      transform: translateY(-6px);
+      box-shadow: var(--shadow-lg);
     }
 
     .service-card:hover::before {
-      transform: scaleX(1);
+      opacity: 1;
     }
 
-    .service-card__header {
+    .service-icon {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, rgba(212, 132, 156, 0.1), rgba(232, 160, 191, 0.15));
       display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      margin-bottom: 12px;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      transition: all var(--transition-base);
     }
 
-    .service-card__name {
-      font-family: var(--font-serif);
-      font-size: 1.2rem;
-      font-weight: 700;
-      color: var(--text-primary);
-      transition: color var(--transition);
+    .service-icon .material-symbols-outlined {
+      font-size: 28px;
+      color: var(--rose-primary);
     }
 
-    .service-card:hover .service-card__name {
-      color: var(--gold-primary);
+    .service-card:hover .service-icon {
+      background: linear-gradient(135deg, var(--rose-primary), var(--rose-deep));
     }
 
-    .service-card__price {
-      font-family: var(--font-sans);
-      font-size: 1.1rem;
-      font-weight: 700;
-      color: var(--gold-primary);
-      white-space: nowrap;
+    .service-card:hover .service-icon .material-symbols-outlined {
+      color: #fff;
     }
 
-    .service-card__desc {
+    .service-card h3 {
+      font-size: 1.15rem;
+      margin-bottom: 10px;
+      font-weight: 600;
+    }
+
+    .service-card p {
       font-size: 0.9rem;
       color: var(--text-muted);
-      line-height: 1.7;
       margin-bottom: 16px;
+      line-height: 1.7;
     }
 
-    .service-card__duration {
-      display: inline-flex;
+    .service-meta {
+      display: flex;
       align-items: center;
-      gap: 6px;
-      font-size: 0.75rem;
-      color: var(--text-muted);
-      font-weight: 500;
-      letter-spacing: 0.04em;
+      justify-content: center;
+      gap: 16px;
+      margin-bottom: 20px;
+      font-size: 0.85rem;
     }
 
-    .service-card__duration .material-symbols-outlined {
+    .service-price {
+      font-family: var(--font-heading);
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--rose-primary);
+    }
+
+    .service-duration {
+      color: var(--text-light-muted);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .service-duration .material-symbols-outlined {
       font-size: 16px;
-      color: var(--gold-secondary);
     }
 
-    @media (max-width: 768px) {
-      .services__grid {
+    @media (max-width: 900px) {
+      .services-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 600px) {
+      .services-grid {
         grid-template-columns: 1fr;
+        max-width: 400px;
+        margin: 0 auto;
       }
     }
 
     /* ========================================
-       4. EDITORIAL FEATURE — "The Ritual"
+       4. THE EXPERIENCE
     ======================================== */
-    .editorial {
-      padding: 120px 0;
+    .experience {
       background: var(--bg-main);
       position: relative;
-    }
-
-    .editorial__grid {
-      display: grid;
-      grid-template-columns: 7fr 5fr;
-      gap: 64px;
-      align-items: center;
-    }
-
-    .editorial__image-wrap {
-      position: relative;
-      border-radius: var(--radius-lg);
       overflow: hidden;
     }
 
-    .editorial__image-wrap img {
+    .experience .deco-circle-1 {
+      width: 350px;
+      height: 350px;
+      background: rgba(201, 169, 110, 0.07);
+      bottom: -10%;
+      right: -5%;
+    }
+
+    .experience-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .experience-image-wrapper {
+      position: relative;
+    }
+
+    .experience-image-wrapper .deco-blob {
+      position: absolute;
+      width: 80%;
+      height: 80%;
+      top: 10%;
+      left: 10%;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(232, 160, 191, 0.15), transparent);
+      filter: blur(50px);
+      z-index: 0;
+    }
+
+    .experience-image-wrapper img {
+      position: relative;
+      z-index: 1;
+      border-radius: 24px;
+      box-shadow: var(--shadow-md);
+      transform: rotate(1.5deg);
       width: 100%;
-      height: 100%;
+      height: auto;
       object-fit: cover;
       aspect-ratio: 4/5;
-      filter: grayscale(100%);
-      transition: filter 0.8s ease, transform 0.8s ease;
     }
 
-    .editorial__image-wrap:hover img {
-      filter: grayscale(0%);
-      transform: scale(1.03);
+    .experience-content .section-label {
+      justify-content: flex-start;
     }
 
-    .editorial__image-wrap::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      border: 1px solid rgba(233, 193, 118, 0.1);
-      border-radius: var(--radius-lg);
-      pointer-events: none;
+    .experience-content .section-label::before {
+      display: none;
     }
 
-    .editorial__content {
-      padding: 20px 0;
+    .experience-content h2 {
+      text-align: left;
+      font-size: clamp(1.8rem, 3.5vw, 2.5rem);
+      margin-bottom: 32px;
     }
 
-    .editorial__heading {
-      font-family: var(--font-serif);
-      font-style: italic;
-      font-size: clamp(2.2rem, 4vw, 3.5rem);
-      font-weight: 700;
-      color: var(--text-primary);
-      line-height: 1.15;
+    .feature-item {
+      display: flex;
+      gap: 18px;
       margin-bottom: 28px;
     }
 
-    .editorial__text {
-      font-size: 1.05rem;
-      color: var(--text-body);
-      line-height: 1.85;
-      margin-bottom: 36px;
-      font-weight: 300;
-    }
-
-    .editorial__tag {
-      display: inline-flex;
+    .feature-icon {
+      width: 50px;
+      height: 50px;
+      min-width: 50px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, rgba(212, 132, 156, 0.1), rgba(232, 160, 191, 0.15));
+      display: flex;
       align-items: center;
-      gap: 12px;
-      font-size: 0.8rem;
+      justify-content: center;
+      margin-top: 2px;
+    }
+
+    .feature-icon .material-symbols-outlined {
+      font-size: 24px;
+      color: var(--rose-primary);
+    }
+
+    .feature-text h4 {
+      font-size: 1.05rem;
+      margin-bottom: 6px;
       font-weight: 600;
-      letter-spacing: 0.06em;
-      color: var(--gold-primary);
-      padding: 12px 20px;
-      background: rgba(233, 193, 118, 0.06);
-      border: 1px solid rgba(233, 193, 118, 0.12);
-      border-radius: 50px;
     }
 
-    .editorial__tag .material-symbols-outlined {
-      font-size: 20px;
+    .feature-text p {
+      font-size: 0.92rem;
+      color: var(--text-muted);
+      line-height: 1.7;
     }
 
-    @media (max-width: 768px) {
-      .editorial__grid {
+    .experience-cta {
+      margin-top: 36px;
+    }
+
+    @media (max-width: 800px) {
+      .experience-grid {
         grid-template-columns: 1fr;
         gap: 40px;
+      }
+
+      .experience-content .section-label {
+        justify-content: center;
+      }
+
+      .experience-content h2 {
+        text-align: center;
+      }
+
+      .experience-cta {
+        text-align: center;
       }
     }
 
     /* ========================================
-       5. MEET THE TEAM
+       5. MEET THE ARTISTS
     ======================================== */
-    .team {
-      padding: 120px 0;
-      background: var(--bg-section);
+    .artists {
+      background: var(--bg-cream);
       position: relative;
+      overflow: hidden;
     }
 
-    .team::before {
+    .artists .deco-circle-1 {
+      width: 300px;
+      height: 300px;
+      background: rgba(212, 132, 156, 0.08);
+      top: 5%;
+      left: -3%;
+    }
+
+    .artists-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 36px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .artist-card {
+      background: #fff;
+      border-radius: 24px;
+      padding: 44px 36px;
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--bg-deeper-blush);
+      position: relative;
+      overflow: hidden;
+      transition: all var(--transition-base);
+    }
+
+    .artist-card::before {
       content: '';
       position: absolute;
       top: 0;
       left: 0;
       width: 100%;
-      height: 1px;
-      background: linear-gradient(to right, transparent, rgba(233, 193, 118, 0.15), transparent);
+      height: 4px;
+      background: linear-gradient(90deg, var(--rose-primary), var(--rose-light), var(--gold));
     }
 
-    .team__header {
-      text-align: center;
-      margin-bottom: 64px;
+    .artist-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-md);
     }
 
-    .team__grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 24px;
+    .artist-avatar {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--rose-light), var(--rose-primary));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 24px;
     }
 
-    .barber-card {
-      position: relative;
-      border-radius: var(--radius-md);
-      overflow: hidden;
-      background: var(--bg-card);
-      transition: var(--transition);
+    .artist-avatar .material-symbols-outlined {
+      font-size: 40px;
+      color: #fff;
     }
 
-    .barber-card:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 24px 64px rgba(0, 0, 0, 0.4);
-    }
-
-    .barber-card__image {
-      aspect-ratio: 3/4;
-      overflow: hidden;
-    }
-
-    .barber-card__image img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: transform 0.8s ease;
-    }
-
-    .barber-card:hover .barber-card__image img {
-      transform: scale(1.08);
-    }
-
-    .barber-card__info {
-      padding: 20px 24px 24px;
-    }
-
-    .barber-card__name {
-      font-family: var(--font-serif);
-      font-size: 1.15rem;
-      font-weight: 700;
-      color: var(--text-primary);
+    .artist-card h3 {
+      font-size: 1.3rem;
       margin-bottom: 4px;
     }
 
-    .barber-card__role {
-      font-size: 0.7rem;
-      font-weight: 700;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--gold-primary);
-      margin-bottom: 10px;
-    }
-
-    .barber-card__bio {
+    .artist-role {
       font-size: 0.85rem;
+      color: var(--rose-primary);
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      margin-bottom: 16px;
+    }
+
+    .artist-card>p {
+      font-size: 0.93rem;
       color: var(--text-muted);
-      line-height: 1.6;
+      line-height: 1.8;
+      margin-bottom: 20px;
     }
 
-    @media (max-width: 1024px) {
-      .team__grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
+    .artist-specialties {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
     }
 
-    @media (max-width: 480px) {
-      .team__grid {
+    .specialty-tag {
+      display: inline-block;
+      padding: 6px 16px;
+      background: rgba(212, 132, 156, 0.1);
+      color: var(--rose-primary);
+      font-size: 0.78rem;
+      font-weight: 600;
+      border-radius: 50px;
+      letter-spacing: 0.02em;
+    }
+
+    @media (max-width: 700px) {
+      .artists-grid {
         grid-template-columns: 1fr;
-        max-width: 360px;
+        max-width: 480px;
         margin: 0 auto;
+      }
+
+      .artist-card {
+        padding: 32px 24px;
       }
     }
 
@@ -815,97 +979,77 @@
        6. GALLERY
     ======================================== */
     .gallery {
-      padding: 120px 0;
-      background: var(--bg-main);
-    }
-
-    .gallery__header {
-      text-align: center;
-      margin-bottom: 64px;
-    }
-
-    .gallery__grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      grid-auto-rows: 200px;
-      gap: 16px;
-    }
-
-    .gallery__item {
+      background: var(--bg-blush);
       position: relative;
-      border-radius: var(--radius-md);
       overflow: hidden;
+    }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .gallery-item {
+      position: relative;
+      border-radius: 20px;
+      overflow: hidden;
+      aspect-ratio: 4/5;
       cursor: pointer;
     }
 
-    .gallery__item img {
+    .gallery-item img {
       width: 100%;
       height: 100%;
       object-fit: cover;
-      transition: transform 0.8s ease;
+      transition: transform var(--transition-slow);
     }
 
-    .gallery__item:hover img {
+    .gallery-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, transparent 40%, rgba(212, 132, 156, 0.85) 100%);
+      opacity: 0;
+      transition: opacity var(--transition-base);
+      display: flex;
+      align-items: flex-end;
+      padding: 28px;
+    }
+
+    .gallery-overlay span {
+      color: #fff;
+      font-family: var(--font-heading);
+      font-size: 1.15rem;
+      font-weight: 600;
+      transform: translateY(10px);
+      transition: transform var(--transition-base);
+    }
+
+    .gallery-item:hover img {
       transform: scale(1.08);
     }
 
-    .gallery__item-overlay {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(to top, rgba(14, 14, 14, 0.8) 0%, transparent 50%);
-      opacity: 0;
-      transition: opacity var(--transition);
-      display: flex;
-      align-items: flex-end;
-      padding: 20px;
-    }
-
-    .gallery__item:hover .gallery__item-overlay {
+    .gallery-item:hover .gallery-overlay {
       opacity: 1;
     }
 
-    .gallery__item-overlay span {
-      font-family: var(--font-serif);
-      font-size: 0.9rem;
-      color: var(--text-primary);
-      font-style: italic;
+    .gallery-item:hover .gallery-overlay span {
+      transform: translateY(0);
     }
 
-    .gallery__item--large {
-      grid-column: span 2;
-      grid-row: span 2;
-    }
-
-    .gallery__item--tall {
-      grid-row: span 2;
-    }
-
-    @media (max-width: 768px) {
-      .gallery__grid {
+    @media (max-width: 800px) {
+      .gallery-grid {
         grid-template-columns: repeat(2, 1fr);
-        grid-auto-rows: 180px;
-      }
-
-      .gallery__item--large {
-        grid-column: span 2;
-        grid-row: span 2;
-      }
-
-      .gallery__item--tall {
-        grid-row: span 2;
       }
     }
 
-    @media (max-width: 480px) {
-      .gallery__grid {
+    @media (max-width: 500px) {
+      .gallery-grid {
         grid-template-columns: 1fr;
-        grid-auto-rows: 220px;
-      }
-
-      .gallery__item--large,
-      .gallery__item--tall {
-        grid-column: span 1;
-        grid-row: span 1;
+        max-width: 400px;
+        margin: 0 auto;
       }
     }
 
@@ -913,357 +1057,96 @@
        7. TESTIMONIALS
     ======================================== */
     .testimonials {
-      padding: 120px 0;
-      background: var(--bg-darkest);
+      background: var(--bg-lightest);
       position: relative;
+      overflow: hidden;
     }
 
-    .testimonials::before,
-    .testimonials::after {
-      content: '';
-      position: absolute;
-      left: 0;
-      width: 100%;
-      height: 1px;
-      background: linear-gradient(to right, transparent, rgba(233, 193, 118, 0.1), transparent);
-    }
-
-    .testimonials::before {
-      top: 0;
-    }
-
-    .testimonials::after {
-      bottom: 0;
-    }
-
-    .testimonials__header {
-      text-align: center;
-      margin-bottom: 64px;
-    }
-
-    .testimonials__heading {
-      font-family: var(--font-serif);
-      font-size: clamp(1.8rem, 3.5vw, 2.8rem);
-      font-weight: 700;
-      color: var(--text-primary);
-      line-height: 1.2;
-    }
-
-    .testimonials__grid {
+    .testimonials-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 24px;
+      gap: 28px;
+      position: relative;
+      z-index: 1;
     }
 
     .testimonial-card {
-      background: var(--bg-card);
-      border: 1px solid rgba(255, 255, 255, 0.04);
-      border-radius: var(--radius-md);
-      padding: 36px 32px;
-      transition: var(--transition);
+      border-radius: 20px;
+      padding: 36px 28px;
       position: relative;
+      box-shadow: var(--shadow-sm);
+      transition: all var(--transition-base);
     }
 
     .testimonial-card:hover {
-      border-color: rgba(233, 193, 118, 0.1);
       transform: translateY(-4px);
+      box-shadow: var(--shadow-md);
     }
 
-    .testimonial-card__quote-icon {
-      font-size: 36px;
-      color: var(--gold-primary);
-      opacity: 0.4;
-      margin-bottom: 16px;
+    .testimonial-card:nth-child(1) {
+      background: #FFF5F6;
     }
 
-    .testimonial-card__text {
-      font-family: var(--font-serif);
+    .testimonial-card:nth-child(2) {
+      background: #F6F2FF;
+    }
+
+    .testimonial-card:nth-child(3) {
+      background: #FFF5EE;
+    }
+
+    .testimonial-quote-icon {
+      font-family: var(--font-heading);
+      font-size: 3.5rem;
+      color: var(--rose-primary);
+      line-height: 1;
+      margin-bottom: 8px;
+      opacity: 0.6;
+    }
+
+    .testimonial-card blockquote {
+      font-family: var(--font-heading);
       font-style: italic;
-      font-size: 1rem;
+      font-size: 1.02rem;
       color: var(--text-body);
       line-height: 1.8;
       margin-bottom: 24px;
     }
 
-    .testimonial-card__stars {
-      display: flex;
-      gap: 3px;
-      margin-bottom: 20px;
-    }
-
-    .testimonial-card__stars .material-symbols-outlined {
-      font-size: 16px;
-      color: var(--gold-primary);
-      font-variation-settings: 'FILL' 1;
-    }
-
-    .testimonial-card__author {
+    .testimonial-footer {
       display: flex;
       align-items: center;
       gap: 14px;
     }
 
-    .testimonial-card__avatar {
+    .testimonial-avatar {
       width: 44px;
       height: 44px;
       border-radius: 50%;
-      background: var(--gold-gradient);
+      background: linear-gradient(135deg, var(--rose-light), var(--rose-primary));
       display: flex;
       align-items: center;
       justify-content: center;
-      font-family: var(--font-serif);
+      color: #fff;
       font-weight: 700;
-      font-size: 1rem;
-      color: var(--bg-darkest);
-      flex-shrink: 0;
+      font-size: 0.85rem;
     }
 
-    .testimonial-card__name {
+    .testimonial-name {
       font-weight: 700;
-      font-size: 0.9rem;
-      color: var(--text-primary);
+      color: var(--text-heading);
+      font-size: 0.92rem;
     }
 
-    .testimonial-card__role {
-      font-size: 0.78rem;
-      color: var(--text-muted);
+    .testimonial-stars {
+      color: var(--gold);
+      font-size: 0.85rem;
+      letter-spacing: 2px;
       margin-top: 2px;
     }
 
-    @media (max-width: 1024px) {
-      .testimonials__grid {
-        grid-template-columns: 1fr;
-        max-width: 600px;
-        margin: 0 auto;
-      }
-    }
-
-    /* ========================================
-       PORTFOLIO GALLERY (SDK)
-    ======================================== */
-    .portfolio-gallery {
-      padding: 120px 0;
-      background: var(--bg-section);
-      position: relative;
-    }
-
-    .portfolio-gallery::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 1px;
-      background: linear-gradient(to right, transparent, rgba(233, 193, 118, 0.15), transparent);
-    }
-
-    .portfolio-gallery__header {
-      text-align: center;
-      margin-bottom: 64px;
-    }
-
-    .portfolio-gallery__grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 20px;
-    }
-
-    .portfolio-card {
-      position: relative;
-      border-radius: var(--radius-md);
-      overflow: hidden;
-      background: var(--bg-card);
-      cursor: pointer;
-      transition: var(--transition);
-    }
-
-    .portfolio-card:hover {
-      transform: scale(1.03);
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
-    }
-
-    .portfolio-card img {
-      width: 100%;
-      aspect-ratio: 4/3;
-      object-fit: cover;
-      transition: transform 0.8s ease;
-    }
-
-    .portfolio-card:hover img {
-      transform: scale(1.08);
-    }
-
-    .portfolio-card__caption {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      padding: 20px;
-      background: linear-gradient(to top, rgba(14, 14, 14, 0.85) 0%, transparent 100%);
-      opacity: 0;
-      transition: opacity var(--transition);
-    }
-
-    .portfolio-card:hover .portfolio-card__caption {
-      opacity: 1;
-    }
-
-    .portfolio-card__caption span {
-      font-family: var(--font-serif);
-      font-style: italic;
-      font-size: 0.9rem;
-      color: var(--text-primary);
-    }
-
-    @media (max-width: 768px) {
-      .portfolio-gallery__grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-    }
-
-    @media (max-width: 480px) {
-      .portfolio-gallery__grid {
-        grid-template-columns: 1fr;
-        max-width: 420px;
-        margin: 0 auto;
-      }
-    }
-
-    /* ========================================
-       MEMBERSHIP PLANS (SDK)
-    ======================================== */
-    .memberships {
-      padding: 120px 0;
-      background: var(--bg-section);
-      position: relative;
-    }
-
-    .memberships::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 1px;
-      background: linear-gradient(to right, transparent, rgba(233, 193, 118, 0.15), transparent);
-    }
-
-    .memberships__header {
-      text-align: center;
-      margin-bottom: 64px;
-    }
-
-    .memberships__grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 24px;
-    }
-
-    .membership-card {
-      background: var(--bg-card);
-      border: 1px solid rgba(255, 255, 255, 0.04);
-      border-radius: var(--radius-md);
-      padding: 40px 32px;
-      text-align: center;
-      transition: var(--transition);
-      position: relative;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .membership-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 3px;
-      background: var(--gold-gradient);
-      transform: scaleX(0);
-      transform-origin: left;
-      transition: transform var(--transition);
-    }
-
-    .membership-card:hover {
-      border-color: rgba(233, 193, 118, 0.15);
-      transform: translateY(-6px);
-      box-shadow: 0 24px 64px rgba(0, 0, 0, 0.35);
-    }
-
-    .membership-card:hover::before {
-      transform: scaleX(1);
-    }
-
-    .membership-card__icon {
-      font-size: 40px;
-      color: var(--gold-primary);
-      margin-bottom: 20px;
-      opacity: 0.7;
-    }
-
-    .membership-card__name {
-      font-family: var(--font-serif);
-      font-size: 1.3rem;
-      font-weight: 700;
-      color: var(--text-primary);
-      margin-bottom: 12px;
-    }
-
-    .membership-card__price {
-      font-family: var(--font-serif);
-      font-size: 2rem;
-      font-weight: 700;
-      color: var(--gold-primary);
-      margin-bottom: 4px;
-      line-height: 1.1;
-    }
-
-    .membership-card__interval {
-      font-size: 0.8rem;
-      color: var(--text-muted);
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      margin-bottom: 20px;
-    }
-
-    .membership-card__desc {
-      font-size: 0.9rem;
-      color: var(--text-body);
-      line-height: 1.7;
-      margin-bottom: 28px;
-      flex-grow: 1;
-    }
-
-    .membership-card__cta {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      padding: 12px 32px;
-      background: transparent;
-      color: var(--gold-primary);
-      font-family: var(--font-sans);
-      font-size: 0.82rem;
-      font-weight: 700;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      border-radius: 50px;
-      border: 1px solid rgba(233, 193, 118, 0.3);
-      cursor: pointer;
-      transition: var(--transition);
-    }
-
-    .membership-card__cta:hover {
-      background: var(--gold-gradient);
-      color: var(--bg-darkest);
-      border-color: transparent;
-      transform: translateY(-2px);
-      box-shadow: 0 8px 30px rgba(233, 193, 118, 0.25);
-    }
-
-    @media (max-width: 1024px) {
-      .memberships__grid {
+    @media (max-width: 800px) {
+      .testimonials-grid {
         grid-template-columns: 1fr;
         max-width: 480px;
         margin: 0 auto;
@@ -1271,321 +1154,293 @@
     }
 
     /* ========================================
-       LOYALTY BANNER (SDK)
+       8. PRODUCTS
     ======================================== */
-    .loyalty-banner {
-      display: none;
-      background: linear-gradient(135deg, rgba(233, 193, 118, 0.12) 0%, rgba(212, 175, 55, 0.08) 50%, rgba(197, 160, 89, 0.12) 100%);
-      border-top: 1px solid rgba(233, 193, 118, 0.15);
-      border-bottom: 1px solid rgba(233, 193, 118, 0.15);
-      padding: 20px 24px;
-      text-align: center;
+    .products {
+      background: var(--bg-cream);
       position: relative;
       overflow: hidden;
     }
 
-    .loyalty-banner::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 200%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(233, 193, 118, 0.05), transparent);
-      animation: loyaltyShimmer 4s ease-in-out infinite;
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 28px;
+      position: relative;
+      z-index: 1;
     }
 
-    @keyframes loyaltyShimmer {
-      0% { transform: translateX(-50%); }
-      100% { transform: translateX(50%); }
+    .product-card {
+      background: #fff;
+      border-radius: 18px;
+      padding: 36px 24px;
+      text-align: center;
+      box-shadow: var(--shadow-sm);
+      transition: all var(--transition-base);
     }
 
-    .loyalty-banner__inner {
+    .product-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .product-icon {
+      width: 60px;
+      height: 60px;
+      border-radius: 16px;
+      background: linear-gradient(135deg, rgba(212, 132, 156, 0.1), rgba(232, 160, 191, 0.15));
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 12px;
-      position: relative;
-      z-index: 1;
-      flex-wrap: wrap;
+      margin: 0 auto 18px;
     }
 
-    .loyalty-banner__icon {
-      font-size: 22px;
-      color: var(--gold-primary);
-      font-variation-settings: 'FILL' 1;
+    .product-icon .material-symbols-outlined {
+      font-size: 28px;
+      color: var(--rose-primary);
     }
 
-    .loyalty-banner__text {
-      font-family: var(--font-sans);
-      font-size: 0.88rem;
-      font-weight: 500;
-      color: var(--text-body);
-      letter-spacing: 0.02em;
-    }
-
-    .loyalty-banner__text strong {
-      color: var(--gold-primary);
-      font-weight: 700;
-    }
-
-    /* ========================================
-       8. ABOUT / STORY
-    ======================================== */
-    .story {
-      padding: 120px 0;
-      background: var(--bg-section);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .story::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 1px;
-      background: linear-gradient(to right, transparent, rgba(233, 193, 118, 0.15), transparent);
-    }
-
-    .story__grid {
-      display: grid;
-      grid-template-columns: 5fr 7fr;
-      gap: 80px;
-      align-items: center;
-    }
-
-    .story__decorative {
-      font-family: var(--font-serif);
-      font-size: clamp(4rem, 8vw, 8rem);
-      font-weight: 700;
-      color: var(--text-primary);
-      line-height: 1;
-      opacity: 0.08;
-      letter-spacing: -0.04em;
-    }
-
-    .story__decorative span {
-      display: block;
-      font-style: italic;
-      color: var(--gold-primary);
-      opacity: 1;
-      font-size: clamp(3.5rem, 7vw, 7rem);
-    }
-
-    .story__content p {
-      font-size: 1.05rem;
-      color: var(--text-body);
-      line-height: 1.85;
-      margin-bottom: 24px;
-      font-weight: 300;
-    }
-
-    .story__stats {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 32px;
-      margin-top: 64px;
-      padding-top: 48px;
-      border-top: 1px solid rgba(255, 255, 255, 0.06);
-    }
-
-    .stat {
-      text-align: center;
-    }
-
-    .stat__number {
-      font-family: var(--font-serif);
-      font-size: clamp(2rem, 3.5vw, 3rem);
-      font-weight: 700;
-      color: var(--gold-primary);
-      line-height: 1;
+    .product-card h3 {
+      font-size: 1.08rem;
       margin-bottom: 8px;
     }
 
-    .stat__label {
-      font-size: 0.8rem;
-      font-weight: 600;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
+    .product-card p {
+      font-size: 0.88rem;
       color: var(--text-muted);
+      margin-bottom: 16px;
+      line-height: 1.6;
     }
 
-    @media (max-width: 768px) {
-      .story__grid {
-        grid-template-columns: 1fr;
-        gap: 40px;
-        text-align: center;
-      }
-
-      .story__stats {
-        grid-template-columns: repeat(3, 1fr);
-        gap: 20px;
-      }
+    .product-price {
+      font-family: var(--font-heading);
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--rose-primary);
+      margin-bottom: 18px;
     }
 
-    @media (max-width: 480px) {
-      .story__stats {
+    @media (max-width: 700px) {
+      .products-grid {
         grid-template-columns: 1fr;
+        max-width: 360px;
+        margin: 0 auto;
       }
     }
 
     /* ========================================
-       9. CTA SECTION
+       9. CONTACT / VISIT US
     ======================================== */
-    .cta-section {
-      padding: 120px 0;
-      background: var(--bg-main);
+    .contact {
+      background: var(--bg-blush);
       position: relative;
-      text-align: center;
       overflow: hidden;
     }
 
-    .cta-section__icon {
+    .contact .deco-circle-1 {
+      width: 300px;
+      height: 300px;
+      background: rgba(212, 132, 156, 0.08);
+      top: -10%;
+      right: -5%;
+    }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 50px;
+      align-items: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .contact-info h2 {
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      text-align: left;
+      margin-bottom: 28px;
+    }
+
+    .contact-detail {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      margin-bottom: 22px;
+    }
+
+    .contact-detail .material-symbols-outlined {
+      font-size: 22px;
+      color: var(--rose-primary);
+      margin-top: 2px;
+    }
+
+    .contact-detail-text strong {
+      display: block;
+      font-size: 0.88rem;
+      color: var(--text-heading);
+      margin-bottom: 2px;
+      font-weight: 600;
+    }
+
+    .contact-detail-text span {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    .contact-map-placeholder {
+      background: #fff;
+      border-radius: 20px;
+      border: 2px solid var(--bg-deeper-blush);
+      padding: 60px 32px;
+      text-align: center;
+      box-shadow: var(--shadow-sm);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .contact-map-placeholder::before {
+      content: '';
       position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      font-size: 320px;
-      color: var(--gold-primary);
-      opacity: 0.03;
+      inset: 0;
+      border-radius: 18px;
+      padding: 2px;
+      background: linear-gradient(135deg, var(--rose-primary), var(--gold), var(--rose-light));
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
       pointer-events: none;
     }
 
-    .cta-section__content {
-      position: relative;
-      z-index: 2;
+    .contact-map-placeholder .material-symbols-outlined {
+      font-size: 48px;
+      color: var(--rose-primary);
+      margin-bottom: 16px;
     }
 
-    .cta-section__heading {
-      font-family: var(--font-serif);
-      font-size: clamp(2.2rem, 4.5vw, 3.8rem);
-      font-weight: 700;
-      color: var(--text-primary);
-      line-height: 1.15;
-      margin-bottom: 20px;
-    }
-
-    .cta-section__subtitle {
+    .contact-map-placeholder h3 {
       font-size: 1.1rem;
-      color: var(--text-body);
-      margin-bottom: 44px;
-      font-weight: 300;
+      margin-bottom: 8px;
     }
 
-    .cta-section .btn-gold {
-      padding: 18px 48px;
+    .contact-map-placeholder p {
+      color: var(--text-muted);
       font-size: 0.9rem;
     }
 
-    .cta-section__badges {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 40px;
-      margin-top: 56px;
-    }
+    @media (max-width: 700px) {
+      .contact-grid {
+        grid-template-columns: 1fr;
+      }
 
-    .badge {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 0.82rem;
-      font-weight: 600;
-      color: var(--text-muted);
-      letter-spacing: 0.04em;
-    }
-
-    .badge .material-symbols-outlined {
-      font-size: 20px;
-      color: var(--gold-primary);
-      font-variation-settings: 'FILL' 1;
+      .contact-info h2 {
+        text-align: center;
+      }
     }
 
     /* ========================================
        10. FOOTER
     ======================================== */
     .footer {
-      padding: 80px 0 0;
-      background: var(--bg-darkest);
-      border-top: 1px solid rgba(233, 193, 118, 0.06);
+      background: var(--text-heading);
+      color: rgba(255, 255, 255, 0.7);
+      padding: 72px 0 0;
     }
 
-    .footer__grid {
+    .footer-grid {
       display: grid;
-      grid-template-columns: 2fr 1fr 1.5fr;
-      gap: 64px;
-      padding-bottom: 64px;
+      grid-template-columns: 1.4fr 0.8fr 1.2fr;
+      gap: 48px;
+      padding-bottom: 48px;
     }
 
-    .footer__brand {
-      font-family: var(--font-serif);
-      font-style: italic;
+    .footer-brand h3 {
+      font-family: var(--font-heading);
       font-size: 1.4rem;
-      font-weight: 700;
-      color: var(--gold-primary);
-      margin-bottom: 16px;
+      color: #fff;
+      margin-bottom: 14px;
     }
 
-    .footer__desc {
+    .footer-brand p {
       font-size: 0.9rem;
-      color: var(--text-muted);
-      line-height: 1.7;
-      max-width: 360px;
+      line-height: 1.8;
+      color: rgba(255, 255, 255, 0.55);
     }
 
-    .footer__title {
-      font-family: var(--font-sans);
-      font-size: 0.75rem;
+    .footer h4 {
+      font-family: var(--font-body);
+      font-size: 0.82rem;
       font-weight: 700;
-      letter-spacing: 0.2em;
       text-transform: uppercase;
-      color: var(--text-primary);
+      letter-spacing: 0.15em;
+      color: rgba(255, 255, 255, 0.45);
       margin-bottom: 20px;
     }
 
-    .footer__links {
+    .footer-links {
       list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
     }
 
-    .footer__links a {
+    .footer-links li {
+      margin-bottom: 12px;
+    }
+
+    .footer-links a {
       font-size: 0.9rem;
-      color: var(--text-muted);
-      transition: color var(--transition);
+      color: rgba(255, 255, 255, 0.65);
+      transition: color var(--transition-base);
     }
 
-    .footer__links a:hover {
-      color: var(--gold-primary);
+    .footer-links a:hover {
+      color: var(--rose-primary);
     }
 
-    .footer__contact {
+    .newsletter-form {
       display: flex;
-      flex-direction: column;
-      gap: 14px;
+      gap: 10px;
+      margin-top: 8px;
     }
 
-    .footer__contact-item {
-      display: flex;
-      align-items: flex-start;
-      gap: 12px;
+    .newsletter-form input {
+      flex: 1;
+      padding: 12px 18px;
+      border-radius: 50px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      background: rgba(255, 255, 255, 0.08);
+      color: #fff;
+      font-family: var(--font-body);
       font-size: 0.88rem;
-      color: var(--text-muted);
-      line-height: 1.5;
+      outline: none;
+      transition: border-color var(--transition-base);
     }
 
-    .footer__contact-item .material-symbols-outlined {
-      font-size: 18px;
-      color: var(--gold-secondary);
-      margin-top: 2px;
-      flex-shrink: 0;
+    .newsletter-form input::placeholder {
+      color: rgba(255, 255, 255, 0.35);
     }
 
-    .footer__bottom {
-      border-top: 1px solid rgba(255, 255, 255, 0.05);
+    .newsletter-form input:focus {
+      border-color: var(--rose-primary);
+    }
+
+    .newsletter-form button {
+      padding: 12px 22px;
+      border-radius: 50px;
+      border: none;
+      background: linear-gradient(135deg, var(--rose-primary), var(--rose-deep));
+      color: #fff;
+      font-family: var(--font-body);
+      font-weight: 600;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all var(--transition-base);
+      white-space: nowrap;
+    }
+
+    .newsletter-form button:hover {
+      background: linear-gradient(135deg, var(--rose-hover), var(--rose-deep));
+      transform: translateY(-1px);
+    }
+
+    .footer-bottom {
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
       padding: 24px 0;
       display: flex;
       align-items: center;
@@ -1594,158 +1449,121 @@
       gap: 16px;
     }
 
-    .footer__socials {
+    .footer-bottom p {
+      font-size: 0.82rem;
+      color: rgba(255, 255, 255, 0.4);
+    }
+
+    .footer-bottom a {
+      color: var(--rose-primary);
+      transition: color var(--transition-base);
+    }
+
+    .footer-bottom a:hover {
+      color: var(--rose-light);
+    }
+
+    .footer-social {
       display: flex;
       gap: 16px;
     }
 
-    .footer__social-link {
-      width: 40px;
-      height: 40px;
+    .footer-social a {
+      width: 38px;
+      height: 38px;
       border-radius: 50%;
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.12);
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: var(--transition);
+      color: rgba(255, 255, 255, 0.55);
+      font-size: 0.9rem;
+      transition: all var(--transition-base);
     }
 
-    .footer__social-link:hover {
-      background: rgba(233, 193, 118, 0.1);
-      border-color: rgba(233, 193, 118, 0.2);
+    .footer-social a:hover {
+      border-color: var(--rose-primary);
+      color: var(--rose-primary);
+      background: rgba(212, 132, 156, 0.1);
     }
 
-    .footer__social-link svg {
-      width: 16px;
-      height: 16px;
-      fill: var(--text-muted);
-      transition: fill var(--transition);
-    }
-
-    .footer__social-link:hover svg {
-      fill: var(--gold-primary);
-    }
-
-    .footer__copy {
-      font-size: 0.78rem;
-      color: var(--text-muted);
-    }
-
-    .footer__powered {
-      font-size: 0.78rem;
-      color: var(--text-muted);
-    }
-
-    .footer__powered a {
-      color: var(--gold-secondary);
-      font-weight: 600;
-      transition: color var(--transition);
-    }
-
-    .footer__powered a:hover {
-      color: var(--gold-primary);
-    }
-
-    @media (max-width: 768px) {
-      .footer__grid {
+    @media (max-width: 700px) {
+      .footer-grid {
         grid-template-columns: 1fr;
-        gap: 40px;
+        gap: 36px;
       }
 
-      .footer__bottom {
+      .footer-bottom {
         flex-direction: column;
         text-align: center;
       }
     }
 
     /* ========================================
-       MICRO-ANIMATIONS
+       Keyframe Animations
     ======================================== */
-    @keyframes fadeInUp {
-      from {
-        opacity: 0;
-        transform: translateY(30px);
+    @keyframes gentlePulse {
+
+      0%,
+      100% {
+        opacity: 0.6;
+        transform: scale(1);
       }
 
-      to {
-        opacity: 1;
+      50% {
+        opacity: 0.9;
+        transform: scale(1.05);
+      }
+    }
+
+    @keyframes float {
+
+      0%,
+      100% {
         transform: translateY(0);
       }
-    }
 
-    @keyframes shimmer {
-      0% {
-        background-position: -200% 0;
+      50% {
+        transform: translateY(-8px);
       }
-
-      100% {
-        background-position: 200% 0;
-      }
-    }
-
-    .hero__badge {
-      animation: fadeInUp 0.8s ease 0.2s both;
-    }
-
-    .hero__title {
-      animation: fadeInUp 0.8s ease 0.4s both;
-    }
-
-    .hero__subtitle {
-      animation: fadeInUp 0.8s ease 0.6s both;
-    }
-
-    .hero__actions {
-      animation: fadeInUp 0.8s ease 0.8s both;
-    }
-
-    /* Gold line decoration */
-    .gold-line {
-      width: 60px;
-      height: 2px;
-      background: var(--gold-gradient);
-      margin: 0 auto 24px;
-      border-radius: 2px;
-    }
-
-    .gold-line--left {
-      margin: 0 0 24px 0;
     }
 
     /* Loading placeholder for SDK-driven sections */
     .loading-placeholder {
       text-align: center;
       padding: 60px 20px;
-      font-family: var(--font-serif);
+      font-family: var(--font-heading);
       font-size: 0.9rem;
-      color: var(--gold-primary);
+      color: var(--rose-primary);
       letter-spacing: 3px;
       text-transform: uppercase;
       opacity: 0.6;
-      animation: shimmer 2s ease-in-out infinite;
+      animation: gentlePulse 2s ease-in-out infinite;
     }
   </style>
 </head>
 
 <body>
 
-  <!-- ==========================================
+  <!-- Rose Gold Top Line -->
+  <div class="top-accent-line"></div>
+
+  <!-- ===================================
        1. STICKY NAV
-  ========================================== -->
+  ==================================== -->
   <nav class="navbar" id="navbar">
-    <div class="navbar__inner">
-      <a href="#" class="navbar__brand">Heritage Haircuts</a>
-      <ul class="navbar__links">
-        <li><a href="#hero">Home</a></li>
+    <div class="container navbar-inner">
+      <a href="#" class="nav-logo">Luxury Nails <span class="sparkle">✦</span></a>
+      <ul class="nav-links">
         <li><a href="#services">Services</a></li>
-        <li><a href="#team">Barbers</a></li>
+        <li><a href="#artists">Artists</a></li>
         <li><a href="#gallery">Gallery</a></li>
-        <li><a href="#story">About</a></li>
+        <li><a href="#experience">About</a></li>
+        <li><a href="#contact">Contact</a></li>
       </ul>
       <a href="#" onclick="event.preventDefault(); if(window.BarberBooking) window.BarberBooking.open();"
-        class="navbar__cta">Book Now</a>
-      <button class="navbar__hamburger" id="hamburger" aria-label="Open menu">
+        class="btn btn-primary nav-book-btn">Book Now</a>
+      <button class="hamburger" id="hamburger" aria-label="Open menu">
         <span></span>
         <span></span>
         <span></span>
@@ -1753,404 +1571,346 @@
     </div>
   </nav>
 
-  <!-- Mobile Menu -->
-  <div class="mobile-menu" id="mobileMenu">
-    <a href="#hero" onclick="closeMobileMenu()">Home</a>
-    <a href="#services" onclick="closeMobileMenu()">Services</a>
-    <a href="#team" onclick="closeMobileMenu()">Barbers</a>
-    <a href="#gallery" onclick="closeMobileMenu()">Gallery</a>
-    <a href="#story" onclick="closeMobileMenu()">About</a>
-    <a href="#" class="navbar__cta"
-      onclick="event.preventDefault(); closeMobileMenu(); if(window.BarberBooking) window.BarberBooking.open();">Book
-      Now</a>
+  <!-- Mobile Nav Overlay -->
+  <div class="mobile-nav" id="mobileNav">
+    <a href="#services" class="mobile-nav-link">Services</a>
+    <a href="#artists" class="mobile-nav-link">Artists</a>
+    <a href="#gallery" class="mobile-nav-link">Gallery</a>
+    <a href="#experience" class="mobile-nav-link">About</a>
+    <a href="#contact" class="mobile-nav-link">Contact</a>
+    <a href="#" onclick="event.preventDefault(); if(window.BarberBooking) window.BarberBooking.open();"
+      class="btn btn-primary" style="margin-top:12px;">Book Now</a>
   </div>
 
-  <!-- ==========================================
+  <!-- ===================================
        2. HERO SECTION
-  ========================================== -->
+  ==================================== -->
   <section class="hero" id="hero">
-    <div class="hero__bg">
-      <img src="/demo/heritage/hero.png" alt="Heritage Haircuts — Premium barbershop interior" />
-    </div>
-    <div class="hero__overlay"></div>
-    <div class="hero__content">
-      <div class="hero__badge">EST. 1924 &bull; ATLANTA, GA</div>
-      <h1 class="hero__title">The Art of <span class="italic" style="color:#e9c176">Precision</span> Grooming</h1>
-      <p class="hero__subtitle">Where timeless tradition meets modern mastery. Experience the pinnacle of men's grooming
-        at Atlanta's most distinguished barbershop.</p>
-      <div class="hero__actions">
-        <a href="#services" class="btn-gold">View Our Services</a>
-        <a href="#team" class="btn-glass">Meet The Team</a>
+    <div class="deco-circle deco-circle-1"></div>
+    <div class="deco-circle deco-circle-2"></div>
+    <div class="container">
+      <div class="hero-grid">
+        <div class="hero-content">
+          <div class="hero-label reveal">PREMIUM NAIL &amp; BEAUTY SERVICES</div>
+          <h1 class="hero-title reveal reveal-delay-1">Where Beauty Becomes <em>Art</em></h1>
+          <p class="hero-subtitle reveal reveal-delay-2">Indulge in a sanctuary of elegance. Our artisans craft bespoke
+            nail designs and luxurious spa treatments tailored to your unique style.</p>
+          <div class="hero-ctas reveal reveal-delay-3">
+            <a href="#services" class="btn btn-primary">Explore Services</a>
+            <a href="#gallery" class="btn btn-outline">View Our Work</a>
+          </div>
+          <div class="hero-trust reveal reveal-delay-4">
+            <span class="star">★</span> 4.9 Rating &nbsp;·&nbsp; 2,000+ Happy Clients &nbsp;·&nbsp; Award-Winning
+            Artists
+          </div>
+        </div>
+        <div class="hero-image-wrapper reveal reveal-delay-2">
+          <div class="deco-blob"></div>
+          <img src="/demo/luxury-nails/hero.png" alt="Luxury Nails & Spa — elegant manicure" />
+        </div>
       </div>
-    </div>
-    <div class="hero__scroll">
-      <span>Scroll</span>
-      <span class="material-symbols-outlined">expand_more</span>
     </div>
   </section>
 
-  <!-- ==========================================
-       LOYALTY PROGRAM BANNER (SDK)
-  ========================================== -->
-  <div class="loyalty-banner" id="loyalty-banner">
-    <div class="container">
-      <div class="loyalty-banner__inner">
-        <span class="material-symbols-outlined loyalty-banner__icon">loyalty</span>
-        <span class="loyalty-banner__text" id="loyalty-text"></span>
-      </div>
-    </div>
-  </div>
-
-  <!-- ==========================================
+  <!-- ===================================
        3. SERVICES SECTION
-  ========================================== -->
-  <section class="services" id="services">
+  ==================================== -->
+  <section class="services section-padding" id="services">
+    <div class="deco-circle deco-circle-1"></div>
     <div class="container">
-      <div class="services__header">
-        <div class="section-label reveal">THE APOTHECARY MENU</div>
-        <div class="gold-line reveal reveal-delay-1"></div>
-        <h2 class="section-heading reveal reveal-delay-2">Curated Services</h2>
-      </div>
+      <div class="section-label reveal">OUR SERVICES</div>
+      <h2 class="section-heading reveal reveal-delay-1">Curated Treatments</h2>
+      <p class="section-subtitle reveal reveal-delay-2">Each service is a ritual — thoughtfully designed to nurture,
+        beautify, and restore.</p>
       <div id="services-loading" class="loading-placeholder">Loading Services...</div>
-      <div id="services-list" class="services__grid" style="display:none"></div>
+      <div id="services-list" class="services-grid" style="display:none"></div>
     </div>
   </section>
 
-  <!-- ==========================================
-       4. EDITORIAL FEATURE — "The Ritual"
-  ========================================== -->
-  <section class="editorial" id="editorial">
+  <!-- ===================================
+       4. THE EXPERIENCE
+  ==================================== -->
+  <section class="experience section-padding" id="experience">
+    <div class="deco-circle deco-circle-1"></div>
     <div class="container">
-      <div class="editorial__grid">
-        <div class="editorial__image-wrap reveal">
-          <img src="/demo/heritage/gallery1.png" alt="The Heritage Haircuts ritual — barber at work" />
+      <div class="experience-grid">
+        <div class="experience-image-wrapper reveal">
+          <div class="deco-blob"></div>
+          <img src="/demo/luxury-nails/hero.png" alt="The Luxury Nails experience" />
         </div>
-        <div class="editorial__content">
+        <div class="experience-content">
           <div class="section-label reveal">THE EXPERIENCE</div>
-          <h2 class="editorial__heading reveal reveal-delay-1">The Ritual</h2>
-          <p class="editorial__text reveal reveal-delay-2">Every visit is more than just a cut; it is a dedicated time
-            for the self. We use only the finest apothecary products, selected for their efficacy and timeless scents.
-            From the hot towel wrap to the final styling, each step is performed with reverence for the craft.</p>
-          <div class="editorial__tag reveal reveal-delay-3">
-            <span class="material-symbols-outlined">brush</span>
-            Traditional Methods / Modern Precision
+          <h2 class="reveal reveal-delay-1">A Sanctuary of Elegance</h2>
+          <div class="feature-item reveal reveal-delay-2">
+            <div class="feature-icon"><span class="material-symbols-outlined">spa</span></div>
+            <div class="feature-text">
+              <h4>Premium Products</h4>
+              <p>We use only the finest, cruelty-free products from leading luxury brands.</p>
+            </div>
+          </div>
+          <div class="feature-item reveal reveal-delay-3">
+            <div class="feature-icon"><span class="material-symbols-outlined">eco</span></div>
+            <div class="feature-text">
+              <h4>Clean &amp; Serene</h4>
+              <p>Our salon maintains the highest standards of hygiene in a calming environment.</p>
+            </div>
+          </div>
+          <div class="feature-item reveal reveal-delay-4">
+            <div class="feature-icon"><span class="material-symbols-outlined">schedule</span></div>
+            <div class="feature-text">
+              <h4>Your Time, Honored</h4>
+              <p>Every appointment is unhurried, allowing our artists to perfect every detail.</p>
+            </div>
+          </div>
+          <div class="experience-cta reveal reveal-delay-5">
+            <a href="#" onclick="event.preventDefault(); if(window.BarberBooking) window.BarberBooking.open();"
+              class="btn btn-primary">Book Your Experience</a>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ==========================================
-       5. MEET THE TEAM
-  ========================================== -->
-  <section class="team" id="team">
+  <!-- ===================================
+       5. MEET THE ARTISTS
+  ==================================== -->
+  <section class="artists section-padding" id="artists">
+    <div class="deco-circle deco-circle-1"></div>
     <div class="container">
-      <div class="team__header">
-        <div class="section-label reveal">MASTERS OF THE CRAFT</div>
-        <div class="gold-line reveal reveal-delay-1"></div>
-        <h2 class="section-heading reveal reveal-delay-2">Meet Our Barbers</h2>
-      </div>
-      <div id="team-loading" class="loading-placeholder">Loading Barbers...</div>
-      <div id="team-list" class="team__grid" style="display:none"></div>
+      <div class="section-label reveal">OUR ARTISTS</div>
+      <h2 class="section-heading reveal reveal-delay-1">The Hands Behind the Beauty</h2>
+      <p class="section-subtitle reveal reveal-delay-2">&nbsp;</p>
+      <div id="team-loading" class="loading-placeholder">Loading Artists...</div>
+      <div id="team-list" class="artists-grid" style="display:none"></div>
     </div>
   </section>
 
-  <!-- ==========================================
-       PORTFOLIO GALLERY (SDK)
-  ========================================== -->
-  <section class="portfolio-gallery" id="portfolio-gallery" style="display:none">
-    <div class="container">
-      <div class="portfolio-gallery__header">
-        <div class="section-label reveal">OUR CRAFT</div>
-        <div class="gold-line reveal reveal-delay-1"></div>
-        <h2 class="section-heading reveal reveal-delay-2">Portfolio Gallery</h2>
-      </div>
-      <div id="gallery-loading" class="loading-placeholder">Loading Portfolio...</div>
-      <div id="gallery-list" class="portfolio-gallery__grid" style="display:none"></div>
-    </div>
-  </section>
-
-  <!-- ==========================================
+  <!-- ===================================
        6. GALLERY
-  ========================================== -->
-  <section class="gallery" id="gallery">
+  ==================================== -->
+  <section class="gallery section-padding" id="gallery">
     <div class="container">
-      <div class="gallery__header">
-        <div class="section-label reveal">OUR WORK</div>
-        <div class="gold-line reveal reveal-delay-1"></div>
-        <h2 class="section-heading reveal reveal-delay-2">The Gallery</h2>
-      </div>
-      <div class="gallery__grid reveal">
-        <div class="gallery__item gallery__item--large">
-          <img src="/demo/heritage/hero.png" alt="Heritage Haircuts showcase" />
-          <div class="gallery__item-overlay"><span>The Heritage Experience</span></div>
+      <div class="section-label reveal">OUR PORTFOLIO</div>
+      <h2 class="section-heading reveal reveal-delay-1">Artistry in Every Detail</h2>
+      <p class="section-subtitle reveal reveal-delay-2">&nbsp;</p>
+      <div class="gallery-grid">
+        <div class="gallery-item reveal">
+          <img src="/demo/luxury-nails/gallery1.png" alt="Rose Gold Elegance" />
+          <div class="gallery-overlay"><span>Rose Gold Elegance</span></div>
         </div>
-        <div class="gallery__item">
-          <img src="/templates/heritage/detail.jpg" alt="Detail work" />
-          <div class="gallery__item-overlay"><span>Precision Detail</span></div>
+        <div class="gallery-item reveal reveal-delay-1">
+          <img src="/demo/luxury-nails/hero.png" alt="The Sanctuary" style="object-position: center 30%;" />
+          <div class="gallery-overlay"><span>The Sanctuary</span></div>
         </div>
-        <div class="gallery__item gallery__item--tall">
-          <img src="/demo/heritage/gallery1.png" alt="Gallery showcase" />
-          <div class="gallery__item-overlay"><span>The Craft</span></div>
+        <div class="gallery-item reveal reveal-delay-2">
+          <img src="/demo/luxury-nails/gallery1.png" alt="Bridal Collection" />
+          <div class="gallery-overlay"><span>Bridal Collection</span></div>
         </div>
-        <div class="gallery__item">
-          <img src="/templates/heritage/elena.jpg" alt="Elena at work" />
-          <div class="gallery__item-overlay"><span>Master at Work</span></div>
+        <div class="gallery-item reveal reveal-delay-3">
+          <img src="/demo/luxury-nails/hero.png" alt="Premium Experience" />
+          <div class="gallery-overlay"><span>Premium Experience</span></div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ==========================================
-       7. CLIENT TESTIMONIALS
-  ========================================== -->
-  <section class="testimonials" id="testimonials">
+  <!-- ===================================
+       7. TESTIMONIALS
+  ==================================== -->
+  <section class="testimonials section-padding" id="testimonials">
     <div class="container">
-      <div class="testimonials__header">
-        <h2 class="testimonials__heading reveal">Reflections from Our <span style="color:#e9c176"
-            class="italic">Distinguished Guests</span></h2>
-      </div>
+      <div class="section-label reveal">CLIENT LOVE</div>
+      <h2 class="section-heading reveal reveal-delay-1">What Our Clients Say</h2>
+      <p class="section-subtitle reveal reveal-delay-2">&nbsp;</p>
       <div id="reviews-loading" class="loading-placeholder">Loading Reviews...</div>
-      <div id="reviews-list" class="testimonials__grid" style="display:none"></div>
+      <div id="reviews-list" class="testimonials-grid" style="display:none"></div>
     </div>
   </section>
 
-  <!-- ==========================================
-       MEMBERSHIP PLANS (SDK)
-  ========================================== -->
-  <section class="memberships" id="memberships" style="display:none">
+  <!-- ===================================
+       8. PRODUCTS
+  ==================================== -->
+  <section class="products section-padding" id="products">
     <div class="container">
-      <div class="memberships__header">
-        <div class="section-label reveal">EXCLUSIVE</div>
-        <div class="gold-line reveal reveal-delay-1"></div>
-        <h2 class="section-heading reveal reveal-delay-2">Membership Plans</h2>
-      </div>
-      <div id="memberships-loading" class="loading-placeholder">Loading Memberships...</div>
-      <div id="memberships-list" class="memberships__grid" style="display:none"></div>
+      <div class="section-label reveal">SELF-CARE AT HOME</div>
+      <h2 class="section-heading reveal reveal-delay-1">Products We Love</h2>
+      <p class="section-subtitle reveal reveal-delay-2">&nbsp;</p>
+      <div id="products-loading" class="loading-placeholder">Loading Products...</div>
+      <div id="products-list" class="products-grid" style="display:none"></div>
     </div>
   </section>
 
-  <!-- ==========================================
-       8. ABOUT / STORY
-  ========================================== -->
-  <section class="story" id="story">
+  <!-- ===================================
+       9. CONTACT / VISIT US
+  ==================================== -->
+  <section class="contact section-padding" id="contact">
+    <div class="deco-circle deco-circle-1"></div>
     <div class="container">
-      <div class="story__grid">
-        <div class="story__decorative reveal">
-          <span>Since</span>
-          1924
-        </div>
-        <div class="story__content">
-          <div class="section-label reveal">OUR STORY</div>
-          <p class="reveal reveal-delay-1">Heritage Haircuts was founded on a simple belief: that every man deserves a
-            sanctuary. For a century, we've perfected the art of grooming, blending time-honored techniques with modern
-            precision.</p>
-          <p class="reveal reveal-delay-2">Our Atlanta atelier is more than a barbershop — it's a retreat. Step through
-            our doors and into a world where craftsmanship is celebrated, conversation flows, and every detail matters.
-          </p>
-        </div>
-      </div>
-      <div class="story__stats">
-        <div class="stat reveal reveal-delay-1">
-          <div class="stat__number">100 Years</div>
-          <div class="stat__label">Of Excellence</div>
-        </div>
-        <div class="stat reveal reveal-delay-2">
-          <div class="stat__number">50,000+</div>
-          <div class="stat__label">Clients Served</div>
-        </div>
-        <div class="stat reveal reveal-delay-3">
-          <div class="stat__number">4</div>
-          <div class="stat__label">Master Barbers</div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ==========================================
-       9. CTA SECTION
-  ========================================== -->
-  <section class="cta-section" id="book">
-    <span class="material-symbols-outlined cta-section__icon">content_cut</span>
-    <div class="container">
-      <div class="cta-section__content">
-        <h2 class="cta-section__heading reveal">Ready for a <span class="italic"
-            style="color:#e9c176">Transformation</span>?</h2>
-        <p class="cta-section__subtitle reveal reveal-delay-1">Experience the pinnacle of grooming. Secure your chair
-          today.</p>
-        <a href="#" onclick="event.preventDefault(); if(window.BarberBooking) window.BarberBooking.open();"
-          class="btn-gold reveal reveal-delay-2">Book Your Appointment</a>
-        <div class="cta-section__badges reveal reveal-delay-3">
-          <div class="badge">
-            <span class="material-symbols-outlined">star</span>
-            5.0 Star Rated
+      <div class="contact-grid">
+        <div class="contact-info reveal">
+          <h2>Visit Our Salon</h2>
+          <div class="contact-detail">
+            <span class="material-symbols-outlined">location_on</span>
+            <div class="contact-detail-text">
+              <strong>Address</strong>
+              <span>450 Peachtree Street NE, Suite 200, Atlanta, GA 30308</span>
+            </div>
           </div>
-          <div class="badge">
-            <span class="material-symbols-outlined">workspace_premium</span>
-            Master Certified
+          <div class="contact-detail">
+            <span class="material-symbols-outlined">call</span>
+            <div class="contact-detail-text">
+              <strong>Phone</strong>
+              <span>(404) 555-0201</span>
+            </div>
           </div>
-          <div class="badge">
-            <span class="material-symbols-outlined">history</span>
-            Since 1924
+          <div class="contact-detail">
+            <span class="material-symbols-outlined">mail</span>
+            <div class="contact-detail-text">
+              <strong>Email</strong>
+              <span>hello@luxurynails.com</span>
+            </div>
+          </div>
+          <div class="contact-detail">
+            <span class="material-symbols-outlined">schedule</span>
+            <div class="contact-detail-text">
+              <strong>Hours</strong>
+              <span>Mon–Sat 9AM–7PM &nbsp;|&nbsp; Sun 10AM–5PM</span>
+            </div>
+          </div>
+        </div>
+        <div class="reveal reveal-delay-1">
+          <div class="contact-map-placeholder">
+            <span class="material-symbols-outlined">pin_drop</span>
+            <h3>Luxury Nails &amp; Spa</h3>
+            <p>Atlanta's premier nail destination</p>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ==========================================
+  <!-- ===================================
        10. FOOTER
-  ========================================== -->
+  ==================================== -->
   <footer class="footer">
     <div class="container">
-      <div class="footer__grid">
-        <!-- Column 1 -->
-        <div>
-          <div class="footer__brand">Heritage Haircuts</div>
-          <p class="footer__desc">Atlanta's most distinguished barbershop, blending timeless tradition with modern
-            mastery since 1924. Every visit is an experience.</p>
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <h3>Luxury Nails &amp; Spa <span style="color:var(--rose-primary);font-size:0.6em;">✦</span></h3>
+          <p>A sanctuary of elegance in the heart of Atlanta. We believe every nail is a canvas and every client
+            deserves the extraordinary.</p>
         </div>
-        <!-- Column 2 -->
-        <div>
-          <div class="footer__title">Quick Links</div>
-          <ul class="footer__links">
+        <div class="footer-quick-links">
+          <h4>Quick Links</h4>
+          <ul class="footer-links">
             <li><a href="#services">Services</a></li>
-            <li><a href="#team">Team</a></li>
+            <li><a href="#artists">Our Artists</a></li>
             <li><a href="#gallery">Gallery</a></li>
-            <li><a href="#story">About</a></li>
+            <li><a href="#contact">Contact</a></li>
+            <li><a href="#">Gift Cards</a></li>
           </ul>
         </div>
-        <!-- Column 3 -->
-        <div>
-          <div class="footer__title">Contact</div>
-          <div class="footer__contact">
-            <div class="footer__contact-item">
-              <span class="material-symbols-outlined">location_on</span>
-              <span>2847 Heritage Blvd, Suite 101<br />Atlanta, GA 30309</span>
-            </div>
-            <div class="footer__contact-item">
-              <span class="material-symbols-outlined">call</span>
-              <span>+1 (404) 555-0180</span>
-            </div>
-            <div class="footer__contact-item">
-              <span class="material-symbols-outlined">mail</span>
-              <span>hello@heritagehaircuts.com</span>
-            </div>
-          </div>
+        <div class="footer-newsletter">
+          <h4>Stay Beautiful</h4>
+          <p style="font-size:0.88rem;color:rgba(255,255,255,0.5);margin-bottom:16px;">Subscribe for exclusive offers,
+            beauty tips, and new arrival updates.</p>
+          <form class="newsletter-form" onsubmit="event.preventDefault();">
+            <input type="email" placeholder="Your email address" aria-label="Email address" />
+            <button type="submit">Subscribe</button>
+          </form>
         </div>
       </div>
-      <!-- Bottom Bar -->
-      <div class="footer__bottom">
-        <div class="footer__socials">
-          <a href="#" class="footer__social-link" aria-label="Instagram">
-            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <div class="footer-bottom">
+        <p>&copy; 2026 Luxury Nails &amp; Spa. All rights reserved. &nbsp;|&nbsp; Powered by <a href="#">KutzApp</a></p>
+        <div class="footer-social">
+          <a href="#" aria-label="Instagram">
+            <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
               <path
-                d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
+                d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z" />
             </svg>
           </a>
-          <a href="#" class="footer__social-link" aria-label="Facebook">
-            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <a href="#" aria-label="Facebook">
+            <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
               <path
-                d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385h-3.047v-3.47h3.047v-2.642c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953h-1.514c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385c5.738-.9 10.126-5.864 10.126-11.854z" />
+                d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
             </svg>
           </a>
-          <a href="#" class="footer__social-link" aria-label="Twitter / X">
-            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <a href="#" aria-label="TikTok">
+            <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
               <path
-                d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z" />
+            </svg>
+          </a>
+          <a href="#" aria-label="Pinterest">
+            <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
+              <path
+                d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 5.079 3.158 9.417 7.618 11.162-.105-.949-.199-2.403.041-3.439.219-.937 1.406-5.957 1.406-5.957s-.359-.72-.359-1.781c0-1.668.967-2.914 2.171-2.914 1.023 0 1.518.769 1.518 1.69 0 1.029-.655 2.568-.994 3.995-.283 1.194.599 2.169 1.777 2.169 2.133 0 3.772-2.249 3.772-5.495 0-2.873-2.064-4.882-5.012-4.882-3.414 0-5.418 2.561-5.418 5.207 0 1.031.397 2.138.893 2.738a.36.36 0 01.083.345l-.333 1.36c-.053.22-.174.267-.402.161-1.499-.698-2.436-2.889-2.436-4.649 0-3.785 2.75-7.262 7.929-7.262 4.163 0 7.398 2.967 7.398 6.931 0 4.136-2.607 7.464-6.227 7.464-1.216 0-2.359-.631-2.75-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146C9.57 23.812 10.763 24 12.017 24c6.624 0 11.99-5.367 11.99-11.988C24.007 5.367 18.641 0 12.017 0z" />
             </svg>
           </a>
         </div>
-        <div class="footer__copy">&copy; 2024 Heritage Haircuts. All rights reserved.</div>
-        <div class="footer__powered">Powered by <a href="#">KutzApp</a></div>
       </div>
     </div>
   </footer>
 
-  <!-- ==========================================
-       JAVASCRIPT
-  ========================================== -->
+  <!-- ===================================
+       JavaScript
+  ==================================== -->
   <script>
-    // ---- Scroll Reveal via IntersectionObserver ----
-    document.addEventListener('DOMContentLoaded', () => {
-      const revealElements = document.querySelectorAll('.reveal');
-
-      const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              entry.target.classList.add('visible');
-            }
-          });
-        },
-        {
-          threshold: 0.1,
-          rootMargin: '0px 0px -40px 0px',
-        }
-      );
-
-      revealElements.forEach((el) => observer.observe(el));
-
-      // ---- Hero parallax (subtle) ----
-      const heroSection = document.querySelector('.hero');
-      if (heroSection) {
-        heroSection.classList.add('visible');
-      }
-
-      // ---- Navbar scroll state ----
-      const navbar = document.getElementById('navbar');
-      window.addEventListener('scroll', () => {
-        if (window.scrollY > 60) {
-          navbar.classList.add('scrolled');
-        } else {
-          navbar.classList.remove('scrolled');
-        }
-      });
-
-      // ---- Hamburger toggle ----
-      const hamburger = document.getElementById('hamburger');
-      const mobileMenu = document.getElementById('mobileMenu');
-
-      hamburger.addEventListener('click', () => {
-        mobileMenu.classList.toggle('active');
-        const spans = hamburger.querySelectorAll('span');
-        if (mobileMenu.classList.contains('active')) {
-          spans[0].style.transform = 'rotate(45deg) translate(5px, 5px)';
-          spans[1].style.opacity = '0';
-          spans[2].style.transform = 'rotate(-45deg) translate(5px, -5px)';
-        } else {
-          spans[0].style.transform = 'none';
-          spans[1].style.opacity = '1';
-          spans[2].style.transform = 'none';
-        }
-      });
-
-      // ---- Parallax on hero bg image ----
-      const heroBg = document.querySelector('.hero__bg img');
-      if (heroBg) {
-        window.addEventListener('scroll', () => {
-          const scrolled = window.scrollY;
-          if (scrolled < window.innerHeight) {
-            heroBg.style.transform = `scale(${1 + scrolled * 0.0002}) translateY(${scrolled * 0.3}px)`;
-          }
-        }, { passive: true });
-      }
+    // ---- Navbar scroll effect ----
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      navbar.classList.toggle('scrolled', window.scrollY > 20);
     });
 
-    function closeMobileMenu() {
-      var mobileMenu = document.getElementById('mobileMenu');
-      var hamburger = document.getElementById('hamburger');
-      mobileMenu.classList.remove('active');
-      var spans = hamburger.querySelectorAll('span');
-      spans[0].style.transform = 'none';
-      spans[1].style.opacity = '1';
-      spans[2].style.transform = 'none';
-    }
-  </script>
+    // ---- Mobile hamburger ----
+    const hamburger = document.getElementById('hamburger');
+    const mobileNav = document.getElementById('mobileNav');
 
-  <!-- KutzApp SDK + Data Loading -->
-  <script>
-    // ---- SDK Loading ----
+    hamburger.addEventListener('click', () => {
+      hamburger.classList.toggle('active');
+      mobileNav.classList.toggle('open');
+      document.body.style.overflow = mobileNav.classList.contains('open') ? 'hidden' : '';
+    });
+
+    document.querySelectorAll('.mobile-nav-link').forEach(link => {
+      link.addEventListener('click', () => {
+        hamburger.classList.remove('active');
+        mobileNav.classList.remove('open');
+        document.body.style.overflow = '';
+      });
+    });
+
+    // ---- Scroll reveal with IntersectionObserver ----
+    const revealElements = document.querySelectorAll('.reveal');
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('revealed');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, {
+      threshold: 0.12,
+      rootMargin: '0px 0px -40px 0px'
+    });
+    revealElements.forEach(el => revealObserver.observe(el));
+
+    // ---- Smooth scroll for anchor links ----
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        const targetId = this.getAttribute('href');
+        if (targetId === '#') return;
+        e.preventDefault();
+        const target = document.querySelector(targetId);
+        if (target) {
+          const offset = 80;
+          const position = target.getBoundingClientRect().top + window.pageYOffset - offset;
+          window.scrollTo({ top: position, behavior: 'smooth' });
+        }
+      });
+    });
+
+    // ---- KutzApp SDK Loading ----
     (function () {
       var domain = window.location.origin;
       var isFileProtocol = window.location.protocol === 'file:';
@@ -2173,17 +1933,10 @@
 
     // ---- SDK Data Loading ----
     window.addEventListener('load', function () {
-      // Grab the observer so we can re-observe dynamically added .reveal elements
-      var observer = new IntersectionObserver(function (entries) {
-        entries.forEach(function (entry) {
-          if (entry.isIntersecting) { entry.target.classList.add('visible'); }
-        });
-      }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
-
       function initializeShop() {
         if (typeof KutzApp === 'undefined') return;
         var urlParams = new URLSearchParams(window.location.search);
-        var shopId = urlParams.get('shopId') || 'cmpnbqh1r0000iu54k0qnj2sl';
+        var shopId = urlParams.get('shopId') || 'cmpksdwb90000j12g6jzm5dfi';
         var domain = window.location.origin;
         var isFileProtocol = window.location.protocol === 'file:';
         if (domain === 'null' || domain === 'about://' || domain === 'file://' || !domain) {
@@ -2193,7 +1946,7 @@
 
         KutzApp.getPublicData().then(function (data) {
           var shop = data.shop || {};
-          var primaryColor = shop.primaryColor || '#c5a059';
+          var primaryColor = shop.primaryColor || '#D4849C';
 
           // --- Load booking modal + widget ---
           setTimeout(function () {
@@ -2204,20 +1957,28 @@
             } else if (window.location.pathname.includes('/html-sections/')) {
               widgetUrlPrefix = '..';
             }
+            var shopName = shop.name || 'Luxury Nails';
+            var secondaryColor = shop.secondaryColor || '#C9A96E';
+            var shopSlogan = shop.slogan || shop.tagline || '';
             ['booking-modal.js', 'booking-widget.js'].forEach(function (script) {
               var s = document.createElement('script');
               s.src = widgetUrlPrefix + '/' + script + cacheBuster;
               s.setAttribute('data-shop-id', shopId);
               s.setAttribute('data-theme-color', primaryColor);
+              s.setAttribute('data-secondary-color', secondaryColor);
+              s.setAttribute('data-template-type', 'editorial');
+              s.setAttribute('data-color-theme', 'light');
+              s.setAttribute('data-shop-name', shopName);
+              if (shopSlogan) s.setAttribute('data-slogan', shopSlogan);
               document.body.appendChild(s);
             });
           }, 50);
 
           // --- Update shop name/logo ---
           try {
-            var shopName = shop.name || 'Heritage Haircuts';
+            var shopName = shop.name || 'Luxury Nails';
             if (shop.logoUrl) {
-              document.querySelector('.navbar__brand').innerHTML = '<img src="' + shop.logoUrl + '" alt="' + shopName + '" style="max-height:36px;">';
+              document.querySelector('.nav-logo').innerHTML = '<img src="' + shop.logoUrl + '" alt="' + shopName + '" style="max-height:40px;">';
             }
           } catch (e) { console.error('Shop render error:', e); }
 
@@ -2226,22 +1987,22 @@
             var services = (data.services || []).filter(function (s) { return s.duration > 0; });
             if (services.length > 0) {
               document.getElementById('services-list').innerHTML = services.map(function (s, i) {
-                var delay = Math.min(i + 1, 6);
-                return '<div class="service-card reveal reveal-delay-' + delay + '" onclick="event.preventDefault(); if(window.BarberBooking) window.BarberBooking.open(\'' + s.id + '\');" style="cursor:pointer;">' +
-                  '<div class="service-card__header">' +
-                  '<h3 class="service-card__name">' + s.name + '</h3>' +
-                  '<span class="service-card__price">$' + Number(s.price).toFixed(0) + '</span>' +
+                var delayClass = i % 3 === 0 ? '' : ' reveal-delay-' + (i % 3);
+                return '<div class="service-card reveal' + delayClass + '">' +
+                  '<div class="service-icon"><span class="material-symbols-outlined">spa</span></div>' +
+                  '<h3>' + s.name + '</h3>' +
+                  '<p>' + (s.description || 'Expert service tailored for you.') + '</p>' +
+                  '<div class="service-meta">' +
+                  '<span class="service-price">$' + Number(s.price).toFixed(0) + '</span>' +
+                  '<span class="service-duration"><span class="material-symbols-outlined">schedule</span> ' + s.duration + ' min</span>' +
                   '</div>' +
-                  '<p class="service-card__desc">' + (s.description || 'Expert grooming service.') + '</p>' +
-                  '<span class="service-card__duration">' +
-                  '<span class="material-symbols-outlined">schedule</span>' +
-                  s.duration + ' min' +
-                  '</span>' +
+                  '<a href="#" onclick="event.preventDefault(); if(window.BarberBooking) window.BarberBooking.open(\'' + s.id + '\');" class="btn btn-outline btn-sm">Book Now</a>' +
                   '</div>';
               }).join('');
               document.getElementById('services-loading').style.display = 'none';
               document.getElementById('services-list').style.display = 'grid';
-              document.querySelectorAll('#services-list .reveal').forEach(function (el) { observer.observe(el); });
+              // Re-observe new reveal elements
+              document.querySelectorAll('#services-list .reveal').forEach(function (el) { revealObserver.observe(el); });
             } else {
               document.getElementById('services-loading').textContent = 'No services available.';
             }
@@ -2251,27 +2012,28 @@
           try {
             var staff = data.staff || [];
             if (staff.length > 0) {
-              var fallbackImg = 'https://images.unsplash.com/photo-1595152772835-219674b2a8a6?auto=format&fit=crop&w=600&q=80';
               document.getElementById('team-list').innerHTML = staff.map(function (st, i) {
                 var safeName = st.name || 'Team Member';
-                var delay = Math.min(i + 1, 4);
-                var imgSrc = st.imageUrl || fallbackImg;
-                return '<div class="barber-card reveal reveal-delay-' + delay + '">' +
-                  '<div class="barber-card__image">' +
-                  '<img src="' + imgSrc + '" alt="' + safeName + '" />' +
-                  '</div>' +
-                  '<div class="barber-card__info">' +
-                  '<h3 class="barber-card__name">' + safeName + '</h3>' +
-                  '<div class="barber-card__role">' + (st.role === 'SHOP_ADMIN' ? 'Master Barber' : 'Specialist') + '</div>' +
-                  '<p class="barber-card__bio"><a href="#" onclick="event.preventDefault(); event.stopPropagation(); if(window.BarberBooking) window.BarberBooking.open(null, \'' + st.id + '\');" class="btn-gold" style="padding:8px 20px;font-size:0.78rem;margin-top:8px;display:inline-block;">Book ' + safeName.split(' ')[0] + '</a></p>' +
+                var initials = safeName.split(' ').map(function (w) { return w[0]; }).join('').substring(0, 2).toUpperCase();
+                var avatarHtml = st.imageUrl
+                  ? '<img src="' + st.imageUrl + '" alt="' + safeName + '" style="width:90px;height:90px;border-radius:50%;object-fit:cover;margin-bottom:24px;">'
+                  : '<div class="artist-avatar"><span class="material-symbols-outlined">person</span></div>';
+                var delayClass = i % 2 === 0 ? '' : ' reveal-delay-1';
+                return '<div class="artist-card reveal' + delayClass + '">' +
+                  avatarHtml +
+                  '<h3>' + safeName + '</h3>' +
+                  '<div class="artist-role">' + (st.role === 'SHOP_ADMIN' ? 'Lead Artist' : 'Specialist') + '</div>' +
+                  '<p>Dedicated to delivering exceptional results with care and precision.</p>' +
+                  '<div class="artist-specialties">' +
+                  '<a href="#" onclick="event.preventDefault(); if(window.BarberBooking) window.BarberBooking.open(null, \'' + st.id + '\');" class="btn btn-outline btn-sm" style="margin-top:8px;">Book ' + safeName.split(' ')[0] + '</a>' +
                   '</div>' +
                   '</div>';
               }).join('');
               document.getElementById('team-loading').style.display = 'none';
               document.getElementById('team-list').style.display = 'grid';
-              document.querySelectorAll('#team-list .reveal').forEach(function (el) { observer.observe(el); });
+              document.querySelectorAll('#team-list .reveal').forEach(function (el) { revealObserver.observe(el); });
             } else {
-              document.getElementById('team').style.display = 'none';
+              document.getElementById('artists').style.display = 'none';
             }
           } catch (e) { console.error('Staff render error:', e); }
 
@@ -2279,97 +2041,54 @@
           try {
             var reviews = data.reviews || [];
             if (reviews.length > 0) {
+              var pastelBgs = ['#FFF5F6', '#F6F2FF', '#FFF5EE'];
               document.getElementById('reviews-list').innerHTML = reviews.map(function (r, i) {
                 var name = (r.user && r.user.name) || 'Client';
                 var initials = name.split(' ').map(function (w) { return w[0]; }).join('').substring(0, 2).toUpperCase();
-                var starsHtml = '';
-                for (var s = 0; s < (r.rating || 5); s++) {
-                  starsHtml += '<span class="material-symbols-outlined">star</span>';
-                }
-                var delay = Math.min(i + 1, 3);
-                return '<div class="testimonial-card reveal reveal-delay-' + delay + '">' +
-                  '<span class="material-symbols-outlined testimonial-card__quote-icon" style="font-variation-settings:\'FILL\' 1;">format_quote</span>' +
-                  '<p class="testimonial-card__text">"' + (r.comment || 'An exceptional standard of service.') + '"</p>' +
-                  '<div class="testimonial-card__stars">' + starsHtml + '</div>' +
-                  '<div class="testimonial-card__author">' +
-                  '<div class="testimonial-card__avatar">' + initials + '</div>' +
+                var stars = '★'.repeat(r.rating || 5);
+                var bg = pastelBgs[i % pastelBgs.length];
+                var delayClass = i % 3 === 0 ? '' : ' reveal-delay-' + (i % 3);
+                return '<div class="testimonial-card reveal' + delayClass + '" style="background:' + bg + '">' +
+                  '<div class="testimonial-quote-icon">&ldquo;</div>' +
+                  '<blockquote>' + (r.comment || 'An exceptional standard of service.') + '</blockquote>' +
+                  '<div class="testimonial-footer">' +
+                  '<div class="testimonial-avatar">' + initials + '</div>' +
                   '<div>' +
-                  '<div class="testimonial-card__name">' + name + '</div>' +
-                  '<div class="testimonial-card__role">Valued Client</div>' +
+                  '<div class="testimonial-name">' + name + '</div>' +
+                  '<div class="testimonial-stars">' + stars + '</div>' +
                   '</div>' +
                   '</div>' +
                   '</div>';
               }).join('');
               document.getElementById('reviews-loading').style.display = 'none';
               document.getElementById('reviews-list').style.display = 'grid';
-              document.querySelectorAll('#reviews-list .reveal').forEach(function (el) { observer.observe(el); });
+              document.querySelectorAll('#reviews-list .reveal').forEach(function (el) { revealObserver.observe(el); });
             } else {
               document.getElementById('testimonials').style.display = 'none';
             }
           } catch (e) { console.error('Reviews render error:', e); }
 
-          // --- PORTFOLIO GALLERY ---
+          // --- PRODUCTS ---
           try {
-            var portfolioImages = data.portfolioImages || [];
-            if (portfolioImages.length > 0) {
-              portfolioImages.sort(function (a, b) { return (a.displayOrder || 0) - (b.displayOrder || 0); });
-              document.getElementById('gallery-list').innerHTML = portfolioImages.map(function (img, i) {
-                var delay = Math.min(i + 1, 6);
-                var caption = img.caption || 'Our Work';
-                return '<div class="portfolio-card reveal reveal-delay-' + delay + '">' +
-                  '<img src="' + img.imageUrl + '" alt="' + caption + '" loading="lazy" />' +
-                  '<div class="portfolio-card__caption"><span>' + caption + '</span></div>' +
+            var products = data.products || [];
+            if (products.length > 0) {
+              document.getElementById('products-list').innerHTML = products.map(function (p, i) {
+                var delayClass = i % 3 === 0 ? '' : ' reveal-delay-' + (i % 3);
+                return '<div class="product-card reveal' + delayClass + '">' +
+                  '<div class="product-icon"><span class="material-symbols-outlined">spa</span></div>' +
+                  '<h3>' + p.name + '</h3>' +
+                  '<p>' + (p.description || '') + '</p>' +
+                  '<div class="product-price">$' + Number(p.price).toFixed(0) + '</div>' +
+                  '<a href="#" onclick="event.preventDefault();" class="btn btn-outline btn-sm">Add to Cart</a>' +
                   '</div>';
               }).join('');
-              document.getElementById('gallery-loading').style.display = 'none';
-              document.getElementById('gallery-list').style.display = 'grid';
-              document.getElementById('portfolio-gallery').style.display = 'block';
-              document.querySelectorAll('#portfolio-gallery .reveal').forEach(function (el) { observer.observe(el); });
+              document.getElementById('products-loading').style.display = 'none';
+              document.getElementById('products-list').style.display = 'grid';
+              document.querySelectorAll('#products-list .reveal').forEach(function (el) { revealObserver.observe(el); });
+            } else {
+              document.getElementById('products').style.display = 'none';
             }
-          } catch (e) { console.error('Portfolio gallery render error:', e); }
-
-          // --- MEMBERSHIP TIERS ---
-          try {
-            var membershipTiers = data.membershipTiers || [];
-            if (membershipTiers.length > 0) {
-              document.getElementById('memberships-list').innerHTML = membershipTiers.map(function (tier, i) {
-                var delay = Math.min(i + 1, 3);
-                var priceStr = '$' + Number(tier.price || 0).toFixed(0);
-                var intervalStr = (tier.interval || 'month').toLowerCase();
-                return '<div class="membership-card reveal reveal-delay-' + delay + '">' +
-                  '<span class="material-symbols-outlined membership-card__icon" style="font-variation-settings:\'FILL\' 1;">workspace_premium</span>' +
-                  '<h3 class="membership-card__name">' + (tier.name || 'Membership') + '</h3>' +
-                  '<div class="membership-card__price">' + priceStr + '</div>' +
-                  '<div class="membership-card__interval">per ' + intervalStr + '</div>' +
-                  '<p class="membership-card__desc">' + (tier.description || 'Exclusive membership benefits.') + '</p>' +
-                  '<button class="membership-card__cta" onclick="alert(\'Membership inquiry for ' + (tier.name || 'this plan').replace(/'/g, '') + '. Please contact us to sign up!\');">Join Now</button>' +
-                  '</div>';
-              }).join('');
-              document.getElementById('memberships-loading').style.display = 'none';
-              document.getElementById('memberships-list').style.display = 'grid';
-              document.getElementById('memberships').style.display = 'block';
-              document.querySelectorAll('#memberships .reveal').forEach(function (el) { observer.observe(el); });
-            }
-          } catch (e) { console.error('Memberships render error:', e); }
-
-          // --- LOYALTY PROGRAM BANNER ---
-          try {
-            var loyalty = data.loyaltyProgram;
-            if (loyalty && loyalty.id) {
-              var perVisit = loyalty.pointsPerVisit || 0;
-              var perDollar = loyalty.pointsPerDollar || 0;
-              var threshold = loyalty.redeemThreshold || 0;
-              var redeemValue = loyalty.redeemValue || 0;
-              var parts = [];
-              if (perVisit > 0) parts.push('Earn <strong>' + perVisit + ' points</strong> per visit');
-              if (perDollar > 0) parts.push('<strong>' + perDollar + ' point' + (perDollar > 1 ? 's' : '') + '</strong> per dollar spent');
-              if (threshold > 0 && redeemValue > 0) parts.push('redeem at <strong>' + threshold + ' points</strong> for <strong>$' + redeemValue + ' off</strong>');
-              if (parts.length > 0) {
-                document.getElementById('loyalty-text').innerHTML = parts.join(' &bull; ');
-                document.getElementById('loyalty-banner').style.display = 'block';
-              }
-            }
-          } catch (e) { console.error('Loyalty banner render error:', e); }
+          } catch (e) { console.error('Products render error:', e); }
 
         }).catch(function (err) { console.error('SDK error:', err); });
       }
