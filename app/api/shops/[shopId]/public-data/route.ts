@@ -27,6 +27,12 @@ export async function GET(request: Request, { params }: { params: Promise<{ shop
         requestDomain = null;
     }
 
+    // Allow cache busting via query param (e.g. after DB updates)
+    const url = new URL(request.url);
+    if (url.searchParams.get('bust')) {
+        await cacheService.invalidate(`api_public_data:${shopId}`).catch(() => {});
+    }
+
     const cachedData = await cacheService.getOrSet(`api_public_data:${shopId}`, async () => {
         const tenantClient = await getTenantClient(shopId);
 
