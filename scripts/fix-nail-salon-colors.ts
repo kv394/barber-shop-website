@@ -1,66 +1,31 @@
-// Update the DB customHtml to check window.__KUTZ_THEME__ for theme colors
+// Check BOTH shops that match the slug
 import { prisma } from '../lib/prisma';
 
 async function main() {
-  const shopId = 'cmpksdwb90000j12g6jzm5dfi';
+  const slug = 'luxury-nails--spa-demo';
+  const firstWord = slug.split('-').find(w => w.length > 2) || slug.split('-')[0];
   
-  const shop = await prisma.shop.findUnique({
-    where: { id: shopId },
-    select: { id: true, name: true, customization: true }
+  const candidates = await prisma.shop.findMany({
+    where: { name: { contains: firstWord, mode: 'insensitive' } },
+    select: { id: true, name: true, template: true, customization: true },
+    take: 50,
   });
 
-  if (!shop) { console.log('NOT FOUND'); return; }
+  const matches = candidates.filter(
+    (s: any) => s.name.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '') === slug.toLowerCase()
+  );
 
-  const c = (shop.customization as any) || {};
-  let html = c.customHtml || '';
-  
-  if (!html) {
-    console.log('No customHtml found in DB');
-    return;
+  console.log(`Found ${matches.length} shops matching slug "${slug}":`);
+  for (const s of matches) {
+    const c = (s.customization as any) || {};
+    console.log(`\n  ID: ${s.id}`);
+    console.log(`  Name: "${s.name}"`);
+    console.log(`  Template: ${s.template}`);
+    console.log(`  primaryColor: ${c.primaryColor || 'NOT SET'}`);
+    console.log(`  Has customHtml: ${!!c.customHtml}`);
+    console.log(`  customHtml length: ${c.customHtml?.length || 0}`);
+    console.log(`  Would be preferred: ${s.template === 'custom' && !!c.customHtml}`);
   }
-
-  // Replace the primary color line to check __KUTZ_THEME__ first
-  const oldLine = "var primaryColor = shop.primaryColor || '#D4849C';";
-  const newLine = "var _t = window.__KUTZ_THEME__ || {};\n          var primaryColor = _t.primaryColor || shop.primaryColor || '#D4849C';";
-  
-  if (html.includes(oldLine)) {
-    html = html.replace(oldLine, newLine);
-    console.log('✅ Replaced primaryColor line');
-  } else {
-    console.log('⚠️ primaryColor line not found in customHtml, checking variations...');
-    // Try a more general pattern
-    const altLine = "var primaryColor = shop.primaryColor";
-    if (html.includes(altLine) && !html.includes('__KUTZ_THEME__')) {
-      html = html.replace(altLine, "var _t = window.__KUTZ_THEME__ || {};\n          var primaryColor = _t.primaryColor || shop.primaryColor");
-      console.log('✅ Replaced with alt pattern');
-    } else if (html.includes('__KUTZ_THEME__')) {
-      console.log('Already patched');
-      return;
-    } else {
-      console.log('❌ Could not find pattern to replace');
-      return;
-    }
-  }
-
-  // Also replace secondaryColor line
-  const oldSec = "var secondaryColor = shop.secondaryColor || '#C9A96E';";
-  const newSec = "var secondaryColor = _t.secondaryColor || shop.secondaryColor || '#C9A96E';";
-  if (html.includes(oldSec)) {
-    html = html.replace(oldSec, newSec);
-    console.log('✅ Replaced secondaryColor line');
-  }
-
-  await prisma.shop.update({
-    where: { id: shopId },
-    data: {
-      customization: {
-        ...c,
-        customHtml: html,
-      }
-    }
-  });
-
-  console.log('✅ Updated customHtml in DB');
 }
 
 main()

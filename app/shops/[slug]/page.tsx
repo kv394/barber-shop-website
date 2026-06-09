@@ -284,14 +284,47 @@ export default async function PublicShopPage({
  }
  }
 
- // Use the custom colors if they exist, otherwise fallback to defaults
- const primaryColor = shop.customization?.primaryColor || '#3b82f6'; // Default blue-500
- const secondaryColor = shop.customization?.secondaryColor || '#06b6d4'; // Default cyan-500
- const templateType = shop.template || 'modern';
- const sportRed = shop.customization?.primaryColor || '#d50000'; // Default to a strong red
+  // Use the custom colors if they exist, otherwise fallback to defaults
+  let primaryColor = shop.customization?.primaryColor || '#3b82f6'; // Default blue-500
+  let secondaryColor = shop.customization?.secondaryColor || '#06b6d4'; // Default cyan-500
+  const templateType = shop.template || 'modern';
+  const sportRed = shop.customization?.primaryColor || '#d50000'; // Default to a strong red
 
- let dynamicTemplateHtml = null;
- let dynamicTemplateCss = null;
+  // For 'custom' templates with embedded HTML, try to extract the actual theme color
+  // from CSS variables (e.g. --rose-primary, --primary, --sport-red) in the HTML itself.
+  // This ensures the booking modal matches the landing page even if the DB's
+  // customization.primaryColor wasn't set to match the template.
+  if (templateType === 'custom' && shop.customization?.customHtml) {
+    const html = shop.customization.customHtml;
+    // Look for CSS custom property definitions that define the primary color
+    const colorPatterns = [
+      /--(?:rose-)?primary\s*:\s*(#[0-9a-fA-F]{3,8})/,
+      /--(?:sport-)?red\s*:\s*(#[0-9a-fA-F]{3,8})/,
+      /--theme-primary\s*:\s*(#[0-9a-fA-F]{3,8})/,
+      /--accent\s*:\s*(#[0-9a-fA-F]{3,8})/,
+    ];
+    for (const pattern of colorPatterns) {
+      const m = html.match(pattern);
+      if (m) {
+        primaryColor = m[1];
+        break;
+      }
+    }
+    const secPatterns = [
+      /--(?:gold|secondary)\s*:\s*(#[0-9a-fA-F]{3,8})/,
+      /--theme-secondary\s*:\s*(#[0-9a-fA-F]{3,8})/,
+    ];
+    for (const pattern of secPatterns) {
+      const m = html.match(pattern);
+      if (m) {
+        secondaryColor = m[1];
+        break;
+      }
+    }
+  }
+
+  let dynamicTemplateHtml = null;
+  let dynamicTemplateCss = null;
 
  if (!['modern', 'classic', 'minimal', 'sporty', 'corporate', 'noir', 'sunset', 'editorial'].includes(templateType)) {
 
