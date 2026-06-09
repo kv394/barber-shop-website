@@ -290,40 +290,7 @@ export default async function PublicShopPage({
   const templateType = shop.template || 'modern';
   const sportRed = shop.customization?.primaryColor || '#d50000'; // Default to a strong red
 
-  // For 'custom' templates with embedded HTML, try to extract the actual theme color
-  // from CSS variables (e.g. --rose-primary, --primary, --sport-red) in the HTML itself.
-  // This ensures the booking modal matches the landing page even if the DB's
-  // customization.primaryColor wasn't set to match the template.
-  if (templateType === 'custom' && shop.customization?.customHtml) {
-    const html = shop.customization.customHtml;
-    // Look for CSS custom property definitions that define the primary color.
-    // Each template uses different naming: --rose-primary, --gold-primary, --sport-red, --primary, etc.
-    const colorPatterns = [
-      /--(?:rose|gold|sport|theme)-primary\s*:\s*(#[0-9a-fA-F]{3,8})/,
-      /--primary\s*:\s*(#[0-9a-fA-F]{3,8})/,
-      /--(?:sport-)?red\s*:\s*(#[0-9a-fA-F]{3,8})/,
-      /--accent\s*:\s*(#[0-9a-fA-F]{3,8})/,
-    ];
-    for (const pattern of colorPatterns) {
-      const m = html.match(pattern);
-      if (m) {
-        primaryColor = m[1];
-        break;
-      }
-    }
-    const secPatterns = [
-      /--(?:gold|rose)-secondary\s*:\s*(#[0-9a-fA-F]{3,8})/,
-      /--(?:gold|secondary)\s*:\s*(#[0-9a-fA-F]{3,8})/,
-      /--theme-secondary\s*:\s*(#[0-9a-fA-F]{3,8})/,
-    ];
-    for (const pattern of secPatterns) {
-      const m = html.match(pattern);
-      if (m) {
-        secondaryColor = m[1];
-        break;
-      }
-    }
-  }
+
 
   let dynamicTemplateHtml = null;
   let dynamicTemplateCss = null;
@@ -451,8 +418,12 @@ export default async function PublicShopPage({
   {!dynamicTemplateHtml && (
   <AIWidget shopId={shop.id} shopName={shop.name} themeColor={primaryColor} secondaryColor={secondaryColor} chatbotPosition={shop.customization?.chatbotPosition} colorTheme={shop.customization?.colorTheme || 'light'} templateType={templateType} shopType={shop.shopType} slogan={shop.slogan || shop.customization?.tagline} />
   )}
- {/* Inject the booking modal script for this shop reliably */}
+ {/* Only inject BookingModalScript for built-in React templates.
+     Custom HTML templates already load their own booking-modal.js with
+     the correct theme colors from their inline JavaScript/SDK. */}
+ {!dynamicTemplateHtml && (
  <BookingModalScript shopId={shop.id} themeColor={primaryColor} secondaryColor={secondaryColor} templateType={templateType} headingFont={shop.customization?.fontFamily} bodyFont={shop.customization?.fontFamily} colorTheme={shop.customization?.colorTheme || 'light'} />
+ )}
  </>
  );
 }
