@@ -4,7 +4,7 @@ import { logger } from '@/lib/logger';
 import { cacheService } from '@/lib/cache';
 
 export const dynamic = 'force-dynamic';
-// Cache bust 1
+// Cache bust 2 - force fresh data after DB color update
 
 export async function GET(request: Request, { params }: { params: Promise<{ shopId: string }> }) {
  try {
@@ -30,10 +30,10 @@ export async function GET(request: Request, { params }: { params: Promise<{ shop
     // Allow cache busting via query param (e.g. after DB updates)
     const url = new URL(request.url);
     if (url.searchParams.get('bust')) {
-        await cacheService.invalidate(`api_public_data:${shopId}`).catch(() => {});
+        await cacheService.invalidate(`api_public_data_v2:${shopId}`).catch(() => {});
     }
 
-    const cachedData = await cacheService.getOrSet(`api_public_data:${shopId}`, async () => {
+    const cachedData = await cacheService.getOrSet(`api_public_data_v2:${shopId}`, async () => {
         const tenantClient = await getTenantClient(shopId);
 
  // 0. Fetch Shop Details First for Security Validation
