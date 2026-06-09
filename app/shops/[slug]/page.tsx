@@ -296,11 +296,12 @@ export default async function PublicShopPage({
   // customization.primaryColor wasn't set to match the template.
   if (templateType === 'custom' && shop.customization?.customHtml) {
     const html = shop.customization.customHtml;
-    // Look for CSS custom property definitions that define the primary color
+    // Look for CSS custom property definitions that define the primary color.
+    // Each template uses different naming: --rose-primary, --gold-primary, --sport-red, --primary, etc.
     const colorPatterns = [
-      /--(?:rose-)?primary\s*:\s*(#[0-9a-fA-F]{3,8})/,
+      /--(?:rose|gold|sport|theme)-primary\s*:\s*(#[0-9a-fA-F]{3,8})/,
+      /--primary\s*:\s*(#[0-9a-fA-F]{3,8})/,
       /--(?:sport-)?red\s*:\s*(#[0-9a-fA-F]{3,8})/,
-      /--theme-primary\s*:\s*(#[0-9a-fA-F]{3,8})/,
       /--accent\s*:\s*(#[0-9a-fA-F]{3,8})/,
     ];
     for (const pattern of colorPatterns) {
@@ -311,6 +312,7 @@ export default async function PublicShopPage({
       }
     }
     const secPatterns = [
+      /--(?:gold|rose)-secondary\s*:\s*(#[0-9a-fA-F]{3,8})/,
       /--(?:gold|secondary)\s*:\s*(#[0-9a-fA-F]{3,8})/,
       /--theme-secondary\s*:\s*(#[0-9a-fA-F]{3,8})/,
     ];
