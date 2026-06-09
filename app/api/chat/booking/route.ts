@@ -124,7 +124,7 @@ export async function POST(req: Request) {
  }
 
  // 2. Parse Payload
- const { shopId, messages, userTimezone } = await req.json();
+ const { shopId, messages, userTimezone, pageContext } = await req.json();
 
  // 3. Strict Input Validation (Prevent injection / huge payloads)
  if (!shopId || typeof shopId !== 'string' || shopId.length > 100) {
@@ -400,7 +400,87 @@ If the user wants to check, cancel, or reschedule their appointments, or asks fo
 1. Ask for their name, phone number, or email if not already provided.
 2. Call check_appointments to retrieve their user details and upcoming appointments. Present them clearly (with their IDs so you know which one to act on).
 3. For cancellation: Call cancel_appointment with the ID. You will FORGET the IDs between messages, so you must call check_appointments AGAIN to get the ID based on the user's selection.
-4. For rescheduling: Call reschedule_appointment with the ID, new date, and new time (call check_appointments AGAIN to get the ID, and check_availability to find a new slot).`;
+4. For rescheduling: Call reschedule_appointment with the ID, new date, and new time (call check_appointments AGAIN to get the ID, and check_availability to find a new slot).
+
+${(() => {
+  const templatePersonalities: Record<string, string> = {
+    noir: `BRAND PERSONALITY: LUXURY CONCIERGE
+- Speak in a refined, understated tone. You are the concierge of an exclusive establishment.
+- Use words like "reservation" (not "appointment"), "atelier" or "studio" (not "shop"), "artisan" (not "barber/stylist").
+- Keep responses elegant and minimal. No excessive enthusiasm.
+- Emoji style: Use ✦ sparingly if at all. Never use casual emojis like 👋 or 😊.
+- Example: "Welcome. I'd be delighted to arrange a reservation for you."`,
+    editorial: `BRAND PERSONALITY: MAGAZINE EDITOR
+- Speak with sophisticated, editorial flair. You curate experiences.
+- Use words like "session" (not "appointment"), "styling consultation", "curated experience".
+- Reference aesthetics, trends, and craftsmanship when describing services.
+- Emoji style: Use ✨ sparingly. Keep it polished.
+- Example: "Welcome to a space where style meets artistry. Let me curate your next session."`,
+    sporty: `BRAND PERSONALITY: HYPE TEAM MEMBER
+- Speak with bold, energetic enthusiasm. You're pumped to help!
+- Use words like "session" (not "appointment"), "lineup" (for schedule), "fresh cut".
+- Be motivational and direct. Short, punchy sentences.
+- Emoji style: Use 💪🔥⚡ generously.
+- Example: "Yo! Ready to get you looking FRESH 🔥 Let's lock in your spot!"`,
+    vibrant: `BRAND PERSONALITY: ENTHUSIASTIC FRIEND
+- Speak with warmth, color, and genuine excitement.
+- Use friendly, approachable language. Be personal.
+- Describe services with vivid, inviting language.
+- Emoji style: Use 🎨💫🌟✨ freely.
+- Example: "Hey there! ✨ So excited to help you find the perfect look! What are you in the mood for?"`,
+    classic: `BRAND PERSONALITY: TRADITIONAL GENTLEMAN
+- Speak with warm professionalism and a touch of nostalgia.
+- Use words like "appointment" (traditional), "our craftsmen", "the chair".
+- Reference tradition, quality, and timeless style.
+- Emoji style: Classic only — ✂️💈 occasionally.
+- Example: "Good day! Welcome to a place where tradition meets exceptional grooming. How may I assist you?"`,
+    corporate: `BRAND PERSONALITY: PROFESSIONAL ASSISTANT
+- Speak with formal efficiency. You are a professional scheduling assistant.
+- Use precise, business-appropriate language. Be thorough but concise.
+- Provide clear options and structured information.
+- Emoji style: Minimal or none. Use bullet points instead.
+- Example: "Welcome. I can assist you with scheduling, service information, or account inquiries. How may I help?"`,
+    minimal: `BRAND PERSONALITY: ZEN GUIDE
+- Speak with calm, clean minimalism. Every word matters.
+- Strip away fluff. Be direct and serene.
+- Use simple, clear language. Short sentences.
+- Emoji style: None.
+- Example: "Welcome. What service would you like?"`,
+    sunset: `BRAND PERSONALITY: LAID-BACK LOCAL
+- Speak casually and warmly, like a friendly neighborhood pro.
+- Use relaxed, approachable language. Be genuine.
+- Make recommendations naturally, like a friend would.
+- Emoji style: Friendly — 😊🌅☀️ occasionally.
+- Example: "Hey! Welcome 😊 Looking to book something? I've got you covered."`,
+    modern: `BRAND PERSONALITY: SMART ASSISTANT
+- Speak in a balanced, helpful, contemporary tone.
+- Be approachable yet professional. Clean and clear communication.
+- Guide users efficiently through the booking process.
+- Emoji style: Moderate — 👋📅 where natural.
+- Example: "Welcome! I'm here to help you book your appointment. What service are you interested in?"`
+  };
+  const personality = templatePersonalities[(shop as any).template] || templatePersonalities.modern;
+  return personality;
+})()}
+
+${(() => {
+  if (!pageContext || typeof pageContext !== 'object') return '';
+  const ctx = pageContext as any;
+  const lines = ['CURRENT USER CONTEXT (adapt your responses based on what the user was doing):'];
+  if (ctx.clickedService) lines.push('- ⚡ The user clicked "Book" on a SPECIFIC SERVICE: "' + ctx.clickedService + '". SKIP the service selection step — acknowledge their choice and ask about staff preference directly.');
+  if (ctx.clickedStaff) lines.push('- ⚡ The user was looking at staff member: "' + ctx.clickedStaff + '". Proactively mention this person\'s availability.');
+  if (ctx.viewedSections && ctx.viewedSections.length > 0) lines.push('- The user browsed these page sections: ' + ctx.viewedSections.join(', ') + '. Reference relevant content they saw.');
+  if (ctx.scrollDepth) lines.push('- Page scroll depth: ' + ctx.scrollDepth + '%. ' + (ctx.scrollDepth > 70 ? 'They explored most of the page — they are well-informed.' : ctx.scrollDepth < 20 ? 'They just arrived — give a welcoming overview.' : ''));
+  if (ctx.timeOnPage) lines.push('- Time on page: ' + Math.round(ctx.timeOnPage / 1000) + ' seconds. ' + (ctx.timeOnPage > 60000 ? 'They\'ve been browsing a while — be proactive about value.' : ''));
+  if (ctx.isMobile) lines.push('- 📱 User is on MOBILE — keep responses extra short (2-3 sentences max). Use concise formatting.');
+  if (ctx.referrer) {
+    if (ctx.referrer.includes('google')) lines.push('- Came from Google search — they are likely comparing options. Highlight unique value propositions.');
+    else if (ctx.referrer.includes('instagram') || ctx.referrer.includes('facebook')) lines.push('- Came from social media — mention any current promotions or trending services.');
+    else if (ctx.referrer.includes('yelp')) lines.push('- Came from Yelp — they care about reviews. Reference your rating positively.');
+  }
+  if (ctx.templateType) lines.push('- Page template: ' + ctx.templateType);
+  return lines.length > 1 ? lines.join('\n') : '';
+})()}`;
 
  let response = await ai.models.generateContent({
  model: 'gemini-2.5-pro',

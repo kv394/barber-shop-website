@@ -225,7 +225,7 @@ export default async function SitePage({ params }: { params: Promise<{ site: str
  dynamicTemplateHtml={dynamicTemplateHtml}
  dynamicTemplateCss={dynamicTemplateCss}
  />
- <AIWidget shopId={shop.id} />
+ <AIWidget shopId={shop.id} shopName={shop.name} themeColor={primaryColor} secondaryColor={secondaryColor} templateType={templateType} shopType={shop.shopType} slogan={shop.slogan || shop.customization?.tagline} />
  </>
  );
 }

@@ -3,7 +3,7 @@ import Image from 'next/image';
 
 import { useEffect } from 'react';
 
-export default function AIWidget({ shopId, shopName, themeColor, secondaryColor, chatbotPosition, colorTheme, templateType }: { shopId: string, shopName?: string, themeColor?: string, secondaryColor?: string, chatbotPosition?: string, colorTheme?: string, templateType?: string }) {
+export default function AIWidget({ shopId, shopName, themeColor, secondaryColor, chatbotPosition, colorTheme, templateType, shopType, slogan }: { shopId: string, shopName?: string, themeColor?: string, secondaryColor?: string, chatbotPosition?: string, colorTheme?: string, templateType?: string, shopType?: string, slogan?: string }) {
  // This component simply injects the lightweight vanilla JS widget onto the page.
  // The widget is completely self-contained in public/booking-widget.js
  
@@ -15,7 +15,7 @@ export default function AIWidget({ shopId, shopName, themeColor, secondaryColor,
  const script = document.createElement('script');
  script.id = 'booking-widget-script';
  // Use a static version string for cache busting — bump when deploying new widget code
- script.src = `/booking-widget.js?v=1.2.0`;
+ script.src = `/booking-widget.js?v=1.3.0`;
  script.setAttribute('data-shop-id', shopId);
  script.setAttribute('data-api-url', '/api/chat/booking');
  if (shopName) {
@@ -36,6 +36,12 @@ export default function AIWidget({ shopId, shopName, themeColor, secondaryColor,
  if (templateType) {
  script.setAttribute('data-template-type', templateType);
  }
+ if (shopType) {
+ script.setAttribute('data-shop-type', shopType);
+ }
+ if (slogan) {
+ script.setAttribute('data-slogan', slogan);
+ }
  script.async = true;
  
  document.body.appendChild(script);
@@ -44,7 +50,8 @@ export default function AIWidget({ shopId, shopName, themeColor, secondaryColor,
  // Optional: Remove script on unmount if needed, 
  // but usually we want the widget to persist across the shop page.
  };
- }, [shopId, shopName, themeColor, secondaryColor, chatbotPosition, colorTheme, templateType]);
+ }, [shopId, shopName, themeColor, secondaryColor, chatbotPosition, colorTheme, templateType, shopType, slogan]);
 
  return null;
 }
+

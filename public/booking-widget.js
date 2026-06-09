@@ -104,6 +104,83 @@
     } catch (e) {}
   }
 
+  // ── Shop metadata from data attributes ──
+  const shopType = (scriptTag && scriptTag.getAttribute('data-shop-type')) || '';
+  const shopSlogan = (scriptTag && scriptTag.getAttribute('data-slogan')) || '';
+
+  // ── Page Context Collector ──
+  // Tracks user behavior on the page to make the AI assistant context-aware
+  const pageLoadTime = Date.now();
+  const viewedSections = new Set();
+
+  // Observe which sections the user has scrolled through
+  try {
+    const sectionObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          // Try to identify the section by ID, heading, or data attribute
+          const el = entry.target;
+          const sectionId = el.id || el.getAttribute('data-section');
+          if (sectionId) {
+            viewedSections.add(sectionId.toLowerCase().replace(/[-_]/g, ' '));
+          } else {
+            // Try to infer from heading content
+            const heading = el.querySelector('h1, h2, h3');
+            if (heading && heading.textContent) {
+              const text = heading.textContent.trim().toLowerCase();
+              if (text.length < 40) viewedSections.add(text);
+            }
+          }
+        }
+      });
+    }, { threshold: 0.3 });
+
+    // Observe common section patterns after DOM is ready
+    const startObserving = () => {
+      // By ID
+      ['services', 'team', 'staff', 'gallery', 'reviews', 'contact', 'about',
+       'products', 'pricing', 'memberships', 'loyalty', 'hours', 'location',
+       'services-container', 'staff-container', 'reviews-container', 'gallery-container',
+       'services-section', 'team-section', 'gallery-section', 'reviews-section'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) sectionObserver.observe(el);
+      });
+      // By semantic element
+      document.querySelectorAll('section, [data-section]').forEach(el => {
+        sectionObserver.observe(el);
+      });
+    };
+    if (document.readyState === 'complete') startObserving();
+    else window.addEventListener('load', startObserving, { once: true });
+  } catch (e) {}
+
+  // Global context hook — external "Book" buttons can push context before opening chat
+  window.__kutzappBookingContext = window.__kutzappBookingContext || {
+    clickedService: null,
+    clickedServiceId: null,
+    clickedStaff: null,
+    clickedStaffId: null
+  };
+
+  // Collect all page context signals into a serializable object
+  function collectPageContext() {
+    const ctx = {
+      templateType: templateType || null,
+      shopType: shopType || null,
+      isMobile: window.innerWidth < 768,
+      scrollDepth: Math.round((window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100) || 0,
+      timeOnPage: Date.now() - pageLoadTime,
+      referrer: document.referrer || null,
+      currentUrl: window.location.href,
+      viewedSections: Array.from(viewedSections),
+      clickedService: window.__kutzappBookingContext.clickedService || null,
+      clickedServiceId: window.__kutzappBookingContext.clickedServiceId || null,
+      clickedStaff: window.__kutzappBookingContext.clickedStaff || null,
+      clickedStaffId: window.__kutzappBookingContext.clickedStaffId || null
+    };
+    return ctx;
+  }
+
   // ── Helper: hex to RGB ──
   function hexToRgb(hex) {
     const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
@@ -771,6 +848,8 @@
     });
   }
 
+  let pendingAutoBooking = null; // Queued auto-booking from context click
+
   function toggleChat(forceOpen = false) {
     if (typeof forceOpen === 'boolean') {
       isOpen = forceOpen;
@@ -788,6 +867,20 @@
       // Dismiss welcome bubble
       if (welcomeBubble) welcomeBubble.classList.remove('show');
       sessionStorage.setItem('kutzapp-bubble-dismissed', '1');
+
+      // ── Context-aware auto-booking ──
+      // If a service was clicked before opening, auto-send a booking request
+      if (pendingAutoBooking && messages.length <= 1) {
+        const serviceName = pendingAutoBooking;
+        pendingAutoBooking = null;
+        // Hide quick actions since we're auto-progressing
+        const qa = shadow.getElementById('quick-actions');
+        if (qa) { qa.style.display = 'none'; }
+        // Small delay so the user sees the chat open first
+        setTimeout(() => {
+          sendChatRequest('\ud83d\udcc5 Book ' + serviceName, '\ud83d\udcc5 Book ' + serviceName);
+        }, 300);
+      }
     } else {
       windowEl.classList.remove('open');
       button.classList.remove('open');
@@ -797,7 +890,13 @@
   closeBtn.addEventListener('click', toggleChat);
 
   // Expose a global function to open the chat from outside
+  // Accepts an optional serviceName to auto-start booking for that service
   window.openKutzAppChat = function(serviceName) {
+    if (serviceName) {
+      // Store context for the AI backend and queue auto-booking
+      window.__kutzappBookingContext.clickedService = serviceName;
+      pendingAutoBooking = serviceName;
+    }
     toggleChat(true);
   };
 
@@ -877,7 +976,8 @@
         body: JSON.stringify({ 
           shopId, 
           messages,
-          userTimezone: Intl.DateTimeFormat().resolvedOptions().timeZone
+          userTimezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+          pageContext: collectPageContext()
         })
       });
 
