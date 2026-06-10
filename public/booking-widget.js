@@ -369,7 +369,7 @@
         bottom: 0 !important;
         height: 75vh;
         max-height: 85%;
-        border-radius: 20px 20px 0 0;
+        border-radius: ${widgetBorderRadius} ${widgetBorderRadius} 0 0;
         border: none;
         border-top: 1px solid var(--border-color);
         box-shadow: 0 -8px 32px var(--shadow-color);
@@ -387,7 +387,7 @@
       #chat-header {
         flex-shrink: 0;
         padding-top: 16px;
-        border-radius: 20px 20px 0 0;
+        border-radius: ${widgetBorderRadius} ${widgetBorderRadius} 0 0;
       }
       
       #chat-messages {
@@ -590,8 +590,8 @@
       height: 75%;
       background-color: var(--bg-color);
       border-top: 1px solid var(--border-color);
-      border-top-left-radius: 20px;
-      border-top-right-radius: 20px;
+      border-top-left-radius: ${widgetBorderRadius};
+      border-top-right-radius: ${widgetBorderRadius};
       box-shadow: 0 -8px 32px var(--shadow-color);
       display: flex;
       flex-direction: column;
@@ -621,7 +621,7 @@
       gap: 4px !important;
       padding: 12px 16px !important;
       background-color: var(--msg-bot-bg) !important;
-      border-radius: 16px !important;
+      border-radius: ${widgetMsgRadius} !important;
       border-bottom-left-radius: 4px !important;
       align-self: flex-start !important;
       margin-bottom: 12px !important;
@@ -748,7 +748,7 @@
       background: var(--bg-color, #fff);
       color: var(--text-color, #333);
       border: 1px solid var(--border-color);
-      border-radius: 16px 16px ${isLeft ? '16px 4px' : '4px 16px'};
+      border-radius: ${widgetMsgRadius} ${widgetMsgRadius} ${isLeft ? widgetMsgRadius + ' 4px' : '4px ' + widgetMsgRadius};
       padding: 12px 16px; max-width: 220px;
       font-size: 13px; line-height: 1.4;
       box-shadow: 0 4px 16px var(--shadow-color);

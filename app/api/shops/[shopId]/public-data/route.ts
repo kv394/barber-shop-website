@@ -251,8 +251,11 @@ export async function GET(request: Request, { params }: { params: Promise<{ shop
  logoUrl: formatImageUrl(customization.logoUrl),
  heroImageUrl: formatImageUrl(customization.heroImageUrl),
  businessHours: customization.businessHours,
- primaryColor: customization.primaryColor,
- secondaryColor: customization.secondaryColor,
+ // For 'custom' templates, don't return primaryColor/secondaryColor from the DB.
+ // Custom HTML templates define their own theme colors via CSS variables and JS
+ // fallbacks. Returning a default DB color would override the template's intended colors.
+ primaryColor: shop.template === 'custom' ? undefined : customization.primaryColor,
+ secondaryColor: shop.template === 'custom' ? undefined : customization.secondaryColor,
  fontFamily: customization.fontFamily,
  buttonShape: customization.buttonShape,
  buttonVariant: customization.buttonVariant,
