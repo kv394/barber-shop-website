@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import Image from 'next/image';
 import { cache } from 'react';
 import { prisma } from '@/lib/prisma';
