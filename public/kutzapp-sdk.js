@@ -130,6 +130,14 @@
             data.shop.primaryColor = custom.primaryColor || shop.primaryColor || "#E31837";
             data.shop.secondaryColor = custom.secondaryColor || shop.secondaryColor || "#000000";
             data.shop.customDomain = shop.customDomain || null;
+            // Widget color overrides (all configurable from admin console)
+            data.shop.widgetBgColor = custom.widgetBgColor || null;
+            data.shop.widgetTextColor = custom.widgetTextColor || null;
+            data.shop.widgetHeaderColor = custom.widgetHeaderColor || null;
+            data.shop.widgetSurfaceColor = custom.widgetSurfaceColor || null;
+            data.shop.widgetMutedColor = custom.widgetMutedColor || null;
+            data.shop.widgetBorderColor = custom.widgetBorderColor || null;
+            data.shop.colorTheme = custom.colorTheme || null;
           }
           this._publicDataCache = data;
           this._publicDataPromise = null;

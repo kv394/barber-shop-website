@@ -226,6 +226,69 @@ export function CustomizationForm({
 
     <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
     <div>
+    <label className="block font-medium text-crm-muted mb-2 text-[13px]">Surface / Card Color</label>
+    <div className="flex items-center gap-3">
+    <input
+    type="color"
+    value={formData.widgetSurfaceColor || (formData.colorTheme === 'dark' ? '#222228' : '#f8f8fa')}
+    onChange={(e) => handleInputChange('widgetSurfaceColor', e.target.value)}
+    className="w-10 h-10 rounded-lg border border-crm-border cursor-pointer p-0.5"
+    style={{ backgroundColor: formData.widgetSurfaceColor || (formData.colorTheme === 'dark' ? '#222228' : '#f8f8fa') }}
+    />
+    <input
+    type="text"
+    value={formData.widgetSurfaceColor || ''}
+    onChange={(e) => handleInputChange('widgetSurfaceColor', e.target.value)}
+    placeholder={formData.colorTheme === 'dark' ? '#222228' : '#f8f8fa'}
+    className="flex-1 bg-crm-bg border border-crm-border shadow-sm rounded px-4 py-2 text-crm-text placeholder-gray-500 font-mono text-[13px]"
+    />
+    </div>
+    <p className="text-[11px] text-crm-muted mt-1">Cards, panels, and elevated surfaces.</p>
+    </div>
+    <div>
+    <label className="block font-medium text-crm-muted mb-2 text-[13px]">Muted Text Color</label>
+    <div className="flex items-center gap-3">
+    <input
+    type="color"
+    value={formData.widgetMutedColor || (formData.colorTheme === 'dark' ? '#9898a0' : '#6b7280')}
+    onChange={(e) => handleInputChange('widgetMutedColor', e.target.value)}
+    className="w-10 h-10 rounded-lg border border-crm-border cursor-pointer p-0.5"
+    style={{ backgroundColor: formData.widgetMutedColor || (formData.colorTheme === 'dark' ? '#9898a0' : '#6b7280') }}
+    />
+    <input
+    type="text"
+    value={formData.widgetMutedColor || ''}
+    onChange={(e) => handleInputChange('widgetMutedColor', e.target.value)}
+    placeholder={formData.colorTheme === 'dark' ? '#9898a0' : '#6b7280'}
+    className="flex-1 bg-crm-bg border border-crm-border shadow-sm rounded px-4 py-2 text-crm-text placeholder-gray-500 font-mono text-[13px]"
+    />
+    </div>
+    <p className="text-[11px] text-crm-muted mt-1">Placeholders, hints, and secondary text.</p>
+    </div>
+    <div>
+    <label className="block font-medium text-crm-muted mb-2 text-[13px]">Border Color</label>
+    <div className="flex items-center gap-3">
+    <input
+    type="color"
+    value={formData.widgetBorderColor || (formData.colorTheme === 'dark' ? '#333338' : '#e5e7eb')}
+    onChange={(e) => handleInputChange('widgetBorderColor', e.target.value)}
+    className="w-10 h-10 rounded-lg border border-crm-border cursor-pointer p-0.5"
+    style={{ backgroundColor: formData.widgetBorderColor || (formData.colorTheme === 'dark' ? '#333338' : '#e5e7eb') }}
+    />
+    <input
+    type="text"
+    value={formData.widgetBorderColor || ''}
+    onChange={(e) => handleInputChange('widgetBorderColor', e.target.value)}
+    placeholder={formData.colorTheme === 'dark' ? '#333338' : '#e5e7eb'}
+    className="flex-1 bg-crm-bg border border-crm-border shadow-sm rounded px-4 py-2 text-crm-text placeholder-gray-500 font-mono text-[13px]"
+    />
+    </div>
+    <p className="text-[11px] text-crm-muted mt-1">Dividers, card borders, and separators.</p>
+    </div>
+    </div>
+
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+    <div>
     <label className="block font-medium text-crm-muted mb-2 text-[13px]">Color Theme</label>
     <select
     value={formData.colorTheme || 'light'}

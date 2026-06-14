@@ -54,12 +54,12 @@ export default async function EmbedBookPage({ params, searchParams }: { params: 
  const colorTheme = qColorTheme || c.colorTheme || 'light';
  const isDark = colorTheme === 'dark';
 
- // ── Match chat widget (booking-widget.js) colors exactly ──
- const themeBg      = c.widgetBgColor   || (isDark ? '#1a1a1f' : '#ffffff');
- const themeSurface = isDark ? '#222228' : '#f8f8fa';
- const themeText    = c.widgetTextColor  || (isDark ? '#e8e8ec' : '#1f2937');
- const themeMuted   = isDark ? '#9898a0' : '#6b7280';
- const themeBorder  = isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.08)';
+ // ── All colors configurable from admin console ──
+ const themeBg      = c.widgetBgColor      || (isDark ? '#1a1a1f' : '#ffffff');
+ const themeSurface = c.widgetSurfaceColor  || (isDark ? '#222228' : '#f8f8fa');
+ const themeText    = c.widgetTextColor     || (isDark ? '#e8e8ec' : '#1f2937');
+ const themeMuted   = c.widgetMutedColor    || (isDark ? '#9898a0' : '#6b7280');
+ const themeBorder  = c.widgetBorderColor   || (isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.08)');
  const themeInputBg = isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.03)';
  const primaryColor = themeColor || c.widgetHeaderColor || c.primaryColor || '#000000';
  const actualSecondaryColor = secondaryColor || c.secondaryColor || '#6b7280';

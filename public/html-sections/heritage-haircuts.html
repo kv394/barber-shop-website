@@ -2056,14 +2056,22 @@
             }
             var shopName = shop.name || _t.shopName || 'Heritage Haircuts';
             var secondaryColor = shop.secondaryColor || '#c5a059';
+            var colorTheme = shop.colorTheme || 'dark';
             ['booking-modal.js', 'booking-widget.js'].forEach(function (script) {
               var s = document.createElement('script');
               s.src = widgetUrlPrefix + '/' + script + cacheBuster;
               s.setAttribute('data-shop-id', shopId);
               s.setAttribute('data-theme-color', primaryColor);
               s.setAttribute('data-secondary-color', secondaryColor);
-              s.setAttribute('data-color-theme', 'dark');
+              s.setAttribute('data-color-theme', colorTheme);
               s.setAttribute('data-shop-name', shopName);
+              // Pass all configurable widget colors from admin console
+              if (shop.widgetBgColor) s.setAttribute('data-widget-bg-color', shop.widgetBgColor);
+              if (shop.widgetTextColor) s.setAttribute('data-widget-text-color', shop.widgetTextColor);
+              if (shop.widgetHeaderColor) s.setAttribute('data-widget-header-color', shop.widgetHeaderColor);
+              if (shop.widgetSurfaceColor) s.setAttribute('data-widget-surface-color', shop.widgetSurfaceColor);
+              if (shop.widgetMutedColor) s.setAttribute('data-widget-muted-color', shop.widgetMutedColor);
+              if (shop.widgetBorderColor) s.setAttribute('data-widget-border-color', shop.widgetBorderColor);
               document.body.appendChild(s);
             });
           }, 50);

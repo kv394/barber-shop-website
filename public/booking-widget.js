@@ -47,6 +47,16 @@
   const sideCSS = isLeft ? 'left: 24px;' : 'right: 24px;';
   const transformOrigin = isLeft ? 'bottom left' : 'bottom right';
 
+  // ── Configurable widget colors (from admin console via data attrs or KutzApp) ──
+  const _attr = (name) => (scriptTag && scriptTag.getAttribute('data-' + name)) || null;
+  const _kutz = (name) => (window.KutzApp && window.KutzApp[name]) || null;
+  const cfgBgColor = _attr('widget-bg-color') || _kutz('widgetBgColor') || null;
+  const cfgTextColor = _attr('widget-text-color') || _kutz('widgetTextColor') || null;
+  const cfgHeaderColor = _attr('widget-header-color') || _kutz('widgetHeaderColor') || null;
+  const cfgSurfaceColor = _attr('widget-surface-color') || _kutz('widgetSurfaceColor') || null;
+  const cfgMutedColor = _attr('widget-muted-color') || _kutz('widgetMutedColor') || null;
+  const cfgBorderColor = _attr('widget-border-color') || _kutz('widgetBorderColor') || null;
+
   // ── Auto-detect page theme colors from CSS custom properties ──
   // Dynamic templates define their own color systems via :root CSS vars.
   // These are more accurate than the DB primaryColor for visual matching.
@@ -272,17 +282,17 @@
   const style = document.createElement('style');
   style.textContent = `
     :host {
-      --primary-color: ${themeColor};
+      --primary-color: ${cfgHeaderColor || themeColor};
       --secondary-color: ${secondaryColor};
-      --bg-color: ${isDark ? '#1a1a1f' : '#ffffff'};
-      --surface-color: ${isDark ? '#222228' : '#f8f8fa'};
-      --text-color: ${isDark ? '#e8e8ec' : '#1f2937'};
-      --text-muted: ${isDark ? '#9898a0' : '#6b7280'};
-      --border-color: ${isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.08)'};
+      --bg-color: ${cfgBgColor || (isDark ? '#1a1a1f' : '#ffffff')};
+      --surface-color: ${cfgSurfaceColor || (isDark ? '#222228' : '#f8f8fa')};
+      --text-color: ${cfgTextColor || (isDark ? '#e8e8ec' : '#1f2937')};
+      --text-muted: ${cfgMutedColor || (isDark ? '#9898a0' : '#6b7280')};
+      --border-color: ${cfgBorderColor || (isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.08)')};
       --msg-user-bg: ${secondaryColor};
       --msg-user-text: #ffffff;
       --msg-bot-bg: ${isDark ? `rgba(${tc.r},${tc.g},${tc.b},0.08)` : `rgba(${tc.r},${tc.g},${tc.b},0.06)`};
-      --msg-bot-text: ${isDark ? '#e8e8ec' : '#1f2937'};
+      --msg-bot-text: ${cfgTextColor || (isDark ? '#e8e8ec' : '#1f2937')};
       --msg-bot-border: ${isDark ? `rgba(${tc.r},${tc.g},${tc.b},0.15)` : `rgba(${tc.r},${tc.g},${tc.b},0.12)`};
       --input-bg: ${isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.03)'};
       --shadow-color: ${isDark ? 'rgba(0,0,0,0.5)' : 'rgba(0,0,0,0.12)'};
