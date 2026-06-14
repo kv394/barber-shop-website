@@ -45,10 +45,25 @@ export async function POST(
  });
  const existing = (existingShop?.customization as any) || {};
 
+  // Normalize /api/assets/{fileId} URLs to public Google Drive URLs
+  // The admin MediaPicker uploads return /api/assets/{fileId} which requires auth,
+  // but landing pages are public and can't access authenticated endpoints.
+  const normalizeAssetUrl = (url: string | undefined): string | undefined => {
+    if (!url) return url;
+    const match = url.match(/\/api\/assets\/([a-zA-Z0-9_-]+)/);
+    if (match) return `https://lh3.googleusercontent.com/d/${match[1]}`;
+    return url;
+  };
+  const normalizedCustomization = {
+    ...customization,
+    ...(customization.logoUrl !== undefined && { logoUrl: normalizeAssetUrl(customization.logoUrl) }),
+    ...(customization.heroImageUrl !== undefined && { heroImageUrl: normalizeAssetUrl(customization.heroImageUrl) }),
+  };
+
  const updatedShop = await tenantClient.shop.update({
  where: { id: shopId },
  data: {
- customization: { ...existing, ...customization },
+ customization: { ...existing, ...normalizedCustomization },
  },
  });
 
