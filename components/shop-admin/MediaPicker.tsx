@@ -1,5 +1,4 @@
-'use client';;
-import Image from 'next/image';
+'use client';
 
 import { useState, useEffect } from 'react';
 
@@ -70,9 +69,9 @@ export default function MediaPicker({ shopId, onSelect, currentUrl, label = 'Sel
  return (
   <div className={className}>
    <div className="flex items-center gap-4">
-   {currentUrl && (
-   <Image src={currentUrl} alt="Preview" />
-   )}
+    {currentUrl && (
+    <img src={currentUrl} alt="Preview" className="w-12 h-12 object-cover rounded-lg border border-crm-border" />
+    )}
    <button
    type="button"
    onClick={() => setIsOpen(true)}
@@ -149,7 +148,7 @@ export default function MediaPicker({ shopId, onSelect, currentUrl, label = 'Sel
     className="cursor-pointer group relative aspect-square rounded-xl overflow-hidden border border-crm-border hover:border-crm-primary"
     onClick={() => handleSelectExisting(url)}
     >
-     <Image src={url} alt={name} />
+     <img src={url} alt={name} className="w-full h-full object-cover" />
      <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
      <span className="text-white font-bold text-[13px]">Select</span>
      </div>

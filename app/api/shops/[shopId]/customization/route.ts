@@ -57,6 +57,8 @@ export async function POST(
  await cacheService.invalidatePattern(`shop_public_page_data:*`);
  await cacheService.invalidate(`shop_public_page_data:${shopId}`);
  await cacheService.invalidatePattern(`shop-template-content:${shopId}:*`);
+ // Invalidate the public-data API cache (used by landing pages & SDK)
+ await cacheService.invalidate(`api_public_data_v2:${shopId}`);
 
  // Clear the Next.js router cache so the new customization is applied everywhere
  revalidatePath(`/shop/${shopId}`);
