@@ -112,6 +112,47 @@ export function CustomizationForm({
    />
    </div>
    </div>
+
+   <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+   <div>
+   <label className="block font-medium text-crm-muted mb-2 text-[13px]">Primary Brand Color</label>
+   <div className="flex items-center gap-3">
+   <input
+   type="color"
+   value={formData.primaryColor || '#000000'}
+   onChange={(e) => handleInputChange('primaryColor', e.target.value)}
+   className="w-10 h-10 rounded-lg border border-crm-border cursor-pointer bg-transparent p-0.5"
+   />
+   <input
+   type="text"
+   value={formData.primaryColor || ''}
+   onChange={(e) => handleInputChange('primaryColor', e.target.value)}
+   placeholder="#000000"
+   className="flex-1 bg-crm-bg border border-crm-border shadow-sm rounded px-4 py-2 text-crm-text placeholder-gray-500 font-mono text-[13px]"
+   />
+   </div>
+   <p className="text-[11px] text-crm-muted mt-1">Used for buttons, accents, and the booking widget theme.</p>
+   </div>
+   <div>
+   <label className="block font-medium text-crm-muted mb-2 text-[13px]">Secondary Brand Color</label>
+   <div className="flex items-center gap-3">
+   <input
+   type="color"
+   value={formData.secondaryColor || '#6b7280'}
+   onChange={(e) => handleInputChange('secondaryColor', e.target.value)}
+   className="w-10 h-10 rounded-lg border border-crm-border cursor-pointer bg-transparent p-0.5"
+   />
+   <input
+   type="text"
+   value={formData.secondaryColor || ''}
+   onChange={(e) => handleInputChange('secondaryColor', e.target.value)}
+   placeholder="#6b7280"
+   className="flex-1 bg-crm-bg border border-crm-border shadow-sm rounded px-4 py-2 text-crm-text placeholder-gray-500 font-mono text-[13px]"
+   />
+   </div>
+   <p className="text-[11px] text-crm-muted mt-1">Used for secondary UI elements and hover states.</p>
+   </div>
+   </div>
    </div>
 
    <div>
