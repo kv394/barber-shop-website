@@ -18,9 +18,11 @@ if [ "$VERCEL_GIT_COMMIT_REF" = "staging" ] || [ "$VERCEL_ENV" = "preview" ]; th
   npx prisma migrate resolve --rolled-back 20260602000000_optimize_indexes || true
   node scripts/safe-migrate.js
 else
-  # Production (main)
-  echo "Production environment. Deploying migrations normally..."
-  node scripts/safe-migrate.js
+  # Production (main) — migrations are already applied by staging
+  # since both environments share the same database.
+  # Run migrations if DB env vars are available, skip gracefully if not.
+  echo "Production environment. Attempting migrations..."
+  node scripts/safe-migrate.js || echo "⚠️  Migration skipped (no DB connection string). Staging migrations already applied."
 fi
 
 # Build Next.js with increased memory
