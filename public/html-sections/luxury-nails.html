@@ -1054,6 +1054,33 @@
       }
     }
 
+    /* Random gallery entry animations */
+    @keyframes gallerySlideUp {
+      from { opacity: 0; transform: translateY(40px) rotate(-2deg); }
+      to { opacity: 1; transform: translateY(0) rotate(0); }
+    }
+    @keyframes galleryZoomIn {
+      from { opacity: 0; transform: scale(0.85); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    @keyframes gallerySlideRight {
+      from { opacity: 0; transform: translateX(-40px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    .gallery-anim-1 {
+      opacity: 0;
+      animation: gallerySlideUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.1s forwards;
+    }
+    .gallery-anim-2 {
+      opacity: 0;
+      animation: galleryZoomIn 0.9s cubic-bezier(0.4, 0, 0.2, 1) 0.3s forwards;
+    }
+    .gallery-anim-3 {
+      opacity: 0;
+      animation: gallerySlideRight 0.7s cubic-bezier(0.4, 0, 0.2, 1) 0.5s forwards;
+    }
+
     /* ========================================
        7. TESTIMONIALS
     ======================================== */
@@ -1697,21 +1724,17 @@
       <h2 class="section-heading reveal reveal-delay-1">Artistry in Every Detail</h2>
       <p class="section-subtitle reveal reveal-delay-2">&nbsp;</p>
       <div class="gallery-grid">
-        <div class="gallery-item reveal">
+        <div class="gallery-item gallery-anim-1">
           <img src="/demo/luxury-nails/gallery1.png" alt="Rose Gold Elegance" />
           <div class="gallery-overlay"><span>Rose Gold Elegance</span></div>
         </div>
-        <div class="gallery-item reveal reveal-delay-1">
+        <div class="gallery-item gallery-anim-2">
           <img src="/demo/luxury-nails/hero.png" alt="The Sanctuary" style="object-position: center 30%;" />
           <div class="gallery-overlay"><span>The Sanctuary</span></div>
         </div>
-        <div class="gallery-item reveal reveal-delay-2">
+        <div class="gallery-item gallery-anim-3">
           <img src="/demo/luxury-nails/gallery1.png" alt="Bridal Collection" />
           <div class="gallery-overlay"><span>Bridal Collection</span></div>
-        </div>
-        <div class="gallery-item reveal reveal-delay-3">
-          <img src="/demo/luxury-nails/hero.png" alt="Premium Experience" />
-          <div class="gallery-overlay"><span>Premium Experience</span></div>
         </div>
       </div>
     </div>
