@@ -1969,9 +1969,10 @@
 
           // --- Update shop name/logo ---
           try {
-            var shopName = shop.name || 'Luxury Nails';
-            var c = shop.customization || {};
-            var logoUrl = shop.logoUrl || c.logoUrl || null;
+            var shopName = shop.name || _t.shopName || 'Luxury Nails';
+            // Prefer server-side injected logoUrl (always fresh from DB)
+            // over SDK API data (which may be cached)
+            var logoUrl = _t.logoUrl || shop.logoUrl || '';
 
             // Update page title
             document.title = shopName + ' — Where Beauty Becomes Art';
@@ -1983,16 +1984,6 @@
                 navLogo.innerHTML = '<img src="' + logoUrl + '" alt="' + shopName + '" style="max-height:44px; width:auto; object-fit:contain;">';
               } else {
                 navLogo.innerHTML = shopName + ' <span class="sparkle">✦</span>';
-              }
-            }
-
-            // Update mobile nav logo if present
-            var mobileNavLinks = document.querySelectorAll('.mobile-nav a');
-            if (mobileNavLinks.length > 0 && logoUrl) {
-              // First link in mobile nav is typically the brand
-              var firstMobileLink = mobileNavLinks[0];
-              if (firstMobileLink && firstMobileLink.textContent.includes('Luxury Nails')) {
-                firstMobileLink.innerHTML = '<img src="' + logoUrl + '" alt="' + shopName + '" style="max-height:48px; width:auto; object-fit:contain;">';
               }
             }
 

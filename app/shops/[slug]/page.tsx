@@ -329,9 +329,11 @@ export default async function PublicShopPage({
   primaryColor,
   secondaryColor
   });
-  // Inject server-side theme colors so the template JS uses DB values
-  // instead of relying on the cached API response
-  const themeInjection = `<script>window.__KUTZ_THEME__={primaryColor:"${primaryColor}",secondaryColor:"${secondaryColor}"};</script>`;
+   // Inject server-side theme colors so the template JS uses DB values
+   // instead of relying on the cached API response
+   const injectedLogoUrl = shopForTemplate.logoUrl || '';
+   const injectedShopName = (shop.name || '').replace(/"/g, '\\"');
+   const themeInjection = `<script>window.__KUTZ_THEME__={primaryColor:"${primaryColor}",secondaryColor:"${secondaryColor}",logoUrl:"${injectedLogoUrl}",shopName:"${injectedShopName}"};</script>`;
   // Insert before </head> or at the start of the HTML
   if (compiledHtml.includes('</head>')) {
   compiledHtml = compiledHtml.replace('</head>', themeInjection + '</head>');
