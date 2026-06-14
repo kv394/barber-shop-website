@@ -1999,6 +1999,33 @@
             if (footerBrand) footerBrand.textContent = shopName;
           } catch (e) { console.error('Shop render error:', e); }
 
+          // --- Update hero image from shop configuration ---
+          try {
+            var heroImageUrl = _t.heroImageUrl || shop.heroImageUrl || '';
+            if (heroImageUrl) {
+              var heroImg = document.querySelector('.hero__bg img');
+              if (heroImg) heroImg.src = heroImageUrl;
+            }
+          } catch (e) { console.error('Hero image error:', e); }
+
+          // --- Update gallery images from portfolio ---
+          try {
+            var portfolio = data.portfolioImages || [];
+            if (portfolio.length > 0) {
+              var galleryItems = document.querySelectorAll('.gallery__item img');
+              galleryItems.forEach(function (img, i) {
+                if (portfolio[i % portfolio.length] && portfolio[i % portfolio.length].imageUrl) {
+                  img.src = portfolio[i % portfolio.length].imageUrl;
+                }
+              });
+              // Also update editorial image if portfolio has images
+              var editorialImg = document.querySelector('.editorial__image-wrap img');
+              if (editorialImg && portfolio[0] && portfolio[0].imageUrl) {
+                editorialImg.src = portfolio[0].imageUrl;
+              }
+            }
+          } catch (e) { console.error('Gallery update error:', e); }
+
           // --- SERVICES ---
           try {
             var services = (data.services || []).filter(function (s) { return s.duration > 0; });
