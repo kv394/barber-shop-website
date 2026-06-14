@@ -255,14 +255,17 @@ export async function GET(request: Request, { params }: { params: Promise<{ shop
   // Custom HTML templates need these for the booking widget/modal theming.
   primaryColor: customization.primaryColor,
   secondaryColor: customization.secondaryColor,
- fontFamily: customization.fontFamily,
- buttonShape: customization.buttonShape,
- buttonVariant: customization.buttonVariant,
- colorTheme: customization.colorTheme,
- customHtml: customization.customHtml,
- authPosition: customization.authPosition,
- chatbotPosition: customization.chatbotPosition,
- announcement: customization.announcement,
+  widgetBgColor: customization.widgetBgColor,
+  widgetTextColor: customization.widgetTextColor,
+  widgetHeaderColor: customization.widgetHeaderColor,
+  fontFamily: customization.fontFamily,
+  buttonShape: customization.buttonShape,
+  buttonVariant: customization.buttonVariant,
+  colorTheme: customization.colorTheme,
+  customHtml: customization.customHtml,
+  authPosition: customization.authPosition,
+  chatbotPosition: customization.chatbotPosition,
+  announcement: customization.announcement,
  };
 
  const cleanShop = {

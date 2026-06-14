@@ -163,6 +163,69 @@ export function CustomizationForm({
 
     <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
     <div>
+    <label className="block font-medium text-crm-muted mb-2 text-[13px]">Background Color</label>
+    <div className="flex items-center gap-3">
+    <input
+    type="color"
+    value={formData.widgetBgColor || (formData.colorTheme === 'dark' ? '#121212' : '#ffffff')}
+    onChange={(e) => handleInputChange('widgetBgColor', e.target.value)}
+    className="w-10 h-10 rounded-lg border border-crm-border cursor-pointer p-0.5"
+    style={{ backgroundColor: formData.widgetBgColor || (formData.colorTheme === 'dark' ? '#121212' : '#ffffff') }}
+    />
+    <input
+    type="text"
+    value={formData.widgetBgColor || ''}
+    onChange={(e) => handleInputChange('widgetBgColor', e.target.value)}
+    placeholder={formData.colorTheme === 'dark' ? '#121212' : '#ffffff'}
+    className="flex-1 bg-crm-bg border border-crm-border shadow-sm rounded px-4 py-2 text-crm-text placeholder-gray-500 font-mono text-[13px]"
+    />
+    </div>
+    <p className="text-[11px] text-crm-muted mt-1">Widget & booking modal background.</p>
+    </div>
+    <div>
+    <label className="block font-medium text-crm-muted mb-2 text-[13px]">Text Color</label>
+    <div className="flex items-center gap-3">
+    <input
+    type="color"
+    value={formData.widgetTextColor || (formData.colorTheme === 'dark' ? '#ffffff' : '#111827')}
+    onChange={(e) => handleInputChange('widgetTextColor', e.target.value)}
+    className="w-10 h-10 rounded-lg border border-crm-border cursor-pointer p-0.5"
+    style={{ backgroundColor: formData.widgetTextColor || (formData.colorTheme === 'dark' ? '#ffffff' : '#111827') }}
+    />
+    <input
+    type="text"
+    value={formData.widgetTextColor || ''}
+    onChange={(e) => handleInputChange('widgetTextColor', e.target.value)}
+    placeholder={formData.colorTheme === 'dark' ? '#ffffff' : '#111827'}
+    className="flex-1 bg-crm-bg border border-crm-border shadow-sm rounded px-4 py-2 text-crm-text placeholder-gray-500 font-mono text-[13px]"
+    />
+    </div>
+    <p className="text-[11px] text-crm-muted mt-1">Headings, labels, and body text.</p>
+    </div>
+    <div>
+    <label className="block font-medium text-crm-muted mb-2 text-[13px]">Header / Accent Color</label>
+    <div className="flex items-center gap-3">
+    <input
+    type="color"
+    value={formData.widgetHeaderColor || formData.primaryColor || '#000000'}
+    onChange={(e) => handleInputChange('widgetHeaderColor', e.target.value)}
+    className="w-10 h-10 rounded-lg border border-crm-border cursor-pointer p-0.5"
+    style={{ backgroundColor: formData.widgetHeaderColor || formData.primaryColor || '#000000' }}
+    />
+    <input
+    type="text"
+    value={formData.widgetHeaderColor || ''}
+    onChange={(e) => handleInputChange('widgetHeaderColor', e.target.value)}
+    placeholder={formData.primaryColor || '#000000'}
+    className="flex-1 bg-crm-bg border border-crm-border shadow-sm rounded px-4 py-2 text-crm-text placeholder-gray-500 font-mono text-[13px]"
+    />
+    </div>
+    <p className="text-[11px] text-crm-muted mt-1">Chat header bar and progress indicators.</p>
+    </div>
+    </div>
+
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+    <div>
     <label className="block font-medium text-crm-muted mb-2 text-[13px]">Color Theme</label>
     <select
     value={formData.colorTheme || 'light'}
@@ -238,13 +301,15 @@ export function CustomizationForm({
     </div>
 
     {(formData.primaryColor || formData.secondaryColor) && (
-    <div className="p-4 rounded-lg border border-crm-border mb-2" style={{ background: formData.colorTheme === 'dark' ? '#1a1a1f' : '#f8f8fa' }}>
-    <p className="text-[11px] font-medium mb-3" style={{ color: formData.colorTheme === 'dark' ? '#9898a0' : '#6b7280' }}>Preview</p>
+    <div className="p-4 rounded-lg border border-crm-border mb-2" style={{ background: formData.widgetBgColor || (formData.colorTheme === 'dark' ? '#1a1a1f' : '#f8f8fa') }}>
+    <p className="text-[11px] font-medium mb-3" style={{ color: formData.widgetTextColor ? formData.widgetTextColor + '90' : (formData.colorTheme === 'dark' ? '#9898a0' : '#6b7280') }}>Preview</p>
     <div className="flex items-center gap-3 flex-wrap">
     <div className="h-8 w-8 rounded-full shadow-sm" style={{ background: `linear-gradient(135deg, ${formData.primaryColor || '#000'}, ${formData.secondaryColor || '#666'})` }} title="FAB Button" />
+    <div className="px-3 py-1.5 rounded-lg text-[12px] font-semibold" style={{ backgroundColor: formData.widgetHeaderColor || formData.primaryColor || '#000', color: '#fff' }}>Header</div>
     <div className="px-4 py-1.5 rounded-full text-[12px] font-semibold text-white shadow-sm" style={{ backgroundColor: formData.primaryColor || '#000' }}>Book Now</div>
     <div className="px-3 py-1.5 rounded-lg text-[12px]" style={{ backgroundColor: formData.secondaryColor || '#666', color: '#fff' }}>User Message</div>
-    <div className="px-3 py-1.5 rounded-lg text-[12px] border" style={{ backgroundColor: formData.colorTheme === 'dark' ? '#222228' : '#f0f0f2', color: formData.colorTheme === 'dark' ? '#e8e8ec' : '#1f2937', borderColor: formData.colorTheme === 'dark' ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.08)' }}>Bot Reply</div>
+    <div className="px-3 py-1.5 rounded-lg text-[12px]" style={{ backgroundColor: formData.widgetBgColor || (formData.colorTheme === 'dark' ? '#222228' : '#f0f0f2'), color: formData.widgetTextColor || (formData.colorTheme === 'dark' ? '#e8e8ec' : '#1f2937'), border: '1px solid ' + (formData.colorTheme === 'dark' ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.08)') }}>Bot Reply</div>
+    <div className="px-3 py-1.5 rounded-lg text-[12px]" style={{ color: formData.widgetTextColor || (formData.colorTheme === 'dark' ? '#e8e8ec' : '#1f2937') }}>Body Text</div>
     </div>
     </div>
     )}

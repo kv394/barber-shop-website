@@ -53,11 +53,11 @@ export default async function EmbedBookPage({ params, searchParams }: { params: 
  const buttonVariant = c.buttonVariant || 'solid';
  const colorTheme = qColorTheme || c.colorTheme || 'light';
  const isDark = colorTheme === 'dark';
- const themeBg = isDark ? '#121212' : '#ffffff';
- const themeText = isDark ? '#ffffff' : '#111827';
+ const themeBg = c.widgetBgColor || (isDark ? '#121212' : '#ffffff');
+ const themeText = c.widgetTextColor || (isDark ? '#ffffff' : '#111827');
  const themeMuted = isDark ? '#a1a1aa' : '#6b7280';
  const themeBorder = isDark ? '#27272a' : '#e5e7eb';
- const primaryColor = themeColor || c.primaryColor || '#000000';
+ const primaryColor = themeColor || c.widgetHeaderColor || c.primaryColor || '#000000';
  const actualSecondaryColor = secondaryColor || c.secondaryColor || '#6b7280';
 
  return (
