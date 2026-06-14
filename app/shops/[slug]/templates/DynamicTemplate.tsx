@@ -126,7 +126,7 @@ export default function DynamicTemplate({ ctx }: { ctx: any }) {
  useEffect(() => {
   // Set theme colors BEFORE any template scripts execute so they use
   // server-side DB values instead of potentially cached API values
-  (window as any).__KUTZ_THEME__ = { primaryColor, secondaryColor };
+  (window as any).__KUTZ_THEME__ = { primaryColor, secondaryColor, logoUrl, shopName: shop?.name };
 
   // Inject <link rel="stylesheet"> for Google Fonts etc.
   const injectedLinks: HTMLLinkElement[] = [];
