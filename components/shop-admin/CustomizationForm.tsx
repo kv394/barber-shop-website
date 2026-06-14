@@ -89,71 +89,166 @@ export function CustomizationForm({
    )}
    <div className="space-y-6 bg-crm-surface p-4 sm:p-6 md:p-8 rounded-lg border border-crm-border shadow-sm">
    
-   <div>
-   <h3 className="font-bold text-crm-text mb-4 text-lg font-bold">Brand Look & Feel</h3>
-   
-   <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-   <div>
-   <label className="block font-medium text-crm-muted mb-2 text-[13px]">Shop Logo</label>
-   <MediaPicker
-   shopId={shopId}
-   currentUrl={formData.logoUrl || ''}
-   onSelect={(url) => handleInputChange('logoUrl', url)}
-   label="Upload Logo"
-   />
-   </div>
-   <div>
-   <label className="block font-medium text-crm-muted mb-2 text-[13px]">Hero / Header Image</label>
-   <MediaPicker
-   shopId={shopId}
-   currentUrl={formData.heroImageUrl || ''}
-   onSelect={(url) => handleInputChange('heroImageUrl', url)}
-   label="Upload Hero Image"
-   />
-   </div>
-   </div>
+    <div>
+    <h3 className="font-bold text-crm-text mb-4 text-lg">Brand & Media</h3>
+    
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+    <div>
+    <label className="block font-medium text-crm-muted mb-2 text-[13px]">Shop Logo</label>
+    <MediaPicker
+    shopId={shopId}
+    currentUrl={formData.logoUrl || ''}
+    onSelect={(url) => handleInputChange('logoUrl', url)}
+    label="Upload Logo"
+    />
+    </div>
+    <div>
+    <label className="block font-medium text-crm-muted mb-2 text-[13px]">Hero / Header Image</label>
+    <MediaPicker
+    shopId={shopId}
+    currentUrl={formData.heroImageUrl || ''}
+    onSelect={(url) => handleInputChange('heroImageUrl', url)}
+    label="Upload Hero Image"
+    />
+    </div>
+    </div>
+    </div>
 
-   <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-   <div>
-   <label className="block font-medium text-crm-muted mb-2 text-[13px]">Primary Brand Color</label>
-   <div className="flex items-center gap-3">
-   <input
-   type="color"
-   value={formData.primaryColor || '#000000'}
-   onChange={(e) => handleInputChange('primaryColor', e.target.value)}
-   className="w-10 h-10 rounded-lg border border-crm-border cursor-pointer bg-transparent p-0.5"
-   />
-   <input
-   type="text"
-   value={formData.primaryColor || ''}
-   onChange={(e) => handleInputChange('primaryColor', e.target.value)}
-   placeholder="#000000"
-   className="flex-1 bg-crm-bg border border-crm-border shadow-sm rounded px-4 py-2 text-crm-text placeholder-gray-500 font-mono text-[13px]"
-   />
-   </div>
-   <p className="text-[11px] text-crm-muted mt-1">Used for buttons, accents, and the booking widget theme.</p>
-   </div>
-   <div>
-   <label className="block font-medium text-crm-muted mb-2 text-[13px]">Secondary Brand Color</label>
-   <div className="flex items-center gap-3">
-   <input
-   type="color"
-   value={formData.secondaryColor || '#6b7280'}
-   onChange={(e) => handleInputChange('secondaryColor', e.target.value)}
-   className="w-10 h-10 rounded-lg border border-crm-border cursor-pointer bg-transparent p-0.5"
-   />
-   <input
-   type="text"
-   value={formData.secondaryColor || ''}
-   onChange={(e) => handleInputChange('secondaryColor', e.target.value)}
-   placeholder="#6b7280"
-   className="flex-1 bg-crm-bg border border-crm-border shadow-sm rounded px-4 py-2 text-crm-text placeholder-gray-500 font-mono text-[13px]"
-   />
-   </div>
-   <p className="text-[11px] text-crm-muted mt-1">Used for secondary UI elements and hover states.</p>
-   </div>
-   </div>
-   </div>
+    <div>
+    <h3 className="font-bold text-crm-text mb-2 text-lg">Widget & Chat Colors</h3>
+    <p className="text-crm-muted text-[12px] mb-4">These colors apply to the booking widget, chat window, and booking modal across your landing page.</p>
+
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+    <div>
+    <label className="block font-medium text-crm-muted mb-2 text-[13px]">Primary Color</label>
+    <div className="flex items-center gap-3">
+    <input
+    type="color"
+    value={formData.primaryColor || '#000000'}
+    onChange={(e) => handleInputChange('primaryColor', e.target.value)}
+    className="w-10 h-10 rounded-lg border border-crm-border cursor-pointer p-0.5"
+    style={{ backgroundColor: formData.primaryColor || '#000000' }}
+    />
+    <input
+    type="text"
+    value={formData.primaryColor || ''}
+    onChange={(e) => handleInputChange('primaryColor', e.target.value)}
+    placeholder="#000000"
+    className="flex-1 bg-crm-bg border border-crm-border shadow-sm rounded px-4 py-2 text-crm-text placeholder-gray-500 font-mono text-[13px]"
+    />
+    </div>
+    <p className="text-[11px] text-crm-muted mt-1">Buttons, accents, widget FAB, and chat header.</p>
+    </div>
+    <div>
+    <label className="block font-medium text-crm-muted mb-2 text-[13px]">Secondary Color</label>
+    <div className="flex items-center gap-3">
+    <input
+    type="color"
+    value={formData.secondaryColor || '#6b7280'}
+    onChange={(e) => handleInputChange('secondaryColor', e.target.value)}
+    className="w-10 h-10 rounded-lg border border-crm-border cursor-pointer p-0.5"
+    style={{ backgroundColor: formData.secondaryColor || '#6b7280' }}
+    />
+    <input
+    type="text"
+    value={formData.secondaryColor || ''}
+    onChange={(e) => handleInputChange('secondaryColor', e.target.value)}
+    placeholder="#6b7280"
+    className="flex-1 bg-crm-bg border border-crm-border shadow-sm rounded px-4 py-2 text-crm-text placeholder-gray-500 font-mono text-[13px]"
+    />
+    </div>
+    <p className="text-[11px] text-crm-muted mt-1">User message bubbles, gradients, and hover states.</p>
+    </div>
+    </div>
+
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+    <div>
+    <label className="block font-medium text-crm-muted mb-2 text-[13px]">Color Theme</label>
+    <select
+    value={formData.colorTheme || 'light'}
+    onChange={(e) => handleInputChange('colorTheme', e.target.value)}
+    className="w-full bg-crm-bg border border-crm-border shadow-sm rounded px-4 py-2 text-crm-text text-[13px]"
+    >
+    <option value="light">Light</option>
+    <option value="dark">Dark</option>
+    </select>
+    <p className="text-[11px] text-crm-muted mt-1">Widget background theme.</p>
+    </div>
+    <div>
+    <label className="block font-medium text-crm-muted mb-2 text-[13px]">Font Family</label>
+    <select
+    value={formData.fontFamily || 'Inter'}
+    onChange={(e) => handleInputChange('fontFamily', e.target.value)}
+    className="w-full bg-crm-bg border border-crm-border shadow-sm rounded px-4 py-2 text-crm-text text-[13px]"
+    >
+    <option value="Inter">Inter</option>
+    <option value="Roboto">Roboto</option>
+    <option value="Outfit">Outfit</option>
+    <option value="Manrope">Manrope</option>
+    <option value="Poppins">Poppins</option>
+    <option value="Noto Serif">Noto Serif</option>
+    <option value="Playfair Display">Playfair Display</option>
+    <option value="Montserrat">Montserrat</option>
+    <option value="Lato">Lato</option>
+    <option value="Open Sans">Open Sans</option>
+    </select>
+    <p className="text-[11px] text-crm-muted mt-1">Font used in widgets and booking modal.</p>
+    </div>
+    <div>
+    <label className="block font-medium text-crm-muted mb-2 text-[13px]">Button Shape</label>
+    <select
+    value={formData.buttonShape || 'rounded'}
+    onChange={(e) => handleInputChange('buttonShape', e.target.value)}
+    className="w-full bg-crm-bg border border-crm-border shadow-sm rounded px-4 py-2 text-crm-text text-[13px]"
+    >
+    <option value="rounded">Rounded</option>
+    <option value="pill">Pill</option>
+    <option value="sharp">Sharp (Square)</option>
+    </select>
+    <p className="text-[11px] text-crm-muted mt-1">Button corner style in widgets.</p>
+    </div>
+    </div>
+
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+    <div>
+    <label className="block font-medium text-crm-muted mb-2 text-[13px]">Button Style</label>
+    <select
+    value={formData.buttonVariant || 'solid'}
+    onChange={(e) => handleInputChange('buttonVariant', e.target.value)}
+    className="w-full bg-crm-bg border border-crm-border shadow-sm rounded px-4 py-2 text-crm-text text-[13px]"
+    >
+    <option value="solid">Solid (Filled)</option>
+    <option value="outline">Outline</option>
+    <option value="ghost">Ghost (Text Only)</option>
+    </select>
+    <p className="text-[11px] text-crm-muted mt-1">How action buttons appear in booking modal.</p>
+    </div>
+    <div>
+    <label className="block font-medium text-crm-muted mb-2 text-[13px]">Chat Widget Position</label>
+    <select
+    value={formData.chatbotPosition || 'bottom-right'}
+    onChange={(e) => handleInputChange('chatbotPosition', e.target.value)}
+    className="w-full bg-crm-bg border border-crm-border shadow-sm rounded px-4 py-2 text-crm-text text-[13px]"
+    >
+    <option value="bottom-right">Bottom Right</option>
+    <option value="bottom-left">Bottom Left</option>
+    </select>
+    <p className="text-[11px] text-crm-muted mt-1">Where the floating chat button appears.</p>
+    </div>
+    </div>
+
+    {(formData.primaryColor || formData.secondaryColor) && (
+    <div className="p-4 rounded-lg border border-crm-border mb-2" style={{ background: formData.colorTheme === 'dark' ? '#1a1a1f' : '#f8f8fa' }}>
+    <p className="text-[11px] font-medium mb-3" style={{ color: formData.colorTheme === 'dark' ? '#9898a0' : '#6b7280' }}>Preview</p>
+    <div className="flex items-center gap-3 flex-wrap">
+    <div className="h-8 w-8 rounded-full shadow-sm" style={{ background: `linear-gradient(135deg, ${formData.primaryColor || '#000'}, ${formData.secondaryColor || '#666'})` }} title="FAB Button" />
+    <div className="px-4 py-1.5 rounded-full text-[12px] font-semibold text-white shadow-sm" style={{ backgroundColor: formData.primaryColor || '#000' }}>Book Now</div>
+    <div className="px-3 py-1.5 rounded-lg text-[12px]" style={{ backgroundColor: formData.secondaryColor || '#666', color: '#fff' }}>User Message</div>
+    <div className="px-3 py-1.5 rounded-lg text-[12px] border" style={{ backgroundColor: formData.colorTheme === 'dark' ? '#222228' : '#f0f0f2', color: formData.colorTheme === 'dark' ? '#e8e8ec' : '#1f2937', borderColor: formData.colorTheme === 'dark' ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.08)' }}>Bot Reply</div>
+    </div>
+    </div>
+    )}
+    </div>
 
    <div>
    <h3 className="font-bold text-crm-text mb-4 text-lg font-bold">Announcement Banner</h3>
