@@ -1937,7 +1937,7 @@
       function initializeShop() {
         if (typeof KutzApp === 'undefined') return;
         var urlParams = new URLSearchParams(window.location.search);
-        var shopId = urlParams.get('shopId') || 'cmn9kj24n0000lqzc7kcsmpst';
+        var shopId = urlParams.get('shopId') || 'cmpksdwb90000j12g6jzm5dfi';
         var domain = window.location.origin;
         var isFileProtocol = window.location.protocol === 'file:';
         if (domain === 'null' || domain === 'about://' || domain === 'file://' || !domain) {
@@ -1982,7 +1982,7 @@
             var navLogo = document.querySelector('.nav-logo');
             if (navLogo) {
               if (logoUrl) {
-                navLogo.innerHTML = '<img src="' + logoUrl + '" alt="' + shopName + '" style="max-height:56px; width:auto; object-fit:contain; filter:drop-shadow(0 1px 4px rgba(201,169,110,0.3)); transition:transform 0.3s ease;" onmouseover="this.style.transform=\'scale(1.05)\'" onmouseout="this.style.transform=\'scale(1)\'">';
+                navLogo.innerHTML = '<img src="' + logoUrl + '" alt="' + shopName + '" style="max-height:40px; width:auto; object-fit:contain; filter:drop-shadow(0 1px 3px rgba(201,169,110,0.25));">';
               } else {
                 navLogo.innerHTML = shopName + ' <span class="sparkle">✦</span>';
               }
