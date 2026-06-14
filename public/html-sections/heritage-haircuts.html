@@ -1403,6 +1403,50 @@
       animation: shimmer 2s ease-in-out infinite;
     }
 
+    /* Business Hours Section */
+    .hours { padding: 120px 0; background: var(--bg-section); position: relative; }
+    .hours::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 1px; background: linear-gradient(to right, transparent, rgba(233,193,118,0.15), transparent); }
+    .hours__header { text-align: center; margin-bottom: 64px; }
+    .hours__grid { max-width: 600px; margin: 0 auto; }
+    .hours__row { display: flex; justify-content: space-between; align-items: center; padding: 16px 0; border-bottom: 1px solid rgba(255,255,255,0.04); }
+    .hours__row:last-child { border-bottom: none; }
+    .hours__day { font-family: var(--font-serif); font-size: 1rem; font-weight: 600; color: var(--text-primary); }
+    .hours__time { font-size: 0.9rem; color: var(--text-muted); font-weight: 400; }
+    .hours__row--today .hours__day { color: var(--gold-primary); }
+    .hours__row--today .hours__time { color: var(--gold-primary); font-weight: 600; }
+    .hours__row--closed .hours__time { color: var(--text-muted); opacity: 0.5; font-style: italic; }
+
+    /* Loyalty Program Section */
+    .loyalty { padding: 120px 0; background: var(--bg-main); position: relative; text-align: center; }
+    .loyalty__card { max-width: 600px; margin: 0 auto; padding: 48px; background: var(--bg-card); border-radius: var(--radius-lg); border: 1px solid rgba(233,193,118,0.12); }
+    .loyalty__icon { font-size: 48px; color: var(--gold-primary); margin-bottom: 20px; }
+    .loyalty__title { font-family: var(--font-serif); font-size: 1.6rem; font-weight: 700; color: var(--text-primary); margin-bottom: 12px; }
+    .loyalty__desc { font-size: 0.95rem; color: var(--text-body); line-height: 1.8; margin-bottom: 28px; }
+    .loyalty__stats { display: flex; justify-content: center; gap: 40px; flex-wrap: wrap; }
+    .loyalty__stat { text-align: center; }
+    .loyalty__stat-value { font-family: var(--font-serif); font-size: 1.8rem; font-weight: 700; color: var(--gold-primary); }
+    .loyalty__stat-label { font-size: 0.75rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); margin-top: 4px; }
+
+    /* Membership Tiers Section */
+    .membership { padding: 120px 0; background: var(--bg-section); position: relative; }
+    .membership::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 1px; background: linear-gradient(to right, transparent, rgba(233,193,118,0.15), transparent); }
+    .membership__header { text-align: center; margin-bottom: 64px; }
+    .membership__grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; max-width: 900px; margin: 0 auto; }
+    .membership-card { background: var(--bg-card); border: 1px solid rgba(255,255,255,0.04); border-radius: var(--radius-md); padding: 36px 32px; text-align: center; transition: var(--transition); position: relative; overflow: hidden; }
+    .membership-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 2px; background: var(--gold-gradient); transform: scaleX(0); transform-origin: left; transition: transform var(--transition); }
+    .membership-card:hover { border-color: rgba(233,193,118,0.12); transform: translateY(-4px); box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
+    .membership-card:hover::before { transform: scaleX(1); }
+    .membership-card__name { font-family: var(--font-serif); font-size: 1.3rem; font-weight: 700; color: var(--text-primary); margin-bottom: 8px; }
+    .membership-card__price { font-size: 2rem; font-weight: 700; color: var(--gold-primary); margin-bottom: 4px; }
+    .membership-card__interval { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 16px; text-transform: lowercase; }
+    .membership-card__desc { font-size: 0.9rem; color: var(--text-body); line-height: 1.7; }
+
+    /* Auth Nav Buttons */
+    .navbar__auth { display: flex; align-items: center; gap: 8px; }
+    .navbar__auth-link { font-size: 0.82rem; font-weight: 500; color: var(--text-muted); cursor: pointer; background: none; border: none; font-family: var(--font-sans); transition: color var(--transition); letter-spacing: 0.04em; }
+    .navbar__auth-link:hover { color: var(--gold-primary); }
+    .navbar__auth-divider { width: 1px; height: 16px; background: rgba(255,255,255,0.1); }
+
     /* Review Form */
     .review-form-section {
       padding: 120px 0;
@@ -1509,6 +1553,11 @@
         <li><a href="#testimonials">Reviews</a></li>
         <li><a href="#story">About</a></li>
       </ul>
+      <div class="navbar__auth">
+        <button class="navbar__auth-link" onclick="if(window.BarberSignIn) window.BarberSignIn.open();">Sign In</button>
+        <div class="navbar__auth-divider"></div>
+        <button class="navbar__auth-link" onclick="if(window.BarberAppointments) window.BarberAppointments.open();">My Appointments</button>
+      </div>
       <a href="#" onclick="event.preventDefault(); if(window.BarberBooking) window.BarberBooking.open();"
         class="navbar__cta">Book Now</a>
       <button class="navbar__hamburger" id="hamburger" aria-label="Open menu">
@@ -1527,6 +1576,8 @@
     <a href="#gallery" onclick="closeMobileMenu()">Gallery</a>
     <a href="#products" onclick="closeMobileMenu()">Products</a>
     <a href="#story" onclick="closeMobileMenu()">About</a>
+    <a href="#" onclick="event.preventDefault(); closeMobileMenu(); if(window.BarberSignIn) window.BarberSignIn.open();">Sign In</a>
+    <a href="#" onclick="event.preventDefault(); closeMobileMenu(); if(window.BarberAppointments) window.BarberAppointments.open();">My Appointments</a>
     <a href="#" class="navbar__cta"
       onclick="event.preventDefault(); closeMobileMenu(); if(window.BarberBooking) window.BarberBooking.open();">Book Now</a>
   </div>
@@ -1540,10 +1591,9 @@
     </div>
     <div class="hero__overlay"></div>
     <div class="hero__content">
-      <div class="hero__badge">EST. 1924 &bull; ATLANTA, GA</div>
-      <h1 class="hero__title">The Art of <span class="italic" style="color:#e9c176">Precision</span> Grooming</h1>
-      <p class="hero__subtitle">Where timeless tradition meets modern mastery. Experience the pinnacle of men's grooming
-        at Atlanta's most distinguished barbershop.</p>
+      <div class="hero__badge" id="hero-badge">PREMIUM GROOMING</div>
+      <h1 class="hero__title" id="hero-title">Welcome</h1>
+      <p class="hero__subtitle" id="hero-subtitle">Loading...</p>
       <div class="hero__actions">
         <a href="#services" class="btn-gold">View Our Services</a>
         <a href="#team" class="btn-glass">Meet The Team</a>
@@ -1690,36 +1740,73 @@
   </div>
 
   <!-- ==========================================
+       BUSINESS HOURS
+  ========================================== -->
+  <section class="hours" id="hours" style="display:none">
+    <div class="container">
+      <div class="hours__header">
+        <div class="section-label reveal">VISIT US</div>
+        <div class="gold-line reveal reveal-delay-1"></div>
+        <h2 class="section-heading reveal reveal-delay-2">Business <span class="italic" style="color:var(--gold-primary)">Hours</span></h2>
+      </div>
+      <div class="hours__grid reveal reveal-delay-3" id="hours-list"></div>
+    </div>
+  </section>
+
+  <!-- ==========================================
+       LOYALTY PROGRAM
+  ========================================== -->
+  <section class="loyalty" id="loyalty" style="display:none">
+    <div class="container">
+      <div class="section-label reveal">REWARDS</div>
+      <div class="gold-line reveal reveal-delay-1"></div>
+      <h2 class="section-heading reveal reveal-delay-2" style="text-align:center">Loyalty <span class="italic" style="color:var(--gold-primary)">Program</span></h2>
+      <div class="loyalty__card reveal reveal-delay-3" id="loyalty-card"></div>
+    </div>
+  </section>
+
+  <!-- ==========================================
+       MEMBERSHIP TIERS
+  ========================================== -->
+  <section class="membership" id="membership" style="display:none">
+    <div class="container">
+      <div class="membership__header">
+        <div class="section-label reveal">EXCLUSIVE ACCESS</div>
+        <div class="gold-line reveal reveal-delay-1"></div>
+        <h2 class="section-heading reveal reveal-delay-2">Membership <span class="italic" style="color:var(--gold-primary)">Plans</span></h2>
+      </div>
+      <div class="membership__grid" id="membership-list"></div>
+    </div>
+  </section>
+
+  <!-- ==========================================
        8. ABOUT / STORY
   ========================================== -->
   <section class="story" id="story">
     <div class="container">
       <div class="story__grid">
         <div class="story__decorative reveal">
-          <span>Since</span>
-          1924
+          <span id="story-label">Our</span>
+          <span id="story-big">Story</span>
         </div>
-        <div class="story__content">
-          <div class="section-label reveal">OUR STORY</div>
-          <p class="reveal reveal-delay-1">Heritage Haircuts was founded on a simple belief: that every man deserves a
-            sanctuary. For a century, we've perfected the art of grooming, blending time-honored techniques with modern
-            precision.</p>
-          <p class="reveal reveal-delay-2">Our Atlanta atelier is more than a barbershop — it's a retreat. Step through
-            our doors and into a world where craftsmanship is celebrated, conversation flows, and every detail matters.</p>
+        <div class="story__content" id="story-content">
+          <div class="section-label reveal">ABOUT US</div>
+          <p class="reveal reveal-delay-1" id="story-text-1">Loading...</p>
+          <p class="reveal reveal-delay-2" id="story-text-2" style="display:none"></p>
         </div>
       </div>
-      <div class="story__stats">
+      <div class="story__stats" id="story-stats">
         <div class="stat reveal reveal-delay-1">
-          <div class="stat__number">100 Years</div>
-          <div class="stat__label">Of Excellence</div>
+          <div class="stat__number" id="stat-reviews">—</div>
+          <div class="stat__label">Happy Clients</div>
         </div>
         <div class="stat reveal reveal-delay-2">
-          <div class="stat__number">50,000+</div>
-          <div class="stat__label">Clients Served</div>
+          <div class="stat__number" id="stat-services">—</div>
+          <div class="stat__label">Services Offered</div>
         </div>
         <div class="stat reveal reveal-delay-3">
-          <div class="stat__number">4</div>
-          <div class="stat__label">Master Barbers</div>
+          <div class="stat__number" id="stat-barbers">—</div>
+          <div class="stat__label">Team Members</div>
         </div>
       </div>
     </div>
@@ -1762,9 +1849,8 @@
     <div class="container">
       <div class="footer__grid">
         <div>
-          <div class="footer__brand" id="footer-brand">Heritage Haircuts</div>
-          <p class="footer__desc">Atlanta's most distinguished barbershop, blending timeless tradition with modern
-            mastery since 1924. Every visit is an experience.</p>
+          <div class="footer__brand" id="footer-brand">Loading...</div>
+          <p class="footer__desc" id="footer-desc">Loading...</p>
         </div>
         <div>
           <div class="footer__title">Quick Links</div>
@@ -1772,23 +1858,24 @@
             <li><a href="#services">Services</a></li>
             <li><a href="#team">Team</a></li>
             <li><a href="#gallery">Gallery</a></li>
+            <li><a href="#hours">Hours</a></li>
             <li><a href="#story">About</a></li>
           </ul>
         </div>
         <div>
           <div class="footer__title">Contact</div>
-          <div class="footer__contact">
+          <div class="footer__contact" id="footer-contact">
             <div class="footer__contact-item">
               <span class="material-symbols-outlined">location_on</span>
-              <span>2847 Heritage Blvd, Suite 101<br />Atlanta, GA 30309</span>
+              <span id="footer-address">Loading...</span>
             </div>
             <div class="footer__contact-item">
               <span class="material-symbols-outlined">call</span>
-              <span>+1 (404) 555-0180</span>
+              <span id="footer-phone">Loading...</span>
             </div>
             <div class="footer__contact-item">
               <span class="material-symbols-outlined">mail</span>
-              <span>hello@heritagehaircuts.com</span>
+              <span id="footer-email">Loading...</span>
             </div>
           </div>
         </div>
@@ -1857,7 +1944,7 @@
       });
     });
 
-    // ---- Review Form Logic ----
+    // ---- Review Form Logic (uses KutzApp.submitReview) ----
     (function () {
       var selectedRating = 0;
       var stars = document.querySelectorAll('.review-form__star');
@@ -1892,30 +1979,29 @@
         msgEl.textContent = '';
         msgEl.className = 'review-form__msg';
         var comment = document.getElementById('review-comment').value.trim();
-        var urlParams = new URLSearchParams(window.location.search);
-        var shopId = urlParams.get('shopId') || window.__KUTZ_SHOP_ID__ || '';
-        var domain = window.location.origin;
-        if (!domain || domain === 'null' || domain === 'file://') {
-          domain = 'https://barber-shop-website-ashy.vercel.app';
-        }
-        fetch(domain + '/api/shops/' + shopId + '/reviews', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ rating: selectedRating, comment: comment || undefined })
-        }).then(function (res) {
-          if (!res.ok) throw new Error('Failed');
-          msgEl.textContent = 'Thank you for your review!';
-          msgEl.className = 'review-form__msg review-form__msg--success';
-          selectedRating = 0;
-          stars.forEach(function (s) { s.classList.remove('active'); });
-          document.getElementById('review-comment').value = '';
-        }).catch(function () {
-          msgEl.textContent = 'Something went wrong. Please try again.';
+
+        // Use SDK submitReview instead of raw fetch
+        if (typeof KutzApp !== 'undefined' && KutzApp.shopId) {
+          KutzApp.submitReview({ rating: selectedRating, comment: comment || undefined })
+            .then(function () {
+              msgEl.textContent = 'Thank you for your review!';
+              msgEl.className = 'review-form__msg review-form__msg--success';
+              selectedRating = 0;
+              stars.forEach(function (s) { s.classList.remove('active'); });
+              document.getElementById('review-comment').value = '';
+            }).catch(function (err) {
+              msgEl.textContent = err.message || 'Something went wrong. Please try again.';
+              msgEl.className = 'review-form__msg review-form__msg--error';
+              submitBtn.disabled = false;
+            }).finally(function () {
+              submitBtn.textContent = 'Submit Review';
+            });
+        } else {
+          msgEl.textContent = 'SDK not ready. Please try again.';
           msgEl.className = 'review-form__msg review-form__msg--error';
           submitBtn.disabled = false;
-        }).finally(function () {
           submitBtn.textContent = 'Submit Review';
-        });
+        }
       });
     })();
 
@@ -1984,7 +2070,7 @@
 
           // --- Update shop name/logo ---
           try {
-            var shopName = shop.name || _t.shopName || 'Heritage Haircuts';
+            var shopName = shop.name || _t.shopName || 'Shop';
             var logoUrl = _t.logoUrl || shop.logoUrl || '';
             var navBrand = document.querySelector('.navbar__brand');
             if (navBrand) {
@@ -1994,21 +2080,50 @@
                 navBrand.textContent = shopName;
               }
             }
-            document.title = shopName + ' — The Art of Precision Grooming';
+            document.title = shopName + (shop.description ? ' — ' + shop.description : '');
             var footerBrand = document.getElementById('footer-brand');
             if (footerBrand) footerBrand.textContent = shopName;
+            var footerDesc = document.getElementById('footer-desc');
+            if (footerDesc) footerDesc.textContent = shop.description || shopName;
           } catch (e) { console.error('Shop render error:', e); }
 
-          // --- Update hero image from shop configuration ---
+          // --- Update hero section from shop data ---
           try {
             var heroImageUrl = _t.heroImageUrl || shop.heroImageUrl || '';
             if (heroImageUrl) {
               var heroImg = document.querySelector('.hero__bg img');
               if (heroImg) heroImg.src = heroImageUrl;
             }
-          } catch (e) { console.error('Hero image error:', e); }
+            var custom = shop.customization || {};
+            var heroTitle = document.getElementById('hero-title');
+            var heroSubtitle = document.getElementById('hero-subtitle');
+            var heroBadge = document.getElementById('hero-badge');
+            if (heroTitle) heroTitle.innerHTML = (shop.name || _t.shopName || 'Welcome');
+            if (heroSubtitle) heroSubtitle.textContent = custom.tagline || shop.description || '';
+            if (heroBadge && custom.announcement) heroBadge.textContent = custom.announcement;
+            else if (heroBadge) heroBadge.textContent = 'PREMIUM GROOMING';
+          } catch (e) { console.error('Hero update error:', e); }
 
-          // --- Update gallery images from portfolio ---
+          // --- Update footer contact from shop data ---
+          try {
+            var custom = shop.customization || {};
+            var contact = custom.contact || {};
+            var addressEl = document.getElementById('footer-address');
+            var phoneEl = document.getElementById('footer-phone');
+            var emailEl = document.getElementById('footer-email');
+            var address = custom.address || contact.address || '';
+            if (typeof address === 'object' && address !== null) {
+              address = [address.street, address.suite, address.city, address.state, address.zip].filter(Boolean).join(', ');
+            }
+            if (addressEl) addressEl.textContent = address || 'Contact us for location';
+            if (phoneEl) phoneEl.textContent = custom.phone || contact.phone || '';
+            if (emailEl) emailEl.textContent = custom.email || contact.email || '';
+            // Hide empty contact items
+            if (phoneEl && !phoneEl.textContent) phoneEl.closest('.footer__contact-item').style.display = 'none';
+            if (emailEl && !emailEl.textContent) emailEl.closest('.footer__contact-item').style.display = 'none';
+          } catch (e) { console.error('Footer contact error:', e); }
+
+          // --- Update gallery images from portfolio (SDK: getPortfolioImages) ---
           try {
             var portfolio = data.portfolioImages || [];
             if (portfolio.length > 0) {
@@ -2018,7 +2133,6 @@
                   img.src = portfolio[i % portfolio.length].imageUrl;
                 }
               });
-              // Also update editorial image if portfolio has images
               var editorialImg = document.querySelector('.editorial__image-wrap img');
               if (editorialImg && portfolio[0] && portfolio[0].imageUrl) {
                 editorialImg.src = portfolio[0].imageUrl;
@@ -2026,7 +2140,96 @@
             }
           } catch (e) { console.error('Gallery update error:', e); }
 
-          // --- SERVICES ---
+          // --- Update about/story section from shop data ---
+          try {
+            var custom = shop.customization || {};
+            var aboutText = custom.aboutText || shop.description || '';
+            var storyText1 = document.getElementById('story-text-1');
+            var storyText2 = document.getElementById('story-text-2');
+            if (storyText1 && aboutText) {
+              // Split long about text into two paragraphs
+              var sentences = aboutText.split('. ');
+              if (sentences.length > 2) {
+                var mid = Math.ceil(sentences.length / 2);
+                storyText1.textContent = sentences.slice(0, mid).join('. ') + '.';
+                storyText2.textContent = sentences.slice(mid).join('. ');
+                storyText2.style.display = 'block';
+              } else {
+                storyText1.textContent = aboutText;
+              }
+            } else if (storyText1) {
+              storyText1.textContent = 'We are dedicated to delivering exceptional grooming experiences.';
+            }
+            // Update stats from actual data
+            var statReviews = document.getElementById('stat-reviews');
+            var statServices = document.getElementById('stat-services');
+            var statBarbers = document.getElementById('stat-barbers');
+            if (statReviews) statReviews.textContent = (data.reviews || []).length + '+';
+            if (statServices) statServices.textContent = (data.services || []).filter(function(s){return s.duration>0;}).length;
+            if (statBarbers) statBarbers.textContent = (data.staff || []).length;
+          } catch (e) { console.error('Story update error:', e); }
+
+          // --- BUSINESS HOURS (SDK: getBusinessHours) ---
+          try {
+            var custom = shop.customization || {};
+            var hours = custom.businessHours || null;
+            if (hours && typeof hours === 'object') {
+              var dayOrder = ['monday','tuesday','wednesday','thursday','friday','saturday','sunday'];
+              var dayNames = {monday:'Monday',tuesday:'Tuesday',wednesday:'Wednesday',thursday:'Thursday',friday:'Friday',saturday:'Saturday',sunday:'Sunday'};
+              var today = dayOrder[new Date().getDay() === 0 ? 6 : new Date().getDay() - 1];
+              var hoursHtml = dayOrder.map(function(day) {
+                var h = hours[day];
+                var isToday = day === today;
+                var isClosed = !h || h.isClosed || (!h.open && !h.close);
+                var rowClass = 'hours__row reveal' + (isToday ? ' hours__row--today' : '') + (isClosed ? ' hours__row--closed' : '');
+                var timeText = isClosed ? 'Closed' : (h.open || '9:00 AM') + ' — ' + (h.close || '5:00 PM');
+                return '<div class="' + rowClass + '">' +
+                  '<span class="hours__day">' + dayNames[day] + (isToday ? ' (Today)' : '') + '</span>' +
+                  '<span class="hours__time">' + timeText + '</span>' +
+                  '</div>';
+              }).join('');
+              document.getElementById('hours-list').innerHTML = hoursHtml;
+              document.getElementById('hours').style.display = 'block';
+              document.querySelectorAll('#hours-list .reveal').forEach(function (el) { revealObserver.observe(el); });
+            }
+          } catch (e) { console.error('Hours render error:', e); }
+
+          // --- LOYALTY PROGRAM (SDK: getLoyaltyProgram) ---
+          try {
+            var loyalty = data.loyaltyProgram || null;
+            if (loyalty) {
+              var loyaltyCard = document.getElementById('loyalty-card');
+              loyaltyCard.innerHTML = '<div class="loyalty__icon"><span class="material-symbols-outlined" style="font-size:48px">stars</span></div>' +
+                '<div class="loyalty__title">Earn Rewards Every Visit</div>' +
+                '<p class="loyalty__desc">Earn points with every dollar spent and every visit. Redeem for discounts on your favorite services.</p>' +
+                '<div class="loyalty__stats">' +
+                '<div class="loyalty__stat"><div class="loyalty__stat-value">' + (loyalty.pointsPerDollar || 1) + 'x</div><div class="loyalty__stat-label">Points per Dollar</div></div>' +
+                '<div class="loyalty__stat"><div class="loyalty__stat-value">' + (loyalty.pointsPerVisit || 0) + '</div><div class="loyalty__stat-label">Points per Visit</div></div>' +
+                '<div class="loyalty__stat"><div class="loyalty__stat-value">$' + (loyalty.redeemValue || 5) + '</div><div class="loyalty__stat-label">Reward Value</div></div>' +
+                '</div>';
+              document.getElementById('loyalty').style.display = 'block';
+            }
+          } catch (e) { console.error('Loyalty render error:', e); }
+
+          // --- MEMBERSHIP TIERS (SDK: getMembershipTiers) ---
+          try {
+            var tiers = data.membershipTiers || [];
+            if (tiers.length > 0) {
+              document.getElementById('membership-list').innerHTML = tiers.map(function (t, i) {
+                var delayClass = i % 3 === 0 ? '' : ' reveal-delay-' + (i % 3);
+                return '<div class="membership-card reveal' + delayClass + '">' +
+                  '<div class="membership-card__name">' + t.name + '</div>' +
+                  '<div class="membership-card__price">$' + Number(t.price).toFixed(0) + '</div>' +
+                  '<div class="membership-card__interval">per ' + (t.interval || 'month').toLowerCase() + '</div>' +
+                  '<p class="membership-card__desc">' + (t.description || 'Premium membership benefits') + '</p>' +
+                  '</div>';
+              }).join('');
+              document.getElementById('membership').style.display = 'block';
+              document.querySelectorAll('#membership-list .reveal').forEach(function (el) { revealObserver.observe(el); });
+            }
+          } catch (e) { console.error('Membership render error:', e); }
+
+          // --- SERVICES (SDK: getBookableServices) ---
           try {
             var services = (data.services || []).filter(function (s) { return s.duration > 0; });
             if (services.length > 0) {
@@ -2052,7 +2255,7 @@
             }
           } catch (e) { console.error('Services render error:', e); }
 
-          // --- STAFF ---
+          // --- STAFF (SDK: getPublicStaff) ---
           try {
             var staff = data.staff || [];
             if (staff.length > 0) {
@@ -2067,7 +2270,7 @@
                   '<div class="barber-card__info">' +
                   '<div class="barber-card__name">' + safeName + '</div>' +
                   '<div class="barber-card__role">' + (st.role === 'SHOP_ADMIN' ? 'Master Barber' : 'Barber') + '</div>' +
-                  '<p class="barber-card__bio">Dedicated to the art of precision grooming.</p>' +
+                  '<p class="barber-card__bio">Dedicated to delivering exceptional results.</p>' +
                   '<a href="#" onclick="event.preventDefault(); if(window.BarberBooking) window.BarberBooking.open(null, \'' + st.id + '\');" class="btn-outline-gold">Book ' + safeName.split(' ')[0] + '</a>' +
                   '</div>' +
                   '</div>';
@@ -2080,7 +2283,7 @@
             }
           } catch (e) { console.error('Staff render error:', e); }
 
-          // --- REVIEWS ---
+          // --- REVIEWS (SDK: getReviews) ---
           try {
             var reviews = data.reviews || [];
             if (reviews.length > 0) {
@@ -2109,18 +2312,23 @@
             }
           } catch (e) { console.error('Reviews render error:', e); }
 
-          // --- PRODUCTS ---
+          // --- PRODUCTS with Buy Now (SDK: buyProduct) ---
           try {
             var products = data.products || [];
             if (products.length > 0) {
               document.getElementById('products-list').innerHTML = products.map(function (p, i) {
                 var delayClass = i % 2 === 0 ? '' : ' reveal-delay-1';
+                var imgHtml = p.imageUrl ? '<img src="' + p.imageUrl + '" alt="' + p.name + '" style="width:100%;height:140px;object-fit:cover;border-radius:8px;margin-bottom:16px;">' : '';
                 return '<div class="service-card reveal' + delayClass + '">' +
+                  imgHtml +
                   '<div class="service-card__header">' +
                   '<span class="service-card__name">' + p.name + '</span>' +
                   '<span class="service-card__price">$' + Number(p.price).toFixed(0) + '</span>' +
                   '</div>' +
                   '<p class="service-card__desc">' + (p.description || '') + '</p>' +
+                  '<div class="service-card__actions">' +
+                  '<a href="#" onclick="event.preventDefault(); if(typeof KutzApp!==\'undefined\') KutzApp.buyProduct(\'' + p.id + '\');" class="btn-outline-gold" style="margin-top:12px;">Buy Now</a>' +
+                  '</div>' +
                   '</div>';
               }).join('');
               document.getElementById('products-loading').style.display = 'none';
