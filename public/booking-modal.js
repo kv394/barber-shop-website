@@ -139,11 +139,14 @@
 
   // Expose a global function to open the modal
   window.BarberBooking = {
-    open: function(serviceId) {
+    open: function(serviceId, staffId) {
       let url = `${baseUrl}/embed/book/${shopId}`;
       let params = [];
       if (serviceId) {
         params.push(`serviceId=${encodeURIComponent(serviceId)}`);
+      }
+      if (staffId) {
+        params.push(`staffId=${encodeURIComponent(staffId)}`);
       }
       if (themeColor) {
         params.push(`themeColor=${encodeURIComponent(themeColor)}`);

@@ -72,6 +72,7 @@ export default function BookingWizard({ shopId, themeColor, secondaryColor, temp
  useEffect(() => {
  const searchParams = new URLSearchParams(window.location.search);
  const initialServiceId = searchParams.get('serviceId');
+ const initialStaffId = searchParams.get('staffId');
 
  Promise.all([
  fetch(`/api/shops/${shopId}/services`).then(r => r.ok ? r.json() : []),
@@ -79,16 +80,39 @@ export default function BookingWizard({ shopId, themeColor, secondaryColor, temp
  fetch(`/api/shops/${shopId}/business-hours`).then(r => r.ok ? r.json() : {}),
  ]).then(([svcs, stfResponse, hours]) => {
  const parsedServices = Array.isArray(svcs) ? svcs : [];
+ const parsedStaff = Array.isArray(stfResponse) ? stfResponse : (stfResponse.staff || []);
  setServices(parsedServices);
- setStaff(Array.isArray(stfResponse) ? stfResponse : (stfResponse.staff || []));
+ setStaff(parsedStaff);
  setShopHours(hours);
 
+ // Auto-select service if provided
+ let autoSelectedService = false;
  if (initialServiceId) {
  const found = parsedServices.find((s: any) => s.id === initialServiceId);
  if (found) {
  setSelectedService(found);
+ autoSelectedService = true;
+ }
+ }
+
+ // Auto-select staff if provided
+ if (initialStaffId) {
+ const foundStaff = parsedStaff.find((s: any) => s.id === initialStaffId);
+ if (foundStaff) {
+ setSelectedStaff(foundStaff);
+ // If both service and staff are pre-selected, skip to date/time
+ if (autoSelectedService) {
+ setStep(3);
+ } else {
+ // Staff pre-selected but no service — go to service step,
+ // staff will be locked in when they proceed
+ setStep(1);
+ }
+ } else if (autoSelectedService) {
  setStep(2);
  }
+ } else if (autoSelectedService) {
+ setStep(2);
  }
 
  setLoading(false);
