@@ -149,6 +149,9 @@
             data.shop.widgetSurfaceColor = custom.widgetSurfaceColor || null;
             data.shop.widgetMutedColor = custom.widgetMutedColor || null;
             data.shop.widgetBorderColor = custom.widgetBorderColor || null;
+            data.shop.widgetUserMsgText = custom.widgetUserMsgText || null;
+            data.shop.widgetBotMsgBg = custom.widgetBotMsgBg || null;
+            data.shop.widgetInputBg = custom.widgetInputBg || null;
             data.shop.colorTheme = custom.colorTheme || null;
           }
           this._publicDataCache = data;

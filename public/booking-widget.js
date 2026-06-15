@@ -56,6 +56,9 @@
   const cfgSurfaceColor = _attr('widget-surface-color') || _kutz('widgetSurfaceColor') || null;
   const cfgMutedColor = _attr('widget-muted-color') || _kutz('widgetMutedColor') || null;
   const cfgBorderColor = _attr('widget-border-color') || _kutz('widgetBorderColor') || null;
+  const cfgUserMsgText = _attr('widget-user-msg-text') || _kutz('widgetUserMsgText') || null;
+  const cfgBotMsgBg = _attr('widget-bot-msg-bg') || _kutz('widgetBotMsgBg') || null;
+  const cfgInputBg = _attr('widget-input-bg') || _kutz('widgetInputBg') || null;
 
   // ── Auto-detect page theme colors from CSS custom properties ──
   // Dynamic templates define their own color systems via :root CSS vars.
@@ -290,11 +293,11 @@
       --text-muted: ${cfgMutedColor || (isDark ? '#9898a0' : '#6b7280')};
       --border-color: ${cfgBorderColor || (isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.08)')};
       --msg-user-bg: ${secondaryColor};
-      --msg-user-text: #ffffff;
-      --msg-bot-bg: ${isDark ? `rgba(${tc.r},${tc.g},${tc.b},0.08)` : `rgba(${tc.r},${tc.g},${tc.b},0.06)`};
+      --msg-user-text: ${cfgUserMsgText || '#ffffff'};
+      --msg-bot-bg: ${cfgBotMsgBg || (isDark ? `rgba(${tc.r},${tc.g},${tc.b},0.08)` : `rgba(${tc.r},${tc.g},${tc.b},0.06)`)};
       --msg-bot-text: ${cfgTextColor || (isDark ? '#e8e8ec' : '#1f2937')};
       --msg-bot-border: ${isDark ? `rgba(${tc.r},${tc.g},${tc.b},0.15)` : `rgba(${tc.r},${tc.g},${tc.b},0.12)`};
-      --input-bg: ${isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.03)'};
+      --input-bg: ${cfgInputBg || (isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.03)')};
       --shadow-color: ${isDark ? 'rgba(0,0,0,0.5)' : 'rgba(0,0,0,0.12)'};
       --color-scheme: ${isDark ? 'dark' : 'light'};
       font-family: ${bodyFontStack};

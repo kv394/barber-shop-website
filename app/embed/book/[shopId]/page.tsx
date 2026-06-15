@@ -108,9 +108,9 @@ export default async function EmbedBookPage({ params, searchParams }: { params: 
    /* Progress dots */
    div[class*="h-1.5"][class*="rounded-full"] { opacity: 1 !important; }
    
-   /* ── Input fields: match chat widget input style ── */
-   input, textarea { ${isDark ? `background-color: ${themeInputBg} !important; color: ${themeText} !important; border-color: ${themeBorder} !important;` : ''} }
-   input:focus, textarea:focus { border-color: ${primaryColor} !important; box-shadow: 0 0 0 2px ${isDark ? `rgba(233,193,118,0.2)` : `rgba(0,0,0,0.1)`} !important; }
+   /* ── Input fields: configurable from admin ── */
+   input, textarea { ${isDark ? `background-color: ${c.widgetInputBg || themeInputBg} !important; color: ${themeText} !important; border-color: ${themeBorder} !important;` : ''} }
+   input:focus, textarea:focus { border-color: ${primaryColor} !important; box-shadow: 0 0 0 2px ${primaryColor}33 !important; }
    input::placeholder, textarea::placeholder { color: ${themeMuted} !important; }
 
    /* Scroll area */

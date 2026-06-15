@@ -289,6 +289,69 @@ export function CustomizationForm({
 
     <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
     <div>
+    <label className="block font-medium text-crm-muted mb-2 text-[13px]">User Message Text</label>
+    <div className="flex items-center gap-3">
+    <input
+    type="color"
+    value={formData.widgetUserMsgText || '#ffffff'}
+    onChange={(e) => handleInputChange('widgetUserMsgText', e.target.value)}
+    className="w-10 h-10 rounded-lg border border-crm-border cursor-pointer p-0.5"
+    style={{ backgroundColor: formData.widgetUserMsgText || '#ffffff' }}
+    />
+    <input
+    type="text"
+    value={formData.widgetUserMsgText || ''}
+    onChange={(e) => handleInputChange('widgetUserMsgText', e.target.value)}
+    placeholder="#ffffff"
+    className="flex-1 bg-crm-bg border border-crm-border shadow-sm rounded px-4 py-2 text-crm-text placeholder-gray-500 font-mono text-[13px]"
+    />
+    </div>
+    <p className="text-[11px] text-crm-muted mt-1">Text on user's sent message bubbles.</p>
+    </div>
+    <div>
+    <label className="block font-medium text-crm-muted mb-2 text-[13px]">Bot Message Background</label>
+    <div className="flex items-center gap-3">
+    <input
+    type="color"
+    value={formData.widgetBotMsgBg || (formData.colorTheme === 'dark' ? '#222228' : '#f0f0f5')}
+    onChange={(e) => handleInputChange('widgetBotMsgBg', e.target.value)}
+    className="w-10 h-10 rounded-lg border border-crm-border cursor-pointer p-0.5"
+    style={{ backgroundColor: formData.widgetBotMsgBg || (formData.colorTheme === 'dark' ? '#222228' : '#f0f0f5') }}
+    />
+    <input
+    type="text"
+    value={formData.widgetBotMsgBg || ''}
+    onChange={(e) => handleInputChange('widgetBotMsgBg', e.target.value)}
+    placeholder={formData.colorTheme === 'dark' ? '#222228' : '#f0f0f5'}
+    className="flex-1 bg-crm-bg border border-crm-border shadow-sm rounded px-4 py-2 text-crm-text placeholder-gray-500 font-mono text-[13px]"
+    />
+    </div>
+    <p className="text-[11px] text-crm-muted mt-1">Background of bot/AI reply bubbles.</p>
+    </div>
+    <div>
+    <label className="block font-medium text-crm-muted mb-2 text-[13px]">Input Background</label>
+    <div className="flex items-center gap-3">
+    <input
+    type="color"
+    value={formData.widgetInputBg || (formData.colorTheme === 'dark' ? '#1e1e24' : '#f5f5f5')}
+    onChange={(e) => handleInputChange('widgetInputBg', e.target.value)}
+    className="w-10 h-10 rounded-lg border border-crm-border cursor-pointer p-0.5"
+    style={{ backgroundColor: formData.widgetInputBg || (formData.colorTheme === 'dark' ? '#1e1e24' : '#f5f5f5') }}
+    />
+    <input
+    type="text"
+    value={formData.widgetInputBg || ''}
+    onChange={(e) => handleInputChange('widgetInputBg', e.target.value)}
+    placeholder={formData.colorTheme === 'dark' ? '#1e1e24' : '#f5f5f5'}
+    className="flex-1 bg-crm-bg border border-crm-border shadow-sm rounded px-4 py-2 text-crm-text placeholder-gray-500 font-mono text-[13px]"
+    />
+    </div>
+    <p className="text-[11px] text-crm-muted mt-1">Text input and search field backgrounds.</p>
+    </div>
+    </div>
+
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+    <div>
     <label className="block font-medium text-crm-muted mb-2 text-[13px]">Color Theme</label>
     <select
     value={formData.colorTheme || 'light'}
