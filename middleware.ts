@@ -50,9 +50,9 @@ const generateCsp = () => {
     script-src 'self' 'unsafe-inline' 'unsafe-eval' https://*.stripe.com ${vercelDomain};
     connect-src 'self' https://*.supabase.co wss://*.supabase.co https://*.stripe.com ${vercelDomain};
     img-src 'self' data: https://images.unsplash.com https://cdn.pixabay.com https://*.googleusercontent.com ${vercelDomain};
-    style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
-    frame-src 'self' https://*.stripe.com https://*.supabase.co https://www.google.com;
-    font-src 'self' data: https://fonts.gstatic.com;
+    style-src 'self' 'unsafe-inline' https://fonts.googleapis.com ${vercelDomain};
+    frame-src 'self' https://*.stripe.com https://*.supabase.co https://www.google.com ${vercelDomain};
+    font-src 'self' data: https://fonts.gstatic.com ${vercelDomain};
   `.replace(/\s{2,}/g, ' ').trim();
   
   return isDev ? '' : csp;
