@@ -1611,9 +1611,9 @@
         <li><a href="#story">About</a></li>
       </ul>
       <div class="navbar__auth">
-        <button class="navbar__auth-link" onclick="openSignIn();">Sign In</button>
+        <a href="/sign-in" target="_top" class="navbar__auth-link" style="text-decoration:none;">Sign In</a>
         <div class="navbar__auth-divider"></div>
-        <button class="navbar__auth-link" onclick="openAppointments();">My Appointments</button>
+        <a href="/my-appointments" target="_top" class="navbar__auth-link" style="text-decoration:none;">My Appointments</a>
       </div>
       <a href="#" onclick="event.preventDefault(); if(window.BarberBooking) window.BarberBooking.open();"
         class="navbar__cta">Book Now</a>
@@ -1633,8 +1633,8 @@
     <a href="#gallery" onclick="closeMobileMenu()">Gallery</a>
     <a href="#products" onclick="closeMobileMenu()">Products</a>
     <a href="#story" onclick="closeMobileMenu()">About</a>
-    <a href="#" onclick="event.preventDefault(); closeMobileMenu(); openSignIn();">Sign In</a>
-    <a href="#" onclick="event.preventDefault(); closeMobileMenu(); openAppointments();">My Appointments</a>
+    <a href="/sign-in" target="_top">Sign In</a>
+    <a href="/my-appointments" target="_top">My Appointments</a>
     <a href="#" class="navbar__cta"
       onclick="event.preventDefault(); closeMobileMenu(); if(window.BarberBooking) window.BarberBooking.open();">Book Now</a>
   </div>
@@ -2070,24 +2070,6 @@
           submitBtn.textContent = 'Submit Review';
         }
       });
-    })();
-
-    // ---- Sign In / Appointments (self-contained, works in iframe) ----
-    (function() {
-      var apiBase = 'https://barber-shop-website-ashy.vercel.app';
-      try { 
-        var parentOrigin = window.parent.location.origin;
-        if (parentOrigin && parentOrigin !== 'null') apiBase = parentOrigin;
-      } catch(e) {}
-
-      window.openSignIn = function() { 
-        try { window.top.location.href = apiBase + '/sign-in'; } 
-        catch(e) { window.open(apiBase + '/sign-in', '_blank'); }
-      };
-      window.openAppointments = function() { 
-        try { window.top.location.href = apiBase + '/my-appointments'; } 
-        catch(e) { window.open(apiBase + '/my-appointments', '_blank'); }
-      };
     })();
 
     // ---- KutzApp SDK Loading ----
