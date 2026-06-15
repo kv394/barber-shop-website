@@ -63,8 +63,10 @@ export default function CustomTemplate({ ctx }: { ctx: any }) {
 </script>
 `;
 
+  const baseUrl = 'https://barber-shop-website-ashy.vercel.app';
+  const baseTag = `<base href="${baseUrl}" target="_top" />`;
   const cssInjection = c.customCss ? `<style>${c.customCss}</style>` : '';
-  const headInjections = injectorScript + cssInjection;
+  const headInjections = baseTag + injectorScript + cssInjection;
   
   const htmlToRender = baseHtml.includes('</head>') 
     ? baseHtml.replace(/<\/head>/i, `${headInjections}</head>`) 
