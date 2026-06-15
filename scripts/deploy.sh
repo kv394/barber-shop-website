@@ -27,3 +27,4 @@ fi
 
 # Build Next.js with increased memory
 npx next build
+// Build trigger: 20260615024304
