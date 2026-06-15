@@ -2044,8 +2044,51 @@
           var shop = data.shop || {};
           var _t = window.__KUTZ_THEME__ || {};
           var primaryColor = _t.primaryColor || shop.primaryColor || '#e9c176';
+          var secondaryColor = shop.secondaryColor || '#c5a059';
 
-          // --- Load booking modal + widget ---
+          // ── Override ALL landing page colors from admin console ──
+          var overrides = [];
+          // Primary/accent colors
+          if (shop.widgetHeaderColor || shop.primaryColor) {
+            var pc = shop.widgetHeaderColor || shop.primaryColor;
+            overrides.push('--gold-primary: ' + pc);
+            overrides.push('--gold-accent: ' + pc);
+            primaryColor = pc;
+          }
+          if (shop.secondaryColor) {
+            overrides.push('--gold-secondary: ' + shop.secondaryColor);
+          }
+          // Background colors
+          if (shop.widgetBgColor) {
+            overrides.push('--bg-main: ' + shop.widgetBgColor);
+            overrides.push('--bg-darkest: ' + shop.widgetBgColor);
+          }
+          if (shop.widgetSurfaceColor) {
+            overrides.push('--bg-section: ' + shop.widgetSurfaceColor);
+            overrides.push('--bg-card: ' + shop.widgetSurfaceColor);
+          }
+          // Text colors
+          if (shop.widgetTextColor) {
+            overrides.push('--text-primary: ' + shop.widgetTextColor);
+            overrides.push('--text-body: ' + shop.widgetTextColor);
+          }
+          if (shop.widgetMutedColor) {
+            overrides.push('--text-muted: ' + shop.widgetMutedColor);
+          }
+          // Border color → card borders via bg-card
+          if (shop.widgetBorderColor) {
+            overrides.push('--border-color: ' + shop.widgetBorderColor);
+          }
+          // Gradient rebuild
+          overrides.push('--gold-gradient: linear-gradient(135deg, var(--gold-primary), var(--gold-accent), var(--gold-secondary))');
+          overrides.push('--gold-gradient-hover: linear-gradient(135deg, var(--gold-secondary), var(--gold-accent), var(--gold-primary))');
+
+          if (overrides.length > 0) {
+            var styleEl = document.createElement('style');
+            styleEl.textContent = ':root { ' + overrides.join(' !important; ') + ' !important; }';
+            document.head.appendChild(styleEl);
+          }
+
           setTimeout(function () {
             var cacheBuster = '?v=' + new Date().getTime();
             var widgetUrlPrefix = domain;
@@ -2055,7 +2098,6 @@
               widgetUrlPrefix = '..';
             }
             var shopName = shop.name || _t.shopName || 'Heritage Haircuts';
-            var secondaryColor = shop.secondaryColor || '#c5a059';
             var colorTheme = shop.colorTheme || 'dark';
             ['booking-modal.js', 'booking-widget.js'].forEach(function (script) {
               var s = document.createElement('script');
