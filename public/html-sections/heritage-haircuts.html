@@ -1611,9 +1611,9 @@
         <li><a href="#story">About</a></li>
       </ul>
       <div class="navbar__auth">
-        <a href="/sign-in" target="_top" class="navbar__auth-link" style="text-decoration:none;">Sign In</a>
-        <div class="navbar__auth-divider"></div>
-        <a href="/my-appointments" target="_top" class="navbar__auth-link" style="text-decoration:none;">My Appointments</a>
+        <a href="/sign-in" target="_top" id="auth-signin" class="navbar__auth-link" style="text-decoration:none;">Sign In</a>
+        <div class="navbar__auth-divider" id="auth-divider"></div>
+        <a href="/my-appointments" target="_top" id="auth-appointments" class="navbar__auth-link" style="text-decoration:none;">My Appointments</a>
       </div>
       <a href="#" onclick="event.preventDefault(); if(window.BarberBooking) window.BarberBooking.open();"
         class="navbar__cta">Book Now</a>
@@ -1633,8 +1633,8 @@
     <a href="#gallery" onclick="closeMobileMenu()">Gallery</a>
     <a href="#products" onclick="closeMobileMenu()">Products</a>
     <a href="#story" onclick="closeMobileMenu()">About</a>
-    <a href="/sign-in" target="_top">Sign In</a>
-    <a href="/my-appointments" target="_top">My Appointments</a>
+    <a href="/sign-in" target="_top" id="mobile-signin">Sign In</a>
+    <a href="/my-appointments" target="_top" id="mobile-appointments">My Appointments</a>
     <a href="#" class="navbar__cta"
       onclick="event.preventDefault(); closeMobileMenu(); if(window.BarberBooking) window.BarberBooking.open();">Book Now</a>
   </div>
@@ -2069,6 +2069,28 @@
           submitBtn.disabled = false;
           submitBtn.textContent = 'Submit Review';
         }
+      });
+    })();
+
+    // ---- Auth State Detection (toggle Sign In / Sign Out) ----
+    (function() {
+      function updateAuthUI(isSignedIn) {
+        var signInBtn = document.getElementById('auth-signin');
+        var mobileSignIn = document.getElementById('mobile-signin');
+        if (isSignedIn) {
+          if (signInBtn) { signInBtn.textContent = 'Sign Out'; signInBtn.href = '/logout'; }
+          if (mobileSignIn) { mobileSignIn.textContent = 'Sign Out'; mobileSignIn.href = '/logout'; }
+        }
+      }
+      // Check auth state after page loads
+      window.addEventListener('load', function() {
+        try {
+          var base = 'https://barber-shop-website-ashy.vercel.app';
+          try { if (window.parent.location.origin && window.parent.location.origin !== 'null') base = window.parent.location.origin; } catch(e) {}
+          fetch(base + '/api/my-appointments/profile', { credentials: 'include' })
+            .then(function(r) { updateAuthUI(r.ok); })
+            .catch(function() { updateAuthUI(false); });
+        } catch(e) { /* silently fail */ }
       });
     })();
 
