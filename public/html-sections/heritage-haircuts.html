@@ -2072,42 +2072,22 @@
       });
     })();
 
-    // ---- Sign In / Appointments overlay (self-contained, works in iframe) ----
+    // ---- Sign In / Appointments (self-contained, works in iframe) ----
     (function() {
       var apiBase = 'https://barber-shop-website-ashy.vercel.app';
-      try { if (window.parent && window.parent.location && window.parent.location.origin) apiBase = window.parent.location.origin; } catch(e) {}
-      if (window.location.origin && window.location.origin !== 'null' && window.location.protocol !== 'file:') apiBase = window.location.origin;
+      try { 
+        var parentOrigin = window.parent.location.origin;
+        if (parentOrigin && parentOrigin !== 'null') apiBase = parentOrigin;
+      } catch(e) {}
 
-      function openOverlay(path) {
-        var existing = document.getElementById('kutz-auth-overlay');
-        if (existing) existing.remove();
-        var overlay = document.createElement('div');
-        overlay.id = 'kutz-auth-overlay';
-        overlay.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);z-index:999999;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);animation:fadeIn 0.3s ease;';
-        var box = document.createElement('div');
-        box.style.cssText = 'width:94%;max-width:460px;height:85vh;max-height:680px;background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,0.4);position:relative;animation:slideUp 0.3s ease;';
-        var closeBtn = document.createElement('button');
-        closeBtn.innerHTML = '\u00d7';
-        closeBtn.style.cssText = 'position:absolute;top:10px;right:14px;background:rgba(0,0,0,0.08);border:none;width:34px;height:34px;border-radius:50%;font-size:22px;cursor:pointer;color:#333;z-index:10;display:flex;align-items:center;justify-content:center;transition:background 0.2s;';
-        closeBtn.onmouseover = function() { closeBtn.style.background = 'rgba(0,0,0,0.15)'; };
-        closeBtn.onmouseout = function() { closeBtn.style.background = 'rgba(0,0,0,0.08)'; };
-        closeBtn.onclick = function() { overlay.remove(); };
-        var iframe = document.createElement('iframe');
-        iframe.src = apiBase + path;
-        iframe.style.cssText = 'width:100%;height:100%;border:none;';
-        box.appendChild(closeBtn);
-        box.appendChild(iframe);
-        overlay.appendChild(box);
-        overlay.addEventListener('click', function(e) { if (e.target === overlay) overlay.remove(); });
-        document.body.appendChild(overlay);
-      }
-      // Add animations
-      var style = document.createElement('style');
-      style.textContent = '@keyframes fadeIn{from{opacity:0}to{opacity:1}} @keyframes slideUp{from{transform:translateY(20px);opacity:0}to{transform:translateY(0);opacity:1}}';
-      document.head.appendChild(style);
-
-      window.openSignIn = function() { openOverlay('/sign-in'); };
-      window.openAppointments = function() { openOverlay('/my-appointments'); };
+      window.openSignIn = function() { 
+        try { window.top.location.href = apiBase + '/sign-in'; } 
+        catch(e) { window.open(apiBase + '/sign-in', '_blank'); }
+      };
+      window.openAppointments = function() { 
+        try { window.top.location.href = apiBase + '/my-appointments'; } 
+        catch(e) { window.open(apiBase + '/my-appointments', '_blank'); }
+      };
     })();
 
     // ---- KutzApp SDK Loading ----
