@@ -80,13 +80,29 @@ export async function generateMetadata({
  };
  }
 
+ const c = shop.customization || {};
+ const seo = (c as any).seo || {};
+ const seoTitle = seo.title || `${shop.name} — Services & Booking`;
+ const seoDescription = seo.description || shop.description || `Book services at ${shop.name}. View services, meet the team, and book online.`;
+ const ogImage = seo.ogImageUrl || (c as any).heroImageUrl || (c as any).logoUrl || null;
+
  return {
- title: `${shop.name} - Services & Booking`,
- description: shop.description || `Book services at ${shop.name}`,
+ title: seoTitle,
+ description: seoDescription,
  openGraph: {
- title: `${shop.name} - Services & Booking`,
- description: shop.description || `Book services at ${shop.name}`,
+ title: seoTitle,
+ description: seoDescription,
+ type: 'website',
+ siteName: shop.name,
+ ...(ogImage ? { images: [{ url: ogImage, width: 1200, height: 630, alt: shop.name }] } : {}),
  },
+ twitter: {
+ card: ogImage ? 'summary_large_image' : 'summary',
+ title: seoTitle,
+ description: seoDescription,
+ ...(ogImage ? { images: [ogImage] } : {}),
+ },
+ robots: { index: true, follow: true },
  };
 }
 
@@ -141,19 +157,82 @@ export default async function PublicShopPage({
 
  // Define different layouts based on the selected template
  
- 
- if (templateType === 'custom') {
- const htmlToRender = c.customHtml || '<div style="padding: 100px; text-align: center;">No custom HTML provided yet.</div>';
- return (
- <div style={{ width: '100vw', height: '100dvh' }}>
- <iframe 
- srcDoc={htmlToRender} 
- style={{ width: '100%', height: '100%', border: 'none', display: 'block' }} 
- title={`${shop.name} Custom Landing Page`}
- />
- </div>
- );
- }
+  if (templateType === 'custom') {
+  let htmlToRender = c.customHtml || '<div style="padding: 100px; text-align: center;">No custom HTML provided yet.</div>';
+  
+  // ── Server-side SEO injection ──
+  const seo = c.seo || {};
+  const seoTitle = seo.title || shop.name || 'Shop';
+  const seoDescription = seo.description || shop.description || `Book services at ${shop.name}`;
+  const ogImage = seo.ogImageUrl || c.heroImageUrl || c.logoUrl || '';
+  const shopUrl = `https://barber-shop-website-ashy.vercel.app/shop-template/${slug}`;
+  const contact = c.contact || {};
+  const address = c.address || '';
+  
+  // Build meta tags to inject
+  const metaTags = [
+  `<meta name="description" content="${seoDescription.replace(/"/g, '&quot;')}" />`,
+  `<meta property="og:type" content="website" />`,
+  `<meta property="og:title" content="${seoTitle.replace(/"/g, '&quot;')}" />`,
+  `<meta property="og:description" content="${seoDescription.replace(/"/g, '&quot;')}" />`,
+  `<meta property="og:site_name" content="${(shop.name || '').replace(/"/g, '&quot;')}" />`,
+  `<meta property="og:url" content="${shopUrl}" />`,
+  ogImage ? `<meta property="og:image" content="${ogImage}" />` : '',
+  `<meta name="twitter:card" content="${ogImage ? 'summary_large_image' : 'summary'}" />`,
+  `<meta name="twitter:title" content="${seoTitle.replace(/"/g, '&quot;')}" />`,
+  `<meta name="twitter:description" content="${seoDescription.replace(/"/g, '&quot;')}" />`,
+  ogImage ? `<meta name="twitter:image" content="${ogImage}" />` : '',
+  `<link rel="canonical" href="${shopUrl}" />`,
+  ].filter(Boolean).join('\n  ');
+  
+  // JSON-LD structured data for LocalBusiness
+  const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'LocalBusiness',
+  name: shop.name || seoTitle,
+  description: seoDescription,
+  ...(ogImage ? { image: ogImage } : {}),
+  url: shopUrl,
+  ...(c.phone ? { telephone: c.phone } : {}),
+  ...(c.email ? { email: c.email } : {}),
+  ...(address ? { address: { '@type': 'PostalAddress', streetAddress: address } } : {}),
+  };
+  
+  const jsonLdScript = `<script type="application/ld+json">${JSON.stringify(jsonLd)}</script>`;
+
+  // Inject __KUTZ_THEME__ with server-side data
+  const themeScript = `<script>window.__KUTZ_THEME__ = ${JSON.stringify({
+  shopName: shop.name,
+  primaryColor: c.primaryColor,
+  secondaryColor: c.secondaryColor,
+  logoUrl: c.logoUrl,
+  heroImageUrl: c.heroImageUrl,
+  })};</script>`;
+  
+  // Replace <title> with SEO title
+  htmlToRender = htmlToRender.replace(
+  /<title>[^<]*<\/title>/i,
+  `<title>${seoTitle}</title>`
+  );
+  
+  // Inject meta tags + JSON-LD + theme into <head>
+  if (htmlToRender.includes('</head>')) {
+  htmlToRender = htmlToRender.replace(
+  '</head>',
+  `  ${metaTags}\n  ${jsonLdScript}\n  ${themeScript}\n</head>`
+  );
+  }
+  
+  return (
+  <div style={{ width: '100vw', height: '100dvh' }}>
+  <iframe 
+  srcDoc={htmlToRender} 
+  style={{ width: '100%', height: '100%', border: 'none', display: 'block' }} 
+  title={seoTitle}
+  />
+  </div>
+  );
+  }
 
  if (!['minimal', 'classic', 'modern', 'editorial'].includes(templateType)) {
  const dynamicTemplate = await prisma.dynamicTemplate.findUnique({
