@@ -43,9 +43,17 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
  const handleDynamicTemplateClick = (e: React.MouseEvent) => {
  const target = e.target as HTMLElement;
  const button = target.closest('button') || target.closest('a');
+ if (!button) return;
 
- // Very basic heuristic: if it looks like a booking action, open the modal.
- if (button && (button.innerText.toLowerCase().includes('book') || button.innerText.toLowerCase().includes('appointment'))) {
+ const text = button.innerText.toLowerCase();
+ const href = button.getAttribute('href') || '';
+
+ // Skip non-booking links (sign-in, sign-out, my-appointments, etc.)
+ if (href.includes('/sign-in') || href.includes('/logout') || href.includes('/my-appointments')) return;
+ if (text.includes('sign in') || text.includes('sign out') || text.includes('my appointments')) return;
+
+ // Only intercept booking-related actions
+ if (text.includes('book') || (text.includes('appointment') && !text.includes('my'))) {
  e.preventDefault();
  // Try to find a specific service based on data attribute, fallback to the first service
  const serviceId = button.getAttribute('data-service-id');
