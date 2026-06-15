@@ -230,6 +230,38 @@ export default async function PublicShopPage({
   style={{ width: '100%', height: '100%', border: 'none', display: 'block' }} 
   title={seoTitle}
   />
+  {/* Bridge: listen for postMessage from Heritage iframe for sign-in / appointments */}
+  <script dangerouslySetInnerHTML={{ __html: `
+  (function() {
+    function createOverlay(url) {
+      var existing = document.getElementById('kutz-auth-overlay');
+      if (existing) existing.remove();
+      var overlay = document.createElement('div');
+      overlay.id = 'kutz-auth-overlay';
+      overlay.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);z-index:2147483647;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);';
+      var box = document.createElement('div');
+      box.style.cssText = 'width:100%;max-width:480px;height:90vh;max-height:700px;background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,0.3);position:relative;';
+      var closeBtn = document.createElement('button');
+      closeBtn.innerHTML = '\\u00d7';
+      closeBtn.style.cssText = 'position:absolute;top:12px;right:16px;background:rgba(0,0,0,0.06);border:none;width:32px;height:32px;border-radius:50%;font-size:20px;cursor:pointer;color:#333;z-index:10;display:flex;align-items:center;justify-content:center;';
+      closeBtn.onclick = function() { overlay.remove(); };
+      var iframe = document.createElement('iframe');
+      iframe.src = url;
+      iframe.style.cssText = 'width:100%;height:100%;border:none;';
+      box.appendChild(closeBtn);
+      box.appendChild(iframe);
+      overlay.appendChild(box);
+      overlay.addEventListener('click', function(e) { if (e.target === overlay) overlay.remove(); });
+      document.body.appendChild(overlay);
+    }
+    window.addEventListener('message', function(e) {
+      if (!e.data || !e.data.type) return;
+      var base = window.location.origin;
+      if (e.data.type === 'kutz:sign-in') createOverlay(base + '/sign-in');
+      if (e.data.type === 'kutz:appointments') createOverlay(base + '/my-appointments');
+    });
+  })();
+  `}} />
   </div>
   );
   }

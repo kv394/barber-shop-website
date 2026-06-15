@@ -1611,9 +1611,9 @@
         <li><a href="#story">About</a></li>
       </ul>
       <div class="navbar__auth">
-        <button class="navbar__auth-link" onclick="if(window.BarberSignIn) window.BarberSignIn.open();">Sign In</button>
+        <button class="navbar__auth-link" onclick="window.parent.postMessage({type:'kutz:sign-in'},'*');">Sign In</button>
         <div class="navbar__auth-divider"></div>
-        <button class="navbar__auth-link" onclick="if(window.BarberAppointments) window.BarberAppointments.open();">My Appointments</button>
+        <button class="navbar__auth-link" onclick="window.parent.postMessage({type:'kutz:appointments'},'*');">My Appointments</button>
       </div>
       <a href="#" onclick="event.preventDefault(); if(window.BarberBooking) window.BarberBooking.open();"
         class="navbar__cta">Book Now</a>
@@ -1633,8 +1633,8 @@
     <a href="#gallery" onclick="closeMobileMenu()">Gallery</a>
     <a href="#products" onclick="closeMobileMenu()">Products</a>
     <a href="#story" onclick="closeMobileMenu()">About</a>
-    <a href="#" onclick="event.preventDefault(); closeMobileMenu(); if(window.BarberSignIn) window.BarberSignIn.open();">Sign In</a>
-    <a href="#" onclick="event.preventDefault(); closeMobileMenu(); if(window.BarberAppointments) window.BarberAppointments.open();">My Appointments</a>
+    <a href="#" onclick="event.preventDefault(); closeMobileMenu(); window.parent.postMessage({type:'kutz:sign-in'},'*');">Sign In</a>
+    <a href="#" onclick="event.preventDefault(); closeMobileMenu(); window.parent.postMessage({type:'kutz:appointments'},'*');">My Appointments</a>
     <a href="#" class="navbar__cta"
       onclick="event.preventDefault(); closeMobileMenu(); if(window.BarberBooking) window.BarberBooking.open();">Book Now</a>
   </div>
