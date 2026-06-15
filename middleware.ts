@@ -211,9 +211,15 @@ export async function middleware(req: NextRequest) {
   response.headers.set('x-pathname', req.nextUrl.pathname);
 
   // Apply Security Headers (CSP, X-Frame-Options, X-Content-Type-Options, etc)
-  const csp = generateCsp();
-  if (csp) {
-    response.headers.set('Content-Security-Policy', csp);
+  // Skip CSP for /shops/ and /shop-template/ — these render custom HTML inside
+  // srcDoc iframes where the iframe's origin is 'null'. CSP 'self' resolves to
+  // null in that context, blocking ALL scripts, API calls, and resources.
+  const isShopPage = req.nextUrl.pathname.startsWith('/shops/') || req.nextUrl.pathname.startsWith('/shop-template/');
+  if (!isShopPage) {
+    const csp = generateCsp();
+    if (csp) {
+      response.headers.set('Content-Security-Policy', csp);
+    }
   }
   
   // Prevent clickjacking for non-embed routes
