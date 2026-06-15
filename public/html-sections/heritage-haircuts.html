@@ -1613,7 +1613,7 @@
       <div class="navbar__auth">
         <a href="/sign-in" target="_top" id="auth-signin" class="navbar__auth-link" style="text-decoration:none;" onclick="event.stopPropagation();">Sign In</a>
         <div class="navbar__auth-divider" id="auth-divider"></div>
-        <a href="/my-appointments" target="_top" id="auth-appointments" class="navbar__auth-link" style="text-decoration:none;" onclick="event.stopPropagation();">My Appointments</a>
+        <a href="#" id="auth-appointments" class="navbar__auth-link" style="text-decoration:none;" onclick="event.preventDefault(); event.stopPropagation(); openAppointmentsModal();">My Appointments</a>
       </div>
       <a href="#" onclick="event.preventDefault(); if(window.BarberBooking) window.BarberBooking.open();"
         class="navbar__cta">Book Now</a>
@@ -1634,7 +1634,7 @@
     <a href="#products" onclick="closeMobileMenu()">Products</a>
     <a href="#story" onclick="closeMobileMenu()">About</a>
     <a href="/sign-in" target="_top" id="mobile-signin" onclick="event.stopPropagation();">Sign In</a>
-    <a href="/my-appointments" target="_top" id="mobile-appointments" onclick="event.stopPropagation();">My Appointments</a>
+    <a href="#" id="mobile-appointments" onclick="event.preventDefault(); event.stopPropagation(); closeMobileMenu(); openAppointmentsModal();">My Appointments</a>
     <a href="#" class="navbar__cta"
       onclick="event.preventDefault(); closeMobileMenu(); if(window.BarberBooking) window.BarberBooking.open();">Book Now</a>
   </div>
@@ -2497,6 +2497,48 @@
       }
     });
   </script>
+
+<!-- ====== MY APPOINTMENTS POPUP MODAL ====== -->
+<div id="appointments-overlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); z-index:99999; backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px); opacity:0; transition:opacity 0.3s ease;">
+  <div id="appointments-modal" style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%) scale(0.95); width:94%; max-width:520px; height:85vh; max-height:750px; background:#1a1a2e; border-radius:20px; overflow:hidden; box-shadow:0 25px 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(212,175,55,0.2); transition:transform 0.3s ease;">
+    <div style="display:flex; align-items:center; justify-content:space-between; padding:16px 20px; background:linear-gradient(135deg, rgba(212,175,55,0.15), rgba(212,175,55,0.05)); border-bottom:1px solid rgba(212,175,55,0.15);">
+      <span style="color:#d4af37; font-family:Georgia,serif; font-size:16px; font-weight:600; letter-spacing:0.5px;">My Appointments</span>
+      <button onclick="closeAppointmentsModal()" style="background:rgba(255,255,255,0.1); border:none; width:34px; height:34px; border-radius:50%; font-size:18px; cursor:pointer; color:#ccc; display:flex; align-items:center; justify-content:center; transition:all 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.2)'; this.style.color='#fff';" onmouseout="this.style.background='rgba(255,255,255,0.1)'; this.style.color='#ccc';">&times;</button>
+    </div>
+    <iframe id="appointments-iframe" style="width:100%; height:calc(100% - 58px); border:none; background:#0f0f1a;" loading="lazy"></iframe>
+  </div>
+</div>
+
+<script>
+  function openAppointmentsModal() {
+    var overlay = document.getElementById('appointments-overlay');
+    var iframe = document.getElementById('appointments-iframe');
+    var base = 'https://barber-shop-website-ashy.vercel.app';
+    try { if (window.parent && window.parent.location && window.parent.location.origin && window.parent.location.origin !== 'null') base = window.parent.location.origin; } catch(e) {}
+    try { if (window.top && window.top.location && window.top.location.origin && window.top.location.origin !== 'null') base = window.top.location.origin; } catch(e) {}
+    iframe.src = base + '/my-appointments';
+    overlay.style.display = 'block';
+    setTimeout(function() {
+      overlay.style.opacity = '1';
+      document.getElementById('appointments-modal').style.transform = 'translate(-50%,-50%) scale(1)';
+    }, 10);
+    document.body.style.overflow = 'hidden';
+  }
+  function closeAppointmentsModal() {
+    var overlay = document.getElementById('appointments-overlay');
+    overlay.style.opacity = '0';
+    document.getElementById('appointments-modal').style.transform = 'translate(-50%,-50%) scale(0.95)';
+    setTimeout(function() {
+      overlay.style.display = 'none';
+      document.getElementById('appointments-iframe').src = '';
+      document.body.style.overflow = '';
+    }, 300);
+  }
+  document.getElementById('appointments-overlay').addEventListener('click', function(e) {
+    if (e.target === this) closeAppointmentsModal();
+  });
+</script>
+
 </body>
 
 </html>
