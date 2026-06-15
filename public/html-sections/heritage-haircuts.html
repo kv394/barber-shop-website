@@ -1611,9 +1611,9 @@
         <li><a href="#story">About</a></li>
       </ul>
       <div class="navbar__auth">
-        <a href="/sign-in" target="_top" id="auth-signin" class="navbar__auth-link" style="text-decoration:none;">Sign In</a>
+        <a href="/sign-in" target="_top" id="auth-signin" class="navbar__auth-link" style="text-decoration:none;" onclick="event.stopPropagation();">Sign In</a>
         <div class="navbar__auth-divider" id="auth-divider"></div>
-        <a href="/my-appointments" target="_top" id="auth-appointments" class="navbar__auth-link" style="text-decoration:none;">My Appointments</a>
+        <a href="/my-appointments" target="_top" id="auth-appointments" class="navbar__auth-link" style="text-decoration:none;" onclick="event.stopPropagation();">My Appointments</a>
       </div>
       <a href="#" onclick="event.preventDefault(); if(window.BarberBooking) window.BarberBooking.open();"
         class="navbar__cta">Book Now</a>
@@ -1633,8 +1633,8 @@
     <a href="#gallery" onclick="closeMobileMenu()">Gallery</a>
     <a href="#products" onclick="closeMobileMenu()">Products</a>
     <a href="#story" onclick="closeMobileMenu()">About</a>
-    <a href="/sign-in" target="_top" id="mobile-signin">Sign In</a>
-    <a href="/my-appointments" target="_top" id="mobile-appointments">My Appointments</a>
+    <a href="/sign-in" target="_top" id="mobile-signin" onclick="event.stopPropagation();">Sign In</a>
+    <a href="/my-appointments" target="_top" id="mobile-appointments" onclick="event.stopPropagation();">My Appointments</a>
     <a href="#" class="navbar__cta"
       onclick="event.preventDefault(); closeMobileMenu(); if(window.BarberBooking) window.BarberBooking.open();">Book Now</a>
   </div>
