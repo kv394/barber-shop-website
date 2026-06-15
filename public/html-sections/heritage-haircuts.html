@@ -17,24 +17,53 @@
        CSS CUSTOM PROPERTIES
     ======================================== */
     :root {
-      --bg-main: #131313;
-      --bg-section: #1c1b1b;
-      --bg-darkest: #0e0e0e;
-      --bg-card: #252525;
+      --bg-main: #0c0c0c;
+      --bg-section: #141414;
+      --bg-darkest: #080808;
+      --bg-card: #1a1a1a;
       --gold-primary: #e9c176;
       --gold-secondary: #c5a059;
       --gold-accent: #d4af37;
-      --text-primary: #e5e2e1;
-      --text-body: #d1c5b4;
+      --text-primary: #f0ede8;
+      --text-body: #d8cfc0;
       --text-muted: #8a8078;
       --font-serif: 'Noto Serif', Georgia, serif;
       --font-sans: 'Manrope', system-ui, sans-serif;
       --gold-gradient: linear-gradient(135deg, var(--gold-primary), var(--gold-accent), var(--gold-secondary));
       --gold-gradient-hover: linear-gradient(135deg, var(--gold-secondary), var(--gold-accent), var(--gold-primary));
       --radius-sm: 6px;
-      --radius-md: 12px;
-      --radius-lg: 20px;
+      --radius-md: 14px;
+      --radius-lg: 24px;
       --transition: 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      --glow-gold: 0 0 60px rgba(233,193,118,0.08);
+    }
+
+    /* ========================================
+       PREMIUM ANIMATIONS
+    ======================================== */
+    @keyframes shimmerGold {
+      0% { background-position: -200% center; }
+      100% { background-position: 200% center; }
+    }
+    @keyframes floatUp {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+    @keyframes pulseGlow {
+      0%, 100% { box-shadow: 0 0 20px rgba(233,193,118,0.15); }
+      50% { box-shadow: 0 0 40px rgba(233,193,118,0.3), 0 0 80px rgba(233,193,118,0.1); }
+    }
+    @keyframes kenBurns {
+      0% { transform: scale(1.05) translate(0, 0); }
+      25% { transform: scale(1.1) translate(-1%, -1%); }
+      50% { transform: scale(1.12) translate(0, -0.5%); }
+      75% { transform: scale(1.08) translate(0.5%, 0); }
+      100% { transform: scale(1.05) translate(0, 0); }
+    }
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
     }
 
     /* ========================================
@@ -343,22 +372,19 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
-      transform: scale(1.05);
-      transition: transform 12s ease-out;
-    }
-
-    .hero.visible .hero__bg img {
-      transform: scale(1);
+      animation: kenBurns 30s ease-in-out infinite;
     }
 
     .hero__overlay {
       position: absolute;
       inset: 0;
-      background: linear-gradient(to right,
-          rgba(14, 14, 14, 0.95) 0%,
-          rgba(14, 14, 14, 0.8) 35%,
-          rgba(14, 14, 14, 0.5) 60%,
-          rgba(14, 14, 14, 0.3) 100%);
+      background:
+        radial-gradient(ellipse at 20% 50%, rgba(233,193,118,0.04) 0%, transparent 60%),
+        linear-gradient(to right,
+          rgba(8, 8, 8, 0.96) 0%,
+          rgba(8, 8, 8, 0.85) 30%,
+          rgba(8, 8, 8, 0.5) 55%,
+          rgba(8, 8, 8, 0.2) 100%);
       z-index: 1;
     }
 
@@ -388,21 +414,30 @@
       letter-spacing: 0.3em;
       text-transform: uppercase;
       color: var(--gold-primary);
-      background: rgba(233, 193, 118, 0.08);
-      border: 1px solid rgba(233, 193, 118, 0.15);
-      padding: 8px 20px;
+      background: rgba(233, 193, 118, 0.06);
+      border: 1px solid rgba(233, 193, 118, 0.18);
+      padding: 10px 24px;
       border-radius: 50px;
       margin-bottom: 28px;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      animation: floatUp 4s ease-in-out infinite;
     }
 
     .hero__title {
       font-family: var(--font-serif);
-      font-size: clamp(3rem, 6vw, 6rem);
+      font-size: clamp(3rem, 6vw, 5.5rem);
       font-weight: 700;
       color: var(--text-primary);
       line-height: 1.05;
       margin-bottom: 24px;
       letter-spacing: -0.02em;
+      background: linear-gradient(90deg, var(--text-primary) 0%, var(--gold-primary) 40%, var(--text-primary) 60%, var(--gold-accent) 100%);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: shimmerGold 6s ease-in-out infinite;
     }
 
     .hero__subtitle {
@@ -424,8 +459,10 @@
       display: inline-flex;
       align-items: center;
       gap: 10px;
-      padding: 16px 36px;
+      padding: 16px 40px;
       background: var(--gold-gradient);
+      background-size: 200% 200%;
+      animation: gradientShift 4s ease infinite;
       color: var(--bg-darkest);
       font-family: var(--font-sans);
       font-size: 0.85rem;
@@ -436,11 +473,12 @@
       border: none;
       cursor: pointer;
       transition: transform var(--transition), box-shadow var(--transition);
+      box-shadow: 0 4px 20px rgba(233,193,118,0.2);
     }
 
     .btn-gold:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 12px 40px rgba(233, 193, 118, 0.3);
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: 0 12px 40px rgba(233, 193, 118, 0.4);
     }
 
     .btn-glass {
@@ -549,13 +587,15 @@
     }
 
     .service-card {
-      background: var(--bg-card);
-      border: 1px solid rgba(255, 255, 255, 0.04);
+      background: linear-gradient(145deg, rgba(30,30,30,0.9), rgba(20,20,20,0.95));
+      border: 1px solid rgba(255, 255, 255, 0.05);
       border-radius: var(--radius-md);
-      padding: 32px;
-      transition: var(--transition);
+      padding: 36px;
+      transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
       position: relative;
       overflow: hidden;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
     }
 
     .service-card::before {
@@ -571,14 +611,31 @@
       transition: transform var(--transition);
     }
 
+    .service-card::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(ellipse, rgba(233,193,118,0.03) 0%, transparent 70%);
+      opacity: 0;
+      transition: opacity 0.6s ease;
+      pointer-events: none;
+    }
+
     .service-card:hover {
-      border-color: rgba(233, 193, 118, 0.12);
-      transform: translateY(-4px);
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      border-color: rgba(233, 193, 118, 0.15);
+      transform: translateY(-6px);
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.4), 0 0 40px rgba(233,193,118,0.05);
     }
 
     .service-card:hover::before {
       transform: scaleX(1);
+    }
+
+    .service-card:hover::after {
+      opacity: 1;
     }
 
     .service-card__header {
@@ -1590,13 +1647,24 @@
       <img src="/demo/heritage/hero.png" alt="Heritage Haircuts — Premium barbershop interior" />
     </div>
     <div class="hero__overlay"></div>
+    <!-- Floating gold particles -->
+    <div style="position:absolute;inset:0;z-index:1;pointer-events:none;overflow:hidden;">
+      <div style="position:absolute;width:3px;height:3px;background:var(--gold-primary);border-radius:50%;top:20%;left:70%;opacity:0.3;animation:floatUp 6s ease-in-out infinite;"></div>
+      <div style="position:absolute;width:2px;height:2px;background:var(--gold-accent);border-radius:50%;top:40%;left:80%;opacity:0.2;animation:floatUp 8s ease-in-out 1s infinite;"></div>
+      <div style="position:absolute;width:4px;height:4px;background:var(--gold-secondary);border-radius:50%;top:60%;left:65%;opacity:0.15;animation:floatUp 7s ease-in-out 2s infinite;"></div>
+      <div style="position:absolute;width:2px;height:2px;background:var(--gold-primary);border-radius:50%;top:30%;left:90%;opacity:0.25;animation:floatUp 9s ease-in-out 0.5s infinite;"></div>
+      <div style="position:absolute;width:3px;height:3px;background:var(--gold-accent);border-radius:50%;top:75%;left:75%;opacity:0.2;animation:floatUp 5s ease-in-out 3s infinite;"></div>
+    </div>
     <div class="hero__content">
       <div class="hero__badge" id="hero-badge">PREMIUM GROOMING</div>
       <h1 class="hero__title" id="hero-title">Welcome</h1>
       <p class="hero__subtitle" id="hero-subtitle">Loading...</p>
       <div class="hero__actions">
-        <a href="#services" class="btn-gold">View Our Services</a>
-        <a href="#team" class="btn-glass">Meet The Team</a>
+        <a href="#" onclick="event.preventDefault(); if(window.BarberBooking) window.BarberBooking.open();" class="btn-gold">
+          <span class="material-symbols-outlined" style="font-size:18px;">calendar_month</span>
+          Book an Appointment
+        </a>
+        <a href="#services" class="btn-glass">Explore Services</a>
       </div>
     </div>
     <div class="hero__scroll">
