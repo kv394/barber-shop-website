@@ -243,11 +243,13 @@ export async function GET(request: Request, { params }: { params: Promise<{ shop
  const formattedPortfolio = portfolioImages.map((img: any) => ({ ...img, imageUrl: formatImageUrl(img.imageUrl) }));
 
  // Clean up customization to only include public-safe fields (branding, contact, hours)
- const publicCustomization = {
- address: customization.address,
- contact: customization.contact,
- branding: customization.branding,
- seo: customization.seo,
+  const publicCustomization = {
+  address: customization.address,
+  phone: customization.phone || (customization.contact || {}).phone || null,
+  email: customization.email || (customization.contact || {}).email || null,
+  contact: customization.contact,
+  branding: customization.branding,
+  seo: customization.seo,
  logoUrl: formatImageUrl(customization.logoUrl),
  heroImageUrl: formatImageUrl(customization.heroImageUrl),
  businessHours: customization.businessHours,

@@ -2112,20 +2112,14 @@
             else if (heroBadge) heroBadge.textContent = 'PREMIUM GROOMING';
           } catch (e) { console.error('Hero update error:', e); }
 
-          // --- Update footer contact from shop data ---
+          // --- Update footer contact from shop data (SDK: getAddress, getPhone, getEmail) ---
           try {
-            var custom = shop.customization || {};
-            var contact = custom.contact || {};
             var addressEl = document.getElementById('footer-address');
             var phoneEl = document.getElementById('footer-phone');
             var emailEl = document.getElementById('footer-email');
-            var address = custom.address || contact.address || '';
-            if (typeof address === 'object' && address !== null) {
-              address = [address.street, address.suite, address.city, address.state, address.zip].filter(Boolean).join(', ');
-            }
-            if (addressEl) addressEl.textContent = address || 'Contact us for location';
-            if (phoneEl) phoneEl.textContent = custom.phone || contact.phone || '';
-            if (emailEl) emailEl.textContent = custom.email || contact.email || '';
+            if (addressEl) addressEl.textContent = shop.address || 'Contact us for location';
+            if (phoneEl) phoneEl.textContent = shop.phone || '';
+            if (emailEl) emailEl.textContent = shop.email || '';
             // Hide empty contact items
             if (phoneEl && !phoneEl.textContent) phoneEl.closest('.footer__contact-item').style.display = 'none';
             if (emailEl && !emailEl.textContent) emailEl.closest('.footer__contact-item').style.display = 'none';
@@ -2177,10 +2171,9 @@
             if (statBarbers) statBarbers.textContent = (data.staff || []).length;
           } catch (e) { console.error('Story update error:', e); }
 
-          // --- BUSINESS HOURS (SDK: getBusinessHours) ---
+          // --- BUSINESS HOURS (SDK: shop.businessHours) ---
           try {
-            var custom = shop.customization || {};
-            var hours = custom.businessHours || null;
+            var hours = shop.businessHours || null;
             if (hours && typeof hours === 'object') {
               var dayOrder = ['monday','tuesday','wednesday','thursday','friday','saturday','sunday'];
               var dayNames = {monday:'Monday',tuesday:'Tuesday',wednesday:'Wednesday',thursday:'Thursday',friday:'Friday',saturday:'Saturday',sunday:'Sunday'};

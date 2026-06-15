@@ -22,6 +22,14 @@ interface KutzAppShop {
   heroImageUrl: string | null;
   primaryColor: string;
   secondaryColor: string;
+  /** Formatted address string */
+  address: string | null;
+  /** Phone number */
+  phone: string | null;
+  /** Email address */
+  email: string | null;
+  /** Business hours by day of week */
+  businessHours: Record<string, { open: string; close: string; isClosed?: boolean }> | null;
   customization: KutzAppCustomization;
 }
 
@@ -189,6 +197,15 @@ interface KutzAppClient {
 
   /** Get shop details (name, branding, customization). */
   getShopDetails(): Promise<KutzAppShop>;
+
+  /** Get the shop's formatted address string. */
+  getAddress(): Promise<string | null>;
+
+  /** Get the shop's phone number. */
+  getPhone(): Promise<string | null>;
+
+  /** Get the shop's email address. */
+  getEmail(): Promise<string | null>;
 
   /** Get all sellable retail products. */
   getSellableProducts(): Promise<KutzAppProduct[]>;

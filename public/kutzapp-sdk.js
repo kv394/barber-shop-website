@@ -130,6 +130,18 @@
             data.shop.primaryColor = custom.primaryColor || shop.primaryColor || "#E31837";
             data.shop.secondaryColor = custom.secondaryColor || shop.secondaryColor || "#000000";
             data.shop.customDomain = shop.customDomain || null;
+
+            // ── Contact info (top-level for easy access) ──
+            var contact = custom.contact || {};
+            var rawAddr = custom.address || contact.address || '';
+            if (typeof rawAddr === 'object' && rawAddr !== null) {
+              rawAddr = [rawAddr.street, rawAddr.suite, rawAddr.city, rawAddr.state, rawAddr.zip].filter(Boolean).join(', ');
+            }
+            data.shop.address = rawAddr || null;
+            data.shop.phone = custom.phone || contact.phone || null;
+            data.shop.email = custom.email || contact.email || null;
+            data.shop.businessHours = custom.businessHours || null;
+
             // Widget color overrides (all configurable from admin console)
             data.shop.widgetBgColor = custom.widgetBgColor || null;
             data.shop.widgetTextColor = custom.widgetTextColor || null;
@@ -157,6 +169,33 @@
     async getShopDetails() {
       const data = await this.getPublicData();
       return data.shop;
+    }
+
+    /**
+     * Get the shop's address as a formatted string.
+     * @returns {Promise<string|null>}
+     */
+    async getAddress() {
+      const shop = await this.getShopDetails();
+      return shop.address || null;
+    }
+
+    /**
+     * Get the shop's phone number.
+     * @returns {Promise<string|null>}
+     */
+    async getPhone() {
+      const shop = await this.getShopDetails();
+      return shop.phone || null;
+    }
+
+    /**
+     * Get the shop's email.
+     * @returns {Promise<string|null>}
+     */
+    async getEmail() {
+      const shop = await this.getShopDetails();
+      return shop.email || null;
     }
 
     /**
