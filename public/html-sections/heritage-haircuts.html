@@ -1658,7 +1658,7 @@
     <div class="hero__content">
       <div class="hero__badge" id="hero-badge">PREMIUM GROOMING</div>
       <h1 class="hero__title" id="hero-title">Welcome</h1>
-      <p class="hero__subtitle" id="hero-subtitle">Loading...</p>
+      <p class="hero__subtitle" id="hero-subtitle" style="max-width:420px;">Where tradition meets modern style.</p>
       <div class="hero__actions">
         <a href="#" onclick="event.preventDefault(); if(window.BarberBooking) window.BarberBooking.open();" class="btn-gold">
           <span class="material-symbols-outlined" style="font-size:18px;">calendar_month</span>
@@ -1698,9 +1698,9 @@
           <img src="/demo/heritage/gallery1.png" alt="Heritage Haircuts — precision grooming experience" />
         </div>
         <div class="editorial__content">
-          <div class="section-label reveal">CRAFTED FOR THE MODERN GENTLEMAN</div>
-          <h2 class="editorial__heading reveal reveal-delay-1" id="editorial-heading">Walk in looking good, walk out looking great.</h2>
-          <p class="editorial__text reveal reveal-delay-2" id="editorial-text">We blend old-school barbering with modern style. Our skilled barbers deliver precision cuts, clean fades, and straight-razor shaves in a welcoming space built for you. Every visit is more than a haircut — it's an experience.</p>
+          <div class="section-label reveal">THE EXPERIENCE</div>
+          <h2 class="editorial__heading reveal reveal-delay-1" id="editorial-heading">Walk in good. Walk out great.</h2>
+          <p class="editorial__text reveal reveal-delay-2" id="editorial-text">Precision cuts. Clean fades. Straight-razor shaves. Every visit is crafted for the modern gentleman.</p>
           <div class="editorial__tag reveal reveal-delay-3">
             <span class="material-symbols-outlined">content_cut</span>
             Old-School Craft / Modern Style
@@ -1856,9 +1856,9 @@
           <span id="story-big">Experience</span>
         </div>
         <div class="story__content" id="story-content">
-          <div class="section-label reveal" id="story-label-text">CRAFTED FOR YOU</div>
-          <h3 class="reveal" id="story-heading" style="font-family:var(--font-serif);font-size:1.75rem;line-height:1.3;color:var(--gold-primary);margin-bottom:1rem;">Walk in looking good, walk out looking great.</h3>
-          <p class="reveal reveal-delay-1" id="story-text-1">We blend old-school barbering with modern style. Precision cuts, clean fades, and straight-razor shaves — every visit is more than a haircut, it's an experience.</p>
+          <div class="section-label reveal" id="story-label-text">MORE THAN A HAIRCUT</div>
+          <h3 class="reveal" id="story-heading" style="font-family:var(--font-serif);font-size:1.75rem;line-height:1.3;color:var(--gold-primary);margin-bottom:1rem;">It's an experience.</h3>
+          <p class="reveal reveal-delay-1" id="story-text-1">Old-school craft. Modern precision. A space built for gentlemen who appreciate the details.</p>
           <p class="reveal reveal-delay-2" id="story-text-2" style="display:none"></p>
         </div>
       </div>
@@ -2216,7 +2216,9 @@
             var heroSubtitle = document.getElementById('hero-subtitle');
             var heroBadge = document.getElementById('hero-badge');
             if (heroTitle) heroTitle.innerHTML = (shop.name || _t.shopName || 'Welcome');
-            if (heroSubtitle) heroSubtitle.textContent = custom.tagline || shop.description || '';
+            // Short tagline only — not the full description
+            var shortTagline = custom.tagline || 'Where tradition meets modern style.';
+            if (heroSubtitle) heroSubtitle.textContent = shortTagline;
             if (heroBadge && custom.announcement) heroBadge.textContent = custom.announcement;
             else if (heroBadge) heroBadge.textContent = 'PREMIUM GROOMING';
           } catch (e) { console.error('Hero update error:', e); }
