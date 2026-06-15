@@ -215,6 +215,14 @@ export default async function PublicShopPage({
   `<title>${seoTitle}</title>`
   );
   
+  // Inject <base> tag so relative URLs work inside srcDoc iframe
+  // Without this, URLs like "/sign-in" resolve to "about:///sign-in" (broken)
+  const baseUrl = 'https://barber-shop-website-ashy.vercel.app';
+  const baseTag = `<base href="${baseUrl}" target="_top" />`;
+  if (htmlToRender.includes('<head>')) {
+  htmlToRender = htmlToRender.replace('<head>', `<head>\n  ${baseTag}`);
+  }
+  
   // Inject meta tags + JSON-LD + theme into <head>
   if (htmlToRender.includes('</head>')) {
   htmlToRender = htmlToRender.replace(
