@@ -1657,7 +1657,7 @@
     </div>
     <div class="hero__content">
       <div class="hero__badge" id="hero-badge">PREMIUM GROOMING</div>
-      <h1 class="hero__title" id="hero-title">Welcome</h1>
+      <h1 class="hero__title" id="hero-title">Look Sharp.<br>Feel Great.</h1>
       <p class="hero__subtitle" id="hero-subtitle" style="max-width:420px;">Where tradition meets modern style.</p>
       <div class="hero__actions">
         <a href="#" onclick="event.preventDefault(); if(window.BarberBooking) window.BarberBooking.open();" class="btn-gold">
@@ -2215,7 +2215,8 @@
             var heroTitle = document.getElementById('hero-title');
             var heroSubtitle = document.getElementById('hero-subtitle');
             var heroBadge = document.getElementById('hero-badge');
-            if (heroTitle) heroTitle.innerHTML = (shop.name || _t.shopName || 'Welcome');
+            // Don't override hero with shop name — keep the catchy heading
+            // Shop name is already shown in the navbar brand
             // Short tagline only — not the full description
             var shortTagline = custom.tagline || 'Where tradition meets modern style.';
             if (heroSubtitle) heroSubtitle.textContent = shortTagline;
