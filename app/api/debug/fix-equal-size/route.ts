@@ -1,12 +1,16 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { cacheService } from '@/lib/cache';
+import { requireSiteAdmin } from '@/lib/auth';
 
 /**
  * POST /api/debug/fix-equal-size
  * Makes the reviews carousel and review form boxes the same size
  */
 export async function POST(request: Request) {
+  const adminCheck = await requireSiteAdmin();
+  if (adminCheck instanceof NextResponse) return adminCheck;
+
   try {
     const body = await request.json();
     const { shopId } = body;

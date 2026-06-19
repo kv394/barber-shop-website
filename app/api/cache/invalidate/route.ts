@@ -13,8 +13,11 @@ export async function POST(request: Request) {
     const body = await request.json();
     const { slug, secret } = body;
 
-    // Simple protection — use CRON_SECRET or a fallback
-    const expectedSecret = process.env.CRON_SECRET || process.env.INNGEST_SIGNING_KEY || 'cache-bust-2026';
+    // Simple protection — require CRON_SECRET or INNGEST_SIGNING_KEY
+    const expectedSecret = process.env.CRON_SECRET || process.env.INNGEST_SIGNING_KEY;
+    if (!expectedSecret) {
+      return NextResponse.json({ error: 'Cache invalidation secret not configured' }, { status: 500 });
+    }
     if (secret !== expectedSecret) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }

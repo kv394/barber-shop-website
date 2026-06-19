@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { cacheService } from '@/lib/cache';
+import { requireSiteAdmin } from '@/lib/auth';
 
 /**
  * GET /api/debug/shop-template?slug=heritage-haircuts
@@ -9,6 +10,9 @@ import { cacheService } from '@/lib/cache';
  * (bypassing all caches) and verify what the page rendering pipeline sees.
  */
 export async function GET(request: Request) {
+  const adminCheck = await requireSiteAdmin();
+  if (adminCheck instanceof NextResponse) return adminCheck;
+
   const url = new URL(request.url);
   const slug = url.searchParams.get('slug') || 'heritage-haircuts';
 

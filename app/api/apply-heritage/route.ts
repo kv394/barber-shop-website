@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
-import { createClient } from '@/utils/supabase/server';
+import { requireSiteAdmin } from '@/lib/auth';
 const htmlCode = `
 <div class="bg-surface text-on-surface selection:bg-primary/30">
 <!-- TopNavBar -->
@@ -50,7 +50,7 @@ const htmlCode = `
 <div class="bg-surface-container-low p-10 group hover:bg-surface-container-high transition-colors">
 <div class="flex justify-between items-start mb-4">
 <h3 class="font-serif text-2xl text-on-surface group-hover:text-primary transition-colors">{{name}}</h3>
-<span class="font-serif text-xl text-primary">$\{{price}}+</span>
+<span class="font-serif text-xl text-primary">\$\\{{price}}+</span>
 </div>
 <p class="text-on-surface-variant leading-relaxed">{{description}}</p>
 </div>
@@ -225,23 +225,8 @@ const cssCode = `
 export async function GET() {
  try {
  // Auth check: require SITE_ADMIN role
- const supabase = await createClient();
- const { data: { user: _authUser } } = await supabase.auth.getUser();
-  const session = _authUser ? { user: _authUser } : null;
-  const authUser = session?.user;
-
- if (!authUser || !authUser.email) {
- return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
- }
-
- const dbUser = await prisma.user.findUnique({
- where: { email: authUser.email },
- select: { role: true },
- });
-
- if (!dbUser || dbUser.role !== 'SITE_ADMIN') {
- return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
- }
+ const adminCheck = await requireSiteAdmin();
+ if (adminCheck instanceof NextResponse) return adminCheck;
 
  const shop = await prisma.shop.findFirst({
  where: {
@@ -281,4 +266,3 @@ export async function GET() {
  return NextResponse.json({ error: error.message }, { status: 500 });
  }
 }
-

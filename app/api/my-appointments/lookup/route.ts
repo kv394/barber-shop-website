@@ -1,6 +1,8 @@
 import { prisma } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
 import { serialize } from '@/lib/serialize';
+import { rateLimit } from '@/lib/rate-limiter';
+import { headers } from 'next/headers';
 
 export const dynamic = 'force-dynamic';
 
@@ -8,9 +10,21 @@ export const dynamic = 'force-dynamic';
  * POST /api/my-appointments/lookup
  * Public endpoint: looks up upcoming appointments by client email address.
  * No authentication required – this is used by the self-service portal.
+ * Rate-limited to prevent email enumeration abuse.
  */
 export async function POST(request: Request) {
   try {
+    // Rate limit: 20 requests per minute per IP
+    const headersList = await headers();
+    const ip = headersList.get('x-forwarded-for') || 'unknown';
+    const { success } = await rateLimit(`lookup:${ip}`, 20, 60);
+    if (!success) {
+      return NextResponse.json(
+        { error: 'Too many requests. Please try again later.' },
+        { status: 429, headers: { 'Retry-After': '60' } }
+      );
+    }
+
     const body = await request.json();
     const { email } = body;
 

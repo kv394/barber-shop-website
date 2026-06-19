@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
+import { requireSiteAdmin } from '@/lib/auth';
 
 /**
  * POST /api/debug/fix-duplicate-shop
@@ -8,14 +9,12 @@ import { prisma } from '@/lib/prisma';
  * slug resolver picks up the correct template regardless of match order.
  */
 export async function POST(request: Request) {
+  const adminCheck = await requireSiteAdmin();
+  if (adminCheck instanceof NextResponse) return adminCheck;
+
   try {
     const body = await request.json();
-    const { sourceShopId, targetShopId, secret } = body;
-
-    const expectedSecret = process.env.CRON_SECRET || process.env.INNGEST_SIGNING_KEY || 'fix-shop-2026';
-    if (secret !== expectedSecret) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
+    const { sourceShopId, targetShopId } = body;
 
     if (!sourceShopId || !targetShopId) {
       return NextResponse.json({ error: 'sourceShopId and targetShopId required' }, { status: 400 });

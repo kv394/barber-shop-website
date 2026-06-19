@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
-import { createClient } from '@/utils/supabase/server';
+import { requireSiteAdmin } from '@/lib/auth';
 import { logger } from '@/lib/logger';
 import { calculateUsageCostStrategy, getSaaSTiers } from '@/lib/cost-calculator';
 
@@ -12,18 +12,9 @@ export async function GET(
 ) {
  try {
  const { shopId } = await params;
- const supabase = await createClient();
- const { data: { user: _authUser } } = await supabase.auth.getUser();
-  const session = _authUser ? { user: _authUser } : null;
-  const authUserSession = session?.user;
- let userId = authUserSession?.id;
- const authUserEmail = authUserSession?.email;
- if (!userId) return new Response("Unauthorized", { status: 401 });
 
- const user = await prisma.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
- if (!user || user.role !== 'SITE_ADMIN') {
- return new Response("Forbidden", { status: 403 });
- }
+ const adminCheck = await requireSiteAdmin();
+ if (adminCheck instanceof NextResponse) return adminCheck;
 
  const shop = await prisma.shop.findUnique({
  where: { id: shopId },

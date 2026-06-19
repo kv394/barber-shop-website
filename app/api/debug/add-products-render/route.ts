@@ -1,12 +1,16 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { cacheService } from '@/lib/cache';
+import { requireSiteAdmin } from '@/lib/auth';
 
 /**
  * POST /api/debug/add-products-render
  * Adds the products rendering code to the getPublicData().then() block
  */
 export async function POST(request: Request) {
+  const adminCheck = await requireSiteAdmin();
+  if (adminCheck instanceof NextResponse) return adminCheck;
+
   try {
     const body = await request.json();
     const { shopId } = body;

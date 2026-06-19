@@ -1,21 +1,13 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
-import { createClient } from '@/utils/supabase/server';
+import { requireSiteAdmin } from '@/lib/auth';
 
 export const dynamic = 'force-dynamic';
 
 export async function GET() {
  try {
- const supabase = await createClient();
- const { data: { user: _authUser } } = await supabase.auth.getUser();
-  const session = _authUser ? { user: _authUser } : null;
-  const user = session?.user;
- if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-
- const dbUser = await prisma.user.findUnique({ where: { email: user.email! } });
- if (dbUser?.role !== 'SITE_ADMIN') {
- return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
- }
+ const adminCheck = await requireSiteAdmin();
+ if (adminCheck instanceof NextResponse) return adminCheck;
 
  const tiers = await prisma.saaSTier.findMany({
  orderBy: { baseFeeUSD: 'asc' }
@@ -30,16 +22,8 @@ export async function GET() {
 
 export async function POST(request: Request) {
  try {
- const supabase = await createClient();
- const { data: { user: _authUser } } = await supabase.auth.getUser();
-  const session = _authUser ? { user: _authUser } : null;
-  const user = session?.user;
- if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-
- const dbUser = await prisma.user.findUnique({ where: { email: user.email! } });
- if (dbUser?.role !== 'SITE_ADMIN') {
- return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
- }
+ const adminCheck = await requireSiteAdmin();
+ if (adminCheck instanceof NextResponse) return adminCheck;
 
  const body = await request.json();
  
@@ -65,16 +49,8 @@ export async function POST(request: Request) {
 
 export async function PATCH(request: Request) {
  try {
- const supabase = await createClient();
- const { data: { user: _authUser } } = await supabase.auth.getUser();
-  const session = _authUser ? { user: _authUser } : null;
-  const user = session?.user;
- if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-
- const dbUser = await prisma.user.findUnique({ where: { email: user.email! } });
- if (dbUser?.role !== 'SITE_ADMIN') {
- return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
- }
+ const adminCheck = await requireSiteAdmin();
+ if (adminCheck instanceof NextResponse) return adminCheck;
 
  const body = await request.json();
  
@@ -101,16 +77,8 @@ export async function PATCH(request: Request) {
 
 export async function DELETE(request: Request) {
  try {
- const supabase = await createClient();
- const { data: { user: _authUser } } = await supabase.auth.getUser();
-  const session = _authUser ? { user: _authUser } : null;
-  const user = session?.user;
- if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-
- const dbUser = await prisma.user.findUnique({ where: { email: user.email! } });
- if (dbUser?.role !== 'SITE_ADMIN') {
- return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
- }
+ const adminCheck = await requireSiteAdmin();
+ if (adminCheck instanceof NextResponse) return adminCheck;
 
  const { searchParams } = new URL(request.url);
  const id = searchParams.get('id');

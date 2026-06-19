@@ -3,6 +3,7 @@ import { prisma } from '@/lib/prisma';
 import { cacheService } from '@/lib/cache';
 import { readFileSync } from 'fs';
 import { join } from 'path';
+import { requireSiteAdmin } from '@/lib/auth';
 
 /**
  * POST /api/debug/restore-landing-page
@@ -12,6 +13,9 @@ import { join } from 'path';
  * Body: { shopId: string, template: "luxury-nails" | "heritage-haircuts" | "index" | "SportClips" }
  */
 export async function POST(request: Request) {
+  const adminCheck = await requireSiteAdmin();
+  if (adminCheck instanceof NextResponse) return adminCheck;
+
   try {
     const body = await request.json();
     const { shopId, template } = body;

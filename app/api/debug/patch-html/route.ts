@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { cacheService } from '@/lib/cache';
+import { requireSiteAdmin } from '@/lib/auth';
 
 /**
  * POST /api/debug/patch-html
@@ -8,15 +9,12 @@ import { cacheService } from '@/lib/cache';
  * Patches the customHtml for a shop to add missing nav items and sections.
  */
 export async function POST(request: Request) {
+  const adminCheck = await requireSiteAdmin();
+  if (adminCheck instanceof NextResponse) return adminCheck;
+
   try {
     const body = await request.json();
-    const { shopId, secret } = body;
-
-    // Debug endpoint - auth via middleware public route restriction
-    // const expectedSecret = process.env.CRON_SECRET || process.env.INNGEST_SIGNING_KEY || 'fix-shop-2026';
-    // if (secret !== expectedSecret) {
-    //   return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    // }
+    const { shopId } = body;
 
     if (!shopId) {
       return NextResponse.json({ error: 'shopId required' }, { status: 400 });
