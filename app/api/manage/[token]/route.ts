@@ -30,6 +30,14 @@ export async function DELETE(
  return NextResponse.json({ error: 'Appointment not found' }, { status: 404 });
  }
 
+  // M5: Check token expiry — explicit expiry or appointment already started
+  const tokenExpired = appointment.managementTokenExpiresAt
+    ? new Date() > new Date(appointment.managementTokenExpiresAt)
+    : new Date() > new Date(appointment.startTime);
+  if (tokenExpired) {
+  return NextResponse.json({ error: 'This management link has expired' }, { status: 410 });
+  }
+
  if (appointment.status === 'CANCELLED') {
  return NextResponse.json({ error: 'Already cancelled' }, { status: 400 });
  }
@@ -83,6 +91,9 @@ export async function PATCH(
  });
 
  if (!appointment) return NextResponse.json({ error: 'Appointment not found' }, { status: 404 });
+ if (appointment.managementTokenExpiresAt && new Date() > new Date(appointment.managementTokenExpiresAt)) {
+ return NextResponse.json({ error: 'This management link has expired' }, { status: 410 });
+ }
  if (appointment.status === 'CANCELLED') return NextResponse.json({ error: 'Cannot reschedule a cancelled appointment' }, { status: 400 });
 
  const oldTimeStr = new Date(appointment.startTime).toLocaleString('en-US', { weekday: 'short', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });

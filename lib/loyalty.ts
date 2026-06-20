@@ -94,6 +94,15 @@ export class LoyaltyService {
         ? new Date(Date.now() + program.pointExpiryDays * 24 * 60 * 60 * 1000)
         : null;
 
+      // M7: Check for duplicate award — prevent points being awarded twice for same appointment
+      const existingAward = await prisma.loyaltyTransaction.findFirst({
+        where: { loyaltyAccountId: account.id, appointmentId, type: 'EARN_VISIT' },
+      });
+      if (existingAward) {
+        logger.info(`Loyalty points already awarded for appointment ${appointmentId}, skipping`);
+        return null;
+      }
+
       const transactions: any[] = [
         prisma.loyaltyTransaction.create({
           data: {

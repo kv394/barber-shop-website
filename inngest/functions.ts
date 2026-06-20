@@ -4,6 +4,8 @@ import { LoyaltyService } from '@/lib/loyalty';
 import { UsageService } from '@/lib/usage-service';
 import { RebookingService } from '@/lib/rebooking-prompts';
 import { DemoAutomationService } from '@/lib/demo-automation';
+import { prisma } from '@/lib/prisma';
+import { logger } from '@/lib/logger';
 
 export const processDailyTasks = inngest.createFunction(
   { id: 'process-daily-tasks', triggers: [{ cron: '0 0 * * *' }] },
@@ -326,3 +328,43 @@ export const monitorVercelLogs = inngest.createFunction(
   }
 );
 
+/**
+ * H10: Cleanup orphaned renter bookings.
+ * Renter bookings create appointments BEFORE Stripe checkout.
+ * If the client abandons payment, the slot is blocked forever.
+ * This cron cancels SCHEDULED renter bookings older than 30 min with no completed payment.
+ */
+export const cleanupOrphanedRenterBookings = inngest.createFunction(
+  { id: 'cleanup-orphaned-renter-bookings', triggers: [{ cron: '*/30 * * * *' }] },
+  async ({ step }) => {
+    const cleaned = await step.run('cancel-orphaned-bookings', async () => {
+      const thirtyMinAgo = new Date(Date.now() - 30 * 60 * 1000);
+
+      // Find SCHEDULED appointments created > 30 min ago by booth renters with no completed payment
+      const orphaned = await prisma.appointment.findMany({
+        where: {
+          status: 'SCHEDULED',
+          createdAt: { lt: thirtyMinAgo },
+          staff: { role: 'BOOTH_RENTER' },
+          payments: {
+            none: { status: 'COMPLETED' },
+          },
+        },
+        select: { id: true, shopId: true },
+      });
+
+      if (orphaned.length === 0) return { cancelled: 0 };
+
+      const ids = orphaned.map(a => a.id);
+      const result = await prisma.appointment.updateMany({
+        where: { id: { in: ids } },
+        data: { status: 'CANCELLED' },
+      });
+
+      logger.info(`[Orphan Cleanup] Cancelled ${result.count} orphaned renter bookings`);
+      return { cancelled: result.count };
+    });
+
+    return cleaned;
+  }
+);

@@ -280,6 +280,7 @@ model Appointment {
   status                 AppointmentStatus    @default(SCHEDULED)
   paymentId              String?              @unique
   managementToken        String?              @unique
+  managementTokenExpiresAt DateTime?
   createdAt              DateTime             @default(now())
   updatedAt              DateTime             @updatedAt
   notes                  String?
@@ -523,6 +524,7 @@ model LoyaltyTransaction {
 
   @@index([loyaltyAccountId])
   @@index([expiresAt])
+  @@unique([loyaltyAccountId, appointmentId, type], name: "unique_loyalty_award")
 }
 
 model Referral {

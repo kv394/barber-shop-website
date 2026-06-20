@@ -1,6 +1,6 @@
 import { serve } from 'inngest/next';
 import { inngest } from '@/inngest/client';
-import { processDailyTasks, processHourlyNotifications, generateHourlyUsageReports, processWinBackCampaigns, runDemoAutomation, analyzeSystemHealth, markNoShowAppointments, cleanupProcessedWebhooks, monitorVercelLogs } from '@/inngest/functions';
+import { processDailyTasks, processHourlyNotifications, generateHourlyUsageReports, processWinBackCampaigns, runDemoAutomation, analyzeSystemHealth, markNoShowAppointments, cleanupProcessedWebhooks, monitorVercelLogs, cleanupOrphanedRenterBookings } from '@/inngest/functions';
 import { simulateLiveShop } from '@/inngest/simulate';
 import { generateRecurringAppointments } from '@/inngest/generateRecurringAppointments';
 
@@ -19,5 +19,6 @@ export const { GET, POST, PUT } = serve({
  cleanupProcessedWebhooks,
  monitorVercelLogs,
  generateRecurringAppointments,
+ cleanupOrphanedRenterBookings,
  ],
 });
