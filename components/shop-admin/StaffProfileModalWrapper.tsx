@@ -194,7 +194,7 @@ export default function StaffProfileModalWrapper({ staff, shopId, children }: { 
  <input type="checkbox" id="inv" checked={formData.canManageInventory} onChange={e => setFormData({...formData, canManageInventory: e.target.checked})} className="rounded text-crm-primary focus:ring-crm-primary" />
  <label htmlFor="inv" className="text-[13px] font-medium text-crm-text">Can Manage Inventory</label>
  </div>
-  {formData.employmentType === 'CONTRACTOR' && (
+  {(formData.employmentType === 'CONTRACTOR' || staff.role === 'BOOTH_RENTER') && (
   <>
   <div className="flex items-center gap-2 mt-2">
   <input type="checkbox" id="isBookable" checked={formData.isBookable} onChange={e => setFormData({...formData, isBookable: e.target.checked})} className="rounded text-crm-primary focus:ring-crm-primary" />
@@ -250,7 +250,7 @@ export default function StaffProfileModalWrapper({ staff, shopId, children }: { 
  <span className="text-crm-muted font-medium">Manage Inventory</span>
  <span className="text-crm-text font-medium">{staff.canManageInventory ? 'Yes' : 'No'}</span>
  </div>
-  {staff.employmentType === 'CONTRACTOR' && (
+  {(staff.employmentType === 'CONTRACTOR' || staff.role === 'BOOTH_RENTER') && (
   <>
   <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center border-t border-crm-border pt-3">
   <span className="text-crm-muted font-medium">Online Bookings</span>

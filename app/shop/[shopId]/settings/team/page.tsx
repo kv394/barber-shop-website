@@ -135,11 +135,11 @@ async function inviteUser(formData: FormData): Promise<{ success: boolean; error
  const existingUser = await prisma.user.findUnique({ where: { email }, include: { shop: { select: { name: true } } } });
  if (existingUser) {
   if (existingUser.shopId === shopId) {
-  // Already in this shop — just update role
-  await prisma.user.update({ where: { email }, data: { role } });
+   // Already in this shop — just update role
+   await prisma.user.update({ where: { email }, data: { role, ...(role === 'BOOTH_RENTER' ? { employmentType: 'CONTRACTOR' } : {}) } });
   } else if (existingUser.shopId === null) {
-  // User has no primary shop — set this as primary.
-  await prisma.user.update({ where: { email }, data: { role, shopId } });
+   // User has no primary shop — set this as primary.
+   await prisma.user.update({ where: { email }, data: { role, shopId, ...(role === 'BOOTH_RENTER' ? { employmentType: 'CONTRACTOR' } : {}) } });
   } else {
    // User belongs to another shop — block unless caller is SITE_ADMIN
    if (caller.role !== 'SITE_ADMIN') {
@@ -177,15 +177,16 @@ async function inviteUser(formData: FormData): Promise<{ success: boolean; error
    const jwtSecret = process.env.JWT_SECRET;
    if (!jwtSecret) throw new Error('JWT_SECRET environment variable is required');
    const userBarcode = crypto.createHash('sha256').update(`${email}-${jwtSecret}`).digest('hex').substring(0, 12).toUpperCase();
-  await prisma.user.create({
-  data: {
-  id: newUserId,
-  email,
-  role,
-  shopId,
-  barcode: userBarcode,
-  }
-  });
+   await prisma.user.create({
+   data: {
+   id: newUserId,
+   email,
+   role,
+   shopId,
+   barcode: userBarcode,
+   ...(role === 'BOOTH_RENTER' ? { employmentType: 'CONTRACTOR' } : {}),
+   }
+   });
 
   // Send password reset email so user can set their own password
   if (!authError) {
