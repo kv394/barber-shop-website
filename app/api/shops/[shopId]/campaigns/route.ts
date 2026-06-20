@@ -89,6 +89,9 @@ export async function PATCH(
  }
 
  if (action === 'send') {
+  if (campaign.status === 'SENT') {
+  return NextResponse.json({ error: 'Campaign has already been sent' }, { status: 400 });
+  }
  // Get target clients based on segment
  const clients = await getTargetClients(shopId, campaign.targetSegment);
 

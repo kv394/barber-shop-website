@@ -129,7 +129,7 @@ export async function PATCH(
  if (!id) {
  return NextResponse.json({ error: 'Valid id required' }, { status: 400 });
  }
- if (status && !['WAITING', 'SERVING', 'DONE', 'LEFT'].includes(status)) {
+  if (status && !['WAITING', 'SERVING', 'COMPLETED', 'CANCELLED', 'NO_SHOW'].includes(status)) {
  return NextResponse.json({ error: 'Invalid status' }, { status: 400 });
  }
 

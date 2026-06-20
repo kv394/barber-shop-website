@@ -6,16 +6,34 @@ import stripe from '@/lib/stripe';
 
 export const dynamic = 'force-dynamic';
 
-const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Methods': 'POST, OPTIONS',
-  'Access-Control-Allow-Headers': 'Content-Type',
-};
+function isAllowedOrigin(origin: string, customDomain?: string | null): boolean {
+  try {
+    const host = new URL(origin).hostname;
+    if (host === 'localhost' || host === '127.0.0.1') return true;
+    if (host.endsWith('.vercel.app')) return true;
+    if (host === 'kutzapp.com' || host.endsWith('.kutzapp.com')) return true;
+    if (customDomain && host === customDomain) return true;
+    return false;
+  } catch {
+    return false;
+  }
+}
 
-export async function OPTIONS() {
+function getCorsHeaders(origin: string | null, customDomain?: string | null): Record<string, string> {
+  const allowedOrigin = origin && isAllowedOrigin(origin, customDomain) ? origin : '';
+  return {
+    'Access-Control-Allow-Origin': allowedOrigin,
+    'Access-Control-Allow-Methods': 'POST, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type',
+    ...(allowedOrigin ? { 'Vary': 'Origin' } : {}),
+  };
+}
+
+export async function OPTIONS(request: Request) {
+  const origin = request.headers.get('origin');
   return new NextResponse(null, {
     status: 204,
-    headers: corsHeaders,
+    headers: getCorsHeaders(origin),
   });
 }
 
@@ -23,6 +41,9 @@ export async function POST(
   request: Request,
   { params }: { params: Promise<{ shopId: string }> }
 ) {
+  const origin = request.headers.get('origin');
+  let corsHeaders = getCorsHeaders(origin);
+
   try {
     const { shopId } = await params;
     const tenantClient = await getTenantClient(shopId);
@@ -55,6 +76,8 @@ export async function POST(
       return NextResponse.json({ error: 'Shop not found' }, { status: 404, headers: corsHeaders });
     }
 
+    corsHeaders = getCorsHeaders(origin, shop.customDomain);
+
     const isValidUrl = (urlStr: string) => {
       try {
         const url = new URL(urlStr);
@@ -76,7 +99,6 @@ export async function POST(
       );
     }
 
-    // Look up the product and verify it exists and is sellable
     const product = await tenantClient.product.findUnique({
       where: { id: productId },
       select: {
@@ -105,7 +127,6 @@ export async function POST(
     const itemQuantity = Math.max(1, parseInt(quantity) || 1);
     const unitAmountCents = Math.round(product.price * 100);
 
-    // Create a Stripe Checkout Session following the createBoothRenterCheckoutSession pattern
     const session = await stripe.checkout.sessions.create({
       mode: 'payment',
       payment_method_types: ['card'],

@@ -20,9 +20,27 @@ export function sanitize(html: string, options?: sanitizeHtml.IOptions): string 
 // We remove event handlers (onclick, onerror) to prevent XSS.
 export function sanitizeTemplate(html: string): string {
   return sanitizeHtml(html, {
-    allowedTags: false, // Allow all tags
+    allowedTags: [
+      'html', 'head', 'body', 'title', 'meta', 'link', 'style',
+      'div', 'span', 'p', 'a', 'br', 'hr', 'wbr',
+      'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
+      'ul', 'ol', 'li', 'dl', 'dt', 'dd',
+      'table', 'thead', 'tbody', 'tfoot', 'tr', 'th', 'td', 'caption', 'colgroup', 'col',
+      'img', 'figure', 'figcaption', 'picture', 'source', 'video', 'audio', 'track',
+      'iframe',
+      'form', 'input', 'button', 'select', 'option', 'optgroup', 'textarea', 'label', 'fieldset', 'legend',
+      'strong', 'em', 'b', 'i', 'u', 's', 'small', 'sub', 'sup', 'mark', 'del', 'ins', 'abbr', 'cite', 'code', 'pre', 'kbd', 'samp', 'var', 'q', 'blockquote',
+      'details', 'summary', 'dialog', 'menu',
+      'header', 'footer', 'main', 'nav', 'section', 'article', 'aside', 'address',
+      'time', 'data', 'meter', 'progress', 'output',
+      'ruby', 'rt', 'rp',
+      'bdi', 'bdo',
+      'map', 'area',
+      'svg', 'path', 'circle', 'rect', 'line', 'polyline', 'polygon', 'ellipse', 'g', 'text', 'tspan', 'defs', 'use', 'symbol', 'clippath', 'lineargradient', 'radialgradient', 'stop', 'mask', 'pattern', 'foreignobject',
+      'canvas', 'noscript', 'template', 'slot',
+    ],
     allowedAttributes: {
-      '*': ['class', 'id', 'style', 'data-*', 'target', 'rel', 'aria-*', 'role', 'tabindex', 'dir', 'lang'],
+      '*': ['class', 'id', 'style', 'href', 'src', 'alt', 'title', 'width', 'height', 'target', 'rel', 'data-*', 'aria-*', 'role', 'type', 'name', 'value', 'placeholder', 'action', 'method'],
       'a': ['href', 'name', 'target', 'rel'],
       'img': ['src', 'alt', 'title', 'width', 'height', 'loading', 'decoding', 'srcset', 'sizes'],
       'iframe': ['src', 'width', 'height', 'frameborder', 'allow', 'allowfullscreen', 'sandbox'],
@@ -38,11 +56,7 @@ export function sanitizeTemplate(html: string): string {
       'source': ['src', 'type', 'media', 'srcset', 'sizes'],
       'video': ['src', 'controls', 'width', 'height', 'autoplay', 'loop', 'muted', 'poster', 'preload'],
       'audio': ['src', 'controls', 'autoplay', 'loop', 'muted', 'preload'],
-      'track': ['src', 'kind', 'srclang', 'label', 'default']
+      'track': ['src', 'kind', 'srclang', 'label', 'default'],
     },
-    // We strictly strip scripts for XSS prevention
-    exclusiveFilter: function(frame) {
-      return frame.tag === 'script'; // Remove <script> tags
-    }
   });
 }

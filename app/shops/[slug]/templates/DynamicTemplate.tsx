@@ -37,7 +37,25 @@ function extractTemplateAssets(html: string) {
   // Check for src attribute
   const srcMatch = tag.match(/src=["']([^"']+)["']/);
   if (srcMatch) {
-   scriptSrcUrls.push(srcMatch[1]);
+   // C5: Only allow scripts from trusted CDN domains
+   const TRUSTED_SCRIPT_DOMAINS = [
+    'kutzapp.com', 'www.kutzapp.com',
+    'cdn.jsdelivr.net', 'unpkg.com',
+    'googleapis.com', 'gstatic.com',
+    'stripe.com', 'js.stripe.com',
+    'cloudflare.com', 'cdnjs.cloudflare.com',
+   ];
+   try {
+    const srcUrl = new URL(srcMatch[1], 'https://kutzapp.com');
+    const isTrusted = TRUSTED_SCRIPT_DOMAINS.some(d => srcUrl.hostname === d || srcUrl.hostname.endsWith('.' + d));
+    if (isTrusted) {
+     scriptSrcUrls.push(srcMatch[1]);
+    } else {
+     console.warn(`[DynamicTemplate] Blocked untrusted external script: ${srcMatch[1]}`);
+    }
+   } catch {
+    console.warn(`[DynamicTemplate] Blocked invalid script URL: ${srcMatch[1]}`);
+   }
   } else if (content) {
    scripts.push(content);
   }

@@ -345,7 +345,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ shop
 
  } catch (error: any) {
  logger.error('Error fetching public shop data:', error);
- return NextResponse.json({ error: 'Failed to fetch public data', details: error?.message || String(error) }, { status: 500, headers: {
+ return NextResponse.json({ error: 'Failed to fetch public data' }, { status: 500, headers: {
  'Access-Control-Allow-Origin': '*',
  } });
  }

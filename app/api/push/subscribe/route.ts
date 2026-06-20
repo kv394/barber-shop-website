@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/utils/supabase/server';
+import { logger } from '@/lib/logger';
 
 interface PushSubscriptionJSON {
   endpoint: string;
@@ -42,7 +43,7 @@ export async function POST(request: NextRequest) {
 
     // TODO: Persist to database once PushSubscription model is available.
     // For now, log the subscription for verification during development.
-    console.log('[Push Subscribe]', {
+    logger.info('[Push Subscribe]', {
       endpoint: subscription.endpoint,
       shopId,
       keys: {
@@ -56,7 +57,7 @@ export async function POST(request: NextRequest) {
       { status: 201 }
     );
   } catch (error) {
-    console.error('[Push Subscribe Error]', error);
+    logger.error('[Push Subscribe Error]', error);
     return NextResponse.json(
       { error: 'Failed to process push subscription.' },
       { status: 500 }

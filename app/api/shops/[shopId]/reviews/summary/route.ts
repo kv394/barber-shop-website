@@ -111,7 +111,12 @@ Rules:
  const resultText = response.candidates?.[0]?.content?.parts?.[0]?.text;
  if (!resultText) throw new Error('No response from AI');
 
- const parsed = JSON.parse(resultText);
+ let parsed;
+ try {
+  parsed = JSON.parse(resultText);
+ } catch {
+  throw new Error('Failed to parse AI response');
+ }
 
  return NextResponse.json({
  bullets: parsed.bullets || [],

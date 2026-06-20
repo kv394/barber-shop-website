@@ -1,10 +1,16 @@
 import Image from 'next/image';
 import { prisma } from '@/lib/prisma';
 import Link from 'next/link';
+import { requireSiteAdmin } from '@/lib/auth';
+import { redirect } from 'next/navigation';
+import { NextResponse } from 'next/server';
 
 export const dynamic = 'force-dynamic';
 
 export default async function SiteAdminDashboard() {
+ const adminCheck = await requireSiteAdmin();
+ if (adminCheck instanceof NextResponse) redirect('/sign-in');
+
  // Dates for querying
  const startOfDay = new Date();
  startOfDay.setHours(0, 0, 0, 0);

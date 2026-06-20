@@ -90,7 +90,12 @@ export class AISreService {
       }
 
       const data = await response.json();
-      const analysis = JSON.parse(data.choices[0].message.content);
+      let analysis;
+      try {
+        analysis = JSON.parse(data.choices[0].message.content);
+      } catch {
+        throw new Error('Failed to parse AI response');
+      }
 
       // 4. If a severe anomaly is detected, trigger an alert
       if (analysis.anomalyDetected && ['CRITICAL', 'HIGH'].includes(analysis.severity)) {

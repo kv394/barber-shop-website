@@ -91,10 +91,28 @@ export async function PATCH(
  const body = await request.json();
  const updateData: any = {};
 
- if (body.notes !== undefined) updateData.notes = body.notes;
- if (body.status && ['SCHEDULED', 'ACCEPTED', 'WORK_COMPLETED', 'COMPLETED', 'CANCELLED', 'NO_SHOW'].includes(body.status)) {
- updateData.status = body.status;
- }
+  if (body.notes !== undefined) updateData.notes = body.notes;
+  if (body.status && ['SCHEDULED', 'ACCEPTED', 'WORK_COMPLETED', 'COMPLETED', 'CANCELLED', 'NO_SHOW'].includes(body.status)) {
+    // Enforce valid state transitions
+    const currentAppt = await tenantClient.appointment.findUnique({ where: { id: appointmentId, shopId }, select: { status: true } });
+    if (!currentAppt) return NextResponse.json({ error: 'Appointment not found' }, { status: 404 });
+    const validTransitions: Record<string, string[]> = {
+      SCHEDULED: ['ACCEPTED', 'CANCELLED', 'NO_SHOW'],
+      ACCEPTED: ['WORK_COMPLETED', 'COMPLETED', 'CANCELLED', 'NO_SHOW'],
+      WORK_COMPLETED: ['COMPLETED', 'CANCELLED'],
+      COMPLETED: [],          // Terminal state
+      CANCELLED: [],          // Terminal state
+      NO_SHOW: [],            // Terminal state
+    };
+    const allowed = validTransitions[currentAppt.status] || [];
+    if (!allowed.includes(body.status)) {
+      return NextResponse.json(
+        { error: `Cannot transition from ${currentAppt.status} to ${body.status}` },
+        { status: 400 }
+      );
+    }
+    updateData.status = body.status;
+  }
 
  // Fetch current appointment for deposit handling
   const currentAppointment = await tenantClient.appointment.findUnique({

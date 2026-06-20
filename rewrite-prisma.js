@@ -67,7 +67,7 @@ export function getTenantClient(shopId: string) {
           // This requires executing the query within an interactive transaction.
           try {
             return await prisma.$transaction(async (tx) => {
-              await tx.$executeRawUnsafe(\`SET LOCAL app.current_shop_id = '\${shopId}';\`);
+              await tx.$executeRaw\`SET LOCAL app.current_shop_id = \${shopId};\`;
               return await query(args);
             });
           } catch (e: any) {

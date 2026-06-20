@@ -73,7 +73,7 @@ export async function POST(
  await refundStripePayment(stripePayment.transactionId, refundAmount);
  } catch (stripeErr) {
  logger.error('Stripe refund failed:', stripeErr);
- // Continue with manual refund record
+ throw new Error('STRIPE_REFUND_FAILED');
  }
  }
 
@@ -116,8 +116,10 @@ export async function POST(
  if (error?.message === 'EXCEEDS_TOTAL') {
  return NextResponse.json({ error: 'Refund amount exceeds the total' }, { status: 400 });
  }
+ if (error?.message === 'STRIPE_REFUND_FAILED') {
+ return NextResponse.json({ error: 'Payment provider refund failed. Please retry or process manually.' }, { status: 502 });
+ }
  logger.error('Error processing refund:', error);
  return NextResponse.json({ error: 'Failed to process refund' }, { status: 500 });
  }
 }
-

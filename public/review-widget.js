@@ -1,4 +1,9 @@
 (function() {
+  function escapeHtml(str) {
+    if (!str) return '';
+    return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
+  }
+
   const containerId = 'kutzapp-review-widget-container';
   const existingContainer = document.getElementById(containerId);
   if (existingContainer) {
@@ -387,11 +392,11 @@
         
         item.innerHTML = `
           <div class="barber-review-header">
-            <span class="barber-review-author">${userName}</span>
+            <span class="barber-review-author">${escapeHtml(userName)}</span>
             <span class="barber-review-stars">${renderStars(review.rating)}</span>
           </div>
-          <div class="barber-review-text">${review.comment || ''}</div>
-          <div style="font-size: 11px; color: #999; margin-top: 8px;">${date}</div>
+          <div class="barber-review-text">${escapeHtml(review.comment || '')}</div>
+          <div style="font-size: 11px; color: #999; margin-top: 8px;">${escapeHtml(date)}</div>
         `;
         listContainer.appendChild(item);
       });

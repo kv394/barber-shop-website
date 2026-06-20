@@ -1,7 +1,10 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
+import { requireSiteAdmin } from '@/lib/auth';
 export const dynamic = 'force-dynamic';
 export async function GET() {
+  const adminCheck = await requireSiteAdmin();
+  if (adminCheck instanceof NextResponse) return adminCheck;
   try {
     const shops = await prisma.shop.findMany({
       orderBy: { createdAt: 'desc' },

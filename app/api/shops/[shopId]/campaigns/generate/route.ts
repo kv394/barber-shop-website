@@ -131,7 +131,12 @@ Only include smsBody for SMS/BOTH channels. Only include emailSubject/emailBody 
  throw new Error('No response from AI');
  }
 
- const parsed = JSON.parse(resultText);
+ let parsed;
+ try {
+   parsed = JSON.parse(resultText);
+ } catch {
+   throw new Error('Failed to parse AI response');
+ }
 
  if (!parsed.variations || !Array.isArray(parsed.variations) || parsed.variations.length === 0) {
  throw new Error('AI returned invalid format');

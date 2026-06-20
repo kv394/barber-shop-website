@@ -54,7 +54,7 @@ class ResendProvider implements EmailProvider {
       if (!res.ok) return { success: false, error: data.message || `HTTP ${res.status}` };
       return { success: true, messageId: data.id };
     } catch (error: any) {
-      return { success: false, error: error.message };
+      return { success: false, error: 'Message delivery failed' };
     }
   }
 }
@@ -98,7 +98,7 @@ class SendGridProvider implements EmailProvider {
       }
       return { success: true, messageId: res.headers.get('x-message-id') || undefined };
     } catch (error: any) {
-      return { success: false, error: error.message };
+      return { success: false, error: 'Message delivery failed' };
     }
   }
 }
@@ -134,7 +134,7 @@ class TwilioProvider implements SMSProvider {
       if (!res.ok) return { success: false, error: data.message || `HTTP ${res.status}` };
       return { success: true, messageId: data.sid };
     } catch (error: any) {
-      return { success: false, error: error.message };
+      return { success: false, error: 'Message delivery failed' };
     }
   }
 }
@@ -176,7 +176,7 @@ class TwilioWhatsAppProvider implements SMSProvider {
       if (!res.ok) return { success: false, error: data.message || `HTTP ${res.status}` };
       return { success: true, messageId: data.sid };
     } catch (error: any) {
-      return { success: false, error: error.message };
+      return { success: false, error: 'Message delivery failed' };
     }
   }
 }
@@ -255,7 +255,7 @@ class SmtpProvider implements EmailProvider {
       return { success: true, messageId: info.messageId };
     } catch (error: any) {
       logger.error(`[SMTP] Failed to send email to ${to}: ${error.message}`);
-      return { success: false, error: error.message };
+      return { success: false, error: 'Message delivery failed' };
     }
   }
 }

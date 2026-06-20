@@ -1,16 +1,16 @@
 import { NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
-import { createClient } from '@/utils/supabase/server';
+import { getTenantClient } from '@/lib/prisma';
+import { requireShopRole } from '@/lib/auth';
 
 export async function PUT(request: Request, { params }: { params: Promise<{ shopId: string, ruleId: string }> }) {
   const { shopId, ruleId } = await params;
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
-  if (!user) return new Response('Unauthorized', { status: 401 });
+  const authResult = await requireShopRole(shopId, ['SHOP_ADMIN']);
+  if (authResult instanceof NextResponse) return authResult;
 
   try {
+    const tenantClient = await getTenantClient(shopId);
     const data = await request.json();
-    const rule = await prisma.dynamicPricingRule.update({
+    const rule = await tenantClient.dynamicPricingRule.update({
       where: { id: ruleId, shopId },
       data: {
         name: data.name,
@@ -31,12 +31,12 @@ export async function PUT(request: Request, { params }: { params: Promise<{ shop
 
 export async function DELETE(request: Request, { params }: { params: Promise<{ shopId: string, ruleId: string }> }) {
   const { shopId, ruleId } = await params;
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
-  if (!user) return new Response('Unauthorized', { status: 401 });
+  const authResult = await requireShopRole(shopId, ['SHOP_ADMIN']);
+  if (authResult instanceof NextResponse) return authResult;
 
   try {
-    await prisma.dynamicPricingRule.delete({
+    const tenantClient = await getTenantClient(shopId);
+    await tenantClient.dynamicPricingRule.delete({
       where: { id: ruleId, shopId }
     });
     return NextResponse.json({ success: true });

@@ -174,7 +174,9 @@ async function inviteUser(formData: FormData): Promise<{ success: boolean; error
   console.error('[INVITE] Failed to create Supabase auth user:', authError.message);
   }
 
-  const userBarcode = crypto.createHash('sha256').update(`${email}-${process.env.JWT_SECRET || 'secret'}`).digest('hex').substring(0, 12).toUpperCase();
+   const jwtSecret = process.env.JWT_SECRET;
+   if (!jwtSecret) throw new Error('JWT_SECRET environment variable is required');
+   const userBarcode = crypto.createHash('sha256').update(`${email}-${jwtSecret}`).digest('hex').substring(0, 12).toUpperCase();
   await prisma.user.create({
   data: {
   id: newUserId,

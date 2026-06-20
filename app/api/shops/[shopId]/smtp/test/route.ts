@@ -91,7 +91,7 @@ export async function POST(
     logger.error('SMTP test failed:', error);
 
     // Provide user-friendly error messages
-    let userMessage = error.message;
+    let userMessage = 'SMTP configuration error';
     if (error.code === 'ECONNREFUSED') {
       userMessage = 'Connection refused. Check the host and port.';
     } else if (error.code === 'EAUTH' || error.responseCode === 535) {

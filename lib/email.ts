@@ -6,6 +6,7 @@
  * - EMAIL_FROM: Sender address (default: notifications@kutzapp.com)
  */
 import { getEmailProviderForShop } from '@/lib/messaging-providers';
+import { logger } from '@/lib/logger';
 
 const RESEND_API_KEY = process.env.RESEND_API_KEY || '';
 const FROM_EMAIL = process.env.EMAIL_FROM || 'KutzApp <onboarding@resend.dev>';
@@ -44,15 +45,15 @@ async function sendEmail(options: SendEmailOptions): Promise<{ success: boolean;
  const data = await res.json();
 
  if (!res.ok) {
-  console.error('[EMAIL] Resend error:', res.status, JSON.stringify(data));
+   logger.error('[EMAIL] Resend error:', { status: res.status, data });
   return { success: false, error: `Resend returned ${res.status}: ${data.message || JSON.stringify(data)}` };
  }
 
- console.log('[EMAIL] Sent successfully to', options.to, 'id:', data.id);
+  logger.info('[EMAIL] Sent successfully', { to: options.to, id: data.id });
  return { success: true, messageId: data.id };
  } catch (error: any) {
- console.error('[EMAIL] Failed to send:', error.message);
- return { success: false, error: error.message };
+  logger.error('[EMAIL] Failed to send:', error.message);
+ return { success: false, error: 'Email delivery failed' };
  }
 }
 

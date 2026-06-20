@@ -54,11 +54,9 @@ export async function POST(
  let isValid = allowedTemplates.includes(template) || template === 'custom';
 
  if (!isValid) {
- console.log('Searching for dynamic template:', template);
  const dynamicTemplate = await tenantClient.dynamicTemplate.findUnique({
  where: { name: template }
  });
- console.log('Found dynamic template:', dynamicTemplate?.name);
  if (dynamicTemplate) {
  isValid = true;
  }

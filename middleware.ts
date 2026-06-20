@@ -80,28 +80,32 @@ export async function middleware(req: NextRequest) {
     && !url.pathname.startsWith('/api/debug/log-error')
   ) {
     const origin = req.headers.get('origin');
-    if (origin) {
-      const rootDomainEnv = process.env.NEXT_PUBLIC_ROOT_DOMAIN || '';
-      const allowedOrigins = [
-        'localhost', '127.0.0.1',
-        'kutzapp.com', 'kutzapp.vercel.app',
-        ...rootDomainEnv.split(',').map(d => d.trim()).filter(Boolean),
-      ];
-      let originHost = '';
-      try {
-        originHost = new URL(origin).hostname;
-      } catch (e) {
-        originHost = origin; // fallback if it's not a full URL
-      }
-      
-      const isAllowedOrigin = allowedOrigins.some(domain => originHost === domain || originHost.endsWith(`.${domain}`))
-        || originHost.endsWith('.vercel.app');
-      if (!isAllowedOrigin) {
-        return NextResponse.json(
-          { error: 'Forbidden: invalid origin' },
-          { status: 403 }
-        );
-      }
+    if (!origin) {
+      return NextResponse.json(
+        { error: 'Forbidden: missing origin' },
+        { status: 403 }
+      );
+    }
+    const rootDomainEnv = process.env.NEXT_PUBLIC_ROOT_DOMAIN || '';
+    const allowedOrigins = [
+      'localhost', '127.0.0.1',
+      'kutzapp.com', 'kutzapp.vercel.app',
+      ...rootDomainEnv.split(',').map(d => d.trim()).filter(Boolean),
+    ];
+    let originHost = '';
+    try {
+      originHost = new URL(origin).hostname;
+    } catch (e) {
+      originHost = origin; // fallback if it's not a full URL
+    }
+    
+    const isAllowedOrigin = allowedOrigins.some(domain => originHost === domain || originHost.endsWith(`.${domain}`))
+      || originHost.endsWith('.vercel.app');
+    if (!isAllowedOrigin) {
+      return NextResponse.json(
+        { error: 'Forbidden: invalid origin' },
+        { status: 403 }
+      );
     }
   }
 
@@ -118,7 +122,7 @@ export async function middleware(req: NextRequest) {
     }
 
     // Rate Limiting
-    const { success } = await rateLimit(`mw:${ip}`, limit, 60);
+    const { success } = await rateLimit(`mw:${ip}`, limit, 60, true);
     if (!success) {
       return NextResponse.json(
         { error: 'Too many requests. Please try again later.' },
