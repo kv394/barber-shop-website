@@ -75,16 +75,22 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
  // Only intercept booking-related actions
  if (text.includes('book') || (text.includes('appointment') && !text.includes('my'))) {
  e.preventDefault();
- // Try to find a specific service based on data attribute, fallback to the first service
+ // Extract service and staff IDs from data attributes (set by template scripts)
  const serviceId = button.getAttribute('data-service-id');
- const service = shop.services?.find((s: any) => s.id === serviceId) || shop.services?.[0];
+ const staffId = button.getAttribute('data-staff-id');
 
  if (typeof window !== 'undefined' && (window as any).BarberBooking) {
- (window as any).BarberBooking.open(service?.id);
+ // Pass both IDs — the BookingWizard will skip steps based on what's provided:
+ // - serviceId only → skip to staff selection
+ // - staffId only → stay on service selection (staff pre-locked)
+ // - neither → start from beginning
+ (window as any).BarberBooking.open(serviceId || null, staffId || null);
  } else if (typeof window !== 'undefined' && (window as any).openKutzAppChat) {
+ const service = shop.services?.find((s: any) => s.id === serviceId) || shop.services?.[0];
  (window as any).openKutzAppChat(service?.name);
- } else if (service) {
- setSelectedService(service);
+ } else {
+ const service = shop.services?.find((s: any) => s.id === serviceId) || shop.services?.[0];
+ if (service) setSelectedService(service);
  }
  }
  };

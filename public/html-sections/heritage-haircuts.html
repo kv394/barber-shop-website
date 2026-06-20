@@ -2385,7 +2385,7 @@
                   '<p class="service-card__desc">' + (s.description || 'Expert service tailored for you.') + '</p>' +
                   '<div class="service-card__duration"><span class="material-symbols-outlined">schedule</span> ' + s.duration + ' min</div>' +
                   '<div class="service-card__actions">' +
-                  '<a href="#" onclick="event.preventDefault(); if(window.BarberBooking) window.BarberBooking.open(\'' + s.id + '\');" class="btn-outline-gold" style="margin-top:12px;">Book Now</a>' +
+                  '<a href="#" data-service-id="' + s.id + '" onclick="event.preventDefault(); if(window.BarberBooking) window.BarberBooking.open(\'' + s.id + '\');" class="btn-outline-gold" style="margin-top:12px;">Book Now</a>' +
                   '</div>' +
                   '</div>';
               }).join('');
@@ -2413,7 +2413,7 @@
                   '<div class="barber-card__name">' + safeName + '</div>' +
                   '<div class="barber-card__role">' + (st.role === 'SHOP_ADMIN' ? 'Master Barber' : 'Barber') + '</div>' +
                   '<p class="barber-card__bio">Dedicated to delivering exceptional results.</p>' +
-                  '<a href="#" onclick="event.preventDefault(); if(window.BarberBooking) window.BarberBooking.open(null, \'' + st.id + '\');" class="btn-outline-gold">Book ' + safeName.split(' ')[0] + '</a>' +
+                  '<a href="#" data-staff-id="' + st.id + '" onclick="event.preventDefault(); if(window.BarberBooking) window.BarberBooking.open(null, \'' + st.id + '\');" class="btn-outline-gold">Book ' + safeName.split(' ')[0] + '</a>' +
                   '</div>' +
                   '</div>';
               }).join('');
