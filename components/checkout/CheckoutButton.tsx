@@ -274,7 +274,7 @@ export default function CheckoutButton({
 
  {isOpen && (
  <div
- className="fixed inset-0 bg-crm-surface z-[200] flex items-center justify-center p-3 backdrop-blur-sm"
+ className="fixed inset-0 bg-black/60 z-[200] flex items-center justify-center p-3 backdrop-blur-sm"
  onClick={() => !isProcessing && setIsOpen(false)}
  >
  <div
