@@ -28,6 +28,8 @@ interface CartItem {
  type: 'SERVICE' | 'PRODUCT';
 }
 
+import { createPortal } from 'react-dom';
+
 export default function CheckoutButton({
  shopId,
  appointmentId,
@@ -62,12 +64,18 @@ export default function CheckoutButton({
  const [discountMessage, setDiscountMessage] = useState<{ text: string, type: 'success' | 'error' } | null>(null);
  const scanProcessedRef = useRef(false);
  const router = useRouter();
+ const [mounted, setMounted] = useState(false);
+ const [overlayOpacity, setOverlayOpacity] = useState(0.6);
 
  const TIP_PRESETS = [0, 2, 5, 10];
 
  const subtotal = cart.reduce((s, i) => s + i.price * i.quantity, 0);
  const effectiveDiscount = Math.min(discount, subtotal);
  const finalTotal = Math.max(0, subtotal - effectiveDiscount + tipAmount);
+
+ useEffect(() => {
+   setMounted(true);
+ }, []);
 
  // When modal opens, seed cart with primary service and load retail products
  useEffect(() => {
@@ -263,25 +271,15 @@ export default function CheckoutButton({
  }
  };
 
- const [overlayOpacity, setOverlayOpacity] = useState(0.6);
-
- return (
+ const modalContent = isOpen ? (
  <>
- <button
- onClick={() => setIsOpen(true)}
- className="bg-status-confirmed hover:bg-status-confirmed text-crm-text text-[11px] font-bold px-4 py-2 rounded uppercase tracking-wider transition-colors"
- >
- Checkout
- </button>
-
- {isOpen && (
  <div
  className="fixed inset-0 z-[200] flex items-center justify-center p-3 backdrop-blur-sm transition-colors"
  style={{ backgroundColor: `rgba(0, 0, 0, ${overlayOpacity})` }}
  onClick={() => !isProcessing && setIsOpen(false)}
  >
  <div
- className="bg-crm-surface border border-crm-border shadow-sm rounded-2xl shadow-2xl w-full max-w-lg max-h-[92vh] overflow-y-auto"
+ className="bg-crm-surface border border-crm-border shadow-sm rounded-2xl shadow-2xl w-full max-w-lg max-h-[92vh] overflow-y-auto relative"
  onClick={e => e.stopPropagation()}
  >
  {/* ── Header ── */}
@@ -290,7 +288,7 @@ export default function CheckoutButton({
    <h2 className="font-bold text-crm-text text-xl font-bold">💳 Point of Sale</h2>
  </div>
  <div className="flex items-center gap-4">
-   <div className="flex flex-col items-end hidden sm:flex">
+   <div className="flex flex-col items-end">
      <label className="text-[10px] text-crm-muted font-bold uppercase tracking-wider mb-1">Background Opacity</label>
      <input 
        type="range" 
@@ -364,10 +362,9 @@ export default function CheckoutButton({
  </div>
  </div>
  </div>
- )}
  {/* ── QR Scanner Overlay for Discount ── */}
  {isScanningDiscount && (
- <div className="fixed inset-0 bg-black/90 z-[110] flex flex-col items-center justify-center pointer-events-auto backdrop-blur-sm p-4">
+ <div className="fixed inset-0 bg-black/90 z-[210] flex flex-col items-center justify-center pointer-events-auto backdrop-blur-sm p-4">
  <div className="w-full max-w-sm relative flex flex-col items-center">
  <div className="w-16 h-16 border-4 border-brand-indigo border-t-transparent rounded-full animate-spin mb-6"></div>
  <h2 className="text-white text-center font-bold text-2xl mb-2 tracking-wide">Waiting for Kiosk</h2>
@@ -381,6 +378,18 @@ export default function CheckoutButton({
  </div>
  </div>
  )}
+ </>
+ ) : null;
+
+ return (
+ <>
+ <button
+ onClick={() => setIsOpen(true)}
+ className="bg-status-confirmed hover:bg-status-confirmed text-crm-text text-[11px] font-bold px-4 py-2 rounded uppercase tracking-wider transition-colors"
+ >
+ Checkout
+ </button>
+ {mounted && createPortal(modalContent, document.body)}
  </>
  );
 }
