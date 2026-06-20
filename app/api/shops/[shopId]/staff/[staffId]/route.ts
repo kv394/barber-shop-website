@@ -80,6 +80,8 @@ export async function PATCH(
  if (body.boothRentAmount !== undefined) allowedFields.boothRentAmount = body.boothRentAmount;
  if (body.boothRentInterval !== undefined) allowedFields.boothRentInterval = body.boothRentInterval;
  if (body.stripeConnectAccountId !== undefined) allowedFields.stripeConnectAccountId = body.stripeConnectAccountId;
+ if (body.isBookable !== undefined) allowedFields.isBookable = body.isBookable;
+ if (body.bookingFeePercent !== undefined) allowedFields.bookingFeePercent = body.bookingFeePercent === null ? null : parseFloat(body.bookingFeePercent);
 
  const updated = await tenantClient.user.update({ where: { id: staffId }, data: allowedFields });
  const { googleRefreshToken, recoveryTotpSecret, ...safeUser } = updated as any;

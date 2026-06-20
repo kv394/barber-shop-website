@@ -140,6 +140,8 @@ model User {
   stripeConnectAccountId  String?
   stripeConnectOnboarded  Boolean                 @default(false)
   employmentType          EmploymentType?         @default(W2)
+  isBookable              Boolean                 @default(false)
+  bookingFeePercent       Float?
   boothRentAmount         Float?
   boothRentInterval       BoothRentInterval?
   staffAppointments       Appointment[]           @relation("StaffAppointments")

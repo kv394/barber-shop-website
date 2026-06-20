@@ -40,8 +40,10 @@ export async function GET(
  const allStaff = await tenantClient.user.findMany({
  where: {
  OR: [
- { shopId: shopId, role: { in: ['STAFF', 'BOOTH_RENTER'] } },
- { shopAccesses: { some: { shopId: shopId, role: { in: ['STAFF', 'BOOTH_RENTER'] } } } }
+ { shopId: shopId, role: 'STAFF' },
+ { shopId: shopId, role: 'BOOTH_RENTER', isBookable: true },
+ { shopAccesses: { some: { shopId: shopId, role: 'STAFF' } } },
+ { shopAccesses: { some: { shopId: shopId, role: 'BOOTH_RENTER' } }, isBookable: true }
  ]
  },
  select: {
@@ -66,8 +68,10 @@ export async function GET(
  const staffWithLeave = await tenantClient.user.findMany({
  where: {
  OR: [
- { shopId: shopId, role: { in: ['STAFF', 'BOOTH_RENTER'] } },
- { shopAccesses: { some: { shopId: shopId, role: { in: ['STAFF', 'BOOTH_RENTER'] } } } }
+ { shopId: shopId, role: 'STAFF' },
+ { shopId: shopId, role: 'BOOTH_RENTER', isBookable: true },
+ { shopAccesses: { some: { shopId: shopId, role: 'STAFF' } } },
+ { shopAccesses: { some: { shopId: shopId, role: 'BOOTH_RENTER' } }, isBookable: true }
  ]
  },
  select: {

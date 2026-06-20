@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "User" ADD COLUMN "isBookable" BOOLEAN NOT NULL DEFAULT false;
+ALTER TABLE "User" ADD COLUMN "bookingFeePercent" DOUBLE PRECISION;

@@ -66,6 +66,7 @@ export default function TeamDashboardClient({
      {staffMember.name || staffMember.email.split('@')[0]}
      {staffMember.role === 'SHOP_ADMIN' && <span className="text-[10px] bg-crm-primary/20 text-crm-primary px-1.5 py-0.5 rounded-full uppercase tracking-wider font-black hover:opacity-90">Admin</span>}
      {staffMember.role === 'BOOTH_RENTER' && <span className="text-[10px] bg-brand-indigo/20 text-brand-indigo px-1.5 py-0.5 rounded-full uppercase tracking-wider font-black hover:opacity-90">Booth Renter</span>}
+     {staffMember.role === 'BOOTH_RENTER' && staffMember.isBookable && <span className="text-[10px] bg-emerald-500/20 text-emerald-500 px-1.5 py-0.5 rounded-full uppercase tracking-wider font-black hover:opacity-90">📅 Bookable</span>}
      </h2>
      <p className="text-crm-muted text-[13px]">{staffMember.email}</p>
      </div>

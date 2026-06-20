@@ -109,7 +109,7 @@ export async function calculateCommissionsForAppointments(
     totalAmount: number;
     tipAmount: number;
     service: { price: number; name: string } | null;
-    staff: { name: string | null } | null;
+    staff: { name: string | null; bookingFeePercent?: number | null; employmentType?: string | null; role?: string | null } | null;
     discount: number;
   }>,
 ) {
@@ -126,6 +126,13 @@ export async function calculateCommissionsForAppointments(
       serviceAmount,
     );
 
+    // Calculate booking fee for contractors/booth renters
+    const isContractor = apt.staff?.employmentType === 'CONTRACTOR' || apt.staff?.role === 'BOOTH_RENTER';
+    const bookingFeePercent = apt.staff?.bookingFeePercent || 0;
+    const bookingFee = isContractor && bookingFeePercent > 0
+      ? Math.round(serviceAmount * (bookingFeePercent / 100) * 100) / 100
+      : 0;
+
     results.push({
       appointmentId: apt.id,
       staffId: apt.staffId,
@@ -137,6 +144,8 @@ export async function calculateCommissionsForAppointments(
       commissionSource: commission.source,
       rateType: commission.rateType,
       rateValue: commission.rateValue,
+      bookingFee,
+      bookingFeePercent,
     });
   }
   return results;

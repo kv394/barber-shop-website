@@ -48,7 +48,7 @@ export async function GET(
  where,
  include: {
  service: { select: { price: true, name: true } },
- staff: { select: { name: true } },
+ staff: { select: { name: true, bookingFeePercent: true, employmentType: true, role: true } },
  },
  orderBy: { updatedAt: 'desc' },
  take: 500,
@@ -63,6 +63,7 @@ export async function GET(
  grossRevenue: number;
  totalCommission: number;
  totalTips: number;
+ totalBookingFees: number;
  totalPayout: number;
  }> = {};
 
@@ -74,6 +75,7 @@ export async function GET(
  grossRevenue: 0,
  totalCommission: 0,
  totalTips: 0,
+ totalBookingFees: 0,
  totalPayout: 0,
  };
  }
@@ -82,7 +84,8 @@ export async function GET(
  s.grossRevenue += r.serviceAmount;
  s.totalCommission += r.commission;
  s.totalTips += r.tipAmount;
- s.totalPayout += r.commission + r.tipAmount;
+ s.totalBookingFees += r.bookingFee || 0;
+ s.totalPayout += (r.commission + r.tipAmount) - (r.bookingFee || 0);
  }
 
  const rules = await tenantClient.commissionRule.findMany({
@@ -98,6 +101,7 @@ export async function GET(
  grossRevenue: Math.round(data.grossRevenue * 100) / 100,
  totalCommission: Math.round(data.totalCommission * 100) / 100,
  totalTips: Math.round(data.totalTips * 100) / 100,
+ totalBookingFees: Math.round(data.totalBookingFees * 100) / 100,
  totalPayout: Math.round(data.totalPayout * 100) / 100,
  })),
  });

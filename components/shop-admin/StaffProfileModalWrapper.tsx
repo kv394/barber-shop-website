@@ -21,7 +21,9 @@ export default function StaffProfileModalWrapper({ staff, shopId, children }: { 
  canManageInventory: staff.canManageInventory || false,
  employmentType: staff.employmentType || 'W2',
  boothRentAmount: staff.boothRentAmount || '',
- boothRentInterval: staff.boothRentInterval || 'WEEKLY'
+ boothRentInterval: staff.boothRentInterval || 'WEEKLY',
+ isBookable: staff.isBookable || false,
+ bookingFeePercent: staff.bookingFeePercent ?? ''
  });
 
  const router = useRouter();
@@ -38,7 +40,9 @@ export default function StaffProfileModalWrapper({ staff, shopId, children }: { 
  canManageInventory: staff.canManageInventory || false,
  employmentType: staff.employmentType || 'W2',
  boothRentAmount: staff.boothRentAmount || '',
- boothRentInterval: staff.boothRentInterval || 'WEEKLY'
+ boothRentInterval: staff.boothRentInterval || 'WEEKLY',
+ isBookable: staff.isBookable || false,
+ bookingFeePercent: staff.bookingFeePercent ?? ''
  });
  }, [staff]);
 
@@ -87,6 +91,12 @@ export default function StaffProfileModalWrapper({ staff, shopId, children }: { 
  payload.boothRentAmount = null;
  payload.boothRentInterval = null;
  }
+  // Handle bookingFeePercent
+  if (payload.bookingFeePercent !== '' && payload.bookingFeePercent !== undefined) {
+  payload.bookingFeePercent = parseFloat(payload.bookingFeePercent);
+  } else {
+  payload.bookingFeePercent = null;
+  }
 
  const res = await fetch(`/api/shops/${shopId}/staff/${staff.id}`, {
  method: 'PATCH',
@@ -101,6 +111,8 @@ export default function StaffProfileModalWrapper({ staff, shopId, children }: { 
  staff.employmentType = payload.employmentType;
  staff.boothRentAmount = payload.boothRentAmount;
  staff.boothRentInterval = payload.boothRentInterval;
+ staff.isBookable = payload.isBookable;
+ staff.bookingFeePercent = payload.bookingFeePercent;
  
  setIsEditing(false);
  router.refresh();
@@ -182,6 +194,21 @@ export default function StaffProfileModalWrapper({ staff, shopId, children }: { 
  <input type="checkbox" id="inv" checked={formData.canManageInventory} onChange={e => setFormData({...formData, canManageInventory: e.target.checked})} className="rounded text-crm-primary focus:ring-crm-primary" />
  <label htmlFor="inv" className="text-[13px] font-medium text-crm-text">Can Manage Inventory</label>
  </div>
+  {formData.employmentType === 'CONTRACTOR' && (
+  <>
+  <div className="flex items-center gap-2 mt-2">
+  <input type="checkbox" id="isBookable" checked={formData.isBookable} onChange={e => setFormData({...formData, isBookable: e.target.checked})} className="rounded text-crm-primary focus:ring-crm-primary" />
+  <label htmlFor="isBookable" className="text-[13px] font-medium text-crm-text">Allow Online Bookings</label>
+  </div>
+  {formData.isBookable && (
+  <div className="mt-2">
+  <label className="block text-[11px] font-bold text-crm-muted uppercase tracking-wider mb-1">Booking Fee (%)</label>
+  <input type="number" step="0.1" min="0" max="100" value={formData.bookingFeePercent} onChange={e => setFormData({...formData, bookingFeePercent: e.target.value})} placeholder="e.g. 10" className="w-full p-2 text-[13px] bg-crm-surface border border-crm-border rounded" />
+  <p className="text-[10px] text-crm-muted mt-1">Percentage deducted from service revenue per booking</p>
+  </div>
+  )}
+  </>
+  )}
  </div>
  ) : (
  <>
@@ -223,6 +250,20 @@ export default function StaffProfileModalWrapper({ staff, shopId, children }: { 
  <span className="text-crm-muted font-medium">Manage Inventory</span>
  <span className="text-crm-text font-medium">{staff.canManageInventory ? 'Yes' : 'No'}</span>
  </div>
+  {staff.employmentType === 'CONTRACTOR' && (
+  <>
+  <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center border-t border-crm-border pt-3">
+  <span className="text-crm-muted font-medium">Online Bookings</span>
+  <span className={`font-medium ${staff.isBookable ? 'text-emerald-500' : 'text-crm-muted'}`}>{staff.isBookable ? '✓ Enabled' : 'Disabled'}</span>
+  </div>
+  {staff.isBookable && staff.bookingFeePercent != null && (
+  <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 items-center">
+  <span className="text-crm-muted font-medium">Booking Fee</span>
+  <span className="text-crm-text font-medium">{staff.bookingFeePercent}%</span>
+  </div>
+  )}
+  </>
+  )}
  </>
  )}
  </div>

@@ -154,22 +154,24 @@ export async function GET(request: Request, { params }: { params: Promise<{ shop
  },
  orderBy: { name: 'asc' }
  }),
-  // 3. Public Staff (bookable barbers only — excludes admins, clients, and kiosks)
-  tenantClient.user.findMany({
-  where: {
-  OR: [
-  { shopId: shop.id, role: { in: ['STAFF', 'BOOTH_RENTER'] } },
-  { shopAccesses: { some: { shopId: shop.id, role: { in: ['STAFF', 'BOOTH_RENTER'] } } } }
-  ]
-  },
-  select: {
-  id: true,
-  name: true,
-  imageUrl: true,
-  role: true,
-  workingHours: true
-  }
-  }),
+   // 3. Public Staff (bookable barbers only — STAFF always, BOOTH_RENTER only if opted in)
+   tenantClient.user.findMany({
+   where: {
+   OR: [
+    { shopId: shop.id, role: 'STAFF' },
+    { shopId: shop.id, role: 'BOOTH_RENTER', isBookable: true },
+    { shopAccesses: { some: { shopId: shop.id, role: 'STAFF' } } },
+    { shopAccesses: { some: { shopId: shop.id, role: 'BOOTH_RENTER' } }, isBookable: true },
+   ]
+   },
+   select: {
+   id: true,
+   name: true,
+   imageUrl: true,
+   role: true,
+   workingHours: true
+   }
+   }),
  // 4. Reviews
  tenantClient.review.findMany({
  where: { shopId: shop.id },

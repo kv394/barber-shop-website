@@ -11,6 +11,7 @@ interface StaffSummary {
  grossRevenue: number;
  totalCommission: number;
  totalTips: number;
+ totalBookingFees: number;
  totalPayout: number;
 }
 
@@ -24,6 +25,8 @@ interface DetailRow {
  commissionSource: string;
  rateType: string;
  rateValue: number;
+ bookingFee: number;
+ bookingFeePercent: number;
 }
 
 export interface CommissionReportClientProps {
@@ -66,13 +69,15 @@ export default function CommissionReportClient({
 
  const totalCommission = summary.reduce((s, r) => s + r.totalCommission, 0);
  const totalTips = summary.reduce((s, r) => s + r.totalTips, 0);
+ const totalBookingFees = summary.reduce((s, r) => s + r.totalBookingFees, 0);
  const totalPayout = summary.reduce((s, r) => s + r.totalPayout, 0);
  const totalRevenue = summary.reduce((s, r) => s + r.grossRevenue, 0);
+ const hasBookingFees = totalBookingFees > 0 || summary.some(s => s.totalBookingFees > 0);
 
  const exportCSV = () => {
  const rows = [
- ['Staff', 'Service', 'Revenue', 'Tip', 'Commission', 'Rate', 'Source'],
- ...details.map(d => [d.staffName, d.serviceName, d.serviceAmount.toFixed(2), d.tipAmount.toFixed(2), d.commission.toFixed(2), `${d.rateValue}${d.rateType === 'PERCENTAGE' ? '%' : ' flat'}`, d.commissionSource]),
+ ['Staff', 'Service', 'Revenue', 'Tip', 'Commission', 'Booking Fee', 'Rate', 'Source'],
+ ...details.map(d => [d.staffName, d.serviceName, d.serviceAmount.toFixed(2), d.tipAmount.toFixed(2), d.commission.toFixed(2), d.bookingFee.toFixed(2), `${d.rateValue}${d.rateType === 'PERCENTAGE' ? '%' : ' flat'}`, d.commissionSource]),
  ];
  const csv = rows.map(r => r.join(',')).join('\n');
  const blob = new Blob([csv], { type: 'text/csv' });
@@ -152,6 +157,7 @@ export default function CommissionReportClient({
  <th className="text-right p-3 sm:p-4 font-semibold">Revenue</th>
  <th className="text-right p-3 sm:p-4 font-semibold">Commission</th>
  <th className="text-right p-3 sm:p-4 font-semibold">Tips</th>
+ {hasBookingFees && <th className="text-right p-3 sm:p-4 font-semibold text-red-400">Booking Fee</th>}
  <th className="text-right p-3 sm:p-4 font-semibold text-crm-accent">Payout</th>
  </tr>
  </thead>
@@ -163,6 +169,7 @@ export default function CommissionReportClient({
  <td className="p-3 sm:p-4 text-right text-crm-muted">{fmtPrice(s.grossRevenue, currency)}</td>
  <td className="p-3 sm:p-4 text-right font-medium text-status-info">{fmtPrice(s.totalCommission, currency)}</td>
  <td className="p-3 sm:p-4 text-right font-medium text-status-pending">{fmtPrice(s.totalTips, currency)}</td>
+ {hasBookingFees && <td className="p-3 sm:p-4 text-right font-medium text-red-400">-{fmtPrice(s.totalBookingFees, currency)}</td>}
  <td className="p-3 sm:p-4 text-right text-crm-accent font-bold">{fmtPrice(s.totalPayout, currency)}</td>
  </tr>
  ))}
