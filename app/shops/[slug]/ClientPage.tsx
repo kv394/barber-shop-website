@@ -74,24 +74,29 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
 
  // Only intercept booking-related actions
  if (text.includes('book') || (text.includes('appointment') && !text.includes('my'))) {
- e.preventDefault();
- // Extract service and staff IDs from data attributes (set by template scripts)
- const serviceId = button.getAttribute('data-service-id');
- const staffId = button.getAttribute('data-staff-id');
+  // If the element has its own onclick handler (dynamically rendered cards via
+  // template scripts bypass the sanitizer), let it handle the booking directly.
+  // Only intercept clicks on sanitized elements that lost their onclick handlers.
+  if (button.hasAttribute('onclick')) return;
 
- if (typeof window !== 'undefined' && (window as any).BarberBooking) {
- // Pass both IDs — the BookingWizard will skip steps based on what's provided:
- // - serviceId only → skip to staff selection
- // - staffId only → stay on service selection (staff pre-locked)
- // - neither → start from beginning
- (window as any).BarberBooking.open(serviceId || null, staffId || null);
- } else if (typeof window !== 'undefined' && (window as any).openKutzAppChat) {
- const service = shop.services?.find((s: any) => s.id === serviceId) || shop.services?.[0];
- (window as any).openKutzAppChat(service?.name);
- } else {
- const service = shop.services?.find((s: any) => s.id === serviceId) || shop.services?.[0];
- if (service) setSelectedService(service);
- }
+  e.preventDefault();
+  // Extract service and staff IDs from data attributes (set by template scripts)
+  const serviceId = button.getAttribute('data-service-id');
+  const staffId = button.getAttribute('data-staff-id');
+
+  if (typeof window !== 'undefined' && (window as any).BarberBooking) {
+   // Pass both IDs — the BookingWizard will skip steps based on what's provided:
+   // - serviceId only → skip to staff selection
+   // - staffId only → stay on service selection (staff pre-locked)
+   // - neither → start from beginning
+   (window as any).BarberBooking.open(serviceId || null, staffId || null);
+  } else if (typeof window !== 'undefined' && (window as any).openKutzAppChat) {
+   const service = shop.services?.find((s: any) => s.id === serviceId) || shop.services?.[0];
+   (window as any).openKutzAppChat(service?.name);
+  } else {
+   const service = shop.services?.find((s: any) => s.id === serviceId) || shop.services?.[0];
+   if (service) setSelectedService(service);
+  }
  }
  };
  // ── Normalised contact helpers (supports both old flat shape and new nested shape) ──

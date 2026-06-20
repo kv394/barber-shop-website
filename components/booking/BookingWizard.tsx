@@ -153,11 +153,21 @@ export default function BookingWizard({ shopId, themeColor, secondaryColor, temp
  }
  const activeBg = themeColor ? hexToRgba(themeColor) : '#f9fafb';
 
- const handleNext = () => setStep(s => s + 1);
- const handleBack = () => {
- setError(null);
- setStep(s => s - 1);
- };
+  const handleNext = () => setStep(s => {
+   // Skip staff step (2) when staff is already pre-selected (e.g. clicked a barber card)
+   if (s === 1 && selectedStaff) return 3;
+   // Skip service step (1) when service is already pre-selected (e.g. clicked a service card)
+   // This shouldn't normally happen since step 1 is the service step, but handles edge cases
+   return s + 1;
+  });
+  const handleBack = () => {
+   setError(null);
+   setStep(s => {
+    // Skip staff step (2) when going back if staff was pre-selected
+    if (s === 3 && selectedStaff) return 1;
+    return s - 1;
+   });
+  };
 
  const getStaffHours = useCallback((staffMember: Staff) => {
  if (!selectedDate) return null;
