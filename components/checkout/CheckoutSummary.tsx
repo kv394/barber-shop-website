@@ -4,12 +4,14 @@ import { fmtPrice } from '@/lib/formatters';
 
 export default function CheckoutSummary({
   subtotal,
+  taxAmount,
   effectiveDiscount,
   tipAmount,
   finalTotal,
   currency,
 }: {
   subtotal: number;
+  taxAmount?: number;
   effectiveDiscount: number;
   tipAmount: number;
   finalTotal: number;
@@ -23,6 +25,11 @@ export default function CheckoutSummary({
       {effectiveDiscount > 0 && (
         <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 text-[13px] text-status-cancelled">
           <span>Discount</span><span>−{fmtPrice(effectiveDiscount, currency)}</span>
+        </div>
+      )}
+      {(taxAmount ?? 0) > 0 && (
+        <div className="flex flex-wrap justify-between gap-x-2 gap-y-2 text-[13px] text-crm-muted">
+          <span>Tax</span><span>+{fmtPrice(taxAmount!, currency)}</span>
         </div>
       )}
       {tipAmount > 0 && (

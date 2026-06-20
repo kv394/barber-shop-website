@@ -22,7 +22,7 @@ interface SendEmailOptions {
 
 async function sendEmail(options: SendEmailOptions): Promise<{ success: boolean; messageId?: string; error?: string }> {
  if (!RESEND_API_KEY) {
- console.warn('[EMAIL] RESEND_API_KEY not configured, skipping email send');
+  logger.warn('[EMAIL] RESEND_API_KEY not configured, skipping email send');
  return { success: false, error: 'Email service not configured' };
  }
 

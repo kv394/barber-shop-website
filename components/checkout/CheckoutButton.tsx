@@ -70,8 +70,9 @@ export default function CheckoutButton({
  const TIP_PRESETS = [0, 2, 5, 10];
 
  const subtotal = cart.reduce((s, i) => s + i.price * i.quantity, 0);
- const effectiveDiscount = Math.min(discount, subtotal);
- const finalTotal = Math.max(0, subtotal - effectiveDiscount + tipAmount);
+ const taxAmount = cart.reduce((sum, item) => sum + (item.price * item.quantity * (item.taxRate || 0)), 0);
+ const effectiveDiscount = Math.min(discount, subtotal + taxAmount);
+ const finalTotal = Math.max(0, subtotal + taxAmount - effectiveDiscount + tipAmount);
 
  useEffect(() => {
    setMounted(true);
@@ -345,6 +346,7 @@ export default function CheckoutButton({
  {/* ── Total Summary ── */}
  <CheckoutSummary
  subtotal={subtotal}
+ taxAmount={taxAmount}
  effectiveDiscount={effectiveDiscount}
  tipAmount={tipAmount}
  finalTotal={finalTotal}
