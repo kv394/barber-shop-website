@@ -429,14 +429,29 @@
     async buyProduct(productId, quantity = 1) {
       this._checkInit();
 
+      // Determine the real page URL — inside a srcDoc iframe, window.location.href is 'about:srcdoc'
+      let pageUrl = window.location.href;
+      try {
+        if (!pageUrl || pageUrl === 'about:srcdoc' || pageUrl === 'about:blank') {
+          pageUrl = window.parent.location.href;
+        }
+      } catch (e) {
+        // Cross-origin parent — fall back to apiUrl
+        pageUrl = this.apiUrl;
+      }
+      // Final fallback
+      if (!pageUrl || pageUrl === 'about:srcdoc' || pageUrl === 'about:blank') {
+        pageUrl = this.apiUrl;
+      }
+
       const res = await fetch(`${this.apiUrl}/api/shops/${this.shopId}/checkout/product`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           productId,
           quantity,
-          successUrl: window.location.href + (window.location.href.includes('?') ? '&' : '?') + 'checkout=success',
-          cancelUrl: window.location.href + (window.location.href.includes('?') ? '&' : '?') + 'checkout=cancelled'
+          successUrl: pageUrl + (pageUrl.includes('?') ? '&' : '?') + 'checkout=success',
+          cancelUrl: pageUrl + (pageUrl.includes('?') ? '&' : '?') + 'checkout=cancelled'
         })
       });
 
@@ -447,7 +462,16 @@
 
       const data = await res.json();
       if (data.url) {
-        window.location.href = data.url;
+        // Redirect via parent window if inside an iframe, otherwise redirect directly
+        try {
+          if (window.parent && window.parent !== window) {
+            window.parent.location.href = data.url;
+          } else {
+            window.location.href = data.url;
+          }
+        } catch (e) {
+          window.location.href = data.url;
+        }
       }
       return data;
     }
