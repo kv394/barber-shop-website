@@ -66,25 +66,39 @@ export async function POST(req: Request) {
  });
  }
 
- // Create the appointment
- await prisma.appointment.create({
- data: {
- shopId,
- staffId: renterId,
- userId: clientUser.id,
- serviceId: serviceId || null,
- startTime: new Date(slotStart),
- endTime: new Date(slotEnd),
- status: 'SCHEDULED',
- notes: `Booked via QR. Paid via Stripe (${session.id})`,
- paymentId: session.payment_intent || session.id,
- totalAmount: (session.amount_total || 0) / 100,
- subtotal: (session.amount_total || 0) / 100,
- paymentMethod: 'CARD',
- },
- });
+  const appointmentId = meta.appointmentId;
 
- logger.info(`Booth renter booking created for renter ${renterId}, client ${clientEmail}`);
+  if (appointmentId) {
+    await prisma.appointment.update({
+      where: { id: appointmentId },
+      data: {
+        status: 'SCHEDULED',
+        notes: `Booked via QR. Paid via Stripe (${session.id})`,
+        paymentId: session.payment_intent || session.id,
+        paymentMethod: 'CARD',
+      },
+    });
+    logger.info(`Booth renter booking updated for renter ${renterId}, client ${clientEmail}`);
+  } else {
+    // Fallback for older checkout sessions without appointmentId
+    await prisma.appointment.create({
+      data: {
+        shopId,
+        staffId: renterId,
+        userId: clientUser.id,
+        serviceId: serviceId || null,
+        startTime: new Date(slotStart),
+        endTime: new Date(slotEnd),
+        status: 'SCHEDULED',
+        notes: `Booked via QR. Paid via Stripe (${session.id})`,
+        paymentId: session.payment_intent || session.id,
+        totalAmount: (session.amount_total || 0) / 100,
+        subtotal: (session.amount_total || 0) / 100,
+        paymentMethod: 'CARD',
+      },
+    });
+    logger.info(`Booth renter booking created for renter ${renterId}, client ${clientEmail}`);
+  }
  }
  break;
  }

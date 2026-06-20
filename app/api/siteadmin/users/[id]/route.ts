@@ -31,7 +31,7 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
       // Send password reset using Supabase Admin
       const { error } = await supabaseAdmin.auth.resetPasswordForEmail(user.email);
       if (error) {
-        return NextResponse.json({ error: error.message }, { status: 400 });
+        return NextResponse.json({ error: 'Internal Server Error' }, { status: 400 });
       }
       return NextResponse.json({ success: true, message: 'Password reset email sent' });
     }
@@ -91,6 +91,6 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
 
   } catch (err: any) {
     console.error('Error updating user:', err);
-    return NextResponse.json({ error: err.message || 'Internal server error' }, { status: 500 });
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }

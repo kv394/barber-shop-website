@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useMemo } from 'react';
 import dynamic from 'next/dynamic';
-import DOMPurify from 'isomorphic-dompurify';
+import { sanitizeTemplate } from '@/lib/sanitize';
 import ReviewsSection from '../components/ReviewsSection';
 import CustomPageContent from '../components/CustomPageContent';
 
@@ -8,11 +8,14 @@ const BookingModal = dynamic(() => import('@/components/appointments/BookingModa
 const BookingWizard = dynamic(() => import('@/components/booking/BookingWizard'), { ssr: false });
 
 function sanitizeCss(css: string): string {
- return css
- .replace(/expression\s*\(/gi, '')
- .replace(/url\s*\(\s*['"]?\s*javascript:/gi, 'url(')
- .replace(/behavior\s*:/gi, '')
- .replace(/@import\b/gi, '');
+  if (!css) return '';
+  return css
+    .replace(/expression\s*\(/gi, '')
+    .replace(/url\s*\(\s*['"]?\s*javascript:/gi, 'url(')
+    .replace(/-moz-binding/gi, 'blocked-binding')
+    .replace(/behavior\s*:/gi, 'blocked-behavior:')
+    .replace(/@import\b/gi, 'blocked-import')
+    .replace(/url\s*\(\s*['"]?\s*data:(text\/html|image\/svg\+xml)/gi, 'url(data:blocked');
 }
 
 /**
@@ -104,14 +107,7 @@ export default function DynamicTemplate({ ctx }: { ctx: any }) {
  // handler attributes (onclick etc.) needed for SDK booking integration.
  const sanitizedHtml = useMemo(() => {
   if (!bodyHtml) return '';
-  return DOMPurify.sanitize(bodyHtml, {
-   ADD_TAGS: ['style', 'iframe'],
-   ADD_ATTR: ['target', 'rel', 'data-service-id', 'data-shop-id',
-    'onclick', 'onsubmit', 'onchange', 'oninput',
-    'aria-label', 'role', 'tabindex', 'loading', 'decoding',
-    'crossorigin', 'data-theme-color', 'data-position'],
-   ALLOW_UNKNOWN_PROTOCOLS: true,
-  });
+  return sanitizeTemplate(bodyHtml);
  }, [bodyHtml]);
 
  // Combine all CSS: separate dynamicTemplateCss + extracted inline styles

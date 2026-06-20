@@ -146,6 +146,7 @@ export async function createBoothRenterCheckoutSession({
   clientPhone,
   successUrl,
   cancelUrl,
+  appointmentId,
 }: {
   renterStripeAccountId: string;
   serviceId: string;
@@ -161,6 +162,7 @@ export async function createBoothRenterCheckoutSession({
   clientPhone?: string;
   successUrl: string;
   cancelUrl: string;
+  appointmentId?: string;
 }) {
   const amountCents = Math.round(amount * 100);
 
@@ -196,6 +198,7 @@ export async function createBoothRenterCheckoutSession({
         clientName,
         clientEmail,
         clientPhone: clientPhone || '',
+        appointmentId: appointmentId || '',
       },
       success_url: successUrl,
       cancel_url: cancelUrl,

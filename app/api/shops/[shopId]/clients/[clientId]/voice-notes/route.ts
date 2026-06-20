@@ -68,6 +68,6 @@ Return strictly a JSON object with these keys. If a key is not mentioned, omit i
  return NextResponse.json({ success: true, parsed, newNoteBlock });
  } catch (err: any) {
  logger.error('Voice to CRM Error:', err);
- return NextResponse.json({ error: err.message }, { status: 500 });
+ return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
  }
 }

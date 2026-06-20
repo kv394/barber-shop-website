@@ -315,7 +315,8 @@ export async function GET(request: Request, { params }: { params: Promise<{ shop
         );
 
         if (!isAllowed) {
-            logger.warn(`Allowing unauthorized access to shop data from domain for demo: ${requestDomain}`);
+            logger.warn(`Unauthorized access attempt to shop data from domain: ${requestDomain}`);
+            return NextResponse.json({ error: 'Unauthorized domain' }, { status: 403 });
         }
     }
 
@@ -332,8 +333,6 @@ export async function GET(request: Request, { params }: { params: Promise<{ shop
             const originHost = new URL(origin).hostname;
             const isOriginAllowed = cachedAllowedDomains.some((domain: string) => originHost === domain || originHost.endsWith(`.${domain}`));
             if (isOriginAllowed) {
-                corsHeaders['Access-Control-Allow-Origin'] = origin;
-            } else {
                 corsHeaders['Access-Control-Allow-Origin'] = origin;
             }
         } catch(e) {}

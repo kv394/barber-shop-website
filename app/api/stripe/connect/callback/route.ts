@@ -27,7 +27,8 @@ export async function GET(request: Request) {
  return NextResponse.redirect(`${appUrl}?stripe_connect=error`);
  }
  const [receivedHmac, userId] = parts;
- const expectedHmac = crypto.createHmac('sha256', process.env.OAUTH_STATE_SECRET || 'fallback-secret').update(userId).digest('hex');
+ const { STATE_SECRET } = await import('@/lib/oauth-state');
+ const expectedHmac = crypto.createHmac('sha256', STATE_SECRET).update(userId).digest('hex');
  if (!crypto.timingSafeEqual(Buffer.from(receivedHmac, 'hex'), Buffer.from(expectedHmac, 'hex'))) {
  logger.warn('Stripe Connect OAuth: state HMAC verification failed', { userId });
  return NextResponse.redirect(`${appUrl}?stripe_connect=error`);

@@ -39,8 +39,9 @@ export async function rateLimit(
   const redis = getRedisClient();
   
   if (!redis) {
+    const isCritical = failClosed || ['totp', 'booking', 'auth', 'waitlist', 'review'].some(k => identifier.includes(k));
     // When failClosed is true (auth-critical paths), deny requests if Redis is unavailable
-    return failClosed
+    return isCritical
       ? { success: false, remaining: 0 }
       : { success: true, remaining: limit };
   }

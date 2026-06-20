@@ -1,6 +1,7 @@
 import { logger } from "@/lib/logger";
 import { getTenantClient } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
+import { rateLimit } from '@/lib/rate-limiter';
 import stripe from '@/lib/stripe';
 
 export const dynamic = 'force-dynamic';
@@ -39,6 +40,38 @@ export async function POST(
     if (!successUrl || !cancelUrl) {
       return NextResponse.json(
         { error: 'successUrl and cancelUrl are required' },
+        { status: 400, headers: corsHeaders }
+      );
+    }
+
+    const ip = request.headers.get('x-forwarded-for') || '127.0.0.1';
+    const rateLimitResult = await rateLimit(`checkout:${ip}`, 5, 60);
+    if (!rateLimitResult.success) {
+      return NextResponse.json({ error: 'Too many requests' }, { status: 429, headers: corsHeaders });
+    }
+
+    const shop = await tenantClient.shop.findUnique({ where: { id: shopId } });
+    if (!shop) {
+      return NextResponse.json({ error: 'Shop not found' }, { status: 404, headers: corsHeaders });
+    }
+
+    const isValidUrl = (urlStr: string) => {
+      try {
+        const url = new URL(urlStr);
+        const host = url.hostname;
+        if (host === 'localhost') return true;
+        if (host.endsWith('.vercel.app')) return true;
+        if (host === 'kutzapp.com' || host.endsWith('.kutzapp.com')) return true;
+        if (shop.customDomain && host === shop.customDomain) return true;
+        return false;
+      } catch (e) {
+        return false;
+      }
+    };
+
+    if (!isValidUrl(successUrl) || !isValidUrl(cancelUrl)) {
+      return NextResponse.json(
+        { error: 'Invalid redirect URL domain' },
         { status: 400, headers: corsHeaders }
       );
     }

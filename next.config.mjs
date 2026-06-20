@@ -7,7 +7,7 @@ const nextConfig = {
   reactStrictMode: true,
   compress: true,
   poweredByHeader: false,
-  serverExternalPackages: ['@prisma/client', '@prisma/adapter-pg', 'pg', 'handlebars'],
+  serverExternalPackages: ['@prisma/client', '@prisma/adapter-pg', 'pg', 'handlebars', 'jsdom', 'isomorphic-dompurify'],
   allowedDevOrigins: ['localhost', '127.0.0.1', '*.local', '192.168.*.*'],
   experimental: {
     optimizePackageImports: ['ioredis', 'lucide-react'],

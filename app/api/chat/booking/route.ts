@@ -167,7 +167,7 @@ export async function POST(req: Request) {
           }
         } catch (err: any) {
           logger.error("Tool execution error:", err);
-          handlerResult = { result: { error: err.message } };
+          handlerResult = { result: { error: 'Internal Server Error' } };
         }
 
         // Merge UI metadata from handler result

@@ -1,6 +1,7 @@
 import { logger } from "@/lib/logger";
 import { prisma, getTenantClient } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
+import { rateLimit } from '@/lib/rate-limiter';
 import { createClient } from '@/utils/supabase/server';
 import { reviewSchema } from '@/lib/validations';
 export const dynamic = 'force-dynamic';
@@ -74,9 +75,9 @@ export async function GET(
  );
 
  if (!isAllowed) {
- // TEMPORARY: Allow all domains for demo/local testing purposes.
- logger.warn(`Allowing unauthorized access to reviews from domain for demo: ${requestDomain}`);
- }
+  logger.warn(`Unauthorized access attempt to reviews from domain: ${requestDomain}`);
+  return NextResponse.json({ error: 'Unauthorized domain' }, { status: 403, headers: corsHeaders });
+  }
  }
 
  const reviews = await tenantClient.review.findMany({
@@ -134,18 +135,24 @@ export async function POST(
  let userId = authUserSession?.id;
  const authUserEmail = authUserSession?.email;
 
- if (!userId) {
- const emailToUse = `anon-review-${crypto.randomUUID().slice(0, 8)}@shophub.local`;
- const anonUser = await tenantClient.user.create({
- data: {
- email: emailToUse,
- name: 'Anonymous Client',
- role: 'CLIENT',
- shopId: realShopId,
- }
- });
- userId = anonUser.id;
- }
+  if (!userId) {
+  const ip = request.headers.get('x-forwarded-for') || '127.0.0.1';
+  const rateLimitResult = await rateLimit(`anon-review:${ip}`, 3, 3600); // Max 3 anon reviews per hour per IP
+  if (!rateLimitResult.success) {
+    return NextResponse.json({ error: 'Too many anonymous reviews. Please try again later.' }, { status: 429, headers: corsHeaders });
+  }
+
+  const emailToUse = `anon-review-${crypto.randomUUID().slice(0, 8)}@shophub.local`;
+  const anonUser = await tenantClient.user.create({
+  data: {
+  email: emailToUse,
+  name: 'Anonymous Client',
+  role: 'CLIENT',
+  shopId: realShopId,
+  }
+  });
+  userId = anonUser.id;
+  }
 
   const body = await request.json();
   const validationResult = reviewSchema.safeParse(body);

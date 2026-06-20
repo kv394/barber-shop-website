@@ -88,14 +88,43 @@ export async function PATCH(
  const oldTimeStr = new Date(appointment.startTime).toLocaleString('en-US', { weekday: 'short', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
  const newTimeStr = new Date(newStartTime).toLocaleString('en-US', { weekday: 'short', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
 
- // Update appointment
- await prisma.appointment.update({
- where: { id: appointment.id },
- data: {
- startTime: new Date(newStartTime),
- endTime: new Date(newEndTime)
- }
- });
+  if (new Date(newStartTime) < new Date()) {
+    return NextResponse.json({ error: 'Cannot reschedule to a past date' }, { status: 400 });
+  }
+
+  try {
+    await prisma.$transaction(async (tx) => {
+      const conflict = await tx.appointment.findFirst({
+        where: {
+          shopId: appointment.shopId,
+          staffId: appointment.staffId,
+          status: { notIn: ['CANCELLED', 'NO_SHOW'] },
+          id: { not: appointment.id },
+          AND: [
+            { startTime: { lt: new Date(newEndTime) } },
+            { endTime: { gt: new Date(newStartTime) } }
+          ]
+        }
+      });
+
+      if (conflict) {
+        throw new Error('CONFLICT');
+      }
+
+      await tx.appointment.update({
+        where: { id: appointment.id },
+        data: {
+          startTime: new Date(newStartTime),
+          endTime: new Date(newEndTime)
+        }
+      });
+    }, { isolationLevel: 'Serializable' });
+  } catch (error: any) {
+    if (error.message === 'CONFLICT') {
+      return NextResponse.json({ error: 'This slot is no longer available' }, { status: 409 });
+    }
+    throw error;
+  }
 
  // Notify staff
  await NotificationService.send({

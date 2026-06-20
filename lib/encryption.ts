@@ -9,29 +9,25 @@ const AUTH_TAG_LENGTH = 16;
 /**
  * Encrypts a string using AES-256-GCM.
  * The output format is: iv:authTag:encryptedText
+ *
+ * SECURITY: Throws if ENCRYPTION_KEY is not configured — never silently degrades to plaintext.
  */
 export function encrypt(text: string): string {
   if (!ENCRYPTION_KEY) {
-    console.warn('ENCRYPTION_KEY is not set. Storing as plain text.');
-    return text;
+    throw new Error('ENCRYPTION_KEY is not set. Cannot encrypt sensitive data. Configure the ENCRYPTION_KEY environment variable.');
   }
   
   if (!text) return text;
 
-  try {
-    const iv = crypto.randomBytes(IV_LENGTH);
-    const cipher = crypto.createCipheriv(ALGORITHM, ENCRYPTION_KEY, iv);
-    
-    let encrypted = cipher.update(text, 'utf8', 'hex');
-    encrypted += cipher.final('hex');
-    
-    const authTag = cipher.getAuthTag();
-    
-    return `${iv.toString('hex')}:${authTag.toString('hex')}:${encrypted}`;
-  } catch (error) {
-    console.error('Encryption failed:', error);
-    return text; // Fallback to plain text on error
-  }
+  const iv = crypto.randomBytes(IV_LENGTH);
+  const cipher = crypto.createCipheriv(ALGORITHM, ENCRYPTION_KEY, iv);
+  
+  let encrypted = cipher.update(text, 'utf8', 'hex');
+  encrypted += cipher.final('hex');
+  
+  const authTag = cipher.getAuthTag();
+  
+  return `${iv.toString('hex')}:${authTag.toString('hex')}:${encrypted}`;
 }
 
 /**
@@ -40,6 +36,9 @@ export function encrypt(text: string): string {
  */
 export function decrypt(text: string): string {
   if (!ENCRYPTION_KEY) {
+    // During decryption, if key is missing, we can't decrypt — return as-is
+    // (data may be legacy plaintext from before encryption was enabled)
+    console.warn('ENCRYPTION_KEY is not set. Cannot decrypt.');
     return text;
   }
   

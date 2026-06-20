@@ -285,7 +285,7 @@ Rules:
  } catch (err: any) {
  logger.error('Inventory Forecast Error:', err);
  return NextResponse.json(
- { error: err.message || 'Failed to generate forecast' },
+ { error: 'Internal Server Error' },
  { status: 500 }
  );
  }

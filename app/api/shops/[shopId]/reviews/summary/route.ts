@@ -125,7 +125,7 @@ Rules:
  } catch (err: any) {
  logger.error('Review Summary Error:', err);
  return NextResponse.json(
- { error: err.message || 'Failed to generate summary' },
+ { error: 'Internal Server Error' },
  { status: 500 }
  );
  }

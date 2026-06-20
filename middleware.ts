@@ -31,7 +31,7 @@ const publicRoutes = [
   '^/api/chat/booking(?:/.*)?$',
   '^/api/assets(?:/.*)?$',
   '^/api/cache/invalidate$',
-  '^/api/debug(?:/.*)?$'
+  '^/api/debug/log-error$'
 ];
 
 const isPublicRoute = (path: string) => {
@@ -87,8 +87,15 @@ export async function middleware(req: NextRequest) {
         'kutzapp.com', 'kutzapp.vercel.app',
         ...rootDomainEnv.split(',').map(d => d.trim()).filter(Boolean),
       ];
-      const isAllowedOrigin = allowedOrigins.some(domain => origin.includes(domain))
-        || origin.includes('vercel.app');
+      let originHost = '';
+      try {
+        originHost = new URL(origin).hostname;
+      } catch (e) {
+        originHost = origin; // fallback if it's not a full URL
+      }
+      
+      const isAllowedOrigin = allowedOrigins.some(domain => originHost === domain || originHost.endsWith(`.${domain}`))
+        || originHost.endsWith('.vercel.app');
       if (!isAllowedOrigin) {
         return NextResponse.json(
           { error: 'Forbidden: invalid origin' },
@@ -214,12 +221,9 @@ export async function middleware(req: NextRequest) {
   // Skip CSP for /shops/ and /shop-template/ — these render custom HTML inside
   // srcDoc iframes where the iframe's origin is 'null'. CSP 'self' resolves to
   // null in that context, blocking ALL scripts, API calls, and resources.
-  const isShopPage = req.nextUrl.pathname.startsWith('/shops/') || req.nextUrl.pathname.startsWith('/shop-template/');
-  if (!isShopPage) {
-    const csp = generateCsp();
-    if (csp) {
-      response.headers.set('Content-Security-Policy', csp);
-    }
+  const csp = generateCsp();
+  if (csp) {
+    response.headers.set('Content-Security-Policy', csp);
   }
   
   // Prevent clickjacking for non-embed routes

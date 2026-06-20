@@ -72,6 +72,6 @@ export async function POST(
  return NextResponse.json(serialize(purchaseOrder));
  } catch (error: any) {
  logger.error('Error creating purchase order:', error);
- return NextResponse.json({ error: error.message || 'Failed to create purchase order' }, { status: 500 });
+ return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
  }
 }

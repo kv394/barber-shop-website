@@ -1,6 +1,7 @@
 import { logger } from "@/lib/logger";
 import { getTenantClient } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
+import { rateLimit } from '@/lib/rate-limiter';
 
 export const dynamic = 'force-dynamic';
 
@@ -25,8 +26,11 @@ export async function POST(
     const { shopId } = await params;
     const tenantClient = await getTenantClient(shopId);
 
-    // TODO: Add rate limiting to prevent abuse (e.g., rateLimit(`public-waitlist:${ip}`, 5, 60))
-
+    const ip = request.headers.get('x-forwarded-for') || '127.0.0.1';
+    const rateLimitResult = await rateLimit(`public-waitlist:${ip}`, 5, 60);
+    if (!rateLimitResult.success) {
+      return NextResponse.json({ error: 'Too many waitlist entries. Please try again later.' }, { status: 429, headers: corsHeaders });
+    }
     const body = await request.json();
     const { clientName, clientPhone, serviceId, partySize } = body;
 

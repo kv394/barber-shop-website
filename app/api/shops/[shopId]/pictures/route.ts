@@ -33,6 +33,6 @@ export async function GET(
  return NextResponse.json({ files });
  } catch (error: any) {
  console.error('List files error:', error);
- return NextResponse.json({ error: error.message || 'Failed to list files' }, { status: 500 });
+ return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
  }
 }

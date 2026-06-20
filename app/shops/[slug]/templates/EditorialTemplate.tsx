@@ -3,6 +3,7 @@ import React from 'react';
 import dynamic from 'next/dynamic';
 import ReviewsSection from '../components/ReviewsSection';
 import CustomPageContent from '../components/CustomPageContent';
+import { sanitize } from '@/lib/sanitize';
 
 const BookingModal = dynamic(() => import('@/components/appointments/BookingModal'), { ssr: false });
 const BookingWizard = dynamic(() => import('@/components/booking/BookingWizard'), { ssr: false });
@@ -109,7 +110,7 @@ export default function EditorialTemplate({ ctx }: { ctx: any }) {
    </span>
    <h1 
    className="font-headline leading-[1.1] mb-8 tracking-tight text-5xl font-bold"
-   dangerouslySetInnerHTML={{ __html: editorial.heroTitle || `Your Sanctuary of <br/> <span class="italic" style="color: ${primaryColor}">Sophisticated Care</span>` }}
+   dangerouslySetInnerHTML={{ __html: sanitize(editorial.heroTitle || `Your Sanctuary of <br/> <span class="italic" style="color: ${primaryColor}">Sophisticated Care</span>`) }}
    />
    <p className="text-crm-muted font-body max-w-md mb-10 leading-relaxed text-[13px]">
    {editorial.heroSubtitle || 'Experience beauty as an art form. Our atelier provides a curated space for those who appreciate the finer details of self-ceremony.'}
@@ -198,7 +199,7 @@ export default function EditorialTemplate({ ctx }: { ctx: any }) {
    <div className="md:col-span-4">
    <h2 
    className="font-headline mb-6 leading-tight text-xl font-bold"
-   dangerouslySetInnerHTML={{ __html: editorial.testimonialsTitle || `Reflections <br/>from Our <br/><span class="italic" style="color: ${primaryColor}">Atelier Guests</span>` }}
+   dangerouslySetInnerHTML={{ __html: sanitize(editorial.testimonialsTitle || `Reflections <br/>from Our <br/><span class="italic" style="color: ${primaryColor}">Atelier Guests</span>`) }}
    />
    </div>
    <div className="md:col-span-8 flex flex-col sm:flex-row gap-8">

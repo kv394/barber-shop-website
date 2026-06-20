@@ -180,8 +180,7 @@ export default async function SitePage({ params }: { params: Promise<{ site: str
  cssCode = cachedContent.cssCode;
 
  try {
- const Handlebars = (await import('handlebars')).default;
- const compiledTemplate = Handlebars.compile(htmlCode);
+ const Mustache = (await import('mustache')).default;
 
  const normalizeImageUrl = (url: string | null): string | null => {
  if (!url) return null;
@@ -200,7 +199,7 @@ export default async function SitePage({ params }: { params: Promise<{ site: str
  heroImageUrl: normalizeImageUrl(shop.customization?.heroImageUrl) || shop.heroImageUrl
  };
 
- dynamicTemplateHtml = compiledTemplate({
+ dynamicTemplateHtml = Mustache.render(htmlCode, {
  ...(shop.customization || {}),
  shop: shopForTemplate,
  primaryColor,
@@ -208,7 +207,7 @@ export default async function SitePage({ params }: { params: Promise<{ site: str
  });
  dynamicTemplateCss = cssCode;
  } catch (e) {
- console.error('Handlebars error:', e);
+ console.error('Mustache error:', e);
  }
  }
  }

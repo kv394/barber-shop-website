@@ -1,6 +1,7 @@
 import { logger } from "@/lib/logger";
 import { prisma, getTenantClient } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
+import { requireShopRole } from '@/lib/auth';
 import { createClient } from '@/utils/supabase/server';
 import { revalidatePath } from 'next/cache';
 import { cacheService } from '@/lib/cache';
@@ -110,6 +111,11 @@ export async function GET(
  return NextResponse.json({ error: 'Shop not found' }, { status: 404 });
  }
  const shopId = resolvedShop.id;
+
+ if (isAdmin) {
+   const authRes = await requireShopRole(shopId, ['SITE_ADMIN', 'SHOP_ADMIN', 'STAFF', 'BOOTH_RENTER']);
+   if (authRes instanceof NextResponse) return authRes;
+ }
 
  const tenantClient = await getTenantClient(shopId);
 

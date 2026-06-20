@@ -263,6 +263,6 @@ export async function GET() {
 
  return NextResponse.json({ message: 'Template created but shop not found.' });
  } catch (error: any) {
- return NextResponse.json({ error: error.message }, { status: 500 });
+ return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
  }
 }

@@ -2,6 +2,7 @@ import { logger } from "@/lib/logger";
 import { prisma, getTenantClient } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
 import { createClient } from '@/utils/supabase/server';
+import { encrypt } from '@/lib/encryption';
 import { revalidatePath } from 'next/cache';
 
 export async function PATCH(
@@ -73,14 +74,11 @@ export async function PATCH(
  if (body.paymentGateway && typeof body.paymentGateway === 'string' && ['STRIPE', 'RAZORPAY', 'NONE'].includes(body.paymentGateway)) {
  updateData.paymentGateway = body.paymentGateway;
  }
- if (body.stripeAccountId !== undefined) {
- updateData.stripeAccountId = body.stripeAccountId ? String(body.stripeAccountId).trim() : null;
- }
  if (body.razorpayKeyId !== undefined) {
  updateData.razorpayKeyId = body.razorpayKeyId ? String(body.razorpayKeyId).trim() : null;
  }
  if (body.razorpayKeySecret !== undefined) {
- updateData.razorpayKeySecret = body.razorpayKeySecret ? String(body.razorpayKeySecret).trim() : null;
+ updateData.razorpayKeySecret = body.razorpayKeySecret ? encrypt(String(body.razorpayKeySecret).trim()) : null;
  }
  // Buffer time (I2) - shop-level setting handled at service level
 
@@ -93,7 +91,8 @@ export async function PATCH(
  data: updateData,
  });
 
- return NextResponse.json(updated);
+ const { razorpayKeySecret, ...safeUpdated } = updated;
+ return NextResponse.json(safeUpdated);
  } catch (error: any) {
  logger.error("Error updating shop:", error);
  return NextResponse.json({ error: 'Failed to update shop' }, { status: 500 });

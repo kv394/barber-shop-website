@@ -158,7 +158,7 @@ Rules:
  } catch (err: any) {
  logger.error('Style Discovery Error:', err);
  return NextResponse.json(
- { error: err.message || 'Failed to analyze style' },
+ { error: 'Internal Server Error' },
  { status: 500 }
  );
  }

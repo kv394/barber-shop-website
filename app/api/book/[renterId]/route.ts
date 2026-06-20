@@ -73,18 +73,59 @@ export async function POST(
  const slotStart = new Date(`${date}T${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:00`);
  const slotEnd = new Date(slotStart.getTime() + service.duration * 60 * 1000);
 
- // Quick conflict check
- const conflict = await prisma.appointment.findFirst({
- where: {
- staffId: renterId,
- status: { not: 'CANCELLED' },
- startTime: { lt: slotEnd },
- endTime: { gt: slotStart },
- },
- });
- if (conflict) {
- return NextResponse.json({ error: 'This slot is no longer available' }, { status: 409 });
- }
+  let appointmentId: string;
+  try {
+    appointmentId = await prisma.$transaction(async (tx) => {
+      const conflict = await tx.appointment.findFirst({
+        where: {
+          staffId: renterId,
+          status: { not: 'CANCELLED' },
+          startTime: { lt: slotEnd },
+          endTime: { gt: slotStart },
+        },
+      });
+
+      if (conflict) {
+        throw new Error('CONFLICT');
+      }
+
+      // Find or create client inside transaction to ensure atomic booking
+      let clientUser = await tx.user.findFirst({ where: { email: clientEmail } });
+      if (!clientUser) {
+        clientUser = await tx.user.create({
+          data: {
+            email: clientEmail,
+            name: clientName,
+            role: 'CLIENT',
+            shopId: renter.shopId!,
+            marketingConsent: false,
+          },
+        });
+      }
+
+      const newAppt = await tx.appointment.create({
+        data: {
+          shopId: renter.shopId!,
+          staffId: renterId,
+          userId: clientUser.id,
+          serviceId: service.id,
+          startTime: slotStart,
+          endTime: slotEnd,
+          status: 'SCHEDULED',
+          notes: `Booking checkout started...`,
+          totalAmount: service.price,
+          subtotal: service.price,
+        },
+      });
+
+      return newAppt.id;
+    }, { isolationLevel: 'Serializable' });
+  } catch (error: any) {
+    if (error.message === 'CONFLICT') {
+      return NextResponse.json({ error: 'This slot is no longer available' }, { status: 409 });
+    }
+    throw error;
+  }
 
  const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
  const currency = renter.shop?.currency || 'USD';
@@ -102,6 +143,7 @@ export async function POST(
  clientName,
  clientEmail,
  clientPhone: clientPhone || '',
+ appointmentId,
  successUrl: `${appUrl}/book/${renterId}/success?session_id={CHECKOUT_SESSION_ID}`,
  cancelUrl: `${appUrl}/book/${renterId}`,
  });

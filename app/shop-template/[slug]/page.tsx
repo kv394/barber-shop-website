@@ -3,7 +3,7 @@ import { prisma } from '@/lib/prisma';
 import { Metadata } from 'next';
 import Script from 'next/script';
 import AIWidget from '@/components/booking/AIWidget';
-import DOMPurify from 'isomorphic-dompurify';
+import { sanitize } from '@/lib/sanitize';
 import { serialize } from '@/lib/serialize';
 
 function sanitizeCss(css: string): string {
@@ -248,11 +248,9 @@ export default async function PublicShopPage({
  });
 
  if (dynamicTemplate) {
- // We dynamically import handlebars so it doesn't break anything else
- const Handlebars = (await import('handlebars')).default;
+ const Mustache = (await import('mustache')).default;
  
- const template = Handlebars.compile(dynamicTemplate.htmlCode);
- const html = template({
+ const html = Mustache.render(dynamicTemplate.htmlCode, {
  shop,
  primaryColor,
  secondaryColor
@@ -263,7 +261,7 @@ export default async function PublicShopPage({
  {dynamicTemplate.cssCode && (
  <style dangerouslySetInnerHTML={{ __html: sanitizeCss(dynamicTemplate.cssCode) }} />
  )}
- <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(html) }} />
+ <div dangerouslySetInnerHTML={{ __html: sanitize(html) }} />
  <Script src="https://cdn.tailwindcss.com?plugins=forms,container-queries" strategy="afterInteractive" />
  <AIWidget shopId={shop.id} />
  </main>
@@ -408,7 +406,7 @@ export default async function PublicShopPage({
    </span>
    <h1 
    className="font-headline leading-[1.1] mb-8 tracking-tight text-crm-mutedrm-textxl font-bold"
-   dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(editorial.heroTitle || `Your Sanctuary of <br/> <span class="italic" style="color: ${primaryColor}">Sophisticated Care</span>`) }}
+   dangerouslySetInnerHTML={{ __html: sanitize(editorial.heroTitle || `Your Sanctuary of <br/> <span class="italic" style="color: ${primaryColor}">Sophisticated Care</span>`) }}
    />
    <p className="text-crm-muted font-body max-w-md mb-10 leading-relaxed text-[13px]">
    {editorial.heroSubtitle || 'Experience beauty as an art form. Our atelier provides a curated space for those who appreciate the finer details of self-ceremony.'}
@@ -508,7 +506,7 @@ export default async function PublicShopPage({
    <div className="md:col-span-4">
    <h2 
    className="font-headline mb-6 leading-tight text-xl font-bold"
-   dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(editorial.testimonialsTitle || `Reflections <br/>from Our <br/><span class="italic" style="color: ${primaryColor}">Atelier Guests</span>`) }}
+   dangerouslySetInnerHTML={{ __html: sanitize(editorial.testimonialsTitle || `Reflections <br/>from Our <br/><span class="italic" style="color: ${primaryColor}">Atelier Guests</span>`) }}
    />
    </div>
    <div className="md:col-span-8 flex gap-8">

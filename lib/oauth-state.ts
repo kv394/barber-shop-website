@@ -9,11 +9,11 @@
 
 import crypto from 'crypto';
 
-const STATE_SECRET = process.env.OAUTH_STATE_SECRET || '';
+export const STATE_SECRET = process.env.OAUTH_STATE_SECRET || crypto.randomBytes(32).toString('hex');
 const STATE_TTL_MS = 10 * 60 * 1000; // 10 minutes
 
-if (!STATE_SECRET) {
-  console.warn('[SECURITY] OAUTH_STATE_SECRET is not set – OAuth state tokens will be weak');
+if (!process.env.OAUTH_STATE_SECRET) {
+  console.warn('[SECURITY] OAUTH_STATE_SECRET is not set – using an ephemeral random key. OAuth callbacks will fail if the server restarts during the flow.');
 }
 
 interface StatePayload {

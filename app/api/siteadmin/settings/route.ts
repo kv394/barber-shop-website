@@ -19,10 +19,16 @@ export async function GET() {
 
   if (settings) {
     const { decrypt } = await import('@/lib/encryption');
-    if (settings.stripeSecretKey) settings.stripeSecretKey = decrypt(settings.stripeSecretKey);
-    if (settings.stripeWebhookSecret) settings.stripeWebhookSecret = decrypt(settings.stripeWebhookSecret);
-    if (settings.twilioAuthToken) settings.twilioAuthToken = decrypt(settings.twilioAuthToken);
-    if (settings.openAiKey) settings.openAiKey = decrypt(settings.openAiKey);
+    const mask = (key: string) => {
+      if (!key || key.length < 12) return '****';
+      const prefixMatch = key.match(/^([a-z]+_[a-z]+_)/i);
+      const prefix = prefixMatch ? prefixMatch[1] : key.substring(0, 4);
+      return `${prefix}****${key.slice(-4)}`;
+    };
+    if (settings.stripeSecretKey) settings.stripeSecretKey = mask(decrypt(settings.stripeSecretKey));
+    if (settings.stripeWebhookSecret) settings.stripeWebhookSecret = mask(decrypt(settings.stripeWebhookSecret));
+    if (settings.twilioAuthToken) settings.twilioAuthToken = mask(decrypt(settings.twilioAuthToken));
+    if (settings.openAiKey) settings.openAiKey = mask(decrypt(settings.openAiKey));
   }
 
   return NextResponse.json(settings || {});

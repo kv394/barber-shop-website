@@ -2,6 +2,7 @@ import { logger } from "@/lib/logger";
 import { prisma, getTenantClient } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
 import { createClient } from '@/utils/supabase/server';
+import { requireShopRole } from '@/lib/auth';
 import crypto from 'crypto';
 import { toShopTzDayBounds } from '@/lib/timezone';
 import { z } from 'zod';
@@ -32,12 +33,8 @@ export async function GET(
  try {
  const { shopId } = await params;
 
-    // Auth check — only authenticated users can view the schedule
-    const supabase = await createClient();
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
+    const authRes = await requireShopRole(shopId, ['SHOP_ADMIN', 'STAFF', 'BOOTH_RENTER']);
+    if (authRes instanceof NextResponse) return authRes;
 
     const tenantClient = await getTenantClient(shopId);
   const { searchParams } = new URL(request.url);

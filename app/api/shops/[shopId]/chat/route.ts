@@ -213,7 +213,7 @@ ONLY use tools if the user role is SHOP_ADMIN or SITE_ADMIN.`;
  try {
  result = await executeAdminTool(call, shopId, user);
  } catch (err: any) {
- result = { error: err.message };
+ result = { error: 'Internal Server Error' };
  }
  toolResponses.push({ functionResponse: { name: call.name, response: result } });
  }

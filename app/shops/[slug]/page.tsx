@@ -323,9 +323,8 @@ export default async function PublicShopPage({
   // iframe-based CustomTemplate.
   if (templateType === 'custom' && shop.customization?.customHtml) {
   try {
-  const Handlebars = (await import('handlebars')).default;
-  const compiledTemplate = Handlebars.compile(shop.customization.customHtml);
-  let compiledHtml = compiledTemplate({
+  const Mustache = (await import('mustache')).default;
+  let compiledHtml = Mustache.render(shop.customization.customHtml, {
   ...shop.customization,
   shop: shopForTemplate,
   primaryColor,
@@ -346,7 +345,7 @@ export default async function PublicShopPage({
   dynamicTemplateHtml = compiledHtml;
   } catch (e) {
   // If Handlebars fails, use the raw HTML as-is
-  console.error('Handlebars error parsing customHtml:', e);
+  console.error('Mustache error parsing customHtml:', e);
   dynamicTemplateHtml = shop.customization.customHtml;
   }
   } else if (templateType !== 'custom') {
@@ -388,10 +387,8 @@ export default async function PublicShopPage({
   cssCode = cachedContent.cssCode;
 
   try {
-  const Handlebars = (await import('handlebars')).default;
-  const compiledTemplate = Handlebars.compile(htmlCode);
-
-  dynamicTemplateHtml = compiledTemplate({
+  const Mustache = (await import('mustache')).default;
+  dynamicTemplateHtml = Mustache.render(htmlCode, {
   ...shop.customization,
   shop: shopForTemplate,
   primaryColor,
