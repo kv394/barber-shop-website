@@ -188,6 +188,48 @@ export default function DynamicTemplate({ ctx }: { ctx: any }) {
     );
    };
 
+   // Pre-load kutzapp-sdk.js so KutzApp is globally available before template scripts run
+   const preloadSdk = () => {
+    return new Promise<void>((resolve) => {
+     // If KutzApp is already available, skip loading
+     if (typeof (window as any).KutzApp !== 'undefined' && (window as any).KutzApp.shopId) {
+      resolve();
+      return;
+     }
+     // Check if SDK script is already in the DOM
+     const existingSdk = document.querySelector('script[src*="kutzapp-sdk"]');
+     if (existingSdk) {
+      // SDK script exists but may not have loaded yet — wait for KutzApp
+      let attempts = 0;
+      const checkInterval = setInterval(() => {
+       attempts++;
+       if (typeof (window as any).KutzApp !== 'undefined' || attempts >= 30) {
+        clearInterval(checkInterval);
+        resolve();
+       }
+      }, 100);
+      return;
+     }
+     // Load the SDK script fresh
+     const sdkScript = document.createElement('script');
+     sdkScript.src = `${window.location.origin}/kutzapp-sdk.js?v=${Date.now()}`;
+     sdkScript.async = false;
+     sdkScript.onload = () => {
+      // Initialize KutzApp with the shop ID immediately after loading
+      if (typeof (window as any).KutzApp !== 'undefined' && shop?.id) {
+       (window as any).KutzApp.init(shop.id, { position: 'bottom-right', apiUrl: window.location.origin });
+      }
+      resolve();
+     };
+     sdkScript.onerror = () => {
+      console.warn('[DynamicTemplate] Failed to pre-load kutzapp-sdk.js');
+      resolve();
+     };
+     document.head.appendChild(sdkScript);
+     injectedScripts.push(sdkScript);
+    });
+   };
+
     // Execute inline scripts only AFTER external scripts are loaded
     const executeInlineScripts = () => {
      scripts.forEach((code, i) => {
@@ -263,9 +305,9 @@ export default function DynamicTemplate({ ctx }: { ctx: any }) {
      });
     };
 
-    // Chain: load external scripts → then execute inline scripts
+    // Chain: pre-load SDK → load external scripts → then execute inline scripts
     let cancelled = false;
-    loadExternalScripts().then(() => {
+    preloadSdk().then(() => loadExternalScripts()).then(() => {
      if (!cancelled) {
       // Small delay to ensure external scripts have initialized globals
       setTimeout(executeInlineScripts, 50);
