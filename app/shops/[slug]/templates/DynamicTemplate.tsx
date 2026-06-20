@@ -117,8 +117,14 @@ export default function DynamicTemplate({ ctx }: { ctx: any }) {
  // Parse the template HTML once, extracting scripts/styles before DOMPurify
  const { bodyHtml, scripts, scriptSrcUrls, styles, linkHrefs } = useMemo(() => {
   if (!dynamicTemplateHtml) return { bodyHtml: '', scripts: [], scriptSrcUrls: [], styles: [], linkHrefs: [] };
-  return extractTemplateAssets(dynamicTemplateHtml);
- }, [dynamicTemplateHtml]);
+  // Replace hardcoded demo shop IDs with the actual shop ID
+  let html = dynamicTemplateHtml;
+  if (shop?.id) {
+   html = html.replace(/cmn9kj24n0000lqzc7kcsmpst/g, shop.id);
+   html = html.replace(/cmpnbqh1r0000iu54k0qnj2sl/g, shop.id);
+  }
+  return extractTemplateAssets(html);
+ }, [dynamicTemplateHtml, shop?.id]);
 
  // Sanitize only the body HTML (scripts/styles already extracted)
  // Templates are admin-controlled (not user-submitted), so we allow event
@@ -138,9 +144,10 @@ export default function DynamicTemplate({ ctx }: { ctx: any }) {
 
  // After mount, inject external stylesheets and execute template scripts
  useEffect(() => {
-  // Set theme colors BEFORE any template scripts execute so they use
+  // Set theme colors and shop ID BEFORE any template scripts execute so they use
   // server-side DB values instead of potentially cached API values
-  (window as any).__KUTZ_THEME__ = { primaryColor, secondaryColor, logoUrl, shopName: shop?.name };
+  (window as any).__KUTZ_THEME__ = { primaryColor, secondaryColor, logoUrl, shopName: shop?.name, shopId: shop?.id };
+  (window as any).__KUTZ_SHOP_ID__ = shop?.id;
 
   // Inject <link rel="stylesheet"> for Google Fonts etc.
   const injectedLinks: HTMLLinkElement[] = [];

@@ -2120,7 +2120,7 @@
       function initializeShop() {
         if (typeof KutzApp === 'undefined') return;
         var urlParams = new URLSearchParams(window.location.search);
-        var shopId = urlParams.get('shopId') || 'cmpnbqh1r0000iu54k0qnj2sl';
+        var shopId = window.__KUTZ_SHOP_ID__ || (window.__KUTZ_THEME__ && window.__KUTZ_THEME__.shopId) || urlParams.get('shopId') || 'cmpnbqh1r0000iu54k0qnj2sl';
         window.__KUTZ_SHOP_ID__ = shopId;
         var domain = window.location.origin;
         var isFileProtocol = window.location.protocol === 'file:';
