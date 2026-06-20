@@ -280,9 +280,15 @@ export default function StaffProfileModalWrapper({ staff, shopId, children }: { 
  </div>
  
  <div className="pt-4 border-t border-crm-border shrink-0 mt-auto">
+ {isEditing ? (
+ <button onClick={() => { setIsEditing(false); setFormData({ name: staff.name || '', phone: staff.phone || '', canManageInventory: staff.canManageInventory || false, employmentType: staff.employmentType || 'W2', boothRentAmount: staff.boothRentAmount || '', boothRentInterval: staff.boothRentInterval || 'WEEKLY', isBookable: staff.isBookable || false, bookingFeePercent: staff.bookingFeePercent ?? '' }); }} className="w-full py-3 bg-crm-surface text-crm-muted rounded-xl hover:bg-crm-surface/80 transition-colors font-bold border border-crm-border">
+ Cancel
+ </button>
+ ) : (
  <button onClick={() => setIsOpen(false)} className="w-full py-3 bg-crm-primary text-white rounded-xl hover:bg-status-pending transition-colors font-bold shadow-lg">
  Close Profile
  </button>
+ )}
  </div>
  </div>
  </div>
