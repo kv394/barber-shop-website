@@ -300,16 +300,7 @@ export default async function PublicShopPage({
  if (!['modern', 'classic', 'minimal', 'sporty', 'corporate', 'noir', 'sunset', 'editorial'].includes(templateType)) {
 
   // Helper to normalize Google Drive image URLs
-  const normalizeImageUrl = (url: string | null): string | null => {
-  if (!url) return null;
-  const fileMatch = url.match(/drive\.google\.com\/file\/d\/([^/]+)/);
-  if (fileMatch) return `https://lh3.googleusercontent.com/d/${fileMatch[1]}`;
-  const openMatch = url.match(/drive\.google\.com\/open\?id=([^&]+)/);
-  if (openMatch) return `https://lh3.googleusercontent.com/d/${openMatch[1]}`;
-  const ucMatch = url.match(/drive\.google\.com\/uc\?.*id=([^&]+)/);
-  if (ucMatch) return `https://lh3.googleusercontent.com/d/${ucMatch[1]}`;
-  return url;
-  };
+  const { normalizeGoogleDriveUrl: normalizeImageUrl } = await import('@/lib/image-utils');
 
   const shopForTemplate = {
   ...shop,

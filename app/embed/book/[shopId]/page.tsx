@@ -37,10 +37,10 @@ export default async function EmbedBookPage({ params, searchParams }: { params: 
  }
 
  if (!shop) {
- if (shopId === 'missouri-city' || shopId === 'sugarland') {
- shop = await prisma.shop.findFirst({
- where: { id: 'cmn9kj24n0000lqzc7kcsmpst' },
- select: { id: true, customization: true, currency: true, shopType: true }
+  if ((shopId === 'missouri-city' || shopId === 'sugarland') && process.env.DEMO_SHOP_ID) {
+  shop = await prisma.shop.findFirst({
+  where: { id: process.env.DEMO_SHOP_ID },
+  select: { id: true, customization: true, currency: true, shopType: true }
  });
  }
  }

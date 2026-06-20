@@ -14,7 +14,12 @@ const nextConfig = {
   },
   images: {
     formats: ['image/avif', 'image/webp'],
-    domains: ['lh3.googleusercontent.com'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'lh3.googleusercontent.com',
+      },
+    ],
   },
   async headers() {
     return [
@@ -28,6 +33,8 @@ const nextConfig = {
       },
     ];
   },
+  // TODO: Fix existing lint errors and re-enable ESLint during builds.
+  // Currently disabled to prevent build failures from pre-existing violations.
   eslint: { ignoreDuringBuilds: true },
 };
 

@@ -1,9 +1,10 @@
-'use client';;
+'use client';
 import Image from 'next/image';
 
 import CustomTemplate from './templates/CustomTemplate';import DynamicTemplate from './templates/DynamicTemplate';import SportyTemplate from './templates/SportyTemplate';import CorporateTemplate from './templates/CorporateTemplate';import NoirTemplate from './templates/NoirTemplate';import SunsetTemplate from './templates/SunsetTemplate';import EditorialTemplate from './templates/EditorialTemplate';import MinimalTemplate from './templates/MinimalTemplate';import ClassicTemplate from './templates/ClassicTemplate';import ModernTemplate from './templates/ModernTemplate';
 
 import { useState, useEffect } from 'react';
+import { normalizeGoogleDriveUrl } from '@/lib/image-utils';
 import dynamic from 'next/dynamic';
 import SupabaseAuthButton from '@/components/auth/SupabaseAuthButton';
 import { usePathname } from 'next/navigation';
@@ -105,16 +106,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
  const shopIG = c.contact?.instagram || c.social?.instagram || '';
  const shopTW = c.contact?.twitter || c.social?.twitter || '';
 
- const normalizeImageUrl = (url: string | null): string | null => {
- if (!url) return null;
- const fileMatch = url.match(/drive\.google\.com\/file\/d\/([^\/]+)/);
- if (fileMatch) return `https://lh3.googleusercontent.com/d/${fileMatch[1]}`;
- const openMatch = url.match(/drive\.google\.com\/open\?id=([^&]+)/);
- if (openMatch) return `https://lh3.googleusercontent.com/d/${openMatch[1]}`;
- const ucMatch = url.match(/drive\.google\.com\/uc\?.*id=([^&]+)/);
- if (ucMatch) return `https://lh3.googleusercontent.com/d/${ucMatch[1]}`;
- return url;
- };
+ const normalizeImageUrl = normalizeGoogleDriveUrl;
 
  const logoUrl = normalizeImageUrl(c.logoUrl) || null;
  const heroImageUrl = normalizeImageUrl(c.heroImageUrl || c.bannerUrl) || null;

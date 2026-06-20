@@ -2,11 +2,11 @@ generator client {
   provider        = "prisma-client-js"
   engineType      = "binary"
   previewFeatures = ["postgresqlExtensions"]
-  binaryTargets   = ["darwin-arm64"]
 }
 
 datasource db {
   provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 model PlatformSettings {

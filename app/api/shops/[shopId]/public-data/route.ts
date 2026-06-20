@@ -85,9 +85,9 @@ export async function GET(request: Request, { params }: { params: Promise<{ shop
 
  if (!shop) {
  // Fallback: If still not found, check if this is the demo shop
- if (shopId === 'missouri-city' || shopId === 'sugarland') {
- shop = await tenantClient.shop.findFirst({
- where: { id: 'cmn9kj24n0000lqzc7kcsmpst' },
+  if ((shopId === 'missouri-city' || shopId === 'sugarland') && process.env.DEMO_SHOP_ID) {
+  shop = await tenantClient.shop.findFirst({
+  where: { id: process.env.DEMO_SHOP_ID },
  select: {
  id: true,
  name: true,
@@ -222,20 +222,8 @@ export async function GET(request: Request, { params }: { params: Promise<{ shop
 
 
 
- const formatImageUrl = (url: string | null) => {
- if (!url) return null;
- 
- // Handle Google Drive links
- const fileMatch = url.match(/drive\.google\.com\/file\/d\/([^/]+)/);
- if (fileMatch) return `https://lh3.googleusercontent.com/d/${fileMatch[1]}`;
- const openMatch = url.match(/drive\.google\.com\/open\?id=([^&]+)/);
- if (openMatch) return `https://lh3.googleusercontent.com/d/${openMatch[1]}`;
- const ucMatch = url.match(/drive\.google\.com\/uc\?.*id=([^&]+)/);
- if (ucMatch) return `https://lh3.googleusercontent.com/d/${ucMatch[1]}`;
- 
- if (url.startsWith('/')) return `${baseUrl}${url}`;
- return url;
- };
+ const { formatImageUrl: _formatImageUrl } = await import('@/lib/image-utils');
+ const formatImageUrl = (url: string | null) => _formatImageUrl(url, baseUrl);
 
  const formattedProducts = products.map((p: any) => ({ ...p, imageUrl: formatImageUrl(p.imageUrl) }));
  const formattedServices = services.map((s: any) => ({ ...s, imageUrl: formatImageUrl(s.imageUrl) }));
