@@ -97,22 +97,25 @@ export default function BookingWizard({ shopId, themeColor, secondaryColor, temp
 
  // Auto-select staff if provided
  if (initialStaffId) {
- const foundStaff = parsedStaff.find((s: any) => s.id === initialStaffId);
- if (foundStaff) {
- setSelectedStaff(foundStaff);
- // If both service and staff are pre-selected, skip to date/time
- if (autoSelectedService) {
- setStep(3);
- } else {
- // Staff pre-selected but no service — go to service step,
- // staff will be locked in when they proceed
- setStep(1);
- }
+  let foundStaff = parsedStaff.find((s: any) => s.id === initialStaffId);
+  if (!foundStaff) {
+   // Staff not in today's available list (on leave, different role, etc.)
+   // Create a minimal entry so the pre-selection still works for future dates
+   foundStaff = { id: initialStaffId, name: 'Selected Barber', workingHours: {} };
+   // Also add to the staff list so they appear in the staff step if user navigates there
+   parsedStaff.push(foundStaff);
+   setStaff([...parsedStaff]);
+  }
+  setSelectedStaff(foundStaff);
+  if (autoSelectedService) {
+   setStep(3);
+  } else {
+   // Staff pre-selected but no service — go to service step,
+   // staff will be locked in when they proceed
+   setStep(1);
+  }
  } else if (autoSelectedService) {
- setStep(2);
- }
- } else if (autoSelectedService) {
- setStep(2);
+  setStep(2);
  }
 
  setLoading(false);

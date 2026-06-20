@@ -40,8 +40,8 @@ export async function GET(
  const allStaff = await tenantClient.user.findMany({
  where: {
  OR: [
- { shopId: shopId, role: 'STAFF' },
- { shopAccesses: { some: { shopId: shopId, role: 'STAFF' } } }
+ { shopId: shopId, role: { in: ['STAFF', 'SHOP_ADMIN', 'BOOTH_RENTER'] } },
+ { shopAccesses: { some: { shopId: shopId, role: { in: ['STAFF', 'SHOP_ADMIN', 'BOOTH_RENTER'] } } } }
  ]
  },
  select: {
@@ -66,8 +66,8 @@ export async function GET(
  const staffWithLeave = await tenantClient.user.findMany({
  where: {
  OR: [
- { shopId: shopId, role: 'STAFF' },
- { shopAccesses: { some: { shopId: shopId, role: 'STAFF' } } }
+ { shopId: shopId, role: { in: ['STAFF', 'SHOP_ADMIN', 'BOOTH_RENTER'] } },
+ { shopAccesses: { some: { shopId: shopId, role: { in: ['STAFF', 'SHOP_ADMIN', 'BOOTH_RENTER'] } } } }
  ]
  },
  select: {
