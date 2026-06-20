@@ -28,6 +28,7 @@ import ReviewsSection from './components/ReviewsSection';
 import CustomPageContent from './components/CustomPageContent';
 export default function ClientPage({ shop, templateType, primaryColor, secondaryColor, sportRed, reviews = [], dynamicTemplateHtml, dynamicTemplateCss }: any) {
  const [selectedService, setSelectedService] = useState<any | null>(null);
+ const [showAppointmentsModal, setShowAppointmentsModal] = useState(false);
  const pathname = usePathname() || '/';
 
  const handleBookClick = (service: any) => {
@@ -48,10 +49,28 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
 
  const text = button.innerText.toLowerCase();
  const href = button.getAttribute('href') || '';
+ const elId = button.getAttribute('id') || '';
 
- // Skip non-booking links (sign-in, sign-out, my-appointments, etc.)
- if (href.includes('/sign-in') || href.includes('/logout') || href.includes('/my-appointments')) return;
- if (text.includes('sign in') || text.includes('sign out') || text.includes('my appointments')) return;
+ // Skip sign-in/sign-out links
+ if (href.includes('/sign-in') || href.includes('/logout')) return;
+ if (text.includes('sign in') || text.includes('sign out')) return;
+
+ // Intercept "My Appointments" clicks → open pop-up instead of navigating
+ if (
+ href.includes('/my-appointments') ||
+ text.includes('my appointments') ||
+ elId === 'auth-appointments' ||
+ elId === 'mobile-appointments'
+ ) {
+ e.preventDefault();
+ // Try the template's own modal function first (e.g. heritage template)
+ if (typeof window !== 'undefined' && typeof (window as any).openAppointmentsModal === 'function') {
+ (window as any).openAppointmentsModal();
+ } else {
+ setShowAppointmentsModal(true);
+ }
+ return;
+ }
 
  // Only intercept booking-related actions
  if (text.includes('book') || (text.includes('appointment') && !text.includes('my'))) {
@@ -129,19 +148,55 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
  heroLayout, heroOverlayOpacity, heroOverlayColor, enableScrollAnimations,
  faviconUrl, customCss, sectionOrder, isDark, themeBg, themeText, themeMuted, themeBorder,
  pages, fontFamily, ctaText, announcement, heroVideoUrl, shopPhone, shopEmail,
- shopWebsite, shopAddress, shopFB, shopIG, shopTW, logoUrl, heroImageUrl, authButton, pathname
+ shopWebsite, shopAddress, shopFB, shopIG, shopTW, logoUrl, heroImageUrl, authButton, pathname,
+ showAppointmentsModal, setShowAppointmentsModal
  };
- if (templateType === 'custom' && dynamicTemplateHtml) return <DynamicTemplate ctx={ctx} />;
- if (templateType === 'custom') return <CustomTemplate ctx={ctx} />;
- if (dynamicTemplateHtml) return <DynamicTemplate ctx={ctx} />;
- if (templateType === 'sporty') return <SportyTemplate ctx={ctx} />;
- if (templateType === 'corporate') return <CorporateTemplate ctx={ctx} />;
- if (templateType === 'noir') return <NoirTemplate ctx={ctx} />;
- if (templateType === 'sunset') return <SunsetTemplate ctx={ctx} />;
- if (templateType === 'editorial') return <EditorialTemplate ctx={ctx} />;
- if (templateType === 'minimal') return <MinimalTemplate ctx={ctx} />;
- if (templateType === 'classic') return <ClassicTemplate ctx={ctx} />;
+
+ const appointmentsModal = showAppointmentsModal ? (
+ <div
+ className="fixed inset-0 z-[99999] flex items-center justify-center p-4"
+ style={{ backgroundColor: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(6px)', WebkitBackdropFilter: 'blur(6px)' }}
+ onClick={() => setShowAppointmentsModal(false)}
+ >
+ <div
+ className="relative w-full max-w-xl rounded-2xl overflow-hidden shadow-2xl"
+ style={{ height: '85vh', maxHeight: '750px', background: '#ffffff', border: '1px solid rgba(0,0,0,0.1)' }}
+ onClick={e => e.stopPropagation()}
+ >
+ <div className="flex items-center justify-between px-5 py-3 border-b border-gray-200 bg-gray-50">
+ <span className="font-bold text-gray-800 text-base">📋 My Appointments</span>
+ <button
+ onClick={() => setShowAppointmentsModal(false)}
+ className="w-8 h-8 flex items-center justify-center rounded-full bg-gray-200 hover:bg-gray-300 text-gray-600 hover:text-gray-900 transition-colors text-sm font-bold"
+ >✕</button>
+ </div>
+ <iframe
+ src="/my-appointments"
+ className="w-full border-none bg-white"
+ style={{ height: 'calc(100% - 52px)' }}
+ title="My Appointments"
+ />
+ </div>
+ </div>
+ ) : null;
+
+ let templateComponent;
+ if (templateType === 'custom' && dynamicTemplateHtml) templateComponent = <DynamicTemplate ctx={ctx} />;
+ else if (templateType === 'custom') templateComponent = <CustomTemplate ctx={ctx} />;
+ else if (dynamicTemplateHtml) templateComponent = <DynamicTemplate ctx={ctx} />;
+ else if (templateType === 'sporty') templateComponent = <SportyTemplate ctx={ctx} />;
+ else if (templateType === 'corporate') templateComponent = <CorporateTemplate ctx={ctx} />;
+ else if (templateType === 'noir') templateComponent = <NoirTemplate ctx={ctx} />;
+ else if (templateType === 'sunset') templateComponent = <SunsetTemplate ctx={ctx} />;
+ else if (templateType === 'editorial') templateComponent = <EditorialTemplate ctx={ctx} />;
+ else if (templateType === 'minimal') templateComponent = <MinimalTemplate ctx={ctx} />;
+ else if (templateType === 'classic') templateComponent = <ClassicTemplate ctx={ctx} />;
+ else templateComponent = <ModernTemplate ctx={ctx} />;
  
- // Default 'modern' template (Redesigned)
- return <ModernTemplate ctx={ctx} />;
+ return (
+ <>
+ {templateComponent}
+ {appointmentsModal}
+ </>
+ );
 }
