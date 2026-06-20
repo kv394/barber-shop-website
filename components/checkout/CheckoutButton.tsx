@@ -263,6 +263,8 @@ export default function CheckoutButton({
  }
  };
 
+ const [overlayOpacity, setOverlayOpacity] = useState(0.6);
+
  return (
  <>
  <button
@@ -274,7 +276,8 @@ export default function CheckoutButton({
 
  {isOpen && (
  <div
- className="fixed inset-0 bg-black/60 z-[200] flex items-center justify-center p-3 backdrop-blur-sm"
+ className="fixed inset-0 z-[200] flex items-center justify-center p-3 backdrop-blur-sm transition-colors"
+ style={{ backgroundColor: `rgba(0, 0, 0, ${overlayOpacity})` }}
  onClick={() => !isProcessing && setIsOpen(false)}
  >
  <div
@@ -283,11 +286,27 @@ export default function CheckoutButton({
  >
  {/* ── Header ── */}
  <div className="flex items-center justify-between px-5 py-4 border-b border-crm-border sticky top-0 bg-crm-surface z-10">
- <h2 className="font-bold text-crm-text text-xl font-bold">💳 Point of Sale</h2>
- <button
- onClick={() => setIsOpen(false)}
- className="text-crm-muted hover:text-crm-text w-8 h-8 flex items-center justify-center rounded-full bg-crm-surface text-[13px]"
- >✕</button>
+ <div className="flex items-center gap-4">
+   <h2 className="font-bold text-crm-text text-xl font-bold">💳 Point of Sale</h2>
+ </div>
+ <div className="flex items-center gap-4">
+   <div className="flex flex-col items-end hidden sm:flex">
+     <label className="text-[10px] text-crm-muted font-bold uppercase tracking-wider mb-1">Background Opacity</label>
+     <input 
+       type="range" 
+       min="0.1" 
+       max="0.9" 
+       step="0.05" 
+       value={overlayOpacity} 
+       onChange={(e) => setOverlayOpacity(parseFloat(e.target.value))}
+       className="w-24 accent-brand-indigo"
+     />
+   </div>
+   <button
+   onClick={() => setIsOpen(false)}
+   className="text-crm-muted hover:text-crm-text w-8 h-8 flex items-center justify-center rounded-full bg-crm-surface text-[13px]"
+   >✕</button>
+ </div>
  </div>
 
  <div className="p-5 space-y-5">
