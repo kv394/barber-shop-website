@@ -117,6 +117,8 @@ export async function GET(request: Request, { params }: { params: Promise<{ shop
  if (shop.customDomain) allowedDomains.push(shop.customDomain);
  if (shop.subdomain) allowedDomains.push(`${shop.subdomain}.kutzapp.com`);
  allowedDomains.push('kutzapp.com'); // Allow main app domain
+ allowedDomains.push('vercel.app'); // Allow Vercel deployment domains
+ allowedDomains.push(requestHost.split(':')[0]); // Allow the request's own host
  allowedDomains.push('localhost'); // Allow local development
  allowedDomains.push('127.0.0.1'); // Allow local IP development
 
