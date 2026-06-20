@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/utils/supabase/server';
 import { authenticator } from '@otplib/preset-default';
 import { prisma } from '@/lib/prisma';
+import { rateLimit } from '@/lib/rate-limiter';
 
 export async function POST(req: NextRequest) {
  try {
@@ -14,11 +15,18 @@ export async function POST(req: NextRequest) {
  return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
  }
 
- const { secret, token } = await req.json();
+  const { secret, token } = await req.json();
 
- if (!secret || !token) {
- return NextResponse.json({ error: 'Missing secret or token' }, { status: 400 });
- }
+  if (!secret || !token) {
+  return NextResponse.json({ error: 'Missing secret or token' }, { status: 400 });
+  }
+
+  // SECURITY: Rate limit TOTP attempts to prevent brute-force (6-digit = 1M combinations)
+  // 5 attempts per 5 minutes, fail-closed (deny if Redis is unavailable)
+  const rl = await rateLimit(`totp:${user.id}`, 5, 300, true);
+  if (!rl.success) {
+  return NextResponse.json({ error: 'Too many verification attempts. Please try again later.' }, { status: 429 });
+  }
 
  // Verify the code against the secret
  const isValid = authenticator.verify({ token, secret });

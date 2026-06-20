@@ -4,7 +4,6 @@ import { rateLimit } from '@/lib/rate-limiter';
 
 const publicRoutes = [
   '^/$',
-  '^/api/admin/clean-shops$',
   '^/embed/book(?:/.*)?$',
   '^/shop-template(?:/.*)?$',
   '^/shops(?:/.*)?$',
@@ -74,10 +73,10 @@ export async function middleware(req: NextRequest) {
   // Exempt: webhooks (signature-verified), inngest (server-to-server), chat/booking (has own CORS check)
   const mutationMethods = ['POST', 'PUT', 'PATCH', 'DELETE'];
   if (mutationMethods.includes(req.method) && isApi
-    && !url.pathname.startsWith('/api/inngest')
-    && !url.pathname.startsWith('/api/webhooks')
-    && !url.pathname.startsWith('/api/chat/booking')
-    && !url.pathname.startsWith('/api/debug/log-error')
+    && !url.pathname.startsWith('/api/inngest')    // Signature-verified server-to-server
+    && !url.pathname.startsWith('/api/webhooks')    // Signature-verified (Stripe/etc.)
+    && !url.pathname.startsWith('/api/chat/booking') // Cross-origin by design; has its own per-shop origin validation (isOriginAllowedForShop)
+    && !url.pathname.startsWith('/api/debug/log-error') // Read-only logging, no state change
   ) {
     const origin = req.headers.get('origin');
     if (!origin) {
@@ -145,8 +144,9 @@ export async function middleware(req: NextRequest) {
   
   // Securely identify our Vercel preview environments
   // This prevents tenants using their own .vercel.app domains from bypassing the tenant routing logic.
-  const vercelEnv = req.headers.get('x-vercel-env') || process.env.VERCEL_ENV;
-  const vercelDeploymentUrl = req.headers.get('x-vercel-deployment-url') || process.env.VERCEL_URL;
+  // SECURITY: Only trust server-side env vars — request headers are client-controllable
+  const vercelEnv = process.env.VERCEL_ENV;
+  const vercelDeploymentUrl = process.env.VERCEL_URL;
   
   const isVercelPreview = hostname.endsWith('.vercel.app') && (vercelEnv === 'preview' || hostname === vercelDeploymentUrl);
   
@@ -197,7 +197,10 @@ export async function middleware(req: NextRequest) {
   const isPublic = isPublicRoute(req.nextUrl.pathname);
 
   if (!isPublic) {
-    const { data: { session } } = await supabase.auth.getSession();
+    // SECURITY: getUser() validates the JWT with the Supabase server.
+    // getSession() only reads cookies WITHOUT verification — never use it for auth decisions.
+    const { data: { user: verifiedUser } } = await supabase.auth.getUser();
+    const session = verifiedUser ? { user: verifiedUser } : null;
 
     // Redirect unauthenticated users to sign-in on protected routes
     if (!session) {
