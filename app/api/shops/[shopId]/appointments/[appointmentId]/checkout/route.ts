@@ -23,8 +23,10 @@ export async function POST(
  const user = await tenantClient.user.findFirst({ where: { OR: [{ id: userId || '' }, { email: authUserEmail || '' }] } });
  
  // Only Shop Admin, Staff, or Site Admin can mark an appointment as paid
- const canManage = (user?.role === 'SHOP_ADMIN' && user?.shopId === shopId) ||
- (user?.role === 'STAFF' && user?.shopId === shopId);
+ const canManage = user?.role === 'SITE_ADMIN' || 
+ (user?.role === 'SHOP_ADMIN' && user?.shopId === shopId) ||
+ (user?.role === 'STAFF' && user?.shopId === shopId) ||
+ (user?.role === 'BOOTH_RENTER' && user?.shopId === shopId);
 
  if (!canManage) {
  return new Response('Forbidden: Only staff can process payments.', { status: 403 });
