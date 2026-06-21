@@ -999,12 +999,13 @@
     }
 
     /* ========================================
-       7. TESTIMONIALS
+       7. TESTIMONIALS — DECK OF CARDS
     ======================================== */
     .testimonials {
       padding: 120px 0;
       background: var(--bg-darkest);
       position: relative;
+      overflow: hidden;
     }
 
     .testimonials::before,
@@ -1022,7 +1023,7 @@
 
     .testimonials__header {
       text-align: center;
-      margin-bottom: 64px;
+      margin-bottom: 48px;
     }
 
     .testimonials__heading {
@@ -1033,41 +1034,81 @@
       line-height: 1.2;
     }
 
+    /* --- Deck of Cards Scroll --- */
     .testimonials__grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 24px;
+      display: flex;
+      gap: 20px;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scroll-behavior: smooth;
+      -webkit-overflow-scrolling: touch;
+      padding: 20px 0 40px;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+      /* Allow cards to peek from edges */
+      padding-left: calc((100% - min(420px, 85vw)) / 2);
+      padding-right: calc((100% - min(420px, 85vw)) / 2);
     }
+    .testimonials__grid::-webkit-scrollbar { display: none; }
 
     .testimonial-card {
-      background: var(--bg-card);
-      border: 1px solid rgba(255, 255, 255, 0.04);
-      border-radius: var(--radius-md);
-      padding: 36px 32px;
-      transition: var(--transition);
+      background: linear-gradient(145deg, var(--bg-card), rgba(26,26,26,0.95));
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 20px;
+      padding: 40px 32px 36px;
+      transition: transform 0.5s cubic-bezier(0.23,1,0.32,1), box-shadow 0.5s ease, border-color 0.4s ease, opacity 0.4s ease;
       position: relative;
+      flex: 0 0 min(420px, 85vw);
+      scroll-snap-align: center;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.4), 0 2px 8px rgba(0,0,0,0.2);
+      transform: scale(0.92);
+      opacity: 0.6;
+    }
+
+    .testimonial-card.is-active {
+      transform: scale(1);
+      opacity: 1;
+      border-color: rgba(233, 193, 118, 0.15);
+      box-shadow: 0 16px 48px rgba(0,0,0,0.5), 0 0 40px rgba(233,193,118,0.06);
     }
 
     .testimonial-card:hover {
-      border-color: rgba(233, 193, 118, 0.1);
-      transform: translateY(-4px);
+      border-color: rgba(233, 193, 118, 0.2);
     }
 
+    /* Gold accent line at top of card */
+    .testimonial-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 32px; right: 32px;
+      height: 2px;
+      background: var(--gold-gradient);
+      border-radius: 0 0 2px 2px;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+    .testimonial-card.is-active::before { opacity: 1; }
+
     .testimonial-card__quote-icon {
-      font-size: 36px;
+      font-size: 42px;
       color: var(--gold-primary);
-      opacity: 0.4;
+      opacity: 0.3;
       margin-bottom: 16px;
       font-family: var(--font-serif);
+      line-height: 1;
     }
 
     .testimonial-card__text {
       font-family: var(--font-serif);
       font-style: italic;
-      font-size: 1rem;
+      font-size: 1.05rem;
       color: var(--text-body);
       line-height: 1.8;
-      margin-bottom: 24px;
+      margin-bottom: 28px;
+      display: -webkit-box;
+      -webkit-line-clamp: 5;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
     }
 
     .testimonial-card__stars {
@@ -1075,7 +1116,7 @@
       gap: 3px;
       margin-bottom: 20px;
       color: var(--gold-primary);
-      font-size: 0.9rem;
+      font-size: 0.95rem;
     }
 
     .testimonial-card__author {
@@ -1085,8 +1126,8 @@
     }
 
     .testimonial-card__avatar {
-      width: 44px;
-      height: 44px;
+      width: 48px;
+      height: 48px;
       border-radius: 50%;
       background: var(--gold-gradient);
       display: flex;
@@ -1097,6 +1138,7 @@
       font-size: 1rem;
       color: var(--bg-darkest);
       flex-shrink: 0;
+      box-shadow: 0 4px 12px rgba(233,193,118,0.2);
     }
 
     .testimonial-card__name {
@@ -1111,11 +1153,48 @@
       margin-top: 2px;
     }
 
-    @media (max-width: 1024px) {
-      .testimonials__grid {
-        grid-template-columns: 1fr;
-        max-width: 600px;
-        margin: 0 auto;
+    /* Navigation Dots */
+    .testimonials__dots {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 32px;
+    }
+    .testimonials__dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.15);
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      padding: 0;
+    }
+    .testimonials__dot.is-active {
+      background: var(--gold-primary);
+      width: 24px;
+      border-radius: 4px;
+      box-shadow: 0 0 8px rgba(233,193,118,0.4);
+    }
+
+    /* Scroll hint arrow */
+    .testimonials__scroll-hint {
+      display: flex;
+      justify-content: center;
+      margin-top: 16px;
+      opacity: 0.4;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      letter-spacing: 0.1em;
+      animation: scrollHintPulse 2s ease-in-out infinite;
+    }
+    @keyframes scrollHintPulse {
+      0%, 100% { opacity: 0.3; }
+      50% { opacity: 0.6; }
+    }
+
+    @media (max-width: 640px) {
+      .testimonial-card {
+        padding: 32px 24px 28px;
       }
     }
 
@@ -1782,6 +1861,8 @@
       </div>
       <div id="reviews-loading" class="loading-placeholder">Loading Reviews...</div>
       <div id="reviews-list" class="testimonials__grid" style="display:none"></div>
+      <div id="reviews-dots" class="testimonials__dots"></div>
+      <div class="testimonials__scroll-hint">SWIPE TO EXPLORE ›</div>
     </div>
   </section>
 
@@ -2447,8 +2528,41 @@
                   '</div>';
               }).join('');
               document.getElementById('reviews-loading').style.display = 'none';
-              document.getElementById('reviews-list').style.display = 'grid';
+              document.getElementById('reviews-list').style.display = 'flex';
               document.querySelectorAll('#reviews-list .reveal').forEach(function (el) { revealObserver.observe(el); });
+
+              // --- Deck of Cards: scroll observer for active state + dots ---
+              var reviewCards = document.querySelectorAll('#reviews-list .testimonial-card');
+              var dotsContainer = document.getElementById('reviews-dots');
+              reviewCards.forEach(function(card, idx) {
+                var dot = document.createElement('button');
+                dot.className = 'testimonials__dot' + (idx === 0 ? ' is-active' : '');
+                dot.setAttribute('aria-label', 'Go to review ' + (idx + 1));
+                dot.onclick = function() {
+                  card.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+                };
+                dotsContainer.appendChild(dot);
+              });
+
+              // Mark first card active
+              if (reviewCards.length > 0) reviewCards[0].classList.add('is-active');
+
+              // Intersection observer for active card
+              var cardObserver = new IntersectionObserver(function(entries) {
+                entries.forEach(function(entry) {
+                  var card = entry.target;
+                  var idx = Array.prototype.indexOf.call(reviewCards, card);
+                  var dots = dotsContainer.querySelectorAll('.testimonials__dot');
+                  if (entry.isIntersecting && entry.intersectionRatio > 0.6) {
+                    reviewCards.forEach(function(c) { c.classList.remove('is-active'); });
+                    card.classList.add('is-active');
+                    dots.forEach(function(d, di) {
+                      d.classList.toggle('is-active', di === idx);
+                    });
+                  }
+                });
+              }, { root: document.getElementById('reviews-list'), threshold: [0.6] });
+              reviewCards.forEach(function(card) { cardObserver.observe(card); });
             } else {
               document.getElementById('testimonials').style.display = 'none';
             }
