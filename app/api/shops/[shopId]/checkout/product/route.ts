@@ -117,7 +117,7 @@ export async function POST(
       );
     }
 
-    if (!product.isSellable) {
+    if (product.isSellable === false) {
       return NextResponse.json(
         { error: 'This product is not available for purchase' },
         { status: 400, headers: corsHeaders }
