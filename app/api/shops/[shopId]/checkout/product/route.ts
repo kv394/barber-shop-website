@@ -154,10 +154,11 @@ export async function POST(
       { url: session.url, sessionId: session.id },
       { headers: corsHeaders }
     );
-  } catch (error) {
+  } catch (error: any) {
     logger.error('Error creating product checkout session:', error);
+    const message = error?.message || 'Failed to create checkout session';
     return NextResponse.json(
-      { error: 'Failed to create checkout session' },
+      { error: message },
       { status: 500, headers: corsHeaders }
     );
   }
