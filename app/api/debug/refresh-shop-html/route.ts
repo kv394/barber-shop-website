@@ -7,44 +7,55 @@ export const dynamic = 'force-dynamic';
 /**
  * POST /api/debug/refresh-shop-html
  * 
- * Force-refreshes the shop's customHtml from the database and clears all caches.
- * Public endpoint for debugging stale cache issues.
+ * Diagnose or update the shop's customHtml and clear all caches.
+ * If `html` is provided in the body, it writes that HTML to the DB.
+ * Otherwise it just reads and reports what Prisma sees.
  */
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { shopId, slug } = body;
+    const { shopId, slug, html } = body;
 
     if (!shopId) {
       return NextResponse.json({ error: 'shopId required' }, { status: 400 });
     }
 
-    // 1. Directly query the DB for current customHtml
-    const shop = await prisma.shop.findUnique({
-      where: { id: shopId },
-      select: { customization: true, name: true }
-    });
+    let resultHtml: string;
 
-    if (!shop) {
-      return NextResponse.json({ error: 'Shop not found' }, { status: 404 });
+    if (html && typeof html === 'string') {
+      // WRITE mode: update customHtml via Vercel's own Prisma connection
+      const shop = await prisma.shop.findUnique({
+        where: { id: shopId },
+        select: { customization: true }
+      });
+      const customization = (shop?.customization || {}) as any;
+      customization.customHtml = html;
+
+      await prisma.shop.update({
+        where: { id: shopId },
+        data: { customization }
+      });
+      resultHtml = html;
+    } else {
+      // READ mode: just report what Prisma sees
+      const shop = await prisma.shop.findUnique({
+        where: { id: shopId },
+        select: { customization: true, name: true }
+      });
+      if (!shop) {
+        return NextResponse.json({ error: 'Shop not found' }, { status: 404 });
+      }
+      resultHtml = (shop.customization as any)?.customHtml || '';
     }
 
-    const customization = (shop.customization || {}) as any;
-    const htmlLen = customization.customHtml?.length || 0;
-    const hasDeck = customization.customHtml?.includes('DECK OF CARDS') || false;
-    const hasScrollSnap = customization.customHtml?.includes('scroll-snap') || false;
-
-    // 2. Clear ALL caches for this shop
+    // Clear ALL caches for this shop
     const cacheKeys = [
       `shop_public_page_data:${slug || shopId}`,
       `api_public_data_v2:${shopId}`,
     ];
-
     for (const key of cacheKeys) {
       await cacheService.invalidate(key).catch(() => {});
     }
-
-    // Also try pattern invalidation
     await cacheService.invalidatePattern(`*${shopId}*`).catch(() => {});
     if (slug) {
       await cacheService.invalidatePattern(`*${slug}*`).catch(() => {});
@@ -52,11 +63,11 @@ export async function POST(request: Request) {
 
     return NextResponse.json({
       success: true,
-      htmlLength: htmlLen,
-      hasDeck,
-      hasScrollSnap,
+      mode: html ? 'write' : 'read',
+      htmlLength: resultHtml.length,
+      hasDeck: resultHtml.includes('DECK OF CARDS'),
+      hasScrollSnap: resultHtml.includes('scroll-snap'),
       clearedCaches: cacheKeys,
-      shopName: shop.name,
     });
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });
