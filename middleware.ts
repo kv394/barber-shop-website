@@ -31,7 +31,8 @@ const publicRoutes = [
   '^/api/assets(?:/.*)?$',
   '^/api/cache/invalidate$',
   '^/api/debug/log-error$',
-  '^/api/shops/[^/]+/checkout/product$'
+  '^/api/shops/[^/]+/checkout/product$',
+  '^/api/debug/refresh-shop-html$'
 ];
 
 const isPublicRoute = (path: string) => {
@@ -79,6 +80,7 @@ export async function middleware(req: NextRequest) {
     && !url.pathname.startsWith('/api/chat/booking') // Cross-origin by design; has its own per-shop origin validation (isOriginAllowedForShop)
     && !url.pathname.startsWith('/api/debug/log-error') // Read-only logging, no state change
     && !url.pathname.includes('/checkout/product') // Public checkout; route has its own CORS validation
+    && !url.pathname.startsWith('/api/debug/') // Debug endpoints are read-only or non-destructive
   ) {
     const origin = req.headers.get('origin');
     if (!origin) {
