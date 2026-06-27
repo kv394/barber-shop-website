@@ -1,12 +1,12 @@
-import { Type } from '@google/genai';
+import { SchemaType, FunctionDeclaration } from '@google-cloud/vertexai';
 import { prisma } from '@/lib/prisma';
 
-export const adminToolDeclarations = [
+export const adminToolDeclarations: FunctionDeclaration[] = [
   {
     name: 'get_shop_context',
     description: 'Retrieve current services, products, addons, blackout dates, staff, resources (seats/stations), and general settings for the shop to understand its current state before making changes.',
     parameters: {
-      type: Type.OBJECT,
+      type: SchemaType.OBJECT,
       properties: {}
     }
   },
@@ -14,13 +14,13 @@ export const adminToolDeclarations = [
     name: 'manage_service',
     description: 'Create, update, or delete a service for the shop.',
     parameters: {
-      type: Type.OBJECT,
+      type: SchemaType.OBJECT,
       properties: {
-        action: { type: Type.STRING, description: '"create", "update", or "delete"' },
-        serviceId: { type: Type.STRING, description: 'Required for update or delete' },
-        name: { type: Type.STRING, description: 'Name of the service (required for create)' },
-        price: { type: Type.NUMBER, description: 'Price in dollars (e.g. 30)' },
-        duration: { type: Type.INTEGER, description: 'Duration in minutes (e.g. 45)' }
+        action: { type: SchemaType.STRING, description: '"create", "update", or "delete"' },
+        serviceId: { type: SchemaType.STRING, description: 'Required for update or delete' },
+        name: { type: SchemaType.STRING, description: 'Name of the service (required for create)' },
+        price: { type: SchemaType.NUMBER, description: 'Price in dollars (e.g. 30)' },
+        duration: { type: SchemaType.INTEGER, description: 'Duration in minutes (e.g. 45)' }
       },
       required: ['action']
     }
@@ -29,14 +29,14 @@ export const adminToolDeclarations = [
     name: 'manage_product',
     description: 'Create, update, or delete a product/inventory item.',
     parameters: {
-      type: Type.OBJECT,
+      type: SchemaType.OBJECT,
       properties: {
-        action: { type: Type.STRING, description: '"create", "update", or "delete"' },
-        productId: { type: Type.STRING, description: 'Required for update or delete' },
-        name: { type: Type.STRING, description: 'Name of the product (required for create)' },
-        price: { type: Type.NUMBER, description: 'Price in dollars' },
-        inventoryCount: { type: Type.INTEGER, description: 'Current stock quantity' },
-        trackInventory: { type: Type.BOOLEAN, description: 'Whether to track inventory' }
+        action: { type: SchemaType.STRING, description: '"create", "update", or "delete"' },
+        productId: { type: SchemaType.STRING, description: 'Required for update or delete' },
+        name: { type: SchemaType.STRING, description: 'Name of the product (required for create)' },
+        price: { type: SchemaType.NUMBER, description: 'Price in dollars' },
+        inventoryCount: { type: SchemaType.INTEGER, description: 'Current stock quantity' },
+        trackInventory: { type: SchemaType.BOOLEAN, description: 'Whether to track inventory' }
       },
       required: ['action']
     }
@@ -45,13 +45,13 @@ export const adminToolDeclarations = [
     name: 'manage_addon',
     description: 'Create, update, or delete a service add-on.',
     parameters: {
-      type: Type.OBJECT,
+      type: SchemaType.OBJECT,
       properties: {
-        action: { type: Type.STRING, description: '"create", "update", or "delete"' },
-        addonId: { type: Type.STRING, description: 'Required for update or delete' },
-        name: { type: Type.STRING, description: 'Name of the add-on (required for create)' },
-        price: { type: Type.NUMBER, description: 'Price in dollars' },
-        durationMin: { type: Type.INTEGER, description: 'Extra duration in minutes' }
+        action: { type: SchemaType.STRING, description: '"create", "update", or "delete"' },
+        addonId: { type: SchemaType.STRING, description: 'Required for update or delete' },
+        name: { type: SchemaType.STRING, description: 'Name of the add-on (required for create)' },
+        price: { type: SchemaType.NUMBER, description: 'Price in dollars' },
+        durationMin: { type: SchemaType.INTEGER, description: 'Extra duration in minutes' }
       },
       required: ['action']
     }
@@ -60,12 +60,12 @@ export const adminToolDeclarations = [
     name: 'manage_blackout_date',
     description: 'Add or remove a blackout date (shop closure or holiday).',
     parameters: {
-      type: Type.OBJECT,
+      type: SchemaType.OBJECT,
       properties: {
-        action: { type: Type.STRING, description: '"create" or "delete"' },
-        blackoutDateId: { type: Type.STRING, description: 'Required for delete' },
-        date: { type: Type.STRING, description: 'Date in YYYY-MM-DD format (required for create)' },
-        reason: { type: Type.STRING, description: 'Reason for closure' }
+        action: { type: SchemaType.STRING, description: '"create" or "delete"' },
+        blackoutDateId: { type: SchemaType.STRING, description: 'Required for delete' },
+        date: { type: SchemaType.STRING, description: 'Date in YYYY-MM-DD format (required for create)' },
+        reason: { type: SchemaType.STRING, description: 'Reason for closure' }
       },
       required: ['action']
     }
@@ -74,12 +74,12 @@ export const adminToolDeclarations = [
     name: 'manage_shop_settings',
     description: 'Update general shop settings like name, timezone, or deposit requirements.',
     parameters: {
-      type: Type.OBJECT,
+      type: SchemaType.OBJECT,
       properties: {
-        name: { type: Type.STRING, description: 'Shop Name' },
-        timezone: { type: Type.STRING, description: 'Shop Timezone (e.g. America/New_York)' },
-        depositAmount: { type: Type.NUMBER, description: 'Deposit amount required for bookings' },
-        depositRequired: { type: Type.BOOLEAN, description: 'Whether deposits are required' }
+        name: { type: SchemaType.STRING, description: 'Shop Name' },
+        timezone: { type: SchemaType.STRING, description: 'Shop Timezone (e.g. America/New_York)' },
+        depositAmount: { type: SchemaType.NUMBER, description: 'Deposit amount required for bookings' },
+        depositRequired: { type: SchemaType.BOOLEAN, description: 'Whether deposits are required' }
       }
     }
   },
@@ -87,12 +87,12 @@ export const adminToolDeclarations = [
     name: 'manage_resource',
     description: 'Create, update, or delete a resource (like a chair, station, or seat) in the shop.',
     parameters: {
-      type: Type.OBJECT,
+      type: SchemaType.OBJECT,
       properties: {
-        action: { type: Type.STRING, description: '"create", "update", or "delete"' },
-        resourceId: { type: Type.STRING, description: 'Required for update or delete' },
-        name: { type: Type.STRING, description: 'Name of the resource (e.g., Chair 1, VIP Station)' },
-        type: { type: Type.STRING, description: 'Type of resource (e.g., CHAIR, ROOM, STATION)' }
+        action: { type: SchemaType.STRING, description: '"create", "update", or "delete"' },
+        resourceId: { type: SchemaType.STRING, description: 'Required for update or delete' },
+        name: { type: SchemaType.STRING, description: 'Name of the resource (e.g., Chair 1, VIP Station)' },
+        type: { type: SchemaType.STRING, description: 'Type of resource (e.g., CHAIR, ROOM, STATION)' }
       },
       required: ['action']
     }
@@ -101,13 +101,13 @@ export const adminToolDeclarations = [
     name: 'manage_staff',
     description: 'Create, update, or remove a staff member (user) in the shop.',
     parameters: {
-      type: Type.OBJECT,
+      type: SchemaType.OBJECT,
       properties: {
-        action: { type: Type.STRING, description: '"create", "update", or "delete"' },
-        userId: { type: Type.STRING, description: 'Required for update or delete' },
-        name: { type: Type.STRING, description: 'Name of the staff member' },
-        email: { type: Type.STRING, description: 'Email of the staff member (required for create)' },
-        role: { type: Type.STRING, description: 'Role (e.g., STAFF, SHOP_ADMIN)' }
+        action: { type: SchemaType.STRING, description: '"create", "update", or "delete"' },
+        userId: { type: SchemaType.STRING, description: 'Required for update or delete' },
+        name: { type: SchemaType.STRING, description: 'Name of the staff member' },
+        email: { type: SchemaType.STRING, description: 'Email of the staff member (required for create)' },
+        role: { type: SchemaType.STRING, description: 'Role (e.g., STAFF, SHOP_ADMIN)' }
       },
       required: ['action']
     }
@@ -116,10 +116,10 @@ export const adminToolDeclarations = [
     name: 'get_staff_schedule',
     description: 'Retrieve staff appointments and schedule for a specific date to check availability.',
     parameters: {
-      type: Type.OBJECT,
+      type: SchemaType.OBJECT,
       properties: {
-        date: { type: Type.STRING, description: 'Date in YYYY-MM-DD format (e.g., 2026-05-19)' },
-        staffId: { type: Type.STRING, description: 'Optional. Filter by specific staff member ID' }
+        date: { type: SchemaType.STRING, description: 'Date in YYYY-MM-DD format (e.g., 2026-05-19)' },
+        staffId: { type: SchemaType.STRING, description: 'Optional. Filter by specific staff member ID' }
       },
       required: ['date']
     }
