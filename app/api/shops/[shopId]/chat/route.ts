@@ -175,11 +175,108 @@ export async function POST(
  const { GoogleGenAI } = require('@google/genai');
  const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
- const systemInstruction = `You are an expert AI assistant and Shop Administrator for this barbershop platform.
-The user asking this question has the role: ${user.role}.
-If they ask for information, you can answer.
-If they ask you to modify shop data (e.g. add a service, change a price), use your tools to perform the action and report back what you did.
-ONLY use tools if the user role is SHOP_ADMIN or SITE_ADMIN.`;
+ // ─── Load rich shop context for the AI ───────────────────
+ const [shop, services, staffList, todayAppointments, recentBookings, productCount, clientCount] = await Promise.all([
+ tenantClient.shop.findUnique({
+ where: { id: shopId },
+ select: { name: true, timezone: true, customization: true, depositRequired: true, depositAmount: true },
+ }),
+ tenantClient.service.findMany({ where: { shopId, type: 'CUSTOMER' }, select: { name: true, price: true, duration: true } }),
+ tenantClient.user.findMany({ where: { shopId, role: { in: ['STAFF', 'SHOP_ADMIN'] } }, select: { name: true, role: true } }),
+ tenantClient.appointment.findMany({
+ where: {
+ shopId,
+ startTime: { gte: new Date(new Date().setHours(0,0,0,0)), lt: new Date(new Date().setHours(23,59,59,999)) },
+ status: { notIn: ['CANCELLED'] },
+ },
+ include: { staff: { select: { name: true } }, user: { select: { name: true } }, service: { select: { name: true } } },
+ orderBy: { startTime: 'asc' },
+ }),
+ tenantClient.appointment.count({ where: { shopId, createdAt: { gte: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000) } } }),
+ tenantClient.product.count({ where: { shopId } }),
+ tenantClient.user.count({ where: { shopId, role: 'CLIENT' } }),
+ ]);
+
+ const shopTz = shop?.timezone || 'America/Chicago';
+ const nowInShopTz = new Intl.DateTimeFormat('en-US', {
+ timeZone: shopTz,
+ weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',
+ hour: '2-digit', minute: '2-digit', hour12: true,
+ }).format(new Date());
+
+ const todayDateStr = new Intl.DateTimeFormat('en-CA', { timeZone: shopTz, year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date());
+
+ const servicesText = services.length > 0
+ ? services.map((s: any) => `  - ${s.name}: $${s.price} (${s.duration} min)`).join('\n')
+ : '  No services configured yet.';
+
+ const staffText = staffList.length > 0
+ ? staffList.map((s: any) => `  - ${s.name || 'Unnamed'} (${s.role})`).join('\n')
+ : '  No staff configured yet.';
+
+ const todayScheduleText = todayAppointments.length > 0
+ ? todayAppointments.map((a: any) => {
+ const time = new Intl.DateTimeFormat('en-US', { timeZone: shopTz, hour: '2-digit', minute: '2-digit', hour12: true }).format(new Date(a.startTime));
+ return `  - ${time}: ${a.service?.name || 'Service'} with ${a.staff?.name || 'Staff'} → Client: ${a.user?.name || 'Walk-in'} [${a.status}]`;
+ }).join('\n')
+ : '  No appointments scheduled for today.';
+
+ const c = (shop?.customization as any) || {};
+ const businessHours = (() => {
+ const bh = c.businessHours || {};
+ const days = ['monday','tuesday','wednesday','thursday','friday','saturday','sunday'];
+ return days.map(d => {
+ const day = bh[d];
+ if (!day) return `  ${d.charAt(0).toUpperCase() + d.slice(1)}: CLOSED`;
+ return `  ${d.charAt(0).toUpperCase() + d.slice(1)}: ${day.open || '9:00'} – ${day.close || '17:00'}`;
+ }).join('\n');
+ })();
+
+ const systemInstruction = `You are an expert AI assistant for "${shop?.name || 'this shop'}", a barbershop/salon management platform powered by KutzApp.
+
+CURRENT DATE & TIME:
+- Right now it is: ${nowInShopTz}
+- Today's date (YYYY-MM-DD): ${todayDateStr}
+- Shop timezone: ${shopTz}
+- IMPORTANT: You MUST answer date/time questions directly. If the user asks "what is today's date" or "what day is it", respond with the exact date and time above.
+
+THE USER:
+- Name: ${user.name || 'Unknown'}
+- Role: ${user.role} (${user.role === 'SHOP_ADMIN' ? 'Full admin access — can modify services, staff, settings' : 'Staff member — read-only, can view schedule and info'})
+
+SHOP OVERVIEW:
+- Shop Name: ${shop?.name || 'Unknown'}
+- Deposit: ${shop?.depositRequired ? '$' + shop.depositAmount + ' required' : 'Not required'}
+- Total Clients: ${clientCount}
+- Total Products: ${productCount}
+- Bookings This Week: ${recentBookings}
+
+BUSINESS HOURS:
+${businessHours}
+
+SERVICES:
+${servicesText}
+
+STAFF:
+${staffText}
+
+TODAY'S SCHEDULE (${todayDateStr}):
+${todayScheduleText}
+- Total appointments today: ${todayAppointments.length}
+
+YOUR CAPABILITIES:
+1. Answer ANY question about the shop — dates, time, services, pricing, staff, schedule, hours, policies
+2. Look up shop data using your tools (get_shop_context, get_staff_schedule)
+3. Modify shop data IF the user is SHOP_ADMIN: add/edit/delete services, products, add-ons, staff, blackout dates, settings
+4. NEVER say "I don't have that information" if the answer is in the context above
+5. Be concise but helpful — this is a team chat, not a formal document
+6. If asked to do something you can't do, suggest which page in the admin dashboard has that feature
+
+RESPONSE STYLE:
+- Keep answers short and actionable (this is a chat, not an email)
+- Use emoji sparingly for visual clarity
+- Format lists with bullet points or numbers
+- If you perform an action with a tool, confirm what you did clearly`;
 
  const tools = [{ functionDeclarations: adminToolDeclarations }];
  
@@ -272,6 +369,17 @@ ONLY use tools if the user role is SHOP_ADMIN or SITE_ADMIN.`;
  });
  } catch (aiError) {
  logger.error("Error triggering AI assistant:", aiError);
+ // Post a visible error message so the user knows the AI failed
+ try {
+ const aiUser = await tenantClient.user.upsert({
+ where: { email: 'ai-assistant@system.local' },
+ update: {},
+ create: { id: 'system_ai_assistant', email: 'ai-assistant@system.local', name: 'AI Assistant', role: 'CLIENT' }
+ });
+ await tenantClient.message.create({
+ data: { shopId, senderId: aiUser.id, content: '⚠️ Sorry, I encountered an error processing your request. Please try again in a moment.' }
+ });
+ } catch (_) { /* silently fail if even the error message fails */ }
  }
  }
  }
