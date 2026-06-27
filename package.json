@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "build": "node scripts/safe-migrate.js && prisma generate && next build",
+    "build": "npx prisma migrate resolve --applied 20260620220000_add_user_isBookable_bookingFee && npx prisma migrate resolve --applied 20260620230000_add_message_receipt && node scripts/safe-migrate.js && prisma generate && next build",
     "dev": "next dev",
     "dev:https": "next dev --experimental-https",
     "start": "next start",
