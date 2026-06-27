@@ -1,10 +1,22 @@
 import { NextResponse } from 'next/server';
 import { requireShopRole, isAuthError } from '@/lib/auth';
 import { logger } from '@/lib/logger';
-import { GoogleGenAI } from '@google/genai';
+import { VertexAI } from '@google-cloud/vertexai';
 import { prisma, getTenantClient } from '@/lib/prisma';
 
-const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+// Initialize Vertex AI with the project and location configured in the IDE
+const vertex_ai = new VertexAI({
+  project: 'igneous-etching-492302-v7', 
+  location: 'us-central1'
+});
+
+const generativeModel = vertex_ai.preview.getGenerativeModel({
+  model: 'gemini-1.5-flash',
+  generationConfig: {
+    temperature: 0.7,
+    responseMimeType: 'application/json',
+  },
+});
 
 const GOAL_PROMPTS: Record<string, string> = {
  WIN_BACK: 'The goal is to RE-ENGAGE inactive clients who haven\'t visited in a while. Create urgency and remind them what they\'re missing. Offer a compelling reason to come back (e.g., a discount, a new service, or a personal touch).',
@@ -113,20 +125,15 @@ Return a JSON object with this exact structure:
 
 Only include smsBody for SMS/BOTH channels. Only include emailSubject/emailBody for EMAIL/BOTH channels.`;
 
- const response = await ai.models.generateContent({
- model: 'gemini-2.5-flash',
- contents: [
- {
- role: 'user',
- parts: [{ text: prompt }],
- },
- ],
- config: {
- responseMimeType: 'application/json',
- },
- });
+ const requestParts = {
+   contents: [{ role: 'user', parts: [{ text: prompt }] }]
+ };
 
- const resultText = response.candidates?.[0]?.content?.parts?.[0]?.text;
+ const responseStream = await generativeModel.generateContentStream(requestParts);
+ const aggregatedResponse = await responseStream.response;
+ 
+ const resultText = aggregatedResponse.candidates?.[0]?.content?.parts?.[0]?.text;
+ 
  if (!resultText) {
  throw new Error('No response from AI');
  }
