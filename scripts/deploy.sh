@@ -16,6 +16,8 @@ if [ "$VERCEL_GIT_COMMIT_REF" = "staging" ] || [ "$VERCEL_ENV" = "preview" ]; th
   
   # Now deploy migrations using the safe connection pool script
   npx prisma migrate resolve --rolled-back 20260602000000_optimize_indexes || true
+  npx prisma migrate resolve --applied 20260620220000_add_user_isBookable_bookingFee || true
+  npx prisma migrate resolve --applied 20260620230000_add_message_receipt || true
   node scripts/safe-migrate.js || echo "⚠️  Migration skipped on staging (no DB connection). Continuing build..."
 else
   # Production (main) — migrations are already applied by staging
