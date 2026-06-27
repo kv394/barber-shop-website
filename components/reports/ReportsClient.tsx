@@ -1,6 +1,5 @@
 'use client';;
 import Image from 'next/image';
-
 import { useState, useMemo } from 'react';
 import { fmtPrice } from '@/lib/formatters';
 import RefundButton from '@/components/checkout/RefundButton';
@@ -35,10 +34,13 @@ export default function ReportsClient({
  shopId,
  currency,
 }: ReportsClientProps) {
- const [dateFrom, setDateFrom] = useState('');
- const [dateTo, setDateTo] = useState('');
- const [activeView, setActiveView] = useState<'transactions' | 'byStaff' | 'byService'>('transactions');
- const formatCurrency = (val: number) => fmtPrice(val, currency);
+  const [dateFrom, setDateFrom] = useState('');
+  const [dateTo, setDateTo] = useState('');
+  const [activeView, setActiveView] = useState<'transactions' | 'byStaff' | 'byService'>('transactions');
+  const [aiInsights, setAiInsights] = useState<string[]>([]);
+  const [aiLoading, setAiLoading] = useState(false);
+  const [aiError, setAiError] = useState<string | null>(null);
+  const formatCurrency = (val: number) => fmtPrice(val, currency);
 
  const filtered = useMemo(() => {
  return appointments.filter(apt => {
@@ -99,6 +101,32 @@ export default function ReportsClient({
  a.download = `report-${dateFrom || 'all'}-to-${dateTo || 'now'}.csv`;
  a.click();
  URL.revokeObjectURL(url);
+ };
+
+ const generateAiInsights = async () => {
+   setAiLoading(true);
+   setAiError(null);
+   setAiInsights([]);
+   try {
+     const res = await fetch(`/api/shops/${shopId}/reports/ai-insights`, {
+       method: 'POST',
+       headers: { 'Content-Type': 'application/json' },
+       body: JSON.stringify({
+         totalRevenue: filteredRevenue,
+         totalAppointments: filtered.length,
+         byStaff: byStaff.slice(0, 10), // Limit payload size
+         byService: byService.slice(0, 10),
+         dateRange: dateFrom && dateTo ? `${dateFrom} to ${dateTo}` : 'All Time'
+       }),
+     });
+     const data = await res.json();
+     if (!res.ok) throw new Error(data.error || 'Failed to generate insights');
+     setAiInsights(data.insights || []);
+   } catch (err: any) {
+     setAiError(err.message || 'Something went wrong');
+   } finally {
+     setAiLoading(false);
+   }
  };
 
  const inputStyle: React.CSSProperties = {};
@@ -180,12 +208,46 @@ export default function ReportsClient({
  </button>
  </div>
  )}
- <div className="w-full sm:w-auto mt-2 sm:mt-0">
- <button onClick={exportCSV} className="h-[40px] text-[13px] bg-crm-surface border border-crm-border shadow-sm hover:bg-crm-primary hover:text-white text-crm-text font-medium px-4 rounded transition-all flex items-center justify-center gap-2 w-full sm:w-auto">
- <span className="text-[14px]">📥</span> Export CSV
- </button>
+  <div className="w-full sm:w-auto mt-2 sm:mt-0 flex gap-2">
+    <button onClick={exportCSV} className="h-[40px] text-[13px] bg-crm-surface border border-crm-border shadow-sm hover:bg-crm-primary hover:text-white text-crm-text font-medium px-4 rounded transition-all flex items-center justify-center gap-2 flex-1 sm:flex-none">
+      <span className="text-[14px]">📥</span> Export CSV
+    </button>
+    <button 
+      onClick={generateAiInsights} 
+      disabled={aiLoading}
+      className="h-[40px] text-[13px] bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600 text-white font-bold px-4 rounded transition-all flex items-center justify-center gap-2 flex-1 sm:flex-none disabled:opacity-50"
+    >
+      <span className="text-[14px]">{aiLoading ? '🔄' : '✨'}</span> {aiLoading ? 'Analyzing...' : 'AI Insights'}
+    </button>
+  </div>
  </div>
- </div>
+
+  {/* AI Insights Card */}
+  {(aiInsights.length > 0 || aiLoading || aiError) && (
+    <div className="mb-6 bg-gradient-to-br from-indigo-50 to-purple-50 rounded-xl p-5 border border-indigo-100 shadow-sm animate-in fade-in slide-in-from-bottom-4">
+      <h3 className="font-bold text-indigo-900 mb-3 flex items-center gap-2">
+        <span className="text-xl">✨</span> Co-Pilot Insights
+      </h3>
+      {aiLoading ? (
+        <div className="space-y-2 animate-pulse">
+          <div className="h-4 bg-indigo-200/50 rounded w-3/4"></div>
+          <div className="h-4 bg-indigo-200/50 rounded w-5/6"></div>
+          <div className="h-4 bg-indigo-200/50 rounded w-2/3"></div>
+        </div>
+      ) : aiError ? (
+        <p className="text-red-500 text-sm">{aiError}</p>
+      ) : (
+        <ul className="space-y-2">
+          {aiInsights.map((insight, idx) => (
+            <li key={idx} className="text-indigo-800 text-sm leading-relaxed flex items-start gap-2">
+              <span className="mt-1 flex-shrink-0 text-[10px]">🔹</span>
+              <span>{insight}</span>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  )}
 
  {/* View Tabs */}
  <div className="flex gap-2 mb-4 border-b border-crm-border pb-3">

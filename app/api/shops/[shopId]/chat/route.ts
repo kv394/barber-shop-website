@@ -3,6 +3,7 @@ import { prisma, getTenantClient } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
 import { createClient } from '@/utils/supabase/server';
 import { adminToolDeclarations, executeAdminTool } from '@/lib/ai-admin-tools';
+import { VertexAI } from '@google-cloud/vertexai';
 
 const isDatabaseConnectionError = (error: any) => {
  const msg = error instanceof Error ? error.message : typeof error === 'string' ? error : JSON.stringify(error);
@@ -168,12 +169,11 @@ export async function POST(
  }
  
  // Handle @help AI Assistant
- if (mentions.includes('help') && process.env.GEMINI_API_KEY) {
+ if (mentions.includes('help')) {
  const question = message.content.replace(/@help/gi, '').trim() || "What can you help me with?";
  
  try {
- const { GoogleGenAI } = require('@google/genai');
- const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+ const vertex_ai = new VertexAI({ project: 'igneous-etching-492302-v7', location: 'us-central1' });
 
  // ─── Load rich shop context for the AI ───────────────────
  const [shop, services, staffList, todayAppointments, recentBookings, productCount, clientCount] = await Promise.all([
@@ -280,66 +280,67 @@ RESPONSE STYLE:
 
  const tools = [{ functionDeclarations: adminToolDeclarations }];
  
+ const generativeModel = vertex_ai.preview.getGenerativeModel({
+   model: 'gemini-1.5-flash',
+   generationConfig: { temperature: 0.7 },
+   systemInstruction: { role: 'system', parts: [{ text: systemInstruction }] },
+   tools: tools
+ });
+
  let formattedContents: any[] = [{ role: 'user', parts: [{ text: question }] }];
 
- let response = await ai.models.generateContent({
- model: 'gemini-2.5-flash',
- contents: formattedContents,
- config: { systemInstruction, tools }
+ let response = await generativeModel.generateContent({
+   contents: formattedContents
  });
 
  let finalResponseText = "";
- if (response.candidates?.[0]?.content?.parts) {
- for (const part of response.candidates[0].content.parts) {
- if (typeof part.text === 'string' && !part.thought) {
- finalResponseText += part.text;
- }
- }
- }
+ let functionCalls: any[] = [];
+ 
+ const extractParts = (res: any) => {
+   let text = "";
+   let fc = [];
+   const parts = res.candidates?.[0]?.content?.parts || [];
+   for (const part of parts) {
+     if (part.text && !part.thought) text += part.text;
+     if (part.functionCall) fc.push(part.functionCall);
+   }
+   return { text, fc };
+ };
 
- let functionCalls = response.functionCalls;
+ let extracted = extractParts(response.response);
+ finalResponseText += extracted.text;
+ functionCalls = extracted.fc;
+
  let loopCount = 0;
- let totalTokensUsed = response.usageMetadata?.totalTokenCount || 0;
+ let totalTokensUsed = response.response.usageMetadata?.totalTokenCount || 0;
 
  while (functionCalls && functionCalls.length > 0 && loopCount < 5) {
- loopCount++;
- const toolResponses: any[] = [];
+   loopCount++;
+   const toolResponses: any[] = [];
 
- for (const call of functionCalls) {
- let result: any = {};
- try {
- result = await executeAdminTool(call, shopId, user);
- } catch (err: any) {
- result = { error: 'Internal Server Error' };
- }
- toolResponses.push({ functionResponse: { name: call.name, response: result } });
- }
+   for (const call of functionCalls) {
+     let result: any = {};
+     try {
+       result = await executeAdminTool(call, shopId, user);
+     } catch (err: any) {
+       result = { error: 'Internal Server Error' };
+     }
+     toolResponses.push({ functionResponse: { name: call.name, response: result } });
+   }
 
- if (response.candidates?.[0]?.content?.parts) {
- formattedContents.push({ role: 'model', parts: response.candidates[0].content.parts });
- } else {
- formattedContents.push({ role: 'model', parts: functionCalls.map((c: any) => ({ functionCall: c })) });
- }
- 
- formattedContents.push({ role: 'user', parts: toolResponses });
+   const lastParts = response.response.candidates?.[0]?.content?.parts || [];
+   formattedContents.push({ role: 'model', parts: lastParts });
+   formattedContents.push({ role: 'user', parts: toolResponses });
 
- response = await ai.models.generateContent({
- model: 'gemini-2.5-flash',
- contents: formattedContents,
- config: { systemInstruction, tools }
- });
- 
- totalTokensUsed += response.usageMetadata?.totalTokenCount || 0;
+   response = await generativeModel.generateContent({
+     contents: formattedContents
+   });
+   
+   totalTokensUsed += response.response.usageMetadata?.totalTokenCount || 0;
 
- finalResponseText = "";
- if (response.candidates?.[0]?.content?.parts) {
- for (const part of response.candidates[0].content.parts) {
- if (typeof part.text === 'string' && !part.thought) {
- finalResponseText += part.text;
- }
- }
- }
- functionCalls = response.functionCalls;
+   extracted = extractParts(response.response);
+   finalResponseText += extracted.text;
+   functionCalls = extracted.fc;
  }
 
  if (totalTokensUsed > 0) {

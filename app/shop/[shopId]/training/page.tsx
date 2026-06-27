@@ -1,0 +1,30 @@
+import { redirect } from 'next/navigation';
+import { createClient } from '@/utils/supabase/server';
+import { getShopLayoutData } from '@/lib/shop-data';
+import ShopAdminLayout from '@/components/shop-admin/ShopAdminLayout';
+import TrainingClient from '@/components/shop-admin/TrainingClient';
+
+export const dynamic = 'force-dynamic';
+
+export default async function TrainingPage({ params }: { params: Promise<{ shopId: string }> }) {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user?.id) return redirect('/sign-in');
+
+  const { shopId } = await params;
+  const data = await getShopLayoutData(user.id, shopId);
+  if (!data) return redirect('/');
+
+  return (
+    <ShopAdminLayout
+      shopName={data.shop.name}
+      shopSlug={data.shopSlug}
+      pageTitle="Training"
+      shopId={shopId}
+      userRole={data.userRole}
+      activeTab="training"
+    >
+      <TrainingClient shopId={shopId} userRole={data.userRole} />
+    </ShopAdminLayout>
+  );
+}

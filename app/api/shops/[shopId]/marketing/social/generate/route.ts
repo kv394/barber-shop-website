@@ -1,9 +1,21 @@
 import { NextResponse } from 'next/server';
 import { prisma, getTenantClient } from '@/lib/prisma';
 import { requireShopRole } from '@/lib/auth';
-import { GoogleGenerativeAI } from '@google/generative-ai';
+import { VertexAI } from '@google-cloud/vertexai';
 
 export const dynamic = 'force-dynamic';
+
+const vertex_ai = new VertexAI({
+  project: 'igneous-etching-492302-v7', 
+  location: 'us-central1'
+});
+
+const generativeModel = vertex_ai.preview.getGenerativeModel({
+  model: 'gemini-1.5-flash',
+  generationConfig: {
+    temperature: 0.7,
+  },
+});
 
 export async function POST(
   request: Request,
@@ -29,18 +41,6 @@ export async function POST(
       return NextResponse.json({ error: 'Insufficient AI tokens.' }, { status: 403 });
     }
 
-    // Initialize Gemini API
-    if (!process.env.GEMINI_API_KEY) {
-      return NextResponse.json({ error: 'AI features are not configured properly.' }, { status: 500 });
-    }
-    
-    const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-    const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
-
-    // Since passing image bytes from an external URL to Gemini requires fetching it server-side, 
-    // for MVP we will use the image's existing caption or just generate a generic amazing caption
-    // based on the shop name. (To do true vision, we'd fetch the image buffer here and pass it as base64).
-    
     // Let's attempt to fetch the image buffer to do real vision
     let imagePart = null;
     try {
@@ -61,16 +61,23 @@ export async function POST(
 
     const promptText = `You are an expert Social Media Manager for a high-end salon/barbershop named "${shopName}" located in ${shopLocation || 'the city'}. 
 Please write a short, highly engaging Instagram/TikTok caption for this portfolio image. 
+${imagePart ? 'Carefully analyze the haircut, style, and details in the image to make the caption highly specific and relevant to the actual work shown.' : ''}
 Include 5-7 relevant hashtags. Do not use quotes around the caption. Use appropriate emojis. 
 Make it punchy and designed to attract new clients to book an appointment.`;
 
-    const requestParts: any[] = [promptText];
+    const requestParts: any[] = [{ text: promptText }];
     if (imagePart) {
       requestParts.push(imagePart);
     }
 
-    const result = await model.generateContent(requestParts);
-    const generatedCaption = result.response.text();
+    const result = await generativeModel.generateContent({
+      contents: [{ role: 'user', parts: requestParts }]
+    });
+    const generatedCaption = result.response.candidates?.[0]?.content?.parts?.[0]?.text;
+
+    if (!generatedCaption) {
+      throw new Error("No caption generated from AI");
+    }
 
     // Deduct 1 AI Token
     const updatedShop = await tenantClient.shop.update({
