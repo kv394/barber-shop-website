@@ -32,7 +32,9 @@ const publicRoutes = [
   '^/api/cache/invalidate$',
   '^/api/debug/log-error$',
   '^/api/shops/[^/]+/checkout/product$',
-  '^/api/debug/refresh-shop-html$'
+  '^/api/debug/refresh-shop-html$',
+  '^/api/shops/[^/]+/gamification/active$',
+  '^/api/shops/[^/]+/gamification/[^/]+/play$'
 ];
 
 const isPublicRoute = (path: string) => {
@@ -81,6 +83,7 @@ export async function middleware(req: NextRequest) {
     && !url.pathname.startsWith('/api/debug/log-error') // Read-only logging, no state change
     && !url.pathname.includes('/checkout/product') // Public checkout; route has its own CORS validation
     && !url.pathname.startsWith('/api/debug/') // Debug endpoints are read-only or non-destructive
+    && !url.pathname.match(/\/gamification\/[^/]+\/play$/) // Public gamification play endpoint
   ) {
     const origin = req.headers.get('origin');
     if (!origin) {

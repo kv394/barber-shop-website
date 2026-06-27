@@ -33,6 +33,7 @@ export default function PrimarySidebar({
  dollar: <><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></>,
  image: <><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></>,
  sun: <><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></>,
+ training: <><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></>,
  };
 
  const navLink = (href: string, label: string, iconPath: React.ReactNode, isActiveCheck: () => boolean) => {
@@ -76,6 +77,7 @@ export default function PrimarySidebar({
   {navLink(`/shop/${shopId}/clients`, 'Clients', icons.users, () => pathname.startsWith(`/shop/${shopId}/clients`))}
   {navLink(`/shop/${shopId}/settings/team`, 'Team', icons.idCard, () => pathname.startsWith(`/shop/${shopId}/settings/team`))}
   {navLink(`/shop/${shopId}/portfolio`, 'Portfolio', icons.image, () => pathname.startsWith(`/shop/${shopId}/portfolio`))}
+  {navLink(`/shop/${shopId}/training`, 'Training', icons.training, () => pathname.startsWith(`/shop/${shopId}/training`))}
 
   <div className="w-8 border-t border-white/15 my-3" />
 
@@ -85,7 +87,7 @@ export default function PrimarySidebar({
 
   <div className="w-8 border-t border-white/15 my-3" />
 
-  {navLink(`/shop/${shopId}/engagement`, 'Engage', icons.heart, () => ['/engagement', '/loyalty', '/referrals', '/campaigns', '/gift-cards', '/reviews'].some(p => pathname.startsWith(`/shop/${shopId}${p}`)))}
+  {navLink(`/shop/${shopId}/engagement`, 'Engage', icons.heart, () => ['/engagement', '/loyalty', '/referrals', '/campaigns', '/gift-cards', '/gamification', '/reviews'].some(p => pathname.startsWith(`/shop/${shopId}${p}`)))}
   {navLink(`/shop/${shopId}/settings`, 'Settings', icons.settings, () => (pathname.startsWith(`/shop/${shopId}/settings`) || pathname.startsWith(`/shop/${shopId}/config`)) && !pathname.startsWith(`/shop/${shopId}/settings/team`))}
   </>
  ) : (
@@ -95,6 +97,7 @@ export default function PrimarySidebar({
  {navLink(`/shop/${shopId}/clients`, 'Clients', icons.users, () => pathname.startsWith(`/shop/${shopId}/clients`))}
  {navLink(`/shop/${shopId}/reports/commissions`, 'Earnings', icons.dollar, () => pathname.startsWith(`/shop/${shopId}/reports/commissions`))}
  {navLink(`/shop/${shopId}/portfolio`, 'Portfolio', icons.image, () => pathname.startsWith(`/shop/${shopId}/portfolio`))}
+ {navLink(`/shop/${shopId}/training`, 'Training', icons.training, () => pathname.startsWith(`/shop/${shopId}/training`))}
  {isBoothRenter && navLink(`/shop/${shopId}/booth-rent`, 'My Rent', icons.badge, () => pathname.startsWith(`/shop/${shopId}/booth-rent`))}
  {isBoothRenter && navLink(`/shop/${shopId}/my-booking-link`, 'Booking', icons.idCard, () => pathname.startsWith(`/shop/${shopId}/my-booking-link`))}
  {navLink(`/shop/${shopId}/leave`, 'Time Off', icons.sun, () => pathname.startsWith(`/shop/${shopId}/leave`))}

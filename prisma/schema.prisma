@@ -111,6 +111,7 @@ model Shop {
   dynamicPricingRules        DynamicPricingRule[]
 
   renterServices RenterService[]
+  gamificationCampaigns GamificationCampaign[]
 
   @@index([createdAt])
   @@index([isActive])
@@ -1099,6 +1100,57 @@ enum PricingRuleType {
 enum PricingAdjustmentType {
   PERCENTAGE
   FLAT
+}
+
+model GamificationCampaign {
+  id              String             @id @default(cuid())
+  shopId          String
+  name            String
+  type            GamificationType
+  status          GamificationStatus @default(DRAFT)
+  config          Json               // prizes, probabilities, colors, branding
+  startDate       DateTime?
+  endDate         DateTime?
+  maxPlaysPerUser Int                @default(1)
+  playLimitType   String             @default("TOTAL") // TOTAL, DAILY, WEEKLY
+  totalPlays      Int                @default(0)
+  totalWins       Int                @default(0)
+  createdAt       DateTime           @default(now())
+  updatedAt       DateTime           @updatedAt
+  shop            Shop               @relation(fields: [shopId], references: [id], onDelete: Cascade)
+  plays           GamificationPlay[]
+
+  @@index([shopId, status])
+  @@index([status])
+}
+
+model GamificationPlay {
+  id         String               @id @default(cuid())
+  campaignId String
+  userId     String?
+  email      String?
+  result     String               // prize name or "NO_WIN"
+  claimed    Boolean              @default(false)
+  claimedAt  DateTime?
+  createdAt  DateTime             @default(now())
+  campaign   GamificationCampaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+
+  @@index([campaignId])
+  @@index([userId, campaignId])
+  @@index([email, campaignId])
+}
+
+enum GamificationType {
+  SPIN_WHEEL
+  SCRATCH_CARD
+  PRIZE_DRAW
+}
+
+enum GamificationStatus {
+  DRAFT
+  ACTIVE
+  PAUSED
+  ENDED
 }
 
 model ProcessedWebhook {

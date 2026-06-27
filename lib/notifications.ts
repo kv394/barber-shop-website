@@ -398,8 +398,23 @@ export class NotificationService {
 
       if (channel === 'SMS' || channel === 'BOTH') {
         if (phone) {
-          const result = await sendSms(phone, message, userId);
-          results.push({ channel: 'SMS', ...result });
+          // Check if the shop has the smsReminders premium feature enabled
+          let smsFeatureEnabled = true; // Default to true for backwards compatibility
+          if (notification?.shopId) {
+            const shopForSms = await prisma.shop.findUnique({
+              where: { id: notification.shopId },
+              select: { premiumFeatures: true },
+            });
+            const features = (shopForSms?.premiumFeatures as Record<string, boolean>) || {};
+            smsFeatureEnabled = features.smsReminders !== false; // Allow if not explicitly disabled
+          }
+
+          if (smsFeatureEnabled) {
+            const result = await sendSms(phone, message, userId);
+            results.push({ channel: 'SMS', ...result });
+          } else {
+            logger.info(`[SMS] smsReminders premium feature not enabled for shop — skipping SMS delivery`);
+          }
         } else {
           logger.warn(`[SMS] No phone number found for user ${userId} — skipping SMS delivery`);
         }

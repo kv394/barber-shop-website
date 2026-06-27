@@ -14,12 +14,15 @@ const PREMIUM_FEATURES = [
   { id: 'loyalty', name: 'Loyalty Program', price: '$15/mo' },
   { id: 'campaigns', name: 'Marketing Campaigns', price: '$20/mo' },
   { id: 'aiSocial', name: 'AI Social Media', price: '$25/mo' },
+  { id: 'chatWidget', name: 'AI Chat Widget', price: '$30/mo' },
+  { id: 'smsReminders', name: 'SMS Reminders & Alerts', price: '$10/mo' },
   { id: 'kiosk', name: 'Front Desk Kiosk', price: '$15/mo' },
   { id: 'giftCards', name: 'Gift Cards', price: '$10/mo' },
   { id: 'payroll', name: 'Automated Payroll', price: '$20/mo' },
   { id: 'dynamicPricing', name: 'Dynamic Pricing', price: '$15/mo' },
   { id: 'consultations', name: 'Virtual Consultations', price: '$15/mo' },
   { id: 'platformEmail', name: 'Platform Email (kutzapp.com)', price: '$10/mo' },
+  { id: 'gamification', name: 'Gamification Suite', price: '$20/mo' },
 ];
 
 export default function PremiumFeaturesModal({ shopId, shopName, onClose, onSuccess }: PremiumFeaturesModalProps) {

@@ -75,7 +75,7 @@ export default function ShopMobileBottomNav({
  const settingsAndConfigPaths = ['/config/services', '/config/products', '/settings/booking', '/settings/resources', '/settings/forms', '/settings/memberships', '/settings', '/settings/notifications', '/settings/kiosk', '/settings/billing', '/settings/commissions'];
  if (pathname === `/shop/${shopId}/settings` || settingsAndConfigPaths.some(p => p !== '/settings' && pathname.startsWith(`/shop/${shopId}${p}`))) return 'settings';
 
- const engagementPaths = ['/engagement', '/loyalty', '/referrals', '/campaigns', '/gift-cards', '/reviews'];
+ const engagementPaths = ['/engagement', '/loyalty', '/referrals', '/campaigns', '/gift-cards', '/gamification', '/reviews'];
  if (engagementPaths.some(p => pathname.startsWith(`/shop/${shopId}${p}`))) return 'engagement';
 
  const reportPaths = ['/reports', '/reports/commissions', '/reports/staff-working', '/expenses'];
@@ -125,7 +125,8 @@ export default function ShopMobileBottomNav({
  terminal: <><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></>,
  menu: <><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></>,
  idCard: <><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><circle cx="9" cy="11" r="3"></circle><line x1="14" y1="11" x2="18" y2="11"></line><line x1="14" y1="15" x2="18" y2="15"></line></>,
- sun: <><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></>
+ sun: <><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></>,
+ training: <><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></>
  };
 
  return (
@@ -324,6 +325,16 @@ export default function ShopMobileBottomNav({
  <span>Portfolio</span>
  </Link>
 
+ <Link 
+ href={`/shop/${shopId}/training`} 
+ className={`flex items-center gap-3 px-4 py-3 rounded-lg text-[15px] font-medium transition-colors ${
+ pathname.startsWith(`/shop/${shopId}/training`) ? 'bg-[#FFF5F2] text-[#ea580c] font-bold' : 'text-crm-muted hover:text-crm-text hover:bg-crm-bg'
+ }`}
+ >
+ <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">{icons.training}</svg>
+ <span>Training</span>
+ </Link>
+
  <div className="my-1 mx-4 border-t border-crm-border/50" />
 
  <Link 
@@ -361,7 +372,7 @@ export default function ShopMobileBottomNav({
  <Link 
  href={`/shop/${shopId}/engagement`} 
  className={`flex items-center gap-3 px-4 py-3 rounded-lg text-[15px] font-medium transition-colors ${
- ['/engagement', '/loyalty', '/referrals', '/campaigns', '/gift-cards', '/reviews'].some(p => pathname.startsWith(`/shop/${shopId}${p}`)) ? 'bg-[#FFF5F2] text-[#ea580c] font-bold' : 'text-crm-muted hover:text-crm-text hover:bg-crm-bg'
+ ['/engagement', '/loyalty', '/referrals', '/campaigns', '/gift-cards', '/gamification', '/reviews'].some(p => pathname.startsWith(`/shop/${shopId}${p}`)) ? 'bg-[#FFF5F2] text-[#ea580c] font-bold' : 'text-crm-muted hover:text-crm-text hover:bg-crm-bg'
  }`}
  >
  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">{icons.heart}</svg>
@@ -428,6 +439,16 @@ export default function ShopMobileBottomNav({
  >
  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">{icons.image}</svg>
  <span>My Portfolio</span>
+ </Link>
+
+ <Link 
+ href={`/shop/${shopId}/training`} 
+ className={`flex items-center gap-3 px-4 py-3 rounded-lg text-[15px] font-medium transition-colors ${
+ pathname.startsWith(`/shop/${shopId}/training`) ? 'bg-[#FFF5F2] text-[#ea580c] font-bold' : 'text-crm-muted hover:text-crm-text hover:bg-crm-bg'
+ }`}
+ >
+ <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">{icons.training}</svg>
+ <span>Training</span>
  </Link>
 
  {userRole === 'BOOTH_RENTER' && (

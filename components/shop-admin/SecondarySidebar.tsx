@@ -20,7 +20,7 @@ export default function SecondarySidebar({ shopId, userRole, shopType }: { shopI
  const settingsAndConfigPaths = ['/config/services', '/config/products', '/settings/booking', '/settings/dynamic-pricing', '/settings/resources', '/settings/forms', '/settings/memberships', '/settings', '/settings/notifications', '/settings/kiosk', '/settings/billing', '/settings/commissions', '/hardware', '/marketplace'];
  if (pathname === `/shop/${shopId}/settings` || settingsAndConfigPaths.some(p => p !== '/settings' && pathname.startsWith(`/shop/${shopId}${p}`))) return 'settings';
 
- const engagementPaths = ['/engagement', '/loyalty', '/referrals', '/campaigns', '/gift-cards', '/reviews'];
+ const engagementPaths = ['/engagement', '/loyalty', '/referrals', '/campaigns', '/gift-cards', '/gamification', '/reviews'];
  if (engagementPaths.some(p => pathname.startsWith(`/shop/${shopId}${p}`))) return 'engagement';
 
  const reportPaths = ['/reports', '/reports/commissions', '/reports/staff-working', '/expenses', '/booth-rent', '/capital'];
@@ -66,11 +66,14 @@ export default function SecondarySidebar({ shopId, userRole, shopType }: { shopI
  return (
  <div className="space-y-0.5 mt-3">
  {navLink(`/shop/${shopId}/engagement`, 'Dashboard', true)}
+ {navLink(`/shop/${shopId}/engagement/chat-widget`, 'AI Chat')}
+ {navLink(`/shop/${shopId}/engagement/sms-reminders`, 'SMS Reminders')}
  {navLink(`/shop/${shopId}/loyalty`, 'Loyalty Program')}
  {navLink(`/shop/${shopId}/referrals`, 'Referrals')}
  {navLink(`/shop/${shopId}/campaigns`, 'Campaigns')}
  {navLink(`/shop/${shopId}/engagement/social`, 'AI Social Media')}
  {navLink(`/shop/${shopId}/gift-cards`, 'Gift Cards')}
+ {navLink(`/shop/${shopId}/gamification`, 'Games')}
  {navLink(`/shop/${shopId}/reviews`, 'Reviews')}
  </div>
  );
