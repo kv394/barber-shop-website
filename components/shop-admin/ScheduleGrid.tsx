@@ -28,7 +28,7 @@ const ScheduleGrid: React.FC<ScheduleGridProps> = ({ staff, selectedDate }) => {
      <div className="flex items-center gap-3">
      <div className="w-10 h-10 rounded-full overflow-hidden bg-crm-surface border-2 border-crm-primary/20 shadow-sm flex items-center justify-center shrink-0">
      {staffMember.imageUrl ? (
-     <Image src={staffMember.imageUrl} alt={staffMember.name} />
+     <Image src={staffMember.imageUrl} alt={staffMember.name} width={40} height={40} className="w-full h-full object-cover" />
      ) : (
      <span className="text-[14px]">👤</span>
      )}

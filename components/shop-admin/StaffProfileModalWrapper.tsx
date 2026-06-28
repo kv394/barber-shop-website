@@ -140,7 +140,7 @@ export default function StaffProfileModalWrapper({ staff, shopId, children }: { 
  <div className="flex-1 overflow-y-auto hide-scrollbar flex flex-col items-center pt-2 pb-4">
  <div className="w-24 h-24 rounded-full overflow-hidden bg-crm-surface border-2 border-brand-indigo mb-3 flex items-center justify-center shrink-0 relative group">
  {imageUrl ? (
- <Image src={imageUrl} alt={staff.name} />
+ <Image src={imageUrl} alt={staff.name} width={80} height={80} className="w-full h-full object-cover" />
  ) : (
  <span className="text-4xl text-crm-muted">👤</span>
  )}

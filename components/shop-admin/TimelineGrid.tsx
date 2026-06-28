@@ -60,7 +60,7 @@ export default function TimelineGrid({ staff, selectedDate }: TimelineGridProps)
      <div className="flex items-center gap-3">
      <div className="w-8 h-8 rounded-full overflow-hidden bg-crm-bg border border-crm-border shadow-sm flex items-center justify-center shrink-0">
      {staffMember.imageUrl ? (
-     <Image src={staffMember.imageUrl} alt={staffMember.name} />
+     <Image src={staffMember.imageUrl} alt={staffMember.name} width={40} height={40} className="w-full h-full object-cover" />
      ) : (
      <span className="text-[12px]">👤</span>
      )}

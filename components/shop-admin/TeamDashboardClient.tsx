@@ -56,7 +56,7 @@ export default function TeamDashboardClient({
      <div className="flex items-center gap-3 text-left">
      <div className="w-10 h-10 rounded-full overflow-hidden bg-black/20 border border-white/10 shadow-sm flex items-center justify-center shrink-0">
      {staffMember.imageUrl ? (
-     <Image src={staffMember.imageUrl} alt={staffMember.name} />
+     <Image src={staffMember.imageUrl} alt={staffMember.name} width={40} height={40} className="w-full h-full object-cover" />
      ) : (
      <span className="text-[13px]">👤</span>
      )}
