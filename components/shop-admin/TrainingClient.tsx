@@ -1,5 +1,6 @@
 'use client';
 import React, { useState, useEffect, useCallback } from 'react';
+import Link from 'next/link';
 import PremiumGlassCard from '@/components/ui/PremiumGlassCard';
 
 // ─── Types ───────────────────────────────────────────────────────────────────
@@ -892,6 +893,26 @@ export default function TrainingClient({ shopId, userRole }: { shopId: string; u
   // ── Module List View ──
   return (
     <div className="space-y-8 animate-page-in">
+      {/* Onboarding Video Banner */}
+      {isAdmin && (
+        <Link href={`/shop/${shopId}/training/onboarding`} className="block group">
+          <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-violet-500 via-indigo-500 to-blue-500 p-5 sm:p-6 shadow-lg hover:shadow-xl transition-all hover:-translate-y-0.5">
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_30%,rgba(255,255,255,0.15),transparent)] pointer-events-none" />
+            <div className="relative z-10 flex items-center gap-5">
+              <div className="w-14 h-14 rounded-2xl bg-white/20 backdrop-blur flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="white"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-[11px] font-black text-white/70 uppercase tracking-widest mb-1">Featured Training</p>
+                <h3 className="text-lg font-black text-white tracking-tight">New Admin Onboarding Walkthrough</h3>
+                <p className="text-[13px] text-white/80 mt-1">Interactive guide covering dashboard, bookings, clients, services, team, and more • ~2 min</p>
+              </div>
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="shrink-0 opacity-50 group-hover:opacity-100 group-hover:translate-x-1 transition-all"><polyline points="9 18 15 12 9 6"/></svg>
+            </div>
+          </div>
+        </Link>
+      )}
+
       {/* Admin overview stats */}
       {isAdmin && <AdminProgressDashboard modules={modules} allProgress={progress} />}
 
