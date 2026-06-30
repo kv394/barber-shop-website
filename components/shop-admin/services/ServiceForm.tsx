@@ -158,9 +158,7 @@ export function ServiceForm({
 
         <div className="bg-crm-bg p-4 rounded border border-crm-border">
           <div className="flex justify-between items-center mb-3">
-            <label className="block font-medium text-crm-text text-[13px]">
-              Resource Requirements (Optional)
-            </label>
+            <p className="block font-medium text-crm-text text-[13px]">Resource Requirements (Optional)</p>
             <button
               type="button"
               onClick={() => setNewService((prev: any) => ({
@@ -224,9 +222,9 @@ export function ServiceForm({
 
         <div className="bg-crm-bg p-4 rounded border border-crm-border">
           <div className="flex justify-between items-center mb-3">
-            <label className="block font-medium text-crm-text text-[13px]">
+            <p className="block font-medium text-crm-text text-[13px]">
               Product Inventory Usage (Optional)
-            </label>
+            </p>
             <button
               type="button"
               onClick={() => setNewService((prev: any) => ({

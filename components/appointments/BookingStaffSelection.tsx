@@ -30,7 +30,7 @@ export default function BookingStaffSelection({
 
   return (
     <div className="mb-5">
-      <label className="block text-crm-text text-[12px] font-semibold mb-2">Select Staff</label>
+      <p className="block text-crm-text text-[12px] font-semibold mb-2">Select Staff</p>
       <div className="space-y-2">
         <button onClick={() => setSelectedStaff(ANY_STAFF_VALUE)} className={`w-full p-3 text-left text-[13px] rounded-lg border transition-colors ${selectedStaff === ANY_STAFF_VALUE ? tStyles.cardActive : tStyles.cardInactive}`} style={selectedStaff === ANY_STAFF_VALUE ? { borderColor: themeColor || '#111827', backgroundColor: activeBg } : {}}>
           Any Available

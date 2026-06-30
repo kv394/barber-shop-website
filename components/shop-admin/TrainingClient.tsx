@@ -542,6 +542,7 @@ function ModuleViewer({ module, progress, onBack, onMarkComplete, onQuizSubmit }
                   className="w-full aspect-video"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                   allowFullScreen
+                  title="Lesson video"
                 />
               ) : (
                 <a href={lesson.videoUrl} target="_blank" rel="noopener noreferrer"
