@@ -72,8 +72,9 @@ export default function StaffAvailability({ defaultDate, defaultFrom, defaultTo,
  <PremiumGlassCard className="w-full max-w-full !p-4 relative z-10" accentColor="crm-primary">
  <div className={`grid grid-cols-1 ${showTimeFilters ? 'sm:grid-cols-3' : 'sm:grid-cols-1'} gap-2 sm:gap-3 mb-4`}>
  <div className="w-full relative">
- <label className="block text-crm-muted mb-2 font-bold uppercase tracking-wider text-[13px] sm:text-[14px]">📅 Date</label>
+ <label htmlFor="dateButton" className="block text-crm-muted mb-2 font-bold uppercase tracking-wider text-[13px] sm:text-[14px]">📅 Date</label>
  <button 
+ id="dateButton"
  onClick={() => setIsCalendarOpen(!isCalendarOpen)}
  className="w-full text-left p-3 sm:p-4 rounded-xl border-2 border-crm-border shadow-sm bg-crm-surface text-crm-text text-[15px] sm:text-[16px] font-medium hover:border-crm-primary/50 focus:ring-2 focus:ring-crm-primary focus:outline-none transition-all flex justify-between items-center"
  >

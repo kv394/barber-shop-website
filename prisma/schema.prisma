@@ -297,6 +297,7 @@ model Appointment {
   depositPaymentIntentId String?
   isRecurringParent      Boolean              @default(false)
   aiGenerated            Boolean              @default(false)
+  metadata               Json?   // Stores custom fields like pet name, vehicle model, consent flags
   recurrenceRule         String?
   recurringGroupId       String?
   refundAmount           Float                @default(0)

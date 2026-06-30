@@ -205,8 +205,9 @@ export default function ShopSwitcher({ currentShopId, currentShopName, shops, us
  <form onSubmit={handleCreateLocation} className="p-6">
  <div className="space-y-4">
  <div>
- <label className="block text-[13px] font-semibold text-crm-muted uppercase tracking-wider mb-1.5">Location Name</label>
+ <label htmlFor="shop-name" className="block text-[13px] font-semibold text-crm-muted uppercase tracking-wider mb-1.5">Location Name</label>
  <input 
+ id="shop-name"
  type="text" 
  name="name" 
  required 
@@ -216,9 +217,10 @@ export default function ShopSwitcher({ currentShopId, currentShopName, shops, us
  </div>
  
  <div>
- <label className="block text-[13px] font-semibold text-crm-muted uppercase tracking-wider mb-1.5">Location Address</label>
+ <label htmlFor="shop-address" className="block text-[13px] font-semibold text-crm-muted uppercase tracking-wider mb-1.5">Location Address</label>
  <p className="text-[11px] text-crm-muted mb-2">The physical address of this shop.</p>
  <input 
+ id="shop-address"
  type="text" 
  name="address" 
  required 
@@ -228,9 +230,10 @@ export default function ShopSwitcher({ currentShopId, currentShopName, shops, us
  </div>
  
  <div>
- <label className="block text-[13px] font-semibold text-crm-muted uppercase tracking-wider mb-1.5">Kiosk Login Email</label>
+ <label htmlFor="shop-kiosk-email" className="block text-[13px] font-semibold text-crm-muted uppercase tracking-wider mb-1.5">Kiosk Login Email</label>
  <p className="text-[11px] text-crm-muted mb-2">Used to sign in to the front-desk tablet for this location.</p>
  <input 
+ id="shop-kiosk-email"
  type="email" 
  name="kioskEmail" 
  required 

@@ -151,34 +151,37 @@ export function ShopProfileForm({
  </h3>
  <div className="space-y-4">
  <div>
- <label className={labelClass}>Shop Name</label>
- <input
- type="text"
- value={formData.name}
- onChange={(e) => handleChange('name', e.target.value)}
- placeholder="E.g., The Gentleman's Barbershop"
- className={inputClass}
- />
+ <label htmlFor="shop-name" className={labelClass}>Shop Name</label>
+<input
+id="shop-name"
+type="text"
+value={formData.name}
+onChange={(e) => handleChange('name', e.target.value)}
+placeholder="E.g., The Gentleman's Barbershop"
+className={inputClass}
+/>
  </div>
  <div>
- <label className={labelClass}>Slogan (Tagline)</label>
- <input
- type="text"
- value={formData.slogan}
- onChange={(e) => handleChange('slogan', e.target.value)}
- placeholder="E.g., Precision cuts for the modern man"
- className={inputClass}
- />
+ <label htmlFor="shop-slogan" className={labelClass}>Slogan (Tagline)</label>
+<input
+id="shop-slogan"
+type="text"
+value={formData.slogan}
+onChange={(e) => handleChange('slogan', e.target.value)}
+placeholder="E.g., Precision cuts for the modern man"
+className={inputClass}
+/>
  </div>
  <div>
- <label className={labelClass}>Description (About the Shop)</label>
- <textarea
- rows={3}
- value={formData.description}
- onChange={(e) => handleChange('description', e.target.value)}
- placeholder="Tell your clients about your shop's history, atmosphere, and specialties."
- className={inputClass}
- />
+ <label htmlFor="shop-description" className={labelClass}>Description (About the Shop)</label>
+<textarea
+id="shop-description"
+rows={3}
+value={formData.description}
+onChange={(e) => handleChange('description', e.target.value)}
+placeholder="Tell your clients about your shop's history, atmosphere, and specialties."
+className={inputClass}
+/>
  </div>
  </div>
  </div>
@@ -190,55 +193,59 @@ export function ShopProfileForm({
  </h3>
  <div className="space-y-4">
  <div>
- <label className={labelClass}>Shop Type</label>
- <select
- value={formData.shopType}
- onChange={(e) => handleChange('shopType', e.target.value)}
- className={inputClass}
- >
- <option value="PHYSICAL">Physical Salon (Customers come to you)</option>
- <option value="MOBILE">Mobile Stylist (You go to customers)</option>
- <option value="HYBRID">Hybrid (Both physical and house calls)</option>
- </select>
+ <label htmlFor="shop-type" className={labelClass}>Shop Type</label>
+<select
+id="shop-type"
+value={formData.shopType}
+onChange={(e) => handleChange('shopType', e.target.value)}
+className={inputClass}
+>
+<option value="PHYSICAL">Physical Salon (Customers come to you)</option>
+<option value="MOBILE">Mobile Stylist (You go to customers)</option>
+<option value="HYBRID">Hybrid (Both physical and house calls)</option>
+</select>
  </div>
  
  <div>
- <label className={labelClass}>Shop Address / Base Location</label>
- <input
- type="text"
- value={formData.baseLocation || ''}
- onChange={(e) => handleChange('baseLocation', e.target.value)}
- placeholder="e.g. 123 Main St, Houston, TX 77002"
- className={inputClass}
- />
+ <label htmlFor="shop-address" className={labelClass}>Shop Address / Base Location</label>
+<input
+id="shop-address"
+type="text"
+value={formData.baseLocation || ''}
+onChange={(e) => handleChange('baseLocation', e.target.value)}
+placeholder="e.g. 123 Main St, Houston, TX 77002"
+className={inputClass}
+/>
  <p className="text-crm-muted text-[11px] mt-1">For physical shops, this is your storefront. For mobile stylists, this is your starting point.</p>
  </div>
 
  {(formData.shopType === 'MOBILE' || formData.shopType === 'HYBRID') && (
  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
  <div>
- <label className={labelClass}>Flat Travel Fee ($)</label>
- <input
- type="number"
- min="0"
- step="0.50"
- value={formData.travelFee}
- onChange={(e) => handleChange('travelFee', parseFloat(e.target.value) || 0)}
- className={inputClass}
- />
+ <label htmlFor="travel-fee" className={labelClass}>Flat Travel Fee ($)</label>
+<input
+id="travel-fee"
+type="number"
+min="0"
+step="0.50"
+value={formData.travelFee}
+onChange={(e) => handleChange('travelFee', parseFloat(e.target.value) || 0)}
+className={inputClass}
+/>
  <p className="text-crm-muted text-[11px] mt-1">Fee automatically added to house calls.</p>
  </div>
  <div>
- <label className={labelClass}>Max Travel Radius</label>
- <input
- type="number"
- min="1"
- step="1"
- value={formData.maxTravelRadius || ''}
- onChange={(e) => handleChange('maxTravelRadius', e.target.value ? parseInt(e.target.value) : null)}
- placeholder="e.g. 20 miles"
- className={inputClass}
- />
+ <label htmlFor="max-travel-radius" className={labelClass}>Max Travel Radius</label>
+<input
+id="max-travel-radius"
+type="number"
+min="1"
+step="1"
+value={formData.maxTravelRadius || ''}
+onChange={(e) => handleChange('maxTravelRadius', e.target.value ? parseInt(e.target.value) : null)}
+placeholder="e.g. 20 miles"
+className={inputClass}
+/>
  </div>
  </div>
  )}
@@ -252,45 +259,47 @@ export function ShopProfileForm({
  </h3>
  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
  <div>
- <label className={labelClass}>Country / Region</label>
- <select
- value={formData.country}
- onChange={(e) => {
- const selected = COUNTRY_OPTIONS.find(c => c.value === e.target.value);
- if (selected) {
- setFormData({
- ...formData,
- country: selected.value,
- currency: selected.currency,
- locale: selected.locale,
- paymentGateway: DEFAULT_GATEWAY[selected.value] || 'STRIPE',
- });
- setSuccess(false);
- }
- }}
- className={inputClass}
- >
- {COUNTRY_OPTIONS.map((opt) => (
- <option key={opt.value} value={opt.value}>{opt.label} — {opt.currency}</option>
- ))}
- </select>
+ <label htmlFor="shop-country" className={labelClass}>Country / Region</label>
+<select
+id="shop-country"
+value={formData.country}
+onChange={(e) => {
+const selected = COUNTRY_OPTIONS.find(c => c.value === e.target.value);
+if (selected) {
+setFormData({
+...formData,
+country: selected.value,
+currency: selected.currency,
+locale: selected.locale,
+paymentGateway: DEFAULT_GATEWAY[selected.value] || 'STRIPE',
+});
+setSuccess(false);
+}
+}}
+className={inputClass}
+>
+{COUNTRY_OPTIONS.map((opt) => (
+<option key={opt.value} value={opt.value}>{opt.label} — {opt.currency}</option>
+))}
+</select>
  <p className="text-crm-muted text-[11px] mt-1">
  Currency: {formData.currency} · Locale: {formData.locale}
  </p>
  </div>
  <div>
- <label className={labelClass}>Timezone</label>
- <select
- value={formData.timezone}
- onChange={(e) => handleChange('timezone', e.target.value)}
- className={inputClass}
- >
- {TIMEZONE_OPTIONS.map((tz) => (
- <option key={tz.value} value={tz.value}>
- {tz.label} — {tz.value}
- </option>
- ))}
- </select>
+ <label htmlFor="shop-timezone" className={labelClass}>Timezone</label>
+<select
+id="shop-timezone"
+value={formData.timezone}
+onChange={(e) => handleChange('timezone', e.target.value)}
+className={inputClass}
+>
+{TIMEZONE_OPTIONS.map((tz) => (
+<option key={tz.value} value={tz.value}>
+{tz.label} — {tz.value}
+</option>
+))}
+</select>
  <p className="text-crm-muted text-[11px] mt-1">All appointment times use this timezone.</p>
  </div>
  </div>
@@ -348,8 +357,9 @@ export function ShopProfileForm({
 
  {formData.depositRequired && (
  <div>
- <label className={labelClass}>Deposit Amount ($)</label>
+ <label htmlFor="deposit-amount" className={labelClass}>Deposit Amount ($)</label>
  <input
+ id="deposit-amount"
  type="number"
  min="0"
  step="0.50"

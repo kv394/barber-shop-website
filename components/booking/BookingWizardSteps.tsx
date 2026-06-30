@@ -212,6 +212,8 @@ export function DetailsStep({
   setServiceLocation,
   notes,
   setNotes,
+  metadata,
+  setMetadata,
   tStyles,
   themeColor,
   formatTime,
@@ -309,6 +311,16 @@ export function DetailsStep({
           className="w-full border p-3 rounded-xl bg-crm-bg focus:outline-none focus:ring-2 focus:ring-gray-900 border-transparent transition-all min-h-[80px]"
           value={notes}
           onChange={e => setNotes(e.target.value)}
+        />
+      </div>
+
+      <div>
+        <label className="block text-sm font-medium text-crm-muted mb-1">Additional Details (JSON) (Optional)</label>
+        <textarea
+          placeholder='{"petName":"Fluffy","vehicleModel":"Toyota"}'
+          className="w-full border p-3 rounded-xl bg-crm-bg focus:outline-none focus:ring-2 focus:ring-gray-900 border-transparent transition-all min-h-[80px]"
+          value={metadata}
+          onChange={e => setMetadata(e.target.value)}
         />
       </div>
 

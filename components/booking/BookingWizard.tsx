@@ -40,6 +40,7 @@ export default function BookingWizard({ shopId, themeColor, secondaryColor, temp
  const [notes, setNotes] = useState('');
  const [serviceLocation, setServiceLocation] = useState('');
  const [isHouseCall, setIsHouseCall] = useState(shopType === 'MOBILE');
+ const [metadata, setMetadata] = useState('');
  
  // Availability state
  const [bookedSlots, setBookedSlots] = useState<BookedSlot[]>([]);
@@ -295,6 +296,7 @@ export default function BookingWizard({ shopId, themeColor, secondaryColor, temp
  clientPhone: phone,
  serviceLocation: isHouseCall ? serviceLocation : undefined,
  turnstileToken: turnstileToken,
+ metadata: metadata ? JSON.parse(metadata) : undefined,
  })
  });
  if (!res.ok) {
@@ -447,6 +449,8 @@ export default function BookingWizard({ shopId, themeColor, secondaryColor, temp
             setServiceLocation={setServiceLocation}
             notes={notes}
             setNotes={setNotes}
+            metadata={metadata}
+            setMetadata={setMetadata}
             tStyles={tStyles}
             themeColor={themeColor}
             formatTime={formatTime}

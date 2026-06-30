@@ -7,6 +7,9 @@ import DeleteShopButton from '@/components/shop-admin/DeleteShopButton';
 import UsageAnalysisModal from '@/components/siteadmin/UsageAnalysisModal';
 import AssignShopAdminModal from '@/components/siteadmin/AssignShopAdminModal';
 import PremiumFeaturesModal from '@/components/siteadmin/PremiumFeaturesModal';
+import HelpTooltip from '@/components/HelpTooltip';
+import BulkActionBar from '@/components/BulkActionBar';
+import PaginationControls from '@/components/PaginationControls';
 
 type ShopData = {
  id: string;
@@ -37,10 +40,14 @@ export default function SiteAdminShopsPage() {
  const [managingFeaturesShop, setManagingFeaturesShop] = useState<{ id: string, name: string } | null>(null);
 
  const [error, setError] = useState<string | null>(null);
+  const [page, setPage] = useState(1);
+  const [pageSize] = useState(20);
+  const [totalPages, setTotalPages] = useState(1);
+  const [selectedShopIds, setSelectedShopIds] = useState<Set<string>>(new Set());
 
  const fetchShops = async () => {
  try {
- const res = await fetch('/api/siteadmin/shops');
+ const res = await fetch(`/api/siteadmin/shops?page=${page}&pageSize=${pageSize}`);
  if (res.ok) {
  const data = await res.json();
  setShops(data.shops || []);

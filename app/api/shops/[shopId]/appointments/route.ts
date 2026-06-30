@@ -24,6 +24,7 @@ const bookingSchema = z.object({
  existingClientId: z.string().optional(),
  addonIds: z.array(z.string()).optional(),
  turnstileToken: z.string().optional(),
+ metadata: z.record(z.string(), z.any()).optional(),
 });
 
 export async function GET(
@@ -116,7 +117,7 @@ export async function POST(
  return NextResponse.json({ error: 'Invalid input data', details: validationResult.error.format() }, { status: 400 });
  }
 
-  const { serviceId, startTime, staffId, clientName, clientEmail, clientPhone, isWalkIn, notes, existingClientId, addonIds, turnstileToken } = validationResult.data;
+  const { serviceId, startTime, staffId, clientName, clientEmail, clientPhone, isWalkIn, notes, existingClientId, addonIds, turnstileToken, metadata } = validationResult.data;
 
   // SECURITY: Ensure user is authenticated OR it is a public walk-in booking
   if (!userId && !isWalkIn) {
@@ -309,6 +310,7 @@ export async function POST(
  endTime: end,
  notes: notes || null,
  addons: addonsJson || null,
+ metadata: metadata || null,
  subtotal: totalPrice,
  totalAmount: totalPrice,
  },

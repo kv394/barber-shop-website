@@ -238,8 +238,9 @@ export default function SmsReminderSettings({ shopId }: { shopId: string }) {
           <div className="p-6 space-y-6">
             {/* Reminder template */}
             <div>
-              <label className="block text-[10px] uppercase tracking-wider font-bold text-crm-muted mb-2">Appointment Reminder</label>
+              <label htmlFor="customReminderTemplate" className="block text-[10px] uppercase tracking-wider font-bold text-crm-muted mb-2">Appointment Reminder</label>
               <textarea
+                id="customReminderTemplate"
                 value={config.customReminderTemplate}
                 onChange={e => setConfig(c => ({ ...c, customReminderTemplate: e.target.value }))}
                 rows={3}
@@ -249,8 +250,9 @@ export default function SmsReminderSettings({ shopId }: { shopId: string }) {
 
             {/* Review template */}
             <div>
-              <label className="block text-[10px] uppercase tracking-wider font-bold text-crm-muted mb-2">Review Request</label>
+              <label htmlFor="customReviewTemplate" className="block text-[10px] uppercase tracking-wider font-bold text-crm-muted mb-2">Review Request</label>
               <textarea
+                id="customReviewTemplate"
                 value={config.customReviewTemplate}
                 onChange={e => setConfig(c => ({ ...c, customReviewTemplate: e.target.value }))}
                 rows={3}

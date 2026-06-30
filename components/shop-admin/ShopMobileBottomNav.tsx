@@ -235,7 +235,7 @@ export default function ShopMobileBottomNav({
 
  {/* Drawer */}
  <div className={`fixed inset-0 z-[3000] flex md:hidden transition-opacity duration-300 ${isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
- <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setIsOpen(false)} />
+ <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" role="button" tabIndex={0} onClick={() => setIsOpen(false)} onKeyDown={(e)=>{if(e.key==='Enter'||e.key===' ') setIsOpen(false);}} />
  <aside 
  className={`relative w-[300px] max-w-[85vw] bg-crm-surface h-full flex flex-col shadow-2xl transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${isOpen ? 'translate-x-0' : '-translate-x-full'}`} 
  onClick={e => e.stopPropagation()}

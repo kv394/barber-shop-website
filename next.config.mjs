@@ -33,9 +33,7 @@ const nextConfig = {
       },
     ];
   },
-  // TODO: Fix existing lint errors and re-enable ESLint during builds.
-  // Currently disabled to prevent build failures from pre-existing violations.
-  eslint: { ignoreDuringBuilds: true },
+
 };
 
 export default withNextIntl(nextConfig);

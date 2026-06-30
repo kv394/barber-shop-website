@@ -200,10 +200,11 @@ export default function SmtpSettingsForm({ shopId }: SmtpSettingsFormProps) {
 
         {/* Quick provider select */}
         <div>
-          <label className="block text-[12px] font-bold text-crm-muted uppercase tracking-wider mb-2">
+          <label htmlFor="providerPreset" className="block text-[12px] font-bold text-crm-muted uppercase tracking-wider mb-2">
             Provider Preset
           </label>
           <select
+            id="providerPreset"
             onChange={(e) => selectProvider(Number(e.target.value))}
             className="w-full px-3 py-2.5 bg-crm-bg border border-crm-border rounded-lg text-crm-text text-sm focus:outline-none focus:border-brand-indigo transition-colors"
           >
@@ -216,10 +217,11 @@ export default function SmtpSettingsForm({ shopId }: SmtpSettingsFormProps) {
         {/* Host & Port */}
         <div className="grid grid-cols-3 gap-3">
           <div className="col-span-2">
-            <label className="block text-[12px] font-bold text-crm-muted uppercase tracking-wider mb-2">
+            <label htmlFor="smtpHost" className="block text-[12px] font-bold text-crm-muted uppercase tracking-wider mb-2">
               SMTP Host
             </label>
             <input
+              id="smtpHost"
               type="text"
               value={config.host}
               onChange={(e) => setConfig(prev => ({ ...prev, host: e.target.value }))}
@@ -229,10 +231,11 @@ export default function SmtpSettingsForm({ shopId }: SmtpSettingsFormProps) {
             />
           </div>
           <div>
-            <label className="block text-[12px] font-bold text-crm-muted uppercase tracking-wider mb-2">
+            <label htmlFor="smtpPort" className="block text-[12px] font-bold text-crm-muted uppercase tracking-wider mb-2">
               Port
             </label>
             <input
+              id="smtpPort"
               type="number"
               value={config.port}
               onChange={(e) => setConfig(prev => ({ ...prev, port: Number(e.target.value) }))}
@@ -259,10 +262,11 @@ export default function SmtpSettingsForm({ shopId }: SmtpSettingsFormProps) {
         {/* Username & Password */}
         <div className="grid grid-cols-2 gap-3">
           <div>
-            <label className="block text-[12px] font-bold text-crm-muted uppercase tracking-wider mb-2">
+            <label htmlFor="smtpUsername" className="block text-[12px] font-bold text-crm-muted uppercase tracking-wider mb-2">
               Username / Email
             </label>
             <input
+              id="smtpUsername"
               type="text"
               value={config.username}
               onChange={(e) => setConfig(prev => ({ ...prev, username: e.target.value }))}
@@ -272,11 +276,12 @@ export default function SmtpSettingsForm({ shopId }: SmtpSettingsFormProps) {
             />
           </div>
           <div>
-            <label className="block text-[12px] font-bold text-crm-muted uppercase tracking-wider mb-2">
+            <label htmlFor="smtpPassword" className="block text-[12px] font-bold text-crm-muted uppercase tracking-wider mb-2">
               Password {configured && <span className="text-brand-amber">(re-enter to save)</span>}
             </label>
             <div className="relative">
               <input
+                id="smtpPassword"
                 type={showPassword ? 'text' : 'password'}
                 value={config.password}
                 onChange={(e) => setConfig(prev => ({ ...prev, password: e.target.value }))}
@@ -305,10 +310,11 @@ export default function SmtpSettingsForm({ shopId }: SmtpSettingsFormProps) {
         {/* From Email & Name */}
         <div className="grid grid-cols-2 gap-3">
           <div>
-            <label className="block text-[12px] font-bold text-crm-muted uppercase tracking-wider mb-2">
+            <label htmlFor="fromEmail" className="block text-[12px] font-bold text-crm-muted uppercase tracking-wider mb-2">
               From Email
             </label>
             <input
+              id="fromEmail"
               type="email"
               value={config.fromEmail}
               onChange={(e) => setConfig(prev => ({ ...prev, fromEmail: e.target.value }))}
@@ -318,10 +324,11 @@ export default function SmtpSettingsForm({ shopId }: SmtpSettingsFormProps) {
             />
           </div>
           <div>
-            <label className="block text-[12px] font-bold text-crm-muted uppercase tracking-wider mb-2">
+            <label htmlFor="fromName" className="block text-[12px] font-bold text-crm-muted uppercase tracking-wider mb-2">
               From Name <span className="text-crm-muted/60">(optional)</span>
             </label>
             <input
+              id="fromName"
               type="text"
               value={config.fromName}
               onChange={(e) => setConfig(prev => ({ ...prev, fromName: e.target.value }))}
