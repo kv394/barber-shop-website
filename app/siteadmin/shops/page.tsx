@@ -64,7 +64,7 @@ export default function SiteAdminShopsPage() {
  }
  };
 
- useEffect(() => { fetchShops(); }, []);
+ useEffect(() => { fetchShops(); }, [page]);
 
  if (loading) {
  return <div className="text-center py-12 text-crm-muted">Loading shops...</div>;
