@@ -71,7 +71,7 @@ export default function InteractiveReviewsSection({ shopId, initialReviews = [],
  )}
  
  <div>
- <label className="block text-[13px] font-medium text-crm-muted mb-2">Rating</label>
+ <p className="block text-[13px] font-medium text-crm-muted mb-2">Rating</p>
  <div className="flex gap-2">
  {[1, 2, 3, 4, 5].map((star) => (
  <button
@@ -87,7 +87,7 @@ export default function InteractiveReviewsSection({ shopId, initialReviews = [],
  </div>
  
  <div>
- <label className="block text-[13px] font-medium text-crm-muted mb-2">Your Review (Optional)</label>
+ <p className="block text-[13px] font-medium text-crm-muted mb-2">Your Review (Optional)</p>
  <textarea
  rows={4}
  value={comment}

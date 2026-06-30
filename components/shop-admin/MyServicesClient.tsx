@@ -93,29 +93,29 @@ export default function MyServicesClient({ renterId }: { renterId: string }) {
  <h3 className="font-bold text-crm-text">{editing ? 'Edit Service' : 'New Service'}</h3>
  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
  <div>
- <label className="block text-[11px] font-bold text-crm-muted uppercase tracking-wider mb-1">Name *</label>
- <input value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
+ <label htmlFor="service-name" className="block text-[11px] font-bold text-crm-muted uppercase tracking-wider mb-1">Name *</label>
+ <input id="service-name" value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
  placeholder="e.g. Fade Cut"
  className="w-full bg-crm-bg border border-crm-border rounded-xl px-3 py-2.5 text-crm-text text-[13px] focus:outline-none focus:border-crm-primary"
  />
  </div>
  <div>
- <label className="block text-[11px] font-bold text-crm-muted uppercase tracking-wider mb-1">Duration (min) *</label>
- <input type="number" value={form.duration} onChange={e => setForm(f => ({ ...f, duration: e.target.value }))}
+ <label htmlFor="service-duration" className="block text-[11px] font-bold text-crm-muted uppercase tracking-wider mb-1">Duration (min) *</label>
+ <input id="service-duration" type="number" value={form.duration} onChange={e => setForm(f => ({ ...f, duration: e.target.value }))}
  placeholder="30"
  className="w-full bg-crm-bg border border-crm-border rounded-xl px-3 py-2.5 text-crm-text text-[13px] focus:outline-none focus:border-crm-primary"
  />
  </div>
  <div>
- <label className="block text-[11px] font-bold text-crm-muted uppercase tracking-wider mb-1">Price *</label>
- <input type="number" value={form.price} onChange={e => setForm(f => ({ ...f, price: e.target.value }))}
+ <label htmlFor="service-price" className="block text-[11px] font-bold text-crm-muted uppercase tracking-wider mb-1">Price *</label>
+ <input id="service-price" type="number" value={form.price} onChange={e => setForm(f => ({ ...f, price: e.target.value }))}
  placeholder="35.00" step="0.01"
  className="w-full bg-crm-bg border border-crm-border rounded-xl px-3 py-2.5 text-crm-text text-[13px] focus:outline-none focus:border-crm-primary"
  />
  </div>
  <div>
- <label className="block text-[11px] font-bold text-crm-muted uppercase tracking-wider mb-1">Description</label>
- <input value={form.description} onChange={e => setForm(f => ({ ...f, description: e.target.value }))}
+ <label htmlFor="service-description" className="block text-[11px] font-bold text-crm-muted uppercase tracking-wider mb-1">Description</label>
+ <input id="service-description" value={form.description} onChange={e => setForm(f => ({ ...f, description: e.target.value }))}
  placeholder="Optional description"
  className="w-full bg-crm-bg border border-crm-border rounded-xl px-3 py-2.5 text-crm-text text-[13px] focus:outline-none focus:border-crm-primary"
  />

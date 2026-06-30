@@ -103,7 +103,7 @@ export default function DynamicPricingSetup({ shopId }: { shopId: string }) {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
           <div>
-            <label className="block text-[13px] text-crm-muted mb-1">Rule Name</label>
+            <p className="block text-[13px] text-crm-muted mb-1">Rule Name</p>
             <input 
               type="text" 
               value={form.name} 

@@ -45,7 +45,7 @@ export default function CapitalOfferCard({ eligibleAmount, repaymentRate, feeAmo
           <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6">
             <div className="flex justify-between items-end mb-4">
               <div>
-                <label className="text-xs font-semibold text-gray-400 uppercase tracking-wider block mb-1">Select Amount</label>
+                <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider block mb-1">Select Amount</p>
                 <div className="text-3xl font-semibold">{formatCurrency(selectedAmount)}</div>
               </div>
             </div>
