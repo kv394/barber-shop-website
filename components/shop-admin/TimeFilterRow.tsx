@@ -32,24 +32,26 @@ const TimeFilterRow: React.FC<TimeFilterRowProps> = ({ defaultFrom, defaultTo, o
  return (
  <>
  <div className="w-full flex-1">
- <label className="block text-crm-muted mb-1 font-semibold uppercase tracking-wider text-[11px] sm:text-[13px]">
+ <label htmlFor="from" className="block text-crm-muted mb-1 font-semibold uppercase tracking-wider text-[11px] sm:text-[13px]">
  🕐 From
  </label>
  <input
  type="time"
  name="from"
+ id="from"
  value={defaultFrom}
  onChange={handleTimeChange}
  className="w-full p-2 sm:p-2.5 rounded-lg border border-crm-border shadow-sm text-crm-text text-[11px] sm:text-[13px] focus:ring-2 focus:ring-crm-primary focus:outline-none transition-all"
  />
  </div>
  <div className="w-full flex-1">
- <label className="block text-crm-muted mb-1 font-semibold uppercase tracking-wider text-[11px] sm:text-[13px]">
+ <label htmlFor="to" className="block text-crm-muted mb-1 font-semibold uppercase tracking-wider text-[11px] sm:text-[13px]">
  🕐 To
  </label>
  <input
  type="time"
  name="to"
+ id="to"
  value={defaultTo}
  onChange={handleTimeChange}
  className="w-full p-2 sm:p-2.5 rounded-lg border border-crm-border shadow-sm text-crm-text text-[11px] sm:text-[13px] focus:ring-2 focus:ring-crm-primary focus:outline-none transition-all"

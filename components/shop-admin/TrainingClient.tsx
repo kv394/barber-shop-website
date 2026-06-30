@@ -125,7 +125,7 @@ function ModuleCard({ module, progress, onClick, onDelete, isAdmin }: {
   const totalDuration = module.lessons.reduce((s, l) => s + l.durationMinutes, 0);
 
   return (
-    <div className="group relative cursor-pointer" onClick={onClick}>
+    <div className="group relative cursor-pointer" role="button" tabIndex={0} onClick={onClick} onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') onClick(); }}>
       <PremiumGlassCard className="!p-0 overflow-hidden hover:shadow-lg transition-all duration-300 hover:-translate-y-1 h-full">
         {/* Category gradient header */}
         <div className={`h-2 bg-gradient-to-r ${cat.bgAccent}`} />
@@ -290,25 +290,25 @@ function ModuleBuilder({ initial, onSave, onCancel }: { initial?: TrainingModule
       {activeTab === 'details' && (
         <div className="space-y-5">
           <div>
-            <label className={labelClass}>Module Title *</label>
-            <input value={title} onChange={e => setTitle(e.target.value)} placeholder="e.g., Fade Techniques Masterclass" className={inputClass} />
+            <label htmlFor="module-title" className={labelClass}>Module Title *</label>
+            <input id="module-title" value={title} onChange={e => setTitle(e.target.value)} placeholder="e.g., Fade Techniques Masterclass" className={inputClass} />
           </div>
           <div>
-            <label className={labelClass}>Description</label>
-            <textarea value={description} onChange={e => setDescription(e.target.value)} placeholder="What will staff learn in this module?" rows={3} className={inputClass + ' resize-none'} />
+            <label htmlFor="module-description" className={labelClass}>Description</label>
+            <textarea id="module-description" value={description} onChange={e => setDescription(e.target.value)} placeholder="What will staff learn in this module?" rows={3} className={inputClass + ' resize-none'} />
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
             <div>
-              <label className={labelClass}>Category</label>
-              <select value={category} onChange={e => setCategory(e.target.value as Category)} className={inputClass}>
+              <label htmlFor="module-category" className={labelClass}>Category</label>
+              <select id="module-category" value={category} onChange={e => setCategory(e.target.value as Category)} className={inputClass}>
                 {Object.entries(CATEGORY_META).map(([k, v]) => (
                   <option key={k} value={k}>{v.emoji} {v.label}</option>
                 ))}
               </select>
             </div>
             <div>
-              <label className={labelClass}>Difficulty</label>
-              <select value={difficulty} onChange={e => setDifficulty(e.target.value as Difficulty)} className={inputClass}>
+              <label htmlFor="module-difficulty" className={labelClass}>Difficulty</label>
+              <select id="module-difficulty" value={difficulty} onChange={e => setDifficulty(e.target.value as Difficulty)} className={inputClass}>
                 {Object.entries(DIFFICULTY_META).map(([k, v]) => (
                   <option key={k} value={k}>{v.label}</option>
                 ))}
@@ -336,12 +336,12 @@ function ModuleBuilder({ initial, onSave, onCancel }: { initial?: TrainingModule
                   <textarea value={lesson.content} onChange={e => updateLesson(idx, { content: e.target.value })} placeholder="Lesson content (text/instructions)..." rows={4} className={inputClass + ' resize-none'} />
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
-                      <label className={labelClass}>Duration (min)</label>
-                      <input type="number" min={1} value={lesson.durationMinutes} onChange={e => updateLesson(idx, { durationMinutes: parseInt(e.target.value) || 1 })} className={inputClass} />
+                      <label htmlFor={"lesson-duration-" + idx} className={labelClass}>Duration (min)</label>
+                      <input id={"lesson-duration-" + idx} type="number" min={1} value={lesson.durationMinutes} onChange={e => updateLesson(idx, { durationMinutes: parseInt(e.target.value) || 1 })} className={inputClass} />
                     </div>
                     <div>
-                      <label className={labelClass}>Video URL (optional)</label>
-                      <input value={lesson.videoUrl || ''} onChange={e => updateLesson(idx, { videoUrl: e.target.value })} placeholder="https://youtube.com/..." className={inputClass} />
+                      <label htmlFor={"lesson-video-" + idx} className={labelClass}>Video URL (optional)</label>
+                      <input id={"lesson-video-" + idx} value={lesson.videoUrl || ''} onChange={e => updateLesson(idx, { videoUrl: e.target.value })} placeholder="https://youtube.com/..." className={inputClass} />
                     </div>
                   </div>
                 </div>
