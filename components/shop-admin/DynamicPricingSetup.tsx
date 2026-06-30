@@ -115,8 +115,8 @@ export default function DynamicPricingSetup({ shopId }: { shopId: string }) {
           
           <div className="grid grid-cols-2 gap-2">
             <div>
-              <label className="block text-[13px] text-crm-muted mb-1">Type</label>
-              <select 
+              <label htmlFor="rule-type" className="block text-[13px] text-crm-muted mb-1">Type</label>
+              <select id="rule-type" 
                 value={form.type} 
                 onChange={e => setForm({...form, type: e.target.value})}
                 className="w-full bg-crm-surface border border-crm-border shadow-sm rounded px-3 py-2 text-crm-text text-[13px] focus:outline-none focus:border-brand-indigo"
@@ -126,8 +126,8 @@ export default function DynamicPricingSetup({ shopId }: { shopId: string }) {
               </select>
             </div>
             <div>
-              <label className="block text-[13px] text-crm-muted mb-1">Amount Type</label>
-              <select 
+              <label htmlFor="adjustment-type" className="block text-[13px] text-crm-muted mb-1">Amount Type</label>
+              <select id="adjustment-type" 
                 value={form.adjustmentType} 
                 onChange={e => setForm({...form, adjustmentType: e.target.value})}
                 className="w-full bg-crm-surface border border-crm-border shadow-sm rounded px-3 py-2 text-crm-text text-[13px] focus:outline-none focus:border-brand-indigo"
@@ -139,8 +139,8 @@ export default function DynamicPricingSetup({ shopId }: { shopId: string }) {
           </div>
 
           <div>
-            <label className="block text-[13px] text-crm-muted mb-1">Value</label>
-            <input 
+            <label htmlFor="adjustment-value" className="block text-[13px] text-crm-muted mb-1">Value</label>
+            <input id="adjustment-value" 
               type="number" 
               min={0}
               value={form.adjustmentValue} 
@@ -150,9 +150,9 @@ export default function DynamicPricingSetup({ shopId }: { shopId: string }) {
           </div>
           
           <div>
-            <label className="block text-[13px] text-crm-muted mb-1">Time Range (Optional)</label>
+            <p className="block font-medium text-crm-muted mb-2 text-[13px]">Link URL (Optional)</p>
             <div className="flex items-center gap-2">
-              <input 
+              <input id="start-time" 
                 type="time" 
                 value={form.startTime} 
                 onChange={e => setForm({...form, startTime: e.target.value})} 
@@ -170,7 +170,7 @@ export default function DynamicPricingSetup({ shopId }: { shopId: string }) {
         </div>
 
         <div className="mb-6">
-          <label className="block text-[13px] text-crm-muted mb-2">Days of Week</label>
+          <p className="block font-medium text-crm-muted mb-2 text-[13px]">Shop Logo</p>
           <div className="flex flex-wrap gap-2">
             {DAYS.map((day, idx) => (
               <button
@@ -208,7 +208,7 @@ export default function DynamicPricingSetup({ shopId }: { shopId: string }) {
               <div key={rule.id} className="flex flex-col md:flex-row md:items-center justify-between gap-4 p-4 border border-crm-border rounded-lg">
                 <div>
                   <div className="flex items-center gap-2 mb-1">
-                    <span className="font-medium text-crm-text text-[14px]">{rule.name}</span>
+                    <p className="block font-medium text-crm-text mb-2 text-[13px]">Custom Landing Page / SDK Allowed Domains (CORS)</p>
                     <span className={`px-2 py-0.5 rounded text-[11px] font-medium ${
                       rule.type === 'SURGE' ? 'bg-status-danger/10 text-status-danger' : 'bg-status-confirmed/10 text-status-confirmed'
                     }`}>
