@@ -66,3 +66,4 @@ test_auth_dump.sql
 !.dev.vars.example
 
 !.env.example
+.env*

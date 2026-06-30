@@ -64,10 +64,8 @@ export function ServiceForm({
           />
           
           <div className="space-y-1.5">
-            <label className="block font-semibold text-crm-muted text-[13px] uppercase tracking-wider">
-              Service Type *
-            </label>
-            <select
+            <label htmlFor="service-type" className="block font-semibold text-crm-muted text-[13px] uppercase tracking-wider">Service Type *</label>
+            <select id="service-type"
               value={newService.type}
               onChange={(e) => setNewService({ ...newService, type: e.target.value as 'CUSTOMER' | 'INTERNAL' })}
               className="w-full bg-crm-bg/50 backdrop-blur-sm border border-white/10 shadow-inner rounded-xl px-4 py-3 text-crm-text focus:ring-2 focus:ring-crm-primary transition-all focus:border-transparent outline-none appearance-none"
@@ -119,17 +117,15 @@ export function ServiceForm({
         </div>
 
         <div className="md:col-span-2">
-          <label className="block font-medium text-crm-muted mb-2 text-[13px]">
-            Service Image (optional)
-          </label>
-          <MediaPicker shopId={shopId} currentUrl={newService.imageUrl} onSelect={(url) => setNewService({ ...newService, imageUrl: url })} label="Upload/Select Service Image" />
+            <label htmlFor="service-image" className="block font-medium text-crm-muted mb-2 text-[13px]">Service Image (optional)</label>
+            <MediaPicker id="service-image" shopId={shopId} currentUrl={newService.imageUrl} onSelect={(url) => setNewService({ ...newService, imageUrl: url })} label="Upload/Select Service Image" />
         </div>
 
         {allAddons.length > 0 && ( 
           <div className="bg-crm-bg p-4 rounded border border-crm-border">
-            <label className="block font-medium text-crm-text mb-3 text-[13px]">
+            <p className="block font-medium text-crm-text mb-3 text-[13px]">
               Select Available Add-Ons for this Service
-            </label>
+            </p>
             <div className="flex flex-wrap gap-2">
               {allAddons.map((addon: any) => {
                 const isSelected = newService.addonIds.includes(addon.id);

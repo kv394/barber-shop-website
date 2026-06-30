@@ -49,10 +49,11 @@ export default function AssignShopAdminModal({
 
         <form onSubmit={handleSave} className="space-y-4">
           <div>
-            <label className="block font-bold text-crm-muted mb-2 uppercase tracking-wider text-[13px]">
+            <label htmlFor="email" className="block font-bold text-crm-muted mb-2 uppercase tracking-wider text-[13px]">
               Email Address
             </label>
             <input
+              id="email"
               type="email"
               required
               value={email}
@@ -63,10 +64,11 @@ export default function AssignShopAdminModal({
           </div>
 
           <div>
-            <label className="block font-bold text-crm-muted mb-2 uppercase tracking-wider text-[13px]">
+            <label htmlFor="role" className="block font-bold text-crm-muted mb-2 uppercase tracking-wider text-[13px]">
               Role
             </label>
             <select
+              id="role"
               value={role}
               onChange={(e) => setRole(e.target.value)}
               className="w-full bg-crm-bg border border-crm-border rounded-lg p-3 text-[13px] text-crm-text focus:ring-2 focus:ring-crm-primary focus:outline-none"
