@@ -124,7 +124,7 @@ export default function StaffProfileModalWrapper({ staff, shopId, children }: { 
  };
 
  const modalContent = (
- <div 
+ <div role="button" tabIndex={0} onKeyDown={e => (e.key === 'Enter' || e.key === 'Escape') && setIsOpen(false)} 
  className={`fixed inset-0 z-[100] flex items-center justify-center bg-black/40 backdrop-blur-sm p-4 transition-opacity duration-200 ${isOpen ? 'opacity-100' : 'opacity-0'}`} 
  onClick={() => setIsOpen(false)}
  style={{ pointerEvents: isOpen ? 'auto' : 'none' }}
@@ -161,16 +161,16 @@ export default function StaffProfileModalWrapper({ staff, shopId, children }: { 
  {isEditing ? (
  <div className="w-full mb-4 space-y-3">
  <div>
- <label className="block text-[11px] font-bold text-crm-muted uppercase tracking-wider mb-1">Name</label>
- <input type="text" value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})} className="w-full p-2 text-[13px] bg-crm-surface border border-crm-border rounded" />
+ <label htmlFor="name" className="block text-[11px] font-bold text-crm-muted uppercase tracking-wider mb-1">Name</label>
+ <input id="name" type="text" value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})} className="w-full p-2 text-[13px] bg-crm-surface border border-crm-border rounded" />
  </div>
  <div>
- <label className="block text-[11px] font-bold text-crm-muted uppercase tracking-wider mb-1">Phone</label>
- <input type="text" value={formData.phone} onChange={e => setFormData({...formData, phone: e.target.value})} className="w-full p-2 text-[13px] bg-crm-surface border border-crm-border rounded" />
+ <label htmlFor="phone" className="block text-[11px] font-bold text-crm-muted uppercase tracking-wider mb-1">Phone</label>
+ <input id="phone" type="text" value={formData.phone} onChange={e => setFormData({...formData, phone: e.target.value})} className="w-full p-2 text-[13px] bg-crm-surface border border-crm-border rounded" />
  </div>
  <div>
- <label className="block text-[11px] font-bold text-crm-muted uppercase tracking-wider mb-1">Employment Type</label>
- <select value={formData.employmentType} onChange={e => setFormData({...formData, employmentType: e.target.value})} className="w-full p-2 text-[13px] bg-crm-surface border border-crm-border rounded">
+ <label htmlFor="employment-type" className="block text-[11px] font-bold text-crm-muted uppercase tracking-wider mb-1">Employment Type</label>
+ <select id="employment-type" value={formData.employmentType} onChange={e => setFormData({...formData, employmentType: e.target.value})} className="w-full p-2 text-[13px] bg-crm-surface border border-crm-border rounded">
  <option value="W2">W2 Employee</option>
  <option value="CONTRACTOR">Independent Contractor (Booth Rent)</option>
  </select>
@@ -178,12 +178,12 @@ export default function StaffProfileModalWrapper({ staff, shopId, children }: { 
  {formData.employmentType === 'CONTRACTOR' && (
  <div className="flex gap-2">
  <div className="flex-1">
- <label className="block text-[11px] font-bold text-crm-muted uppercase tracking-wider mb-1">Rent Amount</label>
- <input type="number" value={formData.boothRentAmount} onChange={e => setFormData({...formData, boothRentAmount: e.target.value})} placeholder="0.00" className="w-full p-2 text-[13px] bg-crm-surface border border-crm-border rounded" />
+ <label htmlFor="rent-amount" className="block text-[11px] font-bold text-crm-muted uppercase tracking-wider mb-1">Rent Amount</label>
+ <input id="rent-amount" type="number" value={formData.boothRentAmount} onChange={e => setFormData({...formData, boothRentAmount: e.target.value})} placeholder="0.00" className="w-full p-2 text-[13px] bg-crm-surface border border-crm-border rounded" />
  </div>
  <div className="flex-1">
- <label className="block text-[11px] font-bold text-crm-muted uppercase tracking-wider mb-1">Interval</label>
- <select value={formData.boothRentInterval} onChange={e => setFormData({...formData, boothRentInterval: e.target.value})} className="w-full p-2 text-[13px] bg-crm-surface border border-crm-border rounded">
+ <label htmlFor="rent-interval" className="block text-[11px] font-bold text-crm-muted uppercase tracking-wider mb-1">Interval</label>
+ <select id="rent-interval" value={formData.boothRentInterval} onChange={e => setFormData({...formData, boothRentInterval: e.target.value})} className="w-full p-2 text-[13px] bg-crm-surface border border-crm-border rounded">
  <option value="WEEKLY">Weekly</option>
  <option value="MONTHLY">Monthly</option>
  </select>
@@ -202,8 +202,8 @@ export default function StaffProfileModalWrapper({ staff, shopId, children }: { 
   </div>
   {formData.isBookable && (
   <div className="mt-2">
-  <label className="block text-[11px] font-bold text-crm-muted uppercase tracking-wider mb-1">Booking Fee (%)</label>
-  <input type="number" step="0.1" min="0" max="100" value={formData.bookingFeePercent} onChange={e => setFormData({...formData, bookingFeePercent: e.target.value})} placeholder="e.g. 10" className="w-full p-2 text-[13px] bg-crm-surface border border-crm-border rounded" />
+  <label htmlFor="booking-fee" className="block text-[11px] font-bold text-crm-muted uppercase tracking-wider mb-1">Booking Fee (%)</label>
+  <input id="booking-fee" type="number" step="0.1" min="0" max="100" value={formData.bookingFeePercent} onChange={e => setFormData({...formData, bookingFeePercent: e.target.value})} placeholder="e.g. 10" className="w-full p-2 text-[13px] bg-crm-surface border border-crm-border rounded" />
   <p className="text-[10px] text-crm-muted mt-1">Percentage deducted from service revenue per booking</p>
   </div>
   )}
@@ -296,7 +296,7 @@ export default function StaffProfileModalWrapper({ staff, shopId, children }: { 
 
  return (
  <>
- <div onClick={() => setIsOpen(true)} className="cursor-pointer hover:opacity-80 transition-opacity flex-1 min-w-0">
+ <div role="button" tabIndex={0} onKeyDown={e => (e.key === 'Enter' || e.key === ' ') && setIsOpen(true)} onClick={() => setIsOpen(true)} className="cursor-pointer hover:opacity-80 transition-opacity flex-1 min-w-0">
  {children}
  </div>
 

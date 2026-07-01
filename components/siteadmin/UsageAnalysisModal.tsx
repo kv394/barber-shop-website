@@ -28,7 +28,7 @@ export default function UsageAnalysisModal({ shopId, shopName, onClose }: UsageA
 
  return (
  <div className="fixed inset-0 bg-crm-surface z-[100] flex items-center justify-center p-4 backdrop-blur-sm" onClick={onClose} role="button" tabIndex={0} onKeyDown={e => (e.key === 'Escape' || e.key === 'Enter') && onClose()}>
- <div className="bg-crm-surface rounded-xl p-6 w-full max-w-2xl border border-crm-border shadow-2xl relative" onClick={e => e.stopPropagation()}>
+ <div className="bg-crm-surface rounded-xl p-6 w-full max-w-2xl border border-crm-border shadow-2xl relative" onClick={e => e.stopPropagation()} role="presentation" tabIndex={-1}>
  <button
  onClick={onClose}
  className="absolute top-3 right-4 text-crm-primary bg-crm-surface hover:bg-gray-100 shadow-sm z-10 w-7 h-7 rounded-full flex items-center justify-center transition-colors font-bold text-[13px]"
