@@ -297,8 +297,6 @@ export default async function PublicShopPage({
   let dynamicTemplateHtml = null;
   let dynamicTemplateCss = null;
 
- if (!['modern', 'classic', 'minimal', 'sporty', 'corporate', 'noir', 'sunset', 'editorial'].includes(templateType)) {
-
   // Helper to normalize Google Drive image URLs
   const { normalizeGoogleDriveUrl: normalizeImageUrl } = await import('@/lib/image-utils');
 
@@ -308,11 +306,9 @@ export default async function PublicShopPage({
   heroImageUrl: normalizeImageUrl(shop.customization?.heroImageUrl) || shop.heroImageUrl
   };
 
-  // For 'custom' template type, use the shop's own customHtml (per-shop).
-  // Route it through dynamicTemplateHtml so it renders via DynamicTemplate
-  // component (which supports script execution for SDK) instead of the
-  // iframe-based CustomTemplate.
   if (shop.customization?.customHtml && shop.customization.customHtml.trim() !== '') {
+
+
   try {
   const Mustache = (await import('mustache')).default;
   let compiledHtml = Mustache.render(shop.customization.customHtml, {
@@ -339,7 +335,7 @@ export default async function PublicShopPage({
   console.error('Mustache error parsing customHtml:', e);
   dynamicTemplateHtml = shop.customization.customHtml;
   }
-  } else if (templateType !== 'custom') {
+  } else if (!['modern', 'classic', 'minimal', 'sporty', 'corporate', 'noir', 'sunset', 'editorial'].includes(templateType) && templateType !== 'custom') {
   // For non-custom dynamic templates, look up in DynamicTemplate table
   const dynamicTemplate = await prisma.dynamicTemplate.findUnique({
   where: { name: templateType }
