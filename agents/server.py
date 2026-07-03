@@ -7,16 +7,53 @@ import json
 from datetime import datetime, timedelta
 from typing import Optional
 from pydantic import BaseModel, Field
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Depends, Security
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.security import APIKeyHeader
+from starlette.status import HTTP_403_FORBIDDEN
 
 import pg8000
+import secrets
+import hmac
 
 
 # ── Configuration ─────────────────────────────────────────────────────────
 
 DATABASE_URL = os.environ.get("DATABASE_URL", "")
 PORT = int(os.environ.get("PORT", "8080"))
+
+# API Key for authentication — set this in Cloud Run env vars
+# Generate one with: python -c "import secrets; print(secrets.token_urlsafe(32))"
+AGENTS_API_KEY = os.environ.get("AGENTS_API_KEY", "")
+
+
+# ── Auth Dependency ───────────────────────────────────────────────────────
+
+api_key_header = APIKeyHeader(name="X-API-Key", auto_error=False)
+
+async def verify_api_key(api_key: str = Security(api_key_header)):
+    """Verify the API key from X-API-Key header."""
+    if not AGENTS_API_KEY:
+        # If no API key is configured, reject all requests (fail-closed)
+        raise HTTPException(
+            status_code=HTTP_403_FORBIDDEN,
+            detail="AGENTS_API_KEY not configured. Set it in environment variables."
+        )
+    
+    if not api_key:
+        raise HTTPException(
+            status_code=HTTP_403_FORBIDDEN,
+            detail="Missing X-API-Key header"
+        )
+    
+    # Constant-time comparison to prevent timing attacks
+    if not hmac.compare_digest(api_key, AGENTS_API_KEY):
+        raise HTTPException(
+            status_code=HTTP_403_FORBIDDEN,
+            detail="Invalid API key"
+        )
+    
+    return api_key
 
 
 def _get_db():
@@ -303,6 +340,8 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# ── Public Endpoints (no auth) ────────────────────────────────────────────
+
 @app.get("/")
 async def root():
     return {"service": "kutzapp-agents", "status": "running", "agents": ["bi", "engagement"]}
@@ -311,14 +350,16 @@ async def root():
 async def health():
     return {"status": "ok"}
 
-@app.post("/analyze", response_model=BusinessReport)
+# ── Protected Endpoints (require API key) ─────────────────────────────────
+
+@app.post("/analyze", response_model=BusinessReport, dependencies=[Depends(verify_api_key)])
 async def analyze(req: AnalyzeRequest):
     try:
         return analyze_shop_data(req.shop_id, req.shop_name)
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-@app.post("/engage", response_model=EngagementReport)
+@app.post("/engage", response_model=EngagementReport, dependencies=[Depends(verify_api_key)])
 async def engage(req: EngagementRequest):
     try:
         return find_and_engage_clients(req.shop_id, req.shop_name, req.dry_run)
