@@ -40,6 +40,7 @@ export default function ReportsClient({
   const [aiInsights, setAiInsights] = useState<string[]>([]);
   const [aiLoading, setAiLoading] = useState(false);
   const [aiError, setAiError] = useState<string | null>(null);
+  const [agentReport, setAgentReport] = useState<{ health_score: number; summary: string; insights: { title: string; detail: string; category: string; priority: string; action: string }[] } | null>(null);
   const formatCurrency = (val: number) => fmtPrice(val, currency);
 
  const filtered = useMemo(() => {
@@ -103,31 +104,53 @@ export default function ReportsClient({
  URL.revokeObjectURL(url);
  };
 
- const generateAiInsights = async () => {
-   setAiLoading(true);
-   setAiError(null);
-   setAiInsights([]);
-   try {
-     const res = await fetch(`/api/shops/${shopId}/reports/ai-insights`, {
-       method: 'POST',
-       headers: { 'Content-Type': 'application/json' },
-       body: JSON.stringify({
-         totalRevenue: filteredRevenue,
-         totalAppointments: filtered.length,
-         byStaff: byStaff.slice(0, 10), // Limit payload size
-         byService: byService.slice(0, 10),
-         dateRange: dateFrom && dateTo ? `${dateFrom} to ${dateTo}` : 'All Time'
-       }),
-     });
-     const data = await res.json();
-     if (!res.ok) throw new Error(data.error || 'Failed to generate insights');
-     setAiInsights(data.insights || []);
-   } catch (err: any) {
-     setAiError(err.message || 'Something went wrong');
-   } finally {
-     setAiLoading(false);
-   }
- };
+  const generateAiInsights = async () => {
+    setAiLoading(true);
+    setAiError(null);
+    setAiInsights([]);
+    setAgentReport(null);
+    try {
+      // Try the Cloud Run BI Agent first
+      const agentUrl = process.env.NEXT_PUBLIC_AGENTS_URL || 'https://kutzapp-agents-967709278571.us-central1.run.app';
+      const agentKey = process.env.NEXT_PUBLIC_AGENTS_API_KEY || '';
+      
+      if (agentKey) {
+        try {
+          const agentRes = await fetch(`${agentUrl}/analyze`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'X-API-Key': agentKey },
+            body: JSON.stringify({ shop_id: shopId, shop_name: 'Your Shop' }),
+          });
+          if (agentRes.ok) {
+            const report = await agentRes.json();
+            setAgentReport(report);
+            setAiInsights(report.insights?.map((i: any) => `[${i.category.toUpperCase()}] ${i.title}: ${i.detail} 💡 ${i.action}`) || []);
+            return;
+          }
+        } catch { /* Fall through to legacy endpoint */ }
+      }
+      
+      // Fallback: existing Gemini endpoint
+      const res = await fetch(`/api/shops/${shopId}/reports/ai-insights`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          totalRevenue: filteredRevenue,
+          totalAppointments: filtered.length,
+          byStaff: byStaff.slice(0, 10),
+          byService: byService.slice(0, 10),
+          dateRange: dateFrom && dateTo ? `${dateFrom} to ${dateTo}` : 'All Time'
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Failed to generate insights');
+      setAiInsights(data.insights || []);
+    } catch (err: any) {
+      setAiError(err.message || 'Something went wrong');
+    } finally {
+      setAiLoading(false);
+    }
+  };
 
  const inputStyle: React.CSSProperties = {};
  const isFiltered = dateFrom || dateTo;
@@ -223,11 +246,23 @@ export default function ReportsClient({
  </div>
 
   {/* AI Insights Card */}
-  {(aiInsights.length > 0 || aiLoading || aiError) && (
-    <div className="mb-6 bg-gradient-to-br from-indigo-50 to-purple-50 rounded-xl p-5 border border-indigo-100 shadow-sm animate-in fade-in slide-in-from-bottom-4">
-      <h3 className="font-bold text-indigo-900 mb-3 flex items-center gap-2">
-        <span className="text-xl">✨</span> Co-Pilot Insights
-      </h3>
+  {(aiInsights.length > 0 || aiLoading || aiError || agentReport) && (
+    <div className="mb-6 bg-gradient-to-br from-indigo-50 to-purple-50 dark:from-indigo-950/30 dark:to-purple-950/30 rounded-xl p-5 border border-indigo-100 dark:border-indigo-800/30 shadow-sm animate-in fade-in slide-in-from-bottom-4">
+      <div className="flex items-center justify-between mb-3">
+        <h3 className="font-bold text-indigo-900 dark:text-indigo-200 flex items-center gap-2">
+          <span className="text-xl">✨</span> {agentReport ? 'AI Agent Insights' : 'Co-Pilot Insights'}
+        </h3>
+        {agentReport && (
+          <div className="flex items-center gap-2">
+            <span className="text-xs text-indigo-600 dark:text-indigo-300 font-medium">Health Score</span>
+            <span className={`text-lg font-black ${
+              agentReport.health_score >= 80 ? 'text-green-600' :
+              agentReport.health_score >= 60 ? 'text-yellow-600' : 'text-red-600'
+            }`}>{agentReport.health_score}/100</span>
+          </div>
+        )}
+      </div>
+      {agentReport && <p className="text-sm text-indigo-700 dark:text-indigo-300 mb-3 italic">{agentReport.summary}</p>}
       {aiLoading ? (
         <div className="space-y-2 animate-pulse">
           <div className="h-4 bg-indigo-200/50 rounded w-3/4"></div>
@@ -236,10 +271,32 @@ export default function ReportsClient({
         </div>
       ) : aiError ? (
         <p className="text-red-500 text-sm">{aiError}</p>
+      ) : agentReport ? (
+        <div className="space-y-3">
+          {agentReport.insights.map((insight, idx) => (
+            <div key={idx} className={`rounded-lg p-3 border ${
+              insight.priority === 'high' ? 'bg-red-50 dark:bg-red-950/20 border-red-200 dark:border-red-800/30' :
+              insight.priority === 'medium' ? 'bg-yellow-50 dark:bg-yellow-950/20 border-yellow-200 dark:border-yellow-800/30' :
+              'bg-green-50 dark:bg-green-950/20 border-green-200 dark:border-green-800/30'
+            }`}>
+              <div className="flex items-center gap-2 mb-1">
+                <span className="text-xs font-bold uppercase tracking-wider text-indigo-500">{insight.category}</span>
+                <span className={`text-[10px] px-1.5 py-0.5 rounded-full font-semibold ${
+                  insight.priority === 'high' ? 'bg-red-200 text-red-800' :
+                  insight.priority === 'medium' ? 'bg-yellow-200 text-yellow-800' :
+                  'bg-green-200 text-green-800'
+                }`}>{insight.priority}</span>
+              </div>
+              <p className="text-sm font-semibold text-gray-900 dark:text-gray-100">{insight.title}</p>
+              <p className="text-sm text-gray-600 dark:text-gray-400 mt-0.5">{insight.detail}</p>
+              <p className="text-sm text-indigo-600 dark:text-indigo-300 mt-1 font-medium">💡 {insight.action}</p>
+            </div>
+          ))}
+        </div>
       ) : (
         <ul className="space-y-2">
           {aiInsights.map((insight, idx) => (
-            <li key={idx} className="text-indigo-800 text-sm leading-relaxed flex items-start gap-2">
+            <li key={idx} className="text-indigo-800 dark:text-indigo-200 text-sm leading-relaxed flex items-start gap-2">
               <span className="mt-1 flex-shrink-0 text-[10px]">🔹</span>
               <span>{insight}</span>
             </li>
