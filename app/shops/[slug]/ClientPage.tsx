@@ -200,9 +200,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
  ) : null;
 
  let templateComponent;
- if (templateType === 'custom' && dynamicTemplateHtml) templateComponent = <DynamicTemplate ctx={ctx} />;
- else if (templateType === 'custom') templateComponent = <CustomTemplate ctx={ctx} />;
- else if (dynamicTemplateHtml) templateComponent = <DynamicTemplate ctx={ctx} />;
+ if (dynamicTemplateHtml) templateComponent = <DynamicTemplate ctx={ctx} />;
  else if (templateType === 'sporty') templateComponent = <SportyTemplate ctx={ctx} />;
  else if (templateType === 'corporate') templateComponent = <CorporateTemplate ctx={ctx} />;
  else if (templateType === 'noir') templateComponent = <NoirTemplate ctx={ctx} />;
