@@ -12,6 +12,7 @@ interface Message {
 export default function ChatBox({ shopId }: { shopId: string }) {
  const [messages, setMessages] = useState<Message[]>([]);
  const [input, setInput] = useState('');
+ const [isThinking, setIsThinking] = useState(false);
  const supabase = createClient();
  const chatEndRef = useRef<HTMLDivElement>(null);
 
@@ -19,7 +20,7 @@ export default function ChatBox({ shopId }: { shopId: string }) {
  chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
  };
 
- useEffect(scrollToBottom, [messages]);
+ useEffect(scrollToBottom, [messages, isThinking]);
 
  const sendMessage = async () => {
  if (!input.trim()) return;
@@ -27,6 +28,7 @@ export default function ChatBox({ shopId }: { shopId: string }) {
  const userMessage: Message = { role: 'user', content: messageText };
  setMessages(prev => [...prev, userMessage]);
  setInput('');
+ setIsThinking(true);
 
  try {
  const { data: { session } } = await supabase.auth.getSession();
@@ -53,6 +55,8 @@ export default function ChatBox({ shopId }: { shopId: string }) {
  console.error('Error sending chat request', e);
  const errMsg: Message = { role: 'assistant', content: '⚠️ Something went wrong. Please try again.' };
  setMessages(prev => [...prev, errMsg]);
+ } finally {
+ setIsThinking(false);
  }
  };
 
@@ -79,6 +83,22 @@ export default function ChatBox({ shopId }: { shopId: string }) {
  )}
  </div>
  ))}
+ {isThinking && (
+ <div
+ className="chat-bubble assistant"
+ style={{
+ ...assistantBubbleStyle,
+ display: 'flex',
+ alignItems: 'center',
+ gap: '6px',
+ padding: '12px 14px'
+ }}
+ >
+ <span className="w-2 h-2 bg-gray-500 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+ <span className="w-2 h-2 bg-gray-500 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+ <span className="w-2 h-2 bg-gray-500 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+ </div>
+ )}
  <div ref={chatEndRef} />
  </div>
  <textarea
