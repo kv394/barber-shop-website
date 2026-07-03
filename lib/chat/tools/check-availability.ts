@@ -9,7 +9,7 @@ import type { ToolHandlerContext, ToolHandlerResult } from '../types';
  * Integrates with Google Calendar busy slots and scores results for gap-fill efficiency.
  */
 export async function handleCheckAvailability(
-  args: { date: string; serviceId: string; staffId?: string },
+  args: { date: string; time?: string; serviceId: string; staffId?: string },
   ctx: ToolHandlerContext
 ): Promise<ToolHandlerResult> {
   const { date, serviceId, staffId } = args;
@@ -90,6 +90,26 @@ export async function handleCheckAvailability(
 
   if (generatedSlots.length === 0) {
     return { result: { message: "No available slots on this date. Please try another date." } };
+  }
+
+  if (args.time) {
+    // Normalize time to HH:MM format in case AI passes H:MM
+    const [h, m] = args.time.split(':');
+    if (h && m) {
+      const normalizedTime = `${h.padStart(2, '0')}:${m.padStart(2, '0')}`;
+      const requestedSlot = generatedSlots.find(s => s.time === normalizedTime);
+      
+      if (requestedSlot) {
+        // If they requested a specific staff member and it's available with that staff member
+        // (the staffId returned in the slot is the available one)
+        return {
+          result: {
+            available: true,
+            message: `The requested time (${args.time}) is available with the requested staff member. Proceed to ask for the client's name and phone number to finalize the booking.`
+          }
+        };
+      }
+    }
   }
 
   // Score and sort slots by gap-fill efficiency

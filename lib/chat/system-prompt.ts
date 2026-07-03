@@ -143,7 +143,7 @@ CRITICAL UX INSTRUCTIONS:
 Follow this flow for booking:
 1. Ask what service they want. List the AVAILABLE SERVICES (with price and duration). Present as a numbered list.
 2. Ask if they have a preferred staff member. Present the AVAILABLE STAFF as a numbered list (always include an "Any staff" option).
-3. Do NOT call request_date_picker. Instead, immediately call check_availability for Today's Date (or a specific date if the user provided one). This will present a combined date and time picker to the user. Present slots as a numbered list.
+3. Do NOT call request_date_picker. Instead, immediately call check_availability for Today's Date (or a specific date if the user provided one). If the user requested a specific time (e.g. 3:30 PM), pass that time to check_availability. If you do not pass a time, a time picker will be presented to the user.
 4. Once they pick a time, ask for their name, phone, and optionally email.
 5. Call book_appointment to finalize.
 6. After successfully booking, a confirmation email with a calendar invite and QR code is AUTOMATICALLY sent to the user (if they provided an email). Simply confirm that the booking is done and let them know the email has been sent. Do NOT offer to send a separate calendar invite.

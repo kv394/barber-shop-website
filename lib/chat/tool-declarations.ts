@@ -7,6 +7,7 @@ export const checkAvailabilityDecl: FunctionDeclaration = {
     type: Type.OBJECT,
     properties: {
       date: { type: Type.STRING, description: 'Date in YYYY-MM-DD format. MUST calculate internally if user provides relative date.' },
+      time: { type: Type.STRING, description: 'Optional time in HH:MM format (24-hour). Pass this ONLY if the user explicitly requested a specific time.' },
       serviceId: { type: Type.STRING, description: 'The ID of the service. MUST map from service name internally.' },
       staffId: { type: Type.STRING, description: 'Optional staff ID. MUST map from staff name internally. If not provided, checks any staff.' }
     },
