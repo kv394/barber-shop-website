@@ -61,7 +61,7 @@ Make it punchy and designed to attract new clients to book an appointment.`;
     }
 
     const result = await ai.models.generateContent({
-      model: 'gemini-2.5-flash',
+      model: 'gemini-2.5-pro',
       contents: [{ role: 'user', parts: requestParts }],
       config: { temperature: 0.7 }
     });

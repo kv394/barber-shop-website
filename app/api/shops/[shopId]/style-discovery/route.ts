@@ -113,7 +113,7 @@ Rules:
 - Be realistic about what would look good based on face shape + hair type`;
 
  const response = await ai.models.generateContent({
- model: 'gemini-2.5-flash',
+ model: 'gemini-2.5-pro',
  contents: [
  {
  role: 'user',

@@ -50,7 +50,7 @@ Focus on:
 Return strictly a JSON object with these keys. If a key is not mentioned, omit it or leave it null.`;
 
  const response = await ai.models.generateContent({
- model: 'gemini-2.5-flash',
+ model: 'gemini-2.5-pro',
  contents: [
  {
  role: 'user',

@@ -114,7 +114,7 @@ Return a JSON object with this exact structure:
 Only include smsBody for SMS/BOTH channels. Only include emailSubject/emailBody for EMAIL/BOTH channels.`;
 
   const response = await ai.models.generateContent({
-    model: 'gemini-2.5-flash',
+    model: 'gemini-2.5-pro',
     contents: [{ role: 'user', parts: [{ text: prompt }] }],
     config: {
       temperature: 0.7,
