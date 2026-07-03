@@ -1,6 +1,7 @@
 import { logger } from "@/lib/logger";
 import { prisma, getTenantClient } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
+import { after } from 'next/server';
 import { createClient } from '@/utils/supabase/server';
 import { adminToolDeclarations, executeAdminTool } from '@/lib/ai-admin-tools';
 import { GoogleGenAI } from '@google/genai';
@@ -168,81 +169,82 @@ export async function POST(
  }
  }
  
- // Handle @help AI Assistant
- if (mentions.includes('help')) {
- const question = message.content.replace(/@help/gi, '').trim() || "What can you help me with?";
- 
- try {
-  const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY as string });
+  // Handle @help AI Assistant — run AFTER returning response for speed
+  if (mentions.includes('help')) {
+  const question = message.content.replace(/@help/gi, '').trim() || "What can you help me with?";
+  
+  after(async () => {
+  try {
+   const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY as string });
 
- // ─── Load rich shop context for the AI ───────────────────
- const [shop, services, staffList, todayAppointments, recentBookings, productCount, clientCount] = await Promise.all([
- tenantClient.shop.findUnique({
- where: { id: shopId },
- select: { name: true, timezone: true, customization: true, depositRequired: true, depositAmount: true },
- }),
- tenantClient.service.findMany({ where: { shopId, type: 'CUSTOMER' }, select: { name: true, price: true, duration: true } }),
- tenantClient.user.findMany({ where: { shopId, role: { in: ['STAFF', 'SHOP_ADMIN'] } }, select: { name: true, role: true } }),
- tenantClient.appointment.findMany({
- where: {
- shopId,
- startTime: { gte: new Date(new Date().setHours(0,0,0,0)), lt: new Date(new Date().setHours(23,59,59,999)) },
- status: { notIn: ['CANCELLED'] },
- },
- include: { staff: { select: { name: true } }, user: { select: { name: true } }, service: { select: { name: true } } },
- orderBy: { startTime: 'asc' },
- }),
- tenantClient.appointment.count({ where: { shopId, createdAt: { gte: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000) } } }),
- tenantClient.product.count({ where: { shopId } }),
- tenantClient.user.count({ where: { shopId, role: 'CLIENT' } }),
- ]);
+  // ─── Load rich shop context for the AI ───────────────────
+  const [shop, services, staffList, todayAppointments, recentBookings, productCount, clientCount] = await Promise.all([
+  tenantClient.shop.findUnique({
+  where: { id: shopId },
+  select: { name: true, timezone: true, customization: true, depositRequired: true, depositAmount: true },
+  }),
+  tenantClient.service.findMany({ where: { shopId, type: 'CUSTOMER' }, select: { name: true, price: true, duration: true } }),
+  tenantClient.user.findMany({ where: { shopId, role: { in: ['STAFF', 'SHOP_ADMIN'] } }, select: { name: true, role: true } }),
+  tenantClient.appointment.findMany({
+  where: {
+  shopId,
+  startTime: { gte: new Date(new Date().setHours(0,0,0,0)), lt: new Date(new Date().setHours(23,59,59,999)) },
+  status: { notIn: ['CANCELLED'] },
+  },
+  include: { staff: { select: { name: true } }, user: { select: { name: true } }, service: { select: { name: true } } },
+  orderBy: { startTime: 'asc' },
+  }),
+  tenantClient.appointment.count({ where: { shopId, createdAt: { gte: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000) } } }),
+  tenantClient.product.count({ where: { shopId } }),
+  tenantClient.user.count({ where: { shopId, role: 'CLIENT' } }),
+  ]);
 
- const shopTz = shop?.timezone || 'America/Chicago';
- const nowInShopTz = new Intl.DateTimeFormat('en-US', {
- timeZone: shopTz,
- weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',
- hour: '2-digit', minute: '2-digit', hour12: true,
- }).format(new Date());
+  const shopTz = shop?.timezone || 'America/Chicago';
+  const nowInShopTz = new Intl.DateTimeFormat('en-US', {
+  timeZone: shopTz,
+  weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',
+  hour: '2-digit', minute: '2-digit', hour12: true,
+  }).format(new Date());
 
- const todayDateStr = new Intl.DateTimeFormat('en-CA', { timeZone: shopTz, year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date());
+  const todayDateStr = new Intl.DateTimeFormat('en-CA', { timeZone: shopTz, year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date());
 
- const servicesText = services.length > 0
- ? services.map((s: any) => `  - ${s.name}: $${s.price} (${s.duration} min)`).join('\n')
- : '  No services configured yet.';
+  const servicesText = services.length > 0
+  ? services.map((s: any) => `  - ${s.name}: $${s.price} (${s.duration} min)`).join('\n')
+  : '  No services configured yet.';
 
- const staffText = staffList.length > 0
- ? staffList.map((s: any) => `  - ${s.name || 'Unnamed'} (${s.role})`).join('\n')
- : '  No staff configured yet.';
+  const staffText = staffList.length > 0
+  ? staffList.map((s: any) => `  - ${s.name || 'Unnamed'} (${s.role})`).join('\n')
+  : '  No staff configured yet.';
 
- const todayScheduleText = todayAppointments.length > 0
- ? todayAppointments.map((a: any) => {
- const time = new Intl.DateTimeFormat('en-US', { timeZone: shopTz, hour: '2-digit', minute: '2-digit', hour12: true }).format(new Date(a.startTime));
- return `  - ${time}: ${a.service?.name || 'Service'} with ${a.staff?.name || 'Staff'} → Client: ${a.user?.name || 'Walk-in'} [${a.status}]`;
- }).join('\n')
- : '  No appointments scheduled for today.';
+  const todayScheduleText = todayAppointments.length > 0
+  ? todayAppointments.map((a: any) => {
+  const time = new Intl.DateTimeFormat('en-US', { timeZone: shopTz, hour: '2-digit', minute: '2-digit', hour12: true }).format(new Date(a.startTime));
+  return `  - ${time}: ${a.service?.name || 'Service'} with ${a.staff?.name || 'Staff'} → Client: ${a.user?.name || 'Walk-in'} [${a.status}]`;
+  }).join('\n')
+  : '  No appointments scheduled for today.';
 
- const c = (shop?.customization as any) || {};
- const businessHours = (() => {
- const bh = c.businessHours || {};
- const days = ['monday','tuesday','wednesday','thursday','friday','saturday','sunday'];
- return days.map(d => {
- const day = bh[d];
- if (!day) return `  ${d.charAt(0).toUpperCase() + d.slice(1)}: CLOSED`;
- return `  ${d.charAt(0).toUpperCase() + d.slice(1)}: ${day.open || '9:00'} – ${day.close || '17:00'}`;
- }).join('\n');
- })();
+  const c = (shop?.customization as any) || {};
+  const businessHours = (() => {
+  const bh = c.businessHours || {};
+  const days = ['monday','tuesday','wednesday','thursday','friday','saturday','sunday'];
+  return days.map(d => {
+  const day = bh[d];
+  if (!day) return `  ${d.charAt(0).toUpperCase() + d.slice(1)}: CLOSED`;
+  return `  ${d.charAt(0).toUpperCase() + d.slice(1)}: ${day.open || '9:00'} – ${day.close || '17:00'}`;
+  }).join('\n');
+  })();
 
- const systemInstruction = `You are an expert AI assistant for "${shop?.name || 'this shop'}", a barbershop/salon management platform powered by KutzApp.
+  const systemInstruction = `You are an expert AI assistant for "${shop?.name || 'this shop'}", a barbershop/salon management platform powered by KutzApp.
 
 CURRENT DATE & TIME:
 - Right now it is: ${nowInShopTz}
 - Today's date (YYYY-MM-DD): ${todayDateStr}
 - Shop timezone: ${shopTz}
-- IMPORTANT: You MUST answer date/time questions directly. If the user asks "what is today's date" or "what day is it", respond with the exact date and time above.
+- IMPORTANT: You MUST answer date/time questions directly.
 
 THE USER:
 - Name: ${user.name || 'Unknown'}
-- Role: ${user.role} (${user.role === 'SHOP_ADMIN' ? 'Full admin access — can modify services, staff, settings' : 'Staff member — read-only, can view schedule and info'})
+- Role: ${user.role} (${user.role === 'SHOP_ADMIN' ? 'Full admin access' : 'Staff member — read-only'})
 
 SHOP OVERVIEW:
 - Shop Name: ${shop?.name || 'Unknown'}
@@ -277,116 +279,54 @@ YOUR CAPABILITIES:
 KUTZAPP PLATFORM FEATURES (you MUST reference these when answering feature questions):
 
 📅 BOOKING & SCHEDULING:
-- Online booking widget for clients (embeddable on any website)
-- Walk-in queue management
-- Recurring/repeat appointment scheduling
-- Appointment reminders via SMS and email (automated)
-- Buffer time between appointments (configurable per service)
-- Multi-staff calendar with drag-and-drop rescheduling
-- Blackout dates for holidays/closures
-- Resource management (chairs, stations, rooms) to prevent double-booking
+- Online booking widget, walk-in queue, recurring appointments
+- Automated SMS/email reminders, buffer time between appointments
+- Multi-staff calendar with drag-and-drop, blackout dates
+- Resource management (chairs/stations/rooms) to prevent double-booking
 
 💰 DYNAMIC PRICING:
-- Peak hour pricing — automatically charge more during busy times (configurable in Settings > Booking & Hours)
-- Weekend/holiday surcharges
-- Service-level pricing tiers
-- Custom pricing rules based on staff seniority
-- Deposit requirements (configurable amount, can be set per-service or shop-wide)
+- Peak hour pricing — auto-charge more during busy times (Settings > Booking & Hours)
+- Weekend/holiday surcharges, service-level pricing tiers
+- Staff seniority pricing rules, configurable deposit requirements
 
 💇 SERVICES & ADD-ONS:
-- Unlimited services with name, price, duration, description
-- Service categories and ordering
-- Add-ons (e.g., beard oil, hot towel) that clients can add during booking
-- Service-specific staff assignment
-- Break services (for staff lunch/breaks, not visible to clients)
+- Unlimited services with name/price/duration/description
+- Add-ons (beard oil, hot towel, etc.), service-specific staff assignment
+- Break services (staff lunch/breaks, not visible to clients)
 
 👥 CLIENT MANAGEMENT (CRM):
-- Full client profiles with visit history, spend, and notes
-- Client tags and segments (VIP, new, inactive, etc.)
-- Loyalty points system — clients earn points per visit/spend
-- Client-specific notes and preferences
-- Birthday tracking with automated birthday campaigns
-- Client feedback/review collection after each visit
+- Client profiles with visit history, spend, notes, tags (VIP, new, inactive)
+- Loyalty points system, birthday tracking, automated birthday campaigns
+- Feedback/review collection after visits
 
 🏆 GAMIFICATION:
 - Staff leaderboards (revenue, bookings, tips, reviews)
-- Achievement badges for staff milestones
-- Point-based reward system for staff performance
-- Client-facing loyalty tiers (Bronze, Silver, Gold, Platinum)
+- Achievement badges, point-based rewards, client loyalty tiers
 - Referral tracking and rewards
 
 📊 REPORTS & ANALYTICS:
-- Revenue reports (daily, weekly, monthly, custom range)
-- Staff performance breakdown
-- Service popularity analysis
-- No-show tracking and rates
-- Tip reports by staff
-- AI-powered business insights (via BI Agent — use get_business_insights tool)
-- CSV export for all reports
-- Client retention metrics
+- Revenue reports (daily/weekly/monthly), staff performance, service popularity
+- No-show tracking, tip reports, AI-powered business insights
+- CSV export, client retention metrics
 
 📣 MARKETING & CAMPAIGNS:
-- AI-generated campaign copy (SMS, Email, or both)
-- Client segmentation for targeted campaigns (inactive 30/60/90 days, birthdays, all)
-- Win-back campaigns for inactive clients (automated via Engagement Agent)
-- Social media caption generator with AI (analyzes portfolio images)
-- Campaign performance tracking
-- Bulk SMS/Email sending
+- AI-generated campaign copy (SMS/Email), client segmentation
+- Win-back campaigns, social media caption generator
+- Campaign performance tracking, bulk SMS/Email
 
-⭐ REVIEWS & REPUTATION:
-- Automated review request after appointments
-- Review display on shop's public page
-- Google review integration prompt
-- Review response management
-- Star rating analytics
-
-🎨 SHOP CUSTOMIZATION:
-- Custom landing page with branding (colors, logo, fonts, images)
-- Custom booking page URL
-- Service menu display on public page
-- Photo gallery/portfolio for showcasing work
-- Testimonials section
-- Team/staff bios on public page
-- SEO optimization for local search
-
-💬 TEAM CHAT (this feature!):
-- Real-time team messaging
-- @mention notifications for specific team members
-- @help AI assistant (that's you!) for instant answers and admin actions
-- Image sharing in chat
-- Read receipts
-- Message threading/replies
-
-📦 INVENTORY & PRODUCTS:
-- Product catalog management
-- Inventory tracking with stock counts
-- Low-stock alerts
-- Product sales tracking
-- Retail product display on booking page
-
-⚙️ SETTINGS & ADMIN:
-- Business hours configuration (per day, open/close times)
-- Timezone management
-- Staff roles and permissions (SHOP_ADMIN vs STAFF)
-- Multi-location support (Shop Access for staff across locations)
-- Notification preferences
-- AI token management (each AI feature uses tokens)
-- Webhook integrations
-- API access for third-party integrations
-
-📱 CLIENT-FACING FEATURES:
-- Mobile-optimized booking page
-- Client self-service (view/cancel/reschedule appointments)
-- Waitlist for fully-booked time slots
-- Client portal with appointment history
-- Push notifications for appointment reminders
+⭐ REVIEWS: Automated review requests, Google review integration, star rating analytics
+🎨 CUSTOMIZATION: Custom landing page, booking URL, portfolio gallery, team bios, SEO
+💬 TEAM CHAT: Real-time messaging, @mentions, @help AI, image sharing, read receipts, threading
+📦 INVENTORY: Product catalog, stock tracking, low-stock alerts, retail display
+⚙️ SETTINGS: Business hours, timezone, staff roles/permissions, multi-location, AI tokens, webhooks, API access
+📱 CLIENT-FACING: Mobile booking, self-service portal, waitlist, push notifications
 
 RESPONSE STYLE:
 - Keep answers short and actionable (this is a chat, not an email)
 - Use emoji sparingly for visual clarity
 - Format lists with bullet points or numbers
 - If you perform an action with a tool, confirm what you did clearly
-- When explaining features, tell them WHERE to find it in the dashboard (e.g., "Go to Settings > Booking & Hours")`;
+- When explaining features, tell them WHERE to find it (e.g., "Go to Settings > Booking & Hours")`;
 
   const genaiTools = [{ functionDeclarations: adminToolDeclarations.map((d: any) => ({
     name: d.name,
@@ -394,15 +334,14 @@ RESPONSE STYLE:
     parameters: d.parameters,
   })) }];
 
-  // Load recent chat history for context (last 20 messages)
+  // Load recent chat history for context (last 10 messages for speed)
   const recentMessages = await tenantClient.message.findMany({
     where: { shopId },
     include: { sender: { select: { name: true, role: true } } },
     orderBy: { createdAt: 'desc' },
-    take: 20,
+    take: 10,
   });
   
-  // Build conversation history (chronological order)
   const chatHistory = recentMessages.reverse().map((m: any) => {
     const senderName = m.sender?.name || 'Unknown';
     const isAi = m.sender?.name === 'AI Assistant';
@@ -412,14 +351,13 @@ RESPONSE STYLE:
     };
   });
 
-  // Add the current question at the end
   let formattedContents: any[] = [
     ...chatHistory,
     { role: 'user', parts: [{ text: `[${user.name || 'Admin'}]: ${question}` }] }
   ];
 
   let response = await ai.models.generateContent({
-    model: 'gemini-2.5-flash',
+    model: 'gemini-2.5-pro',
     contents: formattedContents,
     config: {
       temperature: 0.7,
@@ -428,19 +366,19 @@ RESPONSE STYLE:
     }
   });
 
- let finalResponseText = "";
- let functionCalls: any[] = [];
- 
- const extractParts = (res: any) => {
-   let text = "";
-   let fc = [];
-   const parts = res.candidates?.[0]?.content?.parts || [];
-   for (const part of parts) {
-     if (part.text && !part.thought) text += part.text;
-     if (part.functionCall) fc.push(part.functionCall);
-   }
-   return { text, fc };
- };
+  let finalResponseText = "";
+  let functionCalls: any[] = [];
+  
+  const extractParts = (res: any) => {
+    let text = "";
+    let fc = [];
+    const parts = res.candidates?.[0]?.content?.parts || [];
+    for (const part of parts) {
+      if (part.text && !part.thought) text += part.text;
+      if (part.functionCall) fc.push(part.functionCall);
+    }
+    return { text, fc };
+  };
 
   let extracted = extractParts(response);
   finalResponseText += extracted.text;
@@ -468,7 +406,7 @@ RESPONSE STYLE:
     formattedContents.push({ role: 'user', parts: toolResponses });
 
     response = await ai.models.generateContent({
-      model: 'gemini-2.5-flash',
+      model: 'gemini-2.5-pro',
       contents: formattedContents,
       config: {
         temperature: 0.7,
@@ -484,46 +422,46 @@ RESPONSE STYLE:
     functionCalls = extracted.fc;
   }
 
- if (totalTokensUsed > 0) {
- await tenantClient.shop.update({
- where: { id: shopId },
- data: { aiTokens: { decrement: totalTokensUsed } }
- });
- }
- 
- const aiUser = await tenantClient.user.upsert({
- where: { email: 'ai-assistant@system.local' },
- update: {},
- create: {
- id: 'system_ai_assistant',
- email: 'ai-assistant@system.local',
- name: 'AI Assistant',
- role: 'CLIENT',
- }
- });
+  if (totalTokensUsed > 0) {
+  await tenantClient.shop.update({
+  where: { id: shopId },
+  data: { aiTokens: { decrement: totalTokensUsed } }
+  });
+  }
+  
+  const aiUser = await tenantClient.user.upsert({
+  where: { email: 'ai-assistant@system.local' },
+  update: {},
+  create: {
+  id: 'system_ai_assistant',
+  email: 'ai-assistant@system.local',
+  name: 'AI Assistant',
+  role: 'CLIENT',
+  }
+  });
 
- await tenantClient.message.create({
- data: {
- shopId,
- senderId: aiUser.id,
- content: finalResponseText || "I have completed the task.",
- }
- });
- } catch (aiError) {
- logger.error("Error triggering AI assistant:", aiError);
- // Post a visible error message so the user knows the AI failed
- try {
- const aiUser = await tenantClient.user.upsert({
- where: { email: 'ai-assistant@system.local' },
- update: {},
- create: { id: 'system_ai_assistant', email: 'ai-assistant@system.local', name: 'AI Assistant', role: 'CLIENT' }
- });
- await tenantClient.message.create({
- data: { shopId, senderId: aiUser.id, content: '⚠️ Sorry, I encountered an error processing your request. Please try again in a moment.' }
- });
- } catch (_) { /* silently fail if even the error message fails */ }
- }
- }
+  await tenantClient.message.create({
+  data: {
+  shopId,
+  senderId: aiUser.id,
+  content: finalResponseText || "I have completed the task.",
+  }
+  });
+  } catch (aiError) {
+  logger.error("Error triggering AI assistant:", aiError);
+  try {
+  const aiUser = await tenantClient.user.upsert({
+  where: { email: 'ai-assistant@system.local' },
+  update: {},
+  create: { id: 'system_ai_assistant', email: 'ai-assistant@system.local', name: 'AI Assistant', role: 'CLIENT' }
+  });
+  await tenantClient.message.create({
+  data: { shopId, senderId: aiUser.id, content: '⚠️ Sorry, I encountered an error processing your request. Please try again in a moment.' }
+  });
+  } catch (_) { /* silently fail */ }
+  }
+  }); // end after()
+  }
  }
 
  return NextResponse.json(message);
