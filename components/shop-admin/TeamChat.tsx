@@ -38,6 +38,7 @@ export default function TeamChat({ shopId, currentUserId }: { shopId: string, cu
   const [replyingTo, setReplyingTo] = useState<Message | null>(null);
   const [nextCursor, setNextCursor] = useState<string | null>(null);
   const [loadingOlder, setLoadingOlder] = useState(false);
+  const [aiThinking, setAiThinking] = useState(false);
   
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const messagesContainerRef = useRef<HTMLDivElement>(null);
@@ -180,18 +181,27 @@ export default function TeamChat({ shopId, currentUserId }: { shopId: string, cu
         setMentionSearch(null);
         setReplyingTo(null);
         
-        // If @help was mentioned, poll for AI response since Realtime may not trigger
+        // If @help was mentioned, show thinking indicator and poll for AI response
         if (isAiMention) {
+          setAiThinking(true);
+          const msgCountBefore = messages.length + 1; // +1 for the message we just added
           const pollForAiResponse = async (attempts: number) => {
-            if (attempts <= 0) return;
+            if (attempts <= 0) { setAiThinking(false); return; }
             await new Promise(r => setTimeout(r, 2000));
             await fetchMessages();
-            // Keep polling if needed (the AI can take a few seconds)
-            if (attempts > 1) {
-              setTimeout(() => pollForAiResponse(attempts - 1), 0);
-            }
+            // Check if AI responded (message count increased)
+            setMessages(prev => {
+              if (prev.length > msgCountBefore) {
+                setAiThinking(false);
+              } else if (attempts > 1) {
+                setTimeout(() => pollForAiResponse(attempts - 1), 0);
+              } else {
+                setAiThinking(false);
+              }
+              return prev;
+            });
           };
-          pollForAiResponse(8); // Poll up to 8 times (16 seconds)
+          pollForAiResponse(15); // Poll up to 15 times (30 seconds for pro model)
         }
       } else {
         alert('Failed to send message');
@@ -359,6 +369,22 @@ export default function TeamChat({ shopId, currentUserId }: { shopId: string, cu
               </div>
             );
           })
+        )}
+        {/* AI Thinking Indicator */}
+        {aiThinking && (
+          <div className="flex flex-col items-start">
+            <span className="text-[11px] text-crm-muted mb-1 ml-1 flex items-center gap-1 font-medium">
+              AI Assistant
+            </span>
+            <div className="max-w-[85%] sm:max-w-[80%] p-3 rounded-2xl bg-crm-surface border border-crm-border shadow-sm text-crm-text rounded-bl-sm flex items-center gap-2">
+              <div className="flex gap-1 items-center">
+                <span className="w-2 h-2 bg-crm-primary rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+                <span className="w-2 h-2 bg-crm-primary rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+                <span className="w-2 h-2 bg-crm-primary rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+              </div>
+              <span className="text-sm text-crm-muted ml-1">Thinking...</span>
+            </div>
+          </div>
         )}
         <div ref={messagesEndRef} />
       </div>
