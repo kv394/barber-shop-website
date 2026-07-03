@@ -185,6 +185,12 @@ export default async function BookingsPage({ params }: { params: Promise<{ shopI
    <span className="font-bold text-crm-text text-[13px] bg-white/50 px-3 py-1.5 rounded-lg border border-white/20 shadow-inner">
    {apt.service.name}
    </span>
+   {apt.staff?.name && (
+     <span className="font-bold text-crm-text text-[13px] bg-white/50 px-3 py-1.5 rounded-lg border border-white/20 shadow-inner flex items-center gap-1.5">
+       <span className="text-base leading-none">💈</span>
+       <span>{apt.staff.name}</span>
+     </span>
+   )}
    <span className="text-brand-indigo text-[14px] font-black tracking-wide">
    {fmtPrice(apt.service.price, shop.currency)}
    </span>
