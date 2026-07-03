@@ -66,7 +66,7 @@ const getShopBySlug = cache(async (slug: string) => {
    );
    if (allMatches.length > 1) {
     const customMatch = allMatches.find(
-     (s: any) => s.template === 'custom' && s.customization?.customHtml
+     (s: any) => s.customization?.customHtml
     );
     if (customMatch) shop = customMatch;
    }
@@ -211,7 +211,7 @@ export default async function PublicShopPage({
        );
        if (allMatches.length > 1) {
         const customMatch = allMatches.find(
-         (c: any) => c.template === 'custom' && c.customization?.customHtml
+         (c: any) => c.customization?.customHtml
         );
         if (customMatch) s = customMatch;
        }
@@ -335,7 +335,7 @@ export default async function PublicShopPage({
   console.error('Mustache error parsing customHtml:', e);
   dynamicTemplateHtml = shop.customization.customHtml;
   }
-  } else if (!['modern', 'classic', 'minimal', 'sporty', 'corporate', 'noir', 'sunset', 'editorial'].includes(templateType) && templateType !== 'custom') {
+  } else if (!['modern', 'classic', 'minimal', 'sporty', 'corporate', 'noir', 'sunset', 'editorial'].includes(templateType)) {
   // For non-custom dynamic templates, look up in DynamicTemplate table
   const dynamicTemplate = await prisma.dynamicTemplate.findUnique({
   where: { name: templateType }

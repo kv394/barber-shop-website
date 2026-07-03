@@ -36,14 +36,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'No customHtml found' }, { status: 400 });
     }
 
-    // 1. Fix template to 'custom' if it has customHtml
-    if (shop.template !== 'custom') {
-      await prisma.shop.update({
-        where: { id: shopId },
-        data: { template: 'custom' }
-      });
-      changes.push(`Changed template from '${shop.template}' to 'custom'`);
-    }
+
 
     // 2. Detect nav structure and add Products/Reviews links if missing
     if (!html.includes('href="#products"')) {

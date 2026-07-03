@@ -1,7 +1,6 @@
 'use client';
 import Image from 'next/image';
 
-import CustomTemplate from './templates/CustomTemplate';import DynamicTemplate from './templates/DynamicTemplate';import SportyTemplate from './templates/SportyTemplate';import CorporateTemplate from './templates/CorporateTemplate';import NoirTemplate from './templates/NoirTemplate';import SunsetTemplate from './templates/SunsetTemplate';import EditorialTemplate from './templates/EditorialTemplate';import MinimalTemplate from './templates/MinimalTemplate';import ClassicTemplate from './templates/ClassicTemplate';import ModernTemplate from './templates/ModernTemplate';
 
 import { useState, useEffect } from 'react';
 import { normalizeGoogleDriveUrl } from '@/lib/image-utils';

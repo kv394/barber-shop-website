@@ -51,7 +51,7 @@ export async function POST(
 
  // SECURITY: Only allow known template values
  const allowedTemplates = Object.keys(AVAILABLE_TEMPLATES);
- let isValid = allowedTemplates.includes(template) || template === 'custom';
+ let isValid = allowedTemplates.includes(template);
 
  if (!isValid) {
  const dynamicTemplate = await tenantClient.dynamicTemplate.findUnique({
@@ -71,16 +71,7 @@ export async function POST(
 
  let updateData: any = { template };
  
- if (template === 'custom') {
- const shop = await tenantClient.shop.findUnique({ where: { id: shopId } });
- const currentCustomization = (shop?.customization as any) || {};
- updateData.customization = { 
- ...currentCustomization, 
- customHtml: customHtml || '',
- authPosition: authPosition || 'top-right',
- chatbotPosition: chatbotPosition || 'bottom-right'
- };
- }
+
 
  const updatedShop = await tenantClient.shop.update({
  where: { id: shopId },

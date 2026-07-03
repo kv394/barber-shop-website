@@ -60,11 +60,10 @@ export async function POST(request: Request) {
 
     const customization = (shop.customization || {}) as any;
 
-    // Update the shop with the HTML and ensure template is 'custom'
+    // Update the shop with the HTML
     await prisma.shop.update({
       where: { id: shopId },
       data: {
-        template: 'custom',
         customization: {
           ...customization,
           customHtml: html
