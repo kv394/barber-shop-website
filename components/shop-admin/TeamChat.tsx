@@ -156,13 +156,16 @@ export default function TeamChat({ shopId, currentUserId }: { shopId: string, cu
     e.preventDefault();
     if ((!newMessage.trim() && !imageUrl.trim()) || sending) return;
 
+    const messageContent = newMessage;
+    const isAiMention = /@help/i.test(messageContent);
+    
     setSending(true);
     try {
       const res = await fetch(`/api/shops/${shopId}/chat`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
-          content: newMessage, 
+          content: messageContent, 
           imageUrl: imageUrl.trim() || null,
           parentId: replyingTo?.id || null 
         })
@@ -176,6 +179,20 @@ export default function TeamChat({ shopId, currentUserId }: { shopId: string, cu
         setShowImageInput(false);
         setMentionSearch(null);
         setReplyingTo(null);
+        
+        // If @help was mentioned, poll for AI response since Realtime may not trigger
+        if (isAiMention) {
+          const pollForAiResponse = async (attempts: number) => {
+            if (attempts <= 0) return;
+            await new Promise(r => setTimeout(r, 2000));
+            await fetchMessages();
+            // Keep polling if needed (the AI can take a few seconds)
+            if (attempts > 1) {
+              setTimeout(() => pollForAiResponse(attempts - 1), 0);
+            }
+          };
+          pollForAiResponse(8); // Poll up to 8 times (16 seconds)
+        }
       } else {
         alert('Failed to send message');
       }
