@@ -123,16 +123,20 @@ export default function StaffProfileModalWrapper({ staff, shopId, children }: { 
  }
  };
 
- const modalContent = (
- <div role="button" tabIndex={0} onKeyDown={e => (e.key === 'Enter' || e.key === 'Escape') && setIsOpen(false)} 
- className={`fixed inset-0 z-[100] flex items-center justify-center bg-black/40 backdrop-blur-sm p-4 transition-opacity duration-200 ${isOpen ? 'opacity-100' : 'opacity-0'}`} 
- onClick={() => setIsOpen(false)}
- style={{ pointerEvents: isOpen ? 'auto' : 'none' }}
- >
- <div 
- className={`bg-crm-bg border border-crm-border shadow-sm rounded-2xl p-6 w-full max-w-sm shadow-2xl relative transition-all duration-200 flex flex-col max-h-[90vh] ${isOpen ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-4 scale-95 pointer-events-none'}`} 
- onClick={e => e.stopPropagation()}
- >
+  const modalContent = (
+	{/* eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */}
+	<div 
+		className={`fixed inset-0 z-[100] flex items-center justify-center bg-black/40 backdrop-blur-sm p-4 transition-opacity duration-200 ${isOpen ? 'opacity-100' : 'opacity-0'}`} 
+		onClick={() => setIsOpen(false)}
+		style={{ pointerEvents: isOpen ? 'auto' : 'none' }}
+	>
+	<div 
+		role="dialog"
+		aria-modal="true"
+		aria-label="Staff profile"
+		className={`bg-crm-bg border border-crm-border shadow-sm rounded-2xl p-6 w-full max-w-sm shadow-2xl relative transition-all duration-200 flex flex-col max-h-[90vh] ${isOpen ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-4 scale-95 pointer-events-none'}`} 
+		onClick={e => e.stopPropagation()}
+	>
  <button onClick={() => setIsOpen(false)} className="absolute top-3 right-4 text-crm-primary bg-crm-surface hover:bg-gray-100 shadow-sm z-10 w-7 h-7 rounded-full flex items-center justify-center transition-colors font-bold text-[13px]">
  ✕
  </button>
@@ -160,34 +164,39 @@ export default function StaffProfileModalWrapper({ staff, shopId, children }: { 
 
  {isEditing ? (
  <div className="w-full mb-4 space-y-3">
- <div>
- <label htmlFor="name" className="block text-[11px] font-bold text-crm-muted uppercase tracking-wider mb-1">Name</label>
- <input id="name" type="text" value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})} className="w-full p-2 text-[13px] bg-crm-surface border border-crm-border rounded" />
- </div>
- <div>
- <label htmlFor="phone" className="block text-[11px] font-bold text-crm-muted uppercase tracking-wider mb-1">Phone</label>
- <input id="phone" type="text" value={formData.phone} onChange={e => setFormData({...formData, phone: e.target.value})} className="w-full p-2 text-[13px] bg-crm-surface border border-crm-border rounded" />
- </div>
- <div>
- <label htmlFor="employment-type" className="block text-[11px] font-bold text-crm-muted uppercase tracking-wider mb-1">Employment Type</label>
- <select id="employment-type" value={formData.employmentType} onChange={e => setFormData({...formData, employmentType: e.target.value})} className="w-full p-2 text-[13px] bg-crm-surface border border-crm-border rounded">
- <option value="W2">W2 Employee</option>
- <option value="CONTRACTOR">Independent Contractor (Booth Rent)</option>
- </select>
- </div>
+ 		<div>
+		<label className="block text-[11px] font-bold text-crm-muted uppercase tracking-wider mb-1">Name
+		<input type="text" value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})} className="w-full p-2 text-[13px] bg-crm-surface border border-crm-border rounded" />
+		</label>
+		</div>
+ 		<div>
+		<label className="block text-[11px] font-bold text-crm-muted uppercase tracking-wider mb-1">Phone
+		<input type="text" value={formData.phone} onChange={e => setFormData({...formData, phone: e.target.value})} className="w-full p-2 text-[13px] bg-crm-surface border border-crm-border rounded" />
+		</label>
+		</div>
+ 		<div>
+		<label className="block text-[11px] font-bold text-crm-muted uppercase tracking-wider mb-1">Employment Type
+		<select value={formData.employmentType} onChange={e => setFormData({...formData, employmentType: e.target.value})} className="w-full p-2 text-[13px] bg-crm-surface border border-crm-border rounded">
+		<option value="W2">W2 Employee</option>
+		<option value="CONTRACTOR">Independent Contractor (Booth Rent)</option>
+		</select>
+		</label>
+		</div>
  {formData.employmentType === 'CONTRACTOR' && (
  <div className="flex gap-2">
- <div className="flex-1">
- <label htmlFor="rent-amount" className="block text-[11px] font-bold text-crm-muted uppercase tracking-wider mb-1">Rent Amount</label>
- <input id="rent-amount" type="number" value={formData.boothRentAmount} onChange={e => setFormData({...formData, boothRentAmount: e.target.value})} placeholder="0.00" className="w-full p-2 text-[13px] bg-crm-surface border border-crm-border rounded" />
- </div>
- <div className="flex-1">
- <label htmlFor="rent-interval" className="block text-[11px] font-bold text-crm-muted uppercase tracking-wider mb-1">Interval</label>
- <select id="rent-interval" value={formData.boothRentInterval} onChange={e => setFormData({...formData, boothRentInterval: e.target.value})} className="w-full p-2 text-[13px] bg-crm-surface border border-crm-border rounded">
- <option value="WEEKLY">Weekly</option>
- <option value="MONTHLY">Monthly</option>
- </select>
- </div>
+ 		<div className="flex-1">
+		<label className="block text-[11px] font-bold text-crm-muted uppercase tracking-wider mb-1">Rent Amount
+		<input type="number" value={formData.boothRentAmount} onChange={e => setFormData({...formData, boothRentAmount: e.target.value})} placeholder="0.00" className="w-full p-2 text-[13px] bg-crm-surface border border-crm-border rounded" />
+		</label>
+		</div>
+ 		<div className="flex-1">
+		<label className="block text-[11px] font-bold text-crm-muted uppercase tracking-wider mb-1">Interval
+		<select value={formData.boothRentInterval} onChange={e => setFormData({...formData, boothRentInterval: e.target.value})} className="w-full p-2 text-[13px] bg-crm-surface border border-crm-border rounded">
+		<option value="WEEKLY">Weekly</option>
+		<option value="MONTHLY">Monthly</option>
+		</select>
+		</label>
+		</div>
  </div>
  )}
  <div className="flex items-center gap-2 mt-2">
@@ -201,10 +210,11 @@ export default function StaffProfileModalWrapper({ staff, shopId, children }: { 
   <label htmlFor="isBookable" className="text-[13px] font-medium text-crm-text">Allow Online Bookings</label>
   </div>
   {formData.isBookable && (
-  <div className="mt-2">
-  <label htmlFor="booking-fee" className="block text-[11px] font-bold text-crm-muted uppercase tracking-wider mb-1">Booking Fee (%)</label>
-  <input id="booking-fee" type="number" step="0.1" min="0" max="100" value={formData.bookingFeePercent} onChange={e => setFormData({...formData, bookingFeePercent: e.target.value})} placeholder="e.g. 10" className="w-full p-2 text-[13px] bg-crm-surface border border-crm-border rounded" />
-  <p className="text-[10px] text-crm-muted mt-1">Percentage deducted from service revenue per booking</p>
+   <div className="mt-2">
+   <label className="block text-[11px] font-bold text-crm-muted uppercase tracking-wider mb-1">Booking Fee (%)
+   <input type="number" step="0.1" min="0" max="100" value={formData.bookingFeePercent} onChange={e => setFormData({...formData, bookingFeePercent: e.target.value})} placeholder="e.g. 10" className="w-full p-2 text-[13px] bg-crm-surface border border-crm-border rounded" />
+   </label>
+   <p className="text-[10px] text-crm-muted mt-1">Percentage deducted from service revenue per booking</p>
   </div>
   )}
   </>
@@ -296,9 +306,10 @@ export default function StaffProfileModalWrapper({ staff, shopId, children }: { 
 
  return (
  <>
- <div role="button" tabIndex={0} onKeyDown={e => (e.key === 'Enter' || e.key === ' ') && setIsOpen(true)} onClick={() => setIsOpen(true)} className="cursor-pointer hover:opacity-80 transition-opacity flex-1 min-w-0">
- {children}
- </div>
+ 	{/* eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */}
+	<div role="button" tabIndex={0} onKeyDown={e => (e.key === 'Enter' || e.key === ' ') && setIsOpen(true)} onClick={() => setIsOpen(true)} className="cursor-pointer hover:opacity-80 transition-opacity flex-1 min-w-0">
+	{children}
+	</div>
 
  {isRendered && mounted && createPortal(modalContent, document.body)}
  </>
