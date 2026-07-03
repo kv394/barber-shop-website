@@ -1,23 +1,12 @@
 import { NextResponse } from 'next/server';
 import { requireShopRole, isAuthError } from '@/lib/auth';
 import { logger } from '@/lib/logger';
-import { VertexAI } from '@google-cloud/vertexai';
+import { GoogleGenAI } from '@google/genai';
 import { getTenantClient } from '@/lib/prisma';
 
 export const dynamic = 'force-dynamic';
 
-const vertex_ai = new VertexAI({
-  project: 'igneous-etching-492302-v7', 
-  location: 'us-central1'
-});
-
-const generativeModel = vertex_ai.preview.getGenerativeModel({
-  model: 'gemini-1.5-flash',
-  generationConfig: {
-    temperature: 0.2, // Low temperature for more analytical/factual responses
-    responseMimeType: 'application/json',
-  },
-});
+const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY as string });
 
 export async function POST(
  request: Request,
@@ -66,18 +55,20 @@ Return a JSON object with this exact structure:
  ]
 }`;
 
-   const requestParts = {
-     contents: [{ role: 'user', parts: [{ text: prompt }] }]
-   };
-
-   const responseStream = await generativeModel.generateContentStream(requestParts);
-   const aggregatedResponse = await responseStream.response;
-   
-   const resultText = aggregatedResponse.candidates?.[0]?.content?.parts?.[0]?.text;
-   
-   if (!resultText) {
-     throw new Error('No response from AI');
-   }
+    const response = await ai.models.generateContent({
+      model: 'gemini-2.5-flash',
+      contents: [{ role: 'user', parts: [{ text: prompt }] }],
+      config: {
+        temperature: 0.2,
+        responseMimeType: 'application/json',
+      }
+    });
+    
+    const resultText = response.candidates?.[0]?.content?.parts?.[0]?.text;
+    
+    if (!resultText) {
+      throw new Error('No response from AI');
+    }
 
    let parsed;
    try {

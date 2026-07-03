@@ -1,21 +1,11 @@
 import { NextResponse } from 'next/server';
 import { prisma, getTenantClient } from '@/lib/prisma';
 import { requireShopRole } from '@/lib/auth';
-import { VertexAI } from '@google-cloud/vertexai';
+import { GoogleGenAI } from '@google/genai';
 
 export const dynamic = 'force-dynamic';
 
-const vertex_ai = new VertexAI({
-  project: 'igneous-etching-492302-v7', 
-  location: 'us-central1'
-});
-
-const generativeModel = vertex_ai.preview.getGenerativeModel({
-  model: 'gemini-1.5-flash',
-  generationConfig: {
-    temperature: 0.7,
-  },
-});
+const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY as string });
 
 export async function POST(
   request: Request,
@@ -70,10 +60,12 @@ Make it punchy and designed to attract new clients to book an appointment.`;
       requestParts.push(imagePart);
     }
 
-    const result = await generativeModel.generateContent({
-      contents: [{ role: 'user', parts: requestParts }]
+    const result = await ai.models.generateContent({
+      model: 'gemini-2.5-flash',
+      contents: [{ role: 'user', parts: requestParts }],
+      config: { temperature: 0.7 }
     });
-    const generatedCaption = result.response.candidates?.[0]?.content?.parts?.[0]?.text;
+    const generatedCaption = result.candidates?.[0]?.content?.parts?.[0]?.text;
 
     if (!generatedCaption) {
       throw new Error("No caption generated from AI");
