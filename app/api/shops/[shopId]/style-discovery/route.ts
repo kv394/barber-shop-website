@@ -4,6 +4,9 @@ import { GoogleGenAI } from '@google/genai';
 import { prisma, getTenantClient } from '@/lib/prisma';
 import { rateLimit } from '@/lib/rate-limiter';
 
+export const maxDuration = 60;
+
+
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
 export async function POST(

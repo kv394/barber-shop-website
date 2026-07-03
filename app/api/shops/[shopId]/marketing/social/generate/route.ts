@@ -3,6 +3,9 @@ import { prisma, getTenantClient } from '@/lib/prisma';
 import { requireShopRole } from '@/lib/auth';
 import { GoogleGenAI } from '@google/genai';
 
+export const maxDuration = 60;
+
+
 export const dynamic = 'force-dynamic';
 
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY as string });

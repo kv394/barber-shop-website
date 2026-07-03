@@ -4,6 +4,9 @@ import { logger } from '@/lib/logger';
 import { GoogleGenAI } from '@google/genai';
 import { getTenantClient } from '@/lib/prisma';
 
+export const maxDuration = 60;
+
+
 export const dynamic = 'force-dynamic';
 
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY as string });
