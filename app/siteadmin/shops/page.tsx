@@ -7,7 +7,7 @@ import DeleteShopButton from '@/components/shop-admin/DeleteShopButton';
 import UsageAnalysisModal from '@/components/siteadmin/UsageAnalysisModal';
 import AssignShopAdminModal from '@/components/siteadmin/AssignShopAdminModal';
 import PremiumFeaturesModal from '@/components/siteadmin/PremiumFeaturesModal';
-import HelpTooltip from '@/components/HelpTooltip';
+
 import BulkActionBar from '@/components/BulkActionBar';
 import PaginationControls from '@/components/PaginationControls';
 
