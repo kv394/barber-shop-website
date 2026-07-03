@@ -312,7 +312,7 @@ export default async function PublicShopPage({
   // Route it through dynamicTemplateHtml so it renders via DynamicTemplate
   // component (which supports script execution for SDK) instead of the
   // iframe-based CustomTemplate.
-  if (templateType === 'custom' && shop.customization?.customHtml) {
+  if (shop.customization?.customHtml && shop.customization.customHtml.trim() !== '') {
   try {
   const Mustache = (await import('mustache')).default;
   let compiledHtml = Mustache.render(shop.customization.customHtml, {
