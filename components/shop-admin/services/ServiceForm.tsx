@@ -118,7 +118,7 @@ export function ServiceForm({
 
         <div className="md:col-span-2">
             <label htmlFor="service-image" className="block font-medium text-crm-muted mb-2 text-[13px]">Service Image (optional)</label>
-            <MediaPicker id="service-image" shopId={shopId} currentUrl={newService.imageUrl} onSelect={(url) => setNewService({ ...newService, imageUrl: url })} label="Upload/Select Service Image" />
+            <MediaPicker shopId={shopId} currentUrl={newService.imageUrl} onSelect={(url) => setNewService({ ...newService, imageUrl: url })} label="Upload/Select Service Image" />
         </div>
 
         {allAddons.length > 0 && ( 
