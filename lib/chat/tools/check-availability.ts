@@ -63,6 +63,10 @@ export async function handleCheckAvailability(
 
       const timeStr = `${hour.toString().padStart(2, '0')}:${min.toString().padStart(2, '0')}`;
       const slotStartTime = new Date(startOfDay.getTime() + (hour * 60 + min) * 60000);
+      
+      // Do not allow booking slots in the past
+      if (slotStartTime <= new Date()) continue;
+
       const slotEndTime = new Date(slotStartTime.getTime() + service.duration * 60000);
 
       let isAvailable = false;
