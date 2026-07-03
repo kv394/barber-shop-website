@@ -387,7 +387,7 @@ export default async function PublicShopPage({
   }
   }
   }
- }
+
 
  // Pass everything to the Client Component
  return (
