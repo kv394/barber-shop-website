@@ -330,12 +330,17 @@ export default async function PublicShopPage({
   compiledHtml = themeInjection + compiledHtml;
   }
   dynamicTemplateHtml = compiledHtml;
-  } catch (e) {
+  } catch (e: any) {
   // If Handlebars fails, use the raw HTML as-is
   console.error('Mustache error parsing customHtml:', e);
-  dynamicTemplateHtml = shop.customization.customHtml;
+  dynamicTemplateHtml = `<!-- ERROR: ${e.message} -->\n` + shop.customization.customHtml;
   }
-  } else if (!['modern', 'classic', 'minimal', 'sporty', 'corporate', 'noir', 'sunset', 'editorial'].includes(templateType)) {
+  } else {
+    dynamicTemplateHtml = `<!-- DEBUG: customHtml is falsy! Type: ${typeof shop.customization?.customHtml}, Len: ${shop.customization?.customHtml?.length} -->`;
+  }
+  
+  if (!['modern', 'classic', 'minimal', 'sporty', 'corporate', 'noir', 'sunset', 'editorial'].includes(templateType) && !shop.customization?.customHtml) {
+
   // For non-custom dynamic templates, look up in DynamicTemplate table
   const dynamicTemplate = await prisma.dynamicTemplate.findUnique({
   where: { name: templateType }
