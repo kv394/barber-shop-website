@@ -26,7 +26,7 @@ export default function UsageAnalysisModal({ shopId, shopName, onClose }: UsageA
  .finally(() => setLoading(false));
  }, [shopId]);
 
-  /* eslint-disable jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */
+
  return (
 	<div className="fixed inset-0 bg-crm-surface z-[100] flex items-center justify-center p-4 backdrop-blur-sm" onClick={onClose}>
 	<div role="dialog" aria-modal="true" aria-label="Usage analysis" className="bg-crm-surface rounded-xl p-6 w-full max-w-2xl border border-crm-border shadow-2xl relative" onClick={e => e.stopPropagation()}>

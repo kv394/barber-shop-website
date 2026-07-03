@@ -123,7 +123,7 @@ export default function StaffProfileModalWrapper({ staff, shopId, children }: { 
  }
  };
 
-  /* eslint-disable jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */
+
   const modalContent = (
 	<div 
 		className={`fixed inset-0 z-[100] flex items-center justify-center bg-black/40 backdrop-blur-sm p-4 transition-opacity duration-200 ${isOpen ? 'opacity-100' : 'opacity-0'}`} 
@@ -306,7 +306,7 @@ export default function StaffProfileModalWrapper({ staff, shopId, children }: { 
 
  return (
  <>
- 	{/* eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */}
+
 	<div role="button" tabIndex={0} onKeyDown={e => (e.key === 'Enter' || e.key === ' ') && setIsOpen(true)} onClick={() => setIsOpen(true)} className="cursor-pointer hover:opacity-80 transition-opacity flex-1 min-w-0">
 	{children}
 	</div>
