@@ -4,7 +4,6 @@ import Image from 'next/image';
 import { useState } from 'react';
 
 import { CustomizationForm } from '@/components/shop-admin/CustomizationForm';
-import { CustomPagesForm } from '@/components/shop-admin/CustomPagesForm';
 
 interface SettingsFormManagerProps {
  shopId: string;
@@ -34,12 +33,6 @@ export function SettingsFormManager({
  dynamicTemplates={dynamicTemplates}
  />
 
- {selectedTemplate !== 'custom' && (
- <CustomPagesForm
- shopId={shopId}
- customization={customization}
- />
- )}
  </>
  );
 }
