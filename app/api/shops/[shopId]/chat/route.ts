@@ -287,7 +287,7 @@ RESPONSE STYLE:
   let formattedContents: any[] = [{ role: 'user', parts: [{ text: question }] }];
 
   let response = await ai.models.generateContent({
-    model: 'gemini-2.0-flash',
+    model: 'gemini-2.5-flash',
     contents: formattedContents,
     config: {
       temperature: 0.7,
@@ -336,7 +336,7 @@ RESPONSE STYLE:
     formattedContents.push({ role: 'user', parts: toolResponses });
 
     response = await ai.models.generateContent({
-      model: 'gemini-2.0-flash',
+      model: 'gemini-2.5-flash',
       contents: formattedContents,
       config: {
         temperature: 0.7,
