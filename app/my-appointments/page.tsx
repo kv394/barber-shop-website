@@ -83,11 +83,10 @@ export default function MyAppointmentsPage() {
  fetchAppointments();
  }, []);
 
- function promptCancel(id: string) {
- setCancellingId(id);
- }
-
  async function handleCancel(id: string) {
+ if (!window.confirm("Are you sure you want to cancel this appointment? This action cannot be undone.")) {
+ return;
+ }
  setCancelling(id);
  setError(null);
  try {
@@ -176,7 +175,7 @@ export default function MyAppointmentsPage() {
  <AppointmentCard
  key={apt.id}
  appointment={apt}
- onCancel={promptCancel}
+ onCancel={handleCancel}
  onReschedule={() => setRescheduleTarget(apt)}
  cancelling={cancelling === apt.id}
  showCancel
@@ -217,20 +216,6 @@ export default function MyAppointmentsPage() {
  )}
  </section>
  </div>
-
- {/* Cancel Confirmation Modal */}
- {cancellingId && (
- <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
- <div className="bg-crm-surface rounded-2xl p-6 max-w-sm w-full shadow-2xl">
- <h3 className="font-bold text-lg text-crm-text mb-2">Cancel Appointment?</h3>
- <p className="text-crm-muted text-sm mb-6">This action cannot be undone. Are you sure you want to cancel this appointment?</p>
- <div className="flex gap-3">
- <button onClick={() => setCancellingId(null)} className="flex-1 px-4 py-2.5 rounded-lg border border-crm-border text-crm-muted font-medium hover:bg-crm-bg">Keep It</button>
- <button onClick={() => { handleCancel(cancellingId); setCancellingId(null); }} className="flex-1 px-4 py-2.5 rounded-lg bg-red-600 text-white font-medium hover:bg-red-700">Yes, Cancel</button>
- </div>
- </div>
- </div>
- )}
  </main>
  );
 }

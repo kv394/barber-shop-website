@@ -16,7 +16,10 @@ export default function ManageBookingClient({ appointment, isPast }: { appointme
  const [fetchingSlots, setFetchingSlots] = useState(false);
 
  const handleCancel = async () => {
- setLoading(true);
+  if (!window.confirm("Are you sure you want to cancel this appointment? This action cannot be undone.")) {
+    return;
+  }
+  setLoading(true);
  try {
  const res = await fetch(`/api/manage/${appointment.managementToken}`, {
  method: 'DELETE',
@@ -144,10 +147,11 @@ export default function ManageBookingClient({ appointment, isPast }: { appointme
    ) : (
    <div className="flex gap-2">
    <button
-   onClick={() => setMode('CANCEL')}
-   className="flex-1 py-4 bg-red-500/10 hover:bg-red-500/20 text-red-500 font-bold rounded-xl transition-colors border border-red-500/20"
+   onClick={handleCancel}
+   disabled={loading}
+   className="flex-1 py-4 bg-crm-bg border border-crm-border hover:border-red-500 hover:text-red-500 text-crm-text font-bold rounded-xl transition-colors disabled:opacity-50"
    >
-   Cancel
+   {loading ? 'Cancelling...' : 'Cancel'}
    </button>
    <button
    onClick={() => setMode('RESCHEDULE')}
@@ -160,31 +164,6 @@ export default function ManageBookingClient({ appointment, isPast }: { appointme
 
    {error && <p className="text-red-500 text-center text-sm mt-2">{error}</p>}
    </div>
-   </div>
-   )}
-
-   {mode === 'CANCEL' && (
-   <div className="p-6 md:p-8 space-y-6 text-center">
-   <div className="w-16 h-16 bg-red-500/20 rounded-full flex items-center justify-center text-3xl mx-auto">⚠️</div>
-   <h2 className="text-2xl font-black text-crm-text">Cancel Appointment?</h2>
-   <p className="text-crm-muted">This action cannot be undone. You will lose your slot with {appointment.staff?.name}.</p>
-   <div className="space-y-3 pt-4">
-   <button
-   onClick={handleCancel}
-   disabled={loading}
-   className="w-full py-4 bg-red-500 hover:bg-red-600 text-white font-bold rounded-xl transition-colors disabled:opacity-50"
-   >
-   {loading ? 'Cancelling...' : 'Yes, Cancel it'}
-   </button>
-   <button
-   onClick={() => setMode('VIEW')}
-   disabled={loading}
-   className="w-full py-4 bg-crm-bg border border-crm-border hover:border-crm-primary text-crm-text font-bold rounded-xl transition-colors disabled:opacity-50"
-   >
-   Nevermind, keep it
-   </button>
-   </div>
-   {error && <p className="text-red-500 text-sm">{error}</p>}
    </div>
    )}
 
