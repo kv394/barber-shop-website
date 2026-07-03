@@ -1,7 +1,15 @@
-import { SchemaType, FunctionDeclaration } from '@google-cloud/vertexai';
 import { prisma } from '@/lib/prisma';
 
-export const adminToolDeclarations: FunctionDeclaration[] = [
+// Use plain string types instead of VertexAI SchemaType enum
+const SchemaType = {
+  OBJECT: 'OBJECT' as const,
+  STRING: 'STRING' as const,
+  NUMBER: 'NUMBER' as const,
+  INTEGER: 'INTEGER' as const,
+  BOOLEAN: 'BOOLEAN' as const,
+};
+
+export const adminToolDeclarations: any[] = [
   {
     name: 'get_shop_context',
     description: 'Retrieve current services, products, addons, blackout dates, staff, resources (seats/stations), and general settings for the shop to understand its current state before making changes.',
@@ -122,6 +130,22 @@ export const adminToolDeclarations: FunctionDeclaration[] = [
         staffId: { type: SchemaType.STRING, description: 'Optional. Filter by specific staff member ID' }
       },
       required: ['date']
+    }
+  },
+  {
+    name: 'get_business_insights',
+    description: 'Get AI-powered business intelligence insights for the shop, including revenue trends, no-show rates, top services, client growth, and an overall health score. Use this when the user asks about business performance, revenue, analytics, or "how is business doing".',
+    parameters: {
+      type: SchemaType.OBJECT,
+      properties: {}
+    }
+  },
+  {
+    name: 'get_client_engagement',
+    description: 'Find at-risk clients who haven\'t visited recently and generate personalized win-back messages. Use this when the user asks about inactive clients, client retention, or engagement campaigns. This is a dry-run by default (simulates sending, does not actually send messages).',
+    parameters: {
+      type: SchemaType.OBJECT,
+      properties: {}
     }
   }
 ];
@@ -338,6 +362,42 @@ export async function executeAdminTool(call: any, shopId: string, user: any) {
           appointmentsCount: schedule.length,
           schedule: schedule.length > 0 ? schedule : "No appointments for this date."
         };
+      }
+
+      case 'get_business_insights': {
+        const agentUrl = process.env.NEXT_PUBLIC_AGENTS_URL || 'https://kutzapp-agents-967709278571.us-central1.run.app';
+        const agentKey = process.env.AGENTS_API_KEY || process.env.NEXT_PUBLIC_AGENTS_API_KEY || '';
+        
+        if (!agentKey) return { error: 'Agent API key not configured' };
+        
+        const shop = await prisma.shop.findUnique({ where: { id: shopId }, select: { name: true } });
+        
+        const res = await fetch(`${agentUrl}/analyze`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'X-API-Key': agentKey },
+          body: JSON.stringify({ shop_id: shopId, shop_name: shop?.name || 'Your Shop' }),
+        });
+        
+        if (!res.ok) return { error: `Agent returned ${res.status}: ${await res.text()}` };
+        return await res.json();
+      }
+
+      case 'get_client_engagement': {
+        const agentUrl = process.env.NEXT_PUBLIC_AGENTS_URL || 'https://kutzapp-agents-967709278571.us-central1.run.app';
+        const agentKey = process.env.AGENTS_API_KEY || process.env.NEXT_PUBLIC_AGENTS_API_KEY || '';
+        
+        if (!agentKey) return { error: 'Agent API key not configured' };
+        
+        const shop = await prisma.shop.findUnique({ where: { id: shopId }, select: { name: true } });
+        
+        const res = await fetch(`${agentUrl}/engage`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'X-API-Key': agentKey },
+          body: JSON.stringify({ shop_id: shopId, shop_name: shop?.name || 'Your Shop', dry_run: true }),
+        });
+        
+        if (!res.ok) return { error: `Agent returned ${res.status}: ${await res.text()}` };
+        return await res.json();
       }
 
       default:
