@@ -5,7 +5,7 @@ import { isAllowed } from '@/lib/ai/dispatcher';
 // Initialise Gemini client – expects `GEMINI_API_KEY` in environment
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY as string);
 const model = genAI.getGenerativeModel({
-  model: 'gemini-1.5-flash',
+  model: 'gemini-2.5-pro',
   systemInstruction: `You are an AI assistant for the Barber SaaS platform.
 You have full knowledge of the shop's data model (services, staff, bookings, loyalty, reports).
 You must only perform actions that the user's role permits.
