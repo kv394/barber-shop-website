@@ -284,10 +284,32 @@ RESPONSE STYLE:
     parameters: d.parameters,
   })) }];
 
-  let formattedContents: any[] = [{ role: 'user', parts: [{ text: question }] }];
+  // Load recent chat history for context (last 20 messages)
+  const recentMessages = await tenantClient.message.findMany({
+    where: { shopId },
+    include: { sender: { select: { name: true, role: true } } },
+    orderBy: { createdAt: 'desc' },
+    take: 20,
+  });
+  
+  // Build conversation history (chronological order)
+  const chatHistory = recentMessages.reverse().map((m: any) => {
+    const senderName = m.sender?.name || 'Unknown';
+    const isAi = m.sender?.name === 'AI Assistant';
+    return {
+      role: isAi ? 'model' as const : 'user' as const,
+      parts: [{ text: isAi ? m.content : `[${senderName}]: ${m.content}` }]
+    };
+  });
+
+  // Add the current question at the end
+  let formattedContents: any[] = [
+    ...chatHistory,
+    { role: 'user', parts: [{ text: `[${user.name || 'Admin'}]: ${question}` }] }
+  ];
 
   let response = await ai.models.generateContent({
-    model: 'gemini-2.5-flash',
+    model: 'gemini-2.5-pro',
     contents: formattedContents,
     config: {
       temperature: 0.7,
@@ -336,7 +358,7 @@ RESPONSE STYLE:
     formattedContents.push({ role: 'user', parts: toolResponses });
 
     response = await ai.models.generateContent({
-      model: 'gemini-2.5-flash',
+      model: 'gemini-2.5-pro',
       contents: formattedContents,
       config: {
         temperature: 0.7,
