@@ -85,6 +85,7 @@ export async function handleBookAppointment(
       isRecurringParent: !!recurrenceRule,
       recurrenceRule: recurrenceRule || null,
       recurringGroupId: recurrenceRule ? crypto.randomUUID() : null,
+      aiGenerated: true,
     }
   });
 
