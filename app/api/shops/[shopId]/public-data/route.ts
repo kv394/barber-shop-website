@@ -27,20 +27,49 @@ export async function GET(request: Request, { params }: { params: Promise<{ shop
         requestDomain = null;
     }
 
+    // Resolve slug-based shopId to a real CUID before creating the tenant client.
+    // getTenantClient() enforces CUID format (/^[a-z0-9]{20,30}$/), so name-based
+    // slugs like "heritage-haircuts" must be resolved first via the global prisma client.
+    const SHOP_ID_FORMAT = /^[a-z0-9]{20,30}$/;
+    let resolvedShopId = shopId;
+
+    if (!SHOP_ID_FORMAT.test(shopId)) {
+      // shopId is a slug — resolve to real CUID
+      const firstWord = shopId.split('-').find(w => w.length > 2) || shopId.split('-')[0];
+      const candidates = await prisma.shop.findMany({
+        where: { name: { contains: firstWord, mode: 'insensitive' } },
+        select: { id: true, name: true },
+        take: 50,
+      });
+
+      const matched = candidates.find(
+        (s: any) => s.name.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '') === shopId.toLowerCase()
+      );
+
+      if (matched) {
+        resolvedShopId = matched.id;
+      } else if ((shopId === 'missouri-city' || shopId === 'sugarland') && process.env.DEMO_SHOP_ID) {
+        resolvedShopId = process.env.DEMO_SHOP_ID;
+      } else {
+        // No matching shop found for this slug
+        return NextResponse.json({ error: 'Shop not found' }, { status: 404 });
+      }
+    }
+
     // Allow cache busting via query param (e.g. after DB updates)
     const url = new URL(request.url);
     if (url.searchParams.get('bust')) {
-        await cacheService.invalidate(`api_public_data_v2:${shopId}`).catch(() => {});
+        await cacheService.invalidate(`api_public_data_v2:${resolvedShopId}`).catch(() => {});
     }
 
-    const cachedData = await cacheService.getOrSet(`api_public_data_v2:${shopId}`, async () => {
-        const tenantClient = await getTenantClient(shopId);
+    const cachedData = await cacheService.getOrSet(`api_public_data_v2:${resolvedShopId}`, async () => {
+        const tenantClient = getTenantClient(resolvedShopId);
 
  // 0. Fetch Shop Details First for Security Validation
  let shop = await tenantClient.shop.findFirst({
  where: {
  OR: [
- { id: shopId },
+ { id: resolvedShopId },
  { subdomain: shopId },
  { companyName: shopId }
  ]
@@ -58,51 +87,6 @@ export async function GET(request: Request, { params }: { params: Promise<{ shop
  dynamicTemplates: true
  }
  });
-
- if (!shop) {
- const firstWord = shopId.split('-').find(w => w.length > 2) || shopId.split('-')[0];
- const candidates = await tenantClient.shop.findMany({
- where: { name: { startsWith: firstWord, mode: 'insensitive' } },
- take: 50,
- select: {
- id: true,
- name: true,
- companyName: true,
- description: true,
- timezone: true,
- customDomain: true,
- subdomain: true,
- customization: true,
- template: true,
- dynamicTemplates: true
- }
- });
-
- shop = candidates.find(
- (s: any) => s.name.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '') === shopId.toLowerCase()
- ) || null;
- }
-
- if (!shop) {
- // Fallback: If still not found, check if this is the demo shop
-  if ((shopId === 'missouri-city' || shopId === 'sugarland') && process.env.DEMO_SHOP_ID) {
-  shop = await tenantClient.shop.findFirst({
-  where: { id: process.env.DEMO_SHOP_ID },
- select: {
- id: true,
- name: true,
- companyName: true,
- description: true,
- timezone: true,
- customDomain: true,
- subdomain: true,
- customization: true,
- template: true,
- dynamicTemplates: true
- }
- });
- }
- }
 
  if (!shop) {
  return null;
