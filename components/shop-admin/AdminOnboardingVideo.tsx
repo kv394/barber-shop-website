@@ -474,7 +474,250 @@ function createSlides(shopName: string, shopId: string): Slide[] {
       ),
     },
 
-    // ── 11. Wrap-up ──
+    // ── 11. Reports Deep Dive ──
+    {
+      id: 'reports-deep',
+      title: 'Reports Sub-Menus',
+      subtitle: 'Every financial detail at your fingertips',
+      icon: '💰',
+      accentColor: 'from-teal-500 to-cyan-500',
+      accentGradient: 'from-teal-500/20 via-cyan-500/10 to-transparent',
+      duration: 10,
+      content: (
+        <div className="space-y-5">
+          <p className="text-[14px] text-gray-600 leading-relaxed">
+            Reports has <strong>6 sub-pages</strong> in the left sub-navigation. Here&apos;s what each one does:
+          </p>
+
+          <div className="space-y-2">
+            {[
+              { icon: '📋', label: 'Overview', desc: 'Revenue, tips, completed count, avg ticket. Three tabs: Transactions, By Staff, By Service. Export CSV and AI Insights buttons.' },
+              { icon: '💸', label: 'Commissions', desc: 'Track each barber\'s commission earnings. Set per-service or percentage rates. View payout history.' },
+              { icon: '⏰', label: 'Working Hours', desc: 'Staff clock-in/clock-out logs. Total hours per week. Essential for payroll calculations.' },
+              { icon: '🧾', label: 'Expenses', desc: 'Log business costs by category (rent, supplies, utilities). Attach receipts. Track spending trends.' },
+              { icon: '🏢', label: 'Booth Rent', desc: 'Manage booth rental agreements. Track monthly rent payments. Monitor chair occupancy.' },
+              { icon: '🏦', label: 'Capital & Financing', desc: 'Financial projections, loan tracking, and cash flow management.' },
+            ].map((item, i) => (
+              <div key={i} className="flex items-center gap-4 bg-white/80 border border-gray-100 rounded-xl px-4 py-3 animate-slide-left" style={{ animationDelay: `${0.15 + i * 0.08}s` }}>
+                <span className="text-xl w-8 text-center shrink-0">{item.icon}</span>
+                <div className="flex-1 min-w-0">
+                  <p className="text-[13px] font-bold text-gray-800">{item.label}</p>
+                  <p className="text-[11px] text-gray-500">{item.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className="bg-gradient-to-r from-teal-50 to-cyan-50 border border-teal-100 rounded-xl p-4 animate-slide-up" style={{ animationDelay: '0.7s' }}>
+            <p className="text-[12px] font-bold text-teal-700 mb-1">💡 Pro Tip</p>
+            <p className="text-[12px] text-teal-600">Use <strong>AI Insights</strong> (purple button on Overview) for automated trend analysis. <strong>Export CSV</strong> sends data to your accountant.</p>
+          </div>
+        </div>
+      ),
+    },
+
+    // ── 12. Payroll & Expenses ──
+    {
+      id: 'payroll',
+      title: 'Payroll & Expenses',
+      subtitle: 'Financial management made simple',
+      icon: '💵',
+      accentColor: 'from-green-500 to-emerald-600',
+      accentGradient: 'from-green-500/20 via-emerald-500/10 to-transparent',
+      duration: 8,
+      content: (
+        <div className="space-y-5">
+          <p className="text-[14px] text-gray-600 leading-relaxed">
+            Two dedicated sidebar items for day-to-day financial management:
+          </p>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="bg-white/80 border border-gray-100 rounded-xl p-5 animate-slide-up" style={{ animationDelay: '0.2s' }}>
+              <span className="text-3xl block mb-3">💰</span>
+              <h4 className="text-[14px] font-bold text-gray-800 mb-2">Payroll</h4>
+              <ul className="space-y-1.5 text-[12px] text-gray-600">
+                <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0" />Set hourly rates or salary per staff</li>
+                <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0" />Process payroll runs</li>
+                <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0" />Track pay history</li>
+                <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0" />Integrates with Working Hours</li>
+              </ul>
+            </div>
+
+            <div className="bg-white/80 border border-gray-100 rounded-xl p-5 animate-slide-up" style={{ animationDelay: '0.35s' }}>
+              <span className="text-3xl block mb-3">🧾</span>
+              <h4 className="text-[14px] font-bold text-gray-800 mb-2">Expenses</h4>
+              <ul className="space-y-1.5 text-[12px] text-gray-600">
+                <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-amber-500 shrink-0" />Log expenses by category</li>
+                <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-amber-500 shrink-0" />Attach receipt photos</li>
+                <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-amber-500 shrink-0" />Generate tax reports</li>
+                <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-amber-500 shrink-0" />Budget vs. actual tracking</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      ),
+    },
+
+    // ── 13. Engage Deep Dive ──
+    {
+      id: 'engage-deep',
+      title: 'All 10 Engage Features',
+      subtitle: 'Your complete growth toolkit',
+      icon: '🚀',
+      accentColor: 'from-fuchsia-500 to-pink-500',
+      accentGradient: 'from-fuchsia-500/20 via-pink-500/10 to-transparent',
+      duration: 12,
+      content: (
+        <div className="space-y-5">
+          <p className="text-[14px] text-gray-600 leading-relaxed">
+            Engage has <strong>10 sub-sections</strong> accessible via the left sub-nav:
+          </p>
+
+          <div className="grid grid-cols-2 sm:grid-cols-5 gap-2">
+            {[
+              { icon: '📊', label: 'Dashboard', desc: 'Engagement overview' },
+              { icon: '🤖', label: 'AI Chat', desc: 'Auto-replies to clients' },
+              { icon: '📱', label: 'SMS Reminders', desc: 'Reduce no-shows 80%' },
+              { icon: '⭐', label: 'Loyalty', desc: 'Points per visit' },
+              { icon: '🔗', label: 'Referrals', desc: 'Reward referrers' },
+              { icon: '📣', label: 'Campaigns', desc: 'Email/SMS blasts' },
+              { icon: '📲', label: 'AI Social', desc: 'Auto-generate posts' },
+              { icon: '🎁', label: 'Gift Cards', desc: 'Digital gift cards' },
+              { icon: '🎮', label: 'Games', desc: 'Spin-the-wheel promos' },
+              { icon: '⭐', label: 'Reviews', desc: 'Monitor & reply' },
+            ].map((item, i) => (
+              <div key={i} className="bg-white/80 border border-gray-100 rounded-xl p-3 text-center animate-slide-up" style={{ animationDelay: `${0.1 + i * 0.06}s` }}>
+                <span className="text-xl block mb-1">{item.icon}</span>
+                <p className="text-[11px] font-bold text-gray-800">{item.label}</p>
+                <p className="text-[9px] text-gray-500 mt-0.5">{item.desc}</p>
+              </div>
+            ))}
+          </div>
+
+          <div className="bg-gradient-to-r from-fuchsia-50 to-pink-50 border border-fuchsia-100 rounded-xl p-4 animate-slide-up" style={{ animationDelay: '0.7s' }}>
+            <p className="text-[12px] font-bold text-fuchsia-700 mb-1">⚡ Must-Do</p>
+            <p className="text-[12px] text-fuchsia-600">Reply to <strong>every review</strong> within 24 hours. Enable <strong>SMS Reminders</strong> to cut no-shows by 80%. Set up <strong>Loyalty</strong> to drive repeat visits.</p>
+          </div>
+        </div>
+      ),
+    },
+
+    // ── 14. Reviews Management ──
+    {
+      id: 'reviews',
+      title: 'Managing Reviews',
+      subtitle: 'Build your online reputation',
+      icon: '⭐',
+      accentColor: 'from-amber-500 to-yellow-500',
+      accentGradient: 'from-amber-500/20 via-yellow-500/10 to-transparent',
+      duration: 8,
+      content: (
+        <div className="space-y-5">
+          <p className="text-[14px] text-gray-600 leading-relaxed">
+            Reviews appear under <strong>Engage → Reviews</strong>. Here&apos;s what you&apos;ll see:
+          </p>
+
+          {/* Mock review card */}
+          <div className="bg-white/80 border border-gray-100 rounded-xl p-5 animate-slide-up" style={{ animationDelay: '0.2s' }}>
+            <div className="flex items-center gap-3 mb-3">
+              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center text-white font-bold text-[12px]">JW</div>
+              <div className="flex-1">
+                <p className="text-[13px] font-bold text-gray-800">James Wilson</p>
+                <p className="text-[11px] text-gray-500">Classic Fade • by Marcus Rivera</p>
+              </div>
+              <div className="flex gap-0.5">
+                {[1,2,3,4,5].map(s => <span key={s} className="text-amber-400 text-sm">★</span>)}
+              </div>
+            </div>
+            <p className="text-[12px] text-gray-600 italic mb-3">&quot;Best fade I&apos;ve ever gotten. Marcus really knows his craft!&quot;</p>
+            <button className="text-[11px] text-crm-primary font-bold hover:underline">+ Reply to this review</button>
+          </div>
+
+          <div className="grid grid-cols-2 gap-3">
+            {[
+              { label: 'Filter by Stars', desc: 'Tabs for All, 5★, 4★, 3★, 2★, 1★' },
+              { label: 'Reply Publicly', desc: 'Your response appears under the review' },
+              { label: 'Unanswered Badge', desc: 'Orange alert shows reviews needing response' },
+              { label: 'Star Distribution', desc: 'Visual bar chart of ratings breakdown' },
+            ].map((item, i) => (
+              <div key={i} className="bg-white/80 border border-gray-100 rounded-xl p-3 animate-slide-up" style={{ animationDelay: `${0.5 + i * 0.1}s` }}>
+                <p className="text-[12px] font-bold text-gray-800 mb-0.5">{item.label}</p>
+                <p className="text-[10px] text-gray-500">{item.desc}</p>
+              </div>
+            ))}
+          </div>
+
+          <div className="bg-gradient-to-r from-amber-50 to-yellow-50 border border-amber-100 rounded-xl p-4 animate-slide-up" style={{ animationDelay: '0.9s' }}>
+            <p className="text-[12px] font-bold text-amber-700">✅ Do&apos;s and ❌ Don&apos;ts</p>
+            <div className="grid grid-cols-2 gap-2 mt-2 text-[11px]">
+              <div className="text-emerald-700">✅ Reply within 24 hours<br/>✅ Thank positive reviewers<br/>✅ Be personal &amp; specific</div>
+              <div className="text-red-600">❌ Never argue or get defensive<br/>❌ No copy-paste replies<br/>❌ Don&apos;t ignore negative reviews</div>
+            </div>
+          </div>
+        </div>
+      ),
+    },
+
+    // ── 15. Settings Deep Dive ──
+    {
+      id: 'settings-deep',
+      title: 'Settings Deep Dive',
+      subtitle: 'All 15 configuration pages',
+      icon: '🔧',
+      accentColor: 'from-indigo-500 to-violet-500',
+      accentGradient: 'from-indigo-500/20 via-violet-500/10 to-transparent',
+      duration: 10,
+      content: (
+        <div className="space-y-5">
+          <p className="text-[14px] text-gray-600 leading-relaxed">
+            Settings is organized into <strong>3 groups</strong> with 15 sub-pages. Here&apos;s the complete map:
+          </p>
+
+          <div className="space-y-3">
+            {[
+              { section: 'SETUP', color: 'bg-blue-50 border-blue-100', items: [
+                { icon: '✂️', label: 'Services', desc: 'Name, price, duration, type' },
+                { icon: '🛍️', label: 'Products', desc: 'Retail items & inventory' },
+                { icon: '📅', label: 'Booking & Hours', desc: 'Business hours & slots' },
+                { icon: '💹', label: 'Dynamic Pricing', desc: 'Surge/discount rules by day' },
+                { icon: '🏗️', label: 'Resources', desc: 'Chairs, stations, rooms' },
+                { icon: '🖥️', label: 'Hardware Store', desc: 'POS & card readers' },
+                { icon: '📦', label: 'Wholesale', desc: 'Bulk ordering' },
+              ]},
+              { section: 'EXPERIENCE', color: 'bg-purple-50 border-purple-100', items: [
+                { icon: '🎨', label: 'Appearance', desc: 'Theme, colors, fonts, SEO' },
+                { icon: '🏆', label: 'Memberships', desc: 'Recurring plans & perks' },
+                { icon: '📝', label: 'Intake Forms', desc: 'Client questionnaires' },
+              ]},
+              { section: 'OPERATIONS', color: 'bg-orange-50 border-orange-100', items: [
+                { icon: '💸', label: 'Commissions', desc: 'Per-staff commission rules' },
+                { icon: '🔔', label: 'Alerts', desc: 'Notification preferences' },
+                { icon: '🖥️', label: 'Staff Kiosk', desc: 'Clock-in/out for staff' },
+                { icon: '🖥️', label: 'Front Desk Kiosk', desc: 'Client self-check-in' },
+                { icon: '💳', label: 'Billing', desc: 'Subscription & invoices' },
+              ]},
+            ].map((group, gi) => (
+              <div key={gi} className={`${group.color} border rounded-xl p-3 animate-slide-up`} style={{ animationDelay: `${0.15 + gi * 0.15}s` }}>
+                <p className="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-2">{group.section}</p>
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-1.5">
+                  {group.items.map((item, i) => (
+                    <div key={i} className="bg-white/80 rounded-lg px-2.5 py-2 flex items-center gap-2">
+                      <span className="text-sm shrink-0">{item.icon}</span>
+                      <div className="min-w-0">
+                        <p className="text-[11px] font-bold text-gray-800 truncate">{item.label}</p>
+                        <p className="text-[9px] text-gray-500 truncate">{item.desc}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      ),
+    },
+
+    // ── 16. Wrap-up ──
     {
       id: 'wrapup',
       title: "You're All Set! 🎉",
