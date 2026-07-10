@@ -1,6 +1,7 @@
 'use client';
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import Link from 'next/link';
+import CaptionedVideoPlayer, { VIDEO_CAPTIONS } from './CaptionedVideoPlayer';
 
 // ─── Slide Data ──────────────────────────────────────────────────────────────
 
@@ -65,14 +66,14 @@ function createSlides(shopName: string, shopId: string): Slide[] {
             Your dashboard is the command center. Here&apos;s what you&apos;ll see every day:
           </p>
 
-          {/* Embedded screen recording */}
-          <div className="rounded-xl overflow-hidden border border-gray-200 shadow-sm animate-slide-up" style={{ animationDelay: '0.1s' }}>
-            <div className="bg-gray-900 px-3 py-1.5 flex items-center gap-2">
-              <div className="flex gap-1"><span className="w-2.5 h-2.5 rounded-full bg-red-500" /><span className="w-2.5 h-2.5 rounded-full bg-yellow-500" /><span className="w-2.5 h-2.5 rounded-full bg-green-500" /></div>
-              <span className="text-[10px] text-gray-400 font-mono">📹 Live Recording — Dashboard, Bookings & Clients</span>
-            </div>
-            <img src="/training-videos/01-dashboard-bookings-clients.webp" alt="Animated recording of Dashboard, Bookings and Client pages" className="w-full" loading="lazy" />
-          </div>
+          {/* Embedded screen recording with captions */}
+          <CaptionedVideoPlayer
+            src="/training-videos/01-dashboard-bookings-clients.webp"
+            alt="Animated recording of Dashboard, Bookings and Client pages"
+            title="Live Recording — Dashboard, Bookings & Clients"
+            duration={94.9}
+            captions={VIDEO_CAPTIONS.dashboard}
+          />
 
           {/* Mock stats */}
           <div className="grid grid-cols-5 gap-3">
@@ -315,14 +316,14 @@ function createSlides(shopName: string, shopId: string): Slide[] {
             Add staff members, set their working hours, commission rates, and manage availability.
           </p>
 
-          {/* Embedded screen recording */}
-          <div className="rounded-xl overflow-hidden border border-gray-200 shadow-sm animate-slide-up" style={{ animationDelay: '0.1s' }}>
-            <div className="bg-gray-900 px-3 py-1.5 flex items-center gap-2">
-              <div className="flex gap-1"><span className="w-2.5 h-2.5 rounded-full bg-red-500" /><span className="w-2.5 h-2.5 rounded-full bg-yellow-500" /><span className="w-2.5 h-2.5 rounded-full bg-green-500" /></div>
-              <span className="text-[10px] text-gray-400 font-mono">📹 Live Recording — Team, Portfolio & Training</span>
-            </div>
-            <img src="/training-videos/02-team-portfolio-training.webp" alt="Animated recording of Team availability, Portfolio and Training pages" className="w-full" loading="lazy" />
-          </div>
+          {/* Embedded screen recording with captions */}
+          <CaptionedVideoPlayer
+            src="/training-videos/02-team-portfolio-training.webp"
+            alt="Animated recording of Team availability, Portfolio and Training pages"
+            title="Live Recording — Team, Portfolio & Training"
+            duration={81.3}
+            captions={VIDEO_CAPTIONS.team}
+          />
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {[
@@ -507,14 +508,14 @@ function createSlides(shopName: string, shopId: string): Slide[] {
             Reports has <strong>6 sub-pages</strong> in the left sub-navigation. Here&apos;s what each one does:
           </p>
 
-          {/* Embedded screen recording */}
-          <div className="rounded-xl overflow-hidden border border-gray-200 shadow-sm animate-slide-up" style={{ animationDelay: '0.1s' }}>
-            <div className="bg-gray-900 px-3 py-1.5 flex items-center gap-2">
-              <div className="flex gap-1"><span className="w-2.5 h-2.5 rounded-full bg-red-500" /><span className="w-2.5 h-2.5 rounded-full bg-yellow-500" /><span className="w-2.5 h-2.5 rounded-full bg-green-500" /></div>
-              <span className="text-[10px] text-gray-400 font-mono">📹 Live Recording — Reports & All Sub-Menus</span>
-            </div>
-            <img src="/training-videos/03-reports-all-submenus.webp" alt="Animated recording of Reports overview and all 6 sub-menu pages" className="w-full" loading="lazy" />
-          </div>
+          {/* Embedded screen recording with captions */}
+          <CaptionedVideoPlayer
+            src="/training-videos/03-reports-all-submenus.webp"
+            alt="Animated recording of Reports overview and all 6 sub-menu pages"
+            title="Live Recording — Reports & All Sub-Menus"
+            duration={65.4}
+            captions={VIDEO_CAPTIONS.reports}
+          />
 
           <div className="space-y-2">
             {[
@@ -600,14 +601,14 @@ function createSlides(shopName: string, shopId: string): Slide[] {
             Engage has <strong>10 sub-sections</strong> accessible via the left sub-nav:
           </p>
 
-          {/* Embedded screen recording */}
-          <div className="rounded-xl overflow-hidden border border-gray-200 shadow-sm animate-slide-up" style={{ animationDelay: '0.1s' }}>
-            <div className="bg-gray-900 px-3 py-1.5 flex items-center gap-2">
-              <div className="flex gap-1"><span className="w-2.5 h-2.5 rounded-full bg-red-500" /><span className="w-2.5 h-2.5 rounded-full bg-yellow-500" /><span className="w-2.5 h-2.5 rounded-full bg-green-500" /></div>
-              <span className="text-[10px] text-gray-400 font-mono">📹 Live Recording — Engage & All Sub-Menus</span>
-            </div>
-            <img src="/training-videos/04-engage-all-submenus.webp" alt="Animated recording of Engage section and all 10 sub-menu pages" className="w-full" loading="lazy" />
-          </div>
+          {/* Embedded screen recording with captions */}
+          <CaptionedVideoPlayer
+            src="/training-videos/04-engage-all-submenus.webp"
+            alt="Animated recording of Engage section and all 10 sub-menu pages"
+            title="Live Recording — Engage & All Sub-Menus"
+            duration={84.6}
+            captions={VIDEO_CAPTIONS.engage}
+          />
 
           <div className="grid grid-cols-2 sm:grid-cols-5 gap-2">
             {[
