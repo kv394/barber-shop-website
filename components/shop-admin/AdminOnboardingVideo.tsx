@@ -65,6 +65,15 @@ function createSlides(shopName: string, shopId: string): Slide[] {
             Your dashboard is the command center. Here&apos;s what you&apos;ll see every day:
           </p>
 
+          {/* Embedded screen recording */}
+          <div className="rounded-xl overflow-hidden border border-gray-200 shadow-sm animate-slide-up" style={{ animationDelay: '0.1s' }}>
+            <div className="bg-gray-900 px-3 py-1.5 flex items-center gap-2">
+              <div className="flex gap-1"><span className="w-2.5 h-2.5 rounded-full bg-red-500" /><span className="w-2.5 h-2.5 rounded-full bg-yellow-500" /><span className="w-2.5 h-2.5 rounded-full bg-green-500" /></div>
+              <span className="text-[10px] text-gray-400 font-mono">📹 Live Recording — Dashboard, Bookings & Clients</span>
+            </div>
+            <img src="/training-videos/01-dashboard-bookings-clients.webp" alt="Animated recording of Dashboard, Bookings and Client pages" className="w-full" loading="lazy" />
+          </div>
+
           {/* Mock stats */}
           <div className="grid grid-cols-5 gap-3">
             {[
@@ -306,6 +315,15 @@ function createSlides(shopName: string, shopId: string): Slide[] {
             Add staff members, set their working hours, commission rates, and manage availability.
           </p>
 
+          {/* Embedded screen recording */}
+          <div className="rounded-xl overflow-hidden border border-gray-200 shadow-sm animate-slide-up" style={{ animationDelay: '0.1s' }}>
+            <div className="bg-gray-900 px-3 py-1.5 flex items-center gap-2">
+              <div className="flex gap-1"><span className="w-2.5 h-2.5 rounded-full bg-red-500" /><span className="w-2.5 h-2.5 rounded-full bg-yellow-500" /><span className="w-2.5 h-2.5 rounded-full bg-green-500" /></div>
+              <span className="text-[10px] text-gray-400 font-mono">📹 Live Recording — Team, Portfolio & Training</span>
+            </div>
+            <img src="/training-videos/02-team-portfolio-training.webp" alt="Animated recording of Team availability, Portfolio and Training pages" className="w-full" loading="lazy" />
+          </div>
+
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {[
               { name: 'Marcus Rivera', role: 'Barber', status: 'On Shift', avatar: 'MR', color: 'from-orange-400 to-red-500' },
@@ -489,6 +507,15 @@ function createSlides(shopName: string, shopId: string): Slide[] {
             Reports has <strong>6 sub-pages</strong> in the left sub-navigation. Here&apos;s what each one does:
           </p>
 
+          {/* Embedded screen recording */}
+          <div className="rounded-xl overflow-hidden border border-gray-200 shadow-sm animate-slide-up" style={{ animationDelay: '0.1s' }}>
+            <div className="bg-gray-900 px-3 py-1.5 flex items-center gap-2">
+              <div className="flex gap-1"><span className="w-2.5 h-2.5 rounded-full bg-red-500" /><span className="w-2.5 h-2.5 rounded-full bg-yellow-500" /><span className="w-2.5 h-2.5 rounded-full bg-green-500" /></div>
+              <span className="text-[10px] text-gray-400 font-mono">📹 Live Recording — Reports & All Sub-Menus</span>
+            </div>
+            <img src="/training-videos/03-reports-all-submenus.webp" alt="Animated recording of Reports overview and all 6 sub-menu pages" className="w-full" loading="lazy" />
+          </div>
+
           <div className="space-y-2">
             {[
               { icon: '📋', label: 'Overview', desc: 'Revenue, tips, completed count, avg ticket. Three tabs: Transactions, By Staff, By Service. Export CSV and AI Insights buttons.' },
@@ -572,6 +599,15 @@ function createSlides(shopName: string, shopId: string): Slide[] {
           <p className="text-[14px] text-gray-600 leading-relaxed">
             Engage has <strong>10 sub-sections</strong> accessible via the left sub-nav:
           </p>
+
+          {/* Embedded screen recording */}
+          <div className="rounded-xl overflow-hidden border border-gray-200 shadow-sm animate-slide-up" style={{ animationDelay: '0.1s' }}>
+            <div className="bg-gray-900 px-3 py-1.5 flex items-center gap-2">
+              <div className="flex gap-1"><span className="w-2.5 h-2.5 rounded-full bg-red-500" /><span className="w-2.5 h-2.5 rounded-full bg-yellow-500" /><span className="w-2.5 h-2.5 rounded-full bg-green-500" /></div>
+              <span className="text-[10px] text-gray-400 font-mono">📹 Live Recording — Engage & All Sub-Menus</span>
+            </div>
+            <img src="/training-videos/04-engage-all-submenus.webp" alt="Animated recording of Engage section and all 10 sub-menu pages" className="w-full" loading="lazy" />
+          </div>
 
           <div className="grid grid-cols-2 sm:grid-cols-5 gap-2">
             {[
