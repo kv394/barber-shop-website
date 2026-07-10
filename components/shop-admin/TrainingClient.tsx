@@ -949,6 +949,26 @@ export default function TrainingClient({ shopId, userRole }: { shopId: string; u
               duration: 84.6,
               captions: VIDEO_CAPTIONS.engage,
             },
+            {
+              id: 'vid-settings1',
+              title: '⚙️ Settings — Setup & Experience',
+              desc: 'Services, Products, Booking Hours, Dynamic Pricing, Appearance, Memberships',
+              src: '/training-videos/05-settings-all-submenus.webp',
+              alt: 'Settings Setup and Experience sub-pages walkthrough',
+              playerTitle: 'Settings — Setup & Experience',
+              duration: 56.1,
+              captions: VIDEO_CAPTIONS.settings1,
+            },
+            {
+              id: 'vid-settings2',
+              title: '🔧 Settings — Operations & More',
+              desc: 'Commissions, Alerts, Billing, Kiosks, Resources, Hardware, Wholesale, SDK',
+              src: '/training-videos/06-settings-more-submenus.webp',
+              alt: 'Settings Operations and additional sub-pages walkthrough',
+              playerTitle: 'Settings — Operations & More',
+              duration: 153.4,
+              captions: VIDEO_CAPTIONS.settings2,
+            },
           ].map((vid) => (
             <details key={vid.id} className="group bg-white/40 border border-white/30 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all">
               <summary className="cursor-pointer flex items-center gap-4 px-5 py-4 select-none list-none [&::-webkit-details-marker]:hidden">
