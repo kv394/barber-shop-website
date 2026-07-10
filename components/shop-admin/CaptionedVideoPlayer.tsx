@@ -31,6 +31,7 @@ export default function CaptionedVideoPlayer({ src, alt, title, duration, captio
   const [isVisible, setIsVisible] = useState(false);
   const [elapsed, setElapsed] = useState(0);
   const [currentCaption, setCurrentCaption] = useState<Caption | null>(captions[0] || null);
+  const [voiceEnabled, setVoiceEnabled] = useState(false);
   const imgRef = useRef<HTMLImageElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const startTimeRef = useRef<number>(0);
@@ -98,6 +99,27 @@ export default function CaptionedVideoPlayer({ src, alt, title, duration, captio
     };
   }, [isVisible, tick]);
 
+  // Handle Voice Over
+  useEffect(() => {
+    if (voiceEnabled && currentCaption && isVisible) {
+      if (typeof window !== 'undefined' && window.speechSynthesis) {
+        window.speechSynthesis.cancel();
+        const utterance = new SpeechSynthesisUtterance(currentCaption.text);
+        utterance.rate = 1.0;
+        window.speechSynthesis.speak(utterance);
+      }
+    }
+  }, [currentCaption, voiceEnabled, isVisible]);
+
+  // Clean up speech on unmount
+  useEffect(() => {
+    return () => {
+      if (typeof window !== 'undefined' && window.speechSynthesis) {
+        window.speechSynthesis.cancel();
+      }
+    };
+  }, []);
+
   const progress = (elapsed / duration) * 100;
   const formatTime = (s: number) => {
     const m = Math.floor(s / 60);
@@ -115,7 +137,21 @@ export default function CaptionedVideoPlayer({ src, alt, title, duration, captio
           <span className="w-3 h-3 rounded-full bg-green-500" />
         </div>
         <span className="text-[11px] text-gray-400 font-mono flex-1 truncate">📹 {title}</span>
-        <span className="text-[10px] text-gray-500 font-mono">{formatTime(elapsed)} / {formatTime(duration)}</span>
+        <button 
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            setVoiceEnabled(!voiceEnabled);
+            if (voiceEnabled && typeof window !== 'undefined' && window.speechSynthesis) {
+              window.speechSynthesis.cancel();
+            }
+          }}
+          className={`px-2 py-0.5 rounded text-[10px] font-bold transition-colors ${voiceEnabled ? 'bg-blue-500/20 text-blue-400' : 'bg-gray-800 text-gray-500 hover:text-gray-300'}`}
+          title="Toggle Voice Over"
+        >
+          {voiceEnabled ? '🔊 Voice On' : '🔇 Voice Off'}
+        </button>
+        <span className="text-[10px] text-gray-500 font-mono hidden sm:inline">{formatTime(elapsed)} / {formatTime(duration)}</span>
       </div>
 
       {/* Video area */}
