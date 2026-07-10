@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import PremiumGlassCard from '@/components/ui/PremiumGlassCard';
+import CaptionedVideoPlayer, { VIDEO_CAPTIONS } from './CaptionedVideoPlayer';
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -894,24 +895,84 @@ export default function TrainingClient({ shopId, userRole }: { shopId: string; u
   // ── Module List View ──
   return (
     <div className="space-y-8 animate-page-in">
-      {/* Onboarding Video Banner */}
+      {/* KutzApp Admin Training Videos */}
       {isAdmin && (
-        <Link href={`/shop/${shopId}/training/onboarding`} className="block group">
-          <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-violet-500 via-indigo-500 to-blue-500 p-5 sm:p-6 shadow-lg hover:shadow-xl transition-all hover:-translate-y-0.5">
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_30%,rgba(255,255,255,0.15),transparent)] pointer-events-none" />
-            <div className="relative z-10 flex items-center gap-5">
-              <div className="w-14 h-14 rounded-2xl bg-white/20 backdrop-blur flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="white"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-              </div>
-              <div className="flex-1 min-w-0">
-                <p className="text-[11px] font-black text-white/70 uppercase tracking-widest mb-1">Featured Training</p>
-                <h3 className="text-lg font-black text-white tracking-tight">New Admin Onboarding Walkthrough</h3>
-                <p className="text-[13px] text-white/80 mt-1">Interactive guide covering dashboard, bookings, clients, services, team, and more • ~2 min</p>
-              </div>
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="shrink-0 opacity-50 group-hover:opacity-100 group-hover:translate-x-1 transition-all"><polyline points="9 18 15 12 9 6"/></svg>
+        <div className="space-y-4">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-500 to-indigo-600 flex items-center justify-center shrink-0">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            </div>
+            <div>
+              <h3 className="text-[16px] font-black text-crm-text tracking-tight">KutzApp Admin Training</h3>
+              <p className="text-[12px] text-crm-muted">Watch animated walkthroughs with live captions explaining every feature</p>
             </div>
           </div>
-        </Link>
+
+          {[
+            {
+              id: 'vid-dashboard',
+              title: '📊 Dashboard, Bookings & Clients',
+              desc: 'Navigate the dashboard, manage appointments, search clients',
+              src: '/training-videos/01-dashboard-bookings-clients.webp',
+              alt: 'Dashboard, Bookings and Clients walkthrough',
+              playerTitle: 'Dashboard, Bookings & Clients',
+              duration: 94.9,
+              captions: VIDEO_CAPTIONS.dashboard,
+            },
+            {
+              id: 'vid-team',
+              title: '👨‍💼 Team, Portfolio & Training',
+              desc: 'Staff availability timeline, portfolio showcase, training modules',
+              src: '/training-videos/02-team-portfolio-training.webp',
+              alt: 'Team, Portfolio and Training walkthrough',
+              playerTitle: 'Team, Portfolio & Training',
+              duration: 81.3,
+              captions: VIDEO_CAPTIONS.team,
+            },
+            {
+              id: 'vid-reports',
+              title: '📈 Reports & All Sub-Menus',
+              desc: 'Revenue overview, commissions, working hours, expenses, booth rent',
+              src: '/training-videos/03-reports-all-submenus.webp',
+              alt: 'Reports and all sub-menus walkthrough',
+              playerTitle: 'Reports & All Sub-Menus',
+              duration: 65.4,
+              captions: VIDEO_CAPTIONS.reports,
+            },
+            {
+              id: 'vid-engage',
+              title: '❤️ Engage & All Sub-Menus',
+              desc: 'AI Chat, SMS, loyalty, referrals, campaigns, reviews & more',
+              src: '/training-videos/04-engage-all-submenus.webp',
+              alt: 'Engage and all sub-menus walkthrough',
+              playerTitle: 'Engage & All Sub-Menus',
+              duration: 84.6,
+              captions: VIDEO_CAPTIONS.engage,
+            },
+          ].map((vid) => (
+            <details key={vid.id} className="group bg-white/40 border border-white/30 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all">
+              <summary className="cursor-pointer flex items-center gap-4 px-5 py-4 select-none list-none [&::-webkit-details-marker]:hidden">
+                <span className="text-lg">{vid.title.split(' ')[0]}</span>
+                <div className="flex-1 min-w-0">
+                  <p className="text-[13px] font-bold text-crm-text">{vid.title.slice(vid.title.indexOf(' ') + 1)}</p>
+                  <p className="text-[11px] text-crm-muted">{vid.desc}</p>
+                </div>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="text-crm-muted group-open:rotate-90 transition-transform shrink-0">
+                  <polyline points="9 18 15 12 9 6"/>
+                </svg>
+              </summary>
+              <div className="px-4 pb-4">
+                <CaptionedVideoPlayer
+                  src={vid.src}
+                  alt={vid.alt}
+                  title={vid.playerTitle}
+                  duration={vid.duration}
+                  captions={vid.captions}
+                />
+              </div>
+            </details>
+          ))}
+        </div>
       )}
 
       {/* Admin overview stats */}
