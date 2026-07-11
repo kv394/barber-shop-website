@@ -176,6 +176,10 @@ model User {
   renterServices          RenterService[]
   shopClients             ShopClient[]
   messageReceipts         MessageReceipt[]
+  
+  parentId                String?
+  parent                  User?                   @relation("FamilyMembers", fields: [parentId], references: [id])
+  dependents              User[]                  @relation("FamilyMembers")
 
   @@index([shopId, role])
   @@index([email])
@@ -255,6 +259,8 @@ model Service {
   isGroupClass                Boolean                      @default(false)
   maxCapacity                 Int?
   waitlistEnabled             Boolean                      @default(true)
+  dropInPrice                 Float?
+  semesterPrice               Float?
   appointments                Appointment[]
   appointmentItems            AppointmentItem[]
   commissionRules             CommissionRule[]
