@@ -3,7 +3,7 @@ import { handleFunctionCall } from '@/lib/ai/dispatcher';
 import { isAllowed } from '@/lib/ai/dispatcher';
 
 // Initialise Gemini client – expects `GEMINI_API_KEY` in environment
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY as string);
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || 'dummy');
 const model = genAI.getGenerativeModel({
   model: 'gemini-2.5-pro',
   systemInstruction: `You are an AI assistant for the Barber SaaS platform.

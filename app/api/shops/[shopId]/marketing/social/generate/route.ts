@@ -8,7 +8,7 @@ export const maxDuration = 60;
 
 export const dynamic = 'force-dynamic';
 
-const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY as string });
+const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY || 'dummy' });
 
 export async function POST(
   request: Request,

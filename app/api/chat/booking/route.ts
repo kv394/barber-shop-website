@@ -18,7 +18,7 @@ import {
   handleRescheduleAppointment,
 } from '@/lib/chat/tools';
 
-const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY || 'dummy' });
 
 export async function OPTIONS(req: Request) {
   return handleOptions(req);

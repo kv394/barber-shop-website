@@ -7,7 +7,7 @@ import { prisma, getTenantClient } from '@/lib/prisma';
 export const maxDuration = 60;
 
 
-const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY as string });
+const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY || 'dummy' });
 
 const GOAL_PROMPTS: Record<string, string> = {
  WIN_BACK: 'The goal is to RE-ENGAGE inactive clients who haven\'t visited in a while. Create urgency and remind them what they\'re missing. Offer a compelling reason to come back (e.g., a discount, a new service, or a personal touch).',

@@ -175,7 +175,7 @@ export async function POST(
   
   after(async () => {
   try {
-   const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY as string });
+   const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY || 'dummy' });
 
   // ─── Load rich shop context for the AI ───────────────────
   const [shop, services, staffList, todayAppointments, recentBookings, productCount, clientCount] = await Promise.all([

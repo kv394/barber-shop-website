@@ -7,7 +7,7 @@ import { rateLimit } from '@/lib/rate-limiter';
 export const maxDuration = 60;
 
 
-const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY || 'dummy' });
 
 export async function POST(
  request: Request,
