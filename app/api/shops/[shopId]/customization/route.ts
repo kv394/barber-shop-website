@@ -18,10 +18,10 @@ export async function POST(
  const authResult = await requireShopRole(shopId, ['SHOP_ADMIN']);
  if (isAuthError(authResult)) return authResult;
 
- const body = await request.json();
- const { customization } = body;
+  const body = await request.json();
+  const { customization, template } = body;
 
- if (!customization || typeof customization !== 'object' || Array.isArray(customization)) {
+  if (customization && (typeof customization !== 'object' || Array.isArray(customization))) {
  return NextResponse.json(
  { error: 'Customization must be a valid JSON object' },
  { status: 400 }
@@ -60,12 +60,18 @@ export async function POST(
     ...(customization.heroImageUrl !== undefined && { heroImageUrl: normalizeAssetUrl(customization.heroImageUrl) }),
   };
 
- const updatedShop = await tenantClient.shop.update({
- where: { id: shopId },
- data: {
- customization: { ...existing, ...normalizedCustomization },
- },
- });
+  const updateData: any = {};
+  if (customization) {
+    updateData.customization = { ...existing, ...normalizedCustomization };
+  }
+  if (template) {
+    updateData.template = template;
+  }
+
+  const updatedShop = await tenantClient.shop.update({
+    where: { id: shopId },
+    data: updateData,
+  });
 
  // Clear the Redis cache for anyone accessing this shop
  await cacheService.invalidatePattern(`shop_layout:*:${shopId}`);

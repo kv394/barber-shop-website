@@ -10,6 +10,7 @@ import EditorialTemplate from './templates/EditorialTemplate';
 import MinimalTemplate from './templates/MinimalTemplate';
 import ClassicTemplate from './templates/ClassicTemplate';
 import ModernTemplate from './templates/ModernTemplate';
+import StudioTemplate from './templates/StudioTemplate';
 
 import { useState, useEffect } from 'react';
 import { normalizeGoogleDriveUrl } from '@/lib/image-utils';
@@ -208,6 +209,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
  else if (templateType === 'editorial') templateComponent = <EditorialTemplate ctx={ctx} />;
  else if (templateType === 'minimal') templateComponent = <MinimalTemplate ctx={ctx} />;
  else if (templateType === 'classic') templateComponent = <ClassicTemplate ctx={ctx} />;
+ else if (templateType === 'studio') templateComponent = <StudioTemplate ctx={ctx} />;
  else templateComponent = <ModernTemplate ctx={ctx} />;
  
  return (
