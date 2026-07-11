@@ -18,6 +18,7 @@ export default function SecondarySidebar({ shopId, userRole, shopType, industryT
 
  // Determine Active Section
  const getSection = () => {
+ if (pathname.startsWith(`/shop/${shopId}/classes`)) return 'classes';
  if (pathname.startsWith(`/shop/${shopId}/settings/team`) || pathname.startsWith(`/shop/${shopId}/portfolio`)) return 'team';
  
  const settingsAndConfigPaths = ['/config/services', '/config/products', '/settings/booking', '/settings/dynamic-pricing', '/settings/resources', '/settings/forms', '/settings/memberships', '/settings', '/settings/notifications', '/settings/kiosk', '/settings/billing', '/settings/commissions', '/hardware', '/marketplace'];
@@ -58,6 +59,15 @@ export default function SecondarySidebar({ shopId, userRole, shopType, industryT
 
  const renderSectionContent = () => {
  switch (section) {
+ case 'classes':
+ return (
+ <div className="space-y-0.5 mt-3">
+ {navLink(`/shop/${shopId}/classes`, 'Dashboard', true)}
+ {navLink(`/shop/${shopId}/classes/semesters`, 'Semesters')}
+ {navLink(`/shop/${shopId}/classes/schedules`, 'Weekly Schedules')}
+ {navLink(`/shop/${shopId}/classes/rosters`, 'Rosters & Attendance')}
+ </div>
+ );
  case 'team':
  return (
  <div className="space-y-0.5 mt-3">

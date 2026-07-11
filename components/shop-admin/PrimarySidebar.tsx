@@ -21,6 +21,7 @@ export default function PrimarySidebar({
  const isShopAdmin = userRole === 'SHOP_ADMIN' || userRole === 'SITE_ADMIN';
  const isBoothRenter = userRole === 'BOOTH_RENTER';
  const { t } = useTerminology(industryType as IndustryType);
+ const isGroupClassIndustry = ['DANCE_STUDIO', 'FITNESS', 'MUSIC_SCHOOL', 'MARTIAL_ARTS'].includes(industryType);
 
  // Common Icons reused
  const icons = {
@@ -77,6 +78,7 @@ export default function PrimarySidebar({
   {isShopAdmin ? (
   <>
   {navLink(`/shop/${shopId}/bookings`, t('bookings'), icons.calendar, () => pathname.startsWith(`/shop/${shopId}/bookings`))}
+  {isGroupClassIndustry && navLink(`/shop/${shopId}/classes`, 'Classes', icons.idCard, () => pathname.startsWith(`/shop/${shopId}/classes`))}
   {navLink(`/shop/${shopId}/waitlist`, 'Waitlist', icons.clock, () => pathname.startsWith(`/shop/${shopId}/waitlist`))}
   {navLink(`/shop/${shopId}/clients`, t('clients'), icons.users, () => pathname.startsWith(`/shop/${shopId}/clients`))}
   {navLink(`/shop/${shopId}/settings/team`, 'Team', icons.idCard, () => pathname.startsWith(`/shop/${shopId}/settings/team`))}

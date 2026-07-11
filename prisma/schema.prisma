@@ -108,6 +108,8 @@ model Shop {
   waitlist                   Waitlist[]
   shopClients                ShopClient[]
   purchaseOrders             PurchaseOrder[]
+  academicTerms              AcademicTerm[]
+  classSchedules             ClassSchedule[]
   boothRentPayments          BoothRentPayment[]
   dynamicPricingRules        DynamicPricingRule[]
 
@@ -163,6 +165,10 @@ model User {
   referralsMade           Referral[]              @relation("ReferrerReferrals")
   reviews                 Review[]
   shopAccesses            ShopAccess[]
+  classSchedules          ClassSchedule[]
+  classEnrollments        ClassEnrollment[]
+  classAttendances        ClassAttendance[]
+  waitlistEntries         WaitlistEntry[]
   timeLogs                TimeLog[]
   shop                    Shop?                   @relation(fields: [shopId], references: [id], onDelete: SetNull)
   memberships             UserMembership[]
@@ -246,6 +252,9 @@ model Service {
   processingTime              Int                          @default(0)
   isBookable                  Boolean                      @default(true)
   requiresVirtualConsultation Boolean                      @default(false)
+  isGroupClass                Boolean                      @default(false)
+  maxCapacity                 Int?
+  waitlistEnabled             Boolean                      @default(true)
   appointments                Appointment[]
   appointmentItems            AppointmentItem[]
   commissionRules             CommissionRule[]
@@ -253,6 +262,7 @@ model Service {
   shop                        Shop                         @relation(fields: [shopId], references: [id], onDelete: Cascade)
   addons                      ServiceAddon[]               @relation("ServiceToAddons")
   productUsages               ServiceProductUsage[]
+  classSchedules              ClassSchedule[]
 
   @@index([shopId, type])
   @@index([isBookable])
@@ -1044,6 +1054,8 @@ enum WaitlistStatus {
   COMPLETED
   CANCELLED
   NO_SHOW
+  PROMOTED
+  EXPIRED
 }
 
 enum CampaignStatus {
@@ -1174,4 +1186,113 @@ model ProcessedWebhook {
   createdAt DateTime @default(now())
 
   @@index([eventId])
+}
+
+enum EnrollmentStatus {
+  ACTIVE
+  DROPPED
+}
+
+enum SessionStatus {
+  SCHEDULED
+  CANCELLED
+  COMPLETED
+}
+
+enum AttendanceStatus {
+  PRESENT
+  ABSENT
+  EXCUSED
+}
+
+model AcademicTerm {
+  id        String          @id @default(cuid())
+  shopId    String
+  name      String
+  startDate DateTime
+  endDate   DateTime
+  shop      Shop            @relation(fields: [shopId], references: [id], onDelete: Cascade)
+  classes   ClassSchedule[]
+
+  @@index([shopId])
+}
+
+model ClassSchedule {
+  id           String            @id @default(cuid())
+  shopId       String
+  serviceId    String
+  termId       String?
+  staffId      String
+  dayOfWeek    Int
+  startTime    String
+  endTime      String
+  
+  shop         Shop              @relation(fields: [shopId], references: [id], onDelete: Cascade)
+  service      Service           @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+  term         AcademicTerm?     @relation(fields: [termId], references: [id], onDelete: SetNull)
+  staff        User              @relation(fields: [staffId], references: [id], onDelete: Cascade)
+
+  enrollments  ClassEnrollment[]
+  sessions     ClassSession[]
+  waitlist     WaitlistEntry[]
+
+  @@index([shopId])
+  @@index([serviceId])
+  @@index([staffId])
+}
+
+model ClassEnrollment {
+  id              String           @id @default(cuid())
+  classScheduleId String
+  studentId       String
+  status          EnrollmentStatus @default(ACTIVE)
+  createdAt       DateTime         @default(now())
+
+  classSchedule   ClassSchedule    @relation(fields: [classScheduleId], references: [id], onDelete: Cascade)
+  student         User             @relation(fields: [studentId], references: [id], onDelete: Cascade)
+
+  @@index([classScheduleId])
+  @@index([studentId])
+}
+
+model WaitlistEntry {
+  id              String         @id @default(cuid())
+  classScheduleId String
+  studentId       String
+  position        Int
+  status          WaitlistStatus @default(WAITING)
+  createdAt       DateTime       @default(now())
+
+  classSchedule   ClassSchedule  @relation(fields: [classScheduleId], references: [id], onDelete: Cascade)
+  student         User           @relation(fields: [studentId], references: [id], onDelete: Cascade)
+
+  @@index([classScheduleId])
+  @@index([studentId])
+  @@index([status])
+}
+
+model ClassSession {
+  id              String            @id @default(cuid())
+  classScheduleId String
+  date            DateTime          @db.Date
+  status          SessionStatus     @default(SCHEDULED)
+  
+  classSchedule   ClassSchedule     @relation(fields: [classScheduleId], references: [id], onDelete: Cascade)
+  attendances     ClassAttendance[]
+
+  @@index([classScheduleId])
+  @@index([date])
+}
+
+model ClassAttendance {
+  id             String           @id @default(cuid())
+  classSessionId String
+  studentId      String
+  status         AttendanceStatus @default(PRESENT)
+
+  classSession   ClassSession     @relation(fields: [classSessionId], references: [id], onDelete: Cascade)
+  student        User             @relation(fields: [studentId], references: [id], onDelete: Cascade)
+
+  @@index([classSessionId])
+  @@index([studentId])
 }
