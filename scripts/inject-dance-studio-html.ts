@@ -239,11 +239,11 @@ const customHtml = `
           <div class="flex flex-col">
             {{#semesterPrice}}
             <span class="text-xs font-black uppercase tracking-widest text-yellow-400/80 mb-1">Tuition</span>
-            <span class="text-3xl font-black text-white drop-shadow-lg">\\$\{{semesterPrice}}</span>
+            <span class="text-3xl font-black text-white drop-shadow-lg">\${{semesterPrice}}</span>
             {{/semesterPrice}}
             {{^semesterPrice}}
             <span class="text-xs font-black uppercase tracking-widest text-yellow-400/80 mb-1">Drop-in</span>
-            <span class="text-3xl font-black text-white drop-shadow-lg">\\$\{{price}}</span>
+            <span class="text-3xl font-black text-white drop-shadow-lg">\${{price}}</span>
             {{/semesterPrice}}
           </div>
           <div class="w-14 h-14 rounded-full bg-gradient-to-r from-orange-500 to-pink-500 flex items-center justify-center text-white group-hover:scale-110 group-hover:rotate-12 transition-transform shadow-[0_0_20px_rgba(255,0,127,0.4)]">
