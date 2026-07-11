@@ -114,22 +114,31 @@ const customHtml = `
   </div>
 
   <!-- Header / Nav -->
-  <header class="fixed top-0 left-0 right-0 z-50 p-4 md:px-12 flex justify-between items-center bollywood-glass border-b border-yellow-500/20 transition-all">
+  <header class="fixed top-0 left-0 right-0 z-[100] px-4 py-3 md:px-10 flex justify-between items-center bg-[#120522]/90 backdrop-blur-xl border-b border-yellow-400/30 shadow-[0_4px_30px_rgba(0,0,0,0.5)] transition-all">
     <div class="flex items-center gap-4">
       {{#shop.logoUrl}}
-      <img src="{{shop.logoUrl}}" alt="{{shop.name}}" width="56" height="56" class="rounded-full border-2 border-yellow-400 p-0.5 shadow-[0_0_15px_rgba(255,215,0,0.5)]" />
+      <img src="{{shop.logoUrl}}" alt="{{shop.name}}" width="50" height="50" class="rounded-full border-2 border-yellow-400 p-0.5 shadow-[0_0_15px_rgba(255,215,0,0.5)] hover:scale-105 transition-transform" />
       {{/shop.logoUrl}}
-      <h1 class="text-2xl font-black tracking-tight text-white hidden sm:block" style="text-shadow: 0 2px 10px rgba(0,0,0,0.5)">{{shop.name}}</h1>
+      <h1 class="text-xl md:text-2xl font-black tracking-tight text-white hidden sm:block" style="text-shadow: 0 2px 10px rgba(0,0,0,0.5)">{{shop.name}}</h1>
     </div>
-    <div class="flex items-center gap-6">
-      <div class="hidden lg:flex items-center gap-6 text-pink-100">
-        <a href="#classes" class="text-sm font-bold uppercase tracking-wider hover:text-yellow-400 transition-colors">Programs</a>
-        <a href="#faculty" class="text-sm font-bold uppercase tracking-wider hover:text-yellow-400 transition-colors">Faculty</a>
-        <a href="#testimonials" class="text-sm font-bold uppercase tracking-wider hover:text-yellow-400 transition-colors">Testimonials</a>
-      </div>
+    <div class="flex items-center gap-8">
+      <nav class="hidden md:flex items-center gap-8 text-pink-100">
+        <a href="#classes" class="relative text-sm font-bold uppercase tracking-widest hover:text-yellow-400 transition-colors group">
+          Programs
+          <span class="absolute -bottom-1.5 left-0 w-0 h-0.5 bg-yellow-400 transition-all group-hover:w-full"></span>
+        </a>
+        <a href="#faculty" class="relative text-sm font-bold uppercase tracking-widest hover:text-yellow-400 transition-colors group">
+          Faculty
+          <span class="absolute -bottom-1.5 left-0 w-0 h-0.5 bg-yellow-400 transition-all group-hover:w-full"></span>
+        </a>
+        <a href="#testimonials" class="relative text-sm font-bold uppercase tracking-widest hover:text-yellow-400 transition-colors group">
+          Testimonials
+          <span class="absolute -bottom-1.5 left-0 w-0 h-0.5 bg-yellow-400 transition-all group-hover:w-full"></span>
+        </a>
+      </nav>
       <button 
         onclick="if(window.BarberBooking) window.BarberBooking.open()"
-        class="bollywood-btn px-8 py-3 rounded-full text-sm font-bold uppercase tracking-widest"
+        class="bollywood-btn px-6 py-2.5 rounded-full text-xs md:text-sm font-black uppercase tracking-widest shadow-lg hover:shadow-[0_0_20px_rgba(255,215,0,0.4)]"
       >
         Client Portal
       </button>
@@ -137,7 +146,7 @@ const customHtml = `
   </header>
 
   <!-- Hero Section -->
-  <div class="relative min-h-screen flex items-center justify-center pt-20 z-10">
+  <div class="relative min-h-screen flex items-center justify-center pt-32 z-10">
     <div class="absolute inset-0 z-0 rounded-b-[4rem] overflow-hidden">
       {{#shop.heroImageUrl}}
       <img 
