@@ -323,14 +323,14 @@ const customHtml = `
              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="none" class="text-yellow-400 drop-shadow-[0_0_10px_rgba(255,215,0,0.8)]"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
           </div>
           <p class="text-white text-xl leading-relaxed mb-10 font-light relative z-10 italic">
-            "{{content}}"
+            "{{comment}}"
           </p>
           <div class="flex items-center gap-5 relative z-10">
             <div class="w-16 h-16 rounded-full bg-gradient-to-br from-pink-500 to-orange-500 flex items-center justify-center text-2xl font-black text-white shadow-lg border-2 border-white/20">
-              {{authorName.[0]}}
+              {{user.name.[0]}}
             </div>
             <div>
-              <h5 class="font-black text-white text-xl">{{authorName}}</h5>
+              <h5 class="font-black text-white text-xl">{{user.name}}</h5>
               <span class="text-sm font-bold uppercase tracking-widest text-yellow-400">Student</span>
             </div>
           </div>
