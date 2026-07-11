@@ -49,7 +49,7 @@ export default function CaptionedVideoPlayer({ src, alt, title, duration, captio
 
   // Animation frame loop for precise timing
   const tick = useCallback(() => {
-    if (!startTimeRef.current) return;
+    if (!startTimeRef.current || !isMounted.current) return;
     const now = Date.now();
     const newElapsed = (now - startTimeRef.current) / 1000;
     
@@ -99,10 +99,13 @@ export default function CaptionedVideoPlayer({ src, alt, title, duration, captio
     };
   }, [isVisible, tick]);
 
+  const isMounted = useRef(true);
+
   // Handle Voice Over
   useEffect(() => {
     if (voiceEnabled && currentCaption && isVisible) {
       if (typeof window !== 'undefined' && window.speechSynthesis) {
+        window.speechSynthesis.pause();
         window.speechSynthesis.cancel();
         const utterance = new SpeechSynthesisUtterance(currentCaption.text);
         utterance.rate = 1.0;
@@ -114,7 +117,9 @@ export default function CaptionedVideoPlayer({ src, alt, title, duration, captio
   // Clean up speech on unmount
   useEffect(() => {
     return () => {
+      isMounted.current = false;
       if (typeof window !== 'undefined' && window.speechSynthesis) {
+        window.speechSynthesis.pause();
         window.speechSynthesis.cancel();
       }
     };
