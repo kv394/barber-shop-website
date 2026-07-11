@@ -52,37 +52,40 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
 
  // Click handler for dynamically generated templates where we can't easily attach React handlers to string HTML.
  const handleDynamicTemplateClick = (e: React.MouseEvent) => {
- const target = e.target as HTMLElement;
- const button = target.closest('button') || target.closest('a');
- if (!button) return;
+  const target = e.target as HTMLElement;
+  const button = target.closest('button') || target.closest('a') || target.closest('[data-service-id]') || target.closest('[data-action="book"]');
+  if (!button) return;
 
- const text = button.innerText.toLowerCase();
- const href = button.getAttribute('href') || '';
- const elId = button.getAttribute('id') || '';
+  const text = button.innerText.toLowerCase();
+  const href = button.getAttribute('href') || '';
+  const elId = button.getAttribute('id') || '';
+  const action = button.getAttribute('data-action');
+  const serviceId = button.getAttribute('data-service-id');
 
- // Skip sign-in/sign-out links
- if (href.includes('/sign-in') || href.includes('/logout')) return;
- if (text.includes('sign in') || text.includes('sign out')) return;
+  // Skip sign-in/sign-out links
+  if (href.includes('/sign-in') || href.includes('/logout')) return;
+  if (text.includes('sign in') || text.includes('sign out')) return;
 
- // Intercept "My Appointments" clicks → open pop-up instead of navigating
- if (
- href.includes('/my-appointments') ||
- text.includes('my appointments') ||
- elId === 'auth-appointments' ||
- elId === 'mobile-appointments'
- ) {
- e.preventDefault();
- // Try the template's own modal function first (e.g. heritage template)
- if (typeof window !== 'undefined' && typeof (window as any).openAppointmentsModal === 'function') {
- (window as any).openAppointmentsModal();
- } else {
- setShowAppointmentsModal(true);
- }
- return;
- }
+  // Intercept "My Appointments" clicks → open pop-up instead of navigating
+  if (
+   href.includes('/my-appointments') ||
+   text.includes('my appointments') ||
+   elId === 'auth-appointments' ||
+   elId === 'mobile-appointments'
+  ) {
+   e.preventDefault();
+   // Try the template's own modal function first (e.g. heritage template)
+   if (typeof window !== 'undefined' && typeof (window as any).openAppointmentsModal === 'function') {
+    (window as any).openAppointmentsModal();
+   } else {
+    setShowAppointmentsModal(true);
+   }
+   return;
+  }
 
- // Only intercept booking-related actions
- if (text.includes('book') || (text.includes('appointment') && !text.includes('my'))) {
+  // Only intercept booking-related actions
+  const isBookingAction = action === 'book' || !!serviceId || text.includes('book') || text.includes('register') || text.includes('portal') || (text.includes('appointment') && !text.includes('my'));
+  if (isBookingAction) {
   // If the element has its own onclick handler (dynamically rendered cards via
   // template scripts bypass the sanitizer), let it handle the booking directly.
   // Only intercept clicks on sanitized elements that lost their onclick handlers.
