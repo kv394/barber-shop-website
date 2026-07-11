@@ -16,9 +16,11 @@ export function ServiceForm({
   products,
   shopId,
   currency,
+  industryType,
   onSubmit,
   onReset
 }: any) {
+  const isGroupClassIndustry = ['DANCE_STUDIO', 'FITNESS', 'MUSIC_SCHOOL', 'MARTIAL_ARTS'].includes(industryType);
   return (
     <PremiumGlassCard className="mb-6 sm:mb-8" accentColor="crm-primary">
       <div className="flex justify-between items-center mb-6">
@@ -74,6 +76,29 @@ export function ServiceForm({
               <option value="INTERNAL">Internal / Add-on Service</option>
             </select>
           </div>
+
+          {isGroupClassIndustry && (
+            <>
+              <PremiumInput
+                label="Drop-in Price ($)"
+                value={newService.dropInPrice}
+                onChange={(e) => {
+                  const val = e.target.value;
+                  if (val === '' || /^\d*\.?\d*$/.test(val)) setNewService({ ...newService, dropInPrice: val });
+                }}
+                placeholder="25.00"
+              />
+              <PremiumInput
+                label="Semester/Term Price ($)"
+                value={newService.semesterPrice}
+                onChange={(e) => {
+                  const val = e.target.value;
+                  if (val === '' || /^\d*\.?\d*$/.test(val)) setNewService({ ...newService, semesterPrice: val });
+                }}
+                placeholder="300.00"
+              />
+            </>
+          )}
 
           <div className="md:col-span-2">
             <PremiumInput

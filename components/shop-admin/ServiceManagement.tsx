@@ -25,6 +25,8 @@ interface Service {
  isBookable: boolean;
  requiresVirtualConsultation: boolean;
  imageUrl: string | null;
+ dropInPrice?: number | null;
+ semesterPrice?: number | null;
  addons?: ServiceAddon[];
  resourceRequirements?: { id: string, resourceType: string, quantity: number }[];
  productUsages?: { id: string, productId: string, servicesPerProduct: number, product: { name: string } }[];
@@ -33,9 +35,10 @@ interface Service {
 interface ServiceManagementProps {
  shopId: string;
  currency: string;
+ industryType?: string;
 }
 
-export function ServiceManagement({ shopId, currency }: ServiceManagementProps) {
+export function ServiceManagement({ shopId, currency, industryType }: ServiceManagementProps) {
  const [services, setServices] = useState<Service[]>([]);
  const [allAddons, setAllAddons] = useState<ServiceAddon[]>([]);
  const [resources, setResources] = useState<any[]>([]);
@@ -54,6 +57,8 @@ export function ServiceManagement({ shopId, currency }: ServiceManagementProps) 
  isBookable: true,
  requiresVirtualConsultation: false,
  imageUrl: '',
+ dropInPrice: '',
+ semesterPrice: '',
  resourceRequirements: [] as { resourceType: string, quantity: number }[],
  productUsages: [] as { productId: string, servicesPerProduct: number }[],
  });
@@ -115,7 +120,7 @@ export function ServiceManagement({ shopId, currency }: ServiceManagementProps) 
  }, [shopId]);
 
  const resetForm = () => {
- setNewService({ name: '', description: '', price: '', duration: '', type: 'CUSTOMER', addonIds: [], isBookable: true, requiresVirtualConsultation: false, imageUrl: '', resourceRequirements: [], productUsages: [] });
+ setNewService({ name: '', description: '', price: '', duration: '', type: 'CUSTOMER', addonIds: [], isBookable: true, requiresVirtualConsultation: false, imageUrl: '', dropInPrice: '', semesterPrice: '', resourceRequirements: [], productUsages: [] });
  setEditingServiceId(null);
  };
 
@@ -131,6 +136,8 @@ export function ServiceManagement({ shopId, currency }: ServiceManagementProps) 
  isBookable: service.isBookable,
  requiresVirtualConsultation: service.requiresVirtualConsultation || false,
  imageUrl: service.imageUrl || '',
+ dropInPrice: service.dropInPrice?.toString() || '',
+ semesterPrice: service.semesterPrice?.toString() || '',
  resourceRequirements: service.resourceRequirements?.map(r => ({ resourceType: r.resourceType, quantity: r.quantity })) || [],
  productUsages: service.productUsages?.map(p => ({ productId: p.productId, servicesPerProduct: p.servicesPerProduct })) || [],
  });
@@ -173,6 +180,8 @@ export function ServiceManagement({ shopId, currency }: ServiceManagementProps) 
  isBookable: newService.isBookable,
  requiresVirtualConsultation: newService.requiresVirtualConsultation,
  imageUrl: newService.imageUrl,
+ dropInPrice: newService.dropInPrice ? parseFloat(newService.dropInPrice) : null,
+ semesterPrice: newService.semesterPrice ? parseFloat(newService.semesterPrice) : null,
  addonIds: newService.addonIds,
  resourceRequirements: newService.resourceRequirements,
  productUsages: newService.productUsages,
@@ -313,6 +322,7 @@ export function ServiceManagement({ shopId, currency }: ServiceManagementProps) 
           products={products}
           shopId={shopId}
           currency={currency}
+          industryType={industryType}
           onSubmit={handleSubmitService}
           onReset={resetForm}
         />
