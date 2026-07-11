@@ -16,15 +16,31 @@ async function main() {
       data: {
         name: shopName,
         companyName: shopName,
+        description: 'Join our studio and experience world-class training in a supportive community environment.',
         timezone: 'America/New_York',
         currency: 'USD',
         shopType: 'PHYSICAL',
-        industryType: 'DANCE_STUDIO'
+        industryType: 'DANCE_STUDIO',
+        customization: {
+          heroTitle: 'Discover the Dancer in You.',
+          address: { street: '123 Main St', city: 'San Jose' }
+        }
       }
     });
     console.log(`Created shop: ${shop.name}`);
   } else {
-    console.log(`Shop already exists: ${shop.name}`);
+    // Update existing shop with customization data if missing
+    await prisma.shop.update({
+      where: { id: shop.id },
+      data: {
+        description: 'Join our studio and experience world-class training in a supportive community environment.',
+        customization: {
+          heroTitle: 'Discover the Dancer in You.',
+          address: { street: '123 Main St', city: 'San Jose' }
+        }
+      }
+    });
+    console.log(`Shop already exists and was updated: ${shop.name}`);
   }
 
   // Create admin user
@@ -63,9 +79,9 @@ async function main() {
 
   // Create some classes (Services)
   const services = [
-    { name: 'Beginner Ballet', price: 25, duration: 60 },
-    { name: 'Hip Hop Fundamentals', price: 20, duration: 45 },
-    { name: 'Contemporary Dance', price: 30, duration: 60 }
+    { name: 'Beginner Ballet', dropInPrice: 25, semesterPrice: 350, duration: 60, maxCapacity: 15, isGroupClass: true },
+    { name: 'Hip Hop Fundamentals', dropInPrice: 20, semesterPrice: 300, duration: 45, maxCapacity: 20, isGroupClass: true },
+    { name: 'Contemporary Dance', dropInPrice: 30, semesterPrice: 400, duration: 60, maxCapacity: 12, isGroupClass: true }
   ];
 
   for (const service of services) {
@@ -76,14 +92,28 @@ async function main() {
       await prisma.service.create({
         data: {
           name: service.name,
-          price: service.price,
+          price: service.dropInPrice,
+          dropInPrice: service.dropInPrice,
+          semesterPrice: service.semesterPrice,
           duration: service.duration,
+          maxCapacity: service.maxCapacity,
+          isGroupClass: service.isGroupClass,
           shopId: shop.id,
           isBookable: true,
           type: 'CUSTOMER'
         }
       });
       console.log(`Created service/class: ${service.name}`);
+    } else {
+       await prisma.service.update({
+        where: { id: existing.id },
+        data: {
+          dropInPrice: service.dropInPrice,
+          semesterPrice: service.semesterPrice,
+          maxCapacity: service.maxCapacity,
+          isGroupClass: service.isGroupClass,
+        }
+      });
     }
   }
 

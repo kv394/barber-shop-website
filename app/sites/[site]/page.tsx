@@ -5,97 +5,29 @@ import { Metadata } from 'next';
 import ClientPage from '@/app/shops/[slug]/ClientPage';
 import { createClient } from '@/utils/supabase/server';
 import { redirect } from 'next/navigation';
+import AIWidget from '@/components/booking/AIWidget';
+import { getShopPublicData } from '@/lib/shop-public-data';
 import { getOrCreateFolder, downloadFileFromFolder } from '@/lib/google-drive';
 import { cacheService } from '@/lib/cache';
-import AIWidget from '@/components/booking/AIWidget';
-import { serialize } from '@/lib/serialize';
 
 export const revalidate = 60;
 
-const serviceInclude = {
- services: {
- where: { type: 'CUSTOMER' as const },
- orderBy: { createdAt: 'desc' as const },
- select: { id: true, name: true, description: true, price: true, duration: true },
- },
- products: {
- where: { type: 'RETAIL' as const },
- select: { id: true, name: true, description: true, price: true },
- },
- portfolioImages: {
- select: { id: true, imageUrl: true, caption: true },
- },
-};
-
 const getShopBySite = cache(async (site: string) => {
- // If it's a subdomain on vercel, extract the subdomain
- let subdomain = site;
- let customDomain = site;
- 
- if (site.includes('.vercel.app')) {
- subdomain = site.split('.')[0];
- } else if (site.includes('localhost')) {
- subdomain = site.split(':')[0]; // Just in case, though middleware excludes localhost
- }
-
- // 1. Try to find by customDomain
- let shop: any = await prisma.shop.findUnique({
- where: { customDomain: site },
- include: serviceInclude,
- });
-
- // 2. Try to find by subdomain
- if (!shop && subdomain) {
- shop = await prisma.shop.findUnique({
- where: { subdomain },
- include: serviceInclude,
- });
- }
- 
- // Fallback (for testing / backward compat): treat site as slug/ID
- if (!shop) {
- shop = await prisma.shop.findUnique({
- where: { id: site.split('.')[0] },
- include: serviceInclude,
- });
- }
-
- if (!shop) return null;
-
- // Fetch reviews for this shop
- const reviews = await prisma.review.findMany({
- where: { shopId: shop.id },
- include: {
- user: { select: { name: true } },
- appointment: {
- include: {
- service: { select: { name: true } },
- staff: { select: { name: true } },
- },
- },
- },
- orderBy: { createdAt: 'desc' },
- take: 20,
- });
-
- const serialized = serialize(shop);
- const rawCustom = serialized.customization || {};
- 
- const rawAddress = rawCustom.address;
- const formattedAddress = typeof rawAddress === 'object' && rawAddress !== null
- ? [rawAddress.street, rawAddress.suite, rawAddress.city, rawAddress.state, rawAddress.zip, rawAddress.country].filter(Boolean).join(', ')
- : rawAddress;
-
- const publicCustomization = {
- ...rawCustom,
- address: formattedAddress,
- };
- return {
- ...serialized,
- customization: publicCustomization,
- template: serialized.template || 'modern',
- reviews: serialize(reviews),
- };
+  // Try resolving as a domain/subdomain using getShopPublicData
+  const data = await getShopPublicData(site);
+  if (!data) return null;
+  
+  const { shop, products, services, staff, reviews, portfolioImages } = data;
+  
+  return {
+    ...shop,
+    products,
+    services,
+    users: staff,
+    reviews,
+    portfolioImages,
+    baseLocation: shop.customization?.address || shop.baseLocation,
+  };
 });
 
 export async function generateMetadata({ params }: { params: Promise<{ site: string }> }): Promise<Metadata> {
@@ -186,8 +118,8 @@ export default async function SitePage({ params }: { params: Promise<{ site: str
 
  const shopForTemplate = {
  ...shop,
- logoUrl: normalizeImageUrl(shop.customization?.logoUrl) || shop.logoUrl,
- heroImageUrl: normalizeImageUrl(shop.customization?.heroImageUrl) || shop.heroImageUrl
+ logoUrl: normalizeImageUrl(shop.customization?.logoUrl) || (shop as any).logoUrl,
+ heroImageUrl: normalizeImageUrl(shop.customization?.heroImageUrl) || (shop as any).heroImageUrl
  };
 
  dynamicTemplateHtml = Mustache.render(htmlCode, {
@@ -215,7 +147,7 @@ export default async function SitePage({ params }: { params: Promise<{ site: str
  dynamicTemplateHtml={dynamicTemplateHtml}
  dynamicTemplateCss={dynamicTemplateCss}
  />
- <AIWidget shopId={shop.id} shopName={shop.name} themeColor={primaryColor} secondaryColor={secondaryColor} templateType={templateType} shopType={shop.shopType} slogan={shop.slogan || shop.customization?.tagline} />
+ <AIWidget shopId={shop.id} shopName={shop.name} themeColor={primaryColor} secondaryColor={secondaryColor} templateType={templateType} shopType={(shop as any).shopType} slogan={(shop as any).slogan || (shop as any).customization?.tagline} />
  </>
  );
 }

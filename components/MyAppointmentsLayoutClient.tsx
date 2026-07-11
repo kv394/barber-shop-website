@@ -4,7 +4,7 @@ import React, { useState, useEffect, Suspense } from 'react';
 import Link from 'next/link';
 import { usePathname, useSearchParams } from 'next/navigation';
 
-function LayoutContent({ children }: { children: React.ReactNode }) {
+function LayoutContent({ children, showClassFeatures }: { children: React.ReactNode, showClassFeatures?: boolean }) {
  const pathname = usePathname();
  const searchParams = useSearchParams();
  const themeColor = searchParams.get('themeColor') || undefined;
@@ -15,6 +15,10 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
 
  const tabs = [
  { id: '/my-appointments', label: 'Appointments', icon: <><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></> },
+ ...(showClassFeatures ? [
+   { id: '/my-appointments/family', label: 'Family', icon: <><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></> },
+   { id: '/my-appointments/classes', label: 'Classes', icon: <><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></> },
+ ] : []),
  { id: '/my-appointments/profile', label: 'Profile', icon: <><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></> },
  { id: '/my-appointments/loyalty', label: 'Loyalty', icon: <><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></> },
  { id: '/my-appointments/notifications', label: 'Alerts', icon: <><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></> },
@@ -95,10 +99,10 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
  );
 }
 
-export default function MyAppointmentsLayoutClient({ children }: { children: React.ReactNode }) {
+export default function MyAppointmentsLayoutClient({ children, showClassFeatures }: { children: React.ReactNode, showClassFeatures?: boolean }) {
  return (
  <Suspense fallback={<div className="h-[100dvh] bg-crm-bg flex justify-center items-center">Loading...</div>}>
- <LayoutContent>{children}</LayoutContent>
+ <LayoutContent showClassFeatures={showClassFeatures}>{children}</LayoutContent>
  </Suspense>
  );
 }

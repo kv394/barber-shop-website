@@ -25,7 +25,6 @@ export function CustomizationForm({
  dynamicTemplates = [],
 }: CustomizationFormProps) {
  const [formData, setFormData] = useState(customization || DEFAULT_CUSTOMIZATION);
- const [template, setTemplate] = useState(currentTemplate || 'modern');
  const [isLoading, setIsLoading] = useState(false);
  const [error, setError] = useState<string | null>(null);
  const [success, setSuccess] = useState(false);
@@ -52,7 +51,7 @@ export function CustomizationForm({
  headers: {
  'Content-Type': 'application/json',
  },
- body: JSON.stringify({ customization: formData, template }),
+      body: JSON.stringify({ customization: formData }),
  });
 
  if (!response.ok) {
@@ -92,32 +91,6 @@ export function CustomizationForm({
    
     <div>
     <h3 className="font-bold text-crm-text mb-4 text-lg">Theme & Brand</h3>
-    
-    <div className="mb-6">
-      <label className="block font-medium text-crm-muted mb-2 text-[13px]">Website Template / Theme</label>
-      <select
-        value={template}
-        onChange={(e) => {
-          setTemplate(e.target.value);
-          setSuccess(false);
-        }}
-        className="w-full bg-crm-bg border border-crm-border shadow-sm rounded px-4 py-2 text-crm-text text-[13px] font-medium"
-      >
-        <option value="modern">Modern (Default)</option>
-        <option value="classic">Classic Barber</option>
-        <option value="minimal">Minimalist</option>
-        <option value="sporty">Sporty</option>
-        <option value="corporate">Corporate</option>
-        <option value="noir">Noir (Dark Mode)</option>
-        <option value="sunset">Sunset Gradient</option>
-        <option value="editorial">Editorial / Magazine</option>
-        <option value="studio">Dance/Fitness Studio</option>
-        {dynamicTemplates.map(dt => (
-          <option key={dt.name} value={dt.name}>{dt.description || dt.name}</option>
-        ))}
-      </select>
-      <p className="text-[11px] text-crm-muted mt-1">Changes the overall layout and design of your public landing page.</p>
-    </div>
     
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
     <div>

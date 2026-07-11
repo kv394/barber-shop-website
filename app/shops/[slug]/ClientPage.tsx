@@ -200,17 +200,14 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
  </div>
  ) : null;
 
- let templateComponent;
- if (dynamicTemplateHtml) templateComponent = <DynamicTemplate ctx={ctx} />;
- else if (templateType === 'sporty') templateComponent = <SportyTemplate ctx={ctx} />;
- else if (templateType === 'corporate') templateComponent = <CorporateTemplate ctx={ctx} />;
- else if (templateType === 'noir') templateComponent = <NoirTemplate ctx={ctx} />;
- else if (templateType === 'sunset') templateComponent = <SunsetTemplate ctx={ctx} />;
- else if (templateType === 'editorial') templateComponent = <EditorialTemplate ctx={ctx} />;
- else if (templateType === 'minimal') templateComponent = <MinimalTemplate ctx={ctx} />;
- else if (templateType === 'classic') templateComponent = <ClassicTemplate ctx={ctx} />;
- else if (templateType === 'studio') templateComponent = <StudioTemplate ctx={ctx} />;
- else templateComponent = <ModernTemplate ctx={ctx} />;
+  let templateComponent;
+  if (dynamicTemplateHtml) {
+    templateComponent = <DynamicTemplate ctx={ctx} />;
+  } else if (['DANCE_STUDIO', 'FITNESS', 'MARTIAL_ARTS', 'MUSIC_SCHOOL'].includes(shop.industryType)) {
+    templateComponent = <StudioTemplate ctx={ctx} />;
+  } else {
+    templateComponent = <ModernTemplate ctx={ctx} />;
+  }
  
  return (
  <>

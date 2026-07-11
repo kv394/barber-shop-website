@@ -16,12 +16,30 @@ export default async function MyAppointmentsLayout({
  redirect('/sign-in?redirect_url=/my-appointments');
  }
 
- // Note: We used to redirect STAFF/ADMIN out of here, but they need access to /my-appointments/profile
- // to edit their global account details (name, phone, etc.).
+  let showClassFeatures = false;
+  if (user.email) {
+    const dbUser = await prisma.user.findUnique({
+      where: { email: user.email },
+      include: {
+        shopClients: {
+          include: {
+            shop: {
+              select: { industryType: true }
+            }
+          }
+        }
+      }
+    });
+    
+    if (dbUser) {
+      const classIndustries = ['DANCE_STUDIO', 'FITNESS', 'MARTIAL_ARTS', 'MUSIC_SCHOOL'];
+      showClassFeatures = dbUser.shopClients.some(sc => classIndustries.includes(sc.shop.industryType));
+    }
+  }
 
- return (
- <MyAppointmentsLayoutClient>
- {children}
- </MyAppointmentsLayoutClient>
- );
+  return (
+  <MyAppointmentsLayoutClient showClassFeatures={showClassFeatures}>
+  {children}
+  </MyAppointmentsLayoutClient>
+  );
 }

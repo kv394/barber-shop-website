@@ -13,131 +13,25 @@ import { cacheService } from '@/lib/cache';
 import AIWidget from '@/components/booking/AIWidget';
 import BookingModalScript from '@/components/booking/BookingModalScript';
 import { serialize } from '@/lib/serialize';
+import { getShopPublicData } from '@/lib/shop-public-data';
 
 // Use this to ensure the page caches effectively unless revalidated
 
-const serviceInclude = {
- services: {
- where: { type: 'CUSTOMER' as const, isBookable: true },
- orderBy: { createdAt: 'desc' as const },
- select: { id: true, name: true, description: true, price: true, duration: true, imageUrl: true },
- },
- products: {
- where: { type: 'RETAIL' as const, isSellable: true },
- select: { id: true, name: true, description: true, price: true, imageUrl: true },
- },
- portfolioImages: {
- select: { id: true, imageUrl: true, caption: true },
- },
- users: {
- where: { role: { in: ['STAFF', 'SHOP_ADMIN', 'BOOTH_RENTER'] as UserRole[] } },
- select: { id: true, name: true, imageUrl: true, role: true, shopClients: { select: { clientNotes: true } } }, // using clientNotes temporarily for bio if any, or just name/role
- },
-};
-
 const getShopBySlug = cache(async (slug: string) => {
- return await cacheService.getOrSet(
- `shop_public_page_data:${slug}`,
- async () => {
- // 1. Try to find by exact ID (backward compat)
- let shop: any = await prisma.shop.findUnique({
- where: { id: slug },
- include: serviceInclude,
- });
-
- if (!shop) {
- // 2. Case-insensitive name search — avoids loading ALL shops into memory.
- const firstWord = slug.split('-').find(w => w.length > 2) || slug.split('-')[0];
- const candidates = await prisma.shop.findMany({
- where: { name: { contains: firstWord, mode: 'insensitive' } },
- include: serviceInclude,
- take: 50, // Bounded — never fetches entire table
- });
-
- shop = candidates.find(
- (s: any) => s.name.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '') === slug.toLowerCase()
- ) || null;
-
-  // When multiple shops share the same slug (duplicate names), prefer
-  // the one that has a custom template with actual HTML content.
-  if (shop) {
-   const allMatches = candidates.filter(
-    (s: any) => s.name.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '') === slug.toLowerCase()
-   );
-   if (allMatches.length > 1) {
-    const customMatch = allMatches.find(
-     (s: any) => s.customization?.customHtml
-    );
-    if (customMatch) shop = customMatch;
-   }
-  }
- }
-
- if (!shop) return null;
-
- // Fetch reviews for this shop
- const reviews = await prisma.review.findMany({
- where: { shopId: shop.id },
- include: {
- user: { select: { name: true } },
- appointment: {
- include: {
- service: { select: { name: true } },
- staff: { select: { name: true } },
- },
- },
- },
- orderBy: { createdAt: 'desc' },
- take: 20,
- });
-
- const serialized = serialize(shop);
- // SECURITY: Only expose public-facing customization fields to the client.
- // Internal settings like notifSettings, bookingSettings, businessHours are admin-only.
- const rawCustom = serialized.customization || {};
- 
- // Format address: check customization.address, then contact.address, then fallback to shop.baseLocation
- const rawAddress = rawCustom.address || rawCustom.contact?.address || serialized.baseLocation;
- const formattedAddress = typeof rawAddress === 'object' && rawAddress !== null
- ? [rawAddress.street, rawAddress.suite, rawAddress.city, rawAddress.state, rawAddress.zip, rawAddress.country].filter(Boolean).join(', ')
- : rawAddress;
-
- const publicCustomization = {
- primaryColor: rawCustom.primaryColor,
- secondaryColor: rawCustom.secondaryColor,
- logoUrl: rawCustom.logoUrl,
- bannerUrl: rawCustom.bannerUrl,
- heroImageUrl: rawCustom.heroImageUrl,
- tagline: rawCustom.tagline,
- address: formattedAddress,
- phone: rawCustom.phone || rawCustom.contact?.phone || '',
- email: rawCustom.email || rawCustom.contact?.email || '',
- contact: rawCustom.contact,
- aboutText: rawCustom.aboutText,
- socialLinks: rawCustom.socialLinks,
- // Expose business hours for public schedule display
- businessHours: rawCustom.businessHours,
- pages: rawCustom.pages,
- editorialCustomization: rawCustom.editorialCustomization,
- fontFamily: rawCustom.fontFamily,
- ctaText: rawCustom.ctaText,
- heroVideoUrl: rawCustom.heroVideoUrl,
- announcement: rawCustom.announcement,
- seo: rawCustom.seo,
- customHtml: rawCustom.customHtml,
- authPosition: rawCustom.authPosition,
- chatbotPosition: rawCustom.chatbotPosition,
- colorTheme: rawCustom.colorTheme,
- };
- return {
- ...serialized,
- customization: publicCustomization,
- template: serialized.template || 'modern',
- reviews: serialize(reviews),
- };
- },
- 900 // 15 minutes cache
- );
+  const data = await getShopPublicData(slug);
+  if (!data) return null;
+  
+  const { shop, products, services, staff, reviews, portfolioImages } = data;
+  
+  return {
+    ...shop,
+    products,
+    services,
+    users: staff,
+    reviews,
+    portfolioImages,
+    baseLocation: shop.customization?.address || shop.baseLocation,
+  };
 });
 
 export async function generateMetadata({
@@ -192,71 +86,10 @@ export default async function PublicShopPage({
    // This guarantees fresh data from the DB on every preview request.
    let shop;
    if (isPreview) {
-    // Query DB directly — no Redis, no React cache
-    let s: any = await prisma.shop.findUnique({ where: { id: slug }, include: serviceInclude });
-    if (!s) {
-     const firstWord = slug.split('-').find((w: string) => w.length > 2) || slug.split('-')[0];
-     const candidates = await prisma.shop.findMany({
-      where: { name: { contains: firstWord, mode: 'insensitive' } },
-      include: serviceInclude,
-      take: 50,
-     });
-      s = candidates.find(
-       (c: any) => c.name.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '') === slug.toLowerCase()
-      ) || null;
-      // Prefer the shop with custom template when duplicates exist
-      if (s) {
-       const allMatches = candidates.filter(
-        (c: any) => c.name.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '') === slug.toLowerCase()
-       );
-       if (allMatches.length > 1) {
-        const customMatch = allMatches.find(
-         (c: any) => c.customization?.customHtml
-        );
-        if (customMatch) s = customMatch;
-       }
-      }
-     }
-    if (s) {
-     const reviews = await prisma.review.findMany({
-      where: { shopId: s.id },
-      include: { user: { select: { name: true } }, appointment: { include: { service: { select: { name: true } }, staff: { select: { name: true } } } } },
-      orderBy: { createdAt: 'desc' },
-      take: 20,
-     });
-     const serialized = serialize(s);
-     const rawCustom = serialized.customization || {};
-     const rawAddress = rawCustom.address || rawCustom.contact?.address || serialized.baseLocation;
-     const formattedAddress = typeof rawAddress === 'object' && rawAddress !== null
-      ? [rawAddress.street, rawAddress.suite, rawAddress.city, rawAddress.state, rawAddress.zip, rawAddress.country].filter(Boolean).join(', ')
-      : rawAddress;
-     shop = {
-      ...serialized,
-      customization: {
-       primaryColor: rawCustom.primaryColor, secondaryColor: rawCustom.secondaryColor,
-       logoUrl: rawCustom.logoUrl, bannerUrl: rawCustom.bannerUrl, heroImageUrl: rawCustom.heroImageUrl,
-       tagline: rawCustom.tagline, address: formattedAddress, phone: rawCustom.phone || rawCustom.contact?.phone || '',
-       email: rawCustom.email || rawCustom.contact?.email || '', contact: rawCustom.contact,
-       aboutText: rawCustom.aboutText, socialLinks: rawCustom.socialLinks,
-       businessHours: rawCustom.businessHours, pages: rawCustom.pages,
-       editorialCustomization: rawCustom.editorialCustomization, fontFamily: rawCustom.fontFamily,
-       ctaText: rawCustom.ctaText, heroVideoUrl: rawCustom.heroVideoUrl,
-       announcement: rawCustom.announcement, seo: rawCustom.seo,
-       customHtml: rawCustom.customHtml, authPosition: rawCustom.authPosition,
-       chatbotPosition: rawCustom.chatbotPosition,
-       colorTheme: rawCustom.colorTheme,
-      },
-      template: serialized.template || 'modern',
-      reviews: serialize(reviews),
-     };
-     // Also flush the stale Redis cache so non-preview visits get fresh data too
-     await cacheService.invalidate(`shop_public_page_data:${slug}`).catch(() => {});
-    } else {
-     shop = null;
-    }
-   } else {
-    shop = await getShopBySlug(slug);
+      await cacheService.invalidate(`api_public_data_v2:${slug}`).catch(() => {});
+      await cacheService.invalidate(`shop_public_page_data:${slug}`).catch(() => {});
    }
+   shop = await getShopBySlug(slug);
 
  if (!shop) {
  return (
@@ -302,8 +135,8 @@ export default async function PublicShopPage({
 
   const shopForTemplate = {
   ...shop,
-  logoUrl: normalizeImageUrl(shop.customization?.logoUrl) || shop.logoUrl,
-  heroImageUrl: normalizeImageUrl(shop.customization?.heroImageUrl) || shop.heroImageUrl
+  logoUrl: normalizeImageUrl(shop.customization?.logoUrl) || (shop as any).logoUrl,
+  heroImageUrl: normalizeImageUrl(shop.customization?.heroImageUrl) || (shop as any).heroImageUrl
   };
 
   if (shop.customization?.customHtml && shop.customization.customHtml.trim() !== '') {
@@ -410,7 +243,7 @@ export default async function PublicShopPage({
   {/* Dynamic templates load their own booking-widget.js with template-specific colors via inline SDK.
      Only inject AIWidget for built-in React templates that don't have their own widget loading. */}
   {!dynamicTemplateHtml && (
-  <AIWidget shopId={shop.id} shopName={shop.name} themeColor={primaryColor} secondaryColor={secondaryColor} chatbotPosition={shop.customization?.chatbotPosition} colorTheme={shop.customization?.colorTheme || 'light'} templateType={templateType} shopType={shop.shopType} slogan={shop.slogan || shop.customization?.tagline} />
+  <AIWidget shopId={shop.id} shopName={shop.name} themeColor={primaryColor} secondaryColor={secondaryColor} templateType={templateType} shopType={(shop as any).shopType} slogan={(shop as any).slogan || (shop as any).customization?.tagline} />
   )}
  {/* Only inject BookingModalScript for built-in React templates.
      Custom HTML templates already load their own booking-modal.js with
