@@ -402,6 +402,20 @@ const customHtml = `
       </div>
     </div>
   </footer>
+
+  <!-- KutzApp SDK Initialization -->
+  <script>
+    (function() {
+      var scriptsToInject = ['booking-modal.js', 'booking-widget.js'];
+      scriptsToInject.forEach(function(src) {
+        var script = document.createElement('script');
+        script.src = '/' + src;
+        script.setAttribute('data-shop-id', '{{shop.id}}');
+        script.async = true;
+        document.body.appendChild(script);
+      });
+    })();
+  </script>
 </div>
 `;
 
