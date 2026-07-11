@@ -1,8 +1,8 @@
-import prisma from '@/lib/prisma';
+import { prisma } from '@/lib/prisma';
 import ClassRosterView from '@/components/shop-admin/classes/ClassRosterView';
 
-export default async function RostersPage({ params }: { params: { shopId: string } }) {
-  const shopId = params.shopId;
+export default async function RostersPage({ params }: { params: Promise<{ shopId: string }> }) {
+  const { shopId } = await params;
   
   const schedules = await prisma.classSchedule.findMany({
     where: { shopId },

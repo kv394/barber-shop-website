@@ -1,8 +1,8 @@
-import prisma from '@/lib/prisma';
+import { prisma } from '@/lib/prisma';
 import ClassScheduleManager from '@/components/shop-admin/classes/ClassScheduleManager';
 
-export default async function SchedulesPage({ params }: { params: { shopId: string } }) {
-  const shopId = params.shopId;
+export default async function SchedulesPage({ params }: { params: Promise<{ shopId: string }> }) {
+  const { shopId } = await params;
   
   const schedules = await prisma.classSchedule.findMany({
     where: { shopId },

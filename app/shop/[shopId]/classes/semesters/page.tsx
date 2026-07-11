@@ -1,8 +1,8 @@
-import prisma from '@/lib/prisma';
+import { prisma } from '@/lib/prisma';
 import ClassSemesterManager from '@/components/shop-admin/classes/ClassSemesterManager';
 
-export default async function SemestersPage({ params }: { params: { shopId: string } }) {
-  const shopId = params.shopId;
+export default async function SemestersPage({ params }: { params: Promise<{ shopId: string }> }) {
+  const { shopId } = await params;
   
   const terms = await prisma.academicTerm.findMany({
     where: { shopId },
