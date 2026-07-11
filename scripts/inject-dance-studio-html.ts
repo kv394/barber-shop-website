@@ -128,6 +128,7 @@ const customHtml = `
         <a href="#testimonials" class="text-sm font-bold uppercase tracking-wider hover:text-yellow-400 transition-colors">Testimonials</a>
       </div>
       <button 
+        onclick="if(window.BarberBooking) window.BarberBooking.open()"
         class="bollywood-btn px-8 py-3 rounded-full text-sm font-bold uppercase tracking-widest"
       >
         Client Portal
@@ -162,7 +163,7 @@ const customHtml = `
       </p>
       <div class="flex flex-col sm:flex-row gap-6 justify-center items-center">
         <button 
-          data-action="book"
+          onclick="if(window.BarberBooking) window.BarberBooking.open()"
           class="bollywood-btn w-full sm:w-auto px-12 py-5 rounded-full text-lg font-black tracking-widest flex items-center justify-center gap-3"
         >
           Register Now 
@@ -212,7 +213,7 @@ const customHtml = `
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
       {{#shop.services}}
       <div 
-        data-service-id="{{id}}"
+        onclick="if(window.BarberBooking) window.BarberBooking.open('{{id}}')"
         class="bollywood-glass rounded-[2rem] p-8 bollywood-card-hover cursor-pointer group flex flex-col h-full relative overflow-hidden"
       >
         <!-- Decorative accent -->
@@ -390,7 +391,7 @@ const customHtml = `
           {{/shop.phone}}
           <div class="pt-8">
             <button 
-              data-action="book"
+              onclick="if(window.BarberBooking) window.BarberBooking.open()"
               class="bollywood-btn w-full px-8 py-5 rounded-full text-lg font-black tracking-widest flex items-center justify-center gap-3"
             >
               Book A Trial 
@@ -401,7 +402,21 @@ const customHtml = `
       </div>
     </div>
   </footer>
-
+  
+  <script>
+    (function() {
+      // In a DynamicTemplate sandbox, script.src relative paths may fail, so use window.location.origin
+      var origin = window.location.origin;
+      var scriptsToInject = ['booking-modal.js', 'booking-widget.js'];
+      scriptsToInject.forEach(function(src) {
+        var script = document.createElement('script');
+        script.src = origin + '/' + src;
+        script.setAttribute('data-shop-id', '{{shop.id}}');
+        script.async = true;
+        document.body.appendChild(script);
+      });
+    })();
+  </script>
 </div>
 `;
 
