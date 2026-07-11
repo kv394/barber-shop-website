@@ -5,6 +5,7 @@ import CaptionedVideoPlayer, { VIDEO_CAPTIONS } from './CaptionedVideoPlayer';
 export default function TrainingClient({ shopId, userRole }: { shopId: string; userRole: string }) {
   const isAdmin = userRole === 'SHOP_ADMIN' || userRole === 'SITE_ADMIN';
   const [mounted, setMounted] = useState(false);
+  const [openVideoId, setOpenVideoId] = useState<string | null>(null);
 
   useEffect(() => {
     setMounted(true);
@@ -89,27 +90,32 @@ export default function TrainingClient({ shopId, userRole }: { shopId: string; u
               captions: VIDEO_CAPTIONS.settings2,
             },
           ].map((vid) => (
-            <details key={vid.id} className="group bg-white/40 border border-white/30 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all">
-              <summary className="cursor-pointer flex items-center gap-4 px-5 py-4 select-none list-none [&::-webkit-details-marker]:hidden">
+            <div key={vid.id} className="bg-white/40 border border-white/30 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all">
+              <div 
+                className="cursor-pointer flex items-center gap-4 px-5 py-4 select-none"
+                onClick={() => setOpenVideoId(openVideoId === vid.id ? null : vid.id)}
+              >
                 <span className="text-lg">{vid.title.split(' ')[0]}</span>
                 <div className="flex-1 min-w-0">
                   <p className="text-[13px] font-bold text-crm-text">{vid.title.slice(vid.title.indexOf(' ') + 1)}</p>
                   <p className="text-[11px] text-crm-muted">{vid.desc}</p>
                 </div>
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="text-crm-muted group-open:rotate-90 transition-transform shrink-0">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className={`text-crm-muted transition-transform shrink-0 ${openVideoId === vid.id ? 'rotate-90' : ''}`}>
                   <polyline points="9 18 15 12 9 6"/>
                 </svg>
-              </summary>
-              <div className="px-4 pb-4">
-                <CaptionedVideoPlayer
-                  src={vid.src}
-                  alt={vid.alt}
-                  title={vid.playerTitle}
-                  duration={vid.duration}
-                  captions={vid.captions}
-                />
               </div>
-            </details>
+              {openVideoId === vid.id && (
+                <div className="px-4 pb-4 animate-in fade-in slide-in-from-top-2 duration-200">
+                  <CaptionedVideoPlayer
+                    src={vid.src}
+                    alt={vid.alt}
+                    title={vid.playerTitle}
+                    duration={vid.duration}
+                    captions={vid.captions}
+                  />
+                </div>
+              )}
+            </div>
           ))}
         </div>
       ) : (

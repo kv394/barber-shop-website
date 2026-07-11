@@ -4,6 +4,8 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import ShopSwitcher from './ShopSwitcher';
 import SupabaseAuthButton from '@/components/auth/SupabaseAuthButton';
+import { IndustryType } from '@prisma/client';
+import { useTerminology } from '@/hooks/use-terminology';
 
 export default function PrimarySidebar({ 
  shopId, 
@@ -11,12 +13,14 @@ export default function PrimarySidebar({
  shopName, 
  accessibleShops, 
  fallbackRedirect,
- shopSlug 
+ shopSlug,
+ industryType 
 }: any) {
  const pathname = usePathname();
  const isSiteAdmin = userRole === 'SITE_ADMIN';
  const isShopAdmin = userRole === 'SHOP_ADMIN' || userRole === 'SITE_ADMIN';
  const isBoothRenter = userRole === 'BOOTH_RENTER';
+ const { t } = useTerminology(industryType as IndustryType);
 
  // Common Icons reused
  const icons = {
@@ -72,9 +76,9 @@ export default function PrimarySidebar({
  {navLink(`/shop/${shopId}`, 'Dashboard', icons.home, () => pathname === `/shop/${shopId}`)}
   {isShopAdmin ? (
   <>
-  {navLink(`/shop/${shopId}/bookings`, 'Bookings', icons.calendar, () => pathname.startsWith(`/shop/${shopId}/bookings`))}
+  {navLink(`/shop/${shopId}/bookings`, t('bookings'), icons.calendar, () => pathname.startsWith(`/shop/${shopId}/bookings`))}
   {navLink(`/shop/${shopId}/waitlist`, 'Waitlist', icons.clock, () => pathname.startsWith(`/shop/${shopId}/waitlist`))}
-  {navLink(`/shop/${shopId}/clients`, 'Clients', icons.users, () => pathname.startsWith(`/shop/${shopId}/clients`))}
+  {navLink(`/shop/${shopId}/clients`, t('clients'), icons.users, () => pathname.startsWith(`/shop/${shopId}/clients`))}
   {navLink(`/shop/${shopId}/settings/team`, 'Team', icons.idCard, () => pathname.startsWith(`/shop/${shopId}/settings/team`))}
   {navLink(`/shop/${shopId}/portfolio`, 'Portfolio', icons.image, () => pathname.startsWith(`/shop/${shopId}/portfolio`))}
   {navLink(`/shop/${shopId}/training`, 'Training', icons.training, () => pathname.startsWith(`/shop/${shopId}/training`))}
@@ -94,7 +98,7 @@ export default function PrimarySidebar({
  <>
  {navLink(`/shop/${shopId}/staff`, 'Schedule', icons.calendar, () => pathname.startsWith(`/shop/${shopId}/staff`))}
  {navLink(`/shop/${shopId}/waitlist`, 'Waitlist', icons.clock, () => pathname.startsWith(`/shop/${shopId}/waitlist`))}
- {navLink(`/shop/${shopId}/clients`, 'Clients', icons.users, () => pathname.startsWith(`/shop/${shopId}/clients`))}
+ {navLink(`/shop/${shopId}/clients`, t('clients'), icons.users, () => pathname.startsWith(`/shop/${shopId}/clients`))}
  {navLink(`/shop/${shopId}/reports/commissions`, 'Earnings', icons.dollar, () => pathname.startsWith(`/shop/${shopId}/reports/commissions`))}
  {navLink(`/shop/${shopId}/portfolio`, 'Portfolio', icons.image, () => pathname.startsWith(`/shop/${shopId}/portfolio`))}
  {navLink(`/shop/${shopId}/training`, 'Training', icons.training, () => pathname.startsWith(`/shop/${shopId}/training`))}

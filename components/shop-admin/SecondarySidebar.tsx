@@ -2,8 +2,10 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { IndustryType } from '@prisma/client';
+import { useTerminology } from '@/hooks/use-terminology';
 
-export default function SecondarySidebar({ shopId, userRole, shopType }: { shopId: string, userRole: string, shopType?: string }) {
+export default function SecondarySidebar({ shopId, userRole, shopType, industryType }: { shopId: string, userRole: string, shopType?: string, industryType?: IndustryType }) {
  const pathname = usePathname();
  const isAll = shopId === 'all';
  const isShopAdmin = userRole === 'SHOP_ADMIN' || userRole === 'SITE_ADMIN';
@@ -12,6 +14,8 @@ export default function SecondarySidebar({ shopId, userRole, shopType }: { shopI
 
  // If user is not an admin, they don't have sub-menus (they only have Staff, Clients, Profile)
  if (!isShopAdmin || isAll) return null;
+
+ const { t } = useTerminology(industryType);
 
  // Determine Active Section
  const getSection = () => {
@@ -58,8 +62,8 @@ export default function SecondarySidebar({ shopId, userRole, shopType }: { shopI
  case 'team':
  return (
  <div className="space-y-0.5 mt-3">
- {navLink(`/shop/${shopId}/settings/team`, 'Availability & Staff')}
- {navLink(`/shop/${shopId}/portfolio`, 'Portfolio')}
+ {navLink(`/shop/${shopId}/settings/team`, `Availability & ${t('providers')}`)}
+ {industryType === 'BARBER' || industryType === 'SALON' || industryType === 'NAIL_SALON' || industryType === 'OTHER' ? navLink(`/shop/${shopId}/portfolio`, 'Portfolio') : null}
  </div>
  );
  case 'engagement':
@@ -93,7 +97,7 @@ export default function SecondarySidebar({ shopId, userRole, shopType }: { shopI
  <>
  <h3 className="px-3 text-[11px] font-bold text-crm-muted uppercase tracking-wider mb-1.5 mt-3">Setup</h3>
  <div className="space-y-0.5 mb-6 border-l-2 border-crm-border ml-2 pl-2">
- {navLink(`/shop/${shopId}/config/services`, 'Services')}
+ {navLink(`/shop/${shopId}/config/services`, t('services'))}
  {navLink(`/shop/${shopId}/config/products`, 'Products')}
  {navLink(`/shop/${shopId}/settings/booking`, 'Booking & Hours')}
  {navLink(`/shop/${shopId}/settings/dynamic-pricing`, 'Dynamic Pricing')}

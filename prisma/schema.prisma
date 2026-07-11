@@ -55,6 +55,7 @@ model Shop {
   supportAccessExpiresAt     DateTime?
   deletedAt                  DateTime?
   shopType                   ShopType             @default(PHYSICAL)
+  industryType               IndustryType         @default(BARBER)
   travelFee                  Float                @default(0)
   maxTravelRadius            Int?
   baseLocation               String?
@@ -1152,6 +1153,17 @@ enum GamificationStatus {
   ACTIVE
   PAUSED
   ENDED
+}
+
+enum IndustryType {
+  BARBER
+  SALON
+  NAIL_SALON
+  DANCE_STUDIO
+  MARTIAL_ARTS
+  MUSIC_SCHOOL
+  FITNESS
+  OTHER
 }
 
 model ProcessedWebhook {

@@ -82,11 +82,13 @@ export default async function ShopLayout({
  accessibleShops={(data as any).accessibleShops} 
  fallbackRedirect={fallbackRedirect}
  shopSlug={data.shopSlug}
+ industryType={(data.shop as any).industryType}
  />
  <SecondarySidebar 
  shopId={shopId} 
  userRole={data.userRole} 
  shopType={(data.shop as any).shopType}
+ industryType={(data.shop as any).industryType}
  />
  </div>
 

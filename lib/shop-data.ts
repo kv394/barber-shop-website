@@ -112,6 +112,7 @@ export const getShopLayoutData = cache(async (userId: string, shopId: string) =>
           timezone: 'America/New_York',
           currency: 'USD',
           shopType: 'STANDARD' as const,
+          industryType: 'BARBER' as const,
           subdomain: null,
           customDomain: null,
           customization: {}
@@ -119,7 +120,7 @@ export const getShopLayoutData = cache(async (userId: string, shopId: string) =>
       } else {
         shop = await prisma.shop.findUnique({
           where: { id: shopId },
-          select: { id: true, name: true, companyName: true, description: true, slogan: true, customization: true, template: true, timezone: true, shopType: true, subdomain: true, customDomain: true, currency: true },
+          select: { id: true, name: true, companyName: true, description: true, slogan: true, customization: true, template: true, timezone: true, shopType: true, industryType: true, subdomain: true, customDomain: true, currency: true },
         });
         if (!shop) return null;
       }
