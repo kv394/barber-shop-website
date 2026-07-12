@@ -6,12 +6,12 @@ export function sanitize(html: string, options?: sanitizeHtml.IOptions): string 
       'img', 'style', 'iframe', 'span', 'div', 'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'br', 'a', 'ul', 'li', 'ol', 'video', 'source'
     ]),
     allowedAttributes: {
-      '*': ['class', 'id', 'style'],
+      '*': ['class', 'id', 'style', 'data-*'],
       'a': ['href', 'name', 'target', 'rel'],
-      'img': ['src', 'alt', 'title', 'width', 'height', 'loading', 'decoding', 'class', 'id', 'style'],
-      'iframe': ['src', 'width', 'height', 'frameborder', 'allow', 'allowfullscreen', 'class', 'id', 'style'],
-      'video': ['src', 'controls', 'autoplay', 'loop', 'muted', 'playsinline', 'poster', 'preload', 'class', 'id', 'style'],
-      'source': ['src', 'type', 'class', 'id', 'style']
+      'img': ['src', 'alt', 'title', 'width', 'height', 'loading', 'decoding', 'class', 'id', 'style', 'data-*'],
+      'iframe': ['src', 'width', 'height', 'frameborder', 'allow', 'allowfullscreen', 'class', 'id', 'style', 'data-*'],
+      'video': ['src', 'controls', 'autoplay', 'loop', 'muted', 'playsinline', 'poster', 'preload', 'class', 'id', 'style', 'data-*'],
+      'source': ['src', 'type', 'class', 'id', 'style', 'data-*']
     },
     allowedIframeHostnames: ['www.google.com', 'www.youtube.com', 'vimeo.com', 'player.vimeo.com'],
     ...options,
