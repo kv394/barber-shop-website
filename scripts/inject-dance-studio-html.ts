@@ -40,6 +40,19 @@ const customHtml = `
     box-shadow: 0 15px 45px -10px rgba(255, 0, 127, 0.4);
   }
   
+  /* Perfect iframe cover for 16:9 videos */
+  .youtube-bg {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100vw;
+    height: 56.25vw;
+    min-height: 100vh;
+    min-width: 177.77vh;
+    pointer-events: none;
+  }
+
   /* Animated Glowing Orbs for Background */
   .orb-1, .orb-2, .orb-3 {
     position: absolute;
@@ -154,7 +167,7 @@ const customHtml = `
       <div class="absolute inset-0 w-full h-full pointer-events-none overflow-hidden">
         <iframe 
           src="https://www.youtube.com/embed/BCaSpo2zZE4?autoplay=1&mute=1&loop=1&playlist=BCaSpo2zZE4&controls=0&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1&playsinline=1" 
-          class="absolute w-[300vw] h-[300vh] -top-[100vh] -left-[100vw] lg:w-[150vw] lg:h-[150vh] lg:-top-[25vh] lg:-left-[25vw] object-cover opacity-40 mix-blend-luminosity pointer-events-none" 
+          class="youtube-bg opacity-40 mix-blend-luminosity" 
           frameborder="0" 
           allow="autoplay; encrypted-media" 
           allowfullscreen>
