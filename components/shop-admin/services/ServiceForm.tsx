@@ -125,6 +125,37 @@ export function ServiceForm({
             Available to Customer (Sellable/Bookable)
           </label>
         </div>
+        {isGroupClassIndustry && (
+          <>
+            <div className="flex items-center space-x-3 py-2 cursor-pointer group">
+              <div className="relative flex items-center justify-center w-5 h-5">
+                <input 
+                  type="checkbox" 
+                  id="isGroupClass" 
+                  checked={newService.isGroupClass} 
+                  onChange={(e) => setNewService({ ...newService, isGroupClass: e.target.checked })}
+                  className="peer appearance-none w-5 h-5 border-2 border-white/20 rounded bg-crm-bg/50 checked:bg-crm-primary checked:border-crm-primary transition-all cursor-pointer"
+                />
+                <svg className="absolute w-3 h-3 text-white pointer-events-none opacity-0 peer-checked:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7"></path></svg>
+              </div>
+              <label htmlFor="isGroupClass" className="font-medium text-crm-text group-hover:text-crm-primary transition-colors text-[14px] cursor-pointer">
+                Is this a Group Class?
+              </label>
+            </div>
+
+            {newService.isGroupClass && (
+              <PremiumInput
+                label="Maximum Capacity (Optional)"
+                value={newService.maxCapacity || ''}
+                onChange={(e) => {
+                  const val = e.target.value;
+                  if (val === '' || /^\d+$/.test(val)) setNewService({ ...newService, maxCapacity: val ? parseInt(val) : null });
+                }}
+                placeholder="e.g. 20"
+              />
+            )}
+          </>
+        )}
         <div className="flex items-center space-x-3 py-2 cursor-pointer group">
           <div className="relative flex items-center justify-center w-5 h-5">
             <input 

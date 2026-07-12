@@ -283,24 +283,41 @@ export async function POST(
  }
  }
 
- // SECURITY: Atomic conflict-check + create inside a serializable transaction
- // to prevent double-booking race conditions (TOCTOU).
- const appointment = await tenantClient.$transaction(async (tx: any) => {
- const conflict = await tx.appointment.findFirst({
- where: {
- shopId: shopId,
- staffId: staffId,
- status: { not: 'CANCELLED' },
- startTime: { lt: blockEnd },
- endTime: { gt: start },
- },
- });
+  // SECURITY: Atomic conflict-check + create inside a serializable transaction
+  // to prevent double-booking race conditions (TOCTOU).
+  const appointment = await tenantClient.$transaction(async (tx: any) => {
+    if (service.isGroupClass) {
+      // Group Class Capacity Check
+      const bookedCount = await tx.appointment.count({
+        where: {
+          shopId: shopId,
+          serviceId: serviceId,
+          startTime: start,
+          status: { not: 'CANCELLED' },
+        },
+      });
+      const maxCap = service.maxCapacity || 999;
+      if (bookedCount >= maxCap) {
+        throw new Error('CLASS_FULL');
+      }
+    } else {
+      // Standard 1-on-1 Conflict Check
+      const conflict = await tx.appointment.findFirst({
+        where: {
+          shopId: shopId,
+          staffId: staffId,
+          status: { not: 'CANCELLED' },
+          startTime: { lt: blockEnd },
+          endTime: { gt: start },
+        },
+      });
 
- if (conflict) {
- throw new Error('CONFLICT');
- }
+      if (conflict) {
+        throw new Error('CONFLICT');
+      }
+    }
 
- return tx.appointment.create({
+    return tx.appointment.create({
  data: {
  shopId: shopId,
  serviceId: serviceId,
@@ -360,10 +377,13 @@ export async function POST(
 
  return NextResponse.json(appointment, { status: 201 });
  } catch (error: any) {
- if (error?.message === 'CONFLICT') {
- return NextResponse.json({ error: 'This staff member is not available at the selected time.' }, { status: 400 });
- }
- logger.error("Error creating appointment:", error);
- return NextResponse.json({ error: 'Failed to book appointment' }, { status: 500 });
+    if (error?.message === 'CLASS_FULL') {
+      return NextResponse.json({ error: 'This class is fully booked.' }, { status: 400 });
+    }
+    if (error?.message === 'CONFLICT') {
+      return NextResponse.json({ error: 'This staff member is not available at the selected time.' }, { status: 400 });
+    }
+    logger.error("Error creating appointment:", error);
+    return NextResponse.json({ error: 'Failed to book appointment' }, { status: 500 });
  }
 }

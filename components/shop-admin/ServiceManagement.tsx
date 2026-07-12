@@ -56,6 +56,8 @@ export function ServiceManagement({ shopId, currency, industryType }: ServiceMan
  addonIds: [] as string[],
  isBookable: true,
  requiresVirtualConsultation: false,
+ isGroupClass: false,
+ maxCapacity: null as number | null,
  imageUrl: '',
  dropInPrice: '',
  semesterPrice: '',
@@ -119,28 +121,31 @@ export function ServiceManagement({ shopId, currency, industryType }: ServiceMan
  fetchData();
  }, [shopId]);
 
- const resetForm = () => {
- setNewService({ name: '', description: '', price: '', duration: '', type: 'CUSTOMER', addonIds: [], isBookable: true, requiresVirtualConsultation: false, imageUrl: '', dropInPrice: '', semesterPrice: '', resourceRequirements: [], productUsages: [] });
- setEditingServiceId(null);
- };
+  const resetForm = () => {
+    const defaultService = { name: '', description: '', price: '', duration: '', type: 'CUSTOMER' as 'CUSTOMER' | 'INTERNAL', isBookable: true, requiresVirtualConsultation: false, isGroupClass: false, maxCapacity: null as number | null, imageUrl: '', addonIds: [], dropInPrice: '', semesterPrice: '', resourceRequirements: [], productUsages: [] };
+    setNewService(defaultService);
+    setEditingServiceId(null);
+  };
 
- const handleEditClick = (service: Service) => {
- setEditingServiceId(service.id);
- setNewService({
- name: service.name,
- description: service.description || '',
- price: service.price.toString(),
- duration: service.duration.toString(),
- type: service.type,
- addonIds: service.addons?.map(a => a.id) || [],
- isBookable: service.isBookable,
- requiresVirtualConsultation: service.requiresVirtualConsultation || false,
- imageUrl: service.imageUrl || '',
- dropInPrice: service.dropInPrice?.toString() || '',
- semesterPrice: service.semesterPrice?.toString() || '',
- resourceRequirements: service.resourceRequirements?.map(r => ({ resourceType: r.resourceType, quantity: r.quantity })) || [],
- productUsages: service.productUsages?.map(p => ({ productId: p.productId, servicesPerProduct: p.servicesPerProduct })) || [],
- });
+  const handleEditClick = (service: Service) => {
+    setEditingServiceId(service.id);
+    setNewService({
+      name: service.name,
+      description: service.description || '',
+      price: service.price.toString(),
+      duration: service.duration.toString(),
+      type: service.type,
+      addonIds: service.addons?.map(a => a.id) || [],
+      isBookable: service.isBookable,
+      requiresVirtualConsultation: service.requiresVirtualConsultation || false,
+      isGroupClass: (service as any).isGroupClass || false,
+      maxCapacity: (service as any).maxCapacity || null,
+      imageUrl: service.imageUrl || '',
+      dropInPrice: service.dropInPrice?.toString() || '',
+      semesterPrice: service.semesterPrice?.toString() || '',
+      resourceRequirements: service.resourceRequirements?.map(r => ({ resourceType: r.resourceType, quantity: r.quantity })) || [],
+      productUsages: service.productUsages?.map(p => ({ productId: p.productId, servicesPerProduct: p.servicesPerProduct })) || [],
+    });
  window.scrollTo({ top: 0, behavior: 'smooth' });
  };
 

@@ -126,21 +126,37 @@ export default function BookingWizard({ shopId, themeColor, secondaryColor, temp
  });
  }, [shopId]);
 
- useEffect(() => {
- if (!selectedDate) return;
- const controller = new AbortController();
- setLoadingSlots(true);
- fetch(`/api/shops/${shopId}/appointments?date=${selectedDate}`, { signal: controller.signal })
- .then(res => res.ok ? res.json() : [])
- .then(data => {
- setBookedSlots(Array.isArray(data) ? data : []);
- setLoadingSlots(false);
- })
- .catch(err => {
- if (err.name !== 'AbortError') setLoadingSlots(false);
- });
- return () => controller.abort();
- }, [selectedDate, shopId]);
+  const [classSlots, setClassSlots] = useState<any[]>([]);
+
+  useEffect(() => {
+    if (!selectedDate || !selectedService) return;
+    const controller = new AbortController();
+    setLoadingSlots(true);
+
+    if ((selectedService as any).isGroupClass) {
+      fetch(`/api/shops/${shopId}/classes/availability?date=${selectedDate}&serviceId=${selectedService.id}`, { signal: controller.signal })
+        .then(res => res.ok ? res.json() : [])
+        .then(data => {
+          setClassSlots(Array.isArray(data) ? data : []);
+          setLoadingSlots(false);
+        })
+        .catch(err => {
+          if (err.name !== 'AbortError') setLoadingSlots(false);
+        });
+    } else {
+      fetch(`/api/shops/${shopId}/appointments?date=${selectedDate}`, { signal: controller.signal })
+        .then(res => res.ok ? res.json() : [])
+        .then(data => {
+          setBookedSlots(Array.isArray(data) ? data : []);
+          setLoadingSlots(false);
+        })
+        .catch(err => {
+          if (err.name !== 'AbortError') setLoadingSlots(false);
+        });
+    }
+
+    return () => controller.abort();
+  }, [selectedDate, shopId, selectedService]);
 
  
  const tStyles = getWizardThemeStyles(templateType);
@@ -158,19 +174,15 @@ export default function BookingWizard({ shopId, themeColor, secondaryColor, temp
  const activeBg = themeColor ? hexToRgba(themeColor) : '#f9fafb';
 
   const handleNext = () => setStep(s => {
-   // Skip staff step (2) when staff is already pre-selected (e.g. clicked a barber card)
-   if (s === 1 && selectedStaff) return 3;
-   // Skip service step (1) when service is already pre-selected (e.g. clicked a service card)
-   // This shouldn't normally happen since step 1 is the service step, but handles edge cases
-   return s + 1;
+    if (s === 1 && (selectedStaff || (selectedService as any)?.isGroupClass)) return 3;
+    return s + 1;
   });
   const handleBack = () => {
-   setError(null);
-   setStep(s => {
-    // Skip staff step (2) when going back if staff was pre-selected
-    if (s === 3 && selectedStaff) return 1;
-    return s - 1;
-   });
+    setError(null);
+    setStep(s => {
+      if (s === 3 && (selectedStaff || (selectedService as any)?.isGroupClass)) return 1;
+      return s - 1;
+    });
   };
 
  const getStaffHours = useCallback((staffMember: Staff) => {
@@ -200,48 +212,59 @@ export default function BookingWizard({ shopId, themeColor, secondaryColor, temp
  });
  }, [selectedDate, totalDuration, bookedSlots]);
 
- const availableTimeSlots = useMemo((): ScoredSlot[] => {
- if (!selectedDate || staff.length === 0) return [];
- const rawSlots: { time: string; staffId: string }[] = [];
- const staffToCheck = selectedStaff ? [selectedStaff] : staff;
+  const availableTimeSlots = useMemo((): any[] => {
+    if (!selectedDate) return [];
+    if ((selectedService as any)?.isGroupClass) {
+      return classSlots.map(slot => {
+        const utcTime = new Date(slot.time).toISOString().split('T')[1].substring(0, 5);
+        return {
+          ...slot,
+          time: utcTime
+        };
+      }).filter(slot => slot.availableSpots > 0);
+    }
 
- for (const staffMember of staffToCheck) {
- const hours = getStaffHours(staffMember);
- if (!hours) continue;
- const [openH, openM] = hours.open.split(':').map(Number);
- const [closeH, closeM] = hours.close.split(':').map(Number);
- const start = new Date(`${selectedDate}T00:00:00Z`);
- start.setUTCHours(openH, openM, 0, 0);
- const end = new Date(`${selectedDate}T00:00:00Z`);
- end.setUTCHours(closeH, closeM, 0, 0);
- let cursor = new Date(start);
- while (cursor < end) {
- const timeStr = cursor.toUTCString().split(' ')[4].substring(0, 5);
- if (isStaffFreeAt(staffMember.id, timeStr)) {
- rawSlots.push({ time: timeStr, staffId: staffMember.id });
- }
- cursor = new Date(cursor.getTime() + 30 * 60000);
- }
- }
+    if (staff.length === 0) return [];
+    const rawSlots: { time: string; staffId: string }[] = [];
+    const staffToCheck = selectedStaff ? [selectedStaff] : staff;
 
- // Deduplicate by time (keep first staff match per time)
- const seenTimes = new Set<string>();
- const uniqueSlots = rawSlots.filter(s => {
- if (seenTimes.has(s.time)) return false;
- seenTimes.add(s.time);
- return true;
- });
+    for (const staffMember of staffToCheck) {
+      const hours = getStaffHours(staffMember);
+      if (!hours) continue;
+      const [openH, openM] = hours.open.split(':').map(Number);
+      const [closeH, closeM] = hours.close.split(':').map(Number);
+      const start = new Date(`${selectedDate}T00:00:00Z`);
+      start.setUTCHours(openH, openM, 0, 0);
+      const end = new Date(`${selectedDate}T00:00:00Z`);
+      end.setUTCHours(closeH, closeM, 0, 0);
+      let cursor = new Date(start);
+      while (cursor < end) {
+        const timeStr = cursor.toUTCString().split(' ')[4].substring(0, 5);
+        if (isStaffFreeAt(staffMember.id, timeStr)) {
+          rawSlots.push({ time: timeStr, staffId: staffMember.id });
+        }
+        cursor = new Date(cursor.getTime() + 30 * 60000);
+      }
+    }
 
- // Score and sort by gap-fill efficiency
- const scored = scoreAndSortSlots(uniqueSlots, bookedSlots, selectedDate, totalDuration);
+    // Deduplicate by time (keep first staff match per time)
+    const seenTimes = new Set<string>();
+    const uniqueSlots = rawSlots.filter(s => {
+      if (seenTimes.has(s.time)) return false;
+      seenTimes.add(s.time);
+      return true;
+    });
 
- // If user prefers chronological, re-sort by time but keep isRecommended flags
- if (!sortByFit) {
- scored.sort((a, b) => a.time.localeCompare(b.time));
- }
+    // Score and sort by gap-fill efficiency
+    const scored = scoreAndSortSlots(uniqueSlots, bookedSlots, selectedDate, totalDuration);
 
- return scored;
- }, [selectedDate, staff, selectedStaff, getStaffHours, isStaffFreeAt, bookedSlots, totalDuration, sortByFit]);
+    // If user prefers chronological, re-sort by time but keep isRecommended flags
+    if (!sortByFit) {
+      scored.sort((a, b) => a.time.localeCompare(b.time));
+    }
+
+    return scored;
+  }, [selectedDate, staff, selectedStaff, getStaffHours, isStaffFreeAt, bookedSlots, totalDuration, sortByFit, classSlots, selectedService]);
 
  const formatTime = (timeStr: string) => {
  const [h, m] = timeStr.split(':').map(Number);
@@ -250,30 +273,35 @@ export default function BookingWizard({ shopId, themeColor, secondaryColor, temp
  return `${displayH}:${m.toString().padStart(2, '0')} ${period}`;
  };
 
- const handleBook = async () => {
- if (!selectedService || !selectedDate || !selectedTime) return;
- 
- let resolvedStaffId = selectedStaff?.id;
- if (!resolvedStaffId) {
- const available = staff.filter(s => {
- const hours = getStaffHours(s);
- if (!hours) return false;
- const [h, m] = selectedTime.split(':').map(Number);
- const [openH, openM] = hours.open.split(':').map(Number);
- const [closeH, closeM] = hours.close.split(':').map(Number);
- const slotMins = h * 60 + m;
- const openMins = openH * 60 + openM;
- const closeMins = closeH * 60 + closeM;
- if (slotMins < openMins || slotMins >= closeMins) return false;
- return isStaffFreeAt(s.id, selectedTime);
- });
- if (available.length > 0) resolvedStaffId = available[0].id;
- }
- 
- if (!resolvedStaffId) {
- setError("No professional available at this time. Please select another time.");
- return;
- }
+  const handleBook = async () => {
+    if (!selectedService || !selectedDate || !selectedTime) return;
+    
+    let resolvedStaffId = selectedStaff?.id;
+    if (!resolvedStaffId && (selectedService as any)?.isGroupClass) {
+        const match = availableTimeSlots.find((s: any) => s.time === selectedTime);
+        if (match) resolvedStaffId = match.staffId;
+    }
+
+    if (!resolvedStaffId && !(selectedService as any)?.isGroupClass) {
+      const available = staff.filter(s => {
+        const hours = getStaffHours(s);
+        if (!hours) return false;
+        const [h, m] = selectedTime.split(':').map(Number);
+        const [openH, openM] = hours.open.split(':').map(Number);
+        const [closeH, closeM] = hours.close.split(':').map(Number);
+        const slotMins = h * 60 + m;
+        const openMins = openH * 60 + openM;
+        const closeMins = closeH * 60 + closeM;
+        if (slotMins < openMins || slotMins >= closeMins) return false;
+        return isStaffFreeAt(s.id, selectedTime);
+      });
+      if (available.length > 0) resolvedStaffId = available[0].id;
+    }
+    
+    if (!resolvedStaffId) {
+      setError("No professional available at this time. Please select another time.");
+      return;
+    }
 
  setIsBooking(true);
  setError(null);

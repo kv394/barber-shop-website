@@ -204,6 +204,8 @@ export async function POST(
    addonIds: z.array(z.string()).optional(),
    isBookable: z.boolean().optional().default(true),
    requiresVirtualConsultation: z.boolean().optional().default(false),
+   isGroupClass: z.boolean().optional().default(false),
+   maxCapacity: z.number().min(1).nullable().optional(),
    resourceRequirements: z.array(z.any()).optional(),
    productUsages: z.array(z.any()).optional(),
  });
@@ -214,7 +216,7 @@ export async function POST(
    return NextResponse.json({ error: 'Invalid input', details: validation.error.format() }, { status: 400 });
  }
  const validatedData = validation.data;
- const { name, description, price: parsedPrice, duration: parsedDuration, processingTime: parsedProcessingTime, finishingTime: parsedFinishingTime, type, itemType, brand, bufferMinutes: parsedBuffer, imageUrl, addonIds, isBookable, requiresVirtualConsultation, resourceRequirements, productUsages } = validatedData;
+ const { name, description, price: parsedPrice, duration: parsedDuration, processingTime: parsedProcessingTime, finishingTime: parsedFinishingTime, type, itemType, brand, bufferMinutes: parsedBuffer, imageUrl, addonIds, isBookable, requiresVirtualConsultation, isGroupClass, maxCapacity, resourceRequirements, productUsages } = validatedData;
 
  const dataToCreate: any = {
  name: String(name).slice(0, 200),
@@ -225,6 +227,8 @@ export async function POST(
  finishingTime: parsedFinishingTime,
  isBookable: isBookable ?? true,
  requiresVirtualConsultation: requiresVirtualConsultation ?? false,
+ isGroupClass: isGroupClass ?? false,
+ maxCapacity: maxCapacity || null,
  type: type === 'INTERNAL' ? 'INTERNAL' : 'CUSTOMER',
  itemType: itemType ? String(itemType).slice(0, 100) : null,
  brand: brand ? String(brand).slice(0, 100) : null,

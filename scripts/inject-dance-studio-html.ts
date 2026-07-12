@@ -149,6 +149,13 @@ const customHtml = `
         class="object-cover w-full h-full opacity-40 scale-110 animate-[pulse_20s_ease-in-out_infinite] mix-blend-luminosity"
       />
       {{/shop.heroImageUrl}}
+      {{^shop.heroImageUrl}}
+      <img 
+        src="https://images.unsplash.com/photo-1546427660-eb346c344ba5?q=80&w=2574&auto=format&fit=crop" 
+        alt="Studio" 
+        class="object-cover w-full h-full opacity-40 scale-110 animate-[pulse_20s_ease-in-out_infinite] mix-blend-luminosity"
+      />
+      {{/shop.heroImageUrl}}
       <div class="absolute inset-0 bg-gradient-to-t from-[var(--bollywood-bg-dark)] via-transparent to-[var(--bollywood-bg-dark)] opacity-90"></div>
     </div>
 
@@ -181,22 +188,22 @@ const customHtml = `
     <div class="max-w-7xl mx-auto px-6 md:px-12">
       <div class="grid grid-cols-1 md:grid-cols-3 gap-10 text-center">
         <div class="flex flex-col items-center group bollywood-glass p-10 rounded-[2.5rem] bollywood-card-hover border-t border-yellow-500/20">
-          <div class="w-24 h-24 rounded-[2rem] bg-gradient-to-br from-yellow-400 to-orange-500 flex items-center justify-center mb-8 shadow-[0_0_30px_rgba(255,165,0,0.5)] group-hover:rotate-12 transition-transform duration-500 text-white">
-            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          <div class="w-28 h-28 rounded-full border-4 border-yellow-400/50 flex items-center justify-center mb-8 shadow-[0_0_30px_rgba(255,165,0,0.5)] group-hover:rotate-6 group-hover:scale-110 transition-transform duration-500 overflow-hidden">
+            <img src="https://images.unsplash.com/photo-1518834107812-67b0b7c58434?q=80&w=2500&auto=format&fit=crop" class="w-full h-full object-cover" alt="Expert Choreography" />
           </div>
           <h3 class="text-2xl font-black text-white mb-4 uppercase tracking-wider">Expert Choreography</h3>
           <p class="text-pink-100/80 text-lg leading-relaxed">Learn authentic moves from industry professionals who bring movie magic to life.</p>
         </div>
         <div class="flex flex-col items-center group bollywood-glass p-10 rounded-[2.5rem] bollywood-card-hover border-t border-yellow-500/20 translate-y-0 md:-translate-y-8">
-          <div class="w-24 h-24 rounded-[2rem] bg-gradient-to-br from-pink-500 to-purple-600 flex items-center justify-center mb-8 shadow-[0_0_30px_rgba(255,0,127,0.5)] group-hover:-rotate-12 transition-transform duration-500 text-white">
-            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/><path d="M8 14h.01"/><path d="M12 14h.01"/><path d="M16 14h.01"/><path d="M8 18h.01"/><path d="M12 18h.01"/><path d="M16 18h.01"/></svg>
+          <div class="w-28 h-28 rounded-full border-4 border-pink-500/50 flex items-center justify-center mb-8 shadow-[0_0_30px_rgba(255,0,127,0.5)] group-hover:-rotate-6 group-hover:scale-110 transition-transform duration-500 overflow-hidden">
+            <img src="https://images.unsplash.com/photo-1547153760-18fc86324498?q=80&w=2574&auto=format&fit=crop" class="w-full h-full object-cover" alt="All Ages & Levels" />
           </div>
           <h3 class="text-2xl font-black text-white mb-4 uppercase tracking-wider">All Ages & Levels</h3>
           <p class="text-pink-100/80 text-lg leading-relaxed">From kids to adults, beginners to advanced performers, everyone is welcome.</p>
         </div>
         <div class="flex flex-col items-center group bollywood-glass p-10 rounded-[2.5rem] bollywood-card-hover border-t border-yellow-500/20">
-          <div class="w-24 h-24 rounded-[2rem] bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center mb-8 shadow-[0_0_30px_rgba(16,185,129,0.5)] group-hover:rotate-12 transition-transform duration-500 text-white">
-            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+          <div class="w-28 h-28 rounded-full border-4 border-teal-500/50 flex items-center justify-center mb-8 shadow-[0_0_30px_rgba(16,185,129,0.5)] group-hover:rotate-6 group-hover:scale-110 transition-transform duration-500 overflow-hidden">
+            <img src="https://images.unsplash.com/photo-1504609774780-6051515bb566?q=80&w=2574&auto=format&fit=crop" class="w-full h-full object-cover" alt="Vibrant Community" />
           </div>
           <h3 class="text-2xl font-black text-white mb-4 uppercase tracking-wider">Vibrant Community</h3>
           <p class="text-pink-100/80 text-lg leading-relaxed">Join our festive performances, showcases, and celebrate the culture together.</p>
@@ -281,9 +288,11 @@ const customHtml = `
             />
             {{/imageUrl}}
             {{^imageUrl}}
-            <div class="absolute inset-0 flex items-center justify-center text-pink-500/30">
-              <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-            </div>
+            <img 
+              src="https://images.unsplash.com/photo-1543886567-3729d1c16768?q=80&w=2574&auto=format&fit=crop" 
+              alt="{{name}}" 
+              class="absolute inset-0 object-cover w-full h-full group-hover:scale-110 transition-transform duration-700 mix-blend-luminosity group-hover:mix-blend-normal"
+            />
             {{/imageUrl}}
             
             <!-- Vibrant Overlay -->
