@@ -227,11 +227,11 @@ const customHtml = `
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-10">
       <!-- Advanced Choreography -->
       <div data-service-id="cmrh0fmyd0006neosdr91rc1q" class="bollywood-glass rounded-2xl lg:rounded-[2rem] p-0 bollywood-card-hover cursor-pointer group flex flex-col relative overflow-hidden h-auto">
-        <div class="w-full aspect-video relative bg-black shrink-0">
-          <!-- Video Player -->
+        <div class="w-full aspect-video relative bg-black shrink-0 overflow-hidden">
+          <!-- Video Player: Scaled up to hide top/bottom controls, disabled interaction -->
           <iframe 
             src="https://www.youtube.com/embed/8t_8QbsL-64?autoplay=1&mute=1&loop=1&playlist=8t_8QbsL-64&controls=0&rel=0&modestbranding=1&playsinline=1" 
-            class="absolute w-full h-full top-0 left-0" 
+            class="absolute w-[135%] h-[135%] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none" 
             frameborder="0" 
             allow="autoplay; encrypted-media" 
             allowfullscreen>
@@ -261,11 +261,11 @@ const customHtml = `
 
       <!-- Beginner Ballet -->
       <div data-service-id="cmrh0fmxw0004neosd545vrtz" class="bollywood-glass rounded-2xl lg:rounded-[2rem] p-0 bollywood-card-hover cursor-pointer group flex flex-col relative overflow-hidden h-auto">
-        <div class="w-full aspect-video relative bg-black shrink-0">
-          <!-- Video Player -->
+        <div class="w-full aspect-video relative bg-black shrink-0 overflow-hidden">
+          <!-- Video Player: Scaled up to hide top/bottom controls, disabled interaction -->
           <iframe 
             src="https://www.youtube.com/embed/6Fz27G6WwWw?autoplay=1&mute=1&loop=1&playlist=6Fz27G6WwWw&controls=0&rel=0&modestbranding=1&playsinline=1" 
-            class="absolute w-full h-full top-0 left-0" 
+            class="absolute w-[135%] h-[135%] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none" 
             frameborder="0" 
             allow="autoplay; encrypted-media" 
             allowfullscreen>
@@ -295,11 +295,11 @@ const customHtml = `
 
       <!-- Bhangra Fitness -->
       <div data-service-id="cmrh0fmw00005neosp4505cxr" class="bollywood-glass rounded-2xl lg:rounded-[2rem] p-0 bollywood-card-hover cursor-pointer group flex flex-col relative overflow-hidden h-auto">
-        <div class="w-full aspect-video relative bg-black shrink-0">
-          <!-- Video Player -->
+        <div class="w-full aspect-video relative bg-black shrink-0 overflow-hidden">
+          <!-- Video Player: Scaled up to hide top/bottom controls, disabled interaction -->
           <iframe 
             src="https://www.youtube.com/embed/2iFSDqsAICI?autoplay=1&mute=1&loop=1&playlist=2iFSDqsAICI&controls=0&rel=0&modestbranding=1&playsinline=1" 
-            class="absolute w-full h-full top-0 left-0" 
+            class="absolute w-[135%] h-[135%] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none" 
             frameborder="0" 
             allow="autoplay; encrypted-media" 
             allowfullscreen>

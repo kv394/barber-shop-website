@@ -3,15 +3,17 @@ import sanitizeHtml from 'sanitize-html';
 export function sanitize(html: string, options?: sanitizeHtml.IOptions): string {
   return sanitizeHtml(html, {
     allowedTags: sanitizeHtml.defaults.allowedTags.concat([
-      'img', 'style', 'iframe', 'span', 'div', 'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'br', 'a', 'ul', 'li', 'ol'
+      'img', 'style', 'iframe', 'span', 'div', 'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'br', 'a', 'ul', 'li', 'ol', 'video', 'source'
     ]),
     allowedAttributes: {
       '*': ['class', 'id', 'style'],
       'a': ['href', 'name', 'target', 'rel'],
       'img': ['src', 'alt', 'title', 'width', 'height', 'loading', 'decoding'],
       'iframe': ['src', 'width', 'height', 'frameborder', 'allow', 'allowfullscreen'],
+      'video': ['src', 'controls', 'autoplay', 'loop', 'muted', 'playsinline', 'poster', 'preload'],
+      'source': ['src', 'type']
     },
-    allowedIframeHostnames: ['www.google.com', 'www.youtube.com', 'vimeo.com'],
+    allowedIframeHostnames: ['www.google.com', 'www.youtube.com', 'vimeo.com', 'player.vimeo.com'],
     ...options,
   });
 }
