@@ -12,11 +12,11 @@ export default function CustomPageContent({ content, shop, themeColor, className
   const parts = cleanContent.split(/(\$\{products\}|\$\{services\}|\$\{reviews\}|\$\{team\}|\$\{gallery\}|\$\{contact\})/gi);
 
   useEffect(() => {
-    const heroPlayerDiv = document.getElementById('hero-youtube-player');
-    if (!heroPlayerDiv) return;
+    const heroWrapperDiv = document.getElementById('hero-youtube-wrapper');
+    if (!heroWrapperDiv) return;
 
-    const playlistStr = heroPlayerDiv.getAttribute('data-yt-playlist');
-    const startSecs = parseInt(heroPlayerDiv.getAttribute('data-yt-start') || '0', 10);
+    const playlistStr = heroWrapperDiv.getAttribute('data-yt-playlist');
+    const startSecs = parseInt(heroWrapperDiv.getAttribute('data-yt-start') || '0', 10);
     if (!playlistStr) return;
     const playlist = playlistStr.split(',');
 
@@ -25,6 +25,8 @@ export default function CustomPageContent({ content, shop, themeColor, className
 
     const initPlayer = () => {
       player = new (window as any).YT.Player('hero-youtube-player', {
+        width: '100%',
+        height: '100%',
         videoId: playlist[0],
         playerVars: {
           autoplay: 1,

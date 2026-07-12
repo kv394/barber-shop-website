@@ -165,11 +165,13 @@ const customHtml = `
     <div class="absolute inset-0 z-0 rounded-b-[4rem] overflow-hidden">
       <!-- Video Background -->
       <div class="absolute inset-0 w-full h-full pointer-events-none overflow-hidden">
-        <!-- Replaced iframe with a div for YouTube JS API -->
-        <div id="hero-youtube-player" 
+        <!-- Wrapper div holds the CSS classes and data attributes -->
+        <div id="hero-youtube-wrapper"
              class="youtube-bg opacity-40 mix-blend-luminosity pointer-events-none" 
              data-yt-playlist="aHeIJwgNqEY,CmFaCKr_JBA,e2Kr8SCIGDY,RcPso9RdWYU" 
              data-yt-start="20">
+          <!-- Inner div gets replaced by YouTube iframe -->
+          <div id="hero-youtube-player"></div>
         </div>
       </div>
       <div class="absolute inset-0 bg-gradient-to-t from-[var(--bollywood-bg-dark)] via-transparent to-[var(--bollywood-bg-dark)] opacity-90"></div>
