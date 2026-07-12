@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-
+import Script from "next/script";
 import "./globals.css";
 import { Analytics } from "@vercel/analytics/next";
 import { NextIntlClientProvider } from 'next-intl';
@@ -40,6 +40,7 @@ export default async function RootLayout({
           {children}
         </NextIntlClientProvider>
         <Analytics />
+        <Script src="https://www.youtube.com/iframe_api" strategy="afterInteractive" />
       </body>
     </html>
   );
