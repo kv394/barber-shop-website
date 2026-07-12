@@ -207,7 +207,7 @@ const customHtml = `
         </div>
         <div class="flex flex-col items-center group bollywood-glass p-10 rounded-[2.5rem] bollywood-card-hover border-t border-yellow-500/20">
           <div class="w-28 h-28 rounded-full border-4 border-teal-500/50 flex items-center justify-center mb-8 shadow-[0_0_30px_rgba(16,185,129,0.5)] group-hover:rotate-6 group-hover:scale-110 transition-transform duration-500 overflow-hidden">
-            <img src="https://images.unsplash.com/photo-1504609774780-6051515bb566?q=80&w=2574&auto=format&fit=crop" class="w-full h-full object-cover" alt="Vibrant Community" />
+            <img src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=2574&auto=format&fit=crop" class="w-full h-full object-cover" alt="Vibrant Community" />
           </div>
           <h3 class="text-2xl font-black text-white mb-4 uppercase tracking-wider">Vibrant Community</h3>
           <p class="text-pink-100/80 text-lg leading-relaxed">Join our festive performances, showcases, and celebrate the culture together.</p>
