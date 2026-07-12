@@ -54,7 +54,7 @@ const generateCsp = () => {
     connect-src 'self' https://*.supabase.co wss://*.supabase.co https://*.stripe.com ${vercelDomain};
     img-src 'self' data: https://images.unsplash.com https://cdn.pixabay.com https://*.googleusercontent.com ${vercelDomain};
     style-src 'self' 'unsafe-inline' https://fonts.googleapis.com ${vercelDomain};
-    frame-src 'self' https://*.stripe.com https://*.supabase.co https://www.google.com ${vercelDomain};
+    frame-src 'self' https://*.stripe.com https://*.supabase.co https://www.google.com https://*.youtube.com https://*.vimeo.com ${vercelDomain};
     font-src 'self' data: https://fonts.gstatic.com ${vercelDomain};
   `.replace(/\s{2,}/g, ' ').trim();
   
