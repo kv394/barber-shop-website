@@ -41,6 +41,8 @@ export default function BookingWizard({ shopId, themeColor, secondaryColor, temp
  const [serviceLocation, setServiceLocation] = useState('');
  const [isHouseCall, setIsHouseCall] = useState(shopType === 'MOBILE');
  const [metadata, setMetadata] = useState('');
+ const [dependents, setDependents] = useState<any[]>([]);
+ const [selectedDependentId, setSelectedDependentId] = useState<string>('');
  
  // Availability state
  const [bookedSlots, setBookedSlots] = useState<BookedSlot[]>([]);
@@ -65,6 +67,11 @@ export default function BookingWizard({ shopId, themeColor, secondaryColor, temp
  if (data?.user) {
  setName(data.user.user_metadata?.full_name || '');
  setEmail(data.user.email || '');
+
+ fetch('/api/users/dependents')
+   .then(r => r.ok ? r.json() : [])
+   .then(deps => setDependents(Array.isArray(deps) ? deps : []))
+   .catch(() => {});
  }
  setIsAuthLoaded(true);
  });
@@ -322,6 +329,7 @@ export default function BookingWizard({ shopId, themeColor, secondaryColor, temp
  clientName: name,
  clientEmail: email,
  clientPhone: phone,
+ existingClientId: selectedDependentId || undefined,
  serviceLocation: isHouseCall ? serviceLocation : undefined,
  turnstileToken: turnstileToken,
  metadata: metadata ? JSON.parse(metadata) : undefined,
@@ -479,6 +487,9 @@ export default function BookingWizard({ shopId, themeColor, secondaryColor, temp
             setNotes={setNotes}
             metadata={metadata}
             setMetadata={setMetadata}
+            dependents={dependents}
+            selectedDependentId={selectedDependentId}
+            setSelectedDependentId={setSelectedDependentId}
             tStyles={tStyles}
             themeColor={themeColor}
             formatTime={formatTime}

@@ -214,6 +214,9 @@ export function DetailsStep({
   setNotes,
   metadata,
   setMetadata,
+  dependents,
+  selectedDependentId,
+  setSelectedDependentId,
   tStyles,
   themeColor,
   formatTime,
@@ -246,6 +249,31 @@ export function DetailsStep({
       </div>
 
       <div>
+        {dependents && dependents.length > 0 && (
+          <div className="mb-4">
+            <label className="block text-sm font-medium text-crm-muted mb-1">Who is this for?</label>
+            <select
+              className={`${tStyles.input} bg-crm-bg`}
+              style={{ '--tw-ring-color': themeColor } as any}
+              value={selectedDependentId}
+              onChange={(e) => {
+                setSelectedDependentId(e.target.value);
+                if (e.target.value) {
+                  const dep = dependents.find((d: any) => d.id === e.target.value);
+                  if (dep) {
+                    setName(dep.name);
+                    setEmail(dep.email);
+                  }
+                }
+              }}
+            >
+              <option value="">Myself</option>
+              {dependents.map((dep: any) => (
+                <option key={dep.id} value={dep.id}>{dep.name}</option>
+              ))}
+            </select>
+          </div>
+        )}
         <label className="block text-sm font-medium text-crm-muted mb-1">Name</label>
         <input 
           type="text" 
