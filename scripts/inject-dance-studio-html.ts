@@ -419,7 +419,7 @@ const customHtml = `
       var scriptsToInject = ['booking-modal.js', 'booking-widget.js'];
       scriptsToInject.forEach(function(src) {
         var script = document.createElement('script');
-        script.src = origin + '/' + src;
+        script.src = origin + '/' + src + '?v=' + Date.now();
         script.setAttribute('data-shop-id', '{{shop.id}}');
         script.async = true;
         document.body.appendChild(script);

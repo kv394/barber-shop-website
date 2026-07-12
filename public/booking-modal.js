@@ -176,19 +176,16 @@
 
   // Automatically bind to any element with id="barber-booking-btn", data-action="book", or data-service-id
   document.addEventListener('click', function(e) {
-    let target = e.target;
-    while (target && target !== document.body) {
-      if (
-        target.id === 'barber-booking-btn' || 
-        target.getAttribute('data-action') === 'book' ||
-        target.hasAttribute('data-service-id')
-      ) {
-        e.preventDefault();
-        const serviceId = target.getAttribute('data-service-id') || null;
-        window.BarberBooking.open(serviceId);
-        return;
-      }
-      target = target.parentElement;
+    let el = e.target;
+    // Handle text nodes
+    if (el && el.nodeType === 3) el = el.parentNode;
+    if (!el || typeof el.closest !== 'function') return;
+    
+    const target = el.closest('#barber-booking-btn, [data-action="book"], [data-service-id]');
+    if (target) {
+      e.preventDefault();
+      const serviceId = target.getAttribute('data-service-id') || null;
+      window.BarberBooking.open(serviceId);
     }
   });
 })();
