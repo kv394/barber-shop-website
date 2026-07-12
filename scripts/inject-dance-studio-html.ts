@@ -136,12 +136,6 @@ const customHtml = `
           <span class="absolute -bottom-1.5 left-0 w-0 h-0.5 bg-yellow-400 transition-all group-hover:w-full"></span>
         </a>
       </nav>
-      <button 
-        data-action="book"
-        class="bollywood-btn px-6 py-2.5 rounded-full text-xs md:text-sm font-black uppercase tracking-widest shadow-lg hover:shadow-[0_0_20px_rgba(255,215,0,0.4)]"
-      >
-        Client Portal
-      </button>
     </div>
   </header>
 
