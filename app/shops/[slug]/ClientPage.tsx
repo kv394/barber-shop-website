@@ -40,6 +40,15 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
  const [showAppointmentsModal, setShowAppointmentsModal] = useState(false);
  const pathname = usePathname() || '/';
 
+ useEffect(() => {
+   if (typeof window !== 'undefined') {
+     if ('scrollRestoration' in window.history) {
+       window.history.scrollRestoration = 'manual';
+     }
+     window.scrollTo(0, 0);
+   }
+ }, []);
+
  const handleBookClick = (service: any) => {
  if (typeof window !== 'undefined' && (window as any).BarberBooking) {
  (window as any).BarberBooking.open(service?.id);
