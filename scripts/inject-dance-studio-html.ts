@@ -166,7 +166,7 @@ const customHtml = `
       <!-- Video Background -->
       <div class="absolute inset-0 w-full h-full pointer-events-none overflow-hidden">
         <iframe 
-          src="https://www.youtube.com/embed/BCaSpo2zZE4?autoplay=1&mute=1&loop=1&playlist=BCaSpo2zZE4&controls=0&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1&playsinline=1" 
+          src="https://www.youtube.com/embed/BCaSpo2zZE4?autoplay=1&mute=1&loop=1&playlist=8t_8QbsL-64,6Fz27G6WwWw,2iFSDqsAICI&controls=0&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1&playsinline=1" 
           class="youtube-bg opacity-40 mix-blend-luminosity" 
           frameborder="0" 
           allow="autoplay; encrypted-media" 
