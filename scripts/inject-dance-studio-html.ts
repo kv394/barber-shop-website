@@ -222,7 +222,7 @@ const customHtml = `
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
       <!-- Advanced Choreography -->
-      <div data-action="book" class="bollywood-glass rounded-[2rem] p-0 bollywood-card-hover cursor-pointer group flex flex-col h-full relative overflow-hidden">
+      <div data-service-id="cmrh0fmyd0006neosdr91rc1q" class="bollywood-glass rounded-[2rem] p-0 bollywood-card-hover cursor-pointer group flex flex-col h-full relative overflow-hidden">
         <div class="h-56 w-full relative overflow-hidden bg-[#2d164d]">
           <img src="https://images.unsplash.com/photo-1547153760-18fc86324498?q=80&w=2574&auto=format&fit=crop" alt="Advanced Choreography" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
           <div class="absolute inset-0 bg-gradient-to-t from-[#2d164d] via-[#2d164d]/40 to-transparent opacity-90"></div>
@@ -250,7 +250,7 @@ const customHtml = `
       </div>
 
       <!-- Beginner Ballet -->
-      <div data-action="book" class="bollywood-glass rounded-[2rem] p-0 bollywood-card-hover cursor-pointer group flex flex-col h-full relative overflow-hidden">
+      <div data-service-id="cmrgv907h00002woslv6kbf37" class="bollywood-glass rounded-[2rem] p-0 bollywood-card-hover cursor-pointer group flex flex-col h-full relative overflow-hidden">
         <div class="h-56 w-full relative overflow-hidden bg-[#2d164d]">
           <img src="https://images.unsplash.com/photo-1518834107812-67b0b7c58434?q=80&w=2500&auto=format&fit=crop" alt="Beginner Ballet" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
           <div class="absolute inset-0 bg-gradient-to-t from-[#2d164d] via-[#2d164d]/40 to-transparent opacity-90"></div>
@@ -278,7 +278,7 @@ const customHtml = `
       </div>
 
       <!-- Bhangra Fitness -->
-      <div data-action="book" class="bollywood-glass rounded-[2rem] p-0 bollywood-card-hover cursor-pointer group flex flex-col h-full relative overflow-hidden">
+      <div data-service-id="cmrh0fmw00005neosp4505cxr" class="bollywood-glass rounded-[2rem] p-0 bollywood-card-hover cursor-pointer group flex flex-col h-full relative overflow-hidden">
         <div class="h-56 w-full relative overflow-hidden bg-[#2d164d]">
           <img src="https://images.unsplash.com/photo-1504609774780-6051515bb566?q=80&w=2574&auto=format&fit=crop" alt="Bhangra Fitness" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
           <div class="absolute inset-0 bg-gradient-to-t from-[#2d164d] via-[#2d164d]/40 to-transparent opacity-90"></div>
