@@ -150,20 +150,16 @@ const customHtml = `
   <!-- Hero Section -->
   <div class="relative h-[100dvh] snap-start flex flex-col items-center justify-center pt-16 z-10 overflow-hidden">
     <div class="absolute inset-0 z-0 rounded-b-[4rem] overflow-hidden">
-      {{#shop.heroImageUrl}}
-      <img 
-        src="{{shop.heroImageUrl}}" 
-        alt="Studio" 
-        class="object-cover w-full h-full opacity-40 scale-110 animate-[pulse_20s_ease-in-out_infinite] mix-blend-luminosity"
-      />
-      {{/shop.heroImageUrl}}
-      {{^shop.heroImageUrl}}
-      <img 
-        src="https://images.unsplash.com/photo-1546427660-eb346c344ba5?q=80&w=2574&auto=format&fit=crop" 
-        alt="Studio" 
-        class="object-cover w-full h-full opacity-40 scale-110 animate-[pulse_20s_ease-in-out_infinite] mix-blend-luminosity"
-      />
-      {{/shop.heroImageUrl}}
+      <!-- Video Background -->
+      <div class="absolute inset-0 w-full h-full pointer-events-none overflow-hidden">
+        <iframe 
+          src="https://www.youtube.com/embed/BCaSpo2zZE4?autoplay=1&mute=1&loop=1&playlist=BCaSpo2zZE4&controls=0&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1&playsinline=1" 
+          class="absolute w-[300vw] h-[300vh] -top-[100vh] -left-[100vw] lg:w-[150vw] lg:h-[150vh] lg:-top-[25vh] lg:-left-[25vw] object-cover opacity-40 mix-blend-luminosity pointer-events-none" 
+          frameborder="0" 
+          allow="autoplay; encrypted-media" 
+          allowfullscreen>
+        </iframe>
+      </div>
       <div class="absolute inset-0 bg-gradient-to-t from-[var(--bollywood-bg-dark)] via-transparent to-[var(--bollywood-bg-dark)] opacity-90"></div>
     </div>
 
