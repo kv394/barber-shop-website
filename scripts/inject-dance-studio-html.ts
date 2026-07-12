@@ -140,7 +140,7 @@ const customHtml = `
   </header>
 
   <!-- Hero Section -->
-  <div class="relative h-screen snap-start flex flex-col items-center justify-center pt-20 z-10 overflow-hidden">
+  <div class="relative min-h-[100dvh] snap-start flex flex-col items-center justify-center pt-20 pb-10 z-10 overflow-hidden">
     <div class="absolute inset-0 z-0 rounded-b-[4rem] overflow-hidden">
       {{#shop.heroImageUrl}}
       <img 
@@ -184,7 +184,7 @@ const customHtml = `
   </div>
 
   <!-- Features / Why Us -->
-  <section class="h-screen snap-start flex flex-col justify-center py-10 relative z-10">
+  <section class="min-h-[100dvh] snap-start flex flex-col justify-center py-20 relative z-10">
     <div class="max-w-7xl mx-auto px-6 md:px-12">
       <div class="grid grid-cols-1 md:grid-cols-3 gap-10 text-center">
         <div class="flex flex-col items-center group bollywood-glass p-10 rounded-[2.5rem] bollywood-card-hover border-t border-yellow-500/20">
@@ -213,7 +213,7 @@ const customHtml = `
   </section>
 
   <!-- Classes / Programs Section -->
-  <section id="classes" class="h-screen snap-start flex flex-col justify-center px-6 md:px-12 max-w-7xl mx-auto relative z-10">
+  <section id="classes" class="min-h-[100dvh] snap-start flex flex-col justify-center py-20 px-6 md:px-12 max-w-7xl mx-auto relative z-10">
     <div class="flex flex-col text-center mb-20 gap-4">
       <h2 class="text-sm font-black tracking-[0.2em] uppercase text-yellow-400">Our Curriculum</h2>
       <h3 class="text-5xl md:text-7xl font-black tracking-tighter text-white drop-shadow-[0_5px_15px_rgba(0,0,0,0.5)]">Classes & Pricing</h3>
@@ -308,7 +308,7 @@ const customHtml = `
   </section>
 
   <!-- Instructors / Faculty Section -->
-  <section id="faculty" class="h-screen snap-start flex flex-col justify-center py-10 relative z-10 overflow-hidden">
+  <section id="faculty" class="min-h-[100dvh] snap-start flex flex-col justify-center py-20 relative z-10 overflow-hidden">
     <!-- Slanted background -->
     <div class="absolute inset-0 bg-gradient-to-br from-[#3b0b4a] to-[var(--bollywood-bg-dark)] -skew-y-3 origin-top-left z-0 border-y border-pink-500/20"></div>
     
@@ -356,7 +356,7 @@ const customHtml = `
   </section>
 
   <!-- Testimonials -->
-  <section id="testimonials" class="h-screen snap-start flex flex-col justify-center py-10 relative z-10">
+  <section id="testimonials" class="min-h-[100dvh] snap-start flex flex-col justify-center py-20 relative z-10">
     <div class="max-w-7xl mx-auto px-6 md:px-12">
       <div class="text-center mb-20">
         <h2 class="text-sm font-black tracking-[0.2em] uppercase text-yellow-400 mb-4">Community Love</h2>
@@ -395,7 +395,7 @@ const customHtml = `
   </section>
 
   <!-- Footer / Contact -->
-  <footer class="h-screen snap-start flex flex-col justify-center bg-[#120522] py-10 border-t-4 border-yellow-400 relative z-10">
+  <footer class="min-h-[100dvh] snap-start flex flex-col justify-center bg-[#120522] py-20 border-t-4 border-yellow-400 relative z-10">
     <div class="max-w-7xl mx-auto px-6 md:px-12 grid grid-cols-1 md:grid-cols-12 gap-16">
       <div class="md:col-span-5">
         <div class="flex items-center gap-4 mb-8">
