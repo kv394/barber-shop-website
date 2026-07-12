@@ -224,40 +224,50 @@ const customHtml = `
       {{#shop.services}}
       <div 
         data-service-id="{{id}}"
-        class="bollywood-glass rounded-[2rem] p-8 bollywood-card-hover cursor-pointer group flex flex-col h-full relative overflow-hidden"
+        class="bollywood-glass rounded-[2rem] p-0 bollywood-card-hover cursor-pointer group flex flex-col h-full relative overflow-hidden"
       >
-        <!-- Decorative accent -->
-        <div class="absolute -top-24 -right-24 w-64 h-64 bg-gradient-to-br from-yellow-400 to-pink-500 opacity-20 blur-3xl rounded-full group-hover:opacity-40 transition-opacity duration-500"></div>
-
-        <div class="flex-1 relative z-10">
-          <div class="inline-block px-4 py-1 rounded-full bg-white/10 border border-white/20 text-xs font-bold uppercase tracking-wider text-pink-200 mb-6">
-            {{duration}} Minutes
-          </div>
+        <!-- Dance Image Header -->
+        <div class="h-56 w-full relative overflow-hidden bg-[#2d164d]">
+          {{#imageUrl}}
+          <img src="{{imageUrl}}" alt="{{name}}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+          {{/imageUrl}}
+          {{^imageUrl}}
+          <img src="https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?q=80&w=2669&auto=format&fit=crop" alt="Dance" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 mix-blend-luminosity opacity-80" />
+          {{/imageUrl}}
+          <div class="absolute inset-0 bg-gradient-to-t from-[#2d164d] via-[#2d164d]/40 to-transparent opacity-90"></div>
           
-          <h4 class="text-3xl font-black text-white mb-5 group-hover:text-yellow-400 transition-colors drop-shadow-md">
+          <div class="absolute bottom-4 left-6">
+            <div class="inline-block px-4 py-1 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 text-xs font-bold uppercase tracking-wider text-white shadow-lg">
+              {{duration}} Minutes
+            </div>
+          </div>
+        </div>
+
+        <div class="p-8 flex-1 flex flex-col relative z-10 bg-gradient-to-b from-[#2d164d] to-transparent">
+          <h4 class="text-3xl font-black text-white mb-4 group-hover:text-yellow-400 transition-colors drop-shadow-md">
             {{name}}
           </h4>
           
           {{#description}}
-          <p class="text-pink-100/70 text-base leading-relaxed mb-8 line-clamp-3">
+          <p class="text-pink-100/80 text-base leading-relaxed mb-6 line-clamp-3">
             {{description}}
           </p>
           {{/description}}
-        </div>
 
-        <div class="mt-8 pt-8 border-t border-white/10 flex items-center justify-between relative z-10">
-          <div class="flex flex-col">
-            {{#semesterPrice}}
-            <span class="text-xs font-black uppercase tracking-widest text-yellow-400/80 mb-1">Tuition</span>
-            <span class="text-3xl font-black text-white drop-shadow-lg">\${{semesterPrice}}</span>
-            {{/semesterPrice}}
-            {{^semesterPrice}}
-            <span class="text-xs font-black uppercase tracking-widest text-yellow-400/80 mb-1">Drop-in</span>
-            <span class="text-3xl font-black text-white drop-shadow-lg">\${{price}}</span>
-            {{/semesterPrice}}
-          </div>
-          <div class="w-14 h-14 rounded-full bg-gradient-to-r from-orange-500 to-pink-500 flex items-center justify-center text-white group-hover:scale-110 group-hover:rotate-12 transition-transform shadow-[0_0_20px_rgba(255,0,127,0.4)]">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          <div class="mt-auto pt-6 border-t border-white/10 flex items-center justify-between">
+            <div class="flex flex-col">
+              {{#semesterPrice}}
+              <span class="text-xs font-black uppercase tracking-widest text-yellow-400/80 mb-1">Tuition</span>
+              <span class="text-3xl font-black text-white drop-shadow-lg">\${{semesterPrice}}</span>
+              {{/semesterPrice}}
+              {{^semesterPrice}}
+              <span class="text-xs font-black uppercase tracking-widest text-yellow-400/80 mb-1">Drop-in</span>
+              <span class="text-3xl font-black text-white drop-shadow-lg">\${{price}}</span>
+              {{/semesterPrice}}
+            </div>
+            <div class="w-14 h-14 rounded-full bg-gradient-to-r from-orange-500 to-pink-500 flex items-center justify-center text-white group-hover:scale-110 group-hover:rotate-12 transition-transform shadow-[0_0_20px_rgba(255,0,127,0.4)]">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            </div>
           </div>
         </div>
       </div>
