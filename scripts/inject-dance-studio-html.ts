@@ -165,13 +165,12 @@ const customHtml = `
     <div class="absolute inset-0 z-0 rounded-b-[4rem] overflow-hidden">
       <!-- Video Background -->
       <div class="absolute inset-0 w-full h-full pointer-events-none overflow-hidden">
-        <iframe 
-          src="https://www.youtube.com/embed/aHeIJwgNqEY?autoplay=1&mute=1&loop=1&playlist=CmFaCKr_JBA,e2Kr8SCIGDY,RcPso9RdWYU&controls=0&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1&playsinline=1" 
-          class="youtube-bg opacity-40 mix-blend-luminosity" 
-          frameborder="0" 
-          allow="autoplay; encrypted-media" 
-          allowfullscreen>
-        </iframe>
+        <!-- Replaced iframe with a div for YouTube JS API -->
+        <div id="hero-youtube-player" 
+             class="youtube-bg opacity-40 mix-blend-luminosity pointer-events-none" 
+             data-yt-playlist="aHeIJwgNqEY,CmFaCKr_JBA,e2Kr8SCIGDY,RcPso9RdWYU" 
+             data-yt-start="5">
+        </div>
       </div>
       <div class="absolute inset-0 bg-gradient-to-t from-[var(--bollywood-bg-dark)] via-transparent to-[var(--bollywood-bg-dark)] opacity-90"></div>
     </div>
@@ -243,7 +242,7 @@ const customHtml = `
         <div class="w-full aspect-video relative bg-black shrink-0 overflow-hidden">
           <!-- Video Player: Scaled up to hide top/bottom controls, disabled interaction -->
           <iframe 
-            src="https://www.youtube.com/embed/8t_8QbsL-64?autoplay=1&mute=1&loop=1&playlist=8t_8QbsL-64&controls=0&rel=0&modestbranding=1&playsinline=1" 
+            src="https://www.youtube.com/embed/8t_8QbsL-64?autoplay=1&mute=1&loop=1&playlist=8t_8QbsL-64&controls=0&rel=0&modestbranding=1&playsinline=1&start=5" 
             class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none" 
             style="width: 135%; height: 135%;"
             frameborder="0" 
@@ -278,7 +277,7 @@ const customHtml = `
         <div class="w-full aspect-video relative bg-black shrink-0 overflow-hidden">
           <!-- Video Player: Scaled up to hide top/bottom controls, disabled interaction -->
           <iframe 
-            src="https://www.youtube.com/embed/6Fz27G6WwWw?autoplay=1&mute=1&loop=1&playlist=6Fz27G6WwWw&controls=0&rel=0&modestbranding=1&playsinline=1" 
+            src="https://www.youtube.com/embed/6Fz27G6WwWw?autoplay=1&mute=1&loop=1&playlist=6Fz27G6WwWw&controls=0&rel=0&modestbranding=1&playsinline=1&start=5" 
             class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none" 
             style="width: 135%; height: 135%;"
             frameborder="0" 
@@ -313,7 +312,7 @@ const customHtml = `
         <div class="w-full aspect-video relative bg-black shrink-0 overflow-hidden">
           <!-- Video Player: Scaled up to hide top/bottom controls, disabled interaction -->
           <iframe 
-            src="https://www.youtube.com/embed/2iFSDqsAICI?autoplay=1&mute=1&loop=1&playlist=2iFSDqsAICI&controls=0&rel=0&modestbranding=1&playsinline=1" 
+            src="https://www.youtube.com/embed/2iFSDqsAICI?autoplay=1&mute=1&loop=1&playlist=2iFSDqsAICI&controls=0&rel=0&modestbranding=1&playsinline=1&start=5" 
             class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none" 
             style="width: 135%; height: 135%;"
             frameborder="0" 

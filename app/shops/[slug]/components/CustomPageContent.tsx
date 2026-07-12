@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import InteractiveReviewsSection from '@/components/reviews/InteractiveReviewsSection';
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ReviewsSection from "./ReviewsSection";
 import { sanitize } from '@/lib/sanitize';
 
@@ -10,8 +10,71 @@ export default function CustomPageContent({ content, shop, themeColor, className
  
  // SECURITY: Sanitize the raw HTML to prevent Stored XSS
  const cleanContent = sanitize(content);
- 
- const parts = cleanContent.split(/(\$\{products\}|\$\{services\}|\$\{reviews\}|\$\{team\}|\$\{gallery\}|\$\{contact\})/gi);
+  const parts = cleanContent.split(/(\$\{products\}|\$\{services\}|\$\{reviews\}|\$\{team\}|\$\{gallery\}|\$\{contact\})/gi);
+
+  useEffect(() => {
+    const heroPlayerDiv = document.getElementById('hero-youtube-player');
+    if (!heroPlayerDiv) return;
+
+    const playlistStr = heroPlayerDiv.getAttribute('data-yt-playlist');
+    const startSecs = parseInt(heroPlayerDiv.getAttribute('data-yt-start') || '0', 10);
+    if (!playlistStr) return;
+    const playlist = playlistStr.split(',');
+
+    let player: any;
+    let currentIndex = 0;
+
+    const initPlayer = () => {
+      player = new (window as any).YT.Player('hero-youtube-player', {
+        videoId: playlist[0],
+        playerVars: {
+          autoplay: 1,
+          mute: 1,
+          controls: 0,
+          showinfo: 0,
+          rel: 0,
+          modestbranding: 1,
+          playsinline: 1,
+          start: startSecs
+        },
+        events: {
+          onReady: (event: any) => {
+            event.target.playVideo();
+          },
+          onStateChange: (event: any) => {
+            if (event.data === (window as any).YT.PlayerState.ENDED) {
+              currentIndex = (currentIndex + 1) % playlist.length;
+              player.loadVideoById({
+                videoId: playlist[currentIndex],
+                startSeconds: startSecs
+              });
+            }
+          }
+        }
+      });
+    };
+
+    if (!(window as any).YT) {
+      const tag = document.createElement('script');
+      tag.src = "https://www.youtube.com/iframe_api";
+      const firstScriptTag = document.getElementsByTagName('script')[0];
+      if (firstScriptTag && firstScriptTag.parentNode) {
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+      } else {
+        document.head.appendChild(tag);
+      }
+      (window as any).onYouTubeIframeAPIReady = initPlayer;
+    } else {
+      initPlayer();
+    }
+
+    return () => {
+      if (player && player.destroy) {
+        player.destroy();
+      }
+    };
+  }, [cleanContent]);
+
  if (parts.length === 1) {
  return <div className={className} dangerouslySetInnerHTML={{ __html: cleanContent }} />;
  }
