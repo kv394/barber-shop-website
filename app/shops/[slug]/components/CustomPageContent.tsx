@@ -6,10 +6,9 @@ import { sanitize } from '@/lib/sanitize';
 
 export default function CustomPageContent({ content, shop, themeColor, className, onBookClick, reviews = [], templateType = 'modern' }: { content: string, shop: any, themeColor?: string, className?: string, onBookClick?: (service: any) => void, reviews?: any[], templateType?: string }) {
  const [selectedProduct, setSelectedProduct] = useState<any>(null);
- if (!content) return null;
  
  // SECURITY: Sanitize the raw HTML to prevent Stored XSS
- const cleanContent = sanitize(content);
+ const cleanContent = sanitize(content || '');
   const parts = cleanContent.split(/(\$\{products\}|\$\{services\}|\$\{reviews\}|\$\{team\}|\$\{gallery\}|\$\{contact\})/gi);
 
   useEffect(() => {
@@ -74,6 +73,8 @@ export default function CustomPageContent({ content, shop, themeColor, className
       }
     };
   }, [cleanContent]);
+
+  if (!content) return null;
 
  if (parts.length === 1) {
  return <div className={className} dangerouslySetInnerHTML={{ __html: cleanContent }} />;
