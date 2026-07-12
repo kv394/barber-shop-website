@@ -221,49 +221,26 @@ const customHtml = `
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-      {{#shop.services}}
-      <div 
-        data-service-id="{{id}}"
-        class="bollywood-glass rounded-[2rem] p-0 bollywood-card-hover cursor-pointer group flex flex-col h-full relative overflow-hidden"
-      >
-        <!-- Dance Image Header -->
+      <!-- Advanced Choreography -->
+      <div data-action="book" class="bollywood-glass rounded-[2rem] p-0 bollywood-card-hover cursor-pointer group flex flex-col h-full relative overflow-hidden">
         <div class="h-56 w-full relative overflow-hidden bg-[#2d164d]">
-          {{#imageUrl}}
-          <img src="{{imageUrl}}" alt="{{name}}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
-          {{/imageUrl}}
-          {{^imageUrl}}
-          <img src="https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?q=80&w=2669&auto=format&fit=crop" alt="Dance" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 mix-blend-luminosity opacity-80" />
-          {{/imageUrl}}
+          <img src="https://images.unsplash.com/photo-1547153760-18fc86324498?q=80&w=2574&auto=format&fit=crop" alt="Advanced Choreography" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
           <div class="absolute inset-0 bg-gradient-to-t from-[#2d164d] via-[#2d164d]/40 to-transparent opacity-90"></div>
-          
           <div class="absolute bottom-4 left-6">
             <div class="inline-block px-4 py-1 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 text-xs font-bold uppercase tracking-wider text-white shadow-lg">
-              {{duration}} Minutes
+              90 Minutes
             </div>
           </div>
         </div>
-
         <div class="p-8 flex-1 flex flex-col relative z-10 bg-gradient-to-b from-[#2d164d] to-transparent">
-          <h4 class="text-3xl font-black text-white mb-4 group-hover:text-yellow-400 transition-colors drop-shadow-md">
-            {{name}}
-          </h4>
-          
-          {{#description}}
+          <h4 class="text-3xl font-black text-white mb-4 group-hover:text-yellow-400 transition-colors drop-shadow-md">Advanced Choreography</h4>
           <p class="text-pink-100/80 text-base leading-relaxed mb-6 line-clamp-3">
-            {{description}}
+            Master complex routines and elevate your performance skills with industry-leading choreographers. Perfect for experienced dancers looking to push their boundaries.
           </p>
-          {{/description}}
-
           <div class="mt-auto pt-6 border-t border-white/10 flex items-center justify-between">
             <div class="flex flex-col">
-              {{#semesterPrice}}
               <span class="text-xs font-black uppercase tracking-widest text-yellow-400/80 mb-1">Tuition</span>
-              <span class="text-3xl font-black text-white drop-shadow-lg">\${{semesterPrice}}</span>
-              {{/semesterPrice}}
-              {{^semesterPrice}}
-              <span class="text-xs font-black uppercase tracking-widest text-yellow-400/80 mb-1">Drop-in</span>
-              <span class="text-3xl font-black text-white drop-shadow-lg">\${{price}}</span>
-              {{/semesterPrice}}
+              <span class="text-3xl font-black text-white drop-shadow-lg">$450</span>
             </div>
             <div class="w-14 h-14 rounded-full bg-gradient-to-r from-orange-500 to-pink-500 flex items-center justify-center text-white group-hover:scale-110 group-hover:rotate-12 transition-transform shadow-[0_0_20px_rgba(255,0,127,0.4)]">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
@@ -271,7 +248,62 @@ const customHtml = `
           </div>
         </div>
       </div>
-      {{/shop.services}}
+
+      <!-- Beginner Ballet -->
+      <div data-action="book" class="bollywood-glass rounded-[2rem] p-0 bollywood-card-hover cursor-pointer group flex flex-col h-full relative overflow-hidden">
+        <div class="h-56 w-full relative overflow-hidden bg-[#2d164d]">
+          <img src="https://images.unsplash.com/photo-1518834107812-67b0b7c58434?q=80&w=2500&auto=format&fit=crop" alt="Beginner Ballet" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+          <div class="absolute inset-0 bg-gradient-to-t from-[#2d164d] via-[#2d164d]/40 to-transparent opacity-90"></div>
+          <div class="absolute bottom-4 left-6">
+            <div class="inline-block px-4 py-1 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 text-xs font-bold uppercase tracking-wider text-white shadow-lg">
+              60 Minutes
+            </div>
+          </div>
+        </div>
+        <div class="p-8 flex-1 flex flex-col relative z-10 bg-gradient-to-b from-[#2d164d] to-transparent">
+          <h4 class="text-3xl font-black text-white mb-4 group-hover:text-yellow-400 transition-colors drop-shadow-md">Beginner Ballet</h4>
+          <p class="text-pink-100/80 text-base leading-relaxed mb-6 line-clamp-3">
+            Build a strong foundation in classical ballet techniques. Focus on posture, grace, and fundamental movements in a supportive environment.
+          </p>
+          <div class="mt-auto pt-6 border-t border-white/10 flex items-center justify-between">
+            <div class="flex flex-col">
+              <span class="text-xs font-black uppercase tracking-widest text-yellow-400/80 mb-1">Tuition</span>
+              <span class="text-3xl font-black text-white drop-shadow-lg">$300</span>
+            </div>
+            <div class="w-14 h-14 rounded-full bg-gradient-to-r from-orange-500 to-pink-500 flex items-center justify-center text-white group-hover:scale-110 group-hover:rotate-12 transition-transform shadow-[0_0_20px_rgba(255,0,127,0.4)]">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bhangra Fitness -->
+      <div data-action="book" class="bollywood-glass rounded-[2rem] p-0 bollywood-card-hover cursor-pointer group flex flex-col h-full relative overflow-hidden">
+        <div class="h-56 w-full relative overflow-hidden bg-[#2d164d]">
+          <img src="https://images.unsplash.com/photo-1504609774780-6051515bb566?q=80&w=2574&auto=format&fit=crop" alt="Bhangra Fitness" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+          <div class="absolute inset-0 bg-gradient-to-t from-[#2d164d] via-[#2d164d]/40 to-transparent opacity-90"></div>
+          <div class="absolute bottom-4 left-6">
+            <div class="inline-block px-4 py-1 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 text-xs font-bold uppercase tracking-wider text-white shadow-lg">
+              45 Minutes
+            </div>
+          </div>
+        </div>
+        <div class="p-8 flex-1 flex flex-col relative z-10 bg-gradient-to-b from-[#2d164d] to-transparent">
+          <h4 class="text-3xl font-black text-white mb-4 group-hover:text-yellow-400 transition-colors drop-shadow-md">Bhangra Fitness</h4>
+          <p class="text-pink-100/80 text-base leading-relaxed mb-6 line-clamp-3">
+            A high-energy, cardio-intensive workout set to infectious Punjabi beats. Get fit while learning traditional and modern Bhangra steps!
+          </p>
+          <div class="mt-auto pt-6 border-t border-white/10 flex items-center justify-between">
+            <div class="flex flex-col">
+              <span class="text-xs font-black uppercase tracking-widest text-yellow-400/80 mb-1">Drop-in</span>
+              <span class="text-3xl font-black text-white drop-shadow-lg">$25</span>
+            </div>
+            <div class="w-14 h-14 rounded-full bg-gradient-to-r from-orange-500 to-pink-500 flex items-center justify-center text-white group-hover:scale-110 group-hover:rotate-12 transition-transform shadow-[0_0_20px_rgba(255,0,127,0.4)]">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
