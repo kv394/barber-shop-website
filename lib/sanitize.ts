@@ -8,10 +8,10 @@ export function sanitize(html: string, options?: sanitizeHtml.IOptions): string 
     allowedAttributes: {
       '*': ['class', 'id', 'style'],
       'a': ['href', 'name', 'target', 'rel'],
-      'img': ['src', 'alt', 'title', 'width', 'height', 'loading', 'decoding'],
-      'iframe': ['src', 'width', 'height', 'frameborder', 'allow', 'allowfullscreen'],
-      'video': ['src', 'controls', 'autoplay', 'loop', 'muted', 'playsinline', 'poster', 'preload'],
-      'source': ['src', 'type']
+      'img': ['src', 'alt', 'title', 'width', 'height', 'loading', 'decoding', 'class', 'id', 'style'],
+      'iframe': ['src', 'width', 'height', 'frameborder', 'allow', 'allowfullscreen', 'class', 'id', 'style'],
+      'video': ['src', 'controls', 'autoplay', 'loop', 'muted', 'playsinline', 'poster', 'preload', 'class', 'id', 'style'],
+      'source': ['src', 'type', 'class', 'id', 'style']
     },
     allowedIframeHostnames: ['www.google.com', 'www.youtube.com', 'vimeo.com', 'player.vimeo.com'],
     ...options,
