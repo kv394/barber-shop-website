@@ -25,9 +25,10 @@ export async function GET(request: Request, { params }: { params: Promise<{ shop
         requestDomain = null;
     }
 
+
     const url = new URL(request.url);
     if (url.searchParams.get('bust')) {
-        await cacheService.invalidate(`api_public_data_v2:${shopId}`).catch(() => {});
+        await cacheService.invalidate(`api_public_data_v2:${resolvedShopId}`).catch(() => {});
     }
 
     const cachedData = await getShopPublicData(shopId, baseUrl);
