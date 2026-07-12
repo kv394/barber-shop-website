@@ -137,7 +137,7 @@ const customHtml = `
         </a>
       </nav>
       <button 
-        onclick="if(window.BarberBooking) window.BarberBooking.open()"
+        data-action="book"
         class="bollywood-btn px-6 py-2.5 rounded-full text-xs md:text-sm font-black uppercase tracking-widest shadow-lg hover:shadow-[0_0_20px_rgba(255,215,0,0.4)]"
       >
         Client Portal
@@ -172,7 +172,7 @@ const customHtml = `
       </p>
       <div class="flex flex-col sm:flex-row gap-6 justify-center items-center">
         <button 
-          onclick="if(window.BarberBooking) window.BarberBooking.open()"
+          data-action="book"
           class="bollywood-btn w-full sm:w-auto px-12 py-5 rounded-full text-lg font-black tracking-widest flex items-center justify-center gap-3"
         >
           Register Now 
@@ -222,7 +222,7 @@ const customHtml = `
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
       {{#shop.services}}
       <div 
-        onclick="if(window.BarberBooking) window.BarberBooking.open('{{id}}')"
+        data-service-id="{{id}}"
         class="bollywood-glass rounded-[2rem] p-8 bollywood-card-hover cursor-pointer group flex flex-col h-full relative overflow-hidden"
       >
         <!-- Decorative accent -->
@@ -400,7 +400,7 @@ const customHtml = `
           {{/shop.phone}}
           <div class="pt-8">
             <button 
-              onclick="if(window.BarberBooking) window.BarberBooking.open()"
+              data-action="book"
               class="bollywood-btn w-full px-8 py-5 rounded-full text-lg font-black tracking-widest flex items-center justify-center gap-3"
             >
               Book A Trial 
