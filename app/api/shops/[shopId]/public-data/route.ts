@@ -27,11 +27,8 @@ export async function GET(request: Request, { params }: { params: Promise<{ shop
 
 
     const url = new URL(request.url);
-    if (url.searchParams.get('bust')) {
-        await cacheService.invalidate(`api_public_data_v2:${resolvedShopId}`).catch(() => {});
-    }
-
-    const cachedData = await getShopPublicData(shopId, baseUrl);
+    const bust = !!url.searchParams.get('bust');
+    const cachedData = await getShopPublicData(shopId, baseUrl, bust);
 
     if (!cachedData) {
         return NextResponse.json({ error: 'Shop not found' }, { status: 404 });
