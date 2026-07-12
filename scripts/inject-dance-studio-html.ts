@@ -280,7 +280,7 @@ const customHtml = `
       <!-- Bhangra Fitness -->
       <div data-service-id="cmrh0fmw00005neosp4505cxr" class="bollywood-glass rounded-[2rem] p-0 bollywood-card-hover cursor-pointer group flex flex-col h-full relative overflow-hidden">
         <div class="h-56 w-full relative overflow-hidden bg-[#2d164d]">
-          <img src="https://images.unsplash.com/photo-1504609774780-6051515bb566?q=80&w=2574&auto=format&fit=crop" alt="Bhangra Fitness" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+          <img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=2574&auto=format&fit=crop" alt="Bhangra Fitness" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
           <div class="absolute inset-0 bg-gradient-to-t from-[#2d164d] via-[#2d164d]/40 to-transparent opacity-90"></div>
           <div class="absolute bottom-4 left-6">
             <div class="inline-block px-4 py-1 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 text-xs font-bold uppercase tracking-wider text-white shadow-lg">
