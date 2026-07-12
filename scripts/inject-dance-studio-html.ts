@@ -264,7 +264,7 @@ const customHtml = `
         <div class="w-full aspect-video relative bg-black shrink-0">
           <!-- Video Player -->
           <iframe 
-            src="https://www.youtube.com/embed/8L1jJp3J65E?autoplay=1&mute=1&loop=1&playlist=8L1jJp3J65E&controls=0&rel=0&modestbranding=1&playsinline=1" 
+            src="https://www.youtube.com/embed/6Fz27G6WwWw?autoplay=1&mute=1&loop=1&playlist=6Fz27G6WwWw&controls=0&rel=0&modestbranding=1&playsinline=1" 
             class="absolute w-full h-full top-0 left-0" 
             frameborder="0" 
             allow="autoplay; encrypted-media" 
@@ -298,7 +298,7 @@ const customHtml = `
         <div class="w-full aspect-video relative bg-black shrink-0">
           <!-- Video Player -->
           <iframe 
-            src="https://www.youtube.com/embed/v34q374Vmbg?autoplay=1&mute=1&loop=1&playlist=v34q374Vmbg&controls=0&rel=0&modestbranding=1&playsinline=1" 
+            src="https://www.youtube.com/embed/2iFSDqsAICI?autoplay=1&mute=1&loop=1&playlist=2iFSDqsAICI&controls=0&rel=0&modestbranding=1&playsinline=1" 
             class="absolute w-full h-full top-0 left-0" 
             frameborder="0" 
             allow="autoplay; encrypted-media" 
