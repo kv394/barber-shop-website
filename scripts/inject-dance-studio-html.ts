@@ -228,7 +228,14 @@ const customHtml = `
       <!-- Advanced Choreography -->
       <div data-service-id="cmrh0fmyd0006neosdr91rc1q" class="bollywood-glass rounded-2xl lg:rounded-[2rem] p-0 bollywood-card-hover cursor-pointer group flex flex-row lg:flex-col relative overflow-hidden h-32 lg:h-full">
         <div class="w-1/3 lg:w-full h-full lg:h-56 relative overflow-hidden bg-[#2d164d] shrink-0">
-          <img src="https://images.unsplash.com/photo-1547153760-18fc86324498?q=80&w=2574&auto=format&fit=crop" alt="Advanced Choreography" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+          <!-- Video Background -->
+          <iframe 
+            src="https://www.youtube.com/embed/a97Krd6s5fE?autoplay=1&mute=1&loop=1&playlist=a97Krd6s5fE&controls=0&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1&playsinline=1" 
+            class="absolute w-[200%] h-[200%] md:w-[250%] md:h-[250%] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-90 group-hover:scale-105 transition-transform duration-700 pointer-events-none" 
+            frameborder="0" 
+            allow="autoplay; encrypted-media" 
+            allowfullscreen>
+          </iframe>
           <div class="absolute inset-0 bg-gradient-to-t lg:bg-gradient-to-t from-[#2d164d] lg:via-[#2d164d]/40 to-transparent lg:to-transparent opacity-90 lg:opacity-90 bg-gradient-to-r via-transparent"></div>
           <div class="absolute bottom-2 left-2 lg:bottom-4 lg:left-6">
             <div class="inline-block px-2 py-0.5 lg:px-4 lg:py-1 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 text-[8px] lg:text-xs font-bold uppercase tracking-wider text-white shadow-lg">
@@ -256,7 +263,14 @@ const customHtml = `
       <!-- Beginner Ballet -->
       <div data-service-id="cmrh0fmxw0004neosd545vrtz" class="bollywood-glass rounded-2xl lg:rounded-[2rem] p-0 bollywood-card-hover cursor-pointer group flex flex-row lg:flex-col relative overflow-hidden h-32 lg:h-full">
         <div class="w-1/3 lg:w-full h-full lg:h-56 relative overflow-hidden bg-[#2d164d] shrink-0">
-          <img src="https://images.unsplash.com/photo-1518834107812-67b0b7c58434?q=80&w=2500&auto=format&fit=crop" alt="Beginner Ballet" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+          <!-- Video Background -->
+          <iframe 
+            src="https://www.youtube.com/embed/6Fz27G6WwWw?autoplay=1&mute=1&loop=1&playlist=6Fz27G6WwWw&controls=0&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1&playsinline=1" 
+            class="absolute w-[200%] h-[200%] md:w-[250%] md:h-[250%] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-90 group-hover:scale-105 transition-transform duration-700 pointer-events-none" 
+            frameborder="0" 
+            allow="autoplay; encrypted-media" 
+            allowfullscreen>
+          </iframe>
           <div class="absolute inset-0 bg-gradient-to-t lg:bg-gradient-to-t from-[#2d164d] lg:via-[#2d164d]/40 to-transparent lg:to-transparent opacity-90 lg:opacity-90 bg-gradient-to-r via-transparent"></div>
           <div class="absolute bottom-2 left-2 lg:bottom-4 lg:left-6">
             <div class="inline-block px-2 py-0.5 lg:px-4 lg:py-1 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 text-[8px] lg:text-xs font-bold uppercase tracking-wider text-white shadow-lg">
