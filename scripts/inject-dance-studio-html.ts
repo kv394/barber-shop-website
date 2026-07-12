@@ -242,7 +242,7 @@ const customHtml = `
         <div class="w-full aspect-video relative bg-black shrink-0 overflow-hidden">
           <!-- Video Player: Scaled up to hide top/bottom controls, disabled interaction -->
           <iframe 
-            src="https://www.youtube.com/embed/8t_8QbsL-64?autoplay=1&mute=1&loop=1&playlist=8t_8QbsL-64&controls=0&rel=0&modestbranding=1&playsinline=1&start=5" 
+            src="https://www.youtube.com/embed/SacuV0kEQlA?autoplay=1&mute=1&loop=1&playlist=SacuV0kEQlA&controls=0&rel=0&modestbranding=1&playsinline=1&start=5" 
             class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none" 
             style="width: 135%; height: 135%;"
             frameborder="0" 
