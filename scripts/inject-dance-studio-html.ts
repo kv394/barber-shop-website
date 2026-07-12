@@ -102,6 +102,14 @@ const customHtml = `
   .bollywood-btn:hover::before {
     left: 100%;
   }
+  
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .hide-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
 </style>
 
 <div class="h-screen overflow-y-scroll snap-y snap-mandatory text-neutral-100 font-sans selection:bg-pink-500/30 relative scroll-smooth" style="background-color: var(--bollywood-bg-dark)">
@@ -140,7 +148,7 @@ const customHtml = `
   </header>
 
   <!-- Hero Section -->
-  <div class="relative min-h-[100dvh] snap-start flex flex-col items-center justify-center pt-20 pb-10 z-10 overflow-hidden">
+  <div class="relative h-[100dvh] snap-start flex flex-col items-center justify-center pt-16 z-10 overflow-hidden">
     <div class="absolute inset-0 z-0 rounded-b-[4rem] overflow-hidden">
       {{#shop.heroImageUrl}}
       <img 
@@ -161,7 +169,7 @@ const customHtml = `
 
     <!-- Hero Content -->
     <div class="relative z-10 text-center max-w-5xl px-6">
-      <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bollywood-glass border border-yellow-400/30 mb-8 animate-bounce">
+      <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bollywood-glass border border-yellow-400/30 mb-6 animate-bounce">
         <span class="w-2 h-2 rounded-full bg-yellow-400 animate-pulse"></span>
         <span class="text-xs font-bold uppercase tracking-widest text-yellow-400">Feel The Rhythm</span>
       </div>
@@ -184,46 +192,47 @@ const customHtml = `
   </div>
 
   <!-- Features / Why Us -->
-  <section class="min-h-[100dvh] snap-start flex flex-col justify-center py-20 relative z-10">
-    <div class="max-w-7xl mx-auto px-6 md:px-12">
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-10 text-center">
-        <div class="flex flex-col items-center group bollywood-glass p-10 rounded-[2.5rem] bollywood-card-hover border-t border-yellow-500/20">
-          <div class="w-28 h-28 rounded-full border-4 border-yellow-400/50 flex items-center justify-center mb-8 shadow-[0_0_30px_rgba(255,165,0,0.5)] group-hover:rotate-6 group-hover:scale-110 transition-transform duration-500 overflow-hidden">
+  <section class="h-[100dvh] snap-start flex flex-col justify-center py-10 relative z-10 overflow-hidden">
+    <div class="w-full max-w-7xl mx-auto md:px-12">
+      <div class="flex overflow-x-auto snap-x snap-mandatory gap-6 md:grid md:grid-cols-3 md:gap-10 text-center hide-scrollbar px-6 md:px-0">
+        <div class="min-w-[85vw] md:min-w-0 snap-center shrink-0 flex flex-col items-center group bollywood-glass p-8 rounded-[2.5rem] bollywood-card-hover border-t border-yellow-500/20">
+          <div class="w-20 h-20 md:w-28 md:h-28 rounded-full border-4 border-yellow-400/50 flex items-center justify-center mb-6 shadow-[0_0_30px_rgba(255,165,0,0.5)] group-hover:rotate-6 group-hover:scale-110 transition-transform duration-500 overflow-hidden">
             <img src="https://images.unsplash.com/photo-1518834107812-67b0b7c58434?q=80&w=2500&auto=format&fit=crop" class="w-full h-full object-cover" alt="Expert Choreography" />
           </div>
-          <h3 class="text-2xl font-black text-white mb-4 uppercase tracking-wider">Expert Choreography</h3>
-          <p class="text-pink-100/80 text-lg leading-relaxed">Learn authentic moves from industry professionals who bring movie magic to life.</p>
+          <h3 class="text-xl md:text-2xl font-black text-white mb-3 uppercase tracking-wider">Expert Choreography</h3>
+          <p class="text-pink-100/80 text-sm md:text-lg leading-relaxed">Learn authentic moves from industry professionals who bring movie magic to life.</p>
         </div>
-        <div class="flex flex-col items-center group bollywood-glass p-10 rounded-[2.5rem] bollywood-card-hover border-t border-yellow-500/20 translate-y-0 md:-translate-y-8">
-          <div class="w-28 h-28 rounded-full border-4 border-pink-500/50 flex items-center justify-center mb-8 shadow-[0_0_30px_rgba(255,0,127,0.5)] group-hover:-rotate-6 group-hover:scale-110 transition-transform duration-500 overflow-hidden">
+        <div class="min-w-[85vw] md:min-w-0 snap-center shrink-0 flex flex-col items-center group bollywood-glass p-8 rounded-[2.5rem] bollywood-card-hover border-t border-yellow-500/20 md:-translate-y-8">
+          <div class="w-20 h-20 md:w-28 md:h-28 rounded-full border-4 border-pink-500/50 flex items-center justify-center mb-6 shadow-[0_0_30px_rgba(255,0,127,0.5)] group-hover:-rotate-6 group-hover:scale-110 transition-transform duration-500 overflow-hidden">
             <img src="https://images.unsplash.com/photo-1547153760-18fc86324498?q=80&w=2574&auto=format&fit=crop" class="w-full h-full object-cover" alt="All Ages & Levels" />
           </div>
-          <h3 class="text-2xl font-black text-white mb-4 uppercase tracking-wider">All Ages & Levels</h3>
-          <p class="text-pink-100/80 text-lg leading-relaxed">From kids to adults, beginners to advanced performers, everyone is welcome.</p>
+          <h3 class="text-xl md:text-2xl font-black text-white mb-3 uppercase tracking-wider">All Ages & Levels</h3>
+          <p class="text-pink-100/80 text-sm md:text-lg leading-relaxed">From kids to adults, beginners to advanced performers, everyone is welcome.</p>
         </div>
-        <div class="flex flex-col items-center group bollywood-glass p-10 rounded-[2.5rem] bollywood-card-hover border-t border-yellow-500/20">
-          <div class="w-28 h-28 rounded-full border-4 border-teal-500/50 flex items-center justify-center mb-8 shadow-[0_0_30px_rgba(16,185,129,0.5)] group-hover:rotate-6 group-hover:scale-110 transition-transform duration-500 overflow-hidden">
+        <div class="min-w-[85vw] md:min-w-0 snap-center shrink-0 flex flex-col items-center group bollywood-glass p-8 rounded-[2.5rem] bollywood-card-hover border-t border-yellow-500/20">
+          <div class="w-20 h-20 md:w-28 md:h-28 rounded-full border-4 border-teal-500/50 flex items-center justify-center mb-6 shadow-[0_0_30px_rgba(16,185,129,0.5)] group-hover:rotate-6 group-hover:scale-110 transition-transform duration-500 overflow-hidden">
             <img src="https://images.unsplash.com/photo-1504609774780-6051515bb566?q=80&w=2574&auto=format&fit=crop" class="w-full h-full object-cover" alt="Vibrant Community" />
           </div>
-          <h3 class="text-2xl font-black text-white mb-4 uppercase tracking-wider">Vibrant Community</h3>
-          <p class="text-pink-100/80 text-lg leading-relaxed">Join our festive performances, showcases, and celebrate the culture together.</p>
+          <h3 class="text-xl md:text-2xl font-black text-white mb-3 uppercase tracking-wider">Vibrant Community</h3>
+          <p class="text-pink-100/80 text-sm md:text-lg leading-relaxed">Join our festive performances, showcases, and celebrate the culture together.</p>
         </div>
       </div>
     </div>
   </section>
 
   <!-- Classes / Programs Section -->
-  <section id="classes" class="min-h-[100dvh] snap-start flex flex-col justify-center py-20 px-6 md:px-12 max-w-7xl mx-auto relative z-10">
-    <div class="flex flex-col text-center mb-20 gap-4">
-      <h2 class="text-sm font-black tracking-[0.2em] uppercase text-yellow-400">Our Curriculum</h2>
-      <h3 class="text-5xl md:text-7xl font-black tracking-tighter text-white drop-shadow-[0_5px_15px_rgba(0,0,0,0.5)]">Classes & Pricing</h3>
-      <div class="w-24 h-1 bg-gradient-to-r from-yellow-400 to-pink-500 mx-auto rounded-full mt-4"></div>
+  <section id="classes" class="h-[100dvh] snap-start flex flex-col justify-center py-10 relative z-10 overflow-hidden">
+    <div class="flex flex-col text-center mb-6 md:mb-12 gap-2">
+      <h2 class="text-xs md:text-sm font-black tracking-[0.2em] uppercase text-yellow-400">Our Curriculum</h2>
+      <h3 class="text-4xl md:text-6xl font-black tracking-tighter text-white drop-shadow-[0_5px_15px_rgba(0,0,0,0.5)]">Classes & Pricing</h3>
+      <div class="w-16 md:w-24 h-1 bg-gradient-to-r from-yellow-400 to-pink-500 mx-auto rounded-full mt-2"></div>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+    <div class="w-full max-w-7xl mx-auto md:px-12">
+      <div class="flex overflow-x-auto snap-x snap-mandatory gap-6 md:grid md:grid-cols-3 md:gap-10 hide-scrollbar px-6 md:px-0">
       <!-- Advanced Choreography -->
-      <div data-service-id="cmrh0fmyd0006neosdr91rc1q" class="bollywood-glass rounded-[2rem] p-0 bollywood-card-hover cursor-pointer group flex flex-col h-full relative overflow-hidden">
-        <div class="h-56 w-full relative overflow-hidden bg-[#2d164d]">
+      <div data-service-id="cmrh0fmyd0006neosdr91rc1q" class="min-w-[85vw] md:min-w-0 snap-center shrink-0 bollywood-glass rounded-[2rem] p-0 bollywood-card-hover cursor-pointer group flex flex-col h-full relative overflow-hidden">
+        <div class="h-40 md:h-48 w-full relative overflow-hidden bg-[#2d164d]">
           <img src="https://images.unsplash.com/photo-1547153760-18fc86324498?q=80&w=2574&auto=format&fit=crop" alt="Advanced Choreography" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
           <div class="absolute inset-0 bg-gradient-to-t from-[#2d164d] via-[#2d164d]/40 to-transparent opacity-90"></div>
           <div class="absolute bottom-4 left-6">
@@ -232,9 +241,9 @@ const customHtml = `
             </div>
           </div>
         </div>
-        <div class="p-8 flex-1 flex flex-col relative z-10 bg-gradient-to-b from-[#2d164d] to-transparent">
-          <h4 class="text-3xl font-black text-white mb-4 group-hover:text-yellow-400 transition-colors drop-shadow-md">Advanced Choreography</h4>
-          <p class="text-pink-100/80 text-base leading-relaxed mb-6 line-clamp-3">
+        <div class="p-6 md:p-8 flex-1 flex flex-col relative z-10 bg-gradient-to-b from-[#2d164d] to-transparent">
+          <h4 class="text-2xl md:text-3xl font-black text-white mb-2 md:mb-4 group-hover:text-yellow-400 transition-colors drop-shadow-md">Advanced Choreography</h4>
+          <p class="text-pink-100/80 text-sm md:text-base leading-relaxed mb-4 line-clamp-2 md:line-clamp-3">
             Master complex routines and elevate your performance skills with industry-leading choreographers. Perfect for experienced dancers looking to push their boundaries.
           </p>
           <div class="mt-auto pt-6 border-t border-white/10 flex items-center justify-between">
@@ -250,8 +259,8 @@ const customHtml = `
       </div>
 
       <!-- Beginner Ballet -->
-      <div data-service-id="cmrgv907h00002woslv6kbf37" class="bollywood-glass rounded-[2rem] p-0 bollywood-card-hover cursor-pointer group flex flex-col h-full relative overflow-hidden">
-        <div class="h-56 w-full relative overflow-hidden bg-[#2d164d]">
+      <div data-service-id="cmrgv907h00002woslv6kbf37" class="min-w-[85vw] md:min-w-0 snap-center shrink-0 bollywood-glass rounded-[2rem] p-0 bollywood-card-hover cursor-pointer group flex flex-col h-full relative overflow-hidden">
+        <div class="h-40 md:h-48 w-full relative overflow-hidden bg-[#2d164d]">
           <img src="https://images.unsplash.com/photo-1518834107812-67b0b7c58434?q=80&w=2500&auto=format&fit=crop" alt="Beginner Ballet" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
           <div class="absolute inset-0 bg-gradient-to-t from-[#2d164d] via-[#2d164d]/40 to-transparent opacity-90"></div>
           <div class="absolute bottom-4 left-6">
@@ -260,9 +269,9 @@ const customHtml = `
             </div>
           </div>
         </div>
-        <div class="p-8 flex-1 flex flex-col relative z-10 bg-gradient-to-b from-[#2d164d] to-transparent">
-          <h4 class="text-3xl font-black text-white mb-4 group-hover:text-yellow-400 transition-colors drop-shadow-md">Beginner Ballet</h4>
-          <p class="text-pink-100/80 text-base leading-relaxed mb-6 line-clamp-3">
+        <div class="p-6 md:p-8 flex-1 flex flex-col relative z-10 bg-gradient-to-b from-[#2d164d] to-transparent">
+          <h4 class="text-2xl md:text-3xl font-black text-white mb-2 md:mb-4 group-hover:text-yellow-400 transition-colors drop-shadow-md">Beginner Ballet</h4>
+          <p class="text-pink-100/80 text-sm md:text-base leading-relaxed mb-4 line-clamp-2 md:line-clamp-3">
             Build a strong foundation in classical ballet techniques. Focus on posture, grace, and fundamental movements in a supportive environment.
           </p>
           <div class="mt-auto pt-6 border-t border-white/10 flex items-center justify-between">
@@ -278,8 +287,8 @@ const customHtml = `
       </div>
 
       <!-- Bhangra Fitness -->
-      <div data-service-id="cmrh0fmw00005neosp4505cxr" class="bollywood-glass rounded-[2rem] p-0 bollywood-card-hover cursor-pointer group flex flex-col h-full relative overflow-hidden">
-        <div class="h-56 w-full relative overflow-hidden bg-[#2d164d]">
+      <div data-service-id="cmrh0fmw00005neosp4505cxr" class="min-w-[85vw] md:min-w-0 snap-center shrink-0 bollywood-glass rounded-[2rem] p-0 bollywood-card-hover cursor-pointer group flex flex-col h-full relative overflow-hidden">
+        <div class="h-40 md:h-48 w-full relative overflow-hidden bg-[#2d164d]">
           <img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=2574&auto=format&fit=crop" alt="Bhangra Fitness" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
           <div class="absolute inset-0 bg-gradient-to-t from-[#2d164d] via-[#2d164d]/40 to-transparent opacity-90"></div>
           <div class="absolute bottom-4 left-6">
@@ -288,9 +297,9 @@ const customHtml = `
             </div>
           </div>
         </div>
-        <div class="p-8 flex-1 flex flex-col relative z-10 bg-gradient-to-b from-[#2d164d] to-transparent">
-          <h4 class="text-3xl font-black text-white mb-4 group-hover:text-yellow-400 transition-colors drop-shadow-md">Bhangra Fitness</h4>
-          <p class="text-pink-100/80 text-base leading-relaxed mb-6 line-clamp-3">
+        <div class="p-6 md:p-8 flex-1 flex flex-col relative z-10 bg-gradient-to-b from-[#2d164d] to-transparent">
+          <h4 class="text-2xl md:text-3xl font-black text-white mb-2 md:mb-4 group-hover:text-yellow-400 transition-colors drop-shadow-md">Bhangra Fitness</h4>
+          <p class="text-pink-100/80 text-sm md:text-base leading-relaxed mb-4 line-clamp-2 md:line-clamp-3">
             A high-energy, cardio-intensive workout set to infectious Punjabi beats. Get fit while learning traditional and modern Bhangra steps!
           </p>
           <div class="mt-auto pt-6 border-t border-white/10 flex items-center justify-between">
@@ -308,19 +317,19 @@ const customHtml = `
   </section>
 
   <!-- Instructors / Faculty Section -->
-  <section id="faculty" class="min-h-[100dvh] snap-start flex flex-col justify-center py-20 relative z-10 overflow-hidden">
+  <section id="faculty" class="h-[100dvh] snap-start flex flex-col justify-center py-10 relative z-10 overflow-hidden">
     <!-- Slanted background -->
     <div class="absolute inset-0 bg-gradient-to-br from-[#3b0b4a] to-[var(--bollywood-bg-dark)] -skew-y-3 origin-top-left z-0 border-y border-pink-500/20"></div>
     
-    <div class="max-w-7xl mx-auto px-6 md:px-12 relative z-10">
-      <div class="text-center mb-20">
-        <h2 class="text-sm font-black tracking-[0.2em] uppercase text-yellow-400 mb-4">Meet The Stars</h2>
-        <h3 class="text-5xl md:text-7xl font-black tracking-tighter text-white drop-shadow-lg">Our Choreographers</h3>
+    <div class="w-full max-w-7xl mx-auto md:px-12 relative z-10">
+      <div class="text-center mb-8 md:mb-12">
+        <h2 class="text-xs md:text-sm font-black tracking-[0.2em] uppercase text-yellow-400 mb-2">Meet The Stars</h2>
+        <h3 class="text-4xl md:text-6xl font-black tracking-tighter text-white drop-shadow-lg">Our Choreographers</h3>
       </div>
       
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
+      <div class="flex overflow-x-auto snap-x snap-mandatory gap-6 md:grid md:grid-cols-2 lg:grid-cols-4 md:gap-10 hide-scrollbar px-6 md:px-0">
         {{#shop.users}}
-        <div class="group relative rounded-[2.5rem] overflow-hidden border-2 border-transparent hover:border-yellow-400/50 transition-colors duration-500 shadow-2xl">
+        <div class="min-w-[70vw] sm:min-w-[45vw] md:min-w-0 snap-center shrink-0 group relative rounded-[2.5rem] overflow-hidden border-2 border-transparent hover:border-yellow-400/50 transition-colors duration-500 shadow-2xl">
           <div class="aspect-[4/5] relative w-full bg-[#2d164d]">
             {{#imageUrl}}
             <img 
@@ -356,16 +365,16 @@ const customHtml = `
   </section>
 
   <!-- Testimonials -->
-  <section id="testimonials" class="min-h-[100dvh] snap-start flex flex-col justify-center py-20 relative z-10">
-    <div class="max-w-7xl mx-auto px-6 md:px-12">
-      <div class="text-center mb-20">
-        <h2 class="text-sm font-black tracking-[0.2em] uppercase text-yellow-400 mb-4">Community Love</h2>
-        <h3 class="text-5xl md:text-7xl font-black tracking-tighter text-white drop-shadow-lg">Student Spotlight</h3>
+  <section id="testimonials" class="h-[100dvh] snap-start flex flex-col justify-center py-10 relative z-10 overflow-hidden">
+    <div class="w-full max-w-7xl mx-auto md:px-12">
+      <div class="text-center mb-8 md:mb-12">
+        <h2 class="text-xs md:text-sm font-black tracking-[0.2em] uppercase text-yellow-400 mb-2">Community Love</h2>
+        <h3 class="text-4xl md:text-6xl font-black tracking-tighter text-white drop-shadow-lg">Student Spotlight</h3>
       </div>
       
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+      <div class="flex overflow-x-auto snap-x snap-mandatory gap-6 md:grid md:grid-cols-3 md:gap-10 hide-scrollbar px-6 md:px-0">
         {{#shop.reviews}}
-        <div class="bollywood-glass rounded-[2.5rem] p-10 border-t border-yellow-500/20 relative group hover:-translate-y-4 transition-transform duration-500">
+        <div class="min-w-[85vw] md:min-w-0 snap-center shrink-0 bollywood-glass rounded-[2.5rem] p-6 md:p-10 border-t border-yellow-500/20 relative group md:hover:-translate-y-4 transition-transform duration-500">
           <!-- Big quote mark -->
           <div class="absolute -top-8 -right-4 text-9xl font-black text-white/5 group-hover:text-pink-500/10 transition-colors z-0">"</div>
           
@@ -395,8 +404,8 @@ const customHtml = `
   </section>
 
   <!-- Footer / Contact -->
-  <footer class="min-h-[100dvh] snap-start flex flex-col justify-center bg-[#120522] py-20 border-t-4 border-yellow-400 relative z-10">
-    <div class="max-w-7xl mx-auto px-6 md:px-12 grid grid-cols-1 md:grid-cols-12 gap-16">
+  <footer class="h-[100dvh] snap-start flex flex-col justify-center bg-[#120522] py-10 border-t-4 border-yellow-400 relative z-10 overflow-hidden">
+    <div class="max-w-7xl mx-auto px-6 md:px-12 grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-16 w-full">
       <div class="md:col-span-5">
         <div class="flex items-center gap-4 mb-8">
           {{#shop.logoUrl}}
