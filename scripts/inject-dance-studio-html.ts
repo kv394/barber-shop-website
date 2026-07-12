@@ -40,16 +40,16 @@ const customHtml = `
     box-shadow: 0 15px 45px -10px rgba(255, 0, 127, 0.4);
   }
   
-  /* Perfect iframe cover for 16:9 videos */
+  /* Perfect iframe cover for 16:9 videos, scaled 135% to hide controls */
   .youtube-bg {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 100vw;
-    height: 56.25vw;
-    min-height: 100vh;
-    min-width: 177.77vh;
+    width: 135vw;
+    height: 75.93vw;
+    min-height: 135vh;
+    min-width: 240vh;
     pointer-events: none;
   }
 
