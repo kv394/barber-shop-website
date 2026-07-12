@@ -17,8 +17,8 @@ import { getShopPublicData } from '@/lib/shop-public-data';
 
 // Use this to ensure the page caches effectively unless revalidated
 
-const getShopBySlug = cache(async (slug: string) => {
-  const data = await getShopPublicData(slug);
+const getShopBySlug = cache(async (slug: string, isPreview: boolean = false) => {
+  const data = await getShopPublicData(slug, 'https://kutzapp.com', isPreview);
   if (!data) return null;
   
   const { shop, products, services, staff, reviews, portfolioImages } = data;
@@ -89,7 +89,7 @@ export default async function PublicShopPage({
       await cacheService.invalidate(`api_public_data_v2:${slug}`).catch(() => {});
       await cacheService.invalidate(`shop_public_page_data:${slug}`).catch(() => {});
    }
-   shop = await getShopBySlug(slug);
+   shop = await getShopBySlug(slug, isPreview);
 
  if (!shop) {
  return (

@@ -1,7 +1,7 @@
 import { prisma, getTenantClient } from '@/lib/prisma';
 import { cacheService } from '@/lib/cache';
 
-export async function getShopPublicData(shopIdOrSlug: string, baseUrl: string = 'https://kutzapp.com') {
+export async function getShopPublicData(shopIdOrSlug: string, baseUrl: string = 'https://kutzapp.com', isPreview: boolean = false) {
   // Resolve slug-based shopId to a real CUID before creating the tenant client.
   const SHOP_ID_FORMAT = /^[a-z0-9]{20,30}$/;
   let resolvedShopId = shopIdOrSlug;
@@ -37,7 +37,7 @@ export async function getShopPublicData(shopIdOrSlug: string, baseUrl: string = 
     }
   }
 
-  const cachedData = await cacheService.getOrSet(`api_public_data_v2:${resolvedShopId}`, async () => {
+  const fetcher = async () => {
     const tenantClient = getTenantClient(resolvedShopId);
 
     let shop = await tenantClient.shop.findFirst({
@@ -183,7 +183,13 @@ export async function getShopPublicData(shopIdOrSlug: string, baseUrl: string = 
       membershipTiers,
       allowedDomains
     };
-  }, 300);
+  };
+
+  if (isPreview) {
+    return await fetcher();
+  }
+
+  const cachedData = await cacheService.getOrSet(`api_public_data_v2:${resolvedShopId}`, fetcher, 300);
 
   return cachedData;
 }
