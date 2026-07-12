@@ -226,24 +226,23 @@ const customHtml = `
 
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-10">
       <!-- Advanced Choreography -->
-      <div data-service-id="cmrh0fmyd0006neosdr91rc1q" class="bollywood-glass rounded-2xl lg:rounded-[2rem] p-0 bollywood-card-hover cursor-pointer group flex flex-row lg:flex-col relative overflow-hidden h-32 lg:h-full">
-        <div class="w-1/3 lg:w-full h-full lg:h-56 relative overflow-hidden bg-[#2d164d] shrink-0">
-          <!-- Video Background -->
+      <div data-service-id="cmrh0fmyd0006neosdr91rc1q" class="bollywood-glass rounded-2xl lg:rounded-[2rem] p-0 bollywood-card-hover cursor-pointer group flex flex-col relative overflow-hidden h-auto">
+        <div class="w-full h-48 lg:h-56 relative bg-black shrink-0">
+          <!-- Video Player -->
           <iframe 
-            src="https://www.youtube.com/embed/a97Krd6s5fE?autoplay=1&mute=1&loop=1&playlist=a97Krd6s5fE&controls=0&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1&playsinline=1" 
-            class="absolute w-[200%] h-[200%] md:w-[250%] md:h-[250%] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-90 group-hover:scale-105 transition-transform duration-700 pointer-events-none" 
+            src="https://www.youtube.com/embed/a97Krd6s5fE?autoplay=1&mute=1&loop=1&playlist=a97Krd6s5fE&playsinline=1" 
+            class="absolute w-full h-full top-0 left-0" 
             frameborder="0" 
             allow="autoplay; encrypted-media" 
             allowfullscreen>
           </iframe>
-          <div class="absolute inset-0 bg-gradient-to-t lg:bg-gradient-to-t from-[#2d164d] lg:via-[#2d164d]/40 to-transparent lg:to-transparent opacity-90 lg:opacity-90 bg-gradient-to-r via-transparent"></div>
-          <div class="absolute bottom-2 left-2 lg:bottom-4 lg:left-6">
-            <div class="inline-block px-2 py-0.5 lg:px-4 lg:py-1 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 text-[8px] lg:text-xs font-bold uppercase tracking-wider text-white shadow-lg">
+          <div class="absolute bottom-2 left-2 lg:bottom-4 lg:left-6 pointer-events-none">
+            <div class="inline-block px-2 py-0.5 lg:px-4 lg:py-1 rounded-full bg-black/60 backdrop-blur-sm border border-white/30 text-[8px] lg:text-xs font-bold uppercase tracking-wider text-white shadow-lg">
               90 Min
             </div>
           </div>
         </div>
-        <div class="w-2/3 lg:w-full p-4 lg:p-8 flex flex-col relative z-10 bg-gradient-to-b lg:bg-gradient-to-b from-[#2d164d] to-transparent lg:from-[#2d164d] bg-gradient-to-l lg:bg-none">
+        <div class="w-full p-6 lg:p-8 flex flex-col relative z-10 bg-transparent">
           <h4 class="text-sm lg:text-3xl font-black text-white mb-1 lg:mb-4 group-hover:text-yellow-400 transition-colors drop-shadow-md leading-tight">Advanced Choreography</h4>
           <p class="text-pink-100/80 text-[10px] lg:text-base leading-tight lg:leading-relaxed mb-2 lg:mb-6 line-clamp-2 lg:line-clamp-3">
             Master complex routines and elevate your performance skills with industry-leading choreographers. Perfect for experienced dancers looking to push their boundaries.
@@ -261,24 +260,23 @@ const customHtml = `
       </div>
 
       <!-- Beginner Ballet -->
-      <div data-service-id="cmrh0fmxw0004neosd545vrtz" class="bollywood-glass rounded-2xl lg:rounded-[2rem] p-0 bollywood-card-hover cursor-pointer group flex flex-row lg:flex-col relative overflow-hidden h-32 lg:h-full">
-        <div class="w-1/3 lg:w-full h-full lg:h-56 relative overflow-hidden bg-[#2d164d] shrink-0">
-          <!-- Video Background -->
+      <div data-service-id="cmrh0fmxw0004neosd545vrtz" class="bollywood-glass rounded-2xl lg:rounded-[2rem] p-0 bollywood-card-hover cursor-pointer group flex flex-col relative overflow-hidden h-auto">
+        <div class="w-full h-48 lg:h-56 relative bg-black shrink-0">
+          <!-- Video Player -->
           <iframe 
-            src="https://www.youtube.com/embed/6Fz27G6WwWw?autoplay=1&mute=1&loop=1&playlist=6Fz27G6WwWw&controls=0&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1&playsinline=1" 
-            class="absolute w-[200%] h-[200%] md:w-[250%] md:h-[250%] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-90 group-hover:scale-105 transition-transform duration-700 pointer-events-none" 
+            src="https://www.youtube.com/embed/6Fz27G6WwWw?autoplay=1&mute=1&loop=1&playlist=6Fz27G6WwWw&playsinline=1" 
+            class="absolute w-full h-full top-0 left-0" 
             frameborder="0" 
             allow="autoplay; encrypted-media" 
             allowfullscreen>
           </iframe>
-          <div class="absolute inset-0 bg-gradient-to-t lg:bg-gradient-to-t from-[#2d164d] lg:via-[#2d164d]/40 to-transparent lg:to-transparent opacity-90 lg:opacity-90 bg-gradient-to-r via-transparent"></div>
-          <div class="absolute bottom-2 left-2 lg:bottom-4 lg:left-6">
-            <div class="inline-block px-2 py-0.5 lg:px-4 lg:py-1 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 text-[8px] lg:text-xs font-bold uppercase tracking-wider text-white shadow-lg">
+          <div class="absolute bottom-2 left-2 lg:bottom-4 lg:left-6 pointer-events-none">
+            <div class="inline-block px-2 py-0.5 lg:px-4 lg:py-1 rounded-full bg-black/60 backdrop-blur-sm border border-white/30 text-[8px] lg:text-xs font-bold uppercase tracking-wider text-white shadow-lg">
               60 Min
             </div>
           </div>
         </div>
-        <div class="w-2/3 lg:w-full p-4 lg:p-8 flex flex-col relative z-10 bg-gradient-to-b lg:bg-gradient-to-b from-[#2d164d] to-transparent lg:from-[#2d164d] bg-gradient-to-l lg:bg-none">
+        <div class="w-full p-6 lg:p-8 flex flex-col relative z-10 bg-transparent">
           <h4 class="text-sm lg:text-3xl font-black text-white mb-1 lg:mb-4 group-hover:text-yellow-400 transition-colors drop-shadow-md leading-tight">Beginner Ballet</h4>
           <p class="text-pink-100/80 text-[10px] lg:text-base leading-tight lg:leading-relaxed mb-2 lg:mb-6 line-clamp-2 lg:line-clamp-3">
             Build a strong foundation in classical ballet techniques. Focus on posture, grace, and fundamental movements in a supportive environment.
@@ -296,24 +294,23 @@ const customHtml = `
       </div>
 
       <!-- Bhangra Fitness -->
-      <div data-service-id="cmrh0fmw00005neosp4505cxr" class="bollywood-glass rounded-2xl lg:rounded-[2rem] p-0 bollywood-card-hover cursor-pointer group flex flex-row lg:flex-col relative overflow-hidden h-32 lg:h-full">
-        <div class="w-1/3 lg:w-full h-full lg:h-56 relative overflow-hidden bg-[#2d164d] shrink-0">
-          <!-- Video Background -->
+      <div data-service-id="cmrh0fmw00005neosp4505cxr" class="bollywood-glass rounded-2xl lg:rounded-[2rem] p-0 bollywood-card-hover cursor-pointer group flex flex-col relative overflow-hidden h-auto">
+        <div class="w-full h-48 lg:h-56 relative bg-black shrink-0">
+          <!-- Video Player -->
           <iframe 
-            src="https://www.youtube.com/embed/2iFSDqsAICI?autoplay=1&mute=1&loop=1&playlist=2iFSDqsAICI&controls=0&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1&playsinline=1" 
-            class="absolute w-[200%] h-[200%] md:w-[250%] md:h-[250%] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-90 group-hover:scale-105 transition-transform duration-700 pointer-events-none" 
+            src="https://www.youtube.com/embed/2iFSDqsAICI?autoplay=1&mute=1&loop=1&playlist=2iFSDqsAICI&playsinline=1" 
+            class="absolute w-full h-full top-0 left-0" 
             frameborder="0" 
             allow="autoplay; encrypted-media" 
             allowfullscreen>
           </iframe>
-          <div class="absolute inset-0 bg-gradient-to-t lg:bg-gradient-to-t from-[#2d164d] lg:via-[#2d164d]/40 to-transparent lg:to-transparent opacity-90 lg:opacity-90 bg-gradient-to-r via-transparent"></div>
-          <div class="absolute bottom-2 left-2 lg:bottom-4 lg:left-6">
-            <div class="inline-block px-2 py-0.5 lg:px-4 lg:py-1 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 text-[8px] lg:text-xs font-bold uppercase tracking-wider text-white shadow-lg">
+          <div class="absolute bottom-2 left-2 lg:bottom-4 lg:left-6 pointer-events-none">
+            <div class="inline-block px-2 py-0.5 lg:px-4 lg:py-1 rounded-full bg-black/60 backdrop-blur-sm border border-white/30 text-[8px] lg:text-xs font-bold uppercase tracking-wider text-white shadow-lg">
               45 Min
             </div>
           </div>
         </div>
-        <div class="w-2/3 lg:w-full p-4 lg:p-8 flex flex-col relative z-10 bg-gradient-to-b lg:bg-gradient-to-b from-[#2d164d] to-transparent lg:from-[#2d164d] bg-gradient-to-l lg:bg-none">
+        <div class="w-full p-6 lg:p-8 flex flex-col relative z-10 bg-transparent">
           <h4 class="text-sm lg:text-3xl font-black text-white mb-1 lg:mb-4 group-hover:text-yellow-400 transition-colors drop-shadow-md leading-tight">Bhangra Fitness</h4>
           <p class="text-pink-100/80 text-[10px] lg:text-base leading-tight lg:leading-relaxed mb-2 lg:mb-6 line-clamp-2 lg:line-clamp-3">
             A high-energy, cardio-intensive workout set to infectious Punjabi beats. Get fit while learning traditional and modern Bhangra steps!
