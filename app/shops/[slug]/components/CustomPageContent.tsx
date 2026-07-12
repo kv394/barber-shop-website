@@ -55,18 +55,22 @@ export default function CustomPageContent({ content, shop, themeColor, className
       });
     };
 
+    // Helper to safely initialize
+    const tryInit = () => {
+      if ((window as any).YT && (window as any).YT.Player) {
+        initPlayer();
+      } else {
+        setTimeout(tryInit, 100); // poll until ready
+      }
+    };
+
     if (!(window as any).YT) {
       const tag = document.createElement('script');
       tag.src = "https://www.youtube.com/iframe_api";
-      const firstScriptTag = document.getElementsByTagName('script')[0];
-      if (firstScriptTag && firstScriptTag.parentNode) {
-        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-      } else {
-        document.head.appendChild(tag);
-      }
-      (window as any).onYouTubeIframeAPIReady = initPlayer;
+      document.head.appendChild(tag);
+      (window as any).onYouTubeIframeAPIReady = tryInit;
     } else {
-      initPlayer();
+      tryInit();
     }
 
     return () => {
