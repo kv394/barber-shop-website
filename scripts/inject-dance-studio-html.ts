@@ -115,14 +115,16 @@ const customHtml = `
 
   <!-- Floating Header / Nav -->
   <header class="fixed top-4 md:top-6 left-1/2 -translate-x-1/2 w-[95%] max-w-6xl z-[100] px-4 md:px-8 py-3 flex justify-between items-center bg-[#120522]/70 backdrop-blur-2xl border border-pink-500/30 rounded-full shadow-[0_15px_40px_rgba(0,0,0,0.8)] transition-all">
-    <div class="flex items-center gap-3 md:gap-4">
+    <!-- Left: Logo & Name (flex-1 forces center alignment for nav) -->
+    <div class="flex-1 flex items-center gap-3 md:gap-4">
       {{#shop.logoUrl}}
       <img src="{{shop.logoUrl}}" alt="{{shop.name}}" class="w-10 h-10 md:w-12 md:h-12 rounded-full border border-yellow-400/50 shadow-[0_0_15px_rgba(255,215,0,0.3)] hover:scale-110 transition-transform duration-300 object-cover" />
       {{/shop.logoUrl}}
       <h1 class="text-sm md:text-xl font-black tracking-tighter text-white drop-shadow-md hidden sm:block whitespace-nowrap">{{shop.name}}</h1>
     </div>
     
-    <nav class="hidden lg:flex items-center gap-10 text-pink-100">
+    <!-- Center: Nav Links -->
+    <nav class="hidden lg:flex items-center justify-center gap-10 text-pink-100 shrink-0">
       <a href="#classes" class="relative text-xs font-black uppercase tracking-[0.2em] hover:text-yellow-400 transition-colors group">
         Programs
         <span class="absolute -bottom-2 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-yellow-400 opacity-0 group-hover:opacity-100 transition-opacity"></span>
@@ -137,9 +139,12 @@ const customHtml = `
       </a>
     </nav>
     
-    <button data-action="book" class="bg-gradient-to-r from-yellow-400 via-orange-500 to-pink-500 text-black font-black uppercase tracking-widest text-[10px] md:text-xs px-5 md:px-8 py-2.5 md:py-3 rounded-full shadow-[0_0_20px_rgba(255,165,0,0.5)] hover:shadow-[0_0_30px_rgba(255,0,127,0.7)] hover:scale-105 transition-all duration-300 shrink-0">
-      Register
-    </button>
+    <!-- Right: CTA (flex-1 forces center alignment for nav) -->
+    <div class="flex-1 flex justify-end items-center">
+      <button data-action="book" class="bg-gradient-to-r from-yellow-400 via-orange-500 to-pink-500 text-black font-black uppercase tracking-widest text-[10px] md:text-xs px-5 md:px-8 py-2.5 md:py-3 rounded-full shadow-[0_0_20px_rgba(255,165,0,0.5)] hover:shadow-[0_0_30px_rgba(255,0,127,0.7)] hover:scale-105 transition-all duration-300 shrink-0">
+        Register
+      </button>
+    </div>
   </header>
 
   <!-- Hero Section -->
