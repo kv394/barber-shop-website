@@ -219,86 +219,86 @@ const customHtml = `
       <div class="w-16 md:w-24 h-1 bg-gradient-to-r from-yellow-400 to-pink-500 mx-auto rounded-full mt-2 md:mt-4"></div>
     </div>
 
-    <div class="flex overflow-x-auto snap-x snap-mandatory gap-6 lg:grid lg:grid-cols-3 lg:gap-10 pb-6 hide-scrollbar px-2 lg:px-0">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-10">
       <!-- Advanced Choreography -->
-      <div data-service-id="cmrh0fmyd0006neosdr91rc1q" class="min-w-[85vw] lg:min-w-0 snap-center shrink-0 bollywood-glass rounded-[2rem] p-0 bollywood-card-hover cursor-pointer group flex flex-col h-full relative overflow-hidden">
-        <div class="h-40 md:h-56 w-full relative overflow-hidden bg-[#2d164d]">
+      <div data-service-id="cmrh0fmyd0006neosdr91rc1q" class="bollywood-glass rounded-2xl lg:rounded-[2rem] p-0 bollywood-card-hover cursor-pointer group flex flex-row lg:flex-col relative overflow-hidden h-32 lg:h-full">
+        <div class="w-1/3 lg:w-full h-full lg:h-56 relative overflow-hidden bg-[#2d164d] shrink-0">
           <img src="https://images.unsplash.com/photo-1547153760-18fc86324498?q=80&w=2574&auto=format&fit=crop" alt="Advanced Choreography" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
-          <div class="absolute inset-0 bg-gradient-to-t from-[#2d164d] via-[#2d164d]/40 to-transparent opacity-90"></div>
-          <div class="absolute bottom-4 left-4 md:left-6">
-            <div class="inline-block px-3 py-1 md:px-4 md:py-1 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 text-[10px] md:text-xs font-bold uppercase tracking-wider text-white shadow-lg">
-              90 Minutes
+          <div class="absolute inset-0 bg-gradient-to-t lg:bg-gradient-to-t from-[#2d164d] lg:via-[#2d164d]/40 to-transparent lg:to-transparent opacity-90 lg:opacity-90 bg-gradient-to-r via-transparent"></div>
+          <div class="absolute bottom-2 left-2 lg:bottom-4 lg:left-6">
+            <div class="inline-block px-2 py-0.5 lg:px-4 lg:py-1 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 text-[8px] lg:text-xs font-bold uppercase tracking-wider text-white shadow-lg">
+              90 Min
             </div>
           </div>
         </div>
-        <div class="p-6 md:p-8 flex-1 flex flex-col relative z-10 bg-gradient-to-b from-[#2d164d] to-transparent">
-          <h4 class="text-xl md:text-3xl font-black text-white mb-2 md:mb-4 group-hover:text-yellow-400 transition-colors drop-shadow-md">Advanced Choreography</h4>
-          <p class="text-pink-100/80 text-sm md:text-base leading-relaxed mb-4 md:mb-6 line-clamp-3">
+        <div class="w-2/3 lg:w-full p-4 lg:p-8 flex flex-col relative z-10 bg-gradient-to-b lg:bg-gradient-to-b from-[#2d164d] to-transparent lg:from-[#2d164d] bg-gradient-to-l lg:bg-none">
+          <h4 class="text-sm lg:text-3xl font-black text-white mb-1 lg:mb-4 group-hover:text-yellow-400 transition-colors drop-shadow-md leading-tight">Advanced Choreography</h4>
+          <p class="text-pink-100/80 text-[10px] lg:text-base leading-tight lg:leading-relaxed mb-2 lg:mb-6 line-clamp-2 lg:line-clamp-3">
             Master complex routines and elevate your performance skills with industry-leading choreographers. Perfect for experienced dancers looking to push their boundaries.
           </p>
-          <div class="mt-auto pt-4 md:pt-6 border-t border-white/10 flex items-center justify-between">
+          <div class="mt-auto pt-2 lg:pt-6 border-t border-white/10 flex items-center justify-between">
             <div class="flex flex-col">
-              <span class="text-[10px] md:text-xs font-black uppercase tracking-widest text-yellow-400/80 mb-1">Tuition</span>
-              <span class="text-2xl md:text-3xl font-black text-white drop-shadow-lg">$450</span>
+              <span class="text-[8px] lg:text-xs font-black uppercase tracking-widest text-yellow-400/80 mb-0 lg:mb-1">Tuition</span>
+              <span class="text-sm lg:text-3xl font-black text-white drop-shadow-lg">$450</span>
             </div>
-            <div class="w-10 h-10 md:w-14 md:h-14 rounded-full bg-gradient-to-r from-orange-500 to-pink-500 flex items-center justify-center text-white group-hover:scale-110 group-hover:rotate-12 transition-transform shadow-[0_0_20px_rgba(255,0,127,0.4)]">
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 md:w-6 md:h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            <div class="w-7 h-7 lg:w-14 lg:h-14 rounded-full bg-gradient-to-r from-orange-500 to-pink-500 flex items-center justify-center text-white group-hover:scale-110 group-hover:rotate-12 transition-transform shadow-[0_0_20px_rgba(255,0,127,0.4)]">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 lg:w-6 lg:h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
             </div>
           </div>
         </div>
       </div>
 
       <!-- Beginner Ballet -->
-      <div data-service-id="cmrh0fmxw0004neosd545vrtz" class="min-w-[85vw] lg:min-w-0 snap-center shrink-0 bollywood-glass rounded-[2rem] p-0 bollywood-card-hover cursor-pointer group flex flex-col h-full relative overflow-hidden">
-        <div class="h-40 md:h-56 w-full relative overflow-hidden bg-[#2d164d]">
+      <div data-service-id="cmrh0fmxw0004neosd545vrtz" class="bollywood-glass rounded-2xl lg:rounded-[2rem] p-0 bollywood-card-hover cursor-pointer group flex flex-row lg:flex-col relative overflow-hidden h-32 lg:h-full">
+        <div class="w-1/3 lg:w-full h-full lg:h-56 relative overflow-hidden bg-[#2d164d] shrink-0">
           <img src="https://images.unsplash.com/photo-1518834107812-67b0b7c58434?q=80&w=2500&auto=format&fit=crop" alt="Beginner Ballet" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
-          <div class="absolute inset-0 bg-gradient-to-t from-[#2d164d] via-[#2d164d]/40 to-transparent opacity-90"></div>
-          <div class="absolute bottom-4 left-4 md:left-6">
-            <div class="inline-block px-3 py-1 md:px-4 md:py-1 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 text-[10px] md:text-xs font-bold uppercase tracking-wider text-white shadow-lg">
-              60 Minutes
+          <div class="absolute inset-0 bg-gradient-to-t lg:bg-gradient-to-t from-[#2d164d] lg:via-[#2d164d]/40 to-transparent lg:to-transparent opacity-90 lg:opacity-90 bg-gradient-to-r via-transparent"></div>
+          <div class="absolute bottom-2 left-2 lg:bottom-4 lg:left-6">
+            <div class="inline-block px-2 py-0.5 lg:px-4 lg:py-1 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 text-[8px] lg:text-xs font-bold uppercase tracking-wider text-white shadow-lg">
+              60 Min
             </div>
           </div>
         </div>
-        <div class="p-6 md:p-8 flex-1 flex flex-col relative z-10 bg-gradient-to-b from-[#2d164d] to-transparent">
-          <h4 class="text-xl md:text-3xl font-black text-white mb-2 md:mb-4 group-hover:text-yellow-400 transition-colors drop-shadow-md">Beginner Ballet</h4>
-          <p class="text-pink-100/80 text-sm md:text-base leading-relaxed mb-4 md:mb-6 line-clamp-3">
+        <div class="w-2/3 lg:w-full p-4 lg:p-8 flex flex-col relative z-10 bg-gradient-to-b lg:bg-gradient-to-b from-[#2d164d] to-transparent lg:from-[#2d164d] bg-gradient-to-l lg:bg-none">
+          <h4 class="text-sm lg:text-3xl font-black text-white mb-1 lg:mb-4 group-hover:text-yellow-400 transition-colors drop-shadow-md leading-tight">Beginner Ballet</h4>
+          <p class="text-pink-100/80 text-[10px] lg:text-base leading-tight lg:leading-relaxed mb-2 lg:mb-6 line-clamp-2 lg:line-clamp-3">
             Build a strong foundation in classical ballet techniques. Focus on posture, grace, and fundamental movements in a supportive environment.
           </p>
-          <div class="mt-auto pt-4 md:pt-6 border-t border-white/10 flex items-center justify-between">
+          <div class="mt-auto pt-2 lg:pt-6 border-t border-white/10 flex items-center justify-between">
             <div class="flex flex-col">
-              <span class="text-[10px] md:text-xs font-black uppercase tracking-widest text-yellow-400/80 mb-1">Drop-in</span>
-              <span class="text-2xl md:text-3xl font-black text-white drop-shadow-lg">$35</span>
+              <span class="text-[8px] lg:text-xs font-black uppercase tracking-widest text-yellow-400/80 mb-0 lg:mb-1">Drop-in</span>
+              <span class="text-sm lg:text-3xl font-black text-white drop-shadow-lg">$35</span>
             </div>
-            <div class="w-10 h-10 md:w-14 md:h-14 rounded-full bg-gradient-to-r from-orange-500 to-pink-500 flex items-center justify-center text-white group-hover:scale-110 group-hover:rotate-12 transition-transform shadow-[0_0_20px_rgba(255,0,127,0.4)]">
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 md:w-6 md:h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            <div class="w-7 h-7 lg:w-14 lg:h-14 rounded-full bg-gradient-to-r from-orange-500 to-pink-500 flex items-center justify-center text-white group-hover:scale-110 group-hover:rotate-12 transition-transform shadow-[0_0_20px_rgba(255,0,127,0.4)]">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 lg:w-6 lg:h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
             </div>
           </div>
         </div>
       </div>
 
       <!-- Bhangra Fitness -->
-      <div data-service-id="cmrh0fmw00005neosp4505cxr" class="min-w-[85vw] lg:min-w-0 snap-center shrink-0 bollywood-glass rounded-[2rem] p-0 bollywood-card-hover cursor-pointer group flex flex-col h-full relative overflow-hidden">
-        <div class="h-40 md:h-56 w-full relative overflow-hidden bg-[#2d164d]">
+      <div data-service-id="cmrh0fmw00005neosp4505cxr" class="bollywood-glass rounded-2xl lg:rounded-[2rem] p-0 bollywood-card-hover cursor-pointer group flex flex-row lg:flex-col relative overflow-hidden h-32 lg:h-full">
+        <div class="w-1/3 lg:w-full h-full lg:h-56 relative overflow-hidden bg-[#2d164d] shrink-0">
           <img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=2574&auto=format&fit=crop" alt="Bhangra Fitness" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
-          <div class="absolute inset-0 bg-gradient-to-t from-[#2d164d] via-[#2d164d]/40 to-transparent opacity-90"></div>
-          <div class="absolute bottom-4 left-4 md:left-6">
-            <div class="inline-block px-3 py-1 md:px-4 md:py-1 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 text-[10px] md:text-xs font-bold uppercase tracking-wider text-white shadow-lg">
-              45 Minutes
+          <div class="absolute inset-0 bg-gradient-to-t lg:bg-gradient-to-t from-[#2d164d] lg:via-[#2d164d]/40 to-transparent lg:to-transparent opacity-90 lg:opacity-90 bg-gradient-to-r via-transparent"></div>
+          <div class="absolute bottom-2 left-2 lg:bottom-4 lg:left-6">
+            <div class="inline-block px-2 py-0.5 lg:px-4 lg:py-1 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 text-[8px] lg:text-xs font-bold uppercase tracking-wider text-white shadow-lg">
+              45 Min
             </div>
           </div>
         </div>
-        <div class="p-6 md:p-8 flex-1 flex flex-col relative z-10 bg-gradient-to-b from-[#2d164d] to-transparent">
-          <h4 class="text-xl md:text-3xl font-black text-white mb-2 md:mb-4 group-hover:text-yellow-400 transition-colors drop-shadow-md">Bhangra Fitness</h4>
-          <p class="text-pink-100/80 text-sm md:text-base leading-relaxed mb-4 md:mb-6 line-clamp-3">
+        <div class="w-2/3 lg:w-full p-4 lg:p-8 flex flex-col relative z-10 bg-gradient-to-b lg:bg-gradient-to-b from-[#2d164d] to-transparent lg:from-[#2d164d] bg-gradient-to-l lg:bg-none">
+          <h4 class="text-sm lg:text-3xl font-black text-white mb-1 lg:mb-4 group-hover:text-yellow-400 transition-colors drop-shadow-md leading-tight">Bhangra Fitness</h4>
+          <p class="text-pink-100/80 text-[10px] lg:text-base leading-tight lg:leading-relaxed mb-2 lg:mb-6 line-clamp-2 lg:line-clamp-3">
             A high-energy, cardio-intensive workout set to infectious Punjabi beats. Get fit while learning traditional and modern Bhangra steps!
           </p>
-          <div class="mt-auto pt-4 md:pt-6 border-t border-white/10 flex items-center justify-between">
+          <div class="mt-auto pt-2 lg:pt-6 border-t border-white/10 flex items-center justify-between">
             <div class="flex flex-col">
-              <span class="text-[10px] md:text-xs font-black uppercase tracking-widest text-yellow-400/80 mb-1">Drop-in</span>
-              <span class="text-2xl md:text-3xl font-black text-white drop-shadow-lg">$25</span>
+              <span class="text-[8px] lg:text-xs font-black uppercase tracking-widest text-yellow-400/80 mb-0 lg:mb-1">Drop-in</span>
+              <span class="text-sm lg:text-3xl font-black text-white drop-shadow-lg">$25</span>
             </div>
-            <div class="w-10 h-10 md:w-14 md:h-14 rounded-full bg-gradient-to-r from-orange-500 to-pink-500 flex items-center justify-center text-white group-hover:scale-110 group-hover:rotate-12 transition-transform shadow-[0_0_20px_rgba(255,0,127,0.4)]">
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 md:w-6 md:h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            <div class="w-7 h-7 lg:w-14 lg:h-14 rounded-full bg-gradient-to-r from-orange-500 to-pink-500 flex items-center justify-center text-white group-hover:scale-110 group-hover:rotate-12 transition-transform shadow-[0_0_20px_rgba(255,0,127,0.4)]">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 lg:w-6 lg:h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
             </div>
           </div>
         </div>
