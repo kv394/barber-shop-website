@@ -142,6 +142,12 @@ export function ServiceForm({
                 Is this a Group Class?
               </label>
             </div>
+            
+            {newService.isGroupClass && (
+              <div className="bg-blue-50 border border-blue-100 rounded-lg p-3 mb-4 text-blue-800 text-[13px]">
+                ℹ️ <strong>Note:</strong> You can set up the specific days, times, and instructors for this class in the <strong>Weekly Schedules</strong> tab after saving.
+              </div>
+            )}
 
             {newService.isGroupClass && (
               <PremiumInput

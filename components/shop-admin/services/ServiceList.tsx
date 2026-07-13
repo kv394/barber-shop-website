@@ -59,6 +59,13 @@ export function ServiceList({
                   {service.description && (
                     <p className="text-crm-muted mt-1 text-[13px]">{service.description}</p>
                   )}
+                  {service.isGroupClass && (
+                    <div className="mt-2">
+                      <a href={`/shop/${service.shopId || window.location.pathname.split('/')[2]}/classes/schedules`} className="inline-flex items-center gap-1 text-[12px] font-bold text-blue-600 hover:text-blue-800 bg-blue-50 px-2.5 py-1 rounded-full transition-colors">
+                        📅 Manage Weekly Schedule
+                      </a>
+                    </div>
+                  )}
                   {service.productUsages && service.productUsages.length > 0 && (
                     <div className="mt-1 flex flex-wrap gap-1">
                       {service.productUsages.map((pu: any) => (

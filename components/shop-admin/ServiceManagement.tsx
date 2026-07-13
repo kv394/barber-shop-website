@@ -190,6 +190,8 @@ export function ServiceManagement({ shopId, currency, industryType }: ServiceMan
  addonIds: newService.addonIds,
  resourceRequirements: newService.resourceRequirements,
  productUsages: newService.productUsages,
+ isGroupClass: newService.isGroupClass,
+ maxCapacity: newService.maxCapacity ? parseInt(String(newService.maxCapacity)) : null,
  }),
  });
 
