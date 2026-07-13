@@ -43,6 +43,13 @@
   let themeColor = (window.KutzApp && window.KutzApp.primaryColor) || (scriptTag && scriptTag.getAttribute('data-theme-color')) || '#d4af37';
   let secondaryColor = (window.KutzApp && window.KutzApp.secondaryColor) || (scriptTag && scriptTag.getAttribute('data-secondary-color')) || themeColor;
   const shopName = (scriptTag && scriptTag.getAttribute('data-shop-name')) || (window.KutzApp && window.KutzApp.shopName) || '';
+  const isDanceStudio = (window.KutzApp && (window.KutzApp.businessType === 'dance-studio' || window.KutzApp.industryType === 'DANCE_STUDIO')) || (scriptTag && (scriptTag.getAttribute('data-industry-type') === 'DANCE_STUDIO' || scriptTag.getAttribute('data-template-type') === 'DANCE_STUDIO' || scriptTag.getAttribute('data-business-type') === 'dance-studio'));
+  
+  const txtBook = isDanceStudio ? '📅 Book Class' : '📅 Book Appointment';
+  const txtView = isDanceStudio ? '💃 View Classes' : '💈 View Services';
+  const txtMy = isDanceStudio ? '📋 My Classes' : '📋 My Appointments';
+  const txtInfo = isDanceStudio ? '❓ Studio Info' : '❓ Shop Info';
+
   const position = (window.KutzApp && window.KutzApp.chatbotPosition) || (scriptTag && scriptTag.getAttribute('data-position')) || 'bottom-right';  const isLeft = position === 'bottom-left';
   const sideCSS = isLeft ? 'left: 24px;' : 'right: 24px;';
   const transformOrigin = isLeft ? 'bottom left' : 'bottom right';
@@ -927,10 +934,10 @@
       <div id="chat-messages">
         <div class="message bot">${shopName ? '👋 Welcome to ' + shopName + '! How can I help you today?' : '👋 Hi there! How can I help you today?'}</div>
         <div class="quick-actions" id="quick-actions">
-          <button class="quick-action-btn" data-msg="📅 Book Appointment">📅 Book Appointment</button>
-          <button class="quick-action-btn" data-msg="💈 View Services">💈 View Services</button>
-          <button class="quick-action-btn" data-msg="📋 My Appointments">📋 My Appointments</button>
-          <button class="quick-action-btn" data-msg="❓ Shop Info">❓ Shop Info</button>
+          <button class="quick-action-btn" data-msg="${txtBook}">${txtBook}</button>
+          <button class="quick-action-btn" data-msg="${txtView}">${txtView}</button>
+          <button class="quick-action-btn" data-msg="${txtMy}">${txtMy}</button>
+          <button class="quick-action-btn" data-msg="${txtInfo}">${txtInfo}</button>
         </div>
       </div>
       <form id="chat-input-area">
@@ -965,10 +972,10 @@
       messages = [{ role: 'assistant', content: greetingMsg }];
       messagesEl.innerHTML = '<div class="message bot">' + greetingMsg + '</div>' +
         '<div class="quick-actions" id="quick-actions">' +
-        '<button class="quick-action-btn" data-msg="\ud83d\udcc5 Book Appointment">\ud83d\udcc5 Book Appointment</button>' +
-        '<button class="quick-action-btn" data-msg="\ud83d\udc88 View Services">\ud83d\udc88 View Services</button>' +
-        '<button class="quick-action-btn" data-msg="\ud83d\udccb My Appointments">\ud83d\udccb My Appointments</button>' +
-        '<button class="quick-action-btn" data-msg="\u2753 Shop Info">\u2753 Shop Info</button>' +
+        '<button class="quick-action-btn" data-msg="' + txtBook + '">' + txtBook + '</button>' +
+        '<button class="quick-action-btn" data-msg="' + txtView + '">' + txtView + '</button>' +
+        '<button class="quick-action-btn" data-msg="' + txtMy + '">' + txtMy + '</button>' +
+        '<button class="quick-action-btn" data-msg="' + txtInfo + '">' + txtInfo + '</button>' +
         '</div>';
       // Re-attach quick action handlers
       shadow.querySelectorAll('.quick-action-btn').forEach(btn => {
