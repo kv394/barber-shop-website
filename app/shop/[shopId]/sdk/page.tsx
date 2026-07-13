@@ -17,7 +17,7 @@ export default async function SDKDocsPage({ params }: { params: Promise<{ shopId
  <div className="mb-6">
  <h1 className="text-2xl font-bold text-crm-text mb-2">Developer SDK & Headless Integration</h1>
  <p className="text-crm-muted text-[14px]">
- Use the Kutz Client SDK to build completely custom headless front-ends or embed functionality into your existing website. The SDK is hardened to only expose public-facing customer functionality (Products, Services, Staff, Reviews, Booking, and Purchasing).
+ Use the Kutz Client SDK to build completely custom headless front-ends or embed functionality into your existing website. The SDK is hardened to only expose public-facing customer functionality (Products, Services, Staff, Reviews, Booking, Purchasing, and Class Schedules for group-class industries).
  </p>
  </div>
 
@@ -66,6 +66,33 @@ const services = await Kutz.getBookableServices();
 // Get specific details
 const product = await Kutz.getProductDetails('product_123');
 const service = await Kutz.getServiceDetails('service_456');`}</code>
+ </pre>
+ </div>
+
+ <div className="border border-crm-border p-5 rounded-xl bg-crm-bg">
+ <h3 className="font-bold text-crm-text mb-2">Class Schedules <span className="text-[11px] font-normal text-crm-muted ml-1">(Dance Studios, Fitness, Martial Arts, Music Schools)</span></h3>
+ <p className="text-crm-muted text-[13px] mb-3">For group-class industry shops, the SDK automatically includes class schedules and academic terms in the public data. Use these methods to display your weekly class timetable.</p>
+ <pre className="bg-gray-900 text-gray-100 p-3 rounded-lg text-[12px] overflow-x-auto">
+ <code>{`// Get all class schedules (with instructor, term, and availability)
+const classes = await KutzApp.getClassSchedules();
+classes.forEach(c => {
+  console.log(c.service.name, c.startTime + '-' + c.endTime);
+  console.log('  Instructor:', c.staff.name);
+  console.log('  Spots:', c.availableSpots, '/', c.service.maxCapacity);
+  console.log('  Term:', c.term?.name || 'Ongoing');
+});
+
+// Filter classes by day of week (0=Sun, 1=Mon, ..., 6=Sat)
+const mondayClasses = await KutzApp.getClassSchedulesByDay(1);
+
+// Get active semesters/terms
+const terms = await KutzApp.getTerms();
+
+// Get real-time availability for a specific class on a date
+const slots = await KutzApp.getClassAvailability('service_123', '2025-09-15');
+slots.forEach(s => {
+  console.log(s.time, '—', s.staffName, s.availableSpots + ' spots left');
+});`}</code>
  </pre>
  </div>
 

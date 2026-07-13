@@ -120,6 +120,45 @@ export async function getShopPublicData(shopIdOrSlug: string, baseUrl: string = 
       })
     ]);
 
+    // ── Class schedules & terms (group-class industries only) ──
+    const GROUP_CLASS_INDUSTRIES = ['DANCE_STUDIO', 'FITNESS', 'MARTIAL_ARTS', 'MUSIC_SCHOOL'];
+    const isGroupClassIndustry = shop.industryType && GROUP_CLASS_INDUSTRIES.includes(shop.industryType);
+
+    let classSchedules: any[] = [];
+    let terms: any[] = [];
+
+    if (isGroupClassIndustry) {
+      const [rawSchedules, rawTerms] = await Promise.all([
+        tenantClient.classSchedule.findMany({
+          where: { shopId: shop.id },
+          include: {
+            service: {
+              select: {
+                id: true, name: true, description: true, price: true,
+                duration: true, imageUrl: true, maxCapacity: true,
+                dropInPrice: true, semesterPrice: true,
+              }
+            },
+            staff: { select: { id: true, name: true, imageUrl: true } },
+            term: { select: { id: true, name: true, startDate: true, endDate: true } },
+            _count: { select: { enrollments: true } },
+          },
+          orderBy: [{ dayOfWeek: 'asc' }, { startTime: 'asc' }],
+        }),
+        tenantClient.academicTerm.findMany({
+          where: {
+            shopId: shop.id,
+            endDate: { gte: new Date() },
+          },
+          select: { id: true, name: true, startDate: true, endDate: true },
+          orderBy: { startDate: 'asc' },
+        }),
+      ]);
+
+      classSchedules = rawSchedules;
+      terms = rawTerms;
+    }
+
     const { formatImageUrl: _formatImageUrl } = await import('@/lib/image-utils');
     const formatImageUrl = (url: string | null) => _formatImageUrl(url, baseUrl);
 
@@ -181,6 +220,30 @@ export async function getShopPublicData(shopIdOrSlug: string, baseUrl: string = 
       portfolioImages: portfolioImages.map((img: any) => ({ ...img, imageUrl: formatImageUrl(img.imageUrl) })),
       loyaltyProgram,
       membershipTiers,
+      ...(isGroupClassIndustry ? {
+        classSchedules: classSchedules.map((cs: any) => {
+          const maxCap = cs.service?.maxCapacity || 999;
+          const enrolledCount = cs._count?.enrollments || 0;
+          return {
+            id: cs.id,
+            dayOfWeek: cs.dayOfWeek,
+            startTime: cs.startTime,
+            endTime: cs.endTime,
+            service: {
+              ...cs.service,
+              imageUrl: formatImageUrl(cs.service?.imageUrl),
+            },
+            staff: {
+              ...cs.staff,
+              imageUrl: formatImageUrl(cs.staff?.imageUrl),
+            },
+            term: cs.term,
+            enrolledCount,
+            availableSpots: Math.max(0, maxCap - enrolledCount),
+          };
+        }),
+        terms,
+      } : {}),
       allowedDomains
     };
   };

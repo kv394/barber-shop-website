@@ -296,6 +296,58 @@
     }
 
     /**
+     * Retrieves class schedules for group-class industry shops (Dance Studio, Fitness, etc.).
+     * Returns an empty array for non-class industries.
+     * @returns {Promise<Array>} Array of class schedule objects with service, staff, term, and availability
+     */
+    async getClassSchedules() {
+      const data = await this.getPublicData();
+      return data.classSchedules || [];
+    }
+
+    /**
+     * Retrieves active academic terms/semesters.
+     * Returns an empty array for non-class industries.
+     * @returns {Promise<Array>} Array of { id, name, startDate, endDate }
+     */
+    async getTerms() {
+      const data = await this.getPublicData();
+      return data.terms || [];
+    }
+
+    /**
+     * Retrieves class schedules filtered by a specific day of the week.
+     * @param {number} dayOfWeek - Day of week (0 = Sunday, 1 = Monday, ..., 6 = Saturday)
+     * @returns {Promise<Array>} Filtered array of class schedule objects
+     */
+    async getClassSchedulesByDay(dayOfWeek) {
+      const schedules = await this.getClassSchedules();
+      return schedules.filter(function(s) { return s.dayOfWeek === dayOfWeek; });
+    }
+
+    /**
+     * Fetches real-time availability for a specific class (group service) on a given date.
+     * @param {string} serviceId - The ID of the group class service
+     * @param {string} date - Date string in YYYY-MM-DD format
+     * @returns {Promise<Array>} Array of { time, staffId, staffName, availableSpots, maxCapacity, isRecommended }
+     */
+    async getClassAvailability(serviceId, date) {
+      this._checkInit();
+      if (!serviceId || !date) {
+        throw new Error('serviceId and date are required to check class availability.');
+      }
+
+      var url = this.apiUrl + '/api/shops/' + this.shopId + '/classes/availability?serviceId=' + encodeURIComponent(serviceId) + '&date=' + encodeURIComponent(date);
+
+      var res = await fetch(url);
+      if (!res.ok) {
+        var errorData = await res.json().catch(function() { return {}; });
+        throw new Error(errorData.error || 'Failed to fetch class availability.');
+      }
+      return await res.json();
+    }
+
+    /**
      * Fetches available time slots for a specific service and date.
      * @param {string} serviceId - The ID of the service to check availability for
      * @param {string} date - Date string in YYYY-MM-DD format

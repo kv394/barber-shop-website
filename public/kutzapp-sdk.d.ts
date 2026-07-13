@@ -22,6 +22,8 @@ interface KutzAppShop {
   heroImageUrl: string | null;
   primaryColor: string;
   secondaryColor: string;
+  /** Industry type — determines whether class-specific data is available */
+  industryType: 'BARBER' | 'SALON' | 'NAIL_SALON' | 'DANCE_STUDIO' | 'MARTIAL_ARTS' | 'MUSIC_SCHOOL' | 'FITNESS' | 'OTHER' | null;
   /** Formatted address string */
   address: string | null;
   /** Phone number */
@@ -114,6 +116,58 @@ interface KutzAppMembershipTier {
   interval: string;
 }
 
+// ── Class Schedule Types (Group-Class Industries) ───────────────────
+
+interface KutzAppClassScheduleService {
+  id: string;
+  name: string;
+  description: string | null;
+  price: number;
+  duration: number;
+  imageUrl: string | null;
+  maxCapacity: number | null;
+  dropInPrice: number | null;
+  semesterPrice: number | null;
+}
+
+interface KutzAppClassSchedule {
+  id: string;
+  /** Day of week: 0 = Sunday, 1 = Monday, ..., 6 = Saturday */
+  dayOfWeek: number;
+  /** Start time in HH:MM format */
+  startTime: string;
+  /** End time in HH:MM format */
+  endTime: string;
+  /** The class/service details */
+  service: KutzAppClassScheduleService;
+  /** The instructor/staff assigned */
+  staff: { id: string; name: string; imageUrl: string | null };
+  /** Academic term, if applicable */
+  term: KutzAppAcademicTerm | null;
+  /** Number of currently enrolled students */
+  enrolledCount: number;
+  /** Remaining spots (maxCapacity - enrolledCount) */
+  availableSpots: number;
+}
+
+interface KutzAppAcademicTerm {
+  id: string;
+  name: string;
+  startDate: string;
+  endDate: string;
+}
+
+interface KutzAppClassSlot {
+  time: string;
+  staffId: string;
+  staffName: string;
+  availableSpots: number;
+  maxCapacity: number;
+  isRecommended: boolean;
+}
+
+// ── Public Data Bundle ──────────────────────────────────────────────
+
 interface KutzAppPublicData {
   shop: KutzAppShop;
   products: KutzAppProduct[];
@@ -123,6 +177,10 @@ interface KutzAppPublicData {
   portfolioImages: KutzAppPortfolioImage[];
   loyaltyProgram: KutzAppLoyaltyProgram | null;
   membershipTiers: KutzAppMembershipTier[];
+  /** Class schedules — only present for group-class industries (DANCE_STUDIO, FITNESS, etc.) */
+  classSchedules?: KutzAppClassSchedule[];
+  /** Academic terms — only present for group-class industries */
+  terms?: KutzAppAcademicTerm[];
 }
 
 interface KutzAppSlot {
@@ -236,6 +294,18 @@ interface KutzAppClient {
 
   /** Get business hours from shop customization. */
   getBusinessHours(): Promise<Record<string, { open: string; close: string; isClosed?: boolean }> | null>;
+
+  /** Get all class schedules. Returns [] for non-class industries. */
+  getClassSchedules(): Promise<KutzAppClassSchedule[]>;
+
+  /** Get active academic terms/semesters. Returns [] for non-class industries. */
+  getTerms(): Promise<KutzAppAcademicTerm[]>;
+
+  /** Get class schedules filtered by day of week (0=Sun..6=Sat). */
+  getClassSchedulesByDay(dayOfWeek: number): Promise<KutzAppClassSchedule[]>;
+
+  /** Get real-time availability slots for a class on a specific date. */
+  getClassAvailability(serviceId: string, date: string): Promise<KutzAppClassSlot[]>;
 
   /** Get available time slots for a service on a given date. */
   getAvailableSlots(serviceId: string, date: string, staffId?: string): Promise<KutzAppSlot[]>;
