@@ -77,7 +77,7 @@ export default function PrimarySidebar({
  {navLink(`/shop/${shopId}`, 'Dashboard', icons.home, () => pathname === `/shop/${shopId}`)}
   {isShopAdmin ? (
   <>
-  {navLink(`/shop/${shopId}/bookings`, t('bookings'), icons.calendar, () => pathname.startsWith(`/shop/${shopId}/bookings`))}
+  {!isGroupClassIndustry && navLink(`/shop/${shopId}/bookings`, t('bookings'), icons.calendar, () => pathname.startsWith(`/shop/${shopId}/bookings`))}
   {isGroupClassIndustry && navLink(`/shop/${shopId}/classes`, 'Classes', icons.idCard, () => pathname.startsWith(`/shop/${shopId}/classes`))}
   {navLink(`/shop/${shopId}/waitlist`, 'Waitlist', icons.clock, () => pathname.startsWith(`/shop/${shopId}/waitlist`))}
   {navLink(`/shop/${shopId}/clients`, t('clients'), icons.users, () => pathname.startsWith(`/shop/${shopId}/clients`))}

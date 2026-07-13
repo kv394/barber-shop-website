@@ -11,7 +11,8 @@ export default function ShopMobileBottomNav({
  userRole, 
  currentShopName, 
  accessibleShops, 
- fallbackRedirect 
+ fallbackRedirect,
+ industryType
 }: any) {
  const pathname = usePathname();
  const [isOpen, setIsOpen] = useState(false);
@@ -19,6 +20,7 @@ export default function ShopMobileBottomNav({
  const [canScrollLeft, setCanScrollLeft] = useState(false);
  const scrollContainerRef = useRef<HTMLDivElement>(null);
  const isAll = shopId === 'all';
+ const isGroupClassIndustry = ['DANCE_STUDIO', 'FITNESS', 'MUSIC_SCHOOL', 'MARTIAL_ARTS'].includes(industryType);
 
  useEffect(() => {
  const handleScroll = () => {
@@ -150,7 +152,8 @@ export default function ShopMobileBottomNav({
  {navLink(`/shop/${shopId}`, 'Home', icons.home, true)}
  {userRole === 'SHOP_ADMIN' ? (
  <>
- {navLink(`/shop/${shopId}/bookings`, 'Bookings', icons.calendar)}
+ {!isGroupClassIndustry && navLink(`/shop/${shopId}/bookings`, 'Bookings', icons.calendar)}
+ {isGroupClassIndustry && navLink(`/shop/${shopId}/classes`, 'Classes', icons.idCard)}
  {navLink(`/shop/${shopId}/waitlist`, 'Waitlist', icons.clock)}
  {navLink(`/shop/${shopId}/clients`, 'Clients', icons.users)}
  {navLink(`/shop/${shopId}/reports`, 'Reports', icons.chart)}
@@ -275,15 +278,29 @@ export default function ShopMobileBottomNav({
 
  {userRole === 'SHOP_ADMIN' || userRole === 'SITE_ADMIN' ? (
  <>
- <Link 
- href={`/shop/${shopId}/bookings`} 
- className={`flex items-center gap-3 px-4 py-3 rounded-lg text-[15px] font-medium transition-colors ${
- pathname.startsWith(`/shop/${shopId}/bookings`) ? 'bg-[#FFF5F2] text-[#ea580c] font-bold' : 'text-crm-muted hover:text-crm-text hover:bg-crm-bg'
- }`}
- >
- <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">{icons.calendar}</svg>
- <span>Bookings</span>
- </Link>
+ {!isGroupClassIndustry && (
+   <Link 
+   href={`/shop/${shopId}/bookings`} 
+   className={`flex items-center gap-3 px-4 py-3 rounded-lg text-[15px] font-medium transition-colors ${
+   pathname.startsWith(`/shop/${shopId}/bookings`) ? 'bg-[#FFF5F2] text-[#ea580c] font-bold' : 'text-crm-muted hover:text-crm-text hover:bg-crm-bg'
+   }`}
+   >
+   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">{icons.calendar}</svg>
+   <span>Bookings</span>
+   </Link>
+ )}
+
+ {isGroupClassIndustry && (
+   <Link 
+   href={`/shop/${shopId}/classes`} 
+   className={`flex items-center gap-3 px-4 py-3 rounded-lg text-[15px] font-medium transition-colors ${
+   pathname.startsWith(`/shop/${shopId}/classes`) ? 'bg-[#FFF5F2] text-[#ea580c] font-bold' : 'text-crm-muted hover:text-crm-text hover:bg-crm-bg'
+   }`}
+   >
+   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">{icons.idCard}</svg>
+   <span>Classes</span>
+   </Link>
+ )}
 
  <Link 
  href={`/shop/${shopId}/waitlist`} 
