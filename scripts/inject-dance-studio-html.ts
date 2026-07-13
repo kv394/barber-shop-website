@@ -178,7 +178,6 @@ const customHtml = `
           ></iframe>
         </div>
       </div>
-      </div>
       <div class="absolute inset-0 bg-gradient-to-t from-[var(--bollywood-bg-dark)] via-transparent to-[var(--bollywood-bg-dark)] opacity-90"></div>
     </div>
 
