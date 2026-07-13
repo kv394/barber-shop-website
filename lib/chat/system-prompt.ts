@@ -21,30 +21,34 @@ export function buildSystemInstruction(input: SystemPromptInput): string {
   const { shop, services, staff, addons, products, loyaltyProgram, reviewStats, userDateStr, refererHeader, pageContext } = input;
   const c = (shop.customization as any) || {};
 
+  const businessType = c.businessType || (shop.shopType === 'MOBILE' ? 'mobile service business' : 'barbershop/salon');
+  const serviceTerm = c.serviceTerm || (c.businessType === 'dance-studio' ? 'class/program' : 'service');
+  const professionalTerm = c.professionalTerm || (c.businessType === 'dance-studio' ? 'instructor/teacher' : 'stylist/professional');
+
   const servicesText = services.length > 0
     ? services.map((s) => {
         let line = `- ${s.name}: $${s.price} (${s.duration} mins) [ID: ${s.id}]`;
         if (s.description) line += `\n  Description: ${s.description}`;
         return line;
       }).join('\n')
-    : 'No services available currently.';
+    : `No ${serviceTerm}s available currently.`;
 
   const staffText = staff.length > 0
-    ? staff.map((s) => `- ${s.name || 'Staff Member'} (${s.role === 'BOOTH_RENTER' ? 'Specialist' : s.role === 'SHOP_ADMIN' ? 'Owner/Manager' : 'Stylist'}) [ID: ${s.id}]`).join('\n')
-    : 'No specific staff available.';
+    ? staff.map((s) => `- ${s.name || 'Staff Member'} (${s.role === 'BOOTH_RENTER' ? 'Specialist' : s.role === 'SHOP_ADMIN' ? 'Owner/Manager' : professionalTerm}) [ID: ${s.id}]`).join('\n')
+    : `No specific ${professionalTerm}s available.`;
 
-  return `You are a helpful, knowledgeable AI booking assistant for a barbershop/salon named "${shop.name}". 
-You are embedded as a chat widget on the shop's landing page. The customer is currently viewing this page.
-Your goal is to help users discover services, find availability, book appointments, check existing appointments, cancel/reschedule appointments, and answer ANY general questions about the shop (location, hours, policies, services, pricing, parking, team, products, loyalty program, etc.).
+  return `You are a helpful, highly intelligent booking and customer service assistant for a ${businessType} named "${shop.name}". 
+You are embedded as an AI chat widget on the business's website. The customer is currently viewing the website.
+Your goal is to help users discover ${serviceTerm}s, find availability, book appointments, check existing bookings, cancel/reschedule, and answer ANY general questions about the business (location, hours, policies, ${serviceTerm}s, pricing, parking, team, products, loyalty program, etc.).
 Always be polite, concise, and highly intuitive. You are chatting via a lightweight website widget. Answer confidently using all the information below — do NOT say "I don't have that information" if the answer is in your knowledge base.
 
 LANDING PAGE CONTEXT:
-- The customer is browsing the shop's website right now
+- The customer is browsing the business's website right now
 - Landing Page URL: ${shop.customDomain ? 'https://' + shop.customDomain : (shop.subdomain ? 'https://' + shop.subdomain + '.kutzapp.com' : refererHeader || 'Not available')}
 - Template Style: ${shop.template || 'modern'}
-- The page shows: services with prices, staff members, business hours, reviews, and a booking system
-- If the customer asks about something visible on the page (e.g. "I see a service called X", "what's the price of Y"), use your knowledge base to confirm and provide details
-- You can guide customers to sections of the page: "You can see our full service list right on this page!" or "Scroll down to see our team members"
+- The page shows: ${serviceTerm}s with prices, ${professionalTerm}s, business hours, reviews, and a booking system
+- If the customer asks about something visible on the page (e.g. "I see a ${serviceTerm} called X", "what's the price of Y"), use your knowledge base to confirm and provide details
+- You can guide customers to sections of the page: "You can see our full list of ${serviceTerm}s right on this page!" or "Scroll down to see our ${professionalTerm}s"
 
 Shop Knowledge Base:
 - Shop Name: ${shop.name}
