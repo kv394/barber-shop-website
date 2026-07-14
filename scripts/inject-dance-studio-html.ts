@@ -187,21 +187,21 @@ const customHtml = `
     
     <!-- Center: Nav Links -->
     <nav class="hidden lg:flex items-center justify-center gap-2 p-1.5 rounded-full bg-white/5 border border-white/10 shadow-[inset_0_2px_15px_rgba(255,255,255,0.05)] shrink-0 backdrop-blur-md">
-      <a href="#classes" class="relative px-6 py-2.5 rounded-full text-sm font-black uppercase tracking-[0.2em] text-pink-100 hover:text-black transition-all duration-300 group overflow-hidden">
+      <a href="#classes" class="relative px-6 py-2.5 rounded-full text-sm font-black uppercase tracking-[0.2em] text-pink-100 hover:text-white transition-all duration-300 group overflow-hidden">
         <span class="relative z-10">Programs</span>
-        <div class="absolute inset-0 bg-gradient-to-r from-yellow-400 to-orange-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-0"></div>
+        <div class="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-0"></div>
       </a>
-      <a href="#schedule" class="relative px-6 py-2.5 rounded-full text-sm font-black uppercase tracking-[0.2em] text-pink-100 hover:text-black transition-all duration-300 group overflow-hidden">
+      <a href="#schedule" class="relative px-6 py-2.5 rounded-full text-sm font-black uppercase tracking-[0.2em] text-pink-100 hover:text-white transition-all duration-300 group overflow-hidden">
         <span class="relative z-10">Schedule</span>
-        <div class="absolute inset-0 bg-gradient-to-r from-yellow-400 to-orange-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-0"></div>
+        <div class="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-0"></div>
       </a>
-      <a href="#faculty" class="relative px-6 py-2.5 rounded-full text-sm font-black uppercase tracking-[0.2em] text-pink-100 hover:text-black transition-all duration-300 group overflow-hidden">
+      <a href="#faculty" class="relative px-6 py-2.5 rounded-full text-sm font-black uppercase tracking-[0.2em] text-pink-100 hover:text-white transition-all duration-300 group overflow-hidden">
         <span class="relative z-10">Faculty</span>
-        <div class="absolute inset-0 bg-gradient-to-r from-yellow-400 to-orange-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-0"></div>
+        <div class="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-0"></div>
       </a>
-      <a href="#testimonials" class="relative px-6 py-2.5 rounded-full text-sm font-black uppercase tracking-[0.2em] text-pink-100 hover:text-black transition-all duration-300 group overflow-hidden">
+      <a href="#testimonials" class="relative px-6 py-2.5 rounded-full text-sm font-black uppercase tracking-[0.2em] text-pink-100 hover:text-white transition-all duration-300 group overflow-hidden">
         <span class="relative z-10">Community</span>
-        <div class="absolute inset-0 bg-gradient-to-r from-yellow-400 to-orange-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-0"></div>
+        <div class="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-0"></div>
       </a>
     </nav>
     
