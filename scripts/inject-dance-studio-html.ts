@@ -265,7 +265,7 @@ const customHtml = `
         </div>
         <div class="flex flex-col items-center group bollywood-glass p-10 rounded-[2.5rem] bollywood-card-hover border-t border-yellow-500/20 translate-y-0 md:-translate-y-8">
           <div class="w-28 h-28 rounded-full border-4 border-pink-500/50 flex items-center justify-center mb-8 shadow-[0_0_30px_rgba(255,0,127,0.5)] group-hover:-rotate-6 group-hover:scale-110 transition-transform duration-500 overflow-hidden">
-            <img src="/all_ages.png" class="w-full h-full object-cover" alt="All Ages & Levels" />
+            <img src="/all_ages.png" class="w-full h-full object-contain p-2 bg-white/5" alt="All Ages & Levels" />
           </div>
           <h3 class="text-2xl font-black text-white mb-4 uppercase tracking-wider">All Ages & Levels</h3>
           <p class="text-pink-100/80 text-lg leading-relaxed">From kids to adults, beginners to advanced performers, everyone is welcome.</p>
