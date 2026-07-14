@@ -7,13 +7,35 @@ export default function StudioTemplate({ ctx }: { ctx: any }) {
   const { 
     shop, primaryColor, secondaryColor, handleBookClick
   } = ctx;
-  const { customization, services = [], staff = [], reviews = [] } = shop;
+  const { customization, services = [], staff = [], reviews = [], classSchedules = [] } = shop;
   const address = typeof customization?.address === 'object' 
     ? `${customization.address.street || ''}, ${customization.address.city || ''}`
     : customization?.address;
 
-  // Filter services to only show ones available to customers
-  const customerServices = services.filter((s: any) => s.type === 'CUSTOMER' && s.isBookable !== false);
+  // Build class display list: prefer classSchedules (has day/time/instructor info),
+  // fall back to services filtered by type
+  const DAY_NAMES = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+  
+  // Deduplicate classSchedules by serviceId to get unique class types
+  const uniqueClassMap = new Map<string, any>();
+  (classSchedules || []).forEach((cs: any) => {
+    if (cs.service && !uniqueClassMap.has(cs.service.id)) {
+      uniqueClassMap.set(cs.service.id, {
+        ...cs.service,
+        // Collect all schedule times for display
+        schedules: (classSchedules || [])
+          .filter((s: any) => s.service?.id === cs.service.id)
+          .map((s: any) => ({ dayOfWeek: s.dayOfWeek, startTime: s.startTime, endTime: s.endTime, staff: s.staff })),
+        availableSpots: cs.availableSpots,
+        enrolledCount: cs.enrolledCount,
+      });
+    }
+  });
+
+  // Use classSchedules-derived list if available, otherwise fall back to services
+  const customerServices = uniqueClassMap.size > 0
+    ? Array.from(uniqueClassMap.values())
+    : services.filter((s: any) => s.type === 'CUSTOMER' && s.isBookable !== false);
 
   return (
     <div className="min-h-screen bg-neutral-950 text-neutral-100 font-sans selection:bg-white/20">
@@ -188,9 +210,25 @@ export default function StudioTemplate({ ctx }: { ctx: any }) {
                   {service.name}
                 </h4>
                 {service.description && (
-                  <p className="text-neutral-400 text-base leading-relaxed mb-8 line-clamp-4">
+                  <p className="text-neutral-400 text-base leading-relaxed mb-4 line-clamp-4">
                     {service.description}
                   </p>
+                )}
+
+                {/* Schedule times from classSchedules */}
+                {service.schedules && service.schedules.length > 0 && (
+                  <div className="mb-6 space-y-1.5">
+                    {service.schedules.slice(0, 3).map((sched: any, idx: number) => (
+                      <div key={idx} className="flex items-center gap-2 text-sm text-neutral-300">
+                        <Calendar className="w-3.5 h-3.5 shrink-0" style={{ color: primaryColor }} />
+                        <span>{DAY_NAMES[sched.dayOfWeek]} {sched.startTime}–{sched.endTime}</span>
+                        {sched.staff?.name && <span className="text-neutral-500">· {sched.staff.name}</span>}
+                      </div>
+                    ))}
+                    {service.schedules.length > 3 && (
+                      <span className="text-xs text-neutral-500">+{service.schedules.length - 3} more times</span>
+                    )}
+                  </div>
                 )}
                 
                 <div className="flex flex-wrap items-center gap-3 text-sm text-neutral-300 font-medium">

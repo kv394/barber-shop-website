@@ -127,8 +127,10 @@ export async function middleware(req: NextRequest) {
       limit = 100; // Stricter for bookings
     }
 
-    // Rate Limiting
-    const { success } = await rateLimit(`mw:${ip}`, limit, 60, true);
+    // Rate Limiting — use failClosed only for auth-critical paths.
+    // For general API traffic, allow requests through when Redis is unavailable.
+    const isAuthCritical = url.pathname.includes('/auth') || url.pathname.includes('/sign-in') || url.pathname.includes('/sign-up');
+    const { success } = await rateLimit(`mw:${ip}`, limit, 60, isAuthCritical);
     if (!success) {
       return NextResponse.json(
         { error: 'Too many requests. Please try again later.' },

@@ -21,7 +21,7 @@ const getShopBySlug = cache(async (slug: string, isPreview: boolean = false) => 
   const data = await getShopPublicData(slug, 'https://kutzapp.com', isPreview);
   if (!data) return null;
   
-  const { shop, products, services, staff, reviews, portfolioImages } = data;
+  const { shop, products, services, staff, reviews, portfolioImages, classSchedules, terms } = data as any;
   
   return {
     ...shop,
@@ -30,6 +30,8 @@ const getShopBySlug = cache(async (slug: string, isPreview: boolean = false) => 
     users: staff,
     reviews,
     portfolioImages,
+    classSchedules: classSchedules || [],
+    terms: terms || [],
     baseLocation: shop.customization?.address || shop.baseLocation,
   };
 });
@@ -169,7 +171,8 @@ export default async function PublicShopPage({
   dynamicTemplateHtml = `<!-- ERROR: ${e.message} -->\n` + shop.customization.customHtml;
   }
   } else {
-    dynamicTemplateHtml = `<!-- DEBUG: customHtml is falsy! Type: ${typeof shop.customization?.customHtml}, Len: ${shop.customization?.customHtml?.length} -->`;
+    // No customHtml — leave dynamicTemplateHtml as null so ClientPage
+    // falls through to the correct built-in template (e.g. StudioTemplate).
   }
   
   if (!['modern', 'classic', 'minimal', 'sporty', 'corporate', 'noir', 'sunset', 'editorial'].includes(templateType) && !shop.customization?.customHtml) {

@@ -63,6 +63,7 @@ export async function getShopPublicData(shopIdOrSlug: string, baseUrl: string = 
         baseLocation: true,
         shopType: true,
         slogan: true,
+        currency: true,
       }
     });
 
@@ -83,7 +84,7 @@ export async function getShopPublicData(shopIdOrSlug: string, baseUrl: string = 
       }),
       tenantClient.service.findMany({
         where: { shopId: shop.id },
-        select: { id: true, name: true, description: true, price: true, imageUrl: true, duration: true, dropInPrice: true, semesterPrice: true },
+        select: { id: true, name: true, description: true, price: true, imageUrl: true, duration: true, dropInPrice: true, semesterPrice: true, type: true, isBookable: true, maxCapacity: true },
         orderBy: { name: 'asc' }
       }),
       tenantClient.user.findMany({
@@ -211,6 +212,7 @@ export async function getShopPublicData(shopIdOrSlug: string, baseUrl: string = 
         baseLocation: shop.baseLocation,
         shopType: shop.shopType,
         slogan: shop.slogan,
+        currency: (shop as any).currency || 'USD',
         customization: publicCustomization,
       },
       products: products.map((p: any) => ({ ...p, imageUrl: formatImageUrl(p.imageUrl) })),
