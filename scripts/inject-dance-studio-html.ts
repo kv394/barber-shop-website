@@ -212,7 +212,7 @@ const customHtml = `
   </header>
 
   <!-- Hero Section -->
-  <div class="relative min-h-screen flex items-center justify-center pt-32 z-10">
+  <div class="relative min-h-[75vh] flex items-center justify-center pt-20 z-10">
     <div class="absolute inset-0 z-0 rounded-b-[4rem] overflow-hidden">
       <!-- Video Background -->
       <div class="absolute inset-0 w-full h-full pointer-events-none overflow-hidden">
