@@ -164,6 +164,29 @@ const customHtml = `
     0% { background-position: 200% 0; }
     100% { background-position: -200% 0; }
   }
+  
+  /* Extremely Smooth Drawer & Handle */
+  .smooth-drawer {
+    transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  }
+  .smooth-handle {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: -3.5rem;
+    width: 3.5rem;
+    transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  }
+  .smooth-drawer.is-open .smooth-handle {
+    left: 0;
+    width: 1.5rem;
+    background: rgba(255, 255, 255, 0.05);
+    box-shadow: none;
+    border-radius: 0;
+  }
+  .smooth-drawer.is-open .smooth-handle span {
+    opacity: 0;
+  }
 </style>
 
 <div class="min-h-screen text-neutral-100 font-sans selection:bg-pink-500/30 overflow-hidden relative" style="background-color: var(--bollywood-bg-dark)">
@@ -193,13 +216,13 @@ const customHtml = `
   </header>
 
   <!-- Side Drawer Menu -->
-  <div id="side-drawer" class="fixed top-0 right-0 h-full w-72 bg-black/80 backdrop-blur-3xl border-l border-white/10 z-[200] transform translate-x-full transition-transform duration-500 ease-in-out shadow-2xl flex flex-col pt-24 px-8">
+  <div id="side-drawer" class="smooth-drawer fixed top-0 right-0 h-full w-72 bg-black/80 backdrop-blur-3xl border-l border-white/10 z-[200] transform translate-x-full shadow-2xl flex flex-col pt-24 px-8">
     <!-- Golden Slick Handle -->
-    <div id="drawer-handle" style="left: -3rem; width: 3rem;" class="absolute top-1/2 -translate-y-1/2 py-8 bg-gradient-to-b from-yellow-400 to-orange-500 rounded-l-2xl cursor-pointer flex flex-col items-center justify-center shadow-[0_0_20px_rgba(255,215,0,0.6)] hover:-left-16 transition-all duration-300 group">
-      <span class="text-black font-black text-xs -rotate-90 tracking-widest mb-6 opacity-70 group-hover:opacity-100 transition-opacity">MENU</span>
+    <div id="drawer-handle" class="smooth-handle py-8 bg-gradient-to-b from-yellow-400 to-orange-500 rounded-l-2xl cursor-pointer flex flex-col items-center justify-center shadow-[0_0_20px_rgba(255,215,0,0.6)] group">
+      <span class="text-black font-black text-xs -rotate-90 tracking-widest mb-6 transition-opacity duration-300">MENU</span>
       <div class="flex flex-col gap-1.5 opacity-60 group-hover:opacity-100 transition-opacity">
-        <div class="w-1.5 h-3 bg-black rounded-full"></div>
-        <div class="w-1.5 h-3 bg-black rounded-full"></div>
+        <div class="w-1 h-3 bg-black rounded-full"></div>
+        <div class="w-1 h-3 bg-black rounded-full"></div>
       </div>
     </div>
     
@@ -793,11 +816,13 @@ const customHtml = `
     if (drawer && handle) {
       handle.addEventListener('click', function() {
         drawer.classList.toggle('translate-x-full');
+        drawer.classList.toggle('is-open');
       });
       var links = drawer.querySelectorAll('a');
       links.forEach(function(link) {
         link.addEventListener('click', function() {
           drawer.classList.add('translate-x-full');
+          drawer.classList.remove('is-open');
         });
       });
     }
