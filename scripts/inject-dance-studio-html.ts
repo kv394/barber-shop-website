@@ -216,7 +216,7 @@ const customHtml = `
   </header>
 
   <!-- Side Drawer Menu -->
-  <div id="side-drawer" class="smooth-drawer fixed top-0 right-0 h-full w-72 bg-black/80 backdrop-blur-3xl border-l border-white/10 z-[200] transform translate-x-full shadow-2xl flex flex-col pt-24 px-8">
+  <div id="side-drawer" class="smooth-drawer fixed top-0 right-0 h-full w-56 bg-black/80 backdrop-blur-3xl border-l border-white/10 z-[200] transform translate-x-full shadow-2xl flex flex-col pt-24 px-6">
     <!-- Golden Slick Handle -->
     <div id="drawer-handle" class="smooth-handle py-8 bg-gradient-to-b from-yellow-400 to-orange-500 rounded-l-2xl cursor-pointer flex flex-col items-center justify-center shadow-[0_0_20px_rgba(255,215,0,0.6)] group">
       <span class="text-black font-black text-xs -rotate-90 tracking-widest mb-6 transition-opacity duration-300">MENU</span>
