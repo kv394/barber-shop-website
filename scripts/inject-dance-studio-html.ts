@@ -91,30 +91,27 @@ const customHtml = `
   
   /* Custom Buttons */
   .bollywood-btn {
-    background: rgba(0, 0, 0, 0.4);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.15);
+    background: var(--bollywood-magenta);
+    border: none;
     position: relative;
     overflow: hidden;
     z-index: 1;
     color: white;
-    box-shadow: 0 4px 14px 0 rgba(0, 0, 0, 0.5);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
     transition: all 0.3s ease;
   }
   .bollywood-btn::before {
     content: '';
     position: absolute;
     top: 0; left: -100%; width: 100%; height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
     transition: all 0.5s ease;
     z-index: -1;
   }
   .bollywood-btn:hover {
     transform: translateY(-2px);
-    border-color: rgba(255, 0, 127, 0.5);
-    box-shadow: 0 0 20px rgba(255, 0, 127, 0.3);
-    background: rgba(255, 255, 255, 0.05);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.25);
+    background: #e60072;
   }
   .bollywood-btn:hover::before {
     left: 100%;
