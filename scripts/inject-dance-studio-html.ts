@@ -815,7 +815,7 @@ const customHtml = `
   </script>
 
   <!-- Floating Home Button -->
-  <a href="#top" class="hover:-translate-y-2 transition-transform duration-300 group" style="position: fixed; bottom: 3rem; right: 2.5rem; z-index: 9999;">
+  <a href="#top" class="hover:-translate-y-2 transition-transform duration-300 group" style="position: fixed; bottom: 8rem; right: 2rem; z-index: 9999;">
     <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-pink-500 group-hover:text-yellow-400 transition-colors drop-shadow-[0_0_15px_rgba(255,0,127,0.8)]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="M5 15l7-7 7 7" />
     </svg>
