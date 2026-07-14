@@ -205,23 +205,31 @@ const customHtml = `
     </div>
   </header>
 
-  <!-- Side Drawer Menu -->
-  <div id="side-drawer" class="smooth-drawer fixed top-0 right-0 h-full w-40 bg-[var(--bollywood-bg-light)]/90 backdrop-blur-3xl border-l border-[var(--bollywood-magenta)]/30 z-[200] transform translate-x-full shadow-2xl flex flex-col pt-20 px-4">
-    <!-- Golden Slick Handle -->
-    <div id="drawer-handle" class="smooth-handle py-6 bg-gradient-to-b from-yellow-400 to-orange-500 rounded-l-2xl cursor-pointer flex flex-col items-center justify-center shadow-[0_0_20px_rgba(255,215,0,0.6)] group">
-      <span class="text-black font-black text-[9px] -rotate-90 tracking-widest mb-3 transition-opacity duration-300">MENU</span>
-      <div class="flex flex-col gap-1 opacity-60 group-hover:opacity-100 transition-opacity">
-        <div class="w-0.5 h-2 bg-black rounded-full"></div>
-        <div class="w-0.5 h-2 bg-black rounded-full"></div>
+  <!-- Cute Floating Drawer Menu -->
+  <div id="side-drawer" class="smooth-drawer fixed top-1/2 -translate-y-1/2 right-0 h-auto py-10 w-44 bg-[var(--bollywood-bg-light)]/80 backdrop-blur-3xl border border-r-0 border-pink-400/40 rounded-l-[2.5rem] z-[200] transform translate-x-full shadow-2xl flex flex-col px-5">
+    <!-- Cute Pull Tab -->
+    <div id="drawer-handle" class="smooth-handle py-4 bg-gradient-to-b from-pink-400 to-orange-400 rounded-l-full cursor-pointer flex flex-col items-center justify-center shadow-[0_0_15px_rgba(255,105,180,0.5)] group">
+      <div class="flex flex-col gap-1 opacity-70 group-hover:opacity-100 transition-all group-hover:scale-110">
+        <div class="w-1.5 h-1.5 bg-white rounded-full"></div>
+        <div class="w-1.5 h-1.5 bg-white rounded-full"></div>
+        <div class="w-1.5 h-1.5 bg-white rounded-full"></div>
       </div>
     </div>
     
-    <!-- Drawer Links -->
+    <!-- Cute Links -->
     <nav class="flex flex-col gap-5 mt-2">
-      <a href="#classes" class="text-base font-medium text-white/70 hover:text-white hover:translate-x-1 transition-all">Programs</a>
-      <a href="#schedule" class="text-base font-medium text-white/70 hover:text-white hover:translate-x-1 transition-all">Schedule</a>
-      <a href="#faculty" class="text-base font-medium text-white/70 hover:text-white hover:translate-x-1 transition-all">Faculty</a>
-      <a href="#testimonials" class="text-base font-medium text-white/70 hover:text-white hover:translate-x-1 transition-all">Community</a>
+      <a href="#classes" class="flex flex-col items-center gap-1 text-sm font-semibold text-white/80 hover:text-pink-300 hover:scale-105 transition-all">
+        <span class="text-2xl drop-shadow-md">🩰</span> Programs
+      </a>
+      <a href="#schedule" class="flex flex-col items-center gap-1 text-sm font-semibold text-white/80 hover:text-pink-300 hover:scale-105 transition-all">
+        <span class="text-2xl drop-shadow-md">📅</span> Schedule
+      </a>
+      <a href="#faculty" class="flex flex-col items-center gap-1 text-sm font-semibold text-white/80 hover:text-pink-300 hover:scale-105 transition-all">
+        <span class="text-2xl drop-shadow-md">👥</span> Faculty
+      </a>
+      <a href="#testimonials" class="flex flex-col items-center gap-1 text-sm font-semibold text-white/80 hover:text-pink-300 hover:scale-105 transition-all">
+        <span class="text-2xl drop-shadow-md">✨</span> Community
+      </a>
     </nav>
   </div>
 
