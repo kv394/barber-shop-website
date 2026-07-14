@@ -186,22 +186,22 @@ const customHtml = `
     </div>
     
     <!-- Center: Nav Links -->
-    <nav class="hidden lg:flex items-center justify-center gap-1 p-1 rounded-full bg-black/20 border border-white/5 shadow-inner shrink-0 backdrop-blur-md">
-      <a href="#classes" class="relative px-5 py-2 rounded-full text-sm font-medium text-white/70 hover:text-white transition-colors duration-300 group">
+    <nav class="hidden lg:flex items-center justify-center gap-1 p-1 bg-black/20 border border-white/5 shadow-inner shrink-0 backdrop-blur-md">
+      <a href="#classes" class="relative px-5 py-2 text-sm font-medium text-white/70 hover:text-white transition-colors duration-300 group">
         <span class="relative z-10">Programs</span>
-        <div class="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 rounded-full transition-all duration-300 scale-95 group-hover:scale-100 z-0"></div>
+        <div class="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-all duration-300 scale-95 group-hover:scale-100 z-0"></div>
       </a>
-      <a href="#schedule" class="relative px-5 py-2 rounded-full text-sm font-medium text-white/70 hover:text-white transition-colors duration-300 group">
+      <a href="#schedule" class="relative px-5 py-2 text-sm font-medium text-white/70 hover:text-white transition-colors duration-300 group">
         <span class="relative z-10">Schedule</span>
-        <div class="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 rounded-full transition-all duration-300 scale-95 group-hover:scale-100 z-0"></div>
+        <div class="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-all duration-300 scale-95 group-hover:scale-100 z-0"></div>
       </a>
-      <a href="#faculty" class="relative px-5 py-2 rounded-full text-sm font-medium text-white/70 hover:text-white transition-colors duration-300 group">
+      <a href="#faculty" class="relative px-5 py-2 text-sm font-medium text-white/70 hover:text-white transition-colors duration-300 group">
         <span class="relative z-10">Faculty</span>
-        <div class="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 rounded-full transition-all duration-300 scale-95 group-hover:scale-100 z-0"></div>
+        <div class="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-all duration-300 scale-95 group-hover:scale-100 z-0"></div>
       </a>
-      <a href="#testimonials" class="relative px-5 py-2 rounded-full text-sm font-medium text-white/70 hover:text-white transition-colors duration-300 group">
+      <a href="#testimonials" class="relative px-5 py-2 text-sm font-medium text-white/70 hover:text-white transition-colors duration-300 group">
         <span class="relative z-10">Community</span>
-        <div class="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 rounded-full transition-all duration-300 scale-95 group-hover:scale-100 z-0"></div>
+        <div class="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-all duration-300 scale-95 group-hover:scale-100 z-0"></div>
       </a>
     </nav>
     
