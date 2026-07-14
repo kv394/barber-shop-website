@@ -206,9 +206,7 @@ const customHtml = `
     
     <!-- Right: CTA (flex-1 forces center alignment for nav) -->
     <div class="flex-1 flex justify-end items-center">
-      <button data-action="book" class="bg-gradient-to-r from-yellow-400 via-orange-500 to-pink-500 text-black font-black uppercase tracking-widest text-[10px] md:text-xs px-5 md:px-8 py-2.5 md:py-3 rounded-full shadow-[0_0_20px_rgba(255,165,0,0.5)] hover:shadow-[0_0_30px_rgba(255,0,127,0.7)] hover:scale-105 transition-all duration-300 shrink-0">
-        Register
-      </button>
+      <!-- Register button removed -->
     </div>
   </header>
 
