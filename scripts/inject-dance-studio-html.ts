@@ -186,31 +186,30 @@ const customHtml = `
       <h1 class="text-lg md:text-xl font-semibold tracking-tight text-white drop-shadow-sm hidden sm:block whitespace-nowrap">{{shop.name}}</h1>
     </div>
     
-    <!-- Center: Nav Links -->
-    <nav class="hidden lg:flex items-center justify-center gap-1 p-1 bg-black/20 border border-white/5 shadow-inner shrink-0 backdrop-blur-md">
-      <a href="#classes" class="relative px-5 py-2 text-sm font-medium text-white/70 hover:text-white transition-colors duration-300 group">
-        <span class="relative z-10">Programs</span>
-        <div class="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-all duration-300 scale-95 group-hover:scale-100 z-0"></div>
-      </a>
-      <a href="#schedule" class="relative px-5 py-2 text-sm font-medium text-white/70 hover:text-white transition-colors duration-300 group">
-        <span class="relative z-10">Schedule</span>
-        <div class="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-all duration-300 scale-95 group-hover:scale-100 z-0"></div>
-      </a>
-      <a href="#faculty" class="relative px-5 py-2 text-sm font-medium text-white/70 hover:text-white transition-colors duration-300 group">
-        <span class="relative z-10">Faculty</span>
-        <div class="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-all duration-300 scale-95 group-hover:scale-100 z-0"></div>
-      </a>
-      <a href="#testimonials" class="relative px-5 py-2 text-sm font-medium text-white/70 hover:text-white transition-colors duration-300 group">
-        <span class="relative z-10">Community</span>
-        <div class="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-all duration-300 scale-95 group-hover:scale-100 z-0"></div>
-      </a>
-    </nav>
-    
-    <!-- Right: CTA (flex-1 forces center alignment for nav) -->
+    <!-- Right: CTA -->
     <div class="flex-1 flex justify-end items-center">
       <!-- Register button removed -->
     </div>
   </header>
+
+  <!-- Side Drawer Menu -->
+  <div id="side-drawer" class="fixed top-0 right-0 h-full w-64 bg-black/60 backdrop-blur-3xl border-l border-white/10 z-[200] transform translate-x-full transition-transform duration-500 ease-in-out shadow-2xl flex flex-col pt-24 px-8">
+    <!-- Golden Slick Handle -->
+    <div id="drawer-handle" class="absolute top-1/2 -left-6 -translate-y-1/2 w-6 h-28 bg-gradient-to-b from-yellow-400 to-orange-500 rounded-l-xl cursor-pointer flex items-center justify-center shadow-[0_0_20px_rgba(255,215,0,0.4)] hover:w-8 hover:-left-8 transition-all duration-300 group">
+      <div class="flex flex-col gap-1.5 opacity-60 group-hover:opacity-100 transition-opacity">
+        <div class="w-1.5 h-4 bg-black rounded-full"></div>
+        <div class="w-1.5 h-4 bg-black rounded-full"></div>
+      </div>
+    </div>
+    
+    <!-- Drawer Links -->
+    <nav class="flex flex-col gap-8">
+      <a href="#classes" class="text-xl font-medium text-white/70 hover:text-white hover:translate-x-2 transition-all">Programs</a>
+      <a href="#schedule" class="text-xl font-medium text-white/70 hover:text-white hover:translate-x-2 transition-all">Schedule</a>
+      <a href="#faculty" class="text-xl font-medium text-white/70 hover:text-white hover:translate-x-2 transition-all">Faculty</a>
+      <a href="#testimonials" class="text-xl font-medium text-white/70 hover:text-white hover:translate-x-2 transition-all">Community</a>
+    </nav>
+  </div>
 
   <!-- Hero Section -->
   <div class="relative min-h-[90vh] flex items-center justify-center pt-20 z-10">
@@ -787,6 +786,21 @@ const customHtml = `
     });
   </script>
   <script>
+    // Drawer toggle logic
+    var drawer = document.getElementById('side-drawer');
+    var handle = document.getElementById('drawer-handle');
+    if (drawer && handle) {
+      handle.addEventListener('click', function() {
+        drawer.classList.toggle('translate-x-full');
+      });
+      var links = drawer.querySelectorAll('a');
+      links.forEach(function(link) {
+        link.addEventListener('click', function() {
+          drawer.classList.add('translate-x-full');
+        });
+      });
+    }
+
     // Force scroll to top on page refresh
     if ('scrollRestoration' in history) {
       history.scrollRestoration = 'manual';
