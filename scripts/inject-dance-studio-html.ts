@@ -199,9 +199,14 @@ const customHtml = `
       <h1 class="text-lg md:text-xl font-semibold tracking-tight text-white drop-shadow-sm hidden sm:block whitespace-nowrap">{{shop.name}}</h1>
     </div>
     
-    <!-- Right: CTA -->
+    <!-- Right: CTA / Menu Toggle -->
     <div class="flex-1 flex justify-end items-center">
-      <!-- Register button removed -->
+      <button id="header-menu-btn" class="flex items-center gap-2 bg-pink-500/20 hover:bg-pink-500/40 border border-pink-500/50 text-white px-4 py-2 rounded-full transition-all group">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 group-hover:scale-110 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+        <span class="font-bold text-xs tracking-widest uppercase">Menu</span>
+      </button>
     </div>
   </header>
 
@@ -811,11 +816,19 @@ const customHtml = `
     // Drawer toggle logic
     var drawer = document.getElementById('side-drawer');
     var handle = document.getElementById('drawer-handle');
-    if (drawer && handle) {
-      handle.addEventListener('click', function() {
+    var headerBtn = document.getElementById('header-menu-btn');
+    
+    function toggleDrawer() {
+      if(drawer) {
         drawer.classList.toggle('translate-x-full');
         drawer.classList.toggle('is-open');
-      });
+      }
+    }
+    
+    if (drawer) {
+      if (handle) handle.addEventListener('click', toggleDrawer);
+      if (headerBtn) headerBtn.addEventListener('click', toggleDrawer);
+      
       var links = drawer.querySelectorAll('a');
       links.forEach(function(link) {
         link.addEventListener('click', function() {
