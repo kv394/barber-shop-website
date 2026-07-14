@@ -176,32 +176,32 @@ const customHtml = `
 
   <!-- Floating Header / Nav -->
   <!-- Floating Header / Nav -->
-  <header class="fixed top-4 md:top-6 left-1/2 -translate-x-1/2 w-[95%] max-w-6xl z-[100] px-6 md:px-10 py-5 md:py-6 flex justify-between items-center bg-[#120522]/70 backdrop-blur-2xl border border-pink-500/30 rounded-full shadow-[0_15px_40px_rgba(0,0,0,0.8)] transition-all">
-    <!-- Left: Logo & Name (flex-1 forces center alignment for nav) -->
-    <div class="flex-1 flex items-center gap-3 md:gap-5">
+  <header class="fixed top-4 md:top-6 left-1/2 -translate-x-1/2 w-[95%] max-w-6xl z-[100] px-6 md:px-8 py-3 md:py-4 flex justify-between items-center bg-black/40 backdrop-blur-xl border border-white/10 rounded-full shadow-2xl transition-all">
+    <!-- Left: Logo & Name -->
+    <div class="flex-1 flex items-center gap-3 md:gap-4">
       {{#shop.logoUrl}}
-      <img src="{{shop.logoUrl}}" alt="{{shop.name}}" class="w-12 h-12 md:w-16 md:h-16 rounded-full border border-yellow-400/50 shadow-[0_0_15px_rgba(255,215,0,0.3)] hover:scale-110 transition-transform duration-300 object-cover" />
+      <img src="{{shop.logoUrl}}" alt="{{shop.name}}" class="w-10 h-10 md:w-12 md:h-12 rounded-full border border-white/20 shadow-lg object-cover" />
       {{/shop.logoUrl}}
-      <h1 class="text-base md:text-2xl font-black tracking-tighter text-white drop-shadow-md hidden sm:block whitespace-nowrap">{{shop.name}}</h1>
+      <h1 class="text-lg md:text-xl font-semibold tracking-tight text-white drop-shadow-sm hidden sm:block whitespace-nowrap">{{shop.name}}</h1>
     </div>
     
     <!-- Center: Nav Links -->
-    <nav class="hidden lg:flex items-center justify-center gap-2 p-1.5 rounded-full bg-white/5 border border-white/10 shadow-[inset_0_2px_15px_rgba(255,255,255,0.05)] shrink-0 backdrop-blur-md">
-      <a href="#classes" class="relative px-6 py-2.5 rounded-full text-sm font-black uppercase tracking-[0.2em] text-pink-100 hover:text-white transition-all duration-300 group overflow-hidden">
+    <nav class="hidden lg:flex items-center justify-center gap-1 p-1 rounded-full bg-black/20 border border-white/5 shadow-inner shrink-0 backdrop-blur-md">
+      <a href="#classes" class="relative px-5 py-2 rounded-full text-sm font-medium text-white/70 hover:text-white transition-colors duration-300 group">
         <span class="relative z-10">Programs</span>
-        <div class="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-0"></div>
+        <div class="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 rounded-full transition-all duration-300 scale-95 group-hover:scale-100 z-0"></div>
       </a>
-      <a href="#schedule" class="relative px-6 py-2.5 rounded-full text-sm font-black uppercase tracking-[0.2em] text-pink-100 hover:text-white transition-all duration-300 group overflow-hidden">
+      <a href="#schedule" class="relative px-5 py-2 rounded-full text-sm font-medium text-white/70 hover:text-white transition-colors duration-300 group">
         <span class="relative z-10">Schedule</span>
-        <div class="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-0"></div>
+        <div class="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 rounded-full transition-all duration-300 scale-95 group-hover:scale-100 z-0"></div>
       </a>
-      <a href="#faculty" class="relative px-6 py-2.5 rounded-full text-sm font-black uppercase tracking-[0.2em] text-pink-100 hover:text-white transition-all duration-300 group overflow-hidden">
+      <a href="#faculty" class="relative px-5 py-2 rounded-full text-sm font-medium text-white/70 hover:text-white transition-colors duration-300 group">
         <span class="relative z-10">Faculty</span>
-        <div class="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-0"></div>
+        <div class="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 rounded-full transition-all duration-300 scale-95 group-hover:scale-100 z-0"></div>
       </a>
-      <a href="#testimonials" class="relative px-6 py-2.5 rounded-full text-sm font-black uppercase tracking-[0.2em] text-pink-100 hover:text-white transition-all duration-300 group overflow-hidden">
+      <a href="#testimonials" class="relative px-5 py-2 rounded-full text-sm font-medium text-white/70 hover:text-white transition-colors duration-300 group">
         <span class="relative z-10">Community</span>
-        <div class="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-0"></div>
+        <div class="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 rounded-full transition-all duration-300 scale-95 group-hover:scale-100 z-0"></div>
       </a>
     </nav>
     
