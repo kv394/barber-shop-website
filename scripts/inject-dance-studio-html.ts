@@ -187,10 +187,22 @@ const customHtml = `
     </div>
     <!-- Center: Navigation Links -->
     <nav class="hidden md:flex items-center justify-center gap-12 flex-1">
-      <a href="#classes" class="text-xl font-medium text-white/70 hover:text-white hover:-translate-y-0.5 transition-all">Programs</a>
-      <a href="#schedule" class="text-xl font-medium text-white/70 hover:text-white hover:-translate-y-0.5 transition-all">Schedule</a>
-      <a href="#faculty" class="text-xl font-medium text-white/70 hover:text-white hover:-translate-y-0.5 transition-all">Faculty</a>
-      <a href="#testimonials" class="text-xl font-medium text-white/70 hover:text-white hover:-translate-y-0.5 transition-all">Community</a>
+      <a href="#classes" class="relative group text-xl font-medium text-white/70 hover:text-white transition-colors duration-300">
+        <span>Programs</span>
+        <span class="absolute -bottom-1 left-0 w-full h-[2px] bg-gradient-to-r from-pink-500 to-orange-400 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-center rounded-full"></span>
+      </a>
+      <a href="#schedule" class="relative group text-xl font-medium text-white/70 hover:text-white transition-colors duration-300">
+        <span>Schedule</span>
+        <span class="absolute -bottom-1 left-0 w-full h-[2px] bg-gradient-to-r from-pink-500 to-orange-400 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-center rounded-full"></span>
+      </a>
+      <a href="#faculty" class="relative group text-xl font-medium text-white/70 hover:text-white transition-colors duration-300">
+        <span>Faculty</span>
+        <span class="absolute -bottom-1 left-0 w-full h-[2px] bg-gradient-to-r from-pink-500 to-orange-400 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-center rounded-full"></span>
+      </a>
+      <a href="#testimonials" class="relative group text-xl font-medium text-white/70 hover:text-white transition-colors duration-300">
+        <span>Community</span>
+        <span class="absolute -bottom-1 left-0 w-full h-[2px] bg-gradient-to-r from-pink-500 to-orange-400 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-center rounded-full"></span>
+      </a>
     </nav>
     
     <!-- Right: CTA -->
