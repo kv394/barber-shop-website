@@ -164,6 +164,23 @@ const customHtml = `
     0% { background-position: 200% 0; }
     100% { background-position: -200% 0; }
   }
+  @keyframes gradient-flow {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+  .theme-flow-bg {
+    background: linear-gradient(270deg, var(--bollywood-magenta), var(--bollywood-gold), var(--bollywood-orange), var(--bollywood-magenta));
+    background-size: 300% 300%;
+    animation: gradient-flow 4s ease infinite;
+  }
+  .group:hover .theme-flow-text-hover {
+    background: linear-gradient(270deg, var(--bollywood-magenta), var(--bollywood-gold), var(--bollywood-orange), var(--bollywood-magenta));
+    background-size: 300% 300%;
+    animation: gradient-flow 4s ease infinite;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
 </style>
 
 <div class="min-h-screen text-neutral-100 font-sans selection:bg-pink-500/30 overflow-hidden relative" style="background-color: var(--bollywood-bg-dark)">
@@ -188,20 +205,20 @@ const customHtml = `
     <!-- Center: Navigation Links -->
     <nav class="hidden md:flex items-center justify-center gap-12 flex-1">
       <a href="#classes" class="relative group text-xl font-medium text-white/70 transition-all duration-300">
-        <span class="relative z-10 transition-all duration-300 group-hover:text-pink-300 group-hover:drop-shadow-[0_0_12px_rgba(255,0,127,0.8)]">Programs</span>
-        <span class="absolute -bottom-1 left-0 w-full h-[2px] bg-gradient-to-r from-pink-500 to-orange-400 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-center rounded-full shadow-[0_0_8px_rgba(255,0,127,0.6)]"></span>
+        <span class="relative z-10 transition-all duration-300 group-hover:drop-shadow-[0_0_12px_rgba(255,0,127,0.8)] theme-flow-text-hover">Programs</span>
+        <span class="absolute -bottom-1 left-0 w-full h-[2px] theme-flow-bg scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-center rounded-full shadow-[0_0_8px_rgba(255,0,127,0.6)]"></span>
       </a>
       <a href="#schedule" class="relative group text-xl font-medium text-white/70 transition-all duration-300">
-        <span class="relative z-10 transition-all duration-300 group-hover:text-pink-300 group-hover:drop-shadow-[0_0_12px_rgba(255,0,127,0.8)]">Schedule</span>
-        <span class="absolute -bottom-1 left-0 w-full h-[2px] bg-gradient-to-r from-pink-500 to-orange-400 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-center rounded-full shadow-[0_0_8px_rgba(255,0,127,0.6)]"></span>
+        <span class="relative z-10 transition-all duration-300 group-hover:drop-shadow-[0_0_12px_rgba(255,0,127,0.8)] theme-flow-text-hover">Schedule</span>
+        <span class="absolute -bottom-1 left-0 w-full h-[2px] theme-flow-bg scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-center rounded-full shadow-[0_0_8px_rgba(255,0,127,0.6)]"></span>
       </a>
       <a href="#faculty" class="relative group text-xl font-medium text-white/70 transition-all duration-300">
-        <span class="relative z-10 transition-all duration-300 group-hover:text-pink-300 group-hover:drop-shadow-[0_0_12px_rgba(255,0,127,0.8)]">Faculty</span>
-        <span class="absolute -bottom-1 left-0 w-full h-[2px] bg-gradient-to-r from-pink-500 to-orange-400 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-center rounded-full shadow-[0_0_8px_rgba(255,0,127,0.6)]"></span>
+        <span class="relative z-10 transition-all duration-300 group-hover:drop-shadow-[0_0_12px_rgba(255,0,127,0.8)] theme-flow-text-hover">Faculty</span>
+        <span class="absolute -bottom-1 left-0 w-full h-[2px] theme-flow-bg scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-center rounded-full shadow-[0_0_8px_rgba(255,0,127,0.6)]"></span>
       </a>
       <a href="#testimonials" class="relative group text-xl font-medium text-white/70 transition-all duration-300">
-        <span class="relative z-10 transition-all duration-300 group-hover:text-pink-300 group-hover:drop-shadow-[0_0_12px_rgba(255,0,127,0.8)]">Community</span>
-        <span class="absolute -bottom-1 left-0 w-full h-[2px] bg-gradient-to-r from-pink-500 to-orange-400 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-center rounded-full shadow-[0_0_8px_rgba(255,0,127,0.6)]"></span>
+        <span class="relative z-10 transition-all duration-300 group-hover:drop-shadow-[0_0_12px_rgba(255,0,127,0.8)] theme-flow-text-hover">Community</span>
+        <span class="absolute -bottom-1 left-0 w-full h-[2px] theme-flow-bg scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-center rounded-full shadow-[0_0_8px_rgba(255,0,127,0.6)]"></span>
       </a>
     </nav>
     
@@ -794,7 +811,7 @@ const customHtml = `
   </script>
 
   <!-- Floating Home Button -->
-  <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="fixed bottom-6 right-6 md:bottom-10 md:right-10 z-[150] w-12 h-12 md:w-14 md:h-14 bg-gradient-to-tr from-pink-500 to-orange-500 rounded-full flex items-center justify-center shadow-[0_0_20px_rgba(255,0,127,0.5)] hover:scale-110 hover:shadow-[0_0_30px_rgba(255,0,127,0.8)] transition-all duration-300 group">
+  <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="fixed bottom-6 right-6 md:bottom-10 md:right-10 z-[150] w-12 h-12 md:w-14 md:h-14 theme-flow-bg rounded-full flex items-center justify-center shadow-[0_0_20px_rgba(255,0,127,0.5)] hover:scale-110 hover:shadow-[0_0_30px_rgba(255,0,127,0.8)] transition-all duration-300 group">
     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white group-hover:-translate-y-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
     </svg>
