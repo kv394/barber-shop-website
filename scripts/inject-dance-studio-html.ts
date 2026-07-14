@@ -186,11 +186,11 @@ const customHtml = `
       <h1 class="text-lg md:text-xl font-semibold tracking-tight text-white drop-shadow-sm hidden sm:block whitespace-nowrap">{{shop.name}}</h1>
     </div>
     <!-- Center: Navigation Links -->
-    <nav class="hidden md:flex items-center justify-center gap-8 flex-1">
-      <a href="#classes" class="text-sm font-medium text-white/70 hover:text-white hover:-translate-y-0.5 transition-all">Programs</a>
-      <a href="#schedule" class="text-sm font-medium text-white/70 hover:text-white hover:-translate-y-0.5 transition-all">Schedule</a>
-      <a href="#faculty" class="text-sm font-medium text-white/70 hover:text-white hover:-translate-y-0.5 transition-all">Faculty</a>
-      <a href="#testimonials" class="text-sm font-medium text-white/70 hover:text-white hover:-translate-y-0.5 transition-all">Community</a>
+    <nav class="hidden md:flex items-center justify-center gap-10 flex-1">
+      <a href="#classes" class="text-base font-medium text-white/70 hover:text-white hover:-translate-y-0.5 transition-all">Programs</a>
+      <a href="#schedule" class="text-base font-medium text-white/70 hover:text-white hover:-translate-y-0.5 transition-all">Schedule</a>
+      <a href="#faculty" class="text-base font-medium text-white/70 hover:text-white hover:-translate-y-0.5 transition-all">Faculty</a>
+      <a href="#testimonials" class="text-base font-medium text-white/70 hover:text-white hover:-translate-y-0.5 transition-all">Community</a>
     </nav>
     
     <!-- Right: CTA -->
