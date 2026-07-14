@@ -175,30 +175,31 @@ const customHtml = `
   </div>
 
   <!-- Floating Header / Nav -->
-  <header class="fixed top-4 md:top-6 left-1/2 -translate-x-1/2 w-[95%] max-w-6xl z-[100] px-4 md:px-8 py-3 flex justify-between items-center bg-[#120522]/70 backdrop-blur-2xl border border-pink-500/30 rounded-full shadow-[0_15px_40px_rgba(0,0,0,0.8)] transition-all">
+  <!-- Floating Header / Nav -->
+  <header class="fixed top-4 md:top-6 left-1/2 -translate-x-1/2 w-[95%] max-w-6xl z-[100] px-6 md:px-10 py-5 md:py-6 flex justify-between items-center bg-[#120522]/70 backdrop-blur-2xl border border-pink-500/30 rounded-full shadow-[0_15px_40px_rgba(0,0,0,0.8)] transition-all">
     <!-- Left: Logo & Name (flex-1 forces center alignment for nav) -->
-    <div class="flex-1 flex items-center gap-3 md:gap-4">
+    <div class="flex-1 flex items-center gap-3 md:gap-5">
       {{#shop.logoUrl}}
-      <img src="{{shop.logoUrl}}" alt="{{shop.name}}" class="w-10 h-10 md:w-12 md:h-12 rounded-full border border-yellow-400/50 shadow-[0_0_15px_rgba(255,215,0,0.3)] hover:scale-110 transition-transform duration-300 object-cover" />
+      <img src="{{shop.logoUrl}}" alt="{{shop.name}}" class="w-12 h-12 md:w-16 md:h-16 rounded-full border border-yellow-400/50 shadow-[0_0_15px_rgba(255,215,0,0.3)] hover:scale-110 transition-transform duration-300 object-cover" />
       {{/shop.logoUrl}}
-      <h1 class="text-sm md:text-xl font-black tracking-tighter text-white drop-shadow-md hidden sm:block whitespace-nowrap">{{shop.name}}</h1>
+      <h1 class="text-base md:text-2xl font-black tracking-tighter text-white drop-shadow-md hidden sm:block whitespace-nowrap">{{shop.name}}</h1>
     </div>
     
     <!-- Center: Nav Links -->
-    <nav class="hidden lg:flex items-center justify-center gap-10 text-pink-100 shrink-0">
-      <a href="#classes" class="relative text-xs font-black uppercase tracking-[0.2em] hover:text-yellow-400 transition-colors group">
+    <nav class="hidden lg:flex items-center justify-center gap-12 text-pink-100 shrink-0">
+      <a href="#classes" class="relative text-sm font-black uppercase tracking-[0.2em] hover:text-yellow-400 transition-colors group">
         Programs
         <span class="absolute -bottom-2 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-yellow-400 opacity-0 group-hover:opacity-100 transition-opacity"></span>
       </a>
-      <a href="#schedule" class="relative text-xs font-black uppercase tracking-[0.2em] hover:text-yellow-400 transition-colors group">
+      <a href="#schedule" class="relative text-sm font-black uppercase tracking-[0.2em] hover:text-yellow-400 transition-colors group">
         Schedule
         <span class="absolute -bottom-2 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-yellow-400 opacity-0 group-hover:opacity-100 transition-opacity"></span>
       </a>
-      <a href="#faculty" class="relative text-xs font-black uppercase tracking-[0.2em] hover:text-yellow-400 transition-colors group">
+      <a href="#faculty" class="relative text-sm font-black uppercase tracking-[0.2em] hover:text-yellow-400 transition-colors group">
         Faculty
         <span class="absolute -bottom-2 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-yellow-400 opacity-0 group-hover:opacity-100 transition-opacity"></span>
       </a>
-      <a href="#testimonials" class="relative text-xs font-black uppercase tracking-[0.2em] hover:text-yellow-400 transition-colors group">
+      <a href="#testimonials" class="relative text-sm font-black uppercase tracking-[0.2em] hover:text-yellow-400 transition-colors group">
         Community
         <span class="absolute -bottom-2 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-yellow-400 opacity-0 group-hover:opacity-100 transition-opacity"></span>
       </a>
