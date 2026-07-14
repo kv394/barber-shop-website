@@ -666,17 +666,24 @@ const customHtml = `
         var cellDate = new Date(year, month, d);
         cellDate.setHours(0,0,0,0);
         var dayOfWeek = cellDate.getDay();
-        var hasClasses = daysWithClasses[dayOfWeek];
+        var daySchedulesForCell = allSchedules.filter(function(s) { return s.dayOfWeek === dayOfWeek; });
+        var hasClasses = daySchedulesForCell.length > 0;
         var isPast = cellDate < today;
         var isSelected = cellDate.getTime() === selectedDate.getTime();
         
-        var baseClasses = "relative w-full aspect-square flex items-center justify-center rounded-lg md:rounded-xl text-sm md:text-lg font-bold transition-all ";
+        var baseClasses = "relative w-full flex flex-col rounded-lg md:rounded-xl transition-all overflow-hidden p-1 md:p-2 ";
         
+        if (hasClasses) {
+          baseClasses += "min-h-[90px] md:min-h-[130px] justify-start items-start ";
+        } else {
+          baseClasses += "aspect-square justify-center items-center text-sm md:text-lg font-bold ";
+        }
+
         if (isSelected) {
-          baseClasses += "bg-gradient-to-br from-yellow-400 to-orange-500 text-black shadow-lg scale-110 md:scale-125 z-20 ";
+          baseClasses += "bg-gradient-to-br from-yellow-400 to-orange-500 text-black shadow-lg scale-105 z-20 border border-white ";
         } else if (!isPast) {
           if (hasClasses) {
-            baseClasses += "bg-white/10 hover:bg-white/20 text-white cursor-pointer scale-110 z-10 shadow-lg ";
+            baseClasses += "bg-white/10 hover:bg-white/20 text-white cursor-pointer scale-105 z-10 shadow-lg border border-pink-500/30 hover:border-pink-500 ";
           } else {
             baseClasses += "bg-white/5 hover:bg-white/10 text-white cursor-pointer hover:scale-105 ";
           }
@@ -687,11 +694,30 @@ const customHtml = `
         var clickAttr = (isPast) ? '' : 'onclick="window.selectDate(' + year + ',' + month + ',' + d + ')"';
 
         html += '<div class="' + baseClasses + '" ' + clickAttr + '>';
-        html += '<span>' + d + '</span>';
-        if (hasClasses && !isPast && !isSelected) {
-           html += '<span class="absolute bottom-1 md:bottom-2 left-1/2 -translate-x-1/2 w-1 h-1 md:w-1.5 md:h-1.5 rounded-full bg-pink-500"></span>';
-        } else if (hasClasses && !isPast && isSelected) {
-           html += '<span class="absolute bottom-1 md:bottom-2 left-1/2 -translate-x-1/2 w-1 h-1 md:w-1.5 md:h-1.5 rounded-full bg-black"></span>';
+        
+        if (hasClasses) {
+          html += '<span class="text-sm md:text-lg font-black mb-1 mx-auto">' + d + '</span>';
+          html += '<div class="flex flex-col gap-1 w-full mt-1">';
+          daySchedulesForCell.slice(0, 3).forEach(function(s) {
+            var timeStr = s.startTime.substring(0, 5); // Format: 09:00
+            
+            // Adjust colors if selected so it's readable on the yellow/orange gradient
+            var titleColor = isSelected ? 'text-black' : 'text-pink-200';
+            var timeColor = isSelected ? 'text-black/80' : 'text-white/80';
+            var bgColor = isSelected ? 'bg-white/30' : 'bg-black/30';
+            var borderColor = isSelected ? 'border-black' : 'border-yellow-400';
+            
+            html += '<div class="text-[9px] md:text-xs ' + bgColor + ' rounded px-1 py-0.5 truncate text-left border-l-2 ' + borderColor + ' leading-tight">';
+            html += '<div class="font-bold ' + titleColor + ' truncate" title="' + s.service.name + '">' + s.service.name + '</div>';
+            html += '<div class="' + timeColor + '">' + timeStr + '</div>';
+            html += '</div>';
+          });
+          if (daySchedulesForCell.length > 3) {
+            html += '<div class="text-[10px] ' + (isSelected ? 'text-black' : 'text-yellow-400') + ' font-bold mt-1 text-center">+' + (daySchedulesForCell.length - 3) + ' more</div>';
+          }
+          html += '</div>';
+        } else {
+          html += '<span>' + d + '</span>';
         }
         html += '</div>';
       }
