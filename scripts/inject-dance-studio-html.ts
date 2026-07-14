@@ -206,22 +206,22 @@ const customHtml = `
   </header>
 
   <!-- Side Drawer Menu -->
-  <div id="side-drawer" class="smooth-drawer fixed top-0 right-0 h-full w-56 bg-[var(--bollywood-bg-light)]/90 backdrop-blur-3xl border-l border-[var(--bollywood-magenta)]/30 z-[200] transform translate-x-full shadow-2xl flex flex-col pt-24 px-6">
+  <div id="side-drawer" class="smooth-drawer fixed top-0 right-0 h-full w-48 bg-[var(--bollywood-bg-light)]/90 backdrop-blur-3xl border-l border-[var(--bollywood-magenta)]/30 z-[200] transform translate-x-full shadow-2xl flex flex-col pt-20 px-5">
     <!-- Golden Slick Handle -->
-    <div id="drawer-handle" class="smooth-handle py-8 bg-gradient-to-b from-yellow-400 to-orange-500 rounded-l-2xl cursor-pointer flex flex-col items-center justify-center shadow-[0_0_20px_rgba(255,215,0,0.6)] group">
-      <span class="text-black font-black text-xs -rotate-90 tracking-widest mb-6 transition-opacity duration-300">MENU</span>
-      <div class="flex flex-col gap-1.5 opacity-60 group-hover:opacity-100 transition-opacity">
-        <div class="w-1 h-3 bg-black rounded-full"></div>
-        <div class="w-1 h-3 bg-black rounded-full"></div>
+    <div id="drawer-handle" class="smooth-handle py-6 bg-gradient-to-b from-yellow-400 to-orange-500 rounded-l-2xl cursor-pointer flex flex-col items-center justify-center shadow-[0_0_20px_rgba(255,215,0,0.6)] group">
+      <span class="text-black font-black text-[10px] -rotate-90 tracking-widest mb-4 transition-opacity duration-300">MENU</span>
+      <div class="flex flex-col gap-1 opacity-60 group-hover:opacity-100 transition-opacity">
+        <div class="w-1 h-2.5 bg-black rounded-full"></div>
+        <div class="w-1 h-2.5 bg-black rounded-full"></div>
       </div>
     </div>
     
     <!-- Drawer Links -->
-    <nav class="flex flex-col gap-8">
-      <a href="#classes" class="text-xl font-medium text-white/70 hover:text-white hover:translate-x-2 transition-all">Programs</a>
-      <a href="#schedule" class="text-xl font-medium text-white/70 hover:text-white hover:translate-x-2 transition-all">Schedule</a>
-      <a href="#faculty" class="text-xl font-medium text-white/70 hover:text-white hover:translate-x-2 transition-all">Faculty</a>
-      <a href="#testimonials" class="text-xl font-medium text-white/70 hover:text-white hover:translate-x-2 transition-all">Community</a>
+    <nav class="flex flex-col gap-6 mt-4">
+      <a href="#classes" class="text-lg font-medium text-white/70 hover:text-white hover:translate-x-1.5 transition-all">Programs</a>
+      <a href="#schedule" class="text-lg font-medium text-white/70 hover:text-white hover:translate-x-1.5 transition-all">Schedule</a>
+      <a href="#faculty" class="text-lg font-medium text-white/70 hover:text-white hover:translate-x-1.5 transition-all">Faculty</a>
+      <a href="#testimonials" class="text-lg font-medium text-white/70 hover:text-white hover:translate-x-1.5 transition-all">Community</a>
     </nav>
   </div>
 
