@@ -311,8 +311,22 @@ const customHtml = `
       <div class="w-16 md:w-24 h-1 bg-gradient-to-r from-yellow-400 to-pink-500 mx-auto rounded-full mt-2 md:mt-4"></div>
     </div>
 
-    <!-- Day tabs -->
-    <div id="timetable-tabs" class="flex flex-wrap justify-center gap-2 md:gap-3 mb-10 md:mb-14"></div>
+    <!-- Calendar Container -->
+    <div id="calendar-container" class="mb-10 md:mb-14 max-w-4xl mx-auto bollywood-glass rounded-[2rem] p-4 md:p-8">
+      <div class="flex justify-between items-center mb-6">
+        <button id="cal-prev" class="w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors" onclick="window.changeMonth(-1)">&lt;</button>
+        <h4 id="cal-month-year" class="text-xl md:text-2xl font-black text-white tracking-widest uppercase"></h4>
+        <button id="cal-next" class="w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors" onclick="window.changeMonth(1)">&gt;</button>
+      </div>
+      <!-- Days Header -->
+      <div class="grid grid-cols-7 gap-1 md:gap-2 mb-2 text-center text-[10px] md:text-sm font-bold tracking-widest text-yellow-400 uppercase">
+        <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
+      </div>
+      <!-- Days Grid -->
+      <div id="cal-grid" class="grid grid-cols-7 gap-1 md:gap-2 text-center"></div>
+    </div>
+    
+    <div id="selected-date-label" class="text-center text-xl md:text-2xl font-black text-white mb-6 drop-shadow-md"></div>
 
     <!-- Timetable cards -->
     <div id="timetable-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
@@ -500,7 +514,11 @@ const customHtml = `
     var DAY_NAMES = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     var DAY_SHORT = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
     var allSchedules = [];
-    var activeDayTab = new Date().getDay();
+    
+    var currentMonthOffset = 0; // 0 = current, 1 = next, 2 = +2
+    var selectedDate = new Date();
+    selectedDate.setHours(0,0,0,0);
+    var activeDayTab = selectedDate.getDay();
 
     function initClassesFromSDK() {
       if (typeof KutzApp === 'undefined') {
@@ -516,8 +534,9 @@ const customHtml = `
       KutzApp.getClassSchedules().then(function(schedules) {
         allSchedules = schedules;
         renderClassCards(schedules);
-        renderTimetableTabs(schedules);
-        renderTimetableForDay(activeDayTab);
+        
+        var d = new Date();
+        window.selectDate(d.getFullYear(), d.getMonth(), d.getDate());
       }).catch(function(err) {
         console.warn('SDK class load failed:', err);
       });
@@ -601,41 +620,93 @@ const customHtml = `
       container.innerHTML = html;
     }
 
-    function renderTimetableTabs(schedules) {
-      var tabContainer = document.getElementById('timetable-tabs');
-      if (!tabContainer) return;
+    window.changeMonth = function(dir) {
+      currentMonthOffset += dir;
+      if (currentMonthOffset < 0) currentMonthOffset = 0;
+      if (currentMonthOffset > 2) currentMonthOffset = 2;
+      renderCalendar();
+    };
 
-      // Find which days have classes
+    window.selectDate = function(y, m, d) {
+      selectedDate = new Date(y, m, d);
+      selectedDate.setHours(0,0,0,0);
+      renderCalendar();
+      activeDayTab = selectedDate.getDay();
+      
+      var options = { weekday: 'long', month: 'long', day: 'numeric' };
+      var dateString = selectedDate.toLocaleDateString(undefined, options);
+      var label = document.getElementById('selected-date-label');
+      if (label) label.innerText = 'Schedule for ' + dateString;
+      
+      renderTimetableForDay(activeDayTab);
+    };
+
+    function renderCalendar() {
+      var grid = document.getElementById('cal-grid');
+      var monthLabel = document.getElementById('cal-month-year');
+      var prevBtn = document.getElementById('cal-prev');
+      var nextBtn = document.getElementById('cal-next');
+      if (!grid) return;
+
       var daysWithClasses = {};
-      schedules.forEach(function(s) { daysWithClasses[s.dayOfWeek] = true; });
+      allSchedules.forEach(function(s) { daysWithClasses[s.dayOfWeek] = true; });
+
+      var targetDate = new Date();
+      targetDate.setDate(1); // Set to 1st to avoid overflow issues
+      targetDate.setMonth(targetDate.getMonth() + currentMonthOffset);
+      
+      var year = targetDate.getFullYear();
+      var month = targetDate.getMonth();
+      
+      var monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+      monthLabel.innerText = monthNames[month] + ' ' + year;
+
+      prevBtn.style.opacity = currentMonthOffset === 0 ? '0.3' : '1';
+      prevBtn.style.pointerEvents = currentMonthOffset === 0 ? 'none' : 'auto';
+      nextBtn.style.opacity = currentMonthOffset === 2 ? '0.3' : '1';
+      nextBtn.style.pointerEvents = currentMonthOffset === 2 ? 'none' : 'auto';
+
+      var firstDay = new Date(year, month, 1).getDay();
+      var daysInMonth = new Date(year, month + 1, 0).getDate();
 
       var html = '';
-      for (var d = 0; d < 7; d++) {
-        var isActive = d === activeDayTab;
-        var hasClasses = daysWithClasses[d];
-        var extraClass = isActive ? ' active' : '';
-        var opacity = hasClasses ? '' : ' opacity-40';
-        html += '<button class="timetable-day-tab' + extraClass + opacity + '" data-day="' + d + '" onclick="switchDay(' + d + ')">';
-        html += '<span class="hidden md:inline">' + DAY_NAMES[d] + '</span>';
-        html += '<span class="md:hidden">' + DAY_SHORT[d] + '</span>';
-        if (hasClasses) html += '<span class="ml-1.5 w-1.5 h-1.5 rounded-full bg-yellow-400 inline-block"></span>';
-        html += '</button>';
+      for (var i = 0; i < firstDay; i++) {
+        html += '<div></div>';
       }
-      tabContainer.innerHTML = html;
-    }
 
-    function switchDay(day) {
-      activeDayTab = day;
-      // Update tab styles
-      var tabs = document.querySelectorAll('.timetable-day-tab');
-      tabs.forEach(function(tab) {
-        if (parseInt(tab.getAttribute('data-day')) === day) {
-          tab.classList.add('active');
+      var today = new Date();
+      today.setHours(0,0,0,0);
+
+      for (var d = 1; d <= daysInMonth; d++) {
+        var cellDate = new Date(year, month, d);
+        cellDate.setHours(0,0,0,0);
+        var dayOfWeek = cellDate.getDay();
+        var hasClasses = daysWithClasses[dayOfWeek];
+        var isPast = cellDate < today;
+        var isSelected = cellDate.getTime() === selectedDate.getTime();
+        
+        var baseClasses = "relative w-full aspect-square flex items-center justify-center rounded-lg md:rounded-xl text-sm md:text-lg font-bold transition-all ";
+        
+        if (isSelected) {
+          baseClasses += "bg-gradient-to-br from-yellow-400 to-orange-500 text-black shadow-lg scale-110 z-10 ";
+        } else if (!isPast) {
+          baseClasses += "bg-white/5 hover:bg-white/10 text-white cursor-pointer hover:scale-105 ";
         } else {
-          tab.classList.remove('active');
+          baseClasses += "bg-black/20 text-white/30 cursor-not-allowed ";
         }
-      });
-      renderTimetableForDay(day);
+
+        var clickAttr = (isPast) ? '' : 'onclick="window.selectDate(' + year + ',' + month + ',' + d + ')"';
+
+        html += '<div class="' + baseClasses + '" ' + clickAttr + '>';
+        html += '<span>' + d + '</span>';
+        if (hasClasses && !isPast && !isSelected) {
+           html += '<span class="absolute bottom-1 md:bottom-2 left-1/2 -translate-x-1/2 w-1 h-1 md:w-1.5 md:h-1.5 rounded-full bg-pink-500"></span>';
+        } else if (hasClasses && !isPast && isSelected) {
+           html += '<span class="absolute bottom-1 md:bottom-2 left-1/2 -translate-x-1/2 w-1 h-1 md:w-1.5 md:h-1.5 rounded-full bg-black"></span>';
+        }
+        html += '</div>';
+      }
+      grid.innerHTML = html;
     }
 
     function renderTimetableForDay(day) {
