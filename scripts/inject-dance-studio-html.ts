@@ -692,24 +692,24 @@ const customHtml = `
         var isPast = cellDate < today;
         var isSelected = cellDate.getTime() === selectedDate.getTime();
         
-        var baseClasses = "relative w-full flex flex-col rounded-lg md:rounded-xl transition-all overflow-hidden p-1 md:p-2 ";
+        var baseClasses = "relative w-full flex flex-col rounded-lg md:rounded-xl transition-all duration-300 p-1 md:p-2 group ";
         
         if (hasClasses) {
           baseClasses += "min-h-[90px] md:min-h-[130px] justify-start items-start ";
         } else {
-          baseClasses += "aspect-square justify-center items-center text-sm md:text-lg font-bold ";
+          baseClasses += "aspect-square justify-center items-center text-sm md:text-lg font-bold overflow-hidden ";
         }
 
         if (isSelected) {
-          baseClasses += "bg-gradient-to-br from-yellow-400 to-orange-500 text-black shadow-lg scale-105 z-20 border border-white ";
+          baseClasses += "bg-gradient-to-br from-yellow-400 to-orange-500 text-black shadow-lg z-20 border border-white ";
         } else if (!isPast) {
           if (hasClasses) {
-            baseClasses += "bg-white/10 hover:bg-white/20 text-white cursor-pointer scale-105 z-10 shadow-lg border border-pink-500/30 hover:border-pink-500 ";
+            baseClasses += "bg-white/10 hover:bg-white/20 text-white cursor-pointer z-10 border border-pink-500/30 hover:border-pink-500 ";
           } else {
             baseClasses += "bg-white/5 hover:bg-white/10 text-white cursor-pointer hover:scale-105 ";
           }
         } else {
-          baseClasses += "bg-black/20 text-white/30 cursor-not-allowed ";
+          baseClasses += "bg-black/20 text-white/30 cursor-not-allowed overflow-hidden ";
         }
 
         var clickAttr = (isPast) ? '' : 'onclick="window.selectDate(' + year + ',' + month + ',' + d + ')"';
@@ -717,6 +717,8 @@ const customHtml = `
         html += '<div class="' + baseClasses + '" ' + clickAttr + '>';
         
         if (hasClasses) {
+          // Standard View (visible normally)
+          html += '<div class="w-full h-full flex flex-col overflow-hidden group-hover:opacity-0 transition-opacity duration-300">';
           html += '<span class="text-sm md:text-lg font-black mb-1 mx-auto">' + d + '</span>';
           html += '<div class="flex flex-col gap-1 w-full mt-1">';
           daySchedulesForCell.slice(0, 3).forEach(function(s) {
@@ -737,6 +739,21 @@ const customHtml = `
             html += '<div class="text-[10px] ' + (isSelected ? 'text-black' : 'text-yellow-400') + ' font-bold mt-1 text-center">+' + (daySchedulesForCell.length - 3) + ' more</div>';
           }
           html += '</div>';
+          html += '</div>'; // End Standard View
+          
+          // Hover Popover View (Enlarged, Dynamic Details)
+          html += '<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[140%] min-h-[140%] h-max bg-[#2d164d] rounded-2xl shadow-[0_0_40px_rgba(255,0,127,0.9)] border-2 border-pink-500 z-[100] p-4 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-all duration-300 scale-90 group-hover:scale-100 flex flex-col gap-2">';
+          html += '<span class="text-xl md:text-2xl font-black mb-2 text-center text-yellow-400 border-b border-pink-500/30 pb-2">' + monthNames[month] + ' ' + d + '</span>';
+          daySchedulesForCell.forEach(function(s) {
+            var timeStr = s.startTime.substring(0, 5);
+            var endTimeStr = s.endTime.substring(0, 5);
+            html += '<div class="text-xs md:text-sm bg-black/40 rounded-lg p-2 text-left border-l-4 border-yellow-400 leading-tight w-full">';
+            html += '<div class="font-black text-pink-200 mb-1 leading-snug whitespace-normal">' + s.service.name + '</div>';
+            html += '<div class="text-white/80 font-medium flex justify-between items-center"><span class="flex items-center gap-1"><svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>' + timeStr + ' - ' + endTimeStr + '</span><span class="text-[10px] bg-pink-500/20 text-pink-300 px-2 py-0.5 rounded-full">' + s.service.duration + 'm</span></div>';
+            html += '</div>';
+          });
+          html += '</div>'; // End Hover Popover View
+          
         } else {
           html += '<span>' + d + '</span>';
         }
