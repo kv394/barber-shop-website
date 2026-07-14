@@ -321,7 +321,6 @@ const customHtml = `
       <div id="cal-grid" class="grid grid-cols-7 gap-1 md:gap-2 text-center"></div>
     </div>
     
-    <div id="selected-date-label" class="text-center text-xl md:text-2xl font-black text-white mb-6 drop-shadow-md"></div>
 
     <!-- Timetable cards -->
     <div id="timetable-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
@@ -628,11 +627,7 @@ const customHtml = `
       renderCalendar();
       activeDayTab = selectedDate.getDay();
       
-      var options = { weekday: 'long', month: 'long', day: 'numeric' };
-      var dateString = selectedDate.toLocaleDateString(undefined, options);
-      var label = document.getElementById('selected-date-label');
-      if (label) label.innerText = 'Schedule for ' + dateString;
-      
+
       renderTimetableForDay(activeDayTab);
     };
 
