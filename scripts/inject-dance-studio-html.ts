@@ -185,6 +185,19 @@ const customHtml = `
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
   }
+  .cal-popover {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translate(-50%, -50%) scale(0.75);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .group:hover .cal-popover {
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+    transform: translate(-50%, -50%) scale(1) !important;
+  }
 </style>
 
 <div id="top" class="min-h-screen text-neutral-100 font-sans selection:bg-pink-500/30 overflow-hidden relative" style="background-color: var(--bollywood-bg-dark)">
@@ -746,7 +759,7 @@ const customHtml = `
           html += '</div>'; // End Standard View
           
           // Hover Popover View (Enlarged, Dynamic Details)
-          html += '<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-black rounded-2xl text-white shadow-[0_0_50px_rgba(255,0,127,1)] border border-pink-500/50 z-[100] p-4 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-all duration-300 ease-out scale-75 group-hover:scale-100 flex flex-col gap-2 overflow-y-auto scrollbar-hide cursor-default" style="width: 16rem; height: 16rem; background-color: #000000;">';
+          html += '<div class="cal-popover absolute top-1/2 left-1/2 bg-black rounded-2xl text-white shadow-[0_0_50px_rgba(255,0,127,1)] border border-pink-500/50 z-[100] p-4 flex flex-col gap-2 overflow-y-auto scrollbar-hide cursor-default" style="width: 16rem; height: 16rem; background-color: #000000;">';
           html += '<span class="text-xl md:text-2xl font-black mb-2 text-center text-yellow-400 border-b border-pink-500/30 pb-2 shrink-0">' + monthNames[month] + ' ' + d + '</span>';
           daySchedulesForCell.forEach(function(s) {
             var timeStr = s.startTime.substring(0, 5);
