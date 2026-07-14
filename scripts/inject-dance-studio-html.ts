@@ -554,7 +554,7 @@ const customHtml = `
         var priceVal = svc.semesterPrice || svc.dropInPrice || svc.price || 0;
         var imgSrc = svc.imageUrl || 'https://images.unsplash.com/photo-1518834107812-67b0b7c58434?q=80&w=800&auto=format&fit=crop';
 
-        html += '<div data-service-id="' + svc.id + '" class="bollywood-glass rounded-2xl lg:rounded-[2rem] p-0 bollywood-card-hover cursor-pointer group flex flex-col relative overflow-hidden h-auto" onclick="if(typeof BarberBooking!==\'undefined\')BarberBooking.open(\''+svc.id+'\')">'
+        html += '<div data-service-id="' + svc.id + '" data-booking-service-id="' + svc.id + '" class="bollywood-glass rounded-2xl lg:rounded-[2rem] p-0 bollywood-card-hover cursor-pointer group flex flex-col relative overflow-hidden h-auto">'
           + '<div class="w-full aspect-video relative bg-black shrink-0 overflow-hidden">'
           + '<img src="' + imgSrc + '" alt="' + svc.name + '" class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />'
           + '<div class="absolute inset-0 bg-gradient-to-t from-[#1a0b2e] via-transparent to-transparent opacity-80"></div>'
@@ -640,7 +640,7 @@ const customHtml = `
           ? '<img src="' + s.staff.imageUrl + '" class="w-10 h-10 rounded-full object-cover border-2 border-yellow-400/40" alt="' + s.staff.name + '" />'
           : '<div class="w-10 h-10 rounded-full bg-gradient-to-br from-pink-500 to-orange-500 flex items-center justify-center text-sm font-black text-white border-2 border-yellow-400/40">' + (s.staff.name ? s.staff.name[0] : '?') + '</div>';
 
-        html += '<div class="timetable-card cursor-pointer" onclick="if(typeof BarberBooking!==\'undefined\')BarberBooking.open(\''+svc.id+'\')">'
+        html += '<div class="timetable-card cursor-pointer" data-booking-service-id="' + svc.id + '">'
           + '<div class="flex items-start gap-4">'
           + staffImg
           + '<div class="flex-1 min-w-0">'
@@ -664,6 +664,21 @@ const customHtml = `
 
       grid.innerHTML = html;
     }
+
+    // Event delegation for booking clicks on dynamically rendered class cards
+    document.addEventListener('click', function(e) {
+      var target = e.target;
+      while (target && target !== document) {
+        var serviceId = target.getAttribute && target.getAttribute('data-booking-service-id');
+        if (serviceId) {
+          if (typeof BarberBooking !== 'undefined') {
+            BarberBooking.open(serviceId);
+          }
+          return;
+        }
+        target = target.parentElement;
+      }
+    });
   </script>
   <script>
     // Force scroll to top on page refresh
