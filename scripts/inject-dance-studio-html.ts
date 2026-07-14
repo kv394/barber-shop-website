@@ -329,11 +329,6 @@ const customHtml = `
       <div class="timetable-skeleton h-44"></div>
     </div>
 
-    <!-- Empty state -->
-    <div id="timetable-empty" class="hidden text-center py-16">
-      <div class="text-5xl mb-4 opacity-50">📅</div>
-      <p class="text-pink-100/60 text-lg">No classes scheduled for this day</p>
-    </div>
   </section>
 
   <!-- Instructors / Faculty Section -->
@@ -705,20 +700,14 @@ const customHtml = `
 
     function renderTimetableForDay(day) {
       var grid = document.getElementById('timetable-grid');
-      var empty = document.getElementById('timetable-empty');
-      if (!grid || !empty) return;
+      if (!grid) return;
 
       var daySchedules = allSchedules.filter(function(s) { return s.dayOfWeek === day; });
 
       if (daySchedules.length === 0) {
         grid.innerHTML = '';
-        grid.classList.add('hidden');
-        empty.classList.remove('hidden');
         return;
       }
-
-      grid.classList.remove('hidden');
-      empty.classList.add('hidden');
 
       var html = '';
       daySchedules.forEach(function(s) {
