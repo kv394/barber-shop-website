@@ -177,16 +177,6 @@ const customHtml = `
     width: 3.5rem;
     transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1) !important;
   }
-  .smooth-drawer.is-open .smooth-handle {
-    left: 0;
-    width: 1.5rem;
-    background: rgba(255, 255, 255, 0.05);
-    box-shadow: none;
-    border-radius: 0;
-  }
-  .smooth-drawer.is-open .smooth-handle span {
-    opacity: 0;
-  }
 </style>
 
 <div class="min-h-screen text-neutral-100 font-sans selection:bg-pink-500/30 overflow-hidden relative" style="background-color: var(--bollywood-bg-dark)">
