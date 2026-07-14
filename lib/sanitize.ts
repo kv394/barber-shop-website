@@ -59,6 +59,13 @@ export function sanitizeTemplate(html: string): string {
       'video': ['src', 'controls', 'width', 'height', 'autoplay', 'loop', 'muted', 'poster', 'preload'],
       'audio': ['src', 'controls', 'autoplay', 'loop', 'muted', 'preload'],
       'track': ['src', 'kind', 'srclang', 'label', 'default'],
+      'svg': ['xmlns', 'viewBox', 'fill', 'stroke', 'stroke-width', 'stroke-linecap', 'stroke-linejoin'],
+      'path': ['d', 'fill', 'stroke', 'stroke-linecap', 'stroke-linejoin', 'stroke-width'],
+      'circle': ['cx', 'cy', 'r', 'fill', 'stroke', 'stroke-width'],
+      'rect': ['x', 'y', 'width', 'height', 'rx', 'ry', 'fill', 'stroke', 'stroke-width'],
+      'line': ['x1', 'y1', 'x2', 'y2', 'stroke', 'stroke-width'],
+      'polyline': ['points', 'fill', 'stroke', 'stroke-width'],
+      'polygon': ['points', 'fill', 'stroke', 'stroke-width'],
     },
   });
 }
