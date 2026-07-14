@@ -34,8 +34,9 @@ function extractTemplateAssets(html: string) {
  while ((match = scriptRegex.exec(html)) !== null) {
   const tag = match[0];
   const content = match[1]?.trim();
-  // Check for src attribute
-  const srcMatch = tag.match(/src=["']([^"']+)["']/);
+  // Check for src attribute ONLY in the opening tag, to avoid matching src="" inside JS strings
+  const openingTag = tag.substring(0, tag.indexOf('>'));
+  const srcMatch = openingTag.match(/src=["']([^"']+)["']/);
   if (srcMatch) {
    // C5: Only allow scripts from trusted CDN domains
    const TRUSTED_SCRIPT_DOMAINS = [
