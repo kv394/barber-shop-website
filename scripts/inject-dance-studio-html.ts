@@ -177,7 +177,7 @@ const customHtml = `
 
   <!-- Floating Header / Nav -->
   <!-- Floating Header / Nav -->
-  <header class="fixed top-0 left-0 w-full z-[100] px-6 md:px-10 py-3 md:py-4 flex justify-between items-center bg-black/40 backdrop-blur-xl border-b border-white/10 shadow-2xl transition-all">
+  <header class="fixed top-0 left-0 w-full z-[100] px-6 md:px-10 py-5 md:py-7 flex justify-between items-center bg-black/40 backdrop-blur-xl border-b border-white/10 shadow-2xl transition-all">
     <!-- Left: Logo & Name -->
     <div class="flex-1 flex items-center gap-3 md:gap-4">
       {{#shop.logoUrl}}
