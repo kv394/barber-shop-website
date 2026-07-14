@@ -186,6 +186,9 @@ const customHtml = `
     -webkit-text-fill-color: transparent;
   }
   .cal-popover {
+    width: 16rem;
+    height: 16rem;
+    background-color: #000000;
     opacity: 0;
     visibility: hidden;
     pointer-events: none;
@@ -197,6 +200,22 @@ const customHtml = `
     visibility: visible !important;
     pointer-events: auto !important;
     transform: translate(-50%, -50%) scale(1) !important;
+  }
+  .cal-popover-item {
+    background-color: #111827;
+  }
+  .floating-chevron {
+    position: fixed !important;
+    bottom: 8rem !important;
+    right: 2rem !important;
+    z-index: 9999 !important;
+    display: block !important;
+  }
+  .chevron-icon {
+    width: 3.5rem !important;
+    height: 3.5rem !important;
+    stroke: var(--bollywood-magenta) !important;
+    filter: drop-shadow(0 0 15px rgba(255,0,127,0.8)) !important;
   }
 </style>
 
@@ -759,12 +778,12 @@ const customHtml = `
           html += '</div>'; // End Standard View
           
           // Hover Popover View (Enlarged, Dynamic Details)
-          html += '<div class="cal-popover absolute top-1/2 left-1/2 bg-black rounded-2xl text-white shadow-[0_0_50px_rgba(255,0,127,1)] border border-pink-500/50 z-[100] p-4 flex flex-col gap-2 overflow-y-auto scrollbar-hide cursor-default" style="width: 16rem; height: 16rem; background-color: #000000;">';
+          html += '<div class="cal-popover absolute top-1/2 left-1/2 rounded-2xl text-white shadow-[0_0_50px_rgba(255,0,127,1)] border border-pink-500/50 z-[100] p-4 flex flex-col gap-2 overflow-y-auto scrollbar-hide cursor-default">';
           html += '<span class="text-xl md:text-2xl font-black mb-2 text-center text-yellow-400 border-b border-pink-500/30 pb-2 shrink-0">' + monthNames[month] + ' ' + d + '</span>';
           daySchedulesForCell.forEach(function(s) {
             var timeStr = s.startTime.substring(0, 5);
             var endTimeStr = s.endTime.substring(0, 5);
-            html += '<div class="text-xs md:text-sm bg-gray-900 p-2 text-left border-l-4 border-yellow-400 leading-tight w-full shrink-0" style="background-color: #111827;">';
+            html += '<div class="cal-popover-item text-xs md:text-sm p-2 text-left border-l-4 border-yellow-400 leading-tight w-full shrink-0">';
             html += '<div class="font-black text-white mb-1 leading-snug whitespace-normal">' + s.service.name + '</div>';
             html += '<div class="text-white/80 font-medium flex justify-between items-center"><span class="flex items-center gap-1"><svg class="w-3 h-3 text-pink-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>' + timeStr + ' - ' + endTimeStr + '</span><span class="text-[10px] bg-pink-500 text-white px-2 py-0.5 rounded-sm font-bold">' + s.service.duration + 'm</span></div>';
             html += '</div>';
@@ -849,8 +868,8 @@ const customHtml = `
   </script>
 
   <!-- Floating Home Button -->
-  <a href="#top" class="hover:-translate-y-2 transition-transform duration-300 group" style="position: fixed; bottom: 8rem; right: 2rem; z-index: 9999; display: block;">
-    <svg xmlns="http://www.w3.org/2000/svg" style="width: 3.5rem; height: 3.5rem; stroke: var(--bollywood-magenta); filter: drop-shadow(0 0 15px rgba(255,0,127,0.8));" fill="none" viewBox="0 0 24 24">
+  <a href="#top" class="floating-chevron hover:-translate-y-2 transition-transform duration-300 group">
+    <svg xmlns="http://www.w3.org/2000/svg" class="chevron-icon" fill="none" viewBox="0 0 24 24">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="M5 15l7-7 7 7" />
     </svg>
   </a>
