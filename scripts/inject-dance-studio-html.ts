@@ -187,21 +187,21 @@ const customHtml = `
     </div>
     <!-- Center: Navigation Links -->
     <nav class="hidden md:flex items-center justify-center gap-12 flex-1">
-      <a href="#classes" class="relative group text-xl font-medium text-white/70 hover:text-white transition-colors duration-300">
-        <span>Programs</span>
-        <span class="absolute -bottom-1 left-0 w-full h-[2px] bg-gradient-to-r from-pink-500 to-orange-400 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-center rounded-full"></span>
+      <a href="#classes" class="relative group text-xl font-medium text-white/70 transition-all duration-300">
+        <span class="relative z-10 transition-all duration-300 group-hover:text-pink-300 group-hover:drop-shadow-[0_0_12px_rgba(255,0,127,0.8)]">Programs</span>
+        <span class="absolute -bottom-1 left-0 w-full h-[2px] bg-gradient-to-r from-pink-500 to-orange-400 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-center rounded-full shadow-[0_0_8px_rgba(255,0,127,0.6)]"></span>
       </a>
-      <a href="#schedule" class="relative group text-xl font-medium text-white/70 hover:text-white transition-colors duration-300">
-        <span>Schedule</span>
-        <span class="absolute -bottom-1 left-0 w-full h-[2px] bg-gradient-to-r from-pink-500 to-orange-400 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-center rounded-full"></span>
+      <a href="#schedule" class="relative group text-xl font-medium text-white/70 transition-all duration-300">
+        <span class="relative z-10 transition-all duration-300 group-hover:text-pink-300 group-hover:drop-shadow-[0_0_12px_rgba(255,0,127,0.8)]">Schedule</span>
+        <span class="absolute -bottom-1 left-0 w-full h-[2px] bg-gradient-to-r from-pink-500 to-orange-400 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-center rounded-full shadow-[0_0_8px_rgba(255,0,127,0.6)]"></span>
       </a>
-      <a href="#faculty" class="relative group text-xl font-medium text-white/70 hover:text-white transition-colors duration-300">
-        <span>Faculty</span>
-        <span class="absolute -bottom-1 left-0 w-full h-[2px] bg-gradient-to-r from-pink-500 to-orange-400 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-center rounded-full"></span>
+      <a href="#faculty" class="relative group text-xl font-medium text-white/70 transition-all duration-300">
+        <span class="relative z-10 transition-all duration-300 group-hover:text-pink-300 group-hover:drop-shadow-[0_0_12px_rgba(255,0,127,0.8)]">Faculty</span>
+        <span class="absolute -bottom-1 left-0 w-full h-[2px] bg-gradient-to-r from-pink-500 to-orange-400 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-center rounded-full shadow-[0_0_8px_rgba(255,0,127,0.6)]"></span>
       </a>
-      <a href="#testimonials" class="relative group text-xl font-medium text-white/70 hover:text-white transition-colors duration-300">
-        <span>Community</span>
-        <span class="absolute -bottom-1 left-0 w-full h-[2px] bg-gradient-to-r from-pink-500 to-orange-400 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-center rounded-full"></span>
+      <a href="#testimonials" class="relative group text-xl font-medium text-white/70 transition-all duration-300">
+        <span class="relative z-10 transition-all duration-300 group-hover:text-pink-300 group-hover:drop-shadow-[0_0_12px_rgba(255,0,127,0.8)]">Community</span>
+        <span class="absolute -bottom-1 left-0 w-full h-[2px] bg-gradient-to-r from-pink-500 to-orange-400 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-center rounded-full shadow-[0_0_8px_rgba(255,0,127,0.6)]"></span>
       </a>
     </nav>
     
