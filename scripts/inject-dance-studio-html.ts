@@ -115,6 +115,54 @@ const customHtml = `
   .bollywood-btn:hover::before {
     left: 100%;
   }
+
+  /* Weekly Timetable */
+  .timetable-day-tab {
+    padding: 10px 20px;
+    border-radius: 9999px;
+    font-size: 12px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 215, 0, 0.2);
+    background: rgba(45, 22, 77, 0.4);
+    color: rgba(255, 200, 200, 0.7);
+  }
+  .timetable-day-tab:hover {
+    border-color: rgba(255, 215, 0, 0.5);
+    color: white;
+  }
+  .timetable-day-tab.active {
+    background: linear-gradient(90deg, var(--bollywood-orange), var(--bollywood-magenta));
+    border-color: transparent;
+    color: white;
+    box-shadow: 0 5px 15px rgba(255, 0, 127, 0.4);
+  }
+  .timetable-card {
+    background: rgba(45, 22, 77, 0.5);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 215, 0, 0.1);
+    border-radius: 1.5rem;
+    padding: 24px;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .timetable-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--bollywood-gold);
+    box-shadow: 0 10px 30px -5px rgba(255, 0, 127, 0.3);
+  }
+  .timetable-skeleton {
+    background: linear-gradient(90deg, rgba(255,255,255,0.03) 25%, rgba(255,255,255,0.08) 50%, rgba(255,255,255,0.03) 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+    border-radius: 1rem;
+  }
+  @keyframes shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+  }
 </style>
 
 <div class="min-h-screen text-neutral-100 font-sans selection:bg-pink-500/30 overflow-hidden relative" style="background-color: var(--bollywood-bg-dark)">
@@ -140,6 +188,10 @@ const customHtml = `
     <nav class="hidden lg:flex items-center justify-center gap-10 text-pink-100 shrink-0">
       <a href="#classes" class="relative text-xs font-black uppercase tracking-[0.2em] hover:text-yellow-400 transition-colors group">
         Programs
+        <span class="absolute -bottom-2 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-yellow-400 opacity-0 group-hover:opacity-100 transition-opacity"></span>
+      </a>
+      <a href="#schedule" class="relative text-xs font-black uppercase tracking-[0.2em] hover:text-yellow-400 transition-colors group">
+        Schedule
         <span class="absolute -bottom-2 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-yellow-400 opacity-0 group-hover:opacity-100 transition-opacity"></span>
       </a>
       <a href="#faculty" class="relative text-xs font-black uppercase tracking-[0.2em] hover:text-yellow-400 transition-colors group">
@@ -234,7 +286,7 @@ const customHtml = `
     </div>
   </section>
 
-  <!-- Classes / Programs Section -->
+  <!-- Classes / Programs Section (SDK-Powered) -->
   <section id="classes" class="py-16 md:py-32 px-4 md:px-12 max-w-7xl mx-auto relative z-10">
     <div class="flex flex-col text-center mb-10 md:mb-20 gap-2 md:gap-4">
       <h2 class="text-xs md:text-sm font-black tracking-[0.2em] uppercase text-yellow-400">Our Curriculum</h2>
@@ -242,111 +294,37 @@ const customHtml = `
       <div class="w-16 md:w-24 h-1 bg-gradient-to-r from-yellow-400 to-pink-500 mx-auto rounded-full mt-2 md:mt-4"></div>
     </div>
 
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-10">
-      <!-- Advanced Choreography -->
-      <div data-service-id="cmrh0fmyd0006neosdr91rc1q" class="bollywood-glass rounded-2xl lg:rounded-[2rem] p-0 bollywood-card-hover cursor-pointer group flex flex-col relative overflow-hidden h-auto">
-        <div class="w-full aspect-video relative bg-black shrink-0 overflow-hidden">
-          <!-- Video Player: Scaled up to hide top/bottom controls, disabled interaction -->
-          <iframe 
-            src="https://www.youtube.com/embed/SacuV0kEQlA?autoplay=1&mute=1&loop=1&playlist=SacuV0kEQlA&controls=0&rel=0&modestbranding=1&playsinline=1&start=20" 
-            class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none" 
-            style="width: 135%; height: 135%;"
-            frameborder="0" 
-            allow="autoplay; encrypted-media" 
-            allowfullscreen>
-          </iframe>
-          <div class="absolute bottom-2 left-2 lg:bottom-4 lg:left-6 pointer-events-none">
-            <div class="inline-block px-2 py-0.5 lg:px-4 lg:py-1 rounded-full bg-black/60 backdrop-blur-sm border border-white/30 text-[8px] lg:text-xs font-bold uppercase tracking-wider text-white shadow-lg">
-              90 Min
-            </div>
-          </div>
-        </div>
-        <div class="w-full p-6 lg:p-8 flex flex-col relative z-10 bg-transparent">
-          <h4 class="text-sm lg:text-3xl font-black text-white mb-1 lg:mb-4 group-hover:text-yellow-400 transition-colors drop-shadow-md leading-tight">Advanced Choreography</h4>
-          <p class="text-pink-100/80 text-[10px] lg:text-base leading-tight lg:leading-relaxed mb-2 lg:mb-6 line-clamp-2 lg:line-clamp-3">
-            Master complex routines and elevate your performance skills with industry-leading choreographers. Perfect for experienced dancers looking to push their boundaries.
-          </p>
-          <div class="mt-auto pt-2 lg:pt-6 border-t border-white/10 flex items-center justify-between">
-            <div class="flex flex-col">
-              <span class="text-[8px] lg:text-xs font-black uppercase tracking-widest text-yellow-400/80 mb-0 lg:mb-1">Tuition</span>
-              <span class="text-sm lg:text-3xl font-black text-white drop-shadow-lg">$450</span>
-            </div>
-            <div class="w-7 h-7 lg:w-14 lg:h-14 rounded-full bg-gradient-to-r from-orange-500 to-pink-500 flex items-center justify-center text-white group-hover:scale-110 group-hover:rotate-12 transition-transform shadow-[0_0_20px_rgba(255,0,127,0.4)]">
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 lg:w-6 lg:h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-            </div>
-          </div>
-        </div>
-      </div>
+    <!-- Dynamic class cards populated by SDK -->
+    <div id="sdk-class-cards" class="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-10">
+      <!-- Skeleton loaders while SDK loads -->
+      <div class="timetable-skeleton h-80 lg:h-96"></div>
+      <div class="timetable-skeleton h-80 lg:h-96"></div>
+      <div class="timetable-skeleton h-80 lg:h-96"></div>
+    </div>
+  </section>
 
-      <!-- Beginner Ballet -->
-      <div data-service-id="cmrh0fmxw0004neosd545vrtz" class="bollywood-glass rounded-2xl lg:rounded-[2rem] p-0 bollywood-card-hover cursor-pointer group flex flex-col relative overflow-hidden h-auto">
-        <div class="w-full aspect-video relative bg-black shrink-0 overflow-hidden">
-          <!-- Video Player: Scaled up to hide top/bottom controls, disabled interaction -->
-          <iframe 
-            src="https://www.youtube.com/embed/6Fz27G6WwWw?autoplay=1&mute=1&loop=1&playlist=6Fz27G6WwWw&controls=0&rel=0&modestbranding=1&playsinline=1&start=20" 
-            class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none" 
-            style="width: 135%; height: 135%;"
-            frameborder="0" 
-            allow="autoplay; encrypted-media" 
-            allowfullscreen>
-          </iframe>
-          <div class="absolute bottom-2 left-2 lg:bottom-4 lg:left-6 pointer-events-none">
-            <div class="inline-block px-2 py-0.5 lg:px-4 lg:py-1 rounded-full bg-black/60 backdrop-blur-sm border border-white/30 text-[8px] lg:text-xs font-bold uppercase tracking-wider text-white shadow-lg">
-              60 Min
-            </div>
-          </div>
-        </div>
-        <div class="w-full p-6 lg:p-8 flex flex-col relative z-10 bg-transparent">
-          <h4 class="text-sm lg:text-3xl font-black text-white mb-1 lg:mb-4 group-hover:text-yellow-400 transition-colors drop-shadow-md leading-tight">Beginner Ballet</h4>
-          <p class="text-pink-100/80 text-[10px] lg:text-base leading-tight lg:leading-relaxed mb-2 lg:mb-6 line-clamp-2 lg:line-clamp-3">
-            Build a strong foundation in classical ballet techniques. Focus on posture, grace, and fundamental movements in a supportive environment.
-          </p>
-          <div class="mt-auto pt-2 lg:pt-6 border-t border-white/10 flex items-center justify-between">
-            <div class="flex flex-col">
-              <span class="text-[8px] lg:text-xs font-black uppercase tracking-widest text-yellow-400/80 mb-0 lg:mb-1">Drop-in</span>
-              <span class="text-sm lg:text-3xl font-black text-white drop-shadow-lg">$35</span>
-            </div>
-            <div class="w-7 h-7 lg:w-14 lg:h-14 rounded-full bg-gradient-to-r from-orange-500 to-pink-500 flex items-center justify-center text-white group-hover:scale-110 group-hover:rotate-12 transition-transform shadow-[0_0_20px_rgba(255,0,127,0.4)]">
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 lg:w-6 lg:h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-            </div>
-          </div>
-        </div>
-      </div>
+  <!-- Weekly Schedule / Timetable Section (SDK-Powered) -->
+  <section id="schedule" class="py-16 md:py-32 px-4 md:px-12 max-w-7xl mx-auto relative z-10">
+    <div class="flex flex-col text-center mb-10 md:mb-16 gap-2 md:gap-4">
+      <h2 class="text-xs md:text-sm font-black tracking-[0.2em] uppercase text-yellow-400">Plan Your Week</h2>
+      <h3 class="text-4xl md:text-7xl font-black tracking-tighter text-white drop-shadow-[0_5px_15px_rgba(0,0,0,0.5)]">Weekly Schedule</h3>
+      <div class="w-16 md:w-24 h-1 bg-gradient-to-r from-yellow-400 to-pink-500 mx-auto rounded-full mt-2 md:mt-4"></div>
+    </div>
 
-      <!-- Bhangra Fitness -->
-      <div data-service-id="cmrh0fmw00005neosp4505cxr" class="bollywood-glass rounded-2xl lg:rounded-[2rem] p-0 bollywood-card-hover cursor-pointer group flex flex-col relative overflow-hidden h-auto">
-        <div class="w-full aspect-video relative bg-black shrink-0 overflow-hidden">
-          <!-- Video Player: Scaled up to hide top/bottom controls, disabled interaction -->
-          <iframe 
-            src="https://www.youtube.com/embed/ERf1-execNA?autoplay=1&mute=1&loop=1&playlist=ERf1-execNA&controls=0&rel=0&modestbranding=1&playsinline=1&start=20" 
-            class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none" 
-            style="width: 135%; height: 135%;"
-            frameborder="0" 
-            allow="autoplay; encrypted-media" 
-            allowfullscreen>
-          </iframe>
-          <div class="absolute bottom-2 left-2 lg:bottom-4 lg:left-6 pointer-events-none">
-            <div class="inline-block px-2 py-0.5 lg:px-4 lg:py-1 rounded-full bg-black/60 backdrop-blur-sm border border-white/30 text-[8px] lg:text-xs font-bold uppercase tracking-wider text-white shadow-lg">
-              45 Min
-            </div>
-          </div>
-        </div>
-        <div class="w-full p-6 lg:p-8 flex flex-col relative z-10 bg-transparent">
-          <h4 class="text-sm lg:text-3xl font-black text-white mb-1 lg:mb-4 group-hover:text-yellow-400 transition-colors drop-shadow-md leading-tight">Bhangra Fitness</h4>
-          <p class="text-pink-100/80 text-[10px] lg:text-base leading-tight lg:leading-relaxed mb-2 lg:mb-6 line-clamp-2 lg:line-clamp-3">
-            A high-energy, cardio-intensive workout set to infectious Punjabi beats. Get fit while learning traditional and modern Bhangra steps!
-          </p>
-          <div class="mt-auto pt-2 lg:pt-6 border-t border-white/10 flex items-center justify-between">
-            <div class="flex flex-col">
-              <span class="text-[8px] lg:text-xs font-black uppercase tracking-widest text-yellow-400/80 mb-0 lg:mb-1">Drop-in</span>
-              <span class="text-sm lg:text-3xl font-black text-white drop-shadow-lg">$25</span>
-            </div>
-            <div class="w-7 h-7 lg:w-14 lg:h-14 rounded-full bg-gradient-to-r from-orange-500 to-pink-500 flex items-center justify-center text-white group-hover:scale-110 group-hover:rotate-12 transition-transform shadow-[0_0_20px_rgba(255,0,127,0.4)]">
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 lg:w-6 lg:h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-            </div>
-          </div>
-        </div>
-      </div>
+    <!-- Day tabs -->
+    <div id="timetable-tabs" class="flex flex-wrap justify-center gap-2 md:gap-3 mb-10 md:mb-14"></div>
+
+    <!-- Timetable cards -->
+    <div id="timetable-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
+      <div class="timetable-skeleton h-44"></div>
+      <div class="timetable-skeleton h-44"></div>
+      <div class="timetable-skeleton h-44"></div>
+    </div>
+
+    <!-- Empty state -->
+    <div id="timetable-empty" class="hidden text-center py-16">
+      <div class="text-5xl mb-4 opacity-50">📅</div>
+      <p class="text-pink-100/60 text-lg">No classes scheduled for this day</p>
     </div>
   </section>
 
@@ -504,15 +482,183 @@ const customHtml = `
     (function() {
       // In a DynamicTemplate sandbox, script.src relative paths may fail, so use window.location.origin
       var origin = window.location.origin;
-      var scriptsToInject = ['booking-modal.js', 'booking-widget.js'];
+      var scriptsToInject = ['kutzapp-sdk.js', 'booking-modal.js', 'booking-widget.js'];
+      var loaded = 0;
       scriptsToInject.forEach(function(src) {
         var script = document.createElement('script');
         script.src = origin + '/' + src + '?v=' + Date.now();
         script.setAttribute('data-shop-id', '{{shop.id}}');
-        script.async = true;
+        script.async = false;
+        script.onload = function() {
+          loaded++;
+          if (loaded === scriptsToInject.length) {
+            initClassesFromSDK();
+          }
+        };
         document.body.appendChild(script);
       });
     })();
+
+    var DAY_NAMES = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    var DAY_SHORT = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    var allSchedules = [];
+    var activeDayTab = new Date().getDay();
+
+    function initClassesFromSDK() {
+      if (typeof KutzApp === 'undefined') return;
+      KutzApp.init('{{shop.id}}');
+
+      KutzApp.getClassSchedules().then(function(schedules) {
+        allSchedules = schedules;
+        renderClassCards(schedules);
+        renderTimetableTabs(schedules);
+        renderTimetableForDay(activeDayTab);
+      }).catch(function(err) {
+        console.warn('SDK class load failed:', err);
+      });
+    }
+
+    function formatPrice(price) {
+      if (!price && price !== 0) return '';
+      return '$' + Number(price).toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+    }
+
+    function renderClassCards(schedules) {
+      var container = document.getElementById('sdk-class-cards');
+      if (!container) return;
+
+      // Deduplicate by serviceId to show unique class types
+      var seen = {};
+      var unique = [];
+      schedules.forEach(function(s) {
+        if (!seen[s.service.id]) {
+          seen[s.service.id] = true;
+          unique.push(s);
+        }
+      });
+
+      if (unique.length === 0) {
+        container.innerHTML = '<div class="col-span-full text-center py-16"><div class="text-5xl mb-4 opacity-50">🎶</div><p class="text-pink-100/60 text-lg">Classes coming soon!</p></div>';
+        return;
+      }
+
+      var html = '';
+      unique.forEach(function(s) {
+        var svc = s.service;
+        var priceLabel = svc.semesterPrice ? 'Semester' : (svc.dropInPrice ? 'Drop-in' : 'Tuition');
+        var priceVal = svc.semesterPrice || svc.dropInPrice || svc.price || 0;
+        var imgSrc = svc.imageUrl || 'https://images.unsplash.com/photo-1518834107812-67b0b7c58434?q=80&w=800&auto=format&fit=crop';
+
+        html += '<div data-service-id="' + svc.id + '" class="bollywood-glass rounded-2xl lg:rounded-[2rem] p-0 bollywood-card-hover cursor-pointer group flex flex-col relative overflow-hidden h-auto" onclick="if(typeof BarberBooking!==\'undefined\')BarberBooking.open(\''+svc.id+'\')">'
+          + '<div class="w-full aspect-video relative bg-black shrink-0 overflow-hidden">'
+          + '<img src="' + imgSrc + '" alt="' + svc.name + '" class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />'
+          + '<div class="absolute inset-0 bg-gradient-to-t from-[#1a0b2e] via-transparent to-transparent opacity-80"></div>'
+          + '<div class="absolute bottom-2 left-2 lg:bottom-4 lg:left-6 pointer-events-none">'
+          + '<div class="inline-block px-2 py-0.5 lg:px-4 lg:py-1 rounded-full bg-black/60 backdrop-blur-sm border border-white/30 text-[8px] lg:text-xs font-bold uppercase tracking-wider text-white shadow-lg">'
+          + svc.duration + ' Min</div></div></div>'
+          + '<div class="w-full p-6 lg:p-8 flex flex-col relative z-10 bg-transparent">'
+          + '<h4 class="text-sm lg:text-3xl font-black text-white mb-1 lg:mb-4 group-hover:text-yellow-400 transition-colors drop-shadow-md leading-tight">' + svc.name + '</h4>'
+          + '<p class="text-pink-100/80 text-[10px] lg:text-base leading-tight lg:leading-relaxed mb-2 lg:mb-6 line-clamp-2 lg:line-clamp-3">' + (svc.description || '') + '</p>'
+          + '<div class="mt-auto pt-2 lg:pt-6 border-t border-white/10 flex items-center justify-between">'
+          + '<div class="flex flex-col">'
+          + '<span class="text-[8px] lg:text-xs font-black uppercase tracking-widest text-yellow-400/80 mb-0 lg:mb-1">' + priceLabel + '</span>'
+          + '<span class="text-sm lg:text-3xl font-black text-white drop-shadow-lg">' + formatPrice(priceVal) + '</span></div>'
+          + '<div class="w-7 h-7 lg:w-14 lg:h-14 rounded-full bg-gradient-to-r from-orange-500 to-pink-500 flex items-center justify-center text-white group-hover:scale-110 group-hover:rotate-12 transition-transform shadow-[0_0_20px_rgba(255,0,127,0.4)]">'
+          + '<svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 lg:w-6 lg:h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>'
+          + '</div></div></div></div>';
+      });
+
+      container.innerHTML = html;
+    }
+
+    function renderTimetableTabs(schedules) {
+      var tabContainer = document.getElementById('timetable-tabs');
+      if (!tabContainer) return;
+
+      // Find which days have classes
+      var daysWithClasses = {};
+      schedules.forEach(function(s) { daysWithClasses[s.dayOfWeek] = true; });
+
+      var html = '';
+      for (var d = 0; d < 7; d++) {
+        var isActive = d === activeDayTab;
+        var hasClasses = daysWithClasses[d];
+        var extraClass = isActive ? ' active' : '';
+        var opacity = hasClasses ? '' : ' opacity-40';
+        html += '<button class="timetable-day-tab' + extraClass + opacity + '" data-day="' + d + '" onclick="switchDay(' + d + ')">';
+        html += '<span class="hidden md:inline">' + DAY_NAMES[d] + '</span>';
+        html += '<span class="md:hidden">' + DAY_SHORT[d] + '</span>';
+        if (hasClasses) html += '<span class="ml-1.5 w-1.5 h-1.5 rounded-full bg-yellow-400 inline-block"></span>';
+        html += '</button>';
+      }
+      tabContainer.innerHTML = html;
+    }
+
+    function switchDay(day) {
+      activeDayTab = day;
+      // Update tab styles
+      var tabs = document.querySelectorAll('.timetable-day-tab');
+      tabs.forEach(function(tab) {
+        if (parseInt(tab.getAttribute('data-day')) === day) {
+          tab.classList.add('active');
+        } else {
+          tab.classList.remove('active');
+        }
+      });
+      renderTimetableForDay(day);
+    }
+
+    function renderTimetableForDay(day) {
+      var grid = document.getElementById('timetable-grid');
+      var empty = document.getElementById('timetable-empty');
+      if (!grid || !empty) return;
+
+      var daySchedules = allSchedules.filter(function(s) { return s.dayOfWeek === day; });
+
+      if (daySchedules.length === 0) {
+        grid.innerHTML = '';
+        grid.classList.add('hidden');
+        empty.classList.remove('hidden');
+        return;
+      }
+
+      grid.classList.remove('hidden');
+      empty.classList.add('hidden');
+
+      var html = '';
+      daySchedules.forEach(function(s) {
+        var svc = s.service;
+        var maxCap = svc.maxCapacity || 999;
+        var spotsText = s.availableSpots > 0 ? (s.availableSpots + ' spots left') : 'Full';
+        var spotsColor = s.availableSpots > 3 ? 'text-emerald-400' : (s.availableSpots > 0 ? 'text-yellow-400' : 'text-red-400');
+        var staffImg = s.staff.imageUrl
+          ? '<img src="' + s.staff.imageUrl + '" class="w-10 h-10 rounded-full object-cover border-2 border-yellow-400/40" alt="' + s.staff.name + '" />'
+          : '<div class="w-10 h-10 rounded-full bg-gradient-to-br from-pink-500 to-orange-500 flex items-center justify-center text-sm font-black text-white border-2 border-yellow-400/40">' + (s.staff.name ? s.staff.name[0] : '?') + '</div>';
+
+        html += '<div class="timetable-card cursor-pointer" onclick="if(typeof BarberBooking!==\'undefined\')BarberBooking.open(\''+svc.id+'\')">'
+          + '<div class="flex items-start gap-4">'
+          + staffImg
+          + '<div class="flex-1 min-w-0">'
+          + '<h4 class="text-lg font-black text-white truncate">' + svc.name + '</h4>'
+          + '<p class="text-sm text-pink-100/60">' + s.staff.name + '</p>'
+          + '</div>'
+          + '<div class="text-right shrink-0">'
+          + '<div class="text-lg font-black text-white">' + s.startTime + '</div>'
+          + '<div class="text-xs text-pink-100/50">' + s.startTime + ' – ' + s.endTime + '</div>'
+          + '</div></div>'
+          + '<div class="flex items-center justify-between mt-4 pt-4 border-t border-white/10">'
+          + '<div class="flex items-center gap-3">'
+          + '<span class="text-xs font-bold uppercase tracking-wider text-pink-100/50">' + svc.duration + ' min</span>'
+          + (s.term ? '<span class="text-xs px-2 py-0.5 rounded-full bg-yellow-400/10 text-yellow-400 border border-yellow-400/20">' + s.term.name + '</span>' : '')
+          + '</div>'
+          + '<div class="flex items-center gap-2">'
+          + '<span class="text-xs font-bold ' + spotsColor + '">' + spotsText + '</span>'
+          + (svc.dropInPrice ? '<span class="text-xs font-black text-white ml-2">' + formatPrice(svc.dropInPrice) + '</span>' : '')
+          + '</div></div></div>';
+      });
+
+      grid.innerHTML = html;
+    }
   </script>
   <script>
     // Force scroll to top on page refresh
