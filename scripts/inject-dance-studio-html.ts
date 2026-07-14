@@ -209,13 +209,21 @@ const customHtml = `
     bottom: 8rem !important;
     right: 2rem !important;
     z-index: 9999 !important;
-    display: block !important;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    width: 4rem;
+    height: 4rem;
+    background-color: transparent;
   }
-  .chevron-icon {
-    width: 3.5rem !important;
-    height: 3.5rem !important;
-    stroke: var(--bollywood-magenta) !important;
-    filter: drop-shadow(0 0 15px rgba(255,0,127,0.8)) !important;
+  .css-chevron {
+    width: 1.5rem;
+    height: 1.5rem;
+    border-left: 4px solid var(--bollywood-magenta);
+    border-top: 4px solid var(--bollywood-magenta);
+    transform: rotate(45deg);
+    margin-top: 0.75rem;
+    filter: drop-shadow(0 0 10px rgba(255,0,127,0.8));
   }
 </style>
 
@@ -869,9 +877,7 @@ const customHtml = `
 
   <!-- Floating Home Button -->
   <a href="#top" class="floating-chevron hover:-translate-y-2 transition-transform duration-300 group">
-    <svg xmlns="http://www.w3.org/2000/svg" class="chevron-icon" fill="none" viewBox="0 0 24 24">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="M5 15l7-7 7 7" />
-    </svg>
+    <div class="css-chevron"></div>
   </a>
   
 </div>
