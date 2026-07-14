@@ -164,19 +164,6 @@ const customHtml = `
     0% { background-position: 200% 0; }
     100% { background-position: -200% 0; }
   }
-  
-  /* Extremely Smooth Drawer & Handle */
-  .smooth-drawer {
-    transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1) !important;
-  }
-  .smooth-handle {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    left: -3.5rem;
-    width: 3.5rem;
-    transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1) !important;
-  }
 </style>
 
 <div class="min-h-screen text-neutral-100 font-sans selection:bg-pink-500/30 overflow-hidden relative" style="background-color: var(--bollywood-bg-dark)">
@@ -198,45 +185,19 @@ const customHtml = `
       {{/shop.logoUrl}}
       <h1 class="text-lg md:text-xl font-semibold tracking-tight text-white drop-shadow-sm hidden sm:block whitespace-nowrap">{{shop.name}}</h1>
     </div>
+    <!-- Center: Navigation Links -->
+    <nav class="hidden md:flex items-center justify-center gap-8 flex-1">
+      <a href="#classes" class="text-sm font-medium text-white/70 hover:text-white hover:-translate-y-0.5 transition-all">Programs</a>
+      <a href="#schedule" class="text-sm font-medium text-white/70 hover:text-white hover:-translate-y-0.5 transition-all">Schedule</a>
+      <a href="#faculty" class="text-sm font-medium text-white/70 hover:text-white hover:-translate-y-0.5 transition-all">Faculty</a>
+      <a href="#testimonials" class="text-sm font-medium text-white/70 hover:text-white hover:-translate-y-0.5 transition-all">Community</a>
+    </nav>
     
-    <!-- Right: CTA / Menu Toggle -->
+    <!-- Right: CTA -->
     <div class="flex-1 flex justify-end items-center">
-      <button id="header-menu-btn" class="flex items-center gap-2 bg-pink-500/20 hover:bg-pink-500/40 border border-pink-500/50 text-white px-4 py-2 rounded-full transition-all group">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 group-hover:scale-110 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-        </svg>
-        <span class="font-bold text-xs tracking-widest uppercase">Menu</span>
-      </button>
+      <!-- Register button removed -->
     </div>
   </header>
-
-  <!-- Cute Floating Drawer Menu -->
-  <div id="side-drawer" class="smooth-drawer fixed top-1/2 -translate-y-1/2 right-0 h-auto py-10 w-44 bg-[var(--bollywood-bg-light)]/80 backdrop-blur-3xl border border-r-0 border-pink-400/40 rounded-l-[2.5rem] z-[200] transform translate-x-full shadow-2xl flex flex-col px-5">
-    <!-- Cute Pull Tab -->
-    <div id="drawer-handle" class="smooth-handle py-4 bg-gradient-to-b from-pink-400 to-orange-400 rounded-l-full cursor-pointer flex flex-col items-center justify-center shadow-[0_0_15px_rgba(255,105,180,0.5)] group">
-      <div class="flex flex-col gap-1 opacity-70 group-hover:opacity-100 transition-all group-hover:scale-110">
-        <div class="w-1.5 h-1.5 bg-white rounded-full"></div>
-        <div class="w-1.5 h-1.5 bg-white rounded-full"></div>
-        <div class="w-1.5 h-1.5 bg-white rounded-full"></div>
-      </div>
-    </div>
-    
-    <!-- Cute Links -->
-    <nav class="flex flex-col gap-5 mt-2">
-      <a href="#classes" class="flex flex-col items-center gap-1 text-sm font-semibold text-white/80 hover:text-pink-300 hover:scale-105 transition-all">
-        <span class="text-2xl drop-shadow-md">🩰</span> Programs
-      </a>
-      <a href="#schedule" class="flex flex-col items-center gap-1 text-sm font-semibold text-white/80 hover:text-pink-300 hover:scale-105 transition-all">
-        <span class="text-2xl drop-shadow-md">📅</span> Schedule
-      </a>
-      <a href="#faculty" class="flex flex-col items-center gap-1 text-sm font-semibold text-white/80 hover:text-pink-300 hover:scale-105 transition-all">
-        <span class="text-2xl drop-shadow-md">👥</span> Faculty
-      </a>
-      <a href="#testimonials" class="flex flex-col items-center gap-1 text-sm font-semibold text-white/80 hover:text-pink-300 hover:scale-105 transition-all">
-        <span class="text-2xl drop-shadow-md">✨</span> Community
-      </a>
-    </nav>
-  </div>
 
   <!-- Hero Section -->
   <div class="relative min-h-[90vh] flex items-center justify-center pt-20 z-10">
@@ -813,31 +774,6 @@ const customHtml = `
     });
   </script>
   <script>
-    // Drawer toggle logic
-    var drawer = document.getElementById('side-drawer');
-    var handle = document.getElementById('drawer-handle');
-    var headerBtn = document.getElementById('header-menu-btn');
-    
-    function toggleDrawer() {
-      if(drawer) {
-        drawer.classList.toggle('translate-x-full');
-        drawer.classList.toggle('is-open');
-      }
-    }
-    
-    if (drawer) {
-      if (handle) handle.addEventListener('click', toggleDrawer);
-      if (headerBtn) headerBtn.addEventListener('click', toggleDrawer);
-      
-      var links = drawer.querySelectorAll('a');
-      links.forEach(function(link) {
-        link.addEventListener('click', function() {
-          drawer.classList.add('translate-x-full');
-          drawer.classList.remove('is-open');
-        });
-      });
-    }
-
     // Force scroll to top on page refresh
     if ('scrollRestoration' in history) {
       history.scrollRestoration = 'manual';
