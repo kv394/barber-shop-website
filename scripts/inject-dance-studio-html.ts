@@ -742,14 +742,14 @@ const customHtml = `
           html += '</div>'; // End Standard View
           
           // Hover Popover View (Enlarged, Dynamic Details)
-          html += '<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[140%] min-h-[140%] h-max bg-[#2d164d] rounded-2xl shadow-[0_0_40px_rgba(255,0,127,0.9)] border-2 border-pink-500 z-[100] p-4 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-all duration-300 scale-90 group-hover:scale-100 flex flex-col gap-2">';
+          html += '<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[140%] min-h-[140%] h-max bg-[var(--bollywood-bg-dark)] shadow-[0_0_50px_rgba(255,0,127,0.8)] border border-pink-500/50 z-[100] p-4 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-all duration-500 ease-out scale-95 group-hover:scale-100 flex flex-col gap-2">';
           html += '<span class="text-xl md:text-2xl font-black mb-2 text-center text-yellow-400 border-b border-pink-500/30 pb-2">' + monthNames[month] + ' ' + d + '</span>';
           daySchedulesForCell.forEach(function(s) {
             var timeStr = s.startTime.substring(0, 5);
             var endTimeStr = s.endTime.substring(0, 5);
-            html += '<div class="text-xs md:text-sm bg-black/40 rounded-lg p-2 text-left border-l-4 border-yellow-400 leading-tight w-full">';
-            html += '<div class="font-black text-pink-200 mb-1 leading-snug whitespace-normal">' + s.service.name + '</div>';
-            html += '<div class="text-white/80 font-medium flex justify-between items-center"><span class="flex items-center gap-1"><svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>' + timeStr + ' - ' + endTimeStr + '</span><span class="text-[10px] bg-pink-500/20 text-pink-300 px-2 py-0.5 rounded-full">' + s.service.duration + 'm</span></div>';
+            html += '<div class="text-xs md:text-sm bg-black/50 p-2 text-left border-l-4 border-yellow-400 leading-tight w-full">';
+            html += '<div class="font-black text-white mb-1 leading-snug whitespace-normal">' + s.service.name + '</div>';
+            html += '<div class="text-white/80 font-medium flex justify-between items-center"><span class="flex items-center gap-1"><svg class="w-3 h-3 text-pink-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>' + timeStr + ' - ' + endTimeStr + '</span><span class="text-[10px] bg-pink-500 text-white px-2 py-0.5 rounded-sm font-bold">' + s.service.duration + 'm</span></div>';
             html += '</div>';
           });
           html += '</div>'; // End Hover Popover View
