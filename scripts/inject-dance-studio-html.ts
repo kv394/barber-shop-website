@@ -12,6 +12,10 @@ const customHtml = `
     --bollywood-orange: #ff6b00;
   }
   
+  html {
+    scroll-behavior: smooth;
+  }
+  
   /* Vibrant Bollywood Gradient Text */
   .bollywood-gradient-text {
     background: linear-gradient(135deg, var(--bollywood-gold) 0%, var(--bollywood-orange) 50%, var(--bollywood-magenta) 100%);
@@ -183,7 +187,7 @@ const customHtml = `
   }
 </style>
 
-<div class="min-h-screen text-neutral-100 font-sans selection:bg-pink-500/30 overflow-hidden relative" style="background-color: var(--bollywood-bg-dark)">
+<div id="top" class="min-h-screen text-neutral-100 font-sans selection:bg-pink-500/30 overflow-hidden relative" style="background-color: var(--bollywood-bg-dark)">
   
   <!-- Animated Background Orbs -->
   <div class="fixed inset-0 overflow-hidden pointer-events-none z-0">
@@ -811,11 +815,11 @@ const customHtml = `
   </script>
 
   <!-- Floating Home Button -->
-  <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="fixed bottom-6 right-6 md:bottom-10 md:right-10 z-[150] w-12 h-12 md:w-14 md:h-14 theme-flow-bg rounded-full flex items-center justify-center shadow-[0_0_20px_rgba(255,0,127,0.5)] hover:scale-110 hover:shadow-[0_0_30px_rgba(255,0,127,0.8)] transition-all duration-300 group">
+  <a href="#top" class="fixed bottom-6 right-6 md:bottom-10 md:right-10 z-[150] w-12 h-12 md:w-14 md:h-14 theme-flow-bg rounded-full flex items-center justify-center shadow-[0_0_20px_rgba(255,0,127,0.5)] hover:scale-110 hover:shadow-[0_0_30px_rgba(255,0,127,0.8)] transition-all duration-300 group">
     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white group-hover:-translate-y-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
     </svg>
-  </button>
+  </a>
   
 </div>
 `;
