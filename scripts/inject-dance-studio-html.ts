@@ -688,9 +688,13 @@ const customHtml = `
         var baseClasses = "relative w-full aspect-square flex items-center justify-center rounded-lg md:rounded-xl text-sm md:text-lg font-bold transition-all ";
         
         if (isSelected) {
-          baseClasses += "bg-gradient-to-br from-yellow-400 to-orange-500 text-black shadow-lg scale-110 z-10 ";
+          baseClasses += "bg-gradient-to-br from-yellow-400 to-orange-500 text-black shadow-lg scale-110 md:scale-125 z-20 ";
         } else if (!isPast) {
-          baseClasses += "bg-white/5 hover:bg-white/10 text-white cursor-pointer hover:scale-105 ";
+          if (hasClasses) {
+            baseClasses += "bg-white/10 hover:bg-white/20 text-white cursor-pointer scale-110 z-10 shadow-lg ";
+          } else {
+            baseClasses += "bg-white/5 hover:bg-white/10 text-white cursor-pointer hover:scale-105 ";
+          }
         } else {
           baseClasses += "bg-black/20 text-white/30 cursor-not-allowed ";
         }
