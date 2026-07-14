@@ -215,18 +215,14 @@ const customHtml = `
     <div class="absolute inset-0 z-0 rounded-b-[4rem] overflow-hidden">
       <!-- Video Background -->
       <div class="absolute inset-0 w-full h-full pointer-events-none overflow-hidden">
-        <!-- Wrapper div holds the CSS classes and data attributes -->
-        <!-- Pure HTML YouTube Iframe Background -->
-        <div class="youtube-bg opacity-40 mix-blend-luminosity pointer-events-none">
-          <iframe 
-            src="https://www.youtube.com/embed/aHeIJwgNqEY?autoplay=1&mute=1&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1&start=20&playlist=CmFaCKr_JBA,e2Kr8SCIGDY,RcPso9RdWYU&loop=1" 
-            frameborder="0" 
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-            allowfullscreen
-            class="w-full h-full pointer-events-none"
-            style="width: 100%; height: 100%; border: none;"
-          ></iframe>
-        </div>
+        <video 
+          src="/VIDEO-2026-07-13-22-04-43.mp4" 
+          autoplay 
+          muted 
+          loop 
+          playsinline
+          class="absolute inset-0 w-full h-full object-cover opacity-60 mix-blend-luminosity"
+        ></video>
       </div>
       <div class="absolute inset-0 bg-gradient-to-t from-[var(--bollywood-bg-dark)] via-transparent to-[var(--bollywood-bg-dark)] opacity-90"></div>
     </div>
