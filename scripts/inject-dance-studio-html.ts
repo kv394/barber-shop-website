@@ -692,7 +692,11 @@ const customHtml = `
         var isPast = cellDate < today;
         var isSelected = cellDate.getTime() === selectedDate.getTime();
         
-        var baseClasses = "relative w-full flex flex-col rounded-lg md:rounded-xl transition-all duration-300 p-1 md:p-2 group ";
+        var baseClasses = "relative w-full flex flex-col rounded-lg md:rounded-xl transition-all duration-300 p-1 md:p-2 ";
+        
+        if (!isPast) {
+          baseClasses += "group ";
+        }
         
         if (hasClasses) {
           baseClasses += "min-h-[90px] md:min-h-[130px] justify-start items-start ";
@@ -701,10 +705,10 @@ const customHtml = `
         }
 
         if (isSelected) {
-          baseClasses += "bg-gradient-to-br from-yellow-400 to-orange-500 text-black shadow-lg z-20 border border-white ";
+          baseClasses += "bg-gradient-to-br from-yellow-400 to-orange-500 text-black shadow-lg z-20 hover:z-[200] border border-white ";
         } else if (!isPast) {
           if (hasClasses) {
-            baseClasses += "bg-white/10 hover:bg-white/20 text-white cursor-pointer z-10 border border-pink-500/30 hover:border-pink-500 ";
+            baseClasses += "bg-white/10 hover:bg-white/20 text-white cursor-pointer z-10 hover:z-[200] border border-pink-500/30 hover:border-pink-500 ";
           } else {
             baseClasses += "bg-white/5 hover:bg-white/10 text-white cursor-pointer hover:scale-105 ";
           }
@@ -742,7 +746,7 @@ const customHtml = `
           html += '</div>'; // End Standard View
           
           // Hover Popover View (Enlarged, Dynamic Details)
-          html += '<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-black text-white shadow-[0_0_50px_rgba(255,0,127,1)] border border-pink-500/50 z-[100] p-4 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-all duration-300 ease-out scale-75 group-hover:scale-100 flex flex-col gap-2 overflow-y-auto scrollbar-hide cursor-default" style="width: 16rem; height: 16rem;">';
+          html += '<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-black rounded-2xl text-white shadow-[0_0_50px_rgba(255,0,127,1)] border border-pink-500/50 z-[100] p-4 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-all duration-300 ease-out scale-75 group-hover:scale-100 flex flex-col gap-2 overflow-y-auto scrollbar-hide cursor-default" style="width: 16rem; height: 16rem;">';
           html += '<span class="text-xl md:text-2xl font-black mb-2 text-center text-yellow-400 border-b border-pink-500/30 pb-2 shrink-0">' + monthNames[month] + ' ' + d + '</span>';
           daySchedulesForCell.forEach(function(s) {
             var timeStr = s.startTime.substring(0, 5);
