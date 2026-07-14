@@ -206,14 +206,14 @@ const customHtml = `
   }
   .floating-chevron {
     position: fixed !important;
-    bottom: 8rem !important;
-    right: 2rem !important;
+    bottom: 6rem !important; /* Positioned directly above the chat widget */
+    right: 20px !important; /* Aligned with standard chat widget right margin */
     z-index: 9999 !important;
     display: flex !important;
     align-items: center;
     justify-content: center;
-    width: 4rem;
-    height: 4rem;
+    width: 3.75rem; /* Match typical 60px chat widget width */
+    height: 3.75rem;
     background-color: transparent;
   }
   .css-chevron {
@@ -876,7 +876,7 @@ const customHtml = `
   </script>
 
   <!-- Floating Home Button -->
-  <a href="#top" class="floating-chevron hover:-translate-y-2 transition-transform duration-300 group">
+  <a href="#top" onclick="event.preventDefault(); window.scrollTo({top: 0, behavior: 'smooth'});" class="floating-chevron hover:-translate-y-2 transition-transform duration-300 group">
     <div class="css-chevron"></div>
   </a>
   
