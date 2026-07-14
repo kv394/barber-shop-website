@@ -480,23 +480,21 @@ const customHtml = `
   
   <script>
     (function() {
-      // In a DynamicTemplate sandbox, script.src relative paths may fail, so use window.location.origin
+      // In a DynamicTemplate sandbox, the SDK (kutzapp-sdk.js) is already pre-loaded
+      // and KutzApp.init() is already called by the DynamicTemplate before inline scripts run.
+      // We only need to inject the booking modal/widget scripts.
       var origin = window.location.origin;
-      var scriptsToInject = ['kutzapp-sdk.js', 'booking-modal.js', 'booking-widget.js'];
-      var loaded = 0;
+      var scriptsToInject = ['booking-modal.js', 'booking-widget.js'];
       scriptsToInject.forEach(function(src) {
         var script = document.createElement('script');
         script.src = origin + '/' + src + '?v=' + Date.now();
         script.setAttribute('data-shop-id', '{{shop.id}}');
-        script.async = false;
-        script.onload = function() {
-          loaded++;
-          if (loaded === scriptsToInject.length) {
-            initClassesFromSDK();
-          }
-        };
+        script.async = true;
         document.body.appendChild(script);
       });
+
+      // KutzApp is already initialized by DynamicTemplate — load classes immediately
+      initClassesFromSDK();
     })();
 
     var DAY_NAMES = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
@@ -505,8 +503,15 @@ const customHtml = `
     var activeDayTab = new Date().getDay();
 
     function initClassesFromSDK() {
-      if (typeof KutzApp === 'undefined') return;
-      KutzApp.init('{{shop.id}}');
+      if (typeof KutzApp === 'undefined') {
+        // Fallback: SDK not yet available, retry after a short delay
+        setTimeout(initClassesFromSDK, 200);
+        return;
+      }
+      // KutzApp.init() is already called by DynamicTemplate, but ensure it's initialized
+      if (!KutzApp.shopId) {
+        KutzApp.init('{{shop.id}}');
+      }
 
       KutzApp.getClassSchedules().then(function(schedules) {
         allSchedules = schedules;
