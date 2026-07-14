@@ -532,6 +532,22 @@ const customHtml = `
       var container = document.getElementById('sdk-class-cards');
       if (!container) return;
 
+      // YouTube video mapping by class name (case-insensitive partial match)
+      var CLASS_VIDEOS = {
+        'bollywood': 'ZN7rzjEk_SA',
+        'bhangra': 'eT3s-a_De-I',
+        'kathak': 'd2L1aV9tRpQ'
+      };
+
+      function getVideoId(name) {
+        var lower = (name || '').toLowerCase();
+        var keys = Object.keys(CLASS_VIDEOS);
+        for (var i = 0; i < keys.length; i++) {
+          if (lower.indexOf(keys[i]) !== -1) return CLASS_VIDEOS[keys[i]];
+        }
+        return null;
+      }
+
       // Deduplicate by serviceId to show unique class types
       var seen = {};
       var unique = [];
@@ -543,7 +559,7 @@ const customHtml = `
       });
 
       if (unique.length === 0) {
-        container.innerHTML = '<div class="col-span-full text-center py-16"><div class="text-5xl mb-4 opacity-50">🎶</div><p class="text-pink-100/60 text-lg">Classes coming soon!</p></div>';
+        container.innerHTML = '<div class="col-span-full text-center py-16"><div class="text-5xl mb-4 opacity-50">\ud83c\udfb6</div><p class="text-pink-100/60 text-lg">Classes coming soon!</p></div>';
         return;
       }
 
@@ -552,11 +568,20 @@ const customHtml = `
         var svc = s.service;
         var priceLabel = svc.semesterPrice ? 'Semester' : (svc.dropInPrice ? 'Drop-in' : 'Tuition');
         var priceVal = svc.semesterPrice || svc.dropInPrice || svc.price || 0;
-        var imgSrc = svc.imageUrl || 'https://images.unsplash.com/photo-1518834107812-67b0b7c58434?q=80&w=800&auto=format&fit=crop';
+        var videoId = getVideoId(svc.name);
+
+        // Build the media block: YouTube iframe if video available, fallback to image
+        var mediaBlock;
+        if (videoId) {
+          mediaBlock = '<iframe src="https://www.youtube.com/embed/' + videoId + '?autoplay=1&mute=1&loop=1&playlist=' + videoId + '&controls=0&rel=0&modestbranding=1&playsinline=1&start=20" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none" style="width: 135%; height: 135%;" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>';
+        } else {
+          var imgSrc = svc.imageUrl || 'https://images.unsplash.com/photo-1518834107812-67b0b7c58434?q=80&w=800&auto=format&fit=crop';
+          mediaBlock = '<img src="' + imgSrc + '" alt="' + svc.name + '" class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />';
+        }
 
         html += '<div data-service-id="' + svc.id + '" data-booking-service-id="' + svc.id + '" class="bollywood-glass rounded-2xl lg:rounded-[2rem] p-0 bollywood-card-hover cursor-pointer group flex flex-col relative overflow-hidden h-auto">'
           + '<div class="w-full aspect-video relative bg-black shrink-0 overflow-hidden">'
-          + '<img src="' + imgSrc + '" alt="' + svc.name + '" class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />'
+          + mediaBlock
           + '<div class="absolute inset-0 bg-gradient-to-t from-[#1a0b2e] via-transparent to-transparent opacity-80"></div>'
           + '<div class="absolute bottom-2 left-2 lg:bottom-4 lg:left-6 pointer-events-none">'
           + '<div class="inline-block px-2 py-0.5 lg:px-4 lg:py-1 rounded-full bg-black/60 backdrop-blur-sm border border-white/30 text-[8px] lg:text-xs font-bold uppercase tracking-wider text-white shadow-lg">'
