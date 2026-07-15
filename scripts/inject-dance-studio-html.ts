@@ -205,7 +205,7 @@ const customHtml = `
     transition: all 0.3s ease;
   }
   .frosted-pink-text {
-    color: rgba(219, 39, 119, 0.9); /* Darker, stronger translucent pink */
+    color: rgba(255, 0, 127, 0.15); /* Match CTA button background */
   }
   .glass-btn:hover {
     background: rgba(255, 0, 127, 0.3);
