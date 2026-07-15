@@ -178,6 +178,74 @@ const customHtml = `
     background-size: 300% 300%;
     animation: gradient-flow 4s ease infinite;
   }
+  
+  /* Cinematic Hero Overhaul CSS */
+  @keyframes cinematic-bar-reveal {
+    0% { height: 50vh; }
+    100% { height: 10vh; }
+  }
+  .cinematic-bar-top {
+    animation: cinematic-bar-reveal 2.5s cubic-bezier(0.8, 0, 0.2, 1) forwards;
+  }
+  .cinematic-bar-bottom {
+    animation: cinematic-bar-reveal 2.5s cubic-bezier(0.8, 0, 0.2, 1) forwards;
+  }
+  
+  @keyframes hero-zoom {
+    0% { transform: scale(1.1); }
+    100% { transform: scale(1.25); }
+  }
+  .animate-hero-zoom {
+    animation: hero-zoom 20s linear infinite alternate;
+  }
+  
+  @keyframes cinematic-title-reveal {
+    0% { opacity: 0; transform: translateY(40px) scale(0.9); filter: blur(10px); }
+    100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+  }
+  .animate-cinematic-title {
+    animation: cinematic-title-reveal 2s cubic-bezier(0.16, 1, 0.3, 1) 0.5s forwards;
+    opacity: 0;
+  }
+  
+  .cinematic-gold-text {
+    background: linear-gradient(to bottom, #FFF3B0 0%, #FFD700 25%, #FDB931 50%, #B8860B 51%, #FFD700 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0px 2px 2px rgba(255,255,255,0.4)) drop-shadow(0px 15px 20px rgba(0,0,0,0.9));
+  }
+  
+  .sparkle-layer {
+    background-image: radial-gradient(circle, #fff 1px, transparent 2px);
+    background-size: 40px 40px;
+    opacity: 0.3;
+    animation: drift 30s linear infinite;
+    mix-blend-mode: screen;
+  }
+  @keyframes drift {
+    0% { transform: translateY(0) translateX(0); }
+    100% { transform: translateY(-100%) translateX(10%); }
+  }
+  
+  .btn-sweep {
+    position: relative;
+    overflow: hidden;
+  }
+  .btn-sweep::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+    transform: skewX(-20deg);
+    animation: sweep 4s ease-in-out infinite;
+  }
+  @keyframes sweep {
+    0% { left: -100%; }
+    20%, 100% { left: 200%; }
+  }
   .group:hover .theme-flow-text-hover {
     background: linear-gradient(270deg, var(--bollywood-magenta), var(--bollywood-gold), var(--bollywood-orange), var(--bollywood-magenta));
     background-size: 300% 300%;
@@ -273,41 +341,49 @@ const customHtml = `
   </header>
 
   <!-- Hero Section -->
-  <div class="relative min-h-[90vh] flex items-center justify-center pt-20 z-10">
-    <div class="absolute inset-0 z-0 rounded-b-[4rem] overflow-hidden">
-      <!-- Video Background -->
-      <div class="absolute inset-0 w-full h-full pointer-events-none overflow-hidden">
+  <div class="relative min-h-[90vh] flex items-center justify-center pt-20 z-10 bg-black overflow-hidden">
+    <!-- Cinematic Letterboxing (animates out to reveal) -->
+    <div class="absolute top-0 left-0 w-full bg-black z-30 cinematic-bar-top pointer-events-none"></div>
+    <div class="absolute bottom-0 left-0 w-full bg-black z-30 cinematic-bar-bottom pointer-events-none"></div>
+
+    <div class="absolute inset-0 z-0 overflow-hidden">
+      <!-- Zooming Video Background -->
+      <div class="absolute inset-0 w-full h-full pointer-events-none overflow-hidden flex items-center justify-center">
         <video 
           src="/VIDEO-2026-07-13-22-04-43.mp4" 
           autoplay 
           muted 
           loop 
           playsinline
-          class="absolute inset-0 w-full h-full object-cover opacity-60 mix-blend-luminosity"
+          class="absolute w-full h-full object-cover opacity-80 mix-blend-luminosity animate-hero-zoom"
         ></video>
       </div>
-      <div class="absolute inset-0 bg-gradient-to-t from-[var(--bollywood-bg-dark)] via-transparent to-[var(--bollywood-bg-dark)] opacity-90"></div>
+      
+      <!-- Multi-Layered Lighting & Sparkles -->
+      <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(255,0,127,0.3)_0%,_transparent_70%)] pointer-events-none mix-blend-screen"></div>
+      <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black opacity-90 pointer-events-none"></div>
+      <div class="absolute inset-0 sparkle-layer pointer-events-none"></div>
     </div>
 
     <!-- Hero Content -->
-    <div class="relative z-10 text-center max-w-5xl px-6">
-      <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bollywood-glass border border-yellow-400/30 mb-8 animate-bounce">
-        <span class="w-2 h-2 rounded-full bg-yellow-400 animate-pulse"></span>
-        <span class="text-xs font-bold uppercase tracking-widest text-yellow-400">Feel The Rhythm</span>
+    <div class="relative z-20 text-center max-w-5xl px-6 animate-cinematic-title">
+      <div class="inline-flex items-center gap-2 px-6 py-2 rounded-full bg-black/40 backdrop-blur-md border border-yellow-400/50 shadow-[0_0_20px_rgba(255,215,0,0.3)] mb-8">
+        <span class="w-2 h-2 rounded-full bg-yellow-400 shadow-[0_0_10px_#FFD700] animate-pulse"></span>
+        <span class="text-sm font-bold uppercase tracking-[0.3em] text-yellow-400">The Ultimate Experience</span>
       </div>
-      <h2 class="text-6xl md:text-8xl font-black tracking-tighter mb-6 bollywood-gradient-text leading-tight">
+      <h2 class="text-6xl md:text-[7rem] font-black tracking-tighter mb-6 cinematic-gold-text leading-[1.1]">
         {{#heroTitle}}{{heroTitle}}{{/heroTitle}}{{^heroTitle}}Dance With Passion.{{/heroTitle}}
       </h2>
-      <p class="text-xl md:text-3xl text-pink-100 mb-12 max-w-3xl mx-auto font-light drop-shadow-xl" style="text-shadow: 0 4px 20px rgba(0,0,0,0.8)">
-        {{#shop.description}}{{shop.description}}{{/shop.description}}{{^shop.description}}Experience the vibrant energy, vibrant colors, and infectious beats of Bollywood.{{/shop.description}}
+      <p class="text-2xl md:text-4xl text-white/90 mb-14 max-w-4xl mx-auto font-light drop-shadow-2xl" style="text-shadow: 0 5px 25px rgba(0,0,0,1)">
+        {{#shop.description}}{{shop.description}}{{/shop.description}}{{^shop.description}}Experience the vibrant energy, vivid colors, and infectious beats of Bollywood.{{/shop.description}}
       </p>
       <div class="flex flex-col sm:flex-row gap-6 justify-center items-center">
         <button 
           data-action="book"
-          class="bollywood-btn w-full sm:w-auto px-12 py-5 rounded-full text-lg font-black tracking-widest flex items-center justify-center gap-3"
+          class="btn-sweep bg-gradient-to-r from-yellow-500 to-yellow-600 w-full sm:w-auto px-16 py-6 rounded-full text-xl font-black uppercase tracking-[0.2em] flex items-center justify-center gap-4 text-black shadow-[0_0_40px_rgba(255,215,0,0.4)] hover:shadow-[0_0_60px_rgba(255,215,0,0.6)] hover:scale-105 transition-all duration-300"
         >
-          Register Now 
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          Book Premiere 
+          <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
         </button>
       </div>
     </div>
