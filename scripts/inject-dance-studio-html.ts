@@ -179,66 +179,81 @@ const customHtml = `
     animation: gradient-flow 4s ease infinite;
   }
   
-  /* Asymmetrical Elegance Hero CSS */
-  .editorial-text {
-    line-height: 1.05;
-    letter-spacing: -0.04em;
+  /* Blockbuster Trailer Hero CSS */
+  @keyframes hero-zoom-intense {
+    0% { transform: scale(1.05); filter: contrast(1.1) brightness(0.8) sepia(0.3) hue-rotate(-10deg); }
+    100% { transform: scale(1.3); filter: contrast(1.3) brightness(0.7) sepia(0.5) hue-rotate(-15deg); }
+  }
+  .animate-hero-zoom-intense {
+    animation: hero-zoom-intense 15s linear forwards;
   }
   
-  .editorial-subtext {
-    line-height: 1.6;
-    letter-spacing: 0.02em;
-    font-weight: 300;
+  @keyframes title-crash {
+    0% { opacity: 0; transform: scale(3) translateZ(100px); filter: blur(30px) brightness(3); }
+    60% { opacity: 1; transform: scale(0.95); filter: blur(0) brightness(1); }
+    80% { transform: scale(1.02); }
+    100% { transform: scale(1); }
   }
-  
-  .elegant-btn {
+  .animate-title-crash {
+    animation: title-crash 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.5s forwards;
+    opacity: 0;
+  }
+
+  @keyframes screen-shake {
+    0%, 100% { transform: translate(0, 0) rotate(0deg); }
+    10%, 30%, 50%, 70%, 90% { transform: translate(-3px, -3px) rotate(-1deg); }
+    20%, 40%, 60%, 80% { transform: translate(3px, 3px) rotate(1deg); }
+  }
+  .animate-screen-shake {
+    animation: screen-shake 0.4s ease-in-out 1.1s forwards;
+  }
+
+  .ember-layer {
+    background-image: radial-gradient(circle, #ff4500 1px, transparent 2px),
+                      radial-gradient(circle, #ff8c00 1.5px, transparent 2.5px);
+    background-size: 60px 60px, 90px 90px;
+    background-position: 0 0, 30px 30px;
+    opacity: 0;
+    animation: ember-drift 20s linear infinite, fade-in-embers 2s ease-in 1s forwards;
+    mix-blend-mode: screen;
+    filter: drop-shadow(0 0 5px #ff4500);
+  }
+  @keyframes ember-drift {
+    0% { transform: translateY(0) translateX(0); }
+    100% { transform: translateY(-100%) translateX(20%); }
+  }
+  @keyframes fade-in-embers {
+    to { opacity: 0.6; }
+  }
+
+  .glowing-hot-text {
+    background: linear-gradient(to bottom, #fff 0%, #ffeaa7 40%, #ff7675 80%, #d63031 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 0 20px rgba(214,48,49,0.8)) drop-shadow(0 0 40px rgba(214,48,49,0.4));
+  }
+
+  .burning-btn {
     position: relative;
-    overflow: hidden;
-    background: transparent;
-    border: 1px solid rgba(255,255,255,0.4);
-    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    background: linear-gradient(45deg, #d63031, #e17055, #d63031);
+    background-size: 200% 200%;
+    border: 2px solid #ff7675;
+    box-shadow: 0 0 30px rgba(214,48,49,0.8), inset 0 0 20px rgba(255,234,167,0.5);
+    animation: burning-pulse 3s ease infinite, burning-bg 3s ease infinite;
+    transition: all 0.2s ease;
   }
-  .elegant-btn::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background: white;
-    transform: scaleX(0);
-    transform-origin: right;
-    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-    z-index: -1;
+  .burning-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 50px rgba(214,48,49,1), inset 0 0 30px rgba(255,234,167,0.8);
   }
-  .elegant-btn:hover {
-    border-color: white;
-    color: black !important;
+  @keyframes burning-pulse {
+    0%, 100% { box-shadow: 0 0 30px rgba(214,48,49,0.8), inset 0 0 20px rgba(255,234,167,0.5); }
+    50% { box-shadow: 0 0 50px rgba(214,48,49,1), inset 0 0 30px rgba(255,234,167,0.8); }
   }
-  .elegant-btn:hover::before {
-    transform: scaleX(1);
-    transform-origin: left;
-  }
-  
-  @keyframes float-slow {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-20px); }
-  }
-  .animate-float-slow {
-    animation: float-slow 8s ease-in-out infinite;
-  }
-  
-  @keyframes float-slower {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-35px); }
-  }
-  .animate-float-slower {
-    animation: float-slower 12s ease-in-out infinite;
-  }
-  
-  @keyframes reveal-left {
-    from { opacity: 0; transform: translateX(-40px); }
-    to { opacity: 1; transform: translateX(0); }
-  }
-  .animate-reveal-left {
-    animation: reveal-left 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  @keyframes burning-bg {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
   }
   .group:hover .theme-flow-text-hover {
     background: linear-gradient(270deg, var(--bollywood-magenta), var(--bollywood-gold), var(--bollywood-orange), var(--bollywood-magenta));
@@ -334,64 +349,59 @@ const customHtml = `
     </div>
   </header>
 
-  <!-- Hero Section (Asymmetrical Elegance) -->
-  <div class="relative min-h-[95vh] w-full bg-[#050505] overflow-hidden pt-32 pb-16 px-6 md:px-12 lg:px-20 flex items-center">
-    <!-- Very subtle ambient gradient -->
-    <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_rgba(255,0,127,0.08)_0%,_transparent_60%)] pointer-events-none"></div>
-
-    <div class="max-w-screen-2xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center z-10 relative">
+  <!-- Hero Section (Blockbuster Trailer - High Res) -->
+  <div class="relative min-h-[95vh] flex items-center justify-center pt-24 pb-12 z-10 bg-[#0a0a0a] overflow-hidden animate-screen-shake">
+    <div class="absolute inset-0 z-0 overflow-hidden bg-black">
+      <!-- High-Contrast Graded Video Background -->
+      <div class="absolute inset-0 w-full h-full pointer-events-none overflow-hidden flex items-center justify-center">
+        <video 
+          src="/VIDEO-UPSCALED-SMALL.mp4" 
+          autoplay 
+          muted 
+          loop 
+          playsinline
+          class="absolute w-full h-full object-cover opacity-70 mix-blend-screen animate-hero-zoom-intense"
+        ></video>
+      </div>
       
-      <!-- Left Column: Editorial Typography -->
-      <div class="lg:col-span-5 flex flex-col items-start justify-center animate-reveal-left z-20">
-        <p class="text-[var(--bollywood-gold)] uppercase tracking-[0.3em] font-medium text-sm md:text-base mb-6 border-b border-[var(--bollywood-gold)] pb-2 pr-4 inline-block">
-          The Premier Experience
-        </p>
+      <!-- Extreme Vignette for Tension -->
+      <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_transparent_20%,_rgba(0,0,0,0.95)_100%)] pointer-events-none"></div>
+      
+      <!-- Fiery Core Glow -->
+      <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(214,48,49,0.3)_0%,_transparent_60%)] pointer-events-none mix-blend-overlay"></div>
+      
+      <!-- Drifting Embers Overlay -->
+      <div class="absolute inset-0 ember-layer pointer-events-none"></div>
+    </div>
+
+    <!-- Hero Content -->
+    <div class="relative z-20 w-full max-w-6xl px-6 flex flex-col items-center justify-center h-full">
+      <div class="text-center animate-title-crash flex flex-col items-center">
+        <div class="inline-flex items-center gap-2 px-6 py-2 rounded-none border border-[#d63031]/50 bg-black/60 shadow-[0_0_20px_rgba(214,48,49,0.5)] mb-8 transform -skew-x-12">
+          <span class="w-2 h-2 bg-[#ff7675] shadow-[0_0_10px_#ff7675] animate-pulse"></span>
+          <span class="text-xs font-black uppercase tracking-[0.4em] text-[#ffeaa7]">The Ultimate Spectacle</span>
+        </div>
         
-        <h2 class="text-6xl md:text-7xl lg:text-[6.5rem] font-bold text-white mb-8 editorial-text">
-          {{#heroTitle}}{{heroTitle}}{{/heroTitle}}{{^heroTitle}}Dance With<br/>Passion.{{/heroTitle}}
+        <!-- Colossal Impressive Typography -->
+        <h2 class="text-7xl md:text-[8.5rem] font-black tracking-tighter mb-4 glowing-hot-text leading-[0.9] transform uppercase scale-y-110">
+          {{#heroTitle}}{{heroTitle}}{{/heroTitle}}{{^heroTitle}}Dance With Passion{{/heroTitle}}
         </h2>
         
-        <div class="pl-0 md:pl-6 border-l-0 md:border-l border-white/20 mb-12">
-          <p class="text-xl md:text-2xl text-white/70 max-w-lg editorial-subtext">
-            {{#shop.description}}{{shop.description}}{{/shop.description}}{{^shop.description}}Experience the vibrant energy, vivid colors, and infectious beats of Bollywood in a masterclass environment.{{/shop.description}}
-          </p>
-        </div>
+        <p class="text-xl md:text-3xl text-[#ffeaa7]/70 mb-14 max-w-3xl mx-auto font-medium tracking-wide drop-shadow-2xl">
+          {{#shop.description}}{{shop.description}}{{/shop.description}}{{^shop.description}}Experience the vibrant energy, vivid colors, and infectious beats of Bollywood.{{/shop.description}}
+        </p>
         
-        <button 
-          data-action="book"
-          class="elegant-btn px-10 py-5 rounded-full text-lg text-white font-medium tracking-widest uppercase flex items-center gap-4"
-        >
-          Reserve Your Spot
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-        </button>
-      </div>
-
-      <!-- Right Column: Overlapping Staggered Media Collage -->
-      <div class="lg:col-span-7 relative h-[60vh] lg:h-[80vh] w-full mt-10 lg:mt-0">
-        <!-- Main Video Frame -->
-        <div class="absolute right-0 top-1/2 -translate-y-1/2 w-4/5 h-[90%] rounded-3xl overflow-hidden shadow-2xl z-10 animate-float-slow">
-          <video 
-            src="/VIDEO-2026-07-13-22-04-43.mp4" 
-            autoplay 
-            muted 
-            loop 
-            playsinline
-            class="w-full h-full object-cover opacity-90"
-          ></video>
-          <!-- Subtle inner shadow/border for elegance -->
-          <div class="absolute inset-0 border border-white/10 rounded-3xl pointer-events-none"></div>
+        <!-- Exploding CTA -->
+        <div class="flex flex-col sm:flex-row gap-6 justify-center items-center">
+          <button 
+            data-action="book"
+            class="burning-btn w-full sm:w-auto px-16 py-6 rounded-sm text-xl font-black uppercase tracking-[0.3em] flex items-center justify-center gap-4 text-white transform -skew-x-12"
+          >
+            <span class="transform skew-x-12">Feel The Heat</span>
+            <svg class="transform skew-x-12" xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="square" stroke-linejoin="miter"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          </button>
         </div>
-        
-        <!-- Overlapping Accent Image (Front) -->
-        <div class="absolute left-0 bottom-[10%] w-[45%] h-[45%] rounded-2xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)] z-20 animate-float-slower" style="animation-delay: -3s;">
-          <img src="https://images.unsplash.com/photo-1518834107812-67b0b7c58434?q=80&w=1500&auto=format&fit=crop" class="w-full h-full object-cover grayscale opacity-80 hover:grayscale-0 hover:opacity-100 transition-all duration-700" alt="Choreography details" />
-          <div class="absolute inset-0 border border-white/20 rounded-2xl pointer-events-none"></div>
-        </div>
-
-        <!-- Overlapping Accent Color Block (Back) -->
-        <div class="absolute left-[10%] top-[5%] w-1/3 h-1/3 rounded-full bg-[radial-gradient(circle,_var(--bollywood-magenta)_0%,_transparent_70%)] opacity-30 blur-2xl z-0 animate-pulse"></div>
       </div>
-      
     </div>
   </div>
 
