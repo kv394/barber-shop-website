@@ -197,6 +197,18 @@ const customHtml = `
     opacity: 0;
   }
   
+  @keyframes dance-beat {
+    0% { transform: scale(1); }
+    15% { transform: scale(1.04); }
+    30% { transform: scale(1); }
+    45% { transform: scale(1.02); }
+    60%, 100% { transform: scale(1); }
+  }
+  .animate-dance-beat {
+    animation: dance-beat 1.2s ease-in-out infinite;
+    display: inline-block;
+  }
+  
   .glass-btn {
     background: rgba(255, 0, 127, 0.15);
     backdrop-filter: blur(12px);
@@ -335,8 +347,8 @@ const customHtml = `
           The Premier Bollywood Experience
         </div>
         
-        <!-- Clean Typography -->
-        <h2 class="text-6xl md:text-[8rem] font-black tracking-tighter mb-6 leading-[1.0] frosted-pink-text">
+        <!-- Clean Typography with Dance Beat -->
+        <h2 class="text-6xl md:text-[8rem] font-black tracking-tighter mb-6 leading-[1.0] frosted-pink-text animate-dance-beat">
           {{#heroTitle}}{{heroTitle}}{{/heroTitle}}{{^heroTitle}}Dance With Passion{{/heroTitle}}
         </h2>
         
