@@ -255,6 +255,17 @@ const customHtml = `
     50% { background-position: 100% 50%; }
     100% { background-position: 0% 50%; }
   }
+  
+  /* Catchy Marquee Animation */
+  @keyframes marquee-scroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+  .animate-marquee-scroll {
+    display: inline-flex;
+    white-space: nowrap;
+    animation: marquee-scroll 25s linear infinite;
+  }
   .group:hover .theme-flow-text-hover {
     background: linear-gradient(270deg, var(--bollywood-magenta), var(--bollywood-gold), var(--bollywood-orange), var(--bollywood-magenta));
     background-size: 300% 300%;
@@ -374,13 +385,23 @@ const customHtml = `
       <div class="absolute inset-0 ember-layer pointer-events-none"></div>
     </div>
 
+    <!-- Catchy Animated Marquee at the Top -->
+    <div class="absolute top-20 md:top-24 left-0 w-full overflow-hidden bg-gradient-to-r from-transparent via-[#d63031]/20 to-transparent border-y border-[#d63031]/30 py-3 z-30 backdrop-blur-sm -skew-y-2 shadow-[0_0_20px_rgba(214,48,49,0.3)]">
+      <div class="animate-marquee-scroll text-[#ffeaa7] text-xs md:text-sm font-black uppercase tracking-[0.5em] gap-8">
+        <span class="px-4">/// THE ULTIMATE BOLLYWOOD SPECTACLE</span>
+        <span class="px-4">/// FEEL THE RHYTHM</span>
+        <span class="px-4">/// UNLEASH YOUR PASSION</span>
+        <span class="px-4">/// THE PREMIER EXPERIENCE</span>
+        <span class="px-4">/// THE ULTIMATE BOLLYWOOD SPECTACLE</span>
+        <span class="px-4">/// FEEL THE RHYTHM</span>
+        <span class="px-4">/// UNLEASH YOUR PASSION</span>
+        <span class="px-4">/// THE PREMIER EXPERIENCE</span>
+      </div>
+    </div>
+
     <!-- Hero Content -->
     <div class="relative z-20 w-full max-w-6xl px-6 flex flex-col items-center justify-center h-full">
-      <div class="text-center animate-title-crash flex flex-col items-center">
-        <div class="inline-flex items-center gap-2 px-6 py-2 rounded-none border border-[#d63031]/50 bg-black/60 shadow-[0_0_20px_rgba(214,48,49,0.5)] mb-8 transform -skew-x-12">
-          <span class="w-2 h-2 bg-[#ff7675] shadow-[0_0_10px_#ff7675] animate-pulse"></span>
-          <span class="text-xs font-black uppercase tracking-[0.4em] text-[#ffeaa7]">The Ultimate Spectacle</span>
-        </div>
+      <div class="text-center animate-title-crash flex flex-col items-center mt-12">
         
         <!-- Colossal Impressive Typography -->
         <h2 class="text-7xl md:text-[8.5rem] font-black tracking-tighter mb-4 glowing-hot-text leading-[0.9] transform uppercase scale-y-110">
