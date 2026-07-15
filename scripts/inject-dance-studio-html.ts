@@ -948,28 +948,38 @@ const customHtml = `
     window.scrollTo(0, 0);
 
     // Bounce each letter of the hero title to the beat
-    document.addEventListener('DOMContentLoaded', function() {
-      var titleEl = document.getElementById('hero-dance-title');
-      if (titleEl) {
-        var text = titleEl.innerText || titleEl.textContent;
-        // Trim any whitespace that mustache might render
-        text = text.trim();
-        titleEl.innerHTML = '';
-        for (var i = 0; i < text.length; i++) {
-          var char = text[i];
-          if (char === ' ') {
-            titleEl.appendChild(document.createTextNode(' '));
-          } else {
-            var span = document.createElement('span');
-            span.innerText = char;
-            span.className = 'animate-dance-beat';
-            // Stagger animation based on character index for a wave effect
-            span.style.animationDelay = (i * 0.05) + 's';
-            titleEl.appendChild(span);
+    (function() {
+      function animateTitle() {
+        var titleEl = document.getElementById('hero-dance-title');
+        // Only run once
+        if (titleEl && !titleEl.hasAttribute('data-animated')) {
+          titleEl.setAttribute('data-animated', 'true');
+          var text = titleEl.innerText || titleEl.textContent;
+          text = text.trim();
+          titleEl.innerHTML = '';
+          for (var i = 0; i < text.length; i++) {
+            var char = text[i];
+            if (char === ' ') {
+              // Add a non-breaking space or standard space
+              titleEl.appendChild(document.createTextNode('\u00A0'));
+            } else {
+              var span = document.createElement('span');
+              span.innerText = char;
+              span.className = 'animate-dance-beat';
+              // Keep original styles and just stagger animation delay
+              span.style.animationDelay = (i * 0.05) + 's';
+              titleEl.appendChild(span);
+            }
           }
         }
       }
-    });
+      
+      animateTitle();
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', animateTitle);
+      }
+      setInterval(animateTitle, 500);
+    })();
   </script>
 
   <!-- Floating Home Button -->
