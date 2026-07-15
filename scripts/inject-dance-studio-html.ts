@@ -179,52 +179,81 @@ const customHtml = `
     animation: gradient-flow 4s ease infinite;
   }
   
-  /* Modern Epic Stage Hero CSS */
-  @keyframes hero-zoom {
-    0% { transform: scale(1.05); }
-    100% { transform: scale(1.15); }
+  /* Blockbuster Trailer Hero CSS */
+  @keyframes hero-zoom-intense {
+    0% { transform: scale(1.05); filter: contrast(1.1) brightness(0.8) sepia(0.3) hue-rotate(-10deg); }
+    100% { transform: scale(1.3); filter: contrast(1.3) brightness(0.7) sepia(0.5) hue-rotate(-15deg); }
   }
-  .animate-hero-zoom {
-    animation: hero-zoom 20s linear infinite alternate;
+  .animate-hero-zoom-intense {
+    animation: hero-zoom-intense 15s linear forwards;
   }
   
-  @keyframes stage-pulse {
-    0%, 100% { opacity: 0.5; transform: scale(1); }
-    50% { opacity: 0.8; transform: scale(1.1); }
+  @keyframes title-crash {
+    0% { opacity: 0; transform: scale(3) translateZ(100px); filter: blur(30px) brightness(3); }
+    60% { opacity: 1; transform: scale(0.95); filter: blur(0) brightness(1); }
+    80% { transform: scale(1.02); }
+    100% { transform: scale(1); }
   }
-  .stage-lighting {
-    animation: stage-pulse 8s ease-in-out infinite;
-  }
-
-  @keyframes epic-title-reveal {
-    0% { opacity: 0; transform: translateY(60px); filter: blur(20px); }
-    100% { opacity: 1; transform: translateY(0); filter: blur(0); }
-  }
-  .animate-epic-title {
-    animation: epic-title-reveal 1.8s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards;
+  .animate-title-crash {
+    animation: title-crash 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.5s forwards;
     opacity: 0;
   }
 
-  .glass-backing {
-    background: rgba(0, 0, 0, 0.4);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.7);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+  @keyframes screen-shake {
+    0%, 100% { transform: translate(0, 0) rotate(0deg); }
+    10%, 30%, 50%, 70%, 90% { transform: translate(-3px, -3px) rotate(-1deg); }
+    20%, 40%, 60%, 80% { transform: translate(3px, 3px) rotate(1deg); }
+  }
+  .animate-screen-shake {
+    animation: screen-shake 0.4s ease-in-out 1.1s forwards;
   }
 
-  .neon-btn {
-    position: relative;
-    background: rgba(0,0,0,0.6);
-    backdrop-filter: blur(8px);
-    border: 2px solid var(--bollywood-magenta);
-    box-shadow: 0 0 20px rgba(255,0,127,0.6), inset 0 0 15px rgba(255,0,127,0.4);
-    transition: all 0.3s ease;
+  .ember-layer {
+    background-image: radial-gradient(circle, #ff4500 1px, transparent 2px),
+                      radial-gradient(circle, #ff8c00 1.5px, transparent 2.5px);
+    background-size: 60px 60px, 90px 90px;
+    background-position: 0 0, 30px 30px;
+    opacity: 0;
+    animation: ember-drift 20s linear infinite, fade-in-embers 2s ease-in 1s forwards;
+    mix-blend-mode: screen;
+    filter: drop-shadow(0 0 5px #ff4500);
   }
-  .neon-btn:hover {
-    background: var(--bollywood-magenta);
-    box-shadow: 0 0 40px var(--bollywood-magenta), inset 0 0 20px rgba(255,255,255,0.3);
+  @keyframes ember-drift {
+    0% { transform: translateY(0) translateX(0); }
+    100% { transform: translateY(-100%) translateX(20%); }
+  }
+  @keyframes fade-in-embers {
+    to { opacity: 0.6; }
+  }
+
+  .glowing-hot-text {
+    background: linear-gradient(to bottom, #fff 0%, #ffeaa7 40%, #ff7675 80%, #d63031 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 0 20px rgba(214,48,49,0.8)) drop-shadow(0 0 40px rgba(214,48,49,0.4));
+  }
+
+  .burning-btn {
+    position: relative;
+    background: linear-gradient(45deg, #d63031, #e17055, #d63031);
+    background-size: 200% 200%;
+    border: 2px solid #ff7675;
+    box-shadow: 0 0 30px rgba(214,48,49,0.8), inset 0 0 20px rgba(255,234,167,0.5);
+    animation: burning-pulse 3s ease infinite, burning-bg 3s ease infinite;
+    transition: all 0.2s ease;
+  }
+  .burning-btn:hover {
     transform: scale(1.05);
+    box-shadow: 0 0 50px rgba(214,48,49,1), inset 0 0 30px rgba(255,234,167,0.8);
+  }
+  @keyframes burning-pulse {
+    0%, 100% { box-shadow: 0 0 30px rgba(214,48,49,0.8), inset 0 0 20px rgba(255,234,167,0.5); }
+    50% { box-shadow: 0 0 50px rgba(214,48,49,1), inset 0 0 30px rgba(255,234,167,0.8); }
+  }
+  @keyframes burning-bg {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
   }
   .group:hover .theme-flow-text-hover {
     background: linear-gradient(270deg, var(--bollywood-magenta), var(--bollywood-gold), var(--bollywood-orange), var(--bollywood-magenta));
@@ -320,10 +349,10 @@ const customHtml = `
     </div>
   </header>
 
-  <!-- Hero Section (Modern Epic Stage) -->
-  <div class="relative min-h-[95vh] flex items-center justify-center pt-24 pb-12 z-10 bg-black overflow-hidden">
-    <div class="absolute inset-0 z-0 overflow-hidden">
-      <!-- Full-Bleed Video Background -->
+  <!-- Hero Section (Blockbuster Trailer) -->
+  <div class="relative min-h-[95vh] flex items-center justify-center pt-24 pb-12 z-10 bg-[#0a0a0a] overflow-hidden animate-screen-shake">
+    <div class="absolute inset-0 z-0 overflow-hidden bg-black">
+      <!-- High-Contrast Graded Video Background -->
       <div class="absolute inset-0 w-full h-full pointer-events-none overflow-hidden flex items-center justify-center">
         <video 
           src="/VIDEO-2026-07-13-22-04-43.mp4" 
@@ -331,42 +360,45 @@ const customHtml = `
           muted 
           loop 
           playsinline
-          class="absolute w-full h-full object-cover opacity-60 mix-blend-screen animate-hero-zoom"
+          class="absolute w-full h-full object-cover opacity-70 mix-blend-screen animate-hero-zoom-intense"
         ></video>
       </div>
       
-      <!-- Stage Lighting: Massive Color Floods -->
-      <div class="absolute inset-0 bg-[radial-gradient(circle_at_20%_30%,_rgba(255,0,127,0.4)_0%,_transparent_50%)] stage-lighting pointer-events-none mix-blend-color-dodge"></div>
-      <div class="absolute inset-0 bg-[radial-gradient(circle_at_80%_70%,_rgba(255,165,0,0.3)_0%,_transparent_50%)] stage-lighting pointer-events-none mix-blend-color-dodge" style="animation-delay: -4s"></div>
-      <div class="absolute inset-0 bg-[radial-gradient(circle_at_50%_100%,_rgba(0,255,255,0.2)_0%,_transparent_60%)] stage-lighting pointer-events-none mix-blend-overlay" style="animation-delay: -2s"></div>
+      <!-- Extreme Vignette for Tension -->
+      <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_transparent_20%,_rgba(0,0,0,0.95)_100%)] pointer-events-none"></div>
       
-      <!-- Deep Vignette to focus attention -->
-      <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,_transparent_40%,_rgba(0,0,0,0.8)_100%)] pointer-events-none"></div>
+      <!-- Fiery Core Glow -->
+      <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(214,48,49,0.3)_0%,_transparent_60%)] pointer-events-none mix-blend-overlay"></div>
+      
+      <!-- Drifting Embers Overlay -->
+      <div class="absolute inset-0 ember-layer pointer-events-none"></div>
     </div>
 
     <!-- Hero Content -->
-    <div class="relative z-20 w-full max-w-6xl px-6 animate-epic-title flex flex-col items-center">
-      <div class="glass-backing rounded-[2.5rem] p-8 md:p-14 text-center border-t border-white/20">
-        <div class="inline-flex items-center gap-2 px-6 py-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 mb-8">
-          <span class="w-2 h-2 rounded-full bg-cyan-400 shadow-[0_0_10px_#00ffff] animate-pulse"></span>
-          <span class="text-sm font-bold uppercase tracking-[0.3em] text-cyan-50">Global Stage Production</span>
+    <div class="relative z-20 w-full max-w-6xl px-6 flex flex-col items-center justify-center h-full">
+      <div class="text-center animate-title-crash flex flex-col items-center">
+        <div class="inline-flex items-center gap-2 px-6 py-2 rounded-none border border-[#d63031]/50 bg-black/60 shadow-[0_0_20px_rgba(214,48,49,0.5)] mb-8 transform -skew-x-12">
+          <span class="w-2 h-2 bg-[#ff7675] shadow-[0_0_10px_#ff7675] animate-pulse"></span>
+          <span class="text-xs font-black uppercase tracking-[0.4em] text-[#ffeaa7]">The Ultimate Spectacle</span>
         </div>
         
-        <h2 class="text-6xl md:text-[7.5rem] font-black tracking-tighter mb-6 text-white drop-shadow-[0_0_30px_rgba(255,255,255,0.3)] leading-[1.05]">
-          {{#heroTitle}}{{heroTitle}}{{/heroTitle}}{{^heroTitle}}Dance With Passion.{{/heroTitle}}
+        <!-- Colossal Impressive Typography -->
+        <h2 class="text-7xl md:text-[8.5rem] font-black tracking-tighter mb-4 glowing-hot-text leading-[0.9] transform uppercase scale-y-110">
+          {{#heroTitle}}{{heroTitle}}{{/heroTitle}}{{^heroTitle}}Dance With Passion{{/heroTitle}}
         </h2>
         
-        <p class="text-2xl md:text-3xl text-white/80 mb-12 max-w-4xl mx-auto font-light leading-relaxed">
+        <p class="text-xl md:text-3xl text-[#ffeaa7]/70 mb-14 max-w-3xl mx-auto font-medium tracking-wide drop-shadow-2xl">
           {{#shop.description}}{{shop.description}}{{/shop.description}}{{^shop.description}}Experience the vibrant energy, vivid colors, and infectious beats of Bollywood.{{/shop.description}}
         </p>
         
+        <!-- Exploding CTA -->
         <div class="flex flex-col sm:flex-row gap-6 justify-center items-center">
           <button 
             data-action="book"
-            class="neon-btn w-full sm:w-auto px-16 py-6 rounded-full text-xl font-black uppercase tracking-[0.2em] flex items-center justify-center gap-4 text-white"
+            class="burning-btn w-full sm:w-auto px-16 py-6 rounded-sm text-xl font-black uppercase tracking-[0.3em] flex items-center justify-center gap-4 text-white transform -skew-x-12"
           >
-            Join The Movement
-            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+            <span class="transform skew-x-12">Feel The Heat</span>
+            <svg class="transform skew-x-12" xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="square" stroke-linejoin="miter"><polygon points="5 3 19 12 5 21 5 3"/></svg>
           </button>
         </div>
       </div>
