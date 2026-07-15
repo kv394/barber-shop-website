@@ -56,7 +56,7 @@ export function sanitizeTemplate(html: string): string {
       'meta': ['charset', 'name', 'content', 'property'],
       'link': ['rel', 'href', 'type', 'media', 'crossorigin'],
       'source': ['src', 'type', 'media', 'srcset', 'sizes'],
-      'video': ['src', 'controls', 'width', 'height', 'autoplay', 'loop', 'muted', 'poster', 'preload'],
+      'video': ['src', 'controls', 'width', 'height', 'autoplay', 'loop', 'muted', 'poster', 'preload', 'playsinline'],
       'audio': ['src', 'controls', 'autoplay', 'loop', 'muted', 'preload'],
       'track': ['src', 'kind', 'srclang', 'label', 'default'],
       'svg': ['xmlns', 'viewBox', 'fill', 'stroke', 'stroke-width', 'stroke-linecap', 'stroke-linejoin'],

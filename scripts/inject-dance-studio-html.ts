@@ -642,7 +642,7 @@ const customHtml = `
         // Build the media block: YouTube iframe if video available, fallback to image
         var mediaBlock;
         if (videoId) {
-          mediaBlock = '<iframe src="https://www.youtube.com/embed/' + videoId + '?autoplay=1&mute=1&loop=1&playlist=' + videoId + '&controls=0&rel=0&modestbranding=1&playsinline=1&start=20" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none" style="width: 135%; height: 135%;" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>';
+          mediaBlock = '<iframe src="https://www.youtube.com/embed/' + videoId + '?autoplay=1&mute=1&muted=1&volume=0&loop=1&playlist=' + videoId + '&controls=0&rel=0&modestbranding=1&playsinline=1&start=20" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none" style="width: 135%; height: 135%;" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>';
         } else {
           var imgSrc = svc.imageUrl || 'https://images.unsplash.com/photo-1518834107812-67b0b7c58434?q=80&w=800&auto=format&fit=crop';
           mediaBlock = '<img src="' + imgSrc + '" alt="' + svc.name + '" class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />';
@@ -868,6 +868,22 @@ const customHtml = `
     });
   </script>
   <script>
+    // Force mute all video elements as a fallback guarantee
+    function forceMuteVideos() {
+      document.querySelectorAll('video').forEach(function(v) {
+        v.muted = true;
+        v.defaultMuted = true;
+        v.volume = 0;
+        v.setAttribute('muted', 'muted');
+        v.setAttribute('playsinline', '');
+      });
+    }
+    document.addEventListener('DOMContentLoaded', forceMuteVideos);
+    // Also run immediately in case DOM is already loaded
+    forceMuteVideos();
+    // Run periodically to catch dynamically injected videos
+    setInterval(forceMuteVideos, 1000);
+
     // Force scroll to top on page refresh
     if ('scrollRestoration' in history) {
       history.scrollRestoration = 'manual';
