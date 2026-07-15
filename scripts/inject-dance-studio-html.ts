@@ -198,15 +198,17 @@ const customHtml = `
   }
   
   .glass-btn {
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.3);
+    background: rgba(255, 0, 127, 0.15);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 0, 127, 0.4);
+    box-shadow: 0 4px 15px rgba(255, 0, 127, 0.15);
     transition: all 0.3s ease;
   }
   .glass-btn:hover {
-    background: rgba(255, 255, 255, 0.2);
+    background: rgba(255, 0, 127, 0.3);
+    border: 1px solid rgba(255, 0, 127, 0.6);
     transform: translateY(-2px);
-    box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+    box-shadow: 0 10px 25px rgba(255, 0, 127, 0.3);
   }
   .group:hover .theme-flow-text-hover {
     background: linear-gradient(270deg, var(--bollywood-magenta), var(--bollywood-gold), var(--bollywood-orange), var(--bollywood-magenta));
