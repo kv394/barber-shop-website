@@ -181,8 +181,8 @@ const customHtml = `
   
   /* Blockbuster Trailer Hero CSS */
   @keyframes hero-zoom-intense {
-    0% { transform: scale(1.05); filter: contrast(1.1) brightness(0.8) sepia(0.3) hue-rotate(-10deg); }
-    100% { transform: scale(1.3); filter: contrast(1.3) brightness(0.7) sepia(0.5) hue-rotate(-15deg); }
+    0% { transform: scale(1.2) translate(1%, 2%); filter: contrast(1.1) brightness(0.8) sepia(0.3) hue-rotate(-10deg); }
+    100% { transform: scale(1.05) translate(-1%, -1%); filter: contrast(1.2) brightness(0.8) sepia(0.4) hue-rotate(-12deg); }
   }
   .animate-hero-zoom-intense {
     animation: hero-zoom-intense 15s linear forwards;
