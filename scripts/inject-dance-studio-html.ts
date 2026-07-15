@@ -256,15 +256,16 @@ const customHtml = `
     100% { background-position: 0% 50%; }
   }
   
-  /* Catchy Marquee Animation */
-  @keyframes marquee-scroll {
-    0% { transform: translateX(0); }
-    100% { transform: translateX(-50%); }
+  /* Elegant Word Flip Animation */
+  @keyframes flip-words {
+    0%, 20% { transform: translateY(0); }
+    25%, 45% { transform: translateY(-20%); }
+    50%, 70% { transform: translateY(-40%); }
+    75%, 95% { transform: translateY(-60%); }
+    100% { transform: translateY(-80%); }
   }
-  .animate-marquee-scroll {
-    display: inline-flex;
-    white-space: nowrap;
-    animation: marquee-scroll 25s linear infinite;
+  .animate-flip-words {
+    animation: flip-words 10s cubic-bezier(0.87, 0, 0.13, 1) infinite;
   }
   .group:hover .theme-flow-text-hover {
     background: linear-gradient(270deg, var(--bollywood-magenta), var(--bollywood-gold), var(--bollywood-orange), var(--bollywood-magenta));
@@ -385,23 +386,23 @@ const customHtml = `
       <div class="absolute inset-0 ember-layer pointer-events-none"></div>
     </div>
 
-    <!-- Catchy Animated Marquee at the Top -->
-    <div class="absolute top-20 md:top-24 left-0 w-full overflow-hidden bg-gradient-to-r from-transparent via-[#d63031]/20 to-transparent border-y border-[#d63031]/30 py-3 z-30 backdrop-blur-sm -skew-y-2 shadow-[0_0_20px_rgba(214,48,49,0.3)]">
-      <div class="animate-marquee-scroll text-[#ffeaa7] text-xs md:text-sm font-black uppercase tracking-[0.5em] gap-8">
-        <span class="px-4">/// THE ULTIMATE BOLLYWOOD SPECTACLE</span>
-        <span class="px-4">/// FEEL THE RHYTHM</span>
-        <span class="px-4">/// UNLEASH YOUR PASSION</span>
-        <span class="px-4">/// THE PREMIER EXPERIENCE</span>
-        <span class="px-4">/// THE ULTIMATE BOLLYWOOD SPECTACLE</span>
-        <span class="px-4">/// FEEL THE RHYTHM</span>
-        <span class="px-4">/// UNLEASH YOUR PASSION</span>
-        <span class="px-4">/// THE PREMIER EXPERIENCE</span>
-      </div>
-    </div>
-
     <!-- Hero Content -->
     <div class="relative z-20 w-full max-w-6xl px-6 flex flex-col items-center justify-center h-full">
       <div class="text-center animate-title-crash flex flex-col items-center mt-12">
+        
+        <!-- Elegant Rotating Text Animation -->
+        <div class="mb-6 flex items-center justify-center text-[#ffeaa7] text-lg md:text-2xl font-semibold tracking-[0.3em] uppercase opacity-90">
+          <span>Discover Your</span>
+          <div class="ml-3 h-[1.2em] overflow-hidden inline-block align-bottom relative">
+            <div class="flex flex-col animate-flip-words text-white font-black drop-shadow-[0_0_15px_rgba(255,255,255,0.6)]">
+              <span class="h-[1.2em] flex items-center">Passion</span>
+              <span class="h-[1.2em] flex items-center">Rhythm</span>
+              <span class="h-[1.2em] flex items-center">Energy</span>
+              <span class="h-[1.2em] flex items-center">Power</span>
+              <span class="h-[1.2em] flex items-center">Passion</span>
+            </div>
+          </div>
+        </div>
         
         <!-- Colossal Impressive Typography -->
         <h2 class="text-7xl md:text-[8.5rem] font-black tracking-tighter mb-4 glowing-hot-text leading-[0.9] transform uppercase scale-y-110">
