@@ -205,12 +205,11 @@ const customHtml = `
     transition: all 0.3s ease;
   }
   .frosted-pink-text {
-    color: rgba(255, 240, 250, 0.8);
-    -webkit-text-stroke: 1px rgba(255, 0, 127, 0.8);
+    color: rgba(255, 255, 255, 0.6); /* Translucent white like frosted glass */
+    -webkit-text-stroke: 1px rgba(255, 255, 255, 0.3); /* Subtle glass edge */
     text-shadow: 
-      0 0 15px rgba(255, 0, 127, 0.8), 
-      0 0 30px rgba(255, 0, 127, 0.5), 
-      0 0 50px rgba(255, 0, 127, 0.3);
+      3px 3px 6px rgba(255, 0, 127, 0.6), /* Pink shadow/tint on bottom right */
+      -1px -1px 3px rgba(255, 255, 255, 0.9); /* White highlight on top left */
   }
   .glass-btn:hover {
     background: rgba(255, 0, 127, 0.3);
