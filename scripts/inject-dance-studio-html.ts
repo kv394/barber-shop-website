@@ -188,84 +188,25 @@ const customHtml = `
     animation: hero-zoom-intense 15s linear forwards;
   }
   
-  @keyframes title-crash {
-    0% { opacity: 0; transform: scale(3) translateZ(100px); filter: blur(30px) brightness(3); }
-    60% { opacity: 1; transform: scale(0.95); filter: blur(0) brightness(1); }
-    80% { transform: scale(1.02); }
-    100% { transform: scale(1); }
+  @keyframes elegant-fade-up {
+    0% { opacity: 0; transform: translateY(20px); }
+    100% { opacity: 1; transform: translateY(0); }
   }
-  .animate-title-crash {
-    animation: title-crash 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.5s forwards;
+  .animate-fade-up {
+    animation: elegant-fade-up 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
     opacity: 0;
-  }
-
-  @keyframes screen-shake {
-    0%, 100% { transform: translate(0, 0) rotate(0deg); }
-    10%, 30%, 50%, 70%, 90% { transform: translate(-3px, -3px) rotate(-1deg); }
-    20%, 40%, 60%, 80% { transform: translate(3px, 3px) rotate(1deg); }
-  }
-  .animate-screen-shake {
-    animation: screen-shake 0.4s ease-in-out 1.1s forwards;
-  }
-
-  .ember-layer {
-    background-image: radial-gradient(circle, #ff4500 1px, transparent 2px),
-                      radial-gradient(circle, #ff8c00 1.5px, transparent 2.5px);
-    background-size: 60px 60px, 90px 90px;
-    background-position: 0 0, 30px 30px;
-    opacity: 0;
-    animation: ember-drift 20s linear infinite, fade-in-embers 2s ease-in 1s forwards;
-    mix-blend-mode: screen;
-    filter: drop-shadow(0 0 5px #ff4500);
-  }
-  @keyframes ember-drift {
-    0% { transform: translateY(0) translateX(0); }
-    100% { transform: translateY(-100%) translateX(20%); }
-  }
-  @keyframes fade-in-embers {
-    to { opacity: 0.6; }
-  }
-
-  .glowing-hot-text {
-    background: linear-gradient(to bottom, #fff 0%, #ffeaa7 40%, #ff7675 80%, #d63031 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    filter: drop-shadow(0 0 20px rgba(214,48,49,0.8)) drop-shadow(0 0 40px rgba(214,48,49,0.4));
-  }
-
-  .burning-btn {
-    position: relative;
-    background: linear-gradient(45deg, #d63031, #e17055, #d63031);
-    background-size: 200% 200%;
-    border: 2px solid #ff7675;
-    box-shadow: 0 0 30px rgba(214,48,49,0.8), inset 0 0 20px rgba(255,234,167,0.5);
-    animation: burning-pulse 3s ease infinite, burning-bg 3s ease infinite;
-    transition: all 0.2s ease;
-  }
-  .burning-btn:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 50px rgba(214,48,49,1), inset 0 0 30px rgba(255,234,167,0.8);
-  }
-  @keyframes burning-pulse {
-    0%, 100% { box-shadow: 0 0 30px rgba(214,48,49,0.8), inset 0 0 20px rgba(255,234,167,0.5); }
-    50% { box-shadow: 0 0 50px rgba(214,48,49,1), inset 0 0 30px rgba(255,234,167,0.8); }
-  }
-  @keyframes burning-bg {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
   }
   
-  /* Elegant Word Flip Animation */
-  @keyframes flip-words {
-    0%, 20% { transform: translateY(0); }
-    25%, 45% { transform: translateY(-20%); }
-    50%, 70% { transform: translateY(-40%); }
-    75%, 95% { transform: translateY(-60%); }
-    100% { transform: translateY(-80%); }
+  .glass-btn {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    transition: all 0.3s ease;
   }
-  .animate-flip-words {
-    animation: flip-words 10s cubic-bezier(0.87, 0, 0.13, 1) infinite;
+  .glass-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.3);
   }
   .group:hover .theme-flow-text-hover {
     background: linear-gradient(270deg, var(--bollywood-magenta), var(--bollywood-gold), var(--bollywood-orange), var(--bollywood-magenta));
@@ -361,8 +302,8 @@ const customHtml = `
     </div>
   </header>
 
-  <!-- Hero Section (Blockbuster Trailer - High Res) -->
-  <div class="relative min-h-[95vh] flex items-center justify-center pt-24 pb-12 z-10 bg-[#0a0a0a] overflow-hidden animate-screen-shake">
+  <!-- Hero Section (Clean Cinematic) -->
+  <div class="relative min-h-[95vh] flex items-center justify-center pt-24 pb-12 z-10 bg-[#0a0a0a] overflow-hidden">
     <div class="absolute inset-0 z-0 overflow-hidden bg-black">
       <!-- High-Contrast Graded Video Background -->
       <div class="absolute inset-0 w-full h-full pointer-events-none overflow-hidden flex items-center justify-center">
@@ -372,55 +313,40 @@ const customHtml = `
           muted 
           loop 
           playsinline
-          class="absolute w-full h-full object-cover opacity-70 mix-blend-screen animate-hero-zoom-intense"
+          class="absolute w-full h-full object-cover opacity-80 mix-blend-screen animate-hero-zoom-intense"
         ></video>
       </div>
       
-      <!-- Extreme Vignette for Tension -->
-      <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_transparent_20%,_rgba(0,0,0,0.95)_100%)] pointer-events-none"></div>
-      
-      <!-- Fiery Core Glow -->
-      <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(214,48,49,0.3)_0%,_transparent_60%)] pointer-events-none mix-blend-overlay"></div>
-      
-      <!-- Drifting Embers Overlay -->
-      <div class="absolute inset-0 ember-layer pointer-events-none"></div>
+      <!-- Subtle Vignette -->
+      <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_transparent_30%,_rgba(0,0,0,0.8)_100%)] pointer-events-none"></div>
     </div>
 
     <!-- Hero Content -->
     <div class="relative z-20 w-full max-w-6xl px-6 flex flex-col items-center justify-center h-full">
-      <div class="text-center animate-title-crash flex flex-col items-center mt-12">
+      <div class="text-center flex flex-col items-center mt-12 animate-fade-up" style="animation-delay: 0.2s">
         
-        <!-- Elegant Rotating Text Animation -->
-        <div class="mb-6 flex items-center justify-center text-[#ffeaa7] text-lg md:text-2xl font-semibold tracking-[0.3em] uppercase opacity-90">
-          <span>Discover Your</span>
-          <div class="ml-3 h-[1.2em] overflow-hidden inline-block align-bottom relative">
-            <div class="flex flex-col animate-flip-words text-white font-black drop-shadow-[0_0_15px_rgba(255,255,255,0.6)]">
-              <span class="h-[1.2em] flex items-center">Passion</span>
-              <span class="h-[1.2em] flex items-center">Rhythm</span>
-              <span class="h-[1.2em] flex items-center">Energy</span>
-              <span class="h-[1.2em] flex items-center">Power</span>
-              <span class="h-[1.2em] flex items-center">Passion</span>
-            </div>
-          </div>
+        <!-- Elegant Subheadline -->
+        <div class="mb-8 flex items-center justify-center text-white/80 text-sm md:text-base font-medium tracking-[0.4em] uppercase drop-shadow-md">
+          The Premier Bollywood Experience
         </div>
         
-        <!-- Colossal Impressive Typography -->
-        <h2 class="text-7xl md:text-[8.5rem] font-black tracking-tighter mb-4 glowing-hot-text leading-[0.9] transform uppercase scale-y-110">
+        <!-- Clean Typography -->
+        <h2 class="text-6xl md:text-[7.5rem] font-medium tracking-tight mb-6 text-white leading-[1.0] drop-shadow-2xl">
           {{#heroTitle}}{{heroTitle}}{{/heroTitle}}{{^heroTitle}}Dance With Passion{{/heroTitle}}
         </h2>
         
-        <p class="text-xl md:text-3xl text-[#ffeaa7]/70 mb-14 max-w-3xl mx-auto font-medium tracking-wide drop-shadow-2xl">
+        <p class="text-lg md:text-2xl text-white/80 mb-14 max-w-3xl mx-auto font-light tracking-wide drop-shadow-md">
           {{#shop.description}}{{shop.description}}{{/shop.description}}{{^shop.description}}Experience the vibrant energy, vivid colors, and infectious beats of Bollywood.{{/shop.description}}
         </p>
         
-        <!-- Exploding CTA -->
+        <!-- Elegant CTA -->
         <div class="flex flex-col sm:flex-row gap-6 justify-center items-center">
           <button 
             data-action="book"
-            class="burning-btn w-full sm:w-auto px-16 py-6 rounded-sm text-xl font-black uppercase tracking-[0.3em] flex items-center justify-center gap-4 text-white transform -skew-x-12"
+            class="glass-btn w-full sm:w-auto px-12 py-5 rounded-full text-sm font-semibold uppercase tracking-[0.2em] flex items-center justify-center gap-3 text-white"
           >
-            <span class="transform skew-x-12">Feel The Heat</span>
-            <svg class="transform skew-x-12" xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="square" stroke-linejoin="miter"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            <span>Book Your Class</span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
           </button>
         </div>
       </div>
