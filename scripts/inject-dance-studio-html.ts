@@ -234,7 +234,7 @@ const customHtml = `
     transform: translate(-50%, -50%) scale(1) !important;
   }
   .cal-popover-item {
-    background-color: #111827;
+    background-color: #581c87;
   }
   .floating-chevron {
     position: fixed !important;
