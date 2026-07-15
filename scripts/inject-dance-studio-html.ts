@@ -198,11 +198,11 @@ const customHtml = `
   }
   
   @keyframes dance-beat {
-    0%, 100% { transform: translateY(0) scale(1); }
-    15% { transform: translateY(-12px) scale(1.05); }
-    30% { transform: translateY(0) scale(1); }
-    45% { transform: translateY(-4px) scale(1.02); }
-    60% { transform: translateY(0) scale(1); }
+    0%, 100% { transform: translateY(0) scale(1); color: rgba(255, 0, 127, 0.75); }
+    15% { transform: translateY(-12px) scale(1.05); color: #000000; }
+    30% { transform: translateY(0) scale(1); color: rgba(255, 0, 127, 0.75); }
+    45% { transform: translateY(-4px) scale(1.02); color: rgba(255, 0, 127, 0.75); }
+    60% { transform: translateY(0) scale(1); color: rgba(255, 0, 127, 0.75); }
   }
   .animate-dance-beat {
     animation: dance-beat 1.2s ease-in-out infinite;
