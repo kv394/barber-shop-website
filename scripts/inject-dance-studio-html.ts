@@ -198,11 +198,11 @@ const customHtml = `
   }
   
   @keyframes dance-beat {
-    0% { transform: scale(1); }
-    15% { transform: scale(1.04); }
-    30% { transform: scale(1); }
-    45% { transform: scale(1.02); }
-    60%, 100% { transform: scale(1); }
+    0%, 100% { transform: translateY(0) scale(1); }
+    15% { transform: translateY(-12px) scale(1.05); }
+    30% { transform: translateY(0) scale(1); }
+    45% { transform: translateY(-4px) scale(1.02); }
+    60% { transform: translateY(0) scale(1); }
   }
   .animate-dance-beat {
     animation: dance-beat 1.2s ease-in-out infinite;
@@ -348,7 +348,7 @@ const customHtml = `
         </div>
         
         <!-- Clean Typography with Dance Beat -->
-        <h2 class="text-6xl md:text-[8rem] font-black tracking-tighter mb-6 leading-[1.0] frosted-pink-text animate-dance-beat">
+        <h2 id="hero-dance-title" class="text-6xl md:text-[8rem] font-black tracking-tighter mb-6 leading-[1.0] frosted-pink-text">
           {{#heroTitle}}{{heroTitle}}{{/heroTitle}}{{^heroTitle}}Dance With Passion{{/heroTitle}}
         </h2>
         
@@ -946,6 +946,30 @@ const customHtml = `
       history.scrollRestoration = 'manual';
     }
     window.scrollTo(0, 0);
+
+    // Bounce each letter of the hero title to the beat
+    document.addEventListener('DOMContentLoaded', function() {
+      var titleEl = document.getElementById('hero-dance-title');
+      if (titleEl) {
+        var text = titleEl.innerText || titleEl.textContent;
+        // Trim any whitespace that mustache might render
+        text = text.trim();
+        titleEl.innerHTML = '';
+        for (var i = 0; i < text.length; i++) {
+          var char = text[i];
+          if (char === ' ') {
+            titleEl.appendChild(document.createTextNode(' '));
+          } else {
+            var span = document.createElement('span');
+            span.innerText = char;
+            span.className = 'animate-dance-beat';
+            // Stagger animation based on character index for a wave effect
+            span.style.animationDelay = (i * 0.05) + 's';
+            titleEl.appendChild(span);
+          }
+        }
+      }
+    });
   </script>
 
   <!-- Floating Home Button -->
