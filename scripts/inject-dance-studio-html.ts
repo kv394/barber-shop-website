@@ -179,72 +179,52 @@ const customHtml = `
     animation: gradient-flow 4s ease infinite;
   }
   
-  /* Cinematic Hero Overhaul CSS */
-  @keyframes cinematic-bar-reveal {
-    0% { height: 50vh; }
-    100% { height: 10vh; }
-  }
-  .cinematic-bar-top {
-    animation: cinematic-bar-reveal 2.5s cubic-bezier(0.8, 0, 0.2, 1) forwards;
-  }
-  .cinematic-bar-bottom {
-    animation: cinematic-bar-reveal 2.5s cubic-bezier(0.8, 0, 0.2, 1) forwards;
-  }
-  
+  /* Modern Epic Stage Hero CSS */
   @keyframes hero-zoom {
-    0% { transform: scale(1.1); }
-    100% { transform: scale(1.25); }
+    0% { transform: scale(1.05); }
+    100% { transform: scale(1.15); }
   }
   .animate-hero-zoom {
     animation: hero-zoom 20s linear infinite alternate;
   }
   
-  @keyframes cinematic-title-reveal {
-    0% { opacity: 0; transform: translateY(40px) scale(0.9); filter: blur(10px); }
-    100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+  @keyframes stage-pulse {
+    0%, 100% { opacity: 0.5; transform: scale(1); }
+    50% { opacity: 0.8; transform: scale(1.1); }
   }
-  .animate-cinematic-title {
-    animation: cinematic-title-reveal 2s cubic-bezier(0.16, 1, 0.3, 1) 0.5s forwards;
+  .stage-lighting {
+    animation: stage-pulse 8s ease-in-out infinite;
+  }
+
+  @keyframes epic-title-reveal {
+    0% { opacity: 0; transform: translateY(60px); filter: blur(20px); }
+    100% { opacity: 1; transform: translateY(0); filter: blur(0); }
+  }
+  .animate-epic-title {
+    animation: epic-title-reveal 1.8s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards;
     opacity: 0;
   }
-  
-  .cinematic-gold-text {
-    background: linear-gradient(to bottom, #FFF3B0 0%, #FFD700 25%, #FDB931 50%, #B8860B 51%, #FFD700 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    filter: drop-shadow(0px 2px 2px rgba(255,255,255,0.4)) drop-shadow(0px 15px 20px rgba(0,0,0,0.9));
+
+  .glass-backing {
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.1);
   }
-  
-  .sparkle-layer {
-    background-image: radial-gradient(circle, #fff 1px, transparent 2px);
-    background-size: 40px 40px;
-    opacity: 0.3;
-    animation: drift 30s linear infinite;
-    mix-blend-mode: screen;
-  }
-  @keyframes drift {
-    0% { transform: translateY(0) translateX(0); }
-    100% { transform: translateY(-100%) translateX(10%); }
-  }
-  
-  .btn-sweep {
+
+  .neon-btn {
     position: relative;
-    overflow: hidden;
+    background: rgba(0,0,0,0.6);
+    backdrop-filter: blur(8px);
+    border: 2px solid var(--bollywood-magenta);
+    box-shadow: 0 0 20px rgba(255,0,127,0.6), inset 0 0 15px rgba(255,0,127,0.4);
+    transition: all 0.3s ease;
   }
-  .btn-sweep::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 50%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
-    transform: skewX(-20deg);
-    animation: sweep 4s ease-in-out infinite;
-  }
-  @keyframes sweep {
-    0% { left: -100%; }
-    20%, 100% { left: 200%; }
+  .neon-btn:hover {
+    background: var(--bollywood-magenta);
+    box-shadow: 0 0 40px var(--bollywood-magenta), inset 0 0 20px rgba(255,255,255,0.3);
+    transform: scale(1.05);
   }
   .group:hover .theme-flow-text-hover {
     background: linear-gradient(270deg, var(--bollywood-magenta), var(--bollywood-gold), var(--bollywood-orange), var(--bollywood-magenta));
@@ -340,14 +320,10 @@ const customHtml = `
     </div>
   </header>
 
-  <!-- Hero Section -->
-  <div class="relative min-h-[90vh] flex items-center justify-center pt-20 z-10 bg-black overflow-hidden">
-    <!-- Cinematic Letterboxing (animates out to reveal) -->
-    <div class="absolute top-0 left-0 w-full bg-black z-30 cinematic-bar-top pointer-events-none"></div>
-    <div class="absolute bottom-0 left-0 w-full bg-black z-30 cinematic-bar-bottom pointer-events-none"></div>
-
+  <!-- Hero Section (Modern Epic Stage) -->
+  <div class="relative min-h-[95vh] flex items-center justify-center pt-24 pb-12 z-10 bg-black overflow-hidden">
     <div class="absolute inset-0 z-0 overflow-hidden">
-      <!-- Zooming Video Background -->
+      <!-- Full-Bleed Video Background -->
       <div class="absolute inset-0 w-full h-full pointer-events-none overflow-hidden flex items-center justify-center">
         <video 
           src="/VIDEO-2026-07-13-22-04-43.mp4" 
@@ -355,36 +331,44 @@ const customHtml = `
           muted 
           loop 
           playsinline
-          class="absolute w-full h-full object-cover opacity-80 mix-blend-luminosity animate-hero-zoom"
+          class="absolute w-full h-full object-cover opacity-60 mix-blend-screen animate-hero-zoom"
         ></video>
       </div>
       
-      <!-- Multi-Layered Lighting & Sparkles -->
-      <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(255,0,127,0.3)_0%,_transparent_70%)] pointer-events-none mix-blend-screen"></div>
-      <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black opacity-90 pointer-events-none"></div>
-      <div class="absolute inset-0 sparkle-layer pointer-events-none"></div>
+      <!-- Stage Lighting: Massive Color Floods -->
+      <div class="absolute inset-0 bg-[radial-gradient(circle_at_20%_30%,_rgba(255,0,127,0.4)_0%,_transparent_50%)] stage-lighting pointer-events-none mix-blend-color-dodge"></div>
+      <div class="absolute inset-0 bg-[radial-gradient(circle_at_80%_70%,_rgba(255,165,0,0.3)_0%,_transparent_50%)] stage-lighting pointer-events-none mix-blend-color-dodge" style="animation-delay: -4s"></div>
+      <div class="absolute inset-0 bg-[radial-gradient(circle_at_50%_100%,_rgba(0,255,255,0.2)_0%,_transparent_60%)] stage-lighting pointer-events-none mix-blend-overlay" style="animation-delay: -2s"></div>
+      
+      <!-- Deep Vignette to focus attention -->
+      <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,_transparent_40%,_rgba(0,0,0,0.8)_100%)] pointer-events-none"></div>
     </div>
 
     <!-- Hero Content -->
-    <div class="relative z-20 text-center max-w-5xl px-6 animate-cinematic-title">
-      <div class="inline-flex items-center gap-2 px-6 py-2 rounded-full bg-black/40 backdrop-blur-md border border-yellow-400/50 shadow-[0_0_20px_rgba(255,215,0,0.3)] mb-8">
-        <span class="w-2 h-2 rounded-full bg-yellow-400 shadow-[0_0_10px_#FFD700] animate-pulse"></span>
-        <span class="text-sm font-bold uppercase tracking-[0.3em] text-yellow-400">The Ultimate Experience</span>
-      </div>
-      <h2 class="text-6xl md:text-[7rem] font-black tracking-tighter mb-6 cinematic-gold-text leading-[1.1]">
-        {{#heroTitle}}{{heroTitle}}{{/heroTitle}}{{^heroTitle}}Dance With Passion.{{/heroTitle}}
-      </h2>
-      <p class="text-2xl md:text-4xl text-white/90 mb-14 max-w-4xl mx-auto font-light drop-shadow-2xl" style="text-shadow: 0 5px 25px rgba(0,0,0,1)">
-        {{#shop.description}}{{shop.description}}{{/shop.description}}{{^shop.description}}Experience the vibrant energy, vivid colors, and infectious beats of Bollywood.{{/shop.description}}
-      </p>
-      <div class="flex flex-col sm:flex-row gap-6 justify-center items-center">
-        <button 
-          data-action="book"
-          class="btn-sweep bg-gradient-to-r from-yellow-500 to-yellow-600 w-full sm:w-auto px-16 py-6 rounded-full text-xl font-black uppercase tracking-[0.2em] flex items-center justify-center gap-4 text-black shadow-[0_0_40px_rgba(255,215,0,0.4)] hover:shadow-[0_0_60px_rgba(255,215,0,0.6)] hover:scale-105 transition-all duration-300"
-        >
-          Book Premiere 
-          <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-        </button>
+    <div class="relative z-20 w-full max-w-6xl px-6 animate-epic-title flex flex-col items-center">
+      <div class="glass-backing rounded-[2.5rem] p-8 md:p-14 text-center border-t border-white/20">
+        <div class="inline-flex items-center gap-2 px-6 py-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 mb-8">
+          <span class="w-2 h-2 rounded-full bg-cyan-400 shadow-[0_0_10px_#00ffff] animate-pulse"></span>
+          <span class="text-sm font-bold uppercase tracking-[0.3em] text-cyan-50">Global Stage Production</span>
+        </div>
+        
+        <h2 class="text-6xl md:text-[7.5rem] font-black tracking-tighter mb-6 text-white drop-shadow-[0_0_30px_rgba(255,255,255,0.3)] leading-[1.05]">
+          {{#heroTitle}}{{heroTitle}}{{/heroTitle}}{{^heroTitle}}Dance With Passion.{{/heroTitle}}
+        </h2>
+        
+        <p class="text-2xl md:text-3xl text-white/80 mb-12 max-w-4xl mx-auto font-light leading-relaxed">
+          {{#shop.description}}{{shop.description}}{{/shop.description}}{{^shop.description}}Experience the vibrant energy, vivid colors, and infectious beats of Bollywood.{{/shop.description}}
+        </p>
+        
+        <div class="flex flex-col sm:flex-row gap-6 justify-center items-center">
+          <button 
+            data-action="book"
+            class="neon-btn w-full sm:w-auto px-16 py-6 rounded-full text-xl font-black uppercase tracking-[0.2em] flex items-center justify-center gap-4 text-white"
+          >
+            Join The Movement
+            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+          </button>
+        </div>
       </div>
     </div>
   </div>
