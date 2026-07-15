@@ -204,11 +204,13 @@ const customHtml = `
     box-shadow: 0 4px 15px rgba(255, 0, 127, 0.15);
     transition: all 0.3s ease;
   }
-  .glass-panel-pink {
-    background: rgba(255, 0, 127, 0.15);
-    backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 0, 127, 0.4);
-    box-shadow: 0 4px 20px rgba(255, 0, 127, 0.2);
+  .frosted-pink-text {
+    color: rgba(255, 240, 250, 0.8);
+    -webkit-text-stroke: 1px rgba(255, 0, 127, 0.8);
+    text-shadow: 
+      0 0 15px rgba(255, 0, 127, 0.8), 
+      0 0 30px rgba(255, 0, 127, 0.5), 
+      0 0 50px rgba(255, 0, 127, 0.3);
   }
   .glass-btn:hover {
     background: rgba(255, 0, 127, 0.3);
@@ -339,7 +341,7 @@ const customHtml = `
         </div>
         
         <!-- Clean Typography -->
-        <h2 class="text-6xl md:text-[7.5rem] font-medium tracking-tight mb-6 text-white leading-[1.0] drop-shadow-2xl glass-panel-pink px-8 py-4 md:px-14 md:py-8 rounded-3xl md:rounded-[3rem]">
+        <h2 class="text-6xl md:text-[8rem] font-black tracking-tighter mb-6 leading-[1.0] frosted-pink-text">
           {{#heroTitle}}{{heroTitle}}{{/heroTitle}}{{^heroTitle}}Dance With Passion{{/heroTitle}}
         </h2>
         
