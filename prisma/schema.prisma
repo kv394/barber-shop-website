@@ -1052,6 +1052,7 @@ enum ShopType {
   PHYSICAL
   MOBILE
   HYBRID
+  DANCE_STUDIO
 }
 
 enum WaitlistStatus {
