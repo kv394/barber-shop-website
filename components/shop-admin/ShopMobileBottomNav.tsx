@@ -179,11 +179,19 @@ export default function ShopMobileBottomNav({
  {section === 'settings' && (
  <div className="flex w-full justify-around min-w-max px-2">
  {navLink(`/shop/${shopId}/config/services`, 'Services', icons.scissors, true)}
- {navLink(`/shop/${shopId}/config/products`, 'Products', icons.package, true)}
- {navLink(`/shop/${shopId}/settings/memberships`, 'Memberships', icons.star, true)}
- {navLink(`/shop/${shopId}/settings/booking`, 'Booking', icons.clock, true)}
- {navLink(`/shop/${shopId}/settings/resources`, 'Resources', icons.chair, true)}
- {navLink(`/shop/${shopId}/settings/forms`, 'Forms', icons.file, true)}
+ {industryType !== 'DANCE_STUDIO' && (
+  <>
+  {navLink(`/shop/${shopId}/config/products`, 'Products', icons.package, true)}
+  {navLink(`/shop/${shopId}/settings/booking`, 'Booking', icons.clock, true)}
+  {navLink(`/shop/${shopId}/settings/resources`, 'Resources', icons.chair, true)}
+  </>
+ )}
+ {industryType !== 'DANCE_STUDIO' && (
+  <>
+  {navLink(`/shop/${shopId}/settings/memberships`, 'Memberships', icons.star, true)}
+  {navLink(`/shop/${shopId}/settings/forms`, 'Forms', icons.file, true)}
+  </>
+ )}
  {navLink(`/shop/${shopId}/settings`, 'Appearance', icons.image, true)}
  {navLink(`/shop/${shopId}/settings/notifications`, 'Alerts', icons.bell, true)}
  {navLink(`/shop/${shopId}/settings/commissions`, 'Commissions', icons.dollar, true)}

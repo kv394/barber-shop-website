@@ -107,19 +107,27 @@ export default function SecondarySidebar({ shopId, userRole, shopType, industryT
  <h3 className="px-3 text-[11px] font-bold text-crm-muted uppercase tracking-wider mb-1.5 mt-3">Setup</h3>
  <div className="space-y-0.5 mb-6 border-l-2 border-crm-border ml-2 pl-2">
  {navLink(`/shop/${shopId}/config/services`, t('services'))}
- {navLink(`/shop/${shopId}/config/products`, 'Products')}
- {navLink(`/shop/${shopId}/settings/booking`, 'Booking & Hours')}
- {navLink(`/shop/${shopId}/settings/dynamic-pricing`, 'Dynamic Pricing')}
- {navLink(`/shop/${shopId}/settings/resources`, 'Resources')}
- {navLink(`/shop/${shopId}/hardware`, 'Hardware Store')}
- {navLink(`/shop/${shopId}/marketplace`, 'Wholesale Marketplace')}
+ {industryType !== 'DANCE_STUDIO' && (
+  <>
+  {navLink(`/shop/${shopId}/config/products`, 'Products')}
+  {navLink(`/shop/${shopId}/settings/booking`, 'Booking & Hours')}
+  {navLink(`/shop/${shopId}/settings/dynamic-pricing`, 'Dynamic Pricing')}
+  {navLink(`/shop/${shopId}/settings/resources`, 'Resources')}
+  {navLink(`/shop/${shopId}/hardware`, 'Hardware Store')}
+  {navLink(`/shop/${shopId}/marketplace`, 'Wholesale Marketplace')}
+  </>
+ )}
  </div>
 
  <h3 className="px-3 text-[11px] font-bold text-crm-muted uppercase tracking-wider mb-1.5">Experience</h3>
  <div className="space-y-0.5 mb-6 border-l-2 border-crm-border ml-2 pl-2">
  {navLink(`/shop/${shopId}/settings`, 'Appearance', true)}
- {navLink(`/shop/${shopId}/settings/memberships`, 'Memberships')}
- {navLink(`/shop/${shopId}/settings/forms`, 'Intake Forms')}
+ {industryType !== 'DANCE_STUDIO' && (
+  <>
+  {navLink(`/shop/${shopId}/settings/memberships`, 'Memberships')}
+  {navLink(`/shop/${shopId}/settings/forms`, 'Intake Forms')}
+  </>
+ )}
  </div>
 
  <h3 className="px-3 text-[11px] font-bold text-crm-muted uppercase tracking-wider mb-1.5">Operations</h3>
