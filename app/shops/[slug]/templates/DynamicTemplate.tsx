@@ -91,7 +91,7 @@ function extractTemplateAssets(html: string) {
  } else {
   // Fallback: strip document-level tags
   bodyHtml = bodyHtml
-   .replace(/<(!doctype|html|head|\/head|body|\/body|\/html)[^>]*>/gi, '')
+   .replace(/<(!doctype|html|head|\/head|body|\/body|\/html)\b[^>]*>/gi, '')
    .replace(/<meta\b[^>]*\/?>/gi, '')
    .replace(/<title\b[^>]*>[\s\S]*?<\/title>/gi, '')
    .replace(/<link\b[^>]*\/?>/gi, '')
