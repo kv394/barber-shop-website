@@ -330,69 +330,27 @@ export default function DynamicTemplate({ ctx }: { ctx: any }) {
    return sanitizedHtml.replace(/<img\b(?![^>]*loading=)/gi, '<img loading="lazy" decoding="async" ');
   }, [sanitizedHtml]);
 
-  // DOM tracking for auth widget
-  const [authRect, setAuthRect] = useState<{ top: number, right: number, width: number, height: number } | null>(null);
+  // Mount auth widget into the template using React Portal
+  const [authContainer, setAuthContainer] = useState<HTMLElement | null>(null);
 
   useEffect(() => {
     if (!dynamicTemplateHtml) return;
     
-    const updateRect = () => {
-      // First try to find the exact container, fallback to header
-      const target = document.getElementById('auth-widget-container') || document.getElementById('mainHeader');
+    // Small delay to ensure dangerouslySetInnerHTML has painted the DOM
+    const timer = setTimeout(() => {
+      const target = document.getElementById('auth-widget-container');
       if (target) {
-        const rect = target.getBoundingClientRect();
-        const newRight = document.documentElement.clientWidth - rect.right;
-        
-        setAuthRect(prev => {
-          if (prev && 
-              prev.top === rect.top && 
-              prev.right === newRight && 
-              prev.width === rect.width && 
-              prev.height === rect.height) {
-            return prev; // Return exact same object to prevent re-render
-          }
-          return {
-            top: rect.top,
-            right: newRight,
-            width: rect.width,
-            height: rect.height
-          };
-        });
+        setAuthContainer(target);
       }
-    };
+    }, 100);
     
-    updateRect();
-    window.addEventListener('scroll', updateRect, { passive: true });
-    window.addEventListener('resize', updateRect, { passive: true });
-    
-    // Also update on a short interval to catch CSS transitions (like .scrolled)
-    const interval = setInterval(updateRect, 50);
-    
-    return () => {
-      window.removeEventListener('scroll', updateRect);
-      window.removeEventListener('resize', updateRect);
-      clearInterval(interval);
-    };
+    return () => clearTimeout(timer);
   }, [dynamicTemplateHtml, optimizedHtml]);
 
   let finalAuthButton = null;
   if (dynamicTemplateHtml) {
-    if (authRect) {
-      finalAuthButton = (
-        <div 
-          className="fixed z-[150] pointer-events-none flex items-center justify-end"
-          style={{
-            top: authRect.top + 'px',
-            right: authRect.right + 'px',
-            height: authRect.height + 'px',
-            width: authRect.width + 'px',
-          }}
-        >
-          <div className="pointer-events-auto flex items-center justify-end w-full h-full">
-            {rawAuthButton}
-          </div>
-        </div>
-      );
+    if (authContainer && rawAuthButton) {
+      finalAuthButton = createPortal(rawAuthButton, authContainer);
     }
   } else {
     finalAuthButton = (
