@@ -164,27 +164,6 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
   // Auth button for client sign-in/out
   const rawAuthButton = <SupabaseAuthButton redirectUrl={pathname} primaryColor={primaryColor} secondaryColor={secondaryColor} isIconOnly={true} />;
   
-  let authButton;
-  if (dynamicTemplateHtml) {
-    // Overlay the auth button exactly over the sticky menu band
-    // We add border-transparent to match the 1px border of the mainHeader for pixel-perfect horizontal alignment.
-    authButton = (
-      <div id="react-auth-overlay" className="fixed top-4 md:top-6 left-0 right-0 z-[105] pointer-events-none flex justify-center transition-all duration-[400ms]">
-        <div id="react-auth-overlay-inner" className="w-[92%] max-w-5xl mx-auto px-5 py-3 md:px-8 md:py-3.5 border border-transparent flex justify-end items-center transition-all duration-[400ms]">
-          <div className="pointer-events-auto">
-            {rawAuthButton}
-          </div>
-        </div>
-      </div>
-    );
-  } else {
-    authButton = (
-      <div className="absolute top-6 right-6 z-50">
-        {rawAuthButton}
-      </div>
-    );
-  }
-
  
 
  const ctx = {
@@ -194,7 +173,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
  heroLayout, heroOverlayOpacity, heroOverlayColor, enableScrollAnimations,
  faviconUrl, customCss, sectionOrder, isDark, themeBg, themeText, themeMuted, themeBorder,
  pages, fontFamily, ctaText, announcement, heroVideoUrl, shopPhone, shopEmail,
- shopWebsite, shopAddress, shopFB, shopIG, shopTW, logoUrl, heroImageUrl, authButton, rawAuthButton, pathname,
+ shopWebsite, shopAddress, shopFB, shopIG, shopTW, logoUrl, heroImageUrl, rawAuthButton, pathname,
  showAppointmentsModal, setShowAppointmentsModal
  };
 

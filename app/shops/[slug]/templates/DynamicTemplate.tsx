@@ -111,7 +111,7 @@ export default function DynamicTemplate({ ctx }: { ctx: any }) {
  heroLayout, heroOverlayOpacity, heroOverlayColor, enableScrollAnimations,
  faviconUrl, customCss, sectionOrder, isDark, themeBg, themeText, themeMuted, themeBorder,
  pages, fontFamily, ctaText, announcement, heroVideoUrl, shopPhone, shopEmail,
- shopWebsite, shopAddress, shopFB, shopIG, shopTW, logoUrl, heroImageUrl, authButton, rawAuthButton 
+ shopWebsite, shopAddress, shopFB, shopIG, shopTW, logoUrl, heroImageUrl, rawAuthButton 
  } = ctx;
 
  const containerRef = useRef<HTMLDivElement>(null);
@@ -330,10 +330,71 @@ export default function DynamicTemplate({ ctx }: { ctx: any }) {
    return sanitizedHtml.replace(/<img\b(?![^>]*loading=)/gi, '<img loading="lazy" decoding="async" ');
   }, [sanitizedHtml]);
 
+  // DOM tracking for auth widget
+  const [authRect, setAuthRect] = useState<{ top: number, right: number, width: number, height: number } | null>(null);
+
+  useEffect(() => {
+    if (!dynamicTemplateHtml) return;
+    
+    const updateRect = () => {
+      // First try to find the exact container, fallback to header
+      const target = document.getElementById('auth-widget-container') || document.getElementById('mainHeader');
+      if (target) {
+        const rect = target.getBoundingClientRect();
+        setAuthRect({
+          top: rect.top,
+          right: window.innerWidth - rect.right,
+          width: rect.width,
+          height: rect.height
+        });
+      }
+    };
+    
+    updateRect();
+    window.addEventListener('scroll', updateRect, { passive: true });
+    window.addEventListener('resize', updateRect, { passive: true });
+    
+    // Also update on a short interval to catch CSS transitions (like .scrolled)
+    const interval = setInterval(updateRect, 50);
+    
+    return () => {
+      window.removeEventListener('scroll', updateRect);
+      window.removeEventListener('resize', updateRect);
+      clearInterval(interval);
+    };
+  }, [dynamicTemplateHtml, optimizedHtml]);
+
+  let finalAuthButton = null;
+  if (dynamicTemplateHtml) {
+    if (authRect) {
+      finalAuthButton = (
+        <div 
+          className="fixed z-[150] pointer-events-none flex items-center justify-end"
+          style={{
+            top: authRect.top + 'px',
+            right: authRect.right + 'px',
+            height: authRect.height + 'px',
+            width: authRect.width + 'px',
+          }}
+        >
+          <div className="pointer-events-auto flex items-center justify-end w-full h-full">
+            {rawAuthButton}
+          </div>
+        </div>
+      );
+    }
+  } else {
+    finalAuthButton = (
+      <div className="absolute top-6 right-6 z-[150]">
+        {rawAuthButton}
+      </div>
+    );
+  }
+
   return (
   <main ref={containerRef} className="min-h-screen overflow-x-hidden flex flex-col relative" onClick={handleDynamicTemplateClick}>
 
-   {authButton}
+   {finalAuthButton}
    {combinedCss && <style dangerouslySetInnerHTML={{ __html: combinedCss }} />}
    <div dangerouslySetInnerHTML={{ __html: optimizedHtml }} />
    
