@@ -102,6 +102,10 @@ function extractTemplateAssets(html: string) {
  return { bodyHtml, scripts, scriptSrcUrls, styles, linkHrefs };
 }
 
+const StaticHtmlRender = React.memo(({ html }: { html: string }) => {
+  return <div dangerouslySetInnerHTML={{ __html: html }} />;
+});
+
 export default function DynamicTemplate({ ctx }: { ctx: any }) {
  const { 
  shop, templateType, primaryColor, secondaryColor, sportRed, reviews, dynamicTemplateHtml, dynamicTemplateCss,
@@ -416,7 +420,7 @@ export default function DynamicTemplate({ ctx }: { ctx: any }) {
 
    {finalAuthButton}
    {combinedCss && <style dangerouslySetInnerHTML={{ __html: combinedCss }} />}
-   <div dangerouslySetInnerHTML={{ __html: optimizedHtml }} />
+   <StaticHtmlRender html={optimizedHtml} />
    
    {selectedService && (
    <BookingModal shopId={shop.id} service={selectedService} onClose={() => setSelectedService(null)} shopHours={c.businessHours || {}} themeColor={primaryColor} templateType={templateType} />
