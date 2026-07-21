@@ -102,7 +102,7 @@ function extractTemplateAssets(html: string) {
  return { bodyHtml, scripts, scriptSrcUrls, styles, linkHrefs };
 }
 
-const StaticHtmlRender = React.memo(({ html }: { html: string }) => {
+const StaticHtmlRender = React.memo(function StaticHtmlRender({ html }: { html: string }) {
   return <div dangerouslySetInnerHTML={{ __html: html }} />;
 });
 
