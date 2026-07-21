@@ -120,6 +120,13 @@ export default function DynamicTemplate({ ctx }: { ctx: any }) {
   if (!dynamicTemplateHtml) return { bodyHtml: '', scripts: [], scriptSrcUrls: [], styles: [], linkHrefs: [] };
   // Replace hardcoded demo shop IDs with the actual shop ID
   let html = dynamicTemplateHtml;
+
+  // Polyfill auth-widget-container if missing from legacy templates
+  // This fixes flexbox alignment in the header and gives the DOM tracker a precise 40x40 target
+  if (!html.includes('id="auth-widget-container"')) {
+    html = html.replace(/<\/header>/i, '<div id="auth-widget-container" class="w-10 md:w-12 h-10 flex items-center justify-end relative z-50"></div></header>');
+  }
+
   if (shop?.id) {
    html = html.replace(/cmn9kj24n0000lqzc7kcsmpst/g, shop.id);
    html = html.replace(/cmpnbqh1r0000iu54k0qnj2sl/g, shop.id);
