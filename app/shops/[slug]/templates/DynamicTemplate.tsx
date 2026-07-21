@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useMemo, useState } from 'react';
+import { createPortal } from 'react-dom';
 import dynamic from 'next/dynamic';
 import { sanitizeTemplate } from '@/lib/sanitize';
 import ReviewsSection from '../components/ReviewsSection';
@@ -341,70 +342,37 @@ export default function DynamicTemplate({ ctx }: { ctx: any }) {
   }, [sanitizedHtml]);
 
   // DOM tracking for auth widget
-  const [authRect, setAuthRect] = useState<{ top: number, right: number, width: number, height: number } | null>(null);
+  const [authContainer, setAuthContainer] = useState<Element | null>(null);
 
   useEffect(() => {
     if (!dynamicTemplateHtml) return;
     
-    const updateRect = () => {
+    const findContainer = () => {
       // First try to find the exact container, fallback to header
       const target = document.getElementById('auth-widget-container') || document.getElementById('mainHeader');
       if (target) {
-        const rect = target.getBoundingClientRect();
-        const newRight = document.documentElement.clientWidth - rect.right;
-        
-        // Use Math.round to prevent sub-pixel rendering jitter from causing infinite loops
-        const rTop = Math.round(rect.top);
-        const rRight = Math.round(newRight);
-        const rWidth = Math.round(rect.width);
-        const rHeight = Math.round(rect.height);
-        
-        setAuthRect(prev => {
-          if (prev && 
-              prev.top === rTop && 
-              prev.right === rRight && 
-              prev.width === rWidth && 
-              prev.height === rHeight) {
-            return prev; // Bailout to prevent re-render
-          }
-          return { top: rTop, right: rRight, width: rWidth, height: rHeight };
-        });
+        setAuthContainer(prev => prev !== target ? target : prev);
       }
     };
     
-    updateRect();
-    window.addEventListener('scroll', updateRect, { passive: true });
-    window.addEventListener('resize', updateRect, { passive: true });
+    findContainer();
     
-    // Interval to catch CSS transitions
-    const interval = setInterval(updateRect, 50);
+    // Interval to catch dynamically injected HTML
+    const interval = setInterval(findContainer, 500);
     
     return () => {
-      window.removeEventListener('scroll', updateRect);
-      window.removeEventListener('resize', updateRect);
       clearInterval(interval);
     };
   }, [dynamicTemplateHtml, optimizedHtml]);
 
   let finalAuthButton = null;
   if (dynamicTemplateHtml) {
-    if (authRect) {
-      finalAuthButton = (
-        <div 
-          className="fixed z-[150] pointer-events-none flex items-center justify-end"
-          style={{
-            top: authRect.top + 'px',
-            right: authRect.right + 'px',
-            height: authRect.height + 'px',
-            width: authRect.width + 'px',
-          }}
-        >
-          <div className="flex items-center justify-end w-full h-full">
-            <div className="pointer-events-auto">
-              {rawAuthButton}
-            </div>
-          </div>
-        </div>
+    if (authContainer) {
+      finalAuthButton = createPortal(
+        <div className="flex items-center justify-end w-full h-full pointer-events-auto">
+          {rawAuthButton}
+        </div>,
+        authContainer
       );
     }
   } else {
