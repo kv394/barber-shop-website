@@ -341,11 +341,22 @@ export default function DynamicTemplate({ ctx }: { ctx: any }) {
       const target = document.getElementById('auth-widget-container') || document.getElementById('mainHeader');
       if (target) {
         const rect = target.getBoundingClientRect();
-        setAuthRect({
-          top: rect.top,
-          right: document.documentElement.clientWidth - rect.right,
-          width: rect.width,
-          height: rect.height
+        const newRight = document.documentElement.clientWidth - rect.right;
+        
+        setAuthRect(prev => {
+          if (prev && 
+              prev.top === rect.top && 
+              prev.right === newRight && 
+              prev.width === rect.width && 
+              prev.height === rect.height) {
+            return prev; // Return exact same object to prevent re-render
+          }
+          return {
+            top: rect.top,
+            right: newRight,
+            width: rect.width,
+            height: rect.height
+          };
         });
       }
     };
