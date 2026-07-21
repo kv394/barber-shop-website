@@ -189,7 +189,7 @@ export default function SupabaseAuthButton({
  );
 
  return (
- <div className="relative inline-block z-50">
+ <div className="relative flex z-50">
  <button
  ref={buttonRef}
  onClick={() => setIsOpen(!isOpen)}
@@ -222,7 +222,7 @@ export default function SupabaseAuthButton({
  return (
  <Link 
  href={`/sign-in?redirect_url=${encodeURIComponent(redirectUrl || (typeof window !== 'undefined' ? window.location.pathname : '/'))}`} 
- className={`inline-flex items-center justify-center transition-colors shadow-sm border ${isIconOnly ? 'w-10 h-10 rounded-xl' : 'px-4 py-2 rounded-lg text-[13px] font-semibold'}`}
+ className={`flex items-center justify-center transition-colors shadow-sm border ${isIconOnly ? 'w-10 h-10 rounded-xl' : 'px-4 py-2 rounded-lg text-[13px] font-semibold'}`}
  style={{ 
  backgroundColor: primaryColor || 'var(--crm-surface)', 
  color: primaryColor ? '#ffffff' : 'var(--crm-text)',

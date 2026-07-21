@@ -343,7 +343,7 @@ export default function DynamicTemplate({ ctx }: { ctx: any }) {
         const rect = target.getBoundingClientRect();
         setAuthRect({
           top: rect.top,
-          right: window.innerWidth - rect.right,
+          right: document.documentElement.clientWidth - rect.right,
           width: rect.width,
           height: rect.height
         });
