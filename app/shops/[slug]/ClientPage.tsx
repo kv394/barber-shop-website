@@ -167,9 +167,10 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
   let authButton;
   if (dynamicTemplateHtml) {
     // Overlay the auth button exactly over the sticky menu band
+    // We add border-transparent to match the 1px border of the mainHeader for pixel-perfect horizontal alignment.
     authButton = (
-      <div className="fixed top-4 md:top-6 left-0 right-0 z-[105] pointer-events-none flex justify-center">
-        <div className="w-[92%] max-w-5xl mx-auto px-5 py-3 md:px-8 md:py-3.5 flex justify-end items-center">
+      <div id="react-auth-overlay" className="fixed top-4 md:top-6 left-0 right-0 z-[105] pointer-events-none flex justify-center transition-all duration-[400ms]">
+        <div id="react-auth-overlay-inner" className="w-[92%] max-w-5xl mx-auto px-5 py-3 md:px-8 md:py-3.5 border border-transparent flex justify-end items-center transition-all duration-[400ms]">
           <div className="pointer-events-auto">
             {rawAuthButton}
           </div>

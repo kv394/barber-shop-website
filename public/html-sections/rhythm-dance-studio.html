@@ -1,0 +1,2960 @@
+<meta name="theme-color" content="#1a0b2e">
+
+<style>
+  :root {
+    --bollywood-primary: {{primaryColor}}; /* Default could be a vibrant saffron or magenta */
+    --bollywood-secondary: {{secondaryColor}}; /* Gold or Teal */
+    --bollywood-bg-dark: #1a0b2e; /* Deep rich purple/indigo */
+    --bollywood-bg-light: #2d164d;
+    --bollywood-gold: #ffd700;
+    --bollywood-magenta: #ff007f;
+    --bollywood-orange: #ff6b00;
+  }
+  
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  /* Vibrant Bollywood Gradient Text */
+  .bollywood-gradient-text {
+    background: linear-gradient(135deg, var(--bollywood-gold) 0%, var(--bollywood-orange) 50%, var(--bollywood-magenta) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 40px rgba(255, 107, 0, 0.4);
+  }
+  
+  /* Rich Glassmorphism */
+  .bollywood-glass {
+    background: rgba(45, 22, 77, 0.5);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 215, 0, 0.15);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+  }
+  
+  /* Dynamic Card Hover Effects */
+  .bollywood-card-hover {
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .bollywood-card-hover:hover {
+    transform: translateY(-8px) scale(1.02);
+  }
+  .bollywood-card-hover:hover .bollywood-glass {
+    background: rgba(45, 22, 77, 0.8);
+    border-color: var(--bollywood-gold);
+    box-shadow: 0 15px 45px -10px rgba(255, 0, 127, 0.4);
+  }
+  .bollywood-card-hover:hover .fade-to-bg {
+    -webkit-mask-image: none;
+    mask-image: none;
+    border-bottom: 1px solid var(--bollywood-gold);
+  }
+  .bollywood-card-hover:hover .fade-to-bg-reverse {
+    -webkit-mask-image: none;
+    mask-image: none;
+    border-top: 1px solid var(--bollywood-gold);
+  }
+  
+  /* Ultra-Glassy Effect matching the Theme (Classes Box) */
+  .cal-cell-3d {
+    background: linear-gradient(135deg, rgba(45, 22, 77, 0.4), rgba(45, 22, 77, 0.1)) !important;
+    backdrop-filter: blur(16px) saturate(150%) !important;
+    -webkit-backdrop-filter: blur(16px) saturate(150%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.3) !important;
+    border-left: 1px solid rgba(255, 255, 255, 0.2) !important;
+    box-shadow: 
+      inset 0 1px 1px rgba(255, 255, 255, 0.2), 
+      inset 0 0 20px rgba(255, 255, 255, 0.02),
+      0 8px 32px 0 rgba(0, 0, 0, 0.3) !important;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  }
+  
+  .cal-cell-3d:hover {
+    transform: translateY(-4px) scale(1.02) !important;
+    background: linear-gradient(135deg, rgba(45, 22, 77, 0.7), rgba(45, 22, 77, 0.4)) !important;
+    border: 1px solid rgba(255, 215, 0, 0.4) !important;
+    border-top: 1px solid rgba(255, 215, 0, 0.8) !important;
+    border-left: 1px solid rgba(255, 215, 0, 0.6) !important;
+    /* Theme golden neon glow matching the classes box float */
+    box-shadow: 
+      inset 0 1px 2px rgba(255, 255, 255, 0.4),
+      0 15px 45px -10px rgba(255, 215, 0, 0.6) !important; 
+    z-index: 30 !important;
+  }
+  
+  .cal-cell-3d:active {
+    transform: translateY(0px) scale(1) !important;
+    box-shadow: 
+      inset 0 1px 1px rgba(255, 255, 255, 0.1),
+      0 5px 15px -5px rgba(255, 215, 0, 0.3) !important;
+  }
+
+  /* Selected Date Effect (Golden Glass) */
+  .cal-cell-3d.selected-date {
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.7), rgba(255, 107, 0, 0.6)) !important;
+    backdrop-filter: blur(16px) saturate(150%) !important;
+    -webkit-backdrop-filter: blur(16px) saturate(150%) !important;
+    color: black !important;
+    border: 1px solid rgba(255, 255, 255, 0.4) !important;
+    border-top: 2px solid rgba(255, 255, 255, 0.8) !important;
+    border-left: 1px solid rgba(255, 255, 255, 0.6) !important;
+    box-shadow: 
+      inset 0 1px 3px rgba(255, 255, 255, 0.6), 
+      0 8px 32px 0 rgba(255, 107, 0, 0.4) !important;
+  }
+  
+  .cal-cell-3d.selected-date:hover {
+    transform: translateY(-4px) scale(1.02) !important;
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.8), rgba(255, 107, 0, 0.8)) !important;
+    border: 1px solid #ffffff !important;
+    border-top: 2px solid #ffffff !important;
+    border-left: 1px solid #ffffff !important;
+    box-shadow: 
+      inset 0 2px 4px rgba(255, 255, 255, 0.8),
+      0 15px 45px -10px rgba(255, 215, 0, 0.8) !important;
+  }
+  
+  .cal-cell-3d.selected-date:active {
+    transform: translateY(0px) scale(1) !important;
+    box-shadow: 
+      inset 0 1px 2px rgba(255, 255, 255, 0.4),
+      0 5px 15px -5px rgba(255, 107, 0, 0.4) !important;
+  }
+
+
+
+  
+  /* Fade to Background Effect */
+  .fade-to-bg {
+    -webkit-mask-image: linear-gradient(to bottom, black 0%, transparent 75%);
+    mask-image: linear-gradient(to bottom, black 0%, transparent 75%);
+    border-bottom: none;
+  }
+  .fade-to-bg-reverse {
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, transparent 25%, black 75%, black 100%);
+    mask-image: linear-gradient(to bottom, transparent 0%, transparent 25%, black 75%, black 100%);
+    border-top: none;
+  }
+  
+  /* Perfect iframe cover for 16:9 videos, scaled 135% to hide controls */
+  .youtube-bg {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 135vw;
+    height: 75.93vw;
+    min-height: 135vh;
+    min-width: 240vh;
+    pointer-events: none;
+  }
+
+  /* Animated Glowing Orbs for Background — organic, differentiated motion */
+  .orb-1, .orb-2, .orb-3 {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(120px);
+    opacity: 0.5;
+    z-index: 0;
+  }
+  .orb-1 {
+    width: 600px; height: 600px;
+    background: var(--bollywood-magenta);
+    top: -100px; left: -100px;
+    animation: floatOrb1 15s infinite ease-in-out;
+  }
+  .orb-2 {
+    width: 500px; height: 500px;
+    background: var(--bollywood-orange);
+    bottom: -100px; right: -100px;
+    animation: floatOrb2 22s infinite ease-in-out;
+  }
+  .orb-3 {
+    width: 700px; height: 700px;
+    background: var(--bollywood-gold);
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0.3;
+    animation: floatOrb3 28s infinite ease-in-out;
+  }
+  
+  @keyframes floatOrb1 {
+    0% { transform: translate(0, 0) scale(1); }
+    25% { transform: translate(40px, -60px) scale(1.15); }
+    50% { transform: translate(-30px, 30px) scale(0.9); }
+    75% { transform: translate(20px, 10px) scale(1.05); }
+    100% { transform: translate(0, 0) scale(1); }
+  }
+  @keyframes floatOrb2 {
+    0% { transform: translate(0, 0) scale(1); }
+    20% { transform: translate(-50px, -20px) scale(1.1); }
+    45% { transform: translate(30px, 40px) scale(0.85); }
+    70% { transform: translate(-10px, -40px) scale(1.08); }
+    100% { transform: translate(0, 0) scale(1); }
+  }
+  @keyframes floatOrb3 {
+    0% { transform: translate(-50%, -50%) scale(1); }
+    30% { transform: translate(-45%, -55%) scale(1.12); }
+    60% { transform: translate(-55%, -45%) scale(0.92); }
+    100% { transform: translate(-50%, -50%) scale(1); }
+  }
+  
+  /* Custom Buttons */
+  .bollywood-btn {
+    background: var(--bollywood-magenta);
+    border: none;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+    color: white;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+  }
+  .bollywood-btn::before {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%; width: 100%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+    transition: all 0.5s ease;
+    z-index: -1;
+  }
+  .bollywood-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.25);
+    background: #ff007f;
+  }
+  .bollywood-btn:hover::before {
+    left: 100%;
+  }
+
+  /* Weekly Timetable */
+  .timetable-day-tab {
+    padding: 10px 20px;
+    border-radius: 9999px;
+    font-size: 12px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 215, 0, 0.2);
+    background: rgba(45, 22, 77, 0.4);
+    color: rgba(255, 200, 200, 0.7);
+  }
+  .timetable-day-tab:hover {
+    border-color: rgba(255, 215, 0, 0.5);
+    color: white;
+  }
+  .timetable-day-tab.active {
+    background: linear-gradient(90deg, var(--bollywood-orange), var(--bollywood-magenta));
+    border-color: transparent;
+    color: white;
+    box-shadow: 0 5px 15px rgba(255, 0, 127, 0.4);
+  }
+  .timetable-card {
+    background: rgba(45, 22, 77, 0.5);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 215, 0, 0.1);
+    border-radius: 1.5rem;
+    padding: 24px;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .timetable-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--bollywood-gold);
+    box-shadow: 0 10px 30px -5px rgba(255, 0, 127, 0.3);
+  }
+  .timetable-skeleton {
+    background: linear-gradient(90deg, rgba(255,255,255,0.03) 25%, rgba(255,255,255,0.08) 50%, rgba(255,255,255,0.03) 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+    border-radius: 1rem;
+  }
+  @keyframes shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+  }
+  @keyframes gradient-flow {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+  .theme-flow-bg {
+    background: linear-gradient(270deg, var(--bollywood-magenta), var(--bollywood-gold), var(--bollywood-orange), var(--bollywood-magenta));
+    background-size: 300% 300%;
+    animation: gradient-flow 4s ease infinite;
+  }
+  
+  /* Blockbuster Trailer Hero CSS */
+  @keyframes hero-zoom-intense {
+    0% { transform: scale(1.2) translate(1%, 2%); filter: contrast(1.1) brightness(0.8) sepia(0.3) hue-rotate(-10deg); }
+    100% { transform: scale(1.05) translate(-1%, -1%); filter: contrast(1.2) brightness(0.8) sepia(0.4) hue-rotate(-12deg); }
+  }
+  .animate-hero-zoom-intense {
+    animation: hero-zoom-intense 7s ease-out forwards;
+  }
+  
+  @keyframes elegant-fade-up {
+    0% { opacity: 0; transform: translateY(20px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+  .animate-fade-up {
+    animation: elegant-fade-up 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+    opacity: 0;
+  }
+  
+  @keyframes dance-beat {
+    0%, 100% { transform: translateY(0) scale(1); color: #ff007f; }
+    15% { transform: translateY(-12px) scale(1.05); color: #000000; }
+    30% { transform: translateY(0) scale(1); color: #ff007f; }
+    45% { transform: translateY(-4px) scale(1.02); color: #ff007f; }
+    60% { transform: translateY(0) scale(1); color: #ff007f; }
+  }
+  .animate-dance-beat {
+    animation: dance-beat 1.2s ease-in-out infinite;
+    display: inline-block;
+  }
+  
+  .glass-btn {
+    background: linear-gradient(135deg, rgba(255,215,0,0.4) 0%, rgba(255,0,127,0.6) 100%);
+    -webkit-backdrop-filter: blur(16px);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 8px 32px rgba(255, 0, 127, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.4);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+  }
+  .glass-btn::before {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%; width: 50%; height: 100%;
+    background: linear-gradient(to right, transparent, rgba(255,255,255,0.3), transparent);
+    transform: skewX(-20deg);
+    transition: all 0.6s ease;
+  }
+  .glass-btn:hover::before {
+    left: 150%;
+  }
+  .frosted-pink-text {
+    color: #ff007f; /* Full opacity magenta — no more washed-out hero title */
+  }
+  .glass-btn:hover {
+    background: linear-gradient(135deg, rgba(255,215,0,0.6) 0%, rgba(255,0,127,0.8) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 15px 40px rgba(255, 0, 127, 0.6), inset 0 1px 1px rgba(255, 255, 255, 0.6);
+  }
+  .group:hover .theme-flow-text-hover {
+    background: linear-gradient(270deg, var(--bollywood-magenta), var(--bollywood-gold), var(--bollywood-orange), var(--bollywood-magenta));
+    background-size: 300% 300%;
+    animation: gradient-flow 4s ease infinite;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  /* Cal-popover removed — cell-enlarge effect only */
+  
+  /* Cell enlarge on hover */
+
+  /* For first column cells (SUN), align left */
+  #cal-grid > div:nth-child(7n+1) .cal-popover {
+    left: 0 !important;
+    transform: translateX(0) scale(0.85) !important;
+    transform-origin: bottom left !important;
+  }
+
+  .cal-popover-item {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 215, 0, 0.15);
+    border-radius: 0.625rem;
+    backdrop-filter: blur(10px);
+    margin-bottom: 0.375rem;
+    background-color: #581c87;
+  }
+  .floating-chevron {
+    position: fixed !important;
+    bottom: 8rem !important; /* Positioned directly above the chat widget */
+    right: 20px !important; /* Aligned with standard chat widget right margin */
+    z-index: 9999 !important;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    width: 3.75rem; /* Match typical 60px chat widget width */
+    height: 3.75rem;
+    background-color: transparent;
+  }
+  .css-chevron {
+    width: 1.5rem;
+    height: 1.5rem;
+    border-left: 4px solid var(--bollywood-gold);
+    border-top: 4px solid var(--bollywood-gold);
+    transform: rotate(45deg);
+    margin-top: 0.75rem;
+    filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.6));
+  }
+
+
+  /* ===== MOBILE RESPONSIVE FIXES ===== */
+  @media (max-width: 768px) {
+
+    /* Ensure arrow buttons are tappable on mobile */
+    #cal-prev, #cal-next {
+      min-width: 44px !important;
+      min-height: 44px !important;
+      -webkit-tap-highlight-color: rgba(255, 255, 255, 0.3) !important;
+      touch-action: manipulation !important;
+      cursor: pointer !important;
+      z-index: 50 !important;
+      position: relative !important;
+    }
+    #cal-prev:active, #cal-next:active {
+      transform: scale(0.9) !important;
+      background: rgba(255, 255, 255, 0.3) !important;
+    }
+
+    /* Fix 1: Hero title — dynamically scale to fit one line */
+    #hero-dance-title {
+      font-size: clamp(2rem, 11vw, 8rem) !important;
+      line-height: 1.0 !important;
+      white-space: nowrap !important;
+      overflow: visible !important;
+    }
+
+    /* Fix 2: Elegant tap-to-show calendar popup on mobile */
+    .cal-popover {
+      opacity: 0 !important;
+      visibility: hidden !important;
+      pointer-events: none !important;
+      transform: translate(-50%, -50%) scale(0.85) !important;
+      width: 92vw !important;
+      max-width: 360px !important;
+      height: auto !important;
+      max-height: 75vh !important;
+      position: fixed !important;
+      top: 50% !important;
+      left: 50% !important;
+      z-index: 9999 !important;
+      background: rgba(255, 255, 255, 0.12) !important; backdrop-filter: blur(30px) saturate(1.5) !important; -webkit-backdrop-filter: blur(30px) saturate(1.5) !important; --x: x;
+      border: 1.5px solid rgba(255, 215, 0, 0.4) !important;
+      border-radius: 1.5rem !important;
+      box-shadow: 
+        0 0 60px rgba(255, 0, 127, 0.3),
+        0 0 120px rgba(45, 22, 77, 0.3),
+        0 25px 50px rgba(0, 0, 0, 0.5),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+      padding: 1.5rem !important;
+      transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+      overflow-y: auto !important;
+      -webkit-overflow-scrolling: touch !important;
+    }
+    .cal-popover.cal-popover-active {
+      opacity: 1 !important;
+      visibility: visible !important;
+      pointer-events: auto !important;
+      transform: translate(-50%, -50%) scale(1) !important;
+    }
+    /* Disable hover-based popover GLOBALLY to match mobile view modal */
+    .cal-popover { display: none !important; }
+    .group:hover .cal-popover {
+      display: none !important;
+      opacity: 0 !important;
+      visibility: hidden !important;
+      pointer-events: none !important;
+    }
+    .cal-popover.cal-popover-active {
+      opacity: 1 !important;
+      visibility: visible !important;
+      pointer-events: auto !important;
+      transform: translate(-50%, -50%) scale(1) !important;
+    }
+    /* Bright, vibrant popover item styling */
+    .cal-popover .cal-popover-item {
+      background: rgba(255, 255, 255, 0.12) !important;
+      border: 1px solid rgba(255, 215, 0, 0.2) !important;
+      border-left: 4px solid #ffd700 !important;
+      border-radius: 0.75rem !important;
+      padding: 0.875rem 1rem !important;
+      margin-bottom: 0.5rem !important;
+      backdrop-filter: blur(10px) !important;
+    }
+    .cal-popover .cal-popover-item .font-black {
+      color: #fff !important;
+      font-size: 0.95rem !important;
+      text-shadow: 0 0 20px rgba(255, 215, 0, 0.3) !important;
+    }
+    /* Bright date header in popover */
+    .cal-popover > span:first-child {
+      background: linear-gradient(135deg, #ffd700, #ff6b9d) !important;
+      -webkit-background-clip: text !important;
+      -webkit-text-fill-color: transparent !important;
+      font-size: 1.5rem !important;
+      font-weight: 900 !important;
+      letter-spacing: 0.02em !important;
+      padding-bottom: 0.75rem !important;
+      border-bottom: 2px solid rgba(255, 215, 0, 0.3) !important;
+    }
+    /* Backdrop overlay — no blur to keep popup readable */
+    .cal-popover-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.75);
+      z-index: 9998;
+      transition: opacity 0.3s ease;
+    }
+    .cal-popover-backdrop.active {
+      display: block;
+    }
+    .group:hover > div:first-child {
+      opacity: 1 !important;
+    }
+
+    /* Fix 3: Reposition floating chevron to avoid content overlap */
+    .floating-chevron {
+      bottom: 7rem !important;
+      right: 10px !important;
+      width: 2.5rem !important;
+      height: 2.5rem !important;
+    }
+    .css-chevron {
+      width: 1rem;
+      height: 1rem;
+      margin-top: 0.5rem;
+    }
+
+    /* Fix 5: Reduce excessive vertical padding on sections */
+    #faculty {
+      padding-top: 4rem !important;
+      padding-bottom: 4rem !important;
+    }
+    #testimonials {
+      padding-top: 4rem !important;
+      padding-bottom: 4rem !important;
+    }
+
+    /* Fix 6: Reduce section heading sizes on mobile */
+    #faculty h3,
+    #testimonials h3 {
+      font-size: 2.25rem !important;
+    }
+
+    /* Reduce choreographer / testimonial section header margin */
+    #faculty .text-center {
+      margin-bottom: 2.5rem !important;
+    }
+    #testimonials .text-center {
+      margin-bottom: 2.5rem !important;
+    }
+
+    /* Mobile nav overlay — animated entrance */
+    .mobile-nav-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(5, 2, 18, 0);
+      backdrop-filter: blur(0px);
+      -webkit-backdrop-filter: blur(0px);
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      gap: 1.5rem;
+      pointer-events: none;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+      overflow: hidden;
+    }
+    .mobile-nav-overlay.open {
+      pointer-events: auto;
+      opacity: 1;
+      visibility: visible;
+      background: rgba(5, 2, 18, 0.95);
+      backdrop-filter: blur(30px) saturate(180%);
+      -webkit-backdrop-filter: blur(30px) saturate(180%);
+    }
+    .mobile-nav-overlay a {
+      font-size: 1.75rem;
+      font-weight: 800;
+      color: rgba(255, 255, 255, 0.9);
+      text-decoration: none;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.5rem 1.5rem;
+      position: relative;
+      /* Hidden by default, animated in when .open */
+      opacity: 0;
+      transform: translateY(25px);
+      transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.3s ease, text-shadow 0.3s ease;
+    }
+    .mobile-nav-overlay a:hover,
+    .mobile-nav-overlay a:active {
+      color: #ffd700;
+      transform: scale(1.05);
+    }
+    /* Close button for mobile nav */
+    .mobile-nav-close {
+      position: absolute;
+      top: 1.5rem;
+      right: 1.5rem;
+      background: none;
+      border: none;
+      color: white;
+      font-size: 2rem;
+      cursor: pointer;
+      z-index: 201;
+      width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* Hamburger button — positioned on left, clear of Sign In */
+    .mobile-hamburger-btn {
+      display: flex !important;
+      flex-direction: column;
+      gap: 5px;
+      padding: 10px;
+      cursor: pointer;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 215, 0, 0.3);
+      border-radius: 10px;
+      z-index: 250;
+      -webkit-tap-highlight-color: transparent;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+    .mobile-hamburger-btn:active {
+      background: rgba(255, 255, 255, 0.25);
+      transform: scale(0.95);
+    }
+    .mobile-hamburger-btn span {
+      width: 20px;
+      height: 2px;
+      background: white;
+      border-radius: 2px;
+      transition: all 0.3s ease;
+      display: block;
+    }
+    .mobile-hamburger-btn.is-open span:nth-child(1) {
+      transform: translateY(7px) rotate(45deg);
+    }
+    .mobile-hamburger-btn.is-open span:nth-child(2) {
+      opacity: 0;
+      transform: scaleX(0);
+    }
+    .mobile-hamburger-btn.is-open span:nth-child(3) {
+      transform: translateY(-7px) rotate(-45deg);
+    }
+  }
+
+  @media (min-width: 769px) {
+    .mobile-hamburger-btn {
+      display: none !important;
+    }
+    .mobile-hamburger {
+      display: none !important;
+    }
+    .mobile-nav-overlay {
+      display: none !important;
+    }
+  }
+
+
+    
+    /* Staggered entrance for nav links */
+    .mobile-nav-overlay.open a:nth-of-type(1) {
+      opacity: 1; transform: translateY(0); transition-delay: 0.1s;
+    }
+    .mobile-nav-overlay.open a:nth-of-type(2) {
+      opacity: 1; transform: translateY(0); transition-delay: 0.18s;
+    }
+    .mobile-nav-overlay.open a:nth-of-type(3) {
+      opacity: 1; transform: translateY(0); transition-delay: 0.26s;
+    }
+    .mobile-nav-overlay.open a:nth-of-type(4) {
+      opacity: 1; transform: translateY(0); transition-delay: 0.34s;
+    }
+    .mobile-nav-overlay.open a:nth-of-type(5) {
+      opacity: 1; transform: translateY(0); transition-delay: 0.42s;
+    }
+    .mobile-nav-overlay.open .mobile-nav-close {
+      opacity: 1; transform: translateY(0) scale(1); transition-delay: 0.06s;
+    }
+
+    /* ============================================
+       MODERN ANIMATIONS v9 — Premium Motion Design
+       ============================================ */
+
+    /* === Keyframes === */
+    @keyframes popupSpring {
+      0% { transform: translate(-50%, -50%) scale(0.3); opacity: 0; }
+      50% { transform: translate(-50%, -50%) scale(1.05); }
+      70% { transform: translate(-50%, -50%) scale(0.97); }
+      100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+    }
+    
+    @keyframes popupSlideUp {
+      0% { transform: translate(-50%, -45%) scale(0.96); opacity: 0; filter: blur(8px); }
+      100% { transform: translate(-50%, -50%) scale(1); opacity: 1; filter: blur(0); }
+    }
+
+    @keyframes shimmerBorder {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(40px); filter: blur(4px); }
+      to { opacity: 1; transform: translateY(0); filter: blur(0); }
+    }
+
+    @keyframes fadeInScale {
+      from { opacity: 0; transform: scale(0.9); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    @keyframes slideInLeft {
+      from { opacity: 0; transform: translateX(-30px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    @keyframes slideInRight {
+      from { opacity: 0; transform: translateX(30px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    @keyframes floatSoft {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+
+    @keyframes pulseGlow {
+      0%, 100% { box-shadow: 0 0 20px rgba(255, 215, 0, 0.2), 0 0 60px rgba(255, 0, 127, 0.1); }
+      50% { box-shadow: 0 0 30px rgba(255, 215, 0, 0.4), 0 0 80px rgba(255, 0, 127, 0.2); }
+    }
+
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    @keyframes borderGlow {
+      0%, 100% { border-color: rgba(255, 215, 0, 0.3); }
+      50% { border-color: rgba(255, 0, 127, 0.5); }
+    }
+
+    @keyframes backdropFadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes skeletonPulse {
+      0%, 100% { opacity: 0.4; }
+      50% { opacity: 0.8; }
+    }
+
+    @keyframes textReveal {
+      from { clip-path: inset(0 100% 0 0); opacity: 0; }
+      to { clip-path: inset(0 0 0 0); opacity: 1; }
+    }
+
+    @keyframes staggerPop {
+      0% { transform: scale(0.7) translateY(20px); opacity: 0; }
+      60% { transform: scale(1.02) translateY(-2px); }
+      100% { transform: scale(1) translateY(0); opacity: 1; }
+    }
+
+    /* === Scroll Reveal Classes === */
+    /* === Modern 2026 Scroll Reveal System === */
+    
+    /* Reduced motion: skip all animations */
+    @media (prefers-reduced-motion: reduce) {
+      .reveal, .reveal-left, .reveal-scale, .reveal-clip,
+      .reveal-3d, .reveal-elastic, .reveal-curtain, .reveal-stagger-child {
+        opacity: 1 !important;
+        transform: none !important;
+        filter: none !important;
+        clip-path: none !important;
+        transition: none !important;
+      }
+    }
+
+    /* Base reveal — smooth fade + rise + deblur (default) */
+    .reveal {
+      --reveal-duration: 0.9s;
+      --reveal-delay: 0s;
+      --reveal-ease: cubic-bezier(0.16, 1, 0.3, 1);
+      opacity: 0;
+      transform: translateY(40px);
+      filter: blur(6px);
+      transition: 
+        opacity var(--reveal-duration) var(--reveal-ease) var(--reveal-delay),
+        transform var(--reveal-duration) var(--reveal-ease) var(--reveal-delay),
+        filter var(--reveal-duration) var(--reveal-ease) var(--reveal-delay);
+      will-change: opacity, transform, filter;
+    }
+    .reveal.revealed {
+      opacity: 1;
+      transform: translateY(0);
+      filter: blur(0);
+    }
+
+    /* Slide from left with spring overshoot */
+    .reveal-left {
+      opacity: 0;
+      transform: translateX(-60px) rotate(-2deg);
+      filter: blur(4px);
+      transition: all 0.85s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .reveal-left.revealed {
+      opacity: 1;
+      transform: translateX(0) rotate(0deg);
+      filter: blur(0);
+    }
+
+    /* Slide from right with spring */
+    .reveal-right {
+      opacity: 0;
+      transform: translateX(60px) rotate(2deg);
+      filter: blur(4px);
+      transition: all 0.85s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .reveal-right.revealed {
+      opacity: 1;
+      transform: translateX(0) rotate(0deg);
+      filter: blur(0);
+    }
+
+    /* Scale with elastic spring overshoot */
+    .reveal-scale {
+      opacity: 0;
+      transform: scale(0.8);
+      filter: blur(5px);
+      transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .reveal-scale.revealed {
+      opacity: 1;
+      transform: scale(1);
+      filter: blur(0);
+    }
+
+    /* Clip-path wipe reveal (modern morphing mask) */
+    .reveal-clip {
+      opacity: 0;
+      clip-path: inset(8% 20% 8% 20% round 2rem);
+      filter: blur(4px);
+      transition: 
+        opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+        clip-path 1s cubic-bezier(0.16, 1, 0.3, 1),
+        filter 0.7s ease;
+      will-change: clip-path, opacity;
+    }
+    .reveal-clip.revealed {
+      opacity: 1;
+      clip-path: inset(0% 0% 0% 0% round 0rem);
+      filter: blur(0);
+    }
+
+    /* 3D perspective tilt reveal */
+    .reveal-3d {
+      opacity: 0;
+      transform: perspective(1200px) rotateX(15deg) translateY(30px);
+      transform-origin: bottom center;
+      filter: blur(3px);
+      transition: all 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .reveal-3d.revealed {
+      opacity: 1;
+      transform: perspective(1200px) rotateX(0deg) translateY(0);
+      filter: blur(0);
+    }
+
+    /* Elastic pop entrance */
+    .reveal-elastic {
+      opacity: 0;
+      transform: scale(0.6) translateY(30px);
+      filter: blur(8px);
+      transition: all 0.7s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+    }
+    .reveal-elastic.revealed {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+      filter: blur(0);
+    }
+
+    /* Curtain wipe from bottom */
+    .reveal-curtain {
+      opacity: 0;
+      clip-path: inset(100% 0% 0% 0%);
+      transition: 
+        opacity 0.5s ease,
+        clip-path 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .reveal-curtain.revealed {
+      opacity: 1;
+      clip-path: inset(0% 0% 0% 0%);
+    }
+
+    /* Children stagger — each child animates sequentially */
+    .reveal-stagger-child {
+      opacity: 0;
+      transform: translateY(25px) scale(0.95);
+      filter: blur(3px);
+      transition: 
+        opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1) var(--stagger-delay, 0s),
+        transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) var(--stagger-delay, 0s),
+        filter 0.5s ease var(--stagger-delay, 0s);
+    }
+    .reveal-stagger-child.revealed {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      filter: blur(0);
+    }
+
+    /* Section heading text reveal — word by word */
+    .heading-reveal .word {
+      display: inline-block;
+      opacity: 0;
+      transform: translateY(100%) rotate(3deg);
+      transition: opacity 0.5s ease, transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .heading-reveal.revealed .word {
+      opacity: 1;
+      transform: translateY(0) rotate(0deg);
+    }
+
+    /* Subtle parallax drift on scroll (applied via JS) */
+    .parallax-drift {
+      transition: transform 0.1s linear;
+      will-change: transform, backdrop-filter, box-shadow;
+    backdrop-filter: blur(0px);
+    -webkit-backdrop-filter: blur(0px);
+    }
+
+    /* Scroll progress indicator glow */
+    .scroll-progress-glow {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #ffd700, #ff007f, #ff6b00, #ffd700);
+      background-size: 300% 100%;
+      animation: gradientShift 3s ease infinite;
+      z-index: 10000;
+      transition: width 0.15s ease-out;
+      box-shadow: 0 0 10px rgba(255, 215, 0, 0.5), 0 0 30px rgba(255, 0, 127, 0.3);
+    }
+
+    /* === Modern Calendar Popup — Fullscreen Centered Modal === */
+    .cal-popover.cal-popover-active {
+      display: block !important;
+      visibility: visible !important;
+      opacity: 1 !important;
+      position: fixed !important;
+      top: 50% !important;
+      left: 50% !important;
+      transform: translate(-50%, -50%) !important;
+      width: calc(100vw - 2.5rem) !important;
+      max-width: 400px !important;
+      max-height: 75vh !important;
+      overflow-y: auto !important;
+      -webkit-overflow-scrolling: touch !important;
+      animation: popupSlideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
+      background: rgba(255, 255, 255, 0.12) !important; backdrop-filter: blur(30px) saturate(1.5) !important; -webkit-backdrop-filter: blur(30px) saturate(1.5) !important;
+      border: 1.5px solid rgba(255, 215, 0, 0.3) !important;
+      border-radius: 1.5rem !important;
+      box-shadow: 
+        0 30px 80px rgba(0, 0, 0, 0.6),
+        0 0 0 1px rgba(255, 215, 0, 0.2),
+        0 0 100px rgba(255, 0, 127, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+      padding: 1.75rem !important;
+      z-index: 10000 !important;
+    }
+    
+    /* Shimmer effect on popup border */
+    .cal-popover.cal-popover-active::before {
+      content: '';
+      position: absolute;
+      inset: -2px;
+      border-radius: 1.625rem;
+      background: linear-gradient(135deg, #ffd700, #ff006f, #8b5cf6, #ffd700);
+      background-size: 300% 300%;
+      animation: shimmerBorder 4s ease infinite;
+      z-index: -1;
+      opacity: 0.5;
+      pointer-events: none;
+    }
+    .cal-popover.cal-popover-active::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 1.5rem;
+      background: rgba(255, 255, 255, 0.05);
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    /* Staggered animation for popup items */
+    .cal-popover.cal-popover-active .cal-popover-item {
+animation: staggerPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+      
+      background: rgba(255, 255, 255, 0.12) !important;
+      border: 1px solid rgba(255, 215, 0, 0.15) !important;
+      border-left: 3px solid #ffd700 !important;
+      border-radius: 1rem !important;
+      padding: 1rem 1.25rem !important;
+      margin-bottom: 0.75rem !important;
+      transition: all 0.3s ease !important;
+    }
+    .cal-popover.cal-popover-active .cal-popover-item:nth-child(2) {
+      animation-delay: 0.08s;
+    }
+    .cal-popover.cal-popover-active .cal-popover-item:nth-child(3) {
+      animation-delay: 0.16s;
+    }
+    .cal-popover.cal-popover-active .cal-popover-item:nth-child(4) {
+      animation-delay: 0.24s;
+    }
+    .cal-popover.cal-popover-active .cal-popover-item:hover {
+      background: rgba(255, 255, 255, 0.15) !important;
+      background: rgba(255, 255, 255, 0.15) !important;
+      border-color: rgba(255, 215, 0, 0.35) !important;
+      transform: translateX(4px);
+    }
+
+    /* Popup date header */
+    .cal-popover.cal-popover-active > span:first-of-type {
+      background: linear-gradient(135deg, #ffd700, #ff6b9d) !important;
+      -webkit-background-clip: text !important;
+      -webkit-text-fill-color: transparent !important;
+      font-size: 1.4rem !important;
+      font-weight: 900 !important;
+      letter-spacing: 0.03em !important;
+      display: block !important;
+      padding-bottom: 0.75rem !important;
+      margin-bottom: 0.75rem !important;
+      border-bottom: 1px solid rgba(255, 215, 0, 0.2) !important;
+    }
+
+    /* Backdrop with fade */
+    .cal-popover-backdrop.active {
+      display: block;
+      animation: backdropFadeIn 0.35s ease-out forwards;
+    }
+
+    /* === Modern Close Button === */
+    .cal-popover-close-btn {
+      background: rgba(255, 255, 255, 0.1) !important;
+      border: 1px solid rgba(255, 255, 255, 0.2) !important;
+      backdrop-filter: blur(10px) !important;
+      transition: all 0.25s ease !important;
+    }
+    .cal-popover-close-btn:hover {
+      background: rgba(255, 0, 127, 0.3) !important;
+      border-color: rgba(255, 0, 127, 0.5) !important;
+      transform: rotate(90deg) scale(1.1) !important;
+    }
+
+    /* === Bollywood Card Modern Hover === */
+    .bollywood-card-hover {
+      transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    }
+    .bollywood-card-hover:hover {
+      transform: translateY(-12px) !important;
+      box-shadow: 
+        0 24px 50px rgba(0, 0, 0, 0.35),
+        0 0 80px rgba(255, 0, 127, 0.25),
+        0 0 0 1px rgba(255, 215, 0, 0.3) !important;
+    }
+    .bollywood-card-hover:active {
+      transform: translateY(-2px) scale(0.98) !important;
+      transition-duration: 0.15s !important;
+    }
+
+    /* === Timetable Card Animation === */
+    .timetable-card {
+      animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    }
+    .timetable-card:nth-child(2) { animation-delay: 0.1s; }
+    .timetable-card:nth-child(3) { animation-delay: 0.2s; }
+    .timetable-card:nth-child(4) { animation-delay: 0.3s; }
+    .timetable-card:hover {
+      transform: translateY(-4px) scale(1.02) !important;
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3), 0 0 40px rgba(255, 0, 127, 0.1) !important;
+    }
+
+    /* === Calendar Day Cell Hover === */
+  
+  /* Allow popover to overflow calendar container */
+  #schedule, #schedule > div, #schedule .bollywood-glass,
+  .grid.grid-cols-7 {
+    overflow: visible !important;
+  }
+  #cal-grid {
+    overflow: visible !important;
+  }
+  #cal-grid > div {
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    #cal-grid > div:hover {
+      transform: scale(1.08);
+      z-index: 10;
+    }
+    #cal-grid > div:active {
+      transform: scale(0.95);
+      transition-duration: 0.1s;
+    }
+
+    /* === Bollywood Glass Enhanced === */
+    .bollywood-glass {
+      transition: all 0.4s ease !important;
+      animation: pulseGlow 6s ease-in-out infinite;
+    }
+
+    /* === Modern Button Interactions === */
+    .bollywood-btn {
+      position: relative;
+      overflow: hidden;
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    }
+    .bollywood-btn::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, transparent 30%, rgba(255, 255, 255, 0.2) 50%, transparent 70%);
+      background-size: 200% 100%;
+      animation: shimmerBorder 3s ease-in-out infinite;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    .bollywood-btn:hover::after {
+      opacity: 1;
+    }
+    .bollywood-btn:hover {
+      transform: translateY(-3px) scale(1.02) !important;
+      box-shadow: 0 15px 40px rgba(255, 0, 127, 0.35), 0 0 20px rgba(255, 215, 0, 0.2) !important;
+    }
+    .bollywood-btn:active {
+      transform: translateY(0) scale(0.98) !important;
+      transition-duration: 0.1s !important;
+    }
+
+    /* === Navigation Link Underline Animation === */
+    .mobile-nav-link {
+      position: relative;
+      transition: all 0.3s ease !important;
+    }
+    .mobile-nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 50%;
+      width: 0;
+      height: 2px;
+      background: linear-gradient(90deg, #ffd700, #ff006f);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      transform: translateX(-50%);
+      border-radius: 2px;
+    }
+    .mobile-nav-link:hover::after {
+      width: 60%;
+    }
+    .mobile-nav-link:hover {
+      text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+    }
+
+    /* === Mobile Nav Overlay Modern Entrance === */
+    .mobile-nav-overlay {
+      transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    }
+    /* Nav link entrance — spring stagger */
+    .mobile-nav-overlay .mobile-nav-link,
+    .mobile-nav-overlay .bollywood-btn,
+    .mobile-nav-overlay .mobile-nav-close {
+      opacity: 0;
+      transform: translateY(30px) scale(0.9);
+      transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .mobile-nav-overlay.open .mobile-nav-close {
+      opacity: 1; transform: translateY(0) scale(1) rotate(0deg);
+      transition-delay: 0.05s;
+    }
+    .mobile-nav-overlay.open .mobile-nav-link:nth-child(2) {
+      opacity: 1; transform: translateY(0) scale(1); transition-delay: 0.1s;
+    }
+    .mobile-nav-overlay.open .mobile-nav-link:nth-child(3) {
+      opacity: 1; transform: translateY(0) scale(1); transition-delay: 0.17s;
+    }
+    .mobile-nav-overlay.open .mobile-nav-link:nth-child(4) {
+      opacity: 1; transform: translateY(0) scale(1); transition-delay: 0.24s;
+    }
+    .mobile-nav-overlay.open .mobile-nav-link:nth-child(5) {
+      opacity: 1; transform: translateY(0) scale(1); transition-delay: 0.31s;
+    }
+    .mobile-nav-overlay.open .bollywood-btn {
+      opacity: 1; transform: translateY(0) scale(1); transition-delay: 0.38s;
+    }
+
+    /* === Smooth Header Scroll Effect === */
+    #mainHeader {
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    }
+    #mainHeader.scrolled {
+      padding-top: 0.5rem !important;
+      padding-bottom: 0.5rem !important;
+      background: rgba(0, 0, 0, 0.8) !important;
+      backdrop-filter: blur(20px) !important;
+      -webkit-backdrop-filter: blur(20px) !important;
+    }
+
+    #react-auth-overlay.scrolled #react-auth-overlay-inner {
+      padding-top: 0.5rem !important;
+      padding-bottom: 0.5rem !important;
+    }
+
+    /* === Scroll Progress Indicator === */
+    .scroll-progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #ffd700, #ff006f, #8b5cf6);
+      z-index: 9999;
+      transition: width 0.1s linear;
+      border-radius: 0 2px 2px 0;
+      box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+    }
+
+    /* === Arrow Button Modern Pulse === */
+    #cal-prev, #cal-next {
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    }
+    #cal-prev:hover, #cal-next:hover {
+      background: rgba(255, 215, 0, 0.2) !important;
+      transform: scale(1.15) !important;
+      box-shadow: 0 0 20px rgba(255, 215, 0, 0.3) !important;
+    }
+    #cal-prev:active, #cal-next:active {
+      transform: scale(0.9) !important;
+      transition-duration: 0.1s !important;
+    }
+
+    /* === Testimonial Card Animation === */
+    .testimonial-card {
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .testimonial-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3), 0 0 30px rgba(255, 0, 127, 0.1);
+    }
+
+    /* === Smooth Image Load === */
+    img {
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+
+    /* === Reduce motion for accessibility === */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+    
+  
+    /* Override base popover — make it a centered fixed modal when active */
+    @media (max-width: 768px) {
+      .cal-popover.cal-popover-active {
+        position: fixed !important;
+        top: 50% !important;
+        left: 50% !important;
+        right: auto !important;
+        bottom: auto !important;
+        transform: translate(-50%, -50%) !important;
+        width: calc(100vw - 2rem) !important;
+        max-width: 380px !important;
+        max-height: 70vh !important;
+        min-height: auto !important;
+        margin: 0 !important;
+      }
+    }
+  
+
+  
+    /* === Dynamic Section Fit & Center System === */
+    
+    /* Every section: flex column, center content, min-height to fill viewport */
+    section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      box-sizing: border-box;
+      width: 100%;
+      max-width: 100vw;
+      overflow-x: hidden;
+    }
+
+    /* Inner content wrappers: always centered, never overflow */
+    section > div,
+    section > .max-w-7xl,
+    section > .max-w-4xl {
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    /* Programs section (unlabeled section after hero): fit & center */
+    section.py-24 {
+      min-height: min(100vh, 100dvh);
+      padding-top: clamp(2rem, 4vh, 3.5rem);
+      padding-bottom: clamp(2rem, 4vh, 3.5rem);
+    }
+
+    /* Classes & Pricing (#classes) */
+    #classes {
+      min-height: auto;
+      padding-top: clamp(2rem, 4vh, 3rem);
+      padding-bottom: clamp(2rem, 4vh, 3rem);
+    }
+
+    /* Schedule/Calendar (#schedule) */
+    #schedule {
+      min-height: auto;
+      padding-top: clamp(2rem, 4vh, 3rem);
+      padding-bottom: clamp(2rem, 4vh, 3rem);
+    }
+
+    /* Faculty (#faculty) */
+    #faculty {
+      min-height: auto;
+      padding-top: clamp(2rem, 4vh, 3rem);
+      padding-bottom: clamp(2rem, 4vh, 3rem);
+    }
+
+    /* Testimonials (#testimonials) */
+    #testimonials {
+      min-height: auto;
+      padding-top: clamp(2rem, 4vh, 3rem);
+      padding-bottom: clamp(2rem, 4vh, 3rem);
+    }
+
+    /* Hero — always full viewport */
+    #top > .relative.min-h-\[95vh\],
+    [class*="min-h-[95vh]"] {
+      min-height: 100vh !important;
+      min-height: 100dvh !important;
+    }
+
+    /* Footer — not full viewport, just fit content */
+    footer {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      box-sizing: border-box;
+      width: 100%;
+      padding-top: clamp(3rem, 6vh, 6rem);
+      padding-bottom: clamp(3rem, 6vh, 6rem);
+    }
+
+    /* Mobile: reduce min-heights to auto so content flows naturally */
+    @media (max-width: 768px) {
+      section.py-24,
+      #faculty,
+      #testimonials {
+        min-height: auto;
+        padding-top: clamp(1.5rem, 3vh, 2.5rem);
+        padding-bottom: clamp(1.5rem, 3vh, 2.5rem);
+      }
+
+      #classes,
+      #schedule {
+        padding-top: clamp(1.5rem, 3vh, 2.5rem);
+        padding-bottom: clamp(1.5rem, 3vh, 2.5rem);
+        padding-left: clamp(0.75rem, 3vw, 1.5rem);
+        padding-right: clamp(0.75rem, 3vw, 1.5rem);
+      }
+
+      /* Class cards: ensure they fit width */
+      #classes .grid {
+        padding: 0;
+      }
+      
+      
+
+      
+
+      footer {
+        padding-top: clamp(2rem, 4vh, 3rem);
+        padding-bottom: clamp(2rem, 4vh, 3rem);
+      }
+    }
+
+    
+
+    /* Calendar container: centered with max width */
+    #calendar-container { width: 100%; max-width: 100%; margin-left: auto; margin-right: auto; margin-bottom: 3.5rem; }
+
+    /* Card containers: centered */
+    #sdk-class-cards {
+      display: grid;
+      justify-items: center;
+    }
+
+    /* Heading containers: always centered text */
+    section h2,
+    section .text-5xl,
+    section .text-4xl {
+      text-align: center;
+      width: 100%;
+    }
+
+    /* Sub-headings: centered */
+    section .text-base.tracking-widest,
+    section .tracking-\[0\.2em\] {
+      text-align: center;
+      width: 100%;
+    }
+  
+    /* Mobile Menu Link Stagger Animation */
+    @keyframes mobileMenuSlideUp {
+      0% { opacity: 0; transform: translateY(40px) scale(0.9); }
+      100% { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    
+    .mobile-nav-overlay .mobile-nav-link {
+      opacity: 0;
+      transform: translateY(40px) scale(0.9);
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+    
+    .mobile-nav-overlay.open .mobile-nav-link {
+      animation: mobileMenuSlideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    
+    /* The nth-child index depends on the HTML structure inside the overlay. 
+       Usually there are background bubbles and a close button before the links. */
+    .mobile-nav-overlay.open .mobile-nav-link:nth-of-type(1) { animation-delay: 0.1s; }
+    .mobile-nav-overlay.open .mobile-nav-link:nth-of-type(2) { animation-delay: 0.2s; }
+    .mobile-nav-overlay.open .mobile-nav-link:nth-of-type(3) { animation-delay: 0.3s; }
+    .mobile-nav-overlay.open .mobile-nav-link:nth-of-type(4) { animation-delay: 0.4s; }
+    .mobile-nav-overlay.open .mobile-nav-link:nth-of-type(5) { animation-delay: 0.5s; }
+  
+
+  .hover-z-top:hover {
+    z-index: 999 !important;
+  }
+  
+
+  /* CTA Button Idle Pulse — draws the eye before interaction */
+  @keyframes ctaPulse {
+    0%, 100% { box-shadow: 0 4px 15px rgba(255, 153, 51, 0.2); }
+    50% { box-shadow: 0 4px 25px rgba(255, 153, 51, 0.45), 0 0 50px rgba(255, 153, 51, 0.15); }
+  }
+  
+  /* Footer gradient top border — replaces hard border-t-4 */
+  footer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 5%;
+    right: 5%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, #ffd700, #ff007f, #ffd700, transparent);
+  }
+  
+    /* Timetable cards: flex-centered so 2 cards sit in the middle */
+    #timetable-grid {
+      max-width: 64rem;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    #timetable-grid > * {
+      width: 100%;
+      max-width: 22rem;
+    }
+    @media (min-width: 768px) {
+      #timetable-grid > * {
+        width: calc(50% - 0.5rem);
+        max-width: 24rem;
+      }
+    }
+
+  /* === Cell Enlarge on Hover === */
+  #cal-grid > .group.has-events {
+    transition: transform 0.3s cubic-bezier(0.34, 1.2, 0.64, 1), 
+                z-index 0s,
+                box-shadow 0.4s ease-out,
+                background 0.6s ease-in-out 0.05s,
+                background-image 0.6s ease-in-out 0.05s,
+                border-color 0.4s ease-out,
+                backdrop-filter 0.6s ease-in-out 0.05s,
+                color 0.4s ease-out;
+    transform-origin: center center;
+    will-change: transform;
+  }
+  #cal-grid > .group.has-events:hover {
+    z-index: 50 !important;
+    background: transparent !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+  .hover-popover-card {
+    opacity: 0;
+    visibility: hidden;
+    transform: translate(-50%, -45%) scale(0.96) !important;
+    filter: blur(8px);
+    transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  }
+  @media (hover: hover) and (pointer: fine) {
+    #cal-grid > .group.has-events:hover .hover-popover-card {
+      opacity: 1;
+      visibility: visible;
+      transform: translate(-50%, -50%) scale(1) !important;
+      filter: blur(0px);
+    }
+  }
+  #cal-grid > .group.has-events:hover .standard-view {
+    opacity: 0;
+  }
+  /* Only override the cell's own text color, not event children */
+  #cal-grid > .group:hover {
+    color: white !important;
+    -webkit-text-fill-color: white !important;
+  }
+  #cal-grid > .group:hover > div > span {
+    color: white !important;
+    -webkit-text-fill-color: white !important;
+  }
+  /* Event items keep their original Tailwind colors */
+  /* Selected cell keeps its gradient on hover */
+  /* Event borders keep original colors */
+  /* Cell content stays visible, just scales up */
+
+  /* Edge cells: shift transform origin so they don't clip */
+  #cal-grid > .group.has-events:nth-child(7n+1) { transform-origin: left center; }
+  #cal-grid > .group.has-events:nth-child(7n) { transform-origin: right center; }
+  /* Top row: shift origin down */
+  #cal-grid > .group.has-events:nth-child(-n+7) { transform-origin: center top; }
+  /* Bottom row — we can't easily target this, but last-row is rare */
+
+  /* Frosted pattern overlay on zoomed cells */
+  #cal-grid > .group.has-events {
+    position: relative;
+    overflow: visible;
+  }
+  #cal-grid > .group.has-events::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    opacity: 0;
+    transition: opacity 0.6s ease-in-out 0.05s;
+    pointer-events: none;
+    z-index: 0;
+    background-image:
+      url("data:image/svg+xml,%3Csvg width='40' height='40' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E"),
+      linear-gradient(135deg, rgba(255, 215, 0, 0.04) 25%, transparent 25%, transparent 50%, rgba(255, 215, 0, 0.04) 50%, rgba(255, 215, 0, 0.04) 75%, transparent 75%),
+      linear-gradient(45deg, rgba(255,0,127,0.03) 25%, transparent 25%, transparent 50%, rgba(255,0,127,0.03) 50%, rgba(255,0,127,0.03) 75%, transparent 75%);
+    background-size: 80px 80px, 6px 6px, 8px 8px;
+  }
+  #cal-grid > .group.has-events:hover::before {
+    opacity: 1;
+  }
+  /* Ensure cell content stays above the pattern */
+  #cal-grid > .group.has-events > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Events keep original styling inside zoomed cells */
+
+  /* Selected date uses same style as all other cells when zoomed */
+  #cal-grid > .group.selected-date:hover {
+    background: rgba(20, 10, 40, 0.82) !important;
+    background-image: none !important;
+  }
+
+  /* Darken event backgrounds on zoom */
+  #cal-grid > .group.has-events:hover .border-l-2 {
+    background: rgba(0, 0, 0, 0.6) !important;
+    transition: background 0.5s ease-in-out;
+  }
+  #cal-grid > .group.has-events .border-l-2 {
+    transition: background 0.5s ease-in-out;
+  }
+
+  /* 3D shadow pool beneath zoomed cell */
+  #cal-grid > .group.has-events::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 10%;
+    right: 10%;
+    height: 20px;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.4);
+    filter: blur(12px);
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+    z-index: -1;
+    transform: scaleX(0.7);
+    pointer-events: none;
+  }
+  #cal-grid > .group.has-events:hover::after {
+    opacity: 1;
+    transform: scaleX(1);
+    bottom: -14px;
+  }
+
+  
+
+  /* Custom Scrollbar for Reviews */
+  #testimonials .overflow-y-auto::-webkit-scrollbar {
+    width: 6px;
+  }
+  #testimonials .overflow-y-auto::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 4px;
+  }
+  #testimonials .overflow-y-auto::-webkit-scrollbar-thumb {
+    background: rgba(255, 215, 0, 0.3);
+    border-radius: 4px;
+  }
+  #testimonials .overflow-y-auto::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 215, 0, 0.6);
+  }
+  
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+  /* Hide scrollbar for IE, Edge and Firefox */
+  .scrollbar-hide {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+</style>
+
+<div id="top" class="min-h-screen text-neutral-100 font-sans selection:bg-[#ff007f]/30 overflow-x-hidden relative" style="background-color: var(--bollywood-bg-dark)">
+  
+  <!-- Animated Background Orbs -->
+  <div class="fixed inset-0 overflow-hidden pointer-events-none z-0">
+    <div class="orb-1"></div>
+    <div class="orb-2"></div>
+    <div class="orb-3"></div>
+  </div>
+
+  <!-- Floating Sleek Header / Nav -->
+  <header id="mainHeader" class="sticky top-4 md:top-6 z-[100] w-[92%] max-w-5xl mx-auto rounded-full px-5 py-3 md:px-8 md:py-3.5 bg-[rgba(26,11,46,0.65)] backdrop-blur-2xl border border-white/10 shadow-[0_15px_40px_-10px_rgba(0,0,0,0.6),inset_0_1px_1px_rgba(255,255,255,0.1)] transition-all flex items-center justify-between">
+    <!-- Left: Logo & Hamburger -->
+    <div class="flex items-center gap-4">
+      <button id="hamburgerBtn" class="mobile-hamburger-btn md:hidden" aria-label="Toggle Menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      {{#shop.logoUrl}}
+      <img src="{{shop.logoUrl}}" alt="{{shop.name}}" class="w-8 h-8 md:w-10 md:h-10 rounded-full border border-white/20 shadow-md object-cover hover:scale-105 transition-transform" />
+      {{/shop.logoUrl}}
+      <h1 class="text-sm md:text-lg font-bold tracking-tight text-white hidden sm:block">{{shop.name}}</h1>
+    </div>
+    
+    <!-- Center: Sleek Navigation (desktop only) -->
+    <nav class="hidden md:flex items-center justify-center gap-1 bg-white/5 p-1 rounded-full border border-white/5">
+      <a href="#classes" class="px-5 py-2 rounded-full text-xs lg:text-sm font-semibold tracking-wide text-white/70 hover:text-white hover:bg-white/10 transition-all duration-300">Programs</a>
+      <a href="#schedule" class="px-5 py-2 rounded-full text-xs lg:text-sm font-semibold tracking-wide text-white/70 hover:text-white hover:bg-white/10 transition-all duration-300">Schedule</a>
+      <a href="#faculty" class="px-5 py-2 rounded-full text-xs lg:text-sm font-semibold tracking-wide text-white/70 hover:text-white hover:bg-white/10 transition-all duration-300">Faculty</a>
+      <a href="#testimonials" class="px-5 py-2 rounded-full text-xs lg:text-sm font-semibold tracking-wide text-white/70 hover:text-white hover:bg-white/10 transition-all duration-300">Community</a>
+    </nav>
+    
+    <!-- Right: Auth Widget Container -->
+    <div id="auth-widget-container" class="w-10 md:w-12 h-10 flex items-center justify-end relative z-50"></div>
+  </header>
+
+  <!-- Floating Header / Nav -->
+  
+  <div id="mobileNavOverlay" class="mobile-nav-overlay">
+      <div style="position:absolute;top:-20%;left:-20%;width:300px;height:300px;background:radial-gradient(circle,rgba(255,0,127,0.15) 0%,transparent 70%);border-radius:50%;animation:floatSoft 8s ease-in-out infinite;pointer-events:none;"></div>
+      <div style="position:absolute;bottom:-15%;right:-15%;width:250px;height:250px;background:radial-gradient(circle,rgba(255, 215, 0, 0.12) 0%,transparent 70%);border-radius:50%;animation:floatSoft 6s ease-in-out infinite reverse;pointer-events:none;"></div>
+      <div style="position:absolute;top:40%;left:60%;width:180px;height:180px;background:radial-gradient(circle,rgba(45,22,77,0.15) 0%,transparent 70%);border-radius:50%;animation:floatSoft 10s ease-in-out infinite;pointer-events:none;"></div>
+    <button id="closeNavBtn" class="mobile-nav-close" aria-label="Close menu">&times;</button>
+    <a href="#classes" class="mobile-nav-link">Programs</a>
+    <a href="#schedule" class="mobile-nav-link">Schedule</a>
+    <a href="#faculty" class="mobile-nav-link">Faculty</a>
+    <a href="#testimonials" class="mobile-nav-link">Community</a>
+    <button data-action="book" class="bollywood-btn px-10 py-4 rounded-full text-sm font-bold uppercase tracking-widest text-white mt-6">Book Your Class</button>
+  </div>
+
+  <!-- Hero Section (Clean Cinematic) -->
+  <div class="relative min-h-[95vh] flex items-center justify-center pt-24 pb-12 z-10 bg-[#1a0b2e] overflow-hidden">
+    <div class="absolute inset-0 z-0 overflow-hidden bg-black">
+      <!-- High-Contrast Graded Video Background -->
+      <div class="absolute inset-0 w-full h-full pointer-events-none overflow-hidden flex items-center justify-center">
+        <video 
+          src="/VIDEO-UPSCALED-SMALL.mp4" 
+          autoplay 
+          muted 
+          loop 
+          playsinline
+          class="absolute w-full h-full object-cover opacity-80 mix-blend-screen animate-hero-zoom-intense"
+        ></video>
+      </div>
+      
+      <!-- Subtle Vignette -->
+      <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_transparent_30%,_rgba(0,0,0,0.8)_100%)] pointer-events-none"></div>
+    </div>
+
+    <!-- Hero Content -->
+    <div class="relative z-20 w-full max-w-7xl mx-auto px-6 md:px-12 flex flex-col items-center justify-center h-full">
+      <div class="text-center flex flex-col items-center mt-12 animate-fade-up" style="animation-delay: 0.2s">
+        
+        <!-- Elegant Subheadline -->
+        <div class="mb-8 flex items-center justify-center text-white/80 text-sm md:text-base font-medium tracking-[0.4em] uppercase drop-shadow-md">
+          The Premier Bollywood Experience
+        </div>
+        
+        <!-- Clean Typography with Dance Beat -->
+        <h2 id="hero-dance-title" class="font-black tracking-tighter mb-6 leading-[1.0] frosted-pink-text" style="font-size: clamp(1.5rem, 7vw, 6rem); white-space: nowrap; width: fit-content; max-width: 100%; margin-left: auto; margin-right: auto;">
+          {{#heroTitle}}{{heroTitle}}{{/heroTitle}}{{^heroTitle}}Dance With Passion{{/heroTitle}}
+        </h2>
+        
+        <p class="text-lg md:text-2xl text-white/80 mb-14 max-w-3xl mx-auto font-light tracking-wide drop-shadow-md">
+          {{#shop.description}}{{shop.description}}{{/shop.description}}{{^shop.description}}Experience the vibrant energy, vivid colors, and infectious beats of Bollywood.{{/shop.description}}
+        </p>
+        
+        <!-- Elegant CTA -->
+        <div class="flex flex-col sm:flex-row gap-6 justify-center items-center">
+          <button 
+            data-action="book"
+            class="glass-btn w-full sm:w-auto px-12 py-5 rounded-full text-sm font-semibold uppercase tracking-[0.2em] flex items-center justify-center gap-3 text-white"
+          >
+            <span>Book Your Class</span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Classes / Programs Section (SDK-Powered) -->
+  <section id="classes" class="pt-8 md:pt-12 pb-2 w-full relative z-10">
+    <div class="max-w-7xl mx-auto px-6 md:px-12 w-full">
+    <div class="flex flex-col text-center mb-6 md:mb-8 gap-1 md:gap-2">
+      <h2 class="text-xs md:text-sm font-black tracking-[0.2em] uppercase text-[#ffd700]">Our Curriculum</h2>
+      <h3 class="text-2xl md:text-4xl font-black tracking-tighter text-white drop-shadow-[0_5px_15px_rgba(0,0,0,0.5)]">Classes & Pricing</h3>
+      <div class="w-16 h-0.5 bg-gradient-to-r from-yellow-400 to-[#ff007f] mx-auto rounded-full mt-1 md:mt-2"></div>
+    </div>
+
+    <!-- Dynamic class cards populated by SDK -->
+    <div id="sdk-class-cards" class="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-10">
+      <!-- Skeleton loaders while SDK loads -->
+      <div class="timetable-skeleton h-80 lg:h-96"></div>
+      <div class="timetable-skeleton h-80 lg:h-96"></div>
+      <div class="timetable-skeleton h-80 lg:h-96"></div>
+    </div>
+  </div>
+  </section>
+
+
+
+  <!-- Weekly Schedule / Timetable Section (SDK-Powered) -->
+  <section id="schedule" class="py-8 md:py-12 w-full relative z-10">
+    <div class="max-w-7xl mx-auto px-6 md:px-12 w-full">
+    <div class="flex flex-col text-center mb-6 md:mb-8 gap-1 md:gap-2">
+      <h2 class="text-xs md:text-sm font-black tracking-[0.2em] uppercase text-[#ffd700]">Plan Your Week</h2>
+      <h3 class="text-2xl md:text-4xl font-black tracking-tighter text-white drop-shadow-[0_5px_15px_rgba(0,0,0,0.5)]">Weekly Schedule</h3>
+      <div class="w-16 h-0.5 bg-gradient-to-r from-yellow-400 to-[#ff007f] mx-auto rounded-full mt-1 md:mt-2"></div>
+    </div>
+
+    <!-- Calendar Container -->
+    <div id="calendar-container" class="mb-10 md:mb-14 w-full mx-auto relative rounded-[1.5rem] p-3 md:p-6">
+      <!-- Ambient Neon Background Glow -->
+      <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-[150%] max-w-[1000px] bg-gradient-to-tr from-[#ff007f]/15 to-[#ffd700]/15 blur-[100px] rounded-full pointer-events-none -z-10 mix-blend-screen"></div>
+      
+      <div class="absolute inset-0 z-0 bollywood-glass rounded-[1.5rem]" style="-webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent), linear-gradient(to bottom, transparent, black 15%, black 85%, transparent); -webkit-mask-composite: source-in; mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent), linear-gradient(to bottom, transparent, black 15%, black 85%, transparent); mask-composite: intersect;"></div>
+      <div class="relative z-10 flex items-center justify-between gap-2 md:gap-4">
+        <!-- Prev Button -->
+        <button id="cal-prev" class="w-8 h-8 md:w-12 md:h-12 shrink-0 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors shadow-lg border border-white/10" onclick="window.changeMonth(-1)">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 md:w-6 md:h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+        </button>
+        
+        <!-- Calendar Core -->
+        <div class="min-w-0 flex flex-col mx-auto" style="width: 55%; max-width: 750px;">
+          <div class="flex justify-center items-center mb-3 md:mb-4">
+            <h4 id="cal-month-year" class="text-xl md:text-2xl font-black text-white tracking-widest uppercase drop-shadow-md"></h4>
+          </div>
+          <!-- Days Header -->
+          <div class="grid grid-cols-7 gap-1 md:gap-2 mb-2 text-center text-[10px] md:text-sm font-bold tracking-widest text-[#ffd700] uppercase">
+            <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
+          </div>
+          <!-- Days Grid -->
+          <div id="cal-grid" class="grid grid-cols-7 gap-1 md:gap-2 text-center"></div>
+        </div>
+        
+        <!-- Next Button -->
+        <button id="cal-next" class="w-8 h-8 md:w-12 md:h-12 shrink-0 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors shadow-lg border border-white/10" onclick="window.changeMonth(1)">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 md:w-6 md:h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+        </button>
+      </div>
+    </div>
+    
+
+    <!-- Timetable cards -->
+    <div id="timetable-grid" class="flex flex-wrap justify-center gap-4 lg:gap-6 max-w-5xl mx-auto">
+      <div class="timetable-skeleton h-44"></div>
+      <div class="timetable-skeleton h-44"></div>
+    </div>
+
+  </div>
+  </section>
+
+    <!-- Instructors / Faculty Section -->
+  <section id="faculty" class="py-16 md:py-24 relative z-10 overflow-hidden flex items-center min-h-[70vh]">
+    <!-- Original Slanted background -->
+    <div class="absolute inset-0 bg-gradient-to-br from-[#3b0b4a] to-[var(--bollywood-bg-dark)] -skew-y-3 origin-top-left z-0 border-y border-[#ff007f]/20"></div>
+    
+    <!-- Faded Photo Watermark -->
+    <div class="absolute inset-0 z-0 opacity-20 mix-blend-luminosity">
+      {{#shop.users}}
+      {{#imageUrl}}
+      <img 
+        src="{{imageUrl}}" 
+        alt="{{name}}" 
+        class="absolute right-0 top-0 w-full md:w-1/2 h-full object-cover object-top mask-image-fade-left"
+        style="-webkit-mask-image: linear-gradient(to right, transparent, black 50%); mask-image: linear-gradient(to right, transparent, black 50%);"
+      />
+      {{/imageUrl}}
+      {{^imageUrl}}
+      <img 
+        src="https://images.unsplash.com/photo-1543886567-3729d1c16768?q=80&w=2574&auto=format&fit=crop" 
+        alt="{{name}}" 
+        class="absolute right-0 top-0 w-full md:w-1/2 h-full object-cover object-top mask-image-fade-left"
+        style="-webkit-mask-image: linear-gradient(to right, transparent, black 50%); mask-image: linear-gradient(to right, transparent, black 50%);"
+      />
+      {{/imageUrl}}
+      {{/shop.users}}
+    </div>
+    
+    <div class="max-w-7xl mx-auto px-6 md:px-12 relative z-10 w-full">
+      
+      <!-- Content Container -->
+      <div class="w-full md:w-3/5 lg:w-1/2 relative">
+        <div class="mb-8">
+          <h2 class="text-sm font-black tracking-[0.2em] uppercase text-[#ffd700] mb-2 drop-shadow-lg">Meet The Star</h2>
+          <h3 class="text-4xl md:text-5xl font-black tracking-tighter text-white drop-shadow-xl">Our Choreographer</h3>
+        </div>
+
+        {{#shop.users}}
+        <div class="relative z-10">
+          <h4 class="text-4xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-[#ff007f] mb-2 drop-shadow-lg leading-tight">{{name}}</h4>
+          <p class="text-pink-200 font-black tracking-[0.25em] uppercase text-xs mb-8">Lead Choreographer</p>
+          
+          <div class="space-y-6 text-white/90 text-lg md:text-xl leading-relaxed">
+            <p>A classically trained dancer with over <span class="text-[#ffd700] font-bold">15 years</span> of performance experience across <span class="text-pink-400 font-bold">Bollywood</span>, <span class="text-pink-400 font-bold">Bhangra</span>, and <span class="text-pink-400 font-bold">Kathak</span> styles. Maya brings the electricity of Mumbai's film stages to every class she teaches.</p>
+            
+            <p>Trained at the prestigious <span class="text-[#ffd700] font-semibold">National Institute of Kathak Dance</span> and having choreographed for international stage productions, Maya founded Rhythm & Motion to share the joy and power of Indian dance with students of all levels.</p>
+            
+            <p class="text-white/70 text-base italic border-l-4 border-[#ffd700]/50 pl-6 mt-8 py-2 font-medium">"Dance is not about perfection — it's about expression. Every movement tells a story, and I'm here to help you find yours."</p>
+          </div>
+
+          <!-- Stats -->
+          <div class="flex flex-wrap gap-8 mt-12 pt-8 border-t border-white/10">
+            <div>
+              <div class="text-4xl font-black text-[#ffd700] drop-shadow-md">15+</div>
+              <div class="text-[11px] text-pink-200/80 uppercase tracking-widest font-black mt-1">Years<br/>Experience</div>
+            </div>
+            <div>
+              <div class="text-4xl font-black text-[#ffd700] drop-shadow-md">2K+</div>
+              <div class="text-[11px] text-pink-200/80 uppercase tracking-widest font-black mt-1">Students<br/>Taught</div>
+            </div>
+            <div>
+              <div class="text-4xl font-black text-[#ffd700] drop-shadow-md">50+</div>
+              <div class="text-[11px] text-pink-200/80 uppercase tracking-widest font-black mt-1">Stage<br/>Performances</div>
+            </div>
+          </div>
+        </div>
+        {{/shop.users}}
+      </div>
+      
+    </div>
+  </section>
+
+  <!-- Testimonials -->
+  <section id="testimonials" class="py-12 md:py-20 relative z-10">
+    <div class="max-w-7xl mx-auto px-6 md:px-12">
+      <div class="flex flex-col lg:flex-row gap-12 lg:gap-20 items-start">
+        
+        <!-- Left Side: Headers & CTA -->
+        <div class="w-full lg:w-1/3 lg:sticky lg:top-32 text-center lg:text-left">
+          <h2 class="text-sm font-black tracking-[0.2em] uppercase text-[#ffd700] mb-2">Community Love</h2>
+          <h3 class="text-4xl md:text-5xl font-black tracking-tighter text-white drop-shadow-lg mb-6 leading-tight">Student<br/>Spotlight</h3>
+          
+          <p class="text-white/70 text-lg mb-10 leading-relaxed max-w-md mx-auto lg:mx-0">
+            Hear from our dancers about how Rhythm & Motion has transformed their lives. Loved your experience with us? 
+          </p>
+          
+          <button data-action="review" class="glass-btn w-full sm:w-auto px-8 py-4 rounded-full text-sm font-bold uppercase tracking-widest text-white hover:text-[#ffd700] transition-all shadow-xl hover:-translate-y-1 inline-flex justify-center items-center gap-3">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+            Write a Review
+          </button>
+        </div>
+        
+        <!-- Right Side: Stacked Deck -->
+        <div class="w-full lg:w-2/3 relative min-h-[400px] lg:min-h-[500px]" id="reviews-stack-container">
+          {{#shop.reviews}}
+          <div class="review-card absolute top-0 left-0 w-full bollywood-glass rounded-[2rem] p-8 border-l-4 border-[#ffd700]/50 border-t-0 transition-all duration-500 cursor-pointer shadow-2xl" style="background-color: rgba(26, 11, 46, 0.95) !important;">
+            <!-- Big quote mark -->
+            <div class="absolute top-4 right-6 text-8xl font-black text-[#ffd700]/10 transition-colors z-0 pointer-events-none">"</div>
+            
+            <div class="flex gap-1.5 mb-6 relative z-10">
+               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" stroke="none" class="text-[#ffd700]"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" stroke="none" class="text-[#ffd700]"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" stroke="none" class="text-[#ffd700]"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" stroke="none" class="text-[#ffd700]"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" stroke="none" class="text-[#ffd700]"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            </div>
+            
+            <p class="text-white/90 text-xl leading-relaxed mb-8 font-light relative z-10 italic">
+              "{{comment}}"
+            </p>
+            
+            <div class="flex items-center gap-5 relative z-10">
+              <div class="avatar-initial w-14 h-14 rounded-full bg-gradient-to-br from-[#ff007f] to-[#ff6b00] flex items-center justify-center text-xl font-black text-white shadow-lg" data-name="{{user.name}}">
+                {{user.name.[0]}}
+              </div>
+              <div>
+                <h5 class="font-black text-white text-lg">{{user.name}}</h5>
+                <span class="text-xs font-bold uppercase tracking-widest text-[#ffd700]">Student</span>
+              </div>
+            </div>
+            
+            <div class="absolute bottom-6 right-8 text-white/30 text-sm font-medium tracking-widest uppercase hidden lg:block">Click to Next</div>
+          </div>
+          {{/shop.reviews}}
+        </div>
+        
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer / Contact -->
+  <footer class="bg-[#1a0b2e] py-10 md:py-14 relative z-10">
+    <div class="max-w-7xl mx-auto px-6 md:px-12 grid grid-cols-1 md:grid-cols-12 gap-10">
+      <div class="md:col-span-5">
+        <div class="flex items-center gap-4 mb-8">
+          {{#shop.logoUrl}}
+          <img src="{{shop.logoUrl}}" alt="{{shop.name}}" width="64" height="64" class="rounded-full border-2 border-[#ffd700]" />
+          {{/shop.logoUrl}}
+          <h2 class="text-4xl font-black tracking-tight text-white">{{shop.name}}</h2>
+        </div>
+        <p class="text-pink-100/70 mb-10 max-w-sm text-lg leading-relaxed">
+          Bringing the magic of cinema to the dance floor. Join our vibrant family today!
+        </p>
+        <div class="flex gap-4">
+          <a href="#" class="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center text-[#ffd700] hover:bg-[#ffd700] hover:text-[#1a0b2e] transition-all" aria-label="Instagram">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
+          </a>
+          <a href="#" class="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center text-[#ffd700] hover:bg-[#ffd700] hover:text-[#1a0b2e] transition-all" aria-label="Facebook">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+          </a>
+          <a href="#" class="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center text-[#ffd700] hover:bg-[#ffd700] hover:text-[#1a0b2e] transition-all">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+          </a>
+        </div>
+      </div>
+      
+      <div class="md:col-span-3">
+        <h4 class="text-2xl font-black text-white mb-8">Explore</h4>
+        <ul class="space-y-5">
+          <li><a href="#classes" class="text-pink-100/70 hover:text-[#ffd700] font-bold uppercase tracking-wider text-sm transition-colors">Programs</a></li>
+          <li><a href="#faculty" class="text-pink-100/70 hover:text-[#ffd700] font-bold uppercase tracking-wider text-sm transition-colors">Faculty</a></li>
+          <li><a href="#" class="text-pink-100/70 hover:text-[#ffd700] font-bold uppercase tracking-wider text-sm transition-colors">Performances</a></li>
+          <li><a href="#" class="text-pink-100/70 hover:text-[#ffd700] font-bold uppercase tracking-wider text-sm transition-colors">Contact</a></li>
+        </ul>
+      </div>
+      
+      <div class="md:col-span-4">
+        <h4 class="text-2xl font-black text-white mb-8">Visit Us</h4>
+        <div class="space-y-6">
+          <div class="flex items-start gap-5">
+            <div class="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center text-[#ffd700] shrink-0">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+            </div>
+            <span class="text-lg text-pink-100/90 font-light mt-2">{{address.street}}, {{address.city}}</span>
+          </div>
+          {{#shop.phone}}
+          <div class="flex items-center gap-5">
+            <div class="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center text-[#ffd700] shrink-0">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            </div>
+            <span class="text-lg text-pink-100/90 font-light">{{shop.phone}}</span>
+          </div>
+          {{/shop.phone}}
+          <div class="pt-8">
+            <button 
+              data-action="book"
+              class="bollywood-btn w-full px-8 py-5 rounded-full text-lg font-black tracking-widest flex items-center justify-center gap-3"
+            >
+              Book A Trial 
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+  
+  <script>
+    (function() {
+      // In a DynamicTemplate sandbox, the SDK (kutzapp-sdk.js) is already pre-loaded
+      // and KutzApp.init() is already called by the DynamicTemplate before inline scripts run.
+      // We only need to inject the booking modal/widget scripts.
+      var origin = window.location.origin;
+      var scriptsToInject = ['booking-modal.js', 'booking-widget.js'];
+      scriptsToInject.forEach(function(src) {
+        var script = document.createElement('script');
+        script.src = origin + '/' + src + '?v=' + Date.now();
+        script.setAttribute('data-shop-id', '{{shop.id}}');
+        script.async = true;
+        document.body.appendChild(script);
+      });
+
+      // KutzApp is already initialized by DynamicTemplate — load classes immediately
+      initClassesFromSDK();
+    })();
+
+    var DAY_NAMES = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    var DAY_SHORT = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    var allSchedules = []; window.allSchedules = allSchedules;
+    
+    // Global state
+    var currentMonthOffset = 0; // 0 = current, 1 = next, 2 = +2
+    var selectedDate = new Date();
+    selectedDate.setHours(0,0,0,0);
+    var activeDayTab = selectedDate.getDay();
+
+    function initClassesFromSDK() {
+      if (typeof KutzApp === 'undefined') {
+        // Fallback: SDK not yet available, retry after a short delay
+        setTimeout(initClassesFromSDK, 200);
+        return;
+      }
+      // KutzApp.init() is already called by DynamicTemplate, but ensure it's initialized
+      if (!KutzApp.shopId) {
+        KutzApp.init('{{shop.id}}');
+      }
+
+      KutzApp.getClassSchedules().then(function(schedules) {
+        allSchedules = schedules; window.allSchedules = schedules;
+        renderClassCards(schedules);
+        
+        var d = new Date();
+        window.selectDate(d.getFullYear(), d.getMonth(), d.getDate(), true);
+      }).catch(function(err) {
+        console.warn('SDK class load failed:', err);
+      });
+    }
+
+    function formatPrice(price) {
+      if (!price && price !== 0) return '';
+      return '$' + Number(price).toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+    }
+
+    function renderClassCards(schedules) {
+      var container = document.getElementById('sdk-class-cards');
+      if (!container) return;
+
+      // YouTube video mapping by class name (case-insensitive partial match)
+      var CLASS_VIDEOS = {
+        'bollywood': 'ZN7rzjEk_SA',
+        'bhangra': 'eT3s-a_De-I',
+        'kathak': 'd2L1aV9tRpQ'
+      };
+
+      function getVideoId(name) {
+        var lower = (name || '').toLowerCase();
+        var keys = Object.keys(CLASS_VIDEOS);
+        for (var i = 0; i < keys.length; i++) {
+          if (lower.indexOf(keys[i]) !== -1) return CLASS_VIDEOS[keys[i]];
+        }
+        return null;
+      }
+
+      // Deduplicate by serviceId to show unique class types
+      var seen = {};
+      var unique = [];
+      schedules.forEach(function(s) {
+        if (!seen[s.service.id]) {
+          seen[s.service.id] = true;
+          unique.push(s);
+        }
+      });
+
+      var FEATURES = [
+        {
+          title: "Expert Choreography",
+          desc: "Learn authentic moves from industry professionals who bring movie magic to life.",
+          icon: '<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-[#ffd700] drop-shadow-[0_0_12px_rgba(255,215,0,0.6)]"><circle cx="12" cy="4" r="2"/><path d="M7 21l3-7-2-2-4 4"/><path d="M17 21l-3-7 2-2 4 4"/><path d="M12 10l-2 2M12 10l2 2M12 10V6"/></svg>',
+          wrapperClass: 'border-[#ffd700]/50 shadow-[0_0_30px_rgba(255,165,0,0.5)] bg-gradient-to-br from-yellow-400/20 to-[#ff6b00]/10 group-hover:rotate-6 group-hover:scale-110 transition-transform duration-500'
+        },
+        {
+          title: "All Ages & Levels",
+          desc: "From kids to adults, beginners to advanced performers, everyone is welcome.",
+          icon: '<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-pink-400 drop-shadow-[0_0_12px_rgba(255,0,127,0.6)]"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>',
+          wrapperClass: 'border-[#ff007f]/50 shadow-[0_0_30px_rgba(255,0,127,0.5)] bg-gradient-to-br from-[#ff007f]/20 to-purple-500/10 group-hover:-rotate-6 group-hover:scale-110 transition-transform duration-500'
+        },
+        {
+          title: "Vibrant Community",
+          desc: "Join our festive performances, showcases, and celebrate the culture together.",
+          icon: '<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-teal-400 drop-shadow-[0_0_12px_rgba(16,185,129,0.6)]"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>',
+          wrapperClass: 'border-teal-500/50 shadow-[0_0_30px_rgba(16,185,129,0.5)] bg-gradient-to-br from-teal-500/20 to-emerald-500/10 group-hover:rotate-6 group-hover:scale-110 transition-transform duration-500'
+        }
+      ];
+
+      if (unique.length === 0) {
+        container.innerHTML = '<div class="col-span-full text-center py-16"><div class="text-5xl mb-4 opacity-50">🎶</div><p class="text-pink-100/60 text-lg">Classes coming soon!</p></div>';
+        return;
+      }
+
+      var html = '';
+      unique.forEach(function(s, idx) {
+        var svc = s.service;
+        var feature = FEATURES[idx % FEATURES.length];
+        var priceLabel = svc.semesterPrice ? 'Semester' : (svc.dropInPrice ? 'Drop-in' : 'Tuition');
+        var priceVal = svc.semesterPrice || svc.dropInPrice || svc.price || 0;
+        var videoId = getVideoId(svc.name);
+
+        // Build the media block: YouTube iframe if video available, fallback to image
+        var mediaBlock;
+        if (videoId) {
+          mediaBlock = '<iframe src="https://www.youtube.com/embed/' + videoId + '?autoplay=1&mute=1&muted=1&volume=0&loop=1&playlist=' + videoId + '&controls=0&rel=0&modestbranding=1&playsinline=1&start=20" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none" style="width: 135%; height: 135%;" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>';
+        } else {
+          var imgSrc = svc.imageUrl || 'https://images.unsplash.com/photo-1518834107812-67b0b7c58434?q=80&w=800&auto=format&fit=crop';
+          mediaBlock = '<img src="' + imgSrc + '" alt="' + svc.name + '" class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />';
+        }
+
+        html += '<div data-service-id="' + svc.id + '" data-booking-service-id="' + svc.id + '" class="rounded-2xl lg:rounded-[2rem] p-0 bollywood-card-hover cursor-pointer group flex flex-col relative overflow-hidden h-full">'
+          + '<div class="absolute inset-0 z-0 bollywood-glass fade-to-bg rounded-2xl lg:rounded-[2rem] border-t border-[#ffd700]/20 transition-all duration-500"></div>'
+          + '<div class="w-full aspect-video relative z-10 bg-black shrink-0 overflow-hidden">'
+          + mediaBlock
+          + '<div class="absolute inset-0 bg-gradient-to-t from-[#1a0b2e] via-transparent to-transparent opacity-80"></div>'
+          + '<div class="absolute bottom-2 left-2 lg:bottom-4 lg:left-6 pointer-events-none">'
+          + '<div class="inline-block px-2 py-0.5 lg:px-4 lg:py-1 rounded-full bg-black/60 backdrop-blur-sm border border-white/30 text-[8px] lg:text-xs font-bold uppercase tracking-wider text-white shadow-lg">'
+          + svc.duration + ' Min</div></div></div>'
+          + '<div class="w-full p-6 lg:p-8 flex flex-col relative z-10 bg-transparent flex-grow">'
+          + '<h4 class="text-sm lg:text-3xl font-black text-white mb-1 lg:mb-4 group-hover:text-[#ffd700] transition-colors drop-shadow-md leading-tight">' + svc.name + '</h4>'
+          + '<p class="text-pink-100/80 text-[10px] lg:text-base leading-tight lg:leading-relaxed mb-4 lg:mb-6 line-clamp-2 lg:line-clamp-3">' + (svc.description || '') + '</p>'
+          + '<div class="pt-4 lg:pt-6 border-t border-white/10 flex items-center justify-between mb-6 lg:mb-8">'
+          + '<div class="flex flex-col">'
+          + '<span class="text-[8px] lg:text-xs font-black uppercase tracking-widest text-[#ffd700]/80 mb-0 lg:mb-1">' + priceLabel + '</span>'
+          + '<span class="text-sm lg:text-3xl font-black text-white drop-shadow-lg">' + formatPrice(priceVal) + '</span></div>'
+          + '<div class="w-7 h-7 lg:w-14 lg:h-14 rounded-full bg-gradient-to-r from-[#ff6b00] to-[#ff007f] flex items-center justify-center text-white group-hover:scale-110 group-hover:rotate-12 transition-transform shadow-[0_0_20px_rgba(255,0,127,0.4)]">'
+          + '<svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 lg:w-6 lg:h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>'
+          + '</div></div>'
+          + '<div class="mt-auto pt-4 lg:pt-6 border-t border-white/10 flex flex-col items-center text-center">'
+          + '<div class="w-12 h-12 lg:w-16 lg:h-16 rounded-xl lg:rounded-2xl border-2 flex items-center justify-center mb-3 lg:mb-4 ' + feature.wrapperClass + '">'
+          + feature.icon
+          + '</div>'
+          + '<h3 class="text-sm lg:text-xl font-black text-white mb-1 lg:mb-2 uppercase tracking-wider">' + feature.title + '</h3>'
+          + '<p class="text-pink-100/80 text-[10px] lg:text-sm leading-tight lg:leading-relaxed">' + feature.desc + '</p>'
+          + '</div></div></div>';
+      });
+
+      container.innerHTML = html;
+    }
+
+    window.changeMonth = function(dir) {
+      currentMonthOffset += dir;
+      if (currentMonthOffset < 0) currentMonthOffset = 0;
+      if (currentMonthOffset > 2) currentMonthOffset = 2;
+      renderCalendar();
+    };
+
+    window.selectDate = function(y, m, d, isProgrammatic) {
+      selectedDate = new Date(y, m, d);
+      selectedDate.setHours(0,0,0,0);
+      renderCalendar();
+      activeDayTab = selectedDate.getDay();
+      
+
+      renderTimetableForDay(activeDayTab);
+    };
+
+    function renderCalendar() {
+      var grid = document.getElementById('cal-grid');
+      var monthLabel = document.getElementById('cal-month-year');
+      var prevBtn = document.getElementById('cal-prev');
+      var nextBtn = document.getElementById('cal-next');
+      if (!grid) return;
+
+      var daysWithClasses = {};
+      allSchedules.forEach(function(s) { daysWithClasses[s.dayOfWeek] = true; });
+
+      var targetDate = new Date();
+      targetDate.setDate(1); // Set to 1st to avoid overflow issues
+      targetDate.setMonth(targetDate.getMonth() + currentMonthOffset);
+      
+      var year = targetDate.getFullYear();
+      var month = targetDate.getMonth();
+      
+      var monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+      monthLabel.innerText = monthNames[month] + ' ' + year;
+
+      prevBtn.style.opacity = currentMonthOffset === 0 ? '0.3' : '1';
+      prevBtn.style.pointerEvents = currentMonthOffset === 0 ? 'none' : 'auto';
+      nextBtn.style.opacity = currentMonthOffset === 2 ? '0.3' : '1';
+      nextBtn.style.pointerEvents = currentMonthOffset === 2 ? 'none' : 'auto';
+
+      var firstDay = new Date(year, month, 1).getDay();
+      var daysInMonth = new Date(year, month + 1, 0).getDate();
+
+      var html = '';
+      for (var i = 0; i < firstDay; i++) { html += '<div class="relative min-w-0 w-full flex flex-col rounded-lg md:rounded-xl p-1 md:p-1.5 bg-white/5 opacity-50 pointer-events-none" style="aspect-ratio: 1;"></div>'; }
+
+      var today = new Date();
+      today.setHours(0,0,0,0);
+
+      for (var d = 1; d <= daysInMonth; d++) {
+        var cellDate = new Date(year, month, d);
+        cellDate.setHours(0,0,0,0);
+        var dayOfWeek = cellDate.getDay();
+        var daySchedulesForCell = allSchedules.filter(function(s) { return s.dayOfWeek === dayOfWeek; });
+        var hasClasses = daySchedulesForCell.length > 0;
+        var isPast = cellDate < today;
+        var isSelected = cellDate.getTime() === selectedDate.getTime();
+        
+        var baseClasses = "relative min-w-0 w-full flex flex-col rounded-lg md:rounded-xl transition-all duration-300 p-1 md:p-1.5 ";
+        
+        if (!isPast) {
+          baseClasses += "group ";
+        }
+        
+        if (hasClasses) {
+          baseClasses += "justify-start items-start ";
+        } else {
+          baseClasses += "justify-center items-center text-xs md:text-sm font-bold ";
+        }
+
+        if (isSelected) {
+          baseClasses += "z-20 hover-z-top selected-date has-events cal-cell-3d ";
+        } else if (!isPast) {
+          if (hasClasses) {
+            baseClasses += "text-white cursor-pointer z-10 hover-z-top has-events cal-cell-3d ";
+          } else {
+            baseClasses += "bg-white/5 hover:bg-white/10 text-white cursor-pointer hover:scale-105 ";
+          }
+        } else {
+          baseClasses += "bg-black/20 text-white/30 cursor-not-allowed ";
+        }
+
+        var clickAttr = (isPast) ? '' : 'onclick="window.selectDate(' + year + ',' + month + ',' + d + ')"';
+
+        html += '<div class="' + baseClasses + '" ' + clickAttr + ' style="aspect-ratio: 1;">';
+        
+        if (hasClasses) {
+          // Standard View (visible normally)
+          html += '<div class="standard-view w-full h-full flex flex-col overflow-hidden transition-opacity duration-300">';
+          html += '<span class="text-xs md:text-sm font-black mb-1 mx-auto">' + d + '</span>';
+          html += '<div class="flex flex-col gap-1 w-full mt-1">';
+          daySchedulesForCell.slice(0, 3).forEach(function(s) {
+            var timeStr = s.startTime.substring(0, 5); // Format: 09:00
+            
+            // Adjust colors if selected so it's readable on the yellow/orange gradient
+            var titleColor = isSelected ? 'text-black' : 'text-pink-200';
+            var timeColor = isSelected ? 'text-black/80' : 'text-white/80';
+            var bgColor = isSelected ? 'bg-white/30' : 'bg-black/30';
+            var borderColor = isSelected ? 'border-black' : 'border-[#ffd700]';
+            
+            html += '<div class="text-[8px] md:text-[10px] ' + bgColor + ' rounded px-1 py-0.5 truncate text-left border-l-2 ' + borderColor + ' leading-tight">';
+            html += '<div class="font-bold ' + titleColor + ' truncate" title="' + s.service.name + '">' + s.service.name + '</div>';
+            html += '<div class="' + timeColor + '">' + timeStr + '</div>';
+            html += '</div>';
+          });
+          if (daySchedulesForCell.length > 3) {
+            html += '<div class="text-[10px] ' + (isSelected ? 'text-black' : 'text-[#ffd700]') + ' font-bold mt-1 text-center">+' + (daySchedulesForCell.length - 3) + ' more</div>';
+          }
+          html += '</div>';
+          html += '</div>'; // End Standard View
+          
+          // Hover Popover View (Enlarged, Dynamic Details)
+          var popoverHtml = '<div class="hover-popover-card scrollbar-hide" style="position: absolute; pointer-events: none; z-index: 100; width: 300px; height: 340px; overflow-y: auto; left: 50%; top: 50%; background: rgba(30, 15, 45, 0.85); backdrop-filter: blur(40px) saturate(1.5); -webkit-backdrop-filter: blur(40px) saturate(1.5); border: 1.5px solid rgba(255, 215, 0, 0.3); border-radius: 1.5rem; box-shadow: 0 30px 80px rgba(0,0,0,0.8), inset 0 2px 4px rgba(255,255,255,0.2), inset 0 -2px 6px rgba(0,0,0,0.6); padding: 1.5rem;">';
+          popoverHtml += '<div style="background:linear-gradient(135deg,#ffd700,#ff6b9d);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-size:1.5rem;font-weight:900;letter-spacing:0.03em;padding-bottom:0.75rem;margin-bottom:1rem;border-bottom:1px solid rgba(255, 215, 0, 0.2); text-align:left;">' + monthNames[month] + ' ' + d + '</div>';
+          daySchedulesForCell.forEach(function(s) {
+            popoverHtml += '<div style="background:rgba(255,255,255,0.12);border:1px solid rgba(255, 215, 0, 0.15);border-left:3px solid #ffd700;border-radius:1rem;padding:1rem 1.25rem;margin-bottom:0.75rem; text-align:left;">';
+            popoverHtml += '<div style="font-weight:800;color:white;font-size:1.05rem;margin-bottom:0.35rem;">' + s.service.name + '</div>';
+            popoverHtml += '<div style="display:flex;align-items:center;justify-content:space-between;">';
+            popoverHtml += '<div style="display:flex;align-items:center;gap:0.4rem;color:rgba(255,255,255,0.6);font-size:0.85rem;"><span style="color:#ff007f;">⏱</span> ' + s.startTime.substring(0, 5) + ' - ' + s.endTime.substring(0, 5) + '</div>';
+            if (s.service.duration) {
+              popoverHtml += '<span style="background:linear-gradient(135deg,#ff007f,#ff4da6);color:white;font-size:0.7rem;font-weight:700;padding:0.2rem 0.6rem;border-radius:0.5rem;">' + s.service.duration + 'm</span>';
+            }
+            popoverHtml += '</div>';
+            if (s.staff && s.staff.name) {
+              popoverHtml += '<div style="margin-top:0.4rem;font-size:0.8rem;color:rgba(255,255,255,0.4);">with ' + s.staff.name + '</div>';
+            }
+            popoverHtml += '</div>';
+          });
+          popoverHtml += '</div>';
+          
+          html += popoverHtml;
+
+          
+        } else {
+          html += '<span>' + d + '</span>';
+        }
+        html += '</div>';
+      }
+      // Pad the end of the grid to complete the last row
+      var totalCells = firstDay + daysInMonth;
+      var remainingCells = (7 - (totalCells % 7)) % 7;
+      for (var j = 0; j < remainingCells; j++) {
+        html += '<div class="relative min-w-0 w-full flex flex-col rounded-lg md:rounded-xl p-1 md:p-1.5 bg-white/5 opacity-50 pointer-events-none" style="aspect-ratio: 1;"></div>';
+      }
+      grid.innerHTML = html;
+
+    }
+
+    function renderTimetableForDay(day) {
+      var grid = document.getElementById('timetable-grid');
+      if (!grid) return;
+
+      var daySchedules = allSchedules.filter(function(s) { return s.dayOfWeek === day; });
+
+      if (daySchedules.length === 0) {
+        grid.innerHTML = '';
+        return;
+      }
+
+      var html = '';
+      daySchedules.forEach(function(s) {
+        var svc = s.service;
+        var maxCap = svc.maxCapacity || 999;
+        var spotsText = s.availableSpots > 0 ? (s.availableSpots + ' spots left') : 'Full';
+        var spotsColor = s.availableSpots > 3 ? 'text-emerald-400' : (s.availableSpots > 0 ? 'text-[#ffd700]' : 'text-red-400');
+        var staffImg = s.staff.imageUrl
+          ? '<img src="' + s.staff.imageUrl + '" class="w-10 h-10 rounded-full object-cover border-2 border-[#ffd700]/40" alt="' + s.staff.name + '" />'
+          : '<div class="w-10 h-10 rounded-full bg-gradient-to-br from-[#ff007f] to-[#ff6b00] flex items-center justify-center text-sm font-black text-white border-2 border-[#ffd700]/40">' + (s.staff.name ? s.staff.name[0] : '?') + '</div>';
+
+        html += '<div class="timetable-card cursor-pointer" data-booking-service-id="' + svc.id + '">'
+          + '<div class="flex items-start gap-4">'
+          + staffImg
+          + '<div class="flex-1 min-w-0">'
+          + '<h4 class="text-lg font-black text-white truncate">' + svc.name + '</h4>'
+          + '<p class="text-sm text-pink-100/60">' + s.staff.name + '</p>'
+          + '</div>'
+          + '<div class="text-right shrink-0">'
+          + '<div class="text-lg font-black text-white">' + s.startTime + '</div>'
+          + '<div class="text-xs text-pink-100/50">' + s.startTime + ' – ' + s.endTime + '</div>'
+          + '</div></div>'
+          + '<div class="flex items-center justify-between mt-4 pt-4 border-t border-white/10">'
+          + '<div class="flex items-center gap-3">'
+          + '<span class="text-xs font-bold uppercase tracking-wider text-pink-100/50">' + svc.duration + ' min</span>'
+          + (s.term ? '<span class="text-xs px-2 py-0.5 rounded-full bg-[#ffd700]/10 text-[#ffd700] border border-[#ffd700]/20">' + s.term.name + '</span>' : '')
+          + '</div>'
+          + '<div class="flex items-center gap-2">'
+          + '<span class="text-xs font-bold ' + spotsColor + '">' + spotsText + '</span>'
+          + (svc.dropInPrice ? '<span class="text-xs font-black text-white ml-2">' + formatPrice(svc.dropInPrice) + '</span>' : '')
+          + '</div></div></div>';
+      });
+
+      grid.innerHTML = html;
+    }
+
+    // Event delegation for booking clicks on dynamically rendered class cards
+    document.addEventListener('click', function(e) {
+      var target = e.target;
+      while (target && target !== document) {
+        var serviceId = target.getAttribute && target.getAttribute('data-booking-service-id');
+        if (serviceId) {
+          if (typeof BarberBooking !== 'undefined') {
+            BarberBooking.open(serviceId);
+          }
+          return;
+        }
+        target = target.parentElement;
+      }
+    });
+  
+    // Reviews Stack Logic
+    var reviewsContainer = document.getElementById('reviews-stack-container');
+    if (reviewsContainer) {
+      function updateStack() {
+        var cards = reviewsContainer.querySelectorAll('.review-card');
+        cards.forEach(function(card, index) {
+          card.style.zIndex = cards.length - index;
+          card.style.transform = 'translateY(' + (index * 24) + 'px) scale(' + (1 - index * 0.04) + ')';
+          card.style.opacity = index < 3 ? (1 - index * 0.3) : 0;
+          card.style.pointerEvents = index === 0 ? 'auto' : 'none';
+        });
+      }
+      updateStack();
+      reviewsContainer.addEventListener('click', function(e) {
+        if (e.target.closest('.review-card')) {
+          var cards = reviewsContainer.querySelectorAll('.review-card');
+          if (cards.length > 0) {
+            reviewsContainer.appendChild(cards[0]); // move first to last
+            updateStack();
+          }
+        }
+      });
+    }
+</script>
+  <script>
+    // Force mute all video elements as a fallback guarantee
+    function forceMuteVideos() {
+      document.querySelectorAll('video').forEach(function(v) {
+        v.muted = true;
+        v.defaultMuted = true;
+        v.volume = 0;
+        v.setAttribute('muted', 'muted');
+        v.setAttribute('playsinline', '');
+      });
+    }
+    document.addEventListener('DOMContentLoaded', forceMuteVideos);
+    // Also run immediately in case DOM is already loaded
+    forceMuteVideos();
+    // Run periodically to catch dynamically injected videos
+    setInterval(forceMuteVideos, 1000);
+
+    // Force scroll to top on page refresh
+    if ('scrollRestoration' in history) {
+      history.scrollRestoration = 'manual';
+    }
+    window.scrollTo(0, 0);
+
+    // Bounce each letter of the hero title to the beat
+    (function() {
+      function animateTitle() {
+        var titleEl = document.getElementById('hero-dance-title');
+        // Only run once
+        if (titleEl && !titleEl.hasAttribute('data-animated')) {
+          titleEl.setAttribute('data-animated', 'true');
+          var text = titleEl.innerText || titleEl.textContent;
+          text = text.trim();
+          titleEl.innerHTML = '';
+          for (var i = 0; i < text.length; i++) {
+            var char = text[i];
+            if (char === ' ') {
+              // Add a non-breaking space or standard space
+              titleEl.appendChild(document.createTextNode(' '));
+            } else {
+              var span = document.createElement('span');
+              span.innerText = char;
+              span.className = 'animate-dance-beat';
+              // Keep original styles and just stagger animation delay
+              span.style.animationDelay = (i * 0.05) + 's';
+              titleEl.appendChild(span);
+            }
+          }
+        }
+      }
+      
+      animateTitle();
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', animateTitle);
+      }
+      setInterval(animateTitle, 500);
+    })();
+  </script>
+
+  <!-- Floating Home Button -->
+  <a href="#top" onclick="event.preventDefault(); window.scrollTo({top: 0, behavior: 'smooth'});" class="floating-chevron hover:-translate-y-2 transition-transform duration-300 group">
+    <div class="css-chevron"></div>
+  </a>
+  
+</div>
+  <script>
+    // Hamburger menu controller (v4 — DOM-ready, no inline onclick)
+    (function() {
+      function initHamburger() {
+        var btn = document.getElementById('hamburgerBtn');
+        var overlay = document.getElementById('mobileNavOverlay');
+        var closeBtn = document.getElementById('closeNavBtn');
+        
+        if (!btn || !overlay) {
+          // Retry until DOM is ready
+          setTimeout(initHamburger, 200);
+          return;
+        }
+        
+        // Prevent double-init
+        if (btn.dataset.initialized) return;
+        btn.dataset.initialized = 'true';
+        
+        function openMenu() {
+          overlay.classList.add('open');
+          btn.classList.add('is-open');
+          document.body.style.overflow = 'hidden';
+        }
+        
+        function closeMenu() {
+          overlay.classList.remove('open');
+          btn.classList.remove('is-open');
+          document.body.style.overflow = '';
+        }
+        
+        function toggleMenu() {
+          if (overlay.classList.contains('open')) {
+            closeMenu();
+          } else {
+            openMenu();
+          }
+        }
+        
+        // Hamburger button click
+        btn.addEventListener('click', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          toggleMenu();
+        });
+        
+        // Close button click
+        if (closeBtn) {
+          closeBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            closeMenu();
+          });
+        }
+        
+        // Close when clicking nav links
+        var navLinks = overlay.querySelectorAll('.mobile-nav-link');
+        navLinks.forEach(function(link) {
+          link.addEventListener('click', function() {
+            closeMenu();
+          });
+        });
+        
+        // Close when clicking Book button
+        var bookBtn = overlay.querySelector('[data-action="book"]');
+        if (bookBtn) {
+          bookBtn.addEventListener('click', function() {
+            closeMenu();
+          });
+        }
+        
+        // Close on Escape
+        document.addEventListener('keydown', function(e) {
+          if (e.key === 'Escape') closeMenu();
+        });
+        
+        console.log('[Hamburger] Initialized successfully');
+      }
+      
+      // Initialize
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initHamburger);
+      } else {
+        initHamburger();
+      }
+      // Also try after a delay as fallback
+      setTimeout(initHamburger, 500);
+      setTimeout(initHamburger, 1500);
+    })();
+  </script>
+  <script>
+    // Arrow navigation fix — attach listeners directly after DOM ready
+    (function() {
+      function initArrows() {
+        var prevBtn = document.getElementById('cal-prev');
+        var nextBtn = document.getElementById('cal-next');
+        
+        if (!prevBtn || !nextBtn) {
+          setTimeout(initArrows, 300);
+          return;
+        }
+        
+        // Don't double-init
+        if (prevBtn.dataset.arrowInit) return;
+        prevBtn.dataset.arrowInit = 'true';
+        
+        prevBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          if (typeof window.changeMonth === 'function') {
+            window.changeMonth(-1);
+          } else {
+            console.error('[ArrowFix] window.changeMonth is not defined!');
+          }
+        });
+        
+        nextBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          if (typeof window.changeMonth === 'function') {
+            window.changeMonth(1);
+          } else {
+            console.error('[ArrowFix] window.changeMonth is not defined!');
+          }
+        });
+        
+        // Make sure buttons are visually tappable on mobile
+        [prevBtn, nextBtn].forEach(function(btn) {
+          btn.style.cssText += ';min-width:44px;min-height:44px;-webkit-tap-highlight-color:rgba(255,255,255,0.2);cursor:pointer;position:relative;z-index:50;touch-action:manipulation;';
+        });
+        
+        console.log('[ArrowFix] Calendar arrows initialized, changeMonth type:', typeof window.changeMonth);
+      }
+      
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initArrows);
+      } else {
+        initArrows();
+      }
+      // Retry after scripts load
+      setTimeout(initArrows, 500);
+      setTimeout(initArrows, 2000);
+    })();
+  </script>
+  <script>
+    // === Modern Interactions v9 ===
+    (function() {
+      // --- Scroll Progress Bar ---
+      var progressBar = document.createElement('div');
+      progressBar.className = 'scroll-progress';
+      progressBar.style.width = '0%';
+      document.body.appendChild(progressBar);
+
+      // --- Modern 2026 Scroll Reveal System ---
+      function initScrollReveals() {
+        // Section-specific animation types for visual variety
+        var sectionAnimMap = {
+          'classes': 'reveal-clip',       // Clip-path morphing reveal
+          'schedule': 'reveal-3d',        // 3D perspective tilt
+          'faculty': 'reveal',            // Smooth fade-up (default)
+          'testimonials': 'reveal-elastic' // Elastic pop
+        };
+
+        // Apply section-level reveal classes
+        var sections = document.querySelectorAll('section, [id*="schedule"], [id*="calendar"], [id*="faculty"], [id*="testimonial"], [id*="contact"]');
+        sections.forEach(function(el) {
+          if (el.classList.contains('revealed')) return;
+          var id = el.id || '';
+          var animClass = sectionAnimMap[id] || 'reveal';
+          if (!el.classList.contains(animClass)) {
+            el.classList.add(animClass);
+          }
+        });
+
+        // Staggered card reveals with varied timing
+        var cards = document.querySelectorAll('.bollywood-card-hover, .timetable-card, .testimonial-card');
+        cards.forEach(function(el, i) {
+          if (!el.classList.contains('reveal-stagger-child')) {
+            el.classList.add('reveal-stagger-child');
+            el.style.setProperty('--stagger-delay', (i * 0.12) + 's');
+          }
+        });
+
+        // Heading text word-by-word reveal
+        var headings = document.querySelectorAll('section h2, section .text-5xl, section .text-4xl');
+        headings.forEach(function(h) {
+          if (h.classList.contains('heading-reveal')) return;
+          var text = h.textContent || '';
+          var words = text.trim().split(/\s+/);
+          if (words.length > 1 && words.length < 10) {
+            h.classList.add('heading-reveal');
+            h.innerHTML = words.map(function(w, i) {
+              return '<span class="word" style="transition-delay:' + (i * 0.08) + 's;display:inline-block;overflow:hidden;">' + w + '</span>';
+            }).join(' ');
+          }
+        });
+
+        // Create the scroll-linked progress bar
+        if (!document.querySelector('.scroll-progress-glow')) {
+          var bar = document.createElement('div');
+          bar.className = 'scroll-progress-glow';
+          bar.style.width = '0%';
+          document.body.appendChild(bar);
+        }
+
+        if ('IntersectionObserver' in window) {
+          // Main observer for sections
+          var sectionObserver = new IntersectionObserver(function(entries) {
+            entries.forEach(function(entry) {
+              if (entry.isIntersecting) {
+                entry.target.classList.add('revealed');
+                sectionObserver.unobserve(entry.target);
+              }
+            });
+          }, { 
+            threshold: 0.08,
+            rootMargin: '0px 0px -80px 0px'
+          });
+
+          // Card observer with earlier trigger
+          var cardObserver = new IntersectionObserver(function(entries) {
+            entries.forEach(function(entry) {
+              if (entry.isIntersecting) {
+                entry.target.classList.add('revealed');
+                cardObserver.unobserve(entry.target);
+              }
+            });
+          }, { 
+            threshold: 0.05,
+            rootMargin: '0px 0px -30px 0px'
+          });
+
+          // Observe all reveal types
+          var allRevealSelectors = '.reveal, .reveal-left, .reveal-right, .reveal-scale, .reveal-clip, .reveal-3d, .reveal-elastic, .reveal-curtain, .heading-reveal';
+          document.querySelectorAll(allRevealSelectors).forEach(function(el) {
+            sectionObserver.observe(el);
+          });
+          document.querySelectorAll('.reveal-stagger-child').forEach(function(el) {
+            cardObserver.observe(el);
+          });
+        } else {
+          // Fallback
+          document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale, .reveal-clip, .reveal-3d, .reveal-elastic, .reveal-curtain, .reveal-stagger-child, .heading-reveal').forEach(function(el) {
+            el.classList.add('revealed');
+          });
+        }
+      }
+
+      // --- Header Shrink on Scroll ---
+      var header = document.getElementById('mainHeader');
+      var lastScrollY = 0;
+
+      function onScroll() {
+        var scrollY = window.scrollY || window.pageYOffset;
+        var docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        
+        // Update scroll progress bar
+        var progress = docHeight > 0 ? (scrollY / docHeight) * 100 : 0;
+        progressBar.style.width = progress + '%';
+
+        // Header shrink
+        if (header) {
+          if (scrollY > 60) {
+            header.classList.add('scrolled');
+          } else {
+            header.classList.remove('scrolled');
+          }
+        }
+        
+        // Auth overlay shrink sync
+        var authOverlay = document.getElementById('react-auth-overlay');
+        if (authOverlay) {
+          if (scrollY > 60) {
+            authOverlay.classList.add('scrolled');
+          } else {
+            authOverlay.classList.remove('scrolled');
+          }
+        }
+
+        lastScrollY = scrollY;
+      }
+
+      // Throttled scroll
+      var ticking = false;
+      window.addEventListener('scroll', function() {
+        if (!ticking) {
+          window.requestAnimationFrame(function() {
+            onScroll();
+            ticking = false;
+          });
+          ticking = true;
+        }
+      }, { passive: true });
+
+      // --- Init after DOM ready ---
+      function init() {
+        initScrollReveals();
+        onScroll(); // Initial state
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+      } else {
+        init();
+      }
+
+      // Re-init after SDK loads (new elements may appear)
+      setTimeout(init, 2000);
+      setTimeout(init, 5000);
+    })();
+  </script>
+  <script>
+    // === Centered Calendar Modal v11 ===
+    (function() {
+      var modal = null;
+      var backdrop = null;
+      var isOpen = false;
+
+      function createModal() {
+        if (modal) return;
+        
+        // Backdrop
+        backdrop = document.createElement('div');
+        backdrop.id = 'calModalBackdrop';
+        backdrop.style.cssText = 'display:none;position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:9998;opacity:0;transition:opacity 0.35s ease;';
+        backdrop.addEventListener('click', closeModal);
+        document.body.appendChild(backdrop);
+        
+        // Modal
+        modal = document.createElement('div');
+        modal.id = 'calModal';
+        modal.style.cssText = 'display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-45%) scale(0.96);width:calc(100vw - 2rem);max-width:400px;max-height:75vh;overflow-y:auto;-webkit-overflow-scrolling:touch;background:rgba(255,255,255,0.08);backdrop-filter:blur(30px) saturate(1.5);-webkit-backdrop-filter:blur(30px) saturate(1.5);border:1.5px solid rgba(255, 215, 0, 0.3);border-radius:1.5rem;box-shadow:0 30px 80px rgba(0,0,0,0.6),0 0 0 1px rgba(255, 215, 0, 0.2),0 0 100px rgba(255,0,127,0.15),inset 0 1px 0 rgba(255,255,255,0.1);padding:1.75rem;z-index:9999;opacity:0;filter:blur(8px);transition:all 0.6s cubic-bezier(0.16,1,0.3,1);';
+        document.body.appendChild(modal);
+      }
+
+      function openModal(dateStr, items) {
+        createModal();
+        
+        // Build modal content
+        var html = '';
+        
+        // Close button
+        html += '<button onclick="event.stopPropagation();document.getElementById(\'calModal\').dispatchEvent(new Event(\'close\'))" style="position:absolute;top:1rem;right:1rem;background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);color:white;font-size:1.25rem;width:2.25rem;height:2.25rem;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:10;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);transition:all 0.25s ease;" onmouseover="this.style.background=\'rgba(255, 215, 0, 0.25)\';this.style.transform=\'rotate(90deg) scale(1.1)\'" onmouseout="this.style.background=\'rgba(255,255,255,0.1)\';this.style.transform=\'none\'">&times;</button>';
+        
+        // Date header
+        html += '<div style="background:linear-gradient(135deg,#ffd700,#ff6b9d);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-size:1.5rem;font-weight:900;letter-spacing:0.03em;padding-bottom:0.75rem;margin-bottom:1rem;border-bottom:1px solid rgba(255, 215, 0, 0.2);padding-right:2.5rem;">' + dateStr + '</div>';
+        
+        if (items.length === 0) {
+          html += '<div style="text-align:center;padding:2rem 0;color:rgba(255,255,255,0.5);font-size:0.95rem;">No classes scheduled</div>';
+        } else {
+          items.forEach(function(item, i) {
+            html += '<div class="cal-modal-item" style="animation:staggerPop 0.4s cubic-bezier(0.34,1.56,0.64,1) ' + (i * 0.08) + 's both;background:rgba(255,255,255,0.12);border:1px solid rgba(255, 215, 0, 0.15);border-left:3px solid #ffd700;border-radius:1rem;padding:1rem 1.25rem;margin-bottom:0.75rem;transition:all 0.3s ease;cursor:pointer;" data-booking-service-id="' + (item.serviceId || '') + '">';
+            html += '<div style="font-weight:800;color:white;font-size:1.05rem;margin-bottom:0.35rem;">' + item.name + '</div>';
+            html += '<div style="display:flex;align-items:center;justify-content:space-between;">';
+            html += '<div style="display:flex;align-items:center;gap:0.4rem;color:rgba(255,255,255,0.6);font-size:0.85rem;"><span style="color:#ff007f;">⏱</span> ' + item.time + '</div>';
+            if (item.duration) {
+              html += '<span style="background:linear-gradient(135deg,#ff007f,#ff4da6);color:white;font-size:0.7rem;font-weight:700;padding:0.2rem 0.6rem;border-radius:0.5rem;">' + item.duration + 'm</span>';
+            }
+            html += '</div>';
+            if (item.staff) {
+              html += '<div style="margin-top:0.4rem;font-size:0.8rem;color:rgba(255,255,255,0.4);">with ' + item.staff + '</div>';
+            }
+            html += '</div>';
+          });
+        }
+        
+        modal.innerHTML = html;
+        modal.style.display = 'block';
+        backdrop.style.display = 'block';
+        document.body.style.overflow = 'hidden';
+        
+        // Trigger animation
+        requestAnimationFrame(function() {
+          requestAnimationFrame(function() {
+            backdrop.style.opacity = '1';
+            modal.style.opacity = '1';
+            modal.style.filter = 'blur(0px)';
+            modal.style.transform = 'translate(-50%,-50%) scale(1)';
+          });
+        });
+        
+        isOpen = true;
+        
+        // Close event
+        modal.addEventListener('close', closeModal, { once: true });
+      }
+
+      function closeModal() {
+        if (!isOpen) return;
+        isOpen = false;
+        
+        modal.style.opacity = '0';
+        modal.style.filter = 'blur(8px)';
+        modal.style.transform = 'translate(-50%,-45%) scale(0.96)';
+        backdrop.style.opacity = '0';
+        document.body.style.overflow = '';
+        
+        setTimeout(function() {
+          if (!isOpen) {
+            modal.style.display = 'none';
+            backdrop.style.display = 'none';
+          }
+        }, 400);
+      }
+
+      // Hook into selectDate to show modal on mobile (only on user tap)
+      function hookSelectDate() {
+        if (typeof window.selectDate !== 'function') {
+          setTimeout(hookSelectDate, 500);
+          return;
+        }
+        
+        var origSelectDate = window.selectDate;
+        window.selectDate = function(y, m, d, isProgrammatic) {
+          origSelectDate(y, m, d, isProgrammatic);
+          
+          // On mobile, show modal — but ONLY after user interaction (not on page load)
+          if (isProgrammatic) return;
+          // Only show centered modal on touch/mobile devices (not on large desktop screens)
+          if (window.innerWidth >= 1024) return;
+          
+            // Get class data for this day
+            var dayOfWeek = new Date(y, m, d).getDay();
+            var schedules = window.allSchedules || [];
+            var daySchedules = schedules.filter(function(s) { return s.dayOfWeek === dayOfWeek; });
+            
+            var MONTH_NAMES = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+            var dateStr = MONTH_NAMES[m] + ' ' + d;
+            
+            var items = daySchedules.map(function(s) {
+              return {
+                name: s.service.name,
+                time: s.startTime + ' - ' + s.endTime,
+                duration: s.service.duration,
+                staff: s.staff ? s.staff.name : '',
+                serviceId: s.service.id
+              };
+            });
+            
+            openModal(dateStr, items);
+          
+        };
+        console.log('[CalModal] Hooked selectDate for centered modal');
+      }
+
+      // Also handle Escape key
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') closeModal();
+      });
+
+      // Init
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', hookSelectDate);
+      } else {
+        hookSelectDate();
+      }
+      setTimeout(hookSelectDate, 1000);
+      setTimeout(hookSelectDate, 3000);
+    })();
+  
+
+    </script>
+  <script>
+    // Fix avatar initials — extract first char from name
+    (function() {
+      function fixAvatarInitials() {
+        document.querySelectorAll('.avatar-initial').forEach(function(el) {
+          var name = el.getAttribute('data-name') || '';
+          var text = el.textContent.trim();
+          // If the content is empty or still has the mustache tag, fix it
+          if (!text || text === '{{user.name.[0]}}' || text.length > 2) {
+            el.textContent = name.charAt(0).toUpperCase() || '?';
+          }
+        });
+      }
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', fixAvatarInitials);
+      } else {
+        fixAvatarInitials();
+      }
+      setTimeout(fixAvatarInitials, 1000);
+      setTimeout(fixAvatarInitials, 3000);
+    })();
+  </script>
