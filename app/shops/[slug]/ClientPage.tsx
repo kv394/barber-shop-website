@@ -161,13 +161,28 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
 
  
 
- // Auth button for client sign-in/out
- const rawAuthButton = <SupabaseAuthButton redirectUrl={pathname} primaryColor={primaryColor} secondaryColor={secondaryColor} isIconOnly={true} />;
- const authButton = (
- <div className="absolute top-6 right-6 z-50">
- {rawAuthButton}
- </div>
- );
+  // Auth button for client sign-in/out
+  const rawAuthButton = <SupabaseAuthButton redirectUrl={pathname} primaryColor={primaryColor} secondaryColor={secondaryColor} isIconOnly={true} />;
+  
+  let authButton;
+  if (dynamicTemplateHtml) {
+    // Overlay the auth button exactly over the sticky menu band
+    authButton = (
+      <div className="fixed top-4 md:top-6 left-0 right-0 z-[105] pointer-events-none flex justify-center">
+        <div className="w-[92%] max-w-5xl mx-auto px-5 py-3 md:px-8 md:py-3.5 flex justify-end items-center">
+          <div className="pointer-events-auto">
+            {rawAuthButton}
+          </div>
+        </div>
+      </div>
+    );
+  } else {
+    authButton = (
+      <div className="absolute top-6 right-6 z-50">
+        {rawAuthButton}
+      </div>
+    );
+  }
 
  
 
