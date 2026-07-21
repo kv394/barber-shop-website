@@ -388,8 +388,10 @@ export default function DynamicTemplate({ ctx }: { ctx: any }) {
             width: authRect.width + 'px',
           }}
         >
-          <div className="pointer-events-auto flex items-center justify-end w-full h-full">
-            {rawAuthButton}
+          <div className="flex items-center justify-end w-full h-full">
+            <div className="pointer-events-auto">
+              {rawAuthButton}
+            </div>
           </div>
         </div>
       );
