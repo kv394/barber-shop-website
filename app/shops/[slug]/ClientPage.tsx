@@ -162,7 +162,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
  
 
  // Auth button for client sign-in/out
- const rawAuthButton = <SupabaseAuthButton redirectUrl={pathname} primaryColor={primaryColor} secondaryColor={secondaryColor} />;
+ const rawAuthButton = <SupabaseAuthButton redirectUrl={pathname} primaryColor={primaryColor} secondaryColor={secondaryColor} isIconOnly={true} />;
  const authButton = (
  <div className="absolute top-6 right-6 z-50">
  {rawAuthButton}
