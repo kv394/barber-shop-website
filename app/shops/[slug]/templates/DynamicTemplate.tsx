@@ -349,6 +349,12 @@ export default function DynamicTemplate({ ctx }: { ctx: any }) {
    <div dangerouslySetInnerHTML={{ __html: optimizedHtml }} />
    {authContainer && rawAuthButton && createPortal(rawAuthButton, authContainer)}
    
+   <div className="fixed bottom-4 left-4 z-[9999] bg-black text-white p-4 rounded-lg font-mono text-xs shadow-2xl border border-white/20 pointer-events-none">
+     DEBUG:<br/>
+     authContainer found: {authContainer ? 'YES' : 'NO'}<br/>
+     isIconOnly on raw: {rawAuthButton?.props?.isIconOnly ? 'YES' : 'NO'}
+   </div>
+
    {selectedService && (
    <BookingModal shopId={shop.id} service={selectedService} onClose={() => setSelectedService(null)} shopHours={c.businessHours || {}} themeColor={primaryColor} templateType={templateType} />
    )}
