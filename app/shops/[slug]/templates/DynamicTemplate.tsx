@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useMemo, useState } from 'react';
-import { createPortal } from 'react-dom';
 import dynamic from 'next/dynamic';
 import { sanitizeTemplate } from '@/lib/sanitize';
 import ReviewsSection from '../components/ReviewsSection';
@@ -330,27 +329,70 @@ export default function DynamicTemplate({ ctx }: { ctx: any }) {
    return sanitizedHtml.replace(/<img\b(?![^>]*loading=)/gi, '<img loading="lazy" decoding="async" ');
   }, [sanitizedHtml]);
 
-  // Mount auth widget into the template using React Portal
-  const [authContainer, setAuthContainer] = useState<HTMLElement | null>(null);
+  // DOM tracking for auth widget
+  const [authRect, setAuthRect] = useState<{ top: number, right: number, width: number, height: number } | null>(null);
 
   useEffect(() => {
     if (!dynamicTemplateHtml) return;
     
-    // Small delay to ensure dangerouslySetInnerHTML has painted the DOM
-    const timer = setTimeout(() => {
-      const target = document.getElementById('auth-widget-container');
+    const updateRect = () => {
+      // First try to find the exact container, fallback to header
+      const target = document.getElementById('auth-widget-container') || document.getElementById('mainHeader');
       if (target) {
-        setAuthContainer(target);
+        const rect = target.getBoundingClientRect();
+        const newRight = document.documentElement.clientWidth - rect.right;
+        
+        // Use Math.round to prevent sub-pixel rendering jitter from causing infinite loops
+        const rTop = Math.round(rect.top);
+        const rRight = Math.round(newRight);
+        const rWidth = Math.round(rect.width);
+        const rHeight = Math.round(rect.height);
+        
+        setAuthRect(prev => {
+          if (prev && 
+              prev.top === rTop && 
+              prev.right === rRight && 
+              prev.width === rWidth && 
+              prev.height === rHeight) {
+            return prev; // Bailout to prevent re-render
+          }
+          return { top: rTop, right: rRight, width: rWidth, height: rHeight };
+        });
       }
-    }, 100);
+    };
     
-    return () => clearTimeout(timer);
+    updateRect();
+    window.addEventListener('scroll', updateRect, { passive: true });
+    window.addEventListener('resize', updateRect, { passive: true });
+    
+    // Interval to catch CSS transitions
+    const interval = setInterval(updateRect, 50);
+    
+    return () => {
+      window.removeEventListener('scroll', updateRect);
+      window.removeEventListener('resize', updateRect);
+      clearInterval(interval);
+    };
   }, [dynamicTemplateHtml, optimizedHtml]);
 
   let finalAuthButton = null;
   if (dynamicTemplateHtml) {
-    if (authContainer && rawAuthButton) {
-      finalAuthButton = createPortal(rawAuthButton, authContainer);
+    if (authRect) {
+      finalAuthButton = (
+        <div 
+          className="fixed z-[150] pointer-events-none flex items-center justify-end"
+          style={{
+            top: authRect.top + 'px',
+            right: authRect.right + 'px',
+            height: authRect.height + 'px',
+            width: authRect.width + 'px',
+          }}
+        >
+          <div className="pointer-events-auto flex items-center justify-end w-full h-full">
+            {rawAuthButton}
+          </div>
+        </div>
+      );
     }
   } else {
     finalAuthButton = (
