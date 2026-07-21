@@ -1,4 +1,5 @@
-import React, { useEffect, useRef, useMemo } from 'react';
+import React, { useEffect, useRef, useMemo, useState } from 'react';
+import { createPortal } from 'react-dom';
 import dynamic from 'next/dynamic';
 import { sanitizeTemplate } from '@/lib/sanitize';
 import ReviewsSection from '../components/ReviewsSection';
@@ -329,12 +330,24 @@ export default function DynamicTemplate({ ctx }: { ctx: any }) {
    return sanitizedHtml.replace(/<img\b(?![^>]*loading=)/gi, '<img loading="lazy" decoding="async" ');
   }, [sanitizedHtml]);
 
+  const [authContainer, setAuthContainer] = useState<Element | null>(null);
+
+  useEffect(() => {
+   if (containerRef.current) {
+    const el = containerRef.current.querySelector('#auth-widget-container');
+    if (el) {
+     setAuthContainer(el);
+    }
+   }
+  }, [optimizedHtml]);
+
   return (
   <main ref={containerRef} className="min-h-screen overflow-x-hidden flex flex-col relative" onClick={handleDynamicTemplateClick}>
 
-   {authButton}
+   {!authContainer && authButton}
    {combinedCss && <style dangerouslySetInnerHTML={{ __html: combinedCss }} />}
    <div dangerouslySetInnerHTML={{ __html: optimizedHtml }} />
+   {authContainer && rawAuthButton && createPortal(rawAuthButton, authContainer)}
    
    {selectedService && (
    <BookingModal shopId={shop.id} service={selectedService} onClose={() => setSelectedService(null)} shopHours={c.businessHours || {}} themeColor={primaryColor} templateType={templateType} />

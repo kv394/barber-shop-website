@@ -162,9 +162,10 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
  
 
  // Auth button for client sign-in/out
+ const rawAuthButton = <SupabaseAuthButton redirectUrl={pathname} primaryColor={primaryColor} secondaryColor={secondaryColor} />;
  const authButton = (
  <div className="absolute top-6 right-6 z-50">
- <SupabaseAuthButton redirectUrl={pathname} primaryColor={primaryColor} secondaryColor={secondaryColor} />
+ {rawAuthButton}
  </div>
  );
 
@@ -177,7 +178,7 @@ export default function ClientPage({ shop, templateType, primaryColor, secondary
  heroLayout, heroOverlayOpacity, heroOverlayColor, enableScrollAnimations,
  faviconUrl, customCss, sectionOrder, isDark, themeBg, themeText, themeMuted, themeBorder,
  pages, fontFamily, ctaText, announcement, heroVideoUrl, shopPhone, shopEmail,
- shopWebsite, shopAddress, shopFB, shopIG, shopTW, logoUrl, heroImageUrl, authButton, pathname,
+ shopWebsite, shopAddress, shopFB, shopIG, shopTW, logoUrl, heroImageUrl, authButton, rawAuthButton, pathname,
  showAppointmentsModal, setShowAppointmentsModal
  };
 
