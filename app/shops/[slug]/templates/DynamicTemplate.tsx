@@ -111,7 +111,7 @@ export default function DynamicTemplate({ ctx }: { ctx: any }) {
  heroLayout, heroOverlayOpacity, heroOverlayColor, enableScrollAnimations,
  faviconUrl, customCss, sectionOrder, isDark, themeBg, themeText, themeMuted, themeBorder,
  pages, fontFamily, ctaText, announcement, heroVideoUrl, shopPhone, shopEmail,
- shopWebsite, shopAddress, shopFB, shopIG, shopTW, logoUrl, heroImageUrl, authButton 
+ shopWebsite, shopAddress, shopFB, shopIG, shopTW, logoUrl, heroImageUrl, authButton, rawAuthButton 
  } = ctx;
 
  const containerRef = useRef<HTMLDivElement>(null);
